@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.2.2.1</version>
+    <version>4.2.2.2</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -417,7 +417,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.26</version>
+                <version>1.18.28</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -450,6 +450,7 @@
         <module>platform/quickshop-platform-spigot-v1_19_R1</module>
         <module>platform/quickshop-platform-spigot-v1_19_R2</module>
         <module>platform/quickshop-platform-spigot-v1_19_R3</module>
+        <module>platform/quickshop-platform-spigot-v1_20_R1</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
@@ -469,6 +470,7 @@
         <module>compatibility/lands</module>
         <module>compatibility/residence</module>
         <module>compatibility/elitemobs</module>
+        <module>compatibility/bungeecord-geyser</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
@@ -478,6 +480,7 @@
         <module>addon/limited</module>
         <module>addon/dynmap</module>
         <module>addon/bluemap</module>
+        <module>addon/displaycontrol</module>
     </modules>
 
 </project>

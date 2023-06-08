@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
 import com.comphenix.protocol.events.PacketContainer;
+import com.ghostchu.quickshop.api.event.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
@@ -10,6 +11,7 @@ import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.packetfactory.VirtualDisplayPacketFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -18,10 +20,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadable {
@@ -88,6 +87,14 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
 
     @Override
+    public boolean isApplicableForPlayer(Player player) {
+        DisplayApplicableCheckEvent event = new DisplayApplicableCheckEvent(shop, player.getUniqueId());
+        event.setApplicable(true);
+        event.callEvent();
+        return event.isApplicable();
+    }
+
+    @Override
     public void remove() {
         if (isSpawned()) {
             sendPacketToAll(fakeItemDestroyPacket);
@@ -147,11 +154,19 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         manager.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
-            //Let nearby player can saw fake item
-            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
-            for (Entity entity : entityCollection) {
-                if (entity instanceof Player) {
-                    packetSenders.add(entity.getUniqueId());
+            try (PerfMonitor displayInit = new PerfMonitor("VirtualDisplayInit - Distance Check")) {
+                //Let nearby player can saw fake item
+                List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
+                onlinePlayers.removeIf(p -> !p.getWorld().equals(shop.getLocation().getWorld()));
+                for (Player onlinePlayer : onlinePlayers) {
+                    double distance = onlinePlayer.getLocation().distance(shop.getLocation());
+                    if (Math.abs(distance) > Bukkit.getViewDistance() * 16) {
+                        Log.debug("Skipped for player " + onlinePlayer.getName() + " because distance is " + distance);
+                        continue;
+                    }
+                    if (isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
+                        packetSenders.add(onlinePlayer.getUniqueId());
+                    }
                 }
             }
         }

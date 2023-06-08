@@ -13,6 +13,9 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.reflect.TypeToken;
+import com.google.gson.annotations.SerializedName;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
@@ -30,14 +33,31 @@ import java.util.function.Supplier;
 public class FastPlayerFinder implements PlayerFinder {
     private final Cache<UUID, Optional<String>> nameCache = CacheBuilder.newBuilder()
             .expireAfterAccess(3, TimeUnit.DAYS)
-            .maximumSize(2500)
+            .maximumSize(50000)
             .recordStats()
             .build();
     private final QuickShop plugin;
 
+    private final Timer cleanupTimer;
+
     public FastPlayerFinder(QuickShop plugin) {
         this.plugin = plugin;
         loadFromUserCache();
+        cleanupTimer = new Timer("Failure lookup clean timer");
+        cleanupTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Set<UUID> toClean = new HashSet<>();
+                nameCache.asMap().forEach((uuid, optional) -> {
+                    if (optional.isEmpty()) {
+                        toClean.add(uuid);
+                    }
+                });
+                toClean.forEach(nameCache::invalidate);
+                Log.debug("Cleaned " + toClean.size() + " failure lookup entries.");
+            }
+        }, 0, 1000 * 60 * 60);
+
     }
 
     private void loadFromUserCache() {
@@ -66,12 +86,13 @@ public class FastPlayerFinder implements PlayerFinder {
     public String uuid2Name(@NotNull UUID uuid) {
         try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
             Optional<String> cachedName = nameCache.getIfPresent(uuid);
-            if (cachedName != null && cachedName.isPresent()) {
-                return cachedName.get();
+            //noinspection OptionalAssignedToNull
+            if (cachedName != null) {
+                return cachedName.orElse(null);
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid));
-            String name = grabConcurrentTask.invokeAll(3, TimeUnit.SECONDS, Objects::nonNull);
+            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
+            String name = grabConcurrentTask.invokeAll(10, TimeUnit.SECONDS, Objects::nonNull);
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
         } catch (InterruptedException e) {
@@ -92,7 +113,7 @@ public class FastPlayerFinder implements PlayerFinder {
                 }
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name));
+            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new PlayerDBFindUUIDTask(name));
             // This cannot fail.
             UUID uuid = grabConcurrentTask.invokeAll(1, TimeUnit.DAYS, Objects::nonNull);
             if (uuid == null) {
@@ -138,6 +159,310 @@ public class FastPlayerFinder implements PlayerFinder {
             UUID uuid = offlinePlayer.getUniqueId();
             Log.debug("Lookup result: " + uuid);
             return uuid;
+        }
+    }
+
+    static class PlayerDBFindUUIDTask implements Supplier<UUID> {
+        public final String name;
+
+        PlayerDBFindUUIDTask(@NotNull String name) {
+            this.name = name;
+        }
+
+        @Override
+        public UUID get() {
+            if (!PackageUtil.parsePackageProperly("playerDBFindUUIDTask").asBoolean(false)) {
+                return null;
+            }
+            HttpResponse<String> response = Unirest.get("https://playerdb.co/api/player/minecraft/" + name).asString();
+            PlayerDBResponse playerDBResponse = JsonUtil.getGson().fromJson(response.getBody(), PlayerDBResponse.class);
+            if (!playerDBResponse.getSuccess()) return null;
+            return UUID.fromString(playerDBResponse.getData().getPlayer().getId());
+        }
+
+        static class PlayerDBResponse {
+
+            @SerializedName("code")
+            private String code;
+            @SerializedName("message")
+            private String message;
+            @SerializedName("data")
+            private DataDTO data;
+            @SerializedName("success")
+            private Boolean success;
+
+            public String getCode() {
+                return code;
+            }
+
+            public void setCode(String code) {
+                this.code = code;
+            }
+
+            public String getMessage() {
+                return message;
+            }
+
+            public void setMessage(String message) {
+                this.message = message;
+            }
+
+            public DataDTO getData() {
+                return data;
+            }
+
+            public void setData(DataDTO data) {
+                this.data = data;
+            }
+
+            public Boolean getSuccess() {
+                return success;
+            }
+
+            public void setSuccess(Boolean success) {
+                this.success = success;
+            }
+
+            public static class DataDTO {
+                @SerializedName("player")
+                private PlayerDTO player;
+
+                public PlayerDTO getPlayer() {
+                    return player;
+                }
+
+                public void setPlayer(PlayerDTO player) {
+                    this.player = player;
+                }
+
+                public static class PlayerDTO {
+                    @SerializedName("meta")
+                    private MetaDTO meta;
+                    @SerializedName("username")
+                    private String username;
+                    @SerializedName("id")
+                    private String id;
+                    @SerializedName("raw_id")
+                    private String rawId;
+                    @SerializedName("avatar")
+                    private String avatar;
+                    @SerializedName("name_history")
+                    private List<?> nameHistory;
+
+                    public MetaDTO getMeta() {
+                        return meta;
+                    }
+
+                    public void setMeta(MetaDTO meta) {
+                        this.meta = meta;
+                    }
+
+                    public String getUsername() {
+                        return username;
+                    }
+
+                    public void setUsername(String username) {
+                        this.username = username;
+                    }
+
+                    public String getId() {
+                        return id;
+                    }
+
+                    public void setId(String id) {
+                        this.id = id;
+                    }
+
+                    public String getRawId() {
+                        return rawId;
+                    }
+
+                    public void setRawId(String rawId) {
+                        this.rawId = rawId;
+                    }
+
+                    public String getAvatar() {
+                        return avatar;
+                    }
+
+                    public void setAvatar(String avatar) {
+                        this.avatar = avatar;
+                    }
+
+                    public List<?> getNameHistory() {
+                        return nameHistory;
+                    }
+
+                    public void setNameHistory(List<?> nameHistory) {
+                        this.nameHistory = nameHistory;
+                    }
+
+                    public static class MetaDTO {
+                        @SerializedName("cached_at")
+                        private Integer cachedAt;
+
+                        public Integer getCachedAt() {
+                            return cachedAt;
+                        }
+
+                        public void setCachedAt(Integer cachedAt) {
+                            this.cachedAt = cachedAt;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    static class PlayerDBFindNameTask implements Supplier<String> {
+        public final UUID uuid;
+
+        PlayerDBFindNameTask(@NotNull UUID uuid) {
+            this.uuid = uuid;
+        }
+
+        @Override
+        public String get() {
+            if (!PackageUtil.parsePackageProperly("playerDBFindNameTask").asBoolean(false)) {
+                return null;
+            }
+            HttpResponse<String> response = Unirest.get("https://playerdb.co/api/player/minecraft/" + uuid).asString();
+            PlayerDBResponse playerDBResponse = JsonUtil.getGson().fromJson(response.getBody(), PlayerDBResponse.class);
+            if (!playerDBResponse.getSuccess()) return null;
+            return playerDBResponse.getData().getPlayer().getUsername();
+        }
+
+        static class PlayerDBResponse {
+
+            @SerializedName("code")
+            private String code;
+            @SerializedName("message")
+            private String message;
+            @SerializedName("data")
+            private DataDTO data;
+            @SerializedName("success")
+            private Boolean success;
+
+            public String getCode() {
+                return code;
+            }
+
+            public void setCode(String code) {
+                this.code = code;
+            }
+
+            public String getMessage() {
+                return message;
+            }
+
+            public void setMessage(String message) {
+                this.message = message;
+            }
+
+            public DataDTO getData() {
+                return data;
+            }
+
+            public void setData(DataDTO data) {
+                this.data = data;
+            }
+
+            public Boolean getSuccess() {
+                return success;
+            }
+
+            public void setSuccess(Boolean success) {
+                this.success = success;
+            }
+
+            public static class DataDTO {
+                @SerializedName("player")
+                private PlayerDTO player;
+
+                public PlayerDTO getPlayer() {
+                    return player;
+                }
+
+                public void setPlayer(PlayerDTO player) {
+                    this.player = player;
+                }
+
+                public static class PlayerDTO {
+                    @SerializedName("meta")
+                    private MetaDTO meta;
+                    @SerializedName("username")
+                    private String username;
+                    @SerializedName("id")
+                    private String id;
+                    @SerializedName("raw_id")
+                    private String rawId;
+                    @SerializedName("avatar")
+                    private String avatar;
+                    @SerializedName("name_history")
+                    private List<?> nameHistory;
+
+                    public MetaDTO getMeta() {
+                        return meta;
+                    }
+
+                    public void setMeta(MetaDTO meta) {
+                        this.meta = meta;
+                    }
+
+                    public String getUsername() {
+                        return username;
+                    }
+
+                    public void setUsername(String username) {
+                        this.username = username;
+                    }
+
+                    public String getId() {
+                        return id;
+                    }
+
+                    public void setId(String id) {
+                        this.id = id;
+                    }
+
+                    public String getRawId() {
+                        return rawId;
+                    }
+
+                    public void setRawId(String rawId) {
+                        this.rawId = rawId;
+                    }
+
+                    public String getAvatar() {
+                        return avatar;
+                    }
+
+                    public void setAvatar(String avatar) {
+                        this.avatar = avatar;
+                    }
+
+                    public List<?> getNameHistory() {
+                        return nameHistory;
+                    }
+
+                    public void setNameHistory(List<?> nameHistory) {
+                        this.nameHistory = nameHistory;
+                    }
+
+                    public static class MetaDTO {
+                        @SerializedName("cached_at")
+                        private Integer cachedAt;
+
+                        public Integer getCachedAt() {
+                            return cachedAt;
+                        }
+
+                        public void setCachedAt(Integer cachedAt) {
+                            this.cachedAt = cachedAt;
+                        }
+                    }
+                }
+            }
         }
     }
 

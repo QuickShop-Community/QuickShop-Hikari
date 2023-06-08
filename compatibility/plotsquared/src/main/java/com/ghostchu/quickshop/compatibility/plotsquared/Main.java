@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -10,25 +10,22 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
-import com.plotsquared.core.configuration.caption.Caption;
-import com.plotsquared.core.configuration.caption.TranslatableCaption;
+import com.plotsquared.core.configuration.caption.*;
 import com.plotsquared.core.events.PlotDeleteEvent;
 import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public final class Main extends CompatibilityModule implements Listener {
-    private QuickShopAPI api;
     private boolean whiteList;
     private boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
@@ -79,17 +76,32 @@ public final class Main extends CompatibilityModule implements Listener {
         // Plugin shutdown logic
         super.onDisable();
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
+        GlobalFlagContainer.getInstance().removeFlag(createFlag);
+        GlobalFlagContainer.getInstance().removeFlag(tradeFlag);
+        getLogger().info("Flags unregister successfully.");
     }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         super.onEnable();
+        getLogger().info("Mapping localized captions...");
+        Map<Locale, CaptionMap> finalRegisterMap = new HashMap<>();
+        for (String availableLanguage : getApi().getTextManager().getAvailableLanguages()) {
+            Component flagCreate = getApi().getTextManager().of("addon.plotsquared.flag.create").forLocale(availableLanguage);
+            Component flagPurchase = getApi().getTextManager().of("addon.plotsquared.flag.trade").forLocale(availableLanguage);
+            Map<TranslatableCaption, String> stringMapping = new HashMap<>();
+            stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-create"), LegacyComponentSerializer.legacySection().serialize(flagCreate));
+            stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-trade"), LegacyComponentSerializer.legacySection().serialize(flagPurchase));
+            finalRegisterMap.put(Locale.forLanguageTag(availableLanguage.substring(0, 2)), new LocalizedCaptionMap(Locale.forLanguageTag(availableLanguage.substring(0, 2)), stringMapping));
+        }
+        PlotSquared.get().registerCaptionMap("quickshop-hikari", new PerUserLocaleCaptionMap(finalRegisterMap));
         this.createFlag = new QuickshopCreateFlag();
         this.tradeFlag = new QuickshopTradeFlag();
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
-        getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        getLogger().info("Flags register successfully.");
         PlotSquared.get().getEventDispatcher().registerListener(this);
+
     }
 
     @Override
@@ -109,7 +121,15 @@ public final class Main extends CompatibilityModule implements Listener {
     private List<Shop> getShops(Plot plot) {
         List<Shop> shopsList = new ArrayList<>();
         for (CuboidRegion region : plot.getRegions()) {
-            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+            String worldName = plot.getWorldName();
+            if (region.getWorld() != null) {
+                worldName = region.getWorld().getName();
+            }
+            if (worldName == null) {
+                getLogger().warning("Failed to handle CuboidRegion " + region + " in plot " + plot.getId() + " because world is null, does the world exist? Skipping...");
+            } else {
+                shopsList.addAll(getShops(worldName, region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+            }
         }
         return shopsList;
     }
@@ -129,6 +149,46 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onShopCreation(ShopCreateEvent event) {
+        Location location = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
+                location.getWorld().getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            if (!whiteList) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
+            }
+            return;
+        }
+        if (!plot.getFlag(createFlag)) {
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.create-denied").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onShopTrading(ShopPurchaseEvent event) {
+        Location location = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
+                location.getWorld().getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            if (!whiteList) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
+            }
+            return;
+        }
+        if (!plot.getFlag(tradeFlag)) {
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.trade-denied").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
         com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
@@ -137,7 +197,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         if (plot.getOwners().contains(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
         }
@@ -150,12 +210,12 @@ public final class Main extends CompatibilityModule implements Listener {
         }
 
         public QuickshopCreateFlag() {
-            super(true, TranslatableCaption.of("quickshop-create"));
+            super(true, TranslatableCaption.of("quickshop-hikari", "quickshop-create"));
         }
 
         @Override
         protected QuickshopCreateFlag flagOf(@NotNull Boolean aBoolean) {
-            return new QuickshopCreateFlag(aBoolean, TranslatableCaption.of("quickshop-create"));
+            return new QuickshopCreateFlag(aBoolean, TranslatableCaption.of("quickshop-hikari", "quickshop-create"));
         }
     }
 
@@ -166,12 +226,12 @@ public final class Main extends CompatibilityModule implements Listener {
         }
 
         public QuickshopTradeFlag() {
-            super(true, TranslatableCaption.of("quickshop-trade"));
+            super(true, TranslatableCaption.of("quickshop-hikari", "quickshop-trade"));
         }
 
         @Override
         protected QuickshopTradeFlag flagOf(@NotNull Boolean aBoolean) {
-            return new QuickshopTradeFlag(aBoolean, TranslatableCaption.of("quickshop-trade"));
+            return new QuickshopTradeFlag(aBoolean, TranslatableCaption.of("quickshop-hikari", "quickshop-trade"));
         }
     }
 

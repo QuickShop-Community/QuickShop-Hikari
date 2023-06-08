@@ -295,38 +295,36 @@ public final class EnvironmentChecker {
     public ResultContainer virtualDisplaySupportTest() {
         String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
-        Throwable throwable;
+        if (!plugin.isDisplayEnabled()) {
+            return new ResultContainer(CheckResult.PASSED, "The display are disabled.");
+        }
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+            return new ResultContainer(CheckResult.PASSED, "The display type is not virtual item.");
+        }
         if (!gameVersion.isVirtualDisplaySupports()) {
-            throwable = new IllegalStateException("Version not supports Virtual DisplayItem.");
-        } else {
-            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-                if (plugin.getVirtualDisplayItemManager() != null) {
-                    throwable = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
-                } else {
-                    throwable = new IllegalStateException("VirtualDisplayItemManager is null.");
-                }
-            } else {
-                throwable = new IllegalStateException("ProtocolLib is not installed, virtual DisplayItem seems will not work on your server.");
-            }
+            plugin.getConfig().set("shop.display-type", 0);
+            plugin.getJavaPlugin().saveConfig();
+            return new ResultContainer(CheckResult.WARNING, "Your server version are not supports Virtual DisplayItem, resetting to RealDisplayItem...");
         }
-        if (throwable != null) {
-            if (plugin.getVirtualDisplayItemManager() != null) {
-                plugin.getVirtualDisplayItemManager().setTestPassed(false);
-            }
-            //do not throw
-            plugin.logger().error("Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
-
-            //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
-            if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-                plugin.getConfig().set("shop.display-type", 0);
-                plugin.getJavaPlugin().saveConfig();
-                plugin.logger().warn("Falling back to RealDisplayItem because {} type is unsupported.", DisplayType.VIRTUALITEM);
-
-            }
-            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure QuickShop, ProtocolLib and server builds are up to date.");
-        } else {
-            return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
+            plugin.getConfig().set("shop.display-type", 0);
+            plugin.getJavaPlugin().saveConfig();
+            return new ResultContainer(CheckResult.WARNING, "Plugin [ProtocolLib] not installed on your server, Virtual DisplayItem will not work, resetting to RealDisplayItem..");
         }
+        if (plugin.getVirtualDisplayItemManager() == null) {
+            plugin.getConfig().set("shop.display-type", 0);
+            plugin.getJavaPlugin().saveConfig();
+            return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");
+        }
+        Throwable testResult = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
+        if (testResult != null) {
+            plugin.getVirtualDisplayItemManager().setTestPassed(false);
+            plugin.getConfig().set("shop.display-type", 0);
+            plugin.getJavaPlugin().saveConfig();
+            plugin.logger().warn("Failed to load the VirtualDisplayItem, self-test failure", testResult);
+            return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItem test failed, resetting to RealDisplayItem...");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
     @EnvCheckEntry(name = "ProtocolLib Incorrect Locate Test", priority = 7)

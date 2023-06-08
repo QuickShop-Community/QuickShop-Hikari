@@ -687,6 +687,9 @@ addon:
     no-plot-whitelist-trade: "<red>Du kannst keine Shops ausserhalb des Plots kaufen."
     creation-denied: "<red>Du hast keine Berechtigung Shops in diesem Plot zu erstellen."
     trade-denied: "<red>Du hast keine Berechtigung Shops in diesem Plot zu kaufen."
+    flag:
+      create: "Erstelle QuickShop-Hikari Shops"
+      trade: "Kaufe QuickShop-Hikari Shops"
   superiorskyblock:
     owner-create-only: "<red>Nur der Inselbesitzer kann einen Shop hier erstellen."
     owner-member-create-only: "<red>Nur der Inselbesitzer oder ein Mitglied können einen Shop hier erstellen."
@@ -1368,6 +1371,11 @@ addon:
   chestprotect:
     protection-exists: "<red>Diese Region wird durch ChestProtect geschützt und du hast keine Berechtigung einen Shop hier zu erstellen."
     shops-exsts: "<red>Die Region welche du schützen möchtest enthält Shops anderer Spieler, und du hast nicht die Berechtigung auf diese zugreifen zu können."
+  displaycontrol:
+    toggle: "<green>QuickShop Anzeige erfolgreich zu <aqua>{0}</aqua> geändert.\n<yellow>Du musst eventuell rejoinen damit es aktiv wird."
+    toggle-exception: "<red>Konnte deine Anzeigeeinstellungen nicht ändern aufgrund eines internen Fehlers. Bitte melde dies dem Serveradministrator."
+    command:
+      displaycontrol: "<yellow>Ändere deine QuickShop Anzeige"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

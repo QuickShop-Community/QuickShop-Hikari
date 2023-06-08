@@ -193,6 +193,8 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         DatabaseConfig config = getDatabaseConfig();
         instance.getLogger().info("Renaming tables...");
         String shopsTmpTable = renameTables(actionId, config);
+        instance.getLogger().info("Deleting old tables...");
+        deleteOldTables(actionId, config);
         instance.getLogger().info("Offline Messages and External Caches won't be migrated because they are have totally different syntax and cache need regenerate after migrated.");
         instance.getLogger().info("Downloading old data from database connection...");
         List<ShopStorageUnit> units;
@@ -208,12 +210,29 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             instance.getLogger().info("Checking and creating for database tables... ");
             // Database Helper will resolve all we need while starting up.
             //noinspection deprecation
-            new SimpleDatabaseHelperV1(plugin, liveDatabaseManager, config.getPrefix());
+            SimpleDatabaseHelperV1 v1 = new SimpleDatabaseHelperV1(plugin, liveDatabaseManager, config.getPrefix());
             instance.getLogger().info("Migrating old data to new database...");
             pushShops(units, config.getPrefix(), liveDatabaseManager);
+            instance.getLogger().info("#1 Before Database Version: " + v1.getDatabaseVersion());
+            instance.getLogger().info("Hard relocate version to 3...");
+            v1.setDatabaseVersion(3);
+            instance.getLogger().info("#2 Before Database Version: " + v1.getDatabaseVersion());
             new SimpleDatabaseHelperV2(plugin, liveDatabaseManager, config.getPrefix());
+            instance.getLogger().info("After Database Version: " + v1.getDatabaseVersion());
         }
         instance.getLogger().info("Database migration completed!");
+    }
+
+    private void deleteOldTables(UUID actionId, DatabaseConfig config) throws ConnectException {
+        SQLManager manager = getLiveDatabase();
+        silentDropTable(config.getPrefix() + "shops", manager);
+        silentDropTable(config.getPrefix() + "messages", manager);
+        silentDropTable(config.getPrefix() + "logs", manager);
+        silentDropTable(config.getPrefix() + "external_cache", manager);
+    }
+
+    private void silentDropTable(String table, SQLManager manager) {
+        manager.executeSQL("DROP TABLE " + table);
     }
 
     /**

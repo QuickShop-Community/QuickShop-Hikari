@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -114,6 +115,11 @@ public class RealDisplayItem extends AbstractDisplayItem {
             return false;
         }
         return this.item.isValid();
+    }
+
+    @Override
+    public boolean isApplicableForPlayer(Player player) {
+        return true;
     }
 
     @Override

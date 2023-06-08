@@ -48,7 +48,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
         out.writeUTF(CHAT_COMMAND_CANCEL);
         out.writeUTF(player.getUniqueId().toString());
-        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
+        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_CHANNEL, out.toByteArray());
     }
 
     public void notifyForForward(Player player) {
@@ -56,7 +56,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
         out.writeUTF(CHAT_COMMAND_REQUEST);
         out.writeUTF(player.getUniqueId().toString());
-        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
+        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_CHANNEL, out.toByteArray());
     }
 
     @Override
