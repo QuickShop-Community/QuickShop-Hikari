@@ -76,9 +76,6 @@ public final class Main extends CompatibilityModule implements Listener {
         // Plugin shutdown logic
         super.onDisable();
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
-        GlobalFlagContainer.getInstance().removeFlag(createFlag);
-        GlobalFlagContainer.getInstance().removeFlag(tradeFlag);
-        getLogger().info("Flags unregister successfully.");
     }
 
     @Override
