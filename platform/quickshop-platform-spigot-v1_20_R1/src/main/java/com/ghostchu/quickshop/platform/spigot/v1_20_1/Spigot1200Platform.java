@@ -26,9 +26,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Optional;
 
-public class Spigot1201Platform extends AbstractSpigotPlatform implements Platform {
+public class Spigot1200Platform extends AbstractSpigotPlatform implements Platform {
 
-    public Spigot1201Platform(@NotNull Plugin plugin) {
+    public Spigot1200Platform(@NotNull Plugin plugin) {
         super(plugin);
     }
 
