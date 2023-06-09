@@ -33,7 +33,8 @@ jobs:
           modrinth-id: ijC5dDkD
           modrinth-featured: true
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-
+          curseforge-id: 709851
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           github-discussion: Announcements
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-draft: false
