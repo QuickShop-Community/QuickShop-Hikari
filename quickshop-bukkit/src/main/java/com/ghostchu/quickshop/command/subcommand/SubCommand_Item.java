@@ -52,9 +52,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                         Component.text(checkResult.getMax())).send();
                 return;
             }
-            shop.onUnload();
             shop.setItem(itemStack);
-            shop.onLoad();
             plugin.text().of(sender, "command.trade-item-now", shop.getItem().getAmount(), Util.getItemStackName(shop.getItem())).send();
             return;
         }
