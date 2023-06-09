@@ -3,6 +3,8 @@ package com.ghostchu.quickshop.platform.spigot;
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
 import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -182,18 +184,20 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        NBT.modify(sign, nbt -> {
-            nbt.setString("Text" + (line + 1), GsonComponentSerializer.gson().serialize(component));
-        });
-    }
-
-    @Override
     public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+        String EMPTY_LINE_NBT = "{\"text\":\"\"}";
+        ReadWriteNBT root = NBT.createNBTObject();
+        ReadWriteNBT front_text = root.getOrCreateCompound("front_text"); // > 1.20
+        ReadWriteNBTList<String> messages = front_text.getStringList("messages"); // > 1.20
+        for (int i = 0; i < 4; i++) {
+            Component com = component.get(i);
+            String json = com == null ? EMPTY_LINE_NBT : GsonComponentSerializer.gson().serialize(com);
+            root.setString("Text" + (i + 1), json);
+            messages.add(json); // > 1.20
+        }
+        // ==== Apply the changes ====
         NBT.modify(sign, nbt -> {
-            for (int i = 0; i < Math.min(component.size(),4); i++) {
-                nbt.setString("Text" + (i + 1), GsonComponentSerializer.gson().serialize(component.get(i)));
-            }
+            nbt.mergeCompound(root);
         });
     }
 

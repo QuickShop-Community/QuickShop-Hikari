@@ -67,6 +67,7 @@ public class Spigot1200Platform extends AbstractSpigotPlatform implements Platfo
         }
     }
 
+
     private String postProcessingTranslationKey(String key) {
         return this.translationMapping.getOrDefault(key, key);
     }

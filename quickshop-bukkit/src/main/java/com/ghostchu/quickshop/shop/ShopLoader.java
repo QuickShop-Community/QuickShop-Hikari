@@ -234,8 +234,14 @@ public class ShopLoader implements SubPasteItem {
         if (username == null) {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
             if (PackageUtil.parsePackageProperly("forceResolveUsername").asBoolean(false)) {
-                username = "Unknown_" + shop.getOwner().toString().substring(0, 8);
-                plugin.getDatabaseHelper().updatePlayerProfile(shop.getOwner(), "en_us", username);
+                String finUsername = "Unknown_" + shop.getOwner().toString().substring(0, 8);
+                plugin.getDatabaseHelper().updatePlayerProfile(shop.getOwner(), "en_us", username).whenComplete((i, th) -> {
+                    if (th != null) {
+                        th.printStackTrace();
+                    } else {
+                        Log.debug("Force resolved username for shop owner " + shop.getOwner() + " to " + finUsername);
+                    }
+                });
             }
         }
         return false;
