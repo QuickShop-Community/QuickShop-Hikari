@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.platform.Platform;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
-import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -34,7 +33,6 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
-    protected final LocaleManager localeManager = new LocaleManager();
     private final Plugin plugin;
     protected Map<String, String> translationMapping;
     private BukkitAudiences audience;
@@ -95,50 +93,28 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Material material) {
+    public @NotNull Component getTranslation(@NotNull Material material) throws Throwable {
         return Component.translatable(getTranslationKey(material));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull EntityType entity) {
+    public @NotNull Component getTranslation(@NotNull EntityType entity) throws Throwable {
         return Component.translatable(getTranslationKey(entity));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) throws Throwable {
         return Component.translatable(getTranslationKey(potionEffectType));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) throws Throwable {
         return Component.translatable(getTranslationKey(enchantment));
     }
 
     @Override
     public @NotNull Component getTranslation(@NotNull ItemStack itemStack) throws Throwable {
         return Component.translatable(getTranslationKey(itemStack));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Material material) {
-        return postProcessingTranslationKey(localeManager.queryMaterial(material));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        return postProcessingTranslationKey(localeManager.queryEntityType(type, null));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        String key;
-        key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
     }
 
     @Override
