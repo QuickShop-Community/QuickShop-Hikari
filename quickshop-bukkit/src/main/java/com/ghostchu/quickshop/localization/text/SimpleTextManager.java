@@ -711,7 +711,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             List<Component> texts = new ArrayList<>();
             for (PostProcessor postProcessor : this.manager.postProcessors) {
                 for (Component s : text) {
-                    texts.add(postProcessor.process(s, sender, args));
+                    try {
+                        texts.add(postProcessor.process(s, sender, args));
+                    } catch (Throwable th) {
+                        Log.debug("Failed to post processing text: " + s + " caused by " + th.getMessage() + " handler: " + postProcessor.getClass().getName());
+                    }
                 }
             }
             return texts;
@@ -838,7 +842,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                 try {
                     text = postProcessor.process(text, sender, args);
                 } catch (Exception e) {
-                    Log.debug("Error occurred while processing text: " + PlainTextComponentSerializer.plainText().serialize(text) + " caused by" + e.getMessage());
+                    Log.debug("Error occurred while processing text: " + PlainTextComponentSerializer.plainText().serialize(text) + " caused by" + e.getMessage() + ", handler: " + postProcessor.getClass().getName());
                 }
             }
             return text;
