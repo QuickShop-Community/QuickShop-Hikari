@@ -57,8 +57,8 @@ public class Spigot1194Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
-        //noinspection deprecation
         if (material.isBlock()) {
+            //noinspection deprecation
             return postProcessingTranslationKey(Bukkit.getUnsafe().getBlockTranslationKey(material));
         } else {
             //noinspection deprecation
