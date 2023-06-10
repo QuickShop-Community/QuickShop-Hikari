@@ -15,7 +15,6 @@ import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R1.enchantments.CraftEnchantment;
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_20_R1.potion.CraftPotionEffectType;
-import org.bukkit.craftbukkit.v1_20_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +22,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public class Spigot1200Platform extends AbstractSpigotPlatform implements Platform {
 
@@ -61,9 +58,9 @@ public class Spigot1200Platform extends AbstractSpigotPlatform implements Platfo
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         if (material.isBlock()) {
-            return CraftMagicNumbers.getBlock(material).getDescriptionId();
+            return postProcessingTranslationKey(Bukkit.getUnsafe().getBlockTranslationKey(material));
         } else {
-            return postProcessingTranslationKey(CraftMagicNumbers.getItem(material).getDescriptionId());
+            return postProcessingTranslationKey(Bukkit.getUnsafe().getItemTranslationKey(material));
         }
     }
 
@@ -74,12 +71,14 @@ public class Spigot1200Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
-        if (op.isPresent()) {
-            return postProcessingTranslationKey(op.get().getDescriptionId());
-        } else {
-            return postProcessingTranslationKey("entity." + type.getKey());
-        }
+        //noinspection deprecation
+        return postProcessingTranslationKey(Bukkit.getUnsafe().getTranslationKey(type));
+//        Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
+//        if (op.isPresent()) {
+//            return postProcessingTranslationKey(op.get().getDescriptionId());
+//        } else {
+//            return postProcessingTranslationKey("entity." + type.getKey());
+//        }
     }
 
     @Override
