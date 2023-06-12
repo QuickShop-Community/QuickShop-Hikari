@@ -249,6 +249,9 @@ public class PlayerListener extends AbstractQSListener {
         if (plugin.getConfig().getBoolean("disable-quick-create")) {
             return false;
         }
+        if (plugin.getConfig().getBoolean("shop.disable-quick-create")) {
+            return false;
+        }
         ItemStack stack = player.getInventory().getItemInMainHand();
         ShopAction action = null;
         if (plugin.perm().hasPermission(player, "quickshop.create.sell")) {
