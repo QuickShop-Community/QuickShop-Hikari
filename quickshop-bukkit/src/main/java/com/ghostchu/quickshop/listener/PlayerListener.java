@@ -23,6 +23,7 @@ import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -34,7 +35,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,6 +81,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
+
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
@@ -132,7 +133,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             case TRADE_INTERACTION -> {
                 if (shopSearched.getKey() == null) {
-                    if (createShop(e.getPlayer(), e.getClickedBlock())) {
+                    if (createShop(e.getPlayer(), e.getClickedBlock(), e.getBlockFace(), e.getHand(), e.getItem())) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -233,14 +234,15 @@ public class PlayerListener extends AbstractQSListener {
         shop.setSignText(plugin.text().findRelativeLanguages(p));
     }
 
-    public boolean createShop(@NotNull Player player, @Nullable Block block) {
+    public boolean createShop(@NotNull Player player, @Nullable Block block, @NotNull BlockFace blockFace, @NotNull EquipmentSlot hand, @NotNull ItemStack item) {
         if (block == null) {
             return false; // This shouldn't happen because we have checked action type.
         }
         if (player.getGameMode() != GameMode.SURVIVAL) {
             return false; // Only survival :)
         }
-        if (player.getInventory().getItemInMainHand().getType().isAir()) {
+        ItemStack stack = item.clone();
+        if (stack.getType().isAir()) {
             return false; // Air cannot be used for trade
         }
         if (!Util.canBeShop(block)) {
@@ -252,7 +254,7 @@ public class PlayerListener extends AbstractQSListener {
         if (plugin.getConfig().getBoolean("shop.disable-quick-create")) {
             return false;
         }
-        ItemStack stack = player.getInventory().getItemInMainHand();
+
         ShopAction action = null;
         if (plugin.perm().hasPermission(player, "quickshop.create.sell")) {
             action = ShopAction.CREATE_SELL;
@@ -285,19 +287,19 @@ public class PlayerListener extends AbstractQSListener {
         if (Util.isWallSign(block.getType())) {
             return false;
         }
-        // Finds out where the sign should be placed for the shop
-        Block last = null;
-        final Location from = player.getLocation().clone();
-        from.setY(block.getY());
-        from.setPitch(0);
-        final BlockIterator bIt = new BlockIterator(from, 0, 7);
-        while (bIt.hasNext()) {
-            final Block n = bIt.next();
-            if (n.equals(block)) {
-                break;
-            }
-            last = n;
-        }
+        // Finds out where the sign should be placed for the shop]
+        Block last = block.getRelative(blockFace);
+//        final Location from = player.getLocation().clone();
+//        from.setY(block.getY());
+//        from.setPitch(0);
+//        final BlockIterator bIt = new BlockIterator(from, 0, 7);
+//        while (bIt.hasNext()) {
+//            final Block n = bIt.next();
+//            if (n.equals(block)) {
+//                break;
+//            }
+//            last = n;
+//        }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
         ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
