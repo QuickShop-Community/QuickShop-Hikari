@@ -292,7 +292,6 @@ public class PlayerListener extends AbstractQSListener {
         if (Util.getVerticalFacing().contains(blockFace)) {
             last = block.getRelative(blockFace);
         } else {
-            // 通过玩家的 Location 计算玩家所占的位置相对于方块的方向
             Location playerLocation = player.getLocation();
             double x = playerLocation.getX() - block.getX();
             double z = playerLocation.getZ() - block.getZ();
