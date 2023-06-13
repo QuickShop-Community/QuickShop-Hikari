@@ -30,6 +30,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
@@ -575,6 +576,20 @@ public class PlayerListener extends AbstractQSListener {
         }
         e.setCancelled(true);
         Log.debug("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onSignEditing(SignChangeEvent e) {
+        final Block block = e.getBlock();
+        if (!Util.isWallSign(block.getType())) {
+            return;
+        }
+        final Block attachedBlock = Util.getAttached(block);
+        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
+            return;
+        }
+        e.setCancelled(true);
+        Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
