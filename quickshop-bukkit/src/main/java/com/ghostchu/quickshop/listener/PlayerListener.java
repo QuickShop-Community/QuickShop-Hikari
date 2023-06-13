@@ -287,19 +287,29 @@ public class PlayerListener extends AbstractQSListener {
         if (Util.isWallSign(block.getType())) {
             return false;
         }
-        // Finds out where the sign should be placed for the shop]
-        Block last = block.getRelative(blockFace);
-//        final Location from = player.getLocation().clone();
-//        from.setY(block.getY());
-//        from.setPitch(0);
-//        final BlockIterator bIt = new BlockIterator(from, 0, 7);
-//        while (bIt.hasNext()) {
-//            final Block n = bIt.next();
-//            if (n.equals(block)) {
-//                break;
-//            }
-//            last = n;
-//        }
+        // Finds out where the sign should be placed for the shop
+        Block last;
+        if (Util.getVerticalFacing().contains(blockFace)) {
+            last = block.getRelative(blockFace);
+        } else {
+            // 通过玩家的 Location 计算玩家所占的位置相对于方块的方向
+            Location playerLocation = player.getLocation();
+            double x = playerLocation.getX() - block.getX();
+            double z = playerLocation.getZ() - block.getZ();
+            if (Math.abs(x) > Math.abs(z)) {
+                if (x > 0) {
+                    last = block.getRelative(BlockFace.EAST);
+                } else {
+                    last = block.getRelative(BlockFace.WEST);
+                }
+            } else {
+                if (z > 0) {
+                    last = block.getRelative(BlockFace.SOUTH);
+                } else {
+                    last = block.getRelative(BlockFace.NORTH);
+                }
+            }
+        }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
         ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
