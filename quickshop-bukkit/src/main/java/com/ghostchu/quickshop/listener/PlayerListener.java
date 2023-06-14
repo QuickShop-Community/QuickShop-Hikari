@@ -134,7 +134,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             case TRADE_INTERACTION -> {
                 if (shopSearched.getKey() == null) {
-                    if (createShop(e.getPlayer(), e.getClickedBlock(), e.getBlockFace(), e.getHand(), e.getItem())) {
+                    if (e.getItem() != null && createShop(e.getPlayer(), e.getClickedBlock(), e.getBlockFace(), e.getHand(), e.getItem())) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -242,6 +242,7 @@ public class PlayerListener extends AbstractQSListener {
         if (player.getGameMode() != GameMode.SURVIVAL) {
             return false; // Only survival :)
         }
+
         ItemStack stack = item.clone();
         if (stack.getType().isAir()) {
             return false; // Air cannot be used for trade
