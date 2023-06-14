@@ -23,18 +23,19 @@ import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,6 +82,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
+
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
@@ -132,7 +134,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             case TRADE_INTERACTION -> {
                 if (shopSearched.getKey() == null) {
-                    if (createShop(e.getPlayer(), e.getClickedBlock())) {
+                    if (createShop(e.getPlayer(), e.getClickedBlock(), e.getBlockFace(), e.getHand(), e.getItem())) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -233,14 +235,15 @@ public class PlayerListener extends AbstractQSListener {
         shop.setSignText(plugin.text().findRelativeLanguages(p));
     }
 
-    public boolean createShop(@NotNull Player player, @Nullable Block block) {
+    public boolean createShop(@NotNull Player player, @Nullable Block block, @NotNull BlockFace blockFace, @NotNull EquipmentSlot hand, @NotNull ItemStack item) {
         if (block == null) {
             return false; // This shouldn't happen because we have checked action type.
         }
         if (player.getGameMode() != GameMode.SURVIVAL) {
             return false; // Only survival :)
         }
-        if (player.getInventory().getItemInMainHand().getType().isAir()) {
+        ItemStack stack = item.clone();
+        if (stack.getType().isAir()) {
             return false; // Air cannot be used for trade
         }
         if (!Util.canBeShop(block)) {
@@ -249,7 +252,10 @@ public class PlayerListener extends AbstractQSListener {
         if (plugin.getConfig().getBoolean("disable-quick-create")) {
             return false;
         }
-        ItemStack stack = player.getInventory().getItemInMainHand();
+        if (plugin.getConfig().getBoolean("shop.disable-quick-create")) {
+            return false;
+        }
+
         ShopAction action = null;
         if (plugin.perm().hasPermission(player, "quickshop.create.sell")) {
             action = ShopAction.CREATE_SELL;
@@ -283,17 +289,26 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
         // Finds out where the sign should be placed for the shop
-        Block last = null;
-        final Location from = player.getLocation().clone();
-        from.setY(block.getY());
-        from.setPitch(0);
-        final BlockIterator bIt = new BlockIterator(from, 0, 7);
-        while (bIt.hasNext()) {
-            final Block n = bIt.next();
-            if (n.equals(block)) {
-                break;
+        Block last;
+        if (Util.getVerticalFacing().contains(blockFace)) {
+            last = block.getRelative(blockFace);
+        } else {
+            Location playerLocation = player.getLocation();
+            double x = playerLocation.getX() - block.getX();
+            double z = playerLocation.getZ() - block.getZ();
+            if (Math.abs(x) > Math.abs(z)) {
+                if (x > 0) {
+                    last = block.getRelative(BlockFace.EAST);
+                } else {
+                    last = block.getRelative(BlockFace.WEST);
+                }
+            } else {
+                if (z > 0) {
+                    last = block.getRelative(BlockFace.SOUTH);
+                } else {
+                    last = block.getRelative(BlockFace.NORTH);
+                }
             }
-            last = n;
         }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
@@ -561,6 +576,20 @@ public class PlayerListener extends AbstractQSListener {
         }
         e.setCancelled(true);
         Log.debug("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onSignEditing(SignChangeEvent e) {
+        final Block block = e.getBlock();
+        if (!Util.isWallSign(block.getType())) {
+            return;
+        }
+        final Block attachedBlock = Util.getAttached(block);
+        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
+            return;
+        }
+        e.setCancelled(true);
+        Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

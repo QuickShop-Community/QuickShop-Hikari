@@ -569,7 +569,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Developers: {}", CommonUtil.list2String(javaPlugin.getDescription().getAuthors()));
         logger.info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
         logger.info("Let's start loading the plugin");
-        logger.info("Chat processor selected: Hardcoded BungeeChat Lib");
         /* Process Metrics and Sentry error reporter. */
         new MetricsManager(this);
         loadErrorReporter();
