@@ -630,7 +630,7 @@ transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
 transfer-no-self: "<red>您不能将商店转移给自己"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
-benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中。"
+benefit-exists: "<red>目标玩家已经在此商店的利益分配列表中。"
 benefit-removed: "<red>目标玩家已被从商店的利益分配中移除。"
 benefit-added: "<green>玩家 <aqua>{0}</aqua> 已被添加到商店的利益分配中！"
 benefit-updated: "<green>玩家 <aqua>{0}</aqua> 的利益分配已更新！"
@@ -644,7 +644,7 @@ tag-cleared: "<green>成功清除了该商店的所有标签！"
 tag-shops-cleared: "<green>成功地从您所有标记的商店中清除 <aqua>#{0}</aqua>！"
 tag-query: "<green>该商店有 <yellow>{0}</yellow> 标签："
 tag-query-listing: "<yellow> - <aqua>#{0}</aqua>"
-tag-query-no-tag: "<red>该商店没有标签"
+tag-query-no-tag: "<red>此商店没有标签。"
 tag-query-shops: "<green>此标签包含 <yellow>{0}</yellow> 商店："
 tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
 batch-operations-based-on-tags-no-failure: "<green>成功批量处理 <yellow>{0}</yellow> 个商店"
@@ -698,7 +698,7 @@ addon:
     trade-flag-test-failed: "<red>您没有在该WorldGuard区域与商店交易的权限。"
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "和QuickShop的文字系统一样，Discord插件也会自动检测用户语言并使用该语言发送Discord消息， 它遵循QuickShop-Hikari的语言系统设置。"
+    __to_users: "和QuickShop的文字系统一样，Discord插件也会自动检测用户语言并使用此语言发送Discord消息， 它遵循QuickShop-Hikari的语言系统设置。"
     __to_message_designer: "使用GUI设计您的Discord消息：https://glitchiii.github.io/embedbuilder/，然后复制JSON代码并粘贴到语言文件中，然后在这里开始！"
     discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
     discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
@@ -717,7 +717,7 @@ addon:
          "embed":
            {
              "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "该玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
+             "description": "此玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -772,7 +772,7 @@ addon:
         "embed":
           {
               "title": ":outbox_tray: 有人在商店购买了物品",
-              "description": "该玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%%.",
+              "description": "此玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%%.",
               "color": 52084,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -1294,14 +1294,14 @@ addon:
     discount-code-reach-the-limit: "<red>您已达到优惠码的使用限制 <yellow><bold>{0}</bold></yellow>，则不应用折扣。"
     discount-code-no-permission: "<red>您没有权限在此商店使用任何优惠码！"
     discount-code-has-been-expired: "<red>您的折扣已过期！"
-    discount-code-config-shop-added: "<green>成功地将该商店添加到您的优惠码允许列表。"
+    discount-code-config-shop-added: "<green>成功地将此商店添加到您的优惠码允许列表。"
     discount-code-config-shop-add-failure: "<red>该商店已存在于您的优惠码允许列表"
-    discount-code-config-shop-removed: "<green>成功地将该商店从您的优惠码允许列表中删除。"
-    discount-code-config-shop-remove-failure: "<red>该商店不存在于您的优惠码允许列表。"
+    discount-code-config-shop-removed: "<green>成功地将此商店从您的优惠码允许列表中删除。"
+    discount-code-config-shop-remove-failure: "<red>此商店不存在于您的优惠码允许列表。"
     discount-code-config-expire: "<green>成功地更改了优惠码过期时间。"
     discount-code-config-applied: "<green>成功地配置优惠码！"
     discount-code-created-successfully: |
-      <green>您的优惠码 <yellow>{0}</yellow> 已成功创建！
+      <green>您的优惠码 <yellow>{0}</yellow> 已成功地创建！
       <gold>范围：<aqua>{1}</aqua></gold>.
       <gold>与他人分享：<color:#bcef26>{2}</color:#bcef26></gold>
       <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表，请看着一个商店并执行 <aqua>{3}</aqua> 命令。
@@ -1383,9 +1383,9 @@ suite:
   limited:
     command-description: "<yellow>限制玩家在时间段内的交易。"
     reach-the-quota-limit: "<red>您已达到该商店的交易限制（{0}/{1}）。"
-    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置。"
+    quota-reset-countdown: "<yellow>此商店的交易限制将在 {0} 重置。"
     quota-reset-player-successfully: "<green>已成功重置该商店中玩家 {0} 的交易限制"
-    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制。"
+    quota-reset-everybody-successfully: "<green>已成功地重置此商店中所有人的交易限制。"
     quota-setup: "<green>该商店的交易限制已设置成功！"
     quota-remove: "<green>该商店的交易限制已成功重置！"
     subtitles:
@@ -1393,7 +1393,7 @@ suite:
       subtitle: "<aqua>您还可以在这个商店交易 <yellow>{0}</yellow> 个物品"
   list:
     command-description: "<yellow>列出自己或其他玩家拥有的所有商店"
-    table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店。"
+    table-prefix: "<yellow>您在此服务器中拥有 <aqua>{0}</aqua> 个商店。"
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>物品:{0} X:{1}, Y:{2}, Z:{3}, 世界: {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}、 {3}、 {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} 物品"
