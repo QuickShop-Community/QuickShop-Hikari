@@ -1533,10 +1533,8 @@ public class ContainerShop implements Shop, Reloadable {
                 sign.setGlowingText(isGlowing);
             }
             sign.update(true);
-            for (int i = 0; i < lines.size(); i++) {
-                //plugin.getPlatform().setLine(sign, i, lines.get(i));
-                plugin.getPlatform().setLines(sign, lines);
-            }
+            //plugin.getPlatform().setLine(sign, i, lines.get(i));
+            plugin.getPlatform().setLines(sign, lines);
             new ShopSignUpdateEvent(this, sign).callEvent();
         }
         if (plugin.getSignHooker() != null) {
