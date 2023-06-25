@@ -176,7 +176,7 @@ language:
   translate-progress: '<yellow>翻譯進度：<aqua>{0}%'
   name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
-warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間…… <newline><red><bold>警告：</bold>資料上傳後，此連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者。'
+warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間……<newline><red><bold>警告：</bold>資料上傳後，此連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者。'
 how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
@@ -204,7 +204,7 @@ updatenotify:
     - 看來你需要更新，QuickShop {0} 已正式發布了！
     - 噢！QuickShop {0} 已正式發布了，但你還在使用 QuickShop {1}！
     - 我保證，QS 已更新到了 {0}，但你怎麼還沒有更新？
-    - 修復並重…… 抱歉，QuickShop {0} 已正式發布了！
+    - 修復並重……抱歉，QuickShop {0} 已正式發布了！
     - 錯誤！不，其實並沒有錯誤，QuickShop {0} 已正式發布！
     - 我的天啊！QuickShop {0} 已出來了！你怎麼還在使用 QuickShop {1}？
     - '今日新聞：QuickShop 已正式發布 {0} 的更新！'
