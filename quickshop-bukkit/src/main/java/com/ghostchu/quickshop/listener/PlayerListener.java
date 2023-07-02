@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
+import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -20,11 +21,11 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -584,23 +585,15 @@ public class PlayerListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onSignEditing(SignChangeEvent e) {
         final Block block = e.getBlock();
-        if (!(PaperLib.getBlockState(e.getBlock(), false) instanceof Sign sign)) {
-            return;
-        }
         if (!Util.isWallSign(block.getType())) {
             return;
         }
-        final Block attachedBlock = Util.getAttached(block);
-        if (attachedBlock == null) {
-            return;
-        }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation());
-        if (shop == null) {
-            return;
-        }
-        if (shop.isShopSign(sign)) {
-            e.setCancelled(true);
-            Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
+        BlockState state = e.getBlock().getState();
+        if (state instanceof Sign sign) {
+            if (sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
+                e.setCancelled(true);
+                Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
+            }
         }
     }
 
