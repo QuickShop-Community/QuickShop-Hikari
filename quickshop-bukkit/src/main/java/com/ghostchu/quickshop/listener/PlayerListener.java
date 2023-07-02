@@ -20,10 +20,12 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -582,15 +584,24 @@ public class PlayerListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onSignEditing(SignChangeEvent e) {
         final Block block = e.getBlock();
+        if (!(PaperLib.getBlockState(e.getBlock(), false) instanceof Sign sign)) {
+            return;
+        }
         if (!Util.isWallSign(block.getType())) {
             return;
         }
         final Block attachedBlock = Util.getAttached(block);
-        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
+        if (attachedBlock == null) {
             return;
         }
-        e.setCancelled(true);
-        Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation());
+        if (shop == null) {
+            return;
+        }
+        if (shop.isShopSign(sign)) {
+            e.setCancelled(true);
+            Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
