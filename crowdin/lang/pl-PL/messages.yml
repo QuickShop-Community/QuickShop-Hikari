@@ -167,8 +167,8 @@ unknown-player: <red>Docelowy gracz nie istnieje, sprawdź wpisaną nazwę użyt
 player-offline: "<red>Wybrany gracz jest obecnie offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "Sprzedaż"
+  buying: "Zakup"
 language:
   qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
   code: '<yellow>Kod: <gold>{0}'
@@ -369,7 +369,7 @@ timeunit:
   scheduled-in: zaplanowane w {0}
   second: <red>{0} sekunda
   std-past-format: '{5}{4}{3}{2}{1}{0}temu'
-  std-time-format: "HH:mm:ss"
+  std-time-format: "GG:mm:ss"
   seconds: <red>{0} sekund
   hour: <red>{0} godzina
   scheduled-at: zaplanowane na {0}
@@ -675,12 +675,12 @@ addon:
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    you-cannot-create-shop-in-wildness: "<red>Nie możesz stworzyć sklepu w dzikości."
   griefprevention:
     creation-denied: "<red>You don't have permission to create shops in this claim."
     trade-denied: "<red>You don't have permission to purchase shops in this claim."
   lands:
-    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
+    world-not-enabled: "<red>Nie masz pozwolenia, aby tworzyć lub kupować w tym świecie."
     creation-denied: "<red>You don't have permission to create shops in this Land area."
   plotsquared:
     no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
@@ -1231,18 +1231,18 @@ addon:
             }
         }
     field:
-      player: "Player"
-      item: "Item"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      player: "Gracz"
+      item: "Przedmiot"
+      amount: "Ilość"
+      balance: "Saldo"
+      balance-after-tax: "Saldo (po opodatkowaniu)"
+      account: "Saldo Twojego konta"
+      taxes: "Podatki"
+      cost: "Koszt"
   discount:
     commands:
       discount:
-        description: "<yellow>Apply a discount code or manage your discount codes."
+        description: "<yellow>Zastosuj kod rabatowy lub zarządzaj kodami rabatowymi."
     tab-complete:
       discount:
         general:
