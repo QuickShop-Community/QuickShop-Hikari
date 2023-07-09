@@ -23,7 +23,7 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
      * Whether or not to limit players shop amounts
      */
     private boolean limit = false;
-    private int max = 0;
+    private int def = 0;
 
     public SimpleRankLimiter(QuickShop plugin) {
         this.plugin = plugin;
@@ -37,11 +37,11 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
         ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
         if (limitCfg != null) {
             this.limit = limitCfg.getBoolean("use", false);
+            def = limitCfg.getInt("default");
             limitCfg = limitCfg.getConfigurationSection("ranks");
             for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
-            max = limitCfg.getInt("default");
         } else {
             this.limit = false;
             limits.clear();
@@ -56,12 +56,13 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
      */
     @Override
     public int getShopLimit(@NotNull Player p) {
+        int count = def;
         for (Map.Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > max && plugin.perm().hasPermission(p, entry.getKey())) {
-                max = entry.getValue();
+            if (entry.getValue() > def && plugin.perm().hasPermission(p, entry.getKey())) {
+                count = entry.getValue();
             }
         }
-        return max;
+        return count;
     }
 
     @SuppressWarnings("removal")

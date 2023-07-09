@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.limited.command.SubCommand_Limit;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
+import com.ghostchu.quickshop.api.event.ShopClickEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.localization.text.Text;
@@ -13,7 +14,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,7 +37,6 @@ public final class Main extends JavaPlugin implements Listener {
         // Plugin startup logic
         instance = this;
         saveDefaultConfig();
-        Bukkit.getPluginManager().registerEvents(this, this);
         this.plugin = QuickShop.getInstance();
         this.container = CommandContainer.builder()
                 .prefix("limit")
@@ -62,6 +61,20 @@ public final class Main extends JavaPlugin implements Listener {
             text.send();
             event.setCancelled(true, PlainTextComponentSerializer.plainText().serialize(text.forLocale()));
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopClick(ShopClickEvent event) {
+        Shop shop = event.getShop();
+        ConfigurationSection storage = shop.getExtra(this);
+        if (storage.getInt("limit") < 1) {
+            Log.debug("Shop limit is not enabled on this shop.");
+            return;
+        }
+        int limit = storage.getInt("limit");
+        int playerUsedLimit = storage.getInt("data." + event.getClicker().getUniqueId(), 0);
+        plugin.text().of(event.getClicker(), "addon.limited.remains-limits", limit - playerUsedLimit).send();
+        Log.debug("Shop limit is enabled on this shop. Limit: " + limit + " Used: " + playerUsedLimit);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

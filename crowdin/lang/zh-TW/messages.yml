@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>重新載入完成！<gray>（<yellow>一些更改需要一段時間後作用<gray>）
   require-restart: <green>重新載入完成。<gray>（<yellow>一些更改需要重新啟動伺服器後作用<gray>）
   failed: <red>重新載入失敗，請檢查伺服器控制台錯誤
-player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，你總共賺了 {3} （{4} 的稅） 。
+player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，總共讓你進賺了 {3} （{4} 的稅） 。
 not-enough-space: <red>你只剩下 <yellow>{0}<red> 格空間可以裝東西！
 shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>。
 shop-staff-added: <green>已成功地新增員工 <yellow>{0}<green> 到你的商店。
@@ -176,7 +176,7 @@ language:
   translate-progress: '<yellow>翻譯進度：<aqua>{0}%'
   name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
-warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間…… <newline><red><bold>警告：</bold>資料上傳後，此連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者。'
+warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間……<newline><red><bold>警告：</bold>資料上傳後，此連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者。'
 how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
@@ -204,7 +204,7 @@ updatenotify:
     - 看來你需要更新，QuickShop {0} 已正式發布了！
     - 噢！QuickShop {0} 已正式發布了，但你還在使用 QuickShop {1}！
     - 我保證，QS 已更新到了 {0}，但你怎麼還沒有更新？
-    - 修復並重…… 抱歉，QuickShop {0} 已正式發布了！
+    - 修復並重……抱歉，QuickShop {0} 已正式發布了！
     - 錯誤！不，其實並沒有錯誤，QuickShop {0} 已正式發布！
     - 我的天啊！QuickShop {0} 已出來了！你怎麼還在使用 QuickShop {1}？
     - '今日新聞：QuickShop 已正式發布 {0} 的更新！'
@@ -234,7 +234,7 @@ tableformat:
 quickshop-gui-preview: QuickShop 物品預覽介面
 translate-not-completed-yet-click: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎？點擊這裡！'
 taxaccount-invalid: <red>無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。
-player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。
+player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} 個 {2}，總共讓你進賺了 {3}。
 reached-maximum-can-create: <red>你建立的商店數量已達到上限（你已建立 {0} 個，最多 {1} 個！）
 reached-maximum-create-limit: <red>你創造的商店數量已達上限
 translation-version: '支援版本：Hikari'
@@ -1057,8 +1057,8 @@ addon:
       mod-shop-transfer: |
         {
             "embed": {
-                "title": ":placard: 商店已被轉讓",
-                "description": "商店從一個玩家轉讓到了其他玩家。",
+                "title": ":placard: 商店已被轉移",
+                "description": "商店從一個玩家轉移到了其他玩家。",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1081,12 +1081,12 @@ addon:
                         "inline": false
                     },
                     {
-                        "name": "轉讓來自",
+                        "name": "轉移來自",
                         "value": "%%transfer.from%%",
                         "inline": true
                     },
                     {
-                        "name": "轉讓給",
+                        "name": "轉移給",
                         "value": "%%transfer.to%%",
                         "inline": true
                     }

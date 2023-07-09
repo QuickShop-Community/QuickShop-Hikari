@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
+import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -24,6 +25,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -82,7 +85,6 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
@@ -232,6 +234,7 @@ public class PlayerListener extends AbstractQSListener {
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
         MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);
+        shop.onClick(p);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
     }
 
@@ -333,10 +336,10 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isBuying()) {
             return false;
         }
-
-        this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
+        this.playClickSound(p);
+        shop.onClick(p);
         if (shop.getRemainingSpace() == 0) {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
@@ -381,13 +384,14 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isSelling()) {
             return false;
         }
-        this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingStock() == 0) {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
         }
+        this.playClickSound(p);
+        shop.onClick(p);
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
@@ -585,12 +589,13 @@ public class PlayerListener extends AbstractQSListener {
         if (!Util.isWallSign(block.getType())) {
             return;
         }
-        final Block attachedBlock = Util.getAttached(block);
-        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
-            return;
+        BlockState state = e.getBlock().getState();
+        if (state instanceof Sign sign) {
+            if (sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
+                e.setCancelled(true);
+                Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
+            }
         }
-        e.setCancelled(true);
-        Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

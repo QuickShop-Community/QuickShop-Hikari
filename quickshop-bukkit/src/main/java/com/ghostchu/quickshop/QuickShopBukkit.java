@@ -91,45 +91,48 @@ public class QuickShopBukkit extends JavaPlugin {
         new AdventureLibLoader(this);
     }
 
-    private void loadPlatform() {
+    private void loadPlatform() throws Exception {
         int platformId = 0;
         if (PaperLib.isSpigot()) platformId = 1;
         if (PaperLib.isPaper()) platformId = 2;
 
         platformId = PackageUtil.parsePackageProperly("forcePlatform").asInteger(platformId);
+        try {
+            switch (platformId) {
+                case 1 -> {
+                    getLogger().info("Platform detected: Spigot");
+                    getLogger().warning("Use Paper to get best performance and enhanced features!");
+                    getLogger().warning("");
+                    getLogger().warning("QuickShop-Hikari cannot handle translatable components");
+                    getLogger().warning("on Spigot platform! Make sure you're using Paper or Paper's fork");
+                    getLogger().warning("to unlock full functions!");
+                    getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
 
-        switch (platformId) {
-            case 1 -> {
-                getLogger().info("Platform detected: Spigot");
-                getLogger().warning("Use Paper to get best performance and enhanced features!");
-                getLogger().warning("");
-                getLogger().warning("QuickShop-Hikari cannot handle translatable components");
-                getLogger().warning("on Spigot platform! Make sure you're using Paper or Paper's fork");
-                getLogger().warning("to unlock full functions!");
-                getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
-
-                this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
-                    case "v1_18_R1" -> new Spigot1181Platform(this);
-                    case "v1_18_R2" -> new Spigot1182Platform(this);
-                    case "v1_19_R1" -> new Spigot1191Platform(this);
-                    case "v1_19_R2" -> new Spigot1193Platform(this);
-                    case "v1_19_R3" -> new Spigot1194Platform(this);
-                    case "v1_20_R1" -> new Spigot1200Platform(this);
-                    default -> {
-                        getLogger().warning("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-                        Bukkit.getPluginManager().disablePlugin(this);
-                        throw new IllegalStateException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-                    }
-                };
+                    this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
+                        case "v1_18_R1" -> new Spigot1181Platform(this);
+                        case "v1_18_R2" -> new Spigot1182Platform(this);
+                        case "v1_19_R1" -> new Spigot1191Platform(this);
+                        case "v1_19_R2" -> new Spigot1193Platform(this);
+                        case "v1_19_R3" -> new Spigot1194Platform(this);
+                        case "v1_20_R1" -> new Spigot1200Platform(this);
+                        default -> {
+                            getLogger().warning("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
+                            Bukkit.getPluginManager().disablePlugin(this);
+                            throw new IllegalStateException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
+                        }
+                    };
+                }
+                case 2 -> {
+                    getLogger().info("Platform detected: Paper");
+                    this.platform = new PaperPlatform();
+                }
+                default -> throw new UnsupportedOperationException("Unsupported platform");
             }
-            case 2 -> {
-                getLogger().info("Platform detected: Paper");
-                this.platform = new PaperPlatform();
-            }
-            default -> throw new UnsupportedOperationException("Unsupported platform");
+            this.logger = this.platform.getSlf4jLogger(this);
+            logger.info("Platform initialized: {}", this.platform.getClass().getName());
+        } catch (Throwable e) {
+            throw new Exception("Failed to initialize the platform", e);
         }
-        this.logger = this.platform.getSlf4jLogger(this);
-        logger.info("Platform initialized: {}", this.platform.getClass().getName());
     }
 
     private void initQuickShop() {
