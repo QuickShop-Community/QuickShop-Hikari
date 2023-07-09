@@ -85,7 +85,6 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
@@ -337,11 +336,10 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isBuying()) {
             return false;
         }
-
-        this.playClickSound(p);
-        shop.onClick(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
+        this.playClickSound(p);
+        shop.onClick(p);
         if (shop.getRemainingSpace() == 0) {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
@@ -386,14 +384,14 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isSelling()) {
             return false;
         }
-        this.playClickSound(p);
-        shop.onClick(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingStock() == 0) {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
         }
+        this.playClickSound(p);
+        shop.onClick(p);
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
