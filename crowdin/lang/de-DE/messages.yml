@@ -1346,6 +1346,8 @@ addon:
     success-remove: "<green>All Einschränkungen in diesem Shop wurden erfolgreich entfernt"
     success-setup: "<green>Einschränkungseinstellungen für diesen Shop wurden erfolgreich gespeichert"
     trade-limit-reached-cancel-reason: "<red>Einschränkung dieses Shops erreicht"
+    remains-limits: "<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>"
+    remains-limits-before-reset-period-note: "<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>"
   dynmap:
     markerset-title: "QuickShop-Hikari Shops"
     marker-name: "{0} @ {2} @ {3} für x{4} @ {5}"
