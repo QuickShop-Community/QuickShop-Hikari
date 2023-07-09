@@ -235,6 +235,7 @@ public class PlayerListener extends AbstractQSListener {
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
         MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);
+        shop.onClick(p);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
     }
 
@@ -338,6 +339,7 @@ public class PlayerListener extends AbstractQSListener {
         }
 
         this.playClickSound(p);
+        shop.onClick(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingSpace() == 0) {
@@ -385,6 +387,7 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
         this.playClickSound(p);
+        shop.onClick(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingStock() == 0) {
