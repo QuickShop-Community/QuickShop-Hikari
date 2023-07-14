@@ -58,7 +58,7 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
     public int getShopLimit(@NotNull Player p) {
         int count = def;
         for (Map.Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > def && plugin.perm().hasPermission(p, entry.getKey())) {
+            if ((entry.getValue() > def) && plugin.perm().hasPermission(p, entry.getKey())) {
                 count = entry.getValue();
             }
         }
