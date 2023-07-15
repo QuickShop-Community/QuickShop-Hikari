@@ -541,7 +541,7 @@ internal-error: "<red>发生了一个内部错误，请联系服务器管理员�
 argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>."
 argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
 invalid-percentage: "<red>百分比无效，您必须在百分比的数字后添加'%'"
-display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
+display-fallback: "<red>由于内部错误，正在显示回退消息。\n此项目的值可能无法本地化或处理正确。\n请与服务器管理员联系。"
 not-a-valid-time: |
   <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch 时间</aqua>。
   <gold>有效时间戳示例(适用于 Sat, 17 December 2022 10:31:37 GMT)</gold>
@@ -688,8 +688,8 @@ addon:
     creation-denied: "<red>你没有权限在这块地皮创建商店"
     trade-denied: "<red>你没有权限在这块地皮与商店交易"
     flag:
-      create: "Create QuickShop-Hikari shops"
-      trade: "Purchase QuickShop-Hikari shops"
+      create: "创建 QuickShop-Hikari 商店"
+      trade: "交易 QuickShop-Hikari 商店"
   superiorskyblock:
     owner-create-only: "<red>只有岛屿所有者才能在这里创建商店"
     owner-member-create-only: "<red>只有岛屿所有者或岛屿成员才能在这里创建商店"
@@ -1346,6 +1346,8 @@ addon:
     success-remove: "<green>成功删除此商店的所有限制"
     success-setup: "<green>该商店的限制设置已成功保存"
     trade-limit-reached-cancel-reason: "<red>达到了这个商店的交易限制"
+    remains-limits: "<gold>您在该商店剩余的交易配额： <yellow>{0}</yellow>"
+    remains-limits-before-reset-period-note: "<gold>该商店将重置他们的购买配额： <yellow>{0}</yellow>"
   dynmap:
     markerset-title: "QuickShop-Hikari 商店"
     marker-name: "{0} @ {2} @ {3} x{4} @ {5}"
@@ -1369,13 +1371,13 @@ addon:
       无限模式: {6}
       位置: {7}
   chestprotect:
-    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
-    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
+    protection-exists: "<red>这个区域已经受到ChestProtect的保护，你没有权限在这里创建商店。"
+    shops-exsts: "<red>您要保护的区域包含其他玩家的商店，并且您无权访问它们"
   displaycontrol:
-    toggle: "<green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.\n<yellow>You may need re-join to take effect."
-    toggle-exception: "<red>Failed to toggle your display showcase settings due an internal error, please contact server administrator."
+    toggle: "<green>成功切换您的商店显示到 <aqua>{0}</aqua>。\n<yellow>您可能需要重新加入才能生效。"
+    toggle-exception: "<red>由于内部错误，无法切换您的悬浮物设置，请联系服务器管理员。"
     command:
-      displaycontrol: "<yellow>Toggle your QuickShop display showcasing"
+      displaycontrol: "<yellow>切换您的 QuickShop 显示物显示"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

@@ -1346,6 +1346,8 @@ addon:
     success-remove: "<green>成功地移除此商店的所有限制"
     success-setup: "<green>成功地保存此商店的限制設置"
     trade-limit-reached-cancel-reason: "<red>已達到了此商店的交易限制"
+    remains-limits: "<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>"
+    remains-limits-before-reset-period-note: "<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>"
   dynmap:
     markerset-title: "QuickShop-Hikari 商店"
     marker-name: "{0} @ {2} @ {3} x{4} @ {5}"
