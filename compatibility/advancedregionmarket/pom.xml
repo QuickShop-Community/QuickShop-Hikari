@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.github.alex9849</groupId>
             <artifactId>advanced-region-market</artifactId>
-            <version>3.5.2</version>
+            <version>3.5.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
