@@ -42,7 +42,7 @@ quick-fill:
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Собственик: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
