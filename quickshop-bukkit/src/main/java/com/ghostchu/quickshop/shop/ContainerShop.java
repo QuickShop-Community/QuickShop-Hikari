@@ -1180,8 +1180,8 @@ public class ContainerShop implements Shop, Reloadable {
             Log.debug("Dupe load request, canceled.");
             return;
         }
-        Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
-        if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
+        Shop thisShop = plugin.getShopManager().getShop(getShopId());
+        if (thisShop != this) {
             throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
         try (PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {

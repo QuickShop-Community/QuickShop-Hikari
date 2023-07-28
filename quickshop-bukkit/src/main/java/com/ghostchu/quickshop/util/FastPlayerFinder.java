@@ -47,14 +47,15 @@ public class FastPlayerFinder implements PlayerFinder {
         cleanupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Set<UUID> toClean = new HashSet<>();
-                nameCache.asMap().forEach((uuid, optional) -> {
-                    if (optional.isEmpty()) {
-                        toClean.add(uuid);
-                    }
-                });
-                toClean.forEach(nameCache::invalidate);
-                Log.debug("Cleaned " + toClean.size() + " failure lookup entries.");
+//                Set<UUID> toClean = new HashSet<>();
+                nameCache.asMap().entrySet().removeIf(entry -> entry.getValue().isEmpty());
+//                nameCache.asMap().forEach((uuid, optional) -> {
+//                    if (optional.isEmpty()) {
+//                        toClean.add(uuid);
+//                    }
+//                });
+//                toClean.forEach(nameCache::invalidate);
+//                Log.debug("Cleaned " + toClean.size() + " failure lookup entries.");
             }
         }, 0, 1000 * 60 * 60);
 
