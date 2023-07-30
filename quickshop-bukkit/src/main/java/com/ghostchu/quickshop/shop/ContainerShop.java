@@ -1242,7 +1242,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
         String playerName;
-        if (plugin.getConfig().getBoolean("shops.async-owner-name-fetch", false)) {
+        if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
             CompletableFuture<String> future = CompletableFuture
                     .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
             try {
