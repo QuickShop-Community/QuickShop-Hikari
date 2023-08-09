@@ -38,7 +38,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
             if (parser.getArgs().get(0).equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
                 add = shop.getRemainingSpace();
             } else {
-                plugin.text().of(sender, "thats-not-a-number").send();
+                plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
                 return;
             }
         }
