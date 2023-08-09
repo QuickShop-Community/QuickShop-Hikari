@@ -92,7 +92,7 @@ public class FastPlayerFinder implements PlayerFinder {
                 return cachedName.orElse(null);
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
+            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new BukkitFindNameTask(uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
             String name = grabConcurrentTask.invokeAll(10, TimeUnit.SECONDS, Objects::nonNull);
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
@@ -114,7 +114,7 @@ public class FastPlayerFinder implements PlayerFinder {
                 }
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new PlayerDBFindUUIDTask(name));
+            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
             // This cannot fail.
             UUID uuid = grabConcurrentTask.invokeAll(1, TimeUnit.DAYS, Objects::nonNull);
             if (uuid == null) {

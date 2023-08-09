@@ -1241,26 +1241,27 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
-        String playerName;
-        if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
-            CompletableFuture<String> future = CompletableFuture
-                    .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
-            try {
-                playerName = future.get(20, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                playerName = "N/A";
-            }
-        } else {
-            playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
-        }
         Component name;
-        if (playerName == null) {
-            name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
-        } else {
-            name = Component.text(playerName);
-        }
         if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
+        } else {
+            String playerName;
+            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
+                CompletableFuture<String> future = CompletableFuture
+                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
+                try {
+                    playerName = future.get(20, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    playerName = "N/A";
+                }
+            } else {
+                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
+            }
+            if (playerName == null) {
+                name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
+            } else {
+                name = Component.text(playerName);
+            }
         }
         ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
         event.callEvent();
