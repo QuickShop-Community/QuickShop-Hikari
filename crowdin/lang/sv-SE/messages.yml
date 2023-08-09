@@ -167,8 +167,8 @@ unknown-player: <red>Angiven spelare finns inte, kontrollera användarnamnet du 
 player-offline: "<red>The target player currently is offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "SÄLJER"
+  buying: "KÖPER"
 language:
   qa-issues: '<yellow>Kvalitetsförsäkringsfrågor: <aqua>{0}%'
   code: '<yellow>Kod: <gold>{0}'
@@ -236,7 +236,7 @@ translate-not-completed-yet-click: Översättningen av språket {0} slutfördes 
 taxaccount-invalid: <red>Angivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).
 player-bought-from-your-store: <red>{0} köpte {1} {2} från din butik, och du tjänade {3}.
 reached-maximum-can-create: <red>Du har redan skapat {0}/{1} butiker vilket är max!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>Du har nått det maximala antalet butiker du kan skapa
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Du kan inte skapa den dubbla kistbutiken.
 price-too-cheap: <red>Priset måste vara högre än <yellow>${0}

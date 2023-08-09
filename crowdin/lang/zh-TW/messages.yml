@@ -541,7 +541,7 @@ internal-error: "<red>發生內部錯誤，請聯絡伺服器管理員。"
 argument-cannot-be: "<red>參數 <aqua>{0}</aqua> 不能為 <yellow>{1}</yellow>。"
 argument-must-between: "<red>參數 <aqua>{0}</aqua> 值必須在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之間"
 invalid-percentage: "<red>百分比無效，你必須在百分比的數字後加上「%」。"
-display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
+display-fallback: "<red>由於內部錯誤，正在顯示回饋訊息。\n此項目的值可能無法本地化或正確地處理。\n請聯絡伺服器管理員。"
 not-a-valid-time: |
   <red>字符串 <yellow>{0}</yellow> 不是一個有效的時間戳記，請輸入 <aqua>Zulu 時間（ISO 8601）</aqua> 或 <aqua>Unix Epoch 時間</aqua>。
   <gold>有效時間戳記的範例（適用於 GMT 2022 年 12 月 17 日 星期六 10:31:37 ）</gold>
@@ -1346,8 +1346,8 @@ addon:
     success-remove: "<green>成功地移除此商店的所有限制"
     success-setup: "<green>成功地保存此商店的限制設置"
     trade-limit-reached-cancel-reason: "<red>已達到了此商店的交易限制"
-    remains-limits: "<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>"
-    remains-limits-before-reset-period-note: "<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>"
+    remains-limits: "<gold>你在此商店剩餘的交易額：<yellow>{0}</yellow>"
+    remains-limits-before-reset-period-note: "<gold>此商店將重設他們的購買額：<yellow>{0}</yellow>"
   dynmap:
     markerset-title: "QuickShop-Hikari 商店"
     marker-name: "{0} @ {2} @ {3} x{4} @ {5}"
@@ -1371,7 +1371,7 @@ addon:
       無限商店：{6}
       座標：{7}
   chestprotect:
-    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
+    protection-exists: "<red>此區域已受到 ChestProtect 保護，所以你沒有在此建立商店的權限。"
     shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
   displaycontrol:
     toggle: "<green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.\n<yellow>You may need re-join to take effect."
