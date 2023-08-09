@@ -471,6 +471,7 @@
         <module>compatibility/residence</module>
         <module>compatibility/elitemobs</module>
         <module>compatibility/bungeecord-geyser</module>
+        <module>compatibility/advancedchests</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
