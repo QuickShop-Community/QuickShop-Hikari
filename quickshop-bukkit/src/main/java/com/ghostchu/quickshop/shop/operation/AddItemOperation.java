@@ -50,6 +50,8 @@ public class AddItemOperation implements Operation {
             Map<Integer, ItemStack> notSaved = inv.addItem(target);
             if (notSaved.isEmpty()) {
                 remains -= stackSize;
+            } else {
+                remains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
             }
             if (remains == lastRemains) {
                 return false;
@@ -74,4 +76,5 @@ public class AddItemOperation implements Operation {
         rollback = true;
         return inv.restoreSnapshot(this.snapshot);
     }
+
 }

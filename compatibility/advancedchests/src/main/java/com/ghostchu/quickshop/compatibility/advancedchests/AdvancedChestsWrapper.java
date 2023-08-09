@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
-import com.ghostchu.quickshop.util.logger.Log;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
@@ -153,7 +152,6 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
                 page.getBukkitInventory().setItem(inputSlot, stack);
             }
         }
-        Log.debug("Total " + deque.size() + " items lost due space sufficiency.");
     }
 
     public AdvancedChest<?, ?> getAdvancedChest() {
