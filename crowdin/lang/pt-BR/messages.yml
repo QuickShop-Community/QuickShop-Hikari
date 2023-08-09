@@ -1378,6 +1378,10 @@ addon:
     toggle-exception: "<red>Falha ao alternar para mostrar ou remover o holograma de itens de loja devido a um erro interno, por favor contate um administrador."
     command:
       displaycontrol: "<yellow>Alterna suas configurações para mostrar ou não os itens em cima dos baús de loja"
+compat:
+  advancedchests:
+    created: "<green>You're successfully created a shop on AdvancedChests container!"
+    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
