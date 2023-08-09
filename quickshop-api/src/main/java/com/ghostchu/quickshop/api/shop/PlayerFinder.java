@@ -9,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
 public interface PlayerFinder {
     @Nullable String uuid2Name(@NotNull UUID uuid);
 
-    @NotNull UUID name2Uuid(@NotNull String name);
+    @Nullable UUID name2Uuid(@NotNull String name);
 
-    @Nullable CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid);
+    @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid);
 
     @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name);
 

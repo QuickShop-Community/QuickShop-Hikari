@@ -232,7 +232,7 @@ public class ShopLoader implements SubPasteItem {
         }
         String username = plugin.getPlayerFinder().uuid2Name(shop.getOwner());
         if (username == null) {
-            Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
+            Log.debug("Shop owner not exist on this server, did you have reset the player data?");
             if (PackageUtil.parsePackageProperly("forceResolveUsername").asBoolean(false)) {
                 String finUsername = "Unknown_" + shop.getOwner().toString().substring(0, 8);
                 plugin.getDatabaseHelper().updatePlayerProfile(shop.getOwner(), "en_us", username).whenComplete((i, th) -> {

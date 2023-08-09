@@ -131,7 +131,7 @@ public class FastPlayerFinder implements PlayerFinder {
     }
 
     @Override
-    public @Nullable CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid) {
+    public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> uuid2Name(uuid), QuickExecutor.getCommonExecutor());
     }
 

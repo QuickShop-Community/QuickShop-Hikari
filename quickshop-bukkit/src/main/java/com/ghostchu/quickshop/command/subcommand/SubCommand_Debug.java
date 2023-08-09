@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,7 +17,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -156,20 +158,27 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
         plugin.text().of(sender, "debug.update-player-shops-signs-create-async-task").send();
-        Util.asyncThreadRun(() -> {
-            UUID uuid = plugin.getPlayerFinder().name2Uuid(remove.get(0));
+        plugin.getPlayerFinder().name2UuidFuture(remove.get(0)).whenComplete((uuid, throwable) -> {
+            if (throwable != null) {
+                plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
+                return;
+            }
             plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
             List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
             plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
             BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
             updateExecutor.addTasks(shops);
             plugin.text().of(sender, "debug.update-player-shops-task-started", shops.size()).send();
-            updateExecutor.startHandle(plugin.getJavaPlugin(), Shop::setSignText).whenComplete((aVoid, throwable) -> {
+            updateExecutor.startHandle(plugin.getJavaPlugin(), Shop::setSignText).whenComplete((aVoid, th) -> {
+                if (th != null) {
+                    plugin.text().of(sender, "internal-error", th.getMessage()).send();
+                    return;
+                }
                 long usedTime = updateExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
                 plugin.text().of(sender, "debug.update-player-shops-complete", usedTime);
             });
-
         });
+
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {
