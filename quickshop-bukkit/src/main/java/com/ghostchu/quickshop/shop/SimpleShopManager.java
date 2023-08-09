@@ -1260,7 +1260,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Enabled
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
                 || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
-            ItemStack previewItemStack = shop.getItem();
+            ItemStack previewItemStack = shop.getItem().clone();
             ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack);
             previewComponentPrePopulateEvent.callEvent();
             previewItemStack = previewComponentPrePopulateEvent.getItemStack();
@@ -1275,7 +1275,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     .append(previewComponent)
             );
         } else {
-            ItemStack previewItemStack = shop.getItem();
+            ItemStack previewItemStack = shop.getItem().clone();
             ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack);
             previewComponentPrePopulateEvent.callEvent();
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack())).forLocale()
