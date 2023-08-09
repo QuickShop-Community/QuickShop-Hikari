@@ -1380,8 +1380,8 @@ addon:
       displaycontrol: "<yellow>Ändere deine QuickShop Anzeige"
 compat:
   advancedchests:
-    created: "<green>You're successfully created a shop on AdvancedChests container!"
-    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
+    created: "<green>Du hast erfolgreich einen Shop auf einem AdvancedChests Container erstellt!"
+    permission-denied: "<red>Sorry! Du hast keine Berechtigung um einen Shop auf einen AdvancedChests Container zu erstellen!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

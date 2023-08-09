@@ -662,22 +662,22 @@ addon:
     make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
     shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
     target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
-    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
-    target-shop-not-in-town-region: "<red>The target shop is not in the town."
-    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
-    item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
-    operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
-    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+    target-shop-already-is-nation-shop: "<red>A loja que está apontando já pertence a alguma nação."
+    target-shop-not-in-town-region: "<red>A loja que está pontando não está na cidade."
+    target-shop-not-in-nation-region: "<red>A loja que está apontando não está na nação."
+    item-not-allowed: "<red>Esses itens de loja não estão permitidos a serem usados pela loja da cidade/nação! Escolha outro."
+    operation-disabled-due-shop-status: "<red>Essa operação de loja foi desativada devido a essa cidade/nação já ter uma loja."
+    plot-type-disallowed: "<red>Você não pode criar uma loja da cidade/nação no seu tipo de plot."
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
-      modify: "<red>You didn't have build permission on this towny plot."
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      own: "<red>Você apenas pode criar lojas na sua loja do tipo cidade plot."
+      modify: "<red>Você não tem permissão para construir nessa cidade plot."
+      shop-type: "<red>Você precisa criar uma loja numa loja do tipo cidade plot."
   residence:
-    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
-    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    creation-flag-denied: "<red>Você não tem permissão para criar uma loja nessa residência."
+    trade-flag-denied: "<red>Você não tem permissão para comprar nessa residência."
+    you-cannot-create-shop-in-wildness: "<red>Você não pode criar uma loja na natureza."
   griefprevention:
-    creation-denied: "<red>You don't have permission to create shops in this claim."
+    creation-denied: "<red>Você não tem permissão para criar lojas nesse terreno."
     trade-denied: "<red>You don't have permission to purchase shops in this claim."
   lands:
     world-not-enabled: "<red>You are not allowed to create or purchase in this world."
@@ -1381,7 +1381,7 @@ addon:
 compat:
   advancedchests:
     created: "<green>You're successfully created a shop on AdvancedChests container!"
-    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
+    permission-denied: "<red>Desculpe mas você não tem permissão para criar uma loja em um baú do AdvancedChests!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
