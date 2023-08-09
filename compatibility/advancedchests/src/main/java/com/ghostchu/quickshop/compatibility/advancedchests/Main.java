@@ -60,7 +60,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
 
-        if (QuickShop.getPermissionManager().hasPermission(event.getPlayer(), "quickshop.create.advancedchests")) {
+        if (!QuickShop.getPermissionManager().hasPermission(event.getPlayer(), "quickshop.create.advancedchests")) {
             event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "compat.advancedchests.permission-denied").forLocale());
             return;
         }
@@ -93,7 +93,7 @@ public final class Main extends CompatibilityModule implements Listener {
         for (Shop shop : getApi().getShopManager().getLoadedShops()) {
             InventoryWrapper inventory = shop.getInventory();
             if (inventory == null) continue;
-            if (inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
+            if (inventory instanceof AdvancedChestsWrapper advancedChestsWrapper) {
                 if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
                     shop.setSignText(getApi().getTextManager().findRelativeLanguages(e.getPlayer()));
                 }
