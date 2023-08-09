@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Location;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -85,7 +86,7 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
      */
     @Override
     public @Nullable InventoryHolder getHolder() {
-        return null;
+        return new AdvancedChestsInventoryHolder(advancedChest);
     }
 
     /**
@@ -134,5 +135,23 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
 
     public AdvancedChest<?, ?> getAdvancedChest() {
         return advancedChest;
+    }
+
+    static class AdvancedChestsInventoryHolder implements InventoryHolder {
+        private final AdvancedChest<?, ?> achest;
+
+        public AdvancedChestsInventoryHolder(AdvancedChest<?, ?> achest) {
+            this.achest = achest;
+        }
+
+        public AdvancedChest<?, ?> getAdvancedChest() {
+            return achest;
+        }
+
+        @NotNull
+        @Override
+        public Inventory getInventory() {
+            return null;
+        }
     }
 }

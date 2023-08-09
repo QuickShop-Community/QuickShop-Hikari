@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.compatibility.advancedchests;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
@@ -9,11 +10,14 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.Nullable;
 import us.lynuxcraft.deadsilenceiv.advancedchests.AdvancedChestsAPI;
 import us.lynuxcraft.deadsilenceiv.advancedchests.chest.AdvancedChest;
 import us.lynuxcraft.deadsilenceiv.advancedchests.events.ChestRemoveEvent;
 import us.lynuxcraft.deadsilenceiv.advancedchests.utils.ChunkLocation;
+
+import java.util.Map;
 
 public final class Main extends CompatibilityModule implements Listener {
     public AdvancedChestsInventoryManager manager;
@@ -69,10 +73,31 @@ public final class Main extends CompatibilityModule implements Listener {
     public void onAdvancedChestRemoved(ChestRemoveEvent event) {
         AdvancedChest<?, ?> advancedChests = event.getChest();
         ChunkLocation chunkLocation = advancedChests.getChunkLocation();
-        for (Shop shop : getApi().getShopManager().getShops(chunkLocation.getWorld().getName(), chunkLocation.getX(), chunkLocation.getZ()).values()) {
-            if (!shop.getInventoryWrapperProvider().equals(getDescription().getName())) return;
-            recordDeletion(CommonUtil.getNilUniqueId(), shop, "AdvancedChest Removed");
-            shop.delete();
+        Map<Location, Shop> shops = getApi().getShopManager().getShops(chunkLocation.getWorld().getName(), chunkLocation.getX(), chunkLocation.getZ());
+        if (shops == null) return;
+        for (Shop shop : shops.values()) {
+            InventoryWrapper inventory = shop.getInventory();
+            if (inventory == null) continue;
+            if (inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
+                if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
+                    recordDeletion(CommonUtil.getNilUniqueId(), shop, "AdvancedChest Removed");
+                    shop.delete();
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryClose(InventoryCloseEvent e) {
+        AdvancedChest<?, ?> advancedChests = AdvancedChestsAPI.getInventoryManager().getAdvancedChest(e.getInventory());
+        for (Shop shop : getApi().getShopManager().getLoadedShops()) {
+            InventoryWrapper inventory = shop.getInventory();
+            if (inventory == null) continue;
+            if (inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
+                if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
+                    shop.setSignText(getApi().getTextManager().findRelativeLanguages(e.getPlayer()));
+                }
+            }
         }
     }
 }
