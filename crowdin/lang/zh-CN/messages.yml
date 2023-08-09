@@ -1378,6 +1378,10 @@ addon:
     toggle-exception: "<red>由于内部错误，无法切换您的悬浮物设置，请联系服务器管理员。"
     command:
       displaycontrol: "<yellow>切换您的 QuickShop 显示物显示"
+compat:
+  advancedchests:
+    created: "<green>You're successfully created a shop on AdvancedChests container!"
+    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
