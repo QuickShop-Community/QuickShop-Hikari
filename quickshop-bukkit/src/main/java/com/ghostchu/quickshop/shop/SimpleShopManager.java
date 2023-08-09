@@ -1261,13 +1261,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
                 || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
             ItemStack previewItemStack = shop.getItem().clone();
-            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack);
+            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
             previewComponentPrePopulateEvent.callEvent();
             previewItemStack = previewComponentPrePopulateEvent.getItemStack();
             Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack))
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/qs silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
-            ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent);
+            ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
             itemPreviewComponentPopulateEvent.callEvent();
             previewComponent = itemPreviewComponentPopulateEvent.getComponent();
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(shop.getItem())).forLocale()
@@ -1276,7 +1276,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             );
         } else {
             ItemStack previewItemStack = shop.getItem().clone();
-            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack);
+            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
             previewComponentPrePopulateEvent.callEvent();
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack())).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewComponentPrePopulateEvent.getItemStack()))
