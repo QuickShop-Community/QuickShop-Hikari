@@ -34,7 +34,7 @@ public final class Main extends CompatibilityModule implements Listener {
         Set<EcoEnchant> enchantSet = EcoEnchants.values();
         for (EcoEnchant value : enchantSet) {
             getApi().registerLocalizedTranslationKeyMapping(value.translationKey(), value.getDisplayName());
-            Log.debug("Registered EcoEnchants translation key: " + value.translationKey() + " -> " + value.getDisplayName());
+            Log.debug("Registered EcoEnchant " + value.getId() + " with translation key override mapping: " + value.translationKey() + " -> " + value.getDisplayName());
         }
         getLogger().info("Initialized " + enchantSet.size() + " EcoEnchants translation keys");
     }
