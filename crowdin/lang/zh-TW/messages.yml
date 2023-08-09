@@ -1372,12 +1372,16 @@ addon:
       座標：{7}
   chestprotect:
     protection-exists: "<red>此區域已受到 ChestProtect 保護，所以你沒有在此建立商店的權限。"
-    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
+    shops-exsts: "<red>你想要保護的區域包含其他玩家的商店，所以你沒有訪問它們的權限。"
   displaycontrol:
-    toggle: "<green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.\n<yellow>You may need re-join to take effect."
-    toggle-exception: "<red>Failed to toggle your display showcase settings due an internal error, please contact server administrator."
+    toggle: "<green>成功地切換 QuickShop 懸浮物顯示為 <aqua>{0}</aqua>。\n<yellow>你可能需要重新登入才會生效。"
+    toggle-exception: "<red>由於內部錯誤，無法切換你的懸浮物設定，請聯絡伺服器管理員。"
     command:
-      displaycontrol: "<yellow>Toggle your QuickShop display showcasing"
+      displaycontrol: "<yellow>切換你的 QuickShop 懸浮物顯示"
+compat:
+  advancedchests:
+    created: "<green>You're successfully created a shop on AdvancedChests container!"
+    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
