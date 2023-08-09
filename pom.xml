@@ -473,6 +473,7 @@
         <module>compatibility/bungeecord-geyser</module>
         <module>compatibility/advancedchests</module>
         <module>compatibility/ecoenchants</module>
+        <module>compatibility/reforges</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
