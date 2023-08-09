@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GrabConcurrentTask;
 import com.ghostchu.quickshop.common.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -126,6 +128,16 @@ public class FastPlayerFinder implements PlayerFinder {
             plugin.logger().warn("Interrupted when looking up UUID for " + name, e);
             return CommonUtil.getNilUniqueId();
         }
+    }
+
+    @Override
+    public @Nullable CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> uuid2Name(uuid), QuickExecutor.getCommonExecutor());
+    }
+
+    @Override
+    public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name) {
+        return CompletableFuture.supplyAsync(() -> name2Uuid(name), QuickExecutor.getCommonExecutor());
     }
 
     @Override
