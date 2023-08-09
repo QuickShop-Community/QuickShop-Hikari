@@ -1378,7 +1378,10 @@ addon:
     toggle-exception: "<red>Failed to toggle your display showcase settings due an internal error, please contact server administrator."
     command:
       displaycontrol: "<yellow>Toggle your QuickShop display showcasing"
-
+compat:
+  advancedchests:
+    created: "<green>You're successfully created a shop on AdvancedChests container!"
+    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

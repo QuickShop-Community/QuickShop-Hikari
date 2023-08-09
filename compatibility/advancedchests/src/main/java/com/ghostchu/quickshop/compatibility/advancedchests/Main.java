@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.compatibility.advancedchests;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -54,8 +55,14 @@ public final class Main extends CompatibilityModule implements Listener {
         if (advancedChests == null) {
             return;
         }
+
+        if (QuickShop.getPermissionManager().hasPermission(event.getPlayer(), "quickshop.create.advancedchests")) {
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "compat.advancedchests.permission-denied").forLocale());
+            return;
+        }
         Shop shop = event.getShop();
         shop.setInventory(new AdvancedChestsWrapper(advancedChests, this), manager);
+        getApi().getTextManager().of(event.getPlayer(), "compat.advancedchests.created").send();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
