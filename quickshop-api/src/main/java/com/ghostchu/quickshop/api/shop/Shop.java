@@ -40,16 +40,6 @@ public interface Shop {
     void add(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
-     * Add new staff to the moderators
-     *
-     * @param player New staff
-     * @return Success
-     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#STAFF} instead
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    boolean addStaff(@NotNull UUID player);
-
-    /**
      * Execute buy action for player with x items.
      *
      * @param buyer          The player buying
@@ -72,23 +62,6 @@ public interface Shop {
      */
     void claimShopSign(@NotNull Sign sign);
 
-    /**
-     * Empty moderators team.
-     *
-     * @deprecated
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    void clearStaffs();
-
-    /**
-     * Remove a staff from moderators
-     *
-     * @param player Staff
-     * @return Success
-     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#EVERYONE} instead
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    boolean delStaff(@NotNull UUID player);
 
     /**
      * Delete shop from ram, and database.
@@ -179,24 +152,6 @@ public interface Shop {
     @NotNull
     Location getLocation();
 
-    /**
-     * Return this shop's moderators
-     *
-     * @return Shop moderators
-     * @deprecated Replaced by {@link #playerAuthorize(UUID, BuiltInShopPermission)} ()}
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @NotNull
-    ShopModerator getModerator();
-
-    /**
-     * Set new shop's moderators
-     *
-     * @param shopModerator New moderators team you want set
-     * @deprecated Replaced by {@link #setPlayerGroup(UUID, String)}
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    void setModerator(@NotNull ShopModerator shopModerator);
 
     /**
      * Get shop's owner UUID

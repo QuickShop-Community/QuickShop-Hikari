@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -264,16 +263,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.setSignText();
     }
 
-    @SuppressWarnings("removal")
-    @Override
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    public boolean addStaff(@NotNull UUID player) {
-        Util.ensureThread(false);
-        setPlayerGroup(player, BuiltInShopPermissionGroup.STAFF);
-        setDirty();
-        return true;
-    }
-
     /**
      * Buys amount of item from Player p. Does NOT check our inventory, or balances
      *
@@ -388,26 +377,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public void clearStaffs() {
-        Util.ensureThread(false);
-        this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(this.playerGroup::remove);
-        setDirty();
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public boolean delStaff(@NotNull UUID player) {
-        Util.ensureThread(false);
-        if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())) {
-            setPlayerGroup(player, BuiltInShopPermissionGroup.EVERYONE);
-            setDirty();
-        }
-        return true;
-    }
 
     /**
      * Deletes the shop from the list of shops and queues it for database
@@ -574,21 +543,6 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public @NotNull Location getLocation() {
         return this.location;
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public @NotNull ShopModerator getModerator() {
-        return new SimpleShopModerator(this.getOwner(), ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF)));
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public void setModerator(@NotNull ShopModerator shopModerator) {
-        Util.ensureThread(false);
-        setDirty();
     }
 
     /**
