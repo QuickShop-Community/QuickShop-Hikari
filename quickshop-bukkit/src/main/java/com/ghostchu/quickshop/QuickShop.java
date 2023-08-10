@@ -947,7 +947,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         if (getShopManager() != null) {
             logger.info("Unloading all loaded shops...");
-            getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            getShopManager().getLoadedShops().forEach(Shop::handleUnloading);
         }
         if (this.bungeeListener != null) {
             logger.info("Disabling the BungeeChat messenger listener.");

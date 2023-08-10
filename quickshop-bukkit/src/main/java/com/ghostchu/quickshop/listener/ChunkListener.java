@@ -42,7 +42,7 @@ public class ChunkListener extends AbstractQSListener {
         Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
             try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(2, ChronoUnit.SECONDS))) {
                 for (Shop shop : inChunk.values()) {
-                    shop.onLoad();
+                    plugin.getShopManager().loadShop(shop);
                 }
             }
         }, 1);
@@ -71,7 +71,7 @@ public class ChunkListener extends AbstractQSListener {
         for (Shop shop : inChunk.values()) {
             try (PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(2, ChronoUnit.SECONDS))) {
                 if (shop.isLoaded()) {
-                    shop.onUnload();
+                    plugin.getShopManager().unloadShop(shop);
                 }
             }
         }

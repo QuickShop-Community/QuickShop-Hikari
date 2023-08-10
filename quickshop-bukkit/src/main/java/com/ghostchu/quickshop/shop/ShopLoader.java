@@ -144,14 +144,14 @@ public class ShopLoader implements SubPasteItem {
                 continue;
             }
             // Load to RAM
-            plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
+            plugin.getShopManager().loadShop(shop);
             if (Util.isLoaded(shopLocation)) {
                 // Load to World
                 if (!Util.canBeShop(shopLocation.getBlock())) {
-                    plugin.getShopManager().removeShop(shop); // Remove from Mem
+                    plugin.getShopManager().unloadShop(shop); // Remove from Mem
                     Log.timing("Single shop loading: removed due container missing", singleShopLoadingTimer);
                 } else {
-                    shop.onLoad(); // Patch the shops won't load around the spawn
+                    plugin.getShopManager().loadShop(shop); // Patch the shops won't load around the spawn
                     Log.timing("Single shop loading: success", singleShopLoadingTimer);
                 }
             } else {

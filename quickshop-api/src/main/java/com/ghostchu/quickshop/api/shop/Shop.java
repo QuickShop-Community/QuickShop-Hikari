@@ -93,6 +93,7 @@ public interface Shop {
     /**
      * Delete shop from ram, and database.
      */
+    @Deprecated(forRemoval = true, since = "4.5.0.0")
     void delete();
 
     /**
@@ -100,7 +101,14 @@ public interface Shop {
      *
      * @param memoryOnly true = only delete from ram, false = delete from both ram and database
      */
+    @Deprecated(forRemoval = true, since = "4.5.0.0")
     void delete(boolean memoryOnly);
+
+    @Deprecated(forRemoval = true, since = "4.5.0.0")
+    void onLoad();
+
+    @Deprecated(forRemoval = true, since = "4.5.0.0")
+    void onUnload();
 
     /**
      * Gets the currency that shop use
@@ -491,15 +499,14 @@ public interface Shop {
      */
     void onClick(@NotNull Player clicker);
 
-    /**
-     * Load shop to the world
-     */
-    void onLoad();
 
-    /**
-     * Unload shop from world
-     */
-    void onUnload();
+    @Deprecated()
+    @ApiStatus.Internal
+    void handleLoading();
+
+    @Deprecated()
+    @ApiStatus.Internal
+    void handleUnloading();
 
     /**
      * open a preview for shop item

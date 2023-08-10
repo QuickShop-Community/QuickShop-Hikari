@@ -20,7 +20,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -32,7 +31,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             switchDebug(sender);
             return;
         }
@@ -69,9 +68,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
         if (shop.isLoaded()) {
-            shop.onUnload();
+            plugin.getShopManager().unloadShop(shop);
         } else {
-            shop.onLoad();
+            plugin.getShopManager().loadShop(shop);
         }
         plugin.text().of(sender, "debug.toggle-shop-loaded-status", shop.isLoaded());
     }
@@ -87,12 +86,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleShopsLoaderReload(CommandSender sender, List<String> remove) {
         plugin.text().of(sender, "debug.force-shop-loader-reload").send();
-        Set<Shop> loadedShops = plugin.getShopManager().getLoadedShops();
-        plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops", loadedShops.size()).send();
-        plugin.getShopManager().getLoadedShops().forEach(Shop::onUnload);
         List<Shop> allShops = plugin.getShopManager().getAllShops();
         plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops-from-memory", allShops.size()).send();
-        plugin.getShopManager().getAllShops().forEach(shop -> shop.delete(true));
+        plugin.getShopManager().getAllShops().forEach(shop -> plugin.getShopManager().unloadShop(shop));
         plugin.text().of(sender, "debug.force-shop-loader-reload-reloading-shop-loader").send();
         plugin.getShopLoader().loadShops();
         plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
@@ -101,8 +97,8 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     private void handleShopsReload(CommandSender sender, List<String> remove) {
         plugin.text().of(sender, "debug.force-shop-reload").send();
         List<Shop> shops = new ArrayList<>(plugin.getShopManager().getLoadedShops());
-        shops.forEach(Shop::onUnload);
-        shops.forEach(Shop::onLoad);
+        shops.forEach(s -> plugin.getShopManager().unloadShop(s));
+        shops.forEach(s -> plugin.getShopManager().loadShop(s));
         plugin.text().of(sender, "debug.force-shop-reload-complete", shops.size()).send();
     }
 
