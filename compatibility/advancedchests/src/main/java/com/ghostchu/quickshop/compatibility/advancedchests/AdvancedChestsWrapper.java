@@ -172,7 +172,7 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
             while (iterator.hasNext()) {
                 ItemStack itemStack = iterator.next();
                 if (itemStack == null) {
-                    iterator.setCurrent(itemStackToAdd.clone());
+                    iterator.setCurrent(itemStackToAdd);
                     itemStackToAdd.setAmount(0);
                     continue AddProcess;
                 } else {
@@ -182,7 +182,7 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
                         itemStack.setAmount(itemStack.getAmount() + actuallyAdd);
                         int needsNow = itemStackToAdd.getAmount() - actuallyAdd;
                         itemStackToAdd.setAmount(needsNow);
-                        iterator.setCurrent(itemStack.clone());
+                        iterator.setCurrent(itemStack);
                         if (needsNow == 0) {
                             continue AddProcess;
                         }
