@@ -1227,6 +1227,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
         Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
+        if (inWorld == null) {
+            return;
+        }
         int x = (int) Math.floor((loc.getBlockX()) / 16.0);
         int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
         ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
