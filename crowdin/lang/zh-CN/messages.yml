@@ -1346,7 +1346,7 @@ addon:
     success-remove: "<green>成功删除此商店的所有限制"
     success-setup: "<green>该商店的限制设置已成功保存"
     trade-limit-reached-cancel-reason: "<red>达到了这个商店的交易限制"
-    remains-limits: "<gold>您在该商店剩余的交易配额： <yellow>{0}</yellow>"
+    remains-limits: "<gold>您在该商店剩余的可交易数量： <yellow>{0}</yellow>"
     remains-limits-before-reset-period-note: "<gold>该商店将重置他们的购买配额： <yellow>{0}</yellow>"
   dynmap:
     markerset-title: "QuickShop-Hikari 商店"
@@ -1378,6 +1378,10 @@ addon:
     toggle-exception: "<red>由于内部错误，无法切换您的悬浮物设置，请联系服务器管理员。"
     command:
       displaycontrol: "<yellow>切换您的 QuickShop 显示物显示"
+compat:
+  advancedchests:
+    created: "<green>您已成功在 AdvancedChests 里创建了一个商店！"
+    permission-denied: "<red>抱歉！您没有权限在AdvancedChests上创建商店！"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

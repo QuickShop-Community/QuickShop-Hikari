@@ -567,18 +567,18 @@ debug:
   force-shop-loader-reload: "<yellow>Forçando carregamento de loja a recarregar..."
   force-shop-loader-reload-unloading-shops: "<yellow>Descarregando um total de <aqua>{0}</aqua> lojas carregadas..."
   force-shop-loader-reload-unloading-shops-from-memory: "<yellow>Removendo <aqua>{0}</aqua> lojas da sua memória..."
-  force-shop-loader-reload-reloading-shop-loader: "<yellow>Re-calling shop-loader for reloading all shops from database..."
-  force-shop-loader-reload-complete: "<green>Shop-loader has been reloaded all shops!"
-  toggle-shop-loaded-status: "<aqua>Toggle this shop loaded status to <gold>{0}</gold>"
-  shop-internal-data: "<yellow>The internal data of this shop: <reset>{0}</reset>"
-  handler-list-not-valid-bukkit-event-class: "<red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class."
-  update-player-shops-signs-no-username-given: "<red>You must provide a valid player username."
-  update-player-shops-signs-create-async-task: "<yellow>Creating async tasks for force updating signs..."
-  update-player-shops-player-selected: "<yellow>Player selected: <gold>{0}</gold>"
-  update-player-shops-player-shops: "<yellow>Total <gold>{0}</gold> shops waiting for updates."
-  update-player-shops-per-tick-threshold: "<yellow>Max shops can be update per tick: <gold>{0}</gold>"
-  update-player-shops-complete: "<green>Task completed, Used <yellow>{0}ms</yellow> for updating."
-  update-player-shops-task-started: "<gold>The tasks has been started, please wait for it to complete."
+  force-shop-loader-reload-reloading-shop-loader: "<yellow>Re-chamando o carregador de lojas para recarregar todas as lojas da database..."
+  force-shop-loader-reload-complete: "<green>O carregador de lojas acabou de recarregar todas lojas!"
+  toggle-shop-loaded-status: "<aqua>Altera o status de carregado da loja para <gold>{0}</gold>"
+  shop-internal-data: "<yellow>Um erro interno de dados dessa loja: <reset>{0}</reset>"
+  handler-list-not-valid-bukkit-event-class: "<red>A classe provida <yellow>{0}</yellow> não é uma classe válida de eventos do Bukkit."
+  update-player-shops-signs-no-username-given: "<red>Você precisa providenciar um nome de usuário válido."
+  update-player-shops-signs-create-async-task: "<yellow>Criando tarefas async para forçar atualizar placas..."
+  update-player-shops-player-selected: "<yellow>Jogador selecionado: <gold>{0}</gold>"
+  update-player-shops-player-shops: "<yellow>Total de <gold>{0}</gold> lojas esperando por atualizações."
+  update-player-shops-per-tick-threshold: "<yellow>Máximo de lojas que podem ser atualizadas por tick: <gold>{0}</gold>"
+  update-player-shops-complete: "<green>Tarefas completadas, Usado <yellow>{0}ms</yellow> para atualizar."
+  update-player-shops-task-started: "<gold>As tarefas foram iniciadas, por favor espere até serem completadas."
 database:
   scanning: "<green>Verificando os dados isolados nos bancos de dados QuickShop, o carregamento do banco de dados pode aumentar em progresso de verificação, isso pode demorar um pouco..."
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
@@ -602,13 +602,13 @@ database:
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Gerado em: <gold>{0}</gold>"
   purge-date: "<red>Você deve informar uma data."
-  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
-  purge-task-created: "<green>Task created! Database are silent purging history records in background."
-  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
-  purge-done-with-error: "<red>Purge task failed, check the server console for details."
-  purge-players-cache: "<yellow>Please wait, purging players caches..."
-  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
-  purge-players-error: "<red>Failed to purge players caches, please check the server console."
+  purge-warning: "<yellow>Essa operação irá deletar todo o histórico que foi armazenado na sua database, incluindo lojas criadas/trocadas/deletadas, compras, transações e logs do sistema. Deletar elas pode liberar espaço no discord mas todo o histórico de métricas irá ser perdido, e outros plugins que podem depender dessas métricas irão parar de funcionar. Para continuar com essa operação execute `/qs database purgelogs <before-days> para confirmar`"
+  purge-task-created: "<green>Tarefa criada! A database irá silenciosamente deletar o histórico de registros em segundo plano."
+  purge-done-with-line: "<green>Tarefa de limpeza completa, um total de <gold>{0}</gold> linhas foram deletadas da database."
+  purge-done-with-error: "<red>Tarefa de limpeza falhou, verifique o console para mais detalhes."
+  purge-players-cache: "<yellow>Por favor aguarda, deletando cache dos jogadores..."
+  purge-players-completed: "<green>Sucesso ao deletar o cache de {0} jogadores de ambos, memória e database.<newline><aqua>Nota: A performance do seu servidor talvez seja impactada por essa operação."
+  purge-players-error: "<red>Falha ao deletar o cache de todos os jogadores, por favor verifique seu console."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
@@ -628,96 +628,96 @@ transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer reque
 transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
-transfer-no-self: "<red>You can't transfer your shops to yourself."
-benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
-benefit-exists: "<red>Target player already in benefits list on this shop."
-benefit-removed: "<red>Target player has been removed from shop benefits."
-benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
-benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
-benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
-benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
-tag-added: "<green>Successfully added <aqua>#{0}</aqua> to this shop!"
-tag-add-duplicate: "<red>The tag <aqua>#{0}</aqua> already exists at this shop!"
-tag-removed: "<green>Successfully removed <aqua>#{0}</aqua> from this shop!"
-tag-remove-not-exists: "The tag <aqua>#{0}</aqua> not exists at this shop!"
-tag-cleared: "<green>Successfully cleared all tags from this shop!"
-tag-shops-cleared: "<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!"
-tag-query: "<green>This shop have <yellow>{0}</yellow> tags:"
+transfer-no-self: "<red>Você não pode transferir suas lojas para você mesmo."
+benefit-overflow: "<red>A soma de todos os benefícios não pode ser maior ou igual a 100%."
+benefit-exists: "<red>O player indicado já está com os benefícios da lista dessa loja."
+benefit-removed: "<red>O player indicado foi removido da lista de benefícios dessa loja."
+benefit-added: "<green>Jogador <aqua>{0}</aqua> foi adicionado a sua lista de benefícios da loja!"
+benefit-updated: "<green>Os benefícios do jogador <aqua>{0}</aqua> foram atualizados!"
+benefit-query: "<green>Essa loja tem <yellow>{0}</yellow> jogadores na lista de benefícios!"
+benefit-query-list: "<yellow> - </yellow><white>Jogador <gold>{0}</gold>, Benefício <gold>{1}%</gold></white>"
+tag-added: "<green>Sucesso ao adicionar <aqua>#{0}</aqua> para essa loja!"
+tag-add-duplicate: "<red>A tag <aqua>#{0}</aqua> já existe nessa loja!"
+tag-removed: "<green>Removido com sucesso <aqua>#{0}</aqua> dessa loja!"
+tag-remove-not-exists: "Atag <aqua>#{0}</aqua> não existe nessa loja!"
+tag-cleared: "<green>Sucesso ao limpar todas as tags dessa loja!"
+tag-shops-cleared: "<green> Sucesso ao limpar <aqua>#{0}</aqua> de todas as suas lojas com tags!"
+tag-query: "<green>Essa loja tem <yellow>{0}</yellow> tags:"
 tag-query-listing: "<yellow> - <aqua>#{0}</aqua>"
-tag-query-no-tag: "<red>This shop have no tags."
-tag-query-shops: "<green>This tag contains <yellow>{0}</yellow> shops:"
+tag-query-no-tag: "<red>Essa loja não tem tags."
+tag-query-shops: "<green>Essa tag contem em <yellow>{0}</yellow> lojas:"
 tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
-batch-operations-based-on-tags-no-failure: "<green>Successfully batch processed <yellow>{0}</yellow> shops."
-batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
-batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
-batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>The error messages will send to you above this message in the chat."
+batch-operations-based-on-tags-no-failure: "<green>Sucesso ao processar o lote <yellow>{0}</yellow> de lojas."
+batch-operations-based-on-tags-have-failure: "<yellow>Total de <yellow>{0}</yellow> lojas em um lote foi processado com sucesso, mas <red>{1}</red> pedidos não foram completados."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total de <yellow>{0}</yellow> lojas em um lote foram processadas com sucesso, mas <red>{1}</red> pedidos não foram completados. Motivo: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>Essas mensagens de erros irão enviar para você acima dessa mensagem no chat."
 addon:
   towny:
     commands:
-      town: "<yellow>Set or unset a shop to a Town shop"
-      nation: "<yellow>Set or unset a shop to a Nation shop"
-    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
-    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
-    shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
-    target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
-    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
-    target-shop-not-in-town-region: "<red>The target shop is not in the town."
-    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
-    item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
-    operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
-    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+      town: "<yellow>Seta ou remove uma loja para uma loja da Cidade"
+      nation: "<yellow>Seta ou remove uma loja para a loja da Nação"
+    make-shop-owned-by-town: "<green>Você criou uma loja pertencente a nação <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-town: "<green>Você reseteu o dono da loja, agora irá ser transferido para o dono do original dessa loja."
+    make-shop-owned-by-nation: "<green>Você fez essa loja pertencer a nação <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-nation: "<green>Você resetou o dono dessa loja, agora ela irá ser transferida ao criador original da loja."
+    shop-owning-changing-notice: "<grey>Essa loja agora pertence a uma cidade/nação, o dono original da loja foi adicionado na lista de administradores, modifique ou adicione um novo dono / staff usando o comando /qs permission"
+    target-shop-already-is-town-shop: "<red>A loja inserida já pertence a uma cidade."
+    target-shop-already-is-nation-shop: "<red>A loja que está apontando já pertence a alguma nação."
+    target-shop-not-in-town-region: "<red>A loja que está pontando não está na cidade."
+    target-shop-not-in-nation-region: "<red>A loja que está apontando não está na nação."
+    item-not-allowed: "<red>Esses itens de loja não estão permitidos a serem usados pela loja da cidade/nação! Escolha outro."
+    operation-disabled-due-shop-status: "<red>Essa operação de loja foi desativada devido a essa cidade/nação já ter uma loja."
+    plot-type-disallowed: "<red>Você não pode criar uma loja da cidade/nação no seu tipo de plot."
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
-      modify: "<red>You didn't have build permission on this towny plot."
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      own: "<red>Você apenas pode criar lojas na sua loja do tipo cidade plot."
+      modify: "<red>Você não tem permissão para construir nessa cidade plot."
+      shop-type: "<red>Você precisa criar uma loja numa loja do tipo cidade plot."
   residence:
-    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
-    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    creation-flag-denied: "<red>Você não tem permissão para criar uma loja nessa residência."
+    trade-flag-denied: "<red>Você não tem permissão para comprar nessa residência."
+    you-cannot-create-shop-in-wildness: "<red>Você não pode criar uma loja na natureza."
   griefprevention:
-    creation-denied: "<red>You don't have permission to create shops in this claim."
-    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+    creation-denied: "<red>Você não tem permissão para criar lojas nesse terreno."
+    trade-denied: "<red>Você não tem permissão para realizar compras de loja nesse terreno."
   lands:
-    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    world-not-enabled: "<red>Você não está permitido a criar ou comprar nesse mundo."
+    creation-denied: "<red>Você não tem permissão para criar lojas nesse terreno."
   plotsquared:
-    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
-    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
-    creation-denied: "<red>You don't have permission to create shops in this Plot."
-    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+    no-plot-whitelist-creation: "<red>Você não pode criar lojas fora do plot."
+    no-plot-whitelist-trade: "<red>Você não pode comprar de lojas fora do plot."
+    creation-denied: "<red>Você não tem permissão para criar lojas nesse plot."
+    trade-denied: "<red>Você não tem permissão para comprar de lojas nesse plot."
     flag:
-      create: "Create QuickShop-Hikari shops"
-      trade: "Purchase QuickShop-Hikari shops"
+      create: "Criar lojas do QuickShop-Hikari"
+      trade: "Comprar de lojas QuickShop-Hikari"
   superiorskyblock:
-    owner-create-only: "<red>Only island owner can create shop there."
-    owner-member-create-only: "<red>Only island owner or member can create shop there."
+    owner-create-only: "<red>Apenas o dono da ilha pode criar lojas aqui."
+    owner-member-create-only: "<red>Apenas o dono da ilha ou membro pode criar placas de loja aqui."
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>Você não tem permissão para criar lojas nessa região do WorldGuard."
+    trade-flag-test-failed: "<red>Você não tem permissão para realizar trocas de loja nessa área do WorldGuard."
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
-    __to_message_designer: "Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!"
-    discord-enabled: "<aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord."
-    discord-disabled: "<aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore."
-    discord-not-integrated: "<red>You hadn't link your Discord yet! Please link your Discord account first!"
-    feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
-    feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
-    link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
-    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
-    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
+    __to_users: "Como o sistema de texto do QuickShop. O addon do discord também irá auto detectar a linguagem do usuário e usar a linguagem do usuário para enviar mensagens no Discord, isso seguindo a linguagem da configuração do QuickShop-Hiari's."
+    __to_message_designer: "Crie e faça melhorias na sua mensagem do discord com GUI: https://glitchii.github.io/embedbuilder/, então copie o código JSON e cole isso na tradução e pronto!"
+    discord-enabled: "<aqua>Sucesso ao <green>ativar</green> suas mensagens do QuickShop discord, agora você pode receber as mensagens da loja no Discord."
+    discord-disabled: "<aqua>Sucesso ao <red>desativar</red> suas mensagens do QuickShop discord, agora você não irá mais receber mensagens da loja do Discord."
+    discord-not-integrated: "<red>Você não lincou seu Discord ainda! Por favor, linque sua conta do Discord primeiro!"
+    feature-enabled-for-user: "<aqua>Você <green>ativou a</green> <gold>{0}</gold> notificação."
+    feature-disabled-for-user: "<aqua>Você <red>desativou a</red> <gold>{0}</gold> notificação."
+    link-help: "<yellow>O servidor está usando <gold>{0}</gold> para o driver do Discord, por favor use <green>{0}</green> para lincar sua conta do Discord."
+    save-notifaction-exception: "<red>Um erro aconteceu enquanto era salvo suas configurações de notificação do Discord, por favor entre em contato com um administrador para resolver."
+    feature-status-changed: "<green>Sucesso ao definir o status da notificação <aqua>{0}</aqua> para <gold>{1}</gold>"
     commands:
       discord:
-        description: "<yellow>Managing your QuickShop Discord settings"
+        description: "<yellow>Gerenciando suas configurações do QuickShop Discord"
     discord-messages:
       sold-to-your-shop: |
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: Alguém vendeu itens na sua loja",
+             "description": "O jogador %%purchase.name%% vendeu x%%purchase.amount%% %%shop.item.name%% para sua loja.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -730,17 +730,17 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "Notificação do QuickShop-Hikari",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "Loja",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "Cliente",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -750,17 +750,17 @@ addon:
                  "inline": true
                },
                {
-                 "name": "Amount",
+                 "name": "Quantia",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "Você pagou",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "Taxas",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -771,8 +771,8 @@ addon:
         {
            "embed":
              {
-               "title": ":outbox_tray: Somebody bought items from shop",
-               "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
+               "title": ":outbox_tray: Alguém comprou itens na sua loja",
+               "description": "O jogador %%purchase.name%% comprou x%%purchase.amount%% %%shop.item.name%% da sua loja.",
                "color": 52084,
                "author": {
                    "name": "QuickShop-Hikari",
@@ -785,17 +785,17 @@ addon:
                    "url": ""
                },
                "footer": {
-                   "text": "QuickShop-Hikari Discord Notification",
+                   "text": "Notificação do QuickShop-Hikari",
                    "icon_url": ""
                },
                "fields": [
                    {
-                       "name": "Shop",
+                       "name": "Loja",
                        "value": "%%shop.display-name%%",
                        "inline": false
                    },
                    {
-                       "name": "Purchaser",
+                       "name": "Cliente",
                        "value": "%%purchase.name%%",
                        "inline": true
                    },
@@ -805,17 +805,17 @@ addon:
                        "inline": true
                    },
                    {
-                       "name": "Amount",
+                       "name": "Quantia",
                        "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
                        "inline": true
                    },
                    {
-                       "name": "Your earn",
+                       "name": "Você recebeu",
                        "value": "%%purchase.balance-formatted%%",
                        "inline": true
                    },
                    {
-                       "name": "Taxes",
+                       "name": "Taxas",
                        "value": "%%purchase.taxes-formatted%%",
                        "inline": true
                    }
@@ -826,8 +826,8 @@ addon:
         {
         "embed":
           {
-              "title": ":dollar: Somebody purchased in a shop",
-              "description": "The player %%purchase.name%% purchase x%%purchase.amount%% %%shop.item.name%% from the shop.",
+              "title": ":dollar: Alguém comprou na sua loja",
+              "description": "O jogador %%purchase.name%% comprou x%%purchase.amount%% %%shop.item.name%% da sua loja.",
               "color": 6061450,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -840,17 +840,17 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "Notificação do QuickShop-Hikari",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "Loja",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   },
                   {
-                      "name": "Purchaser",
+                      "name": "Cliente",
                       "value": "%%purchase.name%%",
                       "inline": true
                   },
@@ -860,17 +860,17 @@ addon:
                       "inline": true
                   },
                   {
-                      "name": "Amount",
+                      "name": "Quantia",
                       "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                       "inline": true
                   },
                   {
-                      "name": "Balance",
+                      "name": "Saldo",
                       "value": "%%purchase.balance-formatted%%",
                       "inline": true
                   },
                   {
-                      "name": "Taxes",
+                      "name": "Taxas",
                       "value": "%%purchase.taxes-formatted%%",
                       "inline": true
                   }
@@ -881,8 +881,8 @@ addon:
         {
         "embed":
           {
-              "title": ":mailbox_with_mail: Your shop has run out of space",
-              "description": "Your shop inventory is full of items!\nYou need empty your shop container to free the space then you can continue to accept new items.",
+              "title": ":mailbox_with_mail: Sua loja está lotada",
+              "description": "O inventário da sua loja está lotada!\nVocê precisa limpar o inventário da sua loja para liberar espaço então poder continuar comprando mais.",
               "color": 16065893,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -895,12 +895,12 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "Notificação do QuickShop-hikari",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "Loja",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   }
@@ -911,8 +911,8 @@ addon:
         {
             "embed":
                 {
-                    "title": ":mailbox_with_no_mail: Your shop has run out of stock",
-                    "description": "Your shop inventory is empty now!\nYou need to refill the shop container with items to continue selling items!",
+                    "title": ":mailbox_with_no_mail: Sua loja ficou está sem estoque",
+                    "description": "O estoque da sua loja acabou!\nReabasteça o estoque da sua loja para continuar vendendo e lucrando!",
                     "color": 16065893,
                     "author": {
                         "name": "QuickShop-Hikari",
@@ -925,12 +925,12 @@ addon:
                         "url": ""
                     },
                     "footer": {
-                        "text": "QuickShop-Hikari Discord Notification",
+                        "text": "Notificação do QuickShop-Hikari",
                         "icon_url": ""
                     },
                     "fields": [
                         {
-                            "name": "Shop",
+                            "name": "Loja",
                             "value": "%%shop.display-name%%",
                             "inline": false
                         }
@@ -940,8 +940,8 @@ addon:
       mod-shop-created: |
         {
           "embed": {
-            "title": ":classical_building: A new shop has been created",
-            "description": "Player created a new shop on your server!",
+            "title": ":classical_building: Uma nova loja foi criada",
+            "description": "Um jogador acabou de criar uma nova loja!",
             "color": 6061450,
             "author": {
               "name": "QuickShop-Hikari",
@@ -954,17 +954,17 @@ addon:
               "url": ""
             },
             "footer": {
-              "text": "QuickShop-Hikari Discord Notification",
+              "text": "Notificação do QuickShop-Hikari",
               "icon_url": ""
             },
             "fields": [
               {
-                "name": "Shop",
+                "name": "Loja",
                 "value": "%%shop.display-name%%",
                 "inline": false
               },
               {
-                "name": "Owner",
+                "name": "Proprietário",
                 "value": "%%shop.owner.name%%",
                 "inline": true
               },
@@ -974,12 +974,12 @@ addon:
                 "inline": true
               },
               {
-                "name": "Amount",
+                "name": "Quantia",
                 "value": "%%shop.stacking-amount%%",
                 "inline": true
               },
               {
-                "name": "Type",
+                "name": "Tipo",
                 "value": "%%shop.type%%",
                 "inline": true
               }
@@ -989,8 +989,8 @@ addon:
       mod-remove-shop: |
         {
             "embed": {
-                "title": ":recycle: A shop was removed from this server",
-                "description": "A shop was removed from this server.",
+                "title": ":recycle: Uma loja foi removido desse servidor",
+                "description": "Uma loja foi removida do servidor",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1003,17 +1003,17 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Notificação do QuickShop-Hikari",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Loja",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "Reason",
+                        "name": "Motivo",
                         "value": "%%delete.reason%%",
                         "inline": false
                     }
@@ -1023,8 +1023,8 @@ addon:
       shop-transfer-to-you: |
         {
             "embed": {
-                "title": ":placard: A shop was transfer to you",
-                "description": "A shop transfer to you from another player.",
+                "title": ":placard: Uma loja foi transferida para você",
+                "description": "Uma loja foi transferida para outro jogador.",
                 "color": 16172079,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1037,17 +1037,17 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Notificação do QuickShop-Hikari",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Loja",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
+                        "name": "De",
                         "value": "%%transfer.from%%",
                         "inline": false
                     }
@@ -1057,8 +1057,8 @@ addon:
       mod-shop-transfer: |
         {
             "embed": {
-                "title": ":placard: A shop was transferred",
-                "description": "A shop transfer to a player from another player.",
+                "title": ":placard: Uma loja foi transferida",
+                "description": "Uma loja foi transferida para outro jogador.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1071,22 +1071,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Notificação do QuickShop-Hikar",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Loja",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
+                        "name": "De",
                         "value": "%%transfer.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
+                        "name": "Para",
                         "value": "%%transfer.to%%",
                         "inline": true
                     }
@@ -1096,8 +1096,8 @@ addon:
       shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: Your shop price was changed",
-                "description": "You or your shop staff changed your shop price.",
+                "title": ":money_with_wings: O preço da sua loja foi alterado",
+                "description": "Você ou um membro da sua loja alterou o preço.",
                 "color": 16172079,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1110,22 +1110,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Notificação do QuickShop-Hikar",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Loja",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
+                        "name": "De",
                         "value": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
+                        "name": "Para",
                         "value": "%%change-price.to%%",
                         "inline": true
                     }
@@ -1135,8 +1135,8 @@ addon:
       mod-shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: A shop price has been changed",
-                "description": "A shop changed its price settings.",
+                "title": ":money_with_wings: Um preço da loja foi alterado",
+                "description": "Uma loja trocou sua configuração de preço.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1149,17 +1149,17 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Notificação do QuickShop-Hikar",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Loja",
                         "value": "%%shop.display-name%%",
                         "inline": true
                     },
                     {
-                        "name": "Owner",
+                        "name": "Proprietário",
                         "value": "%%shop.owner.name%%",
                         "inline": true
                     },
@@ -1169,12 +1169,12 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "From",
+                        "name": "De",
                         "value": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
+                        "name": "Para",
                         "value": "%%change-price.to%%",
                         "inline": true
                     }
@@ -1184,8 +1184,8 @@ addon:
       shop-permission-changed: |
         {
             "embed": {
-                "title": ":closed_lock_with_key: Your shop permission settings has been changed",
-                "description": "One of your shop's permission setting has been changed.",
+                "title": ":closed_lock_with_key: As permissões da sua configuração de loja foram alteradas",
+                "description": "Uma das suas permissões de loja's foram alteradas.",
                 "color": 15879747,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1198,22 +1198,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Notificação do QuickShop-Hikar",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Loja",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "Player",
+                        "name": "Jogador",
                         "value": "%%change-permission.player%%",
                         "inline": true
                     },
                     {
-                        "name": "Assign to group",
+                        "name": "Pertencente ao grupo",
                         "value": "%%change-permission.to-group%%",
                         "inline": true
                     },
@@ -1223,7 +1223,7 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "Permission granted (Inherit from group)",
+                        "name": "Permissões ganhadas (vindas do cargo)",
                         "value": "```\n%%change-permission.perms-list%%\n```",
                         "inline": false
                     }
@@ -1378,6 +1378,10 @@ addon:
     toggle-exception: "<red>Falha ao alternar para mostrar ou remover o holograma de itens de loja devido a um erro interno, por favor contate um administrador."
     command:
       displaycontrol: "<yellow>Alterna suas configurações para mostrar ou não os itens em cima dos baús de loja"
+compat:
+  advancedchests:
+    created: "<green>Você acabou de criar um loja em um baú do AdvancedChests!"
+    permission-denied: "<red>Desculpe mas você não tem permissão para criar uma loja em um baú do AdvancedChests!"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
