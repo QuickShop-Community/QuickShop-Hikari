@@ -26,7 +26,7 @@ public class SubCommand_Remove implements CommandHandler<Player> {
         }
         if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.DELETE)
                 || plugin.perm().hasPermission(sender, "quickshop.other.destroy")) {
-            shop.delete();
+            plugin.getShopManager().deleteShop(shop);
             plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(), "/qs remove command", shop.saveToInfoStorage()));
         } else {
             plugin.text().of(sender, "no-permission").send();

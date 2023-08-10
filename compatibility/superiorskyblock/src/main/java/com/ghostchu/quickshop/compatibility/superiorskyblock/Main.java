@@ -46,7 +46,7 @@ public final class Main extends CompatibilityModule implements Listener {
                             return;
                         }
                         recordDeletion(uuid, shop, "Shop deleting");
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                     }
                 });
             }

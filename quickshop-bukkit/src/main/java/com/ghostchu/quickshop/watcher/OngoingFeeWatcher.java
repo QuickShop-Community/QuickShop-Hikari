@@ -101,7 +101,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
      * @param shop The shop was remove cause no enough ongoing fee
      */
     public void removeShop(@NotNull Shop shop) {
-        Util.mainThreadRun(shop::delete);
+        Util.mainThreadRun(() -> plugin.getShopManager().deleteShop(shop));
         MsgUtil.send(shop, shop.getOwner(), plugin.text().of("shop-removed-cause-ongoing-fee", LegacyComponentSerializer.legacySection().deserialize("World:"
                 + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
                 + " X:"

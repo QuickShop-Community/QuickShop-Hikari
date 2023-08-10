@@ -81,7 +81,7 @@ public final class Main extends CompatibilityModule implements Listener {
             if (inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
                 if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
                     recordDeletion(CommonUtil.getNilUniqueId(), shop, "AdvancedChest Removed");
-                    shop.delete();
+                    getApi().getShopManager().deleteShop(shop);
                 }
             }
         }

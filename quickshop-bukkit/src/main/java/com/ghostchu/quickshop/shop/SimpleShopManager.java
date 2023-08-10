@@ -726,6 +726,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 addShopToLookupTable(shop);
                 registerShop(shop, true);
                 loadShop(shop);
+                shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
             }
         }
     }
@@ -1175,7 +1176,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         if (shop.isLoaded()) {
-            plugin.logger().warn("Warning: Unregister a loaded shop from database may lead to unexpected error.");
+            unloadShop(shop);
         }
         for (Sign s : shop.getSigns()) {
             s.getBlock().setType(Material.AIR);
