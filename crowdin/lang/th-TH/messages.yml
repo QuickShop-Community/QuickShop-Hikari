@@ -30,7 +30,9 @@ you-cant-afford-to-change-price: <red>มีค่าใช้จ่ายทั
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
 shop-out-of-space-name: <dark_purple>ร้านของคุณ {0} เต็ม
-paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
+paste-disabled: |-
+  <red>Paste function has been disabled! You cannot request technical support.
+  Reason: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -50,7 +52,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
 currency-unset: <green>Shop currency removed successfully. Using default settings now.
@@ -101,7 +103,7 @@ menu:
   item: '<green>ของ: <yellow>{0}'
   price-per: <green>ราคาต่อ <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
   successful-purchase: '<green>ซื้อสำเร็จ:'
   price-per-stack: <green>ราคาต่อ <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Stored Enchantments
@@ -141,13 +143,21 @@ metric:
   query-argument: 'Query Argument: {0}'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
-  player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
+  player-hover: |-
+    <yellow>{0}
+    <gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
   tax-hover: <yellow>ภาษี {0}
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
   transaction-count: <yellow>รวม {0}
-  shop-hover: '<yellow>{0}<newline><gold>พิกัด: <gray>{1} {2} {3}, โลก: {4}<newline><gold>เจ้าของ: <gray>{5}<newline><gold>ประเภทร้านค้า: <gray>{6}<newline><gold>ของ: <gray>{7}<newline><gold>ราคา: <gray>{8}'
+  shop-hover: |-
+    <yellow>{0}
+    <gold>Pos: <gray>{1} {2} {3}, World: {4}
+    <gold>Owner: <gray>{5}
+    <gold>Shop Type: <gray>{6}
+    <gold>Item: <gray>{7}
+    <gold>Price: <gray>{8}
   time-hover: '<yellow>เวลา: {0}'
   amount-stack-hover: <yellow>{0}x กอง
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
@@ -161,14 +171,16 @@ economy-transaction-failed: <red>Sorry, but an internal error occurred while pro
 nothing-to-flush: <green>You have no new shop messages.
 no-price-change: <red>This wouldn't result in a price change!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
-inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
+inventory-unavailable: |-
+  <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
+  Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
 file-test: This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)
 unknown-player: <red>Target player doesn't exist, please check the username you typed.
-player-offline: "<red>The target player currently is offline."
-player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+player-offline: <red>The target player currently is offline.
+player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: SELLING
+  buying: BUYING
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
   code: '<yellow>โค้ด: <gold>{0}'
@@ -176,7 +188,9 @@ language:
   translate-progress: '<yellow>ความคืบหน้าของการแปลภาษา: <aqua>{0}%'
   name: '<yellow>ชื่อ: <gold>{0}'
   help-us: <green>[ช่วยพวกเราแปลภาษา]
-warn-to-paste: '<yellow>Collecting data and uploading to Pastebin, this may take a while. <red><bold>Warning: <red>The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
+warn-to-paste: |-
+  <yellow>Collecting data and uploading to Pastebin. This may take a while...
+  <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
 how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
@@ -219,7 +233,7 @@ updatenotify:
     - Paimon want told you the QuickShop have new update {0}!
   remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
-nearby-shop-entry: '<green>- Info:{0} <green>Price:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>distance: <aqua>{5} <green>block(s)'
+nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
 chest-title: QuickShop Store
 console-only: <red>This command can only be executed by Console.
 failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
@@ -242,7 +256,7 @@ no-double-chests: <red>You cannot create the double chest shop.
 price-too-cheap: <red>ราคาควรสูงกว่า <yellow>${0}
 shop-not-exist: <red>ไม่มีร้าน
 bad-command-usage: <red>Bad command arguments!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
 cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
 cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
@@ -266,7 +280,10 @@ taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
   outdated: <yellow>This version of QuickShop is already outdated. Update before requesting support!
-  bad-hosts: '<yellow>The server''s HOSTS has been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.<newline>Windows: C:\windows\system32\drivers\etc\hosts<newline>Linux: /etc/hosts'
+  bad-hosts: |-
+    <yellow>The server's HOSTS have been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.
+    Windows: C:\\windows\\system32\\drivers\\etc\\hosts
+    Linux: /etc/hosts
   privacy: <yellow>This server is running in Cracked (Offline) mode. If you're running the server under a proxy and online-mode is set to true in the proxy, configure the proxy-related settings correctly.
   modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
   consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
@@ -277,13 +294,7 @@ unknown-owner: Unknown
 restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
 nearby-shop-this-way: <green>Shop is {0} blocks away from you.
 owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
-april-rick-and-roll-easter-egg: |
-  <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
-  <green>---------------------------------------------------</green>
+april-rick-and-roll-easter-egg: '<green>---------------------------------------------------</green><br><bold><#ff0000>L</#ff0000><#ff2800>I</#ff2800><#ff5000>M</#ff5000><#ff7800>I</#ff7800><#ffa100>T</#ffa100><#ffc900>E</#ffc900><#fff100>D</#fff100><#e4ff00> </#e4ff00><#bbff00>T</#bbff00><#93ff00>I</#93ff00><#6bff00>M</#6bff00><#43ff00>E</#43ff00><#1aff00> </#1aff00><#00ff0d>E</#00ff0d><#00ff35>V</#00ff35><#00ff5d>E</#00ff5d><#00ff86>N</#00ff86><#00ffae>T</#00ffae><#00ffd6> </#00ffd6><#00ffff>-</#00ffff><#00d6ff>-</#00d6ff><#00aeff> </#00aeff><#0086ff>Q</#0086ff><#005dff>u</#005dff><#0035ff>i</#0035ff><#000dff>c</#000dff><#1a00ff>k</#1a00ff><#4300ff>S</#4300ff><#6b00ff>h</#6b00ff><#9300ff>o</#9300ff><#bb00ff>p</#bb00ff><#e400ff>-</#e400ff><#ff00f1>H</#ff00f1><#ff00c9>i</#ff00c9><#ff00a1>k</#ff00a1><#ff0078>a</#ff0078><#ff0050>r</#ff0050><#ff0028>i</#ff0028></bold><br><yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow><br><aqua>Claim it by watch the video tutorial below!</aqua><br><hover:show_text:"<gold>Click to open rewards claim page in your browser.</gold>\\<click:open_url:''https://youtu.be/dQw4w9WgXcQ">https://youtu.be/dQw4w9WgXcQ\</click></hover><br><green>---------------------------------------------------</green><br>'
 signs:
   item-right: ''
   out-of-space: Out of Space
@@ -297,8 +308,8 @@ signs:
   price: '{0} each'
   buying: Buying {0}
   header: '{1}{0}'
-  header-available: '<green>{0}'
-  header-unavailable: '<red>{0}'
+  header-available: <green>{0}
+  header-unavailable: <red>{0}
   selling: Selling {0}
   status-available: <green>
   item-left: ''
@@ -327,37 +338,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   price-hover: <yellow>คลิกเพื่อตั้งราคาใหม่สำหรับของ
-  remove: <red><bold>[ลบร้านค้า]
+  remove: <bold><red>[Remove Shop]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<light_purple><bold>Change<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
   setowner-hover: <yellow>คลิกเพื่อเปลี่ยนเจ้าของ
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   unlimited-hover: <yellow>Click to toggle if the shop is unlimited.
   refill-hover: <yellow>คลิกเพื่อเติมของ
   remove-hover: <yellow>คลิกเพื่อลบร้านนี้
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   freeze-hover: <yellow>Toggle the shop's freeze status.
   lock-hover: <yellow>Enable/Disable the shop's lock protection.
   item-hover: <yellow>Click to change shop Item
   infomation: '<green>แผงควบคุมร้าน'
   mode-selling-hover: <yellow>Click to change the shop to BUY mode.
   empty-hover: <yellow>Click to clear the inventory of the shop.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
 timeunit:
   behind: หลัง
   week: <red>{0} สัปดาห์
@@ -369,7 +380,7 @@ timeunit:
   scheduled-in: scheduled in {0}
   second: <red>{0} วินาที
   std-past-format: '{5}{4}{3}{2}{1}{0} ที่ผ่านมา'
-  std-time-format: "HH:mm:ss"
+  std-time-format: HH:mm:ss
   seconds: <red>{0} วินาที
   hour: <red>{0} ชั่วโมง
   scheduled-at: scheduled at {0}
@@ -436,11 +447,11 @@ command:
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
-  bulk-size-not-set: '<red>การใช้งาน: /qs size <amount>'
-  no-type-given: '<red>การใช้งาน: /qs find <item>'
+  bulk-size-not-set: '<red>Usage: /qs size \<amount>'
+  no-type-given: '<red>Usage: /qs find \<item>'
   feature-not-enabled: This feature is not enabled in the config file.
   now-debuging: <green>เปิดใช้งานโหมด Developer และโหลด QuickShop ใหม่
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount><red>
+  no-amount-given: <red>No amount provided. Use <green>/qs refill \<amount>
   no-owner-given: <red>ไม่มีเจ้าของใส่มา
   disabled: '<red>This command is disabled: <yellow>{0}'
   bulk-size-now: <green>Now trading <yellow>{0}x {1}
@@ -470,7 +481,9 @@ currency-not-support: <red>The economy plugin doesn't support the multi-economy 
 trading-in-creative-mode-is-disabled: <red>คุณไม่สามารถแลกเปลี่ยนกับร้านค้านี้ได้ในขณะที่อยู่ในโหมดสร้างสรรค์
 the-owner-cant-afford-to-buy-from-you: <red>This costs {0}, but the shop-owner only has {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
-inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
+inventory-error: |-
+  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
+  Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
 integrations-check-failed-create: <red>การดำเนินการ {0} ยกเลิกการสร้างร้านค้า
 shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is now full.
 admin-shop: AdminShop
@@ -486,231 +499,245 @@ not-managed-shop: <red>You are not the owner or moderator of this Shop
 shop-cannot-trade-when-freezing: <red>You cannot trade with this shop because it is frozen.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
-  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  header: <green>Shop Permission Details
+  header-player: <green>Shop Permission Details for {0}
+  header-group: <green>Shop Permission Details for group {0}
+  table: <gold><bold>{0}</bold>:</gold> <gray>{1}
   item:
-    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
-    search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
-    delete: "<yellow>Permission to allow users who have this to delete the shop."
-    receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
-    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
-    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
-    management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
-    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
-    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+    purchase: <yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)
+    show-information: <yellow>Permission to allow users who have this to see the shop information. (open shop info panel)
+    preview-shop: <yellow>Permission to allow users who have this to preview the shop. (preview item)
+    search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
+    delete: <yellow>Permission to allow users who have this to delete the shop.
+    receive-alert: <yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade).
+    access-inventory: <yellow>Permission to allow users who have this to access the shop inventory.
+    ownership-transfer: <yellow>Permission to allow users who have this to transfer the shop ownership.
+    management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
+    toggle-display: <yellow>Permission to allow users who have this to toggle the shop display item.
+    set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
+    set-price: <yellow>Permission to allow users who have this to set the shop price.
+    set-item: <yellow>Permission to allow users who have this to set the shop item.
+    set-stack-amount: <yellow>Permission to allow users who have this to set the shop stack amount.
+    set-currency: <yellow>Permission to allow users who have this to set the shop currency.
+    set-name: <yellow>Permission to allow users who have this to set the shop name.
   group:
-    everyone: "<yellow>Default group for all users excepted shop owner."
-    staff: "<yellow>System group for shop staffs."
-    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
-invalid-group: "<red>Invalid group name."
-invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only {0} are allowed."
-player-no-group: "<yellow>Player {0} not in any group in this shop."
-player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
-permission-required: "<red>You don't have permission {0} in this shop to do this."
-no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
-paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
-paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
-paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
-successfully-unset-player-group: "<green>Successfully remove player group in this shop."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
-lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
-lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
-lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
-lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
-lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
-lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand not registered in lookup table."
-lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table."
-lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
-internal-error: "<red>An internal error occurred, please contact the server administrator."
-argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
-argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
-invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
-display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
-not-a-valid-time: |
+    everyone: <yellow>Default group for all users excepted shop owner.
+    staff: <yellow>System group for shop staffs.
+    administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
+invalid-group: <red>Invalid group name.
+invalid-permission: <red>Invalid permission.
+invalid-operation: <red>Invalid operation, only {0} are allowed.
+player-no-group: <yellow>Player {0} not in any group in this shop.
+player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
+permission-required: <red>You don't have permission {0} in this shop to do this.
+no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
+paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
+paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
+paste-created-local: |-
+  <green>Paste created and saved to your local disk at {0}
+  <red>Warning: <gray>Never send pastes to people you don't trust.
+paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
+paste-451: |-
+  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
+  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file
+paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
+paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
+command-incorrect: '<red>Command usage incorrect, type /qs help to check help. Usage: {0}.'
+successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
+successfully-unset-player-group: <green>Successfully remove player group in this shop.
+successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
+lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
+lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
+lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
+lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
+lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
+lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
+lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
+lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
+internal-error: <red>An internal error occurred, please contact the server administrator.
+argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
+invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+display-fallback: |-
+  <red>Due to an internal failure, a fallback message is being displayed.
+  The value of this item may not be localized or processed correctly.
+  Please contact the server administrator.
+not-a-valid-time: |-
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
-  <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
-  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: "<red>You can't specify a time in the past."
+  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
+  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
+invalid-past-time: <red>You can't specify a time in the past.
 debug:
-  arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> invalid."
-  sign-located: "<green>Sign valid: <yellow>{0}</yellow>."
-  operation-missing: "<red>You must specific an operation."
-  operation-invalid: "<red>You must specific an valid operation."
-  invalid-base64-encoded-sql: "<red>The SQL provided must be base64 encoded."
-  warning-sql: "<red><bold>Warning:</bold></red><yellow>You're executing a SQL statement, this may corrupt your database or destroy any data in database even it belongs to other plugins.\n<red>Don't confirm if you don't trust who send you this command."
-  warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
-  warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
-  sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
-  sql-completed: "<green>Completed, {0} rows affected."
-  sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
-  sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
-  force-shop-reload: "<yellow>Forcing reload all loaded shops..."
-  force-shop-reload-complete: "<green>Forced <aqua>{0}</aqua> shops to be reloaded."
-  force-shop-loader-reload: "<yellow>Forcing shop-loader reloading..."
-  force-shop-loader-reload-unloading-shops: "<yellow>Unloading <aqua>{0}</aqua> loaded shops..."
-  force-shop-loader-reload-unloading-shops-from-memory: "<yellow>Removing <aqua>{0}</aqua> shops from memory..."
-  force-shop-loader-reload-reloading-shop-loader: "<yellow>Re-calling shop-loader for reloading all shops from database..."
-  force-shop-loader-reload-complete: "<green>Shop-loader has been reloaded all shops!"
-  toggle-shop-loaded-status: "<aqua>Toggle this shop loaded status to <gold>{0}</gold>"
-  shop-internal-data: "<yellow>The internal data of this shop: <reset>{0}</reset>"
-  handler-list-not-valid-bukkit-event-class: "<red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class."
-  update-player-shops-signs-no-username-given: "<red>You must provide a valid player username."
-  update-player-shops-signs-create-async-task: "<yellow>Creating async tasks for force updating signs..."
-  update-player-shops-player-selected: "<yellow>Player selected: <gold>{0}</gold>"
-  update-player-shops-player-shops: "<yellow>Total <gold>{0}</gold> shops waiting for updates."
-  update-player-shops-per-tick-threshold: "<yellow>Max shops can be update per tick: <gold>{0}</gold>"
-  update-player-shops-complete: "<green>Task completed, Used <yellow>{0}ms</yellow> for updating."
-  update-player-shops-task-started: "<gold>The tasks has been started, please wait for it to complete."
+  arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
+  sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
+  operation-missing: <red>You must specific an operation.
+  operation-invalid: <red>You must specific an valid operation.
+  invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
+  warning-sql: |-
+    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
+    <red>Don't confirm this if you don't trust who send you this.
+  warning-sql-confirm: <yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds.
+  warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
+  sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
+  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
+  sql-completed: <green>Completed, {0} rows affected.
+  sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
+  sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
+  force-shop-reload: <yellow>Forcing reload all loaded shops...
+  force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
+  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
+  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
+  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
+  force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
+  force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
+  toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}
+  shop-internal-data: '<yellow>The internal data of this shop: </yellow>{0}'
+  handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
+  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
+  update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
+  update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}'
+  update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
+  update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}'
+  update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
+  update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
 database:
-  scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
-  scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
-  already-scanning: "<red>An scan task has been started, please wait until it finished."
-  trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
-  status: "<yellow>Status: {0}"
-  status-good: "<green>Good"
-  status-bad: "<yellow>Maintenance Required"
-  isolated: "<yellow>Isolated Data:"
-  isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
-  isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
-  isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
-  isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
-  auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
-  auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
-  trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
-  auto-trim-started: "<green>Auto trim has been started, please wait..."
-  trim-start: "<green>Database trim started, please wait..."
-  trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
-  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
-  purge-date: "<red>You must given a date."
-  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
-  purge-task-created: "<green>Task created! Database are silent purging history records in background."
-  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
-  purge-done-with-error: "<red>Purge task failed, check the server console for details."
-  purge-players-cache: "<yellow>Please wait, purging players caches..."
-  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
-  purge-players-error: "<red>Failed to purge players caches, please check the server console."
+  scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
+  scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
+  already-scanning: <red>An scan task has been started, please wait until it finished.
+  trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
+  status: '<yellow>Status: {0}'
+  status-good: <green>Good
+  status-bad: <yellow>Maintenance Required
+  isolated: '<yellow>Isolated Data:'
+  isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
+  isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
+  isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}'
+  isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
+  last-purge-time: <yellow>Last time of trim at {0}
+  report-time: <yellow>Last time of scan at {0}
+  auto-scan-alert: <yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming.
+  auto-trim: <green>Auto trim has been enabled on this server, no manually trim required.
+  trim-complete: <green>Database trim completed, <yellow>{0}</yellow> isolated trimmed.
+  auto-trim-started: <green>Auto trim has been started, please wait...
+  trim-start: <green>Database trim started, please wait...
+  trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
+  generated-at: '<yellow>Generated at: <gold>{0}'
+  purge-date: <red>You must given a date.
+  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs \<before-days> confirm`
+  purge-task-created: <green>Task created! Database are silent purging history records in background.
+  purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
+  purge-done-with-error: <red>Purge task failed, check the server console for details.
+  purge-players-cache: <yellow>Please wait, purging players caches...
+  purge-players-completed: |-
+    <green>Successfully purged {0} players caches from both memory and database.
+    <aqua>Note: You server performance may impact by this operation.
+  purge-players-error: <red>Failed to purge players caches, please check the server console.
   suggestion:
-    trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
-always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
-importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
-importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
-transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
-transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
-transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
-transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
-transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer request."
-transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
-transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
-transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
-transfer-no-self: "<red>You can't transfer your shops to yourself."
-benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
-benefit-exists: "<red>Target player already in benefits list on this shop."
-benefit-removed: "<red>Target player has been removed from shop benefits."
-benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
-benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
-benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
-benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
-tag-added: "<green>Successfully added <aqua>#{0}</aqua> to this shop!"
-tag-add-duplicate: "<red>The tag <aqua>#{0}</aqua> already exists at this shop!"
-tag-removed: "<green>Successfully removed <aqua>#{0}</aqua> from this shop!"
-tag-remove-not-exists: "The tag <aqua>#{0}</aqua> not exists at this shop!"
-tag-cleared: "<green>Successfully cleared all tags from this shop!"
-tag-shops-cleared: "<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!"
-tag-query: "<green>This shop have <yellow>{0}</yellow> tags:"
-tag-query-listing: "<yellow> - <aqua>#{0}</aqua>"
-tag-query-no-tag: "<red>This shop have no tags."
-tag-query-shops: "<green>This tag contains <yellow>{0}</yellow> shops:"
-tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
-batch-operations-based-on-tags-no-failure: "<green>Successfully batch processed <yellow>{0}</yellow> shops."
-batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
-batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
-batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>The error messages will send to you above this message in the chat."
+    trim: <yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database.
+always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
+exporting-database: <green>Exporting database, please wait...
+exporting-failed: <red>Failed to export database, please check the server console.
+exported-database: <green>Database exported to <yellow>{0}</yellow>.
+importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
+importing-early-warning: |-
+  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
+  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue.
+importing-database: <green>Importing database from backup, please wait...
+importing-failed: <red>Failed to import database, please check the server console.
+imported-database: <green>Database imported from <yellow>{0}</yellow>.
+transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
+transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
+transfer-ask: |-
+  <gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
+transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
+transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
+transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
+transfer-no-pending-operation: <red>You don't have pending transfer request yet.
+transfer-no-self: <red>You can't transfer your shops to yourself.
+benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
+benefit-exists: <red>Target player already in benefits list on this shop.
+benefit-removed: <red>Target player has been removed from shop benefits.
+benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
+benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
+benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
+benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%
+tag-added: '<green>Successfully added <aqua>#{0}</aqua> to this shop!'
+tag-add-duplicate: '<red>The tag <aqua>#{0}</aqua> already exists at this shop!'
+tag-removed: '<green>Successfully removed <aqua>#{0}</aqua> from this shop!'
+tag-remove-not-exists: 'The tag <aqua>#{0}</aqua> not exists at this shop!'
+tag-cleared: <green>Successfully cleared all tags from this shop!
+tag-shops-cleared: '<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!'
+tag-query: '<green>This shop have <yellow>{0}</yellow> tags:'
+tag-query-listing: '<yellow> - <aqua>#{0}'
+tag-query-no-tag: <red>This shop have no tags.
+tag-query-shops: '<green>This tag contains <yellow>{0}</yellow> shops:'
+tag-query-shops-listing: <yellow> - <aqua>{0}
+batch-operations-based-on-tags-no-failure: <green>Successfully batch processed <yellow>{0}</yellow> shops.
+batch-operations-based-on-tags-have-failure: <yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed.
+batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}'
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>The error messages will send to you above this message in the chat.
 addon:
   towny:
     commands:
-      town: "<yellow>Set or unset a shop to a Town shop"
-      nation: "<yellow>Set or unset a shop to a Nation shop"
-    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
-    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
-    shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
-    target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
-    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
-    target-shop-not-in-town-region: "<red>The target shop is not in the town."
-    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
-    item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
-    operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
-    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+      town: <yellow>Set or unset a shop to a Town shop
+      nation: <yellow>Set or unset a shop to a Nation shop
+    make-shop-owned-by-town: <green>You have made the shop owned by town <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
+    make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
+    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission
+    target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
+    target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
+    target-shop-not-in-town-region: <red>The target shop is not in the town.
+    target-shop-not-in-nation-region: <red>The target shop is not in the nation.
+    item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
+    operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
+    plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
-      modify: "<red>You didn't have build permission on this towny plot."
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      own: <red>You can only create shops at your owned shop type towny plot.
+      modify: <red>You didn't have build permission on this towny plot.
+      shop-type: <red>You must create shop on a shop type towny plot.
   residence:
-    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
-    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    creation-flag-denied: <red>You don't have permission to create shops in this residence.
+    trade-flag-denied: <red>You don't have permission to purchase in this residence.
+    you-cannot-create-shop-in-wildness: <red>You can't create shop in wildness.
   griefprevention:
-    creation-denied: "<red>You don't have permission to create shops in this claim."
-    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+    creation-denied: <red>You don't have permission to create shops in this claim.
+    trade-denied: <red>You don't have permission to purchase shops in this claim.
   lands:
-    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    world-not-enabled: <red>You are not allowed to create or purchase in this world.
+    creation-denied: <red>You don't have permission to create shops in this Land area.
   plotsquared:
-    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
-    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
-    creation-denied: "<red>You don't have permission to create shops in this Plot."
-    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+    no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
+    no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
+    creation-denied: <red>You don't have permission to create shops in this Plot.
+    trade-denied: <red>You don't have permission to purchase shops in this Plot.
     flag:
-      create: "Create QuickShop-Hikari shops"
-      trade: "Purchase QuickShop-Hikari shops"
+      create: Create QuickShop-Hikari shops
+      trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
-    owner-create-only: "<red>Only island owner can create shop there."
-    owner-member-create-only: "<red>Only island owner or member can create shop there."
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: <red>You don't have permission create shop in this WorldGuard area.
+    trade-flag-test-failed: <red>You don't have permission trade shop in this WorldGuard area.
   discord:
-    __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
-    __to_message_designer: "Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!"
-    discord-enabled: "<aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord."
-    discord-disabled: "<aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore."
-    discord-not-integrated: "<red>You hadn't link your Discord yet! Please link your Discord account first!"
-    feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
-    feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
-    link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
-    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
-    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
+    __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
+    __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
+    __to_message_designer: 'Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!'
+    discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
+    discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
+    discord-not-integrated: <red>You hadn't link your Discord yet! Please link your Discord account first!
+    feature-enabled-for-user: <aqua>You have <green>enabled</green> <gold>{0}</gold> notification.
+    feature-disabled-for-user: <aqua>You have <red>disabled</red> <gold>{0}</gold> notification.
+    link-help: <yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account.
+    save-notifaction-exception: <red>An error occurred while saving your Discord notifaction settings, please contact the server administrator.
+    feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}
     commands:
       discord:
-        description: "<yellow>Managing your QuickShop Discord settings"
+        description: <yellow>Managing your QuickShop Discord settings
     discord-messages:
       sold-to-your-shop: |
         {
@@ -882,7 +909,7 @@ addon:
         "embed":
           {
               "title": ":mailbox_with_mail: Your shop has run out of space",
-              "description": "Your shop inventory is full of items!\nYou need empty your shop container to free the space then you can continue to accept new items.",
+              "description": "Your shop inventory is full of items!\\nYou need empty your shop container to free the space then you can continue to accept new items.",
               "color": 16065893,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -912,7 +939,7 @@ addon:
             "embed":
                 {
                     "title": ":mailbox_with_no_mail: Your shop has run out of stock",
-                    "description": "Your shop inventory is empty now!\nYou need to refill the shop container with items to continue selling items!",
+                    "description": "Your shop inventory is empty now!\\nYou need to refill the shop container with items to continue selling items!",
                     "color": 16065893,
                     "author": {
                         "name": "QuickShop-Hikari",
@@ -1224,33 +1251,33 @@ addon:
                     },
                     {
                         "name": "Permission granted (Inherit from group)",
-                        "value": "```\n%%change-permission.perms-list%%\n```",
+                        "value": "```\\n%%change-permission.perms-list%%\\n```",
                         "inline": false
                     }
                 ]
             }
         }
     field:
-      player: "Player"
-      item: "Item"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      player: Player
+      item: Item
+      amount: Amount
+      balance: Balance
+      balance-after-tax: Balance (after tax)
+      account: Your account balance
+      taxes: Taxes
+      cost: Cost
   discount:
     commands:
       discount:
-        description: "<yellow>Apply a discount code or manage your discount codes."
+        description: <yellow>Apply a discount code or manage your discount codes.
     tab-complete:
       discount:
         general:
-          code: "<code>"
+          code: \<code>
         create:
           rate: |
             Command Hint:
-            Argument: <rate>
+            Argument: \<rate>
             Description: The actual percentage or money you will earn
             Input `30%` = price * 0.3
             Input `50` = price - 50
@@ -1272,85 +1299,85 @@ addon:
             Accept both Zulu time and UNIX timestamp in seconds.
             Zulu Example: 2022-12-17T10:31:37Z
             UNIX Example: 1671273097
-    discount-code-already-exists: "<red>Sorry, the name of your discount code already in use."
-    invalid-discount-code-regex: "<red>The discount code must matches the regex: <yellow>{0}</yellow>"
-    invalid-discount-code: "<red>This discount code are invalid."
-    discount-code-added: "<green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>"
-    discount-code-removed: "<green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>"
-    invalid-code-type: "<red>The code type <yellow>{0}</yellow> are invalid."
-    invalid-usage-restriction: "<red>The usage restriction <yellow>{0}</yellow> are invalid."
-    invalid-threshold-restriction: "<red>The threshold restriction <yellow>{0}</yellow> are invalid."
-    invalid-effect-scope: "<red>The scope <yellow>{0}</yellow> are invalid."
-    invalid-expire-time: "<red>You can't specify a time in the past."
-    invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
-    discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
-    discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
-    discount-code-uninstalled: "<green>You have uninstalled your discount code."
-    discount-code-query-nothing: "<red>You hadn't install a discount code yet!"
-    discount-code-query: "<green>You are using discount code: <yellow>{0}</yellow>."
-    discount-code-applicable: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop!"
-    discount-code-applicable-with-threshold: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction."
-    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!"
-    discount-code-reach-the-limit: "<red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied."
-    discount-code-no-permission: "<red>You didn't have permission to use any discount code in this shop!"
-    discount-code-has-been-expired: "<red>Your discount has been expired!"
-    discount-code-config-shop-added: "<green>Successfully to add this shop into your discount code allow list."
-    discount-code-config-shop-add-failure: "<red>This shop already in your discount code allow list."
-    discount-code-config-shop-removed: "<green>Successfully to remove this shop from your discount code allow list."
-    discount-code-config-shop-remove-failure: "<red>This shop not exists in your discount code allow list."
-    discount-code-config-expire: "<green>Successfully changed your code expire time."
-    discount-code-config-applied: "<green>Config the discount code successfully!"
+    discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
+    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
+    invalid-discount-code: <red>This discount code are invalid.
+    discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}
+    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}
+    invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
+    invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
+    invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
+    invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
+    invalid-expire-time: <red>You can't specify a time in the past.
+    invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
+    discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
+    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>.
+    discount-code-uninstalled: <green>You have uninstalled your discount code.
+    discount-code-query-nothing: <red>You hadn't install a discount code yet!
+    discount-code-query: '<green>You are using discount code: <yellow>{0}</yellow>.'
+    discount-code-applicable: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop!'
+    discount-code-applicable-with-threshold: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
+    discount-code-not-applicable: <red>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>not applicable</bold> in this shop!
+    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <bold><yellow>{0}</yellow></bold>, discount are not applied.
+    discount-code-no-permission: <red>You didn't have permission to use any discount code in this shop!
+    discount-code-has-been-expired: <red>Your discount has been expired!
+    discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
+    discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
+    discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
+    discount-code-config-shop-remove-failure: <red>This shop not exists in your discount code allow list.
+    discount-code-config-expire: <green>Successfully changed your code expire time.
+    discount-code-config-applied: <green>Config the discount code successfully!
     discount-code-created-successfully: |
       <green>Your discount code <yellow>{0}</yellow> has been successfully created!
       <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <color:#bcef26>{2}</color:#bcef26></gold>.
+      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
       <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      <yellow>You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
-    discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
-    percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
-    fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Listing your discount codes:</gold>"
-    discount-code-applied-in-purchase: "<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!"
+      You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
+    discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
+    percentage-off: '<bold><#bcef26>-{0}%'
+    fixed-off: '<bold><#bcef26>-{0}'
+    discount-code-list: '<gold>Listing your discount codes:'
+    discount-code-applied-in-purchase: '<#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
     scope:
-      this-shop: "{0}"
-      your-shops-owned: "all your shops (owned)"
-      your-shops-managed: "all your shops (managed)"
-      server: "whole server"
+      this-shop: '{0}'
+      your-shops-owned: all your shops (owned)
+      your-shops-managed: all your shops (managed)
+      server: whole server
     code-type:
-      SERVER_ALL_SHOPS: "All shops on this server"
-      PLAYER_ALL_SHOPS: "All shops that created by code owner"
-      SPECIFIC_SHOPS: "Specific shops"
-    discount-code-details: |
+      SERVER_ALL_SHOPS: All shops on this server
+      PLAYER_ALL_SHOPS: All shops that created by code owner
+      SPECIFIC_SHOPS: Specific shops
+    discount-code-details: |-
       <gold>Code: <yellow>{0}</yellow>
-      <gold>Creator: <yellow>{1}</yellow>
-      <gold>Applied to: <yellow>{2}</yellow>
-      <gold>Remaining usage: <yellow>{3}</yellow>
-      <gold>Expired on: <yellow>{4}</yellow>
-      <gold>Threshold: <yellow>{5}</yellow>
-      <gold>Discount: <yellow>{6}</yellow>
+      Creator: <yellow>{1}</yellow>
+      Applied to: <yellow>{2}</yellow>
+      Remaining usage: <yellow>{3}</yellow>
+      Expired on: <yellow>{4}</yellow>
+      Threshold: <yellow>{5}</yellow>
+      Discount: <yellow>{6}</yellow><br>
   list:
     commands:
-      list: "<yellow>Listing all shops owned by your or specific player"
-    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+      list: <yellow>Listing all shops owned by your or specific player
+    table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
+    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
   limited:
     commands:
-      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+      limit: <yellow>Set a limit that restrict the purchase that player can make in period
     titles:
-      title: "<green>Purchase Success"
-      subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
-    reach-the-limit: "<red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items."
-    success-reset: "<green>Reset the restriction of this shop successfully"
-    success-remove: "<green>Successfully remove the all restriction of this shop"
-    success-setup: "<green>Restriction settings for this shop were saved successfully"
-    trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
-    remains-limits: "<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>"
-    remains-limits-before-reset-period-note: "<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>"
+      title: <green>Purchase Success
+      subtitle: <aqua>You can also purchase <gold>{0}</gold> more in this shop
+    reach-the-limit: <red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items.
+    success-reset: <green>Reset the restriction of this shop successfully
+    success-remove: <green>Successfully remove the all restriction of this shop
+    success-setup: <green>Restriction settings for this shop were saved successfully
+    trade-limit-reached-cancel-reason: <red>Reached the restriction of this shop
+    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
+    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}'
   dynmap:
-    markerset-title: "QuickShop-Hikari Shops"
-    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    markerset-title: QuickShop-Hikari Shops
+    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
       Name: {0}
       Owner: {1}
@@ -1360,8 +1387,8 @@ addon:
       Unlimited: {6}
       Location: {7}
   bluemap:
-    markerset-title: "QuickShop-Hikari Shops"
-    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    markerset-title: QuickShop-Hikari Shops
+    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
       Name: {0}
       Owner: {1}
@@ -1371,40 +1398,53 @@ addon:
       Unlimited: {6}
       Location: {7}
   chestprotect:
-    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
-    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
+    protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
+    shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
   displaycontrol:
-    toggle: "<green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.\n<yellow>You may need re-join to take effect."
-    toggle-exception: "<red>Failed to toggle your display showcase settings due an internal error, please contact server administrator."
+    toggle: |-
+      <green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.
+      <yellow>You may need re-join to take effect.
+    toggle-exception: <red>Failed to toggle your display showcase settings due an internal error, please contact server administrator.
     command:
-      displaycontrol: "<yellow>Toggle your QuickShop display showcasing"
+      displaycontrol: <yellow>Toggle your QuickShop display showcasing
 compat:
   advancedchests:
-    created: "<green>You're successfully created a shop on AdvancedChests container!"
-    permission-denied: "<red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!"
+    created: <green>You're successfully created a shop on AdvancedChests container!
+    permission-denied: <red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!
 suite:
   dynmap:
-    title: "{0} - {1} - {2}"
-    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+    title: '{0} - {1} - {2}'
+    description: |-
+      Item: {0}
+      Owner: {1}
+      Type: {2} {3}
+      Price: {4}
+      Location: {5} {6}, {7}, {8}
+      Space: {9}
+      Stock: {10}
   limited:
-    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
-    reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
-    quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
-    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
-    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
-    quota-setup: "<green>The purchase restriction now apply to this shop!"
-    quota-remove: "<green>The purchase restriction now removed from this shop!"
+    command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
+    reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
+    quota-reset-countdown: <yellow>The quota in this shop will reset in {0}.
+    quota-reset-player-successfully: <green>The quota for player {0} in this shop has been reset successfully.
+    quota-reset-everybody-successfully: <green>The quota for everyone in this shop has been reset successfully.
+    quota-setup: <green>The purchase restriction now apply to this shop!
+    quota-remove: <green>The purchase restriction now removed from this shop!
     subtitles:
-      title: "<green>Purchase Success"
-      subtitle: "<aqua>You can purchase <yellow>{0}</yellow> more in this shop"
+      title: <green>Purchase Success
+      subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
   list:
-    command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
-    entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+    command-description: <yellow>List all shops owned by yourself or another player.
+    table-prefix: <yellow>You owned total <aqua>{0}</aqua> shops on this server.
+    entry-syntax: <aqua>- <yellow>{0}
+    entry-syntax-fallback-name: '<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
+    hover-text: |-
+      <yellow>{0}
+      <gray>{1} {2}, {3}, {4}
+      <aqua>{5} - <yellow>{6}
+      {7} items each stack.
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
 compatibility:
   elitemobs:
-    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
+    soulbound-disallowed: You can't trade item which have EliteMobs Soulbound enchantment.
