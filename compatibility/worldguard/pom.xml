@@ -49,7 +49,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.8</version>
+            <version>7.0.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
