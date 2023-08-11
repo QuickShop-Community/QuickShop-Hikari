@@ -46,6 +46,18 @@ public class Economy_TNE extends AbstractEconomy {
         this.api = TNE.instance().api();
     }
 
+    @Override
+    public boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return false;
+        }
+        BigDecimal decimal = BigDecimal.valueOf(amount);
+        if (!this.api.canAddHoldings(name, decimal, getCurrency(world, currency), world.getName())) {
+            return false;
+        }
+        return this.api.addHoldings(name, decimal, getCurrency(world, currency), world.getName());
+    }
+
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
@@ -110,6 +122,18 @@ public class Economy_TNE extends AbstractEconomy {
         }
         BigDecimal decimal = BigDecimal.valueOf(balance);
         return this.api.format(decimal, getCurrency(world, currency), world.getName());
+    }
+
+    @Override
+    public double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return 0.0;
+        }
+        if (getCurrency(world, currency) != null) {
+            return this.api.getHoldings(name, getCurrency(world, currency)).doubleValue();
+        } else {
+            return this.api.getHoldings(name, world.getName()).doubleValue();
+        }
     }
 
 
@@ -183,6 +207,18 @@ public class Economy_TNE extends AbstractEconomy {
     @Override
     public boolean supportCurrency() {
         return true;
+    }
+
+    @Override
+    public boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return false;
+        }
+        BigDecimal decimal = BigDecimal.valueOf(amount);
+        if (!this.api.canRemoveHoldings(name, decimal, getCurrency(world, currency), world.getName())) {
+            return false;
+        }
+        return this.api.removeHoldings(name, decimal, getCurrency(world, currency), world.getName());
     }
 
     /**

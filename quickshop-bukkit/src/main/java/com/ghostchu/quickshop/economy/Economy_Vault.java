@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 
+@SuppressWarnings("deprecation")
 @ToString
 public class Economy_Vault extends AbstractEconomy implements Listener {
 
@@ -95,6 +96,28 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     }
 
     @Override
+    public boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return false;
+        }
+        try {
+            EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(name, amount);
+            if (response.transactionSuccess()) {
+                return true;
+            }
+            this.lastError = getProviderName() + ": " + response.type.name() + " - " + response.errorMessage;
+            Log.transaction(Level.WARNING, "Deposit player " + name + " failed, Vault response: " + response.errorMessage);
+            return false;
+        } catch (Exception t) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
+            return false;
+        }
+    }
+
+    @Override
     public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
@@ -143,6 +166,22 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             return formatedBalance;
         } catch (Exception e) {
             return formatInternal(balance);
+        }
+    }
+
+    @Override
+    public double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return 0.0;
+        }
+        try {
+            return Objects.requireNonNull(this.vault).getBalance(name);
+        } catch (Exception t) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
+            return 0.0;
         }
     }
 
@@ -212,6 +251,31 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     @Override
     public boolean supportCurrency() {
         return false;
+    }
+
+    @Override
+    public boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return false;
+        }
+        try {
+            if ((!allowLoan) && (getBalance(name, world, currency) < amount)) {
+                return false;
+            }
+            EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(name, amount);
+            if (response.transactionSuccess()) {
+                return true;
+            }
+            this.lastError = getProviderName() + ": " + response.type.name() + " - " + response.errorMessage;
+            Log.transaction(Level.WARNING, "Withdraw player " + name + " failed, Vault response: " + response.errorMessage);
+            return false;
+        } catch (Exception t) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
+            return false;
+        }
     }
 
     @Override

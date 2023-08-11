@@ -6,13 +6,11 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
 /**
  * Operation for withdraw money from economy.
  */
 public class WithdrawEconomyOperation implements Operation {
-    private final UUID account;
+    private final Object account;
     private final double amount;
     private final EconomyCore economyCore;
     private final World world;
@@ -20,7 +18,7 @@ public class WithdrawEconomyOperation implements Operation {
     private boolean committed = false;
     private boolean rollback = false;
 
-    public WithdrawEconomyOperation(@NotNull UUID account, double amount, @NotNull World world, @Nullable String currency, @NotNull EconomyCore economyCore) {
+    public WithdrawEconomyOperation(@NotNull Object account, double amount, @NotNull World world, @Nullable String currency, @NotNull EconomyCore economyCore) {
         this.account = account;
         this.amount = amount;
         this.world = world;
