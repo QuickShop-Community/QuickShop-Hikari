@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1014
+config-version: 1015
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -579,7 +579,6 @@ purge:
   banned: true
   # At this moment, QuickShop only compatible with Vanilla OP system, LuckPerms may need add in future.
   skip-op: true
-  return-create-fee: true
 
 debug:
   #Should we disable the debug logger?
