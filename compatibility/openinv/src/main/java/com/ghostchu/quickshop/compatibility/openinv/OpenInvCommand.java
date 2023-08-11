@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.compatibility.openinv;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
             shop.setInventory(new BukkitInventoryWrapper((((InventoryHolder) shop.getLocation().getBlock().getState()).getInventory())), plugin.getApi().getInventoryWrapperRegistry().get("QuickShop-Hikari"));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.to-chest")));
         } else {
-            shop.setInventory(new EnderChestWrapper(shop.getOwner(), plugin.getOpenInv(), plugin), plugin.getManager());
+            shop.setInventory(new EnderChestWrapper(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()), plugin.getOpenInv(), plugin), plugin.getManager());
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.to-echest")));
         }
     }

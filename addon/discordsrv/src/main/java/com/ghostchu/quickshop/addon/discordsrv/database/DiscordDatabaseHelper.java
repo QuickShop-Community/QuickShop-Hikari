@@ -5,6 +5,7 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationSettings;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -34,9 +35,11 @@ public class DiscordDatabaseHelper {
 
     }
 
-    public @NotNull Integer setNotifactionFeatureEnabled(@NotNull UUID uuid, @NotNull NotificationFeature feature, @Nullable Boolean status) throws SQLException {
+    public @NotNull Integer setNotifactionFeatureEnabled(@NotNull QUser qUser, @NotNull NotificationFeature feature, @Nullable Boolean status) throws SQLException {
         Util.ensureThread(true);
-        NotificationSettings settings = getPlayerNotifactionSetting(uuid);
+        UUID playerUuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+        if (playerUuid == null) return 0;
+        NotificationSettings settings = getPlayerNotifactionSetting(playerUuid);
         if (status == null) {
             settings.getSettings().remove(feature);
         } else {
@@ -44,19 +47,19 @@ public class DiscordDatabaseHelper {
         }
         try (SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery()
                 .setLimit(1)
-                .addCondition("player", uuid.toString())
+                .addCondition("player", playerUuid)
                 .build().execute();
              ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 return DiscordTables.DISCORD_PLAYERS.createUpdate()
                         .setLimit(1)
-                        .addCondition("player", uuid.toString())
+                        .addCondition("player", playerUuid)
                         .setColumnValues("notifaction", JsonUtil.getGson().toJson(settings))
                         .build().execute();
             } else {
                 return DiscordTables.DISCORD_PLAYERS.createInsert()
                         .setColumnNames("player", "notifaction")
-                        .setParams(uuid.toString(), JsonUtil.getGson().toJson(settings))
+                        .setParams(playerUuid, JsonUtil.getGson().toJson(settings))
                         .returnGeneratedKey()
                         .execute();
             }
@@ -65,9 +68,10 @@ public class DiscordDatabaseHelper {
     }
 
     @NotNull
-    public NotificationSettings getPlayerNotifactionSetting(@NotNull UUID player) throws SQLException {
+    public NotificationSettings getPlayerNotifactionSetting(@NotNull UUID uuid) throws SQLException {
         Util.ensureThread(true);
-        try (SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player", player.toString()).setLimit(1).build().execute(); ResultSet set = query.getResultSet()) {
+        try (SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player",
+                uuid).setLimit(1).build().execute(); ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 String json = set.getString("notifaction");
                 Log.debug("Json data: " + json);

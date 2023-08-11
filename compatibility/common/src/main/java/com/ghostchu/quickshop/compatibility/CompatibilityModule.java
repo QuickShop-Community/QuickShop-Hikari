@@ -1,10 +1,11 @@
 package com.ghostchu.quickshop.compatibility;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public abstract class CompatibilityModule extends JavaPlugin implements Listener {
     private QuickShopAPI api;
@@ -94,10 +94,10 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
         getLogger().info("Reloading configuration...");
     }
 
-    public void recordDeletion(@Nullable UUID uuid, @NotNull Shop shop, @NotNull String reason) {
-        if (uuid == null) {
-            uuid = CommonUtil.getNilUniqueId();
+    public void recordDeletion(@Nullable QUser qUser, @NotNull Shop shop, @NotNull String reason) {
+        if (qUser == null) {
+            qUser = QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "UNKNOWN", false);
         }
-        this.api.logEvent(new ShopRemoveLog(uuid, reason, shop.saveToInfoStorage()));
+        this.api.logEvent(new ShopRemoveLog(qUser, reason, shop.saveToInfoStorage()));
     }
 }

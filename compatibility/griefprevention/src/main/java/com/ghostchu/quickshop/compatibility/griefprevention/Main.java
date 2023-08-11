@@ -9,7 +9,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
@@ -78,7 +78,7 @@ public final class Main extends CompatibilityModule implements Listener {
             if (shops != null) {
                 for (Shop shop : shops.values()) {
                     if (claim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);
                     }
                 }
@@ -111,7 +111,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 for (Shop shop : shops.values()) {
                     if (oldClaim.contains(shop.getLocation(), false, false) &&
                             !newClaim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);
                     }
                 }
@@ -136,7 +136,7 @@ public final class Main extends CompatibilityModule implements Listener {
                     if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
                             claimVerifyChunks.contains(shop.getLocation(), false, false) &&
                             !claimVerifyShop.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);
                     }
                 }
@@ -177,14 +177,14 @@ public final class Main extends CompatibilityModule implements Listener {
                 if (shop.getOwner().equals(claim.getOwnerID())) {
                     continue;
                 }
-                if (event.getIdentifier().equals(shop.getOwner().toString())) {
-                    getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+                if (event.getIdentifier().equals(shop.getOwner().getUniqueId())) {
+                    getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
                     getApi().getShopManager().deleteShop(shop);
                 } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
-                    getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+                    getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
                     getApi().getShopManager().deleteShop(shop);
                 } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-                    getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+                    getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
                     getApi().getShopManager().deleteShop(shop);
                 }
             }
@@ -214,7 +214,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 for (Shop shop : shops.values()) {
                     if (!shop.getOwner().equals(subClaim.getOwnerID()) &&
                             subClaim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);
                     }
                 }
@@ -224,10 +224,14 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
-        if (checkPermission(event.getPlayer(), event.getShop().getLocation(), Collections.singletonList(createLimit))) {
+        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) {
             return;
         }
-        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.creation-denied").forLocale());
+        if (checkPermission(player, event.getShop().getLocation(), Collections.singletonList(createLimit))) {
+            return;
+        }
+        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.griefprevention.creation-denied").forLocale());
     }
 
     private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
@@ -248,10 +252,14 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
-        if (checkPermission(event.getPlayer(), event.getLocation(), Collections.singletonList(createLimit))) {
+        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) {
             return;
         }
-        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.creation-denied").forLocale());
+        if (checkPermission(player, event.getLocation(), Collections.singletonList(createLimit))) {
+            return;
+        }
+        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.griefprevention.creation-denied").forLocale());
     }
 
     // Player can create subclaims inside a claim.
@@ -271,7 +279,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 for (Shop shop : shops.values()) {
                     if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
                             event.getClaim().contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getCreator()), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);
                     }
                 }
@@ -281,10 +289,14 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTrading(ShopPurchaseEvent event) {
-        if (checkPermission(event.getPlayer(), event.getShop().getLocation(), tradeLimits)) {
+        Player player = event.getPurchaser().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) {
             return;
         }
-        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.trade-denied").forLocale());
+        if (checkPermission(player, event.getShop().getLocation(), tradeLimits)) {
+            return;
+        }
+        event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.griefprevention.trade-denied").forLocale());
     }
 
     @EventHandler(ignoreCancelled = true)

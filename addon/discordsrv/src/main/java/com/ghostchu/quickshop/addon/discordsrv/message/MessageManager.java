@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.addon.discordsrv.Main;
+import com.ghostchu.quickshop.common.obj.QUser;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +58,7 @@ public class MessageManager {
     }
 
     @NotNull
-    public MessageEmbed getEmbedMessage(@NotNull String key, @Nullable UUID receiver, @NotNull Map<String, String> placeholders) {
+    public MessageEmbed getEmbedMessage(@NotNull String key, @Nullable QUser receiver, @NotNull Map<String, String> placeholders) {
         Map.Entry<Object, Method> method = embedMessageRegistry.get(key);
         if (method == null) {
             plugin.getLogger().warning("Cannot find embed message: " + key);

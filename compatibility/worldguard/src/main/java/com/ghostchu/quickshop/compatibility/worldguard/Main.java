@@ -23,9 +23,11 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.UUID;
 import java.util.logging.Level;
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -93,31 +95,43 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void preCreation(ShopPreCreateEvent event) {
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
+        UUID uuid = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) return;
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         if (!query.testState(BukkitAdapter.adapt(event.getLocation()), localPlayer, this.createFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.creation-flag-test-failed").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.worldguard.creation-flag-test-failed").forLocale());
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void preCreation(ShopCreateEvent event) {
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
+        UUID uuid = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) return;
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.createFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.creation-flag-test-failed").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.worldguard.creation-flag-test-failed").forLocale());
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void preCreation(ShopPurchaseEvent event) {
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
+        UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) return;
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.tradeFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.trade-flag-test-failed").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.worldguard.trade-flag-test-failed").forLocale());
         }
     }
 }

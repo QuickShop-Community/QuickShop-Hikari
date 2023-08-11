@@ -3,9 +3,12 @@ package com.ghostchu.quickshop.compatibility.towny.command;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.towny.Main;
 import com.ghostchu.quickshop.compatibility.towny.TownyShopUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
@@ -39,7 +42,8 @@ public class NationCommand implements CommandHandler<Player> {
                     || recordNation.getKing().getUUID().equals(sender.getUniqueId())) {
                 // Turn it back to a normal shop
                 shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
-                shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
+                QUser qUser = QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop));
+                shop.setOwner(qUser);
                 TownyShopUtil.setShopTown(shop, null);
                 plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
             } else {
@@ -51,7 +55,8 @@ public class NationCommand implements CommandHandler<Player> {
         if (TownyShopUtil.getShopNation(shop) != null) {
             // Turn it back to a normal shop
             shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
-            shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
+            QUser qUser = QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop));
+            shop.setOwner(qUser);
             TownyShopUtil.setShopNation(shop, null);
             plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-nation").send();
             return;
@@ -83,9 +88,10 @@ public class NationCommand implements CommandHandler<Player> {
                 shop.setPrice(price);
             }
         }
-        TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
-        shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
-        shop.setOwner(uuid);
+        UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
+        TownyShopUtil.setShopOriginalOwner(shop, shopOwnerUUID);
+        shop.setPlayerGroup(shopOwnerUUID, BuiltInShopPermissionGroup.ADMINISTRATOR);
+        shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), uuid));
         TownyShopUtil.setShopNation(shop, nation);
         plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-nation", nation.getName()).send();
         plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();

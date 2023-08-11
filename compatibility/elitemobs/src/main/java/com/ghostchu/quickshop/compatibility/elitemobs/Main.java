@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.magmaguy.elitemobs.api.utils.EliteItemManager;
 import net.kyori.adventure.text.Component;
@@ -11,8 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
     @Override
@@ -37,7 +36,7 @@ public final class Main extends CompatibilityModule implements Listener {
         return EliteItemManager.getSoulboundPlayer(stack.getItemMeta()) != null;
     }
 
-    private Component getDisallowedMessage(UUID sender) {
+    private Component getDisallowedMessage(QUser sender) {
         return QuickShop.getInstance().text().of(sender, "compatibility.elitemobs.soulbound-disallowed").forLocale();
     }
 

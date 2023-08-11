@@ -42,13 +42,17 @@ public final class Main extends CompatibilityModule {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
             if (whitelist) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
             }
             return;
         }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) {
+            return;
+        }
+        if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
+            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
             }
         }
     }
@@ -74,13 +78,17 @@ public final class Main extends CompatibilityModule {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
             if (whitelist) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
             }
             return;
         }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) {
+            return;
+        }
+        if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
+            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
             }
         }
     }
@@ -92,9 +100,13 @@ public final class Main extends CompatibilityModule {
         if (residence == null) {
             return;
         }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), TRADE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), TRADE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.trade-flag-denied").forLocale());
+        Player player = event.getPurchaser().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) {
+            return;
+        }
+        if (!playerHas(residence.getPermissions(), player, TRADE_FLAG, false)) {
+            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, TRADE_FLAG, false)) {
+                event.setCancelled(true, getApi().getTextManager().of(player, "addon.residence.trade-flag-denied").forLocale());
             }
         }
     }

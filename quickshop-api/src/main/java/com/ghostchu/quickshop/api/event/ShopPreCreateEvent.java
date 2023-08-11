@@ -16,7 +16,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
     private final Location location;
 
     @NotNull
-    private final QUser player;
+    private final QUser creator;
 
     private boolean cancelled;
     private @Nullable Component cancelReason;
@@ -25,12 +25,12 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
      * Calling when shop pre-creating. Shop won't one-percent will create after this event, if you
      * want get the shop created event, please use ShopCreateEvent
      *
-     * @param player   Target player
+     * @param creator   Target player
      * @param location The location will create be shop
      */
-    public ShopPreCreateEvent(@NotNull QUser player, @NotNull Location location) {
+    public ShopPreCreateEvent(@NotNull QUser creator, @NotNull Location location) {
         this.location = location;
-        this.player = player;
+        this.creator = creator;
     }
 
     @Override
@@ -58,8 +58,8 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
      *
      * @return creator
      */
-    public @NotNull QUser getPlayer() {
-        return this.player;
+    public @NotNull QUser getCreator() {
+        return this.creator;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
 
@@ -106,7 +107,7 @@ public class MetricQuery {
                         .total(set.getDouble("money"))
                         .tax(set.getDouble("tax"))
                         .amount(set.getInt("amount"))
-                        .player(UUID.fromString(set.getString("buyer")))
+                        .player(QUserImpl.createSync(plugin.getPlayerFinder(), set.getString("buyer")))
                         .build();
                 list.add(record);
             }

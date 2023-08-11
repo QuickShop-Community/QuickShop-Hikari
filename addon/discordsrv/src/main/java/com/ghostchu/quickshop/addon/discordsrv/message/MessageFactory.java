@@ -2,23 +2,18 @@ package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
-import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class MessageFactory {
     private final QuickShop plugin;
@@ -41,9 +36,9 @@ public class MessageFactory {
         return applyPlaceHolders(shop, map, null);
     }
 
-    private @NotNull Map<String, String> applyPlaceHolders(@NotNull Shop shop, @NotNull Map<String, String> map, @Nullable UUID langUser) {
+    private @NotNull Map<String, String> applyPlaceHolders(@NotNull Shop shop, @NotNull Map<String, String> map, @Nullable QUser langUser) {
         map.put("shop.name", ChatColor.stripColor(shop.getShopName()));
-        map.put("shop.owner.name", wrap(shop.ownerName(getPlayerLocale(langUser))));
+        map.put("shop.owner.name", wrap(shop.ownerName(plugin.text().findRelativeLanguages(langUser, false))));
         map.put("shop.location.world", shop.getLocation().getWorld().getName());
         map.put("shop.location.x", String.valueOf(shop.getLocation().getBlockX()));
         map.put("shop.location.y", String.valueOf(shop.getLocation().getBlockY()));
@@ -71,26 +66,6 @@ public class MessageFactory {
         return wrap(component, Collections.emptyMap());
     }
 
-    @NotNull
-    private ProxiedLocale getPlayerLocale(UUID uuid) {
-        Util.ensureThread(true);
-        ProxiedLocale locale;
-        if (uuid != null) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                locale = plugin.getTextManager().findRelativeLanguages(uuid);
-            } else {
-                try {
-                    locale = new ProxiedLocale(plugin.getDatabaseHelper().getPlayerLocale(uuid).get(10, TimeUnit.SECONDS), MsgUtil.getDefaultGameLanguageCode());
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    locale = MsgUtil.getDefaultGameLanguageLocale();
-                }
-            }
-        } else {
-            locale = MsgUtil.getDefaultGameLanguageLocale();
-        }
-        return locale;
-    }
 
     private String wrap(@NotNull Component component, @NotNull Map<String, String> placeholders) {
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
@@ -120,10 +95,10 @@ public class MessageFactory {
     }
 
     @NotNull
-    private Map<String, String> applyPlaceHoldersForPurchaseEvent(@NotNull Map<String, String> placeHolders, @Nullable UUID langUser, @NotNull ShopSuccessPurchaseEvent event) {
+    private Map<String, String> applyPlaceHoldersForPurchaseEvent(@NotNull Map<String, String> placeHolders, @Nullable QUser langUser, @NotNull ShopSuccessPurchaseEvent event) {
         Shop shop = event.getShop();
         placeHolders.put("purchase.uuid", event.getPurchaser().toString());
-        placeHolders.put("purchase.name", getPlayerName(event.getPurchaser()));
+        placeHolders.put("purchase.name", getPlayerName(langUser));
         //noinspection DataFlowIssue
         placeHolders.put("purchase.world", shop.getLocation().getWorld().getName());
         placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
@@ -134,18 +109,9 @@ public class MessageFactory {
         return placeHolders;
     }
 
-    private String getPlayerName(UUID uuid) {
-        String name = uuid.toString();
-        Player bukkitPlayer = Bukkit.getPlayer(uuid);
-        if (bukkitPlayer != null) {
-            name = bukkitPlayer.getName();
-        } else {
-            String playerName = plugin.getPlayerFinder().uuid2Name(uuid);
-            if (playerName != null) {
-                name = playerName;
-            }
-        }
-        return name;
+    private String getPlayerName(QUser uuid) {
+        if (uuid == null) return "Unknown";
+        return uuid.getDisplay();
     }
 
     @NotNull
@@ -218,7 +184,7 @@ public class MessageFactory {
     public MessageEmbed shopPermissionChanged(@NotNull ShopPlayerGroupSetEvent event) {
         Shop shop = event.getShop();
         Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-        placeHolders.put("change-permission.player", getPlayerName(event.getPlayer()));
+        placeHolders.put("change-permission.player", getPlayerName(QUserImpl.createSync(plugin.getPlayerFinder(), event.getPlayer())));
         placeHolders.put("change-permission.from-group", event.getOldGroup());
         placeHolders.put("change-permission.to-group", event.getNewGroup());
         List<String> oldPermissions = plugin.getShopPermissionManager().getGroupPermissions(event.getOldGroup());

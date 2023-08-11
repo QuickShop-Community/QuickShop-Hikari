@@ -15,11 +15,14 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import io.papermc.lib.PaperLib;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +58,7 @@ public final class Main extends CompatibilityModule implements Listener {
             allFutures.forEach(future -> {
                 Chunk chunk = future.getNow(null);
                 for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
-                    if (shopOwnerToDelete == null || shop.getOwner().equals(shopOwnerToDelete)) {
+                    if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
                         pendingForDeletion.add(shop);
                     }
                 }
@@ -63,7 +66,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Util.mainThreadRun(() -> {
                 pendingForDeletion.forEach(s -> {
                     getApi().getShopManager().deleteShop(s);
-                    recordDeletion(deleteOperator, s, deleteReason);
+                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
                 });
             });
         });
@@ -84,7 +87,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Util.mainThreadRun(() -> {
                 pendingForDeletion.forEach(s -> {
                     getApi().getShopManager().deleteShop(s);
-                    recordDeletion(deleteOperator, s, deleteReason);
+                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
                 });
             });
 
@@ -111,7 +114,9 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
         Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getCreator());
+        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) return;
+        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
         if (island == null) {
             return;
         }
@@ -137,18 +142,20 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
         Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getPlayer());
+        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        if (player == null) return;
+        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
         if (island == null) {
             return;
         }
         if (onlyOwnerCanCreateShop) {
             if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-create-only").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
             }
         } else {
             if (!island.getOwner().equals(superiorPlayer)) {
                 if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
                 }
             }
         }

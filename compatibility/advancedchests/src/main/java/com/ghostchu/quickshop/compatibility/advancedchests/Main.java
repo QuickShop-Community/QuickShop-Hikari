@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -60,13 +61,13 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
 
-        if (!QuickShop.getPermissionManager().hasPermission(event.getPlayer(), "quickshop.create.advancedchests")) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "compat.advancedchests.permission-denied").forLocale());
+        if (!QuickShop.getPermissionManager().hasPermission(event.getCreator(), "quickshop.create.advancedchests")) {
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "compat.advancedchests.permission-denied").forLocale());
             return;
         }
         Shop shop = event.getShop();
         shop.setInventory(new AdvancedChestsWrapper(advancedChests, this), manager);
-        getApi().getTextManager().of(event.getPlayer(), "compat.advancedchests.created").send();
+        getApi().getTextManager().of(event.getCreator(), "compat.advancedchests.created").send();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -80,7 +81,7 @@ public final class Main extends CompatibilityModule implements Listener {
             if (inventory == null) continue;
             if (inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
                 if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
-                    recordDeletion(CommonUtil.getNilUniqueId(), shop, "AdvancedChest Removed");
+                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "AdvancedChests", false), shop, "AdvancedChest Removed");
                     getApi().getShopManager().deleteShop(shop);
                 }
             }
