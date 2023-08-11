@@ -43,7 +43,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
         double gobalCost = plugin.getConfig().getDouble("shop.ongoing-fee.cost-per-shop");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
+            if (!shop.isUnlimited() || !ignoreUnlimited) {
                 QUser shopOwner = shop.getOwner();
                 Location location = shop.getLocation();
                 if (!location.isWorldLoaded()) {

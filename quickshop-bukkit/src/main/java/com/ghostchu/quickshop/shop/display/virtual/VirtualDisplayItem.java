@@ -123,7 +123,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (isSpawned || shop.isDeleted() || !shop.isLoaded()) {
+        if (isSpawned || !shop.isLoaded()) {
             return;
         }
         if (new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM).callCancellableEvent()) {

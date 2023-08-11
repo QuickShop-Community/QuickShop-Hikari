@@ -63,27 +63,6 @@ public interface Shop {
      */
     void claimShopSign(@NotNull Sign sign);
 
-
-    /**
-     * Delete shop from ram, and database.
-     */
-    @Deprecated(forRemoval = true, since = "4.5.0.0")
-    void delete();
-
-    /**
-     * Delete shop from ram or ram and database
-     *
-     * @param memoryOnly true = only delete from ram, false = delete from both ram and database
-     */
-    @Deprecated(forRemoval = true, since = "4.5.0.0")
-    void delete(boolean memoryOnly);
-
-    @Deprecated(forRemoval = true, since = "4.5.0.0")
-    void onLoad();
-
-    @Deprecated(forRemoval = true, since = "4.5.0.0")
-    void onUnload();
-
     /**
      * Gets the currency that shop use
      *
@@ -338,13 +317,6 @@ public interface Shop {
      * @return yes or no
      */
     boolean isBuying();
-
-    /**
-     * Whether Shop is deleted
-     *
-     * @return status
-     */
-    boolean isDeleted();
 
     /**
      * Gets if shop is dirty

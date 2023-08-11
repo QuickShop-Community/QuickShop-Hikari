@@ -23,6 +23,8 @@ public interface QUser {
 
     Optional<UUID> getUniqueIdIfRealPlayer();
 
+    Optional<String> getUsernameIfRealPlayer();
+
     void setUsername(String username);
 
     void setUniqueId(UUID uuid);

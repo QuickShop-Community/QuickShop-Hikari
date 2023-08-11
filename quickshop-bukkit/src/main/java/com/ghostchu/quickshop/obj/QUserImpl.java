@@ -5,6 +5,9 @@ import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -100,7 +103,11 @@ public class QUserImpl implements QUser {
     @Override
     public @NotNull String getDisplay() {
         if (this.username != null) {
-            return this.username;
+            if (isRealPlayer()) {
+                return this.username;
+            } else {
+                return "[" + this.username + "]";
+            }
         }
         return this.uniqueId.toString();
     }
@@ -137,6 +144,14 @@ public class QUserImpl implements QUser {
     }
 
     @Override
+    public Optional<String> getUsernameIfRealPlayer() {
+        if (isRealPlayer()) {
+            return Optional.of(this.username);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public void setUsername(String username) {
         this.username = username;
     }
@@ -164,6 +179,32 @@ public class QUserImpl implements QUser {
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, uuid.toString()), QuickExecutor.getProfileIOExecutor());
+    }
+
+    public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull CommandSender sender) {
+        if (sender instanceof Player player) {
+            return CompletableFuture.supplyAsync(() -> createFullFilled(player));
+        }
+        if (sender instanceof OfflinePlayer offlinePlayer) {
+            return createAsync(finder, offlinePlayer.getUniqueId());
+        }
+        if (sender instanceof ConsoleCommandSender consoleCommandSender) {
+            return CompletableFuture.supplyAsync(() -> createFullFilled(CommonUtil.getNilUniqueId(), "CONSOLE", false));
+        }
+        return CompletableFuture.supplyAsync(() -> createFullFilled(CommonUtil.getNilUniqueId(), sender.getName(), false));
+    }
+
+    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull CommandSender sender) {
+        if (sender instanceof Player player) {
+            return createFullFilled(player);
+        }
+        if (sender instanceof OfflinePlayer offlinePlayer) {
+            return createSync(finder, offlinePlayer.getUniqueId());
+        }
+        if (sender instanceof ConsoleCommandSender consoleCommandSender) {
+            return createFullFilled(CommonUtil.getNilUniqueId(), "CONSOLE", false);
+        }
+        return createFullFilled(CommonUtil.getNilUniqueId(), sender.getName(), false);
     }
 
     public static QUser createFullFilled(UUID uuid, String username, boolean realPlayer) {

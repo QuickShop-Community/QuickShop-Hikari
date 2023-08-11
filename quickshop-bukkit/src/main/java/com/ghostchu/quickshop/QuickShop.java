@@ -777,7 +777,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 Bukkit.getScheduler().runTaskTimer(javaPlugin, () -> {
                     for (Shop shop : getShopManager().getLoadedShops()) {
                         //Shop may be deleted or unloaded when iterating
-                        if (shop.isDeleted() || !shop.isLoaded()) {
+                        if (!shop.isLoaded()) {
                             continue;
                         }
                         shop.checkDisplay();

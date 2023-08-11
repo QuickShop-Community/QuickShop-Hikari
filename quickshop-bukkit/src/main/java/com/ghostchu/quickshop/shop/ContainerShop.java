@@ -17,6 +17,7 @@ import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
@@ -373,55 +374,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-
-    /**
-     * Deletes the shop from the list of shops and queues it for database
-     */
-    @SuppressWarnings("removal")
-    @Override
-    public void delete() {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#deleteShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        plugin.getShopManager().deleteShop(this);
-    }
-
-    /**
-     * Deletes the shop from the list of shops and queues it for database deletion
-     *
-     * @param memoryOnly whether to delete from database
-     */
-    @SuppressWarnings("removal")
-    @Override
-    public void delete(boolean memoryOnly) {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#deleteShop(Shop) or ShopManager#unregisterShop(Shop,Persist[aka.fromMemory]) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        if (memoryOnly) {
-            plugin.getShopManager().unregisterShop(this, false);
-        } else {
-            plugin.getShopManager().deleteShop(this);
-        }
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public void onLoad() {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#loadShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        plugin.getShopManager().loadShop(this);
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public void onUnload() {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#unloadShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        plugin.getShopManager().unloadShop(this);
-    }
-
     /**
      * Gets the currency that shop use
      *
@@ -497,7 +449,7 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             plugin.getShopManager().unregisterShop(this, false);
         }
-        plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
+        plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "Inventory Invalid", this.saveToInfoStorage()));
         Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
     }
@@ -910,8 +862,7 @@ public class ContainerShop implements Shop, Reloadable {
         return this.shopType == ShopType.BUYING;
     }
 
-    @Override
-    public boolean isDeleted() {
+    private boolean isDeleted() {
         return this.isDeleted;
     }
 
