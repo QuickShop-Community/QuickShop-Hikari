@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -42,6 +43,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 
@@ -252,19 +254,27 @@ public class MsgUtil {
             ResultSet rs = warpRS.getResultSet();
             while (rs.next()) {
                 String owner = rs.getString("receiver");
-                UUID ownerUUID;
-                if (CommonUtil.isUUID(owner)) {
-                    ownerUUID = UUID.fromString(owner);
-                } else {
-                    if (QuickShop.getInstance().getPlayerFinder() != null) {
-                        ownerUUID = QuickShop.getInstance().getPlayerFinder().name2Uuid(owner);
-                    } else {
-                        ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
-                    }
-                }
                 String message = rs.getString("content");
-                List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new ArrayList<>());
-                msgs.add(message);
+                CompletableFuture.supplyAsync(() -> {
+                    UUID ownerUUID;
+                    if (CommonUtil.isUUID(owner)) {
+                        ownerUUID = UUID.fromString(owner);
+                    } else {
+                        if (QuickShop.getInstance().getPlayerFinder() != null) {
+                            ownerUUID = QuickShop.getInstance().getPlayerFinder().name2Uuid(owner);
+                        } else {
+                            ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
+                        }
+                    }
+                    return ownerUUID;
+                }, QuickExecutor.getProfileIOExecutor()).whenComplete((ownerUUID, throwable) -> {
+                    if (throwable != null) {
+                        Log.debug("Failed to load transaction message for " + owner + " from database, ownerUUID parsing failed.");
+                        return;
+                    }
+                    List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new ArrayList<>());
+                    msgs.add(message);
+                });
             }
         } catch (SQLException e) {
             PLUGIN.logger().warn("Could not load transaction messages from database. Skipping.", e);

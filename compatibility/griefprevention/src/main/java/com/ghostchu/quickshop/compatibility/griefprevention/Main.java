@@ -14,11 +14,8 @@ import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
-import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
+import me.ryanhamshire.GriefPrevention.events.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,14 +25,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class Main extends CompatibilityModule implements Listener {
-    static final GriefPrevention GRIEF_PREVENTION = GriefPrevention.instance;
+    private GriefPrevention griefPrevention;
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private boolean whiteList;
     private boolean deleteOnClaimTrustChanged;
@@ -55,6 +48,7 @@ public final class Main extends CompatibilityModule implements Listener {
         this.deleteOnSubClaimCreated = getConfig().getBoolean("delete-on-subclaim-created");
         this.createLimit = Flag.getFlag(getConfig().getString("create"));
         this.tradeLimits.addAll(toFlags(getConfig().getStringList("trade")));
+        this.griefPrevention = (GriefPrevention) Bukkit.getPluginManager().getPlugin("GriefPrevention");
     }
 
     private List<Flag> toFlags(List<String> flags) {
@@ -85,7 +79,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 for (Shop shop : shops.values()) {
                     if (claim.contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                     }
                 }
             }
@@ -118,7 +112,7 @@ public final class Main extends CompatibilityModule implements Listener {
                     if (oldClaim.contains(shop.getLocation(), false, false) &&
                             !newClaim.contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                     }
                 }
             }
@@ -143,7 +137,7 @@ public final class Main extends CompatibilityModule implements Listener {
                             claimVerifyChunks.contains(shop.getLocation(), false, false) &&
                             !claimVerifyShop.contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                     }
                 }
             }
@@ -171,6 +165,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     // Helper to the Claim Trust Changed Event Handler (to avoid duplicate code above)
     private void handleClaimTrustChanged(Claim claim, TrustChangedEvent event) {
+        if (event.isGiven()) {
+            return;
+        }
         for (Chunk chunk : claim.getChunks()) {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops == null) {
@@ -182,17 +179,16 @@ public final class Main extends CompatibilityModule implements Listener {
                 }
                 if (event.getIdentifier().equals(shop.getOwner().toString())) {
                     getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-                    shop.delete();
+                    getApi().getShopManager().deleteShop(shop);
                 } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
                     getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-                    shop.delete();
+                    getApi().getShopManager().deleteShop(shop);
                 } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
                     getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-                    shop.delete();
+                    getApi().getShopManager().deleteShop(shop);
                 }
             }
         }
-
     }
 
     // Player can unclaim the main claim or the subclaim.
@@ -219,7 +215,7 @@ public final class Main extends CompatibilityModule implements Listener {
                     if (!shop.getOwner().equals(subClaim.getOwnerID()) &&
                             subClaim.contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                     }
                 }
             }
@@ -235,10 +231,10 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
-        if (!GRIEF_PREVENTION.claimsEnabledForWorld(location.getWorld())) {
+        if (!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
             return true;
         }
-        Claim claim = GRIEF_PREVENTION.dataStore.getClaimAt(location, false, false, GRIEF_PREVENTION.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
+        Claim claim = griefPrevention.dataStore.getClaimAt(location, false, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
         if (claim == null) {
             return !whiteList;
         }
@@ -276,7 +272,7 @@ public final class Main extends CompatibilityModule implements Listener {
                     if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
                             event.getClaim().contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getCreator()), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                     }
                 }
             }
@@ -294,10 +290,10 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
-        if (!GRIEF_PREVENTION.claimsEnabledForWorld(shopLoc.getWorld())) {
+        if (!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
             return;
         }
-        Claim claim = GRIEF_PREVENTION.dataStore.getClaimAt(shopLoc, false, false, GRIEF_PREVENTION.dataStore.getPlayerData(event.getAuthorizer()).lastClaim);
+        Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, griefPrevention.dataStore.getPlayerData(event.getAuthorizer()).lastClaim);
         if (claim == null) {
             return;
         }

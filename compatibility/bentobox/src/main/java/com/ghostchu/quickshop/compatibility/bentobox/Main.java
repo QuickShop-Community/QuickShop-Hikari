@@ -33,7 +33,7 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         getShops(event.getDeletedIslandInfo()).forEach(shop -> {
             recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was deleted");
-            shop.delete();
+            getApi().getShopManager().deleteShop(shop);
         });
     }
 
@@ -49,7 +49,7 @@ public final class Main extends CompatibilityModule implements Listener {
         getShops(event.getIsland()).forEach(shop -> {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(event.getOwner(), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");
-                shop.delete();
+                getApi().getShopManager().deleteShop(shop);
             }
         });
     }
@@ -66,7 +66,7 @@ public final class Main extends CompatibilityModule implements Listener {
         getShops(event.getIsland()).forEach(shop -> {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");
-                shop.delete();
+                getApi().getShopManager().deleteShop(shop);
             }
         });
     }
@@ -78,7 +78,7 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         getShops(event.getOldIsland()).forEach(shop -> {
             recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
-            shop.delete();
+            getApi().getShopManager().deleteShop(shop);
         });
     }
 

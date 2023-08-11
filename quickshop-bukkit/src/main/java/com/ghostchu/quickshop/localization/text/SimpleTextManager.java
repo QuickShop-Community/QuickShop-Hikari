@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
+import com.ghostchu.quickshop.localization.text.postprocessing.impl.ForceReplaceFillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -25,10 +26,15 @@ import kong.unirest.Unirest;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -59,6 +65,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).recordStats().build();
     private final String crowdinHost;
+    private TagResolver[] tagResolvers;
     @Nullable
     private CrowdinOTA crowdinOTA;
 
@@ -87,6 +94,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         plugin.logger().info("Loading up translations from Crowdin OTA, this may need a while...");
         //TODO: This will break the message processing system in-game until loading finished, need to fix it.
         this.reset();
+        initTagResolvers();
         // first, we need load built-in fallback translation.
         languageFilesManager.deploy("en_us", loadBuiltInFallback());
         // second, load the bundled language files
@@ -161,8 +169,41 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         // Register post processor
         postProcessors.add(new FillerProcessor());
+        if (PackageUtil.parsePackageProperly("betaForceReplaceFillerProcessor").asBoolean(false)) {
+            postProcessors.add(new ForceReplaceFillerProcessor());
+        }
         postProcessors.add(new PlaceHolderApiProcessor());
 
+    }
+
+    private void initTagResolvers() {
+        File configFile = new File(plugin.getDataFolder(), "color-scheme.yml");
+        if (!configFile.exists()) {
+            try {
+                Files.copy(plugin.getJavaPlugin().getResource("color-scheme.yml"), configFile.toPath());
+            } catch (IOException e) {
+                plugin.logger().warn("Failed to copy color-scheme.yml to plugin folder!", e);
+            }
+        }
+        FileConfiguration colorSchemeYaml = YamlConfiguration.loadConfiguration(configFile);
+        ConfigurationSection colorSchemeSection = colorSchemeYaml.getConfigurationSection("color-scheme");
+        if (colorSchemeSection == null) {
+            tagResolvers = new TagResolver[0];
+            return;
+        }
+        List<TagResolver> resolvers = new ArrayList<>();
+        resolvers.add(TagResolver.standard());
+        resolvers.add(TagResolver.resolver("color_scheme", (argumentQueue, context) -> {
+            if (!argumentQueue.hasNext()) return null;
+            Tag.Argument argument = argumentQueue.pop();
+            String code = argument.value();
+            String hex = colorSchemeSection.getString(code, "#ffffff");
+            TextColor textColor = TextColor.fromHexString(hex);
+            if (textColor == null) return null;
+            Log.debug("Registered color scheme " + code + " with hex " + hex);
+            return Tag.styling(textColor);
+        }));
+        this.tagResolvers = resolvers.toArray(new TagResolver[0]);
     }
 
     /**
@@ -315,10 +356,14 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         meta.insert("Crowdin Language File Path", CROWDIN_LANGUAGE_FILE_PATH);
         meta.insert("Crowdin Distribution URL", crowdinHost);
         meta.insert("Available Languages", String.valueOf(availableLanguages.size()));
-        meta.insert("Post Processors", String.valueOf(postProcessors.size()));
         joiner.add(meta.render());
         joiner.add("<h5>Caching</h5>");
         joiner.add(GuavaCacheRender.renderTable(languagesCache.stats()));
+        joiner.add("<h5>Post Processors</h5>");
+        HTMLTable postProcessorsTable = new HTMLTable(1, false);
+        postProcessorsTable.setTableTitle("Registered Processors");
+        postProcessors.forEach(p -> postProcessorsTable.insert(p.getClass().getName()));
+        joiner.add(postProcessorsTable.render());
         return joiner.toString();
     }
 
@@ -381,126 +426,6 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         return false;
     }
 
-    public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {
-        private final SimpleTextManager manager;
-        private final String path;
-        private final Map<String, FileConfiguration> mapping;
-        private final CommandSender sender;
-        private final Component[] args;
-
-        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
-            this.manager = manager;
-            this.sender = sender;
-            this.mapping = mapping;
-            this.path = path;
-            this.args = args;
-        }
-
-        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
-            this.manager = manager;
-            if (sender != null) {
-                this.sender = Bukkit.getPlayer(sender);
-            } else {
-                this.sender = null;
-            }
-            this.mapping = mapping;
-            this.path = path;
-            this.args = args;
-        }
-
-        /**
-         * Getting the text that use specify locale
-         *
-         * @param locale The minecraft locale code (like en_us)
-         * @return The text
-         */
-        @Override
-        @NotNull
-        public List<Component> forLocale(@NotNull String locale) {
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
-            if (index == null) {
-                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
-                String languageCode = MsgUtil.getDefaultGameLanguageCode();
-                if (languageCode.equals(locale)) {
-                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                    return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
-                } else {
-                    return forLocale(languageCode);
-                }
-            } else {
-                List<String> str = index.getStringList(path);
-                if (str.isEmpty()) {
-                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                    return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
-                }
-                List<Component> components = str.stream().map(s -> manager.plugin.getPlatform().miniMessage().deserialize(s)).toList();
-                return postProcess(components);
-            }
-        }
-
-        /**
-         * Getting the text for player locale
-         *
-         * @return Getting the text for player locale
-         */
-        @Override
-        @NotNull
-        public List<Component> forLocale() {
-            if (sender instanceof Player player) {
-                return forLocale(player.getLocale());
-            } else {
-                return forLocale(MsgUtil.getDefaultGameLanguageCode());
-            }
-        }
-
-        /**
-         * Getting this text is exists in the translation file
-         *
-         * @return true if this text is exists in the translation file
-         */
-        @Override
-        public boolean isPresent() {
-            String locale;
-            if (sender instanceof Player player) {
-                locale = player.getLocale();
-            } else {
-                locale = MsgUtil.getDefaultGameLanguageCode();
-            }
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
-            return index != null;
-        }
-
-        /**
-         * Send text to the player
-         */
-        @Override
-        public void send() {
-            if (sender == null) {
-                throw new IllegalStateException("Sender is null");
-            }
-            for (Component s : forLocale()) {
-                MsgUtil.sendDirectMessage(sender, s);
-            }
-        }
-
-        /**
-         * Post processes the text
-         *
-         * @param text The text
-         * @return The text that processed
-         */
-        @NotNull
-        private List<Component> postProcess(@NotNull List<Component> text) {
-            List<Component> texts = new ArrayList<>();
-            for (PostProcessor postProcessor : this.manager.postProcessors) {
-                for (Component s : text) {
-                    texts.add(postProcessor.process(s, sender, args));
-                }
-            }
-            return texts;
-        }
-    }
-
     @NotNull
     private String getDefLocale() {
         Iterator<String> defLocale = availableLanguages.iterator();
@@ -508,129 +433,6 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             return defLocale.next();
         }
         return DEFAULT_LOCALE;
-    }
-
-    public static class Text implements com.ghostchu.quickshop.api.localization.text.Text {
-        private final SimpleTextManager manager;
-        private final String path;
-        private final Map<String, FileConfiguration> mapping;
-        private final CommandSender sender;
-        private final Component[] args;
-
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
-            this.manager = manager;
-            this.sender = sender;
-            this.mapping = mapping;
-            this.path = path;
-            this.args = args;
-        }
-
-        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
-            this.manager = manager;
-            if (sender != null) {
-                this.sender = Bukkit.getPlayer(sender);
-            } else {
-                this.sender = null;
-            }
-            this.mapping = mapping;
-            this.path = path;
-            this.args = args;
-        }
-
-        /**
-         * Getting the text that use specify locale
-         *
-         * @param locale The minecraft locale code (like en_us)
-         * @return The text
-         */
-        @Override
-        @NotNull
-        public Component forLocale(@NotNull String locale) {
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
-            if (index == null) {
-                Log.debug("Index for " + locale + " is null");
-                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
-                if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
-                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                    return LegacyComponentSerializer.legacySection().deserialize(path);
-                } else {
-                    return forLocale(MsgUtil.getDefaultGameLanguageCode());
-                }
-            } else {
-                String str = index.getString(path);
-                if (str == null) {
-                    Log.debug("The value about index " + index + " is null");
-                    Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
-                    StringJoiner joiner = new StringJoiner(".");
-                    String[] pathExploded = path.split("\\.");
-                    for (String singlePath : pathExploded) {
-                        joiner.add(singlePath);
-                        Log.debug("Path debug: " + joiner + " is " + index.get(singlePath, "null"));
-                    }
-                    return LegacyComponentSerializer.legacySection().deserialize(path);
-                }
-                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str);
-                return postProcess(component);
-            }
-        }
-
-        /**
-         * Getting the text for player locale
-         *
-         * @return Getting the text for player locale
-         */
-        @Override
-        @NotNull
-        public Component forLocale() {
-            if (sender instanceof Player player) {
-                return forLocale(player.getLocale());
-            } else {
-                return forLocale(MsgUtil.getDefaultGameLanguageCode());
-            }
-        }
-
-        /**
-         * Getting this text is exists in the translation file
-         *
-         * @return true if this text is exists in the translation file
-         */
-        @Override
-        public boolean isPresent() {
-            String locale;
-            if (sender instanceof Player player) {
-                locale = player.getLocale();
-            } else {
-                locale = MsgUtil.getDefaultGameLanguageCode();
-            }
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
-            return index != null;
-        }
-
-        /**
-         * Send text to the player
-         */
-        @Override
-        public void send() {
-            if (sender == null) {
-                throw new IllegalStateException("Sender is null");
-            }
-            Component lang = forLocale();
-            MsgUtil.sendDirectMessage(sender, lang);
-        }
-
-        /**
-         * Post processes the text
-         *
-         * @param text The text
-         * @return The text that processed
-         */
-        @NotNull
-        private Component postProcess(@NotNull Component text) {
-            for (PostProcessor postProcessor : this.manager.postProcessors) {
-                text = postProcessor.process(text, sender, args);
-            }
-            return text;
-        }
     }
 
     @Override
@@ -682,7 +484,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull Text of(@NotNull String path, Object... args) {
-        return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, convert(args));
+        return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -695,7 +497,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -708,7 +510,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     @Override
@@ -793,7 +595,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull TextList ofList(@NotNull String path, Object... args) {
-        return new TextList(this, (CommandSender) null, languageFilesManager.getDistributions(), path, convert(args));
+        return new TextList(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -816,7 +618,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -829,7 +631,264 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
+    }
+
+    public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {
+        private final SimpleTextManager manager;
+        private final String path;
+        private final Map<String, FileConfiguration> mapping;
+        private final CommandSender sender;
+        private final Component[] args;
+        private final TagResolver[] tagResolvers;
+
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+            this.manager = manager;
+            this.sender = sender;
+            this.mapping = mapping;
+            this.path = path;
+            this.tagResolvers = tagResolvers;
+            this.args = args;
+        }
+
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+            this.manager = manager;
+            if (sender != null) {
+                this.sender = Bukkit.getPlayer(sender);
+            } else {
+                this.sender = null;
+            }
+            this.mapping = mapping;
+            this.path = path;
+            this.tagResolvers = tagResolvers;
+            this.args = args;
+        }
+
+        /**
+         * Getting the text that use specify locale
+         *
+         * @param locale The minecraft locale code (like en_us)
+         * @return The text
+         */
+        @Override
+        @NotNull
+        public List<Component> forLocale(@NotNull String locale) {
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+            if (index == null) {
+                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
+                String languageCode = MsgUtil.getDefaultGameLanguageCode();
+                if (languageCode.equals(locale)) {
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
+                } else {
+                    return forLocale(languageCode);
+                }
+            } else {
+                List<String> str = index.getStringList(path);
+                if (str.isEmpty()) {
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
+                }
+                List<Component> components = str.stream().map(s -> manager.plugin.getPlatform().miniMessage().deserialize(s, tagResolvers)).toList();
+                return postProcess(components);
+            }
+        }
+
+        /**
+         * Getting the text for player locale
+         *
+         * @return Getting the text for player locale
+         */
+        @Override
+        @NotNull
+        public List<Component> forLocale() {
+            if (sender instanceof Player player) {
+                return forLocale(player.getLocale());
+            } else {
+                return forLocale(MsgUtil.getDefaultGameLanguageCode());
+            }
+        }
+
+        /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player player) {
+                locale = player.getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+            return index != null;
+        }
+
+        /**
+         * Send text to the player
+         */
+        @Override
+        public void send() {
+            if (sender == null) {
+                throw new IllegalStateException("Sender is null");
+            }
+            for (Component s : forLocale()) {
+                MsgUtil.sendDirectMessage(sender, s);
+            }
+        }
+
+        /**
+         * Post processes the text
+         *
+         * @param text The text
+         * @return The text that processed
+         */
+        @NotNull
+        private List<Component> postProcess(@NotNull List<Component> text) {
+            List<Component> texts = new ArrayList<>();
+            for (PostProcessor postProcessor : this.manager.postProcessors) {
+                for (Component s : text) {
+                    try {
+                        texts.add(postProcessor.process(s, sender, args));
+                    } catch (Throwable th) {
+                        Log.debug("Failed to post processing text: " + s + " caused by " + th.getMessage() + " handler: " + postProcessor.getClass().getName());
+                    }
+                }
+            }
+            return texts;
+        }
+    }
+
+    public static class Text implements com.ghostchu.quickshop.api.localization.text.Text {
+        private final SimpleTextManager manager;
+        private final String path;
+        private final Map<String, FileConfiguration> mapping;
+        private final CommandSender sender;
+        private final Component[] args;
+        private final TagResolver[] tagResolvers;
+
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+            this.manager = manager;
+            this.sender = sender;
+            this.mapping = mapping;
+            this.path = path;
+            this.tagResolvers = tagResolvers;
+            this.args = args;
+        }
+
+        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+            this.manager = manager;
+            if (sender != null) {
+                this.sender = Bukkit.getPlayer(sender);
+            } else {
+                this.sender = null;
+            }
+            this.mapping = mapping;
+            this.path = path;
+            this.tagResolvers = tagResolvers;
+            this.args = args;
+        }
+
+        /**
+         * Getting the text that use specify locale
+         *
+         * @param locale The minecraft locale code (like en_us)
+         * @return The text
+         */
+        @Override
+        @NotNull
+        public Component forLocale(@NotNull String locale) {
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+            if (index == null) {
+                Log.debug("Index for " + locale + " is null");
+                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
+                if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return LegacyComponentSerializer.legacySection().deserialize(path);
+                } else {
+                    return forLocale(MsgUtil.getDefaultGameLanguageCode());
+                }
+            } else {
+                String str = index.getString(path);
+                if (str == null) {
+                    Log.debug("The value about index " + index + " is null");
+                    Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
+                    StringJoiner joiner = new StringJoiner(".");
+                    String[] pathExploded = path.split("\\.");
+                    for (String singlePath : pathExploded) {
+                        joiner.add(singlePath);
+                        Log.debug("Path debug: " + joiner + " is " + index.get(singlePath, "null"));
+                    }
+                    return LegacyComponentSerializer.legacySection().deserialize(path);
+                }
+                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str, tagResolvers);
+                return postProcess(component);
+            }
+        }
+
+        /**
+         * Getting the text for player locale
+         *
+         * @return Getting the text for player locale
+         */
+        @Override
+        @NotNull
+        public Component forLocale() {
+            if (sender instanceof Player player) {
+                return forLocale(player.getLocale());
+            } else {
+                return forLocale(MsgUtil.getDefaultGameLanguageCode());
+            }
+        }
+
+        /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player player) {
+                locale = player.getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+            return index != null;
+        }
+
+        /**
+         * Send text to the player
+         */
+        @Override
+        public void send() {
+            if (sender == null) {
+                throw new IllegalStateException("Sender is null");
+            }
+            Component lang = forLocale();
+            MsgUtil.sendDirectMessage(sender, lang);
+        }
+
+        /**
+         * Post processes the text
+         *
+         * @param text The text
+         * @return The text that processed
+         */
+        @NotNull
+        private Component postProcess(@NotNull Component text) {
+            for (PostProcessor postProcessor : this.manager.postProcessors) {
+                try {
+                    text = postProcessor.process(text, sender, args);
+                } catch (Exception e) {
+                    Log.debug("Error occurred while processing text: " + PlainTextComponentSerializer.plainText().serialize(text) + " caused by" + e.getMessage() + ", handler: " + postProcessor.getClass().getName());
+                }
+            }
+            return text;
+        }
     }
 
 

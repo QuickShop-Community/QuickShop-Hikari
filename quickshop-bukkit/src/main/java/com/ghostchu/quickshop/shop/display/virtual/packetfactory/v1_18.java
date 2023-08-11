@@ -164,9 +164,11 @@ public class v1_18 implements VirtualDisplayPacketFactory {
                         if (!target.isSpawned()) {
                             continue;
                         }
-                        target.getPacketSenders().add(player.getUniqueId());
-                        target.sendDestroyItem(player);
-                        target.sendFakeItem(player);
+                        if (target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
+                            target.getPacketSenders().add(player.getUniqueId());
+                            target.sendDestroyItem(player);
+                            target.sendFakeItem(player);
+                        }
                     }
                     return targetList;
                 });

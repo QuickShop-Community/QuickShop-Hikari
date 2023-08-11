@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.2.2.1</version>
+        <version>4.3.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.addon</groupId>
@@ -18,7 +18,7 @@
 
     <description>Showcase the metrics about QuickShop-Hikari on your Plan page</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.github.plan-player-analytics</groupId>
             <artifactId>Plan</artifactId>
-            <version>5.5.2335</version> <!-- Add the version number here -->
+            <version>5.5.2461</version> <!-- Add the version number here -->
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -16,6 +16,7 @@ import com.google.gson.JsonSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -275,6 +276,15 @@ public abstract class AbstractDisplayItem implements Reloadable {
      * @return Spawned
      */
     public abstract boolean isSpawned();
+
+    /**
+     * Check if the display should be display for the specificed player
+     * Only works with VirtualDisplayItem together as for as now.
+     *
+     * @param player Target player
+     * @return Should display
+     */
+    public abstract boolean isApplicableForPlayer(Player player);
 
     /**
      * Sets this display item should be remove

@@ -112,3 +112,4 @@ buildNumber.properties
 # Common working directory
 run/
 /build-artifacts/
+/.vscode/settings.json

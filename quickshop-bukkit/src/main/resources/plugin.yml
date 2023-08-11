@@ -15,14 +15,14 @@ api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:
   - org.apache.commons:commons-compress:1.23.0
-  - org.apache.commons:commons-lang3:3.12.0
+  - org.apache.commons:commons-lang3:3.13.0
   - org.apache.commons:commons-text:1.10.0
   - com.rollbar:rollbar-java:1.9.0
   - commons-codec:commons-codec:1.15
   - cc.carm.lib:easysql-hikaricp:0.4.7
   - com.h2database:h2:2.1.214
   - com.ghostchu:simplereloadlib:1.1.2
-  - com.konghq:unirest-java:3.14.2
+  - com.konghq:unirest-java:3.14.5
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
   - commons-lang:commons-lang:2.6
@@ -33,10 +33,10 @@ libraries:
   - com.ghostchu.crowdin:crowdinota:1.0.3
   - com.google.code.gson:gson:2.10.1
   - net.kyori:adventure-platform-bukkit:4.3.0
-  - net.kyori:adventure-text-minimessage:4.13.0
-  - net.kyori:adventure-text-serializer-gson:4.13.0
-  - net.kyori:adventure-text-serializer-plain:4.13.0
-  - net.kyori:adventure-text-serializer-legacy:4.13.0
+  - net.kyori:adventure-text-minimessage:4.13.1
+  - net.kyori:adventure-text-serializer-gson:4.13.1
+  - net.kyori:adventure-text-serializer-plain:4.13.1
+  - net.kyori:adventure-text-serializer-legacy:4.13.1
   #  - org.slf4j:slf4j-nop:1.7.35
 authors:
   - Ghost_chu

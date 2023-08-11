@@ -86,7 +86,7 @@ public class BlockListener extends AbstractProtectionListener {
                 action.setAction(ShopAction.CANCELLED);
             }
             plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(), "BlockBreak(player)", shop.saveToInfoStorage()));
-            shop.delete();
+            plugin.getShopManager().deleteShop(shop);
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
             final Shop shop = getShopNextTo(b.getLocation());
@@ -107,7 +107,7 @@ public class BlockListener extends AbstractProtectionListener {
                     }
                     plugin.text().of(p, "break-shop-use-supertool").send();
                     plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(), "BlockBreak(player)", shop.saveToInfoStorage()));
-                    shop.delete();
+                    plugin.getShopManager().deleteShop(shop);
                     return;
                 }
                 e.setCancelled(true);

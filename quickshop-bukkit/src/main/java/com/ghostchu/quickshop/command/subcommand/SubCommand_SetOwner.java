@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
@@ -25,7 +24,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "command.no-owner-given").send();
             return;
         }
@@ -42,17 +41,23 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             return;
         }
 
-        UUID newShopOwner = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
-        if (newShopOwner == null) {
-            plugin.text().of(sender, "unknown-player").send();
-            return;
-        }
-        ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
-        if (event.callCancellableEvent()) {
-            return;
-        }
-        shop.setOwner(newShopOwner);
-        plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
+        plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(0)).whenComplete((newShopOwner, throwable) -> {
+            if (throwable != null) {
+                plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
+                return;
+            }
+            if (newShopOwner == null) {
+                plugin.text().of(sender, "unknown-player").send();
+                return;
+            }
+            ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
+            if (event.callCancellableEvent()) {
+                return;
+            }
+            shop.setOwner(newShopOwner);
+            plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
+        });
+
     }
 
     @NotNull

@@ -8,3 +8,7 @@ depend:
 authors: [ Ghost_chu ]
 #libraries:
 #  - net.dv8tion:JDA:4.4.0_352.fix-2
+permissions:
+  quickshopaddon.discord.use:
+    description: Allows players to use discord commands
+    default: true

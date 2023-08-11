@@ -1,0 +1,11 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+api-version: 1.18
+depend:
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
+permissions:
+  quickshopaddon.displaycontrol.use:
+    description: Allows players to use displaycontrol commands
+    default: true

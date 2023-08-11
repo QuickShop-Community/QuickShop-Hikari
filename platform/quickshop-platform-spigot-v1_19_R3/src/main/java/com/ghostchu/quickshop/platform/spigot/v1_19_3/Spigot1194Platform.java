@@ -12,9 +12,9 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_19_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R3.enchantments.CraftEnchantment;
 import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_19_R3.potion.CraftPotionEffectType;
-import org.bukkit.craftbukkit.v1_19_R3.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -22,9 +22,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
-import java.util.Optional;
 
 public class Spigot1194Platform extends AbstractSpigotPlatform implements Platform {
 
@@ -61,9 +58,11 @@ public class Spigot1194Platform extends AbstractSpigotPlatform implements Platfo
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         if (material.isBlock()) {
-            return CraftMagicNumbers.getBlock(material).getDescriptionId();
+            //noinspection deprecation
+            return postProcessingTranslationKey(Bukkit.getUnsafe().getBlockTranslationKey(material));
         } else {
-            return postProcessingTranslationKey(CraftMagicNumbers.getItem(material).getDescriptionId());
+            //noinspection deprecation
+            return postProcessingTranslationKey(Bukkit.getUnsafe().getItemTranslationKey(material));
         }
     }
 
@@ -73,12 +72,8 @@ public class Spigot1194Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
-        if (op.isPresent()) {
-            return postProcessingTranslationKey(op.get().getDescriptionId());
-        } else {
-            return postProcessingTranslationKey("entity." + type.getKey());
-        }
+        //noinspection deprecation
+        return postProcessingTranslationKey(Bukkit.getUnsafe().getTranslationKey(type));
     }
 
     @Override
@@ -92,7 +87,8 @@ public class Spigot1194Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
+        CraftEnchantment craftEnchantment = (CraftEnchantment) enchantment;
+        return postProcessingTranslationKey(craftEnchantment.getHandle().getDescriptionId());
     }
     @Override
     public @NotNull String getTranslationKey(@NotNull ItemStack stack) {

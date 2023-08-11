@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
@@ -64,47 +63,51 @@ public class ShopPurger {
         boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
         boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
-            if (!player.hasPlayedBefore()) {
-                Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
-                continue;
+            try {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
+                if (!player.hasPlayedBefore()) {
+                    Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
+                    continue;
+                }
+                long lastPlayed = player.getLastPlayed();
+                if (lastPlayed == 0) {
+                    continue;
+                }
+                if (player.isOnline()) {
+                    continue;
+                }
+                if (player.isOp() && skipOp) {
+                    continue;
+                }
+                boolean markDeletion = player.isBanned() && deleteBanned;
+                long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
+                if (noOfDaysBetween > days) {
+                    markDeletion = true;
+                }
+                if (!markDeletion) {
+                    continue;
+                }
+                pendingRemovalShops.add(shop);
+            } catch (Exception e) {
+                plugin.logger().warn("Failed to purge shop " + shop.getShopId(), e);
             }
-            long lastPlayed = player.getLastPlayed();
-            if (lastPlayed == 0) {
-                continue;
-            }
-            if (player.isOnline()) {
-                continue;
-            }
-            if (player.isOp() && skipOp) {
-                continue;
-            }
-            boolean markDeletion = player.isBanned() && deleteBanned;
-            long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
-            if (noOfDaysBetween > days) {
-                markDeletion = true;
-            }
-            if (!markDeletion) {
-                continue;
-            }
-            pendingRemovalShops.add(shop);
         }
 
         BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
         purgeExecutor.addTasks(pendingRemovalShops);
         purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> {
-            shop.delete(false);
-            if (returnCreationFee) {
-                SimpleEconomyTransaction transaction =
-                        SimpleEconomyTransaction.builder()
-                                .amount(plugin.getConfig().getDouble("shop.cost"))
-                                .core(plugin.getEconomy())
-                                .currency(shop.getCurrency())
-                                .world(shop.getLocation().getWorld())
-                                .to(shop.getOwner())
-                                .build();
-                transaction.failSafeCommit();
-            }
+            plugin.getShopManager().deleteShop(shop);
+//            if (returnCreationFee) {
+//                SimpleEconomyTransaction transaction =
+//                        SimpleEconomyTransaction.builder()
+//                                .amount(plugin.getConfig().getDouble("shop.cost"))
+//                                .core(plugin.getEconomy())
+//                                .currency(shop.getCurrency())
+//                                .world(shop.getLocation().getWorld())
+//                                .to(shop.getOwner())
+//                                .build();
+//                transaction.failSafeCommit();
+//            }
         }).whenComplete((a, b) -> {
             long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
             plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",

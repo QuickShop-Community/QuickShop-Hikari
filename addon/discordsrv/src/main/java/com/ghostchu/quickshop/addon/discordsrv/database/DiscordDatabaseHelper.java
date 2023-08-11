@@ -42,10 +42,11 @@ public class DiscordDatabaseHelper {
         } else {
             settings.getSettings().put(feature, status);
         }
-        try (ResultSet set = DiscordTables.DISCORD_PLAYERS.createQuery()
+        try (SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery()
                 .setLimit(1)
                 .addCondition("player", uuid.toString())
-                .build().execute().getResultSet()) {
+                .build().execute();
+             ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 return DiscordTables.DISCORD_PLAYERS.createUpdate()
                         .setLimit(1)

@@ -33,18 +33,16 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
             plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                 UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
-                Util.asyncThreadRun(() -> {
-                    String name = plugin.getPlayerFinder().uuid2Name(uuid);
+                plugin.getPlayerFinder().uuid2NameFuture(uuid).whenComplete((name, throwable) -> {
                     if (name == null) {
                         Log.debug("Failed to migrate shop to unlimited shop owner, uniqueid invalid: " + uuid + ".");
+                        return;
                     }
                     Util.mainThreadRun(() -> {
                         plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
                         plugin.text().of(sender, "unlimited-shop-owner-changed", name).send();
                     });
                 });
-
-
             }
             return;
         }

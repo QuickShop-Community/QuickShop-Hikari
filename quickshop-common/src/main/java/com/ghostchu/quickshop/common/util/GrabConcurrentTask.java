@@ -29,7 +29,7 @@ public class GrabConcurrentTask<T> {
     public T invokeAll(long timeout, @NotNull TimeUnit unit, @Nullable Predicate<T> condition) throws InterruptedException {
         // Submit all tasks into executor
         for (Supplier<T> supplier : suppliers) {
-            QuickExecutor.getCommonExecutor().submit(new GrabConcurrentExecutor<>(deque, supplier));
+            QuickExecutor.getProfileIOExecutor().submit(new GrabConcurrentExecutor<>(deque, supplier));
         }
         if (condition == null) {
             condition = t -> true;
