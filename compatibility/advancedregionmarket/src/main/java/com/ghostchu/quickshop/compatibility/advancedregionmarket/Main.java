@@ -56,8 +56,7 @@ public final class Main extends CompatibilityModule implements Listener {
             if (region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
                 Shop shop = shopEntry.getValue();
                 if (shop != null) {
-                    shop.handleUnloading();
-                    shop.delete(false);
+                    getApi().getShopManager().deleteShop(shop);
                 }
             }
         }

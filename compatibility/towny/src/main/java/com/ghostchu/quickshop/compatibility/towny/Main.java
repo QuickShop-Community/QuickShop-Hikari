@@ -151,7 +151,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
                     Double price = priceLimiter.getPrice(shop.getItem().getType(), shop.isSelling());
                     if (price == null) {
-                        shop.delete();
+                        getApi().getShopManager().deleteShop(shop);
                         recordDeletion(null, shop, "Towny settings disallowed this item as town/nation shop anymore");
                         continue;
                     }
@@ -192,7 +192,7 @@ public final class Main extends CompatibilityModule implements Listener {
             if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
                 if (owner != null && shop.getOwner().equals(owner)) {
                     recordDeletion(deleter, shop, reason);
-                    shop.delete();
+                    getApi().getShopManager().deleteShop(shop);
                 }
             }
         }

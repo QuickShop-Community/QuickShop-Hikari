@@ -97,7 +97,7 @@ public class ShopPurger {
         BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
         purgeExecutor.addTasks(pendingRemovalShops);
         purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> {
-            shop.delete(false);
+            plugin.getShopManager().deleteShop(shop);
             if (returnCreationFee) {
                 SimpleEconomyTransaction transaction =
                         SimpleEconomyTransaction.builder()
