@@ -141,7 +141,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (event.wasAdded()) {
             return; // We only check untrusted
         }
-        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop -> {
+        getShops(event.getPlot()).stream().filter(shop -> event.getPlayer().equals(shop.getOwner().getUniqueId())).forEach(shop -> {
             recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "PlotSquared", false), shop, "Untrusted -> " + event.getPlayer());
             getApi().getShopManager().deleteShop(shop);
         });

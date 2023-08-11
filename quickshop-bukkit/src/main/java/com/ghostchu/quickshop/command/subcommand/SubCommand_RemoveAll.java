@@ -58,7 +58,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                             return;
                         }
                         for (Shop shop : tempList) {
-                            if (shop.getOwner().equals(shopOwner)) {
+                            if (shopOwner.getUniqueId().equals(shop.getOwner().getUniqueId())) {
                                 plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /qs removeall command.", shop.saveToInfoStorage()));
                                 plugin.getShopManager().deleteShop(shop);
                                 i++;

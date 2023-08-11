@@ -87,7 +87,7 @@ public class ContainerShop implements Shop, Reloadable {
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
     @EqualsAndHashCode.Exclude
-    private volatile boolean isDeleted = false;
+    private final boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
@@ -534,7 +534,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @NotNull String getPlayerGroup(@NotNull UUID player) {
-        if (player.equals(getOwner())) {
+        if (player.equals(getOwner().getUniqueId())) {
             return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
         }
         String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
@@ -1140,7 +1140,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
-        if (player.equals(getOwner())) {
+        if (player.equals(getOwner().getUniqueId())) {
             Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
             return true;
         }

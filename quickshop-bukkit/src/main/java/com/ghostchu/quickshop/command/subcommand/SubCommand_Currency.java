@@ -31,7 +31,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
         if (shop != null) {
             if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_CURRENCY)
                     || plugin.perm().hasPermission(sender, "quickshop.other.currency")) {
-                if (parser.getArgs().size() < 1) {
+                if (parser.getArgs().isEmpty()) {
                     shop.setCurrency(null);
                     plugin.text().of(sender, "currency-unset").send();
                     return;

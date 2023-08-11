@@ -92,7 +92,7 @@ public class PurchasesPAPI implements PAPISubHandler {
                     if (shopType == ShopType.BUYING) return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
                     return false;
                 })
-                .filter(record -> record.getPlayer().equals(player)).count();
+                .filter(record -> player.equals(record.getPlayer().getUniqueId())).count();
         return String.valueOf(count);
     }
 }

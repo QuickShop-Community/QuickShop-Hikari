@@ -94,7 +94,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
                     if (shopType == ShopType.BUYING) return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
                     return false;
                 })
-                .filter(record -> record.getPlayer().equals(player))
+                .filter(record -> player.equals(record.getPlayer().getUniqueId()))
                 .mapToLong(ShopMetricRecord::getAmount).sum();
         return String.valueOf(count);
     }

@@ -17,11 +17,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class SubCommand_Find implements CommandHandler<Player> {
 
@@ -33,7 +29,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() == 0) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "command.no-type-given").send();
             return;
         }

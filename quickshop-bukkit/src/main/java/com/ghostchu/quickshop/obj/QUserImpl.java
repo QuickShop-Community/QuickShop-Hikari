@@ -225,8 +225,7 @@ public class QUserImpl implements QUser {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof QUser) {
-            QUser qUser = (QUser) obj;
+        if (obj instanceof QUser qUser) {
             if (this.isRealPlayer() != qUser.isRealPlayer()) return false;
             if (this.isRealPlayer()) {
                 return this.uniqueId.equals(qUser.getUniqueId()) && this.username.equalsIgnoreCase(qUser.getUsername());

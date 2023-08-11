@@ -63,12 +63,10 @@ public final class Main extends CompatibilityModule implements Listener {
                     }
                 }
             });
-            Util.mainThreadRun(() -> {
-                pendingForDeletion.forEach(s -> {
-                    getApi().getShopManager().deleteShop(s);
-                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
-                });
-            });
+            Util.mainThreadRun(() -> pendingForDeletion.forEach(s -> {
+                getApi().getShopManager().deleteShop(s);
+                recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
+            }));
         });
     }
 
@@ -80,16 +78,14 @@ public final class Main extends CompatibilityModule implements Listener {
             }
             List<Shop> pendingForDeletion = new ArrayList<>();
             for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
-                if (shopOwnerToDelete == null || shop.getOwner().equals(shopOwnerToDelete)) {
+                if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
                     pendingForDeletion.add(shop);
                 }
             }
-            Util.mainThreadRun(() -> {
-                pendingForDeletion.forEach(s -> {
-                    getApi().getShopManager().deleteShop(s);
-                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
-                });
-            });
+            Util.mainThreadRun(() -> pendingForDeletion.forEach(s -> {
+                getApi().getShopManager().deleteShop(s);
+                recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
+            }));
 
         });
     }

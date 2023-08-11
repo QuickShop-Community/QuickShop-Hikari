@@ -133,7 +133,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
+                    if (!claimVerifyChunks.getOwnerID().equals(shop.getOwner().getUniqueId()) &&
                             claimVerifyChunks.contains(shop.getLocation(), false, false) &&
                             !claimVerifyShop.contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
@@ -174,13 +174,13 @@ public final class Main extends CompatibilityModule implements Listener {
                 continue;
             }
             for (Shop shop : shops.values()) {
-                if (shop.getOwner().equals(claim.getOwnerID())) {
+                if (claim.getOwnerID().equals(shop.getOwner().getUniqueId())) {
                     continue;
                 }
-                if (event.getIdentifier().equals(shop.getOwner().getUniqueId())) {
+                if (event.getIdentifier().equals(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
                     getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
                     getApi().getShopManager().deleteShop(shop);
-                } else if (event.getIdentifier().contains(shop.getOwner().toString())) {
+                } else if (event.getIdentifier().contains(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
                     getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
                     getApi().getShopManager().deleteShop(shop);
                 } else if ("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
@@ -212,7 +212,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (!shop.getOwner().equals(subClaim.getOwnerID()) &&
+                    if (!subClaim.getOwnerID().equals(shop.getOwner().getUniqueId()) &&
                             subClaim.contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);
@@ -277,7 +277,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
+                    if (!event.getClaim().getOwnerID().equals(shop.getOwner().getUniqueId()) &&
                             event.getClaim().contains(shop.getLocation(), false, false)) {
                         getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
                         getApi().getShopManager().deleteShop(shop);

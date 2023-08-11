@@ -36,7 +36,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             return;
         }
         String type = null;
-        if (parser.getArgs().size() > 0) {
+        if (!parser.getArgs().isEmpty()) {
             type = parser.getArgs().get(0).toLowerCase(Locale.ROOT);
         }
         String operation = null;

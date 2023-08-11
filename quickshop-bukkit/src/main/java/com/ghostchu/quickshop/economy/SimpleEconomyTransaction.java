@@ -94,26 +94,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         new EconomyTransactionEvent(this).callEvent();
     }
 
-    /**
-     * Copy a transaction
-     */
-
-    @Builder
-    public SimpleEconomyTransaction(SimpleEconomyTransaction s) {
-        this.from = s.from;
-        this.to = s.to;
-        this.core = s.core;
-        this.amount = s.amount;
-        this.taxer = s.taxer;
-        this.allowLoan = s.allowLoan;
-        this.world = s.world;
-        this.currency = s.currency;
-        this.amountAfterTax = s.amountAfterTax;
-        this.tax = s.tax;
-        this.benefit = s.benefit;
-        new EconomyTransactionEvent(this).callEvent();
-    }
-
     public interface SimpleTransactionCallback extends TransactionCallback {
         /**
          * Calling while Transaction commit

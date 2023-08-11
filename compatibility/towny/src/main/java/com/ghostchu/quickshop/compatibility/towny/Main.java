@@ -197,7 +197,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 continue;
             }
             if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
-                if (owner != null && shop.getOwner().equals(owner)) {
+                if (owner != null && owner.equals(shop.getOwner().getUniqueId())) {
                     recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false), shop, reason);
                     getApi().getShopManager().deleteShop(shop);
                 }

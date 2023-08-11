@@ -34,7 +34,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.getOwner().equals(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.admin")) {
+        if (!sender.getUniqueId().equals(shop.getOwner().getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.admin")) {
             plugin.getApi().getTextManager().of(sender, "no-permission").send();
             return;
         }

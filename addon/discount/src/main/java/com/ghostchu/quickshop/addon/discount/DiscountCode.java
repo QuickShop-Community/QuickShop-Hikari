@@ -227,7 +227,7 @@ public class DiscountCode {
                 }
             }
             case PLAYER_ALL_SHOPS -> {
-                if (shop.getOwner().equals(owner)) {
+                if (owner.equals(shop.getOwner().getUniqueId())) {
                     yield ApplicableType.APPLICABLE;
                 } else {
                     yield ApplicableType.NOT_APPLICABLE;

@@ -33,7 +33,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             quickshop.text().of(sender, "command-incorrect", "/qs discount <install/uninstall/create/remove/list/config/query>").send();
             return;
         }
@@ -259,8 +259,8 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             }
             case "scope" -> {
                 if (passThroughArgs.length < 3) {
-                    StringJoiner joiner = new StringJoiner("<", "/", ">");
-                    Arrays.stream(CodeType.values()).forEach(t -> joiner.add(t.name()));
+//                    StringJoiner joiner = new StringJoiner("<", "/", ">");
+//                    Arrays.stream(CodeType.values()).forEach(t -> joiner.add(t.name()));
                     quickshop.text().of(sender, "command-incorrect", "/qs discount config <code> scope <scope>").send();
                     return;
                 }

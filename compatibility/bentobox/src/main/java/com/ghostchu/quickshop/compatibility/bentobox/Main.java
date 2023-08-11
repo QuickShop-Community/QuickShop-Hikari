@@ -66,7 +66,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         getShops(event.getIsland()).forEach(shop -> {
-            if (shop.getOwner().equals(event.getPlayerUUID())) {
+            if (event.getPlayerUUID().equals(shop.getOwner().getUniqueId())) {
                 recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");
                 getApi().getShopManager().deleteShop(shop);
             }

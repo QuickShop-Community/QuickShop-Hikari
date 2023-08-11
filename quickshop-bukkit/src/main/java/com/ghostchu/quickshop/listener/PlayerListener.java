@@ -221,7 +221,7 @@ public class PlayerListener extends AbstractQSListener {
                 attached = Util.getSecondHalf(b);
                 if (attached != null) {
                     Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
-                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner().getUniqueId())) {
                         // If player not the owner of the shop, make him select the second half of the
                         // shop
                         // Otherwise owner will be able to create new double chest shop

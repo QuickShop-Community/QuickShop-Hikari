@@ -32,7 +32,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
      */
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
             return;
         }
@@ -55,7 +55,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     }
 
     private void handleTrim(@NotNull CommandSender sender, @NotNull List<String> subParams) {
-        if (subParams.size() < 1 || !"confirm".equalsIgnoreCase(subParams.get(0))) {
+        if (subParams.isEmpty() || !"confirm".equalsIgnoreCase(subParams.get(0))) {
             plugin.text().of(sender, "database.trim-warning").send();
             return;
         }
@@ -89,7 +89,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
 
     private void purgeLogs(@NotNull CommandSender sender, @NotNull List<String> subParams) {
         // TODO: Only purge before x days
-        if (subParams.size() < 1) {
+        if (subParams.isEmpty()) {
             plugin.text().of(sender, "command-incorrect", "/qs database purgelogs <before-days>").send();
             return;
         }
@@ -126,18 +126,15 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
 
     private void purgePlayersCache(CommandSender sender, @NotNull List<String> subParams) {
         plugin.text().of(sender, "database.purge-players-cache").send();
-        Util.asyncThreadRun(() -> {
-            DataTables.PLAYERS
-                    .createDelete()
-                    .build()
-                    .executeAsync((lines) -> {
-                        ((FastPlayerFinder) plugin.getPlayerFinder()).getNameCache().invalidateAll();
-                        plugin.text().of(sender, "database.purge-players-completed", lines).send();
-                    }, (error, sqlAction) -> {
-                        plugin.logger().error("Failed to purge players caches!", error);
-                        plugin.text().of(sender, "database.purge-players-error").send();
-                    });
-
-        });
+        Util.asyncThreadRun(() -> DataTables.PLAYERS
+                .createDelete()
+                .build()
+                .executeAsync((lines) -> {
+                    ((FastPlayerFinder) plugin.getPlayerFinder()).getNameCache().invalidateAll();
+                    plugin.text().of(sender, "database.purge-players-completed", lines).send();
+                }, (error, sqlAction) -> {
+                    plugin.logger().error("Failed to purge players caches!", error);
+                    plugin.text().of(sender, "database.purge-players-error").send();
+                }));
     }
 }

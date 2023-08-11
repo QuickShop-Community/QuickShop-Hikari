@@ -72,25 +72,23 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 }
                 case 2 -> {
                     String name = parser.getArgs().get(1);
-                    plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1)).whenComplete((uuid, throwable) -> {
-                        Util.mainThreadRun(() -> {
-                            BuiltInShopPermissionGroup permissionGroup = null;
-                            switch (parser.getArgs().get(0)) {
-                                case "add" -> {
-                                    permissionGroup = BuiltInShopPermissionGroup.STAFF;
-                                    plugin.text().of(sender, "shop-staff-added", name).send();
-                                }
-                                case "del" -> {
-                                    permissionGroup = BuiltInShopPermissionGroup.EVERYONE;
-                                    plugin.text().of(sender, "shop-staff-deleted", name).send();
-                                }
-                                default -> plugin.text().of(sender, "command.wrong-args").send();
+                    plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1)).whenComplete((uuid, throwable) -> Util.mainThreadRun(() -> {
+                        BuiltInShopPermissionGroup permissionGroup = null;
+                        switch (parser.getArgs().get(0)) {
+                            case "add" -> {
+                                permissionGroup = BuiltInShopPermissionGroup.STAFF;
+                                plugin.text().of(sender, "shop-staff-added", name).send();
                             }
-                            if (permissionGroup != null) {
-                                shop.setPlayerGroup(uuid, permissionGroup);
+                            case "del" -> {
+                                permissionGroup = BuiltInShopPermissionGroup.EVERYONE;
+                                plugin.text().of(sender, "shop-staff-deleted", name).send();
                             }
-                        });
-                    });
+                            default -> plugin.text().of(sender, "command.wrong-args").send();
+                        }
+                        if (permissionGroup != null) {
+                            shop.setPlayerGroup(uuid, permissionGroup);
+                        }
+                    }));
                 }
                 default -> {
                     plugin.text().of(sender, "command.wrong-args").send();

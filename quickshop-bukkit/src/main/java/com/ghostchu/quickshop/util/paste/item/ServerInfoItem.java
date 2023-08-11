@@ -19,7 +19,7 @@ public class ServerInfoItem implements SubPasteItem {
     private final String mcVersion;
     private final String worldContainer;
     private String moddedServerType;
-    private String platform;
+    private final String platform;
 
     public ServerInfoItem() {
         QuickShop plugin = QuickShop.getInstance();

@@ -40,7 +40,7 @@ public class AdvancedChestsInventoryManager implements InventoryWrapperManager {
         Location location = new Location(Bukkit.getWorld(worldName), x, y, z);
         AdvancedChest<?, ?> achest = AdvancedChestsAPI.getChestManager().getAdvancedChest(location);
         if (achest == null)
-            throw new IllegalArgumentException("Cannot found AdvancedChest at " + location.toString() + " with UUID " + aChestUniqueId.toString() + ".");
+            throw new IllegalArgumentException("Cannot found AdvancedChest at " + location + " with UUID " + aChestUniqueId + ".");
         return new AdvancedChestsWrapper(achest, plugin);
     }
 

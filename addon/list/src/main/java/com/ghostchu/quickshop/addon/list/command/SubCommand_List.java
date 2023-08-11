@@ -27,7 +27,7 @@ public class SubCommand_List implements CommandHandler<Player> {
 
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             lookupSelf(sender);
             return;
         }
