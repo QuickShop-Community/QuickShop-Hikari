@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
@@ -149,7 +150,11 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
                     break;
                 }
                 ItemStack stack = deque.pop();
-                page.getBukkitInventory().setItem(inputSlot, stack);
+                if (stack.getType().isAir() || stack.getAmount() == 0) {
+                    page.getBukkitInventory().setItem(inputSlot, null);
+                } else {
+                    page.getBukkitInventory().setItem(inputSlot, stack);
+                }
             }
         }
     }
@@ -172,7 +177,7 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
             while (iterator.hasNext()) {
                 ItemStack itemStack = iterator.next();
                 if (itemStack == null) {
-                    iterator.setCurrent(itemStackToAdd);
+                    iterator.setCurrent(itemStackToAdd.clone());
                     itemStackToAdd.setAmount(0);
                     continue AddProcess;
                 } else {
@@ -216,6 +221,7 @@ public class AdvancedChestsWrapper implements InventoryWrapper {
                     int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);
                     itemStack.setAmount(itemStack.getAmount() - actuallyRemove);
                     int needsNow = itemStackToRemove.getAmount() - actuallyRemove;
+                    Log.debug("couldRemove = " + couldRemove + " actuallyRemove = " + actuallyRemove + " needsNow = " + needsNow);
                     itemStackToRemove.setAmount(needsNow);
                     iterator.setCurrent(itemStack);
                     if (needsNow == 0) {

@@ -91,6 +91,7 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
         AdvancedChest<?, ?> advancedChests = AdvancedChestsAPI.getInventoryManager().getAdvancedChest(e.getInventory());
+        if (advancedChests == null) return;
         for (Shop shop : getApi().getShopManager().getLoadedShops()) {
             InventoryWrapper inventory = shop.getInventory();
             if (inventory == null) continue;

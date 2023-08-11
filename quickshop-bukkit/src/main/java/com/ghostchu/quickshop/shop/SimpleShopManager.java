@@ -143,12 +143,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
     }
 
-    @Deprecated
-    public void actionBuying(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
-                             @NotNull Shop shop, int amount) {
-        actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }
-
     @Override
     public void actionBuying(
             @NotNull Player buyer,
@@ -1402,13 +1396,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return this.interactiveManager;
     }
 
-    @Deprecated
-    public void actionSelling(
-            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
-            int amount) {
-        Util.ensureThread(false);
-        actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }
 
     private void notifyBought(@NotNull QUser seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
         Util.asyncThreadRun(() -> {

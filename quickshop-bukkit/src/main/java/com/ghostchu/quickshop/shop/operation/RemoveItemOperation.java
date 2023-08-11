@@ -41,6 +41,7 @@ public class RemoveItemOperation implements Operation {
         committed = true;
         this.snapshot = inv.createSnapshot();
         int remains = amount;
+        int lastRemains = -1;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
@@ -50,8 +51,11 @@ public class RemoveItemOperation implements Operation {
                 remains -= stackSize;
             } else {
                 remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
+            }
+            if (remains == lastRemains) {
                 return false;
             }
+            lastRemains = remains;
         }
         return true;
     }
