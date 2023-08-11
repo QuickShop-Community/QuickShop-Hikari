@@ -14,6 +14,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,6 +38,7 @@ public final class Main extends JavaPlugin implements Listener {
         // Plugin startup logic
         instance = this;
         saveDefaultConfig();
+        Bukkit.getPluginManager().registerEvents(this, this);
         this.plugin = QuickShop.getInstance();
         this.container = CommandContainer.builder()
                 .prefix("limit")
@@ -45,6 +47,7 @@ public final class Main extends JavaPlugin implements Listener {
                 .executor(new SubCommand_Limit(plugin))
                 .build();
         plugin.getCommandManager().registerCmd(container);
+
     }
 
     @EventHandler(ignoreCancelled = true)

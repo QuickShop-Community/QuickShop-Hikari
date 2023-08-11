@@ -51,7 +51,7 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
                 if (shop != null) {
                     Util.mainThreadRun(() -> {
                         api.logEvent(new ShopRemoveLog(actor.getUniqueId(), "WorldEdit", shop.saveToInfoStorage()));
-                        shop.delete();
+                        api.getShopManager().deleteShop(shop);
                     });
                 }
             }

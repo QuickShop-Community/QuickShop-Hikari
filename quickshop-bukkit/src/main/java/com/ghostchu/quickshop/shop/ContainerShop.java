@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -18,7 +17,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
@@ -265,16 +263,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.setSignText();
     }
 
-    @SuppressWarnings("removal")
-    @Override
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    public boolean addStaff(@NotNull UUID player) {
-        Util.ensureThread(false);
-        setPlayerGroup(player, BuiltInShopPermissionGroup.STAFF);
-        setDirty();
-        return true;
-    }
-
     /**
      * Buys amount of item from Player p. Does NOT check our inventory, or balances
      *
@@ -389,34 +377,17 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public void clearStaffs() {
-        Util.ensureThread(false);
-        this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(this.playerGroup::remove);
-        setDirty();
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public boolean delStaff(@NotNull UUID player) {
-        Util.ensureThread(false);
-        if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())) {
-            setPlayerGroup(player, BuiltInShopPermissionGroup.EVERYONE);
-            setDirty();
-        }
-        return true;
-    }
 
     /**
      * Deletes the shop from the list of shops and queues it for database
      */
+    @SuppressWarnings("removal")
     @Override
     public void delete() {
         Util.ensureThread(false);
-        delete(false);
+        Log.Caller caller = Log.Caller.createRaw();
+        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#deleteShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
+        plugin.getShopManager().deleteShop(this);
     }
 
     /**
@@ -424,72 +395,35 @@ public class ContainerShop implements Shop, Reloadable {
      *
      * @param memoryOnly whether to delete from database
      */
+    @SuppressWarnings("removal")
     @Override
     public void delete(boolean memoryOnly) {
         Util.ensureThread(false);
-        // Get a copy of the attached shop to save it from deletion
-        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
-        if (Util.fireCancellableEvent(shopDeleteEvent)) {
-            Log.debug("Shop deletion was canceled because a plugin canceled it.");
-            return;
-        }
-        setDirty();
-        isDeleted = true;
-        // Unload the shop
-        if (isLoaded) {
-            this.onUnload();
-        }
+        Log.Caller caller = Log.Caller.createRaw();
+        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#deleteShop(Shop) or ShopManager#unregisterShop(Shop,Persist[aka.fromMemory]) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
         if (memoryOnly) {
-            // Delete it from memory
-            plugin.getShopManager().removeShop(this);
+            plugin.getShopManager().unregisterShop(this, false);
         } else {
-            // Delete the signs around it
-            for (Sign s : this.getSigns()) {
-                s.getBlock().setType(Material.AIR);
-            }
-            // Delete it from the database
-            // Refund if necessary
-            if (plugin.getConfig().getBoolean("shop.refund")) {
-                double cost = plugin.getConfig().getDouble("shop.cost");
-                SimpleEconomyTransaction transaction;
-                if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && taxAccount != null) {
-                    cost = Math.min(cost, plugin.getEconomy().getBalance(taxAccount, this.getLocation().getWorld(), plugin.getCurrency()));
-                    transaction =
-                            SimpleEconomyTransaction.builder()
-                                    .amount(cost)
-                                    .core(plugin.getEconomy())
-                                    .currency(plugin.getCurrency())
-                                    .world(this.getLocation().getWorld())
-                                    .from(taxAccount)
-                                    .to(this.getOwner())
-                                    .build();
-                } else {
-                    transaction =
-                            SimpleEconomyTransaction.builder()
-                                    .amount(cost)
-                                    .core(plugin.getEconomy())
-                                    .currency(plugin.getCurrency())
-                                    .world(this.getLocation().getWorld())
-                                    .to(this.getOwner())
-                                    .build();
-                }
-                if (!transaction.failSafeCommit()) {
-                    plugin.logger().warn("Shop deletion refund failed. Reason: {}", transaction.getLastError());
-                }
-            }
-            plugin.getShopManager().removeShop(this);
-            Location loc = getLocation();
-            try {
-                plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-                        .whenComplete((lines, err) -> {
-                            if (err != null) {
-                                plugin.logger().warn("Failed to remove shop from database", err);
-                            }
-                        });
-            } catch (Exception e) {
-                plugin.logger().warn("Failed to remove the shop mapping from database.", e);
-            }
+            plugin.getShopManager().deleteShop(this);
         }
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    public void onLoad() {
+        Util.ensureThread(false);
+        Log.Caller caller = Log.Caller.createRaw();
+        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#loadShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
+        plugin.getShopManager().loadShop(this);
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    public void onUnload() {
+        Util.ensureThread(false);
+        Log.Caller caller = Log.Caller.createRaw();
+        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#unloadShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
+        plugin.getShopManager().unloadShop(this);
     }
 
     /**
@@ -562,10 +496,10 @@ public class ContainerShop implements Shop, Reloadable {
         if (!createBackup) {
             createBackup = false;
             if (createBackup) {
-                this.delete(false);
+                plugin.getShopManager().deleteShop(this);
             }
         } else {
-            this.delete(true);
+            plugin.getShopManager().unregisterShop(this, false);
         }
         plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
         Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
@@ -609,21 +543,6 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public @NotNull Location getLocation() {
         return this.location;
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public @NotNull ShopModerator getModerator() {
-        return new SimpleShopModerator(this.getOwner(), ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF)));
-    }
-
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @Override
-    public void setModerator(@NotNull ShopModerator shopModerator) {
-        Util.ensureThread(false);
-        setDirty();
     }
 
     /**
@@ -1174,15 +1093,11 @@ public class ContainerShop implements Shop, Reloadable {
      * Load ContainerShop.
      */
     @Override
-    public void onLoad() {
+    public void handleLoading() {
         Util.ensureThread(false);
         if (this.isLoaded) {
             Log.debug("Dupe load request, canceled.");
             return;
-        }
-        Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
-        if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
-            throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
         try (PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
             inventoryWrapper = locateInventory(symbolLink);
@@ -1190,10 +1105,10 @@ public class ContainerShop implements Shop, Reloadable {
             plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, e.getClass().getName(), e.getMessage());
             if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
                 plugin.logger().warn("Deleting corrupt shop...");
-                this.delete(false);
+                plugin.getShopManager().deleteShop(this);
             } else {
                 plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
-                this.delete(true);
+                plugin.getShopManager().deleteShop(this);
             }
             return;
         }
@@ -1201,7 +1116,6 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         this.isLoaded = true;
-        plugin.getShopManager().getLoadedShops().add(this);
         //disable schedule check due to performance issue
         //plugin.getShopContainerWatcher().scheduleCheck(this);
         try (PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
@@ -1213,7 +1127,7 @@ public class ContainerShop implements Shop, Reloadable {
      * Unload ContainerShop.
      */
     @Override
-    public void onUnload() {
+    public void handleUnloading() {
         Util.ensureThread(false);
         if (!this.isLoaded) {
             Log.debug("Dupe unload request, canceled.");
@@ -1241,26 +1155,27 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
-        String playerName;
-        if (plugin.getConfig().getBoolean("shops.async-owner-name-fetch", false)) {
-            CompletableFuture<String> future = CompletableFuture
-                    .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
-            try {
-                playerName = future.get(20, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                playerName = "N/A";
-            }
-        } else {
-            playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
-        }
         Component name;
-        if (playerName == null) {
-            name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
-        } else {
-            name = Component.text(playerName);
-        }
         if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
+        } else {
+            String playerName;
+            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
+                CompletableFuture<String> future = CompletableFuture
+                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
+                try {
+                    playerName = future.get(20, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    playerName = "N/A";
+                }
+            } else {
+                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
+            }
+            if (playerName == null) {
+                name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
+            } else {
+                name = Component.text(playerName);
+            }
         }
         ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
         event.callEvent();
@@ -1599,26 +1514,6 @@ public class ContainerShop implements Shop, Reloadable {
     public void setShopBenefit(@NotNull Benefit benefit) {
         this.benefit = benefit;
         setDirty();
-    }
-
-    /**
-     * Check the container still there and we can keep use it.
-     */
-    public void checkContainer() {
-        Util.ensureThread(false);
-        if (!this.isLoaded) {
-            return;
-        }
-        if (!Util.isLoaded(this.getLocation())) {
-            return;
-        }
-        if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Log.debug("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
-                    + " container was missing, deleting...");
-            plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
-            this.onUnload();
-            this.delete(false);
-        }
     }
 
     public @NotNull SimpleDataRecord createDataRecord() {

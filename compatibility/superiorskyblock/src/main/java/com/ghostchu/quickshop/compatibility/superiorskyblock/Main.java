@@ -13,15 +13,23 @@ import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.util.Util;
+import io.papermc.lib.PaperLib;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -31,43 +39,73 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler
     public void deleteShops(IslandQuitEvent event) {
         if (deleteShopOnMemberLeave) {
-            deleteShops(event.getIsland(), event.getPlayer().getUniqueId());
+            deleteShops(event.getIsland(), event.getPlayer().getUniqueId(), event.getPlayer().getUniqueId(), "IslandQuitEvent");
         }
 
     }
 
-    private void deleteShops(@NotNull Island island, @Nullable UUID uuid) {
-        island.getAllChunks().forEach((chunk) -> {
-            Map<Location, Shop> shops = QuickShop.getInstance().getShopManager().getShops(chunk);
-            if (shops != null && !shops.isEmpty()) {
-                shops.forEach((location, shop) -> {
-                    if (uuid != null) {
-                        if (!shop.getOwner().equals(uuid)) {
-                            return;
-                        }
-                        recordDeletion(uuid, shop, "Shop deleting");
-                        shop.delete();
-                    }
-                });
+    private void deleteShops(@NotNull Island island, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
+        List<CompletableFuture<Chunk>> allFutures = this.getAllChunksAsync(island);
+        CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).whenComplete((v, throwable) -> {
+            if (throwable != null) {
+                getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
+                return;
             }
+            List<Shop> pendingForDeletion = new ArrayList<>();
+            allFutures.forEach(future -> {
+                Chunk chunk = future.getNow(null);
+                for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
+                    if (shopOwnerToDelete == null || shop.getOwner().equals(shopOwnerToDelete)) {
+                        pendingForDeletion.add(shop);
+                    }
+                }
+            });
+            Util.mainThreadRun(() -> {
+                pendingForDeletion.forEach(s -> {
+                    getApi().getShopManager().deleteShop(s);
+                    recordDeletion(deleteOperator, s, deleteReason);
+                });
+            });
+        });
+    }
+
+    private void deleteShops(@NotNull World world, int chunkX, int chunkZ, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
+        PaperLib.getChunkAtAsync(world, chunkX, chunkZ).whenComplete((chunk, throwable) -> {
+            if (throwable != null) {
+                getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
+                return;
+            }
+            List<Shop> pendingForDeletion = new ArrayList<>();
+            for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
+                if (shopOwnerToDelete == null || shop.getOwner().equals(shopOwnerToDelete)) {
+                    pendingForDeletion.add(shop);
+                }
+            }
+            Util.mainThreadRun(() -> {
+                pendingForDeletion.forEach(s -> {
+                    getApi().getShopManager().deleteShop(s);
+                    recordDeletion(deleteOperator, s, deleteReason);
+                });
+            });
+
         });
     }
 
     @EventHandler
     public void deleteShops(IslandKickEvent event) {
         if (deleteShopOnMemberLeave) {
-            deleteShops(event.getIsland(), event.getTarget().getUniqueId());
+            deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
         }
     }
 
     @EventHandler
     public void deleteShops(IslandUncoopPlayerEvent event) {
-        deleteShops(event.getIsland(), event.getTarget().getUniqueId());
+        deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandUncoopPlayerEvent");
     }
 
     @EventHandler
     public void deleteShopsOnChunkReset(IslandChunkResetEvent event) {
-        deleteShops(event.getIsland(), null);
+        deleteShops(event.getWorld(), event.getChunkX(), event.getChunkZ(), null, CommonUtil.getNilUniqueId(), "IslandChunkResetEvent");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -124,9 +162,21 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         if (island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
         }
+    }
+
+    private List<CompletableFuture<Chunk>> getAllChunksAsync(Island island) {
+        List<CompletableFuture<Chunk>> chunkFutures = new ArrayList<>();
+        for (World.Environment environment : World.Environment.values()) {
+            try {
+                chunkFutures.addAll(island.getAllChunksAsync(environment, false, chunk -> {
+                }));
+            } catch (NullPointerException ignored) {
+            }
+        }
+        return chunkFutures;
     }
 }

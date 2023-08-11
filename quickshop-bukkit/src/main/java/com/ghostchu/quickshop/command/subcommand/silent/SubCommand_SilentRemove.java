@@ -23,6 +23,6 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
         }
 
         plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(), "/qs silentremove command", shop.saveToInfoStorage()));
-        shop.delete();
+        plugin.getShopManager().deleteShop(shop);
     }
 }

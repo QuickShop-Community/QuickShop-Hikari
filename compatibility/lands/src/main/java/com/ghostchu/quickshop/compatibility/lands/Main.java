@@ -84,7 +84,7 @@ public final class Main extends CompatibilityModule {
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
                                 recordDeletion(CommonUtil.getNilUniqueId(), shop, "Lands: shop deleted because owner lost permission");
-                                Util.mainThreadRun(shop::delete);
+                                Util.mainThreadRun(() -> getApi().getShopManager().deleteShop(shop));
                             }
                         }
                     }

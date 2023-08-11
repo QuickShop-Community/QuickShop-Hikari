@@ -53,7 +53,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 for (Shop shop : tempList) {
                     if (shop.getOwner().equals(shopOwner.getUniqueId())) {
                         plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "Deleting shop " + shop + " as requested by the /qs removeall command.", shop.saveToInfoStorage()));
-                        shop.delete();
+                        plugin.getShopManager().deleteShop(shop);
                         i++;
                     }
                 }
@@ -69,7 +69,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 for (Shop shop : tempList) {
                     if (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
                         plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "Deleting shop " + shop + " as requested by the /qs removeall command.", shop.saveToInfoStorage()));
-                        shop.delete();
+                        plugin.getShopManager().deleteShop(shop);
                         i++;
                     }
                 }

@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.2.2.12</version>
+    <version>4.3.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -471,6 +471,9 @@
         <module>compatibility/residence</module>
         <module>compatibility/elitemobs</module>
         <module>compatibility/bungeecord-geyser</module>
+        <module>compatibility/advancedchests</module>
+        <module>compatibility/ecoenchants</module>
+        <module>compatibility/reforges</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>

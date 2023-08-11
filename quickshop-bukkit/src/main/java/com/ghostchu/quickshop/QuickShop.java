@@ -735,18 +735,17 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                     }
                 });
             });
-
-            if (waitingForBake.isEmpty()) {
-                return;
+            for (UUID uuid : waitingForBake) {
+                QuickExecutor.getProfileIOExecutor().submit(() -> {
+                    String name = playerFinder.uuid2Name(uuid);
+                    if (name != null) {
+                        playerFinder.cache(uuid, name);
+                    }
+                });
             }
-            logger.info("Resolving {} player UUID and Name mappings...", waitingForBake.size());
-            waitingForBake.forEach(uuid -> {
-                String name = playerFinder.uuid2Name(uuid);
-                if (name == null) {
-                    return;
-                }
-                logger.info("Resolved: {} ({}), {} jobs remains.", uuid, name, (waitingForBake.size() - 1));
-            });
+            if (!waitingForBake.isEmpty()) {
+                javaPlugin.logger().info("Performing {} players username caching.", waitingForBake.size());
+            }
         }
     }
 
@@ -948,7 +947,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         if (getShopManager() != null) {
             logger.info("Unloading all loaded shops...");
-            getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            getShopManager().getLoadedShops().forEach(Shop::handleUnloading);
         }
         if (this.bungeeListener != null) {
             logger.info("Disabling the BungeeChat messenger listener.");
