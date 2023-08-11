@@ -13,9 +13,9 @@ import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
@@ -27,7 +27,6 @@ import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
@@ -53,9 +52,6 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * ChestShop core
@@ -76,7 +72,7 @@ public class ContainerShop implements Shop, Reloadable {
     @NotNull
     private final Map<UUID, String> playerGroup;
     private long shopId;
-    private UUID owner;
+    private QUser owner;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
@@ -102,7 +98,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Nullable
     private String currency;
     private boolean disableDisplay;
-    private UUID taxAccount;
+    private QUser taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
     @EqualsAndHashCode.Exclude
@@ -164,13 +160,13 @@ public class ContainerShop implements Shop, Reloadable {
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
-            @NotNull UUID owner,
+            @NotNull QUser owner,
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,
             @Nullable String currency,
             boolean disableDisplay,
-            @Nullable UUID taxAccount,
+            @Nullable QUser taxAccount,
             @NotNull String inventoryWrapperProvider,
             @NotNull String symbolLink,
             @Nullable String shopName,
@@ -272,7 +268,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @param amount         The amount to buy
      */
     @Override
-    public void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory,
+    public void buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory,
                     @NotNull Location loc2Drop, int amount) throws Exception {
         Util.ensureThread(false);
         amount = amount * item.getAmount();
@@ -316,7 +312,7 @@ public class ContainerShop implements Shop, Reloadable {
             }
         }
         //Update sign
-        this.setSignText(plugin.text().findRelativeLanguages(buyer));
+        this.setSignText(plugin.text().findRelativeLanguages(buyer, false));
     }
 
     @Override
@@ -549,7 +545,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @return The name of the player who owns the shop.
      */
     @Override
-    public @NotNull UUID getOwner() {
+    public @NotNull QUser getOwner() {
         return this.owner;
     }
 
@@ -559,13 +555,13 @@ public class ContainerShop implements Shop, Reloadable {
      * @param owner the new owner
      */
     @Override
-    public void setOwner(@NotNull UUID owner) {
+    public void setOwner(@NotNull QUser owner) {
         Util.ensureThread(false);
         if (this.owner.equals(owner)) {
             return;
         }
         this.owner = owner;
-        setSignText(plugin.getTextManager().findRelativeLanguages(owner));
+        setSignText(plugin.getTextManager().findRelativeLanguages(owner, false));
     }
 
     /**
@@ -852,21 +848,11 @@ public class ContainerShop implements Shop, Reloadable {
         return signs;
     }
 
-    /**
-     * @return The list of players who can manage the shop.
-     */
-    @NotNull
-    @Override
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    public List<UUID> getStaffs() {
-        return ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF));
-    }
 
     @Override
     @Nullable
-    public UUID getTaxAccount() {
-        UUID uuid = null;
+    public QUser getTaxAccount() {
+        QUser uuid = null;
         if (taxAccount != null) {
             uuid = taxAccount;
         } else {
@@ -881,7 +867,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public void setTaxAccount(@Nullable UUID taxAccount) {
+    public void setTaxAccount(@Nullable QUser taxAccount) {
         if (Objects.equals(taxAccount, this.taxAccount)) {
             return;
         }
@@ -895,7 +881,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     @Nullable
-    public UUID getTaxAccountActual() {
+    public QUser getTaxAccountActual() {
         return taxAccount;
     }
 
@@ -1159,18 +1145,18 @@ public class ContainerShop implements Shop, Reloadable {
         if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
         } else {
-            String playerName;
-            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
-                CompletableFuture<String> future = CompletableFuture
-                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
-                try {
-                    playerName = future.get(20, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    playerName = "N/A";
-                }
-            } else {
-                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
-            }
+            String playerName = this.getOwner().getUsername();
+//            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
+//                CompletableFuture<String> future = CompletableFuture
+//                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
+//                try {
+//                    playerName = future.get(20, TimeUnit.MILLISECONDS);
+//                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+//                    playerName = "N/A";
+//                }
+//            } else {
+//                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
+//            }
             if (playerName == null) {
                 name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
             } else {
@@ -1309,7 +1295,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @param amount          The amount to sell
      */
     @Override
-    public void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory,
+    public void sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory,
                      @NotNull Location loc2Drop, int amount) throws Exception {
         Util.ensureThread(false);
         amount = item.getAmount() * amount;
@@ -1351,7 +1337,7 @@ public class ContainerShop implements Shop, Reloadable {
                 }
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
-            this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
+            this.setSignText(plugin.getTextManager().findRelativeLanguages(seller, false));
         }
     }
 

@@ -64,7 +64,8 @@ public class ShopPurger {
         boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             try {
-                OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
+                OfflinePlayer player = shop.getOwner().getUniqueIdIfRealPlayer().map(Bukkit::getOfflinePlayer).orElse(null);
+                if (player == null) return;
                 if (!player.hasPlayedBefore()) {
                     Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
                     continue;

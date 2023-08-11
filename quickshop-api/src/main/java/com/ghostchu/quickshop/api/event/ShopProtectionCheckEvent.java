@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.common.obj.QUser;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class ShopProtectionCheckEvent extends AbstractQSEvent {
 
     @NotNull
-    private final Player player;
+    private final QUser player;
 
     @NotNull
     private final Location loc;
@@ -34,7 +34,7 @@ public class ShopProtectionCheckEvent extends AbstractQSEvent {
      */
     public ShopProtectionCheckEvent(
             @NotNull Location location,
-            @NotNull Player player,
+            @NotNull QUser player,
             @NotNull ProtectionCheckStatus status,
             @NotNull Event event) {
         this.loc = location;
@@ -68,7 +68,7 @@ public class ShopProtectionCheckEvent extends AbstractQSEvent {
      *
      * @return player
      */
-    public @NotNull Player getPlayer() {
+    public @NotNull QUser getPlayer() {
         return this.player;
     }
 

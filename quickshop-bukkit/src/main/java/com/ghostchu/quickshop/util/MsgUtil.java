@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
@@ -31,9 +32,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -281,26 +280,12 @@ public class MsgUtil {
         }
     }
 
-    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && PLUGIN.getConfig().getBoolean("respect-item-flag")) {
-            return;
+    public static void printEnchantment(@NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
+        Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
+        if (shop.getItem().getItemMeta() != null) {
+            enchantmentIntegerMap.putAll(shop.getItem().getItemMeta().getEnchants());
         }
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
-            enchs = shop.getItem().getItemMeta().getEnchants();
-        }
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(PLUGIN.text().of(p, "menu.enchants").forLocale());
-            printEnchantment(chatSheetPrinter, enchs);
-        }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta stor) {
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(PLUGIN.text().of(p, "menu.stored-enchants").forLocale());
-                printEnchantment(chatSheetPrinter, enchs);
-            }
-        }
+        printEnchantment(chatSheetPrinter, enchantmentIntegerMap);
     }
 
     private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
@@ -341,7 +326,16 @@ public class MsgUtil {
      * @param shop The shop purchased
      * @param uuid The uuid of the player to message
      */
-    public static void send(@NotNull Shop shop, @NotNull UUID uuid, @NotNull Component shopTransactionMessage) {
+    public static void send(@NotNull Shop shop, @Nullable UUID uuid, @NotNull Component shopTransactionMessage) {
+        send(uuid, shopTransactionMessage, shop.isUnlimited());
+    }
+
+    /**
+     * @param shop  The shop purchased
+     * @param qUser The uuid of the player to message
+     */
+    public static void send(@NotNull Shop shop, @NotNull QUser qUser, @NotNull Component shopTransactionMessage) {
+        UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
         send(uuid, shopTransactionMessage, shop.isUnlimited());
     }
 
@@ -353,10 +347,11 @@ public class MsgUtil {
      *                               <p>
      *                               Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
-    public static void send(@NotNull UUID uuid, @NotNull Component shopTransactionMessage, boolean isUnlimited) {
+    public static void send(@Nullable UUID uuid, @NotNull Component shopTransactionMessage, boolean isUnlimited) {
         if (isUnlimited && PLUGIN.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
+        if (uuid == null) return;
         String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
         Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
@@ -422,7 +417,6 @@ public class MsgUtil {
         PLUGIN.getShopControlPanelManager().openControlPanel((Player) sender, shop);
 
     }
-
     public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
@@ -443,6 +437,15 @@ public class MsgUtil {
             }
             PLUGIN.getPlatform().sendMessage(sender, msg);
         }
+    }
+
+    public static void sendDirectMessage(@Nullable QUser sender, @Nullable Component... messages) {
+        if (sender == null) return;
+        UUID uuid = sender.getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) {
+            return;
+        }
+        sendDirectMessage(uuid, messages);
     }
 
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {

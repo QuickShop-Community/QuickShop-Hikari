@@ -1,13 +1,13 @@
 package com.ghostchu.quickshop;
 
 import com.ghostchu.quickshop.api.RankLimiter;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +55,7 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
      * @return int Player's shop limit
      */
     @Override
-    public int getShopLimit(@NotNull Player p) {
+    public int getShopLimit(@NotNull QUser p) {
         int count = def;
         for (Map.Entry<String, Integer> entry : limits.entrySet()) {
             if ((entry.getValue() > count) && plugin.perm().hasPermission(p, entry.getKey())) {

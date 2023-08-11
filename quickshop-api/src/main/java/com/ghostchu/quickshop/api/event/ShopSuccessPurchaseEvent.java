@@ -2,12 +2,8 @@ package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import com.ghostchu.quickshop.common.obj.QUser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Calling when success purchase in shop
@@ -20,11 +16,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent {
     private final int amount;
 
     @NotNull
-    private final UUID purchaser;
-
-    @Nullable
-    @Deprecated
-    private final Player player;
+    private final QUser purchaser;
 
     @NotNull
     private final InventoryWrapper purchaserInventory;
@@ -46,14 +38,13 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent {
      * @param total              The money in this purchase
      */
     public ShopSuccessPurchaseEvent(
-            @NotNull Shop shop, @NotNull UUID purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total, double tax) {
+            @NotNull Shop shop, @NotNull QUser purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total, double tax) {
         this.shop = shop;
         this.purchaser = purchaser;
         this.purchaserInventory = purchaserInventory;
         this.amount = amount * shop.getItem().getAmount();
         this.tax = tax;
         this.total = total;
-        this.player = Bukkit.getPlayer(purchaser);
     }
 
     /**
@@ -87,20 +78,11 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent {
 
 
     /**
-     * Gets the purchaser
-     *
-     * @return Player or null if purchaser is offline/virtual player.
-     */
-    public @Nullable Player getPlayer() {
-        return this.player;
-    }
-
-    /**
      * Gets the purchaser, that maybe is a online/offline/virtual player.
      *
      * @return The purchaser uuid
      */
-    public @NotNull UUID getPurchaser() {
+    public @NotNull QUser getPurchaser() {
         return this.purchaser;
     }
 

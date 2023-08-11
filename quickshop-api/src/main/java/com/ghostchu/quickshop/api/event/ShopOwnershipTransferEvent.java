@@ -1,19 +1,18 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.obj.QUser;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Fire when a shop ownership was transferred.
  */
 public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCancellable {
     private final Shop shop;
-    private final UUID oldOwner;
-    private final UUID newOwner;
+    private final QUser oldOwner;
+    private final QUser newOwner;
     private boolean cancelled;
     private Component reason;
 
@@ -24,7 +23,7 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
      * @param oldOwner The old owner.
      * @param newOwner The new owner.
      */
-    public ShopOwnershipTransferEvent(@NotNull Shop shop, @NotNull UUID oldOwner, @NotNull UUID newOwner) {
+    public ShopOwnershipTransferEvent(@NotNull Shop shop, @NotNull QUser oldOwner, @NotNull QUser newOwner) {
         this.shop = shop;
         this.oldOwner = oldOwner;
         this.newOwner = newOwner;
@@ -47,7 +46,7 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
      * @return The new owner.
      */
     @NotNull
-    public UUID getNewOwner() {
+    public QUser getNewOwner() {
         return newOwner;
     }
 
@@ -57,7 +56,7 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
      * @return The old owner.
      */
     @NotNull
-    public UUID getOldOwner() {
+    public QUser getOldOwner() {
         return oldOwner;
     }
 

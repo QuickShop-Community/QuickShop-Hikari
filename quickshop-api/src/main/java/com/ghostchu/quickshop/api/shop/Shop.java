@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.obj.QUser;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -48,7 +49,7 @@ public interface Shop {
      * @param paramInt       How many buyed?
      * @throws Exception Possible exception thrown if anything wrong.
      */
-    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+    void buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
     /**
      * Check the display location, and teleport, respawn if needs.
@@ -154,19 +155,19 @@ public interface Shop {
 
 
     /**
-     * Get shop's owner UUID
+     * Get shop's owner QUser
      *
-     * @return Shop's owner UUID, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
+     * @return Shop's owner QUser object, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
      */
     @NotNull
-    UUID getOwner();
+    QUser getOwner();
 
     /**
      * Set new owner to the shop's owner
      *
-     * @param paramString New owner UUID
+     * @param qUser New owner user
      */
-    void setOwner(@NotNull UUID paramString);
+    void setOwner(@NotNull QUser qUser);
 
     /**
      * Gets all player and their group on this shop
@@ -293,29 +294,19 @@ public interface Shop {
     List<Sign> getSigns();
 
     /**
-     * Directly get all staffs.
-     *
-     * @return staffs
-     * @deprecated Replaced by {@link #playersCanAuthorize(BuiltInShopPermissionGroup)} with {@link BuiltInShopPermissionGroup#STAFF}
-     */
-    @NotNull
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    List<UUID> getStaffs();
-
-    /**
      * Getting the shop tax account for using, it can be specific uuid or general tax account
      *
      * @return Shop Tax Account or fallback to general tax account
      */
     @Nullable
-    UUID getTaxAccount();
+    QUser getTaxAccount();
 
     /**
      * Sets shop taxAccount
      *
      * @param taxAccount tax account, null to use general tax account
      */
-    void setTaxAccount(@Nullable UUID taxAccount);
+    void setTaxAccount(@Nullable QUser taxAccount);
 
     /**
      * Getting the shop tax account, it can be specific uuid or general tax account
@@ -324,7 +315,7 @@ public interface Shop {
      */
 
     @Nullable
-    UUID getTaxAccountActual();
+    QUser getTaxAccountActual();
 
     /**
      * Check if shop out of space or out of stock
@@ -588,7 +579,7 @@ public interface Shop {
      * @param paramInt        How many sold?
      * @throws Exception Possible exception thrown if anything wrong.
      */
-    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+    void sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
     /**
      * Sets shop is dirty

@@ -1,12 +1,8 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import com.ghostchu.quickshop.common.obj.QUser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Calling when new shop creating
@@ -14,10 +10,7 @@ import java.util.UUID;
 public class ShopCreateSuccessEvent extends AbstractQSEvent {
 
     @NotNull
-    private final UUID creator;
-
-    @Nullable
-    private final Player player;
+    private final QUser creator;
 
     @NotNull
     private final Shop shop;
@@ -29,10 +22,9 @@ public class ShopCreateSuccessEvent extends AbstractQSEvent {
      * @param shop    Target shop
      * @param creator The player creating the shop, the player might offline/not exist if creating by a plugin.
      */
-    public ShopCreateSuccessEvent(@NotNull Shop shop, @NotNull UUID creator) {
+    public ShopCreateSuccessEvent(@NotNull Shop shop, @NotNull QUser creator) {
         this.shop = shop;
         this.creator = creator;
-        this.player = Bukkit.getPlayer(creator);
     }
 
 
@@ -41,18 +33,10 @@ public class ShopCreateSuccessEvent extends AbstractQSEvent {
      *
      * @return The creator, may be a online/offline/virtual player
      */
-    public @NotNull UUID getCreator() {
+    public @NotNull QUser getCreator() {
         return this.creator;
     }
 
-    /**
-     * Gets the creator that is the shop
-     *
-     * @return Player or null when player not exists or offline
-     */
-    public @Nullable Player getPlayer() {
-        return this.player;
-    }
 
     /**
      * Gets the shop created

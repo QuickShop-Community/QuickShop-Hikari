@@ -89,7 +89,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
         if (passThroughArgsChild.length < 1) {
             return null;
         }
-        List<Shop> belongToPlayers = shopManager.getPlayerAllShops(player);
+        List<Shop> belongToPlayers = shopManager.getAllShops(player);
         return String.valueOf(switch (passThroughArgsChild[0]) {
             case "all" -> belongToPlayers.size();
             case "selling" -> belongToPlayers.stream().filter(shop -> shop.getShopType() == ShopType.SELLING).count();

@@ -5,6 +5,8 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -74,9 +76,11 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                             plugin.text().of(sender, "transfer-no-self", name).send();
                             return;
                         }
+                        QUser senderQUser = QUserImpl.createFullFilled(sender);
+                        QUser receiverQUser = QUserImpl.createFullFilled(receiver);
 
-                        List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
-                        PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), uuid, shopList);
+                        List<Shop> shopsToTransfer = plugin.getShopManager().getAllShops(senderQUser);
+                        PendingTransferTask task = new PendingTransferTask(senderQUser, receiverQUser, shopsToTransfer);
                         taskCache.put(uuid, task);
                         plugin.text().of(sender, "transfer-sent", name).send();
                         plugin.text().of(receiver, "transfer-request", sender.getName()).send();
@@ -91,8 +95,12 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 return;
             }
             Util.asyncThreadRun(() -> {
-                UUID fromPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
-                UUID targetPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
+                QUser fromQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(0));
+                QUser targetQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(1));
+
+                Player fromPlayer = fromQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+                Player targetPlayer = targetQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+
                 if (fromPlayer == null) {
                     plugin.text().of(sender, "unknown-player", "fromPlayer").send();
                     return;
@@ -101,8 +109,8 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     plugin.text().of(sender, "unknown-player", "targetPlayer").send();
                     return;
                 }
-                List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer);
-                PendingTransferTask task = new PendingTransferTask(fromPlayer, targetPlayer, shopList);
+                List<Shop> shopList = plugin.getShopManager().getAllShops(fromQUser);
+                PendingTransferTask task = new PendingTransferTask(fromQUser, targetQUser, shopList);
                 Util.mainThreadRun(() -> {
                     task.commit(false);
                     plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
@@ -122,11 +130,11 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
 
     @Data
     static class PendingTransferTask {
-        private final UUID from;
-        private final UUID to;
+        private final QUser from;
+        private final QUser to;
         private final List<Shop> shops;
 
-        public PendingTransferTask(UUID from, UUID to, List<Shop> shops) {
+        public PendingTransferTask(QUser from, QUser to, List<Shop> shops) {
             this.from = from;
             this.to = to;
             this.shops = shops;
@@ -134,19 +142,8 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
 
         public void cancel(boolean sendMessage) {
             if (sendMessage) {
-                Util.asyncThreadRun(() -> {
-                    String fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(from);
-                    String toPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(to);
-                    Player fromPlayer = Bukkit.getPlayer(from);
-                    Player toPlayer = Bukkit.getPlayer(to);
-                    if (fromPlayer != null && toPlayerProfile != null) {
-                        QuickShop.getInstance().text().of(fromPlayer, "transfer-rejected-fromside", toPlayerProfile).send();
-                    }
-                    if (toPlayer != null && fromPlayerProfile != null) {
-                        QuickShop.getInstance().text().of(toPlayer, "transfer-rejected-toside", fromPlayerProfile).send();
-                    }
-                });
-
+                QuickShop.getInstance().text().of(from, "transfer-rejected-fromside", to).send();
+                QuickShop.getInstance().text().of(to, "transfer-rejected-toside", from).send();
             }
         }
 
@@ -159,16 +156,8 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 shop.setOwner(to);
             }
             if (sendMessage) {
-                Util.asyncThreadRun(() -> {
-                    String fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(from);
-                    String toPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(to);
-                    if (toPlayerProfile != null) {
-                        QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", toPlayerProfile).send();
-                    }
-                    if (fromPlayerProfile != null) {
-                        QuickShop.getInstance().text().of(to, "transfer-accepted-toside", fromPlayerProfile).send();
-                    }
-                });
+                QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", to).send();
+                QuickShop.getInstance().text().of(to, "transfer-accepted-toside", from).send();
             }
         }
     }

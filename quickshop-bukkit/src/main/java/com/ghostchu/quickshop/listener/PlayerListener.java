@@ -9,6 +9,8 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
@@ -239,6 +241,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     public boolean createShop(@NotNull Player player, @Nullable Block block, @NotNull BlockFace blockFace, @NotNull EquipmentSlot hand, @NotNull ItemStack item) {
+        QUser qUser = QUserImpl.createFullFilled(player);
         if (block == null) {
             return false; // This shouldn't happen because we have checked action type.
         }
@@ -316,7 +319,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
-        ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(qUser, block.getLocation());
         if (Util.fireCancellableEvent(spce)) {
             Log.debug("ShopPreCreateEvent cancelled");
             return false;
@@ -371,7 +374,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -419,7 +422,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;

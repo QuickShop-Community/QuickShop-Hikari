@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.common.obj.QUser;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +16,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
     private final Location location;
 
     @NotNull
-    private final Player player;
+    private final QUser player;
 
     private boolean cancelled;
     private @Nullable Component cancelReason;
@@ -28,7 +28,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
      * @param player   Target player
      * @param location The location will create be shop
      */
-    public ShopPreCreateEvent(@NotNull Player player, @NotNull Location location) {
+    public ShopPreCreateEvent(@NotNull QUser player, @NotNull Location location) {
         this.location = location;
         this.player = player;
     }
@@ -58,7 +58,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
      *
      * @return creator
      */
-    public @NotNull Player getPlayer() {
+    public @NotNull QUser getPlayer() {
         return this.player;
     }
 

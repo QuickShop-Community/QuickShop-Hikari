@@ -4,8 +4,10 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
 import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.eventmanager.BukkitEventManager;
 import com.ghostchu.quickshop.eventmanager.QSEventManager;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -82,6 +84,7 @@ public class PermissionChecker implements Reloadable {
     @NotNull
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
         try (PerfMonitor ignored = new PerfMonitor("Build Permission Check", Duration.of(1, ChronoUnit.SECONDS))) {
+            QUser qUser = QUserImpl.createFullFilled(player);
             if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
                 Log.debug("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
                 return Result.SUCCESS;
@@ -122,7 +125,7 @@ public class PermissionChecker implements Reloadable {
                 }
             };
             // Call for event for protection check start
-            this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
+            this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), qUser, ProtectionCheckStatus.BEGIN, beMainHand));
             beMainHand.setDropItems(false);
             beMainHand.setExpToDrop(0);
 
@@ -134,7 +137,7 @@ public class PermissionChecker implements Reloadable {
                         // Call for event for protection check end
                         eventManager.callEvent(
                                 new ShopProtectionCheckEvent(
-                                        block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
+                                        block.getLocation(), qUser, ProtectionCheckStatus.END, beMainHand));
                         if (!event.isCancelled()) {
                             //Ensure this test will no be logged by some plugin
                             beMainHand.setCancelled(true);

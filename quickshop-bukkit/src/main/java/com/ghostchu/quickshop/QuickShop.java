@@ -726,8 +726,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
-                if (!this.playerFinder.isCached(shop.getOwner())) {
-                    waitingForBake.add(shop.getOwner());
+                UUID uuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+                if (uuid != null && !this.playerFinder.isCached(uuid)) {
+                    waitingForBake.add(uuid);
                 }
                 shop.getPermissionAudiences().keySet().forEach(audience -> {
                     if (!this.playerFinder.isCached(audience)) {

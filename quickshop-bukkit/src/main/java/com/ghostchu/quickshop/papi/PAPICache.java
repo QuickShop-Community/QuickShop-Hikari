@@ -61,13 +61,23 @@ public class PAPICache implements Reloadable {
     }
 
     private long getLoadedPlayerShops(@NotNull UUID uuid) {
-        return plugin.getShopManager().getPlayerAllShops(uuid).stream()
-                .filter(Shop::isLoaded)
-                .count();
+        return plugin.getShopManager().getLoadedShops().stream().filter(shop -> {
+            UUID souid = shop.getOwner().getUniqueId();
+            if (souid == null) return false;
+            return souid.equals(uuid);
+        }).count();
+    }
+
+    private long getLoadedPlayerShops(@NotNull String name) {
+        return plugin.getShopManager().getLoadedShops().stream().filter(shop -> {
+            String sousrname = shop.getOwner().getUsername();
+            if (sousrname == null) return false;
+            return name.equals(sousrname);
+        }).count();
     }
 
     private long getPlayerShopsInventoryUnavailable(@NotNull UUID uuid) {
-        return plugin.getShopManager().getPlayerAllShops(uuid).stream()
+        return plugin.getShopManager().getAllShops(uuid).stream()
                 .filter(Shop::inventoryAvailable)
                 .count();
     }

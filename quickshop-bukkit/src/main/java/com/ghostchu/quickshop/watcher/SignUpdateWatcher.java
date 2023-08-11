@@ -18,7 +18,7 @@ public class SignUpdateWatcher extends BukkitRunnable {
         Instant endTime = startTime.plusMillis(50);
         Shop shop = signUpdateQueue.poll();
         while (shop != null && !shop.isDeleted() && !Instant.now().isAfter(endTime)) {
-            shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(shop.getOwner()));
+            shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(shop.getOwner(), false));
             shop = signUpdateQueue.poll();
         }
     }

@@ -13,9 +13,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
@@ -140,10 +138,7 @@ public class InternalListener extends AbstractQSListener {
             plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
         }
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
-            Player player = Bukkit.getPlayer(event.getPurchaser());
-            if (player != null) {
-                plugin.text().of(player, "shop-owner-self-trade").send();
-            }
+            plugin.text().of(event.getPurchaser(), "shop-owner-self-trade").send();
         }
     }
 

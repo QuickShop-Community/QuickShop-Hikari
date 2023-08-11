@@ -4,6 +4,7 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.obj.QUser;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,6 +77,13 @@ public interface DatabaseHelper {
     CompletableFuture<@Nullable String> getPlayerLocale(@NotNull UUID uuid);
 
     /**
+     * Async gets the player last use locale code from database
+     *
+     * @param uuid The player UUID
+     */
+    CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser);
+
+    /**
      * Async gets the player last use username from database
      *
      * @param uuid The player UUID
@@ -86,7 +94,7 @@ public interface DatabaseHelper {
     /**
      * Async gets the player last use username from database
      *
-     * @param uuid The player UUID
+     * @param name The player UUID
      */
     CompletableFuture<@Nullable UUID> getPlayerUUID(@NotNull String name);
 

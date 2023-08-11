@@ -184,10 +184,10 @@ public class CommonUtil {
      * @return LocalDateTime instance
      */
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
-    @Nullable
-    public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
+    public static @NotNull LocalDateTime getDateTimeFromTimestamp(long timestamp) {
         if (timestamp == 0) {
-            return null;
+            return LocalDateTime.ofInstant(Instant.ofEpochMilli(0), TimeZone
+                    .getDefault().toZoneId());
         }
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
                 .getDefault().toZoneId());
@@ -264,6 +264,31 @@ public class CommonUtil {
         }
         final String[] components = string.split("-");
         return components.length == 5;
+    }
+
+    public static boolean isTrimmedUUID(@NotNull String string) {
+        try {
+            fromTrimmedUUID(string);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+
+    public static UUID fromTrimmedUUID(@NotNull String trimmedUUID) {
+        StringBuilder builder = new StringBuilder(trimmedUUID.trim());
+        /* Backwards adding to avoid index adjustments */
+        try {
+            builder.insert(20, "-");
+            builder.insert(16, "-");
+            builder.insert(12, "-");
+            builder.insert(8, "-");
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException();
+        }
+
+        return UUID.fromString(builder.toString());
     }
 
     @SafeVarargs

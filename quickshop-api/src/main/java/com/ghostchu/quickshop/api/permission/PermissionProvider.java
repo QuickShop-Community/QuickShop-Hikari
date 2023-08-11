@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.api.permission;
 
+import com.ghostchu.quickshop.common.obj.QUser;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,5 +25,14 @@ public interface PermissionProvider {
      * @return hasPermission
      */
     boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission);
+
+    /**
+     * Test the sender has special permission
+     *
+     * @param sender     CommandSender
+     * @param permission The permission want to check
+     * @return hasPermission
+     */
+    boolean hasPermission(@NotNull QUser sender, @NotNull String permission);
 
 }

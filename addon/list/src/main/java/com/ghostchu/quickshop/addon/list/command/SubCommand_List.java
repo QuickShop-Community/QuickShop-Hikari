@@ -56,7 +56,7 @@ public class SubCommand_List implements CommandHandler<Player> {
         if (StringUtils.isEmpty(name)) {
             name = "Unknown";
         }
-        List<Shop> shops = quickshop.getShopManager().getPlayerAllShops(lookupUser);
+        List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
         ChatSheetPrinter printer = new ChatSheetPrinter(sender);
         printer.printHeader();
         printer.printLine(quickshop.text().of(sender, "addon.list.table-prefix", name, shops.size()).forLocale());

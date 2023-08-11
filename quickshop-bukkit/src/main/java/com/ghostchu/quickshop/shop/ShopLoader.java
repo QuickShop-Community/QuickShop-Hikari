@@ -7,11 +7,11 @@ import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -230,20 +230,22 @@ public class ShopLoader implements SubPasteItem {
             Log.debug("Shop owner is null");
             return true;
         }
-        String username = plugin.getPlayerFinder().uuid2Name(shop.getOwner());
-        if (username == null) {
-            Log.debug("Shop owner not exist on this server, did you have reset the player data?");
-            if (PackageUtil.parsePackageProperly("forceResolveUsername").asBoolean(false)) {
-                String finUsername = "Unknown_" + shop.getOwner().toString().substring(0, 8);
-                plugin.getDatabaseHelper().updatePlayerProfile(shop.getOwner(), "en_us", username).whenComplete((i, th) -> {
-                    if (th != null) {
-                        th.printStackTrace();
-                    } else {
-                        Log.debug("Force resolved username for shop owner " + shop.getOwner() + " to " + finUsername);
-                    }
-                });
-            }
-        }
+        // TODO: username baking
+//        }
+//        String username = plugin.getPlayerFinder().uuid2Name(shop.getOwner());
+//        if (username == null) {
+//            Log.debug("Shop owner not exist on this server, did you have reset the player data?");
+//            if (PackageUtil.parsePackageProperly("forceResolveUsername").asBoolean(false)) {
+//                String finUsername = "Unknown_" + shop.getOwner().toString().substring(0, 8);
+//                plugin.getDatabaseHelper().updatePlayerProfile(shop.getOwner(), "en_us", username).whenComplete((i, th) -> {
+//                    if (th != null) {
+//                        th.printStackTrace();
+//                    } else {
+//                        Log.debug("Force resolved username for shop owner " + shop.getOwner() + " to " + finUsername);
+//                    }
+//                });
+//            }
+//        }
         return false;
     }
 
@@ -260,14 +262,14 @@ public class ShopLoader implements SubPasteItem {
     @Getter
     @Setter
     public static class DataRawDatabaseInfo {
-        private UUID owner;
+        private QUser owner;
         private String name;
         private ShopType type;
         private String currency;
         private double price;
         private boolean unlimited;
         private boolean hologram;
-        private UUID taxAccount;
+        private QUser taxAccount;
         private Map<UUID, String> permissions;
         private YamlConfiguration extra;
         private String invWrapper;

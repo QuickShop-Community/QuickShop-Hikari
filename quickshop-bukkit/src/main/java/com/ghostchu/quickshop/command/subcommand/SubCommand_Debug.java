@@ -123,7 +123,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleHandlerList(@NotNull CommandSender sender, List<String> remove) {
-        if (remove.size() < 1) {
+        if (remove.isEmpty()) {
             MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
             plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
             return;
@@ -141,7 +141,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleDatabase(@NotNull CommandSender sender, @NotNull List<String> remove) {
-        if (remove.size() < 1) {
+        if (remove.isEmpty()) {
             plugin.text().of("debug.operation-missing");
             return;
         }
@@ -149,7 +149,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleSignsUpdate(CommandSender sender, List<String> remove) {
-        if (remove.size() < 1) {
+        if (remove.isEmpty()) {
             plugin.text().of(sender, "debug.update-player-shops-signs-no-username-given").send();
             return;
         }
@@ -160,7 +160,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 return;
             }
             plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
-            List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
+            List<Shop> shops = plugin.getShopManager().getAllShops(uuid);
             plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
             BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
             updateExecutor.addTasks(shops);

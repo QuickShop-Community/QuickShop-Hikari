@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -55,9 +56,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    private final int LATEST_DATABASE_VERSION = 11;
+    private final int LATEST_DATABASE_VERSION = 12;
 
-    public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws SQLException {
+    public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = prefix;
@@ -73,7 +74,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     /**
      * Verifies that all required columns exist.
      */
-    public void checkColumns() throws SQLException {
+    public void checkColumns() throws Exception {
         plugin.logger().info("Checking and updating database columns, it may take a while...");
         try (PerfMonitor ignored = new PerfMonitor("Perform database schema upgrade")) {
             new DatabaseUpgrade(this).upgrade();
@@ -185,6 +186,33 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
+    private void upgradeUniqueIdsField() {
+        try {
+            CompletableFuture.allOf(
+                    manager.alterTable(DataTables.DATA.getName())
+                            .modifyColumn("owner", "VARCHAR(64) NOT NULL")
+                            .executeFuture(),
+                    manager.alterTable(DataTables.DATA.getName())
+                            .modifyColumn("tax_account", "VARCHAR(64)")
+                            .executeFuture(),
+                    manager.alterTable(DataTables.LOG_PURCHASE.getName())
+                            .modifyColumn("buyer", "VARCHAR(64) NOT NULL")
+                            .executeFuture(),
+                    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                            .modifyColumn("from", "VARCHAR(64) NOT NULL")
+                            .executeFuture(),
+                    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                            .modifyColumn("to", "VARCHAR(64) NOT NULL")
+                            .executeFuture(),
+                    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                            .modifyColumn("tax_account", "VARCHAR(64)")
+                            .executeFuture()).get();
+        } catch (InterruptedException | ExecutionException e) {
+            plugin.logger().warn("Failed to upgrade scheme, the upgrade progress cannot continue.", e);
+            throw new IllegalStateException("Failed to upgrade scheme, the upgrade progress cannot continue.", e);
+        }
+    }
+
     public @NotNull String getPrefix() {
         return prefix;
     }
@@ -254,7 +282,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .executeFuture(query -> {
                     ResultSet result = query.getResultSet();
                     if (result.next()) {
-                        return new SimpleDataRecord(result);
+                        return new SimpleDataRecord(plugin.getPlayerFinder(), result);
                     }
                     return null;
                 });
@@ -276,6 +304,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                             return null;
                         }
                 );
+    }
+
+    @Override
+    public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser) {
+        return CompletableFuture.supplyAsync(() -> {
+            UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+            if (uuid == null) {
+                return null;
+            }
+            return getPlayerLocale(uuid).join();
+        });
     }
 
     @Override
@@ -374,7 +413,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
                 String world = rs.getString("world");
-                DataRecord dataRecord = new SimpleDataRecord(rs);
+                DataRecord dataRecord = new SimpleDataRecord(plugin.getPlayerFinder(), rs);
                 InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
                 shopRecords.add(new ShopRecord(dataRecord, infoRecord));
             }
@@ -726,7 +765,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             this.prefix = parent.getPrefix();
         }
 
-        public void upgrade() throws SQLException {
+        public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
             if (currentDatabaseVersion < 1) {
                 // QuickShop v4/v5 upgrade
@@ -757,15 +796,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 currentDatabaseVersion = 3;
             }
             if (currentDatabaseVersion == 3) {
-                try {
-                    new DatabaseV2Migrate(this).doV2Migrate();
-                    currentDatabaseVersion = 4;
-                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                         IllegalAccessException | ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                new DatabaseV2Migrate(this).doV2Migrate();
+                currentDatabaseVersion = 4;
             }
             if (currentDatabaseVersion < 9) {
                 logger.info("Data upgrading: Performing purge isolated data...");
@@ -784,6 +816,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 parent.upgradePlayers();
                 logger.info("Data upgrading: All completed!");
                 currentDatabaseVersion = 11;
+            }
+            if (currentDatabaseVersion == 11) {
+                logger.info("Data upgrading: Performing database structure upgrade (uuid field length)...");
+                parent.upgradeUniqueIdsField();
+                currentDatabaseVersion = 12;
             }
             parent.setDatabaseVersion(currentDatabaseVersion);
         }

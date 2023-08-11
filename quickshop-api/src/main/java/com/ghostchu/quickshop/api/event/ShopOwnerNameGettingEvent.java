@@ -1,19 +1,18 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.obj.QUser;
 import net.kyori.adventure.text.Component;
-
-import java.util.UUID;
 
 /**
  * Fire when quickshop processing the shop owner name
  */
 public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
     private final Shop shop;
-    private final UUID owner;
+    private final QUser owner;
     private Component name;
 
-    public ShopOwnerNameGettingEvent(Shop shop, UUID owner, Component name) {
+    public ShopOwnerNameGettingEvent(Shop shop, QUser owner, Component name) {
         this.shop = shop;
         this.owner = owner;
         this.name = name;
@@ -42,7 +41,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
      *
      * @return The shop owner unique id
      */
-    public UUID getOwner() {
+    public QUser getOwner() {
         return owner;
     }
 
