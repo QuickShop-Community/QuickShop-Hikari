@@ -1,0 +1,4 @@
+messages:
+  description: Switch a shop to use owner's EnderChest inventory.
+  to-echest: Successfully linked this shop Inventory with your EnderChest!
+  to-chest: Successfully linked this shop Inventory to it's container!

@@ -60,27 +60,28 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 }
                 default -> {
                     String name = parser.getArgs().get(0);
-                    UUID uuid = plugin.getPlayerFinder().name2Uuid(name);
-                    if (uuid == null) {
-                        plugin.text().of(sender, "unknown-player").send();
-                        return;
-                    }
-                    Player receiver = Bukkit.getPlayer(uuid);
-                    if (receiver == null) {
-                        plugin.text().of(sender, "player-offline", name).send();
-                        return;
-                    }
-                    if (sender.getUniqueId().equals(uuid)) {
-                        plugin.text().of(sender, "transfer-no-self", name).send();
-                        return;
-                    }
-                    List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
-                    PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), uuid, shopList);
-                    taskCache.put(uuid, task);
-                    plugin.text().of(sender, "transfer-sent", name).send();
-                    plugin.text().of(receiver, "transfer-request", sender.getName()).send();
-                    plugin.text().of(receiver, "transfer-ask", 60).send();
-                    return;
+                    plugin.getPlayerFinder().name2UuidFuture(name).whenComplete((uuid, throwable) -> {
+                        if (uuid == null) {
+                            plugin.text().of(sender, "unknown-player").send();
+                            return;
+                        }
+                        Player receiver = Bukkit.getPlayer(uuid);
+                        if (receiver == null) {
+                            plugin.text().of(sender, "player-offline", name).send();
+                            return;
+                        }
+                        if (sender.getUniqueId().equals(uuid)) {
+                            plugin.text().of(sender, "transfer-no-self", name).send();
+                            return;
+                        }
+
+                        List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
+                        PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), uuid, shopList);
+                        taskCache.put(uuid, task);
+                        plugin.text().of(sender, "transfer-sent", name).send();
+                        plugin.text().of(receiver, "transfer-request", sender.getName()).send();
+                        plugin.text().of(receiver, "transfer-ask", 60).send();
+                    });
                 }
             }
         }
@@ -89,20 +90,25 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }
-            UUID fromPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
-            UUID targetPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
-            if (fromPlayer == null) {
-                plugin.text().of(sender, "unknown-player", "fromPlayer").send();
-                return;
-            }
-            if (targetPlayer == null) {
-                plugin.text().of(sender, "unknown-player", "targetPlayer").send();
-                return;
-            }
-            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer);
-            PendingTransferTask task = new PendingTransferTask(fromPlayer, targetPlayer, shopList);
-            task.commit(false);
-            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
+            Util.asyncThreadRun(() -> {
+                UUID fromPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
+                UUID targetPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
+                if (fromPlayer == null) {
+                    plugin.text().of(sender, "unknown-player", "fromPlayer").send();
+                    return;
+                }
+                if (targetPlayer == null) {
+                    plugin.text().of(sender, "unknown-player", "targetPlayer").send();
+                    return;
+                }
+                List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer);
+                PendingTransferTask task = new PendingTransferTask(fromPlayer, targetPlayer, shopList);
+                Util.mainThreadRun(() -> {
+                    task.commit(false);
+                    plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
+                });
+            });
+
         }
     }
 

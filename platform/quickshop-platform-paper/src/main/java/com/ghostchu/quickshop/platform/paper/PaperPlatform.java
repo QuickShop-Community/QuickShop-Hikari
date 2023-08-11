@@ -179,11 +179,6 @@ public class PaperPlatform implements Platform {
         stack.customName(component);
     }
 
-    @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        sign.line(line, component);
-        sign.update(true, false);
-    }
 
     @Override
     public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {

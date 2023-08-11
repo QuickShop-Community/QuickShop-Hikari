@@ -85,7 +85,6 @@ public interface Platform {
 
     void setDisplayName(@NotNull Item stack, @Nullable Component component);
 
-    void setLine(@NotNull Sign sign, int line, @NotNull Component component);
     void setLines(@NotNull Sign sign, @NotNull List<Component> component);
 
     void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components);
