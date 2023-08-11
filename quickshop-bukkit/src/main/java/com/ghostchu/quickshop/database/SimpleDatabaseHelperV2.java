@@ -20,6 +20,7 @@ import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.reflect.TypeToken;
@@ -65,6 +66,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         //manager.setDebugMode(Util.isDevMode());
         checkTables();
         checkColumns();
+        checkDatabaseVersion();
+    }
+
+    private void checkDatabaseVersion() {
+        if (PackageUtil.parsePackageProperly("skipDatabaseVersionCheck").asBoolean(false)) {
+            return;
+        }
+        int databaseVersion = getDatabaseVersion();
+        if (databaseVersion > LATEST_DATABASE_VERSION) {
+            throw new IllegalStateException("Database schema version " + databaseVersion + " is newer than this support max supported schema version " + LATEST_DATABASE_VERSION + ", downgrading the QuickShop-Hikari without restore the database from backup is disallowed cause it will break the data.");
+        }
     }
 
     public void checkTables() throws SQLException {
