@@ -14,14 +14,19 @@ import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -37,6 +42,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private void deleteShops(@NotNull Island island, @Nullable UUID uuid) {
+        island.getAllChunksAsync()
         island.getAllChunks().forEach((chunk) -> {
             Map<Location, Shop> shops = QuickShop.getInstance().getShopManager().getShops(chunk);
             if (shops != null && !shops.isEmpty()) {
@@ -128,5 +134,17 @@ public final class Main extends CompatibilityModule implements Listener {
                 event.setResult(true);
             }
         }
+    }
+
+    private List<CompletableFuture<Chunk>> getAllChunksAsync(Island island) {
+        List<CompletableFuture<Chunk>> chunkFutures = new ArrayList<>();
+        for (World.Environment environment : World.Environment.values()) {
+            try {
+                chunkFutures.addAll(island.getAllChunksAsync(environment, false, chunk -> {
+                }));
+            } catch (NullPointerException ignored) {
+            }
+        }
+        return chunkFutures;
     }
 }
