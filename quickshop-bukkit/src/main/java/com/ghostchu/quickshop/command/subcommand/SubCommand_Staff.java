@@ -89,6 +89,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             shop.setPlayerGroup(uuid, permissionGroup);
                         }
                     }));
+                    return;
                 }
                 default -> {
                     plugin.text().of(sender, "command.wrong-args").send();
