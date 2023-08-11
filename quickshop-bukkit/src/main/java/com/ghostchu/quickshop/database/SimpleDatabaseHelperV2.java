@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.reflect.TypeToken;
@@ -171,7 +172,20 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return isolatedIds;
     }
 
+    private void fastBackup() {
+        File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
+        Util.asyncThreadRun(() -> {
+            try {
+                databaseIOUtil.exportTables(file);
+            } catch (SQLException | IOException e) {
+                plugin.logger().warn("Exporting database failed.", e);
+            }
+        });
+    }
+
     private void upgradeBenefit() {
+        fastBackup();
         try {
             Integer lines = getManager().alterTable(DataTables.DATA.getName())
                     .addColumn("benefit", "MEDIUMTEXT")
@@ -186,6 +200,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void upgradePlayers() {
+        fastBackup();
         try {
             Integer lines = getManager().alterTable(DataTables.PLAYERS.getName())
                     .modifyColumn("locale", "VARCHAR(255)")
@@ -199,6 +214,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void upgradeUniqueIdsField() {
+        fastBackup();
         try {
             CompletableFuture.allOf(
                     manager.alterTable(DataTables.DATA.getName())
