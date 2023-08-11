@@ -86,27 +86,29 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 return;
             }
             String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
-            try {
-                double percent = Double.parseDouble(percentageStr);
-                if (Double.isInfinite(percent) || Double.isNaN(percent)) {
-                    plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
-                    return;
+            Util.mainThreadRun(() -> {
+                try {
+                    double percent = Double.parseDouble(percentageStr);
+                    if (Double.isInfinite(percent) || Double.isNaN(percent)) {
+                        plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
+                        return;
+                    }
+                    if (percent <= 0 || percent >= 100) {
+                        plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
+                        return;
+                    }
+                    Benefit benefit = shop.getShopBenefit();
+                    benefit.addBenefit(uuid, percent / 100d);
+                    shop.setShopBenefit(benefit);
+                    plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
+                } catch (NumberFormatException e) {
+                    plugin.text().of(sender, "not-a-number", percentageStr).send();
+                } catch (Benefit.BenefitOverflowException e) {
+                    plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
+                } catch (Benefit.BenefitExistsException e) {
+                    plugin.text().of(sender, "benefit-exists").send();
                 }
-                if (percent <= 0 || percent >= 100) {
-                    plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
-                    return;
-                }
-                Benefit benefit = shop.getShopBenefit();
-                benefit.addBenefit(uuid, percent / 100d);
-                shop.setShopBenefit(benefit);
-                plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
-            } catch (NumberFormatException e) {
-                plugin.text().of(sender, "not-a-number", percentageStr).send();
-            } catch (Benefit.BenefitOverflowException e) {
-                plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
-            } catch (Benefit.BenefitExistsException e) {
-                plugin.text().of(sender, "benefit-exists").send();
-            }
+            });
         });
 
     }

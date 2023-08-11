@@ -71,7 +71,9 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 deletionCounter.incrementAndGet();
                 plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/qs cleanghost command", shop.saveToInfoStorage()));
             }
-        }).whenComplete((aVoid, throwable) -> plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()).send());
+        }).whenComplete((aVoid, throwable) ->
+                plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()
+                ).send());
 
     }
 

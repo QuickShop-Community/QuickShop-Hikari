@@ -21,7 +21,6 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.reflect.TypeToken;
@@ -174,14 +173,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     private void fastBackup() {
         File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
-        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
-        Util.asyncThreadRun(() -> {
+        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
             try {
                 databaseIOUtil.exportTables(file);
             } catch (SQLException | IOException e) {
                 plugin.logger().warn("Exporting database failed.", e);
             }
-        });
     }
 
     private void upgradeBenefit() {
@@ -218,19 +215,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         try {
             CompletableFuture.allOf(
                     manager.alterTable(DataTables.DATA.getName())
-                            .modifyColumn("owner", "VARCHAR(64) NOT NULL")
+                            .modifyColumn("owner", "VARCHAR(128) NOT NULL")
                             .executeFuture(),
                     manager.alterTable(DataTables.DATA.getName())
                             .modifyColumn("tax_account", "VARCHAR(64)")
                             .executeFuture(),
                     manager.alterTable(DataTables.LOG_PURCHASE.getName())
-                            .modifyColumn("buyer", "VARCHAR(64) NOT NULL")
+                            .modifyColumn("buyer", "VARCHAR(128) NOT NULL")
                             .executeFuture(),
                     manager.alterTable(DataTables.LOG_TRANSACTION.getName())
-                            .modifyColumn("from", "VARCHAR(64) NOT NULL")
+                            .modifyColumn("from", "VARCHAR(128) NOT NULL")
                             .executeFuture(),
                     manager.alterTable(DataTables.LOG_TRANSACTION.getName())
-                            .modifyColumn("to", "VARCHAR(64) NOT NULL")
+                            .modifyColumn("to", "VARCHAR(128) NOT NULL")
                             .executeFuture(),
                     manager.alterTable(DataTables.LOG_TRANSACTION.getName())
                             .modifyColumn("tax_account", "VARCHAR(64)")

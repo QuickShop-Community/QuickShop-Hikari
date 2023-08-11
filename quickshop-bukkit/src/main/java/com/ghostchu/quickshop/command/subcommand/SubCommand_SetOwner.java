@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,12 +51,14 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
                 plugin.text().of(sender, "unknown-player").send();
                 return;
             }
-            ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
-            if (event.callCancellableEvent()) {
-                return;
-            }
-            shop.setOwner(newShopOwner);
-            plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
+            Util.mainThreadRun(() -> {
+                ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
+                if (event.callCancellableEvent()) {
+                    return;
+                }
+                shop.setOwner(newShopOwner);
+                plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
+            });
         });
 
     }

@@ -9,13 +9,13 @@ import java.util.UUID;
 public interface QUser {
     @Nullable String getUsername();
 
-    @Nullable Optional<String> getUsernameOptional();
+    @NotNull Optional<String> getUsernameOptional();
 
     @NotNull String getDisplay();
 
     @Nullable UUID getUniqueId();
 
-    @Nullable Optional<UUID> getUniqueIdOptional();
+    @NotNull Optional<UUID> getUniqueIdOptional();
 
     boolean isRealPlayer();
 

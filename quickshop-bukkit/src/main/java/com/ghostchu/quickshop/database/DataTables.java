@@ -18,7 +18,7 @@ public enum DataTables {
 
     DATA("data", (table) -> {
         table.addAutoIncrementColumn("id", true); // SHOP DATA ID
-        table.addColumn("owner", "VARCHAR(64) NOT NULL"); // SHOP DATA OWNER (ALL-ZERO if this is a server shop)
+        table.addColumn("owner", "VARCHAR(128) NOT NULL"); // SHOP DATA OWNER (ALL-ZERO if this is a server shop)
 
         table.addColumn("item", "TEXT NOT NULL"); // SHOP DATA ITEM INFO
         table.addColumn("name", "TEXT"); // SHOP NAME
@@ -32,7 +32,7 @@ public enum DataTables {
         // ITEM HOLOGRAM (whether to show the item in the top of the container block)
         table.addColumn("hologram", "BIT NOT NULL DEFAULT 0");
 
-        table.addColumn("tax_account", "VARCHAR(64)"); // TAX ACCOUNT
+        table.addColumn("tax_account", "VARCHAR(128)"); // TAX ACCOUNT
         table.addColumn("permissions", "MEDIUMTEXT"); // PERMISSIONS (JSON)
         table.addColumn("extra", "LONGTEXT"); // EXTRA
 
@@ -72,7 +72,7 @@ public enum DataTables {
 
     MESSAGES("message", (table) -> {
         table.addAutoIncrementColumn("id", true);
-        table.addColumn("receiver", "VARCHAR(36) NOT NULL");
+        table.addColumn("receiver", "VARCHAR(128) NOT NULL");
         table.addColumn("time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
         table.addColumn("content", "MEDIUMTEXT NOT NULL");
     }),
@@ -99,7 +99,7 @@ public enum DataTables {
         table.addColumn("time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
         table.addColumn("shop", "INT UNSIGNED NOT NULL"); // SHOP ID
         table.addColumn("data", "INT UNSIGNED NOT NULL"); // DATA ID
-        table.addColumn("buyer", "VARCHAR(64) NOT NULL"); // BUYER
+        table.addColumn("buyer", "VARCHAR(128) NOT NULL"); // BUYER
 
         table.addColumn("type", "VARCHAR(32) NOT NULL"); // SHOP TYPE (use enum name)
         table.addColumn("amount", "INT NOT NULL"); // ITEM AMOUNT
@@ -112,21 +112,21 @@ public enum DataTables {
         table.addAutoIncrementColumn("id", true);
         table.addColumn("time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
-        table.addColumn("from", "VARCHAR(64) NOT NULL");
-        table.addColumn("to", "VARCHAR(64) NOT NULL");
+        table.addColumn("from", "VARCHAR(128) NOT NULL");
+        table.addColumn("to", "VARCHAR(128) NOT NULL");
 
         table.addColumn("currency", "VARCHAR(64)");
         table.addColumn("amount", "DECIMAL(32,2) NOT NULL");
 
         table.addColumn("tax_amount", "DECIMAL(32,2) NOT NULL DEFAULT 0");
-        table.addColumn("tax_account", "VARCHAR(36)");
+        table.addColumn("tax_account", "VARCHAR(128)");
 
         // TRANSACTION ERROR MESSAGES (NULL means successfully transacted)
         table.addColumn("error", "MEDIUMTEXT");
     }),
 
     TAGS("tags", (table) -> {
-        table.addColumn("tagger", "VARCHAR(36) NOT NULL"); // tagger
+        table.addColumn("tagger", "VARCHAR(128) NOT NULL"); // tagger
         table.addColumn("shop", "INT UNSIGNED NOT NULL"); // shop id
         table.addColumn("tag", "VARCHAR(255) NOT NULL");
         table.setIndex(IndexType.PRIMARY_KEY, null, "tagger", "shop", "tag");

@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -266,7 +265,7 @@ public class MsgUtil {
                         }
                     }
                     return ownerUUID;
-                }, QuickExecutor.getProfileIOExecutor()).whenComplete((ownerUUID, throwable) -> {
+                }).whenComplete((ownerUUID, throwable) -> {
                     if (throwable != null) {
                         Log.debug("Failed to load transaction message for " + owner + " from database, ownerUUID parsing failed.");
                         return;
