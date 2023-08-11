@@ -269,7 +269,7 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
             if (getConfig().getBoolean("allow-mayor-permission-override", true)) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                     event.setResult(true);
                     return;
                 }
@@ -279,7 +279,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Nation nation = town.getNation();
             if (nation.getKing().getUUID().equals(event.getAuthorizer())) {
                 if (getConfig().getBoolean("allow-king-permission-override", true)) {
-                    if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                         event.setResult(true);
                     }
                 }

@@ -143,7 +143,7 @@ public final class Main extends CompatibilityModule {
             return;
         }
         if (land.getOwnerUID().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
         }

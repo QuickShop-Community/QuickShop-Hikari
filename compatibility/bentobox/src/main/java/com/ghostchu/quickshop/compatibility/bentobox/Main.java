@@ -87,7 +87,7 @@ public final class Main extends CompatibilityModule implements Listener {
         Location shopLoc = event.getShop().getLocation();
         BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island -> {
             if (event.getAuthorizer().equals(island.getOwner())) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                     event.setResult(true);
                 }
             }

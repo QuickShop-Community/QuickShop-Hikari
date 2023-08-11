@@ -84,7 +84,7 @@ public final class Main extends CompatibilityModule implements Listener {
         ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(shopLoc.getX(), shopLoc.getY(), shopLoc.getZ()));
         for (ProtectedRegion region : set.getRegions()) {
             if (region.getOwners().contains(event.getAuthorizer())) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                     event.setResult(true);
                 }
             }

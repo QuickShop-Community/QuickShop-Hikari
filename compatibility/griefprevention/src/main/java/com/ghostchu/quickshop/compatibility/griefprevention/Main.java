@@ -298,7 +298,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         if (claim.getOwnerID().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
         }
