@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class QUserImpl implements QUser {
+    private static final long VERSION = 1;
     private static final Cache<Object, QUserImpl> QUSER_CACHE =
             CacheBuilder.newBuilder()
                     .initialCapacity(150)
@@ -178,6 +180,34 @@ public class QUserImpl implements QUser {
         }
         this.realPlayer = isRealPlayer;
     }
+
+    @Override
+    public String serialize() {
+        return VERSION + ";" + this.getUniqueId() + ";" + this.username + ";" + this.realPlayer;
+    }
+
+    public static QUserImpl deserialize(PlayerFinder finder, String serialized) {
+        String[] split = serialized.split(";");
+        if (split.length != 4) {
+            // plain text?
+            Log.debug("Loading QUser from plain text:" + serialized);
+            return new QUserImpl(finder, serialized);
+        }
+        if (Long.parseLong(split[0]) != VERSION) {
+            throw new IllegalArgumentException("Invalid serialized QUser version");
+        }
+        UUID uuid = null;
+        if (!StringUtils.isEmpty(split[1])) {
+            uuid = UUID.fromString(split[1]);
+        }
+        String username = null;
+        if (!StringUtils.isEmpty(split[2])) {
+            username = split[2];
+        }
+        boolean realPlayer = Boolean.parseBoolean(split[3]);
+        return new QUserImpl(uuid, username, realPlayer);
+    }
+
 
     public void set(String string) {
         parseString(string);

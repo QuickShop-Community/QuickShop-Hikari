@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -282,20 +283,19 @@ public class ShopLoader implements SubPasteItem {
 
 
         DataRawDatabaseInfo(@NotNull DataRecord dataRecord) {
-            this.owner = dataRecord.getOwner();
+            this.owner = QUserImpl.deserialize(dataRecord.getOwner());
             this.price = dataRecord.getPrice();
             this.type = ShopType.fromID(dataRecord.getType());
             this.unlimited = dataRecord.isUnlimited();
             String extraStr = dataRecord.getExtra();
             this.name = dataRecord.getName();
             //handle old shops
-            if (extraStr == null) {
-                extraStr = "";
-                needUpdate = true;
-            }
             this.currency = dataRecord.getCurrency();
             this.hologram = dataRecord.isHologram();
-            this.taxAccount = dataRecord.getTaxAccount();
+            this.taxAccount = null;
+            if (dataRecord.getTaxAccount() != null) {
+                this.taxAccount = QUserImpl.deserialize(dataRecord.getTaxAccount());
+            }
             this.invSymbolLink = dataRecord.getInventorySymbolLink();
             this.invWrapper = dataRecord.getInventoryWrapper();
             this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());

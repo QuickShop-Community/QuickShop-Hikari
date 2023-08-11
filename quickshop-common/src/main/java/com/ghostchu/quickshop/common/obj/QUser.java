@@ -31,4 +31,5 @@ public interface QUser {
 
     void setRealPlayer(boolean isRealPlayer);
 
+    String serialize();
 }

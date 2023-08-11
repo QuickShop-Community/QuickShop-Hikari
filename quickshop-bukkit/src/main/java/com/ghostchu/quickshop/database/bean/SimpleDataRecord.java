@@ -52,7 +52,7 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     public SimpleDataRecord(PlayerFinder finder, ResultSet set) throws SQLException {
-        this.owner = QUserImpl.createSync(finder, set.getString("owner"));
+        this.owner = QUserImpl.deserialize(finder, set.getString("owner"));
         this.item = set.getString("item");
         this.name = set.getString("name");
         this.type = set.getInt("type");
@@ -61,7 +61,7 @@ public class SimpleDataRecord implements DataRecord {
         this.unlimited = set.getBoolean("unlimited");
         this.hologram = set.getBoolean("hologram");
         String taxAccountString = set.getString("tax_account");
-        this.taxAccount = taxAccountString == null ? null : QUserImpl.createSync(finder, taxAccountString);
+        this.taxAccount = taxAccountString == null ? null : QUserImpl.deserialize(finder, taxAccountString);
         this.permissions = set.getString("permissions");
         this.extra = set.getString("extra");
         this.inventorySymbolLink = set.getString("inv_symbol_link");
@@ -80,7 +80,7 @@ public class SimpleDataRecord implements DataRecord {
     @NotNull
     public Map<String, Object> generateParams() {
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("owner", owner.toString());
+        map.put("owner", owner.serialize());
         map.put("item", item);
         map.put("name", name);
         map.put("type", type);
@@ -88,7 +88,7 @@ public class SimpleDataRecord implements DataRecord {
         map.put("price", price);
         map.put("unlimited", unlimited);
         map.put("hologram", hologram);
-        map.put("tax_account", taxAccount);
+        map.put("tax_account", taxAccount.serialize());
         map.put("permissions", permissions);
         map.put("extra", extra);
         map.put("inv_wrapper", inventoryWrapper);
