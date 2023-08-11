@@ -28,8 +28,6 @@ jobs:
         run: mvn -B package -T 1.5C --file pom.xml
       - uses: Kir-Antipov/mc-publish@v3.3
         with:
-          retry-attempts: 15
-          retry-delay: 15000
           modrinth-id: ijC5dDkD
           modrinth-featured: true
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -45,7 +43,8 @@ jobs:
             paper
             purpur
           game-versions: |
-            >=1.18.2
+            >=1.18.2 <=1.20.1
+          game-version-filter: releases
           java: |
             17
           dependencies: |
@@ -67,9 +66,6 @@ jobs:
             residence(optional)
             towny(optional)
             superiorskyblock(optional)
-            velocity(optional)
-            bungeecord(optional)
-            waterfall(optional)
             luckperms(optional)
             vault(optional)
             packetlistenerapi(conflicting)

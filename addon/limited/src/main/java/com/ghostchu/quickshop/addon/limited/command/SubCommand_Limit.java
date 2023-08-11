@@ -25,7 +25,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
 
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             quickshop.text().of(sender, "command.wrong-args").send();
             return;
         }

@@ -54,7 +54,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                     e.setCancelled(true);
                 } else {
                     plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
-                    shop.delete();
+                    plugin.getShopManager().deleteShop(shop);
                 }
             }
         }
@@ -106,7 +106,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                 e.setCancelled(true);
             } else {
                 plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
-                shop.delete();
+                plugin.getShopManager().deleteShop(shop);
             }
         }
     }

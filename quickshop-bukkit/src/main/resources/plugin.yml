@@ -15,14 +15,14 @@ api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:
   - org.apache.commons:commons-compress:1.23.0
-  - org.apache.commons:commons-lang3:3.12.0
+  - org.apache.commons:commons-lang3:3.13.0
   - org.apache.commons:commons-text:1.10.0
   - com.rollbar:rollbar-java:1.9.0
   - commons-codec:commons-codec:1.15
   - cc.carm.lib:easysql-hikaricp:0.4.7
   - com.h2database:h2:2.1.214
   - com.ghostchu:simplereloadlib:1.1.2
-  - com.konghq:unirest-java:3.14.2
+  - com.konghq:unirest-java:3.14.5
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
   - commons-lang:commons-lang:2.6

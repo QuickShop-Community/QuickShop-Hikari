@@ -38,7 +38,6 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     private boolean wholeNumberOnly = false;
     private double undefinedMin = 0.0d;
     private double undefinedMax = Double.MAX_VALUE;
-    ;
 
     public SimplePriceLimiter(@NotNull QuickShop plugin) {
         this.plugin = plugin;

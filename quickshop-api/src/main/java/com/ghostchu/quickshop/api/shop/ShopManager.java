@@ -65,14 +65,14 @@ public interface ShopManager {
             @NotNull Shop shop,
             int amount);
 
-    /**
-     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
-     * by yourself
-     *
-     * @param world The name of the world
-     * @param shop  The shop to add
-     */
-    void addShop(@NotNull String world, @NotNull Shop shop);
+//    /**
+//     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
+//     * by yourself
+//     *
+//     * @param world The name of the world
+//     * @param shop  The shop to add
+//     */
+//    void addShop(@NotNull String world, @NotNull Shop shop);
 
     void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop);
 
@@ -250,6 +250,14 @@ public interface ShopManager {
      */
     @NotNull List<Shop> getShopsInWorld(@NotNull World world);
 
+    /**
+     * Get the all shops in the world.
+     *
+     * @param worldName The world you want get the shops.
+     * @return The list have this world all shops
+     */
+    @NotNull List<Shop> getShopsInWorld(@NotNull String worldName);
+
     @Deprecated
     double getTax(@NotNull Shop shop, @NotNull Player p);
 
@@ -279,7 +287,16 @@ public interface ShopManager {
      * @param world The world the shop is in
      * @param shop  The shop to load
      */
-    void loadShop(@NotNull String world, @NotNull Shop shop);
+    void loadShop(@NotNull Shop shop);
+
+    /**
+     * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+     * effects a lots of feature, make sure load it after create it.
+     *
+     * @param world The world the shop is in
+     * @param shop  The shop to load
+     */
+    void unloadShop(@NotNull Shop shop);
 
     /**
      * Change the owner to unlimited shop owner.
@@ -288,20 +305,20 @@ public interface ShopManager {
     void migrateOwnerToUnlimitedShopOwner(Shop shop);
 
     /**
-     * Register shop to memory and database.
+     * Register shop to database.
      *
      * @param info The info object
      * @return True if the shop was register successfully.
      */
-    void registerShop(@NotNull Shop shop);
+    void registerShop(@NotNull Shop shop, boolean persist);
 
     /**
-     * Removes a shop from the world. Does NOT remove it from the database. * REQUIRES * the world
-     * to be loaded Call shop.onUnload by your self.
+     * Unregister a shop from database.
      *
-     * @param shop The shop to remove
+     * @param info The info object
+     * @return True if the shop was unregister successfully.
      */
-    void removeShop(@NotNull Shop shop);
+    void unregisterShop(@NotNull Shop shop, boolean persist);
 
     /**
      * Send a purchaseSuccess message for a player.
@@ -361,6 +378,8 @@ public interface ShopManager {
     CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
 
     @NotNull List<String> listTags(@NotNull UUID tagger);
+
+    void deleteShop(@NotNull Shop shop);
 
     /**
      * An getActions() alternative.

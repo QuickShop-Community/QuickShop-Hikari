@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.2.2.4</version>
+    <version>4.3.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -87,7 +87,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>3.5.0</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -283,7 +283,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.15.0</version>
+                <version>2.16.0</version>
                 <configuration>
                     <generateBackupPoms>true</generateBackupPoms>
                 </configuration>
@@ -471,6 +471,9 @@
         <module>compatibility/residence</module>
         <module>compatibility/elitemobs</module>
         <module>compatibility/bungeecord-geyser</module>
+        <module>compatibility/advancedchests</module>
+        <module>compatibility/ecoenchants</module>
+        <module>compatibility/reforges</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>

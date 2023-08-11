@@ -3,7 +3,8 @@ package com.ghostchu.quickshop.platform.spigot;
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
 import de.tr7zw.nbtapi.NBT;
-import me.pikamug.localelib.LocaleManager;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
-    protected final LocaleManager localeManager = new LocaleManager();
     private final Plugin plugin;
     protected Map<String, String> translationMapping;
     private BukkitAudiences audience;
@@ -93,50 +93,28 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Material material) {
+    public @NotNull Component getTranslation(@NotNull Material material) throws Throwable {
         return Component.translatable(getTranslationKey(material));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull EntityType entity) {
+    public @NotNull Component getTranslation(@NotNull EntityType entity) throws Throwable {
         return Component.translatable(getTranslationKey(entity));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) throws Throwable {
         return Component.translatable(getTranslationKey(potionEffectType));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) throws Throwable {
         return Component.translatable(getTranslationKey(enchantment));
     }
 
     @Override
     public @NotNull Component getTranslation(@NotNull ItemStack itemStack) throws Throwable {
         return Component.translatable(getTranslationKey(itemStack));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Material material) {
-        return postProcessingTranslationKey(localeManager.queryMaterial(material));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        return postProcessingTranslationKey(localeManager.queryEntityType(type, null));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        String key;
-        key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
     }
 
     @Override
@@ -182,18 +160,20 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        NBT.modify(sign, nbt -> {
-            nbt.setString("Text" + (line + 1), GsonComponentSerializer.gson().serialize(component));
-        });
-    }
-
-    @Override
     public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+        String EMPTY_LINE_NBT = "{\"text\":\"\"}";
+        ReadWriteNBT root = NBT.createNBTObject();
+        ReadWriteNBT front_text = root.getOrCreateCompound("front_text"); // > 1.20
+        ReadWriteNBTList<String> messages = front_text.getStringList("messages"); // > 1.20
+        for (int i = 0; i < 4; i++) {
+            Component com = component.get(i);
+            String json = com == null ? EMPTY_LINE_NBT : GsonComponentSerializer.gson().serialize(com);
+            root.setString("Text" + (i + 1), json);
+            messages.add(json); // > 1.20
+        }
+        // ==== Apply the changes ====
         NBT.modify(sign, nbt -> {
-            for (int i = 0; i < Math.min(component.size(),4); i++) {
-                nbt.setString("Text" + (i + 1), GsonComponentSerializer.gson().serialize(component.get(i)));
-            }
+            nbt.mergeCompound(root);
         });
     }
 

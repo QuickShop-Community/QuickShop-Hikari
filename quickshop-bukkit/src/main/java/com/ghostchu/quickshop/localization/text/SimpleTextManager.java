@@ -26,11 +26,15 @@ import kong.unirest.Unirest;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -61,6 +65,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).recordStats().build();
     private final String crowdinHost;
+    private TagResolver[] tagResolvers;
     @Nullable
     private CrowdinOTA crowdinOTA;
 
@@ -89,6 +94,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         plugin.logger().info("Loading up translations from Crowdin OTA, this may need a while...");
         //TODO: This will break the message processing system in-game until loading finished, need to fix it.
         this.reset();
+        initTagResolvers();
         // first, we need load built-in fallback translation.
         languageFilesManager.deploy("en_us", loadBuiltInFallback());
         // second, load the bundled language files
@@ -168,6 +174,36 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         }
         postProcessors.add(new PlaceHolderApiProcessor());
 
+    }
+
+    private void initTagResolvers() {
+        File configFile = new File(plugin.getDataFolder(), "color-scheme.yml");
+        if (!configFile.exists()) {
+            try {
+                Files.copy(plugin.getJavaPlugin().getResource("color-scheme.yml"), configFile.toPath());
+            } catch (IOException e) {
+                plugin.logger().warn("Failed to copy color-scheme.yml to plugin folder!", e);
+            }
+        }
+        FileConfiguration colorSchemeYaml = YamlConfiguration.loadConfiguration(configFile);
+        ConfigurationSection colorSchemeSection = colorSchemeYaml.getConfigurationSection("color-scheme");
+        if (colorSchemeSection == null) {
+            tagResolvers = new TagResolver[0];
+            return;
+        }
+        List<TagResolver> resolvers = new ArrayList<>();
+        resolvers.add(TagResolver.standard());
+        resolvers.add(TagResolver.resolver("color_scheme", (argumentQueue, context) -> {
+            if (!argumentQueue.hasNext()) return null;
+            Tag.Argument argument = argumentQueue.pop();
+            String code = argument.value();
+            String hex = colorSchemeSection.getString(code, "#ffffff");
+            TextColor textColor = TextColor.fromHexString(hex);
+            if (textColor == null) return null;
+            Log.debug("Registered color scheme " + code + " with hex " + hex);
+            return Tag.styling(textColor);
+        }));
+        this.tagResolvers = resolvers.toArray(new TagResolver[0]);
     }
 
     /**
@@ -448,7 +484,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull Text of(@NotNull String path, Object... args) {
-        return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, convert(args));
+        return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -461,7 +497,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -474,7 +510,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     @Override
@@ -559,7 +595,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull TextList ofList(@NotNull String path, Object... args) {
-        return new TextList(this, (CommandSender) null, languageFilesManager.getDistributions(), path, convert(args));
+        return new TextList(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -582,7 +618,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     /**
@@ -595,7 +631,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
     public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {
@@ -604,16 +640,18 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         private final Map<String, FileConfiguration> mapping;
         private final CommandSender sender;
         private final Component[] args;
+        private final TagResolver[] tagResolvers;
 
-        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
             this.path = path;
+            this.tagResolvers = tagResolvers;
             this.args = args;
         }
 
-        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -622,6 +660,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             }
             this.mapping = mapping;
             this.path = path;
+            this.tagResolvers = tagResolvers;
             this.args = args;
         }
 
@@ -650,7 +689,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                     Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(s -> manager.plugin.getPlatform().miniMessage().deserialize(s)).toList();
+                List<Component> components = str.stream().map(s -> manager.plugin.getPlatform().miniMessage().deserialize(s, tagResolvers)).toList();
                 return postProcess(components);
             }
         }
@@ -711,7 +750,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             List<Component> texts = new ArrayList<>();
             for (PostProcessor postProcessor : this.manager.postProcessors) {
                 for (Component s : text) {
-                    texts.add(postProcessor.process(s, sender, args));
+                    try {
+                        texts.add(postProcessor.process(s, sender, args));
+                    } catch (Throwable th) {
+                        Log.debug("Failed to post processing text: " + s + " caused by " + th.getMessage() + " handler: " + postProcessor.getClass().getName());
+                    }
                 }
             }
             return texts;
@@ -724,16 +767,18 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         private final Map<String, FileConfiguration> mapping;
         private final CommandSender sender;
         private final Component[] args;
+        private final TagResolver[] tagResolvers;
 
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
             this.path = path;
+            this.tagResolvers = tagResolvers;
             this.args = args;
         }
 
-        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
+        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -742,6 +787,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             }
             this.mapping = mapping;
             this.path = path;
+            this.tagResolvers = tagResolvers;
             this.args = args;
         }
 
@@ -777,7 +823,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                     }
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
-                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str);
+                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str, tagResolvers);
                 return postProcess(component);
             }
         }
@@ -838,7 +884,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                 try {
                     text = postProcessor.process(text, sender, args);
                 } catch (Exception e) {
-                    Log.debug("Error occurred while processing text: " + PlainTextComponentSerializer.plainText().serialize(text) + " caused by" + e.getMessage());
+                    Log.debug("Error occurred while processing text: " + PlainTextComponentSerializer.plainText().serialize(text) + " caused by" + e.getMessage() + ", handler: " + postProcessor.getClass().getName());
                 }
             }
             return text;
