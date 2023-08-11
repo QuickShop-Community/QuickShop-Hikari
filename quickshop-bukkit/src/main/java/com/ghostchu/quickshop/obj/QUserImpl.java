@@ -221,12 +221,9 @@ public class QUserImpl implements QUser {
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Log.debug("Create Async: QUSER_CACHE_LOOKUP");
                 return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
             } catch (ExecutionException e) {
                 throw new IllegalStateException(e);
-            } finally {
-                Log.debug("Create Async: QUSER_CACHE_LOOKUP COMPLETE");
             }
         }, QuickExecutor.getCommonExecutor());
     }
@@ -234,12 +231,9 @@ public class QUserImpl implements QUser {
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Log.debug("Create Async: QUSER_CACHE_LOOKUP");
                 return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
             } catch (ExecutionException e) {
                 throw new IllegalStateException(e);
-            } finally {
-                Log.debug("Create Async: QUSER_CACHE_LOOKUP COMPLETE");
             }
         }, QuickExecutor.getCommonExecutor());
     }
@@ -262,12 +256,9 @@ public class QUserImpl implements QUser {
 
     public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
         try {
-            Log.debug("Create Async: QUSER_CACHE_LOOKUP");
             return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
         } catch (ExecutionException e) {
             throw new IllegalStateException(e);
-        } finally {
-            Log.debug("Create Async: QUSER_CACHE_LOOKUP COMPLETE");
         }
     }
 
