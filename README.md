@@ -79,7 +79,6 @@
 # QuickShop-Hikari
 
 [![codacyBadge]][codacy]
-[![codeFactorBadge]][codeFactor]
 [![codeScoreBadge]][codeScore]
 [![licenseBadge]][license]
 [![contributorsBadge]][contributors]
