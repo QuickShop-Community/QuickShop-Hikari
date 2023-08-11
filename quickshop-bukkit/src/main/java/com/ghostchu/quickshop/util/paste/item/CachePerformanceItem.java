@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
 import com.google.common.cache.CacheStats;
@@ -16,7 +17,14 @@ public class CachePerformanceItem implements SubPasteItem {
         return "<h5>Shop Cache</h5>" +
                 buildShopCacheContent() +
                 "<h5>Player Lookup Cache</h5>" +
-                buildPlayerLookupCache();
+                buildPlayerLookupCache() +
+                "<h5>QUser Reuse Memory Cache</h5>" +
+                buildQUserReuseCache();
+    }
+
+    private String buildQUserReuseCache() {
+        CacheStats stats = QUserImpl.getQuserCache().stats();
+        return renderTable(stats);
     }
 
     @NotNull

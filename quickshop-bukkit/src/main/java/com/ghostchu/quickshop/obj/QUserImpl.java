@@ -5,6 +5,8 @@ import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -16,9 +18,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class QUserImpl implements QUser {
+    private static final Cache<Object, QUserImpl> QUSER_CACHE =
+            CacheBuilder.newBuilder()
+                    .initialCapacity(150)
+                    .expireAfterAccess(12, TimeUnit.HOURS)
+                    .recordStats()
+                    .build();
     private final PlayerFinder finder;
     private String username;
     private UUID uniqueId;
@@ -174,11 +184,47 @@ public class QUserImpl implements QUser {
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string) {
-        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, string), QuickExecutor.getProfileIOExecutor());
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
+            } catch (ExecutionException e) {
+                throw new IllegalStateException(e);
+            }
+        }, QuickExecutor.getProfileIOExecutor());
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, uuid.toString()), QuickExecutor.getProfileIOExecutor());
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
+            } catch (ExecutionException e) {
+                throw new IllegalStateException(e);
+            }
+        }, QuickExecutor.getProfileIOExecutor());
+    }
+
+    public static QUser createFullFilled(UUID uuid, String username, boolean realPlayer) {
+        return new QUserImpl(uuid, username, realPlayer);
+    }
+
+    public static QUser createFullFilled(Player player) {
+        return new QUserImpl(player.getUniqueId(), player.getName(), true);
+    }
+
+    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull String string) {
+        try {
+            return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
+        } catch (ExecutionException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
+        try {
+            return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
+        } catch (ExecutionException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull CommandSender sender) {
@@ -188,7 +234,7 @@ public class QUserImpl implements QUser {
         if (sender instanceof OfflinePlayer offlinePlayer) {
             return createAsync(finder, offlinePlayer.getUniqueId());
         }
-        if (sender instanceof ConsoleCommandSender consoleCommandSender) {
+        if (sender instanceof ConsoleCommandSender) {
             return CompletableFuture.supplyAsync(() -> createFullFilled(CommonUtil.getNilUniqueId(), "CONSOLE", false));
         }
         return CompletableFuture.supplyAsync(() -> createFullFilled(CommonUtil.getNilUniqueId(), sender.getName(), false));
@@ -201,26 +247,10 @@ public class QUserImpl implements QUser {
         if (sender instanceof OfflinePlayer offlinePlayer) {
             return createSync(finder, offlinePlayer.getUniqueId());
         }
-        if (sender instanceof ConsoleCommandSender consoleCommandSender) {
+        if (sender instanceof ConsoleCommandSender) {
             return createFullFilled(CommonUtil.getNilUniqueId(), "CONSOLE", false);
         }
         return createFullFilled(CommonUtil.getNilUniqueId(), sender.getName(), false);
-    }
-
-    public static QUser createFullFilled(UUID uuid, String username, boolean realPlayer) {
-        return new QUserImpl(uuid, username, realPlayer);
-    }
-
-    public static QUser createFullFilled(Player player) {
-        return new QUserImpl(player.getUniqueId(), player.getName(), true);
-    }
-
-    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull String string) {
-        return new QUserImpl(finder, string);
-    }
-
-    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
-        return new QUserImpl(finder, uuid.toString());
     }
 
     @Override
@@ -239,5 +269,9 @@ public class QUserImpl implements QUser {
     @Override
     public String toString() {
         return getDisplay();
+    }
+
+    public static Cache<Object, QUserImpl> getQuserCache() {
+        return QUSER_CACHE;
     }
 }
