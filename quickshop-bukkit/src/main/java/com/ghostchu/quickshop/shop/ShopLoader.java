@@ -144,7 +144,7 @@ public class ShopLoader implements SubPasteItem {
                 continue;
             }
             // Load to RAM
-            plugin.getShopManager().loadShop(shop);
+            plugin.getShopManager().registerShop(shop, false); // persist=false to load to memory
             if (Util.isLoaded(shopLocation)) {
                 // Load to World
                 if (!Util.canBeShop(shopLocation.getBlock())) {

@@ -14,7 +14,7 @@
     <artifactId>reforges</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compat-EcoEnchants</name>
+    <name>Compat-Reforges</name>
 
     <description>Compatibility module for Reforges</description>
     <properties>

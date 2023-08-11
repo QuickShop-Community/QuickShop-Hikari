@@ -726,6 +726,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 addShopToLookupTable(shop);
                 registerShop(shop, true);
                 loadShop(shop);
+                shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
             }
         }
     }
@@ -1175,7 +1176,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         if (shop.isLoaded()) {
-            plugin.logger().warn("Warning: Unregister a loaded shop from database may lead to unexpected error.");
+            unloadShop(shop);
         }
         for (Sign s : shop.getSigns()) {
             s.getBlock().setType(Material.AIR);
@@ -1227,6 +1228,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
         Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
+        if (inWorld == null) {
+            return;
+        }
         int x = (int) Math.floor((loc.getBlockX()) / 16.0);
         int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
         ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
