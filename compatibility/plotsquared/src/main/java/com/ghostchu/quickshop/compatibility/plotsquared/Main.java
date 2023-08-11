@@ -76,9 +76,6 @@ public final class Main extends CompatibilityModule implements Listener {
         // Plugin shutdown logic
         super.onDisable();
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
-        GlobalFlagContainer.getInstance().removeFlag(createFlag);
-        GlobalFlagContainer.getInstance().removeFlag(tradeFlag);
-        getLogger().info("Flags unregister successfully.");
     }
 
     @Override
@@ -114,7 +111,7 @@ public final class Main extends CompatibilityModule implements Listener {
     public void onPlotDelete(PlotDeleteEvent event) {
         getShops(event.getPlot()).forEach(shop -> {
             recordDeletion(event.getPlot().getOwner(), shop, "Plot deleted");
-            shop.delete();
+            getApi().getShopManager().deleteShop(shop);
         });
     }
 
@@ -144,7 +141,7 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop -> {
             recordDeletion(event.getPlot().getOwner(), shop, "Untrusted -> " + event.getPlayer());
-            shop.delete();
+            getApi().getShopManager().deleteShop(shop);
         });
     }
 

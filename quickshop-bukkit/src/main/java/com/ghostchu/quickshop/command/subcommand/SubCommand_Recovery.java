@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.Util;
@@ -30,7 +29,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
             return;
         }
 
-        if (parser.getArgs().size() < 1 || !"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
+        if (parser.getArgs().isEmpty() || !"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
             plugin.text().of(sender, "importing-early-warning").send();
             return;
         }
@@ -39,7 +38,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
         Log.debug("Initializing database recovery...");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
         Log.debug("Unloading all shops...");
-        plugin.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        plugin.getShopManager().getAllShops().forEach(s -> plugin.getShopManager().unloadShop(s));
         Log.debug("Clean up in-memory data...");
         plugin.getShopManager().clear();
         Log.debug("Reset shop cache...");

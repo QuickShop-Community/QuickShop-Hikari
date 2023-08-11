@@ -70,8 +70,8 @@ public class WorldListener extends AbstractQSListener {
                 continue;
             }
 
-            for (final Shop shop : inChunk.values()) {
-                shop.onLoad();
+            for (Shop shop : inChunk.values()) {
+                plugin.getShopManager().loadShop(shop);
             }
         }
     }
@@ -88,7 +88,7 @@ public class WorldListener extends AbstractQSListener {
             }
             for (final Shop shop : inChunk.values()) {
                 if (shop.isLoaded()) { //Don't unload already unloaded shops.
-                    shop.onUnload();
+                    shop.handleUnloading();
                 }
             }
         }

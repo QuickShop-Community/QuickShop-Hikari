@@ -58,6 +58,11 @@ public class ConfigUpdateScript {
         getConfig().set("shop.display-center", null);
     }
 
+    @UpdateScript(version = 1015)
+    public void removePurgerRefund() {
+        getConfig().set("purge.return-create-fee", null);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);

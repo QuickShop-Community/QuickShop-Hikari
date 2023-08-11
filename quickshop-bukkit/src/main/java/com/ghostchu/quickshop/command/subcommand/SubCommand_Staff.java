@@ -72,24 +72,22 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 }
                 case 2 -> {
                     String name = parser.getArgs().get(1);
-                    Util.asyncThreadRun(() -> {
-                        UUID uuid = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
+                    plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1)).whenComplete((uuid, throwable) -> {
                         Util.mainThreadRun(() -> {
+                            BuiltInShopPermissionGroup permissionGroup = null;
                             switch (parser.getArgs().get(0)) {
                                 case "add" -> {
-                                    shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
+                                    permissionGroup = BuiltInShopPermissionGroup.STAFF;
                                     plugin.text().of(sender, "shop-staff-added", name).send();
-                                    return;
                                 }
                                 case "del" -> {
-                                    shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
+                                    permissionGroup = BuiltInShopPermissionGroup.EVERYONE;
                                     plugin.text().of(sender, "shop-staff-deleted", name).send();
-                                    return;
                                 }
-                                default -> {
-                                    plugin.text().of(sender, "command.wrong-args").send();
-                                    return;
-                                }
+                                default -> plugin.text().of(sender, "command.wrong-args").send();
+                            }
+                            if (permissionGroup != null) {
+                                shop.setPlayerGroup(uuid, permissionGroup);
                             }
                         });
                     });

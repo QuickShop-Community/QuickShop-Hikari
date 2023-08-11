@@ -23,7 +23,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
-            if (parser.getArgs().size() < 1) {
+            if (parser.getArgs().isEmpty()) {
                 shop.setTaxAccount(null);
                 plugin.text().of(sender, "taxaccount-unset").send();
                 return;
@@ -31,14 +31,21 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
             if (CommonUtil.isUUID(parser.getArgs().get(0))) {
                 shop.setTaxAccount(UUID.fromString(parser.getArgs().get(0)));
             } else {
-                UUID uuid = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
-                if (uuid == null) {
-                    plugin.text().of(sender, "unknown-player").send();
-                    return;
-                }
-                shop.setTaxAccount(uuid);
+                plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(0)).whenComplete((uuid, throwable) -> {
+                    if (throwable != null) {
+                        plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
+                        plugin.logger().warn("Failed to get uuid of player " + parser.getArgs().get(0), throwable);
+                        return;
+                    }
+                    if (uuid == null) {
+                        plugin.text().of(sender, "unknown-player").send();
+                        return;
+                    }
+                    shop.setTaxAccount(uuid);
+                    plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();
+                });
             }
-            plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();
+
         } else {
             plugin.text().of(sender, "not-looking-at-shop").send();
         }

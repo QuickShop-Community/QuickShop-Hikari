@@ -12,11 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class SubCommand_Permission implements CommandHandler<Player> {
     private final QuickShop plugin;
@@ -60,42 +56,51 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             plugin.text().of(sender, "bad-command-usage-detailed", "user,group").send();
             return;
         }
+        if (operation == null) {
+            plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
+            return;
+        }
+        final String typeFinal = type;
+        final String operationFinal = operation;
+        final String targetFinal = target;
+        final String groupFinal = group;
+
         switch (type) {
             case "user" -> {
                 if (target == null) {
                     plugin.text().of(sender, "bad-command-usage-detailed", "set,list,unset").send();
                     return;
                 }
-                UUID uuid = plugin.getPlayerFinder().name2Uuid(target);
-                if (uuid == null) {
-                    plugin.text().of(sender, "unknown-player", target).send();
-                    return;
-                }
-
-                switch (operation) {
-                    case "set" -> {
-                        if (group == null) {
-                            plugin.text().of(sender, "command-incorrect", "/qs permission user set <group>").send();
-                            return;
-                        }
-                        if (!plugin.getShopPermissionManager().hasGroup(group)) {
-                            plugin.text().of(sender, "invalid-group", target).send();
-                            return;
-                        }
-                        shop.setPlayerGroup(uuid, group);
-                        plugin.text().of(sender, "successfully-set-player-group", target, group).send();
+                plugin.getPlayerFinder().name2UuidFuture(targetFinal).whenComplete((uuid, throwable) -> {
+                    if (throwable != null) {
+                        plugin.logger().warn("Failed to get uuid of player " + targetFinal, throwable);
+                        return;
                     }
-                    case "unset" -> {
-                        shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
-                        plugin.text().of(sender, "successfully-unset-player-group", target).send();
+                    if (uuid == null) {
+                        plugin.text().of(sender, "unknown-player", targetFinal).send();
+                        return;
                     }
-                }
+                    switch (operationFinal) {
+                        case "set" -> {
+                            if (groupFinal == null) {
+                                plugin.text().of(sender, "command-incorrect", "/qs permission user set <group>").send();
+                                return;
+                            }
+                            if (!plugin.getShopPermissionManager().hasGroup(groupFinal)) {
+                                plugin.text().of(sender, "invalid-group", targetFinal).send();
+                                return;
+                            }
+                            shop.setPlayerGroup(uuid, groupFinal);
+                            plugin.text().of(sender, "successfully-set-player-group", targetFinal, groupFinal).send();
+                        }
+                        case "unset" -> {
+                            shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
+                            plugin.text().of(sender, "successfully-unset-player-group", targetFinal).send();
+                        }
+                    }
+                });
             }
             case "group" -> {
-                if (operation == null) {
-                    plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
-                    return;
-                }
                 //noinspection SwitchStatementWithTooFewBranches
                 switch (operation) {
                     case "list" -> {

@@ -71,7 +71,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public void setCurrent(ItemStack stack) {
-                itemStacks[Math.max(0, currentIndex - 1)] = stack;
+                itemStacks[Math.max(0, currentIndex - 1)] = stack.clone();
             }
         };
     }
