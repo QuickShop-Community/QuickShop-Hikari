@@ -1,13 +1,12 @@
 package com.ghostchu.quickshop.obj;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -20,19 +19,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class QUserImpl implements QUser {
     private static final long VERSION = 1;
-    @JsonUtil.Hidden
-    private static final Cache<Object, QUserImpl> QUSER_CACHE =
-            CacheBuilder.newBuilder()
-                    .initialCapacity(150)
-                    .expireAfterAccess(12, TimeUnit.HOURS)
-                    .recordStats()
-                    .build();
+    //    @JsonUtil.Hidden
+//    private static final Cache<Object, QUserImpl> QUSER_CACHE =
+//            CacheBuilder.newBuilder()
+//                    .initialCapacity(0)
+//                    .expireAfterAccess(1, TimeUnit.NANOSECONDS)
+//                    .recordStats()
+//                    .build();
     @JsonUtil.Hidden
     private final PlayerFinder finder;
     private String username;
@@ -57,6 +54,7 @@ public class QUserImpl implements QUser {
     }
 
     private void parseString(String string) {
+        Log.debug("Loading QUser from string: " + string);
         if (CommonUtil.isUUID(string) || CommonUtil.isTrimmedUUID(string)) {
             if (CommonUtil.isTrimmedUUID(string)) {
                 string = CommonUtil.fromTrimmedUUID(string).toString();
@@ -71,18 +69,19 @@ public class QUserImpl implements QUser {
                     Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
                 }
             });
-        }
-        if (isBracketedString(string)) {
-            String unbracketedString = removeBrackets(string);
-            this.realPlayer = false;
-            this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
-            this.username = unbracketedString;
         } else {
-            this.realPlayer = true;
-            this.username = string;
-            this.uniqueId = this.finder.name2Uuid(username);
-            if (this.uniqueId == null) {
-                throw new IllegalArgumentException("Cannot find uuid from username:" + username);
+            if (isBracketedString(string)) {
+                String unbracketedString = removeBrackets(string);
+                this.realPlayer = false;
+                this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
+                this.username = unbracketedString;
+            } else {
+                this.realPlayer = true;
+                this.username = string;
+                this.uniqueId = this.finder.name2Uuid(username);
+                if (this.uniqueId == null) {
+                    throw new IllegalArgumentException("Cannot find uuid from username:" + username);
+                }
             }
         }
         tryToFill();
@@ -91,6 +90,9 @@ public class QUserImpl implements QUser {
     private void tryToFill() {
         if (isRealPlayer() && this.username == null) {
             this.username = this.finder.uuid2Name(this.uniqueId);
+        }
+        if (CommonUtil.isUUID(this.username)) {
+            QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
         }
         Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " Version=" + VERSION + " [DynmaicDisplay]DisplayName: " + getDisplay());
     }
@@ -224,21 +226,23 @@ public class QUserImpl implements QUser {
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
-            } catch (ExecutionException e) {
-                throw new IllegalStateException(e);
-            }
+            return new QUserImpl(finder, string);
+//            try {
+//                return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
+//            } catch (ExecutionException e) {
+//                throw new IllegalStateException(e);
+//            }
         }, QuickExecutor.getCommonExecutor());
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
-            } catch (ExecutionException e) {
-                throw new IllegalStateException(e);
-            }
+            return new QUserImpl(finder, uuid);
+//            try {
+//                return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
+//            } catch (ExecutionException e) {
+//                throw new IllegalStateException(e);
+//            }
         }, QuickExecutor.getCommonExecutor());
     }
 
@@ -251,19 +255,13 @@ public class QUserImpl implements QUser {
     }
 
     public static QUser createSync(@NotNull PlayerFinder finder, @NotNull String string) {
-        try {
-            return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
-        } catch (ExecutionException e) {
-            throw new IllegalStateException(e);
-        }
+        return new QUserImpl(finder, string);
+//            return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
     }
 
     public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
-        try {
-            return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
-        } catch (ExecutionException e) {
-            throw new IllegalStateException(e);
-        }
+        return new QUserImpl(finder, uuid);
+        //return QUSER_CACHE.get(uuid, () -> new QUserImpl(finder, uuid));
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull CommandSender sender) {
@@ -310,7 +308,7 @@ public class QUserImpl implements QUser {
         return getDisplay();
     }
 
-    public static Cache<Object, QUserImpl> getQuserCache() {
-        return QUSER_CACHE;
-    }
+//    public static Cache<Object, QUserImpl> getQuserCache() {
+//        return QUSER_CACHE;
+//    }
 }
