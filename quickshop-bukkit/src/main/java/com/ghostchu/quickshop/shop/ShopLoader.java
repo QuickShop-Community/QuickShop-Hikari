@@ -8,10 +8,13 @@ import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -35,14 +38,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A class allow plugin load shops fast and simply.
  */
 public class ShopLoader implements SubPasteItem {
-
     private final QuickShop plugin;
+    private final ExecutorService executorService;
     /* This may contains broken shop, must use null check before load it. */
     private int errors;
 
@@ -53,6 +60,9 @@ public class ShopLoader implements SubPasteItem {
      */
     public ShopLoader(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        this.executorService = Executors.newWorkStealingPool(PackageUtil
+                .parsePackageProperly("parallelism")
+                .asInteger(CommonUtil.multiProcessorThreadRecommended()));
     }
 
     public void loadShops() {
@@ -80,11 +90,31 @@ public class ShopLoader implements SubPasteItem {
         Timer shopTotalTimer = new Timer(true);
         AtomicInteger successCounter = new AtomicInteger(0);
         AtomicInteger chunkNotLoaded = new AtomicInteger(0);
-        for (ShopRecord shopRecord : records) {
+        List<Shop> shopsLoadInNextTick = new CopyOnWriteArrayList<>();
+        CompletableFuture.allOf(records.stream().map(shopRecord ->
+                                loadShopFromShopRecord(worldName, shopRecord, deleteCorruptShops, shopsLoadInNextTick, successCounter, chunkNotLoaded))
+                        .toArray(CompletableFuture[]::new))
+                .thenAcceptAsync((v) -> Log.debug("Shop save completed."), QuickExecutor.getCommonExecutor())
+                .exceptionally(e -> {
+                    Log.debug("Error while saving shops: " + e.getMessage());
+                    return null;
+                }).join();
+        Util.mainThreadRun(() -> shopsLoadInNextTick.forEach(shop -> {
+            try {
+                plugin.getShopManager().loadShop(shop);
+            } catch (Throwable e) {
+                plugin.logger().error("Failed to load shop {}.", shop.getShopId(), e);
+            }
+        }));
+        plugin.logger().info("Used {}ms to load {} shops into memory ({} shops will be loaded after chunks loaded).", shopTotalTimer.stopAndGetTimePassed(), successCounter.get(), chunkNotLoaded.get());
+    }
+
+    private CompletableFuture<Void> loadShopFromShopRecord(String worldName, ShopRecord shopRecord, boolean deleteCorruptShops, List<Shop> shopsLoadInNextTick, AtomicInteger successCounter, AtomicInteger chunkNotLoaded) {
+        return CompletableFuture.supplyAsync(() -> {
             InfoRecord infoRecord = shopRecord.getInfoRecord();
             DataRecord dataRecord = shopRecord.getDataRecord();
             Timer singleShopLoadingTimer = new Timer(true);
-            ShopLoadResult result = loadSingleShop(infoRecord, dataRecord, worldName, singleShopLoadingTimer);
+            ShopLoadResult result = loadSingleShop(infoRecord, dataRecord, worldName, shopsLoadInNextTick);
             switch (result) {
                 case LOADED -> successCounter.incrementAndGet();
                 case LOAD_AFTER_CHUNK_LOADED -> chunkNotLoaded.incrementAndGet();
@@ -98,30 +128,27 @@ public class ShopLoader implements SubPasteItem {
                     }
                 }
             }
-        }
-
-        plugin.logger().info("Done. Used {}ms to load {} shops into memory. ({} shops will be loaded after chunks loaded)", shopTotalTimer.stopAndGetTimePassed(), successCounter.get(), chunkNotLoaded.incrementAndGet());
+            Log.timing("Shop loading completed: " + result.name(), singleShopLoadingTimer);
+            return null;
+        }, this.executorService);
     }
 
 
-    private ShopLoadResult loadSingleShop(InfoRecord infoRecord, DataRecord dataRecord, @Nullable String worldName, @NotNull Timer singleShopLoadingTimer) {
+    private ShopLoadResult loadSingleShop(InfoRecord infoRecord, DataRecord dataRecord, @Nullable String worldName, @NotNull List<Shop> shopsLoadInNextTick) {
         // World check
         if (worldName != null) {
             if (!worldName.equals(infoRecord.getWorld())) {
-                Log.timing("Single shop loading: worldName skipped", singleShopLoadingTimer);
                 return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
             }
         }
         // Shop basic check
         if (dataRecord.getInventoryWrapper() == null) {
-            Log.timing("Single shop loading: InventoryWrapper is null", singleShopLoadingTimer);
             return ShopLoadResult.FAILED;
         }
         if (dataRecord.getInventorySymbolLink() != null
                 && !dataRecord.getInventoryWrapper().isEmpty()
                 && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
             Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
-            Log.timing("Single shop loading: InventoryWrapperProvider skipped", singleShopLoadingTimer);
             return ShopLoadResult.FAILED;
         }
 
@@ -154,7 +181,6 @@ public class ShopLoader implements SubPasteItem {
                 plugin.logger().warn("Failed to load the shop, skipping...", e);
             }
             exceptionHandler(e, location);
-            Log.timing("Single shop loading: Shop loading exception", singleShopLoadingTimer);
             return ShopLoadResult.FAILED;
         }
         // Dirty check
@@ -163,17 +189,15 @@ public class ShopLoader implements SubPasteItem {
         }
         // Null check
         if (shopNullCheck(shop)) {
-            Log.timing("Single shop loading: Shop null check failed", singleShopLoadingTimer);
             return ShopLoadResult.FAILED;
         }
         // Load to RAM
         plugin.getShopManager().registerShop(shop, false); // persist=false to load to memory (it already persisted)
         if (Util.isLoaded(location)) {
             // Load to World
-            plugin.getShopManager().loadShop(shop); // Patch the shops won't load around the spawn
-            Log.timing("Single shop loading: success", singleShopLoadingTimer);
+            //plugin.getShopManager().loadShop(shop); // Patch the shops won't load around the spawn
+            shopsLoadInNextTick.add(shop);
         } else {
-            Log.timing("Single shop loading: waiting for chunk", singleShopLoadingTimer);
             return ShopLoadResult.LOAD_AFTER_CHUNK_LOADED;
         }
         return ShopLoadResult.LOADED;

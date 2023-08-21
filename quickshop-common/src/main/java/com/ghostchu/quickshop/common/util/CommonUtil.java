@@ -291,6 +291,14 @@ public class CommonUtil {
         return UUID.fromString(builder.toString());
     }
 
+    public static int multiProcessorThreadRecommended() {
+        int processors = Runtime.getRuntime().availableProcessors();
+        if (processors >= 2) {
+            processors--;
+        }
+        return processors;
+    }
+
     @SafeVarargs
     @NotNull
     public static <T> List<T> linkLists(List<T>... lists) {
