@@ -5,7 +5,7 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationSettings;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;

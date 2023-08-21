@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.database;
 
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import lombok.Builder;
 import lombok.Data;
 

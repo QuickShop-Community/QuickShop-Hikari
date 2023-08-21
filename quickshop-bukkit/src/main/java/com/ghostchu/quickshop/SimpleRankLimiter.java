@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop;
 
 import com.ghostchu.quickshop.api.RankLimiter;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;

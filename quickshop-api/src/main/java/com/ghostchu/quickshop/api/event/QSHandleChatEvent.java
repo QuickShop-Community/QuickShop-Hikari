@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.event;
 
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

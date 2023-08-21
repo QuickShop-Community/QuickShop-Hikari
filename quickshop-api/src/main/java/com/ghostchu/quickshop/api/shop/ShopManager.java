@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.database.bean;
 
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
-import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;

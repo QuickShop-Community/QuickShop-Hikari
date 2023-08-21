@@ -61,7 +61,6 @@ public class ShopPurger {
         int days = plugin.getConfig().getInt("purge.days", 360);
         boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
         boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
-        boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             try {
                 OfflinePlayer player = shop.getOwner().getUniqueIdIfRealPlayer().map(Bukkit::getOfflinePlayer).orElse(null);

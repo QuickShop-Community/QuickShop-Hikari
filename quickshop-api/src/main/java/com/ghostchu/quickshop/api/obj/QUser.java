@@ -1,5 +1,6 @@
-package com.ghostchu.quickshop.common.obj;
+package com.ghostchu.quickshop.api.obj;
 
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,4 +33,6 @@ public interface QUser {
     void setRealPlayer(boolean isRealPlayer);
 
     String serialize();
+
+    Optional<Player> getBukkitPlayer();
 }

@@ -4,7 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
 import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.eventmanager.BukkitEventManager;
 import com.ghostchu.quickshop.eventmanager.QSEventManager;
 import com.ghostchu.quickshop.obj.QUserImpl;

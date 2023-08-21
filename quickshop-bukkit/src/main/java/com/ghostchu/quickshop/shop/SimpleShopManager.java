@@ -5,9 +5,9 @@ import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
@@ -541,7 +541,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void createShop(@NotNull Shop shop, @Nullable Block signBlock, boolean bypassProtectionCheck) throws IllegalStateException {
         Util.ensureThread(false);
-        Player p = shop.getOwner().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        Player p = shop.getOwner().getBukkitPlayer().orElse(null);
 
         // Player offline check
         if (p == null || !p.isOnline()) {

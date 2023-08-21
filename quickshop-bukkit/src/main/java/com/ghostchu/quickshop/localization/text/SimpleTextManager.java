@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.ForceReplaceFillerProcessor;
@@ -709,7 +709,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         public TextList(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
-            this.sender = sender.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+            this.sender = sender.getBukkitPlayer().orElse(null);
             this.mapping = mapping;
             this.path = path;
             this.tagResolvers = tagResolvers;
@@ -845,7 +845,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         public Text(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
-            this.sender = sender.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+            this.sender = sender.getBukkitPlayer().orElse(null);
             this.mapping = mapping;
             this.path = path;
             this.tagResolvers = tagResolvers;

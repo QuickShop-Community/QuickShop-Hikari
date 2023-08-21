@@ -1,11 +1,10 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +22,7 @@ public class ChatSheetPrinter {
     }
 
     public ChatSheetPrinter(QUser p) {
-        this.p = p.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        this.p = p.getBukkitPlayer().orElse(null);
     }
 
     public void printCenterLine(@NotNull Component text) {

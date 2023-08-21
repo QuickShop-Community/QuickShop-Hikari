@@ -4,9 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.compatibility.towny.command.NationCommand;
@@ -59,12 +59,10 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
             return;
         }
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.createFlags);
-        component.ifPresent(value -> event.setCancelled(true, value));
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.createFlags);
+            component.ifPresent(value -> event.setCancelled(true, value));
+        });
     }
 
     private boolean isWorldIgnored(World world) {
@@ -232,12 +230,10 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getLocation().getWorld())) {
             return;
         }
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        Optional<Component> component = checkFlags(player, event.getLocation(), this.createFlags);
-        component.ifPresent(value -> event.setCancelled(true, value));
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            Optional<Component> component = checkFlags(player, event.getLocation(), this.createFlags);
+            component.ifPresent(value -> event.setCancelled(true, value));
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -245,12 +241,10 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
             return;
         }
-        Player player = event.getPurchaser().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.tradeFlags);
-        component.ifPresent(value -> event.setCancelled(true, value));
+        event.getPurchaser().getBukkitPlayer().ifPresent(player -> {
+            Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.tradeFlags);
+            component.ifPresent(value -> event.setCancelled(true, value));
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

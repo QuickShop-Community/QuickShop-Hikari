@@ -46,15 +46,13 @@ public final class Main extends CompatibilityModule {
             }
             return;
         }
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+                }
             }
-        }
+        });
     }
 
     private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
@@ -82,15 +80,13 @@ public final class Main extends CompatibilityModule {
             }
             return;
         }
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+                }
             }
-        }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -100,15 +96,13 @@ public final class Main extends CompatibilityModule {
         if (residence == null) {
             return;
         }
-        Player player = event.getPurchaser().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        if (!playerHas(residence.getPermissions(), player, TRADE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, TRADE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(player, "addon.residence.trade-flag-denied").forLocale());
+        event.getPurchaser().getBukkitPlayer().ifPresent(player -> {
+            if (!playerHas(residence.getPermissions(), player, TRADE_FLAG, false)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, TRADE_FLAG, false)) {
+                    event.setCancelled(true, getApi().getTextManager().of(player, "addon.residence.trade-flag-denied").forLocale());
+                }
             }
-        }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

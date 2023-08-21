@@ -4,7 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.magmaguy.elitemobs.api.utils.EliteItemManager;
 import net.kyori.adventure.text.Component;

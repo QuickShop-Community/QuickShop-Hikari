@@ -224,14 +224,12 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        if (checkPermission(player, event.getShop().getLocation(), Collections.singletonList(createLimit))) {
-            return;
-        }
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.griefprevention.creation-denied").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(p -> {
+            if (checkPermission(p, event.getShop().getLocation(), Collections.singletonList(createLimit))) {
+                return;
+            }
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.griefprevention.creation-denied").forLocale());
+        });
     }
 
     private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
@@ -252,14 +250,13 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        if (checkPermission(player, event.getLocation(), Collections.singletonList(createLimit))) {
-            return;
-        }
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.griefprevention.creation-denied").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(p -> {
+            if (checkPermission(p, event.getLocation(), Collections.singletonList(createLimit))) {
+                return;
+            }
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.griefprevention.creation-denied").forLocale());
+        });
+
     }
 
     // Player can create subclaims inside a claim.
@@ -289,14 +286,12 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTrading(ShopPurchaseEvent event) {
-        Player player = event.getPurchaser().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) {
-            return;
-        }
-        if (checkPermission(player, event.getShop().getLocation(), tradeLimits)) {
-            return;
-        }
-        event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.griefprevention.trade-denied").forLocale());
+        event.getPurchaser().getBukkitPlayer().ifPresent(p -> {
+            if (checkPermission(p, event.getShop().getLocation(), tradeLimits)) {
+                return;
+            }
+            event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.griefprevention.trade-denied").forLocale());
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

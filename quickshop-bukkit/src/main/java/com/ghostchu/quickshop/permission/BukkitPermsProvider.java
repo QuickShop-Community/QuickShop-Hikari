@@ -1,8 +1,7 @@
 package com.ghostchu.quickshop.permission;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
-import com.ghostchu.quickshop.common.obj.QUser;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +37,7 @@ public class BukkitPermsProvider implements PermissionProvider {
 
     @Override
     public boolean hasPermission(@NotNull QUser sender, @NotNull String permission) {
-        Player player = sender.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        Player player = sender.getBukkitPlayer().orElse(null);
         if (player == null) {
             return false;
         }

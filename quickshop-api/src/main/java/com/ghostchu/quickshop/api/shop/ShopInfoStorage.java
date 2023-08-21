@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
-import com.ghostchu.quickshop.common.obj.QUser;
 import lombok.Data;
 
 import java.util.Map;

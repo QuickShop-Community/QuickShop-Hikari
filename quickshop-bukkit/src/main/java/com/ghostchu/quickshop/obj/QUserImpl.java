@@ -1,13 +1,14 @@
 package com.ghostchu.quickshop.obj;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
-import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -206,6 +207,19 @@ public class QUserImpl implements QUser {
 
     public void set(String string) {
         parseString(string);
+    }
+
+    @Override
+    public Optional<Player> getBukkitPlayer() {
+        if (isRealPlayer()) {
+            if (this.uniqueId != null) {
+                return Optional.ofNullable(Bukkit.getPlayer(this.uniqueId));
+            }
+            if (this.username != null) {
+                return Optional.ofNullable(Bukkit.getPlayer(this.username));
+            }
+        }
+        return Optional.empty();
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string) {

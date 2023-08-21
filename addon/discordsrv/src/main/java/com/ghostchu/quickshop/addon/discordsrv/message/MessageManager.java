@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.addon.discordsrv.Main;
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import org.apache.commons.lang3.StringUtils;

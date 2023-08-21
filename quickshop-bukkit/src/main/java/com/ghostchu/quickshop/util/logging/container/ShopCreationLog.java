@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.util.logging.container;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
-import com.ghostchu.quickshop.common.obj.QUser;
 import lombok.Data;
 
 @Data

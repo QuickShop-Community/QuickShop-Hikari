@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.permission;
 
-import com.ghostchu.quickshop.common.obj.QUser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

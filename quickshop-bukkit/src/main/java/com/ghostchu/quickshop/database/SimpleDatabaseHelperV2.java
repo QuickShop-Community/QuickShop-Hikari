@@ -9,10 +9,10 @@ import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
-import com.ghostchu.quickshop.common.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -333,13 +333,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser) {
-        return CompletableFuture.supplyAsync(() -> {
-            UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
-            if (uuid == null) {
-                return null;
-            }
-            return getPlayerLocale(uuid).join();
-        });
+        UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) {
+            return null;
+        }
+        return getPlayerLocale(uuid);
     }
 
     @Override

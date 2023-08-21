@@ -18,11 +18,9 @@ import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import io.papermc.lib.PaperLib;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
@@ -110,23 +108,24 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
         Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) return;
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
-        if (island == null) {
-            return;
-        }
-        if (onlyOwnerCanCreateShop) {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+            if (island == null) {
+                return;
             }
-        } else {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+            if (onlyOwnerCanCreateShop) {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+                }
+            } else {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    if (!island.isMember(superiorPlayer)) {
+                        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                    }
                 }
             }
-        }
+        });
+
     }
 
     @Override
@@ -138,23 +137,23 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
         Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
-        Player player = event.getCreator().getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        if (player == null) return;
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
-        if (island == null) {
-            return;
-        }
-        if (onlyOwnerCanCreateShop) {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+            if (island == null) {
+                return;
             }
-        } else {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+            if (onlyOwnerCanCreateShop) {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+                }
+            } else {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    if (!island.isMember(superiorPlayer)) {
+                        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                    }
                 }
             }
-        }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
