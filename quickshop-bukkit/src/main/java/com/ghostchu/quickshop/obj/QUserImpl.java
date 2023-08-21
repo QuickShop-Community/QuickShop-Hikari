@@ -61,20 +61,22 @@ public class QUserImpl implements QUser {
             }
             this.realPlayer = true;
             this.uniqueId = UUID.fromString(string);
-            this.finder.uuid2NameFuture(this.uniqueId).whenComplete((result, throwable) -> {
-                if (result != null) {
-                    this.username = result;
-                }
-                if (throwable != null) {
-                    Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
-                }
-            });
+            this.finder.uuid2NameFuture(this.uniqueId)
+                    .thenAccept(result -> {
+                        this.username = result;
+                        endCheck();
+                    })
+                    .exceptionally(throwable -> {
+                        Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
+                        return null;
+                    });
         } else {
             if (isBracketedString(string)) {
                 String unbracketedString = removeBrackets(string);
                 this.realPlayer = false;
                 this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
                 this.username = unbracketedString;
+                endCheck();
             } else {
                 this.realPlayer = true;
                 this.username = string;
@@ -82,19 +84,17 @@ public class QUserImpl implements QUser {
                 if (this.uniqueId == null) {
                     throw new IllegalArgumentException("Cannot find uuid from username:" + username);
                 }
+                endCheck();
             }
         }
-        tryToFill();
+
     }
 
-    private void tryToFill() {
-        if (isRealPlayer() && this.username == null) {
-            this.username = this.finder.uuid2Name(this.uniqueId);
-        }
+    private void endCheck() {
         if (this.username != null && CommonUtil.isUUID(this.username)) {
             QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
         }
-        Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " Version=" + VERSION + " [DynmaicDisplay]DisplayName: " + getDisplay());
+        Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " Version=" + VERSION + " [DynamicDisplay]DisplayName: " + getDisplay());
     }
 
     private boolean isBracketedString(String input) {
