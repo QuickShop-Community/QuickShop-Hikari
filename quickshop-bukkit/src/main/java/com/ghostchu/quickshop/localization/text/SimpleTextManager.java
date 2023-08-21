@@ -544,7 +544,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         for (int i = 0; i < args.length; i++) {
             Object obj = args[i];
             if (obj == null) {
-                components[i] = Component.empty();
+                components[i] = Component.text("null");
                 continue;
             }
             Class<?> clazz = obj.getClass();
