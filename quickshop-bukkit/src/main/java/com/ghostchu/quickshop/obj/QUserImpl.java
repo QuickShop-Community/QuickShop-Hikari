@@ -21,15 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
-public class QUserImpl implements QUser {
-    private static final long VERSION = 1;
-    //    @JsonUtil.Hidden
-//    private static final Cache<Object, QUserImpl> QUSER_CACHE =
-//            CacheBuilder.newBuilder()
-//                    .initialCapacity(0)
-//                    .expireAfterAccess(1, TimeUnit.NANOSECONDS)
-//                    .recordStats()
-//                    .build();
+public final class QUserImpl implements QUser {
     @JsonUtil.Hidden
     private final PlayerFinder finder;
     private String username;
@@ -55,46 +47,58 @@ public class QUserImpl implements QUser {
 
     private void parseString(String string) {
         Log.debug("Loading QUser from string: " + string);
-        if (CommonUtil.isUUID(string) || CommonUtil.isTrimmedUUID(string)) {
-            if (CommonUtil.isTrimmedUUID(string)) {
-                string = CommonUtil.fromTrimmedUUID(string).toString();
-            }
-            this.realPlayer = true;
-            this.uniqueId = UUID.fromString(string);
-            this.finder.uuid2NameFuture(this.uniqueId)
-                    .thenAccept(result -> {
-                        this.username = result;
-                        endCheck();
-                    })
-                    .exceptionally(throwable -> {
-                        Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
-                        return null;
-                    });
+        if (CommonUtil.isUUID(string)) {
+            parseFromUUID(string);
         } else {
-            if (isBracketedString(string)) {
-                String unbracketedString = removeBrackets(string);
-                this.realPlayer = false;
-                this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
-                this.username = unbracketedString;
-                endCheck();
-            } else {
-                this.realPlayer = true;
-                this.username = string;
-                this.uniqueId = this.finder.name2Uuid(username);
-                if (this.uniqueId == null) {
-                    throw new IllegalArgumentException("Cannot find uuid from username:" + username);
-                }
-                endCheck();
-            }
+            parseFromUsername(string);
+        }
+        endCheck();
+    }
+
+    private void parseFromUsername(String string) {
+        if (isBracketedString(string)) {
+            parseFromUsernameFromVirtualPlayer(string);
+        } else {
+            parseFromUsernameFromRealPlayer(string);
         }
 
+    }
+
+    private void parseFromUsernameFromRealPlayer(String string) {
+        this.realPlayer = true;
+        this.username = string;
+        this.uniqueId = this.finder.name2Uuid(username);
+        if (this.uniqueId == null) {
+            throw new IllegalArgumentException("Cannot find uuid from username:" + username);
+        }
+    }
+
+    private void parseFromUsernameFromVirtualPlayer(String string) {
+        String unbracketedString = removeBrackets(string);
+        this.realPlayer = false;
+        this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
+        this.username = unbracketedString;
+    }
+
+    private void parseFromUUID(String string) {
+        this.realPlayer = true;
+        this.uniqueId = UUID.fromString(string);
+        this.finder.uuid2NameFuture(this.uniqueId)
+                .thenAccept(result -> {
+                    this.username = result;
+                    endCheck();
+                })
+                .exceptionally(throwable -> {
+                    Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
+                    return null;
+                });
     }
 
     private void endCheck() {
         if (this.username != null && CommonUtil.isUUID(this.username)) {
             QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
         }
-        Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " Version=" + VERSION + " [DynamicDisplay]DisplayName: " + getDisplay());
+        Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " [DynamicDisplay]DisplayName: " + getDisplay());
     }
 
     private boolean isBracketedString(String input) {
@@ -225,25 +229,11 @@ public class QUserImpl implements QUser {
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string) {
-        return CompletableFuture.supplyAsync(() -> {
-            return new QUserImpl(finder, string);
-//            try {
-//                return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
-//            } catch (ExecutionException e) {
-//                throw new IllegalStateException(e);
-//            }
-        }, QuickExecutor.getCommonExecutor());
+        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, string), QuickExecutor.getCommonExecutor());
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> {
-            return new QUserImpl(finder, uuid);
-//            try {
-//                return QUSER_CACHE.get(uuid.toString(), () -> new QUserImpl(finder, uuid.toString()));
-//            } catch (ExecutionException e) {
-//                throw new IllegalStateException(e);
-//            }
-        }, QuickExecutor.getCommonExecutor());
+        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, uuid), QuickExecutor.getCommonExecutor());
     }
 
     public static QUser createFullFilled(UUID uuid, String username, boolean realPlayer) {
@@ -256,7 +246,6 @@ public class QUserImpl implements QUser {
 
     public static QUser createSync(@NotNull PlayerFinder finder, @NotNull String string) {
         return new QUserImpl(finder, string);
-//            return QUSER_CACHE.get(string, () -> new QUserImpl(finder, string));
     }
 
     public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
@@ -307,8 +296,4 @@ public class QUserImpl implements QUser {
     public String toString() {
         return getDisplay();
     }
-
-//    public static Cache<Object, QUserImpl> getQuserCache() {
-//        return QUSER_CACHE;
-//    }
 }
