@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -188,31 +187,22 @@ public class QUserImpl implements QUser {
 
     @Override
     public String serialize() {
-        return VERSION + ";" + this.uniqueId + ";" + this.username + ";" + this.realPlayer;
+        String serialized;
+        if (this.realPlayer) {
+            if (this.uniqueId != null) {
+                serialized = this.uniqueId.toString();
+            } else {
+                serialized = this.username;
+            }
+        } else {
+            serialized = "[" + this.username + "]";
+        }
+        return serialized;
     }
 
     public static QUserImpl deserialize(PlayerFinder finder, String serialized) {
-        String[] split = serialized.split(";");
-        if (split.length != 4) {
-            // plain text?
-            Log.debug("Loading QUser from plain text:" + serialized);
-            return new QUserImpl(finder, serialized);
-        }
-        if (Long.parseLong(split[0]) != VERSION) {
-            throw new IllegalArgumentException("Invalid serialized QUser version");
-        }
-        UUID uuid = null;
-        if (!StringUtils.isEmpty(split[1])) {
-            uuid = UUID.fromString(split[1]);
-        }
-        String username = null;
-        if (!StringUtils.isEmpty(split[2])) {
-            username = split[2];
-        }
-        boolean realPlayer = Boolean.parseBoolean(split[3]);
-        return new QUserImpl(uuid, username, realPlayer);
+        return new QUserImpl(finder, serialized);
     }
-
 
     public void set(String string) {
         parseString(string);
