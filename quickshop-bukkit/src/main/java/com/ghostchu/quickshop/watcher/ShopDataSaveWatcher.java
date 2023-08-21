@@ -26,12 +26,10 @@ public class ShopDataSaveWatcher extends BukkitRunnable {
         saveTask = CompletableFuture.allOf(plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
                         .map(Shop::update)
                         .toArray(CompletableFuture[]::new))
-                .whenCompleteAsync((v, e) -> {
-                    if (e != null) {
-                        Log.debug("Error saving shops: " + e.getMessage());
-                    } else {
-                        Log.debug("Finished saving shops!");
-                    }
-                }, QuickExecutor.getShopSaveExecutor());
+                .thenAcceptAsync((v) -> Log.debug("Shop save completed."), QuickExecutor.getShopSaveExecutor())
+                .exceptionally(e -> {
+                    Log.debug("Error while saving shops: " + e.getMessage());
+                    return null;
+                });
     }
 }
