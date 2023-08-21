@@ -443,15 +443,6 @@ shop:
 
   #[BETA] Disable the quickshop /qs size command stack size check to allow stack size go up the vanilla limit
   disable-max-size-check-for-size-command: false
-
-  #[BETA] Should we async fetch the owner name?
-  #If you enable this option, the calls for ContainerShop#ownerName will return the cached result.
-  #If the request out of cache, QuickShop-Hikari will allow up to 20 ms for sync fetch username.
-  #Then it will turn to background and return "N/A" this time.
-  #This may cause some display problems (e.g. the info sign will show that the shop owner is N/A)
-  #But once the cache is completed for fetching in the background, the next request will return the correct username
-  #This is very useful for large servers, because sometimes players may accidentally load a large number of long ago shops, resulting in a large number of main route IO requests for username queries and causing a spike in lagging
-  async-owner-name-fetch: false
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.

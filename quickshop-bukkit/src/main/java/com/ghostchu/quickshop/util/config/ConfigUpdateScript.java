@@ -61,6 +61,7 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1015)
     public void removePurgerRefund() {
         getConfig().set("purge.return-create-fee", null);
+        getConfig().set("shop.async-owner-name-fetch", null);
     }
 
     @UpdateScript(version = 1004)
