@@ -128,6 +128,8 @@ shop-name-success: <green>Shop name successfully renamed to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added <yellow>{0}<green> as a staff member to
   your shop.
 shops-recovering: Recovering shops from backup...
+virtual-player-component-hover: '<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>'
+real-player-component-hover: '<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>"[]"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>.'
 menu:
   sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
   owner: '<green>Owner: {0}'
