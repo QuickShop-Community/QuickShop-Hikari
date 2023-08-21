@@ -91,7 +91,7 @@ public class QUserImpl implements QUser {
         if (isRealPlayer() && this.username == null) {
             this.username = this.finder.uuid2Name(this.uniqueId);
         }
-        if (CommonUtil.isUUID(this.username)) {
+        if (this.username != null && CommonUtil.isUUID(this.username)) {
             QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
         }
         Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " Version=" + VERSION + " [DynmaicDisplay]DisplayName: " + getDisplay());
