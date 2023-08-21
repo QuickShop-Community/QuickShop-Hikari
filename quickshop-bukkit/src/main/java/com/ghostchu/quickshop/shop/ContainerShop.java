@@ -1114,6 +1114,16 @@ public class ContainerShop implements Shop, Reloadable {
                 name = Component.text(playerName);
             }
         }
+        if (getOwner().isRealPlayer()) {
+            name = name.hoverEvent(
+                    plugin.text().of("real-player-component-hover", getOwner().getUniqueId(), getOwner().getUsername(), getOwner().getDisplay()).forLocale(locale.getLocale())
+            );
+        } else {
+            name = name.hoverEvent(
+                    plugin.text().of("virtual-player-component-hover", getOwner().getUniqueId(), getOwner().getUsername(), getOwner().getDisplay()).forLocale(locale.getLocale())
+            );
+
+        }
         ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
         event.callEvent();
         name = event.getName();
