@@ -3,8 +3,8 @@ package com.ghostchu.quickshop.shop.inventory;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import io.papermc.lib.PaperLib;
@@ -22,7 +22,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     @Override
     public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
         try (PerfMonitor ignored = new PerfMonitor("Locate inventory wrapper")) {
-            if (MsgUtil.isJson(symbolLink)) {
+            if (CommonUtil.isJson(symbolLink)) {
                 Log.debug("Reading the old format symbol link: " + symbolLink);
                 return locateOld(symbolLink);
             } else {

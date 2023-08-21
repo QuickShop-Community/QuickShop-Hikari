@@ -14,9 +14,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -234,13 +231,9 @@ public class MsgUtil {
         //}
     }
 
+    @Deprecated
     public static boolean isJson(String str) {
-        try {
-            JsonElement element = JsonParser.parseString(str);
-            return element.isJsonObject() || element.isJsonArray();
-        } catch (JsonParseException exception) {
-            return false;
-        }
+        return CommonUtil.isJson(str);
     }
 
     /**

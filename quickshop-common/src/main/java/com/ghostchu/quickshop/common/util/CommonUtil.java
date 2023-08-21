@@ -1,5 +1,8 @@
 package com.ghostchu.quickshop.common.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -297,6 +300,17 @@ public class CommonUtil {
             processors--;
         }
         return processors;
+    }
+
+
+    public static boolean isJson(String str) {
+        if (str == null || str.isBlank()) return false;
+        try {
+            JsonElement element = JsonParser.parseString(str);
+            return element.isJsonObject() || element.isJsonArray();
+        } catch (JsonParseException exception) {
+            return false;
+        }
     }
 
     @SafeVarargs

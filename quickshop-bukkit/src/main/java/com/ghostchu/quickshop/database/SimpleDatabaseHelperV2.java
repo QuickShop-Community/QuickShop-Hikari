@@ -19,7 +19,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -1058,7 +1057,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public OldShopData(ResultSet set) throws Exception {
             String ownerData = set.getString("owner");
-            if (!MsgUtil.isJson(ownerData)) {
+            if (!CommonUtil.isJson(ownerData)) {
                 owner = set.getString("owner");
                 Type t = new TypeToken<Map<UUID, String>>() {
                 }.getType();

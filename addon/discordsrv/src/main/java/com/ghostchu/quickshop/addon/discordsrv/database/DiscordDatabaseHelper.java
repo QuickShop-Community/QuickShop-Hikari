@@ -6,8 +6,8 @@ import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationSettings;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +76,7 @@ public class DiscordDatabaseHelper {
                 String json = set.getString("notifaction");
                 Log.debug("Json data: " + json);
                 if (StringUtils.isNotEmpty(json)) {
-                    if (MsgUtil.isJson(json)) {
+                    if (CommonUtil.isJson(json)) {
                         return JsonUtil.getGson().fromJson(json, NotificationSettings.class);
                     }
                 }

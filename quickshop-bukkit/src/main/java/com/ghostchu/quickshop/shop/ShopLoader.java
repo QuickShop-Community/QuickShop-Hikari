@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -317,7 +316,7 @@ public class ShopLoader implements SubPasteItem {
             this.invWrapper = dataRecord.getInventoryWrapper();
             this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
             String permissionJson = dataRecord.getPermissions();
-            if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
+            if (!StringUtils.isEmpty(permissionJson) && CommonUtil.isJson(permissionJson)) {
                 Type typeToken = new TypeToken<Map<UUID, String>>() {
                 }.getType();
                 this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, typeToken));
