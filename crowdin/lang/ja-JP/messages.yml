@@ -93,6 +93,8 @@ not-enough-space: <red>あなたには {0} 個分のスペースしかありま�
 shop-name-success: <green>ショップ名を <yellow>{0}<green> に設定することに成功しました。
 shop-staff-added: <green>あなたのショップスタッフに {0} を追加しました。
 shops-recovering: バックアップからショップを復元しています...
+virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>消費税として <yellow>{0} <green>を支払いました
   owner: '<green>店主: {0}'

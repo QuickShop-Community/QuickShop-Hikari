@@ -93,6 +93,8 @@ not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Đặt tên cửa hàng thành công thành <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shops-recovering: Đang khôi phục cửa hàng từ bản sao lưu...
+virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Bạn đã trả <yellow>{0} <green>tiền thuế.
   owner: '<green>Chủ: {0}'
