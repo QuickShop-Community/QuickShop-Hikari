@@ -1,12 +1,12 @@
 break-shop-use-supertool: <yellow>你可以使用超級工具破壞商店。
-fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 修改商店定價。
+fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 變更商店定價。
 not-allowed-to-create: <red>你無法在此建立商店。
 disabled-in-this-world: <red>此世界已停用 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
 _comment: 你好翻譯者！假若你正在從 Github 或其他代管平台編輯，你應此前往 https://crowdin.com/project/quickshop-hikari 進行翻譯。
-unlimited-shop-owner-changed: <yellow>此無限商店的店主已經修改成 {0}。
+unlimited-shop-owner-changed: <yellow>此無限商店的店主已經變更成 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
 shop-name-disallowed: <red>商店的名稱 <yellow>{0}</yellow> 已被禁止使用。請嘗試使用另一個名稱！
@@ -26,7 +26,7 @@ taxaccount-unset: <green>此商店的稅金帳戶現在按照伺服器全域設�
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣
 command-type-mismatch: <red>此指令只能由 <aqua>{0} <red>執行。
 server-crash-warning: '<red>警告：如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。'
-you-cant-afford-to-change-price: <red>你需要花費 {0} 來修改商品價格。
+you-cant-afford-to-change-price: <red>你需要花費 {0} 來變更商品價格。
 safe-mode: <red>QuickShop 現在處於安全模式，你無法打開此商店容器，請聯絡伺服器管理員以修復錯誤！
 forbidden-vanilla-behavior: <red>此操作不符合原版行為，因此被禁止。
 shop-out-of-space-name: <dark_purple>你的商店 {0} 已滿！
@@ -93,6 +93,8 @@ not-enough-space: <red>你只剩下 <yellow>{0}<red> 格空間可以裝東西！
 shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>。
 shop-staff-added: <green>已成功地新增員工 <yellow>{0}<green> 到你的商店。
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
+virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>你付了 <yellow>{0}</yellow> 的稅。
   owner: '<green>店主：{0}'
@@ -285,7 +287,7 @@ support-disable-reason:
     Windows: C:\\windows\\system32\\drivers\\etc\\hosts
     Linux: /etc/hosts
   privacy: <yellow>此伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的 bukkit 伺服器及在代理伺服器設定 online-mode=true，請你將代理伺服器的相關配置正確設定。
-  modified: <yellow>檔案完整度檢查失敗：此版本的 QuickShop 並非官方正式版本，亦已經被其他人修改過。
+  modified: <yellow>檔案完整度檢查失敗：此版本的 QuickShop 並非官方正式版本，亦已經被其他人變更過。
   consolespamfix-installed: <yellow>已安裝 ConsoleSpamFix，任何錯誤詳細訊息已被隱藏。如果要得到技術支援，請先停用此功能。
   authlib-injector-detected: <yellow>此伺服器正在運行第三方 Auth-library，例如 authlib-injector。
   unsupported-server-software: <yellow>此伺服器並非運行受支援的伺服器軟體，任何模組化的伺服器軟體，例如 MCPC、Cauldron、CatServer、Mohist、Magma、Fukkit、Cardboard 將不會獲得技術支援。
@@ -339,9 +341,9 @@ booleanformat:
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  price-hover: <yellow>點擊修改商品價格。
+  price-hover: <yellow>點擊變更商品價格。
   remove: <bold><red>[Remove Shop]
-  mode-buying-hover: <yellow>點擊商店修改為出售模式。
+  mode-buying-hover: <yellow>點擊商店變更為出售模式。
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
@@ -353,20 +355,20 @@ controlpanel:
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
-  setowner-hover: <yellow>點擊修改店主。
+  setowner-hover: <yellow>點擊變更店主。
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  unlimited-hover: <yellow>點擊修改商店模式為無限。
+  unlimited-hover: <yellow>點擊變更商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊移除此商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
   refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>啟用/停用商店鎖保護。
-  item-hover: <yellow>點擊修改商店物品
+  item-hover: <yellow>點擊變更商店物品
   infomation: '<green>商店控制面板：'
-  mode-selling-hover: <yellow>點擊商店修改為收購模式。
+  mode-selling-hover: <yellow>點擊商店變更為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
 timeunit:
@@ -403,9 +405,9 @@ timeunit:
 command:
   reloading: "<green>配置檔案已經重新載入。<yellow>某些更改可能需要重新啟動才能生效。<newline>\n<gray>（注意：版本 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件以確保伺服器不會崩潰。）"
   description:
-    buy: <yellow>修改成 <light_purple>收購 <yellow>模式
+    buy: <yellow>變更成 <light_purple>收購 <yellow>模式
     about: <yellow>顯示關於 QuickShop 的資訊
-    language: <yellow>修改正在使用的語言
+    language: <yellow>變更正在使用的語言
     purge: <yellow>在背景啟動商店清理任務
     paste: <yellow>自動將伺服器資料傳送到 Pastebin 上
     title: <green>QuickShop 說明
@@ -413,22 +415,22 @@ command:
     ban: <yellow>解除封禁商店中的玩家
     empty: <yellow>清空商店空間
     alwayscounting: <yellow>設定商店是否會持續計數容器物品（即使是無限商店）
-    setowner: <yellow>修改新的商店擁有者。
+    setowner: <yellow>變更新的商店擁有者。
     reload: <yellow>重新載入 QuickShop
     freeze: <yellow>停用或啟用商店交易
-    price: <yellow>修改 收購/出售 的價格
+    price: <yellow>變更 收購/出售 的價格
     find: <yellow>搜尋附近指定物品類型的商店。
     create: <yellow>在目標儲物箱建立新商店
     lock: <yellow>切換商店上鎖狀態
     currency: <yellow>設定或移除目前商店的貨幣設定
     removeworld: <yellow>移除指定世界的商店
     info: <yellow>顯示 QuickShop 統計資料
-    owner: <yellow>修改新的商店擁有者。
+    owner: <yellow>變更新的商店擁有者。
     amount: <yellow>設定物品數量（聊天室發生問題時很實用）
-    item: <yellow>修改商店物品
+    item: <yellow>變更商店物品
     debug: <yellow>開啟用開發者模式
     unlimited: <yellow>將商店設為無限庫存。
-    sell: <yellow>修改成 <light_purple>出售 <yellow>模式
+    sell: <yellow>變更成 <light_purple>出售 <yellow>模式
     fetchmessage: <yellow>顯示未讀商店日誌
     staff: <yellow>管理你的商店員工
     clean: <yellow>移除所有（已載入）沒有商品的商店
@@ -437,7 +439,7 @@ command:
     removeall: <yellow>移除指定玩家的所有商店
     unban: <yellow>解除封禁商店中的玩家
     transfer: <yellow>將某人的所有商店轉移給其他人
-    size: <yellow>修改每份物品的數量
+    size: <yellow>變更每份物品的數量
     supercreate: <yellow>繞過所有保護檢查並建立商店
     taxaccount: <yellow>設定商店使用的稅金帳戶
     name: <yellow>命名商店一個專有名稱
@@ -464,7 +466,7 @@ command:
     limited: <green>此商店現在已恢復數量限制
     unlimited: <green>此商店現在已沒有數量限制
   transfer-success-other: <green>將<yellow> {0} {1}<green>的商店轉移到<yellow> {2}
-  no-trade-item: <green>請在主手持有要修改的交易商品
+  no-trade-item: <green>請在主手持有要變更的交易商品
   wrong-args: <red>無效的參數，使用 <bold>/qs help <red>查看指令列表。
   some-shops-removed: <yellow>{0} <green>的商店已移除
   new-owner: '<green>新商店店主：<yellow>{0}'
@@ -1123,8 +1125,8 @@ addon:
       shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: 你的商店價格已被修改",
-                "description": "你或者是你的商店店員修改了商店價格。",
+                "title": ":money_with_wings: 你的商店價格已被變更",
+                "description": "你或者是你的商店店員變更了商店價格。",
                 "color": 16172079,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1162,8 +1164,8 @@ addon:
       mod-shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings:商店價格已被修改",
-                "description": "商店修改了價格設定。",
+                "title": ":money_with_wings:商店價格已被變更",
+                "description": "商店變更了價格設定。",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1325,7 +1327,7 @@ addon:
     discount-code-config-shop-add-failure: <red>此商店已存在於你的優惠代碼允許列表。
     discount-code-config-shop-removed: <green>成功地將此商店從你的優惠代碼允許列表中移除。
     discount-code-config-shop-remove-failure: <red>此商店不存在於你的優惠代碼允許列表。
-    discount-code-config-expire: <green>成功地修改了優惠代碼過期時間。
+    discount-code-config-expire: <green>成功地變更了優惠代碼過期時間。
     discount-code-config-applied: <green>成功地配置優惠代碼！
     discount-code-created-successfully: |
       <green>Your discount code <yellow>{0}</yellow> has been successfully created!
