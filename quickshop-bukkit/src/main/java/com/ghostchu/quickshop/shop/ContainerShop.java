@@ -512,6 +512,7 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         this.owner = owner;
+        setDirty();
         setSignText(plugin.getTextManager().findRelativeLanguages(owner, false));
     }
 
@@ -635,6 +636,7 @@ public class ContainerShop implements Shop, Reloadable {
             throw new IllegalStateException("Cannot set shop id once it fully created.");
         }
         this.shopId = newId;
+        setDirty();
     }
 
     /**
