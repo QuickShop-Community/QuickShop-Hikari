@@ -25,7 +25,7 @@ tabcomplete:
 taxaccount-unset: <green>该商店的税务账户现在变为服务器的全局设置。
 blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
-server-crash-warning: '<red>如果服务器运行时替换/删除QuickShop插件 Jar 文件，执行 /qs reload后服务器可能会崩溃。'
+server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
 you-cant-afford-to-change-price: <red>你需要 {0} 才能修改商店的价格。
 safe-mode: <red>QuickShop 现在处于安全模式，您不能打开这个商店方块，请与服务器管理员联系以修复错误。
 forbidden-vanilla-behavior: <red>该操作有悖于原版行为，因此已被禁止
@@ -257,7 +257,7 @@ no-double-chests: <red>你没有权限创建大箱子商店。
 price-too-cheap: <red>价格必须大于<yellow>${0}
 shop-not-exist: <red>这里没有商店
 bad-command-usage: <red>错误的命令参数！
-cleanghost-warning: <yellow>这个命令将清理<red>所有</red>在不允许创建商店的世界的、出售/购买不允许的物品的，以及 <bold><red>所有在服务器没有加载的世界</red></bold>的商店， 请在确保您的商店数据备份完整后使用 <aqua>/qs cleanghost confirm </aqua>来继续。
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>开始检查幽灵商店(缺少容器方块)。所有不存在的商店将被移除...
 cleanghost-deleting: <yellow>发现一个损坏的商店 <aqua>{0}</aqua> 因为 {1}, 标记它删除...
 cleanghost-deleted: <green>总计 <yellow>{0}</yellow> 家商店已被删除。
@@ -270,7 +270,7 @@ price-is-now: <green>商店的新价格是 <yellow>{0}
 shops-arent-locked: <red>注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住商店。
 that-is-locked: <red>这个商店已上锁。
 shop-has-no-space: <red>这个商店只能装下 {0} 个 {1} 了。
-safe-mode-admin: '<red><bold>警告: <red>此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入<yellow>/qs <red> 命令来检查错误。'
+safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
 shop-stock-too-low: <red>这个商店只有 {0} 个 {1} 了。
 world-not-exists: <red>世界 <yellow>{0}<red> 不存在
 how-many-sell: <green>聊天栏中输入想 <light_purple>出售 <green>的物品数量. 您现在可以卖出 <yellow>{0} <green>件物品。输入 <aqua>{1}<green> 来出售全部物品。
@@ -448,11 +448,11 @@ command:
     database: <yellow>查看和维护 QuickShop 数据库
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
     tag: <yellow>添加、 删除或查询商店标签
-  bulk-size-not-set: '<red>Usage: /qs size \<amount>'
-  no-type-given: '<red>Usage: /qs find \<item>'
+  bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
+  no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: 该功能未在配置文件中启用。
   now-debuging: <green>成功切换到了开发者模式，插件重载中...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill \<amount>
+  no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
   no-owner-given: <red>未指定新的商店所有者
   disabled: '<red>此命令已禁用: <yellow>{0}'
   bulk-size-now: <green>现在开始交易 <yellow>{0} 个 {1}
@@ -466,7 +466,7 @@ command:
     unlimited: <green>商店已更改为无限模式
   transfer-success-other: <green>已将玩家<yellow> {1} 的<green> {0} 个商店转移到玩家<yellow> {2}
   no-trade-item: <green>请在主手手持想要切换到的新物品
-  wrong-args: <red>无效参数。使用 <bold>/qs help <red>来查看命令帮助。
+  wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
   some-shops-removed: <yellow>{0} <green>个商店已被移除
   new-owner: '<green>新的商店所有者: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -540,10 +540,10 @@ paste-created-local: |-
 paste-created-local-failed: <red>保存Paste到本地磁盘失败，请检查您的磁盘。
 paste-451: |-
   <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file
+  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
 paste-upload-failed: <red>上传Paste到 {0} 失败，正在尝试其它的Pastebin...
 paste-upload-failed-local: <red>上传Paste失败，尝试生成本地Paste...
-command-incorrect: '<red>指令用法错误，输入/qs help检查帮助。用法： {0}。'
+command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
 successfully-set-player-group: <green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。
 successfully-unset-player-group: <green>成功地移除此商店中的玩家权限组。
 successfully-set-player-permission: <green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>
@@ -577,7 +577,7 @@ debug:
   warning-sql: |-
     <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
     <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>要确认这个危险的操作，请在 60 秒内输入 <aqua>/qs debug database sql confirm {0}</aqua>。
+  warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
   warning-sql-confirm-hover: <yellow>点击以确认此危险操作。
   sql-confirm-not-found: <yellow>指定的操作无效或已过期
   sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
@@ -605,7 +605,7 @@ database:
   scanning: <green>正在 QuickShop 数据库中扫描孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间...
   scanning-async: <yellow>正在异步任务线程上扫描 QuickShop 数据库中孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间，请稍后再试。
   already-scanning: <red>已有一个扫描任务正在进行中，请等待扫描完成。
-  trim-warning: <yellow><red><bold>警告： </red>在继续数据库清理之前备份您的数据库以避免数据丢失。 一旦准备就绪，请执行 <aqua>/qs database trim confirm</aqua> 继续。
+  trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
   status: '<yellow>状态: {0}'
   status-good: <green>良好
   status-bad: <yellow>需要维护
@@ -624,7 +624,7 @@ database:
   trim-exception: <red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。
   generated-at: '<yellow>Generated at: <gold>{0}'
   purge-date: <red>您必须给出一个日期
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop database purgelogs \<before-days> confirm`
   purge-task-created: <green>任务已创建! 数据库在后台静默清除历史记录
   purge-done-with-line: <green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。
   purge-done-with-error: <red>清除任务失败，请检查服务器控制台获取详细信息。
@@ -633,21 +633,23 @@ database:
     <green>成功地从内存和数据库清除了 {0} 个玩家缓存。<aqua>注意：此操作可能会影响服务器性能。
   purge-players-error: <red>清除玩家缓存失败，请检查服务器控制台。
   suggestion:
-    trim: <yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。
+    trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
 always-counting-removal-early-warning: <red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。
 exporting-database: <green>正在导出数据，请稍候...
 exporting-failed: <red>导出数据失败，请检查服务器控制台。
 exported-database: <green>数据已导出到 <yellow>{0}</yellow>。
 importing-not-found: <red>找不到 <yellow>{0}</yellow> 文件，请检查文件路径。
 importing-early-warning: |-
-  <yellow><red><bold>警告: </bold></red>备份即将被导入到当前数据库。任何已存在的数据都将被永久清除并使用新的数据覆盖。<newline><red>您确定要继续导入吗？</red><yellow>输入 <aqua>/qs recovery confirm</aqua> 继续。
+  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
+  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
 importing-database: <green>正在从备份导入数据，请稍候...
 importing-failed: <red>导入数据失败，请检查服务器控制台。
 imported-database: <green>数据从 <yellow>{0}</yellow> 导入。
 transfer-sent: <green>商店转移请求已发送到 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？
 transfer-ask: |-
-  <gold>输入 <red>/qs transfer accept</red> 来接受。</gold><gold>输入 <red>/qs transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。
@@ -685,7 +687,7 @@ addon:
     make-shop-no-longer-owned-by-town: <green>您已重置商店所有权，它现在转移回原店主
     make-shop-owned-by-nation: <green>你已将商店设为 <yellow>{0}</yellow> 国拥有
     make-shop-no-longer-owned-by-nation: <green>您已重置商店所有权，它现在转移回原店主
-    shop-owning-changing-notice: <gray>此商店现在由城镇/国家拥有，商店店主已自动添加到管理员列表中，使用命令/qs permission 修改或添加任何新的商店店主/商店助手
+    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop permission
     target-shop-already-is-town-shop: <red>目标商店已经归城镇所有。
     target-shop-already-is-nation-shop: <red>目标商店已归国家所有。
     target-shop-not-in-town-region: <red>目标商店不在城镇内
@@ -1309,7 +1311,7 @@ addon:
     invalid-expire-time: <red>不能指定过去的时间。
     invalid-discount-rate: <red>折扣率 <yellow>{0}</yellow> 无效，它可以是固定数字或百分比。
     discount-code-expired: <red>哎呀！您的优惠码 <yellow>{0}</yellow> 已过期！
-    discount-code-installed: <green>您已安装优惠码 <gold>{0}</gold>, 优惠码将自动应用于本次会话期间所有可用的交易。 要卸载优惠码，请执行 <aqua>/qs discount uninstall {0}</aqua>。
+    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
     discount-code-uninstalled: <green>您已卸载您的优惠码。
     discount-code-query-nothing: <red>您尚未安装优惠码！
     discount-code-query: '<green>您正在使用优惠码： <yellow>{0}</yellow>。'
@@ -1326,11 +1328,11 @@ addon:
     discount-code-config-expire: <green>成功地更改了优惠码过期时间。
     discount-code-config-applied: <green>成功地配置优惠码！
     discount-code-created-successfully: |
-      <green>您的优惠码 <yellow>{0}</yellow> 已成功地创建！
-      <gold>范围：<aqua>{1}</aqua></gold>.
-      <gold>与他人分享：<#bcef26>{2}</#bcef26></gold>
-      <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表，请看着一个商店并执行 <aqua>{3}</aqua> 命令。
-      您可以随时使用 <aqua>/qs discount config {0}</aqua> 编辑您的优惠码。
+      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
+      <gold>Scope: <aqua>{1}</aqua></gold>.
+      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
+      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
+      You can use <aqua>/quickshop discount config {0}</aqua> to edit your discount code anytime.
     discount-code-under-threshold: <red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>。
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
