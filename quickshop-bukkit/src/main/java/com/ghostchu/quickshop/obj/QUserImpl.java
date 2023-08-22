@@ -46,7 +46,6 @@ public final class QUserImpl implements QUser {
     }
 
     private void parseString(String string) {
-        Log.debug("Loading QUser from string: " + string);
         if (CommonUtil.isUUID(string)) {
             parseFromUUID(string);
         } else {
@@ -98,7 +97,6 @@ public final class QUserImpl implements QUser {
         if (this.username != null && CommonUtil.isUUID(this.username)) {
             QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
         }
-        Log.debug("QUser loaded with data: UniqueId=" + this.uniqueId + " UserName=" + this.username + " RealPlayer=" + this.realPlayer + " [DynamicDisplay]DisplayName: " + getDisplay());
     }
 
     private boolean isBracketedString(String input) {
