@@ -217,7 +217,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.symbolLink = symbolLink;
         this.inventoryWrapperProvider = inventoryWrapperProvider;
         updateShopData();
-        Util.mainThreadRun(this::checkDisplay);
         // ContainerShop constructor is not allowed to write any persistent data to disk
         // ContainerShop constructor may run on both ServerThread and AsyncThread
     }
