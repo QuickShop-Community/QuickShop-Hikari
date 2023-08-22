@@ -69,7 +69,7 @@ public class ConfigUpdateScript {
         getConfig().set("debug.delete-corrupt-shops", false);
     }
 
-    @UpdateScript(version = 1016)
+    @UpdateScript(version = 1017)
     public void addQsToCommands() {
         List<String> getAlias = getConfig().getStringList("custom-commands");
         getAlias.add("qs");

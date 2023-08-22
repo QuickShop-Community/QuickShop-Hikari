@@ -84,11 +84,6 @@ description: QuickShop is a shop plugin that allows players to easily sell/buy a
 
 version: ${project.version}
 
-commands:
-  quickshop:
-    description: The main command of QuickShop
-    usage: "/quickshop help"
-
 permissions:
   quickshop.player:
     description: The permission that provide all player need have permissions
