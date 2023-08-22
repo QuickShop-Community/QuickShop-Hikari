@@ -114,7 +114,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
          */
         default void onFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -124,7 +123,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
          */
         default void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction("Transaction succeed: " + economyTransaction);
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -136,7 +134,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
          */
         default void onTaxFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
     }

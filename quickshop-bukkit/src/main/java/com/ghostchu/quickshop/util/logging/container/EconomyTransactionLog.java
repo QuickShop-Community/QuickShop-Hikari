@@ -1,5 +1,7 @@
 package com.ghostchu.quickshop.util.logging.container;
 
+import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.obj.QUserSimpleRecord;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,21 +10,21 @@ import lombok.Data;
 public class EconomyTransactionLog {
     private static int v = 2;
     private boolean success;
-    private Object from;
-    private Object to;
+    private QUserSimpleRecord from;
+    private QUserSimpleRecord to;
     private String currency;
     private double tax;
-    private Object taxAccount;
+    private QUserSimpleRecord taxAccount;
     private double amount;
     private String lastError;
 
-    public EconomyTransactionLog(boolean success, Object from, Object to, String currency, double tax, Object taxAccount, double amount, String lastError) {
+    public EconomyTransactionLog(boolean success, QUser from, QUser to, String currency, double tax, QUser taxAccount, double amount, String lastError) {
         this.success = success;
-        this.from = from;
-        this.to = to;
+        this.from = QUserSimpleRecord.wrap(from);
+        this.to = QUserSimpleRecord.wrap(to);
         this.currency = currency;
         this.tax = tax;
-        this.taxAccount = taxAccount;
+        this.taxAccount = QUserSimpleRecord.wrap(taxAccount);
         this.amount = amount;
         this.lastError = lastError;
     }
