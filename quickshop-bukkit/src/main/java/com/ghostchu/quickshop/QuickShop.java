@@ -796,10 +796,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private void registerShopLock() {
+        Util.unregisterListenerClazz(javaPlugin, LockListener.class);
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
-        } else {
-            Util.unregisterListenerClazz(javaPlugin, LockListener.class);
         }
     }
 
