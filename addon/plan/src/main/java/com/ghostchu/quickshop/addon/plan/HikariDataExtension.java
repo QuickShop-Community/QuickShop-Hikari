@@ -78,7 +78,7 @@ public class HikariDataExtension implements DataExtension {
         try {
             LinkedHashMap<ShopMetricRecord, DataRecord> recordsMapped = this.metricQuery.mapToDataRecord(records);
             recordsMapped.forEach((metric, data) -> {
-                String player = metric.getPlayer().getDisplay();
+                String player = metric.getPlayer();
                 String action = CommonUtil.prettifyText(metric.getType().name());
                 String shop = dataUtil.getShopName(metric, data);
                 String item = dataUtil.getItemName(data) + " (" + metric.getAmount() + ")";
