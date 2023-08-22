@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -91,11 +92,13 @@ public class ShopLoader implements SubPasteItem {
         AtomicInteger chunkNotLoaded = new AtomicInteger(0);
         List<Shop> shopsLoadInNextTick = new CopyOnWriteArrayList<>();
         CompletableFuture.allOf(records.stream().map(shopRecord ->
-                                loadShopFromShopRecord(worldName, shopRecord, deleteCorruptShops, shopsLoadInNextTick, successCounter, chunkNotLoaded))
+                                loadShopFromShopRecord(worldName, shopRecord, deleteCorruptShops,
+                                        shopsLoadInNextTick, successCounter, chunkNotLoaded))
                         .toArray(CompletableFuture[]::new))
-                .thenAcceptAsync((v) -> Log.debug("Shop save completed."), QuickExecutor.getCommonExecutor())
+                .thenAcceptAsync((v) -> Log.debug("Shop loading completed."), QuickExecutor.getCommonExecutor())
                 .exceptionally(e -> {
-                    Log.debug("Error while saving shops: " + e.getMessage());
+                    Log.debug("Error while loading shops: " + e.getMessage());
+                    MsgUtil.debugStackTrace(e.getStackTrace());
                     return null;
                 }).join();
         Util.mainThreadRun(() -> shopsLoadInNextTick.forEach(shop -> {
