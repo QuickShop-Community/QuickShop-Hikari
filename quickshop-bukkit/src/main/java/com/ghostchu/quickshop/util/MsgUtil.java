@@ -264,6 +264,8 @@ public class MsgUtil {
     }
 
     private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
+        if(enchs.isEmpty()) return;
+        chatSheetPrinter.printCenterLine(PLUGIN.text().of("menu.enchants").forLocale());
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
