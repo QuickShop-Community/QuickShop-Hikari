@@ -25,7 +25,7 @@ tabcomplete:
 taxaccount-unset: <green>La tassa di questo negozio ora segue l'impostazione globale del server.
 blacklisted-item: <red>Non puoi vendere questo oggetto perché è nella blacklist
 command-type-mismatch: <red>Questo comando può essere eseguito solo da <aqua>{0}.
-server-crash-warning: '<red>Il server potrebbe arrestarsi in modo anomalo dopo l''esecuzione del comando /quickshop  reload se si sostituisce/elimina il file Jar del plug-in QuickShop mentre il server è in esecuzione.'
+server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
 you-cant-afford-to-change-price: <red>Questo costa {0} per cambiare il prezzo nel tuo negozio.
 safe-mode: <red>QuickShop ora in modalità provvisoria, non puoi aprire questo contenitore del negozio, contatta l'amministratore del server per correggere gli errori.
 forbidden-vanilla-behavior: <red>L'operazione è vietata in quanto non coerente con il comportamento vanilla
@@ -54,6 +54,7 @@ quick-fill:
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Prezzo medio nelle vicinanze: <yellow>{0}'
+inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
 digits-reach-the-limit: <red>Hai raggiunto i limiti dei decimali nel prezzo.
 currency-unset: <green>Valuta del negozio rimossa con successo. Utilizzando le impostazioni predefinite.
 you-cant-create-shop-in-there: <red>Non hai il permesso di creare un negozio in questa posizione.
@@ -258,7 +259,7 @@ no-double-chests: <red>Non puoi creare un negozio con doppia cassa.
 price-too-cheap: <red>Il prezzo deve essere superiore di <yellow> ${0}
 shop-not-exist: <red>Non c'è nessun negozio.
 bad-command-usage: <red>Argomento di comando errato!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop  cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
 cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
 cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
@@ -271,7 +272,7 @@ price-is-now: <green>Il nuovo prezzo del negozio è <yellow>{0}
 shops-arent-locked: <red>Ricorda che i negozi NON sono protetti dal furto! Se vuoi fermare i ladri, bloccali con LWC, Lockette, ecc!
 that-is-locked: <red>Questo negozio è bloccato.
 shop-has-no-space: <red>Il negozio ha spazio solo per {0} in più {1}.
-safe-mode-admin: '<red><bold>ATTENZIONE: <red>Il QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando <yellow>/quickshop  <red> per controllare eventuali errori.'
+safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
 shop-stock-too-low: <red>Il negozio ha solo {0} {1} rimanenti!
 world-not-exists: <red>Il mondo <yellow>{0}<red> non esiste
 how-many-sell: <green>Inserisci in chat, quanti desideri <aqua>VENDERE<green>. Puoi vendere <yellow>{0}<green>. Inserisci <aqua>{1}<green> in chat per venderli tutti.
@@ -449,11 +450,11 @@ command:
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
-  bulk-size-not-set: '<red>Usage: /quickshop  size \<amount>'
-  no-type-given: '<red>Usage: /quickshop  find \<item>'
+  bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
+  no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: Questa funzione non è abilitata nel file di configurazione.
   now-debuging: <green>Modalità sviluppatore attivata con successo. Ricaricando QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/quickshop  refill \<amount>
+  no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
   no-owner-given: <red>Nessun proprietario fornito
   disabled: '<red>Questo comando è disabilitato: <yellow>{0}'
   bulk-size-now: <green>Scambio <yellow>{0}x {1}
@@ -467,7 +468,7 @@ command:
     unlimited: <green>Il negozio è ora illimitato
   transfer-success-other: <green>Trasferiti <yellow>{0} {1}<green> negozi a <yellow>{2}
   no-trade-item: <green>Si prega di tenere un oggetto di scambio per cambiare nella mano principale
-  wrong-args: <red>Argomento non valido. Usa <bold>/quickshop  help <red>per vedere un elenco di comandi.
+  wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
   some-shops-removed: <yellow>{0} <green>shop rimosso/i
   new-owner: '<green>Nuovo proprietario: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -541,10 +542,10 @@ paste-created-local: |-
 paste-created-local-failed: <red>Fallimento durrante il salvataggio della paste nel tuo disco rigido.
 paste-451: |-
   <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop  paste --file
+  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
 paste-upload-failed: <red>Impossibile caricare la paste su {0}, stiamo provando un altro fornitore di pastebin...
 paste-upload-failed-local: <red>Impossibile caricare la pasta, stiamo cercando di generare una paste locale...
-command-incorrect: '<red>Uso del commando incorretto, scrivi /quickshop  help per controllare la pagina d''aiuto. Uso: {0}.'
+command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
 successfully-set-player-group: <green>Assegnato il gruppo giocatore {0} a <aqua>{1}</aqua> con successo.
 successfully-unset-player-group: <green>Rimosso il gruppo giocatore dal negozio con successo.
 successfully-set-player-permission: <green>Permesso <aqua>{1}</aqua> del giocatore {0} impostato con successo nel negozio <aqua>{2}</aqua>.
@@ -578,7 +579,7 @@ debug:
   warning-sql: |-
     <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
     <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>Per confermare questa pericolosa operazione, per favore scrivi <aqua>/quickshop  debug database sql confirm {0}</aqua> entro 60 secondi.
+  warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
   warning-sql-confirm-hover: <yellow>Clicca per confermare questa operazione pericolosa.
   sql-confirm-not-found: <yellow>L'operazione che hai fornito non è stata trovata, potrebbe essere non valida o scaduta.
   sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
@@ -606,7 +607,7 @@ database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
-  trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/quickshop  database trim confirm</aqua> to continue.'
+  trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
   status: '<yellow>Status: {0}'
   status-good: <green>Good
   status-bad: <yellow>Maintenance Required
@@ -625,7 +626,7 @@ database:
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
   generated-at: '<yellow>Generated at: <gold>{0}'
   purge-date: <red>You must given a date.
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop  database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop database purgelogs \<before-days> confirm`
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
   purge-done-with-error: <red>Purge task failed, check the server console for details.
@@ -635,7 +636,7 @@ database:
     <aqua>Note: You server performance may impact by this operation.
   purge-players-error: <red>Failed to purge players caches, please check the server console.
   suggestion:
-    trim: <yellow>This database require a isolated data trim, execute command <aqua>/quickshop  database trim</aqua> to trim the database.
+    trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
 always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
 exporting-database: <green>Exporting database, please wait...
 exporting-failed: <red>Failed to export database, please check the server console.
@@ -643,14 +644,14 @@ exported-database: <green>Database exported to <yellow>{0}</yellow>.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
   <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop  recovery confirm</aqua> to continue.
+  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
 importing-database: <green>Importing database from backup, please wait...
 importing-failed: <red>Failed to import database, please check the server console.
 imported-database: <green>Database imported from <yellow>{0}</yellow>.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
 transfer-ask: |-
-  <gold>Type <red>/quickshop  transfer accept</red> to accept or <red>/quickshop  transfer deny</red> to deny.
+  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
@@ -689,7 +690,7 @@ addon:
     make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
     make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop  permission
+    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop permission
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
     target-shop-not-in-town-region: <red>The target shop is not in the town.
@@ -1313,7 +1314,7 @@ addon:
     invalid-expire-time: <red>You can't specify a time in the past.
     invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
     discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
-    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop  discount uninstall {0}</aqua>.
+    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
     discount-code-uninstalled: <green>You have uninstalled your discount code.
     discount-code-query-nothing: <red>You hadn't install a discount code yet!
     discount-code-query: '<green>You are using discount code: <yellow>{0}</yellow>.'
@@ -1334,7 +1335,7 @@ addon:
       <gold>Scope: <aqua>{1}</aqua></gold>.
       <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
       <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/quickshop  discount config {0}</aqua> to edit your discount code anytime.
+      You can use <aqua>/quickshop discount config {0}</aqua> to edit your discount code anytime.
     discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
