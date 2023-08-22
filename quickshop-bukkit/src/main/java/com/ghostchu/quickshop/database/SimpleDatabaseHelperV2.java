@@ -183,7 +183,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     private void upgradeBenefit() {
         fastBackup();
         try {
-            Integer lines = getManager().alterTable(DataTables.DATA.getName())
+           getManager().alterTable(DataTables.DATA.getName())
                     .addColumn("benefit", "MEDIUMTEXT")
                     .execute();
         } catch (SQLException e) {
@@ -198,10 +198,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     private void upgradePlayers() {
         fastBackup();
         try {
-            Integer lines = getManager().alterTable(DataTables.PLAYERS.getName())
+            getManager().alterTable(DataTables.PLAYERS.getName())
                     .modifyColumn("locale", "VARCHAR(255)")
                     .execute();
-            lines = getManager().alterTable(DataTables.PLAYERS.getName())
+            getManager().alterTable(DataTables.PLAYERS.getName())
                     .addColumn("cachedName", "VARCHAR(255)")
                     .execute();
         } catch (SQLException e) {
@@ -211,30 +211,25 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     private void upgradeUniqueIdsField() {
         fastBackup();
-        try {
-            CompletableFuture.allOf(
-                    manager.alterTable(DataTables.DATA.getName())
-                            .modifyColumn("owner", "VARCHAR(128) NOT NULL")
-                            .executeFuture(),
-                    manager.alterTable(DataTables.DATA.getName())
-                            .modifyColumn("tax_account", "VARCHAR(64)")
-                            .executeFuture(),
-                    manager.alterTable(DataTables.LOG_PURCHASE.getName())
-                            .modifyColumn("buyer", "VARCHAR(128) NOT NULL")
-                            .executeFuture(),
-                    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
-                            .modifyColumn("from", "VARCHAR(128) NOT NULL")
-                            .executeFuture(),
-                    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
-                            .modifyColumn("to", "VARCHAR(128) NOT NULL")
-                            .executeFuture(),
-                    manager.alterTable(DataTables.LOG_TRANSACTION.getName())
-                            .modifyColumn("tax_account", "VARCHAR(64)")
-                            .executeFuture()).get();
-        } catch (InterruptedException | ExecutionException e) {
-            plugin.logger().warn("Failed to upgrade scheme, the upgrade progress cannot continue.", e);
-            throw new IllegalStateException("Failed to upgrade scheme, the upgrade progress cannot continue.", e);
-        }
+        CompletableFuture.allOf(
+                manager.alterTable(DataTables.DATA.getName())
+                        .modifyColumn("owner", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.DATA.getName())
+                        .modifyColumn("tax_account", "VARCHAR(64)")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_PURCHASE.getName())
+                        .modifyColumn("buyer", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                        .modifyColumn("from", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                        .modifyColumn("to", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                        .modifyColumn("tax_account", "VARCHAR(64)")
+                        .executeFuture()).join();
     }
 
     public @NotNull String getPrefix() {
@@ -844,7 +839,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 parent.upgradeUniqueIdsField();
                 currentDatabaseVersion = 12;
             }
-            parent.setDatabaseVersion(currentDatabaseVersion);
+            parent.setDatabaseVersion(currentDatabaseVersion).join();
         }
 
         private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
