@@ -173,7 +173,6 @@ public class ContainerShop implements Shop, Reloadable {
             @Nullable String shopName,
             @NotNull Map<UUID, String> playerGroup,
             @NotNull Benefit shopBenefit) {
-        Util.ensureThread(false);
         this.shopId = shopId;
         this.shopName = shopName;
         this.location = location;
@@ -220,6 +219,7 @@ public class ContainerShop implements Shop, Reloadable {
         updateShopData();
         checkDisplay();
         // ContainerShop constructor is not allowed to write any persistent data to disk
+        // ContainerShop constructor may run on both ServerThread and AsyncThread
     }
 
     private void updateShopData() {
