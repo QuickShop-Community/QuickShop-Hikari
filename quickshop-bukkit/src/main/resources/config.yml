@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1015
+config-version: 1016
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -580,7 +580,7 @@ debug:
   shop-deletion: false
   #Delete corrupt shops while loading?
   #Setting this to false will disable the loading of corrupt shops!
-  delete-corrupt-shops: true
+  delete-corrupt-shops: false
 
 # Legacy data updater
 # Turn on this will make QuickShop to execute extra checks and may affect performance.

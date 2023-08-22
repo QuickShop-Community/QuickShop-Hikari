@@ -63,6 +63,10 @@ public class ConfigUpdateScript {
         getConfig().set("purge.return-create-fee", null);
         getConfig().set("shop.async-owner-name-fetch", null);
     }
+    @UpdateScript(version = 1016)
+    public void disableDefaultShopCorruptDeletion() {
+        getConfig().set("debug.delete-corrupt-shops", false);
+    }
 
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
