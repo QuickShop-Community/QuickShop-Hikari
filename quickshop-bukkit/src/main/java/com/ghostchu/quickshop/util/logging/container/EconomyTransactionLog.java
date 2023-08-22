@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
 public class EconomyTransactionLog {
     private static int v = 2;
