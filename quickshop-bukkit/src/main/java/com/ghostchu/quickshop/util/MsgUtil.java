@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
 import com.google.common.collect.Iterables;
@@ -38,7 +39,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 
@@ -75,12 +75,10 @@ public class MsgUtil {
                 .info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         PLUGIN.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
-                    } else {
-                        Log.debug("Cleaned " + result + " messages from the database");
-                    }
+                .thenAccept(result -> Log.debug("Cleaned " + result + " messages from the database"))
+                .exceptionally(error -> {
+                    Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                    return null;
                 });
     }
 
@@ -165,12 +163,9 @@ public class MsgUtil {
                     PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
                 }
                 PLUGIN.getDatabaseHelper().cleanMessageForPlayer(pName)
-                        .whenComplete((result, error) -> {
-                            if (error != null) {
-                                Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
-                            } else {
-                                Log.debug("Cleaned " + result + " messages from the database");
-                            }
+                        .exceptionally(error -> {
+                            Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                            return 0;
                         });
                 msgs.clear();
                 return true;
@@ -246,26 +241,14 @@ public class MsgUtil {
             while (rs.next()) {
                 String owner = rs.getString("receiver");
                 String message = rs.getString("content");
-                CompletableFuture.supplyAsync(() -> {
-                    UUID ownerUUID;
-                    if (CommonUtil.isUUID(owner)) {
-                        ownerUUID = UUID.fromString(owner);
-                    } else {
-                        if (QuickShop.getInstance().getPlayerFinder() != null) {
-                            ownerUUID = QuickShop.getInstance().getPlayerFinder().name2Uuid(owner);
-                        } else {
-                            ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
-                        }
-                    }
-                    return ownerUUID;
-                }).whenComplete((ownerUUID, throwable) -> {
-                    if (throwable != null) {
-                        Log.debug("Failed to load transaction message for " + owner + " from database, ownerUUID parsing failed.");
-                        return;
-                    }
-                    List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new ArrayList<>());
-                    msgs.add(message);
-                });
+                QUserImpl.createAsync(PLUGIN.getPlayerFinder(), owner)
+                        .thenAccept(qUser -> qUser.getUniqueIdOptional().ifPresent(uuid -> {
+                            List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(qUser.getUniqueId(), k -> new ArrayList<>());
+                            msgs.add(message);
+                        })).exceptionally(err -> {
+                            Log.debug("Failed to load transaction message for " + owner + " from database, ownerUUID parsing failed.");
+                            return null;
+                        });
             }
         } catch (SQLException e) {
             PLUGIN.logger().warn("Could not load transaction messages from database. Skipping.", e);
@@ -352,10 +335,11 @@ public class MsgUtil {
             msgs.add(serialized);
             OUTGOING_MESSAGES.put(uuid, msgs);
             PLUGIN.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis())
-                    .whenComplete((lines, err) -> {
-                        if (err != null) {
-                            Log.debug(Level.WARNING, "Could not save transaction message to database: " + err.getMessage());
-                        }
+                    .thenAccept(v -> {
+                    })
+                    .exceptionally(err -> {
+                        Log.debug(Level.WARNING, "Could not save transaction message to database: " + err.getMessage());
+                        return null;
                     });
             try {
                 if (p.getName() != null && PLUGIN.getConfig().getBoolean("bungee-cross-server-msg", true)) {
@@ -409,6 +393,7 @@ public class MsgUtil {
         PLUGIN.getShopControlPanelManager().openControlPanel((Player) sender, shop);
 
     }
+
     public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }

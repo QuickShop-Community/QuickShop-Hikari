@@ -96,10 +96,9 @@ public class InternalListener extends AbstractQSListener {
         }
         countUpdateCache.put(event.getShop(), new SpaceCache(event.getSpace(), event.getStock()));
         plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
-                .whenComplete((lines, err) -> {
-                    if (err != null) {
-                        Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
-                    }
+                .exceptionally(err -> {
+                    Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
+                    return 0;
                 });
     }
 

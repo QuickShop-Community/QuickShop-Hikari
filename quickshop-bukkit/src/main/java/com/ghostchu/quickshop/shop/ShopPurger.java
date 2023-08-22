@@ -95,24 +95,12 @@ public class ShopPurger {
 
         BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
         purgeExecutor.addTasks(pendingRemovalShops);
-        purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> {
-            plugin.getShopManager().deleteShop(shop);
-//            if (returnCreationFee) {
-//                SimpleEconomyTransaction transaction =
-//                        SimpleEconomyTransaction.builder()
-//                                .amount(plugin.getConfig().getDouble("shop.cost"))
-//                                .core(plugin.getEconomy())
-//                                .currency(shop.getCurrency())
-//                                .world(shop.getLocation().getWorld())
-//                                .to(shop.getOwner())
-//                                .build();
-//                transaction.failSafeCommit();
-//            }
-        }).whenComplete((a, b) -> {
-            long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
-            plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
-                    pendingRemovalShops.size(),
-                    usedTime);
-        });
+        purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> plugin.getShopManager().deleteShop(shop))
+                .whenComplete((a, b) -> {
+                    long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+                    plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
+                            pendingRemovalShops.size(),
+                            usedTime);
+                });
     }
 }

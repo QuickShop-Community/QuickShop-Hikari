@@ -370,9 +370,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         QUser sellerQUser = QUserImpl.createFullFilled(seller);
 
         if (!plugin.perm().hasPermission(seller, "quickshop.other.use") && !shop.playerAuthorize(seller.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
-                plugin.text().of("no-permission").send();
-                return;
-            }
+            plugin.text().of("no-permission").send();
+            return;
+        }
         if (shopIsNotValid(sellerQUser, info, shop)) {
             return;
         }
@@ -998,11 +998,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Util.ensureThread(false);
         double tax = globalTax;
         if (plugin.perm().hasPermission(p, "quickshop.tax")) {
-                tax = 0;
+            tax = 0;
             Log.debug("Disable the Tax for player " + p + " cause they have permission quickshop.tax");
-            }
+        }
         if (shop.isUnlimited() && plugin.perm().hasPermission(p, "quickshop.tax.bypassunlimited")) {
-                tax = 0;
+            tax = 0;
             Log.debug("Disable the Tax for player " + p + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
         }
         if (tax >= 1.0) {
@@ -1112,18 +1112,19 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // save to database
         addShopToLookupTable(shop);
         if (!persist) return;
-        plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop).whenComplete((id, err) -> {
-            if (err != null) {
-                processCreationFail(shop, shop.getOwner(), err);
-                return;
-            }
-            Log.debug("DEBUG: Setting shop id");
-            shop.setShopId(id);
-            Log.debug("DEBUG: Creating shop map");
-            plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
-            Log.debug("DEBUG: Creating shop successfully");
-            new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
-        });
+        plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop)
+                .thenAccept(id -> {
+                    Log.debug("DEBUG: Setting shop id");
+                    shop.setShopId(id);
+                    Log.debug("DEBUG: Creating shop map");
+                    plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
+                    Log.debug("DEBUG: Creating shop successfully");
+                    new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
+                })
+                .exceptionally(err -> {
+                    processCreationFail(shop, shop.getOwner(), err);
+                    return null;
+                });
     }
 
     @Override
@@ -1132,10 +1133,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!persist) return;
         Location loc = shop.getLocation();
         plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-                .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b) -> null).whenComplete((aVoid, throwable) -> {
-                    if (throwable != null) {
-                        plugin.logger().warn("Failed to remove shop from database", throwable);
-                    }
+                .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b) -> null)
+                .exceptionally(throwable -> {
+                    plugin.logger().warn("Failed to remove shop from database", throwable);
+                    return null;
                 });
     }
 

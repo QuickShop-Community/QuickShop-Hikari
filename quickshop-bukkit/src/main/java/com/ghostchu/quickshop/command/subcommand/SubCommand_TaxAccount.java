@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,26 +27,16 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 plugin.text().of(sender, "taxaccount-unset").send();
                 return;
             }
-            if (CommonUtil.isUUID(parser.getArgs().get(0))) {
-                QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0)).whenComplete(((qUser, throwable) -> {
-                    if (throwable != null) {
+            QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
+                    .thenAccept(qUser -> {
+                        shop.setTaxAccount(qUser);
+                        plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();
+                    })
+                    .exceptionally(throwable -> {
                         plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
                         plugin.logger().warn("Failed to get uuid of player " + parser.getArgs().get(0), throwable);
-                        return;
-                    }
-                    shop.setTaxAccount(qUser);
-                }));
-            } else {
-                QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0)).whenComplete(((qUser, throwable) -> {
-                    if (throwable != null) {
-                        plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
-                        plugin.logger().warn("Failed to get uuid of player " + parser.getArgs().get(0), throwable);
-                        return;
-                    }
-                    shop.setTaxAccount(qUser);
-                    plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();
-                }));
-            }
+                        return null;
+                    });
         } else {
             plugin.text().of(sender, "not-looking-at-shop").send();
         }

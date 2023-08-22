@@ -61,7 +61,13 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         }
         plugin.text().of(sender, "database.trim-start").send();
         SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
-        databaseHelper.purgeIsolated().whenComplete((data, err) -> plugin.text().of(sender, "database.trim-complete", data).send());
+        databaseHelper.purgeIsolated()
+                .thenAccept(i -> plugin.text().of(sender, "database.trim-complete", i).send())
+                .exceptionally(err -> {
+                    plugin.text().of(sender, "internal-error", err.getMessage()).send();
+                    return null;
+                });
+
     }
 //
 //    private void handleStatus(@NotNull CommandSender sender) {

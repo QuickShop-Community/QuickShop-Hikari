@@ -521,10 +521,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
         } else {
             getDatabaseHelper().insertHistoryRecord(eventObject)
-                    .whenComplete((result, throwable) -> {
-                        if (throwable != null) {
-                            Log.debug("Failed to log event: " + throwable.getMessage());
-                        }
+                    .thenAccept(result -> {
+                    })
+                    .exceptionally(throwable -> {
+                        Log.debug("Failed to log event: " + throwable.getMessage());
+                        return null;
                     });
         }
 

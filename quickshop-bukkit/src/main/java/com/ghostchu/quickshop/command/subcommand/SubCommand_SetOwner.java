@@ -42,24 +42,25 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             plugin.text().of(sender, "no-permission").send();
             return;
         }
-        QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0)).whenComplete((newShopOwner, throwable) -> {
-            if (throwable != null) {
-                plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
-                return;
-            }
-            if (newShopOwner == null) {
-                plugin.text().of(sender, "unknown-player").send();
-                return;
-            }
-            Util.mainThreadRun(() -> {
-                ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
-                if (event.callCancellableEvent()) {
-                    return;
-                }
-                shop.setOwner(newShopOwner);
-                plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
-            });
-        });
+        QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
+                .thenAccept(newShopOwner -> {
+                    if (newShopOwner == null) {
+                        plugin.text().of(sender, "unknown-player").send();
+                        return;
+                    }
+                    ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
+                    if (event.callCancellableEvent()) {
+                        return;
+                    }
+                    Util.mainThreadRun(() -> {
+                        shop.setOwner(newShopOwner);
+                        plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
+                    });
+                })
+                .exceptionally(throwable -> {
+                    plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
+                    return null;
+                });
 
     }
 

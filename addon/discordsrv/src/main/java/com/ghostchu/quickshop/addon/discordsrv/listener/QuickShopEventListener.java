@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class QuickShopEventListener implements Listener {
     private final Main plugin;
@@ -162,13 +163,12 @@ public class QuickShopEventListener implements Listener {
             // Send to permission users
             for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                 if (event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
-                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid).whenComplete(((qUser, throwable) -> {
-                        if (throwable != null) {
-                            throwable.printStackTrace();
-                            return;
-                        }
-                        sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
-                    }));
+                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid)
+                            .thenAccept(qUser -> sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
+                            .exceptionally(e -> {
+                                plugin.getLogger().log(Level.WARNING, "Failed to find the player", e);
+                                return null;
+                            });
                 }
             }
         });
