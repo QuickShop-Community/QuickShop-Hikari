@@ -28,7 +28,7 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().isEmpty()) {
-            qs.text().of(sender, "command-incorrect", "/qs displaycontrol <auto/enable/disable>").send();
+            qs.text().of(sender, "command-incorrect", "/quickshop  displaycontrol <auto/enable/disable>").send();
             return;
         }
         DisplayOption option = DisplayOption.AUTO;

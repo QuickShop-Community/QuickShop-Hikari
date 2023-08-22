@@ -24,8 +24,8 @@ public class OpenInvCommand implements CommandHandler<Player> {
      * Calling while command executed by specified sender
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/qs = qs, /shop = shop)
-     * @param cmdArg       The arguments (/qs create stone will receive stone)
+     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param cmdArg       The arguments (/quickshop  create stone will receive stone)
      */
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -51,8 +51,8 @@ public class OpenInvCommand implements CommandHandler<Player> {
      * Calling while sender trying to tab-complete
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/qs = qs, /shop = shop)
-     * @param cmdArg       The arguments (/qs create stone [TAB] will receive stone)
+     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param cmdArg       The arguments (/quickshop  create stone [TAB] will receive stone)
      * @return Candidate list
      */
     @Override

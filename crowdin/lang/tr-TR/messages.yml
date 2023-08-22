@@ -25,7 +25,7 @@ tabcomplete:
 taxaccount-unset: <green>Bu dükkanın vergi hesabı artık sunucu genel ayarını takip ediyor.
 blacklisted-item: <red>Bu öğeyi satamazsın çünkü kara listede
 command-type-mismatch: <red>Bu komut sadece <aqua>{0} <red>tarafından kullanılabilir.
-server-crash-warning: '<red>Eğer QuickShop Jar dosyasını sunucu çalışırken değiştirdiyseniz/sildiyseniz, /qs reload komutunu çalıştırdığınızda sunucu çökebilir.'
+server-crash-warning: '<red>Eğer QuickShop Jar dosyasını sunucu çalışırken değiştirdiyseniz/sildiyseniz, /quickshop  reload komutunu çalıştırdığınızda sunucu çökebilir.'
 you-cant-afford-to-change-price: <red>Marketinizin fiyatını değiştirmek ${0} tutarındadır.
 safe-mode: <red>QuickShop şimdi güvenli modda, bu mağaza kapsayıcısını açamazsınız, hataları düzeltmek için lütfen sunucu yöneticisi ile iletişime geçin.
 forbidden-vanilla-behavior: <red>Eylem, vanilla'ya uygun olmadığı için yasaklandı
@@ -258,7 +258,7 @@ no-double-chests: <red>Çifte sandık ile market oluşturamazsınız.
 price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.
 shop-not-exist: <red>Orada market yok.
 bad-command-usage: <red>Kötü komut argümanları!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop  cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
 cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
 cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
@@ -271,7 +271,7 @@ price-is-now: <green>Marketin yeni fiyatı <yellow>{0}
 shops-arent-locked: <red>Unutmayın! Marketler hırsızlara karşı koruma altında DEĞİLDİR. Eğer hırsızları durdurmak istiyorsanız LWC, Lockette, vb. eklentiler ile kilitleyiniz!
 that-is-locked: <red>Bu market kilitli.
 shop-has-no-space: <red>Markette sadece {1} için daha fazla {0} yer var.
-safe-mode-admin: '<red><bold>UYARI: <red>Bu sunucudaki QuickShop artık güvenli modda çalışıyor, hiçbir özellik çalışmayacak, hataları kontrol etmek için lütfen <yellow>/qs <red> komutunu yazın.'
+safe-mode-admin: '<red><bold>UYARI: <red>Bu sunucudaki QuickShop artık güvenli modda çalışıyor, hiçbir özellik çalışmayacak, hataları kontrol etmek için lütfen <yellow>/quickshop  <red> komutunu yazın.'
 shop-stock-too-low: <red>Markette sadece {0} tane {1} kalmış!
 world-not-exists: <yellow>{0}<red> isimli dünya mevcut değil
 how-many-sell: <green>Sohbete kaç tane <aqua>SATMAK<green> istediğinizi yazın. <yellow>{0}<green> tane satabilirsiniz. Hepsini satmak için <aqua>{1}<green> yazın.
@@ -449,11 +449,11 @@ command:
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
-  bulk-size-not-set: '<red>Usage: /qs size \<amount>'
-  no-type-given: '<red>Usage: /qs find \<item>'
+  bulk-size-not-set: '<red>Usage: /quickshop  size \<amount>'
+  no-type-given: '<red>Usage: /quickshop  find \<item>'
   feature-not-enabled: Bu özellik yapılandırma dosyasında aktif değil.
   now-debuging: <green>Geliştirici modu başarıyla aktive edildi. QuickShop yeniden yükleniyor...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill \<amount>
+  no-amount-given: <red>No amount provided. Use <green>/quickshop  refill \<amount>
   no-owner-given: <red>Sahip sağlanmadı
   disabled: '<red>Bu komut aktif değil: <yellow>{0}'
   bulk-size-now: <green>Şimdi <yellow>{0} tane {1}<green> ticaret ediliyor
@@ -467,7 +467,7 @@ command:
     unlimited: <green>Market şimdi sınırsız
   transfer-success-other: <yellow>{1} <green>oyuncusunun <yellow>{0} <green>marketi <yellow>{2} <green>oyuncusuna devredildi
   no-trade-item: <green>Lütfen değiştirmek için elinizde ticaret edilecek öğeyi tutunuz
-  wrong-args: <red>Geçersiz argüman. Komutların listesini görüntülemek için <bold>/qs help <red>komudunu kullan.
+  wrong-args: <red>Geçersiz argüman. Komutların listesini görüntülemek için <bold>/quickshop  help <red>komudunu kullan.
   some-shops-removed: <yellow>{0} <green>market kaldırıldı
   new-owner: '<green>Yeni sahip: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -541,10 +541,10 @@ paste-created-local: |-
 paste-created-local-failed: <red>Yerel diskinize yapıştırma kaydedilemedi, lütfen diskinizi kontrol edin.
 paste-451: |-
   <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file
+  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop  paste --file
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
-command-incorrect: '<red>Komut kullanımı yanlış, yardımı denetlemek için /qs help yazın. Kullanım: {0}.'
+command-incorrect: '<red>Komut kullanımı yanlış, yardımı denetlemek için /quickshop  help yazın. Kullanım: {0}.'
 successfully-set-player-group: <green>Oyuncu {0} grubu başarıyla <aqua>{1}</aqua>olarak ayarlayın.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
 successfully-set-player-permission: <green>Mağaza {0} oyuncu <aqua>{1}</aqua> izin <aqua>{2}</aqua>başarıyla ayarlayın.
@@ -578,7 +578,7 @@ debug:
   warning-sql: |-
     <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
     <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds.
+  warning-sql-confirm: <yellow>To confirm this dangerous operation, please type <aqua>/quickshop  debug database sql confirm {0}</aqua> in 60 seconds.
   warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
   sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
   sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
@@ -606,7 +606,7 @@ database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
-  trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
+  trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/quickshop  database trim confirm</aqua> to continue.'
   status: '<yellow>Durumu: {0}'
   status-good: <green>İyi
   status-bad: <yellow>Maintenance Required
@@ -625,7 +625,7 @@ database:
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
   generated-at: '<yellow>Generated at: <gold>{0}'
   purge-date: <red>You must given a date.
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop  database purgelogs \<before-days> confirm`
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
   purge-done-with-error: <red>Purge task failed, check the server console for details.
@@ -635,7 +635,7 @@ database:
     <aqua>Note: You server performance may impact by this operation.
   purge-players-error: <red>Failed to purge players caches, please check the server console.
   suggestion:
-    trim: <yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database.
+    trim: <yellow>This database require a isolated data trim, execute command <aqua>/quickshop  database trim</aqua> to trim the database.
 always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
 exporting-database: <green>Veritabanı dışa aktarılıyor, lütfen bekleyin...
 exporting-failed: <red>Dışa aktarılamadı, lütfen sunucu konsolunu kontrol edin.
@@ -643,14 +643,14 @@ exported-database: <green>Veritabanı <yellow>{0}</yellow>'a verildi.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
   <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue.
+  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop  recovery confirm</aqua> to continue.
 importing-database: <green>Veritabanı dışa aktarılıyor, lütfen bekleyin...
 importing-failed: <red>Dışa aktarılamadı, lütfen sunucu konsolunu kontrol edin.
 imported-database: <green>Veritabanı <yellow>{0}</yellow>'a verildi.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
 transfer-ask: |-
-  <gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.
+  <gold>Type <red>/quickshop  transfer accept</red> to accept or <red>/quickshop  transfer deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
@@ -689,7 +689,7 @@ addon:
     make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
     make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission
+    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop  permission
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
     target-shop-not-in-town-region: <red>The target shop is not in the town.
@@ -1313,7 +1313,7 @@ addon:
     invalid-expire-time: <red>Geçmişteki bir saati belirtemezsiniz.
     invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
     discount-code-expired: <red>Eyvah! <yellow>{0}</yellow> indirim kodunuzun süresi doldu!
-    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>.
+    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop  discount uninstall {0}</aqua>.
     discount-code-uninstalled: <green>İndirim kodunuzu kaldırdınız.
     discount-code-query-nothing: <red>Henüz bir indirim kodu yüklemediniz!
     discount-code-query: '<green>İndirim kodu kullanıyorsunuz: <yellow>{0}</yellow>.'
@@ -1334,7 +1334,7 @@ addon:
       <gold>Scope: <aqua>{1}</aqua></gold>.
       <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
       <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
+      You can use <aqua>/quickshop  discount config {0}</aqua> to edit your discount code anytime.
     discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'

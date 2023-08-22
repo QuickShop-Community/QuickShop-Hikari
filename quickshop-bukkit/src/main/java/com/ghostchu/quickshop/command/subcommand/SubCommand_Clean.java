@@ -46,7 +46,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
         }
 
         for (Shop shop : pendingRemoval) {
-            plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/qs clean", shop.saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop  clean", shop.saveToInfoStorage()));
             plugin.getShopManager().deleteShop(shop);
         }
 

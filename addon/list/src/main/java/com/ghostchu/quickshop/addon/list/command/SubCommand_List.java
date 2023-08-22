@@ -76,7 +76,7 @@ public class SubCommand_List implements CommandHandler<Player> {
                 shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
             }
             Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-            component = component.clickEvent(ClickEvent.runCommand("/qs silentpreview " + shop.getRuntimeRandomUniqueId()));
+            component = component.clickEvent(ClickEvent.runCommand("/quickshop  silentpreview " + shop.getRuntimeRandomUniqueId()));
             printer.printLine(component);
             counter++;
         }

@@ -337,7 +337,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             }
             case STOP_WORKING -> {
                 setupBootError(new BootError(logger, joiner.toString()), true);
-                PluginCommand command = javaPlugin.getCommand("qs");
+                PluginCommand command = javaPlugin.getCommand("quickshop");
                 if (command != null) {
                     Util.mainThreadRun(() -> command.setTabCompleter(javaPlugin)); //Disable tab completer
                 }
@@ -911,7 +911,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public void registerQuickShopCommands() {
         commandManager = new SimpleCommandManager(this);
         List<String> customCommands = getConfig().getStringList("custom-commands");
-        Command quickShopCommand = new QuickShopCommand("qs", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
+        Command quickShopCommand = new QuickShopCommand("quickshop", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
         try {
             platform.registerCommand("quickshop-hikari", quickShopCommand);
         } catch (Exception e) {
