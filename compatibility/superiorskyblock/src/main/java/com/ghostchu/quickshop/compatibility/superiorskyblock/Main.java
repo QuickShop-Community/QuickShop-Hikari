@@ -17,7 +17,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -47,11 +46,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     private void deleteShops(@NotNull Island island, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
         List<CompletableFuture<Chunk>> allFutures = this.getAllChunksAsync(island);
-        CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).whenComplete((v, throwable) -> {
-            if (throwable != null) {
-                getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
-                return;
-            }
+        CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).thenAccept(v -> {
             List<Shop> pendingForDeletion = new ArrayList<>();
             allFutures.forEach(future -> {
                 Chunk chunk = future.getNow(null);
@@ -65,27 +60,23 @@ public final class Main extends CompatibilityModule implements Listener {
                 getApi().getShopManager().deleteShop(s);
                 recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
             }));
+        }).exceptionally(throwable -> {
+            getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
+            return null;
         });
     }
 
     private void deleteShops(@NotNull World world, int chunkX, int chunkZ, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
-        PaperLib.getChunkAtAsync(world, chunkX, chunkZ).whenComplete((chunk, throwable) -> {
-            if (throwable != null) {
-                getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
-                return;
+        List<Shop> pendingForDeletion = new ArrayList<>();
+        for (Shop shop : getShops(world.getName(), chunkX, chunkZ)) {
+            if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
+                pendingForDeletion.add(shop);
             }
-            List<Shop> pendingForDeletion = new ArrayList<>();
-            for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
-                if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
-                    pendingForDeletion.add(shop);
-                }
-            }
-            Util.mainThreadRun(() -> pendingForDeletion.forEach(s -> {
-                getApi().getShopManager().deleteShop(s);
-                recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
-            }));
-
-        });
+        }
+        Util.mainThreadRun(() -> pendingForDeletion.forEach(s -> {
+            getApi().getShopManager().deleteShop(s);
+            recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
+        }));
     }
 
     @EventHandler
