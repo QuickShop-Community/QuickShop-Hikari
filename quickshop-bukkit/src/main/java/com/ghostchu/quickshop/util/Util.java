@@ -747,7 +747,7 @@ public class Util {
                     }
                     iterator.remove();
                     Log.debug("Found shop display item in an inventory, Removing...");
-                    MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
+                    MsgUtil.sendGlobalAlert(plugin.text().of("inventory-check-global-alert", location, inv.getHolder().getClass().getName(), Util.getItemStackName(itemStack)).forLocale(MsgUtil.getDefaultGameLanguageCode()));
                 }
             }
         } catch (Exception ignored) {

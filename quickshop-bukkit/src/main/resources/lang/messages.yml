@@ -70,6 +70,7 @@ quick-fill:
   denied the permission checks. If this not expected, try adding <light_purple>{1}
   <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Nearby average prices: <yellow>{0}'
+inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
 digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
 currency-unset: <green>Shop currency removed successfully. Using default settings
   now.

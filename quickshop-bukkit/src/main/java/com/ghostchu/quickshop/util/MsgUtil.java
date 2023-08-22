@@ -461,6 +461,24 @@ public class MsgUtil {
     }
 
     /**
+     * Send globalAlert to ops, console, log file.
+     *
+     * @param content The content to send.
+     */
+    public static void sendGlobalAlert(@Nullable Component content) {
+        if (content == null) {
+            Log.debug("Content is null");
+            Throwable throwable =
+                    new Throwable("Known issue: Global Alert accepted null string, what the fuck");
+            PLUGIN.getSentryErrorReporter().sendError(throwable, "NullCheck");
+            return;
+        }
+        sendMessageToOps(content);
+        PLUGIN.logger().warn(LegacyComponentSerializer.legacySection().serialize(content));
+        PLUGIN.logEvent(new PluginGlobalAlertLog(LegacyComponentSerializer.legacySection().serialize(content)));
+    }
+
+    /**
      * Send a message for all online Ops.
      *
      * @param message The message you want send
@@ -469,6 +487,19 @@ public class MsgUtil {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
                 MsgUtil.sendDirectMessage(player, LegacyComponentSerializer.legacySection().deserialize(message));
+            }
+        }
+    }
+
+    /**
+     * Send a message for all online Ops.
+     *
+     * @param message The message you want send
+     */
+    public static void sendMessageToOps(@NotNull Component message) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
+                MsgUtil.sendDirectMessage(player, message);
             }
         }
     }
