@@ -11,12 +11,12 @@ public interface PAPISubHandler {
     @Nullable
     default String handle(@NotNull OfflinePlayer player, @NotNull String params) {
         String raw = StringUtils.substringAfter(params, getPrefix() + "_");
-        return handle0(player.getUniqueId(), raw);
+        return handle0(player, raw);
     }
 
     @NotNull
     String getPrefix();
 
     @Nullable
-    String handle0(@NotNull UUID player, @NotNull String paramsTrimmed);
+    String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed);
 }

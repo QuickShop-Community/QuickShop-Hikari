@@ -3,11 +3,14 @@ package com.ghostchu.quickshop.papi.impl;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.database.MetricQuery;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.papi.PAPISubHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +36,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
 
     @Override
     @Nullable
-    public String handle0(@NotNull UUID player, @NotNull String paramsTrimmed) {
+    public String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed) {
         String[] args = paramsTrimmed.split("_");
         if (args.length < 1) {
             return null;
@@ -49,7 +52,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
     }
 
     @Nullable
-    private String handleGlobal(@NotNull UUID player, @NotNull String[] passThroughArgs) {
+    private String handleGlobal(@NotNull OfflinePlayer player, @NotNull String[] passThroughArgs) {
         if (passThroughArgs.length < 2) {
             return null;
         }
@@ -74,7 +77,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
     }
 
     @Nullable
-    private String handlePlayer(@NotNull UUID player, String[] passThroughArgs) {
+    private String handlePlayer(@NotNull OfflinePlayer player, String[] passThroughArgs) {
         if (passThroughArgs.length < 2) {
             return null;
         }
@@ -94,7 +97,10 @@ public class TransactionAmountPAPI implements PAPISubHandler {
                     if (shopType == ShopType.BUYING) return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
                     return false;
                 })
-                .filter(record -> player.equals(record.getPlayer().getUniqueId()))
+                .filter(record -> {
+                    QUser qUser = QUserImpl.createSync(plugin.getPlayerFinder(),record.getPlayer());
+                    return player.getUniqueId().equals(qUser.getUniqueId());
+                })
                 .mapToLong(ShopMetricRecord::getAmount).sum();
         return String.valueOf(count);
     }
