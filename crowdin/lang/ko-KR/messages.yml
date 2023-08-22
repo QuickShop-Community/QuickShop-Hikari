@@ -93,6 +93,8 @@ not-enough-space: <red>이 중 {0} 개를 더 사용할 수 있는 공간만 있
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>{0} 님을(를) 상점 관리자로 추가했습니다.
 shops-recovering: 상점을 백업본으로부터 복구하는 중입니다...
+virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>당신은 세금으로 <yellow>{0}원<green>을 지불했습니다.
   owner: '<green>주인 : {0}'

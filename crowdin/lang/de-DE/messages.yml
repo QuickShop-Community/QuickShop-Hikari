@@ -93,6 +93,8 @@ not-enough-space: <red>Du hast nur Platz für <yellow>{0}</yellow> weitere!
 shop-name-success: <green>Shopname erfolgreich geändert zu <yellow>{0}</yellow>.
 shop-staff-added: <yellow>{0} <yellow>wurde erfolgreich als Shopmitarbeiter zu deinem Shop hinzugefügt.
 shops-recovering: Stelle Shops von Backups wieder her...
+virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Du hast <yellow>{0} <green>an Steuern zahlen müssen.
   owner: '<green>Besitzer: {0}'
