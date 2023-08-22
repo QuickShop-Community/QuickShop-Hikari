@@ -1147,9 +1147,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             Log.debug("Shop delete was cancelled by 3rd-party plugin");
             return;
         }
-        if (shop.isLoaded()) {
-            unloadShop(shop);
-        }
         for (Sign s : shop.getSigns()) {
             s.getBlock().setType(Material.AIR);
         }
