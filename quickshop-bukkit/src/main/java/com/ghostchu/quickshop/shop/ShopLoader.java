@@ -91,16 +91,14 @@ public class ShopLoader implements SubPasteItem {
         AtomicInteger successCounter = new AtomicInteger(0);
         AtomicInteger chunkNotLoaded = new AtomicInteger(0);
         List<Shop> shopsLoadInNextTick = new CopyOnWriteArrayList<>();
-        CompletableFuture.allOf(records.stream().map(shopRecord ->
-                                loadShopFromShopRecord(worldName, shopRecord, deleteCorruptShops,
-                                        shopsLoadInNextTick, successCounter, chunkNotLoaded))
-                        .toArray(CompletableFuture[]::new))
-                .thenAcceptAsync((v) -> Log.debug("Shop loading completed."), QuickExecutor.getCommonExecutor())
-                .exceptionally(e -> {
-                    Log.debug("Error while loading shops: " + e.getMessage());
-                    MsgUtil.debugStackTrace(e.getStackTrace());
-                    return null;
-                }).join();
+        for (ShopRecord record : records) {
+            loadShopFromShopRecord(worldName, record, deleteCorruptShops,
+                    shopsLoadInNextTick, successCounter, chunkNotLoaded)
+                    .exceptionally(e -> {
+                        plugin.logger().warn("Failed to load shop {}", record, e);
+                        return null;
+                    }).join();
+        }
         Util.mainThreadRun(() -> shopsLoadInNextTick.forEach(shop -> {
             try {
                 plugin.getShopManager().loadShop(shop);
