@@ -84,6 +84,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
     /**
@@ -948,7 +949,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         if (getShopManager() != null) {
             logger.info("Unloading all loaded shops...");
-            getShopManager().getLoadedShops().forEach(Shop::handleUnloading);
+            getShopManager().getLoadedShops().forEach(shop -> getShopManager().unloadShop(shop));
         }
         if (this.bungeeListener != null) {
             logger.info("Disabling the BungeeChat messenger listener.");
@@ -958,6 +959,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (getShopSaveWatcher() != null) {
             logger.info("Stopping shop auto save...");
             getShopSaveWatcher().cancel();
+        }
+        if (getShopManager() != null) {
+            logger.info("Saving all in-memory changed shops...");
+            List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+            CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
+            CompletableFuture.allOf(completableFutures)
+                    .join();
         }
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {

@@ -1119,6 +1119,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     Log.debug("DEBUG: Creating shop map");
                     plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
                     Log.debug("DEBUG: Creating shop successfully");
+                    shop.setDirty();
                     new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
                 })
                 .exceptionally(err -> {
