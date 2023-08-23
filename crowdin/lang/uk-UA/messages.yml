@@ -404,7 +404,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: '<green>Конфігурація перезавантажена. <yellow>Для впливу деяких змін може знадобитися перезавантаження. <newline><gray>(Примітка: Поведінка перезавантаження була змінена після 4.0.9.10, тепер ми перезавантажуємо лише конфігурацію, але не весь плагін, щоб гарантувати, що сервер не вийде з ладу.).'
   description:
     buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
     about: <yellow>Shows QuickShop info
@@ -549,7 +549,7 @@ command-incorrect: '<red>Command usage incorrect, type /quickshop help to check 
 successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
 successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
-lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
+lookup-item-created: <green>У таблиці підстановки створено елемент з іменем <aqua>{0}</aqua>. Тепер ви можете посилатися на цей елемент у конфігураціях.
 lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
 lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
