@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.obj.QUser;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -18,6 +19,10 @@ public class ChatSheetPrinter {
 
     public ChatSheetPrinter(CommandSender p) {
         this.p = p;
+    }
+
+    public ChatSheetPrinter(QUser p) {
+        this.p = p.getBukkitPlayer().orElse(null);
     }
 
     public void printCenterLine(@NotNull Component text) {

@@ -2,6 +2,8 @@ package com.ghostchu.quickshop.compatibility.worldedit;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.sk89q.worldedit.WorldEditException;
@@ -50,8 +52,8 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
                 Shop shop = api.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
                 if (shop != null) {
                     Util.mainThreadRun(() -> {
-                        api.logEvent(new ShopRemoveLog(actor.getUniqueId(), "WorldEdit", shop.saveToInfoStorage()));
-                        shop.delete();
+                        api.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "WorldEdit", false), "WorldEdit", shop.saveToInfoStorage()));
+                        api.getShopManager().deleteShop(shop);
                     });
                 }
             }

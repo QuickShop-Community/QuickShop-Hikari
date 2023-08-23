@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop.operation;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,16 +41,21 @@ public class RemoveItemOperation implements Operation {
         committed = true;
         this.snapshot = inv.createSnapshot();
         int remains = amount;
+        int lastRemains = -1;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
+            Log.debug("Committing remove item operation, remains: " + remains + ", stackSize: " + stackSize + ", target: " + item);
             Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
             if (notFit.isEmpty()) {
                 remains -= stackSize;
             } else {
                 remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
+            }
+            if (remains == lastRemains) {
                 return false;
             }
+            lastRemains = remains;
         }
         return true;
     }

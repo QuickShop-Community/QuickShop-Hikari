@@ -202,7 +202,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isDeleted() || !shop.isLoaded()) {
+        if (!shop.isLoaded()) {
             return;
         }
         if (shop.getLocation().getWorld() == null) {

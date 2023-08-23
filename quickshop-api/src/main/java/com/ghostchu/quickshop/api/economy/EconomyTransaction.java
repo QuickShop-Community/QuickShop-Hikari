@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Deque;
 import java.util.List;
-import java.util.UUID;
 
 public interface EconomyTransaction {
 
@@ -57,9 +56,9 @@ public interface EconomyTransaction {
 
     void setCurrency(@Nullable String currency);
 
-    @Nullable UUID getFrom();
+    @Nullable Object getFrom();
 
-    void setFrom(@Nullable UUID from);
+    void setFrom(@Nullable Object from);
 
     @Nullable String getLastError();
 
@@ -76,13 +75,13 @@ public interface EconomyTransaction {
 
     void setTax(double tax);
 
-    @Nullable UUID getTaxer();
+    @Nullable Object getTaxer();
 
-    void setTaxer(@Nullable UUID taxer);
+    void setTaxer(@Nullable Object taxer);
 
-    @Nullable UUID getTo();
+    @Nullable Object getTo();
 
-    void setTo(@Nullable UUID to);
+    void setTo(@Nullable Object to);
 
     @NotNull World getWorld();
 

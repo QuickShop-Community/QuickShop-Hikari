@@ -33,8 +33,8 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount <install/uninstall/create/remove/list/config/query>").send();
+        if (parser.getArgs().isEmpty()) {
+            quickshop.text().of(sender, "command-incorrect", "/quickshop  discount <install/uninstall/create/remove/list/config/query>").send();
             return;
         }
         String[] passThroughArgs = new String[parser.getArgs().size() - 1];
@@ -48,7 +48,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             case "config" -> config(sender, passThroughArgs);
             case "list" -> list(sender, passThroughArgs);
             default ->
-                    quickshop.text().of(sender, "command-incorrect", "/qs discount <install/uninstall/create/remove/config/query>").send();
+                    quickshop.text().of(sender, "command-incorrect", "/quickshop  discount <install/uninstall/create/remove/config/query>").send();
         }
     }
 
@@ -58,7 +58,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             return;
         }
         if (passThroughArgs.length < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount install <code>").send();
+            quickshop.text().of(sender, "command-incorrect", "/quickshop  discount install <code>").send();
             return;
         }
         String codeStr = passThroughArgs[0];
@@ -86,12 +86,12 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             return;
         }
         if (passThroughArgs.length < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
+            quickshop.text().of(sender, "command-incorrect", "/quickshop  discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
             return;
         }
         // code, code-type, rate, max-usage, threshold, expired-time
         if (passThroughArgs.length < 3) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
+            quickshop.text().of(sender, "command-incorrect", "/quickshop  discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
             return;
         }
         String code = passThroughArgs[0];
@@ -148,14 +148,14 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created-successfully",
                     code,
                     CommonUtil.prettifyText(codeType.name()),
-                    "/qs discount install " + code,
-                    "/qs discount config " + code + " addshop").send();
+                    "/quickshop  discount install " + code,
+                    "/quickshop  discount config " + code + " addshop").send();
         }
     }
 
     private void remove(CommandSender sender, String[] passThroughArgs) {
         if (passThroughArgs.length < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount remove <code>").send();
+            quickshop.text().of(sender, "command-incorrect", "/quickshop  discount remove <code>").send();
             return;
         }
         String codeStr = passThroughArgs[0];
@@ -214,7 +214,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             return;
         }
         if (passThroughArgs.length < 2) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount config <code> <addshop/removeshop/scope> [args]").send();
+            quickshop.text().of(sender, "command-incorrect", "/quickshop  discount config <code> <addshop/removeshop/scope> [args]").send();
             return;
         }
         DiscountCode code = main.getCodeManager().getCode(passThroughArgs[0]);
@@ -259,9 +259,9 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             }
             case "scope" -> {
                 if (passThroughArgs.length < 3) {
-                    StringJoiner joiner = new StringJoiner("<", "/", ">");
-                    Arrays.stream(CodeType.values()).forEach(t -> joiner.add(t.name()));
-                    quickshop.text().of(sender, "command-incorrect", "/qs discount config <code> scope <scope>").send();
+//                    StringJoiner joiner = new StringJoiner("<", "/", ">");
+//                    Arrays.stream(CodeType.values()).forEach(t -> joiner.add(t.name()));
+                    quickshop.text().of(sender, "command-incorrect", "/quickshop  discount config <code> scope <scope>").send();
                     return;
                 }
                 if (!code.getOwner().equals(((Player) sender).getUniqueId()) && !quickshop.perm().hasPermission(sender, "quickshopaddon.discount.bypass")) {

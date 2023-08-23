@@ -2,15 +2,10 @@ package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.parser.EmbedMessageParser;
-import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class MessageRepository {
     private static final String ADDON_TRANSLATION_KEY_PREFIX = "addon.discord.discord-messages.";
@@ -84,7 +76,8 @@ public class MessageRepository {
 
     @NotNull
     private String textOfString(@Nullable UUID langUser, @NotNull String key) {
-        return PlainTextComponentSerializer.plainText().serialize(plugin.text().of(ADDON_TRANSLATION_KEY_PREFIX + key).forLocale(getPlayerLocale(langUser).getLocale()));
+        return PlainTextComponentSerializer.plainText().serialize(plugin.text().of(ADDON_TRANSLATION_KEY_PREFIX + key)
+                .forLocale(plugin.text().findRelativeLanguages(langUser, false).getLocale()));
     }
 
     @Nullable
@@ -119,26 +112,6 @@ public class MessageRepository {
         return new MessageEmbed.AuthorInfo(name, url, iconUrl, proxyUrl);
     }
 
-    @NotNull
-    private ProxiedLocale getPlayerLocale(@Nullable UUID uuid) {
-        Util.ensureThread(true);
-        ProxiedLocale locale;
-        if (uuid != null) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                locale = plugin.getTextManager().findRelativeLanguages(uuid);
-            } else {
-                try {
-                    locale = new ProxiedLocale(plugin.getDatabaseHelper().getPlayerLocale(uuid).get(10, TimeUnit.SECONDS), MsgUtil.getDefaultGameLanguageCode());
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    locale = MsgUtil.getDefaultGameLanguageLocale();
-                }
-            }
-        } else {
-            locale = MsgUtil.getDefaultGameLanguageLocale();
-        }
-        return locale;
-    }
 
     @AutoRegisterMessage(key = "bought-from-your-shop")
     public MessageEmbed boughtFromYourShop(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {

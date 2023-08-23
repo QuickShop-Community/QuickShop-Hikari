@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode
 @ToString
 public class BlockPos {
+    private final int version = 2;
     private int x;
     private int y;
     private int z;
@@ -27,5 +28,14 @@ public class BlockPos {
         this.y = y;
         this.z = z;
         this.world = world;
+    }
+
+    public static BlockPos deserialize(String string) {
+        String[] split = string.split(";");
+        return new BlockPos(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), split[4]);
+    }
+
+    public String serialize() {
+        return version + ";" + x + ";" + y + ";" + z + ";" + world;
     }
 }

@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.papi.impl;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.papi.PAPISubHandler;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +22,7 @@ public class MetadataPAPI implements PAPISubHandler {
 
     @Override
     @Nullable
-    public String handle0(@NotNull UUID player, @NotNull String paramsTrimmed) {
+    public String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed) {
         String[] args = paramsTrimmed.split("_");
         if (args.length < 1) {
             return null;

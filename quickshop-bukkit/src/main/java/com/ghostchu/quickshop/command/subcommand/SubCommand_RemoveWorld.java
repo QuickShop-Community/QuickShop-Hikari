@@ -22,7 +22,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "command.no-world-given").send();
             return;
         }
@@ -34,7 +34,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
         int shopsDeleted = 0;
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if (Objects.equals(shop.getLocation().getWorld(), world)) {
-                shop.delete();
+                plugin.getShopManager().deleteShop(shop);
                 shopsDeleted++;
             }
         }

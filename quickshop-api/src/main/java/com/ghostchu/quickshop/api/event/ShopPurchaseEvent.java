@@ -1,14 +1,11 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Calling when purchaser purchased a shop
@@ -19,11 +16,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
     private final Shop shop;
 
     @NotNull
-    private final UUID purchaser;
-
-    @Nullable
-    @Deprecated
-    private final Player player;
+    private final QUser purchaser;
 
     @NotNull
     private final InventoryWrapper purchaserInventory;
@@ -45,13 +38,12 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
      * @param amount             The amount they're buying
      * @param total              The total balance in this purchase
      */
-    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull UUID purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total) {
+    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull QUser purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total) {
         this.shop = shop;
         this.purchaser = purchaser;
         this.purchaserInventory = purchaserInventory;
         this.amount = amount * shop.getItem().getAmount();
         this.total = total;
-        this.player = Bukkit.getPlayer(purchaser);
     }
 
     /**
@@ -75,20 +67,11 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
     }
 
     /**
-     * Gets the purchaser
-     *
-     * @return Player or null if purchaser is offline/virtual player.
-     */
-    public @Nullable Player getPlayer() {
-        return this.player;
-    }
-
-    /**
      * Gets the purchaser, that maybe is a online/offline/virtual player.
      *
      * @return The purchaser uuid
      */
-    public @NotNull UUID getPurchaser() {
+    public @NotNull QUser getPurchaser() {
         return this.purchaser;
     }
 

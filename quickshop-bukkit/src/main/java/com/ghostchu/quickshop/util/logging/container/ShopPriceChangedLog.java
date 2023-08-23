@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class ShopPriceChangedLog {
-    private static int v = 1;
+    private static int v = 2;
     private ShopInfoStorage shop;
     private double oldPrice;
     private double newPrice;

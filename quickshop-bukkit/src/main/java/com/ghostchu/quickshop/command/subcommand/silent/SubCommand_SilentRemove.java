@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
             return;
         }
 
-        plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(), "/qs silentremove command", shop.saveToInfoStorage()));
-        shop.delete();
+        plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop  silentremove command", shop.saveToInfoStorage()));
+        plugin.getShopManager().deleteShop(shop);
     }
 }

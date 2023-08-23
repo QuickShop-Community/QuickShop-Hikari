@@ -5,14 +5,15 @@ import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -39,10 +40,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
@@ -71,7 +69,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private static final DecimalFormat STANDARD_FORMATTER = new DecimalFormat("#.#########");
     private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
-    private final Set<Shop> loadedShops = Sets.newConcurrentHashSet();
+    private final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
+    // the performance impact on busy server
     private final InteractiveManager interactiveManager;
     private final QuickShop plugin;
     private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
@@ -84,9 +83,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private final EconomyFormatter formatter;
     @Getter
     @Nullable
-    private UUID cacheTaxAccount;
+    private QUser cacheTaxAccount;
     @Getter
-    private UUID cacheUnlimitedShopAccount;
+    private QUser cacheUnlimitedShopAccount;
     private SimplePriceLimiter priceLimiter;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
@@ -115,11 +114,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Log.debug("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
-            if (CommonUtil.isUUID(taxAccount)) {
-                this.cacheTaxAccount = UUID.fromString(taxAccount);
-            } else {
-                this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
-            }
+            this.cacheTaxAccount = QUserImpl.createSync(plugin.getPlayerFinder(), taxAccount);
         } else {
             // disable tax account
             cacheTaxAccount = null;
@@ -130,11 +125,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 uAccount = "quickshop";
                 plugin.logger().warn("unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
             }
-            if (CommonUtil.isUUID(uAccount)) {
-                cacheUnlimitedShopAccount = UUID.fromString(uAccount);
-            } else {
-                cacheUnlimitedShopAccount = plugin.getPlayerFinder().name2Uuid(uAccount);
-            }
+            cacheUnlimitedShopAccount = QUserImpl.createSync(plugin.getPlayerFinder(), uAccount);
         }
         this.priceLimiter = new SimplePriceLimiter(plugin);
         this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
@@ -152,36 +143,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
     }
 
-    @Deprecated
-    public void actionBuying(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
-                             @NotNull Shop shop, int amount) {
-        Util.ensureThread(false);
-        actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }
-
     @Override
     public void actionBuying(
-            @NotNull UUID buyer,
+            @NotNull Player buyer,
             @NotNull InventoryWrapper buyerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
             int amount) {
-        Util.ensureThread(false);
-
-        Player player = Bukkit.getPlayer(buyer);
-        if (player != null) {
-            if (!plugin.perm().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
-                plugin.text().of("no-permission").send();
-                return;
-            }
-        } else {
-            if (!shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
-                plugin.text().of("no-permission").send();
-                return;
-            }
+        QUser buyerQUser = QUserImpl.createFullFilled(buyer);
+        if (!plugin.perm().hasPermission(buyer, "quickshop.other.use") && !shop.playerAuthorize(buyer.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+            plugin.text().of("no-permission").send();
+            return;
         }
-        if (shopIsNotValid(buyer, info, shop)) {
+        if (shopIsNotValid(buyerQUser, info, shop)) {
             return;
         }
         int space = shop.getRemainingSpace();
@@ -209,16 +184,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         // Money handling
         // BUYING MODE  Shop Owner -> Player
-        double taxModifier = getTax(shop, buyer);
+        double taxModifier = getTax(shop, buyerQUser);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, buyer, buyerInventory, amount, total);
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total);
         if (Util.fireCancellableEvent(e)) {
             plugin.text().of(buyer, "plugin-cancelled", e.getCancelReason()).send();
             return; // Cancelled
         } else {
             total = e.getTotal(); // Allow addon to set it
         }
-        UUID taxAccount = null;
+        QUser taxAccount = null;
         if (shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
         } else {
@@ -260,28 +235,23 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         try {
-            shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+            shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
         } catch (Exception shopError) {
             plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
             transaction.rollback(true);
             plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
             return;
         }
-        sendSellSuccess(buyer, shop, amount, total, transaction.getTax());
-        new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, transaction.getTax()).callEvent();
+        sendSellSuccess(buyerQUser, shop, amount, total, transaction.getTax());
+        new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.getTax()).callEvent();
         shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
-        notifySold(buyer, shop, amount, space);
+        notifySold(buyerQUser, shop, amount, space);
     }
 
-    private void notifySold(@NotNull UUID buyer, @NotNull Shop shop, int amount, int space) {
-        Player player = Bukkit.getPlayer(buyer);
-        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
-            String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale != null) {
-                // Language code override
-                langCode = locale;
-            }
-            Component msg = plugin.text().of("player-sold-to-your-store", player != null ? player.getName() : buyer.toString(),
+    private void notifySold(@NotNull QUser buyerQUser, @NotNull Shop shop, int amount, int space) {
+        Util.asyncThreadRun(() -> {
+            String langCode = plugin.text().findRelativeLanguages(buyerQUser, true).getLocale();
+            Component msg = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(),
                             amount,
                             Util.getItemStackName(shop.getItem())).forLocale(langCode)
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
@@ -315,17 +285,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         });
     }
 
-    private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
+    public boolean shopIsNotValid(@Nullable QUser qUser, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(qUser, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
             return true;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
-            plugin.text().of(p, "chest-was-removed").send();
+            plugin.text().of(qUser, "chest-was-removed").send();
             return true;
         }
         if (info.hasChanged(shop)) {
-            plugin.text().of(p, "shop-has-changed").send();
+            plugin.text().of(qUser, "shop-has-changed").send();
             return true;
         }
         return false;
@@ -333,9 +303,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
+        QUser createQUser = QUserImpl.createFullFilled(p);
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
             return;
         }
 
@@ -369,7 +340,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     info.getLocation(),
                     price,
                     info.getItem(),
-                    p.getUniqueId(),
+                    createQUser,
                     false,
                     ShopType.SELLING,
                     new YamlConfiguration(),
@@ -389,27 +360,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void actionSelling(
-            @NotNull UUID seller,
+            @NotNull Player seller,
             @NotNull InventoryWrapper sellerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
+        QUser sellerQUser = QUserImpl.createFullFilled(seller);
 
-        Player player = Bukkit.getPlayer(seller);
-        if (player != null) {
-            if (!plugin.perm().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
-                plugin.text().of("no-permission").send();
-                return;
-            }
-        } else {
-            if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
-                plugin.text().of("no-permission").send();
-                return;
-            }
+        if (!plugin.perm().hasPermission(seller, "quickshop.other.use") && !shop.playerAuthorize(seller.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+            plugin.text().of("no-permission").send();
+            return;
         }
-        if (shopIsNotValid(seller, info, shop)) {
+        if (shopIsNotValid(sellerQUser, info, shop)) {
             return;
         }
         int stock = shop.getRemainingStock();
@@ -437,10 +401,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
 
-        double taxModifier = getTax(shop, seller);
+        double taxModifier = getTax(shop, sellerQUser);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
 
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, seller, sellerInventory, amount, total);
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total);
         if (Util.fireCancellableEvent(e)) {
             plugin.text().of(seller, "plugin-cancelled", e.getCancelReason()).send();
             return; // Cancelled
@@ -450,7 +414,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Money handling
         // SELLING Player -> Shop Owner
         SimpleEconomyTransaction transaction;
-        UUID taxAccount = null;
+        QUser taxAccount = null;
         if (shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
         } else {
@@ -493,27 +457,26 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         try {
-            shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+            shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
         } catch (Exception shopError) {
             plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
             transaction.rollback(true);
             plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
             return;
         }
-        sendPurchaseSuccess(seller, shop, amount, total, transaction.getTax());
-        new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, transaction.getTax()).callEvent();
-        notifyBought(seller, shop, amount, stock, transaction.getTax(), total);
+        sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.getTax());
+        new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.getTax()).callEvent();
+        notifyBought(sellerQUser, shop, amount, stock, transaction.getTax(), total);
     }
 
     /**
-     * Adds (register) a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
+     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
      * by yourself
      *
-     * @param world The name of the world
-     * @param shop  The shop to add
+     * @param shop The shop to add
      */
-    @Override
-    public void addShop(@NotNull String world, @NotNull Shop shop) {
+    private void addShopToLookupTable(@NotNull Shop shop) {
+        String world = shop.getLocation().getWorld().getName();
         Map<ShopChunk, Map<Location, Shop>> inWorld =
                 this.getShops()
                         .computeIfAbsent(world, k -> new MapMaker().initialCapacity(3).makeMap());
@@ -546,7 +509,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     public void clear() {
         Util.ensureThread(false);
         plugin.logger().info("Unloading loaded shops...");
-        getLoadedShops().forEach(Shop::onUnload);
+        getLoadedShops().forEach(this::unloadShop);
         plugin.logger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
         CompletableFuture<?> saveTask = CompletableFuture.allOf(
                 plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
@@ -578,19 +541,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void createShop(@NotNull Shop shop, @Nullable Block signBlock, boolean bypassProtectionCheck) throws IllegalStateException {
         Util.ensureThread(false);
-        Player p = Bukkit.getPlayer(shop.getOwner());
+        Player p = shop.getOwner().getBukkitPlayer().orElse(null);
+
         // Player offline check
         if (p == null || !p.isOnline()) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
 
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
             return;
         }
 
         // Check if player has reached the max shop limit
-        if (isReachedLimit(p)) {
+        if (isReachedLimit(shop.getOwner())) {
             plugin.text().of(p, "reached-maximum-create-limit").send();
             return;
         }
@@ -676,7 +640,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
             case PASS -> {
                 // Calling ShopCreateEvent
-                ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
+                ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, shop.getOwner());
                 if (Util.fireCancellableEvent(shopCreateEvent)) {
                     plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
                     return;
@@ -726,8 +690,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
                     }
                 }
-                registerShop(shop);
-
+                addShopToLookupTable(shop);
+                registerShop(shop, true);
+                loadShop(shop);
+                shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
             }
         }
     }
@@ -804,10 +770,22 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @return The list have this player's all shops.
      */
     @Override
-    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
+    public @NotNull List<Shop> getAllShops(@NotNull QUser playerUUID) {
         final List<Shop> playerShops = new ArrayList<>(10);
         for (final Shop shop : getAllShops()) {
             if (shop.getOwner().equals(playerUUID)) {
+                playerShops.add(shop);
+            }
+        }
+        return playerShops;
+    }
+
+    @Override
+    public @NotNull List<Shop> getAllShops(@NotNull UUID playerUUID) {
+        final List<Shop> playerShops = new ArrayList<>(10);
+        for (final Shop shop : getAllShops()) {
+            UUID shopUuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+            if (playerUUID.equals(shopUuid)) {
                 playerShops.add(shop);
             }
         }
@@ -1004,25 +982,28 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    @Deprecated
-    public double getTax(@NotNull Shop shop, @NotNull Player p) {
-        return getTax(shop, p.getUniqueId());
+    public @NotNull List<Shop> getShopsInWorld(@NotNull String worldName) {
+        final List<Shop> worldShops = new ArrayList<>();
+        for (final Shop shop : getAllShops()) {
+            Location location = shop.getLocation();
+            if (location.isWorldLoaded() && StringUtils.equals(worldName, location.getWorld().getName())) {
+                worldShops.add(shop);
+            }
+        }
+        return worldShops;
     }
 
     @Override
-    public double getTax(@NotNull Shop shop, @NotNull UUID p) {
+    public double getTax(@NotNull Shop shop, @NotNull QUser p) {
         Util.ensureThread(false);
         double tax = globalTax;
-        Player player = Bukkit.getPlayer(p);
-        if (player != null) {
-            if (plugin.perm().hasPermission(player, "quickshop.tax")) {
-                tax = 0;
-                Log.debug("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
-            }
-            if (shop.isUnlimited() && plugin.perm().hasPermission(player, "quickshop.tax.bypassunlimited")) {
-                tax = 0;
-                Log.debug("Disable the Tax for player " + player + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
-            }
+        if (plugin.perm().hasPermission(p, "quickshop.tax")) {
+            tax = 0;
+            Log.debug("Disable the Tax for player " + p + " cause they have permission quickshop.tax");
+        }
+        if (shop.isUnlimited() && plugin.perm().hasPermission(p, "quickshop.tax.bypassunlimited")) {
+            tax = 0;
+            Log.debug("Disable the Tax for player " + p + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
         }
         if (tax >= 1.0) {
             plugin.logger().warn("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is {})", tax);
@@ -1043,11 +1024,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
+        QUser qUser = QUserImpl.createFullFilled(p);
         if (!plugin.getShopManager().getInteractiveManager().containsKey(p.getUniqueId())) {
             return;
         }
         String message = ChatColor.stripColor(msg);
-        QSHandleChatEvent qsHandleChatEvent = new QSHandleChatEvent(p, message);
+        QSHandleChatEvent qsHandleChatEvent = new QSHandleChatEvent(qUser, message);
         qsHandleChatEvent.callEvent();
         message = qsHandleChatEvent.getMessage();
         // Use from the main thread, because Bukkit hates life
@@ -1080,37 +1062,40 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @return True if they're allowed to place a shop there.
      */
     @Override
-    public boolean isReachedLimit(@NotNull Player p) {
+    public boolean isReachedLimit(@NotNull QUser p) {
         Util.ensureThread(false);
         if (plugin.getRankLimiter().isLimit()) {
             int owned = 0;
             if (useOldCanBuildAlgorithm) {
-                owned = getPlayerAllShops(p.getUniqueId()).size();
+                owned = getAllShops(p).size();
             } else {
-                for (final Shop shop : getPlayerAllShops(p.getUniqueId())) {
+                for (final Shop shop : getAllShops(p)) {
                     if (!shop.isUnlimited()) {
                         owned++;
                     }
                 }
             }
             int max = plugin.getRankLimiter().getShopLimit(p);
-            Log.debug("CanBuildShop check for " + p.getName() + " owned: " + owned + "; max: " + max);
+            Log.debug("CanBuildShop check for " + p.getDisplay() + " owned: " + owned + "; max: " + max);
             return owned + 1 > max;
         }
         return false;
     }
 
-    /**
-     * Load shop method for loading shop into mapping, so getShops method will can find it. It also
-     * effects a lots of feature, make sure load it after create it.
-     *
-     * @param world The world the shop is in
-     * @param shop  The shop to load
-     */
     @Override
-    public void loadShop(@NotNull String world, @NotNull Shop shop) {
-        this.addShop(world, shop);
+    public void loadShop(@NotNull Shop shop) {
+        //noinspection deprecation
+        shop.handleLoading();
+        this.loadedShops.add(shop);
     }
+
+    @Override
+    public void unloadShop(@NotNull Shop shop) {
+        //noinspection deprecation
+        shop.handleUnloading();
+        this.loadedShops.remove(shop);
+    }
+
 
     /**
      * Change the owner to unlimited shop owner.
@@ -1119,30 +1104,88 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void migrateOwnerToUnlimitedShopOwner(@NotNull Shop shop) {
         shop.setOwner(this.cacheUnlimitedShopAccount);
-        shop.setSignText(plugin.text().findRelativeLanguages(shop.getOwner()));
+        shop.setSignText(plugin.text().findRelativeLanguages(shop.getOwner(), false));
     }
 
     @Override
-    public void registerShop(@NotNull Shop shop) {
-        // sync add to prevent compete issue
-        addShop(shop.getLocation().getWorld().getName(), shop);
-        // load the shop finally
-        shop.onLoad();
-        // first init
-        shop.setSignText(plugin.getTextManager().findRelativeLanguages(shop.getOwner()));
+    public void registerShop(@NotNull Shop shop, boolean persist) {
         // save to database
-        plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop).whenComplete((id, err) -> {
-            if (err != null) {
-                processCreationFail(shop, shop.getOwner(), err);
-                return;
+        addShopToLookupTable(shop);
+        if (!persist) return;
+        plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop)
+                .thenAccept(id -> {
+                    Log.debug("DEBUG: Setting shop id");
+                    shop.setShopId(id);
+                    Log.debug("DEBUG: Creating shop map");
+                    plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
+                    Log.debug("DEBUG: Creating shop successfully");
+                    shop.setDirty();
+                    new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
+                })
+                .exceptionally(err -> {
+                    processCreationFail(shop, shop.getOwner(), err);
+                    return null;
+                });
+    }
+
+    @Override
+    public void unregisterShop(@NotNull Shop shop, boolean persist) {
+        removeShopFromLookupTable(shop);
+        if (!persist) return;
+        Location loc = shop.getLocation();
+        plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
+                .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b) -> null)
+                .exceptionally(throwable -> {
+                    plugin.logger().warn("Failed to remove shop from database", throwable);
+                    return null;
+                });
+    }
+
+    @Override
+    public void deleteShop(@NotNull Shop shop) {
+        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
+        if (shopDeleteEvent.callCancellableEvent()) {
+            Log.debug("Shop delete was cancelled by 3rd-party plugin");
+            return;
+        }
+        for (Sign s : shop.getSigns()) {
+            s.getBlock().setType(Material.AIR);
+        }
+        refundShop(shop);
+        unloadShop(shop);
+        unregisterShop(shop, true);
+    }
+
+    private void refundShop(Shop shop) {
+        World world = shop.getLocation().getWorld();
+        if (plugin.getConfig().getBoolean("shop.refund")) {
+            double cost = plugin.getConfig().getDouble("shop.cost");
+            SimpleEconomyTransaction transaction;
+            if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && shop.getTaxAccountActual() != null) {
+                cost = Math.min(cost, plugin.getEconomy().getBalance(shop.getTaxAccountActual(), world, plugin.getCurrency()));
+                transaction =
+                        SimpleEconomyTransaction.builder()
+                                .amount(cost)
+                                .core(plugin.getEconomy())
+                                .currency(plugin.getCurrency())
+                                .world(world)
+                                .from(shop.getTaxAccountActual())
+                                .to(shop.getOwner())
+                                .build();
+            } else {
+                transaction =
+                        SimpleEconomyTransaction.builder()
+                                .amount(cost)
+                                .core(plugin.getEconomy())
+                                .currency(plugin.getCurrency())
+                                .world(world)
+                                .to(shop.getOwner())
+                                .build();
             }
-            Log.debug("DEBUG: Setting shop id");
-            shop.setShopId(id);
-            Log.debug("DEBUG: Creating shop map");
-            plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
-            Log.debug("DEBUG: Creating shop successfully");
-            new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
-        });
+            if (!transaction.failSafeCommit()) {
+                plugin.logger().warn("Shop deletion refund failed. Reason: {}", transaction.getLastError());
+            }
+        }
     }
 
     /**
@@ -1151,11 +1194,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      *
      * @param shop The shop to remove
      */
-    @Override
-    public void removeShop(@NotNull Shop shop) {
+    private void removeShopFromLookupTable(@NotNull Shop shop) {
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
         Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
+        if (inWorld == null) {
+            return;
+        }
         int x = (int) Math.floor((loc.getBlockX()) / 16.0);
         int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
         ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
@@ -1174,27 +1219,23 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @param amount    Trading item amounts.
      */
     @Override
-    public void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount, double total, double tax) {
-        Player sender = Bukkit.getPlayer(purchaser);
-        if (sender == null) {
-            return;
-        }
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
+    public void sendPurchaseSuccess(@NotNull QUser purchaser, @NotNull Shop shop, int amount, double total, double tax) {
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(purchaser);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.successful-purchase").forLocale());
         if (showTax) {
-            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price-tax",
+            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price-tax",
                     Component.text(amount * shop.getItem().getAmount()),
                     Util.getItemStackName(shop.getItem()),
                     format(total, shop),
                     tax).forLocale());
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price",
+            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price",
                     Component.text(amount * shop.getItem().getAmount()),
                     Util.getItemStackName(shop.getItem()),
                     format(total, shop)).forLocale());
         }
-        MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
+        MsgUtil.printEnchantment(shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -1206,16 +1247,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @param amount Trading item amounts.
      */
     @Override
-    public void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount, double total, double tax) {
-        Player sender = Bukkit.getPlayer(seller);
-        if (sender == null) {
-            return;
-        }
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
+    public void sendSellSuccess(@NotNull QUser seller, @NotNull Shop shop, int amount, double total, double tax) {
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(seller);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successfully-sold").forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(seller, "menu.successfully-sold").forLocale());
         chatSheetPrinter.printLine(
-                plugin.text().of(sender,
+                plugin.text().of(seller,
                         "menu.item-name-and-price",
                         amount,
                         Util.getItemStackName(shop.getItem()),
@@ -1224,13 +1261,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            plugin.text().of(sender, "menu.sell-tax", format(tax, shop)).forLocale());
+                            plugin.text().of(seller, "menu.sell-tax", format(tax, shop)).forLocale());
                 } else {
-                    chatSheetPrinter.printLine(plugin.text().of(sender, "menu.sell-tax-self").forLocale());
+                    chatSheetPrinter.printLine(plugin.text().of(seller, "menu.sell-tax-self").forLocale());
                 }
             }
         }
-        MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
+        MsgUtil.printEnchantment(shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -1246,11 +1283,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
             return;
         }
-        if(Util.fireCancellableEvent(new ShopInfoPanelEvent(shop, p.getUniqueId()))){
+        if (Util.fireCancellableEvent(new ShopInfoPanelEvent(shop, p.getUniqueId()))) {
             Log.debug("ShopInfoPanelEvent cancelled by some plugin");
             return;
         }
-        ProxiedLocale locale = plugin.text().findRelativeLanguages(p.getLocale());
+        ProxiedLocale locale = plugin.text().findRelativeLanguages(p);
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
@@ -1260,18 +1297,28 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Enabled
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
                 || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
+            ItemStack previewItemStack = shop.getItem().clone();
+            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
+            previewComponentPrePopulateEvent.callEvent();
+            previewItemStack = previewComponentPrePopulateEvent.getItemStack();
+            Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale()
+                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop  silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
+            ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
+            itemPreviewComponentPopulateEvent.callEvent();
+            previewComponent = itemPreviewComponentPopulateEvent.getComponent();
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(shop.getItem())).forLocale()
                     .append(Component.text("   "))
-                    .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/qs silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())))
+                    .append(previewComponent)
             );
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(shop.getItem())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
+            ItemStack previewItemStack = shop.getItem().clone();
+            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
+            previewComponentPrePopulateEvent.callEvent();
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack())).forLocale()
+                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewComponentPrePopulateEvent.getItemStack()))
             );
         }
-
 
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
@@ -1304,7 +1351,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
         }
-        MsgUtil.printEnchantment(p, shop, chatSheetPrinter);
+        MsgUtil.printEnchantment(shop, chatSheetPrinter);
         if (items.getItemMeta() instanceof PotionMeta potionMeta) {
             PotionData potionData = potionMeta.getBasePotionData();
             PotionEffectType potionEffectType = potionData.getType().getEffectType();
@@ -1344,35 +1391,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
-        Player player = Bukkit.getPlayer(uuid);
-        return shopIsNotValid(player, info, shop);
-    }
-
-    @Override
     public @NotNull ShopManager.InteractiveManager getInteractiveManager() {
         return this.interactiveManager;
     }
 
-    @Deprecated
-    public void actionSelling(
-            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
-            int amount) {
-        Util.ensureThread(false);
-        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }
 
-    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
-        Player player = Bukkit.getPlayer(seller);
-        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
-            String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale != null) {
-                langCode = locale;
-            }
+    private void notifyBought(@NotNull QUser seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
+        Util.asyncThreadRun(() -> {
+            String langCode = plugin.text().findRelativeLanguages(shop.getOwner(), true).getLocale();
             Component msg;
             if (plugin.getConfig().getBoolean("show-tax")) {
                 msg = plugin.text().of("player-bought-from-your-store-tax",
-                                player != null ? player.getName() : seller.toString(),
+                                seller,
                                 amount * shop.getItem().getAmount(),
                                 Util.getItemStackName(shop.getItem()),
                                 this.formatter.format(total - tax, shop),
@@ -1380,7 +1410,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             } else {
                 msg = plugin.text().of("player-bought-from-your-store",
-                                player != null ? player.getName() : seller.toString(),
+                                seller,
                                 amount * shop.getItem().getAmount(),
                                 Util.getItemStackName(shop.getItem()),
                                 this.formatter.format(total - tax, shop)).forLocale(langCode)
@@ -1417,7 +1447,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         });
-
     }
 
     private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
@@ -1536,7 +1565,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
             return;
         }
         AbstractEconomy eco = plugin.getEconomy();
@@ -1572,7 +1601,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+            actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
         } else if (shop.isSelling()) {
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
@@ -1587,7 +1616,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+            actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
         } else {
             plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.logger().warn("Shop data broken? Loc: {}", shop.getLocation());
@@ -1638,16 +1667,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return plugin.getDatabaseHelper().listTags(tagger);
     }
 
-    private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {
+    private void processCreationFail(@NotNull Shop shop, @NotNull QUser owner, @NotNull Throwable e2) {
         plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-        Player player = Bukkit.getPlayer(owner);
-        if (player != null) {
-            plugin.text().of(player, "shop-creation-failed").send();
-        }
+        plugin.text().of(owner, "shop-creation-failed").send();
         Util.mainThreadRun(() -> {
-            shop.onUnload();
-            removeShop(shop);
-            shop.delete();
+            unloadShop(shop);
+            unregisterShop(shop, true);
+            removeShopFromLookupTable(shop);
         });
     }
 
@@ -1736,7 +1762,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             this.actions.keySet().forEach(uuid -> {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
-                    if(plugin.getBungeeListener() != null) {
+                    if (plugin.getBungeeListener() != null) {
                         plugin.getBungeeListener().notifyForCancel(player);
                     }
                 }
@@ -1846,16 +1872,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             this.tags = tags;
             this.tagger = tagger;
         }
-        
-        public List<Shop> parseTags(){
+
+        public List<Shop> parseTags() {
             List<Shop> finalShop = new ArrayList<>();
             for (String tag : tags) {
-               ParseResult result =  parseSingleTag(tag);
-               if(result.getBehavior() == Behavior.INCLUDE){
-                   finalShop.addAll(result.getShops());
-               }else if (result.getBehavior() == Behavior.EXCLUDE){
-                     finalShop.removeAll(result.getShops());
-               }
+                ParseResult result = parseSingleTag(tag);
+                if (result.getBehavior() == Behavior.INCLUDE) {
+                    finalShop.addAll(result.getShops());
+                } else if (result.getBehavior() == Behavior.EXCLUDE) {
+                    finalShop.removeAll(result.getShops());
+                }
             }
             return finalShop;
         }
@@ -1870,7 +1896,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (tagName.isEmpty()) {
                 throw new IllegalArgumentException("Tag name can't be empty");
             }
-            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t)->shopManager.queryTaggedShops(tagger, t).join());
+            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t) -> shopManager.queryTaggedShops(tagger, t).join());
             return new ParseResult(behavior, shops);
         }
 

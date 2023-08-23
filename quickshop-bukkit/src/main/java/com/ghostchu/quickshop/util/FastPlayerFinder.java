@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GrabConcurrentTask;
 import com.ghostchu.quickshop.common.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -47,14 +49,15 @@ public class FastPlayerFinder implements PlayerFinder {
         cleanupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Set<UUID> toClean = new HashSet<>();
-                nameCache.asMap().forEach((uuid, optional) -> {
-                    if (optional.isEmpty()) {
-                        toClean.add(uuid);
-                    }
-                });
-                toClean.forEach(nameCache::invalidate);
-                Log.debug("Cleaned " + toClean.size() + " failure lookup entries.");
+//                Set<UUID> toClean = new HashSet<>();
+                nameCache.asMap().entrySet().removeIf(entry -> entry.getValue().isEmpty());
+//                nameCache.asMap().forEach((uuid, optional) -> {
+//                    if (optional.isEmpty()) {
+//                        toClean.add(uuid);
+//                    }
+//                });
+//                toClean.forEach(nameCache::invalidate);
+//                Log.debug("Cleaned " + toClean.size() + " failure lookup entries.");
             }
         }, 0, 1000 * 60 * 60);
 
@@ -91,7 +94,7 @@ public class FastPlayerFinder implements PlayerFinder {
                 return cachedName.orElse(null);
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
+            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new BukkitFindNameTask(uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
             String name = grabConcurrentTask.invokeAll(10, TimeUnit.SECONDS, Objects::nonNull);
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
@@ -113,7 +116,7 @@ public class FastPlayerFinder implements PlayerFinder {
                 }
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new PlayerDBFindUUIDTask(name));
+            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
             // This cannot fail.
             UUID uuid = grabConcurrentTask.invokeAll(1, TimeUnit.DAYS, Objects::nonNull);
             if (uuid == null) {
@@ -125,6 +128,16 @@ public class FastPlayerFinder implements PlayerFinder {
             plugin.logger().warn("Interrupted when looking up UUID for " + name, e);
             return CommonUtil.getNilUniqueId();
         }
+    }
+
+    @Override
+    public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> uuid2Name(uuid), QuickExecutor.getProfileIOExecutor());
+    }
+
+    @Override
+    public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name) {
+        return CompletableFuture.supplyAsync(() -> name2Uuid(name), QuickExecutor.getProfileIOExecutor());
     }
 
     @Override

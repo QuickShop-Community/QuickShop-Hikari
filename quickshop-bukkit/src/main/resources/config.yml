@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1014
+config-version: 1017
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -280,7 +280,7 @@ shop:
   #ProtocolLib Required
   per-player-shop-sign: false
 
-  #/qs find <itemName> command settings.
+  #/quickshop  find <itemName> command settings.
   #This command lets users shop quickly without wasting time searching.
   finding:
     #Should QS use the old logic? (looking for closest shop and let players look at it)
@@ -317,7 +317,7 @@ shop:
   ignore-unlimited-shop-messages: true
 
   #Allow auto fetching of player shops.
-  #If you disable this, then the players need to use "/qs fetchmessage" to fetch the shops history messages.
+  #If you disable this, then the players need to use "/quickshop  fetchmessage" to fetch the shops history messages.
   #Disabling it may cause database issues!
   auto-fetch-shop-messages: true
 
@@ -441,17 +441,8 @@ shop:
   #This setting controls if QuickShop should ignore the item's custom display name.
   force-use-item-original-name: false
 
-  #[BETA] Disable the quickshop /qs size command stack size check to allow stack size go up the vanilla limit
+  #[BETA] Disable the quickshop /quickshop  size command stack size check to allow stack size go up the vanilla limit
   disable-max-size-check-for-size-command: false
-
-  #[BETA] Should we async fetch the owner name?
-  #If you enable this option, the calls for ContainerShop#ownerName will return the cached result.
-  #If the request out of cache, QuickShop-Hikari will allow up to 20 ms for sync fetch username.
-  #Then it will turn to background and return "N/A" this time.
-  #This may cause some display problems (e.g. the info sign will show that the shop owner is N/A)
-  #But once the cache is completed for fetching in the background, the next request will return the correct username
-  #This is very useful for large servers, because sometimes players may accidentally load a large number of long ago shops, resulting in a large number of main route IO requests for username queries and causing a spike in lagging
-  async-owner-name-fetch: false
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.
@@ -579,7 +570,6 @@ purge:
   banned: true
   # At this moment, QuickShop only compatible with Vanilla OP system, LuckPerms may need add in future.
   skip-op: true
-  return-create-fee: true
 
 debug:
   #Should we disable the debug logger?
@@ -590,7 +580,7 @@ debug:
   shop-deletion: false
   #Delete corrupt shops while loading?
   #Setting this to false will disable the loading of corrupt shops!
-  delete-corrupt-shops: true
+  delete-corrupt-shops: false
 
 # Legacy data updater
 # Turn on this will make QuickShop to execute extra checks and may affect performance.
@@ -602,6 +592,7 @@ legacy-updater:
 # - playershop
 # - pshop
 custom-commands:
+  - qs
   - shop
   - chestshop
   - cshop

@@ -3,9 +3,9 @@ package com.ghostchu.quickshop.shop.display;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.shop.datatype.ShopProtectionFlag;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -80,7 +80,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         String defaultMark = ShopProtectionFlag.getDefaultMark();
         for (String lore : iMeta.getLore()) {
             try {
-                if (!MsgUtil.isJson(lore)) {
+                if (!CommonUtil.isJson(lore)) {
                     continue;
                 }
                 ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);
@@ -138,7 +138,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         String shopLocation = shop.getLocation().toString();
         for (String lore : iMeta.getLore()) {
             try {
-                if (!MsgUtil.isJson(lore)) {
+                if (!CommonUtil.isJson(lore)) {
                     continue;
                 }
                 ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);

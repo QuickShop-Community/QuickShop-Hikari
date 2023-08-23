@@ -84,6 +84,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
     /**
@@ -337,7 +338,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             }
             case STOP_WORKING -> {
                 setupBootError(new BootError(logger, joiner.toString()), true);
-                PluginCommand command = javaPlugin.getCommand("qs");
+                PluginCommand command = javaPlugin.getCommand("quickshop");
                 if (command != null) {
                     Util.mainThreadRun(() -> command.setTabCompleter(javaPlugin)); //Disable tab completer
                 }
@@ -521,10 +522,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
         } else {
             getDatabaseHelper().insertHistoryRecord(eventObject)
-                    .whenComplete((result, throwable) -> {
-                        if (throwable != null) {
-                            Log.debug("Failed to log event: " + throwable.getMessage());
-                        }
+                    .thenAccept(result -> {
+                    })
+                    .exceptionally(throwable -> {
+                        Log.debug("Failed to log event: " + throwable.getMessage());
+                        return null;
                     });
         }
 
@@ -726,8 +728,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
-                if (!this.playerFinder.isCached(shop.getOwner())) {
-                    waitingForBake.add(shop.getOwner());
+                UUID uuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+                if (uuid != null && !this.playerFinder.isCached(uuid)) {
+                    waitingForBake.add(uuid);
                 }
                 shop.getPermissionAudiences().keySet().forEach(audience -> {
                     if (!this.playerFinder.isCached(audience)) {
@@ -735,18 +738,17 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                     }
                 });
             });
-
-            if (waitingForBake.isEmpty()) {
-                return;
+            for (UUID uuid : waitingForBake) {
+                QuickExecutor.getProfileIOExecutor().submit(() -> {
+                    String name = playerFinder.uuid2Name(uuid);
+                    if (name != null) {
+                        playerFinder.cache(uuid, name);
+                    }
+                });
             }
-            logger.info("Resolving {} player UUID and Name mappings...", waitingForBake.size());
-            waitingForBake.forEach(uuid -> {
-                String name = playerFinder.uuid2Name(uuid);
-                if (name == null) {
-                    return;
-                }
-                logger.info("Resolved: {} ({}), {} jobs remains.", uuid, name, (waitingForBake.size() - 1));
-            });
+            if (!waitingForBake.isEmpty()) {
+                javaPlugin.logger().info("Performing {} players username caching.", waitingForBake.size());
+            }
         }
     }
 
@@ -777,7 +779,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 Bukkit.getScheduler().runTaskTimer(javaPlugin, () -> {
                     for (Shop shop : getShopManager().getLoadedShops()) {
                         //Shop may be deleted or unloaded when iterating
-                        if (shop.isDeleted() || !shop.isLoaded()) {
+                        if (!shop.isLoaded()) {
                             continue;
                         }
                         shop.checkDisplay();
@@ -795,10 +797,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private void registerShopLock() {
+        Util.unregisterListenerClazz(javaPlugin, LockListener.class);
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
-        } else {
-            Util.unregisterListenerClazz(javaPlugin, LockListener.class);
         }
     }
 
@@ -910,7 +911,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public void registerQuickShopCommands() {
         commandManager = new SimpleCommandManager(this);
         List<String> customCommands = getConfig().getStringList("custom-commands");
-        Command quickShopCommand = new QuickShopCommand("qs", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
+        Command quickShopCommand = new QuickShopCommand("quickshop", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
         try {
             platform.registerCommand("quickshop-hikari", quickShopCommand);
         } catch (Exception e) {
@@ -948,7 +949,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         if (getShopManager() != null) {
             logger.info("Unloading all loaded shops...");
-            getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            getShopManager().getLoadedShops().forEach(shop -> getShopManager().unloadShop(shop));
         }
         if (this.bungeeListener != null) {
             logger.info("Disabling the BungeeChat messenger listener.");
@@ -958,6 +959,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (getShopSaveWatcher() != null) {
             logger.info("Stopping shop auto save...");
             getShopSaveWatcher().cancel();
+        }
+        if (getShopManager() != null) {
+            logger.info("Saving all in-memory changed shops...");
+            List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+            CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
+            CompletableFuture.allOf(completableFutures)
+                    .join();
         }
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {

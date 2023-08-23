@@ -4,11 +4,13 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
@@ -219,7 +221,7 @@ public class PlayerListener extends AbstractQSListener {
                 attached = Util.getSecondHalf(b);
                 if (attached != null) {
                     Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
-                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner().getUniqueId())) {
                         // If player not the owner of the shop, make him select the second half of the
                         // shop
                         // Otherwise owner will be able to create new double chest shop
@@ -239,6 +241,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     public boolean createShop(@NotNull Player player, @Nullable Block block, @NotNull BlockFace blockFace, @NotNull EquipmentSlot hand, @NotNull ItemStack item) {
+        QUser qUser = QUserImpl.createFullFilled(player);
         if (block == null) {
             return false; // This shouldn't happen because we have checked action type.
         }
@@ -316,7 +319,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
-        ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(qUser, block.getLocation());
         if (Util.fireCancellableEvent(spce)) {
             Log.debug("ShopPreCreateEvent cancelled");
             return false;
@@ -371,7 +374,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -419,7 +422,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -622,10 +625,9 @@ public class PlayerListener extends AbstractQSListener {
     public void onJoin(PlayerLocaleChangeEvent e) {
         Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
         plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getLocale(), e.getPlayer().getName())
-                .whenComplete((result, throwable) -> {
-                    if (throwable != null) {
-                        Log.debug("Failed to set player locale: " + throwable.getMessage());
-                    }
+                .exceptionally(throwable -> {
+                    Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    return null;
                 });
     }
 
@@ -675,10 +677,9 @@ public class PlayerListener extends AbstractQSListener {
         // Remove them from the menu
         plugin.getShopManager().getInteractiveManager().remove(e.getPlayer().getUniqueId());
         plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getPlayer().getLocale(), e.getPlayer().getName())
-                .whenComplete((result, throwable) -> {
-                    if (throwable != null) {
-                        Log.debug("Failed to set player locale: " + throwable.getMessage());
-                    }
+                .exceptionally(throwable -> {
+                    Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    return null;
                 });
     }
 

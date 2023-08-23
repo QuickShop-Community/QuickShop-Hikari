@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import net.kyori.adventure.text.Component;
@@ -40,16 +41,6 @@ public interface Shop {
     void add(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
-     * Add new staff to the moderators
-     *
-     * @param player New staff
-     * @return Success
-     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#STAFF} instead
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    boolean addStaff(@NotNull UUID player);
-
-    /**
      * Execute buy action for player with x items.
      *
      * @param buyer          The player buying
@@ -58,7 +49,7 @@ public interface Shop {
      * @param paramInt       How many buyed?
      * @throws Exception Possible exception thrown if anything wrong.
      */
-    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+    void buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
     /**
      * Check the display location, and teleport, respawn if needs.
@@ -71,36 +62,6 @@ public interface Shop {
      * @param sign The shop sign
      */
     void claimShopSign(@NotNull Sign sign);
-
-    /**
-     * Empty moderators team.
-     *
-     * @deprecated
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    void clearStaffs();
-
-    /**
-     * Remove a staff from moderators
-     *
-     * @param player Staff
-     * @return Success
-     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#EVERYONE} instead
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    boolean delStaff(@NotNull UUID player);
-
-    /**
-     * Delete shop from ram, and database.
-     */
-    void delete();
-
-    /**
-     * Delete shop from ram or ram and database
-     *
-     * @param memoryOnly true = only delete from ram, false = delete from both ram and database
-     */
-    void delete(boolean memoryOnly);
 
     /**
      * Gets the currency that shop use
@@ -171,39 +132,21 @@ public interface Shop {
     @NotNull
     Location getLocation();
 
-    /**
-     * Return this shop's moderators
-     *
-     * @return Shop moderators
-     * @deprecated Replaced by {@link #playerAuthorize(UUID, BuiltInShopPermission)} ()}
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @NotNull
-    ShopModerator getModerator();
 
     /**
-     * Set new shop's moderators
+     * Get shop's owner QUser
      *
-     * @param shopModerator New moderators team you want set
-     * @deprecated Replaced by {@link #setPlayerGroup(UUID, String)}
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    void setModerator(@NotNull ShopModerator shopModerator);
-
-    /**
-     * Get shop's owner UUID
-     *
-     * @return Shop's owner UUID, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
+     * @return Shop's owner QUser object, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
      */
     @NotNull
-    UUID getOwner();
+    QUser getOwner();
 
     /**
      * Set new owner to the shop's owner
      *
-     * @param paramString New owner UUID
+     * @param qUser New owner user
      */
-    void setOwner(@NotNull UUID paramString);
+    void setOwner(@NotNull QUser qUser);
 
     /**
      * Gets all player and their group on this shop
@@ -330,29 +273,19 @@ public interface Shop {
     List<Sign> getSigns();
 
     /**
-     * Directly get all staffs.
-     *
-     * @return staffs
-     * @deprecated Replaced by {@link #playersCanAuthorize(BuiltInShopPermissionGroup)} with {@link BuiltInShopPermissionGroup#STAFF}
-     */
-    @NotNull
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    List<UUID> getStaffs();
-
-    /**
      * Getting the shop tax account for using, it can be specific uuid or general tax account
      *
      * @return Shop Tax Account or fallback to general tax account
      */
     @Nullable
-    UUID getTaxAccount();
+    QUser getTaxAccount();
 
     /**
      * Sets shop taxAccount
      *
      * @param taxAccount tax account, null to use general tax account
      */
-    void setTaxAccount(@Nullable UUID taxAccount);
+    void setTaxAccount(@Nullable QUser taxAccount);
 
     /**
      * Getting the shop tax account, it can be specific uuid or general tax account
@@ -361,7 +294,7 @@ public interface Shop {
      */
 
     @Nullable
-    UUID getTaxAccountActual();
+    QUser getTaxAccountActual();
 
     /**
      * Check if shop out of space or out of stock
@@ -384,13 +317,6 @@ public interface Shop {
      * @return yes or no
      */
     boolean isBuying();
-
-    /**
-     * Whether Shop is deleted
-     *
-     * @return status
-     */
-    boolean isDeleted();
 
     /**
      * Gets if shop is dirty
@@ -491,15 +417,14 @@ public interface Shop {
      */
     void onClick(@NotNull Player clicker);
 
-    /**
-     * Load shop to the world
-     */
-    void onLoad();
 
-    /**
-     * Unload shop from world
-     */
-    void onUnload();
+    @Deprecated()
+    @ApiStatus.Internal
+    void handleLoading();
+
+    @Deprecated()
+    @ApiStatus.Internal
+    void handleUnloading();
 
     /**
      * open a preview for shop item
@@ -626,7 +551,7 @@ public interface Shop {
      * @param paramInt        How many sold?
      * @throws Exception Possible exception thrown if anything wrong.
      */
-    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+    void sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
     /**
      * Sets shop is dirty

@@ -15,6 +15,27 @@ public interface EconomyCore {
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
+     * @param obj      The object of one of type: UUID, OfflinePlayer, String
+     * @param amount   The amount to give them
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return True if success (Should be almost always)
+     */
+    boolean deposit(@NotNull Object obj, double amount, @NotNull World world, @Nullable String currency);
+
+    /**
+     * Deposits a given amount of money from thin air to the given username.
+     *
+     * @param name     The exact (case insensitive) username to give money to
+     * @param amount   The amount to give them
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return True if success (Should be almost always)
+     */
+    boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency);
+    /**
+     * Deposits a given amount of money from thin air to the given username.
+     *
      * @param name     The exact (case insensitive) username to give money to
      * @param amount   The amount to give them
      * @param currency The currency name
@@ -43,6 +64,26 @@ public interface EconomyCore {
      * @return The balance in human readable text.
      */
     String format(double balance, @NotNull World world, @Nullable String currency);
+
+    /**
+     * Fetches the balance of the given account name
+     *
+     * @param obj      The object of one of type: UUID, OfflinePlayer, String
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return Their current balance.
+     */
+    double getBalance(@NotNull Object obj, @NotNull World world, @Nullable String currency);
+
+    /**
+     * Fetches the balance of the given account name
+     *
+     * @param name     The uuid of the account
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return Their current balance.
+     */
+    double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency);
 
     /**
      * Fetches the balance of the given account name
@@ -112,6 +153,19 @@ public interface EconomyCore {
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
+     * @param from     The player who is paying money, The object of one of type: UUID, OfflinePlayer, String
+     * @param to       The player who is receiving money, The object of one of type: UUID, OfflinePlayer, String
+     * @param amount   The amount to transfer
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return true if success (Payer had enough cash, receiver was able to receive the funds)
+     */
+    boolean transfer(@NotNull Object from, @NotNull Object to, double amount, @NotNull World world, @Nullable String currency);
+
+
+    /**
+     * Transfers the given amount of money from Player1 to Player2
+     *
      * @param from     The player who is paying money
      * @param to       The player who is receiving money
      * @param amount   The amount to transfer
@@ -120,6 +174,41 @@ public interface EconomyCore {
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
     boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency);
+
+    /**
+     * Transfers the given amount of money from Player1 to Player2
+     *
+     * @param from     The player who is paying money
+     * @param to       The player who is receiving money
+     * @param amount   The amount to transfer
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return true if success (Payer had enough cash, receiver was able to receive the funds)
+     */
+    boolean transfer(@NotNull String from, @NotNull String to, double amount, @NotNull World world, @Nullable String currency);
+
+
+    /**
+     * Withdraws a given amount of money from the given username and turns it to thin air.
+     *
+     * @param obj      The object of one of type: UUID, OfflinePlayer, String
+     * @param amount   The amount to take from them
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return True if success, false if they didn't have enough cash
+     */
+    boolean withdraw(@NotNull Object obj, double amount, @NotNull World world, @Nullable String currency);
+
+    /**
+     * Withdraws a given amount of money from the given username and turns it to thin air.
+     *
+     * @param name     The exact (case insensitive) username to take money from
+     * @param amount   The amount to take from them
+     * @param currency The currency name
+     * @param world    The transaction world
+     * @return True if success, false if they didn't have enough cash
+     */
+    boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.

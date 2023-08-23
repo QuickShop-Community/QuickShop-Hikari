@@ -27,7 +27,7 @@ public class SubCommand_List implements CommandHandler<Player> {
 
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             lookupSelf(sender);
             return;
         }
@@ -56,7 +56,7 @@ public class SubCommand_List implements CommandHandler<Player> {
         if (StringUtils.isEmpty(name)) {
             name = "Unknown";
         }
-        List<Shop> shops = quickshop.getShopManager().getPlayerAllShops(lookupUser);
+        List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
         ChatSheetPrinter printer = new ChatSheetPrinter(sender);
         printer.printHeader();
         printer.printLine(quickshop.text().of(sender, "addon.list.table-prefix", name, shops.size()).forLocale());
@@ -76,7 +76,7 @@ public class SubCommand_List implements CommandHandler<Player> {
                 shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
             }
             Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-            component = component.clickEvent(ClickEvent.runCommand("/qs silentpreview " + shop.getRuntimeRandomUniqueId()));
+            component = component.clickEvent(ClickEvent.runCommand("/quickshop  silentpreview " + shop.getRuntimeRandomUniqueId()));
             printer.printLine(component);
             counter++;
         }

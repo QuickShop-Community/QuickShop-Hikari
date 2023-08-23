@@ -307,6 +307,11 @@ public class Log {
         }
 
         @NotNull
+        public static Caller createRaw() {
+            return create(2);
+        }
+
+        @NotNull
         public static Caller create(int steps) {
             List<StackWalker.StackFrame> caller = STACK_WALKER.walk(frames -> frames.limit(steps + 1L).toList());
             StackWalker.StackFrame frame = caller.get(steps);

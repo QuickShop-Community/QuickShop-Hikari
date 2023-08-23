@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -18,7 +19,7 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
-import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.reflect.TypeToken;
@@ -55,15 +56,26 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    private final int LATEST_DATABASE_VERSION = 11;
+    private final int LATEST_DATABASE_VERSION = 12;
 
-    public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws SQLException {
+    public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = prefix;
         //manager.setDebugMode(Util.isDevMode());
         checkTables();
         checkColumns();
+        checkDatabaseVersion();
+    }
+
+    private void checkDatabaseVersion() {
+        if (PackageUtil.parsePackageProperly("skipDatabaseVersionCheck").asBoolean(false)) {
+            return;
+        }
+        int databaseVersion = getDatabaseVersion();
+        if (databaseVersion > LATEST_DATABASE_VERSION) {
+            throw new IllegalStateException("Database schema version " + databaseVersion + " is newer than this support max supported schema version " + LATEST_DATABASE_VERSION + ", downgrading the QuickShop-Hikari without restore the database from backup is disallowed cause it will break the data.");
+        }
     }
 
     public void checkTables() throws SQLException {
@@ -73,7 +85,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     /**
      * Verifies that all required columns exist.
      */
-    public void checkColumns() throws SQLException {
+    public void checkColumns() throws Exception {
         plugin.logger().info("Checking and updating database columns, it may take a while...");
         try (PerfMonitor ignored = new PerfMonitor("Perform database schema upgrade")) {
             new DatabaseUpgrade(this).upgrade();
@@ -158,9 +170,20 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return isolatedIds;
     }
 
+    private void fastBackup() {
+        File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
+            try {
+                databaseIOUtil.exportTables(file);
+            } catch (SQLException | IOException e) {
+                plugin.logger().warn("Exporting database failed.", e);
+            }
+    }
+
     private void upgradeBenefit() {
+        fastBackup();
         try {
-            Integer lines = getManager().alterTable(DataTables.DATA.getName())
+           getManager().alterTable(DataTables.DATA.getName())
                     .addColumn("benefit", "MEDIUMTEXT")
                     .execute();
         } catch (SQLException e) {
@@ -173,16 +196,40 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void upgradePlayers() {
+        fastBackup();
         try {
-            Integer lines = getManager().alterTable(DataTables.PLAYERS.getName())
+            getManager().alterTable(DataTables.PLAYERS.getName())
                     .modifyColumn("locale", "VARCHAR(255)")
                     .execute();
-            lines = getManager().alterTable(DataTables.PLAYERS.getName())
+            getManager().alterTable(DataTables.PLAYERS.getName())
                     .addColumn("cachedName", "VARCHAR(255)")
                     .execute();
         } catch (SQLException e) {
             Log.debug("Failed to add cachedName or modify locale column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
         }
+    }
+
+    private void upgradeUniqueIdsField() {
+        fastBackup();
+        CompletableFuture.allOf(
+                manager.alterTable(DataTables.DATA.getName())
+                        .modifyColumn("owner", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.DATA.getName())
+                        .modifyColumn("tax_account", "VARCHAR(64)")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_PURCHASE.getName())
+                        .modifyColumn("buyer", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                        .modifyColumn("from", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                        .modifyColumn("to", "VARCHAR(128) NOT NULL")
+                        .executeFuture(),
+                manager.alterTable(DataTables.LOG_TRANSACTION.getName())
+                        .modifyColumn("tax_account", "VARCHAR(64)")
+                        .executeFuture()).join();
     }
 
     public @NotNull String getPrefix() {
@@ -254,7 +301,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .executeFuture(query -> {
                     ResultSet result = query.getResultSet();
                     if (result.next()) {
-                        return new SimpleDataRecord(result);
+                        return new SimpleDataRecord(plugin.getPlayerFinder(), result);
                     }
                     return null;
                 });
@@ -276,6 +323,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                             return null;
                         }
                 );
+    }
+
+    @Override
+    public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser) {
+        UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) {
+            return null;
+        }
+        return getPlayerLocale(uuid);
     }
 
     @Override
@@ -374,7 +430,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
                 String world = rs.getString("world");
-                DataRecord dataRecord = new SimpleDataRecord(rs);
+                DataRecord dataRecord = new SimpleDataRecord(plugin.getPlayerFinder(), rs);
                 InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
                 shopRecords.add(new ShopRecord(dataRecord, infoRecord));
             }
@@ -726,7 +782,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             this.prefix = parent.getPrefix();
         }
 
-        public void upgrade() throws SQLException {
+        public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
             if (currentDatabaseVersion < 1) {
                 // QuickShop v4/v5 upgrade
@@ -757,15 +813,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 currentDatabaseVersion = 3;
             }
             if (currentDatabaseVersion == 3) {
-                try {
-                    new DatabaseV2Migrate(this).doV2Migrate();
-                    currentDatabaseVersion = 4;
-                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                         IllegalAccessException | ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                new DatabaseV2Migrate(this).doV2Migrate();
+                currentDatabaseVersion = 4;
             }
             if (currentDatabaseVersion < 9) {
                 logger.info("Data upgrading: Performing purge isolated data...");
@@ -785,7 +834,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 logger.info("Data upgrading: All completed!");
                 currentDatabaseVersion = 11;
             }
-            parent.setDatabaseVersion(currentDatabaseVersion);
+            if (currentDatabaseVersion == 11) {
+                logger.info("Data upgrading: Performing database structure upgrade (uuid field length)...");
+                parent.upgradeUniqueIdsField();
+                currentDatabaseVersion = 12;
+            }
+            parent.setDatabaseVersion(currentDatabaseVersion).join();
         }
 
         private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
@@ -998,7 +1052,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public OldShopData(ResultSet set) throws Exception {
             String ownerData = set.getString("owner");
-            if (!MsgUtil.isJson(ownerData)) {
+            if (!CommonUtil.isJson(ownerData)) {
                 owner = set.getString("owner");
                 Type t = new TypeToken<Map<UUID, String>>() {
                 }.getType();

@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.2.2.12</version>
+    <version>5.0.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -350,10 +350,6 @@
             <url>https://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -362,29 +358,14 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>enginehub-repo</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-        <repository>
             <id>sonatype-oss-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/groups/aikar/</url>
-        </repository>
-        <repository>
-            <id>nms-repo</id>
-            <url>https://repo.codemc.io/repository/nms/</url>
-        </repository>
-        <repository>
-            <id>onarandombox</id>
-            <url>https://repo.onarandombox.com/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>essentials</id>
-            <url>https://repo.essentialsx.net/releases/</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>aikar</id>-->
+<!--            <url>https://repo.aikar.co/content/groups/aikar/</url>-->
+<!--        </repository>-->
+
     </repositories>
 
 
@@ -393,7 +374,7 @@
             <dependency>
                 <groupId>org.spigotmc</groupId>
                 <artifactId>spigot-api</artifactId>
-                <version>1.19.3-R0.1-SNAPSHOT</version>
+                <version>1.20.1-R0.1-SNAPSHOT</version>
                 <scope>provided</scope>
                 <exclusions>
                     <exclusion>
@@ -471,6 +452,9 @@
         <module>compatibility/residence</module>
         <module>compatibility/elitemobs</module>
         <module>compatibility/bungeecord-geyser</module>
+        <!--        <module>compatibility/advancedchests</module>-->
+        <module>compatibility/ecoenchants</module>
+        <module>compatibility/reforges</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>

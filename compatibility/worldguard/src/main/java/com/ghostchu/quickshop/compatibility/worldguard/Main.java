@@ -84,7 +84,7 @@ public final class Main extends CompatibilityModule implements Listener {
         ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(shopLoc.getX(), shopLoc.getY(), shopLoc.getZ()));
         for (ProtectedRegion region : set.getRegions()) {
             if (region.getOwners().contains(event.getAuthorizer())) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                     event.setResult(true);
                 }
             }
@@ -93,31 +93,38 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void preCreation(ShopPreCreateEvent event) {
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
-        if (!query.testState(BukkitAdapter.adapt(event.getLocation()), localPlayer, this.createFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.creation-flag-test-failed").forLocale());
-        }
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            RegionQuery query = container.createQuery();
+            if (!query.testState(BukkitAdapter.adapt(event.getLocation()), localPlayer, this.createFlag)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.worldguard.creation-flag-test-failed").forLocale());
+            }
+        });
+
     }
 
     @EventHandler(ignoreCancelled = true)
     public void preCreation(ShopCreateEvent event) {
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
-        if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.createFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.creation-flag-test-failed").forLocale());
-        }
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            RegionQuery query = container.createQuery();
+            if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.createFlag)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.worldguard.creation-flag-test-failed").forLocale());
+            }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
     public void preCreation(ShopPurchaseEvent event) {
-        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
-        if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.tradeFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.trade-flag-test-failed").forLocale());
-        }
+        event.getPurchaser().getBukkitPlayer().ifPresent(player -> {
+            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            RegionQuery query = container.createQuery();
+            if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.tradeFlag)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.worldguard.trade-flag-test-failed").forLocale());
+            }
+        });
     }
 }

@@ -87,8 +87,47 @@ public class Economy_Reserve extends AbstractEconomy {
     }
 
     @Override
+    public boolean transfer(@NotNull String from, @NotNull String to, double amount, @NotNull World world, @Nullable String currency) {
+        try {
+            return Objects.requireNonNull(reserve).transferHoldings(from, to, BigDecimal.valueOf(amount), world.getName(), currency);
+        } catch (Exception throwable) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        try {
+            return Objects.requireNonNull(reserve).removeHoldings(name, BigDecimal.valueOf(amount));
+        } catch (Exception throwable) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
+            return false;
+        }
+    }
+
+    @Override
     public String getProviderName() {
         return "Reserve";
+    }
+
+    @Override
+    public boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        try {
+            return Objects.requireNonNull(reserve).addHoldings(name, BigDecimal.valueOf(amount), world.getName(), currency);
+        } catch (Exception throwable) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
+            return false;
+        }
     }
 
     /**
@@ -133,6 +172,19 @@ public class Economy_Reserve extends AbstractEconomy {
             }
             plugin.logger().warn(ERROR_MESSAGE, throwable);
             return formatInternal(balance);
+        }
+    }
+
+    @Override
+    public double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency) {
+        try {
+            return Objects.requireNonNull(reserve).getHoldings(name, world.getName(), currency).doubleValue();
+        } catch (Exception throwable) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
+            return 0.0;
         }
     }
 

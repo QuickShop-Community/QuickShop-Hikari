@@ -1,16 +1,22 @@
 package com.ghostchu.quickshop.database.bean;
 
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
+import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.PlayerFinder;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Data
 public class SimpleDataRecord implements DataRecord {
-    private final UUID owner;
+    private final QUser owner;
     private final String item;
     private final String name;
     private final int type;
@@ -18,7 +24,7 @@ public class SimpleDataRecord implements DataRecord {
     private final double price;
     private final boolean unlimited;
     private final boolean hologram;
-    private final UUID taxAccount;
+    private final QUser taxAccount;
     private final String permissions;
     private final String extra;
     private final String inventoryWrapper;
@@ -27,7 +33,7 @@ public class SimpleDataRecord implements DataRecord {
 
     private final String benefit;
 
-    public SimpleDataRecord(UUID owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, UUID taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime, String benefit) {
+    public SimpleDataRecord(QUser owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, QUser taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime, String benefit) {
         this.owner = owner;
         this.item = item;
         this.name = name;
@@ -45,8 +51,8 @@ public class SimpleDataRecord implements DataRecord {
         this.benefit = benefit;
     }
 
-    public SimpleDataRecord(ResultSet set) throws SQLException {
-        this.owner = UUID.fromString(set.getString("owner"));
+    public SimpleDataRecord(PlayerFinder finder, ResultSet set) throws SQLException {
+        this.owner = QUserImpl.deserialize(finder, set.getString("owner"));
         this.item = set.getString("item");
         this.name = set.getString("name");
         this.type = set.getInt("type");
@@ -54,7 +60,8 @@ public class SimpleDataRecord implements DataRecord {
         this.price = set.getDouble("price");
         this.unlimited = set.getBoolean("unlimited");
         this.hologram = set.getBoolean("hologram");
-        this.taxAccount = set.getString("tax_account") == null ? null : UUID.fromString(set.getString("tax_account"));
+        String taxAccountString = set.getString("tax_account");
+        this.taxAccount = taxAccountString == null ? null : QUserImpl.deserialize(finder, taxAccountString);
         this.permissions = set.getString("permissions");
         this.extra = set.getString("extra");
         this.inventorySymbolLink = set.getString("inv_symbol_link");
@@ -73,7 +80,7 @@ public class SimpleDataRecord implements DataRecord {
     @NotNull
     public Map<String, Object> generateParams() {
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("owner", owner.toString());
+        map.put("owner", owner.serialize());
         map.put("item", item);
         map.put("name", name);
         map.put("type", type);
@@ -81,7 +88,7 @@ public class SimpleDataRecord implements DataRecord {
         map.put("price", price);
         map.put("unlimited", unlimited);
         map.put("hologram", hologram);
-        map.put("tax_account", taxAccount);
+        map.put("tax_account", taxAccount.serialize());
         map.put("permissions", permissions);
         map.put("extra", extra);
         map.put("inv_wrapper", inventoryWrapper);
@@ -127,7 +134,7 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public @NotNull UUID getOwner() {
+    public @NotNull QUser getOwner() {
         return owner;
     }
 
@@ -142,7 +149,7 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public UUID getTaxAccount() {
+    public QUser getTaxAccount() {
         return taxAccount;
     }
 

@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.compatibility.openinv;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,8 +24,8 @@ public class OpenInvCommand implements CommandHandler<Player> {
      * Calling while command executed by specified sender
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/qs = qs, /shop = shop)
-     * @param cmdArg       The arguments (/qs create stone will receive stone)
+     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param cmdArg       The arguments (/quickshop  create stone will receive stone)
      */
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -33,7 +34,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.getOwner().equals(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.admin")) {
+        if (!sender.getUniqueId().equals(shop.getOwner().getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.admin")) {
             plugin.getApi().getTextManager().of(sender, "no-permission").send();
             return;
         }
@@ -41,7 +42,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
             shop.setInventory(new BukkitInventoryWrapper((((InventoryHolder) shop.getLocation().getBlock().getState()).getInventory())), plugin.getApi().getInventoryWrapperRegistry().get("QuickShop-Hikari"));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.to-chest")));
         } else {
-            shop.setInventory(new EnderChestWrapper(shop.getOwner(), plugin.getOpenInv(), plugin), plugin.getManager());
+            shop.setInventory(new EnderChestWrapper(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()), plugin.getOpenInv(), plugin), plugin.getManager());
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.to-echest")));
         }
     }
@@ -50,8 +51,8 @@ public class OpenInvCommand implements CommandHandler<Player> {
      * Calling while sender trying to tab-complete
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/qs = qs, /shop = shop)
-     * @param cmdArg       The arguments (/qs create stone [TAB] will receive stone)
+     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param cmdArg       The arguments (/quickshop  create stone [TAB] will receive stone)
      * @return Candidate list
      */
     @Override

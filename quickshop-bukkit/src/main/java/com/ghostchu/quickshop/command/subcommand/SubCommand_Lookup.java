@@ -24,8 +24,8 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         ItemStack item = sender.getInventory().getItemInMainHand();
-        if (parser.getArgs().size() < 1) {
-            plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
+        if (parser.getArgs().isEmpty()) {
+            plugin.text().of(sender, "command-incorrect", "/quickshop  lookup <create/remove/test> <name>").send();
             return;
         }
 
@@ -43,7 +43,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
                 }
                 return;
             }
-            plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop  lookup <create/remove/test> <name>").send();
             return;
         }
         String itemRefName = parser.getArgs().get(1);
@@ -71,7 +71,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
                     default -> plugin.text().of(sender, "internal-error", itemRefName).send();
                 }
             }
-            default -> plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
+            default -> plugin.text().of(sender, "command-incorrect", "/quickshop  lookup <create/remove/test> <name>").send();
         }
     }
 

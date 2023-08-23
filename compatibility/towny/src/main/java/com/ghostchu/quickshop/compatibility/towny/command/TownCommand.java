@@ -4,8 +4,10 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.towny.Main;
 import com.ghostchu.quickshop.compatibility.towny.TownyShopUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
@@ -45,7 +47,7 @@ public class TownCommand implements CommandHandler<Player> {
                     .anyMatch(uuid -> uuid.equals(sender.getUniqueId()))) {
                 // Turn it back to a normal shop
                 shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
-                shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
+                shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop)));
                 TownyShopUtil.setShopTown(shop, null);
                 plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
                 return;
@@ -86,10 +88,12 @@ public class TownCommand implements CommandHandler<Player> {
                 shop.setPrice(price);
             }
         }
-        TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
+
+        UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
+        TownyShopUtil.setShopOriginalOwner(shop, shopOwnerUUID);
         TownyShopUtil.setShopTown(shop, town);
-        shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
-        shop.setOwner(uuid);
+        shop.setPlayerGroup(shopOwnerUUID, BuiltInShopPermissionGroup.ADMINISTRATOR);
+        shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), uuid));
         plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-town", town.getName()).send();
         plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();
     }

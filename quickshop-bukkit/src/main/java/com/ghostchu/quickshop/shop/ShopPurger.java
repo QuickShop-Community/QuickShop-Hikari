@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
@@ -50,7 +49,7 @@ public class ShopPurger {
             try {
                 File file = new File("purge-backup-" + UUID.randomUUID() + ".zip");
                 ioUtil.exportTables(file);
-                plugin.logger().info("[Shop Purger] We have backup shop data as {}, if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback!", file.getName());
+                plugin.logger().info("[Shop Purger] We have backup shop data as {}, if you ran into any trouble, please rename it to recovery.txt then use /quickshop  recovery in console to rollback!", file.getName());
             } catch (SQLException | IOException e) {
                 plugin.logger().warn("Failed to backup database, purge cancelled.", e);
                 return;
@@ -62,10 +61,10 @@ public class ShopPurger {
         int days = plugin.getConfig().getInt("purge.days", 360);
         boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
         boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
-        boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             try {
-                OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
+                OfflinePlayer player = shop.getOwner().getUniqueIdIfRealPlayer().map(Bukkit::getOfflinePlayer).orElse(null);
+                if (player == null) return;
                 if (!player.hasPlayedBefore()) {
                     Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
                     continue;
@@ -96,24 +95,12 @@ public class ShopPurger {
 
         BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
         purgeExecutor.addTasks(pendingRemovalShops);
-        purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> {
-            shop.delete(false);
-            if (returnCreationFee) {
-                SimpleEconomyTransaction transaction =
-                        SimpleEconomyTransaction.builder()
-                                .amount(plugin.getConfig().getDouble("shop.cost"))
-                                .core(plugin.getEconomy())
-                                .currency(shop.getCurrency())
-                                .world(shop.getLocation().getWorld())
-                                .to(shop.getOwner())
-                                .build();
-                transaction.failSafeCommit();
-            }
-        }).whenComplete((a, b) -> {
-            long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
-            plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
-                    pendingRemovalShops.size(),
-                    usedTime);
-        });
+        purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> plugin.getShopManager().deleteShop(shop))
+                .whenComplete((a, b) -> {
+                    long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+                    plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
+                            pendingRemovalShops.size(),
+                            usedTime);
+                });
     }
 }

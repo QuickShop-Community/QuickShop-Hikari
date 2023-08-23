@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -56,6 +57,23 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1014)
     public void removeDisplayCenterConfig() {
         getConfig().set("shop.display-center", null);
+    }
+
+    @UpdateScript(version = 1015)
+    public void removePurgerRefund() {
+        getConfig().set("purge.return-create-fee", null);
+        getConfig().set("shop.async-owner-name-fetch", null);
+    }
+    @UpdateScript(version = 1016)
+    public void disableDefaultShopCorruptDeletion() {
+        getConfig().set("debug.delete-corrupt-shops", false);
+    }
+
+    @UpdateScript(version = 1017)
+    public void addQsToCommands() {
+        List<String> getAlias = getConfig().getStringList("custom-commands");
+        getAlias.add("qs");
+        getConfig().set("custom-commands", getAlias);
     }
 
     @UpdateScript(version = 1004)

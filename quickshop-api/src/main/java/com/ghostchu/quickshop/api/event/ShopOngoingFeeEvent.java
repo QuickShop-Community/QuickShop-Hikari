@@ -1,16 +1,15 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Fire when watcher processing the shop ongoing fee
  */
 public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellable {
-    private final UUID player;
+    private final QUser player;
 
     private final Shop shop;
 
@@ -18,7 +17,7 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
     private boolean cancelled;
     private @Nullable Component cancelReason;
 
-    public ShopOngoingFeeEvent(Shop shop, UUID player, double cost) {
+    public ShopOngoingFeeEvent(Shop shop, QUser player, double cost) {
         this.shop = shop;
         this.player = player;
         this.cost = cost;
@@ -58,7 +57,7 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
      *
      * @return The player triggered ongoing fee event
      */
-    public UUID getPlayer() {
+    public QUser getPlayer() {
         return player;
     }
 

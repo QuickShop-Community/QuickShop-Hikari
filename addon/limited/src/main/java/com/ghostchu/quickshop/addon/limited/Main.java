@@ -14,11 +14,15 @@ import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
 
 public final class Main extends JavaPlugin implements Listener {
     public static Main instance;
@@ -37,6 +41,7 @@ public final class Main extends JavaPlugin implements Listener {
         // Plugin startup logic
         instance = this;
         saveDefaultConfig();
+        Bukkit.getPluginManager().registerEvents(this, this);
         this.plugin = QuickShop.getInstance();
         this.container = CommandContainer.builder()
                 .prefix("limit")
@@ -45,6 +50,7 @@ public final class Main extends JavaPlugin implements Listener {
                 .executor(new SubCommand_Limit(plugin))
                 .build();
         plugin.getCommandManager().registerCmd(container);
+
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -55,11 +61,14 @@ public final class Main extends JavaPlugin implements Listener {
             return;
         }
         int limit = storage.getInt("limit");
-        int playerUsedLimit = storage.getInt("data." + event.getPlayer().getUniqueId(), 0);
-        if (playerUsedLimit + event.getAmount() > limit) {
-            Text text = plugin.text().of(event.getPlayer(), "addon.limited.trade-limit-reached-cancel-reason");
-            text.send();
-            event.setCancelled(true, PlainTextComponentSerializer.plainText().serialize(text.forLocale()));
+        UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid != null) {
+            int playerUsedLimit = storage.getInt("data." + uuid, 0);
+            if (playerUsedLimit + event.getAmount() > limit) {
+                Text text = plugin.text().of(event.getPurchaser(), "addon.limited.trade-limit-reached-cancel-reason");
+                text.send();
+                event.setCancelled(true, PlainTextComponentSerializer.plainText().serialize(text.forLocale()));
+            }
         }
     }
 
@@ -84,18 +93,24 @@ public final class Main extends JavaPlugin implements Listener {
         if (storage.getInt("limit") < 1) {
             return;
         }
-        int limit = storage.getInt("limit");
-        int playerUsedLimit = storage.getInt("data." + event.getPlayer().getUniqueId(), 0);
-        playerUsedLimit += event.getAmount();
-        storage.set("data." + event.getPlayer().getUniqueId(), playerUsedLimit);
-        shop.setExtra(this, storage);
-        event.getPlayer().sendTitle(
-                LegacyComponentSerializer.legacySection()
-                        .serialize(plugin.text().of(event.getPlayer(), "addon.limited.titles.title")
-                                .forLocale()),
-                LegacyComponentSerializer.legacySection()
-                        .serialize(plugin.text().of(event.getPlayer(), "addon.limited.titles.subtitle"
-                                , (limit - playerUsedLimit)).forLocale()));
+        UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid != null) {
+            int limit = storage.getInt("limit");
+            int playerUsedLimit = storage.getInt("data." + uuid, 0);
+            playerUsedLimit += event.getAmount();
+            storage.set("data." + uuid, playerUsedLimit);
+            shop.setExtra(this, storage);
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.sendTitle(
+                        LegacyComponentSerializer.legacySection()
+                                .serialize(plugin.text().of(player, "addon.limited.titles.title")
+                                        .forLocale()),
+                        LegacyComponentSerializer.legacySection()
+                                .serialize(plugin.text().of(player, "addon.limited.titles.subtitle"
+                                        , (limit - playerUsedLimit)).forLocale()));
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

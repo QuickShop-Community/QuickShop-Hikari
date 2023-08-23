@@ -3,12 +3,11 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
@@ -29,55 +29,45 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        CompletableFuture<QUser> qUserFuture;
         if (parser.getArgs().size() == 1) {
-            //copy it first
-            List<Shop> tempList = new ArrayList<>(plugin.getShopManager().getAllShops());
-            OfflinePlayer shopOwner = null;
-            for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-                if (player.getName() != null && player.getName().equalsIgnoreCase(parser.getArgs().get(0))) {
-                    shopOwner = player;
-                    break;
-                }
-            }
-            if (shopOwner == null) {
-                plugin.text().of(sender, "unknown-player").send();
-                return;
-            }
-
-            int i = 0;
-            if (!shopOwner.equals(sender)) { //Non-self shop
-                if (!plugin.perm().hasPermission(sender, "quickshop.removeall.other")) {
-                    plugin.text().of(sender, "no-permission").send();
-                    return;
-                }
-                for (Shop shop : tempList) {
-                    if (shop.getOwner().equals(shopOwner.getUniqueId())) {
-                        plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "Deleting shop " + shop + " as requested by the /qs removeall command.", shop.saveToInfoStorage()));
-                        shop.delete();
-                        i++;
-                    }
-                }
-            } else { //Self shop
-                if (!plugin.perm().hasPermission(sender, "quickshop.removeall.self")) {
-                    plugin.text().of(sender, "no-permission").send();
-                    return;
-                }
-                if (!(sender instanceof OfflinePlayer)) {
-                    sender.sendMessage(ChatColor.RED + "This command can't be run by the console!");
-                    return;
-                }
-                for (Shop shop : tempList) {
-                    if (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-                        plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "Deleting shop " + shop + " as requested by the /qs removeall command.", shop.saveToInfoStorage()));
-                        shop.delete();
-                        i++;
-                    }
-                }
-            }
-            plugin.text().of(sender, "command.some-shops-removed", i).send();
+            qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0));
         } else {
-            plugin.text().of(sender, "command.no-owner-given").send();
+            qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), sender);
         }
+        qUserFuture
+                .thenAccept(qUser -> {
+                    QUser executor = QUserImpl.createAsync(plugin.getPlayerFinder(), sender).join();
+                    if (executor.equals(qUser)) {
+                        if (!plugin.perm().hasPermission(sender, "quickshop.removeall.self")) {
+                            plugin.text().of(sender, "no-permission").send();
+                            return;
+                        }
+                    } else {
+                        if (!plugin.perm().hasPermission(sender, "quickshop.removeall.other")) {
+                            plugin.text().of(sender, "no-permission").send();
+                            return;
+                        }
+                    }
+                    List<Shop> pendingRemoval = new ArrayList<>();
+                    for (Shop shop : plugin.getShopManager().getAllShops()) {
+                        if (!shop.getOwner().equals(qUser)) continue;
+                        pendingRemoval.add(shop);
+                    }
+                    Util.mainThreadRun(() -> {
+                        pendingRemoval.forEach(shop -> {
+                            plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /quickshop  removeall command.", shop.saveToInfoStorage()));
+                            plugin.getShopManager().deleteShop(shop);
+                        });
+                        plugin.text().of(sender, "command.some-shops-removed", pendingRemoval.size()).send();
+                    });
+
+                })
+                .exceptionally(err -> {
+                    plugin.text().of(sender, "internal-error", err.getMessage()).send();
+                    return null;
+                });
+
     }
 
     @Override

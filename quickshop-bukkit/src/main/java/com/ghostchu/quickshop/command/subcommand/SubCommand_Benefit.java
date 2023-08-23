@@ -31,8 +31,8 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
-            plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
+        if (parser.getArgs().isEmpty()) {
+            plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
         Shop shop = getLookingShop(sender);
@@ -52,74 +52,88 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             case "remove" -> removeBenefit(sender, shop, parser);
             case "query" -> queryBenefit(sender, shop, parser);
             default ->
-                    plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
+                    plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove> <player> <percentage>").send();
         }
 
     }
 
     private void addBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 3) {
-            plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove> <player> <percentage>").send();
             return;
         }
         String player = parser.getArgs().get(1);
-        UUID uuid = plugin.getPlayerFinder().name2Uuid(player);
-        if (uuid == null) {
-            plugin.text().of(sender, "unknown-player", player).send();
-            return;
-        }
-        if (!PackageUtil.parsePackageProperly("allowOffline").asBoolean()) {
-            Player p = Bukkit.getPlayer(uuid);
-            if (p == null || !p.isOnline()) {
-                plugin.text().of(sender, "player-offline", player).send();
+        plugin.getPlayerFinder().name2UuidFuture(player).whenComplete((uuid, throwable) -> {
+            if (throwable != null) {
+                plugin.logger().warn("Failed to get uuid of player " + player, throwable);
+                plugin.text().of(sender, "internal-error").send();
                 return;
             }
-        }
-        if (!parser.getArgs().get(2).endsWith("%")) {
-            // Force player enter '%' to avoid player type something like 0.01 for 1%
-            plugin.text().of(sender, "invalid-percentage", parser.getArgs().get(0)).send();
-            return;
-        }
-        String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
-        try {
-            double percent = Double.parseDouble(percentageStr);
-            if (Double.isInfinite(percent) || Double.isNaN(percent)) {
-                plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
+            if (uuid == null) {
+                plugin.text().of(sender, "unknown-player", player).send();
                 return;
             }
-            if (percent <= 0 || percent >= 100) {
-                plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
+            if (!PackageUtil.parsePackageProperly("allowOffline").asBoolean()) {
+                Player p = Bukkit.getPlayer(uuid);
+                if (p == null || !p.isOnline()) {
+                    plugin.text().of(sender, "player-offline", player).send();
+                    return;
+                }
+            }
+            if (!parser.getArgs().get(2).endsWith("%")) {
+                // Force player enter '%' to avoid player type something like 0.01 for 1%
+                plugin.text().of(sender, "invalid-percentage", parser.getArgs().get(0)).send();
                 return;
             }
-            Benefit benefit = shop.getShopBenefit();
-            benefit.addBenefit(uuid, percent / 100d);
-            shop.setShopBenefit(benefit);
-            plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
-        } catch (NumberFormatException e) {
-            plugin.text().of(sender, "not-a-number", percentageStr).send();
-        } catch (Benefit.BenefitOverflowException e) {
-            plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
-        } catch (Benefit.BenefitExistsException e) {
-            plugin.text().of(sender, "benefit-exists").send();
-        }
+            String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
+            Util.mainThreadRun(() -> {
+                try {
+                    double percent = Double.parseDouble(percentageStr);
+                    if (Double.isInfinite(percent) || Double.isNaN(percent)) {
+                        plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
+                        return;
+                    }
+                    if (percent <= 0 || percent >= 100) {
+                        plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
+                        return;
+                    }
+                    Benefit benefit = shop.getShopBenefit();
+                    benefit.addBenefit(uuid, percent / 100d);
+                    shop.setShopBenefit(benefit);
+                    plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
+                } catch (NumberFormatException e) {
+                    plugin.text().of(sender, "not-a-number", percentageStr).send();
+                } catch (Benefit.BenefitOverflowException e) {
+                    plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
+                } catch (Benefit.BenefitExistsException e) {
+                    plugin.text().of(sender, "benefit-exists").send();
+                }
+            });
+        });
+
     }
 
     private void removeBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 2) {
-            plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
         String player = parser.getArgs().get(1);
-        UUID uuid = plugin.getPlayerFinder().name2Uuid(player);
-        if (uuid == null) {
-            plugin.text().of(sender, "unknown-player", player).send();
-            return;
-        }
-
-        Benefit benefit = shop.getShopBenefit();
-        benefit.removeBenefit(uuid);
-        shop.setShopBenefit(benefit);
-        plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
+        plugin.getPlayerFinder().name2UuidFuture(player).whenComplete((uuid, throwable) -> {
+            if (throwable != null) {
+                plugin.logger().warn("Failed to get uuid of player " + player, throwable);
+                plugin.text().of(sender, "internal-error").send();
+                return;
+            }
+            if (uuid == null) {
+                plugin.text().of(sender, "unknown-player", player).send();
+                return;
+            }
+            Benefit benefit = shop.getShopBenefit();
+            benefit.removeBenefit(uuid);
+            shop.setShopBenefit(benefit);
+            plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
+        });
 
     }
 

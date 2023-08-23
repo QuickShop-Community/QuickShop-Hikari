@@ -63,15 +63,15 @@ public interface Platform {
 
     @NotNull Component getTranslation(@NotNull ItemStack itemStack) throws Throwable;
 
-    @NotNull String getTranslationKey(@NotNull Material material) throws Throwable;
+    @NotNull String getTranslationKey(@NotNull Material material);
 
-    @NotNull String getTranslationKey(@NotNull EntityType entity) throws Throwable;
+    @NotNull String getTranslationKey(@NotNull EntityType entity);
 
-    @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) throws Throwable;
+    @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType);
 
-    @NotNull String getTranslationKey(@NotNull Enchantment enchantment) throws Throwable;
+    @NotNull String getTranslationKey(@NotNull Enchantment enchantment);
 
-    @NotNull String getTranslationKey(@NotNull ItemStack stack) throws Throwable;
+    @NotNull String getTranslationKey(@NotNull ItemStack stack);
 
     @NotNull MiniMessage miniMessage();
 

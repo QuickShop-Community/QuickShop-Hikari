@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.addon.discount.DiscountCode;
 import com.ghostchu.quickshop.addon.discount.Main;
 import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -56,7 +57,9 @@ public class MainListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPurchase(ShopPurchaseEvent event) {
-        UUID purchaser = event.getPurchaser();
+        QUser purchaserQUser = event.getPurchaser();
+        UUID purchaser = purchaserQUser.getUniqueIdIfRealPlayer().orElse(null);
+        if (purchaser == null) return;
         Shop shop = event.getShop();
         DiscountCode codeInstalled = main.getStatusManager().get(purchaser, main.getCodeManager());
         if (codeInstalled == null) {

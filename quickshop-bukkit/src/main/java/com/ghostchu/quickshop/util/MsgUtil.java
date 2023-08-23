@@ -4,18 +4,17 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -30,9 +29,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -78,12 +75,10 @@ public class MsgUtil {
                 .info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         PLUGIN.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000)
-                .whenComplete((result, error) -> {
-                    if (error != null) {
-                        Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
-                    } else {
-                        Log.debug("Cleaned " + result + " messages from the database");
-                    }
+                .thenAccept(result -> Log.debug("Cleaned " + result + " messages from the database"))
+                .exceptionally(error -> {
+                    Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                    return null;
                 });
     }
 
@@ -168,12 +163,9 @@ public class MsgUtil {
                     PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
                 }
                 PLUGIN.getDatabaseHelper().cleanMessageForPlayer(pName)
-                        .whenComplete((result, error) -> {
-                            if (error != null) {
-                                Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
-                            } else {
-                                Log.debug("Cleaned " + result + " messages from the database");
-                            }
+                        .exceptionally(error -> {
+                            Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                            return 0;
                         });
                 msgs.clear();
                 return true;
@@ -234,13 +226,9 @@ public class MsgUtil {
         //}
     }
 
+    @Deprecated
     public static boolean isJson(String str) {
-        try {
-            JsonElement element = JsonParser.parseString(str);
-            return element.isJsonObject() || element.isJsonArray();
-        } catch (JsonParseException exception) {
-            return false;
-        }
+        return CommonUtil.isJson(str);
     }
 
     /**
@@ -252,48 +240,32 @@ public class MsgUtil {
             ResultSet rs = warpRS.getResultSet();
             while (rs.next()) {
                 String owner = rs.getString("receiver");
-                UUID ownerUUID;
-                if (CommonUtil.isUUID(owner)) {
-                    ownerUUID = UUID.fromString(owner);
-                } else {
-                    if (QuickShop.getInstance().getPlayerFinder() != null) {
-                        ownerUUID = QuickShop.getInstance().getPlayerFinder().name2Uuid(owner);
-                    } else {
-                        ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
-                    }
-                }
                 String message = rs.getString("content");
-                List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new ArrayList<>());
-                msgs.add(message);
+                QUserImpl.createAsync(PLUGIN.getPlayerFinder(), owner)
+                        .thenAccept(qUser -> qUser.getUniqueIdOptional().ifPresent(uuid -> {
+                            List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(qUser.getUniqueId(), k -> new ArrayList<>());
+                            msgs.add(message);
+                        })).exceptionally(err -> {
+                            Log.debug("Failed to load transaction message for " + owner + " from database, ownerUUID parsing failed.");
+                            return null;
+                        });
             }
         } catch (SQLException e) {
             PLUGIN.logger().warn("Could not load transaction messages from database. Skipping.", e);
         }
     }
 
-    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && PLUGIN.getConfig().getBoolean("respect-item-flag")) {
-            return;
+    public static void printEnchantment(@NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
+        Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
+        if (shop.getItem().getItemMeta() != null) {
+            enchantmentIntegerMap.putAll(shop.getItem().getItemMeta().getEnchants());
         }
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
-            enchs = shop.getItem().getItemMeta().getEnchants();
-        }
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(PLUGIN.text().of(p, "menu.enchants").forLocale());
-            printEnchantment(chatSheetPrinter, enchs);
-        }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta stor) {
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(PLUGIN.text().of(p, "menu.stored-enchants").forLocale());
-                printEnchantment(chatSheetPrinter, enchs);
-            }
-        }
+        printEnchantment(chatSheetPrinter, enchantmentIntegerMap);
     }
 
     private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
+        if(enchs.isEmpty()) return;
+        chatSheetPrinter.printCenterLine(PLUGIN.text().of("menu.enchants").forLocale());
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
@@ -331,7 +303,16 @@ public class MsgUtil {
      * @param shop The shop purchased
      * @param uuid The uuid of the player to message
      */
-    public static void send(@NotNull Shop shop, @NotNull UUID uuid, @NotNull Component shopTransactionMessage) {
+    public static void send(@NotNull Shop shop, @Nullable UUID uuid, @NotNull Component shopTransactionMessage) {
+        send(uuid, shopTransactionMessage, shop.isUnlimited());
+    }
+
+    /**
+     * @param shop  The shop purchased
+     * @param qUser The uuid of the player to message
+     */
+    public static void send(@NotNull Shop shop, @NotNull QUser qUser, @NotNull Component shopTransactionMessage) {
+        UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
         send(uuid, shopTransactionMessage, shop.isUnlimited());
     }
 
@@ -343,10 +324,11 @@ public class MsgUtil {
      *                               <p>
      *                               Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
-    public static void send(@NotNull UUID uuid, @NotNull Component shopTransactionMessage, boolean isUnlimited) {
+    public static void send(@Nullable UUID uuid, @NotNull Component shopTransactionMessage, boolean isUnlimited) {
         if (isUnlimited && PLUGIN.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
+        if (uuid == null) return;
         String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
         Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
@@ -355,10 +337,11 @@ public class MsgUtil {
             msgs.add(serialized);
             OUTGOING_MESSAGES.put(uuid, msgs);
             PLUGIN.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis())
-                    .whenComplete((lines, err) -> {
-                        if (err != null) {
-                            Log.debug(Level.WARNING, "Could not save transaction message to database: " + err.getMessage());
-                        }
+                    .thenAccept(v -> {
+                    })
+                    .exceptionally(err -> {
+                        Log.debug(Level.WARNING, "Could not save transaction message to database: " + err.getMessage());
+                        return null;
                     });
             try {
                 if (p.getName() != null && PLUGIN.getConfig().getBoolean("bungee-cross-server-msg", true)) {
@@ -435,6 +418,15 @@ public class MsgUtil {
         }
     }
 
+    public static void sendDirectMessage(@Nullable QUser sender, @Nullable Component... messages) {
+        if (sender == null) return;
+        UUID uuid = sender.getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) {
+            return;
+        }
+        sendDirectMessage(uuid, messages);
+    }
+
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
             return;
@@ -469,6 +461,24 @@ public class MsgUtil {
     }
 
     /**
+     * Send globalAlert to ops, console, log file.
+     *
+     * @param content The content to send.
+     */
+    public static void sendGlobalAlert(@Nullable Component content) {
+        if (content == null) {
+            Log.debug("Content is null");
+            Throwable throwable =
+                    new Throwable("Known issue: Global Alert accepted null string, what the fuck");
+            PLUGIN.getSentryErrorReporter().sendError(throwable, "NullCheck");
+            return;
+        }
+        sendMessageToOps(content);
+        PLUGIN.logger().warn(LegacyComponentSerializer.legacySection().serialize(content));
+        PLUGIN.logEvent(new PluginGlobalAlertLog(LegacyComponentSerializer.legacySection().serialize(content)));
+    }
+
+    /**
      * Send a message for all online Ops.
      *
      * @param message The message you want send
@@ -477,6 +487,19 @@ public class MsgUtil {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
                 MsgUtil.sendDirectMessage(player, LegacyComponentSerializer.legacySection().deserialize(message));
+            }
+        }
+    }
+
+    /**
+     * Send a message for all online Ops.
+     *
+     * @param message The message you want send
+     */
+    public static void sendMessageToOps(@NotNull Component message) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
+                MsgUtil.sendDirectMessage(player, message);
             }
         }
     }

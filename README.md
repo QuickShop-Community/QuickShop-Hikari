@@ -79,7 +79,6 @@
 # QuickShop-Hikari
 
 [![codacyBadge]][codacy]
-[![codeFactorBadge]][codeFactor]
 [![codeScoreBadge]][codeScore]
 [![licenseBadge]][license]
 [![contributorsBadge]][contributors]
@@ -155,7 +154,7 @@ You can download optional modules [here][optional_modules] for compatibility wit
 
 ### [OpenInv][openinv]
 
-- Allow the usage of a Player's Ender Chest as Shop inventory by using `/qs echest`.
+- Allow the usage of a Player's Ender Chest as Shop inventory by using `/quickshop  echest`.
 
 ### [Worldedit][worldedit]
 

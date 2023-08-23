@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.2.2.12</version>
+        <version>5.0.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -42,6 +42,13 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>alex9849</id>
+            <url>https://nexus.alex9849.net/repository/maven-releases/</url>
+        </repository>
+    </repositories>
+
 
     <dependencies>
         <dependency>
@@ -61,9 +68,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.alex9849</groupId>
-            <artifactId>advanced-region-market</artifactId>
-            <version>3.5.2</version>
+            <groupId>net.alex9849.advancedregionmarket</groupId>
+            <artifactId>advancedregionmarket</artifactId>
+            <version>3.5.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

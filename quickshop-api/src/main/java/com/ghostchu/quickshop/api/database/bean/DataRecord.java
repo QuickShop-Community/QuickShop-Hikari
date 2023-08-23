@@ -1,10 +1,10 @@
 package com.ghostchu.quickshop.api.database.bean;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
-import java.util.UUID;
 
 public interface DataRecord {
     @NotNull
@@ -29,7 +29,7 @@ public interface DataRecord {
     String getName();
 
     @NotNull
-    UUID getOwner();
+    QUser getOwner();
 
     @NotNull
     String getPermissions();
@@ -37,7 +37,7 @@ public interface DataRecord {
     double getPrice();
 
     @Nullable
-    UUID getTaxAccount();
+    QUser getTaxAccount();
 
     int getType();
 

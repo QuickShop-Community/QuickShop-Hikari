@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.*;
@@ -13,9 +14,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +78,7 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopDelete(ShopDeleteEvent event) {
         if (loggingAction) {
-            plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Shop removed", event.getShop().saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "Shop removed", event.getShop().saveToInfoStorage()));
         }
         if (plugin.getShopCache() != null) {
             plugin.getShopCache().invalidate(event.getShop().getLocation());
@@ -97,10 +96,9 @@ public class InternalListener extends AbstractQSListener {
         }
         countUpdateCache.put(event.getShop(), new SpaceCache(event.getSpace(), event.getStock()));
         plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
-                .whenComplete((lines, err) -> {
-                    if (err != null) {
-                        Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
-                    }
+                .exceptionally(err -> {
+                    Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
+                    return 0;
                 });
     }
 
@@ -140,10 +138,7 @@ public class InternalListener extends AbstractQSListener {
             plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
         }
         if (event.getPurchaser().equals(event.getShop().getOwner())) {
-            Player player = Bukkit.getPlayer(event.getPurchaser());
-            if (player != null) {
-                plugin.text().of(player, "shop-owner-self-trade").send();
-            }
+            plugin.text().of(event.getPurchaser(), "shop-owner-self-trade").send();
         }
     }
 
