@@ -1239,7 +1239,13 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(this.originalItem), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
+        return new ShopInfoStorage(getLocation().getWorld().getName(),
+                new BlockPos(getLocation()), this.owner, this.price,
+                Util.serialize(this.originalItem), isUnlimited() ? 1 : 0
+                , getShopType().toID(),
+                saveExtraToYaml(), this.currency,this.disableDisplay,
+                this.taxAccount, inventoryWrapperProvider,
+                saveToSymbolLink(), this.playerGroup);
     }
 
     @Override
