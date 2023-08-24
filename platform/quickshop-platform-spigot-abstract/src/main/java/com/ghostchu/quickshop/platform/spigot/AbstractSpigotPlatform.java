@@ -93,27 +93,27 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Material material) throws Throwable {
+    public @NotNull Component getTranslation(@NotNull Material material) {
         return Component.translatable(getTranslationKey(material));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull EntityType entity) throws Throwable {
+    public @NotNull Component getTranslation(@NotNull EntityType entity) {
         return Component.translatable(getTranslationKey(entity));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) throws Throwable {
+    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
         return Component.translatable(getTranslationKey(potionEffectType));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) throws Throwable {
+    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
         return Component.translatable(getTranslationKey(enchantment));
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) throws Throwable {
+    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
         return Component.translatable(getTranslationKey(itemStack));
     }
 

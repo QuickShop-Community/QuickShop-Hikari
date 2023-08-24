@@ -499,7 +499,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@NotNull String path, Object... args) {
+    public @NotNull Text of(@NotNull String path, @Nullable Object... args) {
         return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
