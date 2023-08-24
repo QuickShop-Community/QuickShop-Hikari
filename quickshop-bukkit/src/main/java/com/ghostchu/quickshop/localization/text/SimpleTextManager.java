@@ -499,7 +499,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@NotNull String path, Object... args) {
+    public @NotNull Text of(@NotNull String path, @Nullable Object... args) {
         return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
@@ -530,7 +530,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
 
     @Override
-    public Text of(@Nullable QUser sender, @NotNull String path, @Nullable Object... args) {
+    public @NotNull Text of(@Nullable QUser sender, @NotNull String path, @Nullable Object... args) {
         return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
@@ -709,7 +709,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         public TextList(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
-            this.sender = sender.getBukkitPlayer().orElse(null);
+            if(sender != null) {
+                this.sender = sender.getBukkitPlayer().orElse(null);
+            }else{
+                this.sender = null;
+            }
             this.mapping = mapping;
             this.path = path;
             this.tagResolvers = tagResolvers;
@@ -845,7 +849,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         public Text(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
-            this.sender = sender.getBukkitPlayer().orElse(null);
+            if(sender != null) {
+                this.sender = sender.getBukkitPlayer().orElse(null);
+            }else{
+                this.sender = null;
+            }
             this.mapping = mapping;
             this.path = path;
             this.tagResolvers = tagResolvers;

@@ -88,7 +88,11 @@ public class SimpleDataRecord implements DataRecord {
         map.put("price", price);
         map.put("unlimited", unlimited);
         map.put("hologram", hologram);
-        map.put("tax_account", taxAccount.serialize());
+        if (taxAccount != null) {
+            map.put("tax_account", taxAccount.serialize());
+        }else{
+            map.put("tax_account", null);
+        }
         map.put("permissions", permissions);
         map.put("extra", extra);
         map.put("inv_wrapper", inventoryWrapper);

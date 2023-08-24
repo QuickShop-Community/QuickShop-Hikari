@@ -38,7 +38,11 @@ public class ShopInfoStorage {
         this.extra = extra;
         this.currency = currency;
         this.disableDisplay = disableDisplay;
-        this.taxAccount = taxAccount.serialize();
+        if(taxAccount != null){
+            this.taxAccount = taxAccount.serialize();
+        }else{
+            this.taxAccount = null;
+        }
         this.inventoryWrapperName = inventoryWrapperName;
         this.symbolLink = symbolLink;
         this.permission = permission;

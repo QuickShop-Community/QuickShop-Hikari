@@ -206,7 +206,7 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} släpptes. Du använder fortfarande {1}!'
+    - '{0} har släppts. Du använder {1} just nu!'
     - Boom! Ny uppdatering {0} på gång. Uppdatera!
     - Överraskning! {0} kom ut. Du är kvar på {1}
     - Ser ut som du behöver uppdatera. {0} har släppts!
@@ -376,7 +376,7 @@ timeunit:
   seconds: <red>{0} seconds
   hour: <red>{0} hour
   scheduled-at: scheduled at {0}
-  after: after
+  after: efter
   day: <red>{0} day
   recent: recent
   between: between

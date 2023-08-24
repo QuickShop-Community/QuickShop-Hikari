@@ -56,7 +56,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@NotNull String path, @NotNull Object... args);
+    Text of(@NotNull String path, @Nullable Object... args);
 
     /**
      * Getting the translation with path with player's locale (if available)

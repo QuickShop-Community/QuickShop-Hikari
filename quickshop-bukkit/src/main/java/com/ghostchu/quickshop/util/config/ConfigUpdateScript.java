@@ -124,7 +124,11 @@ public class ConfigUpdateScript {
         if (!locales.exists()) {
             return;
         }
-        for (File localeDirectory : locales.listFiles()) {
+        File[] files = locales.listFiles();
+        if(files == null) {
+            return;
+        }
+        for (File localeDirectory : files) {
             if (!localeDirectory.isDirectory()) {
                 continue;
             }

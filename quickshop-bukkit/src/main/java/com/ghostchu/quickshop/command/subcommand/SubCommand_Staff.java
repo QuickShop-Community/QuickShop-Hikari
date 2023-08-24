@@ -89,9 +89,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                                 }
                                 if (permissionGroup != null) {
                                     BuiltInShopPermissionGroup finalPermissionGroup = permissionGroup;
-                                    Util.mainThreadRun(() -> {
-                                        shop.setPlayerGroup(uuid, finalPermissionGroup);
-                                    });
+                                    Util.mainThreadRun(() -> shop.setPlayerGroup(uuid, finalPermissionGroup));
                                 }
                             })
                             .exceptionally(throwable -> {
