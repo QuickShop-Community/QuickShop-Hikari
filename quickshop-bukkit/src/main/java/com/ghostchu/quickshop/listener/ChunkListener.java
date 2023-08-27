@@ -39,13 +39,11 @@ public class ChunkListener extends AbstractQSListener {
         }
         cleanDisplayItems(e.getChunk());
         String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
-        Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
-            try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(2, ChronoUnit.SECONDS))) {
-                for (Shop shop : inChunk.values()) {
-                    plugin.getShopManager().loadShop(shop);
-                }
+        try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(500, ChronoUnit.MILLIS))) {
+            for (Shop shop : inChunk.values()) {
+                plugin.getShopManager().loadShop(shop);
             }
-        }, 1);
+        }
     }
 
     private void cleanDisplayItems(Chunk chunk) {
@@ -69,7 +67,7 @@ public class ChunkListener extends AbstractQSListener {
             return;
         }
         for (Shop shop : inChunk.values()) {
-            try (PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(2, ChronoUnit.SECONDS))) {
+            try (PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(500, ChronoUnit.MILLIS))) {
                 if (shop.isLoaded()) {
                     plugin.getShopManager().unloadShop(shop);
                 }

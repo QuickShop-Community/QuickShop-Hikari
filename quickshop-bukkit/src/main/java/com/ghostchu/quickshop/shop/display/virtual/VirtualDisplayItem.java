@@ -152,19 +152,16 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         Chunk chunk = shop.getLocation().getChunk();
         chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         manager.put(chunkLocation, this);
-        if (Util.isLoaded(shop.getLocation())) {
-            //Let nearby player can saw fake item
-            List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
-            onlinePlayers.removeIf(p -> !p.getWorld().equals(shop.getLocation().getWorld()));
-            for (Player onlinePlayer : onlinePlayers) {
-                double distance = onlinePlayer.getLocation().distance(shop.getLocation());
-                if (Math.abs(distance) > Bukkit.getViewDistance() * 16) {
-                    Log.debug("Skipped for player " + onlinePlayer.getName() + " because distance is " + distance);
-                    continue;
-                }
-                if (isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
-                    packetSenders.add(onlinePlayer.getUniqueId());
-                }
+        //Let nearby player can saw fake item
+        List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
+        onlinePlayers.removeIf(p -> !p.getWorld().equals(shop.getLocation().getWorld()));
+        for (Player onlinePlayer : onlinePlayers) {
+            double distance = onlinePlayer.getLocation().distance(shop.getLocation());
+            if (Math.abs(distance) > Bukkit.getViewDistance() * 16) {
+                continue;
+            }
+            if (isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
+                packetSenders.add(onlinePlayer.getUniqueId());
             }
         }
     }
