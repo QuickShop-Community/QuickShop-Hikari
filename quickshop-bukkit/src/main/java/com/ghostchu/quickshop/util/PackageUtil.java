@@ -13,7 +13,7 @@ public class PackageUtil {
      */
     @NotNull
     public static PackageUtil.SysPropertiesParseResult parsePackageProperly(@NotNull String name) {
-        Log.Caller caller = Log.Caller.create();
+        Log.Caller caller = Log.Caller.createSync();
         String str = caller.getClassName() + "." + name;
         String value = System.getProperty(str);
         SysPropertiesParseResult result = new SysPropertiesParseResult(str, value);

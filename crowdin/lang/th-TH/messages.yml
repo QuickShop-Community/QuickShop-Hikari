@@ -182,18 +182,18 @@ unknown-player: <red>Target player doesn't exist, please check the username you 
 player-offline: <red>The target player currently is offline.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
-  selling: SELLING
-  buying: BUYING
+  selling: ขาย
+  buying: ซื้อ
 language:
-  qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
+  qa-issues: '<yellow>ปัญหาการประกันคุณภาพ: <aqua>{0}%'
   code: '<yellow>โค้ด: <gold>{0}'
-  approval-progress: '<yellow>Approval Progress: <aqua>{0}%'
+  approval-progress: '<yellow>ความคืบหน้าการอนุมัติ: <aqua>{0}%'
   translate-progress: '<yellow>ความคืบหน้าของการแปลภาษา: <aqua>{0}%'
   name: '<yellow>ชื่อ: <gold>{0}'
   help-us: <green>[ช่วยพวกเราแปลภาษา]
 warn-to-paste: |-
-  <yellow>Collecting data and uploading to Pastebin. This may take a while...
-  <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
+  <yellow>รวบรวมข้อมูลและอัปโหลดไปยัง Pastebin การดําเนินการนี้อาจใช้เวลาสักครู่...
+  <red><bold>คำเตือน:</bold> ข้อมูลจะถูกเก็บไว้สู่สาธารณะเป็นเวลาหนึ่งสัปดาห์! อาจทําให้การกําหนดค่าเซิร์ฟเวอร์และข้อมูลที่ละเอียดอ่อนอื่น ๆ ของคุณรั่วไหล ตรวจสอบให้แน่ใจว่าคุณส่งไปที่ <bold>พนักงาน/นักพัฒนาที่เชื่อถือได้
 how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
