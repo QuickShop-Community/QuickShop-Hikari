@@ -833,7 +833,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
-        if (!skipShopableChecking) {
+        if (!skipShopableChecking && !Util.canBeShop(loc.getBlock())) {
             return null;
         }
         final Map<Location, Shop> inChunk = getShops(loc.getChunk());
