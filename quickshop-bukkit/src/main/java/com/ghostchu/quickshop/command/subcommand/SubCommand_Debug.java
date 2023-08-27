@@ -72,6 +72,10 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         if (split.length > 1) {
             value = split[1];
         }
+        if(!key.startsWith("com.ghostchu.quickshop") && !key.startsWith("quickshop")){
+            sender.sendMessage("Error: You can only set the quickshop related properties for safety.");
+            return;
+        }
         if (value == null) {
             System.clearProperty(key);
             sender.sendMessage("Property " + key + " has been deleted.");
