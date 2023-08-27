@@ -315,6 +315,9 @@ public class Log {
 
         @NotNull
         public static CompletableFuture<Caller> create(int steps) {
+            if("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))){
+                return CompletableFuture.supplyAsync(()->new Caller("<DISABLED>","<DISABLED>","<DISABLED>",-1));
+            }
             Throwable throwable = new Throwable("Caller Check");
             return CompletableFuture.supplyAsync(() -> {
                 StackTraceElement[] caller = throwable.getStackTrace();
