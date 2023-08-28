@@ -686,7 +686,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 // Shop info sign check
                 if (signBlock != null && autoSign) {
                     if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
-                        this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
+                        BlockState signState = this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
+                        if(signState instanceof Sign puttedSign) {
+                            try {
+                                shop.claimShopSign(puttedSign);
+                            }catch (Throwable ignored){}
+                        }
                     }
                 }
                 addShopToLookupTable(shop);
@@ -1445,8 +1450,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         });
     }
-
-    private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
+    private @NotNull BlockState processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
         boolean signIsWatered = signBlock.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());
         BlockState signBlockState = signBlock.getState();
@@ -1465,6 +1469,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     "Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
         }
         signBlockState.update(true);
+        return signBlockState;
     }
 
 
