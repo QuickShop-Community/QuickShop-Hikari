@@ -7,5 +7,5 @@
     "Ghost_chu",
     "4drian3d"
   ],
-  "main": "com.ghostchu.quickshop.compatibility.${project.artifactId}.Main"
+  "main": "com.ghostchu.compatibility.velocity.Main"
 }
