@@ -25,8 +25,8 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      * Calling while command executed by specified sender
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
-     * @param parser       The arguments (/quickshop  create stone will receive stone)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
+     * @param parser       The arguments (/quickshop create stone will receive stone)
      */
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
@@ -83,7 +83,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                     switch (operationFinal) {
                         case "set" -> {
                             if (groupFinal == null) {
-                                plugin.text().of(sender, "command-incorrect", "/quickshop  permission user set <group>").send();
+                                plugin.text().of(sender, "command-incorrect", "/quickshop permission user set <group>").send();
                                 return;
                             }
                             if (!plugin.getShopPermissionManager().hasGroup(groupFinal)) {
@@ -129,8 +129,8 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      * Calling while sender trying to tab-complete
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
-     * @param parser       The arguments (/quickshop  create stone [TAB] will receive stone)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
+     * @param parser       The arguments (/quickshop create stone [TAB] will receive stone)
      * @return Candidate list
      */
     @Override

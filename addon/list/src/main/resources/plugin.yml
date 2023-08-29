@@ -7,8 +7,8 @@ depend:
 authors: [ Ghost_chu ]
 permissions:
   quickshopaddon.list.self:
-    description: Allow player to use /quickshop  list to query self
+    description: Allow player to use /quickshop list to query self
     default: true
   quickshopaddon.list.other:
-    description: Allow player to use /quickshop  list <player> to query other
+    description: Allow player to use /quickshop list <player> to query other
     default: op

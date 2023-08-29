@@ -27,8 +27,8 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
      * Calling while command executed by specified sender
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
-     * @param cmdArg       The arguments (/quickshop  create stone will receive stone)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
+     * @param cmdArg       The arguments (/quickshop create stone will receive stone)
      */
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
@@ -96,7 +96,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     private void purgeLogs(@NotNull CommandSender sender, @NotNull List<String> subParams) {
         // TODO: Only purge before x days
         if (subParams.isEmpty()) {
-            plugin.text().of(sender, "command-incorrect", "/quickshop  database purgelogs <before-days>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop database purgelogs <before-days>").send();
             return;
         }
         if (subParams.size() < 2 || !"confirm".equalsIgnoreCase(subParams.get(1))) {

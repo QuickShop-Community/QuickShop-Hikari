@@ -49,7 +49,7 @@ public class ShopPurger {
             try {
                 File file = new File("purge-backup-" + UUID.randomUUID() + ".zip");
                 ioUtil.exportTables(file);
-                plugin.logger().info("[Shop Purger] We have backup shop data as {}, if you ran into any trouble, please rename it to recovery.txt then use /quickshop  recovery in console to rollback!", file.getName());
+                plugin.logger().info("[Shop Purger] We have backup shop data as {}, if you ran into any trouble, please rename it to recovery.txt then use /quickshop recovery in console to rollback!", file.getName());
             } catch (SQLException | IOException e) {
                 plugin.logger().warn("Failed to backup database, purge cancelled.", e);
                 return;

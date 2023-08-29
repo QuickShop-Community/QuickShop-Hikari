@@ -23,7 +23,7 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
             return;
         }
 
-        plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop  silentremove command", shop.saveToInfoStorage()));
+        plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop silentremove command", shop.saveToInfoStorage()));
         plugin.getShopManager().deleteShop(shop);
     }
 }

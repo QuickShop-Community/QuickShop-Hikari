@@ -286,7 +286,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     public boolean shopIsNotValid(@Nullable QUser qUser, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(qUser, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(qUser, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
             return true;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
@@ -305,7 +305,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         QUser createQUser = QUserImpl.createFullFilled(p);
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
             return;
         }
 
@@ -548,7 +548,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
             return;
         }
 
@@ -1307,7 +1307,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             previewItemStack = previewComponentPrePopulateEvent.getItemStack();
             Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop  silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
             ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
             itemPreviewComponentPopulateEvent.callEvent();
             previewComponent = itemPreviewComponentPopulateEvent.getComponent();
@@ -1567,7 +1567,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop  main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
             return;
         }
         AbstractEconomy eco = plugin.getEconomy();

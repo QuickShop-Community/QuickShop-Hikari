@@ -32,7 +32,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().isEmpty()) {
-            plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove/query> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
         Shop shop = getLookingShop(sender);
@@ -52,14 +52,14 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             case "remove" -> removeBenefit(sender, shop, parser);
             case "query" -> queryBenefit(sender, shop, parser);
             default ->
-                    plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove> <player> <percentage>").send();
+                    plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
         }
 
     }
 
     private void addBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 3) {
-            plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
             return;
         }
         String player = parser.getArgs().get(1);
@@ -115,7 +115,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
     private void removeBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 2) {
-            plugin.text().of(sender, "command-incorrect", "/quickshop  benefit <add/remove/query> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
         String player = parser.getArgs().get(1);
