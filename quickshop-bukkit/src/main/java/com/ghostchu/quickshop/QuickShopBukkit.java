@@ -30,6 +30,7 @@ public class QuickShopBukkit extends JavaPlugin {
     private Platform platform;
     private Logger logger;
     private QuickShop quickShop;
+    private Throwable abortLoading;
 
     @Override
     public void reloadConfig() {
@@ -53,6 +54,7 @@ public class QuickShopBukkit extends JavaPlugin {
         } catch (Throwable e) {
             getLogger().log(Level.SEVERE, "Failed to startup the QuickShop-Hikari due unexpected exception!", e);
             Bukkit.getPluginManager().disablePlugin(this);
+            abortLoading = e;
             throw new IllegalStateException("Boot failure", e);
         }
     }
@@ -71,6 +73,9 @@ public class QuickShopBukkit extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if(abortLoading != null){
+            throw new IllegalStateException("Plugin is disabled due an loading error",abortLoading);
+        }
         logger.info("Forwarding onEnable() to QuickShop instance...");
         this.quickShop.onEnable();
         logger.info("Finishing up onEnable() in Bootloader...");
@@ -108,6 +113,8 @@ public class QuickShopBukkit extends JavaPlugin {
                     getLogger().warning("to unlock full functions!");
                     getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
 
+                    initNbtApi();
+
                     this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
                         case "v1_18_R1" -> new Spigot1181Platform(this);
                         case "v1_18_R2" -> new Spigot1182Platform(this);
@@ -133,6 +140,10 @@ public class QuickShopBukkit extends JavaPlugin {
         } catch (Throwable e) {
             throw new Exception("Failed to initialize the platform", e);
         }
+    }
+
+    private void initNbtApi() {
+        new NbtApiInitializer(getLogger());
     }
 
     private void initQuickShop() {
