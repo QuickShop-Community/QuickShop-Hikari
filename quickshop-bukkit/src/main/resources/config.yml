@@ -280,7 +280,7 @@ shop:
   #ProtocolLib Required
   per-player-shop-sign: false
 
-  #/quickshop  find <itemName> command settings.
+  #/quickshop find <itemName> command settings.
   #This command lets users shop quickly without wasting time searching.
   finding:
     #Should QS use the old logic? (looking for closest shop and let players look at it)
@@ -317,7 +317,7 @@ shop:
   ignore-unlimited-shop-messages: true
 
   #Allow auto fetching of player shops.
-  #If you disable this, then the players need to use "/quickshop  fetchmessage" to fetch the shops history messages.
+  #If you disable this, then the players need to use "/quickshop fetchmessage" to fetch the shops history messages.
   #Disabling it may cause database issues!
   auto-fetch-shop-messages: true
 
@@ -441,7 +441,7 @@ shop:
   #This setting controls if QuickShop should ignore the item's custom display name.
   force-use-item-original-name: false
 
-  #[BETA] Disable the quickshop /quickshop  size command stack size check to allow stack size go up the vanilla limit
+  #[BETA] Disable the quickshop /quickshop size command stack size check to allow stack size go up the vanilla limit
   disable-max-size-check-for-size-command: false
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.

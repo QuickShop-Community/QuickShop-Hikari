@@ -31,12 +31,12 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 2) {
-            qs.text().of(sender, "command-incorrect", "/quickshop  discord <features> <enable/disable>").send();
+            qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
             return;
         }
         NotificationFeature feature = getFeatureByName(parser.getArgs().get(0));
         if (feature == null) {
-            qs.text().of(sender, "command-incorrect", "/quickshop  discord <features> <enable/disable>").send();
+            qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
             return;
         }
         boolean ops = parser.getArgs().get(1).equalsIgnoreCase("enable");

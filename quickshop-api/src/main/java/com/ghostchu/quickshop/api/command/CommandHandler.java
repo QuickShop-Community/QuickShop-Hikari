@@ -87,7 +87,7 @@ public interface CommandHandler<T extends CommandSender> {
      * Calling while command executed by specified sender
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
      * @param parser       The command parser which include arguments and colon arguments
      */
     default void onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
@@ -98,7 +98,7 @@ public interface CommandHandler<T extends CommandSender> {
      * Calling while command executed by specified sender
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
      * @param cmdArgs      The command arguments
      * @deprecated This method is deprecated, please use {@link #onCommand(T, String, CommandParser)} instead.
      */
@@ -129,7 +129,7 @@ public interface CommandHandler<T extends CommandSender> {
      * Calling while sender trying to tab-complete
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
      * @param parser       The command parser which include arguments and colon arguments
      * @return Candidate list
      */
@@ -142,7 +142,7 @@ public interface CommandHandler<T extends CommandSender> {
      * Calling while sender trying to tab-complete
      *
      * @param sender       The command sender but will automatically convert to specified instance
-     * @param commandLabel The command prefix (/quickshop  = qs, /shop = shop)
+     * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
      * @param cmdArgs      The command arguments
      * @return Candidate list
      * @deprecated This method is deprecated, please use {@link #onTabComplete(T, String, CommandParser)} instead.

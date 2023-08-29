@@ -147,10 +147,10 @@ permissions:
     description: Allows a player to change their shop's price.
     default: op
   quickshop.create.cmd:
-    description: Allows a player to use /quickshop  create to create a shop.
+    description: Allows a player to use /quickshop create to create a shop.
     default: op
   quickshop.create.admin:
-    description: Allows a player use /quickshop  supercreate to create a shop that bypasses all protection checks.
+    description: Allows a player use /quickshop supercreate to create a shop that bypasses all protection checks.
     default: op
   quickshop.create.changeitem:
     description: Allows a player to change their shop's item.
@@ -165,7 +165,7 @@ permissions:
     description: Allows a player to buy/sell using other player's shops.
     default: true
   quickshop.unlimited:
-    description: Allows a staff member to use /quickshop  unlimited to make a shop infinite.
+    description: Allows a staff member to use /quickshop unlimited to make a shop infinite.
     default: op
   quickshop.bypass.<itemID>:
     description: Allows a player to sell blacklisted <itemIDs>.
@@ -219,10 +219,10 @@ permissions:
     description: Show QuickShop's Statistics.
     default: op
   quickshop.fetchmessage:
-    description: Allows the use of the /quickshop  fetchmessage command to manually fetch shop messages from the database. Will not effect auto fetch if turned on...
+    description: Allows the use of the /quickshop fetchmessage command to manually fetch shop messages from the database. Will not effect auto fetch if turned on...
     default: true
   quickshop.paste:
-    description: Allows the use of the /quickshop  paste command to upload server information to Pastebin. !WARNING! This will upload your data and may leak your server configuration and other sensitive information.
+    description: Allows the use of the /quickshop paste command to upload server information to Pastebin. !WARNING! This will upload your data and may leak your server configuration and other sensitive information.
     default: op
   quickshop.preview:
     description: Permission to preview item using a GUI.
@@ -234,61 +234,61 @@ permissions:
     description: Permission to bypass taxes but for unlimited shops ONLY.
     default: op
   quickshop.cleanghost:
-    description: Permission to use /quickshop  cleanghost.
+    description: Permission to use /quickshop cleanghost.
     default: op
   quickshop.reset:
-    description: Permission to use /quickshop  reset.
+    description: Permission to use /quickshop reset.
     default: op
   quickshop.bypasscreatefee:
     description: Permission to bypass the creation fee.
     default: op
   quickshop.recovery:
-    description: Permission to use /quickshop  recovery. !WARNING! DO NOT EXECUTE THIS COMMAND IF YOU DON'T KNOW WHAT YOU'RE DOING.
+    description: Permission to use /quickshop recovery. !WARNING! DO NOT EXECUTE THIS COMMAND IF YOU DON'T KNOW WHAT YOU'RE DOING.
     default: op
   quickshop.removeall.other:
-    description: Permission to use /quickshop  removeall <player> to remove other player's shops.
+    description: Permission to use /quickshop removeall <player> to remove other player's shops.
     default: op
   quickshop.removeall.self:
-    description: Permission to use /quickshop  removeall to remove player's own shops.
+    description: Permission to use /quickshop removeall to remove player's own shops.
     default: op
   quickshop.removeworld:
-    description: Permission to use /quickshop  removeworld.
+    description: Permission to use /quickshop removeworld.
     default: op
   quickshop.currency:
-    description: Permission to use /quickshop  currency.
+    description: Permission to use /quickshop currency.
     default: op
   quickshop.other.currency:
-    description: Permission to use /quickshop  currency but for other's shops.
+    description: Permission to use /quickshop currency but for other's shops.
     default: op
   quickshop.showdisabled:
     description: Permission to see disabled commands in help list.
     default: op
   quickshop.taxaccount:
-    description: Permission to use /quickshop  taxaccount
+    description: Permission to use /quickshop taxaccount
     default: op
   quickshop.other.taxaccount:
-    description: Permission to use /quickshop  taxaccount on others shops
+    description: Permission to use /quickshop taxaccount on others shops
     default: op
   quickshop.toggledisplay:
-    description: Permission to use /quickshop  toggledisplay
+    description: Permission to use /quickshop toggledisplay
     default: op
   quickshop.other.toggledisplay:
-    description: Permission to use /quickshop  toggledisplay on others shops
+    description: Permission to use /quickshop toggledisplay on others shops
     default: op
   quickshop.purge:
-    description: Permission to use /quickshop  purge
+    description: Permission to use /quickshop purge
     default: op
   quickshop.shopnaming:
-    description: Permission to use /quickshop  name
+    description: Permission to use /quickshop name
     default: op
   quickshop.other.shopnaming:
-    description: Permission to use /quickshop  name on others shops
+    description: Permission to use /quickshop name on others shops
     default: op
   quickshop.bypass.namefee:
-    description: Permission to use /quickshop  name without the fee
+    description: Permission to use /quickshop name without the fee
     default: op
   quickshop.permission:
-    description: Permission to use /quickshop  permission
+    description: Permission to use /quickshop permission
     default: op
   quickshop.other.search:
     description: Permission to bypass the search flag restriction
@@ -300,10 +300,10 @@ permissions:
     description: Permission to bypass the purchase restriction
     default: op
   quickshop.database:
-    description: Permission to use /quickshop  database
+    description: Permission to use /quickshop database
     default: op
   quickshop.benefit:
-    description: Permission to use /quickshop  benefit
+    description: Permission to use /quickshop benefit
     default: op
   quickshop.other.benefit:
     description: Permission to bypass the benefit permission check

@@ -7,5 +7,5 @@ depend:
 authors: [ Ghost_chu ]
 permissions:
   quickshopaddon.limit.use:
-    description: Allow player to use /quickshop  limit
+    description: Allow player to use /quickshop limit
     default: op
