@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.database;
 
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
+import cc.carm.lib.easysql.api.action.query.PreparedQueryAction;
 import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
@@ -56,7 +57,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    private final int LATEST_DATABASE_VERSION = 12;
+    private final int LATEST_DATABASE_VERSION = 13;
 
     public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
         this.plugin = plugin;
@@ -173,17 +174,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     private void fastBackup() {
         File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
-            try {
-                databaseIOUtil.exportTables(file);
-            } catch (SQLException | IOException e) {
-                plugin.logger().warn("Exporting database failed.", e);
-            }
+        try {
+            databaseIOUtil.exportTables(file);
+        } catch (SQLException | IOException e) {
+            plugin.logger().warn("Exporting database failed.", e);
+        }
     }
 
     private void upgradeBenefit() {
         fastBackup();
         try {
-           getManager().alterTable(DataTables.DATA.getName())
+            getManager().alterTable(DataTables.DATA.getName())
                     .addColumn("benefit", "MEDIUMTEXT")
                     .execute();
         } catch (SQLException e) {
@@ -230,6 +231,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 manager.alterTable(DataTables.LOG_TRANSACTION.getName())
                         .modifyColumn("tax_account", "VARCHAR(64)")
                         .executeFuture()).join();
+    }
+
+    private void upgradeTablesEncoding() {
+        fastBackup();
+        for (DataTables value : DataTables.values()) {
+            if (value.isExists(manager)) {
+                Integer integer = manager.executeSQL("ALTER TABLE `" + value.getName() + "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                Log.debug("Changing the table " + value.getName() + " charset to utf8mb4, returns " + integer + " lines changed.");
+            }else{
+                Log.debug("Table " + value.getName() + " not exists, skipping.");
+            }
+        }
     }
 
     public @NotNull String getPrefix() {
@@ -705,6 +718,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return match; // Uh, wtf.
     }
 
+
     /**
      * Returns true if the table exists
      *
@@ -839,6 +853,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 parent.upgradeUniqueIdsField();
                 currentDatabaseVersion = 12;
             }
+            if (currentDatabaseVersion == 12) {
+                logger.info("Data upgrading: Converting data tables to utf8mb4...");
+                parent.upgradeTablesEncoding();
+                currentDatabaseVersion = 13;
+            }
+
+
             parent.setDatabaseVersion(currentDatabaseVersion).join();
         }
 

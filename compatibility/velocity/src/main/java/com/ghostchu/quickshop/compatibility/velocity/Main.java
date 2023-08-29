@@ -1,4 +1,4 @@
-package com.ghostchu.compatibility.velocity;
+package com.ghostchu.quickshop.compatibility.velocity;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;

@@ -251,36 +251,35 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private void notifySold(@NotNull QUser buyerQUser, @NotNull Shop shop, int amount, int space) {
         Util.asyncThreadRun(() -> {
             String langCode = plugin.text().findRelativeLanguages(buyerQUser, true).getLocale();
-            Component msg = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(),
+            List<Component> sendList = new ArrayList<>();
+            Component notify = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(),
                             amount,
                             Util.getItemStackName(shop.getItem())).forLocale(langCode)
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            sendList.add(notify);
             if (space == amount) {
+                Component spaceWarn;
                 if (shop.getShopName() == null) {
-                    msg = plugin.text().of("shop-out-of-space",
+                    spaceWarn = plugin.text().of("shop-out-of-space",
                                     shop.getLocation().getBlockX(),
                                     shop.getLocation().getBlockY(),
                                     shop.getLocation().getBlockZ()).forLocale(langCode)
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 } else {
-                    msg = plugin.text().of("shop-out-of-space-name", shop.getShopName(),
+                    spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(),
                                     Util.getItemStackName(shop.getItem())).forLocale(langCode)
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 }
+                sendList.add(spaceWarn);
+            }
+            for (Component component : sendList) {
                 if (sendStockMessageToStaff) {
                     for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                        MsgUtil.send(shop, recv, msg);
+                        MsgUtil.send(shop, recv, component);
                     }
                 } else {
-                    MsgUtil.send(shop, shop.getOwner(), msg);
+                    MsgUtil.send(shop, shop.getOwner(), component);
                 }
-            }
-            if (sendStockMessageToStaff) {
-                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                    MsgUtil.send(shop, recv, msg);
-                }
-            } else {
-                MsgUtil.send(shop, shop.getOwner(), msg);
             }
         });
     }
@@ -687,7 +686,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 // Shop info sign check
                 if (signBlock != null && autoSign) {
                     if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
-                        this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
+                        BlockState signState = this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
+                        if(signState instanceof Sign puttedSign) {
+                            try {
+                                shop.claimShopSign(puttedSign);
+                            }catch (Throwable ignored){}
+                        }
                     }
                 }
                 addShopToLookupTable(shop);
@@ -1399,9 +1403,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private void notifyBought(@NotNull QUser seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
         Util.asyncThreadRun(() -> {
             String langCode = plugin.text().findRelativeLanguages(shop.getOwner(), true).getLocale();
-            Component msg;
+            List<Component> sendList = new ArrayList<>();
+            Component notify;
             if (plugin.getConfig().getBoolean("show-tax")) {
-                msg = plugin.text().of("player-bought-from-your-store-tax",
+                notify = plugin.text().of("player-bought-from-your-store-tax",
                                 seller,
                                 amount * shop.getItem().getAmount(),
                                 Util.getItemStackName(shop.getItem()),
@@ -1409,47 +1414,43 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                 this.formatter.format(tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             } else {
-                msg = plugin.text().of("player-bought-from-your-store",
+                notify = plugin.text().of("player-bought-from-your-store",
                                 seller,
                                 amount * shop.getItem().getAmount(),
                                 Util.getItemStackName(shop.getItem()),
                                 this.formatter.format(total - tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             }
-
-            if (sendStockMessageToStaff) {
-                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                    MsgUtil.send(shop, recv, msg);
-                }
-            } else {
-                MsgUtil.send(shop, shop.getOwner(), msg);
-            }
+            sendList.add(notify);
             // Transfers the item from A to B
             if (stock == amount) {
+                Component stockWarn;
                 if (shop.getShopName() == null) {
-                    msg = plugin.text().of("shop-out-of-stock",
+                    stockWarn = plugin.text().of("shop-out-of-stock",
                                     shop.getLocation().getBlockX(),
                                     shop.getLocation().getBlockY(),
                                     shop.getLocation().getBlockZ(),
                                     Util.getItemStackName(shop.getItem())).forLocale(langCode)
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 } else {
-                    msg = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
+                    stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
                                     Util.getItemStackName(shop.getItem())).forLocale(langCode)
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 }
+                sendList.add(stockWarn);
+            }
+            for (Component component : sendList) {
                 if (sendStockMessageToStaff) {
                     for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                        MsgUtil.send(shop, recv, msg);
+                        MsgUtil.send(shop, recv, component);
                     }
                 } else {
-                    MsgUtil.send(shop, shop.getOwner(), msg);
+                    MsgUtil.send(shop, shop.getOwner(), component);
                 }
             }
         });
     }
-
-    private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
+    private @NotNull BlockState processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
         boolean signIsWatered = signBlock.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());
         BlockState signBlockState = signBlock.getState();
@@ -1468,6 +1469,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     "Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
         }
         signBlockState.update(true);
+        return signBlockState;
     }
 
 
