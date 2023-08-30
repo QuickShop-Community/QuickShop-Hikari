@@ -284,6 +284,10 @@ public class Log {
             }, QuickExecutor.getCommonExecutor());
         }
 
+        @Override
+        public String toString() {
+            return generate().join();
+        }
     }
 
     @Data

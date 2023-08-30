@@ -334,7 +334,7 @@ public class DiscountCode {
 
         @Override
         public double apply(double price) {
-            return Math.min(0.0d, CalculateUtil.multiply(price, percent));
+            return Math.max(0.0d, CalculateUtil.multiply(price, percent));
         }
 
         @Override
