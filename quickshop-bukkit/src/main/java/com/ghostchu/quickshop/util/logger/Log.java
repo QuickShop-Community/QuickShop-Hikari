@@ -284,6 +284,10 @@ public class Log {
             }, QuickExecutor.getCommonExecutor());
         }
 
+        public String syncBuildString(){
+          return   generate().join();
+        }
+
     }
 
     @Data
