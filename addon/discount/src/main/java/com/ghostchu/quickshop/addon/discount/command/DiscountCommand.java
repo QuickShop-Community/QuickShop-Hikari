@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -151,6 +152,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     "/quickshop discount install " + code,
                     "/quickshop discount config " + code + " addshop").send();
         }
+        Log.debug("Discount code created: "+ main.getCodeManager().getCode(code));
     }
 
     private void remove(CommandSender sender, String[] passThroughArgs) {
