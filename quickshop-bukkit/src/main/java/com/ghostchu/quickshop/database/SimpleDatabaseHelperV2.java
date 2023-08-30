@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.database;
 
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
-import cc.carm.lib.easysql.api.action.query.PreparedQueryAction;
 import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
@@ -239,7 +238,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             if (value.isExists(manager)) {
                 Integer integer = manager.executeSQL("ALTER TABLE `" + value.getName() + "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 Log.debug("Changing the table " + value.getName() + " charset to utf8mb4, returns " + integer + " lines changed.");
-            }else{
+            } else {
                 Log.debug("Table " + value.getName() + " not exists, skipping.");
             }
         }
@@ -587,6 +586,21 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public @NotNull SQLQuery selectAllMessages() throws SQLException {
         return DataTables.MESSAGES.createQuery().build().execute();
+    }
+
+    @Override
+    public @NotNull CompletableFuture<List<String>> selectPlayerMessages(UUID player) {
+        return DataTables.MESSAGES.createQuery()
+                .addCondition("receiver", player.toString())
+                .selectColumns()
+                .build()
+                .executeFuture(dat -> {
+                    List<String> msgs = new ArrayList<>();
+                    try (ResultSet set = dat.getResultSet()) {
+                        msgs.add(set.getString("content"));
+                    }
+                    return msgs;
+                });
     }
 
     @Override

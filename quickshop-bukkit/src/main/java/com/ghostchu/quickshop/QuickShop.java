@@ -619,7 +619,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.registerShopLock();
         logger.info("Cleaning MsgUtils...");
         MsgUtil.clean();
-        Util.asyncThreadRun(MsgUtil::loadTransactionMessages);
         this.registerUpdater();
         /* Delay the Economy system load, give a chance to let economy system register. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
