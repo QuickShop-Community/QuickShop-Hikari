@@ -284,10 +284,10 @@ public class Log {
             }, QuickExecutor.getCommonExecutor());
         }
 
-        public String syncBuildString(){
-          return   generate().join();
+        @Override
+        public String toString() {
+            return generate().join();
         }
-
     }
 
     @Data

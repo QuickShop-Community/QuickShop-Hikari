@@ -38,7 +38,7 @@ public class CronLogsItem implements SubPasteItem {
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
         List<String> debugLogs = Log.fetchLogs(Log.Type.CRON).
-                stream().map(recordEntry -> "[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry.syncBuildString())
+                stream().map(recordEntry -> "[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry)
                 .toList();
         List<String> tail = CommonUtil.tail(debugLogs, 1000);
         tail.forEach(builder::add);
