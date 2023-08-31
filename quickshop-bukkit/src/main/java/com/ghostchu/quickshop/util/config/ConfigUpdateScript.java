@@ -76,6 +76,14 @@ public class ConfigUpdateScript {
         getConfig().set("custom-commands", getAlias);
     }
 
+    @UpdateScript(version = 1018)
+    public void tweakBackupPolicy() {
+        getConfig().set("purge.backup", null);
+        getConfig().set("backup-policy.shops-auto-purge", false);
+        getConfig().set("backup-policy.database-upgrade", true);
+        getConfig().set("backup-policy.startup", false);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);
