@@ -593,7 +593,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .executeFuture(dat -> {
                     List<String> msgs = new ArrayList<>();
                     try (ResultSet set = dat.getResultSet()) {
-                        msgs.add(set.getString("content"));
+                        while(set.next()) {
+                            msgs.add(set.getString("content"));
+                        }
                     }
                     return msgs;
                 });
