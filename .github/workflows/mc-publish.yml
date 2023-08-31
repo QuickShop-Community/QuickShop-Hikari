@@ -68,6 +68,10 @@ jobs:
             superiorskyblock(optional)
             luckperms(optional)
             vault(optional)
+            plan(optional)
+            advancedregionmarket(optional)
+            ecoenchants(optional)
+            reforges(optional)
             packetlistenerapi(conflicting)
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
