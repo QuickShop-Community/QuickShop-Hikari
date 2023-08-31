@@ -82,6 +82,7 @@ public class ConfigUpdateScript {
         getConfig().set("backup-policy.shops-auto-purge", false);
         getConfig().set("backup-policy.database-upgrade", true);
         getConfig().set("backup-policy.startup", false);
+        getConfig().set("backup-policy.recovery", true);
     }
 
     @UpdateScript(version = 1004)
