@@ -37,7 +37,7 @@ public class DiscountCodeManager {
         this.codes.clear();
         this.codes.addAll(this.config.getStringList("codes").stream()
                 .map(DiscountCode::fromString)
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .toList());
     }
 
