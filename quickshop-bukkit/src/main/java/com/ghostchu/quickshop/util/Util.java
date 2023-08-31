@@ -747,7 +747,7 @@ public class Util {
                         return; // Virtual GUI
                     }
                     iterator.remove();
-                    Log.debug("Found shop display item in an inventory, Removing...");
+                    Log.debug("Found shop display item in an inventory" + location + ", Removing...");
                     MsgUtil.sendGlobalAlert(plugin.text().of("inventory-check-global-alert", location, inv.getHolder().getClass().getName(), Util.getItemStackName(itemStack)).forLocale(MsgUtil.getDefaultGameLanguageCode()));
                 }
             }
