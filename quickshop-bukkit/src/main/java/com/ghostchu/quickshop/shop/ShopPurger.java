@@ -44,17 +44,10 @@ public class ShopPurger {
     private void run() {
         Util.ensureThread(true);
         executing = true;
-        if (plugin.getConfig().getBoolean("purge.backup")) {
-            DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
-            try {
-                File file = new File("purge-backup-" + UUID.randomUUID() + ".zip");
-                ioUtil.exportTables(file);
-                plugin.logger().info("[Shop Purger] We have backup shop data as {}, if you ran into any trouble, please rename it to recovery.txt then use /quickshop recovery in console to rollback!", file.getName());
-            } catch (SQLException | IOException e) {
-                plugin.logger().warn("Failed to backup database, purge cancelled.", e);
-                return;
-            }
-
+        DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
+        if(!ioUtil.performBackup("shops-auto-purge")){
+            plugin.logger().warn("[Shop Purger] Purge progress declined due backup failure");
+            return;
         }
         plugin.logger().info("[Shop Purger] Scanning and removing shops....");
         List<Shop> pendingRemovalShops = new ArrayList<>();

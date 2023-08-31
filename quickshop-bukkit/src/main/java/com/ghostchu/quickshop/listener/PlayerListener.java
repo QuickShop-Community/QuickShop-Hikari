@@ -15,14 +15,13 @@ import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.util.ExpiringSet;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -53,10 +52,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends AbstractQSListener {
-    private final Cache<UUID, Long> cooldownMap = CacheBuilder
-            .newBuilder()
-            .expireAfterWrite(1, TimeUnit.SECONDS)
-            .build();
+    private final ExpiringSet<UUID> adventureWorkaround = new ExpiringSet<>(1,TimeUnit.SECONDS);
+    private final ExpiringSet<UUID> rateLimit = new ExpiringSet<>(125, TimeUnit.MILLISECONDS);
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
@@ -68,10 +65,10 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         // ----Adventure dupe click workaround start----
-        if (cooldownMap.getIfPresent(event.getPlayer().getUniqueId()) != null) {
+        if (adventureWorkaround.contains(event.getPlayer().getUniqueId())) {
             return;
         }
-        cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        adventureWorkaround.add(event.getPlayer().getUniqueId());
         // ----Adventure dupe click workaround end----
         Block focused = event.getPlayer().getTargetBlockExact(5);
         if (focused != null) {
@@ -93,12 +90,17 @@ public class PlayerListener extends AbstractQSListener {
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if (cooldownMap.getIfPresent(e.getPlayer().getUniqueId()) == null) {
+            if (!adventureWorkaround.contains(e.getPlayer().getUniqueId())) {
                 return;
             }
-            cooldownMap.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+            adventureWorkaround.add(e.getPlayer().getUniqueId());
         }
         // ----Adventure dupe click workaround end----
+        if(rateLimit.contains(e.getPlayer().getUniqueId())){
+            Log.debug("Player "+e.getPlayer().getName()+" click the blocks too fast and reached the rate limit, ignoring the event...");
+            return;
+        }
+        rateLimit.add(e.getPlayer().getUniqueId());
 
         Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
 
@@ -478,7 +480,7 @@ public class PlayerListener extends AbstractQSListener {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {
-            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+            amount = invHaveItems;
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
@@ -536,7 +538,7 @@ public class PlayerListener extends AbstractQSListener {
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
             // items from the shop.
-            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+            amount = invHaveSpaces;
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
@@ -706,7 +708,6 @@ public class PlayerListener extends AbstractQSListener {
             } else if (info.getAction().isCreating()) {
                 plugin.text().of(p, "shop-creation-cancelled").send();
             }
-            Log.debug(p.getName() + " too far with the shop location.");
             plugin.getShopManager().getInteractiveManager().remove(p.getUniqueId());
         }
     }

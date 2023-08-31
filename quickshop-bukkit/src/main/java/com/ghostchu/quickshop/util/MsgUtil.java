@@ -43,7 +43,6 @@ import java.util.logging.Level;
 
 
 public class MsgUtil {
-    private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
     private static final QuickShop PLUGIN = QuickShop.getInstance();
     private static DecimalFormat decimalFormat;
     private static volatile Entry<String, String> cachedGameLanguageCode = null;
@@ -155,21 +154,26 @@ public class MsgUtil {
      */
     public static boolean flush(@NotNull OfflinePlayer p) {
         Player player = p.getPlayer();
-        if (player != null) {
-            UUID pName = player.getUniqueId();
-            List<String> msgs = OUTGOING_MESSAGES.get(pName);
-            if (msgs != null) {
-                for (String msg : msgs) {
-                    PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
-                }
-                PLUGIN.getDatabaseHelper().cleanMessageForPlayer(pName)
-                        .exceptionally(error -> {
-                            Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
-                            return 0;
-                        });
-                msgs.clear();
-                return true;
-            }
+        if (player == null) return false;
+        UUID playerUniqueId = player.getUniqueId();
+        try {
+            PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
+                    .thenAccept(msgs -> {
+                        for (String msg : msgs) {
+                            PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
+                        }
+                        PLUGIN.getDatabaseHelper().cleanMessageForPlayer(playerUniqueId)
+                                .exceptionally(error -> {
+                                    PLUGIN.logger().warn("Error on cleaning the purchase messages from the database", error);
+                                    return 0;
+                                });
+                    })
+                    .exceptionally(th -> {
+                        PLUGIN.logger().warn("Failed to retrieve player {} messages.", playerUniqueId, th);
+                        return null;
+                    });
+        } catch (SQLException e) {
+            PLUGIN.logger().warn("Failed to retrieve player messages due an SQLException.", e);
         }
         return false;
     }
@@ -231,30 +235,6 @@ public class MsgUtil {
         return CommonUtil.isJson(str);
     }
 
-    /**
-     * loads all player purchase messages from the database.
-     */
-    public static void loadTransactionMessages() {
-        OUTGOING_MESSAGES.clear(); // Delete old messages
-        try (SQLQuery warpRS = PLUGIN.getDatabaseHelper().selectAllMessages()) {
-            ResultSet rs = warpRS.getResultSet();
-            while (rs.next()) {
-                String owner = rs.getString("receiver");
-                String message = rs.getString("content");
-                QUserImpl.createAsync(PLUGIN.getPlayerFinder(), owner)
-                        .thenAccept(qUser -> qUser.getUniqueIdOptional().ifPresent(uuid -> {
-                            List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(qUser.getUniqueId(), k -> new ArrayList<>());
-                            msgs.add(message);
-                        })).exceptionally(err -> {
-                            Log.debug("Failed to load transaction message for " + owner + " from database, ownerUUID parsing failed.");
-                            return null;
-                        });
-            }
-        } catch (SQLException e) {
-            PLUGIN.logger().warn("Could not load transaction messages from database. Skipping.", e);
-        }
-    }
-
     public static void printEnchantment(@NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
         Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
         if (shop.getItem().getItemMeta() != null) {
@@ -264,7 +244,7 @@ public class MsgUtil {
     }
 
     private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
-        if(enchs.isEmpty()) return;
+        if (enchs.isEmpty()) return;
         chatSheetPrinter.printCenterLine(PLUGIN.text().of("menu.enchants").forLocale());
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
@@ -333,14 +313,11 @@ public class MsgUtil {
         Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
         if (!p.isOnline()) {
-            List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new ArrayList<>());
-            msgs.add(serialized);
-            OUTGOING_MESSAGES.put(uuid, msgs);
             PLUGIN.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis())
                     .thenAccept(v -> {
                     })
                     .exceptionally(err -> {
-                        Log.debug(Level.WARNING, "Could not save transaction message to database: " + err.getMessage());
+                        PLUGIN.logger().warn("Could not save transaction message to database", err);
                         return null;
                     });
             try {

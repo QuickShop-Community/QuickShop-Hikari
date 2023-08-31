@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
+import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
@@ -113,8 +114,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private final QuickShopBukkit javaPlugin;
     private final Logger logger;
-    @Getter
-    private final ShopBackupUtil shopBackupUtil = new ShopBackupUtil(this);
     @Getter
     private final Platform platform;
     @Getter
@@ -619,7 +618,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.registerShopLock();
         logger.info("Cleaning MsgUtils...");
         MsgUtil.clean();
-        Util.asyncThreadRun(MsgUtil::loadTransactionMessages);
         this.registerUpdater();
         /* Delay the Economy system load, give a chance to let economy system register. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
@@ -886,7 +884,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 Log.debug("Registering JDBC H2 driver...");
                 Driver.load();
                 logger.info("Create database backup...");
-                new DatabaseBackupUtil().backup();
                 String driverClassName = Driver.class.getName();
                 Log.debug("Setting up H2 driver class name to: " + driverClassName);
                 config.setDriverClassName(driverClassName);
@@ -898,6 +895,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             this.sqlManager.setExecutorPool(QuickExecutor.getDatabaseExecutor());
             // Make the database up to date
             this.databaseHelper = new SimpleDatabaseHelperV2(this, this.sqlManager, this.getDbPrefix());
+            DatabaseIOUtil ioUtil = new DatabaseIOUtil(databaseHelper);
+            ioUtil.performBackup("startup");
             return true;
         } catch (Exception e) {
             logger.error("Error when connecting to the database", e);

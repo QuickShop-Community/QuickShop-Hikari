@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.database;
 
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
-import cc.carm.lib.easysql.api.action.query.PreparedQueryAction;
 import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
@@ -82,6 +81,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public void checkTables() throws SQLException {
         DataTables.initializeTables(manager, prefix);
     }
+
 
     /**
      * Verifies that all required columns exist.
@@ -172,13 +172,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void fastBackup() {
-        File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
-        try {
-            databaseIOUtil.exportTables(file);
-        } catch (SQLException | IOException e) {
-            plugin.logger().warn("Exporting database failed.", e);
-        }
+        databaseIOUtil.performBackup("database-upgrade");
     }
 
     private void upgradeBenefit() {
@@ -239,7 +234,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             if (value.isExists(manager)) {
                 Integer integer = manager.executeSQL("ALTER TABLE `" + value.getName() + "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 Log.debug("Changing the table " + value.getName() + " charset to utf8mb4, returns " + integer + " lines changed.");
-            }else{
+            } else {
                 Log.debug("Table " + value.getName() + " not exists, skipping.");
             }
         }
@@ -590,6 +585,21 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
+    public @NotNull CompletableFuture<List<String>> selectPlayerMessages(UUID player) {
+        return DataTables.MESSAGES.createQuery()
+                .addCondition("receiver", player.toString())
+                .selectColumns()
+                .build()
+                .executeFuture(dat -> {
+                    List<String> msgs = new ArrayList<>();
+                    try (ResultSet set = dat.getResultSet()) {
+                        msgs.add(set.getString("content"));
+                    }
+                    return msgs;
+                });
+    }
+
+    @Override
     public @NotNull SQLQuery selectTable(@NotNull String table) throws SQLException {
         return manager.createQuery()
                 .inTable(prefix + table)
@@ -742,46 +752,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return match;
     }
 
-    public void importFromCSV(@NotNull File zipFile, @NotNull DataTables table) throws SQLException, ClassNotFoundException {
-        Log.debug("Loading CsvDriver...");
-        Class.forName("org.relique.jdbc.csv.CsvDriver");
-        try (Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
-             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                     ResultSet.CONCUR_READ_ONLY);
-             ResultSet results = stmt.executeQuery("SELECT * FROM " + table.getName())) {
-            ResultSetMetaData metaData = results.getMetaData();
-            String[] columns = new String[metaData.getColumnCount()];
-            for (int i = 0; i < columns.length; i++) {
-                columns[i] = metaData.getColumnName(i + 1);
-            }
-            Log.debug("Parsed " + columns.length + " columns: " + CommonUtil.array2String(columns));
-            while (results.next()) {
-                Object[] values = new String[columns.length];
-                for (int i = 0; i < values.length; i++) {
-                    Log.debug("Copying column: " + columns[i]);
-                    values[i] = results.getObject(columns[i]);
-                }
-                Log.debug("Inserting row: " + CommonUtil.array2String(Arrays.stream(values).map(Object::toString).toArray(String[]::new)));
-                table.createInsert()
-                        .setColumnNames(columns)
-                        .setParams(values)
-                        .execute();
-            }
-        }
-    }
-
-    public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {
-        if (!csvFile.getParentFile().exists()) {
-            csvFile.getParentFile().mkdirs();
-        }
-        if (!csvFile.exists()) {
-            csvFile.createNewFile();
-        }
-        try (PrintStream stream = new PrintStream(csvFile)) {
-            Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
-            CsvDriver.writeToCsv(set, stream, true);
-        }
-    }
 
     static class DatabaseUpgrade {
         private final SimpleDatabaseHelperV2 parent;
@@ -798,6 +768,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
+            if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION){
+                throw new IllegalStateException("The database version is newer than this build supported.");
+            }
+            if(currentDatabaseVersion == parent.LATEST_DATABASE_VERSION){
+                return;
+            }
             if (currentDatabaseVersion < 1) {
                 // QuickShop v4/v5 upgrade
                 // Call updater
@@ -858,8 +834,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 parent.upgradeTablesEncoding();
                 currentDatabaseVersion = 13;
             }
-
-
             parent.setDatabaseVersion(currentDatabaseVersion).join();
         }
 

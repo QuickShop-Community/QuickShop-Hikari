@@ -22,7 +22,6 @@ public class ShopDataSaveWatcher extends BukkitRunnable {
             Log.debug("Another save task still running!");
             return;
         }
-        Log.debug("Starting save shops...");
         CompletableFuture<?>[] shopsToSaveFuture = plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
                 .map(Shop::update)
                 .toArray(CompletableFuture[]::new);
@@ -33,7 +32,7 @@ public class ShopDataSaveWatcher extends BukkitRunnable {
                     }
                 }, QuickExecutor.getShopSaveExecutor())
                 .exceptionally(e -> {
-                    Log.debug("Error while saving shops: " + e.getMessage());
+                    plugin.logger().warn("Error while saving shops, all failed shops will attempt save again in next time", e);
                     return null;
                 });
     }

@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1017
+config-version: 1018
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -546,6 +546,17 @@ protect:
   hopper-owner-exclude: false
   entity: true
 
+# The policy that QuickShop-Hikari will backup the databases
+backup-policy:
+  # Backup before purge the shops
+  shops-auto-purge: false
+  # Backup the database before perform database upgrade
+  database-upgrade: true
+  # Backup on every startup
+  startup: false
+  # Backup old databases when recovery the database from file
+  recovery: true
+
 #This option allows you to set custom item max stacksizes.
 #If nothing matches, then all items (*) will be used.
 #* means all items.
@@ -563,8 +574,7 @@ purge:
   enabled: false
   #Whether to purge shops automatically when server started
   at-server-startup: true
-  #Whether to export a backup file for recovery before each purge
-  backup: true
+  # The days of offline need to be purged
   days: 60
   # At this moment, QuickShop only compatible with Vanilla banning system (e.g Essentials using)
   banned: true
