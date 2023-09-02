@@ -14,9 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
 public class SubCommand_List implements CommandHandler<Player> {
     private final QuickShop quickshop;
@@ -32,6 +36,16 @@ public class SubCommand_List implements CommandHandler<Player> {
             return;
         }
         lookupOther(sender, parser.getArgs().get(0));
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 1) {
+            if (sender.hasPermission("quickshopaddon.list.other")) {
+                return getPlayerList();
+            }
+        }
+        return Collections.emptyList();
     }
 
     private void lookupSelf(Player sender) {
