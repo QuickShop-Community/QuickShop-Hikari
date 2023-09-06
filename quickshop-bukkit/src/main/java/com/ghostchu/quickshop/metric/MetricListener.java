@@ -46,7 +46,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
                                 .player(event.getShop().getOwner())
                                 .tax(0.0d)
                                 .total(plugin.getConfig().getBoolean("shop.refund") ? plugin.getConfig().getDouble("shop.cost", 0.0d) : 0.0d)
-                                .type(ShopOperationEnum.CREATE)
+                                .type(ShopOperationEnum.DELETE)
                                 .build()
                 )
                 .exceptionally(e -> {

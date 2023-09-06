@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1018
+config-version: 1019
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -183,7 +183,6 @@ limits:
 #By default, chests are added to this list.
 #This will only work for blocks that implement an InventoryHolder!
 #In other words, You cannot create shops with normal blocks like dirt or stone.
-#Enderchests can only be used as shop blocks when the "openinv" plugin is installed!
 #May cause unexpected behavior with some blocks...eg:
 #-Hopper shops suck the display item in,
 #-Furnace shops allow players whatever item they want in all 3 slots,
@@ -193,6 +192,7 @@ shop-blocks:
   - CHEST
   - TRAPPED_CHEST
   - ENDER_CHEST
+  - BARREL
 
 shop:
   #The cost to make a shop.
@@ -457,29 +457,14 @@ plugin:
   #If you have Multiverse-Core, QuickShop will try to load worlds when the shop's world doesn't exist.
   #This will throw an exception and automatically repair the shops.
   Multiverse-Core: true
-
-  #If you have OpenInv, QuickShop will enable the EnderChest feature for shop-blocks.
-  OpenInv: true
-
   #If you have PlaceHolderAPI, QuickShop will use it to process all messages.
   PlaceHolderAPI:
     enable: true
     # The PAPI request caching expire time. (ms)
     # Low value may increase the database load and hurt server performance.
     cache: 900000
-
-  #If you have LWC/LWCX, QuickShop will check access.
-  LWC: true
-  #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
-
-  BlockHub:
-    enable: true
-    #Should BlockHub only be used for permission checks?
-    only: false
   #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
   WorldEdit: true
-  #Allow us use NBTAPI to direct modify the blockstate data
-  NBTAPI: true
 #Special in-game effect
 effect:
   #Sound related

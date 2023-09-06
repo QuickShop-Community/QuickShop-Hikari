@@ -85,6 +85,14 @@ public class ConfigUpdateScript {
         getConfig().set("backup-policy.recovery", true);
     }
 
+    @UpdateScript(version = 1019)
+    public void oldConfigCleanup() {
+        getConfig().set("plugin.OpenInv", null);
+        getConfig().set("plugin.LWC", null);
+        getConfig().set("plugin.BlockHub", null);
+        getConfig().set("plugin.NBTAPI", null);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);
