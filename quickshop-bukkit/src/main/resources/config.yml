@@ -183,7 +183,6 @@ limits:
 #By default, chests are added to this list.
 #This will only work for blocks that implement an InventoryHolder!
 #In other words, You cannot create shops with normal blocks like dirt or stone.
-#Enderchests can only be used as shop blocks when the "openinv" plugin is installed!
 #May cause unexpected behavior with some blocks...eg:
 #-Hopper shops suck the display item in,
 #-Furnace shops allow players whatever item they want in all 3 slots,
@@ -193,6 +192,7 @@ shop-blocks:
   - CHEST
   - TRAPPED_CHEST
   - ENDER_CHEST
+  - BARREL
 
 shop:
   #The cost to make a shop.
