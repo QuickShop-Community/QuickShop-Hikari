@@ -151,7 +151,7 @@ public class Log {
     }
 
     public static void permission(@NotNull String message) {
-        permission(Level.INFO, message, Caller.create(3));
+        permission(Level.INFO, message, Caller.create(3,false));
     }
 
     @ApiStatus.Internal
@@ -173,7 +173,7 @@ public class Log {
     }
 
     public static void permission(@NotNull Level level, @NotNull String message) {
-        permission(level, message, Caller.create(3));
+        permission(level, message, Caller.create(3,false));
     }
 
     public static void timing(@NotNull String operation, @NotNull Timer timer) {
@@ -309,18 +309,24 @@ public class Log {
 
         @NotNull
         public static CompletableFuture<Caller> create() {
-            return create(3);
+            return create(3,false);
         }
 
         @NotNull
         public static Caller createSync() {
-            return create(3).join();
+            return create(3,false).join();
+        }
+        @NotNull
+        public static Caller createSync(boolean force) {
+            return create(3,force).join();
         }
 
         @NotNull
-        public static CompletableFuture<Caller> create(int steps) {
-            if("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))){
-                return CompletableFuture.supplyAsync(()->new Caller("<DISABLED>","<DISABLED>","<DISABLED>",-1));
+        public static CompletableFuture<Caller> create(int steps, boolean force) {
+            if(!force) {
+                if ("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
+                    return CompletableFuture.supplyAsync(() -> new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1));
+                }
             }
             Throwable throwable = new Throwable("Caller Check");
             return CompletableFuture.supplyAsync(() -> {
