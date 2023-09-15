@@ -2,4 +2,8 @@ name: qscompat-${project.artifactId}
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
 api-version: 1.18
-depend: [ ChestProtect, QuickShop-Hikari ]
+depend:
+  - ChestProtect
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
+description: Compatibility module for ChestProtect
