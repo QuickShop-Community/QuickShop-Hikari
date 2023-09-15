@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1019
+config-version: 1020
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -370,6 +370,9 @@ shop:
   #Integration checking will be checked after this, so disable it when it's conflicting with integration
   #If you don't want this, then please disable it and use the integration below instead.
   protection-checking: true
+
+  # Cancel the fake BlockBreakEvent before it passed to MONITOR level listeners.
+  cancel-protection-fake-event-before-reach-monitor-listeners: true
 
   #The list of worlds in which protection checking is disabled.
   protection-checking-blacklist:

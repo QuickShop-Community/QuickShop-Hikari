@@ -93,6 +93,13 @@ public class ConfigUpdateScript {
         getConfig().set("plugin.NBTAPI", null);
     }
 
+    @UpdateScript(version = 1020)
+    public void protectionCheckMonitorListeners() {
+        getConfig().set("shop.cancel-protection-fake-event-before-reach-monitor-listeners", true);
+    }
+
+
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);
