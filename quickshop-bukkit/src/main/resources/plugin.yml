@@ -24,7 +24,7 @@ libraries:
   - com.ghostchu:simplereloadlib:1.1.2
   - com.konghq:unirest-java:3.14.5
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
-  - one.util:streamex:0.8.1
+  - one.util:streamex:0.8.2
   - commons-lang:commons-lang:2.6
   - net.sourceforge.csvjdbc:csvjdbc:1.0.40
   - org.dom4j:dom4j:2.1.4
