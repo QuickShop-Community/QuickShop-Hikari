@@ -30,7 +30,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "no-price-given").send();
             return;
         }

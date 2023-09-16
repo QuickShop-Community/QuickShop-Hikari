@@ -1,15 +1,14 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 /**
  * Calling when shop tax calculation
  */
 public class ShopTaxEvent extends AbstractQSEvent {
-    private final UUID user;
+    private final QUser user;
     private final Shop shop;
     private double tax;
 
@@ -20,7 +19,7 @@ public class ShopTaxEvent extends AbstractQSEvent {
      * @param tax  The tax
      * @param user The user (buyer/seller)
      */
-    public ShopTaxEvent(@NotNull Shop shop, double tax, @NotNull UUID user) {
+    public ShopTaxEvent(@NotNull Shop shop, double tax, @NotNull QUser user) {
         this.shop = shop;
         this.tax = tax;
         this.user = user;
@@ -58,7 +57,7 @@ public class ShopTaxEvent extends AbstractQSEvent {
      *
      * @return User
      */
-    public UUID getUser() {
+    public QUser getUser() {
         return this.user;
     }
 }

@@ -1,11 +1,14 @@
 package com.ghostchu.quickshop.addon.discordsrv.listener;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.database.DiscordDatabaseHelper;
 import com.ghostchu.quickshop.addon.discordsrv.wrapper.JDAWrapper;
 import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import org.bukkit.event.EventHandler;
@@ -14,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class QuickShopEventListener implements Listener {
     private final Main plugin;
@@ -86,12 +90,26 @@ public class QuickShopEventListener implements Listener {
 
     }
 
-    private void sendMessageIfEnabled(@NotNull UUID uuid, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+    private void sendMessageIfEnabled(@NotNull QUser qUser, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+        UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) return;
         Util.ensureThread(true);
         if (databaseHelper.isNotifactionFeatureEnabled(uuid, feature)) {
             jdaWrapper.sendMessage(uuid, embed);
         }
     }
+
+    private void sendMessageIfEnabled(@NotNull QUser qUser, @NotNull Shop shop, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+        Util.ensureThread(true);
+        UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+        if (uuid == null) return;
+        if (shop.playerAuthorize(uuid, plugin, "discordalert")) {
+            if (databaseHelper.isNotifactionFeatureEnabled(uuid, feature)) {
+                jdaWrapper.sendMessage(uuid, embed);
+            }
+        }
+    }
+
 
     private void sendMessageIfEnabled(@NotNull UUID uuid, @NotNull Shop shop, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
         Util.ensureThread(true);
@@ -144,7 +162,14 @@ public class QuickShopEventListener implements Listener {
             sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
             // Send to permission users
             for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-                sendMessageIfEnabled(uuid, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
+                if (event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
+                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid)
+                            .thenAccept(qUser -> sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
+                            .exceptionally(e -> {
+                                plugin.getLogger().log(Level.WARNING, "Failed to find the player", e);
+                                return null;
+                            });
+                }
             }
         });
 

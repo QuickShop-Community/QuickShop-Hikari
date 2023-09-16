@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api.database;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -76,6 +77,13 @@ public interface DatabaseHelper {
     CompletableFuture<@Nullable String> getPlayerLocale(@NotNull UUID uuid);
 
     /**
+     * Async gets the player last use locale code from database
+     *
+     * @param uuid The player UUID
+     */
+    CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser);
+
+    /**
      * Async gets the player last use username from database
      *
      * @param uuid The player UUID
@@ -86,7 +94,7 @@ public interface DatabaseHelper {
     /**
      * Async gets the player last use username from database
      *
-     * @param uuid The player UUID
+     * @param name The player UUID
      */
     CompletableFuture<@Nullable UUID> getPlayerUUID(@NotNull String name);
 
@@ -181,6 +189,15 @@ public interface DatabaseHelper {
      */
     @NotNull
     SQLQuery selectAllMessages() throws SQLException;
+
+    /**
+     * Select player messages that saved in the database
+     *
+     * @return Query result set
+     * @throws SQLException Any errors related to SQL Errors
+     */
+    @NotNull
+    CompletableFuture<List<String>> selectPlayerMessages(UUID player) throws SQLException;
 
     /**
      * Select specific table content

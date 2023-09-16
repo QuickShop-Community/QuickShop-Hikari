@@ -14,7 +14,7 @@ public class SubCommand_FetchMessage implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        Util.mainThreadRun(() -> MsgUtil.flush(sender));
+        MsgUtil.flush(sender);
     }
 
 

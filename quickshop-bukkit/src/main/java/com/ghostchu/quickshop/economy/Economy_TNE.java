@@ -7,9 +7,18 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import net.tnemc.core.TNE;
-import net.tnemc.core.common.api.TNEAPI;
-import net.tnemc.core.common.currency.TNECurrency;
+import net.tnemc.core.EconomyManager;
+import net.tnemc.core.TNECore;
+import net.tnemc.core.account.Account;
+import net.tnemc.core.account.holdings.HoldingsEntry;
+import net.tnemc.core.account.holdings.modify.HoldingsModifier;
+import net.tnemc.core.actions.source.PluginSource;
+import net.tnemc.core.api.TNEAPI;
+import net.tnemc.core.currency.Currency;
+import net.tnemc.core.currency.format.CurrencyFormatter;
+import net.tnemc.core.transaction.Transaction;
+import net.tnemc.core.transaction.TransactionResult;
+import net.tnemc.core.utils.exceptions.InvalidTransactionException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -18,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 @ToString
@@ -43,13 +53,75 @@ public class Economy_TNE extends AbstractEconomy {
     }
 
     private void setupEconomy() {
-        this.api = TNE.instance().api();
+        this.api = TNECore.api();
+    }
+
+    @Nullable
+    private Currency getCurrency(@NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return null;
+        }
+
+        if(currency != null) {
+            final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
+            return currencyOpt.orElseGet(() -> TNECore.eco().currency().getDefaultCurrency(world.getName()));
+        }
+        return TNECore.eco().currency().getDefaultCurrency(world.getName());
+    }
+
+    private boolean runTransaction(final Account account, final Currency currency, final String world, final BigDecimal amount, final String type, final boolean counter) {
+
+        //Set up our holdings' modifier.
+        final HoldingsModifier modifier = new HoldingsModifier(world,
+                currency.getUid(),
+                amount);
+
+        //Setup our transaction.
+        final Transaction transaction = new Transaction(type)
+                .to(account, ((counter)? modifier.counter() : modifier))
+                .processor(EconomyManager.baseProcessor())
+                .source(new PluginSource("QuickShop"));
+        try {
+
+            //Process our transaction.
+            final TransactionResult result = transaction.process();
+            if(result.isSuccessful()) {
+                return true;
+            }
+
+        } catch(InvalidTransactionException ignore) {
+            return false;
+        }
+        return false;
     }
 
     /**
-     * Deposits a given amount of money from thin air to the given username.
+     * Deposits a given amount of money from thin air to the account with the given name.
      *
-     * @param name     The exact (case insensitive) username to give money to
+     * @param name     The exact (case-insensitive) username to give money to
+     * @param amount   The amount to give them
+     * @param currency The currency name
+     * @return True if success (Should be almost always)
+     */
+    @Override
+    public boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return false;
+        }
+        final Optional<Account> account = TNECore.api().getAccount(name);
+        final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
+
+        if(account.isPresent() && currencyOpt.isPresent()) {
+
+            return runTransaction(account.get(), currencyOpt.get(), world.getName(), BigDecimal.valueOf(amount), "give", false);
+        }
+        return false;
+    }
+
+    /**
+     * Deposits a given amount of money from thin air to the account with the given {@link UUID unique identifier}.
+     *
+     * @param name     The {@link UUID unique identifier} to give money to
      * @param amount   The amount to give them
      * @param currency The currency name
      * @return True if success (Should be almost always)
@@ -60,25 +132,10 @@ public class Economy_TNE extends AbstractEconomy {
         return false;
     }
 
-    @Nullable
-    private TNECurrency getCurrency(@NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return null;
-        }
-        if (currency != null) {
-            for (TNECurrency apiCurrency : this.api.getCurrencies(world.getName())) {
-                if (apiCurrency.getIdentifier().equals(currency)) {
-                    return apiCurrency;
-                }
-            }
-        }
-        return this.api.getDefault(world.getName()); // Want to get some default currency available in thi world
-    }
-
     /**
-     * Deposits a given amount of money from thin air to the given username.
+     * Deposits a given amount of money from thin air to the given {@link OfflinePlayer player}.
      *
-     * @param trader   The player to give money to
+     * @param trader   The {@link OfflinePlayer player} to give money to
      * @param amount   The amount to give them
      * @param currency The currency name
      * @return True if success (Should be almost always)
@@ -88,11 +145,8 @@ public class Economy_TNE extends AbstractEconomy {
         if (!isValid()) {
             return false;
         }
-        BigDecimal decimal = BigDecimal.valueOf(amount);
-        if (!this.api.canAddHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName())) {
-            return false;
-        }
-        return this.api.addHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName());
+        //We should forward this method to the UUID one instead of doing another OfflinePlayer lookup here just to send it to the TNE UUID method.
+        return deposit(trader.getUniqueId(), amount, world, currency);
     }
 
 
@@ -108,40 +162,54 @@ public class Economy_TNE extends AbstractEconomy {
         if (!isValid()) {
             return "Error";
         }
-        BigDecimal decimal = BigDecimal.valueOf(balance);
-        return this.api.format(decimal, getCurrency(world, currency), world.getName());
+
+        final Currency currencyObj = getCurrency(world, currency);
+
+        if(currencyObj == null) {
+            return "Error";
+        }
+
+        return CurrencyFormatter.format(null, new HoldingsEntry(TNECore.eco().region().defaultRegion(),
+                currencyObj.getUid(), BigDecimal.valueOf(balance), EconomyManager.NORMAL));
+    }
+
+    @Override
+    public double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return 0.0;
+        }
+        final Optional<Account> account = TNECore.api().getAccount(name);
+        final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
+
+        if(account.isPresent() && currencyOpt.isPresent()) {
+            return account.get().getHoldingsTotal(world.getName(), currencyOpt.get().getUid()).doubleValue();
+        }
+        return 0.0;
     }
 
 
     /**
-     * Fetches the balance of the given account name
+     * Fetches the balance of the given account {@link UUID unique identifier}.
      *
-     * @param name     The name of the account
+     * @param name     The {@link UUID unique identifier} of the account
      * @param currency The currency name
      * @return Their current balance.
      */
     @Override
     public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
-        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
+        return getBalance(name.toString(), world, currency);
     }
 
     /**
-     * Fetches the balance of the given player
+     * Fetches the balance of the given {@link OfflinePlayer player}
      *
-     * @param player   The name of the account
+     * @param player   The {@link OfflinePlayer player}
      * @param currency The currency name
      * @return Their current balance.
      */
     @Override
     public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return 0.0;
-        }
-        if (getCurrency(world, currency) != null) {
-            return this.api.getHoldings(player.getName(), getCurrency(world, currency)).doubleValue();
-        } else {
-            return this.api.getHoldings(player.getName(), world.getName()).doubleValue();
-        }
+        return getBalance(player.getUniqueId().toString(), world, currency);
     }
 
     @Override
@@ -155,14 +223,14 @@ public class Economy_TNE extends AbstractEconomy {
     }
 
     /**
-     * Gets the currency does exists
+     * Checks if the currency exists.
      *
      * @param currency Currency name
      * @return exists
      */
     @Override
     public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        return getCurrency(world, currency) != null;
+        return TNECore.eco().currency().findCurrency(currency).isPresent();
     }
 
     /**
@@ -172,7 +240,7 @@ public class Economy_TNE extends AbstractEconomy {
      */
     @Override
     public boolean isValid() {
-        return this.api != null && TNE.instance() != null;
+        return this.api != null && TNECore.instance() != null;
     }
 
     /**
@@ -184,38 +252,54 @@ public class Economy_TNE extends AbstractEconomy {
     public boolean supportCurrency() {
         return true;
     }
-
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
-     * @param name     The exact (case insensitive) username to take money from
+     * @param name     The exact (case-insensitive) username to take money from
+     * @param amount   The amount to take from them
+     * @param currency The currency name
+     * @return True if success, false if they didn't have enough cash
+     */
+    @Override
+    public boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
+            return false;
+        }
+
+        final Optional<Account> account = TNECore.api().getAccount(name);
+        final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
+
+        if(account.isPresent() && currencyOpt.isPresent()) {
+
+            return runTransaction(account.get(), currencyOpt.get(), world.getName(), BigDecimal.valueOf(amount), "take", true);
+        }
+        return false;
+    }
+
+    /**
+     * Withdraws a given amount of money from the given {@link UUID unique identifier} and turns it to thin air.
+     *
+     * @param name     The exact {@link UUID unique identifier} of the user.
      * @param amount   The amount to take from them
      * @param currency The currency name
      * @return True if success, false if they didn't have enough cash
      */
     @Override
     public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
+        return withdraw(name.toString(), amount, world, currency);
     }
 
     /**
-     * Withdraws a given amount of money from the given username and turns it to thin air.
+     * Withdraws a given amount of money from the given {@link OfflinePlayer player} and turns it to thin air.
      *
-     * @param trader   The player to take money from
+     * @param trader   The {@link OfflinePlayer player} to take money from
      * @param amount   The amount to take from them
      * @param currency The currency name
      * @return True if success, false if they didn't have enough cash
      */
     @Override
     public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        BigDecimal decimal = BigDecimal.valueOf(amount);
-        if (!this.api.canRemoveHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName())) {
-            return false;
-        }
-        return this.api.removeHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName());
+        return withdraw(trader.getUniqueId().toString(), amount, world, currency);
     }
 
     @Override

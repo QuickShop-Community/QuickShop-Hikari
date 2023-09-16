@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.obj.QUser;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,7 +32,7 @@ public interface ShopManager {
      * @param amount         The amount of the item/stack
      */
     void actionBuying(
-            @NotNull UUID buyer,
+            @NotNull Player buyer,
             @NotNull InventoryWrapper buyerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
@@ -58,7 +59,7 @@ public interface ShopManager {
      * @param amount          The amount of the item/stack
      */
     void actionSelling(
-            @NotNull UUID seller,
+            @NotNull Player seller,
             @NotNull InventoryWrapper sellerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
@@ -142,7 +143,17 @@ public interface ShopManager {
      * @param playerUUID The player's uuid.
      * @return The list have this player's all shops.
      */
-    @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID);
+    @NotNull List<Shop> getAllShops(@NotNull QUser playerUUID);
+
+    /**
+     * Get a players all shops.
+     *
+     * <p>Make sure you have caching this, because this need a while to get player's all shops
+     *
+     * @param playerUUID The player's uuid.
+     * @return The list have this player's all shops.
+     */
+    @NotNull List<Shop> getAllShops(@NotNull UUID playerUUID);
 
     /**
      * Getting the Shop Price Limiter
@@ -258,8 +269,6 @@ public interface ShopManager {
      */
     @NotNull List<Shop> getShopsInWorld(@NotNull String worldName);
 
-    @Deprecated
-    double getTax(@NotNull Shop shop, @NotNull Player p);
 
     /**
      * Get the tax of the shop
@@ -268,9 +277,9 @@ public interface ShopManager {
      * @param p    The player
      * @return The tax of the shop
      */
-    double getTax(@NotNull Shop shop, @NotNull UUID p);
+    double getTax(@NotNull Shop shop, @NotNull QUser p);
 
-    void handleChat(@NotNull Player p, @NotNull String msg);
+    void handleChat(@NotNull Player player, @NotNull String msg);
 
     /**
      * Checks if player reached the limit of shops
@@ -278,7 +287,7 @@ public interface ShopManager {
      * @param p The player to check
      * @return True if they're reached the limit.
      */
-    boolean isReachedLimit(@NotNull Player p);
+    boolean isReachedLimit(@NotNull QUser p);
 
     /**
      * Load shop method for loading shop into mapping, so getShops method will can find it. It also
@@ -328,7 +337,7 @@ public interface ShopManager {
      * @param amount    Trading item amounts.
      */
     @ApiStatus.Experimental
-    void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount, double total, double tax);
+    void sendPurchaseSuccess(@NotNull QUser purchaser, @NotNull Shop shop, int amount, double total, double tax);
 
     /**
      * Send a sellSuccess message for a player.
@@ -338,7 +347,7 @@ public interface ShopManager {
      * @param amount Trading item amounts.
      */
     @ApiStatus.Experimental
-    void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount, double total, double tax);
+    void sendSellSuccess(@NotNull QUser seller, @NotNull Shop shop, int amount, double total, double tax);
 
     /**
      * Send a shop infomation to a player.
@@ -357,7 +366,7 @@ public interface ShopManager {
      * @param shop The shop
      * @return If the shop is not valided for the player
      */
-    boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop);
+    boolean shopIsNotValid(@NotNull QUser uuid, @NotNull Info info, @NotNull Shop shop);
 
     /**
      * Gets the InteractiveManager (which former as known getActions())

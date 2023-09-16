@@ -48,7 +48,40 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "check-shop-status" -> handleShopDebug(sender, subParams);
             case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
             case "check-shop-debug" -> handleShopInfo(sender, subParams);
+            case "set-property" -> handleProperty(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+        }
+    }
+
+    private void handleProperty(CommandSender sender, List<String> subParams) {
+        if (subParams.isEmpty()) {
+            sender.sendMessage("Error: You must enter a property key=value set.");
+            return;
+        }
+        if (subParams.size() > 1) {
+            sender.sendMessage("Error: You must enter a (and only one) property key=value set. E.g   aaa=bbb");
+            return;
+        }
+        String[] split = subParams.get(0).split("=");
+        if (split.length < 1) {
+            sender.sendMessage("Error: You must enter a (and only one) property key=value set. E.g   aaa=bbb");
+            return;
+        }
+        String key = split[0];
+        String value = null;
+        if (split.length > 1) {
+            value = split[1];
+        }
+        if(!key.startsWith("com.ghostchu.quickshop") && !key.startsWith("quickshop")){
+            sender.sendMessage("Error: You can only set the quickshop related properties for safety.");
+            return;
+        }
+        if (value == null) {
+            System.clearProperty(key);
+            sender.sendMessage("Property " + key + " has been deleted.");
+        } else {
+            String oldOne = System.setProperty(key, value);
+            sender.sendMessage("Property " + key + " has been changed from " + oldOne + " to " + value);
         }
     }
 
@@ -123,7 +156,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleHandlerList(@NotNull CommandSender sender, List<String> remove) {
-        if (remove.size() < 1) {
+        if (remove.isEmpty()) {
             MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
             plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
             return;
@@ -141,7 +174,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleDatabase(@NotNull CommandSender sender, @NotNull List<String> remove) {
-        if (remove.size() < 1) {
+        if (remove.isEmpty()) {
             plugin.text().of("debug.operation-missing");
             return;
         }
@@ -149,7 +182,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleSignsUpdate(CommandSender sender, List<String> remove) {
-        if (remove.size() < 1) {
+        if (remove.isEmpty()) {
             plugin.text().of(sender, "debug.update-player-shops-signs-no-username-given").send();
             return;
         }
@@ -160,7 +193,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 return;
             }
             plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
-            List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
+            List<Shop> shops = plugin.getShopManager().getAllShops(uuid);
             plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
             BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
             updateExecutor.addTasks(shops);

@@ -16,7 +16,15 @@ public class CachePerformanceItem implements SubPasteItem {
         return "<h5>Shop Cache</h5>" +
                 buildShopCacheContent() +
                 "<h5>Player Lookup Cache</h5>" +
-                buildPlayerLookupCache();
+                buildPlayerLookupCache() +
+                "<h5>QUser Reuse Memory Cache</h5>" +
+                buildQUserReuseCache();
+    }
+
+    private String buildQUserReuseCache() {
+        return "";
+//        CacheStats stats = QUserImpl.getQuserCache().stats();
+//        return renderTable(stats);
     }
 
     @NotNull

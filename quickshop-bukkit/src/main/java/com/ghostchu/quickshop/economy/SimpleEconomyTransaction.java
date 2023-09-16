@@ -34,9 +34,9 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     private final QuickShop plugin = QuickShop.getInstance();
     private final Deque<Operation> processingStack = new LinkedList<>();
     @Nullable
-    private UUID from;
+    private Object from;
     @Nullable
-    private UUID to;
+    private Object to;
     private double amount;
     @NotNull
     @JsonUtil.Hidden
@@ -44,7 +44,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     private double amountAfterTax;
     private double tax;
     @Nullable
-    private UUID taxer;
+    private Object taxer;
     private boolean allowLoan;
     private World world;
     @Nullable
@@ -68,7 +68,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      */
 
     @Builder
-    public SimpleEconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, Boolean allowLoan, @NotNull World world, @Nullable String currency, boolean neverFail, @Nullable Benefit benefit) {
+    public SimpleEconomyTransaction(@Nullable Object from, @Nullable Object to, double amount, double taxModifier, @Nullable Object taxAccount, EconomyCore core, Boolean allowLoan, @NotNull World world, @Nullable String currency, boolean neverFail, @Nullable Benefit benefit) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
@@ -94,26 +94,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         new EconomyTransactionEvent(this).callEvent();
     }
 
-    /**
-     * Copy a transaction
-     */
-
-    @Builder
-    public SimpleEconomyTransaction(SimpleEconomyTransaction s) {
-        this.from = s.from;
-        this.to = s.to;
-        this.core = s.core;
-        this.amount = s.amount;
-        this.taxer = s.taxer;
-        this.allowLoan = s.allowLoan;
-        this.world = s.world;
-        this.currency = s.currency;
-        this.amountAfterTax = s.amountAfterTax;
-        this.tax = s.tax;
-        this.benefit = s.benefit;
-        new EconomyTransactionEvent(this).callEvent();
-    }
-
     public interface SimpleTransactionCallback extends TransactionCallback {
         /**
          * Calling while Transaction commit
@@ -134,7 +114,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
          */
         default void onFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -144,7 +123,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
          */
         default void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction("Transaction succeed: " + economyTransaction);
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -156,7 +134,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
          */
         default void onTaxFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
     }
@@ -172,7 +149,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     }
 
     @Override
-    public @Nullable UUID getFrom() {
+    public @Nullable Object getFrom() {
         return from;
     }
 
@@ -240,17 +217,17 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
 
 
     @Override
-    public void setFrom(@Nullable UUID from) {
+    public void setFrom(@Nullable Object from) {
         this.from = from;
     }
 
     @Override
-    public @Nullable UUID getTo() {
+    public @Nullable Object getTo() {
         return to;
     }
 
     @Override
-    public void setTo(@Nullable UUID to) {
+    public void setTo(@Nullable Object to) {
         this.to = to;
     }
 
@@ -300,12 +277,12 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     }
 
     @Override
-    public @Nullable UUID getTaxer() {
+    public @Nullable Object getTaxer() {
         return taxer;
     }
 
     @Override
-    public void setTaxer(@Nullable UUID taxer) {
+    public void setTaxer(@Nullable Object taxer) {
         this.taxer = taxer;
     }
 

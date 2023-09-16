@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
@@ -30,18 +31,18 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 2) {
-            qs.text().of(sender, "command-incorrect", "/qs discord <features> <enable/disable>").send();
+            qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
             return;
         }
         NotificationFeature feature = getFeatureByName(parser.getArgs().get(0));
         if (feature == null) {
-            qs.text().of(sender, "command-incorrect", "/qs discord <features> <enable/disable>").send();
+            qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
             return;
         }
         boolean ops = parser.getArgs().get(1).equalsIgnoreCase("enable");
         Util.asyncThreadRun(() -> {
             try {
-                Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(sender.getUniqueId(), feature, ops);
+                Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(QUserImpl.createFullFilled(sender), feature, ops);
                 Log.debug("Execute Discord Notifaction with id " + i + " affected");
                 Component text = qs.text().of(sender, "addon.discord.message-type-mapping." + feature.getConfigNode(), feature.getConfigNode(), ops).forLocale();
                 qs.text().of(sender, "addon.discord.feature-status-changed", text, ops).send();

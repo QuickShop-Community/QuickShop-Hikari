@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.3.0.0</version>
+        <version>5.0.0.7</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -40,6 +40,18 @@
         <repository>
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
+        </repository>
+        <repository>
+            <id>essentials</id>
+            <url>https://repo.essentialsx.net/releases/</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>onarandombox</id>
+            <url>https://repo.onarandombox.com/content/groups/public</url>
         </repository>
     </repositories>
     <dependencies>
@@ -145,11 +157,10 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>tne.tne</groupId>
-            <artifactId>TheNewEconomy</artifactId>
-            <scope>system</scope>
-            <version>0.1.1.17-PRE-2</version>
-            <systemPath>${project.basedir}/lib/TNE-0.1.1.17-PRE-2.jar</systemPath>
+            <groupId>net.tnemc</groupId>
+            <artifactId>EconomyCore</artifactId>
+            <version>0.1.2.2-Pre-1</version>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>*</artifactId>

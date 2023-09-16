@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.papi.PAPISubHandler;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +28,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
 
     @Override
     @Nullable
-    public String handle0(@NotNull UUID player, @NotNull String paramsTrimmed) {
+    public String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed) {
         String[] args = paramsTrimmed.split("_");
         if (args.length < 1) {
             return null;
@@ -43,7 +44,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
     }
 
     @Nullable
-    private String handleGlobal(@NotNull UUID player, @NotNull String[] passThroughArgs) {
+    private String handleGlobal(@NotNull OfflinePlayer player, @NotNull String[] passThroughArgs) {
         if (passThroughArgs.length < 2) {
             return null;
         }
@@ -56,7 +57,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
     }
 
     @Nullable
-    private String handlePlayer(@NotNull UUID player, String[] passThroughArgs) {
+    private String handlePlayer(@NotNull OfflinePlayer player, String[] passThroughArgs) {
         if (passThroughArgs.length < 2) {
             return null;
         }
@@ -65,11 +66,11 @@ public class ShopManagerPAPI implements PAPISubHandler {
         if (!type.equalsIgnoreCase("total")) return null;
         String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
         System.arraycopy(passThroughArgs, 1, passThroughArgsChild, 0, passThroughArgsChild.length);
-        return handlePlayerTotal(player, passThroughArgsChild);
+        return handlePlayerTotal(player.getUniqueId(), passThroughArgsChild);
     }
 
     @Nullable
-    private String handleGlobalTotal(@NotNull UUID player, String[] passThroughArgsChild) {
+    private String handleGlobalTotal(@NotNull OfflinePlayer player, String[] passThroughArgsChild) {
         if (passThroughArgsChild.length < 1) {
             return null;
         }
@@ -89,7 +90,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
         if (passThroughArgsChild.length < 1) {
             return null;
         }
-        List<Shop> belongToPlayers = shopManager.getPlayerAllShops(player);
+        List<Shop> belongToPlayers = shopManager.getAllShops(player);
         return String.valueOf(switch (passThroughArgsChild[0]) {
             case "all" -> belongToPlayers.size();
             case "selling" -> belongToPlayers.stream().filter(shop -> shop.getShopType() == ShopType.SELLING).count();

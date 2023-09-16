@@ -7,7 +7,9 @@ import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.caption.*;
@@ -42,12 +44,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsqured.trade-denied").forLocale());
         }
     }
 
@@ -62,12 +64,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.plotsqured.trade-denied").forLocale());
         }
     }
 
@@ -110,7 +112,7 @@ public final class Main extends CompatibilityModule implements Listener {
     @Subscribe
     public void onPlotDelete(PlotDeleteEvent event) {
         getShops(event.getPlot()).forEach(shop -> {
-            recordDeletion(event.getPlot().getOwner(), shop, "Plot deleted");
+            recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "PlotSquared", false), shop, "Plot deleted");
             getApi().getShopManager().deleteShop(shop);
         });
     }
@@ -139,8 +141,8 @@ public final class Main extends CompatibilityModule implements Listener {
         if (event.wasAdded()) {
             return; // We only check untrusted
         }
-        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop -> {
-            recordDeletion(event.getPlot().getOwner(), shop, "Untrusted -> " + event.getPlayer());
+        getShops(event.getPlot()).stream().filter(shop -> event.getPlayer().equals(shop.getOwner().getUniqueId())).forEach(shop -> {
+            recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "PlotSquared", false), shop, "Untrusted -> " + event.getPlayer());
             getApi().getShopManager().deleteShop(shop);
         });
     }
@@ -156,12 +158,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(createFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.create-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsquared.create-denied").forLocale());
         }
     }
 
@@ -176,12 +178,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.trade-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.plotsquared.trade-denied").forLocale());
         }
     }
 

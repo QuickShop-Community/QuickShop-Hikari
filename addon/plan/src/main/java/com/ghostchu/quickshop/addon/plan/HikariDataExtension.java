@@ -78,7 +78,7 @@ public class HikariDataExtension implements DataExtension {
         try {
             LinkedHashMap<ShopMetricRecord, DataRecord> recordsMapped = this.metricQuery.mapToDataRecord(records);
             recordsMapped.forEach((metric, data) -> {
-                String player = dataUtil.getPlayerName(metric.getPlayer());
+                String player = metric.getPlayer();
                 String action = CommonUtil.prettifyText(metric.getType().name());
                 String shop = dataUtil.getShopName(metric, data);
                 String item = dataUtil.getItemName(data) + " (" + metric.getAmount() + ")";
@@ -123,7 +123,7 @@ public class HikariDataExtension implements DataExtension {
 
     @StringProvider(text = "Owned shops", description = "How many shops created and exists by this player", iconName = "hashtable", iconColor = Color.GREEN, priority = 100, showInPlayerTable = true)
     public String shopCreatedPlayer(UUID playerUUID) {
-        return String.valueOf(main.getQuickShop().getShopManager().getPlayerAllShops(playerUUID).size());
+        return String.valueOf(main.getQuickShop().getShopManager().getAllShops(playerUUID).size());
     }
 
     @TableProvider(tableColor = Color.BLUE)
@@ -163,7 +163,7 @@ public class HikariDataExtension implements DataExtension {
                 .columnTwo("Price", Icon.called("money-bill-wave").build())
                 .columnThree("Type", Icon.called("code-branch").build())
                 .columnFour("Location", Icon.called("location-arrow").build());
-        for (Shop shop : main.getQuickShop().getShopManager().getPlayerAllShops(playerUUID)) {
+        for (Shop shop : main.getQuickShop().getShopManager().getAllShops(playerUUID)) {
             String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
             String price = df.format(shop.getPrice());
             if (main.getQuickShop().getEconomy() != null) {

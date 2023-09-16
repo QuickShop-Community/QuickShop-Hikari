@@ -37,9 +37,9 @@ public class CommandContainer {
     @Singular
     private List<String> permissions; // E.g quickshop.unlimited
     @NotNull
-    private String prefix; // E.g /qs <prefix>
+    private String prefix; // E.g /quickshop <prefix>
     @Nullable
-    private Function<@NotNull String, @Nullable Component> description; // Will show in the /qs help, provide an arg that pass a player locale code
+    private Function<@NotNull String, @Nullable Component> description; // Will show in the /quickshop help, provide an arg that pass a player locale code
 
     private boolean disabled; //Set command is disabled or not.
     @Nullable

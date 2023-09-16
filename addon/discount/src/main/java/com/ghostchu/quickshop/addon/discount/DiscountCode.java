@@ -227,7 +227,7 @@ public class DiscountCode {
                 }
             }
             case PLAYER_ALL_SHOPS -> {
-                if (shop.getOwner().equals(owner)) {
+                if (owner.equals(shop.getOwner().getUniqueId())) {
                     yield ApplicableType.APPLICABLE;
                 } else {
                     yield ApplicableType.NOT_APPLICABLE;
@@ -334,7 +334,7 @@ public class DiscountCode {
 
         @Override
         public double apply(double price) {
-            return Math.min(0.0d, CalculateUtil.multiply(price, percent));
+            return Math.max(0.0d, CalculateUtil.multiply(price, percent));
         }
 
         @Override

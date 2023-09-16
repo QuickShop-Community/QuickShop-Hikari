@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.permission;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
 import com.ghostchu.quickshop.api.permission.ProviderIsEmptyException;
 import net.milkbowl.vault.permission.Permission;
@@ -7,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +45,15 @@ public class VaultPermissionProvider implements PermissionProvider {
     @Override
     public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
         return api.has(sender, permission);
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull QUser sender, @NotNull String permission) {
+        Player player = sender.getBukkitPlayer().orElse(null);
+        if (player == null) {
+            return false;
+        }
+        return api.has(player, permission);
     }
 
     /**

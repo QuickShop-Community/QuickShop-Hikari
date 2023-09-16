@@ -1,18 +1,17 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Calling when shop price was changed
  */
 public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCancellable {
     @Nullable
-    private final UUID newTaxAccount;
+    private final QUser newTaxAccount;
     @NotNull
     private final Shop shop;
 
@@ -25,7 +24,7 @@ public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCanc
      * @param shop          Target shop
      * @param newTaxAccount The new shop tax account
      */
-    public ShopTaxAccountChangeEvent(@NotNull Shop shop, @Nullable UUID newTaxAccount) {
+    public ShopTaxAccountChangeEvent(@NotNull Shop shop, @Nullable QUser newTaxAccount) {
         this.shop = shop;
         this.newTaxAccount = newTaxAccount;
     }
@@ -42,7 +41,7 @@ public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCanc
     }
 
     @Nullable
-    public UUID getNewTaxAccount() {
+    public QUser getNewTaxAccount() {
         return newTaxAccount;
     }
 

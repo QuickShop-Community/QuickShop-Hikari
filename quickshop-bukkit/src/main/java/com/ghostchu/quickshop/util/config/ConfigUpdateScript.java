@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -61,7 +62,43 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1015)
     public void removePurgerRefund() {
         getConfig().set("purge.return-create-fee", null);
+        getConfig().set("shop.async-owner-name-fetch", null);
     }
+    @UpdateScript(version = 1016)
+    public void disableDefaultShopCorruptDeletion() {
+        getConfig().set("debug.delete-corrupt-shops", false);
+    }
+
+    @UpdateScript(version = 1017)
+    public void addQsToCommands() {
+        List<String> getAlias = getConfig().getStringList("custom-commands");
+        getAlias.add("qs");
+        getConfig().set("custom-commands", getAlias);
+    }
+
+    @UpdateScript(version = 1018)
+    public void tweakBackupPolicy() {
+        getConfig().set("purge.backup", null);
+        getConfig().set("backup-policy.shops-auto-purge", false);
+        getConfig().set("backup-policy.database-upgrade", true);
+        getConfig().set("backup-policy.startup", false);
+        getConfig().set("backup-policy.recovery", true);
+    }
+
+    @UpdateScript(version = 1019)
+    public void oldConfigCleanup() {
+        getConfig().set("plugin.OpenInv", null);
+        getConfig().set("plugin.LWC", null);
+        getConfig().set("plugin.BlockHub", null);
+        getConfig().set("plugin.NBTAPI", null);
+    }
+
+    @UpdateScript(version = 1020)
+    public void protectionCheckMonitorListeners() {
+        getConfig().set("shop.cancel-protection-fake-event-before-reach-monitor-listeners", true);
+    }
+
+
 
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
@@ -111,7 +148,11 @@ public class ConfigUpdateScript {
         if (!locales.exists()) {
             return;
         }
-        for (File localeDirectory : locales.listFiles()) {
+        File[] files = locales.listFiles();
+        if(files == null) {
+            return;
+        }
+        for (File localeDirectory : files) {
             if (!localeDirectory.isDirectory()) {
                 continue;
             }

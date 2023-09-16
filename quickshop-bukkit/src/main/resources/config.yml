@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1015
+config-version: 1020
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -183,7 +183,6 @@ limits:
 #By default, chests are added to this list.
 #This will only work for blocks that implement an InventoryHolder!
 #In other words, You cannot create shops with normal blocks like dirt or stone.
-#Enderchests can only be used as shop blocks when the "openinv" plugin is installed!
 #May cause unexpected behavior with some blocks...eg:
 #-Hopper shops suck the display item in,
 #-Furnace shops allow players whatever item they want in all 3 slots,
@@ -193,6 +192,7 @@ shop-blocks:
   - CHEST
   - TRAPPED_CHEST
   - ENDER_CHEST
+  - BARREL
 
 shop:
   #The cost to make a shop.
@@ -280,7 +280,7 @@ shop:
   #ProtocolLib Required
   per-player-shop-sign: false
 
-  #/qs find <itemName> command settings.
+  #/quickshop find <itemName> command settings.
   #This command lets users shop quickly without wasting time searching.
   finding:
     #Should QS use the old logic? (looking for closest shop and let players look at it)
@@ -317,7 +317,7 @@ shop:
   ignore-unlimited-shop-messages: true
 
   #Allow auto fetching of player shops.
-  #If you disable this, then the players need to use "/qs fetchmessage" to fetch the shops history messages.
+  #If you disable this, then the players need to use "/quickshop fetchmessage" to fetch the shops history messages.
   #Disabling it may cause database issues!
   auto-fetch-shop-messages: true
 
@@ -370,6 +370,9 @@ shop:
   #Integration checking will be checked after this, so disable it when it's conflicting with integration
   #If you don't want this, then please disable it and use the integration below instead.
   protection-checking: true
+
+  # Cancel the fake BlockBreakEvent before it passed to MONITOR level listeners.
+  cancel-protection-fake-event-before-reach-monitor-listeners: true
 
   #The list of worlds in which protection checking is disabled.
   protection-checking-blacklist:
@@ -441,17 +444,8 @@ shop:
   #This setting controls if QuickShop should ignore the item's custom display name.
   force-use-item-original-name: false
 
-  #[BETA] Disable the quickshop /qs size command stack size check to allow stack size go up the vanilla limit
+  #[BETA] Disable the quickshop /quickshop size command stack size check to allow stack size go up the vanilla limit
   disable-max-size-check-for-size-command: false
-
-  #[BETA] Should we async fetch the owner name?
-  #If you enable this option, the calls for ContainerShop#ownerName will return the cached result.
-  #If the request out of cache, QuickShop-Hikari will allow up to 20 ms for sync fetch username.
-  #Then it will turn to background and return "N/A" this time.
-  #This may cause some display problems (e.g. the info sign will show that the shop owner is N/A)
-  #But once the cache is completed for fetching in the background, the next request will return the correct username
-  #This is very useful for large servers, because sometimes players may accidentally load a large number of long ago shops, resulting in a large number of main route IO requests for username queries and causing a spike in lagging
-  async-owner-name-fetch: false
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.
@@ -466,29 +460,14 @@ plugin:
   #If you have Multiverse-Core, QuickShop will try to load worlds when the shop's world doesn't exist.
   #This will throw an exception and automatically repair the shops.
   Multiverse-Core: true
-
-  #If you have OpenInv, QuickShop will enable the EnderChest feature for shop-blocks.
-  OpenInv: true
-
   #If you have PlaceHolderAPI, QuickShop will use it to process all messages.
   PlaceHolderAPI:
     enable: true
     # The PAPI request caching expire time. (ms)
     # Low value may increase the database load and hurt server performance.
     cache: 900000
-
-  #If you have LWC/LWCX, QuickShop will check access.
-  LWC: true
-  #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
-
-  BlockHub:
-    enable: true
-    #Should BlockHub only be used for permission checks?
-    only: false
   #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
   WorldEdit: true
-  #Allow us use NBTAPI to direct modify the blockstate data
-  NBTAPI: true
 #Special in-game effect
 effect:
   #Sound related
@@ -555,6 +534,17 @@ protect:
   hopper-owner-exclude: false
   entity: true
 
+# The policy that QuickShop-Hikari will backup the databases
+backup-policy:
+  # Backup before purge the shops
+  shops-auto-purge: false
+  # Backup the database before perform database upgrade
+  database-upgrade: true
+  # Backup on every startup
+  startup: false
+  # Backup old databases when recovery the database from file
+  recovery: true
+
 #This option allows you to set custom item max stacksizes.
 #If nothing matches, then all items (*) will be used.
 #* means all items.
@@ -572,8 +562,7 @@ purge:
   enabled: false
   #Whether to purge shops automatically when server started
   at-server-startup: true
-  #Whether to export a backup file for recovery before each purge
-  backup: true
+  # The days of offline need to be purged
   days: 60
   # At this moment, QuickShop only compatible with Vanilla banning system (e.g Essentials using)
   banned: true
@@ -589,7 +578,7 @@ debug:
   shop-deletion: false
   #Delete corrupt shops while loading?
   #Setting this to false will disable the loading of corrupt shops!
-  delete-corrupt-shops: true
+  delete-corrupt-shops: false
 
 # Legacy data updater
 # Turn on this will make QuickShop to execute extra checks and may affect performance.
@@ -601,6 +590,7 @@ legacy-updater:
 # - playershop
 # - pshop
 custom-commands:
+  - qs
   - shop
   - chestshop
   - cshop

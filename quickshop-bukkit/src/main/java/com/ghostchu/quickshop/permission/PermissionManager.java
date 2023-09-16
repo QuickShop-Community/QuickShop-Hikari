@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.permission;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -44,5 +45,26 @@ public class PermissionManager {
             return false;
         }
     }
+
+    /**
+     * Check the permission for sender
+     *
+     * @param sender     The CommandSender you want check
+     * @param permission The permission node wait to check
+     * @return The result of check
+     */
+    public boolean hasPermission(@NotNull QUser sender, @NotNull String permission) {
+        try {
+            boolean result = provider.hasPermission(sender, permission);
+            if (Util.isDevMode()) {
+                Log.permission(sender.getDisplay() + " : " + permission + " -> " + result);
+            }
+            return result;
+        } catch (Exception th) {
+            plugin.logger().warn("Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
+            return false;
+        }
+    }
+
 
 }

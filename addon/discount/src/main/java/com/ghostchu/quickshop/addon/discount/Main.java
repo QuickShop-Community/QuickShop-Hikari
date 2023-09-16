@@ -27,7 +27,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-
+        codeManager.saveDatabase();
         HandlerList.unregisterAll((Plugin) this);
     }
 

@@ -31,8 +31,7 @@ safe-mode: <red>QuickShop ist im Sicherheitsmodus. Du kannst diesen Shop-Contain
 forbidden-vanilla-behavior: <red>Die Operation ist verboten da Sie nicht mit dem Vanilla verhalten übereinstimmt
 shop-out-of-space-name: <dark_purple>Dein Shop {0} ist voll!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>Paste Funktion wurde deaktiviert! Du kannst keinen technischen Support anfordern.<newline>Grund: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[eigener] <aqua>{0} <light_purple>{1}'
   hover:
@@ -52,8 +51,9 @@ quick-fill:
   header: '<yellow>Du hast mehrere Shops mit dem Namem "<green>{0}</green>", wähle einen um fortzufahren:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Nur für Admins) <light_purple>{0}<light_purple> hat die Berechtigungsprüfungen verweigert. Wenn dies nicht beabsichtigt ist, versuche <light_purple>{1}</light_purple> auf die Schwarze Liste der Listener hinzuzufügen. Konfigurationsguide (Auf Englisch): https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-Protection-listener-filter'
 average-price-nearby: '<green>Durchschnittspreis in der Umgebung: <yellow>{0}'
+inventory-check-global-alert: "<red>[Inventar Prüfung] <gray>Warnung! Ein QuickShop Anzeigeitem <gold>{2}</gold> wurde in einem Inventar bei <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray> gefunden, was nicht passieren sollte. Dies bedeutet oftmals, dass jemand einen Exploit böswillig ausnutzt um das Anzeigeitem zu duplizieren."
 digits-reach-the-limit: <red>Du hast das Limit an Dezimalstellen im Preis erreicht.
 currency-unset: <green>Shopwährung erfolgreich entfernt. Verwende jetzt Standardeinstellungen.
 you-cant-create-shop-in-there: <red>Du hast keine Berechtigung einen Shop and dieser Position zu erstellen.
@@ -93,6 +93,8 @@ not-enough-space: <red>Du hast nur Platz für <yellow>{0}</yellow> weitere!
 shop-name-success: <green>Shopname erfolgreich geändert zu <yellow>{0}</yellow>.
 shop-staff-added: <yellow>{0} <yellow>wurde erfolgreich als Shopmitarbeiter zu deinem Shop hinzugefügt.
 shops-recovering: Stelle Shops von Backups wieder her...
+virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>Bezieht sich auf ein Systemkonto mit dem selben Namen.</gray>\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>"
+real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Du hast <yellow>{0} <green>an Steuern zahlen müssen.
   owner: '<green>Besitzer: {0}'
@@ -103,7 +105,7 @@ menu:
   item: '<green>Gegenstand: <yellow>{0}'
   price-per: <green>Preis pro <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>für <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
+  item-name-and-price-tax: <yellow>{0} {1} <green>für</green> {2} <gray>(<green>{3}</green> an Steuern)</gray>
   successful-purchase: '<green>Erfolgreich gekauft:'
   price-per-stack: <green>Preis pro <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen
@@ -144,20 +146,14 @@ metric:
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>Shop {0}''s Transaktionen von {1} {2}:'
   player-hover: |-
-    <yellow>{0}
-    <gold>UUID: <gray>{1}
+    <yellow>{0}<newline><gold>UUID: <gray>{1}
   looking-up: <yellow>Führe erstellung von Statistiken aus, bitte warten...
   tax-hover: <yellow>{0} Steuern
   header-global: '<yellow>Transaktionen des Server für {0} {1}:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
   shop-hover: |-
-    <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
+    <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Welt: {4}<newline><gold>Besitzer: <gray>{5}<newline><gold>Shop-Art: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Preis: <gray>{8}
   time-hover: '<yellow>Zeit: {0}'
   amount-stack-hover: <yellow>{0}x Stacks
 permission-denied-3rd-party: '<red>Berechtigung verweigert: Drittanbieterplugin [{0}].'
@@ -172,12 +168,11 @@ nothing-to-flush: <green>Es gibt keine neuen Nachrichten zu deinem Shop.
 no-price-change: <red>Dies würde in keinen Preisunterschied enden!
 edition-confilct: QuicShop-Hikari mit QuickShop-Reremake installiert können gegenseitige Konflikte auslösen. Deinstalliere eines davon.
 inventory-unavailable: |-
-  <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
-  Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
+  <red>Dieser Shop Inventar-Wrapper existiert nicht oder ist ungültig. Verwendest du ein Add-on um das Shop-Inventar neu zu verbinden? Information: Inventar-Wrapper={0}, Wrapper Bereitstellung={1}, Symbol-Link={2}. Bitte kontaktiere die Server-Administratoren.
 file-test: Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)
 unknown-player: <red>Dieser Spieler existiert nicht. Bitte überprüfe, ob der Name korrekt geschrieben wurde.
 player-offline: <red>Der ausgewählte Spieler ist zurzeit Offline.
-player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
+player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VERKAUFEN
   buying: KAUFEN
@@ -189,8 +184,7 @@ language:
   name: '<yellow>Name: <gold>{0}'
   help-us: <green>[Hilf uns, die Übersetzungsqualität zu verbessern]
 warn-to-paste: |-
-  <yellow>Collecting data and uploading to Pastebin. This may take a while...
-  <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
+  <yellow>Sammle Daten und lade sie auf Pastebin hoch. Dies kann eine Weile dauern...<newline><red><bold>Warnung:</bold> Die Daten bleiben für eine Woche sichtbar! Es könnte deine Servereinstellungen und sensible Daten verraten. Stell sicher, dass du es nur an <bold>vertrauenswürdige Mitarbeiter/Entwickler</bold> weitergibst.
 how-many-sell-stack: <green>Schreib im Chat, wie viele Mengen du gerne <light_purple>VERKAUFEN</yellow> willst. Es sind <yellow>{0}<green> Items pro Menge und du kannst <yellow>{1}<green> Mengen verkaufen. Schreibe <aqua>{2}<green> um alle zu verkaufen.
 updatenotify:
   buttontitle: '[Jetzt Aktualisieren]'
@@ -233,7 +227,7 @@ updatenotify:
     - Paimont möchte dir sagen, dass QuickShop ein neues Update {0} hat!
   remote-disable-warning: '<red>Diese Version von QuickShop wurde vom Remote-Server als Deaktiviert markiert, was bedeuted, dass diese Version ernsthafte Probleme haben könnte. Erhalte vollständige Details auf unsere SpigotMC Seiter: {0}. Diese Warnung wird so lange auftauchen, bis du zu einer stabilen Version gewecheslt hast, wird aber die Performance deines Servers nicht beeinflussen.'
 purchase-out-of-stock: <red>Dieser Shop hat keine Items mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter um den Bestand wieder aufzufüllen.
-nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
+nearby-shop-entry: '<green>- Info:{0} <green>Preis:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>Distanz: <aqua>{5} <green>Block/Blöcke'
 chest-title: QuickShop Laden
 console-only: <red>Dieser Befehl kann nur in der Konsole ausgeführt werden.
 failed-to-put-sign: <red>Nicht genug Platz um den Shop herum um das Infoschild zu setzen.
@@ -256,7 +250,7 @@ no-double-chests: <red>Du kannst keinen Doppeltruhen-Shop erstellen.
 price-too-cheap: <red>Preis muss höher als <yellow>${0}<red> sein
 shop-not-exist: <red>Dieser Shop existiert nicht.
 bad-command-usage: <red>Schlechte Befehlsargumente!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>Dieser Befehlt entfernt <red>alle</red> Shops welche beschädigt sind, in nicht erlaubten Welten erstellt wurden, nicht erlaubte Items (ver)kaufen oder <red><bold>IN UNGELADENEN WELTEN EXISTIEREN</bold></red>. Erstell ein komplettes Backup deiner Shopdaten und fahre dann mit <aqua>/qs cleanghost confirm</aqua> fort.
 cleanghost-starting: <green>Beginne mit der suche nach Geistershops (Fehlende Containerblöcke). Alle nicht-existierenden Shops werden entfernt...
 cleanghost-deleting: <yellow>Ein beschädigter Shop <aqua>{0}</aqua> wurde gefunden aufgrund von {1}. Zum löschen markiert...
 cleanghost-deleted: <green><yellow>{0}</yellow> Shops wurden insgesammt gelöscht.
@@ -281,9 +275,7 @@ support-disable-reason:
   hot-reload: <yellow>Nicht unterstützter Hot reload vom Server. Starte den Server neu und versuch es erneut.
   outdated: <yellow>Diese Version von QuickShop ist nicht mehr aktuell. Aktualisiere es bevor du nach Support fragst!
   bad-hosts: |-
-    <yellow>The server's HOSTS have been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.
-    Windows: C:\\windows\\system32\\drivers\\etc\\hosts
-    Linux: /etc/hosts
+    <yellow>Die HOSTS des Servers wurden modifiziert und gewisse Funktionen von QuickShop benötigen eine Verbindung zu der Mojang API um zu funktionieren. Bitte behebe die HOSTS Einstellungen bevor du nach Support fragst.<newline>Windows: C:\windows\system32\drivers\etc\hosts<newline>Linux: /etc/hosts
   privacy: <yellow>Dieser Server läuft im Cracked (Offline) Modus. Wenn du einen Server unter einer Proxy betreibst und Online Modus ist auf dieser aktiviert, konfiguriere bitte die Proxy-relevanten Einstellungen korrekt.
   modified: <yellow>Datei-Integritätsprüfung fehlgeschlagen. Dieser QuickShop Build wurde von jemandem modifiziert.
   consolespamfix-installed: <yellow>ConsoleSpamFix ist installiert. Es wird Details von Fehlern verstecken. Deaktiviere es vorrübergehend während du nach Support fragst.
@@ -294,7 +286,7 @@ unknown-owner: Unbekannt
 restricted-prices: '<red>Eingeschränkter Preis für {0}: Mindestens {1}, maximal {2}'
 nearby-shop-this-way: <green>Shop ist {0} Blöcke von dir entfernt.
 owner-bypass-check: <yellow>Alle Prüfungen wurden umgangen. Handel erfolgreich! (Sie sind jetzt der Besitzer des Ladens!)
-april-rick-and-roll-easter-egg: '<green>---------------------------------------------------</green><br><bold><#ff0000>L</#ff0000><#ff2800>I</#ff2800><#ff5000>M</#ff5000><#ff7800>I</#ff7800><#ffa100>T</#ffa100><#ffc900>E</#ffc900><#fff100>D</#fff100><#e4ff00> </#e4ff00><#bbff00>T</#bbff00><#93ff00>I</#93ff00><#6bff00>M</#6bff00><#43ff00>E</#43ff00><#1aff00> </#1aff00><#00ff0d>E</#00ff0d><#00ff35>V</#00ff35><#00ff5d>E</#00ff5d><#00ff86>N</#00ff86><#00ffae>T</#00ffae><#00ffd6> </#00ffd6><#00ffff>-</#00ffff><#00d6ff>-</#00d6ff><#00aeff> </#00aeff><#0086ff>Q</#0086ff><#005dff>u</#005dff><#0035ff>i</#0035ff><#000dff>c</#000dff><#1a00ff>k</#1a00ff><#4300ff>S</#4300ff><#6b00ff>h</#6b00ff><#9300ff>o</#9300ff><#bb00ff>p</#bb00ff><#e400ff>-</#e400ff><#ff00f1>H</#ff00f1><#ff00c9>i</#ff00c9><#ff00a1>k</#ff00a1><#ff0078>a</#ff0078><#ff0050>r</#ff0050><#ff0028>i</#ff0028></bold><br><yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow><br><aqua>Claim it by watch the video tutorial below!</aqua><br><hover:show_text:"<gold>Click to open rewards claim page in your browser.</gold>\\<click:open_url:''https://youtu.be/dQw4w9WgXcQ">https://youtu.be/dQw4w9WgXcQ\</click></hover><br><green>---------------------------------------------------</green><br>'
+april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>ZEITLICH BEGRENZTES EVENT -- QuickShop-Hikari</bold></rainbow>\n<yellow>Hol dir deinen <gold>PREMIUM</gold> Partikeleffekt auf allen Servern mit QuickShop!</yellow>\n<aqua>Erhalte es durch das schauen des Video Tutorials hier</aqua>\n<hover:show_text:'<gold>Klicke um die Belohnungsseite im Browser zu öffnen.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
 signs:
   item-right: ''
   out-of-space: Kein Platz
@@ -338,37 +330,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  stack: '<green>Pro-Menge-Anzahl: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   price-hover: Klicke, um den Preis für das Item zu ändern.
-  remove: <bold><red>[Remove Shop]
+  remove: <red><bold>[Shop entfernen]
   mode-buying-hover: <yellow>Klicke, um den Shop in den VERKAUFEN-Modus zu ändern.
-  empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  empty: '<green>Leeren: Entferne alle Items <yellow>[<light_purple><bold>OK</bold></light_purple>]'
   stack-hover: <yellow>Klicke um die Anzahl an Items pro Menge zu ändern. Ändere es zu 1 für normales Verhalten.
   alwayscounting-hover: <yellow>Klicke um zu ändern, ob der Shop immer Zählen soll.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  freeze: '<yellow>Eingefroren: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   currency-hover: <yellow>Klicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
+  lock: '<yellow>Shop sperren: <aqua>{0}</aqua> [<light_purple><bold>Ändern</bold></light_purple>]'
+  mode-selling: '<green>Shop-Modus: <aqua>Verkaufen <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  currency: '<green>Währung: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   setowner-hover: <yellow>Klicke hier um den Besitzer zu wechseln.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  mode-buying: '<green>Shop-Modus: <aqua>Kaufen <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  unlimited: '<green>Unlimitiert: {0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   unlimited-hover: <yellow>Klicke hier um umzuschalten, ob der Shop unlimitiert ist.
   refill-hover: <yellow>Klicke hier um den Shop aufzufüllen.
   remove-hover: <yellow>Klicke um diesen Shop zu entfernen.
   toggledisplay-hover: <yellow>Ändere den Status des Display-Items für den Shop
-  refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  refill: '<green>Auffüllen: Füllt die Items auf <yellow>[<light_purple><bold>OK</bold></light_purple>]'
   freeze-hover: <yellow>Ändere den Freeze-Status des Shops.
   lock-hover: <yellow>Aktiviere/Deaktiviere den Sperrschutz des Shops.
   item-hover: <yellow>Klicke um das Shop Item zu ändern
   infomation: '<green>Shop Kontrollpanel:'
   mode-selling-hover: <yellow>Klicke, um den Shop in den KAUF-Modus zu ändern.
   empty-hover: <yellow>Klicke hier um den Shop zu leeren.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
 timeunit:
   behind: hinter
   week: <red>{0} Woche
@@ -447,11 +439,11 @@ command:
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
-  bulk-size-not-set: '<red>Usage: /qs size \<amount>'
-  no-type-given: '<red>Usage: /qs find \<item>'
+  bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
+  no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
   now-debuging: <green>Entwicklermodus erfolgreich aktiviert. Lade QuickShop neu...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill \<amount>
+  no-amount-given: <red>Keine Menge angegeben. Verwende <green>/qs refill <Menge><red>
   no-owner-given: <red>Kein Eigentümer angegeben
   disabled: '<red>Dieser Befehl ist deaktiviert: <yellow>{0}'
   bulk-size-now: <green>Handle jetzt {0}x {1}
@@ -482,8 +474,7 @@ trading-in-creative-mode-is-disabled: <red>Du kannst mit dem Shop nicht handeln 
 the-owner-cant-afford-to-buy-from-you: <red>Dies würde {0} kosten, aber der Besitzer hat nur {1}
 you-cant-afford-shop-naming: <red>Du kannst dir keine Shopbenennung leisten. Es kosted {0} um einen Shop zu benennen.
 inventory-error: |-
-  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
-  Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
+  <red>Fehler beim Verarbeiten des Inventar-Wrappers. Verwendest du ein Add-on welches das Shop-Inventar neu verbindet? Informationen: Fehler={0}, Inventar-Wrapper={1}, Wrapper-Typ={2}, Wrapper-Bereitstellung={3}, Symbol-Link={4}. Bitte kontaktiere die Server-Administratoren.
 integrations-check-failed-create: <red>Integrierung {0} hat die Shop-Erstellung verweigert
 shop-out-of-space: <dark_purple>Dein Shop bei {0}, {1}, {2} ist jetzt voll.
 admin-shop: AdminShop
@@ -502,7 +493,7 @@ permission:
   header: <green>Details Shop-Berechtigungen
   header-player: <green>Details Shop-Berechtigungen für {0}
   header-group: <green>Details Shop-Berechtigungen für Gruppe {0}
-  table: <gold><bold>{0}</bold>:</gold> <gray>{1}
+  table: <gold><b>{0}</b>:</gold> <gray>{1}</gray>
   item:
     purchase: <yellow>Berechtigung um Spielern, welche es haben, das kaufen vom Shop zu erlauben (Beinhaltet kaufen und verkaufen).
     show-information: <yellow>Berechtigung welche Benutzern erlaubt, die Shop-Informationen zu sehen (Shop-Infopanel zu öffnen).
@@ -532,14 +523,12 @@ player-in-group: <green>Spieler {0} ist in Gruppe <aqua>{1}</aqua> in diesem Sho
 permission-required: <red>Du hast keine Berechtigung {0} um das in diesem Shop zu tun.
 no-permission-detailed: <red>Du hast keine Berechtigung <yellow>{0}</yellow> um dies zu tun.
 paste-uploading: <aqua>Bitte warte... Lade den Paste auf Pastebin hoch...
-paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
+paste-created: '<green>Paste erstellt. Klicke um im Browser zu öffnen: <yellow>{0}</yellow><newline><red>Warnung: <gray>Sende niemals Pastes zu Personen denen du nicht traust.'
 paste-created-local: |-
-  <green>Paste created and saved to your local disk at {0}
-  <red>Warning: <gray>Never send pastes to people you don't trust.
+  <green>Paste erstellt und auf deiner lokalen Festplatte gespeichert unter: {0}<newline><red>Warnung: <gray>Sende niemals Pastes zu Personen denen du nicht traust.
 paste-created-local-failed: <red>Konnte Paste nicht auf lokaler Festplatte speicher, bitte überprüfe deine Festplatte.
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file
+  <gray><bold>TIPPS:</bold> Dein aktuelles Land scheint die Verbindung zum CloudFlare Workers Service blockiert zu haben. QuickShop Pastes können eventuell nicht korrekt geladen werden.<newline><gray>Wenn die nachfolgenden Aktionen fehlschalgen, versuche den --file Parameter hinzuzufügen um einen lokalen paste zu erstellen: <dark_gray>/qs paste --file</dark_gray>
 paste-upload-failed: <red>Konnte Paste nicht auf {0} hochladen, versuche anderen Pastebin-Anbieter...
 paste-upload-failed-local: <red>Hochladen von Paste fehlgeschlagen, versuche lokale Paste zu erstellen...
 command-incorrect: '<red>Befehlsnutzung falsch, schreibe /qs help um die Hilfe zu sehen. Verwendung: {0}.'
@@ -556,16 +545,17 @@ lookup-item-test-found: '<gold>Test: <green>Das Item in deiner Hand wurde als <a
 lookup-item-removed: <green>Das angegebene Item <aqua>{0}</aqua> wurde erfolgreich von der Suchtabelle entfernt.
 internal-error: <red>Ein interner Fehler ist aufgetreten. Bitte kontaktiere den Serveradministrator.
 argument-cannot-be: <red>Das Argument <aqua>{0}</aqua> kann nicht <yellow>{1}</yellow> sein.
-argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
+argument-must-between: <red>Der Wert von <aqua>{0}</aqua> muss zwischen <yellow>{1}</yellow> und <yellow>{2}</yellow> sein
 invalid-percentage: <red>Prozentsatz ungültig, du musst '%' nach der Nummer hinzufügen.
 display-fallback: |-
   <red>Aufgrund eines internen Fehlers wird eine Fallback-Nachricht angezeigt.
   Der Wert dieses Items wird eventuell nicht lokalisiert oder richtig verarbeitet.
   Bitte kontaktiere den Server Administrator.
 not-a-valid-time: |-
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
-  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
+  <red>Der Text <yellow>{0}</yellow> ist kein gültiger Zeitstempel. Bitte gib eine <aqua>Zulu-Zeit (ISO 8601)</aqua> oder <aqua>Unix-Epoch-Zeit in Sekunden</aqua> ein.
+  <gold>Gültiges Zeitstempel Beispiel: (Für Samstag, 17. Dez. 2022 10:31:37 GMT):</gold>
+  <aqua>-</aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu-Teit)</grey>
+  <aqua>-</aqua> <yellow>1671273097</yellow> <grey>(Unix-Epoch-Zeit in Sekunden)</grey>
 invalid-past-time: <red>Du kannst keine Zeit in der Vergangenheit setzen.
 debug:
   arguments-invalid: <red>Angegebene Argumente <yellow>{0}</yellow> sind ungültig.
@@ -574,12 +564,12 @@ debug:
   operation-invalid: <red>Du musst eine gültige Operation angeben.
   invalid-base64-encoded-sql: <red>Die angegebene SQL-Operation muss Base64 kodiert sein.
   warning-sql: |-
-    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
-    <red>Don't confirm this if you don't trust who send you this.
+    <red><bold>Warnung:</bold></red> <yellow>Du führst eine SQL-Anweisung aus. Diese könnte deine Datenbank beschädigen oder sämtliche Daten in dieser vernichten, selbst wenn sie zu einem anderen Plugin gehört.
+    <red>Bestätige diese Aktion nicht, wenn du dem sender dieser nicht traust.
   warning-sql-confirm: <yellow>Um diese gefährliche Aktion zu bestätigen, führe <aqua>/qs debug database sql confirm {0}</aqua> innerhalb der nächsten 60 Sekunden aus.
   warning-sql-confirm-hover: <yellow>Klicke um diese gefährliche Aktion zu bestätigen.
   sql-confirm-not-found: <yellow>Kann die angegebene Aktion nicht finden. Sie ist eventuell ungültig oder is abgelaufen.
-  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
+  sql-executing: '<yellow>Führe SQL-Answeisung aus: <aqua>{0}</aqua>'
   sql-completed: <green>Aktion abgeschlossen! {0} Zeilen betroffen.
   sql-exception: <red>Ein Fehler ist beim ausführen der SQL-Abfrage aufgetreten. Überprüfe die Konsole für Details!
   sql-disabled: '<red>Aus Sicherheitsgründen sind SQL-Abfragen in diesem Server deaktiviert. Wenn du diese Funktion wirklich nutzen willst, kannst den folgenden Argument in deinen Start-Parametern aktivieren: <aqua>{0}</aqua> mit Wert `true`.'
@@ -590,14 +580,14 @@ debug:
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>Entferne <aqua>{0}</aqua> Shops aus Speicher...
   force-shop-loader-reload-reloading-shop-loader: <yellow>Rufe Shop-Loader erneut auf, um alle Shops aus der Datenbank neu zu laden...
   force-shop-loader-reload-complete: <green>Shop-Loader hat alle Shops neu geladen!
-  toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}
-  shop-internal-data: '<yellow>The internal data of this shop: </yellow>{0}'
+  toggle-shop-loaded-status: <aqua>Ändere den geladen Status dieses Shops zu <gold>{0}</gold>
+  shop-internal-data: '<yellow>Die internen Daten dieses Shops: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: <red>Die angegebene Class <yellow>{0}</yellow> ist keine gültige Bukkit Event-Class.
   update-player-shops-signs-no-username-given: <red>Du musst einen gültigen Spielernamen angeben.
   update-player-shops-signs-create-async-task: <yellow>Erstelle async Aufgaben zu erzwingen des neu laden von Schildern...
-  update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}'
+  update-player-shops-player-selected: '<yellow>Spieler ausgewählt: <gold>{0}</gold>'
   update-player-shops-player-shops: <yellow>Insgesamt <gold>{0}</gold> Shops warten auf Updates.
-  update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}'
+  update-player-shops-per-tick-threshold: '<yellow>Maximale Anzahl Shops die pro Tick aktualisiert werden können: <gold>{0}</gold>'
   update-player-shops-complete: <green>Aufgabe erfolgreich. Aktualisierung benötigte <yellow>{0}ms</yellow>.
   update-player-shops-task-started: <gold>Die Aufgaben wurden gestartet. Bitte warte, bis sie abgeschlossen sind.
 database:
@@ -609,10 +599,10 @@ database:
   status-good: <green>Gut
   status-bad: <yellow>Wartungsarbeiten erforderlich
   isolated: '<yellow>Isolierte Daten:'
-  isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
-  isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
-  isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}'
-  isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
+  isolated-data-ids: '<aqua>└<yellow> Datensätze: <gold>{0}</gold>'
+  isolated-shop-ids: '<aqua>└<yellow> Shop-Indexe: <gold>{0}</gold>'
+  isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}</gold>'
+  isolated-external-caches: '<aqua>└<yellow> Externe Zwischenspeicher: <gold>{0}</gold>'
   last-purge-time: <yellow>Letzter Trimmzeitpunkt um {0}
   report-time: <yellow>Letzter scan am {0}
   auto-scan-alert: <yellow>Die QuickShop Datenbank auf diesem Server benötigt Wartungsarbeiten. <gold>{0}</gold> isolierte Daten zum entfernen gefunden.
@@ -621,16 +611,15 @@ database:
   auto-trim-started: <green>Auto-Bereinigung gestartet. Bitte warten...
   trim-start: <green>Datenbank bereinigung gestartet. Bitte warten...
   trim-exception: <red>Datenbank-Bereinigung fehlgeschlagen. Ein Fehler ist während der Aktion aufgetreten. Überprüfe die Serverkonsole.
-  generated-at: '<yellow>Generated at: <gold>{0}'
+  generated-at: '<yellow>Generiert am: <gold>{0}</gold>'
   purge-date: <red>Du musst ein Datum angeben.
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>Diese Aktion wird den Verlauf welcher in deiner Datenbank gespeichert ist löschen, inklusive Shop erstellungen/änderungen/löschungen, käufe, transaktionen und System logs. Das löschen dieser Daten kann zwar Speicherplatz freigeben, aber semtliche Verlaufs-Metriken gehen verloren, und andere Plugins die diese benötigen werden nicht mehr funktionieren. Um diese Aktion weiter auszuführen, führe `/qs database purgelogs <vor-tage> confirm` aus
   purge-task-created: <green>Aufgabe erstellt! Datenbank wird die Verlaufs-Einträge leise im Hintergrund entfernen.
   purge-done-with-line: <green>Lösch-Auftrag beendet. Total <gold>{0}</gold> Linien von Datenbank gelöscht.
   purge-done-with-error: <red>Lösch-Auftrag fehlgeschlagen. Überprüfe die Server-Konsole für Details.
   purge-players-cache: <yellow>Bitte warten. Leere Spieler-Caches...
   purge-players-completed: |-
-    <green>Successfully purged {0} players caches from both memory and database.
-    <aqua>Note: You server performance may impact by this operation.
+    <green>{0} Spieler-Caches erfolgreich aus dem Speicher und der Datenbank entfernt.<newline><aqua>Hinweis: Deine Serverleistung könnte durch diese Vorgang beeinträchtigt werden.
   purge-players-error: <red>Konnte Spieler-Caches nicht leeren, bitte überprüfe die Serverkonsole.
   suggestion:
     trim: <yellow>Diese Datenbank benötigt eine Bereinigung von isolierten Daten. Führe <aqua>/qs database trim</aqua> aus um die Datenbank zu bereinigen.
@@ -640,16 +629,14 @@ exporting-failed: <red>Der Export der Datenbank ist fehlgeschlagen, bitte überp
 exported-database: <green>Datenbank exportiert nach <yellow>{0}</yellow>.
 importing-not-found: <red>Datei <yellow>{0}</yellow> nicht gefunden. Stelle sicher, dass der Dateipfad gültig ist.
 importing-early-warning: |-
-  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue.
+  <red><bold>Warnung:</bold> <yellow>Das Backup wird in die aktuelle Datenbank importiert. Sämtliche bereits existierenden Daten werden entfernt und sind für immer verloren, sofern du kein Backup gemacht hast.<newline><red>Bist du sicher dass du das Import-Verfahren fortsetzen willst?</red> Schreibe <aqua>/qs recovery confirm</aqua> um fortzufahren.
 importing-database: <green>Datenbank wird aus dem Backup importiert, bitte warten...
 importing-failed: <red>Import der Datenbank fehlgeschlagen, bitte überprüfe die Serverkonsole.
 imported-database: <green>Datenbank importiert von <yellow>{0}</yellow>.
 transfer-sent: <green>Shop-Übertragungsanfrage an <yellow>{0}</yellow> gesendet.
 transfer-request: <yellow>Spieler <aqua>{0}</aqua> möchte gerne seine Shops auf dich übertragen. Möchtest du diese Anfrage akzeptieren?
 transfer-ask: |-
-  <gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
 transfer-accepted-fromside: <green>Spieler <aqua>{0}</aqua> hat deinen Shop-Übertragungsantrag akzeptiert.
 transfer-accepted-toside: <green>Du hast <aqua>{0}</aqua>'s Tranfer-Anfrage akzeptiert.
 transfer-rejected-fromside: <red>Spieler <aqua>{0}</aqua> hat deine Shop-Übertragungsanfrage abgelehnt.
@@ -662,7 +649,7 @@ benefit-removed: <red>Spieler wurde von Shop-Vorteilen entfernt.
 benefit-added: <green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugefügt!
 benefit-updated: <green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!
 benefit-query: <green>Dieser Shop hat <yellow>{0}</yellow> Spieler in der Vorteilsliste!
-benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%
+benefit-query-list: '<yellow> - </yellow><white>Spieler <gold>{0}</gold>. Vorteil: <gold>{1}%</gold>/white>'
 tag-added: '<green><aqua>#{0}</aqua> erfolgreich als Tag zu diesem Shop hinzugefügt!'
 tag-add-duplicate: '<red>Der Tag <aqua>#{0}</aqua> existiert bereits für diesen Shop!'
 tag-removed: '<green>Tag <aqua>#{0}</aqua> efolgreich von diesem Shop entfernt!'
@@ -670,13 +657,13 @@ tag-remove-not-exists: '<red>Der Tag <aqua>#{0}</aqua> existiert für diesen Sho
 tag-cleared: <green>Alle Tags erfolgreich von diesem Shop entfernt!
 tag-shops-cleared: '<green><aqua>#{0}</aqua> wurde erfolgreich von all deinen getaggten Shops entfernt!'
 tag-query: '<green>Dieser Shop hat <yellow>{0}</yellow> Tags:'
-tag-query-listing: '<yellow> - <aqua>#{0}'
+tag-query-listing: '<yellow> - <aqua>#{0}</aqua>'
 tag-query-no-tag: <red>Dieser Shop hat keine Tags.
 tag-query-shops: '<green>Dieser Tag hat <yellow>{0}</yellow> Shops:'
-tag-query-shops-listing: <yellow> - <aqua>{0}
+tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green><yellow>{0}</yellow> Shops erfolgreich verarbeitet.
-batch-operations-based-on-tags-have-failure: <yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed.
-batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}'
+batch-operations-based-on-tags-have-failure: <yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.\nGrund: <gold>{2}</gold>"
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>Die Fehlermeldungen wurden dir vor dieser Nachricht im Chat gesendet.
 addon:
   towny:
@@ -687,7 +674,7 @@ addon:
     make-shop-no-longer-owned-by-town: <green>Du hast den Shop-Besitzer zurückgesetzt. Er gehört nun wieder dem original Shop-Besitzer.
     make-shop-owned-by-nation: <green>Du hast den Shop-Besitzer zur Nation <yellow>{0}</yellow> geändert.
     make-shop-no-longer-owned-by-nation: <green>Du hast den Shop-Besitzer zurückgesetzt. Er gehört nun wieder dem original Shop-Besitzer.
-    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission
+    shop-owning-changing-notice: <grey>Dieser Shop gehört nun einer Stadt/Nation. Der ursprüngliche Shopeigentümer wurde automatisch als Administrator hinzugefügt. Ändere oder füge weitere Besitzer/Mitarbeiter mit dem Befehl /qs permission hinzu
     target-shop-already-is-town-shop: <red>Der Zielshop ist bereits in Besitz einer Stadt.
     target-shop-already-is-nation-shop: <red>Der Zielshop ist bereits im Besitz einer Nation.
     target-shop-not-in-town-region: <red>Der Zielshop ist nicht in der Stadt.
@@ -734,7 +721,7 @@ addon:
     feature-disabled-for-user: <aqua>Du hast die <gold>{0}</gold> Benachrichtigungen <red>deaktiviert</red>.
     link-help: <yellow>Dieser Server benutzt <gold>{0}</gold> für Discord-funktionalität. Bitte verwende <green>{0}</green> um deinen Discord Account zu verbinden.
     save-notifaction-exception: <red>Ein Fehler ist beim Speichern deiner Discord Benachrichtigungseinstellungen aufgetreten. Bitte kontaktiere den Server Administrator.
-    feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}
+    feature-status-changed: <green>Benachrichtigungsstatus für <aqua>{0}</aqua> erfolgreich zu <gold>{1}</gold> gesetzt
     commands:
       discord:
         description: <yellow>Verwalte deine QuickShop Discord Einstellungen
@@ -908,8 +895,8 @@ addon:
         {
         "embed":
           {
-              "title": ":mailbox_with_mail: Your shop has run out of space",
-              "description": "Your shop inventory is full of items!\\nYou need empty your shop container to free the space then you can continue to accept new items.",
+              "title": ":mailbox_with_mail: Dein Shop hat keinen Platz mehr",
+              "description": "Dein Shopinventar ist voller Items!\nDu musst deinen Shop leeren um weitere Items akzeptieren zu können.",
               "color": 16065893,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -922,7 +909,7 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord Benachrichtigung",
                   "icon_url": ""
               },
               "fields": [
@@ -938,8 +925,8 @@ addon:
         {
             "embed":
                 {
-                    "title": ":mailbox_with_no_mail: Your shop has run out of stock",
-                    "description": "Your shop inventory is empty now!\\nYou need to refill the shop container with items to continue selling items!",
+                    "title": ":mailbox_with_no_mail: Dein Shop ist ausverkauft",
+                    "description": "Dein Shopinventar ist jetzt leer!\nDu musst ihn wieder auffüllen um weiterhin Items verkaufen zu können.",
                     "color": 16065893,
                     "author": {
                         "name": "QuickShop-Hikari",
@@ -952,7 +939,7 @@ addon:
                         "url": ""
                     },
                     "footer": {
-                        "text": "QuickShop-Hikari Discord Notification",
+                        "text": "QuickShop-Hikari Discord Benachrichtigung",
                         "icon_url": ""
                     },
                     "fields": [
@@ -1211,8 +1198,8 @@ addon:
       shop-permission-changed: |
         {
             "embed": {
-                "title": ":closed_lock_with_key: Your shop permission settings has been changed",
-                "description": "One of your shop's permission setting has been changed.",
+                "title": ":closed_lock_with_key: Die Berechtigungseinstellungen deines Shops wurden geändert",
+                "description": "Die Berechtigungseinstellungen eines deiner Shops wurden geändert.",
                 "color": 15879747,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1225,7 +1212,7 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
                     "icon_url": ""
                 },
                 "fields": [
@@ -1235,12 +1222,12 @@ addon:
                         "inline": false
                     },
                     {
-                        "name": "Player",
+                        "name": "Spieler",
                         "value": "%%change-permission.player%%",
                         "inline": true
                     },
                     {
-                        "name": "Assign to group",
+                        "name": "Zu Gruppe hinzugefügt",
                         "value": "%%change-permission.to-group%%",
                         "inline": true
                     },
@@ -1250,8 +1237,8 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "Permission granted (Inherit from group)",
-                        "value": "```\\n%%change-permission.perms-list%%\\n```",
+                        "name": "Erlaubte Berechtigungen (Übernommen von Gruppe)",
+                        "value": "```\n%%change-permission.perms-list%%\n```",
                         "inline": false
                     }
                 ]
@@ -1273,14 +1260,14 @@ addon:
     tab-complete:
       discount:
         general:
-          code: \<code>
+          code: <code>
         create:
           rate: |
-            Command Hint:
-            Argument: \<rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            Befehlshinweis:
+            Argument: <rate>
+            Beschreibung: Der aktuelle Prozentsatz oder Geld, welches du verdienen wirst
+            Eingabe `30%` = Preis * 0.3
+            Eingabe `50` = Preis -50
           max-usage: |
             Befehlshinweis:
             Argument: [Max verwendungen]
@@ -1300,10 +1287,10 @@ addon:
             Zulu Beispiel: 2022-12-17T10:31:37Z
             UNIX Beispiel: 1671273097
     discount-code-already-exists: <red>Sorry, der Name deines Rabattcodes wird bereits verwendet.
-    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
+    invalid-discount-code-regex: '<red>Der Rabattcode muss dem Regex entsprechen: <yellow>{0}</yellow>'
     invalid-discount-code: <red>Der Rabattcode ist ungültig.
-    discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}
+    discount-code-added: <green>Dein Rabattcode <yellow>{0}</yellow> wurde dem Shop <aqua>{1}</aqua> hinzugefügt.
+    discount-code-removed: <green>Dein Rabattcode <yellow>{0}</yellow> wurde vom Shop <aqua>{1}</aqua> entfernt.
     invalid-code-type: <red>Der Code-Typ <yellow>{0}</yellow> ist ungültig.
     invalid-usage-restriction: <red>Die Nutzungsbeschränkung <yellow>{0}</yellow> ist ungültig.
     invalid-threshold-restriction: <red>Die Schwellenwerdbeschränkung <yellow>{0}</yellow> ist ungültig.
@@ -1315,10 +1302,10 @@ addon:
     discount-code-uninstalled: <green>Du hast deinen Rabattcode deaktiviert.
     discount-code-query-nothing: <red>Du hattest keinen aktiven Rabattcode!
     discount-code-query: '<green>Du verwendest den Rabattcode <yellow>{0}</yellow>.'
-    discount-code-applicable: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop!'
-    discount-code-applicable-with-threshold: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>not applicable</bold> in this shop!
-    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <bold><yellow>{0}</yellow></bold>, discount are not applied.
+    discount-code-applicable: '<color:#bcef26>Dein Rabattcode <yellow><bold>{0}</bold></yellow> ist in diesem Shop <bold>verwendbar</bold>!'
+    discount-code-applicable-with-threshold: '<color:#bcef26>Dein Rabattcode <yellow><bold>{0}</bold></yellow> ist auf diesen Shop <bold>anwendbar</bold> aber nur auf einen Kauf von über <yellow>{1}</yellow> in einem einzigen Kauf.'
+    discount-code-not-applicable: <red>Dein Rabattcode <yellow><bold>{0}</bold></yellow> ist <bold>nicht anwendbar</bold> auf diesen Shop!
+    discount-code-reach-the-limit: <red>Du hast das Nutzungslimit für den Rabattcode <yellow><bold>{0}</bold></yellow> erreicht. Rabatte werden nicht mehr angewendet.
     discount-code-no-permission: <red>Du hast keine Berechtigung, einen Rabattcode in diesem Shop anzuwenden!
     discount-code-has-been-expired: <red>Dein Rabatt ist abgelaufen!
     discount-code-config-shop-added: <green>Shop erfolgreich in deine Rabattcode Erlaubt-Liste hinzugefügt.
@@ -1328,16 +1315,16 @@ addon:
     discount-code-config-expire: <green>Rabattcode Ablaufdatum erfolgreich geändert.
     discount-code-config-applied: <green>Rabattcode erfolgreich konfiguriert!
     discount-code-created-successfully: |
-      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
-      <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
+      <green>Dein Rabattcode <yellow>{0}</yellow> wurde erfolgreich erstellt!
+      <gold>Geltungsbereich: <aqua>{1}</aqua></gold>.
+      <gold>Mit anderen teilen: <color:#bcef26>{2}</color:#bcef26></gold>.
+      <yellow>Geltungsbereich nur für <gray>bestimmte Shops</gray>: Um Shops zu deiner Rabattcode Erlaubt-Liste hinzuzufügen, schaue einen Shop an und verwende den <aqua>{3}</aqua> Befehl.
+      <yellow>Du kannst <aqua>/qs discount config {0}</aqua> verwenden um deinen Rabattcode jedezeit zu ändern.
     discount-code-under-threshold: <red>Der Rabattcode konnte nicht auf deinen Kauf angewendet werden, da der totale Wert unter dem Rabattcode-Schwellenwert von <yellow>{0}</yellow> lag.
-    percentage-off: '<bold><#bcef26>-{0}%'
-    fixed-off: '<bold><#bcef26>-{0}'
-    discount-code-list: '<gold>Listing your discount codes:'
-    discount-code-applied-in-purchase: '<#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    percentage-off: '<bold><color:#bcef26>-{0}%</color:#bcef26></bold>'
+    fixed-off: '<bold><color:#bcef26>-{0}</color:#bcef26></bold>'
+    discount-code-list: '<gold>Auflistung deiner Rabattcodes:</gold>'
+    discount-code-applied-in-purchase: '<color:#bcef26>Dein Rabattcode <yellow>{0}</yellow> wurde auf diesen Einkauf angewendet und du hast <gold>{1}</gold> gespart!'
     scope:
       this-shop: '{0}'
       your-shops-owned: All deine Shops (Im Besitz)
@@ -1349,17 +1336,17 @@ addon:
       SPECIFIC_SHOPS: Bestimmte Shops
     discount-code-details: |-
       <gold>Code: <yellow>{0}</yellow>
-      Creator: <yellow>{1}</yellow>
-      Applied to: <yellow>{2}</yellow>
-      Remaining usage: <yellow>{3}</yellow>
-      Expired on: <yellow>{4}</yellow>
-      Threshold: <yellow>{5}</yellow>
-      Discount: <yellow>{6}</yellow><br>
+      <gold>Ersteller: <yellow>{1}</yellow>
+      <gold>Angewendet auf: <yellow>{2}</yellow>
+      <gold>Verbleibende Nutzungen: <yellow>{3}</yellow>
+      <gold>Läuft ab: <yellow>{4}</yellow>
+      <gold>Schwellenwert: <yellow>{5}</yellow>
+      <gold>Rabatt: <yellow>{6}</yellow>
   list:
     commands:
       list: <yellow>Zeigt alle Shops welche dir oder einem bestimmten Spieler gehören
     table-prefix: '<yellow><green>{0}</green>''s Shops <gray>(Gesamt: {1})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3}, {4}, {5}</gray>\n<aqua>Preis <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: <red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen.
   limited:
@@ -1373,8 +1360,8 @@ addon:
     success-remove: <green>All Einschränkungen in diesem Shop wurden erfolgreich entfernt
     success-setup: <green>Einschränkungseinstellungen für diesen Shop wurden erfolgreich gespeichert
     trade-limit-reached-cancel-reason: <red>Einschränkung dieses Shops erreicht
-    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
-    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}'
+    remains-limits: '<gold>Deine verbleibendes Kaufvolumen in diesem Shop: <yellow>{0}</yellow>'
+    remains-limits-before-reset-period-note: '<gold>Dieser Shop erneuert sein Kaufvolumen alle <yellow>{0}</yellow>'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} für x{4} @ {5}'
@@ -1442,7 +1429,7 @@ suite:
       <yellow>{0}
       <gray>{1} {2}, {3}, {4}
       <aqua>{5} - <yellow>{6}
-      {7} items each stack.
+      <yellow>{7} Items pro Stack.
   shopitemonly:
     message: <red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen.
 compatibility:

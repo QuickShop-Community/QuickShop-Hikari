@@ -37,7 +37,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             shop.setShopName(null);
             plugin.text().of(sender, "shop-name-unset").send();
             return;

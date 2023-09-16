@@ -4,8 +4,10 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
 import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.eventmanager.BukkitEventManager;
 import com.ghostchu.quickshop.eventmanager.QSEventManager;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -27,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A helper to resolve issue around other plugins with BlockBreakEvent
@@ -82,6 +85,7 @@ public class PermissionChecker implements Reloadable {
     @NotNull
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
         try (PerfMonitor ignored = new PerfMonitor("Build Permission Check", Duration.of(1, ChronoUnit.SECONDS))) {
+            QUser qUser = QUserImpl.createFullFilled(player);
             if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
                 Log.debug("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
                 return Result.SUCCESS;
@@ -90,6 +94,9 @@ public class PermissionChecker implements Reloadable {
             if (!usePermissionChecker) {
                 return Result.SUCCESS;
             }
+
+            AtomicBoolean qsCancelling = new AtomicBoolean(false);
+
             final Result isCanBuild = new Result();
 
             BlockBreakEvent beMainHand;
@@ -100,6 +107,7 @@ public class PermissionChecker implements Reloadable {
                 public void setCancelled(boolean cancel) {
                     //tracking cancel plugin
                     if (cancel && !isCancelled()) {
+                        if (qsCancelling.get()) return;
                         Log.debug("An plugin blocked the protection checking event! See this stacktrace:");
                         for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
                             Log.debug(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
@@ -122,7 +130,7 @@ public class PermissionChecker implements Reloadable {
                 }
             };
             // Call for event for protection check start
-            this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
+            this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), qUser, ProtectionCheckStatus.BEGIN, beMainHand), null);
             beMainHand.setDropItems(false);
             beMainHand.setExpToDrop(0);
 
@@ -134,7 +142,7 @@ public class PermissionChecker implements Reloadable {
                         // Call for event for protection check end
                         eventManager.callEvent(
                                 new ShopProtectionCheckEvent(
-                                        block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
+                                        block.getLocation(), qUser, ProtectionCheckStatus.END, beMainHand), null);
                         if (!event.isCancelled()) {
                             //Ensure this test will no be logged by some plugin
                             beMainHand.setCancelled(true);
@@ -144,7 +152,16 @@ public class PermissionChecker implements Reloadable {
                     }
                 }
             }, plugin.getJavaPlugin());
-            this.eventManager.callEvent(beMainHand);
+            this.eventManager.callEvent(beMainHand, (event) -> {
+                if (plugin.getConfig().getBoolean("shop.cancel-protection-fake-event-before-reach-monitor-listeners")) {
+                    if (event instanceof BlockBreakEvent blockBreakEvent) {
+                        qsCancelling.set(true);
+                        blockBreakEvent.setCancelled(true);
+                        blockBreakEvent.setDropItems(false);
+                        qsCancelling.set(false);
+                    }
+                }
+            });
             return isCanBuild;
         }
     }

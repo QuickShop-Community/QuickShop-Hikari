@@ -31,8 +31,8 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 1) {
-            plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
+        if (parser.getArgs().isEmpty()) {
+            plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
         Shop shop = getLookingShop(sender);
@@ -52,14 +52,14 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             case "remove" -> removeBenefit(sender, shop, parser);
             case "query" -> queryBenefit(sender, shop, parser);
             default ->
-                    plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
+                    plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
         }
 
     }
 
     private void addBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 3) {
-            plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
             return;
         }
         String player = parser.getArgs().get(1);
@@ -86,34 +86,36 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 return;
             }
             String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
-            try {
-                double percent = Double.parseDouble(percentageStr);
-                if (Double.isInfinite(percent) || Double.isNaN(percent)) {
-                    plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
-                    return;
+            Util.mainThreadRun(() -> {
+                try {
+                    double percent = Double.parseDouble(percentageStr);
+                    if (Double.isInfinite(percent) || Double.isNaN(percent)) {
+                        plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
+                        return;
+                    }
+                    if (percent <= 0 || percent >= 100) {
+                        plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
+                        return;
+                    }
+                    Benefit benefit = shop.getShopBenefit();
+                    benefit.addBenefit(uuid, percent / 100d);
+                    shop.setShopBenefit(benefit);
+                    plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
+                } catch (NumberFormatException e) {
+                    plugin.text().of(sender, "not-a-number", percentageStr).send();
+                } catch (Benefit.BenefitOverflowException e) {
+                    plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
+                } catch (Benefit.BenefitExistsException e) {
+                    plugin.text().of(sender, "benefit-exists").send();
                 }
-                if (percent <= 0 || percent >= 100) {
-                    plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
-                    return;
-                }
-                Benefit benefit = shop.getShopBenefit();
-                benefit.addBenefit(uuid, percent / 100d);
-                shop.setShopBenefit(benefit);
-                plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
-            } catch (NumberFormatException e) {
-                plugin.text().of(sender, "not-a-number", percentageStr).send();
-            } catch (Benefit.BenefitOverflowException e) {
-                plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
-            } catch (Benefit.BenefitExistsException e) {
-                plugin.text().of(sender, "benefit-exists").send();
-            }
+            });
         });
 
     }
 
     private void removeBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 2) {
-            plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
+            plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
         String player = parser.getArgs().get(1);

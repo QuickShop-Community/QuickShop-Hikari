@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
 import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
 import com.ghostchu.quickshop.util.Util;
@@ -53,7 +54,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
                 } else {
-                    plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Exploding", false), "BlockBreak(explode)", shop.saveToInfoStorage()));
                     plugin.getShopManager().deleteShop(shop);
                 }
             }
@@ -105,7 +106,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             if (plugin.getConfig().getBoolean("protect.explode")) {
                 e.setCancelled(true);
             } else {
-                plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
+                plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "EntityExploding", false), "BlockBreak(explode)", shop.saveToInfoStorage()));
                 plugin.getShopManager().deleteShop(shop);
             }
         }

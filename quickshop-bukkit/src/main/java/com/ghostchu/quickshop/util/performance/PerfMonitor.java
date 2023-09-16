@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 public class PerfMonitor implements AutoCloseable {
@@ -13,23 +14,9 @@ public class PerfMonitor implements AutoCloseable {
     private final Instant startTime;
     @Nullable
     private final Duration exceptedDuration;
-    private final Log.Caller caller;
+    private final CompletableFuture<Log.Caller> caller;
     @Nullable
     private String context;
-
-    public PerfMonitor() {
-        this.caller = Log.Caller.create();
-        this.name = caller.getClassName() + "#" + caller.getMethodName();
-        this.startTime = Instant.now();
-        this.exceptedDuration = null;
-    }
-
-    public PerfMonitor(@NotNull Duration exceptedDuration) {
-        this.caller = Log.Caller.create();
-        this.name = caller.getClassName() + "#" + caller.getMethodName();
-        this.startTime = Instant.now();
-        this.exceptedDuration = exceptedDuration;
-    }
 
     public PerfMonitor(@NotNull String name) {
         this.caller = Log.Caller.create();
@@ -63,6 +50,7 @@ public class PerfMonitor implements AutoCloseable {
     public void setContext(@Nullable String context) {
         this.context = context;
     }
+
 
     @Override
     public void close() {

@@ -1,6 +1,8 @@
 package com.ghostchu.quickshop.util.logger;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.EvictingQueue;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 
@@ -35,7 +38,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+    public static void cron(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -53,9 +56,11 @@ public class Log {
     }
 
     private static void debugStdOutputs(Record recordEntry) {
-        if (Util.isDevMode()) {
-            QuickShop.getInstance().logger().info("[DEBUG] " + recordEntry.toString());
-        }
+        recordEntry.generate().thenAccept(log->{
+            if (Util.isDevMode()) {
+                QuickShop.getInstance().logger().info("[DEBUG] " + log);
+            }
+        });
     }
 
     public static void cron(@NotNull Level level, @NotNull String message) {
@@ -67,7 +72,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+    public static void debug(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -87,7 +92,7 @@ public class Log {
         debug(level, message, Caller.create());
     }
 
-    public static void performance(@NotNull Level level, @NotNull String message, @NotNull Caller caller) {
+    public static void performance(@NotNull Level level, @NotNull String message, @NotNull CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry = new Record(level, Type.PERFORMANCE, message, caller);
@@ -146,11 +151,11 @@ public class Log {
     }
 
     public static void permission(@NotNull String message) {
-        permission(Level.INFO, message, Caller.create(3));
+        permission(Level.INFO, message, Caller.create(3,false));
     }
 
     @ApiStatus.Internal
-    public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+    public static void permission(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -168,7 +173,7 @@ public class Log {
     }
 
     public static void permission(@NotNull Level level, @NotNull String message) {
-        permission(level, message, Caller.create(3));
+        permission(level, message, Caller.create(3,false));
     }
 
     public static void timing(@NotNull String operation, @NotNull Timer timer) {
@@ -176,7 +181,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable Caller caller) {
+    public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -198,7 +203,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+    public static void transaction(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -238,54 +243,55 @@ public class Log {
         @NotNull
         private final String message;
         @Nullable
-        private final Caller caller;
-        @Nullable
-        private String toStringCache;
+        private final CompletableFuture<Caller> caller;
 
-        public Record(@NotNull Level level, @NotNull Type type, @NotNull String message, @Nullable Caller caller) {
+        public Record(@NotNull Level level, @NotNull Type type, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
             this.level = level;
             this.type = type;
             this.message = message;
             this.caller = caller;
         }
 
-        @Override
-        public String toString() {
-            if (toStringCache != null) {
-                return toStringCache;
-            }
-            StringBuilder sb = new StringBuilder();
-            Log.Caller caller = this.getCaller();
-
-            if (caller != null) {
-                String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
-                sb.append("[");
-                sb.append(caller.getThreadName());
-                sb.append("/");
-                sb.append(this.getLevel().getName());
-                sb.append("]");
-                sb.append(" ");
-                sb.append("(");
-                sb.append(simpleClassName).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
-                sb.append(")");
-                sb.append(" ");
-            } else {
-                sb.append("[");
-                sb.append(this.getLevel().getName());
-                sb.append("]");
-                sb.append(" ");
-            }
-            sb.append(this.getMessage());
-            toStringCache = sb.toString();
-            return toStringCache;
+        public CompletableFuture<String> generate() {
+            return CompletableFuture.supplyAsync(() -> {
+                StringBuilder sb = new StringBuilder();
+                Log.Caller caller;
+                if (this.caller == null) {
+                    caller = new Caller("<NO RECORDING>", "<NO RECORDING>", "<NO RECORDING>", -1);
+                } else {
+                    caller = this.caller.join();
+                }
+                if (caller != null) {
+                    String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
+                    sb.append("[");
+                    sb.append(caller.getThreadName());
+                    sb.append("/");
+                    sb.append(this.getLevel().getName());
+                    sb.append("]");
+                    sb.append(" ");
+                    sb.append("(");
+                    sb.append(simpleClassName).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
+                    sb.append(")");
+                    sb.append(" ");
+                } else {
+                    sb.append("[");
+                    sb.append(this.getLevel().getName());
+                    sb.append("]");
+                    sb.append(" ");
+                }
+                sb.append(this.getMessage());
+                return sb.toString();
+            }, QuickExecutor.getCommonExecutor());
         }
 
+        @Override
+        public String toString() {
+            return generate().join();
+        }
     }
 
     @Data
     public final static class Caller {
-        @NotNull
-        private static final StackWalker STACK_WALKER = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
         @NotNull
         private final String threadName;
         @NotNull
@@ -302,24 +308,36 @@ public class Log {
         }
 
         @NotNull
-        public static Caller create() {
-            return create(3);
+        public static CompletableFuture<Caller> create() {
+            return create(3,false);
         }
 
         @NotNull
-        public static Caller createRaw() {
-            return create(2);
+        public static Caller createSync() {
+            return create(3,false).join();
+        }
+        @NotNull
+        public static Caller createSync(boolean force) {
+            return create(3,force).join();
         }
 
         @NotNull
-        public static Caller create(int steps) {
-            List<StackWalker.StackFrame> caller = STACK_WALKER.walk(frames -> frames.limit(steps + 1L).toList());
-            StackWalker.StackFrame frame = caller.get(steps);
-            String threadName = Thread.currentThread().getName();
-            String className = frame.getClassName();
-            String methodName = frame.getMethodName();
-            int codeLine = frame.getLineNumber();
-            return new Caller(threadName, className, methodName, codeLine);
+        public static CompletableFuture<Caller> create(int steps, boolean force) {
+            if(!force) {
+                if ("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
+                    return CompletableFuture.supplyAsync(() -> new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1));
+                }
+            }
+            Throwable throwable = new Throwable("Caller Check");
+            return CompletableFuture.supplyAsync(() -> {
+                StackTraceElement[] caller = throwable.getStackTrace();
+                StackTraceElement frame = caller[steps];
+                String threadName = Thread.currentThread().getName();
+                String className = frame.getClassName();
+                String methodName = frame.getMethodName();
+                int codeLine = frame.getLineNumber();
+                return new Caller(threadName, className, methodName, codeLine);
+            }, QuickExecutor.getCommonExecutor());
         }
     }
 

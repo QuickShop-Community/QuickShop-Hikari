@@ -58,9 +58,9 @@ body:
       required: true
   - type: 'input'
     attributes:
-      label: '`/qs paste` URL'
+      label: '`/quickshop paste` URL'
       description: |-
-        Please execute `/qs paste` in-game or `qs paste` in your server console.
+        Please execute `/quickshop paste` in-game or `qs paste` in your server console.
         The plugin will generate a URL that you can then post in the field below.
 
         If you can't create a paste, should you upload other files such as the `latest.log` file to https://paste.helpch.at and share the URL.

@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
@@ -42,21 +43,23 @@ public final class Main extends CompatibilityModule {
     public void onCreation(ShopCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.world-not-enabled").forLocale());
                 return;
             }
         }
+        UUID playerUUID = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
+        if (playerUUID == null) return;
         Location loc = event.getShop().getLocation();
         Chunk locChunk = loc.getChunk();
         Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
         if (land != null) {
-            if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
+            if (land.getOwnerUID().equals(playerUUID) || land.isTrusted(playerUUID)) {
                 return;
             }
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
         } else {
             if (whitelist) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
             }
         }
     }
@@ -82,8 +85,10 @@ public final class Main extends CompatibilityModule {
                         //Matching Owner and delete it
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
-                            if (target.equals(shop.getOwner())) {
-                                recordDeletion(CommonUtil.getNilUniqueId(), shop, "Lands: shop deleted because owner lost permission");
+                            UUID owner = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+                            if (owner == null) continue;
+                            if (target.equals(owner)) {
+                                recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Lands", false), shop, "Lands: shop deleted because owner lost permission");
                                 Util.mainThreadRun(() -> getApi().getShopManager().deleteShop(shop));
                             }
                         }
@@ -105,7 +110,7 @@ public final class Main extends CompatibilityModule {
     public void onPreCreation(ShopPreCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.world-not-enabled").forLocale());
                 return;
             }
         }
@@ -113,13 +118,13 @@ public final class Main extends CompatibilityModule {
         Chunk locChunk = loc.getChunk();
         Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
         if (land != null) {
-            if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
+            if (land.getOwnerUID().equals(event.getCreator().getUniqueId()) || land.isTrusted(event.getCreator().getUniqueId())) {
                 return;
             }
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
         } else {
             if (whitelist) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
             }
         }
     }
@@ -130,7 +135,7 @@ public final class Main extends CompatibilityModule {
             if (ignoreDisabledWorlds) {
                 return;
             }
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.lands.world-not-enabled").forLocale());
         }
     }
 
@@ -143,7 +148,7 @@ public final class Main extends CompatibilityModule {
             return;
         }
         if (land.getOwnerUID().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
         }

@@ -32,7 +32,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         BlockIterator bIt = new BlockIterator(sender, 10);
         ItemStack item;
-        if (parser.getArgs().size() < 1) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "command.wrong-args").send();
             return;
         } else if (parser.getArgs().size() == 1) {

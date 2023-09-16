@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.bukkit.entity.Player;
 
 /**
  * QuickShop chat handling event
@@ -12,10 +12,10 @@ import org.bukkit.entity.Player;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class QSHandleChatEvent extends AbstractQSEvent {
-    private final Player sender;
+    private final QUser sender;
     private String message;
 
-    public QSHandleChatEvent(Player sender, String message) {
+    public QSHandleChatEvent(QUser sender, String message) {
         this.sender = sender;
         this.message = message;
     }
@@ -43,7 +43,7 @@ public class QSHandleChatEvent extends AbstractQSEvent {
      *
      * @return The chat sender
      */
-    public Player getSender() {
+    public QUser getSender() {
         return sender;
     }
 }

@@ -1,9 +1,9 @@
 package com.ghostchu.quickshop.addon.discordsrv.parser;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.google.common.reflect.TypeToken;
+import com.google.gson.annotations.SerializedName;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class EmbedMessageParser {
     @NotNull
     public MessageEmbed parse(@NotNull String json) {
         // test json
-        if (!MsgUtil.isJson(json)) {
+        if (!CommonUtil.isJson(json)) {
             throw new IllegalArgumentException("Invalid json: " + json);
         }
         // map check
@@ -85,73 +85,73 @@ public class EmbedMessageParser {
     @NoArgsConstructor
     @Data
     public static class PackageDTO {
-        @JsonProperty("embed")
+        @SerializedName("embed")
         private EmbedDTO embed;
 
         @NoArgsConstructor
         @Data
         public static class EmbedDTO {
-            @JsonProperty("title")
+            @SerializedName("title")
             private String title;
-            @JsonProperty("description")
+            @SerializedName("description")
             private String description;
-            @JsonProperty("color")
+            @SerializedName("color")
             private Integer color;
-            @JsonProperty("url")
+            @SerializedName("url")
             private String url;
-            @JsonProperty("author")
+            @SerializedName("author")
             private AuthorDTO author;
-            @JsonProperty("thumbnail")
+            @SerializedName("thumbnail")
             private ThumbnailDTO thumbnail;
-            @JsonProperty("image")
+            @SerializedName("image")
             private ImageDTO image;
-            @JsonProperty("footer")
+            @SerializedName("footer")
             private FooterDTO footer;
-            @JsonProperty("fields")
+            @SerializedName("fields")
             private List<FieldsDTO> fields;
 
             @NoArgsConstructor
             @Data
             public static class AuthorDTO {
-                @JsonProperty("name")
+                @SerializedName("name")
                 private String name;
-                @JsonProperty("url")
+                @SerializedName("url")
                 private String url;
-                @JsonProperty("icon_url")
+                @SerializedName("icon_url")
                 private String iconUrl;
             }
 
             @NoArgsConstructor
             @Data
             public static class ThumbnailDTO {
-                @JsonProperty("url")
+                @SerializedName("url")
                 private String url;
             }
 
             @NoArgsConstructor
             @Data
             public static class ImageDTO {
-                @JsonProperty("url")
+                @SerializedName("url")
                 private String url;
             }
 
             @NoArgsConstructor
             @Data
             public static class FooterDTO {
-                @JsonProperty("text")
+                @SerializedName("text")
                 private String text;
-                @JsonProperty("icon_url")
+                @SerializedName("icon_url")
                 private String iconUrl;
             }
 
             @NoArgsConstructor
             @Data
             public static class FieldsDTO {
-                @JsonProperty("name")
+                @SerializedName("name")
                 private String name;
-                @JsonProperty("value")
+                @SerializedName("value")
                 private String value;
-                @JsonProperty("inline")
+                @SerializedName("inline")
                 private Boolean inline;
             }
         }

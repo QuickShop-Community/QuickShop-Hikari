@@ -4,7 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +34,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         getShops(event.getDeletedIslandInfo()).forEach(shop -> {
-            recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was deleted");
+            recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "BentoBox", false), shop, "Island " + event.getIsland().getName() + " was deleted");
             getApi().getShopManager().deleteShop(shop);
         });
     }
@@ -47,8 +49,8 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         getShops(event.getIsland()).forEach(shop -> {
-            if (shop.getOwner().equals(event.getPlayerUUID())) {
-                recordDeletion(event.getOwner(), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");
+            if (event.getPlayerUUID().equals(shop.getOwner().getUniqueId())) {
+                recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "BentoBox", false), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");
                 getApi().getShopManager().deleteShop(shop);
             }
         });
@@ -64,7 +66,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         getShops(event.getIsland()).forEach(shop -> {
-            if (shop.getOwner().equals(event.getPlayerUUID())) {
+            if (event.getPlayerUUID().equals(shop.getOwner().getUniqueId())) {
                 recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");
                 getApi().getShopManager().deleteShop(shop);
             }
@@ -77,7 +79,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         getShops(event.getOldIsland()).forEach(shop -> {
-            recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
+            recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "BentoBox", false), shop, "Island " + event.getIsland().getName() + " was resetted");
             getApi().getShopManager().deleteShop(shop);
         });
     }
@@ -87,7 +89,7 @@ public final class Main extends CompatibilityModule implements Listener {
         Location shopLoc = event.getShop().getLocation();
         BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island -> {
             if (event.getAuthorizer().equals(island.getOwner())) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                     event.setResult(true);
                 }
             }

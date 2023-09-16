@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import java.util.Arrays;
 
 /**
- * BootError class contains print errors on /qs command when plugin failed launched.
+ * BootError class contains print errors on /quickshop command when plugin failed launched.
  *
  * @author Ghost_chu
  */

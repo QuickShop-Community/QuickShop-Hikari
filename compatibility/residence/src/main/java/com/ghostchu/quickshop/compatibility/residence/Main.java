@@ -42,15 +42,17 @@ public final class Main extends CompatibilityModule {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
             if (whitelist) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
             }
             return;
         }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+                }
             }
-        }
+        });
     }
 
     private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
@@ -74,15 +76,17 @@ public final class Main extends CompatibilityModule {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
             if (whitelist) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
             }
             return;
         }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            if (!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+                }
             }
-        }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -92,11 +96,13 @@ public final class Main extends CompatibilityModule {
         if (residence == null) {
             return;
         }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), TRADE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), TRADE_FLAG, false)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.trade-flag-denied").forLocale());
+        event.getPurchaser().getBukkitPlayer().ifPresent(player -> {
+            if (!playerHas(residence.getPermissions(), player, TRADE_FLAG, false)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, TRADE_FLAG, false)) {
+                    event.setCancelled(true, getApi().getTextManager().of(player, "addon.residence.trade-flag-denied").forLocale());
+                }
             }
-        }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

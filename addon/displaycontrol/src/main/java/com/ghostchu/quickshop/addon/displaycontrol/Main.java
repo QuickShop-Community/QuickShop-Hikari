@@ -114,7 +114,7 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
     }
 
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if (!channel.equalsIgnoreCase(BUNGEE_CHANNEL)) return;
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String prefix = in.readUTF();

@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.block.Block;
@@ -72,25 +73,31 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 }
                 case 2 -> {
                     String name = parser.getArgs().get(1);
-                    plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1)).whenComplete((uuid, throwable) -> {
-                        Util.mainThreadRun(() -> {
-                            BuiltInShopPermissionGroup permissionGroup = null;
-                            switch (parser.getArgs().get(0)) {
-                                case "add" -> {
-                                    permissionGroup = BuiltInShopPermissionGroup.STAFF;
-                                    plugin.text().of(sender, "shop-staff-added", name).send();
+                    plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1))
+                            .thenAccept(uuid -> {
+                                BuiltInShopPermissionGroup permissionGroup = null;
+                                switch (parser.getArgs().get(0)) {
+                                    case "add" -> {
+                                        permissionGroup = BuiltInShopPermissionGroup.STAFF;
+                                        plugin.text().of(sender, "shop-staff-added", name).send();
+                                    }
+                                    case "del" -> {
+                                        permissionGroup = BuiltInShopPermissionGroup.EVERYONE;
+                                        plugin.text().of(sender, "shop-staff-deleted", name).send();
+                                    }
+                                    default -> plugin.text().of(sender, "command.wrong-args").send();
                                 }
-                                case "del" -> {
-                                    permissionGroup = BuiltInShopPermissionGroup.EVERYONE;
-                                    plugin.text().of(sender, "shop-staff-deleted", name).send();
+                                if (permissionGroup != null) {
+                                    BuiltInShopPermissionGroup finalPermissionGroup = permissionGroup;
+                                    Util.mainThreadRun(() -> shop.setPlayerGroup(uuid, finalPermissionGroup));
                                 }
-                                default -> plugin.text().of(sender, "command.wrong-args").send();
-                            }
-                            if (permissionGroup != null) {
-                                shop.setPlayerGroup(uuid, permissionGroup);
-                            }
-                        });
-                    });
+                            })
+                            .exceptionally(throwable -> {
+                                Log.debug("Failed set the user group: " + throwable.getMessage());
+                                plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
+                                return null;
+                            });
+                    return;
                 }
                 default -> {
                     plugin.text().of(sender, "command.wrong-args").send();

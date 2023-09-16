@@ -4,8 +4,10 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.compatibility.towny.command.NationCommand;
 import com.ghostchu.quickshop.compatibility.towny.command.TownCommand;
@@ -13,6 +15,7 @@ import com.ghostchu.quickshop.compatibility.towny.compat.UuidConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.essentials.EssentialsConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.general.GeneralConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.gringotts.towny.GringottsTownyConversion;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -56,8 +59,10 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
             return;
         }
-        Optional<Component> component = checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags);
-        component.ifPresent(value -> event.setCancelled(true, value));
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.createFlags);
+            component.ifPresent(value -> event.setCancelled(true, value));
+        });
     }
 
     private boolean isWorldIgnored(World world) {
@@ -190,8 +195,8 @@ public final class Main extends CompatibilityModule implements Listener {
                 continue;
             }
             if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
-                if (owner != null && shop.getOwner().equals(owner)) {
-                    recordDeletion(deleter, shop, reason);
+                if (owner != null && owner.equals(shop.getOwner().getUniqueId())) {
+                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false), shop, reason);
                     getApi().getShopManager().deleteShop(shop);
                 }
             }
@@ -225,8 +230,10 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getLocation().getWorld())) {
             return;
         }
-        Optional<Component> component = checkFlags(event.getPlayer(), event.getLocation(), this.createFlags);
-        component.ifPresent(value -> event.setCancelled(true, value));
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            Optional<Component> component = checkFlags(player, event.getLocation(), this.createFlags);
+            component.ifPresent(value -> event.setCancelled(true, value));
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -234,8 +241,10 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
             return;
         }
-        Optional<Component> component = checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags);
-        component.ifPresent(value -> event.setCancelled(true, value));
+        event.getPurchaser().getBukkitPlayer().ifPresent(player -> {
+            Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.tradeFlags);
+            component.ifPresent(value -> event.setCancelled(true, value));
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -269,7 +278,7 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
             if (getConfig().getBoolean("allow-mayor-permission-override", true)) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                     event.setResult(true);
                     return;
                 }
@@ -279,7 +288,7 @@ public final class Main extends CompatibilityModule implements Listener {
             Nation nation = town.getNation();
             if (nation.getKing().getUUID().equals(event.getAuthorizer())) {
                 if (getConfig().getBoolean("allow-king-permission-override", true)) {
-                    if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                         event.setResult(true);
                     }
                 }
@@ -347,7 +356,8 @@ public final class Main extends CompatibilityModule implements Listener {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(town.getAccount().getName());
                 uuid = player.getUniqueId();
             }
-            event.setTaxAccount(uuid);
+            QUser taxUUID = QUserImpl.createFullFilled(uuid, town.getAccount().getName(), false);
+            event.setTaxAccount(taxUUID);
             Log.debug("Tax account override: " + uuid + " = " + town.getAccount().getName());
         }
     }

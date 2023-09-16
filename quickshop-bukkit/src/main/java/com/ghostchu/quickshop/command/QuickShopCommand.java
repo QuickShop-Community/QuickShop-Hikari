@@ -13,7 +13,7 @@ public class QuickShopCommand extends BukkitCommand {
     private final CommandManager manager;
 
     public QuickShopCommand(@NotNull String name, CommandManager commandManager, @NotNull List<String> aliases) {
-        super(name, "QuickShop command", "/qs", aliases);
+        super(name, "QuickShop command", "/quickshop", aliases);
         this.manager = commandManager;
     }
 

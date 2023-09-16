@@ -15,8 +15,8 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -46,49 +46,37 @@ public final class Main extends CompatibilityModule implements Listener {
 
     private void deleteShops(@NotNull Island island, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
         List<CompletableFuture<Chunk>> allFutures = this.getAllChunksAsync(island);
-        CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).whenComplete((v, throwable) -> {
-            if (throwable != null) {
-                getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
-                return;
-            }
+        CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).thenAccept(v -> {
             List<Shop> pendingForDeletion = new ArrayList<>();
             allFutures.forEach(future -> {
                 Chunk chunk = future.getNow(null);
                 for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
-                    if (shopOwnerToDelete == null || shop.getOwner().equals(shopOwnerToDelete)) {
+                    if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
                         pendingForDeletion.add(shop);
                     }
                 }
             });
-            Util.mainThreadRun(() -> {
-                pendingForDeletion.forEach(s -> {
-                    getApi().getShopManager().deleteShop(s);
-                    recordDeletion(deleteOperator, s, deleteReason);
-                });
-            });
+            Util.mainThreadRun(() -> pendingForDeletion.forEach(s -> {
+                getApi().getShopManager().deleteShop(s);
+                recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
+            }));
+        }).exceptionally(throwable -> {
+            getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
+            return null;
         });
     }
 
     private void deleteShops(@NotNull World world, int chunkX, int chunkZ, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
-        PaperLib.getChunkAtAsync(world, chunkX, chunkZ).whenComplete((chunk, throwable) -> {
-            if (throwable != null) {
-                getLogger().log(Level.WARNING, "Failed to handle SuperiorSkyblock2 island shops deletion", throwable);
-                return;
+        List<Shop> pendingForDeletion = new ArrayList<>();
+        for (Shop shop : getShops(world.getName(), chunkX, chunkZ)) {
+            if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
+                pendingForDeletion.add(shop);
             }
-            List<Shop> pendingForDeletion = new ArrayList<>();
-            for (Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
-                if (shopOwnerToDelete == null || shop.getOwner().equals(shopOwnerToDelete)) {
-                    pendingForDeletion.add(shop);
-                }
-            }
-            Util.mainThreadRun(() -> {
-                pendingForDeletion.forEach(s -> {
-                    getApi().getShopManager().deleteShop(s);
-                    recordDeletion(deleteOperator, s, deleteReason);
-                });
-            });
-
-        });
+        }
+        Util.mainThreadRun(() -> pendingForDeletion.forEach(s -> {
+            getApi().getShopManager().deleteShop(s);
+            recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SuperiorSkyblock", false), s, deleteReason);
+        }));
     }
 
     @EventHandler
@@ -111,21 +99,24 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
         Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getCreator());
-        if (island == null) {
-            return;
-        }
-        if (onlyOwnerCanCreateShop) {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+            if (island == null) {
+                return;
             }
-        } else {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+            if (onlyOwnerCanCreateShop) {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+                }
+            } else {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    if (!island.isMember(superiorPlayer)) {
+                        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                    }
                 }
             }
-        }
+        });
+
     }
 
     @Override
@@ -137,21 +128,23 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
         Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getPlayer());
-        if (island == null) {
-            return;
-        }
-        if (onlyOwnerCanCreateShop) {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-create-only").forLocale());
+        event.getCreator().getBukkitPlayer().ifPresent(player -> {
+            SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+            if (island == null) {
+                return;
             }
-        } else {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+            if (onlyOwnerCanCreateShop) {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+                }
+            } else {
+                if (!island.getOwner().equals(superiorPlayer)) {
+                    if (!island.isMember(superiorPlayer)) {
+                        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                    }
                 }
             }
-        }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -49,6 +49,7 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -275,7 +276,7 @@ public class Util {
      */
     @Deprecated(forRemoval = true)
     public static void debugLog(@NotNull String... logs) {
-        Log.Caller caller = Log.Caller.create();
+        CompletableFuture<Log.Caller> caller = Log.Caller.create();
         for (String log : logs) {
             Log.debug(Level.INFO, log, caller);
         }
@@ -746,8 +747,8 @@ public class Util {
                         return; // Virtual GUI
                     }
                     iterator.remove();
-                    Log.debug("Found shop display item in an inventory, Removing...");
-                    MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
+                    Log.debug("Found shop display item in an inventory" + location + ", Removing...");
+                    MsgUtil.sendGlobalAlert(plugin.text().of("inventory-check-global-alert", location, inv.getHolder().getClass().getName(), Util.getItemStackName(itemStack)).forLocale(MsgUtil.getDefaultGameLanguageCode()));
                 }
             }
         } catch (Exception ignored) {

@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.api.localization.text;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,9 @@ public interface TextManager {
 
     @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender);
 
-    @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender);
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender, boolean allowDbLoad);
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable QUser qUser, boolean allowDbLoad);
 
     /**
      * Return the set of available Languages
@@ -53,7 +56,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@NotNull String path, @NotNull Object... args);
+    Text of(@NotNull String path, @Nullable Object... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -77,6 +80,18 @@ public interface TextManager {
     @NotNull
     Text of(@Nullable UUID sender, @NotNull String path, @Nullable Object... args);
 
+
+    /**
+     * Getting the translation with path with player's locale (if available)
+     *
+     * @param sender The player unique id
+     * @param path   The path
+     * @param args   The arguments
+     * @return The text object
+     */
+    @NotNull
+    Text of(@Nullable QUser sender, @NotNull String path, @Nullable Object... args);
+
     /**
      * Getting the translation with path with default locale (if available)
      *
@@ -97,6 +112,17 @@ public interface TextManager {
      */
     @NotNull
     TextList ofList(@Nullable UUID sender, @NotNull String path, @Nullable Object... args);
+
+    /**
+     * Getting the translation with path  with player's locale (if available)
+     *
+     * @param sender The player unique id
+     * @param path   The path
+     * @param args   The arguments
+     * @return The text object
+     */
+    @NotNull
+    TextList ofList(@Nullable QUser sender, @NotNull String path, @Nullable Object... args);
 
     /**
      * Getting the translation with path with player's locale (if available)

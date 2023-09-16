@@ -46,6 +46,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
         Log.debug("Launching async thread for importing tables...");
         Util.asyncThreadRun(() -> {
             try {
+                databaseIOUtil.performBackup("recovery");
                 databaseIOUtil.importTables(file);
                 Log.debug("Re-loading shop from database...");
                 Util.mainThreadRun(() -> {

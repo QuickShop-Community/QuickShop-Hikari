@@ -1,9 +1,8 @@
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 /**
  * Fire when quickshop processing shop tax account.
@@ -11,9 +10,9 @@ import java.util.UUID;
 public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
     private final Shop shop;
     @Nullable
-    private UUID taxAccount;
+    private QUser taxAccount;
 
-    public ShopTaxAccountGettingEvent(Shop shop, @Nullable UUID taxAccount) {
+    public ShopTaxAccountGettingEvent(Shop shop, @Nullable QUser taxAccount) {
         this.shop = shop;
         this.taxAccount = taxAccount;
     }
@@ -33,7 +32,7 @@ public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
      * @return The tax account, null if tax has been disabled
      */
     @Nullable
-    public UUID getTaxAccount() {
+    public QUser getTaxAccount() {
         return taxAccount;
     }
 
@@ -42,7 +41,7 @@ public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
      *
      * @param taxAccount The tax account
      */
-    public void setTaxAccount(@Nullable UUID taxAccount) {
+    public void setTaxAccount(@Nullable QUser taxAccount) {
         this.taxAccount = taxAccount;
     }
 }

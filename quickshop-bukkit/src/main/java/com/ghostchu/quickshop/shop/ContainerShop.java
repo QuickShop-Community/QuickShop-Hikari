@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
@@ -15,8 +16,8 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
@@ -27,7 +28,6 @@ import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
@@ -53,9 +53,6 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * ChestShop core
@@ -76,7 +73,7 @@ public class ContainerShop implements Shop, Reloadable {
     @NotNull
     private final Map<UUID, String> playerGroup;
     private long shopId;
-    private UUID owner;
+    private QUser owner;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
@@ -90,7 +87,7 @@ public class ContainerShop implements Shop, Reloadable {
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
     @EqualsAndHashCode.Exclude
-    private volatile boolean isDeleted = false;
+    private final boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
@@ -102,7 +99,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Nullable
     private String currency;
     private boolean disableDisplay;
-    private UUID taxAccount;
+    private QUser taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
     @EqualsAndHashCode.Exclude
@@ -164,19 +161,18 @@ public class ContainerShop implements Shop, Reloadable {
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
-            @NotNull UUID owner,
+            @NotNull QUser owner,
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,
             @Nullable String currency,
             boolean disableDisplay,
-            @Nullable UUID taxAccount,
+            @Nullable QUser taxAccount,
             @NotNull String inventoryWrapperProvider,
             @NotNull String symbolLink,
             @Nullable String shopName,
             @NotNull Map<UUID, String> playerGroup,
             @NotNull Benefit shopBenefit) {
-        Util.ensureThread(false);
         this.shopId = shopId;
         this.shopName = shopName;
         this.location = location;
@@ -221,8 +217,8 @@ public class ContainerShop implements Shop, Reloadable {
         this.symbolLink = symbolLink;
         this.inventoryWrapperProvider = inventoryWrapperProvider;
         updateShopData();
-        checkDisplay();
         // ContainerShop constructor is not allowed to write any persistent data to disk
+        // ContainerShop constructor may run on both ServerThread and AsyncThread
     }
 
     private void updateShopData() {
@@ -272,7 +268,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @param amount         The amount to buy
      */
     @Override
-    public void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory,
+    public void buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory,
                     @NotNull Location loc2Drop, int amount) throws Exception {
         Util.ensureThread(false);
         amount = amount * item.getAmount();
@@ -316,7 +312,7 @@ public class ContainerShop implements Shop, Reloadable {
             }
         }
         //Update sign
-        this.setSignText(plugin.text().findRelativeLanguages(buyer));
+        this.setSignText(plugin.text().findRelativeLanguages(buyer, false));
     }
 
     @Override
@@ -375,55 +371,6 @@ public class ContainerShop implements Shop, Reloadable {
             sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
             sign.update();
         }
-    }
-
-
-    /**
-     * Deletes the shop from the list of shops and queues it for database
-     */
-    @SuppressWarnings("removal")
-    @Override
-    public void delete() {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#deleteShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        plugin.getShopManager().deleteShop(this);
-    }
-
-    /**
-     * Deletes the shop from the list of shops and queues it for database deletion
-     *
-     * @param memoryOnly whether to delete from database
-     */
-    @SuppressWarnings("removal")
-    @Override
-    public void delete(boolean memoryOnly) {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#deleteShop(Shop) or ShopManager#unregisterShop(Shop,Persist[aka.fromMemory]) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        if (memoryOnly) {
-            plugin.getShopManager().unregisterShop(this, false);
-        } else {
-            plugin.getShopManager().deleteShop(this);
-        }
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public void onLoad() {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#loadShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        plugin.getShopManager().loadShop(this);
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public void onUnload() {
-        Util.ensureThread(false);
-        Log.Caller caller = Log.Caller.createRaw();
-        plugin.logger().warn("Detected outdated API interaction from {}, This API will be removed soon and continued use will prevent you from upgrading in the future. Use ShopManager#unloadShop(Shop) instead.", caller.getClassName() + "." + caller.getMethodName() + "(" + caller.getLineNumber() + ")");
-        plugin.getShopManager().unloadShop(this);
     }
 
     /**
@@ -501,7 +448,7 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             plugin.getShopManager().unregisterShop(this, false);
         }
-        plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
+        plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "Inventory Invalid", this.saveToInfoStorage()));
         Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
     }
@@ -549,7 +496,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @return The name of the player who owns the shop.
      */
     @Override
-    public @NotNull UUID getOwner() {
+    public @NotNull QUser getOwner() {
         return this.owner;
     }
 
@@ -559,13 +506,14 @@ public class ContainerShop implements Shop, Reloadable {
      * @param owner the new owner
      */
     @Override
-    public void setOwner(@NotNull UUID owner) {
+    public void setOwner(@NotNull QUser owner) {
         Util.ensureThread(false);
         if (this.owner.equals(owner)) {
             return;
         }
         this.owner = owner;
-        setSignText(plugin.getTextManager().findRelativeLanguages(owner));
+        setDirty();
+        setSignText(plugin.getTextManager().findRelativeLanguages(owner, false));
     }
 
     /**
@@ -586,7 +534,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @NotNull String getPlayerGroup(@NotNull UUID player) {
-        if (player.equals(getOwner())) {
+        if (player.equals(getOwner().getUniqueId())) {
             return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
         }
         String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
@@ -688,6 +636,7 @@ public class ContainerShop implements Shop, Reloadable {
             throw new IllegalStateException("Cannot set shop id once it fully created.");
         }
         this.shopId = newId;
+        setDirty();
     }
 
     /**
@@ -852,21 +801,11 @@ public class ContainerShop implements Shop, Reloadable {
         return signs;
     }
 
-    /**
-     * @return The list of players who can manage the shop.
-     */
-    @NotNull
-    @Override
-    @SuppressWarnings("removal")
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    public List<UUID> getStaffs() {
-        return ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF));
-    }
 
     @Override
     @Nullable
-    public UUID getTaxAccount() {
-        UUID uuid = null;
+    public QUser getTaxAccount() {
+        QUser uuid = null;
         if (taxAccount != null) {
             uuid = taxAccount;
         } else {
@@ -881,7 +820,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public void setTaxAccount(@Nullable UUID taxAccount) {
+    public void setTaxAccount(@Nullable QUser taxAccount) {
         if (Objects.equals(taxAccount, this.taxAccount)) {
             return;
         }
@@ -895,7 +834,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     @Nullable
-    public UUID getTaxAccountActual() {
+    public QUser getTaxAccountActual() {
         return taxAccount;
     }
 
@@ -924,8 +863,7 @@ public class ContainerShop implements Shop, Reloadable {
         return this.shopType == ShopType.BUYING;
     }
 
-    @Override
-    public boolean isDeleted() {
+    private boolean isDeleted() {
         return this.isDeleted;
     }
 
@@ -1159,23 +1097,33 @@ public class ContainerShop implements Shop, Reloadable {
         if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
         } else {
-            String playerName;
-            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
-                CompletableFuture<String> future = CompletableFuture
-                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
-                try {
-                    playerName = future.get(20, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    playerName = "N/A";
-                }
-            } else {
-                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
-            }
+            String playerName = this.getOwner().getUsername();
+//            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
+//                CompletableFuture<String> future = CompletableFuture
+//                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
+//                try {
+//                    playerName = future.get(20, TimeUnit.MILLISECONDS);
+//                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+//                    playerName = "N/A";
+//                }
+//            } else {
+//                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
+//            }
             if (playerName == null) {
                 name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
             } else {
                 name = Component.text(playerName);
             }
+        }
+        if (getOwner().isRealPlayer()) {
+            name = name.hoverEvent(
+                    plugin.text().of("real-player-component-hover", getOwner().getUniqueId(), getOwner().getUsername(), getOwner().getDisplay()).forLocale(locale.getLocale())
+            );
+        } else {
+            name = name.hoverEvent(
+                    plugin.text().of("virtual-player-component-hover", getOwner().getUniqueId(), getOwner().getUsername(), getOwner().getDisplay()).forLocale(locale.getLocale())
+            );
+
         }
         ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
         event.callEvent();
@@ -1203,7 +1151,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
-        if (player.equals(getOwner())) {
+        if (player.equals(getOwner().getUniqueId())) {
             Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
             return true;
         }
@@ -1291,7 +1239,13 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(this.originalItem), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
+        return new ShopInfoStorage(getLocation().getWorld().getName(),
+                new BlockPos(getLocation()), this.owner, this.price,
+                Util.serialize(this.originalItem), isUnlimited() ? 1 : 0
+                , getShopType().toID(),
+                saveExtraToYaml(), this.currency,this.disableDisplay,
+                this.taxAccount, inventoryWrapperProvider,
+                saveToSymbolLink(), this.playerGroup);
     }
 
     @Override
@@ -1309,7 +1263,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @param amount          The amount to sell
      */
     @Override
-    public void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory,
+    public void sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory,
                      @NotNull Location loc2Drop, int amount) throws Exception {
         Util.ensureThread(false);
         amount = item.getAmount() * amount;
@@ -1351,7 +1305,7 @@ public class ContainerShop implements Shop, Reloadable {
                 }
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
-            this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
+            this.setSignText(plugin.getTextManager().findRelativeLanguages(seller, false));
         }
     }
 

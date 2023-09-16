@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -85,7 +86,7 @@ public class BlockListener extends AbstractProtectionListener {
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
             }
-            plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(), "BlockBreak(player)", shop.saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(p), "BlockBreak(player)", shop.saveToInfoStorage()));
             plugin.getShopManager().deleteShop(shop);
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
@@ -106,7 +107,7 @@ public class BlockListener extends AbstractProtectionListener {
                         return;
                     }
                     plugin.text().of(p, "break-shop-use-supertool").send();
-                    plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(), "BlockBreak(player)", shop.saveToInfoStorage()));
+                    plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(p), "BlockBreak(player)", shop.saveToInfoStorage()));
                     plugin.getShopManager().deleteShop(shop);
                     return;
                 }
@@ -116,7 +117,7 @@ public class BlockListener extends AbstractProtectionListener {
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)
-            if (getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
+            if (getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner().getUniqueId())) {
                 return;
             }
             Log.debug("Player cannot break the shop information sign.");

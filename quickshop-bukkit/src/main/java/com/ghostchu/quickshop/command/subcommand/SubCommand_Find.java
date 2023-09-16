@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.event.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -14,14 +15,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class SubCommand_Find implements CommandHandler<Player> {
 
@@ -33,7 +31,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() == 0) {
+        if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "command.no-type-given").send();
             return;
         }
@@ -122,22 +120,27 @@ public class SubCommand_Find implements CommandHandler<Player> {
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
             plugin.text().of(sender, "nearby-shop-this-way", closest.getValue().intValue()).send();
         } else {
-            Component stringBuilder = plugin.text().of(sender, "nearby-shop-header", lookFor).forLocale()
-                    .append(Component.newline());
+            plugin.text().of(sender, "nearby-shop-header", lookFor).send();
             for (Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
                 Shop shop = shopDoubleEntry.getKey();
                 Location location = shop.getLocation();
+                ItemStack previewItemStack = shop.getItem().clone();
+                ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, sender);
+                previewComponentPrePopulateEvent.callEvent();
+                previewItemStack = previewComponentPrePopulateEvent.getItemStack();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                stringBuilder = stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
-                        shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(1),
-                        shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(3),
-                        location.getBlockX(),
-                        location.getBlockY(),
-                        location.getBlockZ(),
-                        shopDoubleEntry.getValue().intValue()
-                ).forLocale()).append(Component.newline());
+                Component entryComponent = plugin.text().of(sender, "nearby-shop-entry",
+                                shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(1),
+                                shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(3),
+                                location.getBlockX(),
+                                location.getBlockY(),
+                                location.getBlockZ(),
+                                shopDoubleEntry.getValue().intValue()
+                        ).forLocale()
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack));
+                MsgUtil.sendDirectMessage(sender, entryComponent);
             }
-            MsgUtil.sendDirectMessage(sender, stringBuilder.compact());
+
         }
     }
 }

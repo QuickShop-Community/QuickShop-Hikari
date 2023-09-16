@@ -35,7 +35,11 @@ public class TownyShopUtil {
         if (section.isSet("towny-original-owner")) {
             return UUID.fromString(section.getString("towny-original-owner", CommonUtil.getNilUniqueId().toString()));
         } else {
-            return shop.getOwner();
+            UUID uuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+            if (uuid == null) {
+                return CommonUtil.getNilUniqueId();
+            }
+            return uuid;
         }
     }
 

@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.ForceReplaceFillerProcessor;
@@ -49,6 +50,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -463,7 +465,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
 
     @Override
-    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender) {
+    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender, boolean allowDbLoad) {
         if (sender == null) {
             return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
         }
@@ -471,8 +473,22 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         if (player != null) {
             return findRelativeLanguages(player);
         }
-        return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        if (!allowDbLoad) {
+            return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        }
+        try {
+            return findRelativeLanguages(plugin.getDatabaseHelper().getPlayerLocale(sender).get());
+        } catch (InterruptedException | ExecutionException e) {
+            Log.debug("Failed to get player locale from database, fallback to default locale: " + e.getMessage());
+            return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        }
+    }
 
+    @Override
+    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable QUser qUser, boolean allowDbLoad) {
+        if (qUser == null || !qUser.isRealPlayer())
+            return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        return findRelativeLanguages(qUser.getUniqueId(), allowDbLoad);
     }
 
     /**
@@ -483,7 +499,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@NotNull String path, Object... args) {
+    public @NotNull Text of(@NotNull String path, @Nullable Object... args) {
         return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
@@ -514,6 +530,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
 
     @Override
+    public @NotNull Text of(@Nullable QUser sender, @NotNull String path, @Nullable Object... args) {
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
+    }
+
+    @Override
     @NotNull
     public Component[] convert(@Nullable Object... args) {
         if (args == null || args.length == 0) {
@@ -523,7 +544,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         for (int i = 0; i < args.length; i++) {
             Object obj = args[i];
             if (obj == null) {
-                components[i] = Component.empty();
+                components[i] = Component.text("null");
                 continue;
             }
             Class<?> clazz = obj.getClass();
@@ -535,6 +556,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                 components[i] = componentLike.asComponent();
                 continue;
             }
+            if (obj instanceof QUser qUser) {
+                components[i] = LegacyComponentSerializer.legacySection().deserialize(qUser.getDisplay());
+            }
             // Check
             try {
                 if (Character.class.equals(clazz)) {
@@ -542,31 +566,45 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                     continue;
                 }
                 if (Byte.class.equals(clazz)) {
-                    components[i] = Component.text((Byte) obj);
+                    if (obj instanceof Byte) {
+                        components[i] = Component.text((Byte) obj);
+                    }
                     continue;
                 }
                 if (Integer.class.equals(clazz)) {
-                    components[i] = Component.text((Integer) obj);
+                    if (obj instanceof Integer) {
+                        components[i] = Component.text((Integer) obj);
+                    }
                     continue;
                 }
                 if (Long.class.equals(clazz)) {
-                    components[i] = Component.text((Long) obj);
+                    if (obj instanceof Long) {
+                        components[i] = Component.text((Long) obj);
+                    }
                     continue;
                 }
                 if (Float.class.equals(clazz)) {
-                    components[i] = Component.text((Float) obj);
+                    if (obj instanceof Float) {
+                        components[i] = Component.text((Float) obj);
+                    }
                     continue;
                 }
                 if (Double.class.equals(clazz)) {
-                    components[i] = Component.text((Double) obj);
+                    if (obj instanceof Double) {
+                        components[i] = Component.text((Double) obj);
+                    }
                     continue;
                 }
                 if (Boolean.class.equals(clazz)) {
-                    components[i] = Component.text((Boolean) obj);
+                    if (obj instanceof Boolean) {
+                        components[i] = Component.text((Boolean) obj);
+                    }
                     continue;
                 }
                 if (String.class.equals(clazz)) {
-                    components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
+                    if (obj instanceof String) {
+                        components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
+                    }
                     continue;
                 }
                 if (Text.class.equals(clazz)) {
@@ -621,6 +659,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
     }
 
+    @Override
+    public com.ghostchu.quickshop.api.localization.text.@NotNull TextList ofList(@Nullable QUser sender, @NotNull String path, @Nullable Object... args) {
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
+    }
+
     /**
      * Getting the translation with path with player's locale (if available)
      *
@@ -656,6 +699,19 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
             } else {
+                this.sender = null;
+            }
+            this.mapping = mapping;
+            this.path = path;
+            this.tagResolvers = tagResolvers;
+            this.args = args;
+        }
+
+        public TextList(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+            this.manager = manager;
+            if(sender != null) {
+                this.sender = sender.getBukkitPlayer().orElse(null);
+            }else{
                 this.sender = null;
             }
             this.mapping = mapping;
@@ -783,6 +839,19 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
             } else {
+                this.sender = null;
+            }
+            this.mapping = mapping;
+            this.path = path;
+            this.tagResolvers = tagResolvers;
+            this.args = args;
+        }
+
+        public Text(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+            this.manager = manager;
+            if(sender != null) {
+                this.sender = sender.getBukkitPlayer().orElse(null);
+            }else{
                 this.sender = null;
             }
             this.mapping = mapping;

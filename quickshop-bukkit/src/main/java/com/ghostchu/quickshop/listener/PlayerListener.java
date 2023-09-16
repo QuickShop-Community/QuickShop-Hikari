@@ -4,23 +4,24 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.util.ExpiringSet;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -51,10 +52,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends AbstractQSListener {
-    private final Cache<UUID, Long> cooldownMap = CacheBuilder
-            .newBuilder()
-            .expireAfterWrite(1, TimeUnit.SECONDS)
-            .build();
+    private final ExpiringSet<UUID> adventureWorkaround = new ExpiringSet<>(1,TimeUnit.SECONDS);
+    private final ExpiringSet<UUID> rateLimit = new ExpiringSet<>(125, TimeUnit.MILLISECONDS);
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
@@ -66,10 +65,10 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         // ----Adventure dupe click workaround start----
-        if (cooldownMap.getIfPresent(event.getPlayer().getUniqueId()) != null) {
+        if (adventureWorkaround.contains(event.getPlayer().getUniqueId())) {
             return;
         }
-        cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        adventureWorkaround.add(event.getPlayer().getUniqueId());
         // ----Adventure dupe click workaround end----
         Block focused = event.getPlayer().getTargetBlockExact(5);
         if (focused != null) {
@@ -91,12 +90,17 @@ public class PlayerListener extends AbstractQSListener {
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if (cooldownMap.getIfPresent(e.getPlayer().getUniqueId()) == null) {
+            if (!adventureWorkaround.contains(e.getPlayer().getUniqueId())) {
                 return;
             }
-            cooldownMap.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+            adventureWorkaround.add(e.getPlayer().getUniqueId());
         }
         // ----Adventure dupe click workaround end----
+        if(rateLimit.contains(e.getPlayer().getUniqueId())){
+            Log.debug("Player "+e.getPlayer().getName()+" click the blocks too fast and reached the rate limit, ignoring the event...");
+            return;
+        }
+        rateLimit.add(e.getPlayer().getUniqueId());
 
         Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
 
@@ -219,7 +223,7 @@ public class PlayerListener extends AbstractQSListener {
                 attached = Util.getSecondHalf(b);
                 if (attached != null) {
                     Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
-                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner().getUniqueId())) {
                         // If player not the owner of the shop, make him select the second half of the
                         // shop
                         // Otherwise owner will be able to create new double chest shop
@@ -239,6 +243,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     public boolean createShop(@NotNull Player player, @Nullable Block block, @NotNull BlockFace blockFace, @NotNull EquipmentSlot hand, @NotNull ItemStack item) {
+        QUser qUser = QUserImpl.createFullFilled(player);
         if (block == null) {
             return false; // This shouldn't happen because we have checked action type.
         }
@@ -316,7 +321,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
-        ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(qUser, block.getLocation());
         if (Util.fireCancellableEvent(spce)) {
             Log.debug("ShopPreCreateEvent cancelled");
             return false;
@@ -371,7 +376,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -419,7 +424,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -475,7 +480,7 @@ public class PlayerListener extends AbstractQSListener {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {
-            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+            amount = invHaveItems;
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
@@ -533,7 +538,7 @@ public class PlayerListener extends AbstractQSListener {
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
             // items from the shop.
-            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+            amount = invHaveSpaces;
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
@@ -622,10 +627,9 @@ public class PlayerListener extends AbstractQSListener {
     public void onJoin(PlayerLocaleChangeEvent e) {
         Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
         plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getLocale(), e.getPlayer().getName())
-                .whenComplete((result, throwable) -> {
-                    if (throwable != null) {
-                        Log.debug("Failed to set player locale: " + throwable.getMessage());
-                    }
+                .exceptionally(throwable -> {
+                    Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    return null;
                 });
     }
 
@@ -675,10 +679,9 @@ public class PlayerListener extends AbstractQSListener {
         // Remove them from the menu
         plugin.getShopManager().getInteractiveManager().remove(e.getPlayer().getUniqueId());
         plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getPlayer().getLocale(), e.getPlayer().getName())
-                .whenComplete((result, throwable) -> {
-                    if (throwable != null) {
-                        Log.debug("Failed to set player locale: " + throwable.getMessage());
-                    }
+                .exceptionally(throwable -> {
+                    Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    return null;
                 });
     }
 
@@ -705,7 +708,6 @@ public class PlayerListener extends AbstractQSListener {
             } else if (info.getAction().isCreating()) {
                 plugin.text().of(p, "shop-creation-cancelled").send();
             }
-            Log.debug(p.getName() + " too far with the shop location.");
             plugin.getShopManager().getInteractiveManager().remove(p.getUniqueId());
         }
     }
