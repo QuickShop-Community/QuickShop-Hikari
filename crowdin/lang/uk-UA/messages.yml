@@ -1,5 +1,5 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
-fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
+break-shop-use-supertool: <yellow>Ви можете зламати магазин, використовуючи супер інструмент.
+fee-charged-for-price-change: <green>Ви заплатили <red>{0}</red> щоб змінити ціну.
 not-allowed-to-create: <red>Ви не можете створити магазин тут.
 disabled-in-this-world: <red>Quickshop відключений у цьому світі
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
@@ -11,9 +11,9 @@ bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following p
 thats-not-a-number: <red>Неправильне число
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Це небезпечна команда, тому виконати її може тільки Консоль.
-not-a-number: <red>You can only input a number, your input was {0}.
+not-a-number: <red>Ви можете ввести тільки число, ваше введення було {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>Ваш магазин за адресою {0} був видалений, тому що у вас не було достатньо грошей, щоб його утримати!
 tabcomplete:
   amount: '[amount]'
   item: '[item]'
@@ -25,14 +25,14 @@ tabcomplete:
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
-you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
+server-crash-warning: '<red>УВАГА: використання команди перезамінності /quickshop для замінити/видалення файлу QuickShop Jar може аварійно завершити роботу сервера під час його роботи.'
+you-cant-afford-to-change-price: <red>Зміна ціни у вашому магазині коштує {0}.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Ваш магазин {0} є повним!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>Функція вставки відключена! Ви не можете подати запит на технічну підтримку.
+  Причина: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -52,27 +52,27 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Лише для адміністратора) <light_purple>{0}<dark_gray> відмовлено в перевірках дозволів. Якщо цього не очікується, спробуйте додати <light_purple>{1} <gray>до чорного списку слухачів. Посібник з налаштування: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
-digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
-currency-unset: <green>Shop currency removed successfully. Using default settings now.
-you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
+inventory-check-global-alert: "<red>[Тест інвентарю] <gray>Увага! Знайдено елемент відображення у QuickShop <gold>{2}</gold> в інвентарі <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, що не повинно було статися, це зазвичай означає, що хтось зловмисно використовує його для дублювання елемента відображення."
+digits-reach-the-limit: <red>Ви досягли межі десяткових знаків у ціні.
+currency-unset: <green>Валюту магазину успішно видалено. Зараз використовується налаштування за замовчуванням.
+you-cant-create-shop-in-there: <red>У вас немає дозволу на створення магазину в цьому місці.
 no-pending-action: <red>You do not have any pending actions
-refill-success: <green>Refill successful
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
+refill-success: <green>Поповнення успішне
+failed-to-paste: <red>Не вдалося завантажити дані в Pastebin. Перевірте підключення до Інтернету та повторіть спробу. (Детальніше див. консоль)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
+exceeded-maximum: <red>Значення перевищило максимальне значення в Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All shops have been removed...
 3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission setup in there?
 not-a-integer: <red>You must input a integer, your input was {0}.
-translation-country: 'Language Zone: English (en_US)'
+translation-country: 'Мова: Українська(uk_UA)'
 buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
 purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
+denied-put-in-item: <red>Ви не можете покласти цей товар у свій магазин!
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
@@ -89,52 +89,52 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} Придбати {1} {2} з вашого магазину, і ви заробили {3} ({4} в податках).
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
-shops-recovering: Recovering shops from backup...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+shops-recovering: Відновлення магазинів із резервної копії...
+virtual-player-component-hover: "<gray>Це віртуальний плеєр.\n<gray>Відноситься до системного облікового запису з таким ім'ям з таким же ім'ям.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>Це реально існуючий гравець.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>\n<gray>Якщо ви хочете використовувати обліковий запис віртуальної системи з таким же ім'ям, додайте <dark_gray>\"[]\"</dark_gray> з обох боків імені користувача: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
   owner: '<green>Власник: {0}'
   preview: <aqua>[Item Preview]
-  enchants: <dark_purple>Enchantments
+  enchants: <dark_purple>Зачарування
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
   shop-information: '<green>Відомості про магазин:'
   item: '<green>Предмет: <yellow>{0}'
   price-per: <green>Ціна за <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
+  item-name-and-price-tax: <yellow>{0} {1} <green>для</green> {2} <gray>(<green>{3}</green> в податках)
   successful-purchase: '<green>Успішно придбано:'
-  price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
+  price-per-stack: <green>Ціна за <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Збережені зачарування
   item-holochat-error: <red>[Помилка]
   this-shop-is-selling: <green>This shop is <aqua>SELLING<green> items.
-  shop-stack: '<green>Amount of bulk: <yellow>{0}'
-  space: '<green>Space: <yellow>{0}'
-  effects: <green>Effects
-  damage-percent-remaining: <yellow>{0}% <green>remaining.
+  shop-stack: '<green>Кількість об''єму: <yellow>{0}'
+  space: '<green>Простір: <yellow>{0}'
+  effects: <green>Ефекти
+  damage-percent-remaining: <yellow>{0}% <green>Залишилися.
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
-  this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
+  this-shop-is-buying: <green>Цей магазин є <light_purple>ПОКУПКИ<green> Елементи.
   successfully-sold: '<green>Успішно продано:'
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
-currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
+currency-not-exists: <red>Не вдається знайти валюту, яку потрібно встановити. Можливо, написання неправильне або ця валюта недоступна в цьому світі.
 no-nearby-shop: <red>No nearby shop matching {0}.
-translation-author: 'Translator: Ghost_chu, Andre_601'
-integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
+translation-author: 'Перекладач: Ghost_chu, Andre_601'
+integrations-check-failed-trade: <red>Інтеграція {0} відмовлено в торгівлі магазину
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
-success-change-owner-to-server: <green>Successfully set the shop owner to Server.
+success-change-owner-to-server: <green>Успішно встановлено власника магазину.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Назва цього магазину задовга (максимальна довжина {0}), будь ласка, виберіть інший!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}''s {1} {2} Угоди:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
+  price-hover: <yellow>Підсумок {0}, Включаючи {1} Податки.
+  unknown: <gray>(невідомо)
+  undefined: <gray>(немає імені)
   no-results: <red>No transactions found.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
