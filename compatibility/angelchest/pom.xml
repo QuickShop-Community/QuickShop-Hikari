@@ -14,7 +14,7 @@
     <artifactId>angelchest</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compat-ChestProtect</name>
+    <name>Compat-AngelChest</name>
 
     <description>Compatibility module for AngelChest</description>
     <properties>
