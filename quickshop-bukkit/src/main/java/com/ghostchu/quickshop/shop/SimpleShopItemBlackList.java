@@ -6,7 +6,9 @@ import com.ghostchu.quickshop.util.ItemExpression;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.function.Function;
 public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, SubPasteItem {
     private final QuickShop plugin;
     private final List<Function<ItemStack, Boolean>> BLACKLIST = new ArrayList<>();
+    private final List<String> BLACKLIST_LORES = new ArrayList<>();
 
     public SimpleShopItemBlackList(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -26,6 +29,7 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
 
     private void init() {
         BLACKLIST.clear();
+        BLACKLIST_LORES.clear();
         List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
         for (String s : configBlacklist) {
             Optional<Function<ItemStack, Boolean>> func = new ItemExpression(plugin, s).getFunction();
@@ -35,6 +39,8 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
                 plugin.logger().warn("Failed to parse item expression: {}", s);
             }
         }
+        List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
+        configLoresBlackList.forEach(s -> BLACKLIST_LORES.add(ChatColor.stripColor(s)));
     }
 
     /**
@@ -48,6 +54,24 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
         for (Function<ItemStack, Boolean> f : BLACKLIST) {
             if (f.apply(itemStack)) {
                 return true;
+            }
+        }
+        if(BLACKLIST_LORES.isEmpty()) return false; // Fast return if empty
+        if (!itemStack.hasItemMeta()) return false;
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) return false;
+        if (!meta.hasLore()) return false;
+        List<String> originalLores = meta.getLore();
+        if (originalLores == null) return false;
+        List<String> strippedLores = new ArrayList<>(originalLores.size());
+        for (String originalLore : originalLores) {
+            strippedLores.add(ChatColor.stripColor(originalLore));
+        }
+        for (String loreLine : strippedLores) {
+            for (String blacklistLore : BLACKLIST_LORES) {
+                if (loreLine.contains(blacklistLore)) {
+                    return true;
+                }
             }
         }
         return false;
