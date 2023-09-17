@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.metric.MetricDataType;
 import com.google.common.collect.Lists;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
@@ -69,58 +70,65 @@ public class RollbarErrorReporter {
             plugin.logger().warn("Cannot send error on primary thread (I/O blocking). This error has been discard.");
             return;
         }
-        try {
-            if (plugin.getBootError() != null) {
-                return; // Don't report any errors if boot failed.
-            }
-            if (tempDisable) {
-                this.tempDisable = false;
-                return;
-            }
-            if (disable) {
-                return;
-            }
-            if (!enabled) {
-                return;
-            }
+        plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "RollbarErrorReporter", "QuickShop detected a error, we will report it to Rollbar Error Tracker so QuickShop's developers will receive the notification so we can fix it.",
+                () -> {
+                    try {
+                        if (plugin.getBootError() != null) {
+                            return; // Don't report any errors if boot failed.
+                        }
+                        if (tempDisable) {
+                            this.tempDisable = false;
+                            return;
+                        }
+                        if (disable) {
+                            return;
+                        }
+                        if (!enabled) {
+                            return;
+                        }
 
-            if (!canReport(throwable)) {
-                return;
-            }
-            if (isDisallowedClazz(throwable.getClass())) {
-                return;
-            }
-            if (throwable.getCause() != null) {
-                if (isDisallowedClazz(throwable.getCause().getClass())) {
-                    return;
-                }
-            }
-            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
-            plugin
-                    .logger()
-                    .warn(
-                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
-            plugin.logger().warn("====QuickShop Error Report BEGIN===");
-            plugin.logger().warn("Description: {}", throwable.getMessage());
-            plugin.logger().warn("Server   ID: {}", plugin.getServerUniqueID());
-            plugin.logger().warn("Exception  : ");
-            ignoreThrows();
-            throwable.printStackTrace();
-            resetIgnores();
-            plugin.logger().warn("====QuickShop Error Report E N D===");
-            plugin
-                    .logger()
-                    .warn(
-                            "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
-            Log.debug(throwable.getMessage());
-            Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
-            if (Util.isDevMode()) {
-                throwable.printStackTrace();
-            }
-        } catch (Exception th) {
-            ignoreThrow();
-            plugin.logger().warn("Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
-        }
+                        if (!canReport(throwable)) {
+                            return;
+                        }
+                        if (isDisallowedClazz(throwable.getClass())) {
+                            return;
+                        }
+                        if (throwable.getCause() != null) {
+                            if (isDisallowedClazz(throwable.getCause().getClass())) {
+                                return;
+                            }
+                        }
+                        this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+                        plugin
+                                .logger()
+                                .warn(
+                                        "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
+                        plugin.logger().warn("====QuickShop Error Report BEGIN===");
+                        plugin.logger().warn("Description: {}", throwable.getMessage());
+                        plugin.logger().warn("Server   ID: {}", plugin.getServerUniqueID());
+                        plugin.logger().warn("Exception  : ");
+                        ignoreThrows();
+                        throwable.printStackTrace();
+                        resetIgnores();
+                        plugin.logger().warn("====QuickShop Error Report E N D===");
+                        plugin
+                                .logger()
+                                .warn(
+                                        "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
+                        Log.debug(throwable.getMessage());
+                        Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+                        if (Util.isDevMode()) {
+                            throwable.printStackTrace();
+                        }
+                    } catch (Exception th) {
+                        ignoreThrow();
+                        plugin.logger().warn("Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
+                    }
+                }, () -> {
+                    ignoreThrow();
+                    plugin.logger().warn("An error occurred during running, because your privacy setting, the error not reported to server.", throwable);
+                });
+
     }
 
     /**
