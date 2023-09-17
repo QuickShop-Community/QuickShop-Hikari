@@ -92,7 +92,7 @@ public class Log {
 
 
     public static void privacy(@NotNull String message) {
-        debug(Level.INFO, message, Caller.create());
+        privacy(Level.INFO, message, Caller.create());
     }
 
     @ApiStatus.Internal
