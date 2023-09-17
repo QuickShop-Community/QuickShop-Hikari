@@ -14,16 +14,9 @@ public class CachePerformanceItem implements SubPasteItem {
     @Override
     public @NotNull String genBody() {
         return "<h5>Player Lookup Cache</h5>" +
-                buildPlayerLookupCache() +
-                "<h5>QUser Reuse Memory Cache</h5>" +
-                buildQUserReuseCache();
+                buildPlayerLookupCache();
     }
 
-    private String buildQUserReuseCache() {
-        return "";
-//        CacheStats stats = QUserImpl.getQuserCache().stats();
-//        return renderTable(stats);
-    }
 
     private String buildPlayerLookupCache() {
         CacheStats stats = ((FastPlayerFinder) plugin.getPlayerFinder()).getNameCache().stats();
