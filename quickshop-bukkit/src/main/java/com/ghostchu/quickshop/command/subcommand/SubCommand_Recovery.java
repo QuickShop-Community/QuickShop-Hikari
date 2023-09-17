@@ -41,8 +41,6 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
         plugin.getShopManager().getAllShops().forEach(s -> plugin.getShopManager().unloadShop(s));
         Log.debug("Clean up in-memory data...");
         plugin.getShopManager().clear();
-        Log.debug("Reset shop cache...");
-        plugin.getShopCache().invalidateAll();
         Log.debug("Launching async thread for importing tables...");
         Util.asyncThreadRun(() -> {
             try {

@@ -542,6 +542,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         this.interactiveManager.reset();
         this.shops.clear();
+        this.shopCache.invalidateAll(null);
     }
 
     /**
@@ -1232,6 +1233,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         inChunk.remove(loc);
+        shopCache.invalidate(null, shop.getLocation());
     }
 
     /**

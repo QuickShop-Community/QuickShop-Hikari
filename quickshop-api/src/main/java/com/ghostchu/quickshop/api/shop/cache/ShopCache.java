@@ -10,9 +10,9 @@ public interface ShopCache {
 
     @Nullable Shop get(@NotNull ShopCacheNamespacedKey namespacedKey, @NotNull Location location, boolean allowLoading);
 
-    void invalidateAll(@NotNull ShopCacheNamespacedKey namespacedKey);
+    void invalidateAll(@Nullable ShopCacheNamespacedKey namespacedKey);
 
-    void invalidate(@NotNull ShopCacheNamespacedKey namespacedKey, @NotNull Location location);
+    void invalidate(@Nullable ShopCacheNamespacedKey namespacedKey, @NotNull Location location);
 
     @NotNull CacheStats getCacheStats(@NotNull ShopCacheNamespacedKey namespacedKey);
 }

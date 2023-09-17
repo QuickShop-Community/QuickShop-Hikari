@@ -13,9 +13,7 @@ public class CachePerformanceItem implements SubPasteItem {
 
     @Override
     public @NotNull String genBody() {
-        return "<h5>Shop Cache</h5>" +
-                buildShopCacheContent() +
-                "<h5>Player Lookup Cache</h5>" +
+        return "<h5>Player Lookup Cache</h5>" +
                 buildPlayerLookupCache() +
                 "<h5>QUser Reuse Memory Cache</h5>" +
                 buildQUserReuseCache();
@@ -25,15 +23,6 @@ public class CachePerformanceItem implements SubPasteItem {
         return "";
 //        CacheStats stats = QUserImpl.getQuserCache().stats();
 //        return renderTable(stats);
-    }
-
-    @NotNull
-    private String buildShopCacheContent() {
-        if (plugin.getShopCache() == null) {
-            return "<p>Shop Cache disabled.</p>";
-        }
-        CacheStats stats = plugin.getShopCache().getStats();
-        return renderTable(stats);
     }
 
     private String buildPlayerLookupCache() {
