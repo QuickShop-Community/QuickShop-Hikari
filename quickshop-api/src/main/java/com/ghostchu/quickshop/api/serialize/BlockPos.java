@@ -1,10 +1,9 @@
 package com.ghostchu.quickshop.api.serialize;
 
+import lombok.EqualsAndHashCode;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
-
+@EqualsAndHashCode
 public final class BlockPos {
     private final int version = 2;
     private final int x;
@@ -42,19 +41,6 @@ public final class BlockPos {
 
     public String getWorld() {
         return world;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BlockPos blockPos = (BlockPos) o;
-        return version == blockPos.version && x == blockPos.x && y == blockPos.y && z == blockPos.z && Objects.equals(world, blockPos.world);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(version, x, y, z, world);
     }
 
     @Override
