@@ -38,7 +38,7 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
             Function<Location, Shop> valueProvider = pair.getLeft();
             if (valueProvider == null) throw new IllegalArgumentException("The shop value provider cannot be null!");
             Cache<Location, BoxedShop> cacheContainer = pair.getRight();
-            if (pair.getRight() == null)
+            if (cacheContainer == null)
                 cacheContainer = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES).recordStats().build();
             CACHES.put(namespacedKey, cacheContainer);
             CACHE_VALUE_PROVIDER.put(namespacedKey, valueProvider);
