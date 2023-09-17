@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.metric.collect;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.metric.MetricCollectEntry;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
 import org.bstats.charts.AdvancedPie;
@@ -85,5 +86,13 @@ public class BuiltInCollects {//Statistic
         });
     }
 
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - ItemMatcher", description = "We collect this so we can know the item matcher that users using, and improve it.")
+    public CustomChart statisticItemMatcher() {
+        return new SimplePie("statistic_item_matcher", () -> plugin.getItemMatcher().getName());
+    }
 
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - DisplayImpl", description = "We collect this so we can know the which one item display impl most using, and improve it.")
+    public CustomChart statisticDisplayImpl() {
+        return new SimplePie("statistic_displayimpl", () -> AbstractDisplayItem.getNowUsing().name());
+    }
 }

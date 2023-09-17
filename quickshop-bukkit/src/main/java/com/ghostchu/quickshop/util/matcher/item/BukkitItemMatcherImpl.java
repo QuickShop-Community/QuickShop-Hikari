@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
      */
     @Override
     public @NotNull String getName() {
-        return plugin.getJavaPlugin().getName();
+        return Bukkit.getServer().getName();
     }
 
     /**
