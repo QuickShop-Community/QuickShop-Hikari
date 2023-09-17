@@ -259,6 +259,7 @@ public class PasteGenerator {
         add(new TimingsLogsItem());
         add(new CronLogsItem());
         add(new PerformanceLogsItem());
+        add(new PrivacyLogsItem());
         add(new MiscUtilItem());
         PasteManager pasteManager = QuickShop.getInstance().getPasteManager();
         if (pasteManager != null) {

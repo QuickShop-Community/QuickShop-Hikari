@@ -115,6 +115,7 @@
                                         <include>net.minidev:json-smart:*</include>
                                         <include>de.themoep:minedown-adventure:*</include>
                                         <include>io.papermc:paperlib:*</include>
+                                        <include>org.bstats:*</include>
                                     </includes>
                                     <!--                                    <excludes>-->
                                     <!--                                        <exclude>org.apache.commons:commons-compress:*</exclude>-->
