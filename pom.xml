@@ -181,6 +181,11 @@
                                         <pattern>de.tr7zw.changeme.nbtapi</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>org.bstats</pattern>
+                                        <!-- Replace this with your package! -->
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.bstats</shadedPattern>
+                                    </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer

@@ -603,6 +603,11 @@ config-damaged: false
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: [ ]
 
+privacy:
+  type:
+    STATISTIC: true
+    RESEARCH: true
+
 # Record transactions for metric purpose,
 # all transaction will be record into database can used by other plugins for analyse trade activities.
 # Turn off this will stop recording transactions for metrics.

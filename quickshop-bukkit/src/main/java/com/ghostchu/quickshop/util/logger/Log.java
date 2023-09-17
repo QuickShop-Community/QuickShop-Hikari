@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util.logger;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.util.Util;
@@ -17,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
@@ -91,6 +89,34 @@ public class Log {
     public static void debug(@NotNull Level level, @NotNull String message) {
         debug(level, message, Caller.create());
     }
+
+
+    public static void privacy(@NotNull String message) {
+        debug(Level.INFO, message, Caller.create());
+    }
+
+    @ApiStatus.Internal
+    public static void privacy(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+        LOCK.writeLock().lock();
+        try {
+            Record recordEntry;
+            if (DISABLE_LOCATION_RECORDING) {
+                recordEntry = new Record(level, Type.PRIVACY, message, null);
+            } else {
+                recordEntry = new Record(level, Type.PRIVACY, message, caller);
+            }
+            LOGGER_BUFFER.offer(recordEntry);
+            debugStdOutputs(recordEntry);
+        } finally {
+            LOCK.writeLock().unlock();
+        }
+    }
+
+    public static void privacy(@NotNull Level level, @NotNull String message) {
+        privacy(level, message, Caller.create());
+    }
+
+
 
     public static void performance(@NotNull Level level, @NotNull String message, @NotNull CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
@@ -229,6 +255,7 @@ public class Log {
         TRANSACTION,
         TIMING,
         PERFORMANCE,
+        PRIVACY,
         PERMISSION
     }
 
