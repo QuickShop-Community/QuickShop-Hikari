@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import java.sql.DatabaseMetaData;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,4 +61,29 @@ public class BuiltInCollects {//Statistic
     public CustomChart statisticEconomyTypes() {
         return new SimplePie("statistic_economy_types", () -> plugin.getEconomy().getName());
     }
+
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Product", description = "We collect this so we can know the database vendor that users using, and provide dedicated driver if possible.")
+    public CustomChart statisticDatabaseProject() {
+        return new SimplePie("statistic_database_product", () -> {
+            try{
+                DatabaseMetaData metaData = plugin.getSqlManager().getConnection().getMetaData();
+                return metaData.getDatabaseProductName();
+            }catch (Throwable throwable){
+                return "Error";
+            }
+        });
+    }
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Version", description = "We collect this so we can know the database versions that users using, and provide/update dedicated driver or drop the support for too old database versions.")
+    public CustomChart statisticDatabaseVersion() {
+        return new SimplePie("statistic_database_version", () -> {
+            try{
+                DatabaseMetaData metaData = plugin.getSqlManager().getConnection().getMetaData();
+                return metaData.getDatabaseProductName()+"@"+metaData.getDatabaseProductName();
+            }catch (Throwable throwable){
+                return "Error";
+            }
+        });
+    }
+
+
 }
