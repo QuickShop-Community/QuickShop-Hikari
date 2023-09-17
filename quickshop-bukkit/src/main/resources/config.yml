@@ -598,10 +598,19 @@ config-damaged: false
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: [ ]
 
+#Privacy Controller allows you turn on/off some options that related to privacy. This is our move towards privacy transparency.
+#By audit all privacy reviewing activities, execute `/quickshop paste` to generate a paste and check `Privacy Logs` section.
 privacy:
+  # Category Control
   type:
+    # Including `/qs paste` and Auto Error Reporter, disable DIAGNOSTIC category will disable online paste, rollbar error reporter error reporting.
+    DIAGNOSTIC: true
+    # Including bStats metrics with `Statistic - ` prefix, see all metrics we collected on https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281
     STATISTIC: true
+    # Including bStats metrics with `Research - ` prefix, see all metrics we collected on https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281
     RESEARCH: true
+  module:
+  #  SOME_MODULE_NAME_HERE: false
 
 # Record transactions for metric purpose,
 # all transaction will be record into database can used by other plugins for analyse trade activities.
