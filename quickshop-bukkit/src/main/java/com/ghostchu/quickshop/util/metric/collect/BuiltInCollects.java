@@ -67,10 +67,6 @@ public class BuiltInCollects {//Statistic
         return new SimplePie("statistic_database_types", () -> plugin.getDatabaseDriverType().name());
     }
 
-    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Economy Types", description = "We collect this so we can know the percent of different economy types users.")
-    public CustomChart statisticEconomyTypes() {
-        return new SimplePie("statistic_economy_types", () -> plugin.getEconomy().getName());
-    }
 
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Product", description = "We collect this so we can know the database vendor that users using, and provide dedicated driver if possible.")
     public CustomChart statisticDatabaseProject() {
@@ -93,6 +89,11 @@ public class BuiltInCollects {//Statistic
                 return "Error";
             }
         });
+    }
+
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Economy Types", description = "We collect this so we can know the percent of different economy types users.")
+    public CustomChart statisticEconomyTypes() {
+        return new SimplePie("statistic_economy_types", () -> plugin.getEconomy().getName());
     }
 
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - ItemMatcher", description = "We collect this so we can know the item matcher that users using, and improve it.")
