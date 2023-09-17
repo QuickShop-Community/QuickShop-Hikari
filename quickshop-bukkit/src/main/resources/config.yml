@@ -598,8 +598,10 @@ config-damaged: false
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: [ ]
 
+
 #Privacy Controller allows you turn on/off some options that related to privacy. This is our move towards privacy transparency.
 #By audit all privacy reviewing activities, execute `/quickshop paste` to generate a paste and check `Privacy Logs` section.
+#To out-put from bStats completely, go to /plugins/bStats/config.yml.
 privacy:
   # Category Control
   type:
