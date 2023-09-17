@@ -100,6 +100,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private String tradeAllKeyword;
     private boolean disableCreativePurchase;
     private boolean sendStockMessageToStaff;
+    private boolean useShopableChecks;
 
     public SimpleShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
@@ -141,6 +142,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.tradeAllKeyword = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         this.disableCreativePurchase = plugin.getConfig().getBoolean("shop.disable-creative-mode-trading");
         this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
+        this.useShopableChecks = PackageUtil.parsePackageProperly("shoppableChecks").asBoolean(false);
     }
 
     @Override
@@ -826,7 +828,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public @Nullable Shop getShop(@NotNull Location loc) {
-        return getShop(loc, false);
+        return getShop(loc, !useShopableChecks);
     }
 
     /**
