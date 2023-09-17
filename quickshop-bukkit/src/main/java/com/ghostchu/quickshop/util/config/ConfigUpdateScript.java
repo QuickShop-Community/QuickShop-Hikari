@@ -106,6 +106,7 @@ public class ConfigUpdateScript {
 
     @UpdateScript(version = 1021)
     public void privacySystem() {
+        getConfig().set("disabled-metrics", null);
         getConfig().set("privacy.type.STATISTIC", true);
         getConfig().set("privacy.type.RESEARCH", true);
         getConfig().set("privacy.type.DIAGNOSTIC", true);
