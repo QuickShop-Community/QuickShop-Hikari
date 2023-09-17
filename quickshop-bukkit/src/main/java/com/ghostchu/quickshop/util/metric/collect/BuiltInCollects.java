@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.util.metric.collect;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.metric.MetricCollectEntry;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
 import org.bstats.charts.AdvancedPie;
@@ -12,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +35,9 @@ public class BuiltInCollects {//Statistic
                 if (descriptionFile.getDepend().contains(myName) || descriptionFile.getSoftDepend().contains(myName)) {
                     data.put(descriptionFile.getName(), 1);
                 }
+            }
+            if (data.isEmpty()) {
+                data.put("None", 1);
             }
             return data;
         });
@@ -72,21 +77,24 @@ public class BuiltInCollects {//Statistic
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Product", description = "We collect this so we can know the database vendor that users using, and provide dedicated driver if possible.")
     public CustomChart statisticDatabaseProject() {
         return new SimplePie("statistic_database_product", () -> {
-            try{
-                DatabaseMetaData metaData = plugin.getSqlManager().getConnection().getMetaData();
+            try (Connection connection = plugin.getSqlManager().getConnection()) {
+                DatabaseMetaData metaData = connection.getMetaData();
                 return metaData.getDatabaseProductName();
-            }catch (Throwable throwable){
+            } catch (Throwable throwable) {
+                Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
                 return "Error";
             }
         });
     }
+
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Version", description = "We collect this so we can know the database versions that users using, and provide/update dedicated driver or drop the support for too old database versions.")
     public CustomChart statisticDatabaseVersion() {
         return new SimplePie("statistic_database_version", () -> {
-            try{
-                DatabaseMetaData metaData = plugin.getSqlManager().getConnection().getMetaData();
-                return metaData.getDatabaseProductName()+"@"+metaData.getDatabaseProductName();
-            }catch (Throwable throwable){
+            try (Connection connection = plugin.getSqlManager().getConnection()) {
+                DatabaseMetaData metaData = connection.getMetaData();
+                return metaData.getDatabaseProductName() + "@" + metaData.getDatabaseProductVersion();
+            } catch (Throwable throwable) {
+                Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
                 return "Error";
             }
         });
@@ -115,9 +123,9 @@ public class BuiltInCollects {//Statistic
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Background Debug Logger", description = "We collect this so we can know the which one item display impl most using, and improve it.")
     public CustomChart statisticBackgroundDebugLogger() {
         return new SimplePie("statistic_background_debug_logger", () -> {
-            if(plugin.getConfig().getBoolean("debug.disable-debuglogger")){
+            if (plugin.getConfig().getBoolean("debug.disable-debuglogger")) {
                 return "Disabled";
-            }else{
+            } else {
                 return "Enabled";
             }
         });
