@@ -93,6 +93,27 @@ public class ConfigUpdateScript {
         getConfig().set("plugin.NBTAPI", null);
     }
 
+    @UpdateScript(version = 1020)
+    public void protectionCheckMonitorListeners() {
+        getConfig().set("shop.cancel-protection-fake-event-before-reach-monitor-listeners", true);
+    }
+
+    @UpdateScript(version = 1021)
+    public void cacheSystemReworked() {
+        getConfig().set("shop.use-cache", true);
+        getConfig().set("use-caching", null);
+    }
+
+    @UpdateScript(version = 1021)
+    public void privacySystem() {
+        getConfig().set("disabled-metrics", null);
+        getConfig().set("privacy.type.STATISTIC", true);
+        getConfig().set("privacy.type.RESEARCH", true);
+        getConfig().set("privacy.type.DIAGNOSTIC", true);
+    }
+
+
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);

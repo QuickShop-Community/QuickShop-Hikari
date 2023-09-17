@@ -40,7 +40,7 @@ public class DebugLogsItem implements SubPasteItem {
         List<String> debugLogs = Log.fetchLogs(Log.Type.DEBUG).stream().map(recordEntry -> "[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry).toList();
         List<String> tail = CommonUtil.tail(debugLogs, 1000);
         tail.forEach(builder::add);
-        return "<textarea name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +
+        return "<textarea readonly=\"true\" name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(builder.toString()) +
                 "</textarea><br />";
     }

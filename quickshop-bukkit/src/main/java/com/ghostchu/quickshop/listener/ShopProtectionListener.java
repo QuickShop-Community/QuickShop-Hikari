@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.listener;
 
-import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -32,8 +31,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     private boolean hopperProtect;
     private boolean hopperOwnerExclude;
 
-    public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
-        super(plugin, cache);
+    public ShopProtectionListener(@NotNull QuickShop plugin) {
+        super(plugin);
         init();
     }
 

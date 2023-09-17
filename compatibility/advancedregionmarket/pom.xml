@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.0.0.7</version>
+        <version>5.1.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -68,9 +68,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.alex9849.advancedregionmarket</groupId>
-            <artifactId>advancedregionmarket</artifactId>
-            <version>3.5.3</version>
+            <groupId>com.github.alex9849</groupId>
+            <artifactId>advanced-region-market</artifactId>
+            <version>3.5.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

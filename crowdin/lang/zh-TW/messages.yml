@@ -343,7 +343,7 @@ booleanformat:
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   price-hover: <yellow>點擊變更商品價格。
-  remove: <bold><red>[Remove Shop]
+  remove: <bold><red>[刪除商店]
   mode-buying-hover: <yellow>點擊商店變更為出售模式。
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
@@ -1451,3 +1451,4 @@ suite:
 compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易擁有 EliteMobs 靈魂綁定附魔的物品。
+internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."

@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>5.0.0.7</version>
+    <version>5.1.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -115,6 +115,7 @@
                                         <include>net.minidev:json-smart:*</include>
                                         <include>de.themoep:minedown-adventure:*</include>
                                         <include>io.papermc:paperlib:*</include>
+                                        <include>org.bstats:*</include>
                                     </includes>
                                     <!--                                    <excludes>-->
                                     <!--                                        <exclude>org.apache.commons:commons-compress:*</exclude>-->
@@ -180,6 +181,11 @@
                                     <relocation>
                                         <pattern>de.tr7zw.changeme.nbtapi</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.bstats</pattern>
+                                        <!-- Replace this with your package! -->
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.bstats</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>
@@ -455,7 +461,8 @@
         <!--        <module>compatibility/advancedchests</module>-->
         <module>compatibility/ecoenchants</module>
         <module>compatibility/reforges</module>
-<!--        <module>compatibility/chestprotect</module>-->
+        <module>compatibility/chestprotect</module>
+        <module>compatibility/angelchest</module>
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
         <module>addon/discount</module>

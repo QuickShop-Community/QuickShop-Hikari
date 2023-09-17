@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1019
+config-version: 1022
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -79,15 +79,10 @@ logging:
 #Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
 force-bukkit-chat-handler: false
 
-#Disallow QuickShop to send metrics data to bStats (https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281).
-#Please let the metrics enabled, it helps the author :).
-disabled-metrics: false
-
 #Should QS be allowed to check for updates on SpigotMC.org?
 updater: true
 
 #Should QS be allowed to automatically report errors to the author?
-#It will also create a paste for data-recovery or debug when the server boots up.
 auto-report-errors: true
 
 #Should QS use OfflinePlayer list for TabComplete?
@@ -118,9 +113,6 @@ send-shop-protection-alert: false
 
 #Still WIP
 server-platform: 0
-
-#Use caching to find shops to optimize performance if possible.
-use-caching: true
 
 #Select which chat system QuickShop should use.
 #0=BungeeChat (Spigot default)
@@ -371,6 +363,9 @@ shop:
   #If you don't want this, then please disable it and use the integration below instead.
   protection-checking: true
 
+  # Cancel the fake BlockBreakEvent before it passed to MONITOR level listeners.
+  cancel-protection-fake-event-before-reach-monitor-listeners: true
+
   #The list of worlds in which protection checking is disabled.
   protection-checking-blacklist:
     - disabled_world
@@ -443,6 +438,9 @@ shop:
 
   #[BETA] Disable the quickshop /quickshop size command stack size check to allow stack size go up the vanilla limit
   disable-max-size-check-for-size-command: false
+
+  # Use shop cache if possible to improve shop lookup performance
+  use-cache: true
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.
@@ -599,6 +597,22 @@ config-damaged: false
 #Example:
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: [ ]
+
+
+#Privacy Controller allows you turn on/off some options that related to privacy. This is our move towards privacy transparency.
+#By audit all privacy reviewing activities, execute `/quickshop paste` to generate a paste and check `Privacy Logs` section.
+#To out-put from bStats completely, go to /plugins/bStats/config.yml.
+privacy:
+  # Category Control
+  type:
+    # Including `/qs paste` and Auto Error Reporter, disable DIAGNOSTIC category will disable online paste, rollbar error reporter error reporting.
+    DIAGNOSTIC: true
+    # Including bStats metrics with `Statistic - ` prefix, see all metrics we collected on https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281
+    STATISTIC: true
+    # Including bStats metrics with `Research - ` prefix, see all metrics we collected on https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281
+    RESEARCH: true
+  module:
+  #  SOME_MODULE_NAME_HERE: false
 
 # Record transactions for metric purpose,
 # all transaction will be record into database can used by other plugins for analyse trade activities.

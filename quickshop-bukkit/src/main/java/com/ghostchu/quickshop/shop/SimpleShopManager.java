@@ -7,6 +7,8 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.cache.ShopCache;
+import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -14,6 +16,8 @@ import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.cache.BoxedShop;
+import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -39,6 +43,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
@@ -61,6 +67,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 
 /**
  * Manage a lot of shops.
@@ -80,6 +87,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     .weakValues()
                     .initialCapacity(50)
                     .build();
+    private ShopCache shopCache;
     private final EconomyFormatter formatter;
     @Getter
     @Nullable
@@ -100,6 +108,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private String tradeAllKeyword;
     private boolean disableCreativePurchase;
     private boolean sendStockMessageToStaff;
+    private boolean useShopableChecks;
+    private boolean useShopCache;
 
     public SimpleShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
@@ -141,6 +151,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.tradeAllKeyword = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         this.disableCreativePurchase = plugin.getConfig().getBoolean("shop.disable-creative-mode-trading");
         this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
+        this.useShopableChecks = PackageUtil.parsePackageProperly("shoppableChecks").asBoolean(false);
+        this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
+        Map<@NotNull ShopCacheNamespacedKey, @NotNull Pair<@NotNull Function<Location, Shop>, @Nullable Cache<Location, BoxedShop>>> map = new HashMap<>();
+        // SINGLE
+        map.put(ShopCacheNamespacedKey.SINGLE, new ImmutablePair<>(this::getShop, null));
+        map.put(ShopCacheNamespacedKey.INCLUDE_ATTACHED, new ImmutablePair<>(this::getShopIncludeAttached, null));
+        this.shopCache = new SimpleShopCache(plugin, map);
     }
 
     @Override
@@ -527,6 +544,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         this.interactiveManager.reset();
         this.shops.clear();
+        this.shopCache.invalidateAll(null);
     }
 
     /**
@@ -687,10 +705,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 if (signBlock != null && autoSign) {
                     if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
                         BlockState signState = this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
-                        if(signState instanceof Sign puttedSign) {
+                        if (signState instanceof Sign puttedSign) {
                             try {
                                 shop.claimShopSign(puttedSign);
-                            }catch (Throwable ignored){}
+                            } catch (Throwable ignored) {
+                            }
                         }
                     }
                 }
@@ -825,14 +844,22 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public @Nullable Shop getShop(@NotNull Location loc) {
-        return getShop(loc, false);
+        return getShop(loc, !useShopableChecks);
+    }
+
+    @Override
+    public @Nullable Shop getShopViaCache(@NotNull Location loc) {
+        if(!this.useShopCache){
+            return getShop(loc);
+        }
+        return shopCache.get(ShopCacheNamespacedKey.SINGLE, loc, true);
     }
 
     /**
      * Gets a shop in a specific location
      *
      * @param loc                  The location to get the shop from
-     * @param skipShopableChecking whether to check is shopable
+     * @param skipShopableChecking whether to check is shopable, this will cause chunk loading
      * @return The shop at that location
      */
     @Override
@@ -840,7 +867,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
             return null;
         }
-        final Map<Location, Shop> inChunk = getShops(loc.getChunk());
+        ShopChunk shopChunk = SimpleShopChunk.fromLocation(loc);
+        final Map<Location, Shop> inChunk = getShops(shopChunk);
         if (inChunk == null) {
             return null;
         }
@@ -890,28 +918,23 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
-        return getShopIncludeAttached(loc, true);
-    }
-
-    /**
-     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
-     *
-     * @param loc      The location to get the shop from
-     * @param useCache whether to use cache
-     * @return The shop at that location
-     */
-    @Override
-    public @Nullable Shop getShopIncludeAttached(@Nullable Location loc, boolean useCache) {
         if (loc == null) {
             Log.debug("Location is null.");
             return null;
         }
-        if (useCache) {
-            if (plugin.getShopCache() != null) {
-                return plugin.getShopCache().find(loc, true);
-            }
-        }
         return findShopIncludeAttached(loc, false);
+    }
+
+    @Override
+    public @Nullable Shop getShopIncludeAttachedViaCache(@Nullable Location loc) {
+        if (loc == null) {
+            Log.debug("Location is null.");
+            return null;
+        }
+        if(!this.useShopCache){
+            return getShopIncludeAttachedViaCache(loc);
+        }
+        return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
     }
 
     /**
@@ -954,6 +977,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return null;
         }
         return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));
+    }
+
+    @Override
+    public @Nullable Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk) {
+        return getShops(shopChunk.getWorld(), shopChunk.getX(), shopChunk.getZ());
     }
 
     /**
@@ -1213,6 +1241,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         inChunk.remove(loc);
+        shopCache.invalidate(null, shop.getLocation());
     }
 
     /**
@@ -1450,6 +1479,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         });
     }
+
     private @NotNull BlockState processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
         boolean signIsWatered = signBlock.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());
@@ -1556,10 +1586,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     }
                 }
             }
-        }
-        // add cache if using
-        if (plugin.getShopCache() != null) {
-            plugin.getShopCache().setCache(loc, shop);
         }
         return shop;
     }

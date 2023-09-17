@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.addon.bluemap;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
@@ -14,11 +13,9 @@ import de.bluecolored.bluemap.api.markers.POIMarker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
+import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -44,65 +41,17 @@ public final class Main extends JavaPlugin implements Listener {
         saveDefaultConfig();
         plugin = QuickShop.getInstance();
         getLogger().info("Registering the per shop permissions...");
-        Bukkit.getScheduler().runTaskAsynchronously(this,()->{
-            while(BlueMapAPI.getInstance().isEmpty()){
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            getLogger().info("Found Pl3xMap loaded! Hooking!");
-            blueMapAPI = BlueMapAPI.getInstance().orElseThrow();
-            Bukkit.getPluginManager().registerEvents(this, this);
-            Bukkit.getScheduler().runTaskLater(this, this::updateAllMarkers, 80);
-        });
-    }
+            BlueMapAPI.onEnable(blueMapAPI -> {
+                getLogger().info("Found BlueMap loaded! Hooking!");
+                createMarkerSet();
+                Bukkit.getScheduler().runTaskTimerAsynchronously(this, ()->{
+                    updateAllMarkers();
+                }, 1, getConfig().getInt("refresh-per-seconds") * 20L);
+            });
 
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(WorldLoadEvent event){
-        Util.mainThreadRun(this::updateAllMarkers);
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(WorldUnloadEvent event){
-        Util.mainThreadRun(this::updateAllMarkers);
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(QSConfigurationReloadEvent event){
-        Util.mainThreadRun(this::updateAllMarkers);
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopCreateSuccessEvent event){
-        updateShopMarker(event.getShop());
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopDeleteEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopPriceChangeEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopItemChangeEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopOwnershipTransferEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopSuccessPurchaseEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopTypeChangeEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopNamingEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
-    }
+        BlueMapAPI.onDisable(api -> Bukkit.getScheduler().cancelTasks(this));
+        }
+
     @NotNull
     public String plain(@NotNull Component component) {
         return PlainTextComponentSerializer.plainText().serialize(component);
@@ -136,32 +85,14 @@ public final class Main extends JavaPlugin implements Listener {
         }
         for (BlueMapMap map : bWorld.get().getMaps()) {
             MarkerSet markerSet = map.getMarkerSets().computeIfAbsent("quickshop-hikari-shops",(key)-> createMarkerSet());
-            String markerName = plain(text().of("addon.bluemap.marker-name",
-                    shopName,
-                    plain(shop.ownerName()),
-                    plain(Util.getItemStackName(shop.getItem())),
-                    plugin.getShopManager().format(shop.getPrice(), shop),
-                    shop.getShopStackingAmount(),
-                    shop.getShopType() == ShopType.SELLING ? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
-                    shop.isUnlimited(),
-                    posStr
-            ).forLocale());
-            String desc = plain(text().of("addon.bluemap.marker-description",
-                    shopName,
-                    plain(shop.ownerName()),
-                    plain(Util.getItemStackName(shop.getItem())),
-                    plugin.getShopManager().format(shop.getPrice(), shop),
-                    shop.getShopStackingAmount(),
-                    shop.getShopType() == ShopType.SELLING ? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
-                    shop.isUnlimited(),
-                    posStr
-            ).forLocale());
+            String markerName = fillPlaceholders(getConfig().getString("marker-label"), shop);
+            String desc = fillPlaceholders(getConfig().getString("marker-detail"), shop);
             POIMarker marker = POIMarker.builder()
                     .label(markerName)
                     .position(shop.getLocation().getX(),
                             shop.getLocation().getY(),
                             shop.getLocation().getZ())
-                    .maxDistance(1000)
+                    .maxDistance(getConfig().getDouble("max-distance"))
                     .detail(desc)
                     .styleClasses()
                     .build();
@@ -169,4 +100,17 @@ public final class Main extends JavaPlugin implements Listener {
         }
     }
 
+    private String fillPlaceholders(String s, Shop shop){
+        Location loc = shop.getLocation();
+        String x = String.valueOf(loc.getX());
+        String y = String.valueOf(loc.getY());
+        String z = String.valueOf(loc.getZ());
+        s = s.replace("%owner%", plain(shop.ownerName()));
+        s = s.replace("%item%", shop.getItem().getType().name());
+        s = s.replace("%price%", String.valueOf(shop.getPrice()));
+        s = s.replace("%stock%", String.valueOf(shop.getRemainingStock()));
+        s = s.replace("%type%", shop.getShopType().name());
+        s = s.replace("%location%", x + "," + y + "," + z );
+        return s;
+    }
 }

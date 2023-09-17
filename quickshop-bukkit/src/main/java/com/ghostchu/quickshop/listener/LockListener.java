@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.listener;
 
-import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -19,7 +18,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +28,8 @@ public class LockListener extends AbstractProtectionListener {
             .expireAfterAccess(1, TimeUnit.SECONDS)
             .build();
 
-    public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
-        super(plugin, cache);
+    public LockListener(@NotNull final QuickShop plugin) {
+        super(plugin);
     }
 
     /*

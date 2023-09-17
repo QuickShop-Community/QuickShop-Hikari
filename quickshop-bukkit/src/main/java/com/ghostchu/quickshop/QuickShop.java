@@ -20,8 +20,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.bstats.Metrics;
-import com.ghostchu.quickshop.bstats.MetricsManager;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -54,8 +52,10 @@ import com.ghostchu.quickshop.util.envcheck.*;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import com.ghostchu.quickshop.util.metric.MetricManager;
 import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
+import com.ghostchu.quickshop.util.privacy.PrivacyController;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.util.updater.NexusManager;
 import com.ghostchu.quickshop.watcher.*;
@@ -158,10 +158,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Nullable
     @Getter
     private LogWatcher logWatcher;
-    /**
-     * bStats, good helper for metrics.
-     */
-    private Metrics metrics;
+
     /**
      * The plugin PlaceHolderAPI(null if not present)
      */
@@ -195,8 +192,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private OngoingFeeWatcher ongoingFeeWatcher;
     @Getter
     private SignUpdateWatcher signUpdateWatcher;
-    @Getter
-    private Cache shopCache;
     @Getter
     private boolean allowStack;
     @Getter
@@ -241,6 +236,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Nullable
     @Getter
     private VirtualDisplayItemManager virtualDisplayItemManager;
+    @Getter
+    private PrivacyController privacyController;
+    @Getter
+    private MetricManager metricManager;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -291,6 +290,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         logger.info("Reading the configuration...");
         initConfiguration();
+        logger.info("Setting up privacy controller...");
+        this.privacyController = new PrivacyController(this);
+        logger.info("Setting up metrics manager...");
+        this.metricManager = new MetricManager(this);
         logger.info("Loading player name and unique id mapping...");
         this.playerFinder = new FastPlayerFinder(this);
         loadChatProcessor();
@@ -570,8 +573,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Developers: {}", CommonUtil.list2String(javaPlugin.getDescription().getAuthors()));
         logger.info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
         logger.info("Let's start loading the plugin");
-        /* Process Metrics and Sentry error reporter. */
-        new MetricsManager(this);
         loadErrorReporter();
         loadItemMatcher();
         this.itemMarker = new ItemMarker(this);
@@ -599,7 +600,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
             logger.error("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
         }
-        setupShopCaches();
         signUpdateWatcher = new SignUpdateWatcher();
         //shopContainerWatcher = new ShopContainerWatcher();
         shopSaveWatcher = new ShopDataSaveWatcher(this);
@@ -632,8 +632,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
         }
         logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
-
     }
+
 
     private void loadErrorReporter() {
         try {
@@ -713,14 +713,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     }
 
-    private void setupShopCaches() {
-        if (getConfig().getBoolean("use-caching")) {
-            this.shopCache = new Cache(this);
-        } else {
-            this.shopCache = null;
-        }
-    }
-
     private void bakeShopsOwnerCache() {
         if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean()) {
             logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
@@ -751,14 +743,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private void registerListeners() {
-        new BlockListener(this, this.shopCache).register();
+        new BlockListener(this).register();
         new PlayerListener(this).register();
         new WorldListener(this).register();
         // Listeners - We decide which one to use at runtime
         new ChatListener(this).register();
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
-        new ShopProtectionListener(this, this.shopCache).register();
+        new ShopProtectionListener(this).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
         if (Util.checkIfBungee()) {
@@ -788,7 +780,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             } else {
                 logger.error("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
             }
-            new DisplayProtectionListener(this, this.shopCache).register();
+            new DisplayProtectionListener(this).register();
         } else {
             Util.unregisterListenerClazz(javaPlugin, DisplayProtectionListener.class);
         }
@@ -796,13 +788,15 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     private void registerShopLock() {
         Util.unregisterListenerClazz(javaPlugin, LockListener.class);
-        if (getConfig().getBoolean("shop.lock")) {
-            new LockListener(this, this.shopCache).register();
+        boolean useShopLock = getConfig().getBoolean("shop.lock");
+        if (useShopLock) {
+            new LockListener(this).register();
         }
     }
 
     private void registerUpdater() {
-        if (this.getConfig().getBoolean("updater", true)) {
+        boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
+        if (updaterEnabled) {
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         } else {
@@ -839,7 +833,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
      * Load 3rdParty plugin support module.
      */
     private void load3rdParty() {
-        if (getConfig().getBoolean("plugin.PlaceHolderAPI.enable")) {
+        boolean usePAPI = getConfig().getBoolean("plugin.PlaceHolderAPI.enable");
+        if (usePAPI) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null && placeHolderAPI.isEnabled()) {
                 this.quickShopPAPI = new QuickShopPAPI(this);
@@ -856,13 +851,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
      */
     private boolean setupDatabase() {
         logger.info("Setting up database...");
-
         HikariConfig config = HikariUtil.createHikariConfig();
-
         try {
-            databaseDriverType = DatabaseDriverType.MYSQL;
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
+                databaseDriverType = DatabaseDriverType.MYSQL;
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
                 if (dbPrefix == null || "none".equals(dbPrefix)) {

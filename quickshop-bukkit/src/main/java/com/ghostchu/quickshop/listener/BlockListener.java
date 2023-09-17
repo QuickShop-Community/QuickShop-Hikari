@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.listener;
 
-import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -39,8 +38,8 @@ import org.jetbrains.annotations.Nullable;
 public class BlockListener extends AbstractProtectionListener {
     private boolean updateSignWhenInventoryMoving;
 
-    public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
-        super(plugin, cache);
+    public BlockListener(@NotNull final QuickShop plugin) {
+        super(plugin);
         init();
     }
 

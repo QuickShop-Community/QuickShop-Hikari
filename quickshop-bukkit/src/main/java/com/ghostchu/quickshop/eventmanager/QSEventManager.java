@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 public class QSEventManager implements QuickEventManager, Listener, Reloadable {
@@ -54,7 +55,7 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     }
 
     @Override
-    public void callEvent(@NotNull Event event) {
+    public void callEvent(@NotNull Event event, @Nullable Consumer<Event> callBeforePassToMonitor) {
         if (event.isAsynchronous()) {
             if (Thread.holdsLock(Bukkit.getPluginManager())) {
                 throw new IllegalStateException(
@@ -73,10 +74,15 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
             }
         }
 
-        fireEvent(event);
+        if(callBeforePassToMonitor == null){
+            callBeforePassToMonitor = empty -> {};
+        }
+
+        fireEvent(event,callBeforePassToMonitor);
     }
 
-    private void fireEvent(Event event) {
+    private void fireEvent(Event event, Consumer<Event> callBeforePassToMonitor) {
+        boolean reachedMonitorPriority = false;
         HandlerList handlers = event.getHandlers();
         RegisteredListener[] listeners = handlers.getRegisteredListeners();
         for (RegisteredListener registration : listeners) {
@@ -95,6 +101,12 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                 continue;
             }
             try {
+                if(registration.getPriority() == EventPriority.MONITOR){
+                    if(!reachedMonitorPriority){
+                        reachedMonitorPriority = true;
+                        callBeforePassToMonitor.accept(event);
+                    }
+                }
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {
                 Plugin regPlugin = registration.getPlugin();

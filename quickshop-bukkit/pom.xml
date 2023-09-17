@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.0.0.7</version>
+        <version>5.1.0.0</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -157,11 +157,10 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>tne.tne</groupId>
-            <artifactId>TheNewEconomy</artifactId>
-            <scope>system</scope>
-            <version>0.1.1.17-PRE-2</version>
-            <systemPath>${project.basedir}/lib/TNE-0.1.1.17-PRE-2.jar</systemPath>
+            <groupId>net.tnemc</groupId>
+            <artifactId>EconomyCore</artifactId>
+            <version>0.1.2.2-Pre-1</version>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>*</artifactId>
@@ -273,6 +272,11 @@
             <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

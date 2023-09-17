@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -149,8 +148,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     private void load() {
         Util.ensureThread(false);
         //some time shop can be loaded when world isn't loaded
-        Chunk chunk = shop.getLocation().getChunk();
-        chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        chunkLocation = SimpleShopChunk.fromLocation(shop.getLocation());
         manager.put(chunkLocation, this);
         //Let nearby player can saw fake item
         List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
