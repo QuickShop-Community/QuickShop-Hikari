@@ -180,6 +180,15 @@ public interface ShopManager {
     @Nullable Shop getShop(@NotNull Location loc);
 
     /**
+     * Gets a shop in a specific location but via cache
+     * ATTENTION: This not include attached shops (double-chest)
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location but via cache
+     */
+    @Nullable Shop getShopViaCache(@NotNull Location loc);
+
+    /**
      * Gets a shop in a specific location
      * ATTENTION: This not include attached shops (double-chest)
      *
@@ -203,13 +212,13 @@ public interface ShopManager {
     @Nullable Shop getShopIncludeAttached(@Nullable Location loc);
 
     /**
-     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
+     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop. but via cache
      *
-     * @param loc      The location to get the shop from
-     * @param useCache whether to use cache
-     * @return The shop at that location
+     * @param loc The location to get the shop from
+     * @return The shop at that location but via cache
      */
-    @Nullable Shop getShopIncludeAttached(@Nullable Location loc, boolean useCache);
+    @Nullable Shop getShopIncludeAttachedViaCache(@Nullable Location loc);
+
 
     /**
      * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting

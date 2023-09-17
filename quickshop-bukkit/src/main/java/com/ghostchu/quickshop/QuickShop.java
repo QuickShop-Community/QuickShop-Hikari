@@ -196,8 +196,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private SignUpdateWatcher signUpdateWatcher;
     @Getter
-    private Cache shopCache;
-    @Getter
     private boolean allowStack;
     @Getter
     private EnvironmentChecker environmentChecker;
@@ -599,7 +597,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
             logger.error("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
         }
-        setupShopCaches();
         signUpdateWatcher = new SignUpdateWatcher();
         //shopContainerWatcher = new ShopContainerWatcher();
         shopSaveWatcher = new ShopDataSaveWatcher(this);
@@ -713,14 +710,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     }
 
-    private void setupShopCaches() {
-        if (getConfig().getBoolean("use-caching")) {
-            this.shopCache = new Cache(this);
-        } else {
-            this.shopCache = null;
-        }
-    }
-
     private void bakeShopsOwnerCache() {
         if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean()) {
             logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
@@ -751,14 +740,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private void registerListeners() {
-        new BlockListener(this, this.shopCache).register();
+        new BlockListener(this).register();
         new PlayerListener(this).register();
         new WorldListener(this).register();
         // Listeners - We decide which one to use at runtime
         new ChatListener(this).register();
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
-        new ShopProtectionListener(this, this.shopCache).register();
+        new ShopProtectionListener(this).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
         if (Util.checkIfBungee()) {
@@ -788,7 +777,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             } else {
                 logger.error("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
             }
-            new DisplayProtectionListener(this, this.shopCache).register();
+            new DisplayProtectionListener(this).register();
         } else {
             Util.unregisterListenerClazz(javaPlugin, DisplayProtectionListener.class);
         }
@@ -797,7 +786,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private void registerShopLock() {
         Util.unregisterListenerClazz(javaPlugin, LockListener.class);
         if (getConfig().getBoolean("shop.lock")) {
-            new LockListener(this, this.shopCache).register();
+            new LockListener(this).register();
         }
     }
 

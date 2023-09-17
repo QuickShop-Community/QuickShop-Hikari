@@ -1,20 +1,16 @@
 package com.ghostchu.quickshop.api.serialize;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-@Data
-@EqualsAndHashCode
-@ToString
-public class BlockPos {
+import java.util.Objects;
+
+public final class BlockPos {
     private final int version = 2;
-    private int x;
-    private int y;
-    private int z;
-    private String world;
+    private final int x;
+    private final int y;
+    private final int z;
+    private final String world;
 
     public BlockPos(@NotNull Location location) {
         this.x = location.getBlockX();
@@ -28,6 +24,48 @@ public class BlockPos {
         this.y = y;
         this.z = z;
         this.world = world;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+
+    public int getY() {
+        return y;
+    }
+
+
+    public int getZ() {
+        return z;
+    }
+
+    public String getWorld() {
+        return world;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlockPos blockPos = (BlockPos) o;
+        return version == blockPos.version && x == blockPos.x && y == blockPos.y && z == blockPos.z && Objects.equals(world, blockPos.world);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(version, x, y, z, world);
+    }
+
+    @Override
+    public String toString() {
+        return "BlockPos{" +
+                "version=" + version +
+                ", x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", world='" + world + '\'' +
+                '}';
     }
 
     public static BlockPos deserialize(String string) {

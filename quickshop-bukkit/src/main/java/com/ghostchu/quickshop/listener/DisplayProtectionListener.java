@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.listener;
 
-import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
@@ -26,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class DisplayProtectionListener extends AbstractProtectionListener {
 
-    public DisplayProtectionListener(QuickShop plugin, Cache cache) {
-        super(plugin, cache);
+    public DisplayProtectionListener(QuickShop plugin) {
+        super(plugin);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

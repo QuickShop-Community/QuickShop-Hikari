@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.listener;
 
-import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import lombok.Getter;
@@ -10,12 +9,10 @@ import org.jetbrains.annotations.Nullable;
 
 @Getter
 public abstract class AbstractProtectionListener extends AbstractQSListener {
-    private final Cache cache;
 
-    protected AbstractProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
+    protected AbstractProtectionListener(@NotNull QuickShop plugin) {
         super(plugin);
         plugin.getReloadManager().register(this);
-        this.cache = cache;
     }
 
     public QuickShop getPlugin() {
@@ -32,7 +29,7 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
      */
     @Nullable
     public Shop getShopNature(@NotNull Location location, boolean includeAttached) {
-        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location, false) : plugin.getShopManager().getShop(location);
+        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location) : plugin.getShopManager().getShop(location);
     }
 
     /**
@@ -44,7 +41,7 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
      */
     @Nullable
     public Shop getShopPlayer(@NotNull Location location, boolean includeAttached) {
-        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location, false) : plugin.getShopManager().getShop(location);
+        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location) : plugin.getShopManager().getShop(location);
     }
 
     /**
@@ -56,15 +53,12 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
      */
     @Nullable
     public Shop getShopRedstone(@NotNull Location location, boolean includeAttached) {
-        if (cache != null) {
-            return cache.find(location, includeAttached);
-        } else {
-            if (includeAttached) {
-                return plugin.getShopManager().getShopIncludeAttached(location);
-            } else {
-                return plugin.getShopManager().getShop(location);
-            }
+        if(includeAttached){
+            return plugin.getShopManager().getShopIncludeAttachedViaCache(location);
+        }else{
+            return plugin.getShopManager().getShopViaCache(location);
         }
+
     }
 
 }
