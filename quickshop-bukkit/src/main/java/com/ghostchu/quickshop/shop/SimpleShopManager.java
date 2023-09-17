@@ -687,10 +687,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 if (signBlock != null && autoSign) {
                     if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
                         BlockState signState = this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
-                        if(signState instanceof Sign puttedSign) {
+                        if (signState instanceof Sign puttedSign) {
                             try {
                                 shop.claimShopSign(puttedSign);
-                            }catch (Throwable ignored){}
+                            } catch (Throwable ignored) {
+                            }
                         }
                     }
                 }
@@ -832,7 +833,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * Gets a shop in a specific location
      *
      * @param loc                  The location to get the shop from
-     * @param skipShopableChecking whether to check is shopable
+     * @param skipShopableChecking whether to check is shopable, this will cause chunk loading
      * @return The shop at that location
      */
     @Override
@@ -840,7 +841,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
             return null;
         }
-        final Map<Location, Shop> inChunk = getShops(loc.getChunk());
+        ShopChunk shopChunk = SimpleShopChunk.fromLocation(loc);
+        final Map<Location, Shop> inChunk = getShops(shopChunk);
         if (inChunk == null) {
             return null;
         }
@@ -954,6 +956,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return null;
         }
         return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));
+    }
+
+    @Override
+    public @Nullable Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk) {
+        return getShops(shopChunk.getWorld(), shopChunk.getX(), shopChunk.getZ());
     }
 
     /**
@@ -1450,6 +1457,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         });
     }
+
     private @NotNull BlockState processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
         boolean signIsWatered = signBlock.getType() == Material.WATER;
         signBlock.setType(Util.getSignMaterial());

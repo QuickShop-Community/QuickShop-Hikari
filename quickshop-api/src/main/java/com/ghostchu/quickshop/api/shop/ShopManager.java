@@ -246,6 +246,14 @@ public interface ShopManager {
     @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
 
     /**
+     * Gets the shop at the world and specific chunk.
+     *
+     * @param shopChunk The shop chunk
+     * @return The shop at the world and specific chunk.
+     */
+    @Nullable Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk);
+
+    /**
      * Returns a map of Chunk - Shop
      *
      * @param world The name of the world (case sensitive) to get the list of shops from

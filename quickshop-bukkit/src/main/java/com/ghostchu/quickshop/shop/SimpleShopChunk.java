@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,5 +46,10 @@ public class SimpleShopChunk implements ShopChunk {
     @Override
     public boolean isSame(@NotNull World world, int x, int z) {
         return isSame(world.getName(), x, z);
+    }
+
+    @NotNull
+    public static ShopChunk fromLocation(@NotNull Location location){
+        return new SimpleShopChunk(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 }
