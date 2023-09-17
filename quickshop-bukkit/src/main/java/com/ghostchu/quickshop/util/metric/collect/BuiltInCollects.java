@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.util.metric.MetricDataType;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.CustomChart;
 import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -104,6 +105,11 @@ public class BuiltInCollects {//Statistic
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - DisplayImpl", description = "We collect this so we can know the which one item display impl most using, and improve it.")
     public CustomChart statisticDisplayImpl() {
         return new SimplePie("statistic_displayimpl", () -> AbstractDisplayItem.getNowUsing().name());
+    }
+
+    @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Statistic - All shops hosting across all servers", description = "How many shops we can power across all servers? This research will used for performance tweak for components like shop managing/looking up/caching size etc.")
+    public CustomChart statisticAllShops() {
+        return new SingleLineChart("statistic_all_shops_hosting_across_all_servers", () -> plugin.getShopManager().getAllShops().size());
     }
 
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Background Debug Logger", description = "We collect this so we can know the which one item display impl most using, and improve it.")
