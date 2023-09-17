@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api.serialize;
 import lombok.EqualsAndHashCode;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+
 @EqualsAndHashCode
 public final class BlockPos {
     private final int version = 2;
@@ -55,8 +56,15 @@ public final class BlockPos {
     }
 
     public static BlockPos deserialize(String string) {
-        String[] split = string.split(";");
-        return new BlockPos(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), split[4]);
+        try {
+            String[] split = string.split(";");
+            if (split.length < 5) {
+                throw new IllegalArgumentException("Invalid input string for deserialization");
+            }
+            return new BlockPos(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), split[4]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Failed to parse integer during deserialization", e);
+        }
     }
 
     public String serialize() {
