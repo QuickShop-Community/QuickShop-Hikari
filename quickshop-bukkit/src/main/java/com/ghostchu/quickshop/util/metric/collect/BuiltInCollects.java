@@ -53,6 +53,15 @@ public class BuiltInCollects {//Statistic
         });
     }
 
+    @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Research - Command Alias", description = "We collect this for determine if we should add/remove alias to default configuration.")
+    public CustomChart researchCommandAlias() {
+        return new AdvancedPie("research_command_alias", () -> {
+            Map<String, Integer> data = new HashMap<>();
+            plugin.getConfig().getStringList("custom-commands").forEach(s -> data.put(s, 1));
+            return data;
+        });
+    }
+
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Types", description = "We collect this so we can know the percent of different database types users.")
     public CustomChart statisticDatabaseTypes() {
         return new SimplePie("statistic_database_types", () -> plugin.getDatabaseDriverType().name());
@@ -94,5 +103,16 @@ public class BuiltInCollects {//Statistic
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - DisplayImpl", description = "We collect this so we can know the which one item display impl most using, and improve it.")
     public CustomChart statisticDisplayImpl() {
         return new SimplePie("statistic_displayimpl", () -> AbstractDisplayItem.getNowUsing().name());
+    }
+
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Background Debug Logger", description = "We collect this so we can know the which one item display impl most using, and improve it.")
+    public CustomChart statisticBackgroundDebugLogger() {
+        return new SimplePie("statistic_background_debug_logger", () -> {
+            if(plugin.getConfig().getBoolean("debug.disable-debuglogger")){
+                return "Disabled";
+            }else{
+                return "Enabled";
+            }
+        });
     }
 }
