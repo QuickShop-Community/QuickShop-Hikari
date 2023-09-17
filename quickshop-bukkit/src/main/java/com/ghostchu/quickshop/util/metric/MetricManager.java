@@ -1,16 +1,12 @@
 package com.ghostchu.quickshop.util.metric;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.metric.collect.BuiltInCollects;
-import org.bstats.MetricsBase;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.CustomChart;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
@@ -22,18 +18,6 @@ public class MetricManager {
         this.plugin = plugin;
         this.metrics = new Metrics(plugin.getJavaPlugin(), 14281);
         initCollects();
-        Util.asyncThreadRun(()->{
-            try {
-                Field metricsBaseField = metrics.getClass().getDeclaredField("metricsBase");
-                metricsBaseField.setAccessible(true);
-                MetricsBase metricsBase = (MetricsBase) metricsBaseField.get(metrics);
-                Method submitNow = metricsBase.getClass().getDeclaredMethod("submitData", (Class<?>[]) null);
-                submitNow.setAccessible(true);
-                submitNow.invoke(metricsBase);
-            } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
     public void registerChart(MetricDataType dataType, String moduleName, String reason, CustomChart chart) {
