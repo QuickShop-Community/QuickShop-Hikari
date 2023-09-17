@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.metric.MetricDataType;
 import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
 import net.kyori.adventure.text.Component;
@@ -85,18 +86,22 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        final String string = Paste.paste(new PasteGenerator(sender).render());
-        if (string != null) {
-            String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
-            Component component = plugin.text().of(sender, "paste-created", url).forLocale();
-            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
-            MsgUtil.sendDirectMessage(sender, component);
-            if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
-                plugin.text().of(sender, "paste-451").send();
+        plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC,"Debug Paste", "User request to create a online debug paste",()->{
+            final String string = Paste.paste(new PasteGenerator(sender).render());
+            if (string != null) {
+                String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
+                Component component = plugin.text().of(sender, "paste-created", url).forLocale();
+                component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
+                MsgUtil.sendDirectMessage(sender, component);
+                if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
+                    plugin.text().of(sender, "paste-451").send();
+                }
+                return;
             }
-            return true;
-        }
-        return false;
+        }, ()->{
+            plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send();
+        });
+        return true;
     }
 
 
