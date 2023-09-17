@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1020
+config-version: 1021
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -118,9 +118,6 @@ send-shop-protection-alert: false
 
 #Still WIP
 server-platform: 0
-
-#Use caching to find shops to optimize performance if possible.
-use-caching: true
 
 #Select which chat system QuickShop should use.
 #0=BungeeChat (Spigot default)
@@ -446,6 +443,9 @@ shop:
 
   #[BETA] Disable the quickshop /quickshop size command stack size check to allow stack size go up the vanilla limit
   disable-max-size-check-for-size-command: false
+
+  # Use shop cache if possible to improve shop lookup performance
+  use-cache: true
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.

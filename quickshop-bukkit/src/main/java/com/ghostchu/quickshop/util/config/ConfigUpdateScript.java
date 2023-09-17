@@ -98,6 +98,12 @@ public class ConfigUpdateScript {
         getConfig().set("shop.cancel-protection-fake-event-before-reach-monitor-listeners", true);
     }
 
+    @UpdateScript(version = 1021)
+    public void cacheSystemReworked() {
+        getConfig().set("shop.use-cache", true);
+        getConfig().set("use-caching", null);
+    }
+
 
 
     @UpdateScript(version = 1004)

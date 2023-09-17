@@ -109,6 +109,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private boolean disableCreativePurchase;
     private boolean sendStockMessageToStaff;
     private boolean useShopableChecks;
+    private boolean useShopCache;
 
     public SimpleShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
@@ -151,6 +152,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.disableCreativePurchase = plugin.getConfig().getBoolean("shop.disable-creative-mode-trading");
         this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
         this.useShopableChecks = PackageUtil.parsePackageProperly("shoppableChecks").asBoolean(false);
+        this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
         Map<@NotNull ShopCacheNamespacedKey, @NotNull Pair<@NotNull Function<Location, Shop>, @Nullable Cache<Location, BoxedShop>>> map = new HashMap<>();
         // SINGLE
         map.put(ShopCacheNamespacedKey.SINGLE, new ImmutablePair<>(this::getShop, null));
@@ -847,6 +849,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public @Nullable Shop getShopViaCache(@NotNull Location loc) {
+        if(!this.useShopCache){
+            return getShop(loc);
+        }
         return shopCache.get(ShopCacheNamespacedKey.SINGLE, loc, true);
     }
 
@@ -925,6 +930,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (loc == null) {
             Log.debug("Location is null.");
             return null;
+        }
+        if(!this.useShopCache){
+            return getShopIncludeAttachedViaCache(loc);
         }
         return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
     }
