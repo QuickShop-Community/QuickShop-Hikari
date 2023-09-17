@@ -104,6 +104,13 @@ public class ConfigUpdateScript {
         getConfig().set("use-caching", null);
     }
 
+    @UpdateScript(version = 1021)
+    public void privacySystem() {
+        getConfig().set("privacy.type.STATISTIC", true);
+        getConfig().set("privacy.type.RESEARCH", true);
+        getConfig().set("privacy.type.DIAGNOSTIC", true);
+    }
+
 
 
     @UpdateScript(version = 1004)
