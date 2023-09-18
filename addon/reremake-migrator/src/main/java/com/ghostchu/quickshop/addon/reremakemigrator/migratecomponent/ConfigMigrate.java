@@ -47,9 +47,17 @@ public class ConfigMigrate extends AbstractMigrateComponent {
     @Override
     public boolean migrate() {
         copyValues();
+        migrateCommandAlias();
         migratePriceRestrictions();
         setFixedConfigValues();
         return true;
+    }
+
+    private void migrateCommandAlias() {
+        List<String> commandAlias = getReremake().getConfig().getStringList("custom-commands");
+        commandAlias.add("qs");
+        getHikari().getConfig().set("custom-commands", commandAlias);
+        getHikariJavaPlugin().saveConfig();
     }
 
     private void setFixedConfigValues() {
