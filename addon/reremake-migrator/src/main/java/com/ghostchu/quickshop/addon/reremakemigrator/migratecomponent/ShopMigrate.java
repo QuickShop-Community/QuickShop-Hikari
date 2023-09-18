@@ -72,7 +72,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
                         getHikari(),
                         -1,
                         shopLoc,
-                        reremakeShop.getPrice(),
+                        Math.min(reremakeShop.getPrice(), 999999999999999999999999999999.99),
                         reremakeShop.getItem(),
                         QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getOwner()),
                         reremakeShop.isUnlimited(),
