@@ -55,7 +55,9 @@ public class ConfigMigrate extends AbstractMigrateComponent {
 
     private void migrateCommandAlias() {
         List<String> commandAlias = getReremake().getConfig().getStringList("custom-commands");
-        commandAlias.add("qs");
+        if(!commandAlias.contains("qs")){
+            commandAlias.add("qs");
+        }
         getHikari().getConfig().set("custom-commands", commandAlias);
         getHikariJavaPlugin().saveConfig();
     }
@@ -119,6 +121,8 @@ public class ConfigMigrate extends AbstractMigrateComponent {
     }
 
     private void copyValue(String keyName) {
-        getHikari().getConfig().set(keyName, getReremake().getConfig().get(keyName));
+        if (getReremake().getConfig().contains(keyName)) {
+            getHikari().getConfig().set(keyName, getReremake().getConfig().get(keyName));
+        }
     }
 }
