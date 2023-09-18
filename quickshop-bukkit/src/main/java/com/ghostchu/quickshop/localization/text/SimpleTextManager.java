@@ -788,7 +788,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         @Override
         public void send() {
             if (sender == null) {
-                throw new IllegalStateException("Sender is null");
+                return;
             }
             for (Component s : forLocale()) {
                 MsgUtil.sendDirectMessage(sender, s);
@@ -935,7 +935,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         @Override
         public void send() {
             if (sender == null) {
-                throw new IllegalStateException("Sender is null");
+                return;
             }
             Component lang = forLocale();
             MsgUtil.sendDirectMessage(sender, lang);
