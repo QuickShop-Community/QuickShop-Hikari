@@ -1647,9 +1647,10 @@ addon:
     server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
     starting-convert-progress: "<gold>Starting the convert progress, <red>DO NOT SHUTDOWN YOUR SERVER!</red>"
     executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-    completed: "<aqua>Migrate completed, please restart your server and remove QuickShop-Reremake from plugins directory."
+    completed: "<green>Done! Migrate completed, please restart your server and remove QuickShop-Reremake from plugins directory."
     join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
     join_blocking_finished: "<red>[QuickShop-Hikari Migrator] This server has just completed a data conversion and is waiting for a reboot to apply the changes, try again later!"
+    failed: "<red>Migration progress exited with error, please check the server console."
     modules:
       config:
         copy-values: "<yellow>Copying values (total {0} entries)..."

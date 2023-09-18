@@ -1243,7 +1243,7 @@ public class ContainerShop implements Shop, Reloadable {
                 new BlockPos(getLocation()), this.owner, this.price,
                 Util.serialize(this.originalItem), isUnlimited() ? 1 : 0
                 , getShopType().toID(),
-                saveExtraToYaml(), this.currency,this.disableDisplay,
+                saveExtraToYaml(), this.currency, this.disableDisplay,
                 this.taxAccount, inventoryWrapperProvider,
                 saveToSymbolLink(), this.playerGroup);
     }
@@ -1561,6 +1561,7 @@ public class ContainerShop implements Shop, Reloadable {
                 ")" +
                 " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false, MsgUtil.getDefaultGameLanguageLocale())) + " - " + getOwner() +
                 ", Unlimited: " + isUnlimited() +
-                " Price: " + getPrice();
+                ", Item: " + LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(getItem())) +
+                ", Price: " + getPrice();
     }
 }

@@ -100,7 +100,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
             count.set(0);
             for (int i = 0; i < preparedShops.size(); i++) {
                 com.ghostchu.quickshop.api.shop.Shop shop = preparedShops.get(i);
-                getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.register-entry",shop , count, preparedShops.size()).send();
+                getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.register-entry",shop , count.incrementAndGet(), preparedShops.size()).send();
                 getHikari().getShopManager().registerShop(shop, true);
                 shop.setDirty();
             }
@@ -121,8 +121,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
         }).exceptionally((error) -> {
             getHikari().logger().warn("Error while migrating shops", error);
             return null;
-        });
-
+        }).join();
         return true;
     }
 }
