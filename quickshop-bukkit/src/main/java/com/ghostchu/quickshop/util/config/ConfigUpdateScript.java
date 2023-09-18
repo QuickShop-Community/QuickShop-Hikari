@@ -104,7 +104,7 @@ public class ConfigUpdateScript {
         getConfig().set("use-caching", null);
     }
 
-    @UpdateScript(version = 1021)
+    @UpdateScript(version = 1022)
     public void privacySystem() {
         getConfig().set("disabled-metrics", null);
         getConfig().set("privacy.type.STATISTIC", true);
