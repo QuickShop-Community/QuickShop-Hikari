@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.MigrateCom
 import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ShopMigrate;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.util.ProgressMonitor;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -48,15 +49,19 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
         Util.asyncThreadRun(() -> {
             running.set(true);
             plugin.setDeniedMessage(hikari.text().of(sender, "addon.reremake-migrator.join_blocking_converting").forLocale());
-            int count = 0;
-            for (MigrateComponent migrateComponent : migrateComponentList) {
-                count++;
+            for (MigrateComponent migrateComponent : new ProgressMonitor<>(migrateComponentList, triple -> hikari.text().of(sender, "addon.reremake-migrator.executing", triple.getRight().getClass().getSimpleName(), triple.getLeft(), triple.getMiddle()).send())) {
                 String migrateComponentName = migrateComponent.getClass().getSimpleName();
-                hikari.text().of(sender, "addon.reremake-migrator.executing", migrateComponentName, count, migrateComponentList.size()).send();
                 try {
-                    migrateComponent.migrate();
+                    if (!migrateComponent.migrate()) {
+                        // Something failed during the migration?
+                        hikari.text().of(sender, "addon.reremake-migrator.failed", migrateComponentName).send();
+                        running.set(false);
+                        return;
+                    }
                 } catch (Exception e) {
                     hikari.logger().warn("Failed to execute migrate component {}", migrateComponentName, e);
+                    running.set(false);
+                    return;
                 }
             }
             hikari.text().of(sender, "addon.reremake-migrator.completed").send();
