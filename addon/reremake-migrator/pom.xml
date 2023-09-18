@@ -71,7 +71,7 @@
         <dependency>
             <groupId>org.maxgamer</groupId>
             <artifactId>QuickShop</artifactId>
-            <version>5.1.2.2</version>
+            <version>5.1.2.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
