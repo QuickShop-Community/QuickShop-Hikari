@@ -105,6 +105,13 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
             configuration.set("version", 2);
             anyChanges = true;
         }
+        if (configuration.getInt("version") == 2) {
+            if (configuration.getDouble("undefined.max") == -1) {
+                configuration.set("undefined.min", 999999999999999999999999999999.99); // DECIMAL (32,2) MAX
+            }
+            configuration.set("version", 3);
+            anyChanges = true;
+        }
         return anyChanges;
     }
 
@@ -137,6 +144,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         }
         return new RuleSet(items, bypassPermission, currency, min, max);
     }
+
     /**
      * Check the price restriction rules
      *

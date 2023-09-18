@@ -9,7 +9,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ProgressMonitor;
-import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
@@ -72,7 +71,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
                         getHikari(),
                         -1,
                         shopLoc,
-                        Math.min(reremakeShop.getPrice(), 999999999999999999999999999999.99),
+                        Math.min(reremakeShop.getPrice(), 999999999999999999999999999999.99), // DECIMAL (32,2) MAX
                         reremakeShop.getItem(),
                         QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getOwner()),
                         reremakeShop.isUnlimited(),
@@ -117,16 +116,23 @@ public class ShopMigrate extends AbstractMigrateComponent {
                 .map(com.ghostchu.quickshop.api.shop.Shop::update)
                 .toArray(CompletableFuture[]::new);
         getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.saving-shops", shopsToSaveFuture.length).send();
-        CompletableFuture.allOf(shopsToSaveFuture)
-                .thenAcceptAsync((v) -> {
-                    if (shopsToSaveFuture.length != 0) {
-                        Log.debug("Saved " + shopsToSaveFuture.length + " shops in background.");
-                    }
-                }, QuickExecutor.getShopSaveExecutor())
-                .exceptionally(e -> {
-                    getHikari().logger().warn("Error while saving shops", e);
-                    return null;
-                }).join();
+        for (CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple -> getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
+            try {
+                completableFuture.join();
+            }catch (Exception e){
+                getHikari().logger().warn("Error while saving shops, skipping", e);
+            }
+        }
+//        CompletableFuture.allOf(shopsToSaveFuture)
+//                .thenAcceptAsync((v) -> {
+//                    if (shopsToSaveFuture.length != 0) {
+//                        Log.debug("Saved " + shopsToSaveFuture.length + " shops in background.");
+//                    }
+//                }, QuickExecutor.getShopSaveExecutor())
+//                .exceptionally(e -> {
+//                    getHikari().logger().warn("Error while saving shops", e);
+//                    return null;
+//                }).join();
     }
 
     private void registerHikariShops(List<ContainerShop> preparedShops) {
