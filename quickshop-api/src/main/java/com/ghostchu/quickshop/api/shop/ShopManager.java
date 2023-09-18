@@ -336,7 +336,7 @@ public interface ShopManager {
      * @param info The info object
      * @return True if the shop was register successfully.
      */
-    void registerShop(@NotNull Shop shop, boolean persist);
+    CompletableFuture<?> registerShop(@NotNull Shop shop, boolean persist);
 
     /**
      * Unregister a shop from database.
@@ -344,7 +344,7 @@ public interface ShopManager {
      * @param info The info object
      * @return True if the shop was unregister successfully.
      */
-    void unregisterShop(@NotNull Shop shop, boolean persist);
+    CompletableFuture<?> unregisterShop(@NotNull Shop shop, boolean persist);
 
     /**
      * Send a purchaseSuccess message for a player.

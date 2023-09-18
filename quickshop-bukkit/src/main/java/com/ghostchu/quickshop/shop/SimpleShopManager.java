@@ -849,7 +849,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public @Nullable Shop getShopViaCache(@NotNull Location loc) {
-        if(!this.useShopCache){
+        if (!this.useShopCache) {
             return getShop(loc);
         }
         return shopCache.get(ShopCacheNamespacedKey.SINGLE, loc, true);
@@ -931,7 +931,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             Log.debug("Location is null.");
             return null;
         }
-        if(!this.useShopCache){
+        if (!this.useShopCache) {
             return getShopIncludeAttachedViaCache(loc);
         }
         return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
@@ -1140,11 +1140,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public void registerShop(@NotNull Shop shop, boolean persist) {
+    public CompletableFuture<?> registerShop(@NotNull Shop shop, boolean persist) {
         // save to database
         addShopToLookupTable(shop);
-        if (!persist) return;
-        plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop)
+        if (!persist) return CompletableFuture.completedFuture(null);
+        return plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop)
                 .thenAccept(id -> {
                     Log.debug("DEBUG: Setting shop id");
                     shop.setShopId(id);
@@ -1161,11 +1161,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public void unregisterShop(@NotNull Shop shop, boolean persist) {
+    public CompletableFuture<?> unregisterShop(@NotNull Shop shop, boolean persist) {
         removeShopFromLookupTable(shop);
-        if (!persist) return;
+        if (!persist) return CompletableFuture.completedFuture(null);
         Location loc = shop.getLocation();
-        plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
+        return plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
                 .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b) -> null)
                 .exceptionally(throwable -> {
                     plugin.logger().warn("Failed to remove shop from database", throwable);

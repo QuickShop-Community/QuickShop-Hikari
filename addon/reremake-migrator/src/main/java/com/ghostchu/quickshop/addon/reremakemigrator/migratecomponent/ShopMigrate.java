@@ -131,7 +131,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
 
     private void registerHikariShops(List<ContainerShop> preparedShops) {
         for (com.ghostchu.quickshop.api.shop.Shop shop : new ProgressMonitor<>(preparedShops, triple -> getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.register-entry", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
-            getHikari().getShopManager().registerShop(shop, true);
+            getHikari().getShopManager().registerShop(shop, true).join();
             shop.setDirty();
         }
     }
