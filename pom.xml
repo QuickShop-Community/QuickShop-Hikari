@@ -472,6 +472,7 @@
         <module>addon/dynmap</module>
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
+        <module>addon/reremake-migrator</module>
     </modules>
 
 </project>
