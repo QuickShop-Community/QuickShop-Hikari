@@ -20,7 +20,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
     private final Main plugin;
     private final QuickShop hikari;
     private final org.maxgamer.quickshop.QuickShop reremake;
-    private final AtomicBoolean running =  new AtomicBoolean(false);
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     public SubCommand_ReremakeMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake) {
         this.plugin = main;
@@ -30,29 +30,37 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
 
     @Override
     public void onCommand(ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if(running.get()){
+        if (running.get()) {
             return;
         }
         if (parser.getArgs().isEmpty()) {
             hikari.text().of(sender, "command-incorrect", "/quickshop reremakemigrate <shouldOverrideExistShops>").send();
             return;
         }
-        if(!Bukkit.getOnlinePlayers().isEmpty()){
+        if (!Bukkit.getOnlinePlayers().isEmpty()) {
             hikari.text().of(sender, "addon.reremake-migrator.server-not-empty").send();
             return;
         }
         boolean shouldOverrideExistShops = Boolean.parseBoolean(parser.getArgs().get(0));
         List<MigrateComponent> migrateComponentList = new ArrayList<>();
-        migrateComponentList.add(new ConfigMigrate(plugin, hikari,reremake, sender));
-        migrateComponentList.add(new ShopMigrate(plugin, hikari,reremake, sender, shouldOverrideExistShops));
-        Util.asyncThreadRun(()->{
+        migrateComponentList.add(new ConfigMigrate(plugin, hikari, reremake, sender));
+        migrateComponentList.add(new ShopMigrate(plugin, hikari, reremake, sender, shouldOverrideExistShops));
+        Util.asyncThreadRun(() -> {
             running.set(true);
+            plugin.setDeniedMessage(hikari.text().of(sender, "addon.reremake-migrator.join_blocking_converting").forLocale());
             int count = 0;
             for (MigrateComponent migrateComponent : migrateComponentList) {
                 count++;
-                hikari.text().of(sender, "addon.reremake-migrator.executing", migrateComponent.getClass().getSimpleName(),count, migrateComponentList.size()).send();
-                migrateComponent.migrate();
+                String migrateComponentName = migrateComponent.getClass().getSimpleName();
+                hikari.text().of(sender, "addon.reremake-migrator.executing", migrateComponentName, count, migrateComponentList.size()).send();
+                try {
+                    migrateComponent.migrate();
+                } catch (Exception e) {
+                    hikari.logger().warn("Failed to execute migrate component {}", migrateComponentName, e);
+                }
             }
+            hikari.text().of(sender, "addon.reremake-migrator.completed").send();
+            plugin.setDeniedMessage(hikari.text().of(sender, "addon.reremake-migrator.join_blocking_finished").forLocale());
             running.set(false);
         });
     }
