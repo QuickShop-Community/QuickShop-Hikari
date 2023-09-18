@@ -80,6 +80,12 @@
             <version>2.11.3</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.21.9</version>
+            <scope>compile</scope>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>net.kyori</groupId>-->
         <!--            <artifactId>adventure-text-serializer-plain</artifactId>-->

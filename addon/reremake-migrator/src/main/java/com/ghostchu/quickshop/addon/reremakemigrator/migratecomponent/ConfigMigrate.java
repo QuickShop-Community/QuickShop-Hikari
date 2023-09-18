@@ -20,9 +20,8 @@ public class ConfigMigrate extends AbstractMigrateComponent {
             "game-language", "enabled-languages", "mojangapi-mirror", "dev-mode", "tax", "tax-account", "unlimited-shop-owner-change",
             "unlimited-shop-owner-change-account", "show-tax", "respect-item-flag", "currency", "logging", "trying-fix-banlance-insuffient",
             "include-offlineplayer-list", "economy-type", "use-decimal-format", "decimal-format", "send-display-item-protection-alert",
-            "send-shop-protection-alert", "chat-type", "database.mysql", "database.host", "database.port", "database.user",
-            "database.password", "database.prefix", "database.usessl", "limits", "shop-block", "shop.cost", "shop.refund"
-            , "shop.sending-stock-message-to-staffs", "shop.disable-creative-mode-trading", "shop.disable-super-tool",
+            "send-shop-protection-alert", "chat-type", "limits", "shop-block", "shop.cost", "shop.refund",
+            "shop.sending-stock-message-to-staffs", "shop.disable-creative-mode-trading", "shop.disable-super-tool",
             "shop.allow-owner-break-shop-sign", "shop.price-change-requires-fee", "shop.fee-for-price-change", "shop.lock",
             "shop.disable-quick-create", "shop.auto-sign", "shop.sign-glowing", "shop.sign-dye-color", "shop.pay-unlimited-shop-owners",
             "shop.display-items", "shop.display-items-check-ticks", "shop.display-type", "shop.display-auto-despawn",
@@ -57,7 +56,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
     }
 
     private void migratePriceRestrictions() {
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.config.migrate-price-restriction");
+        getHikari().text().of(sender, "addon.reremake-migrator.modules.config.migrate-price-restriction").send();
         File configFile = new File(getHikariJavaPlugin().getDataFolder(), "price-restriction.yml");
         if (!configFile.exists()) {
             try {
@@ -101,9 +100,9 @@ public class ConfigMigrate extends AbstractMigrateComponent {
 
 
     private void copyValues() {
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.config.copy-values", DIRECT_COPY_KEYS.length);
+        getHikari().text().of(sender, "addon.reremake-migrator.modules.config.copy-values", DIRECT_COPY_KEYS.length).send();
         for (int i = 0; i < DIRECT_COPY_KEYS.length; i++) {
-            getHikari().text().of(sender, "addon.reremake-migrator.modules.config.copy-values", (i + 1), DIRECT_COPY_KEYS.length);
+            getHikari().text().of(sender, "addon.reremake-migrator.modules.config.copying-value", DIRECT_COPY_KEYS[i], (i + 1), DIRECT_COPY_KEYS.length).send();
             copyValue(DIRECT_COPY_KEYS[i]);
         }
         getHikariJavaPlugin().saveConfig();
