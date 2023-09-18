@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>5.1.0.0</version>
+    <version>5.1.1.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -472,6 +472,7 @@
         <module>addon/dynmap</module>
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
+        <module>addon/reremake-migrator</module>
     </modules>
 
 </project>

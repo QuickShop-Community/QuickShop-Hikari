@@ -1,0 +1,12 @@
+name: qsaddon-reremakemigrator
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.reremakemigrator.Main
+api-version: 1.18
+depend:
+  - QuickShop-Hikari
+  - QuickShop
+authors: [ Ghost_chu ]
+permissions:
+  quickshopaddon.reremakemigrator.migrator-admin:
+    default: op
+    description: Migrate from QuickShop-Reremake
