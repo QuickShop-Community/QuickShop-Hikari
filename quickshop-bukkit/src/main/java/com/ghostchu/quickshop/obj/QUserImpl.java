@@ -282,7 +282,7 @@ public final class QUserImpl implements QUser {
         if (obj instanceof QUser qUser) {
             if (this.isRealPlayer() != qUser.isRealPlayer()) return false;
             if (this.isRealPlayer()) {
-                return this.uniqueId.equals(qUser.getUniqueId()) && this.username.equalsIgnoreCase(qUser.getUsername());
+                return this.uniqueId.equals(qUser.getUniqueId());
             } else {
                 return this.username.equalsIgnoreCase(qUser.getUsername());
             }
