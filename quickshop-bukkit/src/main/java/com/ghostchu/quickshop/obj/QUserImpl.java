@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -282,9 +283,9 @@ public final class QUserImpl implements QUser {
         if (obj instanceof QUser qUser) {
             if (this.isRealPlayer() != qUser.isRealPlayer()) return false;
             if (this.isRealPlayer()) {
-                return this.uniqueId.equals(qUser.getUniqueId());
+                return Objects.equals(this.uniqueId, qUser.getUniqueId());
             } else {
-                return this.username.equalsIgnoreCase(qUser.getUsername());
+                return Objects.equals(this.username, qUser.getUsername());
             }
         }
         return false;
