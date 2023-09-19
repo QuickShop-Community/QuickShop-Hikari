@@ -391,7 +391,7 @@ timeunit:
   future-plain-text: future
   month: <red>{0} month
   future: in {0}
-  days: <red>{0} days
+  days: <red>{0} päivää
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
@@ -434,11 +434,11 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>Kaupan oikeuksien hallinta
+    lookup: <yellow>Hallitse hakukelpoisten kohteiden taulua
     database: <yellow>View and maintain QuickShop database
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
-    tag: <yellow>Add, remove or query tags of a shop
+    benefit: <yellow>Asetukset jaettujen oikeuksien kaupan omistan ja pelaajien välillä
+    tag: <yellow>Lisää, poista tai kysy tunnisteita kaupasta
   bulk-size-not-set: '<red>Käyttö: /qs size <määrä>'
   no-type-given: '<red>Käytä: /qs find <tavara>'
   feature-not-enabled: Tämä ominaisuus ei ole käytössä asetustiedostossa.
@@ -460,14 +460,14 @@ command:
   wrong-args: <red>Virheellinen argumentti. Kirjoita <bold>/qs help <red>nähdäksesi lista komennoista.
   some-shops-removed: <yellow>{0} <green>kauppa(a) poistettu
   new-owner: '<green>Uusi omistaja: <yellow>{0}'
-  format: <green>/{0} {1} <yellow>- {2}
+  format: <green>{0}{1}<yellow>{2}
   transfer-success: <green>Siirretty <yellow>{0} <green>kauppa(a) pelaajalle <yellow>{1}
   now-buying: <green>Nyt <light_purple>OSTETAAN <yellow>{0}
   now-selling: <green>Kauppasi <aqua>MYY<green> nyt tuotetta <yellow>{0}
   cleaned: <green>Poistettu <yellow>{0}<green> kauppaa.
   trade-item-now: <green>Nyt vaihdossa <yellow>{0}x {1}
   no-world-given: <red>Anna maailman nimi
-  format-disabled: <red>/{0} {1} <gray>- {2}
+  format-disabled: <red>{0}{1}<gray>{2}
   invalid-bulk-amount: <red>Annettu arvo {0} on suurempi kuin maksimi pino koko tai pienempi kuin yksi
 currency-not-support: <red>Tämä ekonomia plugini ei tue multi-economy ominaisuutta.
 trading-in-creative-mode-is-disabled: <red>Et voi ostaa/myydä luovassa tilassa.
@@ -490,13 +490,13 @@ not-managed-shop: <red>Et ole tämän kaupan omistaja taikka valvoja
 shop-cannot-trade-when-freezing: <red>Et voi vaihtaa tämän kaupan kanssa, koska se on jäässä.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
-  header: <green>Shop Permission Details
-  header-player: <green>Shop Permission Details for {0}
-  header-group: <green>Shop Permission Details for group {0}
+  header: <green>Kaupan käyttöoikeuksien yksityiskohdat
+  header-player: '<green>Kaupan käyttöoikeuksien yksityiskohdat: {0}'
+  header-group: '<green>Kaupan käyttöoikeuksien yksityiskohdat ryhmälle: {0}'
   table: <gold><b>{0}</b>:</gold> <gray>{1}</gray>
   item:
     purchase: <yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)
-    show-information: <yellow>Permission to allow users who have this to see the shop information. (open shop info panel)
+    show-information: <yellow>Lupa sallia käyttäjiä näkemään kaupan tiedot. (avaa kaupan infopaneeli)
     preview-shop: <yellow>Permission to allow users who have this to preview the shop. (preview item)
     search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
     delete: <yellow>Permission to allow users who have this to delete the shop.
@@ -1415,7 +1415,7 @@ addon:
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
         register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving shops..."
+        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
 compat:
   advancedchests:
