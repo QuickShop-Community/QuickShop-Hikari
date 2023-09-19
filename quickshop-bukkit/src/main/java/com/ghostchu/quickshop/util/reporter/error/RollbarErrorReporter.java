@@ -70,59 +70,60 @@ public class RollbarErrorReporter {
             plugin.logger().warn("Cannot send error on primary thread (I/O blocking). This error has been discard.");
             return;
         }
+        if (plugin.getBootError() != null) {
+            return; // Don't report any errors if boot failed.
+        }
+        if (tempDisable) {
+            this.tempDisable = false;
+            return;
+        }
+        if (disable) {
+            return;
+        }
+        if (!enabled) {
+            return;
+        }
+
+        if (!canReport(throwable)) {
+            return;
+        }
+        if (isDisallowedClazz(throwable.getClass())) {
+            return;
+        }
+        if (throwable.getCause() != null) {
+            if (isDisallowedClazz(throwable.getCause().getClass())) {
+                return;
+            }
+        }
+        @NotNull Throwable finalThrowable = throwable;
         plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "RollbarErrorReporter", "QuickShop detected a error, we will report it to Rollbar Error Tracker so QuickShop's developers will receive the notification so we can fix it.",
                 () -> {
-                    try {
-                        if (plugin.getBootError() != null) {
-                            return; // Don't report any errors if boot failed.
-                        }
-                        if (tempDisable) {
-                            this.tempDisable = false;
-                            return;
-                        }
-                        if (disable) {
-                            return;
-                        }
-                        if (!enabled) {
-                            return;
-                        }
-
-                        if (!canReport(throwable)) {
-                            return;
-                        }
-                        if (isDisallowedClazz(throwable.getClass())) {
-                            return;
-                        }
-                        if (throwable.getCause() != null) {
-                            if (isDisallowedClazz(throwable.getCause().getClass())) {
-                                return;
-                            }
-                        }
-                        this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+                    try{
+                        this.rollbar.error(finalThrowable, this.makeMapping(), throwable.getMessage());
                         plugin
                                 .logger()
                                 .warn(
                                         "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
                         plugin.logger().warn("====QuickShop Error Report BEGIN===");
-                        plugin.logger().warn("Description: {}", throwable.getMessage());
+                        plugin.logger().warn("Description: {}", finalThrowable.getMessage());
                         plugin.logger().warn("Server   ID: {}", plugin.getServerUniqueID());
                         plugin.logger().warn("Exception  : ");
                         ignoreThrows();
-                        throwable.printStackTrace();
+                        finalThrowable.printStackTrace();
                         resetIgnores();
                         plugin.logger().warn("====QuickShop Error Report E N D===");
                         plugin
                                 .logger()
                                 .warn(
                                         "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
-                        Log.debug(throwable.getMessage());
-                        Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+                        Log.debug(finalThrowable.getMessage());
+                        Arrays.stream(finalThrowable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
                         if (Util.isDevMode()) {
-                            throwable.printStackTrace();
+                            finalThrowable.printStackTrace();
                         }
-                    } catch (Exception th) {
+                    }catch (Exception ex){
                         ignoreThrow();
-                        plugin.logger().warn("Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
+                        plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", throwable,ex);
                     }
                 }, () -> {
                     ignoreThrow();
