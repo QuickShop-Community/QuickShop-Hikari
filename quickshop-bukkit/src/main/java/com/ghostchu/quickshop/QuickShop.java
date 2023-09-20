@@ -583,6 +583,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
             initDatabase();
         }
+        Util.asyncThreadRun(()-> {
+            logger.info("Start to caching usernames (async)...");
+            ((FastPlayerFinder)getPlayerFinder()).bakeCaches();
+        });
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
@@ -632,6 +636,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
         }
         logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+
     }
 
 

@@ -49,7 +49,6 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     public FastPlayerFinder(QuickShop plugin) {
         this.plugin = plugin;
         this.resolver = new PlayerFinderResolver(this, plugin);
-        loadFromUserCache();
         cleanupTimer = new Timer("Failure lookup clean timer");
         plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
         cleanupTimer.scheduleAtFixedRate(new TimerTask() {
@@ -61,7 +60,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         }, 0, 1000 * 60 * 60);
     }
 
-    private void loadFromUserCache() {
+    public void bakeCaches() {
         File file = new File("usercache.json");
         if (!file.exists()) {
             Log.debug("Not found usercache.json at " + file.getAbsolutePath());
@@ -88,14 +87,20 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
             return;
         }
-        Log.debug("Caching " + cacheBeans.size() + " usernames into database...");
         List<Triple<UUID, String, String>> batchUpdate = new ArrayList<>();
         cacheBeans.forEach(b -> batchUpdate.add(new ImmutableTriple<>(b.getUuid(), null, b.getName())));
         DatabaseHelper databaseHelper = plugin.getDatabaseHelper();
         if (databaseHelper != null) {
+            Log.debug("Caching " + cacheBeans.size() + " usernames into database...");
             databaseHelper.updatePlayerProfileInBatch(batchUpdate)
-                    .thenAccept(i -> Log.debug("Completed, returns " + i));
+                    .thenAccept(i -> Log.debug("Username caches update successfully, total " + i+" records updated."))
+                    .exceptionally((e) -> {
+                        Log.debug("Failed to bake caches: "+e.getMessage());
+                        return null;
+                    });
 
+        } else {
+            Log.debug("Database not ready, skipping cache write.");
         }
     }
 
@@ -143,7 +148,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
         @SuppressWarnings("unchecked") CompletableFuture<String> inProgress = (CompletableFuture<String>) handling.get(uuid);
         if (inProgress != null) {
-            Log.debug("Reused "+inProgress+" for uuid2Name lookup: uuid="+uuid+", writeCache="+writeCache+", executorService="+executorService);
+            Log.debug("Reused " + inProgress + " for uuid2Name lookup: uuid=" + uuid + ", writeCache=" + writeCache + ", executorService=" + executorService);
             return inProgress;
         }
         CompletableFuture<String> future =
@@ -164,7 +169,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
         @SuppressWarnings("unchecked") CompletableFuture<UUID> inProgress = (CompletableFuture<UUID>) handling.get(name);
         if (inProgress != null) {
-            Log.debug("Reused "+inProgress+" for name2Uuid lookup: name="+name+", writeCache="+writeCache+", executorService="+executorService);
+            Log.debug("Reused " + inProgress + " for name2Uuid lookup: name=" + name + ", writeCache=" + writeCache + ", executorService=" + executorService);
             return inProgress;
         }
         CompletableFuture<UUID> future =
