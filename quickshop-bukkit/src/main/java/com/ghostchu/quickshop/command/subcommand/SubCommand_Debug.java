@@ -21,6 +21,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -59,28 +61,50 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleProfileIOTasksInfo(CommandSender sender, List<String> subParams) {
         if (subParams.isEmpty()) {
-            int count = 0;
-            for (Runnable runnable : QuickExecutor.getPrimaryProfileIoQueue()) {
-                count++;
-                sender.sendMessage(count + ". " + runnable.toString());
+            sender.sendMessage("ERROR! Usage: /quickshop debug await-profile-io-tasks <target> <action>");
+            return;
+        }
+        if (subParams.size() < 2) {
+            sender.sendMessage("ERROR! Usage: /quickshop debug await-profile-io-tasks <target> <action>");
+            return;
+        }
+        ExecutorService executorService;
+        BlockingQueue<Runnable> queue;
+        switch (subParams.get(0)) {
+            case "PRIMARY" -> {
+                executorService = QuickExecutor.getPrimaryProfileIoExecutor();
+                queue = QuickExecutor.getPrimaryProfileIoQueue();
             }
-            sender.sendMessage("Tasks in waiting queue: " + count);
-        } else {
-            if (subParams.get(0).equalsIgnoreCase("reset")) {
-                sender.sendMessage("Nuking profile io task pool...");
-                List<Runnable> nuked = QuickExecutor.getProfileIOExecutor().shutdownNow();
+            case "SECONDARY" -> {
+                executorService = QuickExecutor.getSecondaryProfileIoExecutor();
+                queue = QuickExecutor.getSecondaryProfileIoQueue();
+            }
+            default -> {
+                sender.sendMessage("Target only accepts: PRIMARY, SECONDARY");
+                return;
+            }
+        }
+        switch (subParams.get(1)) {
+            case "info" -> {
                 int count = 0;
-                for (Runnable runnable : nuked) {
+                for (Runnable runnable : queue) {
                     count++;
                     sender.sendMessage(count + ". " + runnable.toString());
                 }
-                sender.sendMessage("Nuked: " + nuked.size() + " tasks.");
-                sender.sendMessage("Purging: " + QuickExecutor.getPrimaryProfileIoQueue().size() + " in-queue tasks.");
-                QuickExecutor.getPrimaryProfileIoQueue().clear();
-                QuickExecutor.setPrimaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, QuickExecutor.getPrimaryProfileIoQueue()));
-                sender.sendMessage("Done.");
+                sender.sendMessage("Total tasks in queue: " + count);
+            }
+            case "reset" -> {
+                List<Runnable> remains = executorService.shutdownNow();
+                sender.sendMessage("Killed executor service with " + remains.size() + " unfinished tasks.");
+                switch (subParams.get(0)) {
+                    case "PRIMARY" -> QuickExecutor.setPrimaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, queue));
+                    case "SECONDARY" -> QuickExecutor.setSecondaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, queue));
+                    default -> {}
+                }
+                sender.sendMessage("Successfully re-launched executor service with 2 min, 32 max, 60sec K.A.T., unlimited capacity.");
             }
         }
+
     }
 
     private void handleProperty(CommandSender sender, List<String> subParams) {
