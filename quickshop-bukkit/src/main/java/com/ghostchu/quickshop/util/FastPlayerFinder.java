@@ -73,7 +73,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             }.getType());
             List<UserCacheBean> fullCacheBeans = userCacheBeans.stream()
                     .filter(b -> b.getUuid() != null)
-                    .filter(b -> b.getUuid() != null)
+                    .filter(b -> b.getName() != null)
                     .toList();
             cacheInBatch(fullCacheBeans);
             Log.debug("Loaded " + userCacheBeans.size() + " entries from usercache.json");
