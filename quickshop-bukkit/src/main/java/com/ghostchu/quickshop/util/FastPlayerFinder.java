@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileReader;
+import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.*;
@@ -40,6 +41,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             .maximumSize(50000)
             .recordStats()
             .build();
+    private final Map<WeakReference<ExecutorService>, Map<Object, CompletableFuture<?>>> handling = new ConcurrentHashMap<>();
     private final Map<String, CompletableFuture<UUID>> name2UuidHandling = new ConcurrentHashMap<>();
     private final Map<UUID, CompletableFuture<String>> uuid2NameHandling = new ConcurrentHashMap<>();
     private final QuickShop plugin;
@@ -55,6 +57,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             @Override
             public void run() {
                 nameCache.asMap().entrySet().removeIf(entry -> entry.getValue().isEmpty());
+                handling.entrySet().removeIf(entry -> entry.getKey().get() == null);
             }
         }, 0, 1000 * 60 * 60);
         this.resolver = new PlayerFinderResolver(this, plugin);
@@ -120,10 +123,24 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         return uuid2NameFuture(uuid, true, QuickExecutor.getPrimaryProfileIoExecutor());
     }
 
+    @NotNull
+    private Map<Object, CompletableFuture<?>> getExecutorRef(@NotNull ExecutorService executorService) {
+        for (Map.Entry<WeakReference<ExecutorService>, Map<Object, CompletableFuture<?>>> entry : this.handling.entrySet()) {
+            ExecutorService service = entry.getKey().get();
+            if (service == executorService) {
+                return entry.getValue();
+            }
+        }
+        Map<Object, CompletableFuture<?>> map = new ConcurrentHashMap<>();
+        this.handling.put(new WeakReference<>(executorService), map);
+        return map;
+    }
+
     @Override
     public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid, boolean writeCache, @NotNull ExecutorService executorService) {
-        CompletableFuture<String> inProgress = this.uuid2NameHandling.get(uuid);
-        if (inProgress != null){
+        Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
+        @SuppressWarnings("unchecked") CompletableFuture<String> inProgress = (CompletableFuture<String>) handling.get(uuid);
+        if (inProgress != null) {
             return inProgress;
         }
         CompletableFuture<String> future =
@@ -141,8 +158,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name, boolean writeCache, @NotNull ExecutorService executorService) {
-        CompletableFuture<UUID> inProgress = this.name2UuidHandling.get(name);
-        if (inProgress != null){
+        Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
+        @SuppressWarnings("unchecked") CompletableFuture<UUID> inProgress = (CompletableFuture<UUID>) handling.get(name);
+        if (inProgress != null) {
             return inProgress;
         }
         CompletableFuture<UUID> future =
