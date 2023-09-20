@@ -5,14 +5,16 @@ import com.earth2me.essentials.User;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GrabConcurrentTask;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheStats;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.annotations.SerializedName;
 import kong.unirest.HttpResponse;
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
-public class FastPlayerFinder implements PlayerFinder {
+public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     private final Cache<UUID, Optional<String>> nameCache = CacheBuilder.newBuilder()
             .expireAfterAccess(3, TimeUnit.DAYS)
             .maximumSize(50000)
@@ -46,6 +49,7 @@ public class FastPlayerFinder implements PlayerFinder {
         this.plugin = plugin;
         loadFromUserCache();
         cleanupTimer = new Timer("Failure lookup clean timer");
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
         cleanupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -95,7 +99,7 @@ public class FastPlayerFinder implements PlayerFinder {
             }
             perf.setContext("cache miss");
             GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new BukkitFindNameTask(uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
-            String name = grabConcurrentTask.invokeAll(10, TimeUnit.SECONDS, Objects::nonNull);
+            String name = grabConcurrentTask.invokeAll("Username Lookup - " + uuid,10, TimeUnit.SECONDS, Objects::nonNull);
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
         } catch (InterruptedException e) {
@@ -118,15 +122,15 @@ public class FastPlayerFinder implements PlayerFinder {
             perf.setContext("cache miss");
             GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
             // This cannot fail.
-            UUID uuid = grabConcurrentTask.invokeAll(1, TimeUnit.DAYS, Objects::nonNull);
+            UUID uuid = grabConcurrentTask.invokeAll("UniqueID Lookup - " + name, 15, TimeUnit.SECONDS, Objects::nonNull);
             if (uuid == null) {
-                return CommonUtil.getNilUniqueId();
+                return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
             }
             this.nameCache.put(uuid, Optional.of(name));
             return uuid;
         } catch (InterruptedException e) {
             plugin.logger().warn("Interrupted when looking up UUID for " + name, e);
-            return CommonUtil.getNilUniqueId();
+            return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -154,6 +158,21 @@ public class FastPlayerFinder implements PlayerFinder {
     @NotNull
     public Cache<UUID, Optional<String>> getNameCache() {
         return nameCache;
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        return "<h5>Username Cache</h5>" + renderTable(this.nameCache.stats());
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "PlayerFinder";
+    }
+
+    @NotNull
+    private String renderTable(@NotNull CacheStats stats) {
+        return GuavaCacheRender.renderTable(stats);
     }
 
     static class BukkitFindUUIDTask implements Supplier<UUID> {

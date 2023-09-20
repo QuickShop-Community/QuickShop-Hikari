@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import net.kyori.adventure.text.Component;
@@ -20,6 +21,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -49,7 +52,34 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
             case "check-shop-debug" -> handleShopInfo(sender, subParams);
             case "set-property" -> handleProperty(sender, subParams);
+            case "await-profile-io-tasks" -> handleProfileIOTasksInfo(sender,subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+        }
+    }
+
+    private void handleProfileIOTasksInfo(CommandSender sender, List<String> subParams) {
+        if(subParams.isEmpty()){
+            int count = 0;
+            for (Runnable runnable : QuickExecutor.getPlayerUsernameUuidLookupDeque()) {
+                count++;
+                sender.sendMessage(count + ". " + runnable.toString());
+            }
+            sender.sendMessage("Tasks in waiting queue: "+count);
+        }else{
+            if(subParams.get(0).equalsIgnoreCase("reset")){
+                sender.sendMessage("Nuking profile io task pool...");
+                List<Runnable> nuked = QuickExecutor.getProfileIOExecutor().shutdownNow();
+                int count = 0;
+                for (Runnable runnable : nuked) {
+                    count++;
+                    sender.sendMessage(count + ". " + runnable.toString());
+                }
+                sender.sendMessage("Nuked: "+nuked.size()+" tasks.");
+                sender.sendMessage("Purging: "+QuickExecutor.getPlayerUsernameUuidLookupDeque().size()+" in-queue tasks.");
+                QuickExecutor.getPlayerUsernameUuidLookupDeque().clear();
+                QuickExecutor.setPlayerUsernameUuidLookupExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, QuickExecutor.getPlayerUsernameUuidLookupDeque()));
+                sender.sendMessage("Done.");
+            }
         }
     }
 
