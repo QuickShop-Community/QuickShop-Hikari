@@ -88,11 +88,14 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
             return;
         }
+        Log.debug("Caching " + cacheBeans.size() + " usernames into database...");
         List<Triple<UUID, String, String>> batchUpdate = new ArrayList<>();
         cacheBeans.forEach(b -> batchUpdate.add(new ImmutableTriple<>(b.getUuid(), null, b.getName())));
         DatabaseHelper databaseHelper = plugin.getDatabaseHelper();
         if (databaseHelper != null) {
-            databaseHelper.updatePlayerProfileInBatch(batchUpdate);
+            databaseHelper.updatePlayerProfileInBatch(batchUpdate)
+                    .thenAccept(i -> Log.debug("Completed, returns " + i));
+
         }
     }
 
@@ -131,6 +134,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         }
         Map<Object, CompletableFuture<?>> map = new ConcurrentHashMap<>();
         this.handling.put(new WeakReference<>(executorService), map);
+        Log.debug("Created new executor caching region for executor service: " + executorService);
         return map;
     }
 
@@ -139,6 +143,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
         @SuppressWarnings("unchecked") CompletableFuture<String> inProgress = (CompletableFuture<String>) handling.get(uuid);
         if (inProgress != null) {
+            Log.debug("Reused "+inProgress+" for uuid2Name lookup: uuid="+uuid+", writeCache="+writeCache+", executorService="+executorService);
             return inProgress;
         }
         CompletableFuture<String> future =
@@ -159,6 +164,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
         @SuppressWarnings("unchecked") CompletableFuture<UUID> inProgress = (CompletableFuture<UUID>) handling.get(name);
         if (inProgress != null) {
+            Log.debug("Reused "+inProgress+" for name2Uuid lookup: name="+name+", writeCache="+writeCache+", executorService="+executorService);
             return inProgress;
         }
         CompletableFuture<UUID> future =
