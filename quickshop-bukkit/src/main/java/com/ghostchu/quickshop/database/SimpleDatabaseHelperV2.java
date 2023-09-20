@@ -1,8 +1,10 @@
 package com.ghostchu.quickshop.database;
 
+import cc.carm.lib.easysql.action.PreparedSQLBatchUpdateActionImpl;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
+import cc.carm.lib.easysql.manager.SQLManagerImpl;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
@@ -628,7 +630,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID, String, String>> uuidLocaleUsername) {
-            // TODO: @carm
+        var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl) getManager(), Integer.class,
+                "INSERT INTO " + DataTables.PLAYERS.getName() + "(uuid, locale, cachedName) VALUES (?, ?, ?) " +
+                        "ON DUPLICATE KEY UPDATE locale = ?, cachedName = ?"
+        );
+        for (Triple<UUID, String, String> data : uuidLocaleUsername) {
+            String locale = Optional.ofNullable(data.getMiddle()).orElse("en_us");
+            String cachedName = data.getRight();
+            action.addParamsBatch(data.getLeft().toString(), locale, cachedName, locale, cachedName);
+        }
+        return action.executeFuture(lines -> lines.stream().mapToInt(Integer::intValue).sum());
     }
 
     @Override
