@@ -25,15 +25,12 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.reflect.TypeToken;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.relique.jdbc.csv.CsvDriver;
 import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
@@ -593,7 +590,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .executeFuture(dat -> {
                     List<String> msgs = new ArrayList<>();
                     try (ResultSet set = dat.getResultSet()) {
-                        while(set.next()) {
+                        while (set.next()) {
                             msgs.add(set.getString("content"));
                         }
                     }
@@ -611,11 +608,27 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     @NotNull
-    public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @NotNull String locale, @NotNull String username) {
-        return DataTables.PLAYERS.createReplace()
-                .setColumnNames("uuid", "locale", "cachedName")
-                .setParams(uuid.toString(), locale, username)
-                .executeFuture(lines -> lines);
+    public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @Nullable String locale, @NotNull String username) {
+        if (locale != null) {
+            return DataTables.PLAYERS.createReplace()
+                    .setColumnNames("uuid", "locale", "cachedName")
+                    .setParams(uuid.toString(), locale, username)
+                    .executeFuture(lines -> lines);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                String cachedLocale = getPlayerLocale(uuid).join();
+                if (cachedLocale == null) cachedLocale = "en_us";
+                return DataTables.PLAYERS.createReplace()
+                        .setColumnNames("uuid", "locale", "cachedName")
+                        .setParams(uuid.toString(), cachedLocale, username)
+                        .executeFuture(lines -> lines).join();
+            });
+        }
+    }
+
+    @Override
+    public CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID, String, String>> uuidLocaleUsername) {
+            // TODO: @carm
     }
 
     @Override
@@ -770,10 +783,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
-            if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION){
+            if (currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
                 throw new IllegalStateException("The database version is newer than this build supported.");
             }
-            if(currentDatabaseVersion == parent.LATEST_DATABASE_VERSION){
+            if (currentDatabaseVersion == parent.LATEST_DATABASE_VERSION) {
                 return;
             }
             if (currentDatabaseVersion < 1) {

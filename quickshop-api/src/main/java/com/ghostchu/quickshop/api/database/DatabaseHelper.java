@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -208,7 +209,14 @@ public interface DatabaseHelper {
     @NotNull
     SQLQuery selectTable(@NotNull String table) throws SQLException;
 
-    CompletableFuture<Integer> updatePlayerProfile(@NotNull UUID uuid, @NotNull String locale, @NotNull String username);
+    CompletableFuture<Integer> updatePlayerProfile(@NotNull UUID uuid, @Nullable String locale, @NotNull String username);
+
+    /**
+     * Update player profiles in batch
+     * @param uuidLocaleUsername left=uuid, middle=locale, right=username
+     * @return Future
+     */
+    CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID,String,String>> uuidLocaleUsername);
 
     /**
      * Update inventory data to external cache table
