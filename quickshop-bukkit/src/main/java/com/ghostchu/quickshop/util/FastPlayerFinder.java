@@ -42,8 +42,6 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             .recordStats()
             .build();
     private final Map<WeakReference<ExecutorService>, Map<Object, CompletableFuture<?>>> handling = new ConcurrentHashMap<>();
-    private final Map<String, CompletableFuture<UUID>> name2UuidHandling = new ConcurrentHashMap<>();
-    private final Map<UUID, CompletableFuture<String>> uuid2NameHandling = new ConcurrentHashMap<>();
     private final QuickShop plugin;
     private final Timer cleanupTimer;
     private final PlayerFinderResolver resolver;
@@ -145,9 +143,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         }
         CompletableFuture<String> future =
                 CompletableFuture.supplyAsync(
-                        () -> resolver.uuid2Name(uuid, executorService, () -> this.uuid2NameHandling.remove(uuid)),
+                        () -> resolver.uuid2Name(uuid, executorService, () -> handling.remove(uuid)),
                         QuickExecutor.getPrimaryProfileIoExecutor());
-        this.uuid2NameHandling.put(uuid, future);
+        handling.put(uuid, future);
         return future;
     }
 
@@ -165,9 +163,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         }
         CompletableFuture<UUID> future =
                 CompletableFuture.supplyAsync(
-                        () -> resolver.name2Uuid(name, executorService, () -> this.name2UuidHandling.remove(name)),
+                        () -> resolver.name2Uuid(name, executorService, () -> handling.remove(name)),
                         QuickExecutor.getPrimaryProfileIoExecutor());
-        this.name2UuidHandling.put(name, future);
+        handling.put(name, future);
         return future;
     }
 
