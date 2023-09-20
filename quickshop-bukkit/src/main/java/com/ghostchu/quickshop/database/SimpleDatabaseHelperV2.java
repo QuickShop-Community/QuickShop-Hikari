@@ -630,16 +630,26 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID, String, String>> uuidLocaleUsername) {
+        List<Object[]> specificLocale = new ArrayList<>();
+        List<Triple<UUID, String, String>> unspecificLocale = new ArrayList<>();
+
+        for (Triple<UUID, String, String> user : uuidLocaleUsername) {
+            if (user.getMiddle() == null) unspecificLocale.add(user);
+            else specificLocale.add(new Object[]{user.getLeft(), user.getMiddle(), user.getRight()});
+        }
+
         var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl) getManager(), Integer.class,
                 "INSERT INTO " + DataTables.PLAYERS.getName() + "(uuid, locale, cachedName) VALUES (?, ?, ?) " +
-                        "ON DUPLICATE KEY UPDATE locale = ?, cachedName = ?"
+                        "ON DUPLICATE KEY UPDATE cachedName = ?"
         );
-        for (Triple<UUID, String, String> data : uuidLocaleUsername) {
-            String locale = Optional.ofNullable(data.getMiddle()).orElse("en_us");
-            String cachedName = data.getRight();
-            action.addParamsBatch(data.getLeft().toString(), locale, cachedName, locale, cachedName);
+        for (Triple<UUID, String, String> data : unspecificLocale) {
+            action.addParamsBatch(data.getLeft().toString(), "en_us", data.getRight(), data.getRight());
         }
-        return action.executeFuture(lines -> lines.stream().mapToInt(Integer::intValue).sum());
+
+        return DataTables.PLAYERS.createReplaceBatch().setColumnNames("uuid", "locale", "cachedName")
+                .setAllParams(specificLocale)
+                .executeFuture(lines -> lines.stream().mapToInt(Integer::intValue).sum())
+                .thenCombine(action.executeFuture(lines -> lines.stream().mapToInt(Integer::intValue).sum()), Integer::sum);
     }
 
     @Override
