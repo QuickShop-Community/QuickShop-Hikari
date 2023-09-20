@@ -1,8 +1,10 @@
 package com.ghostchu.quickshop.database;
 
+import cc.carm.lib.easysql.action.PreparedSQLBatchUpdateActionImpl;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
+import cc.carm.lib.easysql.manager.SQLManagerImpl;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
@@ -25,15 +27,12 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.reflect.TypeToken;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.relique.jdbc.csv.CsvDriver;
 import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
@@ -593,7 +592,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .executeFuture(dat -> {
                     List<String> msgs = new ArrayList<>();
                     try (ResultSet set = dat.getResultSet()) {
-                        while(set.next()) {
+                        while (set.next()) {
                             msgs.add(set.getString("content"));
                         }
                     }
@@ -611,11 +610,46 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     @NotNull
-    public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @NotNull String locale, @NotNull String username) {
-        return DataTables.PLAYERS.createReplace()
-                .setColumnNames("uuid", "locale", "cachedName")
-                .setParams(uuid.toString(), locale, username)
-                .executeFuture(lines -> lines);
+    public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @Nullable String locale, @NotNull String username) {
+        if (locale != null) {
+            return DataTables.PLAYERS.createReplace()
+                    .setColumnNames("uuid", "locale", "cachedName")
+                    .setParams(uuid.toString(), locale, username)
+                    .executeFuture(lines -> lines);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                String cachedLocale = getPlayerLocale(uuid).join();
+                if (cachedLocale == null) cachedLocale = "en_us";
+                return DataTables.PLAYERS.createReplace()
+                        .setColumnNames("uuid", "locale", "cachedName")
+                        .setParams(uuid.toString(), cachedLocale, username)
+                        .executeFuture(lines -> lines).join();
+            });
+        }
+    }
+
+    @Override
+    public CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID, String, String>> uuidLocaleUsername) {
+        List<Object[]> specificLocale = new ArrayList<>();
+        List<Triple<UUID, String, String>> unspecificLocale = new ArrayList<>();
+
+        for (Triple<UUID, String, String> user : uuidLocaleUsername) {
+            if (user.getMiddle() == null) unspecificLocale.add(user);
+            else specificLocale.add(new Object[]{user.getLeft(), user.getMiddle(), user.getRight()});
+        }
+
+        var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl) getManager(), Integer.class,
+                "INSERT INTO " + DataTables.PLAYERS.getName() + "(uuid, locale, cachedName) VALUES (?, ?, ?) " +
+                        "ON DUPLICATE KEY UPDATE cachedName = ?"
+        );
+        for (Triple<UUID, String, String> data : unspecificLocale) {
+            action.addParamsBatch(data.getLeft().toString(), "en_us", data.getRight(), data.getRight());
+        }
+
+        return DataTables.PLAYERS.createReplaceBatch().setColumnNames("uuid", "locale", "cachedName")
+                .setAllParams(specificLocale)
+                .executeFuture(lines -> lines.stream().mapToInt(Integer::intValue).sum())
+                .thenCombine(action.executeFuture(lines -> lines.stream().mapToInt(Integer::intValue).sum()), Integer::sum);
     }
 
     @Override
@@ -770,10 +804,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
-            if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION){
+            if (currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
                 throw new IllegalStateException("The database version is newer than this build supported.");
             }
-            if(currentDatabaseVersion == parent.LATEST_DATABASE_VERSION){
+            if (currentDatabaseVersion == parent.LATEST_DATABASE_VERSION) {
                 return;
             }
             if (currentDatabaseVersion < 1) {

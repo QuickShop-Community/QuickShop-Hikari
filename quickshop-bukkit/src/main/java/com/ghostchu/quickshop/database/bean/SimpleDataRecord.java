@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.database.bean;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +53,7 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     public SimpleDataRecord(PlayerFinder finder, ResultSet set) throws SQLException {
-        this.owner = QUserImpl.deserialize(finder, set.getString("owner"));
+        this.owner = QUserImpl.deserialize(finder, set.getString("owner"), QuickExecutor.getSecondaryProfileIoExecutor());
         this.item = set.getString("item");
         this.name = set.getString("name");
         this.type = set.getInt("type");
@@ -61,7 +62,7 @@ public class SimpleDataRecord implements DataRecord {
         this.unlimited = set.getBoolean("unlimited");
         this.hologram = set.getBoolean("hologram");
         String taxAccountString = set.getString("tax_account");
-        this.taxAccount = taxAccountString == null ? null : QUserImpl.deserialize(finder, taxAccountString);
+        this.taxAccount = taxAccountString == null ? null : QUserImpl.deserialize(finder, taxAccountString, QuickExecutor.getSecondaryProfileIoExecutor());
         this.permissions = set.getString("permissions");
         this.extra = set.getString("extra");
         this.inventorySymbolLink = set.getString("inv_symbol_link");

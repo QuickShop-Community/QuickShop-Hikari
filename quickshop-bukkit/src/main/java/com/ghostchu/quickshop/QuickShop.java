@@ -583,6 +583,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
             initDatabase();
         }
+        Util.asyncThreadRun(()-> {
+            logger.info("Start to caching usernames (async)...");
+            ((FastPlayerFinder)getPlayerFinder()).bakeCaches();
+        });
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
@@ -632,6 +636,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
         }
         logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+
     }
 
 
@@ -714,7 +719,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private void bakeShopsOwnerCache() {
-        if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean(false)) {
             logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
@@ -729,7 +734,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 });
             });
             for (UUID uuid : waitingForBake) {
-                QuickExecutor.getProfileIOExecutor().submit(() -> {
+                QuickExecutor.getSecondaryProfileIoExecutor().submit(() -> {
                     String name = playerFinder.uuid2Name(uuid);
                     if (name != null) {
                         playerFinder.cache(uuid, name);
