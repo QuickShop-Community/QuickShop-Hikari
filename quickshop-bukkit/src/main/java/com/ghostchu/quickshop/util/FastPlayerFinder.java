@@ -200,7 +200,8 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     }
 
     @Override
-    public void cache(@NotNull UUID uuid, @NotNull String name) {
+    public void cache(@NotNull UUID uuid, @Nullable String name) {
+        if(name == null) return;
         this.nameCache.put(uuid, Optional.of(name));
         if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
             return;
