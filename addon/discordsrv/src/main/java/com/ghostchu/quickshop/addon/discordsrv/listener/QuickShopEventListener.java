@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.addon.discordsrv.wrapper.JDAWrapper;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
@@ -163,7 +164,7 @@ public class QuickShopEventListener implements Listener {
             // Send to permission users
             for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                 if (event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
-                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid)
+                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid, QuickExecutor.getProfileIOExecutor())
                             .thenAccept(qUser -> sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
                             .exceptionally(e -> {
                                 plugin.getLogger().log(Level.WARNING, "Failed to find the player", e);

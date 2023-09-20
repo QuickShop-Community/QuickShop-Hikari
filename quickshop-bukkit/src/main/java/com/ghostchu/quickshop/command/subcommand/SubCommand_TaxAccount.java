@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 plugin.text().of(sender, "taxaccount-unset").send();
                 return;
             }
-            QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
+            QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0), QuickExecutor.getProfileIOExecutor())
                     .thenAccept(qUser -> {
                         shop.setTaxAccount(qUser);
                         plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();
