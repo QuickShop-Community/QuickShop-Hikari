@@ -48,6 +48,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     public FastPlayerFinder(QuickShop plugin) {
         this.plugin = plugin;
+        this.resolver = new PlayerFinderResolver(this, plugin);
         loadFromUserCache();
         cleanupTimer = new Timer("Failure lookup clean timer");
         plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
@@ -58,7 +59,6 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
                 handling.entrySet().removeIf(entry -> entry.getKey().get() == null);
             }
         }, 0, 1000 * 60 * 60);
-        this.resolver = new PlayerFinderResolver(this, plugin);
     }
 
     private void loadFromUserCache() {
