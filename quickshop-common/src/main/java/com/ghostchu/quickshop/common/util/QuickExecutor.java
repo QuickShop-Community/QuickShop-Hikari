@@ -26,11 +26,9 @@ public class QuickExecutor {
     public static ExecutorService getShopSaveExecutor() {
         return SHOP_SAVE_EXECUTOR;
     }
-
-    public static ExecutorService getProfileIOExecutor() {
+    public static ExecutorService getPrimaryProfileIoExecutor() {
         return PRIMARY_PROFILE_IO_EXECUTOR;
     }
-
     public static BlockingQueue<Runnable> getPrimaryProfileIoQueue() {
         return PRIMARY_PROFILE_IO_QUEUE;
     }
@@ -47,9 +45,7 @@ public class QuickExecutor {
         return SECONDARY_PROFILE_IO_QUEUE;
     }
 
-    public static ExecutorService getPrimaryProfileIoExecutor() {
-        return PRIMARY_PROFILE_IO_EXECUTOR;
-    }
+
 
     public static void setSecondaryProfileIoExecutor(ExecutorService secondaryProfileIoExecutor) {
         SECONDARY_PROFILE_IO_EXECUTOR = secondaryProfileIoExecutor;

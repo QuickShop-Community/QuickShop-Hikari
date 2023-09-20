@@ -49,7 +49,7 @@ public final class QUserImpl implements QUser {
         this.uniqueId = uuid;
         this.username = username;
         this.realPlayer = realPlayer;
-        this.executorService = QuickExecutor.getProfileIOExecutor();
+        this.executorService = QuickExecutor.getPrimaryProfileIoExecutor();
     }
 
     private void parseString(String string) {
@@ -233,12 +233,20 @@ public final class QUserImpl implements QUser {
         return Optional.empty();
     }
 
+    public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string) {
+        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, string, QuickExecutor.getPrimaryProfileIoExecutor()), QuickExecutor.getCommonExecutor());
+    }
+
+    public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, uuid, QuickExecutor.getPrimaryProfileIoExecutor()), QuickExecutor.getCommonExecutor());
+    }
+
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull String string, @NotNull ExecutorService executorService) {
         return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, string, executorService), QuickExecutor.getCommonExecutor());
     }
 
     public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull UUID uuid, @NotNull ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, uuid,executorService), QuickExecutor.getCommonExecutor());
+        return CompletableFuture.supplyAsync(() -> new QUserImpl(finder, uuid, executorService), QuickExecutor.getCommonExecutor());
     }
 
     public static QUser createFullFilled(UUID uuid, String username, boolean realPlayer) {
@@ -255,6 +263,15 @@ public final class QUserImpl implements QUser {
 
     public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid, @NotNull ExecutorService executorService) {
         return new QUserImpl(finder, uuid, executorService);
+        //return QUSER_CACHE.get(uuid, () -> new QUserImpl(finder, uuid));
+    }
+
+    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull String string) {
+        return new QUserImpl(finder, string, QuickExecutor.getPrimaryProfileIoExecutor());
+    }
+
+    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull UUID uuid) {
+        return new QUserImpl(finder, uuid, QuickExecutor.getPrimaryProfileIoExecutor());
         //return QUSER_CACHE.get(uuid, () -> new QUserImpl(finder, uuid));
     }
 
@@ -282,6 +299,15 @@ public final class QUserImpl implements QUser {
             return createFullFilled(CommonUtil.getNilUniqueId(), "CONSOLE", false);
         }
         return createFullFilled(CommonUtil.getNilUniqueId(), sender.getName(), false);
+    }
+
+
+    public static CompletableFuture<QUser> createAsync(@NotNull PlayerFinder finder, @NotNull CommandSender sender) {
+        return createAsync(finder, sender, QuickExecutor.getPrimaryProfileIoExecutor());
+    }
+
+    public static QUser createSync(@NotNull PlayerFinder finder, @NotNull CommandSender sender) {
+        return createSync(finder, sender, QuickExecutor.getPrimaryProfileIoExecutor());
     }
 
     @Override

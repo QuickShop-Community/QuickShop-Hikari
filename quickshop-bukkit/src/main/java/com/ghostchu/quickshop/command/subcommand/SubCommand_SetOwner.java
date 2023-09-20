@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
@@ -43,7 +42,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             plugin.text().of(sender, "no-permission").send();
             return;
         }
-        QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0), QuickExecutor.getProfileIOExecutor())
+        QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
                 .thenAccept(newShopOwner -> {
                     if (newShopOwner == null) {
                         plugin.text().of(sender, "unknown-player").send();

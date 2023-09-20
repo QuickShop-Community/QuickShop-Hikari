@@ -28,7 +28,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 plugin.text().of(sender, "taxaccount-unset").send();
                 return;
             }
-            QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0), QuickExecutor.getProfileIOExecutor())
+            QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
                     .thenAccept(qUser -> {
                         shop.setTaxAccount(qUser);
                         plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();

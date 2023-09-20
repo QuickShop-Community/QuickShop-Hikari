@@ -97,7 +97,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public @Nullable String uuid2Name(@NotNull UUID uuid) {
-        return uuid2Name(uuid, true, QuickExecutor.getProfileIOExecutor());
+        return uuid2Name(uuid, true, QuickExecutor.getPrimaryProfileIoExecutor());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public @Nullable UUID name2Uuid(@NotNull String name) {
-        return name2Uuid(name, true, QuickExecutor.getProfileIOExecutor());
+        return name2Uuid(name, true, QuickExecutor.getPrimaryProfileIoExecutor());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid) {
-        return uuid2NameFuture(uuid, true, QuickExecutor.getProfileIOExecutor());
+        return uuid2NameFuture(uuid, true, QuickExecutor.getPrimaryProfileIoExecutor());
     }
 
     @Override
@@ -129,14 +129,14 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         CompletableFuture<String> future =
                 CompletableFuture.supplyAsync(
                         () -> resolver.uuid2Name(uuid, executorService, () -> this.uuid2NameHandling.remove(uuid)),
-                        QuickExecutor.getProfileIOExecutor());
+                        QuickExecutor.getPrimaryProfileIoExecutor());
         this.uuid2NameHandling.put(uuid, future);
         return future;
     }
 
     @Override
     public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name) {
-        return name2UuidFuture(name, true, QuickExecutor.getProfileIOExecutor());
+        return name2UuidFuture(name, true, QuickExecutor.getPrimaryProfileIoExecutor());
     }
 
     @Override
@@ -148,7 +148,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         CompletableFuture<UUID> future =
                 CompletableFuture.supplyAsync(
                         () -> resolver.name2Uuid(name, executorService, () -> this.name2UuidHandling.remove(name)),
-                        QuickExecutor.getProfileIOExecutor());
+                        QuickExecutor.getPrimaryProfileIoExecutor());
         this.name2UuidHandling.put(name, future);
         return future;
     }

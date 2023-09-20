@@ -714,7 +714,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private void bakeShopsOwnerCache() {
-        if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean(false)) {
             logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
@@ -729,7 +729,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 });
             });
             for (UUID uuid : waitingForBake) {
-                QuickExecutor.getProfileIOExecutor().submit(() -> {
+                QuickExecutor.getSecondaryProfileIoExecutor().submit(() -> {
                     String name = playerFinder.uuid2Name(uuid);
                     if (name != null) {
                         playerFinder.cache(uuid, name);

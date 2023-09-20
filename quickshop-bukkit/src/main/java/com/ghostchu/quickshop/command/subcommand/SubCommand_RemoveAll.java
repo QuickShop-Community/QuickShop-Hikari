@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -32,13 +31,13 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         CompletableFuture<QUser> qUserFuture;
         if (parser.getArgs().size() == 1) {
-            qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0), QuickExecutor.getProfileIOExecutor());
+            qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0));
         } else {
-            qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), sender, QuickExecutor.getProfileIOExecutor());
+            qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), sender);
         }
         qUserFuture
                 .thenAccept(qUser -> {
-                    QUser executor = QUserImpl.createAsync(plugin.getPlayerFinder(), sender, QuickExecutor.getProfileIOExecutor()).join();
+                    QUser executor = QUserImpl.createAsync(plugin.getPlayerFinder(), sender).join();
                     if (executor.equals(qUser)) {
                         if (!plugin.perm().hasPermission(sender, "quickshop.removeall.self")) {
                             plugin.text().of(sender, "no-permission").send();

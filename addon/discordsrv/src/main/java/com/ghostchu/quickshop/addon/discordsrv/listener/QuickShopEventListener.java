@@ -164,7 +164,7 @@ public class QuickShopEventListener implements Listener {
             // Send to permission users
             for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                 if (event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
-                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid, QuickExecutor.getProfileIOExecutor())
+                    QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid)
                             .thenAccept(qUser -> sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
                             .exceptionally(e -> {
                                 plugin.getLogger().log(Level.WARNING, "Failed to find the player", e);
