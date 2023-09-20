@@ -52,21 +52,21 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
             case "check-shop-debug" -> handleShopInfo(sender, subParams);
             case "set-property" -> handleProperty(sender, subParams);
-            case "await-profile-io-tasks" -> handleProfileIOTasksInfo(sender,subParams);
+            case "await-profile-io-tasks" -> handleProfileIOTasksInfo(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
     }
 
     private void handleProfileIOTasksInfo(CommandSender sender, List<String> subParams) {
-        if(subParams.isEmpty()){
+        if (subParams.isEmpty()) {
             int count = 0;
-            for (Runnable runnable : QuickExecutor.getPlayerUsernameUuidLookupDeque()) {
+            for (Runnable runnable : QuickExecutor.getPrimaryProfileIoQueue()) {
                 count++;
                 sender.sendMessage(count + ". " + runnable.toString());
             }
-            sender.sendMessage("Tasks in waiting queue: "+count);
-        }else{
-            if(subParams.get(0).equalsIgnoreCase("reset")){
+            sender.sendMessage("Tasks in waiting queue: " + count);
+        } else {
+            if (subParams.get(0).equalsIgnoreCase("reset")) {
                 sender.sendMessage("Nuking profile io task pool...");
                 List<Runnable> nuked = QuickExecutor.getProfileIOExecutor().shutdownNow();
                 int count = 0;
@@ -74,10 +74,10 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     count++;
                     sender.sendMessage(count + ". " + runnable.toString());
                 }
-                sender.sendMessage("Nuked: "+nuked.size()+" tasks.");
-                sender.sendMessage("Purging: "+QuickExecutor.getPlayerUsernameUuidLookupDeque().size()+" in-queue tasks.");
-                QuickExecutor.getPlayerUsernameUuidLookupDeque().clear();
-                QuickExecutor.setPlayerUsernameUuidLookupExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, QuickExecutor.getPlayerUsernameUuidLookupDeque()));
+                sender.sendMessage("Nuked: " + nuked.size() + " tasks.");
+                sender.sendMessage("Purging: " + QuickExecutor.getPrimaryProfileIoQueue().size() + " in-queue tasks.");
+                QuickExecutor.getPrimaryProfileIoQueue().clear();
+                QuickExecutor.setPrimaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, QuickExecutor.getPrimaryProfileIoQueue()));
                 sender.sendMessage("Done.");
             }
         }
@@ -102,7 +102,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         if (split.length > 1) {
             value = split[1];
         }
-        if(!key.startsWith("com.ghostchu.quickshop") && !key.startsWith("quickshop")){
+        if (!key.startsWith("com.ghostchu.quickshop") && !key.startsWith("quickshop")) {
             sender.sendMessage("Error: You can only set the quickshop related properties for safety.");
             return;
         }

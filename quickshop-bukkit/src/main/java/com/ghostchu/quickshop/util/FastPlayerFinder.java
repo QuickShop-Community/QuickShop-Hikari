@@ -19,6 +19,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.annotations.SerializedName;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
@@ -29,10 +31,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
@@ -41,9 +40,11 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             .maximumSize(50000)
             .recordStats()
             .build();
+    private final Map<String, CompletableFuture<UUID>> name2UuidHandling = new ConcurrentHashMap<>();
+    private final Map<UUID, CompletableFuture<String>> uuid2NameHandling = new ConcurrentHashMap<>();
     private final QuickShop plugin;
-
     private final Timer cleanupTimer;
+    private final PlayerFinderResolver resolver;
 
     public FastPlayerFinder(QuickShop plugin) {
         this.plugin = plugin;
@@ -53,18 +54,10 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         cleanupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-//                Set<UUID> toClean = new HashSet<>();
                 nameCache.asMap().entrySet().removeIf(entry -> entry.getValue().isEmpty());
-//                nameCache.asMap().forEach((uuid, optional) -> {
-//                    if (optional.isEmpty()) {
-//                        toClean.add(uuid);
-//                    }
-//                });
-//                toClean.forEach(nameCache::invalidate);
-//                Log.debug("Cleaned " + toClean.size() + " failure lookup entries.");
             }
         }, 0, 1000 * 60 * 60);
-
+        this.resolver = new PlayerFinderResolver(this, plugin);
     }
 
     private void loadFromUserCache() {
@@ -77,76 +70,99 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         try (FileReader reader = new FileReader(file)) {
             List<UserCacheBean> userCacheBeans = JsonUtil.getGson().fromJson(reader, new TypeToken<List<UserCacheBean>>() {
             }.getType());
-            userCacheBeans.forEach(bean -> {
-                if (bean.getUuid() != null && bean.getName() != null) {
-                    nameCache.put(bean.getUuid(), Optional.of(bean.getName()));
-                }
-            });
+            List<UserCacheBean> fullCacheBeans = userCacheBeans.stream()
+                    .filter(b -> b.getUuid() != null)
+                    .filter(b -> b.getUuid() != null)
+                    .toList();
+            cacheInBatch(fullCacheBeans);
             Log.debug("Loaded " + userCacheBeans.size() + " entries from usercache.json");
         } catch (Exception e) {
             Log.debug("Giving up usercache.json loading: " + e.getMessage());
         }
     }
 
-    @Override
-    @Nullable
-    public String uuid2Name(@NotNull UUID uuid) {
-        try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
-            Optional<String> cachedName = nameCache.getIfPresent(uuid);
-            //noinspection OptionalAssignedToNull
-            if (cachedName != null) {
-                return cachedName.orElse(null);
-            }
-            perf.setContext("cache miss");
-            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new BukkitFindNameTask(uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
-            String name = grabConcurrentTask.invokeAll("Username Lookup - " + uuid,10, TimeUnit.SECONDS, Objects::nonNull);
-            this.nameCache.put(uuid, Optional.ofNullable(name));
-            return name;
-        } catch (InterruptedException e) {
-            plugin.logger().warn("Interrupted when looking up username for " + uuid, e);
-            return null;
+
+    public void cacheInBatch(List<UserCacheBean> cacheBeans) {
+        cacheBeans.forEach(b -> nameCache.put(b.getUuid(), Optional.of(b.getName())));
+        if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
+            return;
+        }
+        List<Triple<UUID, String, String>> batchUpdate = new ArrayList<>();
+        cacheBeans.forEach(b -> batchUpdate.add(new ImmutableTriple<>(b.getUuid(), null, b.getName())));
+        DatabaseHelper databaseHelper = plugin.getDatabaseHelper();
+        if (databaseHelper != null) {
+            databaseHelper.updatePlayerProfileInBatch(batchUpdate);
         }
     }
 
     @Override
-    @NotNull
-    public UUID name2Uuid(@NotNull String name) {
-        try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
-            for (Map.Entry<UUID, Optional<String>> uuidStringEntry : nameCache.asMap().entrySet()) {
-                if (uuidStringEntry.getValue().isPresent()) {
-                    if (uuidStringEntry.getValue().get().equals(name)) {
-                        return uuidStringEntry.getKey();
-                    }
-                }
-            }
-            perf.setContext("cache miss");
-            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
-            // This cannot fail.
-            UUID uuid = grabConcurrentTask.invokeAll("UniqueID Lookup - " + name, 15, TimeUnit.SECONDS, Objects::nonNull);
-            if (uuid == null) {
-                return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
-            }
-            this.nameCache.put(uuid, Optional.of(name));
-            return uuid;
-        } catch (InterruptedException e) {
-            plugin.logger().warn("Interrupted when looking up UUID for " + name, e);
-            return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
-        }
+    public @Nullable String uuid2Name(@NotNull UUID uuid) {
+        return uuid2Name(uuid, true, QuickExecutor.getProfileIOExecutor());
+    }
+
+    @Override
+    public @Nullable String uuid2Name(@NotNull UUID uuid, boolean writeCache, @NotNull ExecutorService executorService) {
+        return uuid2NameFuture(uuid, writeCache, executorService).join();
+    }
+
+    @Override
+    public @Nullable UUID name2Uuid(@NotNull String name) {
+        return name2Uuid(name, true, QuickExecutor.getProfileIOExecutor());
+    }
+
+    @Override
+    public @Nullable UUID name2Uuid(@NotNull String name, boolean writeCache, @NotNull ExecutorService executorService) {
+        return name2UuidFuture(name, writeCache, executorService).join();
     }
 
     @Override
     public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> uuid2Name(uuid), QuickExecutor.getProfileIOExecutor());
+        return uuid2NameFuture(uuid, true, QuickExecutor.getProfileIOExecutor());
+    }
+
+    @Override
+    public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid, boolean writeCache, @NotNull ExecutorService executorService) {
+        CompletableFuture<String> inProgress = this.uuid2NameHandling.get(uuid);
+        if (inProgress != null){
+            return inProgress;
+        }
+        CompletableFuture<String> future =
+                CompletableFuture.supplyAsync(
+                        () -> resolver.uuid2Name(uuid, executorService, () -> this.uuid2NameHandling.remove(uuid)),
+                        QuickExecutor.getProfileIOExecutor());
+        this.uuid2NameHandling.put(uuid, future);
+        return future;
     }
 
     @Override
     public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name) {
-        return CompletableFuture.supplyAsync(() -> name2Uuid(name), QuickExecutor.getProfileIOExecutor());
+        return name2UuidFuture(name, true, QuickExecutor.getProfileIOExecutor());
+    }
+
+    @Override
+    public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name, boolean writeCache, @NotNull ExecutorService executorService) {
+        CompletableFuture<UUID> inProgress = this.name2UuidHandling.get(name);
+        if (inProgress != null){
+            return inProgress;
+        }
+        CompletableFuture<UUID> future =
+                CompletableFuture.supplyAsync(
+                        () -> resolver.name2Uuid(name, executorService, () -> this.name2UuidHandling.remove(name)),
+                        QuickExecutor.getProfileIOExecutor());
+        this.name2UuidHandling.put(name, future);
+        return future;
     }
 
     @Override
     public void cache(@NotNull UUID uuid, @NotNull String name) {
         this.nameCache.put(uuid, Optional.of(name));
+        if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
+            return;
+        }
+        DatabaseHelper databaseHelper = plugin.getDatabaseHelper();
+        if (databaseHelper != null) {
+            databaseHelper.updatePlayerProfile(uuid, null, name);
+        }
     }
 
     @Override
@@ -173,6 +189,42 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @NotNull
     private String renderTable(@NotNull CacheStats stats) {
         return GuavaCacheRender.renderTable(stats);
+    }
+
+    public static class PlayerFinderResolver {
+        private final QuickShop plugin;
+        private final FastPlayerFinder parent;
+
+        public PlayerFinderResolver(FastPlayerFinder fastPlayerFinder, QuickShop plugin) {
+            this.plugin = plugin;
+            this.parent = fastPlayerFinder;
+        }
+
+        @Nullable
+        public String uuid2Name(@NotNull UUID uuid, @NotNull ExecutorService executorService, @NotNull Runnable endCallback) {
+            try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
+                GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(executorService, new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new BukkitFindNameTask(uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
+                return grabConcurrentTask.invokeAll("Username Lookup - " + uuid, 10, TimeUnit.SECONDS, Objects::nonNull);
+            } catch (InterruptedException e) {
+                return null;
+            } finally {
+                endCallback.run();
+            }
+        }
+
+        @NotNull
+        public UUID name2Uuid(@NotNull String name, @NotNull ExecutorService executorService, @NotNull Runnable endCallback) {
+            try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
+                GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(executorService, new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
+                // This cannot fail.
+                UUID uuid = grabConcurrentTask.invokeAll("UniqueID Lookup - " + name, 15, TimeUnit.SECONDS, Objects::nonNull);
+                return Objects.requireNonNullElseGet(uuid, () -> UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8)));
+            } catch (InterruptedException e) {
+                return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
+            } finally {
+                endCallback.run();
+            }
+        }
     }
 
     static class BukkitFindUUIDTask implements Supplier<UUID> {
@@ -641,7 +693,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         }
     }
 
-    static class UserCacheBean {
+    public static class UserCacheBean {
         private String name;
         private UUID uuid;
 
