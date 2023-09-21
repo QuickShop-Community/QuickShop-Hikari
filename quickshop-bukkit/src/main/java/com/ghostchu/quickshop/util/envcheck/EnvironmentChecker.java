@@ -124,7 +124,7 @@ public final class EnvironmentChecker {
     }
     @EnvCheckEntry(name = "ModdedServer Database Driver Test", priority = 5)
     public ResultContainer moddedServerDatabaseDriverTest() {
-        boolean trigged = isForgeBasedServer() || isFabricBasedServer();
+        boolean trigged = isForgeBasedServer() || isFabricBasedServer() && plugin.getConfig().getBoolean("database.mysql",false);
         if (trigged) {
             return new ResultContainer(CheckResult.STOP_WORKING, "You can't use H2 database driver on Forge/Fabric hybird server (it's buggy and will destroy your data). Use a MySQL server instead.");
         }
