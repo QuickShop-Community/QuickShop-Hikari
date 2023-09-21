@@ -55,7 +55,7 @@ public enum DataTables {
 
     SHOP_MAP("shop_map", (table) -> {
         // BLOCK LOCATION DATA
-        table.addColumn("world", "VARCHAR(32) NOT NULL");
+        table.addColumn("world", "VARCHAR(255) NOT NULL");
         table.addColumn("x", "INT NOT NULL");
         table.addColumn("y", "INT NOT NULL");
         table.addColumn("z", "INT NOT NULL");
