@@ -55,7 +55,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    private final int LATEST_DATABASE_VERSION = 13;
+    private final int LATEST_DATABASE_VERSION = 14;
 
     public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
         this.plugin = plugin;
@@ -105,7 +105,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (!result.next()) {
-                return LATEST_DATABASE_VERSION; // Default latest version
+                return -1; // Default latest version
             }
             return Integer.parseInt(result.getString("value"));
         } catch (SQLException e) {
@@ -171,8 +171,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void fastBackup() {
-        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
-        databaseIOUtil.performBackup("database-upgrade");
+        try {
+            DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
+            databaseIOUtil.performBackup("database-upgrade");
+        }catch (Throwable throwable){
+            plugin.logger().warn("Failed to backup the database.",throwable);
+        }
     }
 
     private void upgradeBenefit() {
@@ -225,6 +229,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 manager.alterTable(DataTables.LOG_TRANSACTION.getName())
                         .modifyColumn("tax_account", "VARCHAR(64)")
                         .executeFuture()).join();
+    }
+
+    private void upgradeWorldNameLength(){
+        fastBackup();
+        manager.alterTable(DataTables.SHOP_MAP.getName())
+                .modifyColumn("world", "VARCHAR(255) NOT NULL")
+                .executeFuture().join();
     }
 
     private void upgradeTablesEncoding() {
@@ -804,6 +815,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
+            if(currentDatabaseVersion == -1){
+                currentDatabaseVersion = 11;
+            }
             if (currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
                 throw new IllegalStateException("The database version is newer than this build supported.");
             }
@@ -869,6 +883,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 logger.info("Data upgrading: Converting data tables to utf8mb4...");
                 parent.upgradeTablesEncoding();
                 currentDatabaseVersion = 13;
+            }
+            if (currentDatabaseVersion == 13) {
+                logger.info("Data upgrading: Converting shop_map world length to 255...");
+                parent.upgradeWorldNameLength();
+                currentDatabaseVersion = 14;
             }
             parent.setDatabaseVersion(currentDatabaseVersion).join();
         }

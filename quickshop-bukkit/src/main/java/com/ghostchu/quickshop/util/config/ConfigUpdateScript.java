@@ -114,6 +114,13 @@ public class ConfigUpdateScript {
         getConfig().set("privacy.type.DIAGNOSTIC", true);
     }
 
+    @UpdateScript(version = 1023)
+    public void allowPublicKeyRetrieve() {
+        if(!getConfig().isSet("database.properties.allowPublicKeyRetrieval")){
+            getConfig().set("database.properties.allowPublicKeyRetrieval", true);
+        }
+    }
+
 
 
     @UpdateScript(version = 1004)

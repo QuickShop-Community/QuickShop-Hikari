@@ -6,8 +6,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
 import org.bukkit.Location;
-import org.bukkit.block.Container;
-import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -72,9 +70,9 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public boolean isValid() {
-        if (this.inventory instanceof BlockInventoryHolder) {
+        if (this.inventory instanceof InventoryHolder) {
             if (this.inventory.getLocation() != null) {
-                return this.inventory.getLocation().getBlock() instanceof Container;
+                return this.inventory.getLocation().getBlock() instanceof InventoryHolder;
             }
             return false;
         }

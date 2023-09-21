@@ -123,10 +123,16 @@ public class Util {
         }
         // Specified types by configuration
         if (!isShoppables(b.getType())) {
+            Log.debug(b.getType().name() + " not a shoppable");
             return false;
         }
         final BlockState bs = PaperLib.getBlockState(b, false).getState();
-        return bs instanceof InventoryHolder;
+        boolean container =  bs instanceof InventoryHolder;
+        if(!container){
+            Log.debug(b.getType().name() + " not a container");
+            return false;
+        }
+        return true;
     }
 
     public static boolean isBlacklistWorld(@NotNull World world) {

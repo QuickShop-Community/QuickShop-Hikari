@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,10 +39,10 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
             throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
         }
         BlockState block = PaperLib.getBlockState(world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false).getState();
-        if (!(block instanceof Container container)) {
-            throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
+        if (!(block instanceof InventoryHolder holder)) {
+            throw new IllegalArgumentException("Invalid symbol link: Target block not a InventoryHolder (map changed/resetted?)");
         }
-        return new BukkitInventoryWrapper(container.getInventory());
+        return new BukkitInventoryWrapper(holder.getInventory());
     }
 
     @Deprecated

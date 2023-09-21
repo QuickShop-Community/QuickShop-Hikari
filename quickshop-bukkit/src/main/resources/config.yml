@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1022
+config-version: 1023
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -152,6 +152,7 @@ database:
     prepStmtCacheSqlLimit: 2048
     useUnicode: true
     characterEncoding: utf8
+    allowPublicKeyRetrieval: true
 
 #Limits the amount of shops a player can create and own.
 limits:
