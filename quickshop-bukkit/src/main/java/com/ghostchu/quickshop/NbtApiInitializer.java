@@ -1,12 +1,9 @@
 package com.ghostchu.quickshop;
 
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
 import com.google.common.hash.Hashing;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import lombok.Data;
@@ -38,7 +35,7 @@ public class NbtApiInitializer {
     }
 
     private boolean checkNeedDownloadNbtApi() {
-        return Bukkit.getPluginManager().getPlugin("NBT-API") == null;
+        return Bukkit.getPluginManager().getPlugin("NBTAPI") == null;
     }
 
     private void init(Logger logger) throws IOException, InvalidPluginException, InvalidDescriptionException {

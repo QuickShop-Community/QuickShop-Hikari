@@ -11,6 +11,8 @@ softdepend:
   - CMI
   - ProtocolLib
   - NBTAPI
+  - NBT-API
+  - ItemNBTAPI
 api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:
