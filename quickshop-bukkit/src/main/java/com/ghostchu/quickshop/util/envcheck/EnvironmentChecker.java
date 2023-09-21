@@ -122,6 +122,14 @@ public final class EnvironmentChecker {
         }
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
     }
+    @EnvCheckEntry(name = "ModdedServer Database Driver Test", priority = 5)
+    public ResultContainer moddedServerDatabaseDriverTest() {
+        boolean trigged = isForgeBasedServer() || isFabricBasedServer();
+        if (trigged) {
+            return new ResultContainer(CheckResult.STOP_WORKING, "You can't use H2 database driver on Forge/Fabric hybird server (it's buggy and will destroy your data). Use a MySQL server instead.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
+    }
 
     public boolean isForgeBasedServer() {
         //Forge server detect - Arclight
