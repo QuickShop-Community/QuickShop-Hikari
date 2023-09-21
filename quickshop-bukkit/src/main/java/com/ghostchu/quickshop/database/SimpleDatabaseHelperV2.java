@@ -171,8 +171,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void fastBackup() {
-        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
-        databaseIOUtil.performBackup("database-upgrade");
+        try {
+            DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
+            databaseIOUtil.performBackup("database-upgrade");
+        }catch (Throwable throwable){
+            plugin.logger().warn("Failed to backup the database.",throwable);
+        }
     }
 
     private void upgradeBenefit() {
