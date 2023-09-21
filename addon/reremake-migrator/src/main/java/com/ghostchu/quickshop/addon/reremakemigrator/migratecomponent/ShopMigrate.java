@@ -14,10 +14,10 @@ import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.InventoryHolder;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.io.File;
@@ -63,7 +63,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
                     }
                 }
                 BlockState block = shopLoc.getBlock().getState();
-                if (!(block instanceof Container container)) {
+                if (!(block instanceof InventoryHolder container)) {
                     getHikari().logger().warn("Shop Invalid: Shop block not a valid Container, failed to create InventoryHolder.");
                     return;
                 }

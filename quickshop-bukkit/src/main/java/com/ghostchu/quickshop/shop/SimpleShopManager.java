@@ -1577,7 +1577,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 } else {
                     // optimize for performance
                     BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
-                    if (!(state instanceof Container)) {
+                    if (!(state instanceof InventoryHolder holder)) {
                         return null;
                     }
                     @Nullable final Block half = Util.getSecondHalf(currentBlock);
