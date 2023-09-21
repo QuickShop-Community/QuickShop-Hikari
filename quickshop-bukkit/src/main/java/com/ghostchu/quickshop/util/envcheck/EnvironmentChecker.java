@@ -128,7 +128,7 @@ public final class EnvironmentChecker {
         if (trigged) {
             return new ResultContainer(CheckResult.STOP_WORKING, "You can't use H2 database driver on Forge/Fabric hybird server (it's buggy and will destroy your data). Use a MySQL server instead.");
         }
-        return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
+        return new ResultContainer(CheckResult.PASSED, "OK");
     }
 
     public boolean isForgeBasedServer() {
