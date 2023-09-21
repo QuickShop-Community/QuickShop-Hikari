@@ -105,7 +105,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (!result.next()) {
-                return LATEST_DATABASE_VERSION; // Default latest version
+                return -1; // Default latest version
             }
             return Integer.parseInt(result.getString("value"));
         } catch (SQLException e) {
@@ -811,6 +811,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
+            if(currentDatabaseVersion == -1){
+                currentDatabaseVersion = 11;
+            }
             if (currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
                 throw new IllegalStateException("The database version is newer than this build supported.");
             }
