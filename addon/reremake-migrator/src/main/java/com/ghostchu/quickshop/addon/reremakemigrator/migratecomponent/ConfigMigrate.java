@@ -80,7 +80,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
         // migrate the minimum-price and maximum-price
         configuration.set("undefined.min", getReremake().getConfig().get("shop.minimum-price", "0.01"));
-        configuration.set("undefined.max", getReremake().getConfig().get("shop.maximum-price", "999999999999999999999999999999.99"));
+        configuration.set("undefined.max", getReremake().getConfig().get("shop.maximum-price", 999999999999999999999999999999.99d));
         configuration.set("enable", true);
         // migrate the whole-number setting from Reremake configuration
         configuration.set("whole-number-only", getReremake().getConfig().get("shop.whole-number-prices-only"));
