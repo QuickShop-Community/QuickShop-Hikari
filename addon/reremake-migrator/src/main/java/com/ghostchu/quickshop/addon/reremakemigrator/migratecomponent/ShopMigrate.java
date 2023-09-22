@@ -52,7 +52,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
             getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.migrate-entry", reremakeShop.toString(), c.incrementAndGet(), allShops.size()).send();
             try {
                 Location shopLoc = reremakeShop.getLocation();
-                com.ghostchu.quickshop.api.shop.Shop hikariShop = getHikari().getShopManager().getShop(shopLoc,true);
+                com.ghostchu.quickshop.api.shop.Shop hikariShop = getHikari().getShopManager().getShop(shopLoc, true);
                 if (hikariShop != null) {
                     if (!override) {
                         getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.conflict", "SKIPPING").send();
@@ -103,11 +103,12 @@ public class ShopMigrate extends AbstractMigrateComponent {
         return success.get();
     }
 
-    private YamlConfiguration getReremakeShopExtra(Shop reremakeShop){
+    private YamlConfiguration getReremakeShopExtra(Shop reremakeShop) {
         YamlConfiguration configuration = new YamlConfiguration();
         try {
             configuration.loadFromString(reremakeShop.saveExtraToYaml());
-        } catch (InvalidConfigurationException ignored) {}
+        } catch (InvalidConfigurationException ignored) {
+        }
         return configuration;
     }
 
@@ -119,7 +120,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
         for (CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple -> getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
             try {
                 completableFuture.join();
-            }catch (Exception e){
+            } catch (Exception e) {
                 getHikari().logger().warn("Error while saving shops, skipping", e);
             }
         }

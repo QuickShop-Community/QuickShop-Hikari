@@ -64,6 +64,7 @@ public class ConfigUpdateScript {
         getConfig().set("purge.return-create-fee", null);
         getConfig().set("shop.async-owner-name-fetch", null);
     }
+
     @UpdateScript(version = 1016)
     public void disableDefaultShopCorruptDeletion() {
         getConfig().set("debug.delete-corrupt-shops", false);
@@ -116,7 +117,7 @@ public class ConfigUpdateScript {
 
     @UpdateScript(version = 1023)
     public void allowPublicKeyRetrieve() {
-        if(!getConfig().isSet("database.properties.allowPublicKeyRetrieval")){
+        if (!getConfig().isSet("database.properties.allowPublicKeyRetrieval")) {
             getConfig().set("database.properties.allowPublicKeyRetrieval", true);
         }
     }
@@ -175,7 +176,7 @@ public class ConfigUpdateScript {
             return;
         }
         File[] files = locales.listFiles();
-        if(files == null) {
+        if (files == null) {
             return;
         }
         for (File localeDirectory : files) {
@@ -191,10 +192,10 @@ public class ConfigUpdateScript {
                 yamlFile.createNewFile();
                 YamlConfiguration yamlConfiguration = new YamlConfiguration();
                 JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(jsonFile);
-                if(jsonConfiguration.equals(new JsonConfiguration())){
+                if (jsonConfiguration.equals(new JsonConfiguration())) {
                     continue;
                 }
-                if(jsonConfiguration.getKeys(true).isEmpty()){
+                if (jsonConfiguration.getKeys(true).isEmpty()) {
                     continue;
                 }
                 jsonConfiguration.getKeys(true).forEach(key -> yamlConfiguration.set(key, translate(jsonConfiguration.get(key))));

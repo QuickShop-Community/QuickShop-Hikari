@@ -44,7 +44,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         init();
     }
 
-    public static void setVirtualDisplayDoesntWork(boolean shouldDisable){
+    public static void setVirtualDisplayDoesntWork(boolean shouldDisable) {
         virutalDisplayDoesntWork = shouldDisable;
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     @NotNull
     public static DisplayType getNowUsing() {
         DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-        if(displayType == DisplayType.VIRTUALITEM && virutalDisplayDoesntWork){
+        if (displayType == DisplayType.VIRTUALITEM && virutalDisplayDoesntWork) {
             return DisplayType.REALITEM;
         }
         return displayType;

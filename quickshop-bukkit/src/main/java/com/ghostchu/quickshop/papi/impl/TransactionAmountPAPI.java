@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 public class TransactionAmountPAPI implements PAPISubHandler {
     private final QuickShop plugin;
@@ -98,7 +97,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
                     return false;
                 })
                 .filter(record -> {
-                    QUser qUser = QUserImpl.createSync(plugin.getPlayerFinder(),record.getPlayer());
+                    QUser qUser = QUserImpl.createSync(plugin.getPlayerFinder(), record.getPlayer());
                     return player.getUniqueId().equals(qUser.getUniqueId());
                 })
                 .mapToLong(ShopMetricRecord::getAmount).sum();

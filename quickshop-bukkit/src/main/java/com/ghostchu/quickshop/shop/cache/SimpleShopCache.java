@@ -70,9 +70,9 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
 
     @Override
     public void invalidateAll(@Nullable ShopCacheNamespacedKey namespacedKey) {
-        if(namespacedKey == null){
+        if (namespacedKey == null) {
             CACHES.values().forEach(Cache::invalidateAll);
-        }else{
+        } else {
             Cache<Location, BoxedShop> targetCacheContainer = CACHES.get(namespacedKey);
             if (targetCacheContainer == null)
                 throw new IllegalArgumentException("Shop cache container " + namespacedKey.name() + " not exists!");
@@ -83,15 +83,16 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
 
     @Override
     public void invalidate(@Nullable ShopCacheNamespacedKey namespacedKey, @NotNull Location location) {
-        if(namespacedKey == null){
-            CACHES.values().forEach(c->c.invalidate(location));
-        }else{
+        if (namespacedKey == null) {
+            CACHES.values().forEach(c -> c.invalidate(location));
+        } else {
             Cache<Location, BoxedShop> targetCacheContainer = CACHES.get(namespacedKey);
             if (targetCacheContainer == null)
                 throw new IllegalArgumentException("Shop cache container " + namespacedKey.name() + " not exists!");
             targetCacheContainer.invalidate(location);
         }
     }
+
     @Override
     @NotNull
     public CacheStats getCacheStats(@NotNull ShopCacheNamespacedKey namespacedKey) {

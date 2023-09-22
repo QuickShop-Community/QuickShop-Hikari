@@ -53,9 +53,9 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
      */
     @Nullable
     public Shop getShopRedstone(@NotNull Location location, boolean includeAttached) {
-        if(includeAttached){
+        if (includeAttached) {
             return plugin.getShopManager().getShopIncludeAttachedViaCache(location);
-        }else{
+        } else {
             return plugin.getShopManager().getShopViaCache(location);
         }
 

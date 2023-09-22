@@ -29,7 +29,7 @@ public class ExpiringSet<T> {
         this.cache.invalidate(item);
     }
 
-    public long size(){
+    public long size() {
         return this.cache.size();
     }
 }

@@ -49,7 +49,7 @@ public class SimpleShopChunk implements ShopChunk {
     }
 
     @NotNull
-    public static ShopChunk fromLocation(@NotNull Location location){
+    public static ShopChunk fromLocation(@NotNull Location location) {
         return new SimpleShopChunk(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 }

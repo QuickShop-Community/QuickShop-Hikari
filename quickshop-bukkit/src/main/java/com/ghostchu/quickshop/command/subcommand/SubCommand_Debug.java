@@ -97,9 +97,12 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 List<Runnable> remains = executorService.shutdownNow();
                 sender.sendMessage("Killed executor service with " + remains.size() + " unfinished tasks.");
                 switch (subParams.get(0)) {
-                    case "PRIMARY" -> QuickExecutor.setPrimaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, queue));
-                    case "SECONDARY" -> QuickExecutor.setSecondaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, queue));
-                    default -> {}
+                    case "PRIMARY" ->
+                            QuickExecutor.setPrimaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, queue));
+                    case "SECONDARY" ->
+                            QuickExecutor.setSecondaryProfileIoExecutor(new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, queue));
+                    default -> {
+                    }
                 }
                 sender.sendMessage("Successfully re-launched executor service with 2 min, 32 max, 60sec K.A.T., unlimited capacity.");
             }

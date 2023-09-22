@@ -213,10 +213,11 @@ public interface DatabaseHelper {
 
     /**
      * Update player profiles in batch
+     *
      * @param uuidLocaleUsername left=uuid, middle=locale, right=username
      * @return Future
      */
-    CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID,String,String>> uuidLocaleUsername);
+    CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID, String, String>> uuidLocaleUsername);
 
     /**
      * Update inventory data to external cache table

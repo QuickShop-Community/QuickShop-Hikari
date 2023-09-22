@@ -11,14 +11,10 @@ import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 public class ShopPurger {
@@ -45,7 +41,7 @@ public class ShopPurger {
         Util.ensureThread(true);
         executing = true;
         DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
-        if(!ioUtil.performBackup("shops-auto-purge")){
+        if (!ioUtil.performBackup("shops-auto-purge")) {
             plugin.logger().warn("[Shop Purger] Purge progress declined due backup failure");
             return;
         }

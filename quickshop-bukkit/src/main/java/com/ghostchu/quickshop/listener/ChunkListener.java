@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

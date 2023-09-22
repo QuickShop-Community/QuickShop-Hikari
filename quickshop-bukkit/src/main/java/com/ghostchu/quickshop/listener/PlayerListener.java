@@ -52,7 +52,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends AbstractQSListener {
-    private final ExpiringSet<UUID> adventureWorkaround = new ExpiringSet<>(1,TimeUnit.SECONDS);
+    private final ExpiringSet<UUID> adventureWorkaround = new ExpiringSet<>(1, TimeUnit.SECONDS);
     private final ExpiringSet<UUID> rateLimit = new ExpiringSet<>(125, TimeUnit.MILLISECONDS);
 
     public PlayerListener(QuickShop plugin) {
@@ -96,8 +96,8 @@ public class PlayerListener extends AbstractQSListener {
             adventureWorkaround.add(e.getPlayer().getUniqueId());
         }
         // ----Adventure dupe click workaround end----
-        if(rateLimit.contains(e.getPlayer().getUniqueId())){
-            Log.debug("Player "+e.getPlayer().getName()+" click the blocks too fast and reached the rate limit, ignoring the event...");
+        if (rateLimit.contains(e.getPlayer().getUniqueId())) {
+            Log.debug("Player " + e.getPlayer().getName() + " click the blocks too fast and reached the rate limit, ignoring the event...");
             return;
         }
         rateLimit.add(e.getPlayer().getUniqueId());

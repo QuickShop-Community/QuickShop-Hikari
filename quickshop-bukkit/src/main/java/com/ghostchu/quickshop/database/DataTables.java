@@ -193,7 +193,7 @@ public enum DataTables {
 
         TableCreateBuilder tableBuilder = sqlManager.createTable(this.getName());
         String newSettings = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-        Log.debug("Creating table "+ this.getName() + " with settings: " + newSettings);
+        Log.debug("Creating table " + this.getName() + " with settings: " + newSettings);
         tableBuilder.setTableSettings(newSettings);
         tableHandler.accept(tableBuilder);
         tableBuilder.build().execute();

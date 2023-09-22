@@ -14,6 +14,7 @@ public class ShopMetricRecord {
     private double tax;
     private int amount;
     private String player;
+
     @Builder
     public ShopMetricRecord(long time, long shopId, ShopOperationEnum type, double total, double tax, int amount, QUser player) {
         this.time = time;

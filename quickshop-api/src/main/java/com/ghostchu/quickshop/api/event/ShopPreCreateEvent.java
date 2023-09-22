@@ -25,7 +25,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
      * Calling when shop pre-creating. Shop won't one-percent will create after this event, if you
      * want get the shop created event, please use ShopCreateEvent
      *
-     * @param creator   Target player
+     * @param creator  Target player
      * @param location The location will create be shop
      */
     public ShopPreCreateEvent(@NotNull QUser creator, @NotNull Location location) {

@@ -98,7 +98,7 @@ public class RollbarErrorReporter {
         @NotNull Throwable finalThrowable = throwable;
         plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "RollbarErrorReporter", "QuickShop detected a error, we will report it to Rollbar Error Tracker so QuickShop's developers will receive the notification so we can fix it.",
                 () -> {
-                    try{
+                    try {
                         this.rollbar.error(finalThrowable, this.makeMapping(), throwable.getMessage());
                         plugin
                                 .logger()
@@ -121,9 +121,9 @@ public class RollbarErrorReporter {
                         if (Util.isDevMode()) {
                             finalThrowable.printStackTrace();
                         }
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ignoreThrow();
-                        plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", throwable,ex);
+                        plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", throwable, ex);
                     }
                 }, () -> {
                     ignoreThrow();

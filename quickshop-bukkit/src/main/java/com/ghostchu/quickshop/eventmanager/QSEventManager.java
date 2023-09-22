@@ -74,11 +74,12 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
             }
         }
 
-        if(callBeforePassToMonitor == null){
-            callBeforePassToMonitor = empty -> {};
+        if (callBeforePassToMonitor == null) {
+            callBeforePassToMonitor = empty -> {
+            };
         }
 
-        fireEvent(event,callBeforePassToMonitor);
+        fireEvent(event, callBeforePassToMonitor);
     }
 
     private void fireEvent(Event event, Consumer<Event> callBeforePassToMonitor) {
@@ -101,8 +102,8 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                 continue;
             }
             try {
-                if(registration.getPriority() == EventPriority.MONITOR){
-                    if(!reachedMonitorPriority){
+                if (registration.getPriority() == EventPriority.MONITOR) {
+                    if (!reachedMonitorPriority) {
                         reachedMonitorPriority = true;
                         callBeforePassToMonitor.accept(event);
                     }

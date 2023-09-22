@@ -62,7 +62,7 @@ public class Economy_TNE extends AbstractEconomy {
             return null;
         }
 
-        if(currency != null) {
+        if (currency != null) {
             final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
             return currencyOpt.orElseGet(() -> TNECore.eco().currency().getDefaultCurrency(world.getName()));
         }
@@ -78,18 +78,18 @@ public class Economy_TNE extends AbstractEconomy {
 
         //Setup our transaction.
         final Transaction transaction = new Transaction(type)
-                .to(account, ((counter)? modifier.counter() : modifier))
+                .to(account, ((counter) ? modifier.counter() : modifier))
                 .processor(EconomyManager.baseProcessor())
                 .source(new PluginSource("QuickShop"));
         try {
 
             //Process our transaction.
             final TransactionResult result = transaction.process();
-            if(result.isSuccessful()) {
+            if (result.isSuccessful()) {
                 return true;
             }
 
-        } catch(InvalidTransactionException ignore) {
+        } catch (InvalidTransactionException ignore) {
             return false;
         }
         return false;
@@ -111,7 +111,7 @@ public class Economy_TNE extends AbstractEconomy {
         final Optional<Account> account = TNECore.api().getAccount(name);
         final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
 
-        if(account.isPresent() && currencyOpt.isPresent()) {
+        if (account.isPresent() && currencyOpt.isPresent()) {
 
             return runTransaction(account.get(), currencyOpt.get(), world.getName(), BigDecimal.valueOf(amount), "give", false);
         }
@@ -165,7 +165,7 @@ public class Economy_TNE extends AbstractEconomy {
 
         final Currency currencyObj = getCurrency(world, currency);
 
-        if(currencyObj == null) {
+        if (currencyObj == null) {
             return "Error";
         }
 
@@ -181,7 +181,7 @@ public class Economy_TNE extends AbstractEconomy {
         final Optional<Account> account = TNECore.api().getAccount(name);
         final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
 
-        if(account.isPresent() && currencyOpt.isPresent()) {
+        if (account.isPresent() && currencyOpt.isPresent()) {
             return account.get().getHoldingsTotal(world.getName(), currencyOpt.get().getUid()).doubleValue();
         }
         return 0.0;
@@ -252,6 +252,7 @@ public class Economy_TNE extends AbstractEconomy {
     public boolean supportCurrency() {
         return true;
     }
+
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
@@ -269,7 +270,7 @@ public class Economy_TNE extends AbstractEconomy {
         final Optional<Account> account = TNECore.api().getAccount(name);
         final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
 
-        if(account.isPresent() && currencyOpt.isPresent()) {
+        if (account.isPresent() && currencyOpt.isPresent()) {
 
             return runTransaction(account.get(), currencyOpt.get(), world.getName(), BigDecimal.valueOf(amount), "take", true);
         }

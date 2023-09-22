@@ -86,7 +86,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC,"Debug Paste", "User request to create a online debug paste",()->{
+        plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "Debug Paste", "User request to create a online debug paste", () -> {
             final String string = Paste.paste(new PasteGenerator(sender).render());
             if (string != null) {
                 String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
@@ -98,7 +98,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 }
                 return;
             }
-        }, ()->{
+        }, () -> {
             plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send();
         });
         return true;

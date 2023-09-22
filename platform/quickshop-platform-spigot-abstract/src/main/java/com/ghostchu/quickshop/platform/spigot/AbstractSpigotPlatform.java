@@ -135,7 +135,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void shutdown() {
-        if(this.audience != null){
+        if (this.audience != null) {
             this.audience.close();
         }
     }

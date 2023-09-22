@@ -4,13 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.command.subcommand.*;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentBuy;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentEmpty;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentPreview;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentRemove;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentSell;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentToggleDisplay;
-import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentUnlimited;
+import com.ghostchu.quickshop.command.subcommand.silent.*;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -362,7 +356,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return ImmutableList.copyOf(this.getCmds());
     }
 
-    private void init(){
+    private void init() {
         this.playSoundOnCommand = plugin.getConfig().getBoolean("effect.sound.oncommand");
         this.playSoundOnTabComplete = plugin.getConfig().getBoolean("effect.sound.ontabcomplete");
     }

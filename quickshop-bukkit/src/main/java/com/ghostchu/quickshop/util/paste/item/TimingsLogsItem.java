@@ -37,7 +37,7 @@ public class TimingsLogsItem implements SubPasteItem {
     @NotNull
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
-        List<String> debugLogs = Log.fetchLogs(Log.Type.TIMING).stream().map(recordEntry -> "[" + format.format(recordEntry.getTimestamp()) + "] "+recordEntry).toList();
+        List<String> debugLogs = Log.fetchLogs(Log.Type.TIMING).stream().map(recordEntry -> "[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry).toList();
         List<String> tail = CommonUtil.tail(debugLogs, 1000);
         tail.forEach(builder::add);
         return "<textarea readonly=\"true\" name=\"timingslogs\" style=\"height: 1000px; width: 100%;\">" +

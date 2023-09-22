@@ -76,8 +76,8 @@ public class QuickShopBukkit extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if(abortLoading != null){
-            throw new IllegalStateException("Plugin is disabled due an loading error",abortLoading);
+        if (abortLoading != null) {
+            throw new IllegalStateException("Plugin is disabled due an loading error", abortLoading);
         }
         logger.info("Forwarding onEnable() to QuickShop instance...");
         this.quickShop.onEnable();

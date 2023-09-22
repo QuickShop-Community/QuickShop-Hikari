@@ -228,12 +228,12 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         try {
             this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack, this::safeGuard);
-        }catch (NoSuchMethodError noSuchMethodError){
-            try{
+        } catch (NoSuchMethodError noSuchMethodError) {
+            try {
                 this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
                 safeGuard(this.item);
-            }catch (Exception e){
-                Log.debug("Failed to generate the real display item: "+e.getMessage());
+            } catch (Exception e) {
+                Log.debug("Failed to generate the real display item: " + e.getMessage());
             }
         }
         new ShopDisplayItemSafeGuardEvent(shop, this.item).callEvent();

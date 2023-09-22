@@ -54,7 +54,7 @@ public class Log {
     }
 
     private static void debugStdOutputs(Record recordEntry) {
-        recordEntry.generate().thenAccept(log->{
+        recordEntry.generate().thenAccept(log -> {
             if (Util.isDevMode()) {
                 QuickShop.getInstance().logger().info("[DEBUG] " + log);
             }
@@ -117,7 +117,6 @@ public class Log {
     }
 
 
-
     public static void performance(@NotNull Level level, @NotNull String message, @NotNull CompletableFuture<Caller> caller) {
         LOCK.writeLock().lock();
         try {
@@ -177,7 +176,7 @@ public class Log {
     }
 
     public static void permission(@NotNull String message) {
-        permission(Level.INFO, message, Caller.create(3,false));
+        permission(Level.INFO, message, Caller.create(3, false));
     }
 
     @ApiStatus.Internal
@@ -199,7 +198,7 @@ public class Log {
     }
 
     public static void permission(@NotNull Level level, @NotNull String message) {
-        permission(level, message, Caller.create(3,false));
+        permission(level, message, Caller.create(3, false));
     }
 
     public static void timing(@NotNull String operation, @NotNull Timer timer) {
@@ -336,21 +335,22 @@ public class Log {
 
         @NotNull
         public static CompletableFuture<Caller> create() {
-            return create(3,false);
+            return create(3, false);
         }
 
         @NotNull
         public static Caller createSync() {
-            return create(3,false).join();
+            return create(3, false).join();
         }
+
         @NotNull
         public static Caller createSync(boolean force) {
-            return create(3,force).join();
+            return create(3, force).join();
         }
 
         @NotNull
         public static CompletableFuture<Caller> create(int steps, boolean force) {
-            if(!force) {
+            if (!force) {
                 if ("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
                     return CompletableFuture.supplyAsync(() -> new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1));
                 }

@@ -55,7 +55,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
 
     private void migrateCommandAlias() {
         List<String> commandAlias = getReremake().getConfig().getStringList("custom-commands");
-        if(!commandAlias.contains("qs")){
+        if (!commandAlias.contains("qs")) {
             commandAlias.add("qs");
         }
         getHikari().getConfig().set("custom-commands", commandAlias);

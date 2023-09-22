@@ -580,9 +580,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
             initDatabase();
         }
-        Util.asyncThreadRun(()-> {
+        Util.asyncThreadRun(() -> {
             logger.info("Start to caching usernames (async)...");
-            ((FastPlayerFinder)getPlayerFinder()).bakeCaches();
+            ((FastPlayerFinder) getPlayerFinder()).bakeCaches();
         });
         /* Initalize the tools */
         // Create the shop manager.

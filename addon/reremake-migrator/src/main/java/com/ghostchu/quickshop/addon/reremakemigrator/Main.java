@@ -19,6 +19,7 @@ public class Main extends JavaPlugin implements Listener {
     private QuickShop hikari;
     private org.maxgamer.quickshop.QuickShop reremake;
     private String deniedMessage;
+
     @Override
     public void onLoad() {
         instance = this;
@@ -29,8 +30,8 @@ public class Main extends JavaPlugin implements Listener {
         saveDefaultConfig();
         hikari = QuickShop.getInstance();
         reremake = org.maxgamer.quickshop.QuickShop.getInstance();
-        getLogger().info("Found QuickShop-Hikari: "+hikari.getJavaPlugin().getDescription().getVersion());
-        getLogger().info("Found QuickShop-Reremake: "+reremake.getDescription().getVersion());
+        getLogger().info("Found QuickShop-Hikari: " + hikari.getJavaPlugin().getDescription().getVersion());
+        getLogger().info("Found QuickShop-Reremake: " + reremake.getDescription().getVersion());
         Bukkit.getPluginManager().registerEvents(this, this);
         hikari.getCommandManager().registerCmd(
                 CommandContainer
@@ -38,7 +39,7 @@ public class Main extends JavaPlugin implements Listener {
                         .prefix("migratefromreremake")
                         .description((locale) -> hikari.text().of("addon.reremake-migrator.commands.migratefromreremake").forLocale(locale))
                         .permission("quickshopaddon.reremakemigrator.migrator-admin")
-                        .executor(new SubCommand_ReremakeMigrate(this, hikari,reremake))
+                        .executor(new SubCommand_ReremakeMigrate(this, hikari, reremake))
                         .build());
     }
 
@@ -64,8 +65,8 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerJoin(AsyncPlayerPreLoginEvent event){
-        if(this.deniedMessage != null){
+    public void onPlayerJoin(AsyncPlayerPreLoginEvent event) {
+        if (this.deniedMessage != null) {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, this.deniedMessage);
         }
     }

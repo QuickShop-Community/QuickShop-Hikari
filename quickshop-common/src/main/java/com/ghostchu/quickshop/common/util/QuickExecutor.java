@@ -12,6 +12,7 @@ public class QuickExecutor {
     private static ExecutorService PRIMARY_PROFILE_IO_EXECUTOR = new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, PRIMARY_PROFILE_IO_QUEUE);
     private static final BlockingQueue<Runnable> SECONDARY_PROFILE_IO_QUEUE = new LinkedBlockingDeque<>();
     private static ExecutorService SECONDARY_PROFILE_IO_EXECUTOR = new ThreadPoolExecutor(2, 32, 60L, TimeUnit.SECONDS, SECONDARY_PROFILE_IO_QUEUE);
+
     private QuickExecutor() {
     }
 
@@ -26,9 +27,11 @@ public class QuickExecutor {
     public static ExecutorService getShopSaveExecutor() {
         return SHOP_SAVE_EXECUTOR;
     }
+
     public static ExecutorService getPrimaryProfileIoExecutor() {
         return PRIMARY_PROFILE_IO_EXECUTOR;
     }
+
     public static BlockingQueue<Runnable> getPrimaryProfileIoQueue() {
         return PRIMARY_PROFILE_IO_QUEUE;
     }
@@ -44,7 +47,6 @@ public class QuickExecutor {
     public static BlockingQueue<Runnable> getSecondaryProfileIoQueue() {
         return SECONDARY_PROFILE_IO_QUEUE;
     }
-
 
 
     public static void setSecondaryProfileIoExecutor(ExecutorService secondaryProfileIoExecutor) {

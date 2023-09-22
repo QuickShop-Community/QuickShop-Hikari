@@ -174,8 +174,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         try {
             DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
             databaseIOUtil.performBackup("database-upgrade");
-        }catch (Throwable throwable){
-            plugin.logger().warn("Failed to backup the database.",throwable);
+        } catch (Throwable throwable) {
+            plugin.logger().warn("Failed to backup the database.", throwable);
         }
     }
 
@@ -231,7 +231,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         .executeFuture()).join();
     }
 
-    private void upgradeWorldNameLength(){
+    private void upgradeWorldNameLength() {
         fastBackup();
         manager.alterTable(DataTables.SHOP_MAP.getName())
                 .modifyColumn("world", "VARCHAR(255) NOT NULL")
@@ -815,7 +815,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         public void upgrade() throws Exception {
             int currentDatabaseVersion = parent.getDatabaseVersion();
-            if(currentDatabaseVersion == -1){
+            if (currentDatabaseVersion == -1) {
                 currentDatabaseVersion = 11;
             }
             if (currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {

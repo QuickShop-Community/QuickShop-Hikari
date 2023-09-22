@@ -33,6 +33,7 @@ public interface EconomyCore {
      * @return True if success (Should be almost always)
      */
     boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency);
+
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
