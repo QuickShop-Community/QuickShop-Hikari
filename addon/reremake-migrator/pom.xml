@@ -71,7 +71,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>de.themoep:minedown-adventure:*</include>
-                                    <include>com.dumptruckman.minecraft:JsonConfiguration:*</include>
+                                    <include>com.ghostchu.thirdparty:JsonConfiguration:*</include>
                                     <include>net.minidev:json-smart:*</include>
                                 </includes>
                             </artifactSet>

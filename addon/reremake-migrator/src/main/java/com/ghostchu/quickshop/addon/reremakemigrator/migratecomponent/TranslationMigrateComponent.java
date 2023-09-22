@@ -67,7 +67,7 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
             if (jsonConfiguration.isConfigurationSection(key)) continue;
             if (jsonConfiguration.isString(key)) {
                 String originalValue = jsonConfiguration.getString(key);
-                Component component = MineDown.parse(originalValue);
+                Component component = MineDown.parse(originalValue).compact();
                 String convertedValue = MiniMessage.miniMessage().serialize(component);
                 yamlConfiguration.set(key, convertedValue);
             } else {
@@ -75,7 +75,7 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
                     List<String> list = jsonConfiguration.getStringList(key);
                     List<String> convert = new ArrayList<>();
                     list.forEach(s -> {
-                        Component component = MineDown.parse(s);
+                        Component component = MineDown.parse(s).compact();
                         String convertedValue = MiniMessage.miniMessage().serialize(component);
                         convert.add(convertedValue);
                     });
