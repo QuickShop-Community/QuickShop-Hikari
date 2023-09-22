@@ -132,6 +132,13 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
+    public void shutdown() {
+        if(this.audience != null){
+            this.audience.close();
+        }
+    }
+
+    @Override
     public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
         //player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
     }

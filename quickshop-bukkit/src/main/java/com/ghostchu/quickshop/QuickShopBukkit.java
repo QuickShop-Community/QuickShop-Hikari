@@ -65,11 +65,13 @@ public class QuickShopBukkit extends JavaPlugin {
         logger.info("Forwarding onDisable() to QuickShop instance...");
         this.quickShop.onDisable();
         logger.info("Finishing up onDisable() in Bootloader...");
+        logger.info("Cleaning up resources...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
         Bukkit.getServicesManager().unregisterAll(this);
         Unirest.shutDown(true);
         Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
+        this.platform.shutdown();
     }
 
     @Override
