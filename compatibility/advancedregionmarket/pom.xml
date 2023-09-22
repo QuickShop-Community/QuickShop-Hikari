@@ -44,8 +44,8 @@
 
     <repositories>
         <repository>
-            <id>alex9849</id>
-            <url>https://nexus.alex9849.net/repository/maven-releases/</url>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
