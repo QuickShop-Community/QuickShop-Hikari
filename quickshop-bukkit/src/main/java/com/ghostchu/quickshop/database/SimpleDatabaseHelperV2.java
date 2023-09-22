@@ -245,7 +245,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     private void upgradeTablesEncoding() {
         fastBackup();
         for (DataTables value : DataTables.values()) {
-            if (value.isExists(manager)) {
+            if (value.isExists(manager, prefix)) {
                 Integer integer = manager.executeSQL("ALTER TABLE `" + value.getName() + "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 Log.debug("Changing the table " + value.getName() + " charset to utf8mb4, returns " + integer + " lines changed.");
             } else {
