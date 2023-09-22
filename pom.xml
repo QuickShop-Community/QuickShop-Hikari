@@ -115,21 +115,6 @@
                                         <include>de.themoep:minedown-adventure:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
-                                        <include>net.kyori:adventure-api</include>
-                                        <include>net.kyori:adventure-text-serializer-gson</include>
-                                        <include>net.kyori:adventure-platform-bukkit</include>
-                                        <include>net.kyori:adventure-text-minimessage</include>
-                                        <include>net.kyori:adventure-platform-api</include>
-                                        <include>net.kyori:adventure-platform-viaversion</include>
-                                        <include>net.kyori:adventure-platform-facet</include>
-                                        <include>net.kyori:adventure-nbt</include>
-                                        <include>net.kyori:adventure-key</include>
-                                        <include>net.kyori:examination-api</include>
-                                        <include>net.kyori:examination-string</include>
-                                        <include>net.kyori:adventure-text-serializer-legacy</include>
-                                        <include>net.kyori:adventure-text-serializer-bungeecord</include>
-                                        <include>net.kyori:adventure-text-serializer-craftbukkit</include>
-                                        <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                                     </includes>
                                     <!--                                    <excludes>-->
                                     <!--                                        <exclude>org.apache.commons:commons-compress:*</exclude>-->

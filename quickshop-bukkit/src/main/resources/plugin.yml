@@ -34,12 +34,25 @@ libraries:
   - com.vdurmont:semver4j:3.1.0
   - com.ghostchu.crowdin:crowdinota:1.0.3
   - com.google.code.gson:gson:2.10.1
-#  - net.kyori:adventure-platform-bukkit:4.3.0
-#  - net.kyori:adventure-text-minimessage:4.13.1
-#  - net.kyori:adventure-text-serializer-gson:4.13.1
-#  - net.kyori:adventure-text-serializer-plain:4.13.1
-#  - net.kyori:adventure-text-serializer-legacy:4.13.1
-  #  - org.slf4j:slf4j-nop:1.7.35
+  - net.kyori:adventure-api:4.14.0
+  - net.kyori:adventure-key:4.14.0
+  - net.kyori:adventure-nbt:4.14.0
+  - net.kyori:adventure-platform-api:4.3.0
+  - net.kyori:adventure-platform-bukkit:4.3.0
+  - net.kyori:adventure-platform-facet:4.3.0
+  - net.kyori:adventure-platform-viaversion:4.3.0
+  - net.kyori:adventure-serializer-configurate4:4.14.0
+  - net.kyori:adventure-text-logger-slf4j:4.14.0
+  - net.kyori:adventure-text-minimessage:4.14.0
+  - net.kyori:adventure-text-serializer-ansi:4.14.0
+  - net.kyori:adventure-text-serializer-bungeecord:4.3.0
+  - net.kyori:adventure-text-serializer-gson-legacy-impl:4.14.0
+  - net.kyori:adventure-text-serializer-json:4.14.0
+  - net.kyori:adventure-text-serializer-json-legacy-impl:4.14.0
+  - net.kyori:adventure-text-serializer-legacy:4.14.0
+  - net.kyori:adventure-text-serializer-plain:4.14.0
+  - net.kyori:examination-api:1.3.0
+  - net.kyori:examination-string:1.3.0
 authors:
   - Ghost_chu
   - PotatoCraft Studio
