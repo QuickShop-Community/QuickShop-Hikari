@@ -33,13 +33,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
 /**
@@ -828,37 +826,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             if (currentDatabaseVersion == parent.LATEST_DATABASE_VERSION) {
                 return;
             }
-            if (currentDatabaseVersion < 1) {
-                // QuickShop v4/v5 upgrade
-                // Call updater
-                currentDatabaseVersion = 1;
-            }
-            if (currentDatabaseVersion == 1) {
-                // QuickShop-Hikari 1.1.0.0
-                try {
-                    manager.alterTable(prefix + "shops")
-                            .addColumn("name", "TEXT NULL")
-                            .execute();
-                } catch (SQLException e) {
-                    parent.plugin.logger().warn("Failed to add name column to shops table! SQL: {}", e.getMessage());
-                }
-                parent.plugin.logger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
-                currentDatabaseVersion = 2;
-            }
-            if (currentDatabaseVersion == 2) {
-                // QuickShop-Hikari 2.0.0.0
-                try {
-                    manager.alterTable(prefix + "shops")
-                            .addColumn("permission", "TEXT NULL")
-                            .execute();
-                } catch (SQLException e) {
-                    parent.plugin.logger().warn("Failed to add name column to shops table! SQL: {}", e.getMessage());
-                }
-                currentDatabaseVersion = 3;
-            }
-            if (currentDatabaseVersion == 3) {
-                new DatabaseV2Migrate(this).doV2Migrate();
-                currentDatabaseVersion = 4;
+            if (currentDatabaseVersion <= 3) {
+                throw new IllegalStateException("Database Upgrade for <= Hikari 3.0.0.0 is no-longer supported");
             }
             if (currentDatabaseVersion < 9) {
                 logger.info("Data upgrading: Performing purge isolated data...");
@@ -910,149 +879,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 return false;
             }
             return true;
-        }
-
-        static class DatabaseV2Migrate {
-            private final DatabaseUpgrade parent;
-            private final Logger logger;
-            private final String prefix;
-            private final SQLManager manager;
-
-            DatabaseV2Migrate(DatabaseUpgrade parent) {
-                this.parent = parent;
-                this.logger = parent.parent.plugin.logger();
-                this.prefix = parent.prefix;
-                this.manager = parent.manager;
-            }
-
-            private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ExecutionException, InterruptedException {
-                logger.info("Please wait... QuickShop-Hikari preparing for database migration...");
-                String actionId = UUID.randomUUID().toString().replace("-", "");
-                logger.info("Action ID: {}", actionId);
-
-                logger.info("Cloning the tables for data copy...");
-                if (!parent.silentTableMoving(prefix + "shops", prefix + "shops_" + actionId)) {
-                    throw new IllegalStateException("Cannot rename critical tables");
-                }
-                // Backup tables
-                parent.silentTableMoving(prefix + "messages", prefix + "messages_" + actionId);
-                parent.silentTableMoving(prefix + "logs", prefix + "logs_" + actionId);
-                parent.silentTableMoving(prefix + "external_cache", prefix + "external_cache_" + actionId);
-                parent.silentTableMoving(prefix + "player", prefix + "player_" + actionId);
-                parent.silentTableMoving(prefix + "metrics", prefix + "metrics_" + actionId);
-                logger.info("Cleaning resources...");
-                // Backup current ver tables to prevent last converting failure or data loss
-                for (DataTables value : DataTables.values()) {
-                    parent.silentTableMoving(value.getName(), value.getName() + "_" + actionId);
-                }
-                logger.info("Ensuring shops ready for migrate...");
-                if (!parent.parent.hasTable(prefix + "shops_" + actionId)) {
-                    throw new IllegalStateException("Failed to rename tables!");
-                }
-
-                logger.info("Downloading the data that need to converting to memory...");
-                List<OldShopData> oldShopData = new LinkedList<>();
-                List<OldMessageData> oldMessageData = new LinkedList<>();
-                List<OldShopMetricData> oldMetricData = new LinkedList<>();
-                List<OldPlayerData> oldPlayerData = new LinkedList<>();
-                downloadData("Shops", "shops", actionId, OldShopData.class, oldShopData);
-                downloadData("Messages", "messages", actionId, OldMessageData.class, oldMessageData);
-                downloadData("Players Properties", "player", actionId, OldPlayerData.class, oldPlayerData);
-                downloadData("Shop Metrics", "metric", actionId, OldShopMetricData.class, oldMetricData);
-                logger.info("Converting data and write into database...");
-                // Convert data
-                int pos = 0;
-                int total = oldShopData.size();
-                logger.info("Rebuilding database structure...");
-                // Create new tables
-                Log.debug("Table prefix: " + prefix);
-                Log.debug("Global prefix: " + parent.parent.plugin.getDbPrefix());
-                DataTables.initializeTables(manager, prefix);
-                logger.info("Validating tables exists...");
-                for (DataTables value : DataTables.values()) {
-                    if (!value.isExists()) {
-                        throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
-                    }
-                }
-
-                for (OldShopData data : oldShopData) {
-                    long dataId = DataTables.DATA.createInsert()
-                            .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
-                            .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, JsonUtil.getGson().toJson(data.permission), data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
-                            .returnGeneratedKey(Long.class)
-                            .execute();
-                    if (dataId < 1) {
-                        throw new IllegalStateException("DataId creation failed.");
-                    }
-                    long shopId = DataTables.SHOPS.createInsert()
-                            .setColumnNames("data").setParams(dataId)
-                            .returnGeneratedKey(Long.class).execute();
-                    if (shopId < 1) {
-                        throw new IllegalStateException("ShopId creation failed.");
-                    }
-                    DataTables.SHOP_MAP.createReplace()
-                            .setColumnNames("world", "x", "y", "z", "shop")
-                            .setParams(data.world, data.x, data.y, data.z, shopId)
-                            .execute();
-                    logger.info("Converting shops...  ({}/{})", ++pos, total);
-                }
-                pos = 0;
-                total = oldMessageData.size();
-                for (OldMessageData data : oldMessageData) {
-                    DataTables.MESSAGES.createInsert()
-                            .setColumnNames("receiver", "time", "content")
-                            .setParams(data.owner, data.time, data.message)
-                            .execute();
-                    logger.info("Converting messages...  ({}/{})", ++pos, total);
-                }
-                pos = 0;
-                total = oldPlayerData.size();
-                for (OldPlayerData data : oldPlayerData) {
-                    DataTables.PLAYERS.createInsert()
-                            .setColumnNames("uuid", "locale")
-                            .setParams(data.uuid, data.locale)
-                            .execute();
-                    logger.info("Converting players properties...  ({}/{})", ++pos, total);
-                }
-                pos = 0;
-                total = oldMetricData.size();
-                for (OldShopMetricData data : oldMetricData) {
-                    Long shopId = parent.parent.locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ()).get();
-                    if (shopId == null) {
-                        throw new IllegalStateException("ShopId not found.");
-                    }
-                    Long dataId = parent.parent.locateShopDataId(shopId).get();
-                    if (dataId == null) {
-                        throw new IllegalStateException("DataId not found.");
-                    }
-                    DataTables.LOG_PURCHASE.createInsert()
-                            .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
-                            .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
-                            .execute();
-                    logger.info("Converting purchase metric...  ({}/{})", ++pos, total);
-                }
-                parent.parent.checkTables();
-                logger.info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
-            }
-
-            private <T> void downloadData(@NotNull String name, @NotNull String tableLegacyName, @NotNull String actionId, @NotNull Class<T> clazz, @NotNull List<T> target) throws NoSuchMethodException, SQLException, InvocationTargetException, InstantiationException, IllegalAccessException {
-                logger.info("Performing query for data downloading ({})...", name);
-                if (parent.parent.hasTable(prefix + tableLegacyName + "_" + actionId)) {
-                    try (SQLQuery query = manager.createQuery().inTable(prefix + tableLegacyName + "_" + actionId)
-                            .build().execute()) {
-                        ResultSet set = query.getResultSet();
-                        int count = 0;
-                        while (set.next()) {
-                            target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
-                            count++;
-                            logger.info("Downloaded {} data to memory ({})...", count, name);
-                        }
-                        logger.info("Downloaded {} total, completed. ({})", count, name);
-                    }
-                } else {
-                    logger.info("Skipping for table {}", tableLegacyName);
-                }
-            }
         }
     }
 
