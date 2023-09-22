@@ -9,6 +9,7 @@ import cc.carm.lib.easysql.api.function.SQLHandler;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -265,10 +266,13 @@ public enum DataTables {
     }
 
     public boolean isExists() {
-        return isExists(this.manager);
+        return isExists(this.manager, this.prefix);
     }
 
-    public boolean isExists(@NotNull SQLManager manager) {
+    public boolean isExists(@NotNull SQLManager manager, @Nullable String prefix) {
+        if (prefix != null) {
+            this.prefix = prefix;
+        }
         boolean match = false;
         try {
             try (Connection connection = manager.getConnection(); ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {

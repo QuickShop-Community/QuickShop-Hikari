@@ -78,8 +78,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     public void checkTables() throws SQLException {
-        DataTables.METADATA.setPrefix(prefix);
-        boolean metadataExists = DataTables.METADATA.isExists(manager);
+        boolean metadataExists = DataTables.METADATA.isExists(manager, prefix);
         DataTables.initializeTables(manager, prefix);
         if (!metadataExists) {
             setDatabaseVersion(LATEST_DATABASE_VERSION);
