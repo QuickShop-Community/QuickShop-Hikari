@@ -260,6 +260,10 @@ public enum DataTables {
         return sqlManager.createUpdate(this.getName());
     }
 
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
     public boolean isExists() {
         return isExists(this.manager);
     }
