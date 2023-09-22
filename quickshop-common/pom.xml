@@ -45,25 +45,25 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <scope>compile</scope>
-            <version>4.13.1</version>
+            <version>4.14.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
             <scope>compile</scope>
-            <version>4.13.0</version>
+            <version>4.14.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-plain</artifactId>
             <scope>compile</scope>
-            <version>4.13.1</version>
+            <version>4.14.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-legacy</artifactId>
             <scope>compile</scope>
-            <version>4.13.1</version>
+            <version>4.14.0</version>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
