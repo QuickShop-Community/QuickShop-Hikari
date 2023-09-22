@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.addon.reremakemigrator.Main;
 import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ConfigMigrate;
 import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.MigrateComponent;
 import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ShopMigrate;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.TranslationMigrateComponent;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.ProgressMonitor;
@@ -45,6 +46,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
         boolean shouldOverrideExistShops = Boolean.parseBoolean(parser.getArgs().get(0));
         List<MigrateComponent> migrateComponentList = new ArrayList<>();
         migrateComponentList.add(new ConfigMigrate(plugin, hikari, reremake, sender));
+        migrateComponentList.add(new TranslationMigrateComponent(plugin, hikari, reremake, sender));
         migrateComponentList.add(new ShopMigrate(plugin, hikari, reremake, sender, shouldOverrideExistShops));
         Util.asyncThreadRun(() -> {
             running.set(true);

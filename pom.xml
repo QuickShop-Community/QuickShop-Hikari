@@ -126,6 +126,10 @@
                                         <pattern>org.bstats</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.org.bstats</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>de.themoep.minedown.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown</shadedPattern>
+                                    </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer

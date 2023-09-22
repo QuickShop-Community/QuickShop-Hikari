@@ -37,11 +37,9 @@ public class ConfigMigrate extends AbstractMigrateComponent {
             "shop.allow-stacks", "shop.force-use-item-original-name", "blacklist", "plugin.Multiverse-Core", "plugin.WorldEdit",
             "effect", "matcher", "protect.explode", "protect.hopper", "protect.entity", "custom-item-stacksize", "purge", "debug"
     };
-    private final CommandSender sender;
 
     public ConfigMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender) {
-        super(main, hikari, reremake);
-        this.sender = sender;
+        super(main, hikari, reremake, sender);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
 
     private void migratePriceRestrictions() {
         // Generating price-restriction.yml, copy from SimplePriceLimiter.java
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.config.migrate-price-restriction").send();
+        text("modules.config.migrate-price-restriction").send();
         File configFile = new File(getHikariJavaPlugin().getDataFolder(), "price-restriction.yml");
         if (!configFile.exists()) {
             try {
@@ -85,7 +83,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
         // migrate the whole-number setting from Reremake configuration
         configuration.set("whole-number-only", getReremake().getConfig().get("shop.whole-number-prices-only"));
         List<String> str = getReremake().getConfig().getStringList("shop.price-restriction");
-        for (String record : new ProgressMonitor<>(str, (triple) -> getHikari().text().of(sender, "addon.reremake-migrator.modules.migrate-price-restriction-entry", triple.getLeft(), triple.getMiddle()).send())) {
+        for (String record : new ProgressMonitor<>(str, (triple) -> text("modules.migrate-price-restriction-entry", triple.getLeft(), triple.getMiddle()).send())) {
             try {
                 String[] records = record.split(";");
                 if (records.length != 3) continue;
@@ -111,10 +109,9 @@ public class ConfigMigrate extends AbstractMigrateComponent {
 
 
     private void copyValues() {
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.config.copy-values", DIRECT_COPY_KEYS.length).send();
+        text("modules.config.copy-values", DIRECT_COPY_KEYS.length).send();
         for (String directCopyKey : new ProgressMonitor<>(DIRECT_COPY_KEYS, triple ->
-                getHikari().text().of(sender, "addon.reremake-migrator.modules.config.copying-value",
-                        triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
+                text("modules.config.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
             copyValue(directCopyKey);
         }
         getHikariJavaPlugin().saveConfig();
