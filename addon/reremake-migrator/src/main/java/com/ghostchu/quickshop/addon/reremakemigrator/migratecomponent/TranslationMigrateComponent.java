@@ -12,6 +12,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class TranslationMigrateComponent extends AbstractMigrateComponent {
@@ -69,7 +71,18 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
                 String convertedValue = MiniMessage.miniMessage().serialize(component);
                 yamlConfiguration.set(key, convertedValue);
             } else {
-                yamlConfiguration.set(key, jsonConfiguration.get(key));
+                if (jsonConfiguration.isList(key)) {
+                    List<String> list = jsonConfiguration.getStringList(key);
+                    List<String> convert = new ArrayList<>();
+                    list.forEach(s -> {
+                        Component component = MineDown.parse(s);
+                        String convertedValue = MiniMessage.miniMessage().serialize(component);
+                        convert.add(convertedValue);
+                    });
+                    yamlConfiguration.set(key, convert);
+                } else {
+                    yamlConfiguration.set(key, jsonConfiguration.get(key));
+                }
             }
         }
         if (!targetLangFile.exists()) {
