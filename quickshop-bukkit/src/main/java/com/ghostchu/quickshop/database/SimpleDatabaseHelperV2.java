@@ -13,19 +13,14 @@ import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
-import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
-import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
-import com.google.common.reflect.TypeToken;
-import lombok.Data;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Location;
@@ -33,12 +28,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 /**
  * A Util to execute all SQLs.
@@ -909,114 +902,4 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             return z;
         }
     }
-
-    @Data
-    static class OldShopData {
-        private final double price;
-        private final String itemConfig;
-        private final int x;
-        private final int y;
-        private final int z;
-        private final String world;
-        private final boolean unlimited;
-        private final int type;
-        private final String extra;
-        private final String currency;
-        private final boolean disableDisplay;
-        private final String taxAccount;
-        private final String inventorySymbolLink;
-        private final String inventoryWrapperName;
-        private final String name;
-        private String owner;
-        private Map<UUID, String> permission = new HashMap<>();
-
-        public OldShopData(ResultSet set) throws Exception {
-            String ownerData = set.getString("owner");
-            if (!CommonUtil.isJson(ownerData)) {
-                owner = set.getString("owner");
-                Type t = new TypeToken<Map<UUID, String>>() {
-                }.getType();
-                Map<UUID, String> map = JsonUtil.getGson().fromJson(set.getString("permission"), t);
-                if (map == null) {
-                    permission = new HashMap<>();
-                } else {
-                    permission = new HashMap<>(map);
-                }
-            } else {
-                Log.debug(Level.WARNING, "Found a data-record that data mismatch with excepted, fixing...");
-                //noinspection deprecation
-                ShopModerator simpleShopModeratorLegacy = SimpleShopModerator.deserialize(ownerData);
-                owner = simpleShopModeratorLegacy.getOwner().toString();
-                simpleShopModeratorLegacy.getStaffs().forEach(staff -> permission.put(staff, BuiltInShopPermissionGroup.STAFF.getNamespacedNode()));
-            }
-            price = set.getDouble("price");
-            itemConfig = set.getString("itemConfig");
-            x = set.getInt("x");
-            y = set.getInt("y");
-            z = set.getInt("z");
-            world = set.getString("world");
-            unlimited = set.getBoolean("unlimited");
-            type = set.getInt("type");
-            extra = set.getString("extra");
-            currency = set.getString("currency");
-            disableDisplay = set.getBoolean("disableDisplay");
-            taxAccount = set.getString("taxAccount");
-            inventorySymbolLink = set.getString("inventorySymbolLink");
-            inventoryWrapperName = set.getString("inventoryWrapperName");
-            name = set.getString("name");
-        }
-    }
-
-    @Data
-    static class OldMessageData {
-        private final String owner;
-        private final String message;
-        private final Date time;
-
-        public OldMessageData(ResultSet set) throws SQLException {
-            owner = set.getString("owner");
-            message = set.getString("message");
-            long timeStamp = set.getLong("time");
-            time = new Date(timeStamp);
-        }
-    }
-
-    @Data
-    static class OldShopMetricData {
-        private final long time;
-        private final int x;
-        private final int y;
-        private final int z;
-        private final String world;
-        private final String type;
-        private final double total;
-        private final double tax;
-        private final int amount;
-        private final String player;
-
-        public OldShopMetricData(ResultSet set) throws SQLException {
-            time = set.getLong("time");
-            x = set.getInt("x");
-            y = set.getInt("y");
-            z = set.getInt("z");
-            world = set.getString("world");
-            type = set.getString("type");
-            total = set.getDouble("total");
-            tax = set.getDouble("tax");
-            amount = set.getInt("amount");
-            player = set.getString("player");
-        }
-    }
-
-    @Data
-    static class OldPlayerData {
-        private final String uuid;
-        private final String locale;
-
-        public OldPlayerData(ResultSet set) throws SQLException {
-            uuid = set.getString("owner");
-            locale = set.getString("locale");
-        }
-    }
-
 }
