@@ -1403,7 +1403,7 @@ addon:
       <yellow>您可能需要重新加入才能生效。
     toggle-exception: <red>由于内部错误，无法切换您的悬浮物设置，请联系服务器管理员。
     command:
-      displaycontrol: <yellow>切换您的 QuickShop 显示物显示
+      displaycontrol: <yellow>切换您的 QuickShop 悬浮物显示
   reremake-migrator:
     commands:
       migratefromreremake: 将 QuickShop-Remake 的数据迁移到 QuickShop-Hikari
