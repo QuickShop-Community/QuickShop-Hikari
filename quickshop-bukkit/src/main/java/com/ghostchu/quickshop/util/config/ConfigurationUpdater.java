@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.util.config;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.converter.HikariConverter;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +44,6 @@ public class ConfigurationUpdater {
         Log.debug("Starting configuration update...");
         writeServerUniqueId();
         selectedVersion = configuration.getInt(CONFIG_VERSION_KEY, -1);
-        legacyUpdate();
         for (Method method : getUpdateScripts(configUpdateScript)) {
             try {
                 UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
@@ -95,17 +93,6 @@ public class ConfigurationUpdater {
         }
     }
 
-    private void legacyUpdate() {
-        if (selectedVersion < 1000) {
-            new HikariConverter(plugin).upgrade();
-            plugin.logger().info("Save changes & Reloading configurations...");
-            plugin.getJavaPlugin().saveConfig();
-            plugin.getJavaPlugin().reloadConfig();
-            if (plugin.getReloadManager() != null) {
-                plugin.getReloadManager().reload();
-            }
-        }
-    }
 
     @NotNull
     public List<Method> getUpdateScripts(@NotNull Object configUpdateScript) {
