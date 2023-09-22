@@ -33,6 +33,11 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
+    public void shutdown() {
+
+    }
+
+    @Override
     public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
         return stack.displayName();
     }
