@@ -255,7 +255,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
             selectedVersion = 31;
         }
         if (selectedVersion == 31) {
-            plugin.getConfig().set("shop.display-type", 0);
+            plugin.getConfig().set("shop.display-type", 2);
             plugin.getConfig().set("config-version", 32);
             selectedVersion = 32;
         }
