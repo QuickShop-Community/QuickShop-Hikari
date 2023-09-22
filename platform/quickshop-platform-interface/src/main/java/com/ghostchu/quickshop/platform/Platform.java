@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface Platform {
+    void shutdown();
     @NotNull Component getDisplayName(@NotNull ItemStack stack);
 
     @Nullable Component getDisplayName(@NotNull ItemMeta meta);

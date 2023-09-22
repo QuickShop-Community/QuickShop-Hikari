@@ -25,14 +25,13 @@ tabcomplete:
 taxaccount-unset: <green>此商店的稅金帳戶現在按照伺服器全域設定。
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣
 command-type-mismatch: <red>此指令只能由 <aqua>{0} <red>執行。
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+server-crash-warning: '<red>警告：使用  /quickshop reload 重新載入命令替換/刪除 QuickShop Jar 檔可能會在伺服器運行時崩潰。'
 you-cant-afford-to-change-price: <red>你需要花費 {0} 來變更商品價格。
 safe-mode: <red>QuickShop 現在處於安全模式，你無法打開此商店容器，請聯絡伺服器管理員以修復錯誤！
 forbidden-vanilla-behavior: <red>此操作不符合原版行為，因此被禁止。
 shop-out-of-space-name: <dark_purple>你的商店 {0} 已滿！
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>原始碼儲存功能被禁止! 你將無法請求技術支援。原因: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -52,9 +51,9 @@ quick-fill:
   header: '<yellow>你有多個名為「<green>{0}<yellow>」的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。<gray>如果不是預期所見到的，請新增 <light_purple>{1} <gray>進監聽黑名單。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>附近的平均價格：<yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[庫存檢查] <gray>警告！找到商店全息顯示<gold>{2}</gold> 在庫存中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，這不應該發生，這通常意味著有人惡意利用該漏洞來複製顯示專案。"
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
 currency-unset: <green>已成功地移除商店貨幣。現在使用預設設定。
 you-cant-create-shop-in-there: <red>你沒有在這個地方建立商店的權限。
@@ -94,8 +93,8 @@ not-enough-space: <red>你只剩下 <yellow>{0}<red> 格空間可以裝東西！
 shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>。
 shop-staff-added: <green>已成功地新增員工 <yellow>{0}<green> 到你的商店。
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用具有相同名稱的此名稱的系統帳戶。</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請添加 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側： <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>你付了 <yellow>{0}</yellow> 的稅。
   owner: '<green>店主：{0}'
@@ -148,19 +147,14 @@ metric:
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
   player-hover: |-
     <yellow>{0}
-    <gold>UUID: <gray>{1}
+    <gold>UUID： <gray>{1}
   looking-up: <yellow>正在進行指標搜尋，請稍候……
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易：'
   na: <gray>N/A
   transaction-count: <yellow>{0} 總共
   shop-hover: |-
-    <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
+    <yellow>{0}<newline><gold>位置: <gray>{1} {2} {3}, 地圖: {4}<newline><gold>持有人: <gray>{5}<newline><gold>商店類型: <gray>{6}<newline><gold>物品: <gray>{7}<newline><gold>價格: <gray>{8}
   time-hover: '<yellow>時間：{0}'
   amount-stack-hover: <yellow>{0} 組
 permission-denied-3rd-party: <red>權限被第三方插件 {0} 拒絕。
@@ -598,7 +592,7 @@ debug:
   handler-list-not-valid-bukkit-event-class: <red>所提供的 class <yellow>{0}</yellow> 不是有效的 Bukkit event class。
   update-player-shops-signs-no-username-given: <red>你必須提供有效的玩家名稱。
   update-player-shops-signs-create-async-task: <yellow>正在為強制更新標誌建立異步任務……
-  update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}'
+  update-player-shops-player-selected: '<yellow>已選擇玩家：<gold>{0}'
   update-player-shops-player-shops: <yellow>共有 <gold>{0}</gold> 家商店等待更新。
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}'
   update-player-shops-complete: <green>任務已完成，已使用 <yellow>{0} 毫秒</yellow>更新。

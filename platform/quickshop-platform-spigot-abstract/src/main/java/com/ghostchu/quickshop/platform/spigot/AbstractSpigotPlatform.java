@@ -8,6 +8,7 @@ import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -128,7 +129,15 @@ public abstract class AbstractSpigotPlatform implements Platform {
         if (this.audience == null) {
             this.audience = BukkitAudiences.create(this.plugin);
         }
-        this.audience.sender(sender).sendMessage(component);
+        //this.audience.sender(sender).sendMessage(component);
+        sender.spigot().sendMessage(BungeeComponentSerializer.get().serialize(component));
+    }
+
+    @Override
+    public void shutdown() {
+        if(this.audience != null){
+            this.audience.close();
+        }
     }
 
     @Override

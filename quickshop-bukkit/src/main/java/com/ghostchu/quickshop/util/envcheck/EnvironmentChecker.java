@@ -299,7 +299,7 @@ public final class EnvironmentChecker {
         return success;
     }
 
-    @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
+    @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer virtualDisplaySupportTest() {
         String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
@@ -310,25 +310,21 @@ public final class EnvironmentChecker {
             return new ResultContainer(CheckResult.PASSED, "The display type is not virtual item.");
         }
         if (!gameVersion.isVirtualDisplaySupports()) {
-            plugin.getConfig().set("shop.display-type", 0);
-            plugin.getJavaPlugin().saveConfig();
+            AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             return new ResultContainer(CheckResult.WARNING, "Your server version are not supports Virtual DisplayItem, resetting to RealDisplayItem...");
         }
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
-            plugin.getConfig().set("shop.display-type", 0);
-            plugin.getJavaPlugin().saveConfig();
+            AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             return new ResultContainer(CheckResult.WARNING, "Plugin [ProtocolLib] not installed on your server, Virtual DisplayItem will not work, resetting to RealDisplayItem..");
         }
         if (plugin.getVirtualDisplayItemManager() == null) {
-            plugin.getConfig().set("shop.display-type", 0);
-            plugin.getJavaPlugin().saveConfig();
+            AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");
         }
         Throwable testResult = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
         if (testResult != null) {
             plugin.getVirtualDisplayItemManager().setTestPassed(false);
-            plugin.getConfig().set("shop.display-type", 0);
-            plugin.getJavaPlugin().saveConfig();
+            AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             plugin.logger().warn("Failed to load the VirtualDisplayItem, self-test failure", testResult);
             return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItem test failed, resetting to RealDisplayItem...");
         }

@@ -65,7 +65,6 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.vdurmont.semver4j.Semver;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -216,7 +215,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     @Nullable
     private QuickShopPAPI quickShopPAPI;
-    private BukkitAudiences audience;
     @Getter
     private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
@@ -562,7 +560,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         Timer enableTimer = new Timer(true);
         logger.info("QuickShop " + javaPlugin.getFork());
         registerService();
-        this.audience = BukkitAudiences.create(javaPlugin);
         /* Check the running envs is support or not. */
         logger.info("Starting plugin self-test, please wait...");
         try (PerfMonitor ignored = new PerfMonitor("Self Test")) {

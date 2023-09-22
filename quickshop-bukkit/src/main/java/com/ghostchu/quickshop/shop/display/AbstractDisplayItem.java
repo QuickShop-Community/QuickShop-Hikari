@@ -35,12 +35,17 @@ public abstract class AbstractDisplayItem implements Reloadable {
     @Nullable
     protected ItemStack guardedIstack;
     private boolean pendingRemoval;
+    private static boolean virutalDisplayDoesntWork = false;
 
     protected AbstractDisplayItem(Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
         PLUGIN.getReloadManager().register(this);
         init();
+    }
+
+    public static void setVirtualDisplayDoesntWork(boolean shouldDisable){
+        virutalDisplayDoesntWork = shouldDisable;
     }
 
     /**
@@ -50,7 +55,11 @@ public abstract class AbstractDisplayItem implements Reloadable {
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        return DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        if(displayType == DisplayType.VIRTUALITEM && virutalDisplayDoesntWork){
+            return DisplayType.REALITEM;
+        }
+        return displayType;
     }
 
     /**

@@ -121,7 +121,10 @@ public class ConfigUpdateScript {
         }
     }
 
-
+    @UpdateScript(version = 1024)
+    public void displayVirtualStatusReset() {
+        getConfig().set("shop.display-type", 2);
+    }
 
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
