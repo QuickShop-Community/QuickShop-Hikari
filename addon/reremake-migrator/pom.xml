@@ -68,6 +68,13 @@
                             <!--                                    <include>de.themoep:minedown:*</include>-->
                             <!--                                </includes>-->
                             <!--                            </artifactSet>-->
+                            <artifactSet>
+                                <includes>
+                                    <include>de.themoep:minedown-adventure:*</include>
+                                    <include>com.dumptruckman.minecraft:JsonConfiguration:*</include>
+                                    <include>net.minidev:json-smart:*</include>
+                                </includes>
+                            </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>de.themoep.minedown.</pattern>
@@ -76,9 +83,9 @@
                                     </shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.dumptruckman.minecraft.</pattern>
+                                    <pattern>com.dumptruckman.</pattern>
                                     <shadedPattern>
-                                        com.ghostchu.quickshop.addon.reremakemigrator.shade.com.dumptruckman.minecraft.
+                                        com.ghostchu.quickshop.addon.reremakemigrator.shade.com.dumptruckman.
                                     </shadedPattern>
                                 </relocation>
                                 <relocation>
@@ -142,18 +149,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.11.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>3.21.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>minedown-adventure</artifactId>
             <version>1.7.1-SNAPSHOT</version>
@@ -163,12 +158,14 @@
             <groupId>com.dumptruckman.minecraft</groupId>
             <artifactId>JsonConfiguration</artifactId>
             <version>1.1</version>
+            <scope>compile</scope>
         </dependency>
         <!-- Required json dependency because no other json lib can handle numbers appropriately. -->
         <dependency>
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
             <version>1.1.1</version>
+            <scope>compile</scope>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>net.kyori</groupId>-->

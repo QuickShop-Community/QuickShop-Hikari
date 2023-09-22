@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 public class TranslationMigrateComponent extends AbstractMigrateComponent {
 
@@ -39,7 +40,7 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
                 getHikari().logger().warn("Failed migrate lang file " + langJsonFile.getName() + ".", exception);
             }
         }
-        return false;
+        return true;
     }
 
     private void migrateFile(File langFolder, File langJsonFile) throws IOException {
@@ -52,12 +53,14 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
         }
         JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(langJsonFile);
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        File targetLangFile = new File(hikariOverrideFolder, langJsonFile.getName().replace(".json", ".yml"));
+        File targetLangFile = new File(targetLangFolder, langJsonFile.getName().replace(".json", ".yml"));
         if (targetLangFile.exists()) {
             yamlConfiguration = YamlConfiguration.loadConfiguration(targetLangFile);
         }
-        getHikari().logger().info("Migrating the Reremake language file: " + langJsonFile.getName() + "...");
-        for (String key : new ProgressMonitor<>(jsonConfiguration.getKeys(true), (triple) -> text("modules.translation.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()))) {
+        getHikari().logger().info("Migrating the Reremake language file: " + langJsonFile.getAbsolutePath() + "...");
+        Set<String> keys = jsonConfiguration.getKeys(true);
+        text("modules.translation.copy-values", targetLangFolder.getName(), keys.size()).send();
+        for (String key : new ProgressMonitor<>(keys, (triple) -> text("modules.translation.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
             if (key.equals("_comment")) continue;
             if (jsonConfiguration.isConfigurationSection(key)) continue;
             if (jsonConfiguration.isString(key)) {
