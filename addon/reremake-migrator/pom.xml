@@ -32,8 +32,8 @@
             <url>https://repo.minebench.de/</url>
         </repository>
         <repository>
-            <id>onarandombox</id>
-            <url>https://repo.onarandombox.com/content/groups/public</url>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -155,10 +155,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.dumptruckman.minecraft</groupId>
+            <groupId>com.ghostchu.thirdparty</groupId>
             <artifactId>JsonConfiguration</artifactId>
-            <version>1.1</version>
-            <scope>compile</scope>
+            <version>1.2-20230922.165143-1</version>
         </dependency>
         <!-- Required json dependency because no other json lib can handle numbers appropriately. -->
         <dependency>
