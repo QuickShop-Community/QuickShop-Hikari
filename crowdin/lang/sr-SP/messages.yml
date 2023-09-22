@@ -1433,6 +1433,11 @@ addon:
         register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
+      translation:
+        start-migrate: "<yellow>Migrating translation files...</yellow>"
+        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
+        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>You're successfully created a shop on AdvancedChests container!
