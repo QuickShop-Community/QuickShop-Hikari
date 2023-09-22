@@ -103,6 +103,12 @@
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_20_R2</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-paper</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
