@@ -44,7 +44,7 @@ public class EmbedMessageParser {
             builder.setColor(dto.getColor());
         }
         if (dto.getFooter() != null) {
-            builder.setFooter(dto.getFooter().getText(), dto.getFooter().getIconUrl());
+            builder.setFooter(dto.getFooter().getText(), emptyDefault(dto.getFooter().getIconUrl()));
         }
         if (dto.getThumbnail() != null) {
             builder.setThumbnail(emptyDefault(dto.getThumbnail().getUrl()));
@@ -53,7 +53,7 @@ public class EmbedMessageParser {
             builder.setImage(dto.getImage().getUrl());
         }
         if (dto.getAuthor() != null) {
-            builder.setAuthor(dto.getAuthor().getName(), dto.getAuthor().getUrl(), dto.getAuthor().getIconUrl());
+            builder.setAuthor(dto.getAuthor().getName(), emptyDefault(dto.getAuthor().getUrl()), emptyDefault(dto.getAuthor().getIconUrl()));
         }
         builder.setTimestamp(Instant.now());
         if (dto.getFields() != null) {
