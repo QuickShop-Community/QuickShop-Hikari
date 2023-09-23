@@ -6,10 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.VirtualDisplayPacketFactory;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_18;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_19_R1;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_19_R2_UP;
+import com.ghostchu.quickshop.shop.display.virtual.packetfactory.*;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +51,8 @@ public class VirtualDisplayItemManager {
         this.packetFactory = switch (plugin.getGameVersion()) {
             case v1_18_R1, v1_18_R2 -> new v1_18(plugin, this);
             case v1_19_R1 -> new v1_19_R1(plugin, this);
-            case v1_19_R2, v1_19_R3, v1_20_R1 -> new v1_19_R2_UP(plugin, this);
+            case v1_19_R2, v1_19_R3, v1_20_R1 -> new v1_19_R2_TO_v1_20_R1(plugin, this);
+            case v1_20_R2 -> new v1_20_R2(plugin, this);
             default ->
                     throw new IllegalStateException("Unsupported Virtual Display Minecraft version: " + plugin.getGameVersion());
         };

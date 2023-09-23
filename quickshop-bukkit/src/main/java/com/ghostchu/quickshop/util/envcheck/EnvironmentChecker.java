@@ -318,6 +318,12 @@ public final class EnvironmentChecker {
             AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             return new ResultContainer(CheckResult.WARNING, "Plugin [ProtocolLib] not installed on your server, Virtual DisplayItem will not work, resetting to RealDisplayItem..");
         }
+
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
+    public ResultContainer virtualDisplayWorkingTest() {
         if (plugin.getVirtualDisplayItemManager() == null) {
             AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");

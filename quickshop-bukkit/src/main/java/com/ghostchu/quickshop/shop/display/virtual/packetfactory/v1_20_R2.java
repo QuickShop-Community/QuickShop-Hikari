@@ -7,10 +7,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.WrappedDataValue;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import com.comphenix.protocol.wrappers.*;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
@@ -31,11 +28,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class v1_19_R2_UP implements VirtualDisplayPacketFactory {
+public class v1_20_R2 implements VirtualDisplayPacketFactory {
     private final QuickShop plugin;
     private final VirtualDisplayItemManager manager;
 
-    public v1_19_R2_UP(QuickShop plugin, VirtualDisplayItemManager manager) {
+    public v1_20_R2(QuickShop plugin, VirtualDisplayItemManager manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
@@ -194,12 +191,12 @@ public class v1_19_R2_UP implements VirtualDisplayPacketFactory {
                 if (player.getClass().getName().contains("TemporaryPlayer")) {
                     return;
                 }
-                StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+                StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
+                ChunkCoordIntPair pair = intPairStructureModifier.read(0);
                 //chunk x
-                int x = integerStructureModifier.read(0);
+                int x = pair.getChunkX();
                 //chunk z
-                int z = integerStructureModifier.read(1);
-
+                int z = pair.getChunkZ();
                 manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
                     for (VirtualDisplayItem target : targetList) {
                         if (!target.isSpawned()) {
