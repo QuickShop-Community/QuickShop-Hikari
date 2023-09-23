@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.1</version>
+        <version>5.2.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -43,10 +43,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>

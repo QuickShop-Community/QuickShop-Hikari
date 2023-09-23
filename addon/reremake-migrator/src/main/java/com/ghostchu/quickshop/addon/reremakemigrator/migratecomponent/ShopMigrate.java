@@ -31,11 +31,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShopMigrate extends AbstractMigrateComponent {
     private final boolean override;
-    private final CommandSender sender;
 
     public ShopMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender, boolean overrideExists) {
-        super(main, hikari, reremake);
-        this.sender = sender;
+        super(main, hikari, reremake, sender);
         this.override = overrideExists;
     }
 
@@ -45,20 +43,20 @@ public class ShopMigrate extends AbstractMigrateComponent {
         final AtomicInteger c = new AtomicInteger(0);
         List<Shop> allShops = getReremake().getShopManager().getAllShops();
         List<ContainerShop> preparedShops = new ArrayList<>();
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.start-migrate", allShops.size()).send();
+        text("modules.shop.start-migrate", allShops.size()).send();
         BatchBukkitExecutor<Shop> batchBukkitExecutor = new BatchBukkitExecutor<>();
         batchBukkitExecutor.addTasks(allShops);
         batchBukkitExecutor.startHandle(getHikari().getJavaPlugin(), reremakeShop -> {
-            getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.migrate-entry", reremakeShop.toString(), c.incrementAndGet(), allShops.size()).send();
+            text("modules.shop.migrate-entry", reremakeShop.toString(), c.incrementAndGet(), allShops.size()).send();
             try {
                 Location shopLoc = reremakeShop.getLocation();
-                com.ghostchu.quickshop.api.shop.Shop hikariShop = getHikari().getShopManager().getShop(shopLoc,true);
+                com.ghostchu.quickshop.api.shop.Shop hikariShop = getHikari().getShopManager().getShop(shopLoc, true);
                 if (hikariShop != null) {
                     if (!override) {
-                        getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.conflict", "SKIPPING").send();
+                        text("modules.shop.conflict", "SKIPPING").send();
                         return;
                     } else {
-                        getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.conflict", "OVERWRITING").send();
+                        text("modules.shop.conflict", "OVERWRITING").send();
                         getHikari().getShopManager().deleteShop(hikariShop);
                     }
                 }
@@ -103,11 +101,12 @@ public class ShopMigrate extends AbstractMigrateComponent {
         return success.get();
     }
 
-    private YamlConfiguration getReremakeShopExtra(Shop reremakeShop){
+    private YamlConfiguration getReremakeShopExtra(Shop reremakeShop) {
         YamlConfiguration configuration = new YamlConfiguration();
         try {
             configuration.loadFromString(reremakeShop.saveExtraToYaml());
-        } catch (InvalidConfigurationException ignored) {}
+        } catch (InvalidConfigurationException ignored) {
+        }
         return configuration;
     }
 
@@ -115,11 +114,11 @@ public class ShopMigrate extends AbstractMigrateComponent {
         CompletableFuture<?>[] shopsToSaveFuture = getHikari().getShopManager().getAllShops().stream().filter(com.ghostchu.quickshop.api.shop.Shop::isDirty)
                 .map(com.ghostchu.quickshop.api.shop.Shop::update)
                 .toArray(CompletableFuture[]::new);
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.saving-shops", shopsToSaveFuture.length).send();
-        for (CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple -> getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
+        text("modules.shop.saving-shops", shopsToSaveFuture.length).send();
+        for (CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple -> text("modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
             try {
                 completableFuture.join();
-            }catch (Exception e){
+            } catch (Exception e) {
                 getHikari().logger().warn("Error while saving shops, skipping", e);
             }
         }
@@ -136,14 +135,14 @@ public class ShopMigrate extends AbstractMigrateComponent {
     }
 
     private void registerHikariShops(List<ContainerShop> preparedShops) {
-        for (com.ghostchu.quickshop.api.shop.Shop shop : new ProgressMonitor<>(preparedShops, triple -> getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.register-entry", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
+        for (com.ghostchu.quickshop.api.shop.Shop shop : new ProgressMonitor<>(preparedShops, triple -> text("modules.shop.register-entry", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
             getHikari().getShopManager().registerShop(shop, true).join();
             shop.setDirty();
         }
     }
 
     private void unloadAndMoveAwayReremake() {
-        getHikari().text().of(sender, "addon.reremake-migrator.modules.shop.unloading-reremake").send();
+        text("modules.shop.unloading-reremake").send();
         Bukkit.getPluginManager().disablePlugin(getReremake());
         File reremakeDataDirectory = new File(getHikari().getDataFolder(), "QuickShop");
         try {

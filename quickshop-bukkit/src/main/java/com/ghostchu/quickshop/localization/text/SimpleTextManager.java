@@ -709,9 +709,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         public TextList(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
-            if(sender != null) {
+            if (sender != null) {
                 this.sender = sender.getBukkitPlayer().orElse(null);
-            }else{
+            } else {
                 this.sender = null;
             }
             this.mapping = mapping;
@@ -849,9 +849,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         public Text(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
             this.manager = manager;
-            if(sender != null) {
+            if (sender != null) {
                 this.sender = sender.getBukkitPlayer().orElse(null);
-            }else{
+            } else {
                 this.sender = null;
             }
             this.mapping = mapping;

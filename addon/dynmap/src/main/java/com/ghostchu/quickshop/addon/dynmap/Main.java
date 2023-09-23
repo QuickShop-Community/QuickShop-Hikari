@@ -48,49 +48,60 @@ public final class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(WorldLoadEvent event){
+    public void onEvent(WorldLoadEvent event) {
         Util.mainThreadRun(this::updateAllMarkers);
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(WorldUnloadEvent event){
+    public void onEvent(WorldUnloadEvent event) {
         Util.mainThreadRun(this::updateAllMarkers);
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(QSConfigurationReloadEvent event){
+    public void onEvent(QSConfigurationReloadEvent event) {
         Util.mainThreadRun(this::updateAllMarkers);
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopCreateSuccessEvent event){
+    public void onEvent(ShopCreateSuccessEvent event) {
         updateShopMarker(event.getShop());
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopDeleteEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopDeleteEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopPriceChangeEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopPriceChangeEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopItemChangeEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopItemChangeEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopOwnershipTransferEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopOwnershipTransferEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopSuccessPurchaseEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopSuccessPurchaseEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopTypeChangeEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopTypeChangeEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopNamingEvent event){
-        Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    public void onEvent(ShopNamingEvent event) {
+        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
     }
+
     @NotNull
     public String plain(@NotNull Component component) {
         return PlainTextComponentSerializer.plainText().serialize(component);

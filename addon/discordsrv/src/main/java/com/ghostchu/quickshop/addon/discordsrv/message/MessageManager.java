@@ -59,7 +59,7 @@ public class MessageManager {
 
     @NotNull
     public MessageEmbed getEmbedMessage(@NotNull String key, @Nullable QUser receiver, @NotNull Map<String, String> placeholders) {
-        if(receiver == null){
+        if (receiver == null) {
             return failSafeEmbedMessage(key);
         }
         Map.Entry<Object, Method> method = embedMessageRegistry.get(key);

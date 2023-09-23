@@ -9,18 +9,20 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-public class ProgressMonitor<T> implements Iterable<T>{
+public class ProgressMonitor<T> implements Iterable<T> {
     private final Collection<T> elements;
-    private final Consumer<Triple<Long, Long,T>> callback;
+    private final Consumer<Triple<Long, Long, T>> callback;
 
-    public ProgressMonitor(@NotNull Collection<T> elements, Consumer<Triple<Long, Long, T>> callback){
+    public ProgressMonitor(@NotNull Collection<T> elements, Consumer<Triple<Long, Long, T>> callback) {
         this.elements = elements;
         this.callback = callback;
     }
-    public ProgressMonitor(@NotNull T[] elements, Consumer<Triple<Long, Long, T>> callback){
+
+    public ProgressMonitor(@NotNull T[] elements, Consumer<Triple<Long, Long, T>> callback) {
         this.elements = Arrays.asList(elements);
         this.callback = callback;
     }
+
     @NotNull
     @Override
     public Iterator<T> iterator() {

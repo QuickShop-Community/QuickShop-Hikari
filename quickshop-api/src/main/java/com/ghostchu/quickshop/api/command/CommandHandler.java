@@ -71,7 +71,7 @@ public interface CommandHandler<T extends CommandSender> {
         for (String s : cmdArg) {
             joiner.add(s);
         }
-        CommandParser parser = new CommandParser(joiner.toString(),true);
+        CommandParser parser = new CommandParser(joiner.toString(), true);
         try {
             onCommand(sender, commandLabel, parser);
         } catch (NotImplementedException e) {
@@ -113,7 +113,7 @@ public interface CommandHandler<T extends CommandSender> {
         for (String s : cmdArg) {
             joiner.add(s);
         }
-        CommandParser parser = new CommandParser(joiner.toString(),false);
+        CommandParser parser = new CommandParser(joiner.toString(), false);
         try {
             return onTabComplete(sender, commandLabel, parser);
         } catch (NotImplementedException e) {

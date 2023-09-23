@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.1</version>
+        <version>5.2.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -36,6 +36,13 @@
             </resource>
         </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>

@@ -147,7 +147,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid, boolean writeCache, @NotNull ExecutorService executorService) {
         Optional<String> lookupName = nameCache.getIfPresent(uuid);
-        if(lookupName != null && lookupName.isPresent()) return CompletableFuture.completedFuture(lookupName.get());
+        if (lookupName != null && lookupName.isPresent()) return CompletableFuture.completedFuture(lookupName.get());
 
         Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
         @SuppressWarnings("unchecked") CompletableFuture<String> inProgress = (CompletableFuture<String>) handling.get(uuid);
@@ -159,7 +159,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
                 CompletableFuture.supplyAsync(
                         () -> resolver.uuid2Name(uuid, executorService, (name) -> {
                             handling.remove(uuid);
-                            if(writeCache) {
+                            if (writeCache) {
                                 cache(uuid, name);
                             }
                         }),
@@ -176,7 +176,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public @NotNull CompletableFuture<UUID> name2UuidFuture(@NotNull String name, boolean writeCache, @NotNull ExecutorService executorService) {
         for (Map.Entry<UUID, Optional<String>> entry : nameCache.asMap().entrySet()) {
-            if(entry.getValue().isPresent() && entry.getValue().get().equals(name)){
+            if (entry.getValue().isPresent() && entry.getValue().get().equals(name)) {
                 return CompletableFuture.completedFuture(entry.getKey());
             }
         }
@@ -190,7 +190,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
                 CompletableFuture.supplyAsync(
                         () -> resolver.name2Uuid(name, executorService, (uuid) -> {
                             handling.remove(name);
-                            if(writeCache) {
+                            if (writeCache) {
                                 cache(uuid, name);
                             }
                         }),
@@ -201,7 +201,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public void cache(@NotNull UUID uuid, @Nullable String name) {
-        if(name == null) return;
+        if (name == null) return;
         this.nameCache.put(uuid, Optional.of(name));
         if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
             return;

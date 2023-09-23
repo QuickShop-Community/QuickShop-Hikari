@@ -39,9 +39,10 @@ public class MainListener implements Listener {
             return;
         }
         String code = codeInstalled.getCode();
-        Util.mainThreadRun(()->{
+        Util.mainThreadRun(() -> {
             switch (codeInstalled.applicableShop(purchaser, shop)) {
-                case APPLICABLE -> quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code).send();
+                case APPLICABLE ->
+                        quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code).send();
                 case APPLICABLE_WITH_THRESHOLD ->
                         quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code, quickshop.getEconomy().format(codeInstalled.getThreshold(), shop.getLocation().getWorld(), shop.getCurrency())).send();
                 case NOT_APPLICABLE ->

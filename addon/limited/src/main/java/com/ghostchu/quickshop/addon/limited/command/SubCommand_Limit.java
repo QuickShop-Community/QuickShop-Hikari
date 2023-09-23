@@ -70,7 +70,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
                     quickshop.text().of(sender, "addon.limited.success-setup").send();
                     shop.setExtra(Main.instance, manager);
                 } catch (IllegalArgumentException ignored) {
-                    quickshop.text().of(sender, "command.wrong-args",parser.getArgs().get(1)).send();
+                    quickshop.text().of(sender, "command.wrong-args", parser.getArgs().get(1)).send();
                 }
             }
         }

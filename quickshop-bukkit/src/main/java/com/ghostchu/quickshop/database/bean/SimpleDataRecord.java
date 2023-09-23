@@ -91,7 +91,7 @@ public class SimpleDataRecord implements DataRecord {
         map.put("hologram", hologram);
         if (taxAccount != null) {
             map.put("tax_account", taxAccount.serialize());
-        }else{
+        } else {
             map.put("tax_account", null);
         }
         map.put("permissions", permissions);

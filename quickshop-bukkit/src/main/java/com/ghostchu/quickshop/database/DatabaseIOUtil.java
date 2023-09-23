@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
-import me.xanium.gemseconomy.file.F;
 import org.jetbrains.annotations.NotNull;
 import org.relique.jdbc.csv.CsvDriver;
 

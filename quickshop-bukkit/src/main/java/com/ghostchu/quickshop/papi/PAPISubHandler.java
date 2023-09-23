@@ -5,8 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
 public interface PAPISubHandler {
     @Nullable
     default String handle(@NotNull OfflinePlayer player, @NotNull String params) {

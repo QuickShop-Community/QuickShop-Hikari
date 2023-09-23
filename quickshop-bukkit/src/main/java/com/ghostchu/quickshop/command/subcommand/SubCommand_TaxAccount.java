@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

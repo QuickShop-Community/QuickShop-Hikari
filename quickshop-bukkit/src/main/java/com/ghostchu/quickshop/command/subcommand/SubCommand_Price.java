@@ -123,7 +123,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         shop.setPrice(price);
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender,
-                "price-is-now", plugin.getShopManager().format(shop.getPrice(),shop)).send();
+                "price-is-now", plugin.getShopManager().format(shop.getPrice(), shop)).send();
     }
 
     @NotNull

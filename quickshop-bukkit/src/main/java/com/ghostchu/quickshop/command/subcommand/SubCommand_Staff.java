@@ -53,7 +53,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             final List<UUID> staffs = shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);
                             if (staffs.isEmpty()) {
                                 MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
-                                        .append(Component.text("Empty").color(NamedTextColor.GRAY)));
+                                        .append(plugin.text().of(sender, "shop-staff-empty").forLocale()));
                                 return;
                             }
                             Util.asyncThreadRun(() -> {

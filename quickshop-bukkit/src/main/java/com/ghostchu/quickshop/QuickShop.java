@@ -575,14 +575,18 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.itemMarker = new ItemMarker(this);
         this.shopItemBlackList = new SimpleShopItemBlackList(this);
         Util.initialize();
-        loadVirtualDisplayItem();
+        try {
+            loadVirtualDisplayItem();
+        } catch (Exception e) {
+            logger.warn("Failed to process virtual display item system", e);
+        }
         //Load the database
         try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
             initDatabase();
         }
-        Util.asyncThreadRun(()-> {
+        Util.asyncThreadRun(() -> {
             logger.info("Start to caching usernames (async)...");
-            ((FastPlayerFinder)getPlayerFinder()).bakeCaches();
+            ((FastPlayerFinder) getPlayerFinder()).bakeCaches();
         });
         /* Initalize the tools */
         // Create the shop manager.

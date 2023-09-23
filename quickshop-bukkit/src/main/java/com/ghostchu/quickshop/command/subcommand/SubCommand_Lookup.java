@@ -71,7 +71,8 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
                     default -> plugin.text().of(sender, "internal-error", itemRefName).send();
                 }
             }
-            default -> plugin.text().of(sender, "command-incorrect", "/quickshop lookup <create/remove/test> <name>").send();
+            default ->
+                    plugin.text().of(sender, "command-incorrect", "/quickshop lookup <create/remove/test> <name>").send();
         }
     }
 

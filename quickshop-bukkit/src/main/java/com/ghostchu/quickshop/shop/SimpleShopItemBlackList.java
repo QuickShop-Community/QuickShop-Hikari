@@ -56,7 +56,7 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
                 return true;
             }
         }
-        if(BLACKLIST_LORES.isEmpty()) return false; // Fast return if empty
+        if (BLACKLIST_LORES.isEmpty()) return false; // Fast return if empty
         if (!itemStack.hasItemMeta()) return false;
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return false;

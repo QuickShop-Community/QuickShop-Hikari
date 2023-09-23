@@ -249,6 +249,4 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     }
 
 
-
-
 }

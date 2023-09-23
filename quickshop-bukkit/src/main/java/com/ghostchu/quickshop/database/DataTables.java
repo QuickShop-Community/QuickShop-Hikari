@@ -9,6 +9,7 @@ import cc.carm.lib.easysql.api.function.SQLHandler;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -193,7 +194,7 @@ public enum DataTables {
 
         TableCreateBuilder tableBuilder = sqlManager.createTable(this.getName());
         String newSettings = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-        Log.debug("Creating table "+ this.getName() + " with settings: " + newSettings);
+        Log.debug("Creating table " + this.getName() + " with settings: " + newSettings);
         tableBuilder.setTableSettings(newSettings);
         tableHandler.accept(tableBuilder);
         tableBuilder.build().execute();
@@ -260,11 +261,18 @@ public enum DataTables {
         return sqlManager.createUpdate(this.getName());
     }
 
-    public boolean isExists() {
-        return isExists(this.manager);
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
-    public boolean isExists(@NotNull SQLManager manager) {
+    public boolean isExists() {
+        return isExists(this.manager, this.prefix);
+    }
+
+    public boolean isExists(@NotNull SQLManager manager, @Nullable String prefix) {
+        if (prefix != null) {
+            this.prefix = prefix;
+        }
         boolean match = false;
         try {
             try (Connection connection = manager.getConnection(); ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {

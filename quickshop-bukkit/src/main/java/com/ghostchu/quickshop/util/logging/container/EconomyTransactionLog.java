@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util.logging.container;
 
 import com.ghostchu.quickshop.api.obj.QUser;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

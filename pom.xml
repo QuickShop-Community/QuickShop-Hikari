@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>5.2.0.1</version>
+    <version>5.2.0.2</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -108,71 +108,12 @@
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
-                                        <include>com.github.PikaMug:LocaleLib:*</include>
-                                        <include>com.dumptruckman.minecraft:JsonConfiguration:*</include>
                                         <include>de.tr7zw:item-nbt-api:*</include>
-                                        <include>net.minidev:json-smart:*</include>
-                                        <include>de.themoep:minedown-adventure:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
                                     </includes>
-                                    <!--                                    <excludes>-->
-                                    <!--                                        <exclude>org.apache.commons:commons-compress:*</exclude>-->
-                                    <!--                                        <exclude>org.apache.commons:commons-lang3:*</exclude>-->
-                                    <!--                                        <exclude>org.apache.commons:commons-text:*</exclude>-->
-                                    <!--                                        <exclude>com.rollbar:rollbar-java:*</exclude>-->
-                                    <!--                                        <exclude>commons-codec:commons-codec:*</exclude>-->
-                                    <!--                                        <exclude>cc.carm.lib:easysql-hikaricp:*</exclude>-->
-                                    <!--                                        <exclude>cc.carm.lib:easysql-api:*</exclude>-->
-                                    <!--                                        <exclude>com.h2database:h2:*</exclude>-->
-                                    <!--                                        <exclude>com.ghostchu:simplereloadlib:*</exclude>-->
-                                    <!--                                        <exclude>com.konghq:unirest-java:*</exclude>-->
-                                    <!--                                        <exclude>com.github.juliomarcopineda:jdbc-stream:*</exclude>-->
-                                    <!--                                        <exclude>one.util:streamex:*</exclude>-->
-                                    <!--                                        <exclude>commons-lang:commons-lang:*</exclude>-->
-                                    <!--                                        <exclude>net.sourceforge.csvjdbc:csvjdbc:*</exclude>-->
-                                    <!--                                        <exclude>org.dom4j:dom4j:*</exclude>-->
-                                    <!--                                        <exclude>org.slf4j:slf4j-jdk14:*</exclude>-->
-                                    <!--                                        <exclude>com.vdurmont:semver4j:*</exclude>-->
-                                    <!--                                        <exclude>com.ghostchu.crowdin:crowdinota:*</exclude>-->
-                                    <!--                                        <exclude>org.slf4j:slf4j-nop:*</exclude>-->
-                                    <!--                                        <exclude>com.google.code.gson:gson:*</exclude>-->
-                                    <!--                                    </excludes>-->
                                 </artifactSet>
                                 <relocations>
-                                    <relocation>
-                                        <pattern>com.dumptruckman.bukkit.configuration.</pattern>
-                                        <shadedPattern>
-                                            com.ghostchu.quickshop.shade.com.dumptruckman.bukkit.configuration.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>net.minidev.json.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.net.minidev.json.minidev.json.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.json.simple.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.json.simple.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.github.PikaMug.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>me.pikamug.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.me.pikamug.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>de.themoep.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>io.papermc.lib.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
-                                    </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
@@ -183,8 +124,11 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>org.bstats</pattern>
-                                        <!-- Replace this with your package! -->
                                         <shadedPattern>com.ghostchu.quickshop.shade.org.bstats</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>de.themoep.minedown.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>
@@ -206,18 +150,6 @@
                                             <exclude>META-INF/versions/9/*</exclude>
                                             <exclude>*License*</exclude>
                                             <exclude>*LICENSE*</exclude>
-                                            <!-- Defined in plugin.yml which resolved by Spigot -->
-                                            <!--                                            <exclude>org/slf4j/**</exclude>-->
-                                            <!--                                            <exclude>com/google/gson/**</exclude>-->
-                                            <!--                                            <exclude>com/ghostchu/simplereloadlib/**</exclude>-->
-                                            <!--                                            <exclude>cc/carm/lib/easysql/**</exclude>-->
-                                            <!--                                            <exclude>com/vdurmont/semver4j/**</exclude>-->
-                                            <!--                                            <exclude>io/papermc/lib/**</exclude>-->
-                                            <!--                                            <exclude>org/apache/commons/compress/**</exclude>-->
-                                            <!--                                            <exclude>org/apache/commons/lang/**</exclude>-->
-                                            <!--                                            <exclude>org/apache/commons/lang3/**</exclude>-->
-                                            <!--                                            <exclude>org/apache/commons/text/**</exclude>-->
-
                                         </excludes>
                                     </filter>
                                 </filters>
@@ -338,39 +270,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>sonatype-s01</id>
-            <url>https://s01.oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>md_5-snapshots</id>
-            <url>https://repo.md-5.net/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>sonatype-oss-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-<!--        <repository>-->
-<!--            <id>aikar</id>-->
-<!--            <url>https://repo.aikar.co/content/groups/aikar/</url>-->
-<!--        </repository>-->
-
     </repositories>
 
 
@@ -385,18 +284,6 @@
                     <exclusion>
                         <groupId>commons-lang</groupId>
                         <artifactId>commons-lang</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>com.rollbar</groupId>
-                <version>1.10.0</version>
-                <artifactId>rollbar-java</artifactId>
-                <scope>provided</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>

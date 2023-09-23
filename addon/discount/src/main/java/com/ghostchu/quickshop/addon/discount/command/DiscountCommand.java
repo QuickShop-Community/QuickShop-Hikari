@@ -152,7 +152,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     "/quickshop discount install " + code,
                     "/quickshop discount config " + code + " addshop").send();
         }
-        Log.debug("Discount code created: "+ main.getCodeManager().getCode(code));
+        Log.debug("Discount code created: " + main.getCodeManager().getCode(code));
     }
 
     private void remove(CommandSender sender, String[] passThroughArgs) {

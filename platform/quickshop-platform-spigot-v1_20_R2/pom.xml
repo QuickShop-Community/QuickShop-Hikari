@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.1</version>
+        <version>5.2.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -76,8 +76,8 @@
             <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
     </repositories>
 

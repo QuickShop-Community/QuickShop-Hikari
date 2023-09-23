@@ -14,6 +14,7 @@ public class CommandParser {
 
     /**
      * Parse a command string.
+     *
      * @param raw raw command string - e.g. benefit add a b c d -tag:1 -tag:2 -foo:bar
      */
     public CommandParser(@NotNull String raw, boolean trimTail) {
@@ -23,6 +24,7 @@ public class CommandParser {
 
     /**
      * Gets the all arguments.
+     *
      * @return the all arguments. (benefit, a, b, c, d)
      */
     public List<String> getArgs() {
@@ -32,6 +34,7 @@ public class CommandParser {
     /**
      * Gets the arguments started with `-`.
      * E.g [[tag,1], [tag,2], [foo,bar]]
+     *
      * @return the arguments started with `-`.
      */
     @NotNull
@@ -41,6 +44,7 @@ public class CommandParser {
 
     /**
      * The raw command string.
+     *
      * @return the raw command string.
      */
     @NotNull
@@ -72,18 +76,18 @@ public class CommandParser {
 
     private void explode(boolean trimTail) {
         StringBuilder buffer = new StringBuilder();
-        for(char c: raw.toCharArray()){
-            if(c == ' '){
+        for (char c : raw.toCharArray()) {
+            if (c == ' ') {
                 String newArg = buffer.toString();
                 buffer = new StringBuilder();
                 this.args.add(newArg);
-            }else{
+            } else {
                 buffer.append(c);
             }
         }
-        if(buffer.isEmpty() && !trimTail){
+        if (buffer.isEmpty() && !trimTail) {
             this.args.add(buffer.toString());
-        }else if(!buffer.isEmpty()){
+        } else if (!buffer.isEmpty()) {
             this.args.add(buffer.toString());
         }
     }

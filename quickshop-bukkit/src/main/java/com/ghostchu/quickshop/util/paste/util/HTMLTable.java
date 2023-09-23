@@ -113,7 +113,7 @@ public class HTMLTable {
 
     private String renderColAttributes() {
 //        String base ="<col style=\"width: {length}%;\">\n";
-        String base ="<col>\n";
+        String base = "<col>\n";
         return base.replace("{length}", String.valueOf(100 / columns)).repeat(columns);
     }
 

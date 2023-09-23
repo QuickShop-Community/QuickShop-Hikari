@@ -127,8 +127,8 @@ public class Util {
             return false;
         }
         final BlockState bs = PaperLib.getBlockState(b, false).getState();
-        boolean container =  bs instanceof InventoryHolder;
-        if(!container){
+        boolean container = bs instanceof InventoryHolder;
+        if (!container) {
             Log.debug(b.getType().name() + " not a container");
             return false;
         }
