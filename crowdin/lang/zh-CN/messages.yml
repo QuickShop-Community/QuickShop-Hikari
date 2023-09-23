@@ -1474,4 +1474,3 @@ compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易拥有 EliteMobs 灵魂绑定附魔的物品。
 internet-paste-forbidden-privacy-reason: "<red>失败！根据您的隐私设置，QuickShop-Hikari不允许将您的Paste上传到互联网，在配置文件中启用DIAGNOSTIC配置项。 或使用 <aqua>/quickshop paste --file</aqua> 代替。"
-shop-staff-empty: "<gray>Empty"
