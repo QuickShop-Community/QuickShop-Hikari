@@ -1464,3 +1464,4 @@ compatibility:
   elitemobs:
     soulbound-disallowed: Du kannst Items mit Seelenverzauberung von EliteMobs nicht handeln.
 internet-paste-forbidden-privacy-reason: "<red>Fehlgeschlagen! Basierend auf deinen Privatsphäre-Einstellungen ist QuickShop nicht berechtigt, deinen Paste im Internet hochzuladen. Aktiviere DIAGNOSTIC Berechtigungen in den Privatsphäre-Einstellungen in der config.yml oder verwende <aqua>/quickshop paste --file</aqua>."
+shop-staff-empty: "<gray>Empty"
