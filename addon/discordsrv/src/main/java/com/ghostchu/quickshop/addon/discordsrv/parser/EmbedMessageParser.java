@@ -50,7 +50,7 @@ public class EmbedMessageParser {
             builder.setThumbnail(emptyDefault(dto.getThumbnail().getUrl()));
         }
         if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage().getUrl())) {
-            builder.setImage(dto.getImage().getUrl());
+            builder.setImage(emptyDefault(dto.getImage().getUrl()));
         }
         if (dto.getAuthor() != null) {
             builder.setAuthor(dto.getAuthor().getName(), emptyDefault(dto.getAuthor().getUrl()), emptyDefault(dto.getAuthor().getIconUrl()));
@@ -76,7 +76,7 @@ public class EmbedMessageParser {
 
     @Nullable
     private String emptyDefault(@Nullable String v) {
-        if (v == null || !v.startsWith("http")) {
+        if (v == null || StringUtils.isBlank(v) || !v.startsWith("http")) {
             return null;
         }
         return v;
