@@ -261,6 +261,7 @@ public class PasteGenerator {
         add(new PerformanceLogsItem());
         add(new PrivacyLogsItem());
         add(new MiscUtilItem());
+        add(new DisplaySystemItem());
         PasteManager pasteManager = QuickShop.getInstance().getPasteManager();
         if (pasteManager != null) {
             pasteManager.getAllRegistered().forEach(this::add);
