@@ -44,16 +44,16 @@ public class EmbedMessageParser {
             builder.setColor(dto.getColor());
         }
         if (dto.getFooter() != null) {
-            builder.setFooter(dto.getFooter().getText(), dto.getFooter().getIconUrl());
+            builder.setFooter(dto.getFooter().getText(), emptyDefault(dto.getFooter().getIconUrl()));
         }
         if (dto.getThumbnail() != null) {
             builder.setThumbnail(emptyDefault(dto.getThumbnail().getUrl()));
         }
         if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage().getUrl())) {
-            builder.setImage(dto.getImage().getUrl());
+            builder.setImage(emptyDefault(dto.getImage().getUrl()));
         }
         if (dto.getAuthor() != null) {
-            builder.setAuthor(dto.getAuthor().getName(), dto.getAuthor().getUrl(), dto.getAuthor().getIconUrl());
+            builder.setAuthor(dto.getAuthor().getName(), emptyDefault(dto.getAuthor().getUrl()), emptyDefault(dto.getAuthor().getIconUrl()));
         }
         builder.setTimestamp(Instant.now());
         if (dto.getFields() != null) {
@@ -76,7 +76,7 @@ public class EmbedMessageParser {
 
     @Nullable
     private String emptyDefault(@Nullable String v) {
-        if (v == null || !v.startsWith("http")) {
+        if (v == null || StringUtils.isBlank(v) || !v.startsWith("http")) {
             return null;
         }
         return v;

@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
@@ -42,9 +43,14 @@ public class MessageFactory {
         map.put("shop.location.world", shop.getLocation().getWorld().getName());
         map.put("shop.location.x", String.valueOf(shop.getLocation().getBlockX()));
         map.put("shop.location.y", String.valueOf(shop.getLocation().getBlockY()));
-        map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockY()));
+        map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockZ()));
         map.put("shop.location.id", String.valueOf(shop.getShopId()));
-        map.put("shop.item.name", wrap(Util.getItemStackName(shop.getItem())));
+        Component customName = Util.getItemCustomName(shop.getItem());
+        if (customName != null) {
+            map.put("shop.item.name", wrap(customName));
+        } else {
+            map.put("shop.item.name", CommonUtil.prettifyText(shop.getItem().getType().name()));
+        }
         map.put("shop.item.amount", String.valueOf(shop.getItem().getAmount()));
         map.put("shop.item.material", shop.getItem().getType().name());
         map.put("shop.owner.currency", shop.getCurrency());
