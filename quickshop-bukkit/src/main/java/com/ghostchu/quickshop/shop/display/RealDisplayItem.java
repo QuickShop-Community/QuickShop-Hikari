@@ -191,7 +191,10 @@ public class RealDisplayItem extends AbstractDisplayItem {
         itemEntity.setSilent(true);
         itemEntity.setInvulnerable(true);
         itemEntity.setPortalCooldown(Integer.MAX_VALUE);
-        itemEntity.setUnlimitedLifetime(true);
+        if (Util.isMethodAvailable("org.bukkit.entity.Item", "setUnlimitedLifetime")) {
+            itemEntity.setUnlimitedLifetime(true);
+            Log.debug("Guard display " + itemEntity + " with 1.18.2+ new unlimited life time api.");
+        }
         itemEntity.setVelocity(new Vector(0, 0.1, 0));
     }
 
