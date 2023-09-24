@@ -147,7 +147,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public @NotNull CompletableFuture<String> uuid2NameFuture(@NotNull UUID uuid, boolean writeCache, @NotNull ExecutorService executorService) {
         Optional<String> lookupName = nameCache.getIfPresent(uuid);
-        if (lookupName != null && lookupName.isPresent()) return CompletableFuture.completedFuture(lookupName.get());
+        if (lookupName != null && lookupName.isPresent()) {
+            return CompletableFuture.completedFuture(lookupName.get());
+        }
 
         Map<Object, CompletableFuture<?>> handling = getExecutorRef(executorService);
         @SuppressWarnings("unchecked") CompletableFuture<String> inProgress = (CompletableFuture<String>) handling.get(uuid);
@@ -201,7 +203,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public void cache(@NotNull UUID uuid, @Nullable String name) {
-        if (name == null) return;
+        if (name == null) {
+            return;
+        }
         this.nameCache.put(uuid, Optional.of(name));
         if (PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
             return;
@@ -269,7 +273,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
                 GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(executorService, new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
                 // This cannot fail.
                 UUID lookupResult = grabConcurrentTask.invokeAll("UniqueID Lookup - " + name, 15, TimeUnit.SECONDS, Objects::nonNull);
-                if (lookupResult != null) uuid = lookupResult;
+                if (lookupResult != null) {
+                    uuid = lookupResult;
+                }
                 return uuid;
             } catch (InterruptedException e) {
                 return uuid;
@@ -312,7 +318,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             }
             HttpResponse<String> response = Unirest.get("https://playerdb.co/api/player/minecraft/" + name).asString();
             PlayerDBResponse playerDBResponse = JsonUtil.getGson().fromJson(response.getBody(), PlayerDBResponse.class);
-            if (!playerDBResponse.getSuccess()) return null;
+            if (!playerDBResponse.getSuccess()) {
+                return null;
+            }
             return UUID.fromString(playerDBResponse.getData().getPlayer().getId());
         }
 
@@ -464,7 +472,9 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
             }
             HttpResponse<String> response = Unirest.get("https://playerdb.co/api/player/minecraft/" + uuid).asString();
             PlayerDBResponse playerDBResponse = JsonUtil.getGson().fromJson(response.getBody(), PlayerDBResponse.class);
-            if (!playerDBResponse.getSuccess()) return null;
+            if (!playerDBResponse.getSuccess()) {
+                return null;
+            }
             return playerDBResponse.getData().getPlayer().getUsername();
         }
 
@@ -636,10 +646,14 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
                     return null;
                 }
                 Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
-                if (essPlugin == null || !essPlugin.isEnabled()) return null;
+                if (essPlugin == null || !essPlugin.isEnabled()) {
+                    return null;
+                }
                 Essentials ess = (Essentials) essPlugin;
                 User user = ess.getUser(name);
-                if (user == null) return null;
+                if (user == null) {
+                    return null;
+                }
                 UUID uuid = user.getUUID();
                 Log.debug("Lookup result: " + uuid);
                 return uuid;
@@ -663,10 +677,14 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
                     return null;
                 }
                 Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
-                if (essPlugin == null || !essPlugin.isEnabled()) return null;
+                if (essPlugin == null || !essPlugin.isEnabled()) {
+                    return null;
+                }
                 Essentials ess = (Essentials) essPlugin;
                 User user = ess.getUser(uuid);
-                if (user == null) return null;
+                if (user == null) {
+                    return null;
+                }
                 String name = user.getName();
                 Log.debug("Lookup result: " + name);
                 return name;

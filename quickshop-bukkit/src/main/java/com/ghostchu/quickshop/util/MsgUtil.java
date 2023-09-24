@@ -31,7 +31,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
@@ -150,27 +149,25 @@ public class MsgUtil {
      */
     public static boolean flush(@NotNull OfflinePlayer p) {
         Player player = p.getPlayer();
-        if (player == null) return false;
-        UUID playerUniqueId = player.getUniqueId();
-        try {
-            PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
-                    .thenAccept(msgs -> {
-                        for (String msg : msgs) {
-                            PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
-                        }
-                        PLUGIN.getDatabaseHelper().cleanMessageForPlayer(playerUniqueId)
-                                .exceptionally(error -> {
-                                    PLUGIN.logger().warn("Error on cleaning the purchase messages from the database", error);
-                                    return 0;
-                                });
-                    })
-                    .exceptionally(th -> {
-                        PLUGIN.logger().warn("Failed to retrieve player {} messages.", playerUniqueId, th);
-                        return null;
-                    });
-        } catch (SQLException e) {
-            PLUGIN.logger().warn("Failed to retrieve player messages due an SQLException.", e);
+        if (player == null) {
+            return false;
         }
+        UUID playerUniqueId = player.getUniqueId();
+        PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
+                .thenAccept(msgs -> {
+                    for (String msg : msgs) {
+                        PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
+                    }
+                    PLUGIN.getDatabaseHelper().cleanMessageForPlayer(playerUniqueId)
+                            .exceptionally(error -> {
+                                PLUGIN.logger().warn("Error on cleaning the purchase messages from the database", error);
+                                return 0;
+                            });
+                })
+                .exceptionally(th -> {
+                    PLUGIN.logger().warn("Failed to retrieve player {} messages.", playerUniqueId, th);
+                    return null;
+                });
         return false;
     }
 
@@ -240,7 +237,9 @@ public class MsgUtil {
     }
 
     private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
-        if (enchs.isEmpty()) return;
+        if (enchs.isEmpty()) {
+            return;
+        }
         chatSheetPrinter.printCenterLine(PLUGIN.text().of("menu.enchants").forLocale());
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
@@ -304,7 +303,9 @@ public class MsgUtil {
         if (isUnlimited && PLUGIN.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        if (uuid == null) return;
+        if (uuid == null) {
+            return;
+        }
         String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
         Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
@@ -392,7 +393,9 @@ public class MsgUtil {
     }
 
     public static void sendDirectMessage(@Nullable QUser sender, @Nullable Component... messages) {
-        if (sender == null) return;
+        if (sender == null) {
+            return;
+        }
         UUID uuid = sender.getUniqueIdIfRealPlayer().orElse(null);
         if (uuid == null) {
             return;

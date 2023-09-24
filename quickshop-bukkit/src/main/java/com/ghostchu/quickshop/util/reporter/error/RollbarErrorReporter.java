@@ -123,7 +123,8 @@ public class RollbarErrorReporter {
                         }
                     } catch (Exception ex) {
                         ignoreThrow();
-                        plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", throwable, ex);
+                        plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", throwable);
+                        plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", ex);
                     }
                 }, () -> {
                     ignoreThrow();

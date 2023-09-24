@@ -304,7 +304,9 @@ public class CommonUtil {
 
 
     public static boolean isJson(String str) {
-        if (str == null || str.isBlank()) return false;
+        if (str == null || str.isBlank()) {
+            return false;
+        }
         try {
             JsonElement element = JsonParser.parseString(str);
             return element.isJsonObject() || element.isJsonArray();

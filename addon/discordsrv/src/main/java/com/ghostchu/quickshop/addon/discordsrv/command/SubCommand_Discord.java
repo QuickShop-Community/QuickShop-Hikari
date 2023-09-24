@@ -39,7 +39,7 @@ public class SubCommand_Discord implements CommandHandler<Player> {
             qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
             return;
         }
-        boolean ops = parser.getArgs().get(1).equalsIgnoreCase("enable");
+        boolean ops = "enable".equalsIgnoreCase(parser.getArgs().get(1));
         Util.asyncThreadRun(() -> {
             try {
                 Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(QUserImpl.createFullFilled(sender), feature, ops);
@@ -57,15 +57,18 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     private NotificationFeature getFeatureByName(String name) {
         for (NotificationFeature value : NotificationFeature.values()) {
             NotificationFeature selected = null;
-            if (value.name().equalsIgnoreCase(name))
+            if (value.name().equalsIgnoreCase(name)) {
                 selected = value;
-            else if (value.getConfigNode().equalsIgnoreCase(name))
+            } else if (value.getConfigNode().equalsIgnoreCase(name)) {
                 selected = value;
-            else if (value.getDatabaseNode().equalsIgnoreCase(name))
+            } else if (value.getDatabaseNode().equalsIgnoreCase(name)) {
                 selected = value;
-            if (selected != null)
-                if (selected.isPlayerToggleable())
+            }
+            if (selected != null) {
+                if (selected.isPlayerToggleable()) {
                     return selected;
+                }
+            }
         }
         return null;
     }

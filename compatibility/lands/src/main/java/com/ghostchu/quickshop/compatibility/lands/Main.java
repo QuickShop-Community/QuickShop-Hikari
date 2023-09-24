@@ -48,7 +48,9 @@ public final class Main extends CompatibilityModule {
             }
         }
         UUID playerUUID = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
-        if (playerUUID == null) return;
+        if (playerUUID == null) {
+            return;
+        }
         Location loc = event.getShop().getLocation();
         Chunk locChunk = loc.getChunk();
         Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
@@ -86,7 +88,9 @@ public final class Main extends CompatibilityModule {
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
                             UUID owner = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
-                            if (owner == null) continue;
+                            if (owner == null) {
+                                continue;
+                            }
                             if (target.equals(owner)) {
                                 recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Lands", false), shop, "Lands: shop deleted because owner lost permission");
                                 Util.mainThreadRun(() -> getApi().getShopManager().deleteShop(shop));

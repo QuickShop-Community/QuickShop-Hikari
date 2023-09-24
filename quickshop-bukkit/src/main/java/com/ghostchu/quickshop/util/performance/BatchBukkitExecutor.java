@@ -30,23 +30,31 @@ public class BatchBukkitExecutor<T> {
     }
 
     public void addTask(@NotNull T task) {
-        if (started) throw new IllegalStateException("This batch task has been started");
+        if (started) {
+            throw new IllegalStateException("This batch task has been started");
+        }
         this.tasks.add(task);
     }
 
     @SafeVarargs
     public final void addTasks(@NotNull T... tasks) {
-        if (started) throw new IllegalStateException("This batch task has been started");
+        if (started) {
+            throw new IllegalStateException("This batch task has been started");
+        }
         this.tasks.addAll(Arrays.asList(tasks));
     }
 
     public void addTasks(@NotNull Collection<T> tasks) {
-        if (started) throw new IllegalStateException("This batch task has been started");
+        if (started) {
+            throw new IllegalStateException("This batch task has been started");
+        }
         this.tasks.addAll(tasks);
     }
 
     public CompletableFuture<Void> startHandle(Plugin plugin, Consumer<T> consumer) {
-        if (started) throw new IllegalStateException("This batch task has been handled");
+        if (started) {
+            throw new IllegalStateException("This batch task has been handled");
+        }
         started = true;
         startTime = Instant.now();
         CompletableFuture<Void> future = new CompletableFuture<>();

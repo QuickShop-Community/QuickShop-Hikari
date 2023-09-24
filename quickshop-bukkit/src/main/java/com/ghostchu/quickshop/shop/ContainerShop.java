@@ -206,11 +206,9 @@ public class ContainerShop implements Shop, Reloadable {
         this.disableDisplay = disableDisplay;
         this.taxAccount = taxAccount;
         this.dirty = false;
-        //noinspection ConstantConditions
         if (symbolLink == null) {
             throw new IllegalArgumentException("SymbolLink cannot be null");
         }
-        //noinspection ConstantConditions
         if (inventoryWrapperProvider == null) {
             throw new IllegalArgumentException("InventoryWrapperProvider cannot be null");
         }

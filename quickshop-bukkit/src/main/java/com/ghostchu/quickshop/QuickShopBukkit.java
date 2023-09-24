@@ -17,8 +17,14 @@ import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.platform.viaversion.ViaFacet;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -101,20 +107,19 @@ public class QuickShopBukkit extends JavaPlugin {
 
     private void loadPlatform() throws Exception {
         int platformId = 0;
-        if (PaperLib.isSpigot()) platformId = 1;
-        if (PaperLib.isPaper()) platformId = 2;
+        if (PaperLib.isSpigot()) {
+            platformId = 1;
+        }
+        if (PaperLib.isPaper()) {
+            platformId = 2;
+        }
 
         platformId = PackageUtil.parsePackageProperly("forcePlatform").asInteger(platformId);
         try {
             switch (platformId) {
                 case 1 -> {
                     getLogger().info("Platform detected: Spigot");
-                    getLogger().warning("Use Paper to get best performance and enhanced features!");
-                    getLogger().warning("");
-                    getLogger().warning("QuickShop-Hikari cannot handle translatable components");
-                    getLogger().warning("on Spigot platform! Make sure you're using Paper or Paper's fork");
-                    getLogger().warning("to unlock full functions!");
-                    getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
+                    getLogger().warning("Use Paper or Paper's fork to get best performance and enhanced features!");
 
                     initNbtApi();
 
@@ -213,7 +218,13 @@ public class QuickShopBukkit extends JavaPlugin {
             plugin.getLogger().info("Adventure Bukkit Platform loaded from: " + CommonUtil.getClassPath(BukkitAudiences.class));
             plugin.getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + CommonUtil.getClassPath(LegacyComponentSerializer.class));
             plugin.getLogger().info("Adventure Text Serializer (Gson) loaded from: " + CommonUtil.getClassPath(GsonComponentSerializer.class));
-            plugin.getLogger().info("Adventure MiniMessage Lib loaded from: " + CommonUtil.getClassPath(LegacyComponentSerializer.class));
+            plugin.getLogger().info("Adventure Text Serializer (Json) loaded from: " + CommonUtil.getClassPath(JSONComponentSerializer.class));
+            plugin.getLogger().info("Adventure Text Serializer (BungeeChat) loaded from: " + CommonUtil.getClassPath(BungeeComponentSerializer.class));
+            plugin.getLogger().info("Adventure Text Serializer (ViaVersion Facet) loaded from: " + CommonUtil.getClassPath(ViaFacet.class));
+            plugin.getLogger().info("Adventure Text Serializer (ANSI) loaded from: " + CommonUtil.getClassPath(ANSIComponentSerializer.class));
+            plugin.getLogger().info("Adventure Text Serializer (Plain) loaded from: " + CommonUtil.getClassPath(PlainTextComponentSerializer.class));
+            plugin.getLogger().info("Adventure MiniMessage Lib loaded from: " + CommonUtil.getClassPath(MiniMessage.class));
+
         }
     }
 }

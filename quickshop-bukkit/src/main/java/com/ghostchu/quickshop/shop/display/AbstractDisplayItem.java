@@ -35,7 +35,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     @Nullable
     protected ItemStack guardedIstack;
     private boolean pendingRemoval;
-    private static boolean virutalDisplayDoesntWork = false;
+    private static boolean virtualDisplayDoesntWork = false;
 
     protected AbstractDisplayItem(Shop shop) {
         this.shop = shop;
@@ -45,7 +45,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     public static void setVirtualDisplayDoesntWork(boolean shouldDisable) {
-        virutalDisplayDoesntWork = shouldDisable;
+        virtualDisplayDoesntWork = shouldDisable;
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     @NotNull
     public static DisplayType getNowUsing() {
         DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-        if (displayType == DisplayType.VIRTUALITEM && virutalDisplayDoesntWork) {
+        if (displayType == DisplayType.VIRTUALITEM && virtualDisplayDoesntWork) {
             return DisplayType.REALITEM;
         }
         return displayType;
@@ -346,5 +346,9 @@ public abstract class AbstractDisplayItem implements Reloadable {
     @NotNull
     public Shop getShop() {
         return shop;
+    }
+
+    public static boolean isVirtualDisplayDoesntWork() {
+        return virtualDisplayDoesntWork;
     }
 }

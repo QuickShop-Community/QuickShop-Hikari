@@ -38,7 +38,9 @@ public class DiscordDatabaseHelper {
     public @NotNull Integer setNotifactionFeatureEnabled(@NotNull QUser qUser, @NotNull NotificationFeature feature, @Nullable Boolean status) throws SQLException {
         Util.ensureThread(true);
         UUID playerUuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
-        if (playerUuid == null) return 0;
+        if (playerUuid == null) {
+            return 0;
+        }
         NotificationSettings settings = getPlayerNotifactionSetting(playerUuid);
         if (status == null) {
             settings.getSettings().remove(feature);
@@ -94,7 +96,9 @@ public class DiscordDatabaseHelper {
     public boolean isNotifactionFeatureEnabled(@NotNull UUID uuid, @NotNull NotificationFeature feature) {
         Util.ensureThread(true);
         boolean defValue = plugin.isServerNotificationFeatureEnabled(feature);
-        if (!defValue) return false; // If server disabled it, do not send it
+        if (!defValue) {
+            return false; // If server disabled it, do not send it
+        }
         try {
             NotificationSettings settings = getPlayerNotifactionSetting(uuid);
             Log.debug("Notifaction Settings: " + settings);

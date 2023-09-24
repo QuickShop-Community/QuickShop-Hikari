@@ -63,7 +63,9 @@ public class PAPICache implements Reloadable {
     private long getLoadedPlayerShops(@NotNull UUID uuid) {
         return plugin.getShopManager().getLoadedShops().stream().filter(shop -> {
             UUID souid = shop.getOwner().getUniqueId();
-            if (souid == null) return false;
+            if (souid == null) {
+                return false;
+            }
             return souid.equals(uuid);
         }).count();
     }
@@ -71,7 +73,9 @@ public class PAPICache implements Reloadable {
     private long getLoadedPlayerShops(@NotNull String name) {
         return plugin.getShopManager().getLoadedShops().stream().filter(shop -> {
             String sousrname = shop.getOwner().getUsername();
-            if (sousrname == null) return false;
+            if (sousrname == null) {
+                return false;
+            }
             return name.equals(sousrname);
         }).count();
     }
@@ -94,7 +98,9 @@ public class PAPICache implements Reloadable {
     public String readCache(@NotNull UUID player, @NotNull String queryString) {
         Optional<String> cache = performCaches.getIfPresent(compileUniqueKey(player, queryString));
         //noinspection OptionalAssignedToNull
-        if (cache == null || cache.isEmpty()) return null;
+        if (cache == null || cache.isEmpty()) {
+            return null;
+        }
         return cache.orElse(null);
     }
 

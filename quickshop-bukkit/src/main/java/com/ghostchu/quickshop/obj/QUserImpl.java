@@ -313,7 +313,9 @@ public final class QUserImpl implements QUser {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof QUser qUser) {
-            if (this.isRealPlayer() != qUser.isRealPlayer()) return false;
+            if (this.isRealPlayer() != qUser.isRealPlayer()) {
+                return false;
+            }
             if (this.isRealPlayer()) {
                 return Objects.equals(this.uniqueId, qUser.getUniqueId());
             } else {

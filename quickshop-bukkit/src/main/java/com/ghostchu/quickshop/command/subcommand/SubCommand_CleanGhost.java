@@ -43,7 +43,6 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
             if (shop == null) {
                 return; // WTF
             }
-            //noinspection ConstantConditions
             if (shop.getOwner() == null) {
                 plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid owner data").send();
                 plugin.getShopManager().deleteShop(shop);

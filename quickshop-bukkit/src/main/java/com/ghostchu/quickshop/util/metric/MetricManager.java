@@ -21,7 +21,9 @@ public class MetricManager {
     }
 
     public void registerChart(MetricDataType dataType, String moduleName, String reason, CustomChart chart) {
-        if (chart == null) return; // ignore
+        if (chart == null) {
+            return; // ignore
+        }
         plugin.getPrivacyController().privacyReview(dataType, moduleName.replace(" ", "_").replace("-", "_").toUpperCase(Locale.ROOT), reason, () -> this.metrics.addCustomChart(chart), () -> Log.debug("Blocked chart register: failed privacy reviewing."));
     }
 

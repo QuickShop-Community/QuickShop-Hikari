@@ -90,7 +90,6 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void playerQuit(PlayerQuitEvent event) {
-        //noinspection ConstantConditions
         cleanup(event.getPlayer().getUniqueId());
     }
 
@@ -115,7 +114,9 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
 
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
-        if (!channel.equalsIgnoreCase(BUNGEE_CHANNEL)) return;
+        if (!channel.equalsIgnoreCase(BUNGEE_CHANNEL)) {
+            return;
+        }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String prefix = in.readUTF();
         //noinspection SwitchStatementWithTooFewBranches

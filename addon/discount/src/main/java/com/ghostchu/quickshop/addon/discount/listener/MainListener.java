@@ -60,7 +60,9 @@ public class MainListener implements Listener {
     public void onPurchase(ShopPurchaseEvent event) {
         QUser purchaserQUser = event.getPurchaser();
         UUID purchaser = purchaserQUser.getUniqueIdIfRealPlayer().orElse(null);
-        if (purchaser == null) return;
+        if (purchaser == null) {
+            return;
+        }
         Shop shop = event.getShop();
         DiscountCode codeInstalled = main.getStatusManager().get(purchaser, main.getCodeManager());
         if (codeInstalled == null) {

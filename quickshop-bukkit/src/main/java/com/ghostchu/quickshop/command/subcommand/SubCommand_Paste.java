@@ -98,9 +98,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 }
                 return;
             }
-        }, () -> {
-            plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send();
-        });
+        }, () -> plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send());
         return true;
     }
 

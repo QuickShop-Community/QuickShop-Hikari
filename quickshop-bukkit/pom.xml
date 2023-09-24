@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.3</version>
+        <version>5.2.0.4</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -148,10 +148,6 @@
                     <groupId>*</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.rollbar</groupId>
-            <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
             <groupId>me.xanium</groupId>

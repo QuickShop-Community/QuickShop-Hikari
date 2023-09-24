@@ -44,7 +44,6 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void invClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
-        //noinspection ConstantConditions
         if (inventory == null) {
             return;
         }
@@ -82,7 +81,6 @@ public final class Main extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void invMove(InventoryMoveItemEvent event) {
-        //noinspection ConstantConditions
         if (event.getDestination() == null) { //Stupid CMIGUI plugin
             return;
         }
@@ -93,7 +91,9 @@ public final class Main extends JavaPlugin implements Listener {
         if (shop == null) {
             return;
         }
-        if (event.getItem().getType() == Material.AIR) return;
+        if (event.getItem().getType() == Material.AIR) {
+            return;
+        }
         if (shop.matches(event.getItem())) {
             return;
         }

@@ -405,7 +405,6 @@ public class Util {
      */
     public static File getCacheFolder() {
         QuickShop qs = QuickShop.getInstance();
-        //noinspection ConstantConditions
         if (qs != null) {
             File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
             if (!cache.exists()) {

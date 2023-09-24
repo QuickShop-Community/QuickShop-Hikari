@@ -5,10 +5,7 @@ import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.metric.MetricCollectEntry;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
-import org.bstats.charts.AdvancedPie;
-import org.bstats.charts.CustomChart;
-import org.bstats.charts.SimplePie;
-import org.bstats.charts.SingleLineChart;
+import org.bstats.charts.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -17,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 public class BuiltInCollects {//Statistic
     private final QuickShop plugin;
@@ -52,9 +50,7 @@ public class BuiltInCollects {//Statistic
     public CustomChart researchProtectionListenerBlacklist() {
         return new AdvancedPie("research_protection_checker_blacklist", () -> {
             Map<String, Integer> data = new HashMap<>();
-            plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(s -> {
-                data.put(s, 1);
-            });
+            plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(s -> data.put(s, 1));
             return data;
         });
     }
@@ -128,6 +124,45 @@ public class BuiltInCollects {//Statistic
             } else {
                 return "Enabled";
             }
+        });
+    }
+
+    @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Research - ProtocolLib Version", description = "We collect this so we can know the which one ProtocolLib is popular. ProtocolLib sometimes releases destructive updates, so we collect this metric to know the distribution of ProtocolLib versions among users and remove unused ProtocolLib workaround code to improve code maintainability and program performance.")
+    public CustomChart researchProtocolLibVersion() {
+        return new SimplePie("research_protocollib_version", () -> {
+            Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+            if (protocolLib == null) {
+                return "Not Installed";
+            }
+            return protocolLib.getDescription().getVersion();
+        });
+    }
+
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Server Software Build Version", description = "Spigot and Paper always release updates during their version support cycles. Counting the server-side software versions used by users lets us know which builds are popular. And it allows us to be more aggressive with newly added APIs, This can improve code maintainability, stability and program performance.")
+    public CustomChart statisticServerSoftwareBuildVersion() {
+        return new DrilldownPie("statistic_server_software_build_version", () -> {
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            Map<String, Integer> entry = new HashMap<>();
+            entry.put(Bukkit.getServer().getVersion(), 1);
+            map.put(Bukkit.getServer().getName(), entry);
+            return map;
+        });
+    }
+
+    @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Research - Geyser", description = "We've released the Suspension Closure expansion for Geyser, but we're ultimately undecided about a Geyser-specific update. The data collected from this study allows us to analyze the QuickShop-Hikari user base to check if Geyser or Floodgate is installed, and with the percentage of users who have the statistics, we will decide whether to add support for Geyser GUIs and the like. We also welcome your feedback on our Discord server.")
+    public CustomChart researchGeyser() {
+        return new SimplePie("research_geyser", () -> {
+            StringJoiner joiner = new StringJoiner("+");
+            joiner.setEmptyValue("Not detected");
+            Plugin geyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
+            if (geyser != null) {
+                joiner.add("Geyser-Spigot");
+            }
+            Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate");
+            if (floodgate != null) {
+                joiner.add("Floodgate");
+            }
+            return joiner.toString();
         });
     }
 }
