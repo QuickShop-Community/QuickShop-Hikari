@@ -51,15 +51,13 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
 
         MsgUtil.sendDirectMessage(sender, Component.text("QuickShop Statistics...").color(NamedTextColor.GOLD));
         MsgUtil.sendDirectMessage(sender, Component.text("Server UniqueId: " + plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
-        MsgUtil.sendDirectMessage(sender, Component.text(""
-                + (buying + selling)
+        MsgUtil.sendDirectMessage(sender, Component.text((buying + selling)
                 + " shops in "
                 + chunks
                 + " chunks spread over "
                 + worlds
                 + " worlds.").color(NamedTextColor.GREEN));
-        MsgUtil.sendDirectMessage(sender, Component.text(""
-                + nostock
+        MsgUtil.sendDirectMessage(sender, Component.text(nostock
                 + " out-of-stock loaded shops (excluding doubles) which will be removed by /quickshop clean.").color(NamedTextColor.GREEN));
         MsgUtil.sendDirectMessage(sender, Component.text("QuickShop " + QuickShop.getInstance().getVersion()).color(NamedTextColor.GREEN));
     }

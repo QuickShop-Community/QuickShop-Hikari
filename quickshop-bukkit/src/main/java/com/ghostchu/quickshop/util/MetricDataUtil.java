@@ -94,7 +94,7 @@ public class MetricDataUtil {
             return "[Server]";
         }
         String name = plugin.getPlayerFinder().uuid2Name(uuid);
-        if (name == null || "".equals(name)) {
+        if (name == null || name.isEmpty()) {
             return uuid.toString();
         }
         return HtmlEscapers.htmlEscaper().escape(name);

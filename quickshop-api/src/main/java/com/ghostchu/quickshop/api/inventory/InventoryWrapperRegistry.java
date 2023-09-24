@@ -29,7 +29,7 @@ public class InventoryWrapperRegistry {
         if (registry.containsKey(plugin.getName())) {
             plugin.getLogger().warning("Nag Author: Plugin " + plugin.getName() + " already have a registered InventoryWrapperManager: "
                     + registry.get(plugin.getName()).getClass().getName() +
-                    " but trying register another new manager: " + manager.getClass().getName() + "" +
+                    " but trying register another new manager: " + manager.getClass().getName() +
                     ". This may cause unexpected behavior! Replacing with new instance...");
         }
         registry.put(plugin.getName(), manager);

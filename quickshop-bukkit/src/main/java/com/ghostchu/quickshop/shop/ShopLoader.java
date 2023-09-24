@@ -229,7 +229,6 @@ public class ShopLoader implements SubPasteItem {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
             Log.debug("Shop object is null");

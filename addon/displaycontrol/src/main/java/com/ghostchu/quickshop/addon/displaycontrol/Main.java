@@ -90,7 +90,6 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void playerQuit(PlayerQuitEvent event) {
-        //noinspection ConstantConditions
         cleanup(event.getPlayer().getUniqueId());
     }
 

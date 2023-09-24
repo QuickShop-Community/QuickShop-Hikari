@@ -195,10 +195,9 @@ public interface DatabaseHelper {
      * Select player messages that saved in the database
      *
      * @return Query result set
-     * @throws SQLException Any errors related to SQL Errors
      */
     @NotNull
-    CompletableFuture<List<String>> selectPlayerMessages(UUID player) throws SQLException;
+    CompletableFuture<List<String>> selectPlayerMessages(UUID player);
 
     /**
      * Select specific table content

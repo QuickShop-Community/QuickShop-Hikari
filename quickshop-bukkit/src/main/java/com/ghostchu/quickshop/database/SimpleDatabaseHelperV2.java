@@ -813,7 +813,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             this.prefix = parent.getPrefix();
         }
 
-        public void upgrade() throws Exception {
+        public void upgrade() {
             int currentDatabaseVersion = parent.getDatabaseVersion();
             if (currentDatabaseVersion == -1) {
                 currentDatabaseVersion = 11;

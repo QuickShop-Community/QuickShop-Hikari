@@ -150,10 +150,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.rollbar</groupId>
-            <artifactId>rollbar-java</artifactId>
-        </dependency>
-        <dependency>
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
             <scope>system</scope>
