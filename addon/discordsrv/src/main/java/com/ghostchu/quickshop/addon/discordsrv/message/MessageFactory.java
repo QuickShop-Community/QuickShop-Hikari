@@ -43,7 +43,7 @@ public class MessageFactory {
         map.put("shop.location.world", shop.getLocation().getWorld().getName());
         map.put("shop.location.x", String.valueOf(shop.getLocation().getBlockX()));
         map.put("shop.location.y", String.valueOf(shop.getLocation().getBlockY()));
-        map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockY()));
+        map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockZ()));
         map.put("shop.location.id", String.valueOf(shop.getShopId()));
         Component customName = Util.getItemCustomName(shop.getItem());
         if (customName != null) {
