@@ -36,10 +36,13 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
             }
             Pair<Function<Location, Shop>, Cache<Location, BoxedShop>> pair = entry.getValue();
             Function<Location, Shop> valueProvider = pair.getLeft();
-            if (valueProvider == null) throw new IllegalArgumentException("The shop value provider cannot be null!");
+            if (valueProvider == null) {
+                throw new IllegalArgumentException("The shop value provider cannot be null!");
+            }
             Cache<Location, BoxedShop> cacheContainer = pair.getRight();
-            if (cacheContainer == null)
+            if (cacheContainer == null) {
                 cacheContainer = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES).recordStats().build();
+            }
             CACHES.put(namespacedKey, cacheContainer);
             CACHE_VALUE_PROVIDER.put(namespacedKey, valueProvider);
             Log.debug("Shop cache " + namespacedKey.name() + " registered.");
@@ -50,16 +53,20 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
     @Override
     public Shop get(@NotNull ShopCacheNamespacedKey namespacedKey, @NotNull Location location, boolean allowLoading) {
         Cache<Location, BoxedShop> targetCacheContainer = CACHES.get(namespacedKey);
-        if (targetCacheContainer == null)
+        if (targetCacheContainer == null) {
             throw new IllegalArgumentException("Shop cache container " + namespacedKey.name() + " not exists!");
+        }
         if (!allowLoading) {
             BoxedShop boxedShop = targetCacheContainer.getIfPresent(location);
-            if (boxedShop == null) return null;
+            if (boxedShop == null) {
+                return null;
+            }
             return boxedShop.getShop();
         }
         Function<Location, Shop> provider = CACHE_VALUE_PROVIDER.get(namespacedKey);
-        if (provider == null)
+        if (provider == null) {
             throw new IllegalArgumentException("Shop cache provider " + namespacedKey.name() + " not exists");
+        }
         try {
             return targetCacheContainer.get(location, () -> new BoxedShop(provider.apply(location))).getShop();
         } catch (ExecutionException e) {
@@ -74,8 +81,9 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
             CACHES.values().forEach(Cache::invalidateAll);
         } else {
             Cache<Location, BoxedShop> targetCacheContainer = CACHES.get(namespacedKey);
-            if (targetCacheContainer == null)
+            if (targetCacheContainer == null) {
                 throw new IllegalArgumentException("Shop cache container " + namespacedKey.name() + " not exists!");
+            }
             targetCacheContainer.invalidateAll();
         }
     }
@@ -87,8 +95,9 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
             CACHES.values().forEach(c -> c.invalidate(location));
         } else {
             Cache<Location, BoxedShop> targetCacheContainer = CACHES.get(namespacedKey);
-            if (targetCacheContainer == null)
+            if (targetCacheContainer == null) {
                 throw new IllegalArgumentException("Shop cache container " + namespacedKey.name() + " not exists!");
+            }
             targetCacheContainer.invalidate(location);
         }
     }
@@ -97,8 +106,9 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
     @NotNull
     public CacheStats getCacheStats(@NotNull ShopCacheNamespacedKey namespacedKey) {
         Cache<Location, BoxedShop> targetCacheContainer = CACHES.get(namespacedKey);
-        if (targetCacheContainer == null)
+        if (targetCacheContainer == null) {
             throw new IllegalArgumentException("Shop cache container " + namespacedKey.name() + " not exists!");
+        }
         return targetCacheContainer.stats();
     }
 

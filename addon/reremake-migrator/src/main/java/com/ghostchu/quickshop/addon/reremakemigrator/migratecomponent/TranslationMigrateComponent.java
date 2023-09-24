@@ -26,7 +26,9 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
     public boolean migrate() {
         text("modules.translation.start-migrate").send();
         File reremakeOverrideFolder = new File(getReremake().getDataFolder(), "overrides");
-        if (!reremakeOverrideFolder.exists()) return true;
+        if (!reremakeOverrideFolder.exists()) {
+            return true;
+        }
         File[] fileTree = reremakeOverrideFolder.listFiles();
         if (fileTree == null) {
             getHikari().logger().warn("Skipping translation migrate (no file tree)");
@@ -35,7 +37,9 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
 
         for (File langFolder : new ProgressMonitor<>(fileTree, (triple) -> text("modules.translation.migrate-entry", triple.getRight().getName(), triple.getLeft(), triple.getMiddle()))) {
             File langJsonFile = new File(langFolder, "messages.json");
-            if (!langJsonFile.exists()) continue;
+            if (!langJsonFile.exists()) {
+                continue;
+            }
             try {
                 migrateFile(langFolder, langJsonFile);
             } catch (Exception exception) {
@@ -63,8 +67,12 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
         Set<String> keys = jsonConfiguration.getKeys(true);
         text("modules.translation.copy-values", targetLangFolder.getName(), keys.size()).send();
         for (String key : new ProgressMonitor<>(keys, (triple) -> text("modules.translation.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
-            if ("_comment".equals(key)) continue;
-            if (jsonConfiguration.isConfigurationSection(key)) continue;
+            if ("_comment".equals(key)) {
+                continue;
+            }
+            if (jsonConfiguration.isConfigurationSection(key)) {
+                continue;
+            }
             if (jsonConfiguration.isString(key)) {
                 String originalValue = jsonConfiguration.getString(key);
                 Component component = MineDown.parse(originalValue).compact();

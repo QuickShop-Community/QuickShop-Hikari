@@ -196,12 +196,16 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         List<TagResolver> resolvers = new ArrayList<>();
         resolvers.add(TagResolver.standard());
         resolvers.add(TagResolver.resolver("color_scheme", (argumentQueue, context) -> {
-            if (!argumentQueue.hasNext()) return null;
+            if (!argumentQueue.hasNext()) {
+                return null;
+            }
             Tag.Argument argument = argumentQueue.pop();
             String code = argument.value();
             String hex = colorSchemeSection.getString(code, "#ffffff");
             TextColor textColor = TextColor.fromHexString(hex);
-            if (textColor == null) return null;
+            if (textColor == null) {
+                return null;
+            }
             Log.debug("Registered color scheme " + code + " with hex " + hex);
             return Tag.styling(textColor);
         }));
@@ -486,8 +490,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
     @Override
     public @NotNull ProxiedLocale findRelativeLanguages(@Nullable QUser qUser, boolean allowDbLoad) {
-        if (qUser == null || !qUser.isRealPlayer())
+        if (qUser == null || !qUser.isRealPlayer()) {
             return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        }
         return findRelativeLanguages(qUser.getUniqueId(), allowDbLoad);
     }
 

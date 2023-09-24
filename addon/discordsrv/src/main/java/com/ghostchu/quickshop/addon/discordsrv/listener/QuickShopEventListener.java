@@ -92,7 +92,9 @@ public class QuickShopEventListener implements Listener {
 
     private void sendMessageIfEnabled(@NotNull QUser qUser, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
         UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
-        if (uuid == null) return;
+        if (uuid == null) {
+            return;
+        }
         Util.ensureThread(true);
         if (databaseHelper.isNotifactionFeatureEnabled(uuid, feature)) {
             jdaWrapper.sendMessage(uuid, embed);
@@ -102,7 +104,9 @@ public class QuickShopEventListener implements Listener {
     private void sendMessageIfEnabled(@NotNull QUser qUser, @NotNull Shop shop, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
         Util.ensureThread(true);
         UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
-        if (uuid == null) return;
+        if (uuid == null) {
+            return;
+        }
         if (shop.playerAuthorize(uuid, plugin, "discordalert")) {
             if (databaseHelper.isNotifactionFeatureEnabled(uuid, feature)) {
                 jdaWrapper.sendMessage(uuid, embed);

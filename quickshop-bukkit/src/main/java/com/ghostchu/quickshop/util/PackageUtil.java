@@ -36,7 +36,9 @@ public class PackageUtil {
         }
 
         public boolean asBoolean(boolean def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             return Boolean.parseBoolean(value);
         }
 

@@ -51,7 +51,9 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                     }
                     List<Shop> pendingRemoval = new ArrayList<>();
                     for (Shop shop : plugin.getShopManager().getAllShops()) {
-                        if (!shop.getOwner().equals(qUser)) continue;
+                        if (!shop.getOwner().equals(qUser)) {
+                            continue;
+                        }
                         pendingRemoval.add(shop);
                     }
                     Util.mainThreadRun(() -> {

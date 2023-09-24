@@ -57,15 +57,18 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     private NotificationFeature getFeatureByName(String name) {
         for (NotificationFeature value : NotificationFeature.values()) {
             NotificationFeature selected = null;
-            if (value.name().equalsIgnoreCase(name))
+            if (value.name().equalsIgnoreCase(name)) {
                 selected = value;
-            else if (value.getConfigNode().equalsIgnoreCase(name))
+            } else if (value.getConfigNode().equalsIgnoreCase(name)) {
                 selected = value;
-            else if (value.getDatabaseNode().equalsIgnoreCase(name))
+            } else if (value.getDatabaseNode().equalsIgnoreCase(name)) {
                 selected = value;
-            if (selected != null)
-                if (selected.isPlayerToggleable())
+            }
+            if (selected != null) {
+                if (selected.isPlayerToggleable()) {
                     return selected;
+                }
+            }
         }
         return null;
     }

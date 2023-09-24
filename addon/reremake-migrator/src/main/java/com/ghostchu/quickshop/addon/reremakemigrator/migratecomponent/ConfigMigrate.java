@@ -86,12 +86,16 @@ public class ConfigMigrate extends AbstractMigrateComponent {
         for (String record : new ProgressMonitor<>(str, (triple) -> text("modules.migrate-price-restriction-entry", triple.getLeft(), triple.getMiddle()).send())) {
             try {
                 String[] records = record.split(";");
-                if (records.length != 3) continue;
+                if (records.length != 3) {
+                    continue;
+                }
                 Material material = Material.matchMaterial(records[0]);
                 double min = Double.parseDouble(records[1]);
                 double max = Double.parseDouble(records[2]);
                 String name = UUID.randomUUID().toString().replace("-", "");
-                if (material == null) continue;
+                if (material == null) {
+                    continue;
+                }
                 configuration.set("rules." + name + ".items", List.of(material));
                 configuration.set("rules." + name + ".currency", List.of("*"));
                 configuration.set("rules." + name + ".min", min);

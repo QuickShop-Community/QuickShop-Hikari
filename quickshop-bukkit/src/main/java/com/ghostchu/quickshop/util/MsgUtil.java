@@ -150,7 +150,9 @@ public class MsgUtil {
      */
     public static boolean flush(@NotNull OfflinePlayer p) {
         Player player = p.getPlayer();
-        if (player == null) return false;
+        if (player == null) {
+            return false;
+        }
         UUID playerUniqueId = player.getUniqueId();
         try {
             PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
@@ -240,7 +242,9 @@ public class MsgUtil {
     }
 
     private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
-        if (enchs.isEmpty()) return;
+        if (enchs.isEmpty()) {
+            return;
+        }
         chatSheetPrinter.printCenterLine(PLUGIN.text().of("menu.enchants").forLocale());
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
@@ -304,7 +308,9 @@ public class MsgUtil {
         if (isUnlimited && PLUGIN.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        if (uuid == null) return;
+        if (uuid == null) {
+            return;
+        }
         String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
         Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
@@ -392,7 +398,9 @@ public class MsgUtil {
     }
 
     public static void sendDirectMessage(@Nullable QUser sender, @Nullable Component... messages) {
-        if (sender == null) return;
+        if (sender == null) {
+            return;
+        }
         UUID uuid = sender.getUniqueIdIfRealPlayer().orElse(null);
         if (uuid == null) {
             return;

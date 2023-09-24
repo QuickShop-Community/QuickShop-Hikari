@@ -93,7 +93,9 @@ public final class Main extends JavaPlugin implements Listener {
         if (shop == null) {
             return;
         }
-        if (event.getItem().getType() == Material.AIR) return;
+        if (event.getItem().getType() == Material.AIR) {
+            return;
+        }
         if (shop.matches(event.getItem())) {
             return;
         }

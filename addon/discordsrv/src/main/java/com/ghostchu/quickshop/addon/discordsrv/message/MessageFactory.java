@@ -116,7 +116,9 @@ public class MessageFactory {
     }
 
     private String getPlayerName(QUser uuid) {
-        if (uuid == null) return "Unknown";
+        if (uuid == null) {
+            return "Unknown";
+        }
         return uuid.getDisplay();
     }
 

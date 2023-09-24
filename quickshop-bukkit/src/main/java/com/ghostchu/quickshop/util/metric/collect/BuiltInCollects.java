@@ -133,7 +133,9 @@ public class BuiltInCollects {//Statistic
     public CustomChart researchProtocolLibVersion() {
         return new SimplePie("research_protocollib_version", () -> {
             Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-            if (protocolLib == null) return "Not Installed";
+            if (protocolLib == null) {
+                return "Not Installed";
+            }
             return protocolLib.getDescription().getVersion();
         });
     }
@@ -155,9 +157,13 @@ public class BuiltInCollects {//Statistic
             StringJoiner joiner = new StringJoiner("+");
             joiner.setEmptyValue("Not detected");
             Plugin geyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
-            if (geyser != null) joiner.add("Geyser-Spigot");
+            if (geyser != null) {
+                joiner.add("Geyser-Spigot");
+            }
             Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate");
-            if (floodgate != null) joiner.add("Floodgate");
+            if (floodgate != null) {
+                joiner.add("Floodgate");
+            }
             return joiner.toString();
         });
     }

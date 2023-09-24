@@ -268,8 +268,12 @@ public class DiscountCode {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DiscountCode that)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DiscountCode that)) {
+            return false;
+        }
         return maxUsage == that.maxUsage && Double.compare(that.threshold, threshold) == 0 && expiredTime == that.expiredTime && code.equals(that.code) && owner.equals(that.owner) && shopScope.equals(that.shopScope) && codeType == that.codeType && rate.equals(that.rate);
     }
 

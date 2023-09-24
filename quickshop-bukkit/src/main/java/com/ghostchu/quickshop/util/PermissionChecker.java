@@ -107,7 +107,9 @@ public class PermissionChecker implements Reloadable {
                 public void setCancelled(boolean cancel) {
                     //tracking cancel plugin
                     if (cancel && !isCancelled()) {
-                        if (qsCancelling.get()) return;
+                        if (qsCancelling.get()) {
+                            return;
+                        }
                         Log.debug("An plugin blocked the protection checking event! See this stacktrace:");
                         for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
                             Log.debug(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");

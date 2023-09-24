@@ -57,7 +57,9 @@ public class NbtApiInitializer {
         logger.info("Selected: " + dto);
         Path path = Files.createTempDirectory("quickshop-nbtapi-tmp");
         File nbtapiTempFile = path.toFile();
-        if (!nbtapiTempFile.exists()) nbtapiTempFile.mkdirs();
+        if (!nbtapiTempFile.exists()) {
+            nbtapiTempFile.mkdirs();
+        }
         nbtapiTempFile = new File(nbtapiTempFile, dto.getFilename());
 
         logger.info("Downloading NBT-API from Modrinth...");
@@ -96,7 +98,9 @@ public class NbtApiInitializer {
         ResponseProject project = responseProjects[0];
         ResponseProject.FilesDTO dto = null;
         for (ResponseProject.FilesDTO file : project.getFiles()) {
-            if (!file.getPrimary()) continue;
+            if (!file.getPrimary()) {
+                continue;
+            }
             dto = file;
             break;
         }

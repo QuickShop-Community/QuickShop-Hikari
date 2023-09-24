@@ -61,12 +61,22 @@ public class CommandParser {
         Iterator<String> it = args.iterator();
         while (it.hasNext()) {
             String waiting = it.next();
-            if (!waiting.startsWith("-")) continue;
-            if (!waiting.contains(":")) continue;
+            if (!waiting.startsWith("-")) {
+                continue;
+            }
+            if (!waiting.contains(":")) {
+                continue;
+            }
             String[] spilt = waiting.split(":", 2);
-            if (spilt.length < 2) continue;
-            if (spilt[0].isEmpty() || spilt[1].isEmpty()) continue;
-            if (spilt[0].endsWith("\\")) continue;
+            if (spilt.length < 2) {
+                continue;
+            }
+            if (spilt[0].isEmpty() || spilt[1].isEmpty()) {
+                continue;
+            }
+            if (spilt[0].endsWith("\\")) {
+                continue;
+            }
             it.remove();
             List<String> registered = colonArgs.getOrDefault(spilt[0], new ArrayList<>());
             registered.add(spilt[1]);

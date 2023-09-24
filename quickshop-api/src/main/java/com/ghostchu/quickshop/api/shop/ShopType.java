@@ -18,8 +18,9 @@ public enum ShopType {
 
     public static @Nullable ShopType fromString(@NotNull String string) {
         for (ShopType type : ShopType.values()) {
-            if (type.name().equalsIgnoreCase(string))
+            if (type.name().equalsIgnoreCase(string)) {
                 return type;
+            }
         }
         return null;
     }

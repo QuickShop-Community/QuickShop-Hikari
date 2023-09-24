@@ -77,7 +77,9 @@ public final class Main extends JavaPlugin implements Listener {
 
     public void updateShopMarker(Shop shop) {
         Optional<BlueMapWorld> bWorld = blueMapAPI.getWorld(shop.getLocation().getWorld());
-        if (bWorld.isEmpty()) return;
+        if (bWorld.isEmpty()) {
+            return;
+        }
         String shopName = shop.getShopName();
         String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
         if (shopName == null) {

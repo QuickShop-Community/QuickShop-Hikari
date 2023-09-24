@@ -107,8 +107,12 @@ public class QuickShopBukkit extends JavaPlugin {
 
     private void loadPlatform() throws Exception {
         int platformId = 0;
-        if (PaperLib.isSpigot()) platformId = 1;
-        if (PaperLib.isPaper()) platformId = 2;
+        if (PaperLib.isSpigot()) {
+            platformId = 1;
+        }
+        if (PaperLib.isPaper()) {
+            platformId = 2;
+        }
 
         platformId = PackageUtil.parsePackageProperly("forcePlatform").asInteger(platformId);
         try {

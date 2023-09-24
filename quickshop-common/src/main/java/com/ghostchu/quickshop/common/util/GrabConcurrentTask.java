@@ -44,7 +44,9 @@ public class GrabConcurrentTask<T> {
         do {
             // loop timed out
             long loopAllowedWaitingTime = timeoutEpochSecond - Instant.now().getEpochSecond();
-            if (loopAllowedWaitingTime <= 0) return null;
+            if (loopAllowedWaitingTime <= 0) {
+                return null;
+            }
             Optional<T> element = deque.poll(loopAllowedWaitingTime, TimeUnit.SECONDS);
             //noinspection OptionalAssignedToNull
             if (element == null) {

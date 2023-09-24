@@ -56,13 +56,23 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
                 return true;
             }
         }
-        if (BLACKLIST_LORES.isEmpty()) return false; // Fast return if empty
-        if (!itemStack.hasItemMeta()) return false;
+        if (BLACKLIST_LORES.isEmpty()) {
+            return false; // Fast return if empty
+        }
+        if (!itemStack.hasItemMeta()) {
+            return false;
+        }
         ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) return false;
-        if (!meta.hasLore()) return false;
+        if (meta == null) {
+            return false;
+        }
+        if (!meta.hasLore()) {
+            return false;
+        }
         List<String> originalLores = meta.getLore();
-        if (originalLores == null) return false;
+        if (originalLores == null) {
+            return false;
+        }
         List<String> strippedLores = new ArrayList<>(originalLores.size());
         for (String originalLore : originalLores) {
             strippedLores.add(ChatColor.stripColor(originalLore));

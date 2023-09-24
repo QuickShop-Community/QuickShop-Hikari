@@ -625,7 +625,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         } else {
             return CompletableFuture.supplyAsync(() -> {
                 String cachedLocale = getPlayerLocale(uuid).join();
-                if (cachedLocale == null) cachedLocale = "en_us";
+                if (cachedLocale == null) {
+                    cachedLocale = "en_us";
+                }
                 return DataTables.PLAYERS.createReplace()
                         .setColumnNames("uuid", "locale", "cachedName")
                         .setParams(uuid.toString(), cachedLocale, username)
@@ -640,8 +642,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         List<Triple<UUID, String, String>> unspecificLocale = new ArrayList<>();
 
         for (Triple<UUID, String, String> user : uuidLocaleUsername) {
-            if (user.getMiddle() == null) unspecificLocale.add(user);
-            else specificLocale.add(new Object[]{user.getLeft(), user.getMiddle(), user.getRight()});
+            if (user.getMiddle() == null) {
+                unspecificLocale.add(user);
+            } else {
+                specificLocale.add(new Object[]{user.getLeft(), user.getMiddle(), user.getRight()});
+            }
         }
 
         var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl) getManager(), Integer.class,

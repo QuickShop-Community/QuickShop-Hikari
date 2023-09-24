@@ -65,10 +65,15 @@ public class TransactionAmountPAPI implements PAPISubHandler {
         Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
         long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
                 .filter(record -> {
-                    if (shopType == null) return true;
-                    if (shopType == ShopType.SELLING)
+                    if (shopType == null) {
+                        return true;
+                    }
+                    if (shopType == ShopType.SELLING) {
                         return record.getType() == ShopOperationEnum.PURCHASE_SELLING_SHOP;
-                    if (shopType == ShopType.BUYING) return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
+                    }
+                    if (shopType == ShopType.BUYING) {
+                        return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
+                    }
                     return false;
                 })
                 .mapToLong(ShopMetricRecord::getAmount).sum();
@@ -90,10 +95,15 @@ public class TransactionAmountPAPI implements PAPISubHandler {
         Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
         long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
                 .filter(record -> {
-                    if (shopType == null) return true;
-                    if (shopType == ShopType.SELLING)
+                    if (shopType == null) {
+                        return true;
+                    }
+                    if (shopType == ShopType.SELLING) {
                         return record.getType() == ShopOperationEnum.PURCHASE_SELLING_SHOP;
-                    if (shopType == ShopType.BUYING) return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
+                    }
+                    if (shopType == ShopType.BUYING) {
+                        return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
+                    }
                     return false;
                 })
                 .filter(record -> {
