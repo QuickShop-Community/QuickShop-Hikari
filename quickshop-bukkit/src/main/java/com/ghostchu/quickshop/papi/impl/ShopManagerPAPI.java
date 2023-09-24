@@ -50,7 +50,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
         }
         String type = passThroughArgs[0];
         String condition = passThroughArgs[1];
-        if (!type.equalsIgnoreCase("total")) return null;
+        if (!"total".equalsIgnoreCase(type)) return null;
         String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
         System.arraycopy(passThroughArgs, 1, passThroughArgsChild, 0, passThroughArgsChild.length);
         return handleGlobalTotal(player, passThroughArgsChild);
@@ -63,7 +63,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
         }
         String type = passThroughArgs[0];
         String condition = passThroughArgs[1];
-        if (!type.equalsIgnoreCase("total")) return null;
+        if (!"total".equalsIgnoreCase(type)) return null;
         String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
         System.arraycopy(passThroughArgs, 1, passThroughArgsChild, 0, passThroughArgsChild.length);
         return handlePlayerTotal(player.getUniqueId(), passThroughArgsChild);

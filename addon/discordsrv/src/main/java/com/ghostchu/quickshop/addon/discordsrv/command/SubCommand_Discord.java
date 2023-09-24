@@ -39,7 +39,7 @@ public class SubCommand_Discord implements CommandHandler<Player> {
             qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
             return;
         }
-        boolean ops = parser.getArgs().get(1).equalsIgnoreCase("enable");
+        boolean ops = "enable".equalsIgnoreCase(parser.getArgs().get(1));
         Util.asyncThreadRun(() -> {
             try {
                 Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(QUserImpl.createFullFilled(sender), feature, ops);

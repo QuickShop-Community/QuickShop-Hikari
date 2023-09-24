@@ -33,10 +33,10 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
         }
         DisplayOption option = DisplayOption.AUTO;
         String userInput = parser.getArgs().get(0).trim();
-        if (userInput.equalsIgnoreCase("enable")) {
+        if ("enable".equalsIgnoreCase(userInput)) {
             option = DisplayOption.ENABLED;
         }
-        if (userInput.equalsIgnoreCase("disable")) {
+        if ("disable".equalsIgnoreCase(userInput)) {
             option = DisplayOption.DISABLED;
         }
         DisplayOption optionFinCopy = option;

@@ -63,7 +63,7 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
         Set<String> keys = jsonConfiguration.getKeys(true);
         text("modules.translation.copy-values", targetLangFolder.getName(), keys.size()).send();
         for (String key : new ProgressMonitor<>(keys, (triple) -> text("modules.translation.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
-            if (key.equals("_comment")) continue;
+            if ("_comment".equals(key)) continue;
             if (jsonConfiguration.isConfigurationSection(key)) continue;
             if (jsonConfiguration.isString(key)) {
                 String originalValue = jsonConfiguration.getString(key);
