@@ -209,7 +209,7 @@ public class PaperPlatform implements Platform {
     public @NotNull Logger getSlf4jLogger(@NotNull Plugin parent) {
         try {
             return parent.getSLF4JLogger();
-        } catch (Exception exception) {
+        } catch (Throwable exception) {
             return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
         }
     }
