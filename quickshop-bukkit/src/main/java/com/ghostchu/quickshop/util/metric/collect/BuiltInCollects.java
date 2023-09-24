@@ -50,9 +50,7 @@ public class BuiltInCollects {//Statistic
     public CustomChart researchProtectionListenerBlacklist() {
         return new AdvancedPie("research_protection_checker_blacklist", () -> {
             Map<String, Integer> data = new HashMap<>();
-            plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(s -> {
-                data.put(s, 1);
-            });
+            plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(s -> data.put(s, 1));
             return data;
         });
     }
