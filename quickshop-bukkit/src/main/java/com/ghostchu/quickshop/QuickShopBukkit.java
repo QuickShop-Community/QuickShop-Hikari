@@ -30,6 +30,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.logging.Level;
 
@@ -144,7 +145,11 @@ public class QuickShopBukkit extends JavaPlugin {
                 }
                 default -> throw new UnsupportedOperationException("Unsupported platform");
             }
-            this.logger = this.platform.getSlf4jLogger(this);
+            try {
+                this.logger = this.platform.getSlf4jLogger(this);
+            } catch (Throwable th) {
+                this.logger = LoggerFactory.getLogger(getDescription().getName());
+            }
             logger.info("Platform initialized: {}", this.platform.getClass().getName());
         } catch (Throwable e) {
             throw new Exception("Failed to initialize the platform", e);
