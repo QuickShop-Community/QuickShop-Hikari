@@ -78,11 +78,6 @@ public final class Main extends JavaPlugin implements Listener {
         if (bWorld.isEmpty()) {
             return;
         }
-        String shopName = shop.getShopName();
-        String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
-        if (shopName == null) {
-            shopName = posStr;
-        }
         for (BlueMapMap map : bWorld.get().getMaps()) {
             MarkerSet markerSet = map.getMarkerSets().computeIfAbsent("quickshop-hikari-shops", (key) -> createMarkerSet());
             String markerName = fillPlaceholders(getConfig().getString("marker-label"), shop);

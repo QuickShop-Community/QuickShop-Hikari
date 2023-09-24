@@ -7,6 +7,7 @@ import javax.swing.*;
  *
  * @author Ghost_chu
  */
+@SuppressWarnings("CallToPrintStackTrace")
 public class Bootstrap {
     public static void main(String[] args) {
         System.out.println("QuickShop is a Spigot plugin.");
