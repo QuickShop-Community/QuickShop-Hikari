@@ -4,26 +4,21 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.platform.viaversion.ViaFacet;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatProcessorInfoItem implements SubPasteItem {
     private static final String IMPL = "Adventure";
     private static final String FORMATTER = "MiniMessage";
-    private final String adventureSource;
-    private final String adventureBukkitPlatformSource;
-    private final String adventureTextSerializerLegacySource;
-    private final String adventureTextSerializerGsonSource;
-    private final String miniMessageSource;
 
     public ChatProcessorInfoItem() {
-        this.adventureSource = CommonUtil.getClassPathRelative(Adventure.class);
-        this.adventureBukkitPlatformSource = CommonUtil.getClassPathRelative(BukkitAudiences.class);
-        this.adventureTextSerializerGsonSource = CommonUtil.getClassPathRelative(GsonComponentSerializer.class);
-        this.adventureTextSerializerLegacySource = CommonUtil.getClassPathRelative(LegacyComponentSerializer.class);
-        this.miniMessageSource = CommonUtil.getClassPathRelative(MiniMessage.class);
     }
 
     @Override
@@ -41,11 +36,16 @@ public class ChatProcessorInfoItem implements SubPasteItem {
         HTMLTable table = new HTMLTable(2, true);
         table.insert("Processor", IMPL);
         table.insert("Formatter", FORMATTER);
-        table.insert("Adventure", adventureSource);
-        table.insert("Bukkit Platform", adventureBukkitPlatformSource);
-        table.insert("Text Serializer(Gson)", adventureTextSerializerGsonSource);
-        table.insert("Text Serializer(Legacy)", adventureTextSerializerLegacySource);
-        table.insert("MiniMessage", miniMessageSource);
+        table.insert("Adventure API", CommonUtil.getClassPathRelative(Adventure.class));
+        table.insert("Adventure Bukkit Platform", CommonUtil.getClassPathRelative(BukkitAudiences.class));
+        table.insert("Adventure Text Serializer (Legacy)", CommonUtil.getClassPathRelative(LegacyComponentSerializer.class));
+        table.insert("Adventure Text Serializer (Gson)", CommonUtil.getClassPathRelative(GsonComponentSerializer.class));
+        table.insert("Adventure Text Serializer (Json)", CommonUtil.getClassPathRelative(JSONComponentSerializer.class));
+        table.insert("Adventure Text Serializer (BungeeChat)", CommonUtil.getClassPathRelative(BungeeComponentSerializer.class));
+        table.insert("Adventure Text Serializer (ViaVersion Facet)", CommonUtil.getClassPathRelative(ViaFacet.class));
+        table.insert("Adventure Text Serializer (ANSI)", CommonUtil.getClassPathRelative(ANSIComponentSerializer.class));
+        table.insert("Adventure Text Serializer (Plain)", CommonUtil.getClassPathRelative(PlainTextComponentSerializer.class));
+        table.insert("Adventure MiniMessage", CommonUtil.getClassPathRelative(MiniMessage.class));
         return table.render();
     }
 }
