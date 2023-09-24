@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.platform.paper;
 
-import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -207,10 +206,6 @@ public class PaperPlatform implements Platform {
 
     @Override
     public @NotNull Logger getSlf4jLogger(@NotNull Plugin parent) {
-        try {
-            return parent.getSLF4JLogger();
-        } catch (Exception exception) {
-            return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
-        }
+        return parent.getSLF4JLogger();
     }
 }
