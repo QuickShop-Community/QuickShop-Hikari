@@ -123,13 +123,11 @@ public class Util {
         }
         // Specified types by configuration
         if (!isShoppables(b.getType())) {
-            Log.debug(b.getType().name() + " not a shoppable");
             return false;
         }
         final BlockState bs = PaperLib.getBlockState(b, false).getState();
         boolean container = bs instanceof InventoryHolder;
         if (!container) {
-            Log.debug(b.getType().name() + " not a container");
             return false;
         }
         return true;
