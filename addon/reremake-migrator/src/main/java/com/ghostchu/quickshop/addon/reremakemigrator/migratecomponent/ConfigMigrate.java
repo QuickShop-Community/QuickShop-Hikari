@@ -48,6 +48,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
         migrateCommandAlias();
         migratePriceRestrictions();
         setFixedConfigValues();
+        getHikariJavaPlugin().reloadConfig();
         return true;
     }
 

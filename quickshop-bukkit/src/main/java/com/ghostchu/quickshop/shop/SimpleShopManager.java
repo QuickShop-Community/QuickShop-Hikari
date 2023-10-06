@@ -935,7 +935,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return null;
         }
         if (!this.useShopCache) {
-            return getShopIncludeAttachedViaCache(loc);
+            return getShopIncludeAttached(loc);
         }
         return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
     }
