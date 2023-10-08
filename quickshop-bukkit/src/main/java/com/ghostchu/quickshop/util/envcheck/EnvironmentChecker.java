@@ -126,8 +126,8 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "ModdedServer Database Driver Test", priority = 5)
     public ResultContainer moddedServerDatabaseDriverTest() {
         boolean trigged = (isForgeBasedServer() || isFabricBasedServer()) && !plugin.getConfig().getBoolean("database.mysql", false);
-        if (trigged) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "You can't use H2 database driver on Forge/Fabric hybird server (it's buggy and will destroy your data). Use a MySQL server instead.");
+        if (trigged && Bukkit.getPluginManager().getPlugin("Mohist") == null) {
+            return new ResultContainer(CheckResult.STOP_WORKING, "You can't use H2 database driver on Forge/Fabric hybird server (it's buggy and will destroy your data on Arclight). Use a MySQL server instead. If you're running Mohist or other no-bug software, add -Dcom.ghostchu.quickshop.util.envcheck.EnvironmentChecker.skip.MODDEDSERVER_DATABASE_DRIVER_TEST=true to startup flag to skip this check.");
         }
         return new ResultContainer(CheckResult.PASSED, "OK");
     }
