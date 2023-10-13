@@ -163,6 +163,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.shopCache = new SimpleShopCache(plugin, map);
     }
 
+    public ShopCache getShopCache() {
+        return shopCache;
+    }
+
     @Override
     public void actionBuying(
             @NotNull Player buyer,

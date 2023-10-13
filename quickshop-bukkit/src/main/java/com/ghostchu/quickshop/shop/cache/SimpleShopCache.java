@@ -49,6 +49,10 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
         }
     }
 
+    public Map<ShopCacheNamespacedKey, Cache<Location, BoxedShop>> getCaches() {
+        return CACHES;
+    }
+
     @Nullable
     @Override
     public Shop get(@NotNull ShopCacheNamespacedKey namespacedKey, @NotNull Location location, boolean allowLoading) {
