@@ -267,7 +267,7 @@ shop-purchase-cancelled: <red>Shop purchase cancelled.
 bypassing-lock: <red>Bypassing a QuickShop lock!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
 saved-to-path: The Backup was saved to {0}.
-shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
+shop-now-freezed: <green>Ви заморозили магазин. Тепер ніхто не може торгувати з цим магазином!
 price-is-now: <green>The new price of the shop is <yellow>{0}
 shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
 that-is-locked: <red>This shop is locked.
@@ -342,7 +342,7 @@ booleanformat:
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  price-hover: <yellow>Click to set a new price for the item.
+  price-hover: <yellow>Натисніть, щоб призначити нову ціну на товар.
   remove: <bold><red>[Remove Shop]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
