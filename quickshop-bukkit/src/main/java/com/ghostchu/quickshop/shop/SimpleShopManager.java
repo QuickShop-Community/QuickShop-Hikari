@@ -163,6 +163,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.shopCache = new SimpleShopCache(plugin, map);
     }
 
+    public ShopCache getShopCache() {
+        return shopCache;
+    }
+
     @Override
     public void actionBuying(
             @NotNull Player buyer,
@@ -935,7 +939,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return null;
         }
         if (!this.useShopCache) {
-            return getShopIncludeAttachedViaCache(loc);
+            return getShopIncludeAttached(loc);
         }
         return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
     }

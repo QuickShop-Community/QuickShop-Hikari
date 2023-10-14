@@ -104,7 +104,7 @@ public class ShopLoader implements SubPasteItem {
                 plugin.logger().error("Failed to load shop {}.", shop.getShopId(), e);
             }
         }));
-        plugin.logger().info("Used {}ms to load {} shops into memory ({} shops will be loaded after chunks loaded).", shopTotalTimer.stopAndGetTimePassed(), successCounter.get(), chunkNotLoaded.get());
+        plugin.logger().info("Used {}ms to load {} shops into memory ({} shops will be loaded after chunks/world loaded).", shopTotalTimer.stopAndGetTimePassed(), successCounter.get(), chunkNotLoaded.get());
     }
 
     private CompletableFuture<Void> loadShopFromShopRecord(String worldName, ShopRecord shopRecord, boolean deleteCorruptShops, List<Shop> shopsLoadInNextTick, AtomicInteger successCounter, AtomicInteger chunkNotLoaded) {
@@ -138,6 +138,9 @@ public class ShopLoader implements SubPasteItem {
             if (!worldName.equals(infoRecord.getWorld())) {
                 return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
             }
+        }
+        if (Bukkit.getWorld(infoRecord.getWorld()) == null) {
+            return ShopLoadResult.LOAD_AFTER_CHUNK_LOADED;
         }
         // Shop basic check
         if (dataRecord.getInventoryWrapper() == null) {

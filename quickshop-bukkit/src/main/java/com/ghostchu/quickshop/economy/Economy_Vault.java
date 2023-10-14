@@ -112,6 +112,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
+            plugin.logger().warn("Failure - deposit - " + name + " - " + amount + " - " + world + " - " + currency);
             plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
@@ -147,6 +148,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 plugin.logger().warn("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
             }
+            plugin.logger().warn("Failure - deposit - " + trader + " - " + amount + " - " + world + " - " + currency);
             plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
@@ -180,6 +182,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
+            plugin.logger().warn("Failure - getBalance - " + name + " - " + world + " - " + currency);
             plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return 0.0;
         }
@@ -212,6 +215,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
+            plugin.logger().warn("Failure - getBalance - " + player + " - " + world + " - " + currency);
             plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return 0.0;
         }
@@ -273,6 +277,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
+            plugin.logger().warn("Failure - withdraw - " + name + " - " + amount + " - " + world + " - " + currency);
             plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
@@ -310,6 +315,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 plugin.logger().warn("Withdraw failed and player name is NULL, Player uuid: {}", trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
             }
+            plugin.logger().warn("Failure - withdraw - " + trader + " - " + amount + " - " + world + " - " + currency);
             plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }

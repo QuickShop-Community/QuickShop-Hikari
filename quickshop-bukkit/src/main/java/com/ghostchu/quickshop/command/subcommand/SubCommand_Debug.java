@@ -5,8 +5,11 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
+import com.ghostchu.quickshop.shop.SimpleShopManager;
+import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
+import com.google.common.cache.Cache;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -55,8 +58,16 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "check-shop-debug" -> handleShopInfo(sender, subParams);
             case "set-property" -> handleProperty(sender, subParams);
             case "await-profile-io-tasks" -> handleProfileIOTasksInfo(sender, subParams);
+            case "reset-shop-caches" -> handleShopCacheResetting(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
+    }
+
+    private void handleShopCacheResetting(CommandSender sender, List<String> subParams) {
+        SimpleShopManager shopManager = (SimpleShopManager) plugin.getShopManager();
+        SimpleShopCache simpleShopCache = (SimpleShopCache) shopManager.getShopCache();
+        simpleShopCache.getCaches().values().forEach(Cache::invalidateAll);
+        sender.sendMessage("Cleared!");
     }
 
     private void handleProfileIOTasksInfo(CommandSender sender, List<String> subParams) {
