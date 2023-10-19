@@ -70,7 +70,11 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public boolean isValid() {
-        return this.inventory instanceof InventoryHolder;
+        if (this.inventory.getHolder() != null) {
+            return true;
+        } else {
+            return this.inventory instanceof InventoryHolder;
+        }
     }
 
     @Override
