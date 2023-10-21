@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
-import io.papermc.lib.PaperLib;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -38,7 +37,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         if (world == null) {
             throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
         }
-        BlockState block = PaperLib.getBlockState(world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false).getState();
+        BlockState block = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
         if (!(block instanceof InventoryHolder holder)) {
             throw new IllegalArgumentException("Invalid symbol link: Target block not a InventoryHolder (map changed/resetted?)");
         }
@@ -56,7 +55,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
                 if (world == null) {
                     throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
                 }
-                BlockState block = PaperLib.getBlockState(world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()), false).getState();
+                BlockState block = world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getState();
                 if (!(block instanceof InventoryHolder holder)) {
                     throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
                 }
