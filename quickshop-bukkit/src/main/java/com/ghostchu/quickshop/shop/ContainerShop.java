@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -1056,6 +1057,10 @@ public class ContainerShop implements Shop, Reloadable {
         //plugin.getShopContainerWatcher().scheduleCheck(this);
         try (PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
             checkDisplay();
+        }
+        if (PackageUtil.parsePackageProperly("updateShopSignOnLoad").asBoolean(false)) {
+            Log.debug("Scheduled sign update for shop " + this + " because updateShopSignOnLoad has been enabled.");
+            plugin.getSignUpdateWatcher().scheduleSignUpdate(this);
         }
     }
 

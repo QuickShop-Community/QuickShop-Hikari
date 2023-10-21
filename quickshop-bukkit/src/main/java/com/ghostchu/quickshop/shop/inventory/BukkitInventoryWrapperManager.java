@@ -5,6 +5,8 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import lombok.Builder;
@@ -13,6 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Chest;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +42,20 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
             throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
         }
         BlockState block = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
+        if (PackageUtil.parsePackageProperly("forceLoadAnotherSideWhenInventoryLocate").asBoolean(false)) {
+            BlockData blockData = block.getBlockData();
+            if (blockData instanceof Chest chest) {
+                if (chest.getType() != Chest.Type.SINGLE) {
+                    // try load another side
+                    Block anotherBlock = Util.getSecondHalf(block.getBlock());
+                    anotherBlock.getChunk().load();
+                    if (PackageUtil.parsePackageProperly("forceUpdateAnotherSideAfterForceLoadAnotherSide").asBoolean(false)) {
+                        block.update();
+                        block = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
+                    }
+                }
+            }
+        }
         if (!(block instanceof InventoryHolder holder)) {
             throw new IllegalArgumentException("Invalid symbol link: Target block not a InventoryHolder (map changed/resetted?)");
         }
@@ -56,6 +74,20 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
                     throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
                 }
                 BlockState block = world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getState();
+                if (PackageUtil.parsePackageProperly("forceLoadAnotherSideWhenInventoryLocate").asBoolean(false)) {
+                    BlockData blockData = block.getBlockData();
+                    if (blockData instanceof Chest chest) {
+                        if (chest.getType() != Chest.Type.SINGLE) {
+                            // try load another side
+                            Block anotherBlock = Util.getSecondHalf(block.getBlock());
+                            anotherBlock.getChunk().load();
+                            if (PackageUtil.parsePackageProperly("forceUpdateAnotherSideAfterForceLoadAnotherSide").asBoolean(false)) {
+                                block.update();
+                                block = world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getState();
+                            }
+                        }
+                    }
+                }
                 if (!(block instanceof InventoryHolder holder)) {
                     throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
                 }
