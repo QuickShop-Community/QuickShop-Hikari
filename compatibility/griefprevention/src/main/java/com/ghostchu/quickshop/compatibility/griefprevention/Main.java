@@ -304,7 +304,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (claim == null) {
             return;
         }
-        if (claim.getOwnerID().equals(event.getAuthorizer())) {
+        if (Objects.equals(event.getAuthorizer(), claim.getOwnerID())) {
             if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
