@@ -31,7 +31,7 @@ libraries:
   - commons-lang:commons-lang:2.6
   - net.sourceforge.csvjdbc:csvjdbc:1.0.40
   - org.dom4j:dom4j:2.1.4
-  - org.slf4j:slf4j-jdk14:2.0.7
+  - org.slf4j:slf4j-jdk14:2.0.9
   - com.vdurmont:semver4j:3.1.0
   - com.ghostchu.crowdin:crowdinota:1.0.3
   - com.google.code.gson:gson:2.10.1
