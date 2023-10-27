@@ -165,7 +165,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>EconomyCore</artifactId>
-            <version>0.1.2.2-Pre-1</version>
+            <version>0.1.2.6-Pre1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
