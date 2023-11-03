@@ -383,12 +383,12 @@ timeunit:
   hours: <red>{0} hours
   months: <red>{0} months
   longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: <red>{0} minutes
+  between-format: mellan {0} och {1}
+  minutes: <red>{0} minuter
   justnow: just now
   minute: <red>{0} minute
   std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
+  future-plain-text: framtiden
   month: <red>{0} month
   future: in {0}
   days: <red>{0} days
