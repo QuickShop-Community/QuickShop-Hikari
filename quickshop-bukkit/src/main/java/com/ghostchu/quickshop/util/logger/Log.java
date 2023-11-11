@@ -25,6 +25,7 @@ public class Log {
     private static final int BUFFER_SIZE = 500 * Type.values().length;
     private static final Queue<Record> LOGGER_BUFFER = EvictingQueue.create(BUFFER_SIZE);
     private static final boolean DISABLE_LOCATION_RECORDING;
+    private static final StackWalker STACK_WALKER = StackWalker.getInstance();
 
     static {
         // Cannot replace with Util since it depend on this class
@@ -36,7 +37,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void cron(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+    public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -70,7 +71,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void debug(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+    public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -96,7 +97,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void privacy(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+    public static void privacy(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -117,7 +118,7 @@ public class Log {
     }
 
 
-    public static void performance(@NotNull Level level, @NotNull String message, @NotNull CompletableFuture<Caller> caller) {
+    public static void performance(@NotNull Level level, @NotNull String message, @NotNull Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry = new Record(level, Type.PERFORMANCE, message, caller);
@@ -180,7 +181,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void permission(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+    public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -206,7 +207,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable CompletableFuture<Caller> caller) {
+    public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -228,7 +229,7 @@ public class Log {
     }
 
     @ApiStatus.Internal
-    public static void transaction(@NotNull Level level, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+    public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
@@ -269,9 +270,9 @@ public class Log {
         @NotNull
         private final String message;
         @Nullable
-        private final CompletableFuture<Caller> caller;
+        private final Caller caller;
 
-        public Record(@NotNull Level level, @NotNull Type type, @NotNull String message, @Nullable CompletableFuture<Caller> caller) {
+        public Record(@NotNull Level level, @NotNull Type type, @NotNull String message, @Nullable Caller caller) {
             this.level = level;
             this.type = type;
             this.message = message;
@@ -285,26 +286,19 @@ public class Log {
                 if (this.caller == null) {
                     caller = new Caller("<NO RECORDING>", "<NO RECORDING>", "<NO RECORDING>", -1);
                 } else {
-                    caller = this.caller.join();
+                    caller = this.caller;
                 }
-                if (caller != null) {
-                    String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
-                    sb.append("[");
-                    sb.append(caller.getThreadName());
-                    sb.append("/");
-                    sb.append(this.getLevel().getName());
-                    sb.append("]");
-                    sb.append(" ");
-                    sb.append("(");
-                    sb.append(simpleClassName).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
-                    sb.append(")");
-                    sb.append(" ");
-                } else {
-                    sb.append("[");
-                    sb.append(this.getLevel().getName());
-                    sb.append("]");
-                    sb.append(" ");
-                }
+                String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
+                sb.append("[");
+                sb.append(caller.getThreadName());
+                sb.append("/");
+                sb.append(this.getLevel().getName());
+                sb.append("]");
+                sb.append(" ");
+                sb.append("(");
+                sb.append(simpleClassName).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
+                sb.append(")");
+                sb.append(" ");
                 sb.append(this.getMessage());
                 return sb.toString();
             }, QuickExecutor.getCommonExecutor());
@@ -334,37 +328,36 @@ public class Log {
         }
 
         @NotNull
-        public static CompletableFuture<Caller> create() {
+        public static Caller create() {
             return create(3, false);
         }
 
         @NotNull
         public static Caller createSync() {
-            return create(3, false).join();
+            return create(3, false);
         }
 
         @NotNull
         public static Caller createSync(boolean force) {
-            return create(3, force).join();
+            return create(3, force);
         }
 
         @NotNull
-        public static CompletableFuture<Caller> create(int steps, boolean force) {
+        public static Caller create(int steps, boolean force) {
             if (!force) {
                 if ("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
-                    return CompletableFuture.supplyAsync(() -> new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1));
+                    return new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1);
                 }
             }
-            Throwable throwable = new Throwable("Caller Check");
-            return CompletableFuture.supplyAsync(() -> {
-                StackTraceElement[] caller = throwable.getStackTrace();
-                StackTraceElement frame = caller[steps];
-                String threadName = Thread.currentThread().getName();
-                String className = frame.getClassName();
-                String methodName = frame.getMethodName();
-                int codeLine = frame.getLineNumber();
-                return new Caller(threadName, className, methodName, codeLine);
-            }, QuickExecutor.getCommonExecutor());
+            return STACK_WALKER.walk(stream -> stream.skip(steps).findFirst()
+                .map(frame -> {
+                    String threadName = Thread.currentThread().getName();
+                    String className = frame.getClassName();
+                    String methodName = frame.getMethodName();
+                    int codeLine = frame.getLineNumber();
+                    return new Caller(threadName, className, methodName, codeLine);
+                })
+                .orElseGet(() -> new Caller("<INVALID>", "<INVALID>", "<INVALID>", -1)));
         }
     }
 
