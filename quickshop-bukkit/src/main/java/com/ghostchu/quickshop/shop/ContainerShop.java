@@ -743,12 +743,12 @@ public class ContainerShop implements Shop, Reloadable {
 
         //line 3
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
-            Component left = plugin.text().of("signs.item-left").forLocale();
-            Component right = plugin.text().of("signs.item-right").forLocale();
+            Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
+            Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
             Component itemName = Util.getItemStackName(getItem());
             lines.add(left.append(itemName).append(right));
         } else {
-            lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));
+            lines.add(plugin.text().of("signs.item-left").forLocale(locale.getLocale()).append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale(locale.getLocale()))));
         }
 
         //line 4
