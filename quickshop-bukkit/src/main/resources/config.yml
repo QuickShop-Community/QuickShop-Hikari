@@ -74,7 +74,7 @@ logging:
   #The target size (in MB) to split log files to the "plugins\QuickShop\logs" folder.
   file-size: 10.0
   #Log data storage location (0 to file, 1 to database)
-  location: 0
+  location: 1
 
 #Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
 force-bukkit-chat-handler: false
