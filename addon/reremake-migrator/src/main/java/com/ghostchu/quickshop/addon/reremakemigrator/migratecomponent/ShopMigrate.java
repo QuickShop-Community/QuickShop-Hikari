@@ -94,8 +94,8 @@ public class ShopMigrate extends AbstractMigrateComponent {
             } catch (Exception e) {
                 getHikari().logger().warn("Failed to migrate shop " + reremakeShop, e);
             }
-            unloadAndMoveAwayReremake();
         }).thenAcceptAsync(a -> {
+            unloadAndMoveAwayReremake();
             registerHikariShops(preparedShops);
             saveHikariShops();
         }, QuickExecutor.getCommonExecutor()).exceptionally((error) -> {
