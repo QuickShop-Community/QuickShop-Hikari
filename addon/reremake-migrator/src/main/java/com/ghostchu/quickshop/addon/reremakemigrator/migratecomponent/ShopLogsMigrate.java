@@ -68,30 +68,34 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
         long sumLines = countLines(filteredFile);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
         try (bufferedReader) {
-            String cursor;
+            String cursor = null;
             long count = 0;
-            while ((cursor = bufferedReader.readLine()) != null) {
-                count++;
-                text("modules.shop-logs.import-entry", "<ENTRY TOO  LONG>", count, sumLines);
-                DatedLogEntry entry = JsonUtil.standard().fromJson(new String(Base64.getDecoder().decode(cursor), StandardCharsets.UTF_8), DatedLogEntry.class);
-                Date date = entry.getDate();
-                JsonObject jObj = JsonUtil.readObject(entry.getContent());
-                if (jObj.has("shop") && jObj.has("type") && jObj.has("trader")
-                        && jObj.has("itemStack") && jObj.has("amount")
-                        && jObj.has("balance")
-                        && jObj.has("tax")) {
-                    try {
-                        importThePurchaseRecord(date, jObj);
-                    } catch (Exception e) {
-                        getHikari().logger().warn("Error on importing to database", e);
+            try {
+                while ((cursor = bufferedReader.readLine()) != null) {
+                    count++;
+                    text("modules.shop-logs.import-entry", "<ENTRY TOO  LONG>", count, sumLines);
+                    DatedLogEntry entry = JsonUtil.standard().fromJson(new String(Base64.getDecoder().decode(cursor), StandardCharsets.UTF_8), DatedLogEntry.class);
+                    Date date = entry.getDate();
+                    JsonObject jObj = JsonUtil.readObject(entry.getContent());
+                    if (jObj.has("shop") && jObj.has("type") && jObj.has("trader")
+                            && jObj.has("itemStack") && jObj.has("amount")
+                            && jObj.has("balance")
+                            && jObj.has("tax")) {
+                        try {
+                            importThePurchaseRecord(date, jObj);
+                        } catch (Exception e) {
+                            getHikari().logger().warn("Error on importing to database", e);
+                        }
+                        continue;
                     }
-                    continue;
-                }
 //                if (jObj.has("creator") && jObj.has("shop") && jObj.has("location")) {
 //                    importTheCreationRecord(date, jObj);
 //                    continue;
 //                }
-                getHikari().logger().warn("Invalid record {}, skipping", entry);
+                    getHikari().logger().warn("Invalid record {}, skipping", entry);
+                }
+            } catch (Exception e) {
+                getHikari().logger().warn("Parse the log failed, cursor [{}]", cursor, e);
             }
         }
     }
