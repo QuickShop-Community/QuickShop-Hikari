@@ -197,7 +197,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
 
     @Nullable
     private DatedLogEntry _formatLine(String line) throws DateTimeParseException {
-        String json = line.substring(template.length() - 1);
+        String json = StringUtils.substringAfter(line, "] ");
         if (!CommonUtil.isJson(json)) return null;
         String dateStr = line.substring(1, template.length() - 1).trim();
         TemporalAccessor accessor = DATETIME_FORMATTER.parse(dateStr);
