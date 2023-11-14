@@ -22,6 +22,8 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.ZoneId;
@@ -245,9 +247,13 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
         }
         File mainLogFile = new File(dataFolder, "qs.log");
         getHikari().logger().info("Selected main log file: " + mainLogFile.getAbsolutePath());
-
         if (mainLogFile.exists()) {
-            logsFile.println(Files.readString(mainLogFile.toPath()));
+            try {
+                logsFile.println(Files.readString(mainLogFile.toPath()));
+            } catch (MalformedInputException e) {
+                getHikari().logger().warn("Encoding determine failed, file not a UTF-8 encoding file, re-read by platform encoding...", e);
+                logsFile.println(Files.readString(mainLogFile.toPath(), Charset.defaultCharset()));
+            }
         } else {
             throw new IllegalStateException("Main qs.log log file not exists");
         }
