@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -231,17 +230,24 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
 
     private void appendFiles(File dataFolder, PrintWriter logsFile) throws IOException {
         text("modules.shop-logs.extract-history-files").send();
-        File[] files = dataFolder.listFiles(f -> f.getName().endsWith(".log.gz"));
-        if (files == null) return;
-        for (File file : files) {
-            GzipParameters gzipParameters = new GzipParameters();
-            gzipParameters.setFilename(file.getName());
-            try (GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
-                String content = new String(gzipInputStream.readAllBytes(), StandardCharsets.UTF_8);
-                logsFile.println(content);
-                logsFile.flush();
+        File logsSubFolder = new File(dataFolder, "logs");
+        if (logsSubFolder.exists()) {
+            File[] files = logsSubFolder.listFiles(f -> f.getName().endsWith(".log.gz"));
+            if (files != null) {
+                for (File file : files) {
+                    try (GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
+                        String content = new String(gzipInputStream.readAllBytes(), StandardCharsets.UTF_8);
+                        logsFile.println(content);
+                        logsFile.flush();
+                    }
+                }
             }
         }
-        logsFile.println(Files.readString(new File(dataFolder, "qs.log").toPath(), StandardCharsets.UTF_8));
+        File mainLogFile = new File(dataFolder, "qs.log");
+        if (mainLogFile.exists()) {
+            logsFile.println(Files.readString(mainLogFile.toPath(), StandardCharsets.UTF_8));
+        } else {
+            throw new IllegalStateException("Main qs.log log file not exists");
+        }
     }
 }
