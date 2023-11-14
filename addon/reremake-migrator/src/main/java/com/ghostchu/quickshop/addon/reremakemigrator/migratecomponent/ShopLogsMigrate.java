@@ -244,8 +244,10 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
             }
         }
         File mainLogFile = new File(dataFolder, "qs.log");
+        getHikari().logger().info("Selected main log file: " + mainLogFile.getAbsolutePath());
+
         if (mainLogFile.exists()) {
-            logsFile.println(Files.readString(mainLogFile.toPath(), StandardCharsets.UTF_8));
+            logsFile.println(Files.readString(mainLogFile.toPath()));
         } else {
             throw new IllegalStateException("Main qs.log log file not exists");
         }
