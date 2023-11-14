@@ -2,10 +2,7 @@ package com.ghostchu.quickshop.addon.reremakemigrator.command;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
-import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ConfigMigrate;
-import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.MigrateComponent;
-import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ShopMigrate;
-import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.TranslationMigrateComponent;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.*;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.ProgressMonitor;
@@ -48,6 +45,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
         migrateComponentList.add(new ConfigMigrate(plugin, hikari, reremake, sender));
         migrateComponentList.add(new TranslationMigrateComponent(plugin, hikari, reremake, sender));
         migrateComponentList.add(new ShopMigrate(plugin, hikari, reremake, sender, shouldOverrideExistShops));
+        migrateComponentList.add(new ShopLogsMigrate(plugin, hikari, reremake, sender));
         Util.asyncThreadRun(() -> {
             running.set(true);
             plugin.setDeniedMessage(hikari.text().of(sender, "addon.reremake-migrator.join_blocking_converting").forLocale());
