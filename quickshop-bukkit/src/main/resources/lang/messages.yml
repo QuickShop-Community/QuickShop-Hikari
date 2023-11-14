@@ -1669,6 +1669,12 @@ addon:
         copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+      shop-logs:
+        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
+        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
+        filter-history-files: "<gray>Please wait for us to filter the history log..."
+        filtered-history-files: "<gray>Filtered {0} lines out of queue."
+        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>You're successfully created a shop on AdvancedChests container!
