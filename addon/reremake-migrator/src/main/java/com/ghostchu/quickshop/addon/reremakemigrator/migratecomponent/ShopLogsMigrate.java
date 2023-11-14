@@ -48,7 +48,6 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
         text("modules.shop-logs.start-migrate").send();
         File logsFile = new File(getReremake().getDataFolder(), "appended-qs.log");
         File filteredFile = new File(getReremake().getDataFolder(), "filtered-qs.log");
-        if (!logsFile.exists()) return true;
         try (PrintWriter printWriter = new PrintWriter(logsFile, StandardCharsets.UTF_8)) {
             logsFile.createNewFile();
             filteredFile.createNewFile();
