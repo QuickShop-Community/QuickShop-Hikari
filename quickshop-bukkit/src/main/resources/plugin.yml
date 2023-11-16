@@ -29,7 +29,7 @@ libraries:
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.2
   - commons-lang:commons-lang:2.6
-  - net.sourceforge.csvjdbc:csvjdbc:1.0.40
+  - net.sourceforge.csvjdbc:csvjdbc:1.0.41
   - org.dom4j:dom4j:2.1.4
   - org.slf4j:slf4j-jdk14:2.0.9
   - com.vdurmont:semver4j:3.1.0
