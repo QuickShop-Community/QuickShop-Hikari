@@ -283,7 +283,7 @@ public class Util {
      */
     @Deprecated(forRemoval = true)
     public static void debugLog(@NotNull String... logs) {
-        CompletableFuture<Log.Caller> caller = Log.Caller.create();
+        Log.Caller caller = Log.Caller.create();
         for (String log : logs) {
             Log.debug(Level.INFO, log, caller);
         }

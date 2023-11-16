@@ -1415,6 +1415,7 @@ addon:
         migrate-entry: "<gray> - Migriere <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>Deaktiviere Reremake um Datenüberschreibungen zu verhindern..."
         register-entry: "<gray> - Registriere <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Speichere <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>Speichere <gold>{0}</gold> Shop(s). Dies kann einen Augenblick dauern™ (Die Zeit basiert auf die Anzahl an Shops)..."
         conflict: "<gray> - KONFLIKT > Konflikt zwischen Reremake Shop und einem existierenden Hikari Shop Platzierung erkannt. Führe vordefinierte Aktion aus: <dark_gray>{0}</dark_gray>"
       translation:
@@ -1422,6 +1423,12 @@ addon:
         copy-values: "<yellow>Kopiere Inhalte von Sprache <gold>{0}</gold> (insgesamt {1} Inhalte)..."
         migrate-entry: "<gray> - Migriere <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - Kopiere <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+      shop-logs:
+        start-migrate: "<yellow>Migriere Shop Logs (Details in Konsole), bitte warten...</yellow>"
+        extract-history-files: "<gray>Bitte warte, bis wir alles entpackt und die Verlaufsprotokolle angehängt haben..."
+        filter-history-files: "<gray>Bitte warte während wir die Verlaufsprotokolle filtern..."
+        filtered-history-files: "<gray>{0} Linien aus der Warteschlange gefiltert."
+        import-entry: "<gray> - Migriere <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>Du hast erfolgreich einen Shop auf einem AdvancedChests Container erstellt!

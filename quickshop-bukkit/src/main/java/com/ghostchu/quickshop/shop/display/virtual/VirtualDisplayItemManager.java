@@ -33,10 +33,15 @@ public class VirtualDisplayItemManager {
     private boolean testPassed = true;
 
     public VirtualDisplayItemManager(QuickShop plugin) {
-        this.plugin = plugin;
-        this.protocolManager = ProtocolLibrary.getProtocolManager();
-        this.entityIdCounter = new AtomicInteger(Integer.MAX_VALUE);
-        load();
+        try {
+            this.plugin = plugin;
+            this.protocolManager = ProtocolLibrary.getProtocolManager();
+            this.entityIdCounter = new AtomicInteger(Integer.MAX_VALUE);
+            load();
+        } catch (NoClassDefFoundError noClassDefFoundError) {
+            plugin.logger().error("DisplayType already set to VIRTUAL_DISPLAY_ITEM, but ProtocolLib not installed on your server, please download ProtocolLib and install it from https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/ or change the display type to REAL_DISPLAY_ITEM (0) or disable display system.");
+            throw new IllegalStateException("ProtocolLib not installed on this server");
+        }
     }
 
     public void load() {

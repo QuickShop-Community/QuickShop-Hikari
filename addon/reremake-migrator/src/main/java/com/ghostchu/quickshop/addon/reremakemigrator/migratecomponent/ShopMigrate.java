@@ -3,6 +3,8 @@ package com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.obj.QUserImpl;
@@ -15,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.InventoryHolder;
@@ -25,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -84,13 +88,14 @@ public class ShopMigrate extends AbstractMigrateComponent {
                         Collections.emptyMap(),
                         new SimpleBenefit()
                 );
+                migrateReremakeBanAddonData(reremakeShop, hikariRawShop);
                 hikariRawShop.setDirty();
                 preparedShops.add(hikariRawShop);
             } catch (Exception e) {
                 getHikari().logger().warn("Failed to migrate shop " + reremakeShop, e);
             }
-            unloadAndMoveAwayReremake();
         }).thenAcceptAsync(a -> {
+            unloadAndMoveAwayReremake();
             registerHikariShops(preparedShops);
             saveHikariShops();
         }, QuickExecutor.getCommonExecutor()).exceptionally((error) -> {
@@ -99,6 +104,20 @@ public class ShopMigrate extends AbstractMigrateComponent {
             return null;
         }).join();
         return success.get();
+    }
+
+    private void migrateReremakeBanAddonData(Shop reremakeShop, ContainerShop hikariRawShop) {
+        try {
+            ConfigurationSection reremakeBanExtra = reremakeShop.getExtra(new MockPlugin("QuickShopBan"));
+            for (String bannedPlayer : reremakeBanExtra.getStringList("bannedplayers")) {
+                if (!CommonUtil.isUUID(bannedPlayer)) continue;
+                getHikari().logger().info("Migrating shop ban record {} at {} to new Hikari container shop.", bannedPlayer, reremakeShop);
+                UUID uuid = UUID.fromString(bannedPlayer);
+                hikariRawShop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.BLOCKED);
+            }
+        } catch (Throwable th) {
+            getHikari().logger().warn("Failed to migrate the shop ban record", th);
+        }
     }
 
     private YamlConfiguration getReremakeShopExtra(Shop reremakeShop) {

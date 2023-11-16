@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.5</version>
+        <version>5.2.0.6</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -140,7 +140,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.3</version>
+            <version>2.11.5</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -165,7 +165,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>EconomyCore</artifactId>
-            <version>0.1.2.2-Pre-1</version>
+            <version>0.1.2.6-Pre1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -216,7 +216,7 @@
         <dependency>
             <groupId>net.sourceforge.csvjdbc</groupId>
             <artifactId>csvjdbc</artifactId>
-            <version>1.0.40</version>
+            <version>1.0.41</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->

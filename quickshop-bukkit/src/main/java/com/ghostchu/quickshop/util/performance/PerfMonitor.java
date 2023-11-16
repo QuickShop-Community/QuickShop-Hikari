@@ -14,7 +14,7 @@ public class PerfMonitor implements AutoCloseable {
     private final Instant startTime;
     @Nullable
     private final Duration exceptedDuration;
-    private final CompletableFuture<Log.Caller> caller;
+    private final Log.Caller caller;
     @Nullable
     private String context;
 

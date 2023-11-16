@@ -1425,13 +1425,20 @@ addon:
         migrate-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>正在卸载 Reremake 以避免数据覆盖..."
         register-entry: "<gray> -注册 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
+        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        saving-shops: "<yellow>正在保存 <gold>{0}</gold> 商店，这可能需要一段时间™（取决于商店数量）..."
         conflict: "<gray> -冲突 > 检测 Reremake 商店与现有 Hikari 商店位置之间的冲突，采取预先定义的行为: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
-        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
+        start-migrate: "<yellow>正在迁移翻译文件...</yellow>"
+        copy-values: "<yellow>在语言文件中复制值 <gold>{0}</gold> （总计 {1} 条目）..."
         migrate-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - 复制 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+      shop-logs:
+        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
+        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
+        filter-history-files: "<gray>Please wait for us to filter the history log..."
+        filtered-history-files: "<gray>Filtered {0} lines out of queue."
+        import-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>您已成功在 AdvancedChests 里创建了一个商店！

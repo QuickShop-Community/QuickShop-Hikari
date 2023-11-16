@@ -1431,6 +1431,7 @@ addon:
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
         register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
       translation:
@@ -1438,6 +1439,12 @@ addon:
         copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+      shop-logs:
+        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
+        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
+        filter-history-files: "<gray>Please wait for us to filter the history log..."
+        filtered-history-files: "<gray>Filtered {0} lines out of queue."
+        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>Você acabou de criar um loja em um baú do AdvancedChests!

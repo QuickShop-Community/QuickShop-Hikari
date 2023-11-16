@@ -135,14 +135,14 @@ metric:
   price-hover: <yellow>Підсумок {0}, Включаючи {1} Податки.
   unknown: <gray>(невідомо)
   undefined: <gray>(немає імені)
-  no-results: <red>No transactions found.
+  no-results: <red>Транзакцій не знайдено.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
+    PURCHASE_BUYING_SHOP: <yellow>Гравець продавав деякі предмети магазину, що купує.
+    CREATE: <yellow>Гравець створив магазин.
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
+    PURCHASE: <yellow>Придбаний товар у магазині
   query-argument: 'Query Argument: {0}'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
@@ -171,8 +171,8 @@ success-removed-shop: <green>Магазин видалений.
 currency-set: <green>Shop currency successfully set to {0}.
 shop-purged-start: <green>Shop purge started, check the console for details.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
-nothing-to-flush: <green>You have no new shop messages.
-no-price-change: <red>This wouldn't result in a price change!
+nothing-to-flush: <green>У вас немає нових повідомлень у магазині.
+no-price-change: <red>Це не призведе до зміни ціни!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
 inventory-unavailable: |-
   <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
@@ -186,7 +186,7 @@ shop-type:
   buying: BUYING
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
-  code: '<yellow>Code: <gold>{0}'
+  code: '<yellow>Код: <gold>{0}'
   approval-progress: '<yellow>Approval Progress: <aqua>{0}%'
   translate-progress: '<yellow>Translation Progress: <aqua>{0}%'
   name: '<yellow>Назва: <gold>{0}'
@@ -267,7 +267,7 @@ shop-purchase-cancelled: <red>Shop purchase cancelled.
 bypassing-lock: <red>Bypassing a QuickShop lock!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
 saved-to-path: The Backup was saved to {0}.
-shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
+shop-now-freezed: <green>Ви заморозили магазин. Тепер ніхто не може торгувати з цим магазином!
 price-is-now: <green>The new price of the shop is <yellow>{0}
 shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
 that-is-locked: <red>This shop is locked.
@@ -342,7 +342,7 @@ booleanformat:
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  price-hover: <yellow>Click to set a new price for the item.
+  price-hover: <yellow>Натисніть, щоб призначити нову ціну на товар.
   remove: <bold><red>[Remove Shop]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
@@ -527,8 +527,8 @@ permission:
     everyone: <yellow>Default group for all users excepted shop owner.
     staff: <yellow>System group for shop staffs.
     administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
-invalid-group: <red>Invalid group name.
-invalid-permission: <red>Invalid permission.
+invalid-group: <red>Неприпустима назва групи.
+invalid-permission: <red>Недійсний дозвіл.
 invalid-operation: <red>Invalid operation, only {0} are allowed.
 player-no-group: <yellow>Player {0} not in any group in this shop.
 player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
@@ -1431,6 +1431,7 @@ addon:
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
         register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
       translation:
@@ -1438,6 +1439,12 @@ addon:
         copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
         migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+      shop-logs:
+        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
+        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
+        filter-history-files: "<gray>Please wait for us to filter the history log..."
+        filtered-history-files: "<gray>Filtered {0} lines out of queue."
+        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>You're successfully created a shop on AdvancedChests container!

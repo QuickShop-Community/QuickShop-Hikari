@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -340,8 +341,8 @@ public class ContainerShop implements Shop, Reloadable {
                         default -> new RealDisplayItem(this);
                     };
                 }
-            } catch (Error anyError) {
-                plugin.logger().warn("Failed to init the displayItem for shop {}", this, anyError);
+            } catch (Throwable anyError) {
+                plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
                 return;
             }
         }
@@ -742,12 +743,12 @@ public class ContainerShop implements Shop, Reloadable {
 
         //line 3
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
-            Component left = plugin.text().of("signs.item-left").forLocale();
-            Component right = plugin.text().of("signs.item-right").forLocale();
+            Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
+            Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
             Component itemName = Util.getItemStackName(getItem());
             lines.add(left.append(itemName).append(right));
         } else {
-            lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));
+            lines.add(plugin.text().of("signs.item-left").forLocale(locale.getLocale()).append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale(locale.getLocale()))));
         }
 
         //line 4
@@ -1056,6 +1057,10 @@ public class ContainerShop implements Shop, Reloadable {
         //plugin.getShopContainerWatcher().scheduleCheck(this);
         try (PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
             checkDisplay();
+        }
+        if (PackageUtil.parsePackageProperly("updateShopSignOnLoad").asBoolean(false)) {
+            Log.debug("Scheduled sign update for shop " + this + " because updateShopSignOnLoad has been enabled.");
+            plugin.getSignUpdateWatcher().scheduleSignUpdate(this);
         }
     }
 
