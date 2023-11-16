@@ -341,8 +341,8 @@ public class ContainerShop implements Shop, Reloadable {
                         default -> new RealDisplayItem(this);
                     };
                 }
-            } catch (Error anyError) {
-                plugin.logger().warn("Failed to init the displayItem for shop {}", this, anyError);
+            } catch (Throwable anyError) {
+                plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
                 return;
             }
         }
