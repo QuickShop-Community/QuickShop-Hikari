@@ -39,8 +39,8 @@ libraries:
   - net.kyori:adventure-key:4.14.0
   - net.kyori:adventure-nbt:4.14.0
   - net.kyori:adventure-platform-api:4.3.0
-  - net.kyori:adventure-platform-bukkit:4.3.0
-  - net.kyori:adventure-platform-facet:4.3.0
+  - net.kyori:adventure-platform-bukkit:4.3.1
+  - net.kyori:adventure-platform-facet:4.3.1
   - net.kyori:adventure-platform-viaversion:4.3.0
   - net.kyori:adventure-serializer-configurate4:4.14.0
   - net.kyori:adventure-text-logger-slf4j:4.14.0
