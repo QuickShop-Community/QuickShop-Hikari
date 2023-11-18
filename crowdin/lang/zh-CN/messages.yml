@@ -60,7 +60,7 @@ currency-unset: <green>商店货币已被成功删除。现在会使用默认货
 you-cant-create-shop-in-there: <red>你没有在这个位置创建商店的权限。
 no-pending-action: <red>你没有任何进行中的操作
 refill-success: <green>补货成功
-failed-to-paste: <red>无法将数据上传到Pastebin，请检查你的网络连接并重试。（查看后台获取详情）
+failed-to-paste: <red>无法将数据上传到Pastebin，请检查你的网络连接并重试。（检查控制台获取详情）
 shop-out-of-stock-name: <dark_purple>你名为 {0} 的商店的 {1} 脱销了!
 shop-name-invalid: <red>商店名称<yellow>{0} <red>无效。请换一个名称后再试！
 how-many-buy-stack: <green>聊天栏中输入你想<aqua>买<green>的份数. 每份中有 <yellow>{0}<green> 个该物品, 你可以买 <yellow>{1}<green> 份. 输入 <aqua>{2}<green> 以买下所有该物品.
@@ -141,7 +141,7 @@ metric:
     ONGOING_FEE: <yellow>玩家支付了持续商店的费用，因为支付期限已过。
     PURCHASE_BUYING_SHOP: <yellow>玩家将一些物品卖给收购商店
     CREATE: <yellow>玩家创建了一个商店
-    PURCHASE_SELLING_SHOP: <yellow>玩家从一个出售商店购买了一些物品
+    PURCHASE_SELLING_SHOP: <yellow>玩家从出售商店购买了一些物品
     PURCHASE: <yellow>通过商店购买的物品
   query-argument: '查询参数： {0}'
   amount-hover: <yellow>{0}个
@@ -408,7 +408,7 @@ command:
     buy: <yellow>切换到 <light_purple>收购 <yellow>模式
     about: <yellow>显示QuickShop信息
     language: <yellow>切换正在使用的语言
-    purge: <yellow>在后台启动商店清理任务
+    purge: <yellow>在控制台启动商店清理任务
     paste: <yellow>上传调试信息到Pastebin
     title: <green>QuickShop 帮助
     remove: <yellow>删除您正看向的商店
@@ -624,7 +624,7 @@ database:
   generated-at: '<yellow>生成于： <gold>{0}'
   purge-date: <red>您必须给出一个日期
   purge-warning: <yellow>此操作将清除存储在数据库中的历史记录，包括商店创建/更改/删除、购买、交易和系统日志。 删除这些数据可以释放磁盘空间，但所有历史数据都会丢失，依赖计量的其它插件将停止工作。 要继续执行此操作，请执行指令以 `/quickshop database purgelogs <before-days> 确认`
-  purge-task-created: <green>任务已创建! 数据库在后台静默清除历史记录
+  purge-task-created: <green>任务已创建! 数据库在控制台静默清除历史记录
   purge-done-with-line: <green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。
   purge-done-with-error: <red>清除任务失败，请检查服务器控制台获取详细信息。
   purge-players-cache: <yellow>请稍候，正在清理玩家缓存...
@@ -795,8 +795,8 @@ addon:
         {
         "embed":
           {
-              "title": ":outbox_tray: 有人在商店购买了物品",
-              "description": "此玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%%.",
+              "title": ":outbox_tray: 有人在商店购买物品",
+              "description": "此玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%% .",
               "color": 52084,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -850,8 +850,8 @@ addon:
         {
         "embed":
           {
-              "title": ":dollar: 有人在商店里购买了",
-              "description": "该玩家 %%purchase.name%% 在商店里购买了 %%purchase.amount%%个 %%shop.item.name%%物品.",
+              "title": ":dollar: 有人在商店里购买",
+              "description": "该玩家 %%purchase.name%% 在商店里购买了 %%purchase.amount%%个 %%shop.item.name%% 物品.",
               "color": 6061450,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -1160,7 +1160,7 @@ addon:
         {
             "embed": {
                 "title": ":money_with_wings:商店价格已被修改",
-                "description": "商店修改了价格设定.",
+                "description": "商店修改了价格",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1425,7 +1425,7 @@ addon:
         migrate-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         unloading-reremake: "<gold>正在卸载 Reremake 以避免数据覆盖..."
         register-entry: "<gray> -注册 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - 保存 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>正在保存 <gold>{0}</gold> 商店，这可能需要一段时间™（取决于商店数量）..."
         conflict: "<gray> -冲突 > 检测 Reremake 商店与现有 Hikari 商店位置之间的冲突，采取预先定义的行为: <dark_gray>{0}</dark_gray>"
       translation:
@@ -1434,10 +1434,10 @@ addon:
         migrate-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - 复制 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
-        filtered-history-files: "<gray>Filtered {0} lines out of queue."
+        start-migrate: "<yellow>正在迁移商店日志（详情请检查控制台），请稍候...</yellow>"
+        extract-history-files: "<gray>请等待解压并追加历史日志..."
+        filter-history-files: "<gray>请等待我们筛选历史日志..."
+        filtered-history-files: "<gray>从队列中筛选出 {0} 行"
         import-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
