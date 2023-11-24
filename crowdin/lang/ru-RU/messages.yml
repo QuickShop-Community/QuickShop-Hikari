@@ -53,7 +53,7 @@ quick-fill:
   entry-cooperation: ' <yellow>- <red>[совместный] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Средняя цена: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Проверка Инвентаря] <gray> Внимание! Найден отображаемый предмет БыстрогоМагазина <gold>{2}</gold> в инвентаре в <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, что не должно было произойти, обычно это значит, что кто-то эксплуатирует уязвимость для дублирования отображаемого предмета."
 digits-reach-the-limit: <red>Вы достигли пределов десятичных знаков в цене.
 currency-unset: <green>Валюта магазина сброшена. Будет использована по умолчанию.
 you-cant-create-shop-in-there: <red>У вас нет прав на создание магазины в текущем месте.
