@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.platform.spigot.v1_20_1;
+package com.ghostchu.quickshop.platform.spigot.v1_20_2;
 
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.Util;
@@ -11,10 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
-import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R1.enchantments.CraftEnchantment;
-import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_20_R1.potion.CraftPotionEffectType;
+import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_20_R3.enchantments.CraftEnchantment;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R3.potion.CraftPotionEffectType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -23,9 +23,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public class Spigot1200Platform extends AbstractSpigotPlatform implements Platform {
+public class Spigot1203Platform extends AbstractSpigotPlatform implements Platform {
 
-    public Spigot1200Platform(@NotNull Plugin plugin) {
+    public Spigot1203Platform(@NotNull Plugin plugin) {
         super(plugin);
     }
 
