@@ -47,6 +47,7 @@ public enum GameVersion {
     v1_19_R3(true, false, true, true, true, true),
     v1_20_R1(true, false, true, true, true, true),
     v1_20_R2(true, false, true, true, true, true),
+    v1_20_R3(true, false, true, true, true, true),
     UNKNOWN(true, false, false, true, true, true);
     /**
      * CoreSupports - Check does QuickShop most features supports this server version

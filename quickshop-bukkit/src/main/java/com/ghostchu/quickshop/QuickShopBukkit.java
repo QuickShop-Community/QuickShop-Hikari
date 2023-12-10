@@ -9,8 +9,9 @@ import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_3.Spigot1194Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_20_1.Spigot1200Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_20_1.Spigot1201Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1202Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1203Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
@@ -130,8 +131,9 @@ public class QuickShopBukkit extends JavaPlugin {
                         case "v1_19_R1" -> new Spigot1191Platform(this);
                         case "v1_19_R2" -> new Spigot1193Platform(this);
                         case "v1_19_R3" -> new Spigot1194Platform(this);
-                        case "v1_20_R1" -> new Spigot1200Platform(this);
+                        case "v1_20_R1" -> new Spigot1201Platform(this);
                         case "v1_20_R2" -> new Spigot1202Platform(this);
+                        case "v1_20_R3" -> new Spigot1203Platform(this);
                         default -> {
                             getLogger().warning("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
                             Bukkit.getPluginManager().disablePlugin(this);

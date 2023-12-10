@@ -53,7 +53,7 @@ quick-fill:
   entry-cooperation: ' <yellow>- <red>[совместный] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Средняя цена: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Проверка Инвентаря] <gray> Внимание! Найден отображаемый предмет БыстрогоМагазина <gold>{2}</gold> в инвентаре в <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, что не должно было произойти, обычно это значит, что кто-то эксплуатирует уязвимость для дублирования отображаемого предмета."
 digits-reach-the-limit: <red>Вы достигли пределов десятичных знаков в цене.
 currency-unset: <green>Валюта магазина сброшена. Будет использована по умолчанию.
 you-cant-create-shop-in-there: <red>У вас нет прав на создание магазины в текущем месте.
@@ -93,7 +93,7 @@ not-enough-space: <red>В вашем инвентаре осталось мес�
 shop-name-success: <green>Название магазина успешно изменено на <yellow>{0}<green>.
 shop-staff-added: <green>{0} успешно добавлен в качестве сотрудника вашего магазина.
 shops-recovering: Восстановление магазинов из резервной копии...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+virtual-player-component-hover: "<gray> Является виртуальным игроком. \n<gray> Обращается к системному аккаунту этого имени с таким же именем. </gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Имя Пользователя: <yellow>{1}</yellow></green>\n<green> Показывать как: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Вы заплатили <yellow>{0} <green>налогов.

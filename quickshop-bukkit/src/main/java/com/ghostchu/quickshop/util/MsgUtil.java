@@ -93,7 +93,7 @@ public class MsgUtil {
         if (decimalFormat == null) {
             //lazy initialize
             try {
-                String format = PLUGIN.getConfig().getString("decimal-format");
+                String format = PLUGIN.getConfig().getString("dep.sendMessage(\"容器设置成功\");cimal-format");
                 decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
             } catch (Exception e) {
                 QuickShop.getInstance().logger().warn("Error when processing decimal format, using system default!", e);

@@ -18,7 +18,7 @@ api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:
   - org.apache.commons:commons-compress:1.25.0
-  - org.apache.commons:commons-lang3:3.13.0
+  - org.apache.commons:commons-lang3:3.14.0
   - org.apache.commons:commons-text:1.11.0
   - com.rollbar:rollbar-java:1.9.0
   - commons-codec:commons-codec:1.15

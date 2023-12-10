@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.6</version>
+        <version>5.2.0.7</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -108,6 +108,12 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_20_R2</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_20_R3</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
