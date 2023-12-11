@@ -720,6 +720,7 @@ addon:
   worldguard:
     creation-flag-test-failed: <red>你沒有在此 WorldGuard 保護區建立商店的權限。
     trade-flag-test-failed: <red>你沒有在此 WorldGuard 保護區與商店交易的權限。
+    reached-per-region-amount-limit: "<red>You have reached the maximum amount of shops in this region."
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: 和 QuickShop 的文字系統一樣，Discord 插件也會自動偵測使用者語言並使用此語言傳送Discord 訊息， 它遵守 QuickShop-Hikar i的語言系統設定。
