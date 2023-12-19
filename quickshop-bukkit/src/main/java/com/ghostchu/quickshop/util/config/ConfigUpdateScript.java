@@ -24,6 +24,10 @@ public class ConfigUpdateScript {
     public void displayVirtualStatusReset() {
         getConfig().set("shop.display-type", 2);
     }
+    @UpdateScript(version = 1025)
+    public void disableCSMByDefault() {
+        getConfig().set("bungee-cross-server-msg", false);
+    }
 
     @UpdateScript(version = 1023)
     public void allowPublicKeyRetrieve() {
