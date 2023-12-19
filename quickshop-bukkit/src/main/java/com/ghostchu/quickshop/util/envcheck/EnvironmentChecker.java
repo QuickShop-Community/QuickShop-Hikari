@@ -207,9 +207,9 @@ public final class EnvironmentChecker {
                 try {
                     Thread.sleep(Integer.MAX_VALUE);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    return new ResultContainer(CheckResult.DISABLE_PLUGIN, "WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
                 }
-                return new ResultContainer(CheckResult.WARNING, "WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
+                return new ResultContainer(CheckResult.DISABLE_PLUGIN, "WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
             }
 
         }
