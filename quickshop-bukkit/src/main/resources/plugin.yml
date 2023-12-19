@@ -14,6 +14,7 @@ softdepend:
   - NBT-API
   - ItemNBTAPI
   - Mohist
+  - EcoEnchants # Add ecoenchants to allow us to detect if ee is installed for compatibility warning
 api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:

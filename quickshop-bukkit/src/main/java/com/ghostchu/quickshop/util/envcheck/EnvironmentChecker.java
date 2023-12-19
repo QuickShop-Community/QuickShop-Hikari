@@ -10,8 +10,10 @@ import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
@@ -179,6 +181,37 @@ public final class EnvironmentChecker {
     public ResultContainer rereMakeTest() {
         if (Bukkit.getPluginManager().isPluginEnabled("QuickShop")) {
             return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
+        }
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
+    }
+
+    @EnvCheckEntry(name = "EcoEnchants V11 Check", priority = 12, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer ecoEnchantsNewerVersionWarning() {
+        Plugin eePluginInstance = Bukkit.getPluginManager().getPlugin("EcoEnchants");
+        if (eePluginInstance != null) {
+            Semver semver = new Semver(eePluginInstance.getDescription().getVersion());
+            if(semver.getMajor() >= 11){
+                plugin.logger().warn("=================================================");
+                plugin.logger().warn("WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
+                plugin.logger().warn("Your installation of EcoEnchants (version >= 11.0.0) has been detected.");
+                plugin.logger().warn("Its plugin's enchantment loading logic was changed on v11 update, but due to EcoEnchants registering their enchantments with Bukkit too late, this would cause ItemStack to permanently lose all EcoEnchants enchantments during deserialization.");
+                plugin.logger().warn("For this reason, once any update to QuickShop's store occurs, it will permanently affect the information saved in the database and cause irreversible, permanent damage to items and stores.");
+                plugin.logger().warn("Unfortunately, EcoEnchants did not patch this issue until we released this version (see the link below), so to avoid widespread data corruption, we had to abort your server loading process.");
+                plugin.logger().warn("https://discordapp.com/channels/452518336627081236/1183846962194300958");
+                plugin.logger().warn("This doesn't just affect QuickShop, but also plugins like the one that loads ItemStack data during startup.");
+                plugin.logger().warn("There is nothing we can do about this issue - until EcoEnchants fixes it.");
+                plugin.logger().warn("If the issue has been fixed, or you are willing to take the risk, add this startup parameter to disable this check:");
+                plugin.logger().warn("-Dcom.ghostchu.quickshop.util.envcheck.EnvironmentChecker.skip.ECOENCHANTS_V11_CHECK=true");
+                plugin.logger().warn("=================================================");
+                plugin.logger().error("Server startup has been terminated.");
+                try {
+                    Thread.sleep(Integer.MAX_VALUE);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return new ResultContainer(CheckResult.WARNING, "WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
+            }
+
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
