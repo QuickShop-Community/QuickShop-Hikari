@@ -2,3 +2,6 @@ create:
   default-allow: false
 trade:
   default-allow: true
+# amount limit for per region, -1 for no limit
+# this is a simple limit, There are no plans to expand it
+max-shops-in-region: -1

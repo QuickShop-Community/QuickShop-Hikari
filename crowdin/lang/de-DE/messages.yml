@@ -710,6 +710,7 @@ addon:
   worldguard:
     creation-flag-test-failed: <red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen.
     trade-flag-test-failed: <red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln.
+    reached-per-region-amount-limit: "<red>Du hast die maximale Anzahl an Shops in dieser Region ereicht."
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: Genau wie das QuickShop Textsystem kann das Discord Addon die Benutzersprache automatisch erkennen und verwendet die Sprache des Benutzers um Discord Nachrichten zu senden, basierend auf QuickShop-Hikari's Sprachsystem Einstellungen.

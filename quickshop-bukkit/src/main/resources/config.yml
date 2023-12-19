@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1024
+config-version: 1025
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -56,7 +56,8 @@ show-tax: false
 respect-item-flag: true
 
 #Should we try to send cross-server message for the player?
-bungee-cross-server-msg: true
+#It could cause the kicking on some network (which have multiple server that using different minecraft versions)
+bungee-cross-server-msg: false
 
 #The currency used to create shops.
 #Set this to "" to use default currency.

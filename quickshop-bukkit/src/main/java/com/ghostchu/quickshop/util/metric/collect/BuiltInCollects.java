@@ -149,6 +149,11 @@ public class BuiltInCollects {//Statistic
         });
     }
 
+    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Publisher", description = "We count the name of the publisher (in BuildInfo) so that we know if someone else is recompiling our plugin without changing the fork name. if you are a QuickShop-Hikari fork developer, please change the return value of your getFork() to something else in order to separate it from the stats. This value is usually fixed to Ghost-chu@Hikari.")
+    public CustomChart statisticPublisher() {
+        return new SimplePie("statistic_publisher", () -> plugin.getBuildInfo().getGitInfo().getCommitUsername() + "@" + plugin.getFork());
+    }
+
     @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Research - Geyser", description = "We've released the Suspension Closure expansion for Geyser, but we're ultimately undecided about a Geyser-specific update. The data collected from this study allows us to analyze the QuickShop-Hikari user base to check if Geyser or Floodgate is installed, and with the percentage of users who have the statistics, we will decide whether to add support for Geyser GUIs and the like. We also welcome your feedback on our Discord server.")
     public CustomChart researchGeyser() {
         return new SimplePie("research_geyser", () -> {

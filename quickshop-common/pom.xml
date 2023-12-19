@@ -5,7 +5,7 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>5.2.0.7</version>
+        <version>5.2.0.8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -63,19 +63,19 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-key</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -105,25 +105,25 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-serializer-configurate4</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-logger-slf4j</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-ansi</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -135,31 +135,31 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json-legacy-impl</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-legacy</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-plain</artifactId>
             <scope>compile</scope>
-            <version>4.14.0</version>
+            <version>4.15.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>

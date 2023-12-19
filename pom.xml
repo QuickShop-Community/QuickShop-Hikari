@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>5.2.0.7</version>
+    <version>5.2.0.8</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -160,7 +160,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.2</version>
+                    <version>3.6.3</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
