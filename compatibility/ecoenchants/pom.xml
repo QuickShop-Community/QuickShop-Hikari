@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.8</version>
+        <version>5.2.0.9</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -69,13 +69,13 @@
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>EcoEnchants</artifactId>
-            <version>11.0.0</version>
+            <version>11.2.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>eco</artifactId>
-            <version>6.67.2</version>
+            <version>6.68.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
