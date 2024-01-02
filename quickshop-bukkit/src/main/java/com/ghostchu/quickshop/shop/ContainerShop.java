@@ -522,7 +522,12 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @NotNull Map<UUID, String> getPermissionAudiences() {
-        return Map.copyOf(playerGroup);
+        Map<UUID,String> clonedPlayerGroup = new HashMap<>(playerGroup);
+        Optional<UUID> uuid = getOwner().getUniqueIdOptional();
+        if(uuid.isPresent()) {
+            clonedPlayerGroup.put(getOwner().getUniqueId(), BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode());
+        }
+        return clonedPlayerGroup;
     }
 
     /**
@@ -536,7 +541,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (player.equals(getOwner().getUniqueId())) {
             return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
         }
-        String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
+        String group = getPermissionAudiences().getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
         if (plugin.getShopPermissionManager().hasGroup(group)) {
             return group;
         }
@@ -1186,13 +1191,13 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup) {
-        return playerGroup.entrySet().stream().filter(entry -> entry.getValue().equals(permissionGroup.getNamespacedNode())).map(Map.Entry::getKey).toList();
+        return getPermissionAudiences().entrySet().stream().filter(entry -> entry.getValue().equals(permissionGroup.getNamespacedNode())).map(Map.Entry::getKey).toList();
     }
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull Plugin namespace, @NotNull String permission) {
         List<UUID> result = new ArrayList<>();
-        for (Map.Entry<UUID, String> uuidStringEntry : this.playerGroup.entrySet()) {
+        for (Map.Entry<UUID, String> uuidStringEntry : this.getPermissionAudiences().entrySet()) {
             String group = uuidStringEntry.getValue();
             boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
             ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, uuidStringEntry.getKey(), namespace, permission, r);
@@ -1350,9 +1355,9 @@ public class ContainerShop implements Shop, Reloadable {
         }
         new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group).callEvent();
         if (group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
-            this.playerGroup.remove(player);
+            this.getPermissionAudiences().remove(player);
         } else {
-            this.playerGroup.put(player, group);
+            this.getPermissionAudiences().put(player, group);
         }
         setDirty();
     }
@@ -1364,7 +1369,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
         if (group == BuiltInShopPermissionGroup.EVERYONE) {
-            this.playerGroup.remove(player);
+            this.getPermissionAudiences().remove(player);
         } else {
             setPlayerGroup(player, group.getNamespacedNode());
         }
