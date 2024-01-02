@@ -1021,7 +1021,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Override
     public ReloadResult reloadModule() throws Exception {
         registerDisplayAutoDespawn();
-        registerOngoingFee();
+        //registerOngoingFee();
         registerUpdater();
         registerShopLock();
         registerDisplayItem();
