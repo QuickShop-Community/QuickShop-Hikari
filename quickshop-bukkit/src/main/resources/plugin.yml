@@ -32,7 +32,7 @@ libraries:
   - commons-lang:commons-lang:2.6
   - net.sourceforge.csvjdbc:csvjdbc:1.0.41
   - org.dom4j:dom4j:2.1.4
-  - org.slf4j:slf4j-jdk14:2.0.9
+  - org.slf4j:slf4j-jdk14:2.0.10
   - com.vdurmont:semver4j:3.1.0
   - com.ghostchu.crowdin:crowdinota:1.0.3
   - com.google.code.gson:gson:2.10.1
@@ -40,7 +40,7 @@ libraries:
   - net.kyori:adventure-key:4.15.0
   - net.kyori:adventure-nbt:4.15.0
   - net.kyori:adventure-platform-api:4.3.1
-  - net.kyori:adventure-platform-bukkit:4.3.1
+  - net.kyori:adventure-platform-bukkit:4.3.2
   - net.kyori:adventure-platform-facet:4.3.1
   - net.kyori:adventure-platform-viaversion:4.3.1
   - net.kyori:adventure-serializer-configurate4:4.15.0
