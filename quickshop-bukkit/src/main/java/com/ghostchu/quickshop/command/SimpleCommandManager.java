@@ -323,7 +323,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("permission")
-                .permission("quickshop.permission")
+                .selectivePermission("quickshop.permission")
+                .selectivePermission("quickshop.permission.bypass")
                 .executor(new SubCommand_Permission(plugin))
                 .build());
         registerCmd(CommandContainer.builder()
