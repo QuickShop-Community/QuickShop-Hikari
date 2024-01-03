@@ -1,6 +1,13 @@
 package com.ghostchu.quickshop;
 
+import com.alessiodp.libby.BukkitLibraryManager;
+import com.alessiodp.libby.Library;
+import com.alessiodp.libby.LibraryManager;
+import com.alessiodp.libby.logging.LogLevel;
+import com.alessiodp.libby.logging.adapters.JDKLogAdapter;
+import com.alessiodp.libby.logging.adapters.LogAdapter;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.GeoUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
@@ -30,9 +37,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 public class QuickShopBukkit extends JavaPlugin {
@@ -40,6 +53,7 @@ public class QuickShopBukkit extends JavaPlugin {
     private Logger logger;
     private QuickShop quickShop;
     private Throwable abortLoading;
+    private BukkitLibraryManager bukkitLibraryManager;
 
     @Override
     public void reloadConfig() {
@@ -103,9 +117,129 @@ public class QuickShopBukkit extends JavaPlugin {
     }
 
     private void loadLibraries() {
+        resolveLibraries(this);
         new UnirestLibLoader(this);
         new AdventureLibLoader(this);
     }
+
+    private void resolveLibraries(QuickShopBukkit quickShopBukkit) {
+        LogAdapter adapter = new LogAdapter() {
+            @Override
+            public void log(@NotNull LogLevel logLevel, @Nullable String s) {
+                // silent
+            }
+
+            @Override
+            public void log(@NotNull LogLevel logLevel, @Nullable String s, @Nullable Throwable throwable) {
+                // silent
+            }
+        };
+        if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
+            adapter = new JDKLogAdapter(getLogger());
+        }
+        this.bukkitLibraryManager = new BukkitLibraryManager(quickShopBukkit, "lib", adapter);
+        if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableMavenLocal"))) {
+            getLogger().info("Registered repository: Local");
+            this.bukkitLibraryManager.addMavenLocal();
+        }
+        if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimization"))) {
+            getLogger().info("Please wait... Determining the reachable mirror server...");
+            if (GeoUtil.inChinaRegion()) {
+                getLogger().info("Dependencies resolver selected: China optimized");
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationAliyunPublicRepository"))) {
+                    getLogger().info("Registered repository: Aliyun Public Mirror");
+                    this.bukkitLibraryManager.addRepository("https://maven.aliyun.com/repository/public");
+                }
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationAliyunCentralRepository"))) {
+                    getLogger().info("Registered repository: Aliyun Central Mirror");
+                    this.bukkitLibraryManager.addRepository("https://maven.aliyun.com/repository/central");
+                }
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationAliyunGradleRepository"))) {
+                    getLogger().info("Registered repository: Aliyun Gradle Plugin Mirror");
+                    this.bukkitLibraryManager.addRepository("https://maven.aliyun.com/repository/gradle-plugin");
+                }
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationAliyunApacheSnapshotsRepository"))) {
+                    getLogger().info("Registered repository: Aliyun Apache Snapshots Mirror");
+                    this.bukkitLibraryManager.addRepository("https://maven.aliyun.com/repository/apache-snapshots");
+                }
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationTencentCloudPublicRepository"))) {
+                    getLogger().info("Registered repository: Tencent Cloud Central Mirror");
+                    this.bukkitLibraryManager.addRepository("https://mirrors.cloud.tencent.com/nexus/repository/maven-public");
+                }
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationNeteasePublicRepository"))) {
+                    getLogger().info("Registered repository: Netease Central Mirror");
+                    this.bukkitLibraryManager.addRepository("https://mirrors.163.com/maven/repository/maven-public");
+                }
+            } else {
+                getLogger().info("Dependencies resolver selected: Universal Global");
+                if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableMavenCentral"))) {
+                    getLogger().info("Registered repository: Maven Central");
+                    this.bukkitLibraryManager.addMavenCentral();
+                }
+            }
+        }
+
+//        if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableSonatype"))) {
+//            getLogger().info("Registered repository: Sonatype");
+//            this.bukkitLibraryManager.addSonatype();
+//        }
+//        if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableJitpack"))) {
+//            getLogger().info("Registered repository: Jitpack");
+//            this.bukkitLibraryManager.addJitPack();
+//        }
+        loadLibraries(this.bukkitLibraryManager);
+    }
+
+    private void loadLibraries(LibraryManager manager) {
+        try (InputStream stream = getResource("libraries.maven")) {
+            if (stream == null) {
+                throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
+            }
+            String dat = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+            String[] libraries = dat.split("\n");
+            List<Library> libraryList = new ArrayList<>();
+            for (String library : libraries) {
+                if (library.isBlank() || library.startsWith("#") || library.startsWith("//")) continue;
+                library = library.trim();
+                String[] libExplode = library.split(":");
+                if (libExplode.length < 3) {
+                    throw new IllegalArgumentException("[" + library + "] not a valid maven dependency syntax");
+                }
+                String groupId = libExplode[0];
+                String artifactId = libExplode[1];
+                String version = libExplode[2];
+                String classifier = null;
+                if (libExplode.length >= 4) {
+                    classifier = libExplode[3];
+                }
+                Library.Builder libBuilder = Library.builder()
+                        .groupId(groupId)
+                        .artifactId(artifactId)
+                        .version(version)
+                        .resolveTransitiveDependencies(true)
+                        .isolatedLoad(false);
+                if (classifier != null) {
+                    libBuilder = libBuilder.classifier(classifier);
+                }
+                Library lib = libBuilder.build();
+                libraryList.add(lib);
+            }
+            getLogger().info("Loading " + libraryList.size() + " libraries...");
+            for (int i = 0; i < libraryList.size(); i++) {
+                Library load = libraryList.get(i);
+                getLogger().info("Loading library " + load.toString() + " [" + (i + 1) + "/" + libraryList.size() + "]");
+                if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
+                    for (String url : load.getUrls()) {
+                        getLogger().info(load.toString()+" url selected: "+url);
+                    }
+                }
+                manager.loadLibrary(load);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private void loadPlatform() throws Exception {
         int platformId = 0;

@@ -111,6 +111,11 @@
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
+                                        <include>org.apache.commons:*:*</include>
+                                        <include>commons-lang:commons-lang:*</include>
+                                        <include>com.google.code.gson:gson:*</include>
+                                        <include>com.alessiodp.libby:libby-core:*</include>
+                                        <include>com.alessiodp.libby:libby-bukkit:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -128,7 +133,19 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>de.themoep.minedown.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.apache.commons.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.apache.commons.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.google.gson.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.google.gson.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.alessiodp.libby.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>
