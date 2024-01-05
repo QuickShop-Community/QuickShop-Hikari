@@ -11,13 +11,14 @@ import com.ghostchu.quickshop.addon.discordsrv.message.MessageRepository;
 import com.ghostchu.quickshop.addon.discordsrv.wrapper.JDAWrapper;
 import com.ghostchu.quickshop.addon.discordsrv.wrapper.discordsrv.DiscordSRVWrapper;
 import com.ghostchu.quickshop.api.command.CommandContainer;
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
-import com.ghostchu.simplereloadlib.ReloadResult;
-import com.ghostchu.simplereloadlib.Reloadable;
 import github.scarsz.discordsrv.api.commands.PluginSlashCommand;
 import github.scarsz.discordsrv.api.commands.SlashCommandProvider;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -57,13 +58,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     public void onEnable() {
         saveDefaultConfig();
         plugin = QuickShop.getInstance();
-        plugin.getReloadManager().register(new Reloadable() {
-            @Override
-            public ReloadResult reloadModule() throws Exception {
-                reloadConfig();
-                return Reloadable.super.reloadModule();
-            }
-        });
         manager = new MessageManager(this);
         manager.register(new MessageRepository(plugin));
         factory = new MessageFactory(plugin, manager);
@@ -122,6 +116,11 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     @Override
     public void onDisable() {
         HandlerList.unregisterAll((Plugin) this);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onQuickShopReload(QSConfigurationReloadEvent event){
+        reloadConfig();
     }
 
 
