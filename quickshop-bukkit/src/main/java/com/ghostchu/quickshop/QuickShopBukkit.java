@@ -187,7 +187,11 @@ public class QuickShopBukkit extends JavaPlugin {
 //            getLogger().info("Registered repository: Jitpack");
 //            this.bukkitLibraryManager.addJitPack();
 //        }
-        loadLibraries(this.bukkitLibraryManager);
+        try {
+            loadLibraries(this.bukkitLibraryManager);
+        }catch (IllegalStateException e){
+            getLogger().log(Level.SEVERE, e.getMessage()+" The startup cannot continue.", e);
+        }
     }
 
     private void loadLibraries(LibraryManager manager) {
@@ -236,7 +240,7 @@ public class QuickShopBukkit extends JavaPlugin {
                 manager.loadLibrary(load);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Cannot download the libraries, the first time install/upgrade need the Internet connection.", e);
         }
     }
 
