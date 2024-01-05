@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.addon.discordsrv;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.command.SubCommand_Discord;
 import com.ghostchu.quickshop.addon.discordsrv.database.DiscordDatabaseHelper;
@@ -30,8 +29,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 
-public final class Main extends JavaPlugin implements Listener, SlashCommandProvider {
-    private QuickShop plugin;
+public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
     private MessageFactory factory;
     private MessageManager manager;
     private JDAWrapper jdaWrapper;
@@ -57,27 +55,28 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        plugin = QuickShop.getInstance();
         manager = new MessageManager(this);
-        manager.register(new MessageRepository(plugin));
-        factory = new MessageFactory(plugin, manager);
+        manager.register(new MessageRepository(new QuickShopJumpLoader().getQuickShopInstance()));
+        factory = new MessageFactory(new QuickShopJumpLoader().getQuickShopInstance(), manager);
         this.jdaWrapper = new DiscordSRVWrapper();
-        plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "discordalert");
-        plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode(), this, "discordalert");
+        new QuickShopJumpLoader().getQuickShopInstance().getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "discordalert");
+        new QuickShopJumpLoader().getQuickShopInstance().getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode(), this, "discordalert");
         try {
-            this.databaseHelper = new DiscordDatabaseHelper(this, plugin.getSqlManager(), plugin.getDbPrefix());
+            this.databaseHelper = new DiscordDatabaseHelper(this, new QuickShopJumpLoader().getQuickShopInstance().getSqlManager(), new QuickShopJumpLoader().getQuickShopInstance().getDbPrefix());
         } catch (SQLException e) {
             getLogger().log(Level.SEVERE, "Failed to connect to database, please check your database settings.", e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        plugin.getCommandManager().registerCmd(CommandContainer.builder()
+        new QuickShopJumpLoader().getQuickShopInstance().getCommandManager().registerCmd(CommandContainer.builder()
                 .permission("quickshopaddon.discord.use")
-                .description((locale) -> plugin.text().of("addon.discord.commands.discord.description")
-                        .forLocale(locale)).prefix("discord").executor(new SubCommand_Discord(plugin, this)).build());
+                .description((locale) -> new QuickShopJumpLoader().getQuickShopInstance().text().of("addon.discord.commands.discord.description")
+                        .forLocale(locale)).prefix("discord").executor(new SubCommand_Discord(new QuickShopJumpLoader().getQuickShopInstance(), this)).build());
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new QuickShopEventListener(this), this);
     }
+
+
 
     public MessageFactory getFactory() {
         return factory;
