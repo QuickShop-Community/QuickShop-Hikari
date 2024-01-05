@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 
-public final class Main extends JavaPlugin implements Listener, SlashCommandProvider, Reloadable {
+public final class Main extends JavaPlugin implements Listener, SlashCommandProvider {
     private QuickShop plugin;
     private MessageFactory factory;
     private MessageManager manager;
@@ -57,7 +57,13 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     public void onEnable() {
         saveDefaultConfig();
         plugin = QuickShop.getInstance();
-        plugin.getReloadManager().register(this);
+        plugin.getReloadManager().register(new Reloadable() {
+            @Override
+            public ReloadResult reloadModule() throws Exception {
+                reloadConfig();
+                return Reloadable.super.reloadModule();
+            }
+        });
         manager = new MessageManager(this);
         manager.register(new MessageRepository(plugin));
         factory = new MessageFactory(plugin, manager);
@@ -96,11 +102,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         return getConfig().getBoolean("features." + feature.getConfigNode(), true);
     }
 
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        this.reloadConfig();
-        return Reloadable.super.reloadModule();
-    }
 
     public DiscordDatabaseHelper getDatabaseHelper() {
         return databaseHelper;
