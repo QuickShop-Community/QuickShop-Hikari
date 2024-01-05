@@ -37,7 +37,7 @@ public class GeoUtil {
                 }
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Cannot determine the server region: "+e.getClass().getName()+": "+e.getMessage()+", falling back to use CN mirror (Did your server behind the GFW, or no internet connection?)");
         }
         return inChinaRegion;
     }
