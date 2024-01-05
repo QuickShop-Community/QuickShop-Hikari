@@ -14,7 +14,7 @@ public class GeoUtil {
         // Already know
         if (inChinaRegion != null) return inChinaRegion;
         var client = HttpClient.newHttpClient();
-        inChinaRegion = false;
+        inChinaRegion = true;
         var request = HttpRequest.newBuilder()
                 .uri(URI.create("https://cloudflare.com/cdn-cgi/trace"))
                 .timeout(Duration.ofSeconds(7))
@@ -30,14 +30,14 @@ public class GeoUtil {
                     }
                     String key = kv[0];
                     String value = kv[1];
-                    if (key.equalsIgnoreCase("loc") && value.equalsIgnoreCase("CN")) {
-                        inChinaRegion = true;
+                    if (key.equalsIgnoreCase("loc") && !value.equalsIgnoreCase("CN")) {
+                        inChinaRegion = false;
                         break;
                     }
                 }
             }
         } catch (IOException | InterruptedException e) {
-            inChinaRegion = false;
+            e.printStackTrace();
         }
         return inChinaRegion;
     }

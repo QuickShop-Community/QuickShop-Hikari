@@ -334,6 +334,10 @@ public class QuickShopBukkit extends JavaPlugin {
         }
     }
 
+    public QuickShop getQuickShop() {
+        return quickShop;
+    }
+
     static class UnirestLibLoader {
         public UnirestLibLoader(QuickShopBukkit plugin) {
             plugin.getLogger().info("Initialing Unirest...");

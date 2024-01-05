@@ -35,6 +35,7 @@ public interface QuickShopAPI {
         return provider.getPlugin();
     }
 
+
     /**
      * Getting command manager that allow addon direct access QuickShop sub-command system
      *
