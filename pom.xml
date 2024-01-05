@@ -108,6 +108,7 @@
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
+                                        <include>com.ghostchu:simplereloadlib:*</include>
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
