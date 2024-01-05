@@ -1355,9 +1355,9 @@ public class ContainerShop implements Shop, Reloadable {
         }
         new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group).callEvent();
         if (group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
-            this.getPermissionAudiences().remove(player);
+            this.playerGroup.remove(player);
         } else {
-            this.getPermissionAudiences().put(player, group);
+            this.playerGroup.put(player, group);
         }
         setDirty();
     }
