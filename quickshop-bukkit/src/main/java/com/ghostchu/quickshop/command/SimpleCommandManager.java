@@ -74,9 +74,15 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
-                        .prefix("transfer")
-                        .permission("quickshop.transfer")
-                        .executor(new SubCommand_Transfer(plugin))
+                        .prefix("transferall")
+                        .permission("quickshop.transferall")
+                        .executor(new SubCommand_TransferAll(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("transferownership")
+                        .permission("quickshop.transferownership")
+                        .executor(new SubCommand_TransferOwnership(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()

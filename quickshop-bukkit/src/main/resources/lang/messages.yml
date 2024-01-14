@@ -533,6 +533,8 @@ command:
     removeall: <yellow>Remove ALL shops of a specified player
     unban: <yellow>Unban a player from the shop
     transfer: <yellow>Transfer ALL shops of a player to someone else
+    transferall: <yellow>Transfer ALL shops of a player to someone else
+    transferownership: <yellow>Transfer the shop you're looking at to someone else
     size: <yellow>Change per-bulk amount of a shop
     supercreate: <yellow>Create a shop while bypassing all protection checks
     taxaccount: <yellow>Set the tax account that the shop using
@@ -817,7 +819,15 @@ imported-database: <green>Database imported from <yellow>{0}</yellow>.
 transfer-sent: <green>Shop Transfer-request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> would like to transfer their Shops
   to you. Do you want to accept the request?
+transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop
+  to you. Do you want to accept the request?
 transfer-ask: |-
+  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transferall-ask: |-
+  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transfer-single-ask: |-
   <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your Shop Transfer-request.

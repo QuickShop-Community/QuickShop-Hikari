@@ -115,7 +115,8 @@ permissions:
       quickshop.create.changeprice: true
       quickshop.create.double: true
       quickshop.create.cmd: true
-      quickshop.transfer: true
+      quickshop.transferall: true
+      quickshop.transferownership: true
       quickshop.find: true
       quickshop.fetchmessage: true
       quickshop.staff: true
@@ -135,6 +136,7 @@ permissions:
       quickshop.bypass.*: true
       quickshop.alerts: true
       quickshop.create.admin: true
+      quickshop.transferownershop.other: true
       quickshop.other.changeitem: true
       quickshop.other.changeamount: true
       quickshop.other.staff: true
@@ -324,4 +326,16 @@ permissions:
     default: op
   quickshop.other.benefit:
     description: Permission to bypass the benefit permission check
+    default: op
+  quickshop.transferall:
+    description: Permission to transfer all shops of a player to someone
+    default: op
+  quickshop.transferall.other:
+    description: Permission to transfer others all shops of a player to someone
+    default: op
+  quickshop.transferownership:
+    description: Permission to transfer a single shop of a player to someone
+    default: op
+  quickshop.transferownership.other:
+    description: Permission to transfer a single shop of a player to someone without permission check
     default: op
