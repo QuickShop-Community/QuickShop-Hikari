@@ -190,7 +190,7 @@ public final class EnvironmentChecker {
         Plugin eePluginInstance = Bukkit.getPluginManager().getPlugin("EcoEnchants");
         if (eePluginInstance != null) {
             Semver semver = new Semver(eePluginInstance.getDescription().getVersion());
-            if(semver.getMajor() >= 11){
+            if(semver.getMajor() == 12 && semver.getMinor() <= 2 && semver.getPatch() < 1){
                 plugin.logger().warn("=================================================");
                 plugin.logger().warn("WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
                 plugin.logger().warn("Your installation of EcoEnchants (version >= 11.0.0) has been detected.");

@@ -105,7 +105,7 @@ menu:
   item: '<green>商品：<yellow>{0}'
   price-per: <green>每個 <yellow>{0}<green> 價格 <yellow>{1}
   item-name-and-price: <yellow>{0} 個 {1}<green> 為 </green> {2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
+  item-name-and-price-tax: <yellow>{0} 個 {1} <green>為</green> {2} <gray>(<green>{3}</green> 元的稅 ）
   successful-purchase: '<green>已成功地購買：'
   price-per-stack: <green>每 <yellow>{2}<green> 個 <yellow>{0}<green> 組價格 <yellow>{1}
   stored-enchants: <dark_purple>附魔
@@ -169,8 +169,8 @@ nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動！
 edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
 inventory-unavailable: |-
-  <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
-  Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
+  <red>不存在或無效的 InventoryWrapper。您是否使用外掛程式來重新綁定商店庫存？
+  資訊：InventoryWrapper={0}、WrapperProvider={1}、SymbolLink={2}，請聯絡伺服器管理員。
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: <red>目標玩家離線。
@@ -186,8 +186,8 @@ language:
   name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
 warn-to-paste: |-
-  <yellow>Collecting data and uploading to Pastebin. This may take a while...
-  <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
+  <yellow>收集資料並上傳到 Pastebin。這可能需要一段時間...
+  <red><bold>警告：</bold> 資料將公開一週！它可能會洩露您的伺服器設定和其他敏感資訊。確保您只將其傳送到 <bold>值得信賴的工作人員／開發人員。
 how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
@@ -230,7 +230,7 @@ updatenotify:
     - 派蒙想告訴你 QuickShop 有新的更新 {0}！
   remote-disable-warning: '<red>此版本的 QuickShop 已被遠端伺服器標記為停用，這意味著此版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊：{0}。在你切換到穩定版本之前，此警告將繼續出現，但不會影響伺服器的效能。'
 purchase-out-of-stock: <red>此商店已缺貨，請聯絡商店店主或商店員工補充庫存。
-nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
+nearby-shop-entry: '<green>-資訊：{0} 價格：<aqua>{1} <green>X：<aqua>{2} <green>Y：<aqua>{3} <green>Z：<aqua>{4} <green>距離：<aqua>{5} <green> 個方塊'
 chest-title: QuickShop 商店
 console-only: <red>此指令只能在控制台執行。
 failed-to-put-sign: <red>你的商店周圍沒有足夠的空間，放置商店的資訊告示牌。

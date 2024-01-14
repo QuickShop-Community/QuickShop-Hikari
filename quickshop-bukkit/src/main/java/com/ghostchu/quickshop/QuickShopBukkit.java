@@ -123,6 +123,10 @@ public class QuickShopBukkit extends JavaPlugin {
     }
 
     private void resolveLibraries(QuickShopBukkit quickShopBukkit) {
+        if(Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.doNotResolveLibraries"))){
+            getLogger().warning("Warning! You have disabled libraries resolver! Make sure you added libraries in plugin.yml!");
+            return;
+        }
         LogAdapter adapter = new LogAdapter() {
             @Override
             public void log(@NotNull LogLevel logLevel, @Nullable String s) {
