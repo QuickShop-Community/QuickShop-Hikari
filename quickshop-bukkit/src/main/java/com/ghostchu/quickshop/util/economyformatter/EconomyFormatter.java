@@ -66,7 +66,7 @@ public class EconomyFormatter implements Reloadable {
             return getInternalFormat(n, currency);
         }
         try {
-            String formatted = plugin.getEconomy().format(n, world, currency);
+            String formatted = economy.format(n, world, currency);
             if (StringUtils.isEmpty(formatted)) {
                 Log.debug(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
