@@ -1,7 +1,7 @@
 break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+not-allowed-to-create: <red>Du kan ikke lave en butik her.
+disabled-in-this-world: <red>QuickShop er ikke tændt i denne verden
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Opretter Butik-backup fra database...
@@ -13,46 +13,46 @@ shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick an
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>Du kan kun indtaste et nummer, dit input var {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>Din butik ved {0} blev fjernet fordi du ikke havde nok penge til at beholde den!
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
-  price: '[price]'
-  name: '[name]'
-  range: '[range]'
-  currency: '[currency name]'
-  percentage: '[percentage%]'
+  amount: '[mængde]'
+  item: '[genstand]'
+  price: '[pris]'
+  name: '[navn]'
+  range: '[rækkevidde]'
+  currency: '[valuta navn]'
+  percentage: '[procent%]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
-you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
+server-crash-warning: '<red>ADVARSEL: Benyttelsen af /quickshop reload kommandoen for at erstatte/slette QuickShop Jar filen kan muligvis crashe serveren mens den kører.'
+you-cant-afford-to-change-price: <red>Det koster {0} for at ændre prisen i din butik.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Din butik {0} er fuld!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>Indsæt funktionen er blevet slukket! Du kan ikke kalde på teknisk assistance.
+  Grund: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[egen] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Navn: <aqua>{0}'
     - '<yellow>Ejer: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Pris: <aqua>{0}'
+    - '<yellow>Genstand: <aqua>{0}'
+    - '<yellow>Lokation: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Navn: <aqua>{name}'
+    - '<yellow>Ejer: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Pris: <aqua>{price}'
+    - '<yellow>Genstand: <aqua>{item}'
     - '<yellow>Placering: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Personale)<light_purple>{0}<dark_gray> nægtede adgang til tilladelseskontrollerne. Hvis dette ikke forventes, kan du prøve at tilføje <light_purple>{1}<gray> til lytterens sortliste. Konfigurationsvejledning: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
 digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
