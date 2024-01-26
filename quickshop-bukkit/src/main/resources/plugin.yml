@@ -126,6 +126,7 @@ permissions:
       quickshop.shopnaming: true
       quickshop.permission: true
       quickshop.benefit: true
+      quickshop.sign: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -152,7 +153,7 @@ permissions:
       quickshop.other.preview: true
       quickshop.other.use: true
       quickshop.other.benefit: true
-
+      quickshop.other.sign: true
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
@@ -203,6 +204,9 @@ permissions:
     default: op
   quickshop.other.amount:
     description: Allows a staff member to change the item amount per trade of someone else's shop.
+    default: op
+  quickshop.other.sign:
+    description: Allows a staff member to change the sign type of someone else's shop.
     default: op
   quickshop.setowner:
     description: Allows a staff member to change the owner of any shop.
@@ -338,4 +342,7 @@ permissions:
     default: op
   quickshop.transferownership.other:
     description: Permission to transfer a single shop of a player to someone without permission check
+    default: op
+  quickshop.sign:
+    description: Permission to change the shop sign type
     default: op

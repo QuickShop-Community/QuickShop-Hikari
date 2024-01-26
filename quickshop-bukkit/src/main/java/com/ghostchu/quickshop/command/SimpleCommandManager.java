@@ -348,6 +348,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .permission("quickshop.benefit")
                 .executor(new SubCommand_Benefit(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("sign")
+                .permission("quickshop.sign")
+                .executor(new SubCommand_Sign(plugin))
+                .build());
 
     }
 
