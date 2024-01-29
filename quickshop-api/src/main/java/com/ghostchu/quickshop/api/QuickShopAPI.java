@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
+import com.ghostchu.quickshop.api.registry.Registry;
 import com.ghostchu.quickshop.api.shop.*;
 import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
@@ -156,4 +157,6 @@ public interface QuickShopAPI {
     Semver getSemVersion();
 
     ShopItemBlackList getShopItemBlackList();
+
+    Registry getRegistry();
 }

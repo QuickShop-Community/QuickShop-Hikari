@@ -1,8 +1,9 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
+import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
-import com.ghostchu.quickshop.util.ItemExpression;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -13,13 +14,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, SubPasteItem {
     private final QuickShop plugin;
-    private final List<Function<ItemStack, Boolean>> BLACKLIST = new ArrayList<>();
     private final List<String> BLACKLIST_LORES = new ArrayList<>();
+    private List<String> configBlacklist;
 
     public SimpleShopItemBlackList(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -28,17 +27,8 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
     }
 
     private void init() {
-        BLACKLIST.clear();
         BLACKLIST_LORES.clear();
-        List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
-        for (String s : configBlacklist) {
-            Optional<Function<ItemStack, Boolean>> func = new ItemExpression(plugin, s).getFunction();
-            if (func.isPresent()) {
-                BLACKLIST.add(func.get());
-            } else {
-                plugin.logger().warn("Failed to parse item expression: {}", s);
-            }
-        }
+        this.configBlacklist = plugin.getConfig().getStringList("blacklist");
         List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
         configLoresBlackList.forEach(s -> BLACKLIST_LORES.add(ChatColor.stripColor(s)));
     }
@@ -51,10 +41,11 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
      */
     @Override
     public boolean isBlacklisted(@NotNull ItemStack itemStack) {
-        for (Function<ItemStack, Boolean> f : BLACKLIST) {
-            if (f.apply(itemStack)) {
-                return true;
-            }
+        ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry) plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+        for (String s : this.configBlacklist) {
+           if(itemExpressionRegistry.match(itemStack, s)){
+               return true;
+           }
         }
         if (BLACKLIST_LORES.isEmpty()) {
             return false; // Fast return if empty
@@ -96,7 +87,7 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
 
     @Override
     public @NotNull String genBody() {
-        return "<p>Blacklist Rules: " + BLACKLIST.size() + "</p>";
+        return "<p>Blacklist Rules: " + configBlacklist.size() + "</p>";
     }
 
     @Override

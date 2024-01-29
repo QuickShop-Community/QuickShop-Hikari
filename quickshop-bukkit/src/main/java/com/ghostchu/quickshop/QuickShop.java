@@ -18,6 +18,9 @@ import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
+import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
+import com.ghostchu.quickshop.api.registry.RegistryManager;
+import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.QuickShopCommand;
@@ -38,6 +41,11 @@ import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
+import com.ghostchu.quickshop.registry.SimpleRegistryManager;
+import com.ghostchu.quickshop.registry.builtin.itemexpression.SimpleItemExpressionRegistry;
+import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleEnchantmentExpressionHandler;
+import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleItemReferenceExpressionHandler;
+import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleMaterialExpressionHandler;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
@@ -238,6 +246,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private PrivacyController privacyController;
     @Getter
     private MetricManager metricManager;
+    @Getter
+    private RegistryManager registry;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -290,6 +300,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         initConfiguration();
         logger.info("Setting up privacy controller...");
         this.privacyController = new PrivacyController(this);
+        logger.info("Setting up QuickShop registry....");
+        this.registry = new SimpleRegistryManager();
+        this.registry.registerRegistry(BuiltInRegistry.ITEM_EXPRESSION.getName(), new SimpleItemExpressionRegistry(this));
         logger.info("Setting up metrics manager...");
         this.metricManager = new MetricManager(this);
         logger.info("Loading player name and unique id mapping...");
@@ -573,6 +586,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         loadErrorReporter();
         loadItemMatcher();
         this.itemMarker = new ItemMarker(this);
+        loadRegistry();
         this.shopItemBlackList = new SimpleShopItemBlackList(this);
         Util.initialize();
         try {
@@ -638,6 +652,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
 
+    }
+
+    private void loadRegistry() {
+        logger.info("Setting up ItemExpressionRegistry...");
+        ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry) this.registry.getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+        itemExpressionRegistry.registerHandlerSafely(new SimpleMaterialExpressionHandler(this));
+        itemExpressionRegistry.registerHandlerSafely(new SimpleEnchantmentExpressionHandler(this));
+        itemExpressionRegistry.registerHandlerSafely(new SimpleItemReferenceExpressionHandler(this));
     }
 
 
