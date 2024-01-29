@@ -144,6 +144,10 @@
                                         <pattern>com.alessiodp.libby.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>com.mohistmc.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
+                                    </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer

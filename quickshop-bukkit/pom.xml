@@ -57,7 +57,10 @@
             <id>jitpack.io</id>
             <url>https://www.jitpack.io</url>
         </repository>
-
+        <repository>
+            <id>Mohist MC</id>
+            <url>https://maven.mohistmc.com/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -281,5 +284,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.mohistmc</groupId>-->
+<!--            <artifactId>json</artifactId>-->
+<!--            <version>0.2</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
     </dependencies>
 </project>
