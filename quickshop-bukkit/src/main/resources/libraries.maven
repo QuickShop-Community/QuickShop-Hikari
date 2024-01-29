@@ -1,8 +1,5 @@
 org.slf4j:slf4j-jdk14:2.0.10
 com.google.code.gson:gson:2.10.1
-org.apache.commons:commons-lang3:3.14.0
-org.apache.commons:commons-text:1.11.0
-org.apache.commons:commons-compress:1.25.0
 com.rollbar:rollbar-java:1.9.0
 cc.carm.lib:easysql-hikaricp:0.4.7
 com.h2database:h2:2.1.214
