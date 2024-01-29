@@ -917,6 +917,26 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             }
         }
 
+        @Override
+        public @NotNull String plain() {
+            return PlainTextComponentSerializer.plainText().serialize(forLocale());
+        }
+
+        @Override
+        public @NotNull String plain(@NotNull String locale) {
+            return PlainTextComponentSerializer.plainText().serialize(forLocale(locale));
+        }
+
+        @Override
+        public @NotNull String legacy() {
+            return LegacyComponentSerializer.legacySection().serialize(forLocale());
+        }
+
+        @Override
+        public @NotNull String legacy(@NotNull String locale) {
+            return LegacyComponentSerializer.legacySection().serialize(forLocale(locale));
+        }
+
         /**
          * Getting this text is exists in the translation file
          *

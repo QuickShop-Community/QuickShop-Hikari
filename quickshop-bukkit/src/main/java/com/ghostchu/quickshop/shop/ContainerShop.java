@@ -764,7 +764,7 @@ public class ContainerShop implements Shop, Reloadable {
                     item.getAmount(),
                     Util.getItemStackName(item)).forLocale(locale.getLocale());
         } else {
-            line4 = plugin.text().of("signs.price", LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this))).forLocale(locale.getLocale());
+            line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale(locale.getLocale());
         }
         lines.add(line4);
 
