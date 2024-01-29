@@ -19,16 +19,20 @@ public class ConfigUpdateScript {
         this.config = config;
         this.plugin = plugin;
     }
-
-    @UpdateScript(version = 1024)
-    public void displayVirtualStatusReset() {
-        getConfig().set("shop.display-type", 2);
+    @UpdateScript(version = 1026)
+    public void toggleEnchantsAndEffectList() {
+        getConfig().set("shop.info-panel.show-enchantments", true);
+        getConfig().set("shop.info-panel.show-effects", true);
+        getConfig().set("shop.info-panel.show-durability", true);
     }
     @UpdateScript(version = 1025)
     public void disableCSMByDefault() {
         getConfig().set("bungee-cross-server-msg", false);
     }
-
+    @UpdateScript(version = 1024)
+    public void displayVirtualStatusReset() {
+        getConfig().set("shop.display-type", 2);
+    }
     @UpdateScript(version = 1023)
     public void allowPublicKeyRetrieve() {
         if (!getConfig().isSet("database.properties.allowPublicKeyRetrieval")) {
