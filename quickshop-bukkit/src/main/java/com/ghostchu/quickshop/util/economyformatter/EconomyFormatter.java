@@ -16,16 +16,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class EconomyFormatter implements Reloadable {
     private static final Map<String, String> CURRENCY_SYMBOL_MAPPING = new HashMap<>();
     private final QuickShop plugin;
-    private final AbstractEconomy economy;
+    private final Supplier<AbstractEconomy> economy;
     private boolean disableVaultFormat;
     private boolean useDecimalFormat;
     private boolean currencySymbolOnRight;
 
-    public EconomyFormatter(QuickShop plugin, AbstractEconomy economy) {
+    public EconomyFormatter(QuickShop plugin, Supplier<AbstractEconomy> economy) {
         this.plugin = plugin;
         this.economy = economy;
         reloadModule();
@@ -66,7 +67,7 @@ public class EconomyFormatter implements Reloadable {
             return getInternalFormat(n, currency);
         }
         try {
-            String formatted = economy.format(n, world, currency);
+            String formatted = economy.get().format(n, world, currency);
             if (StringUtils.isEmpty(formatted)) {
                 Log.debug(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");

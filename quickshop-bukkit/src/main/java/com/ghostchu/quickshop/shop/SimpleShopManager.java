@@ -118,7 +118,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Util.ensureThread(false);
         this.plugin = plugin;
         this.interactiveManager = new InteractiveManager(plugin);
-        this.formatter = new EconomyFormatter(plugin, plugin.getEconomy());
+        this.formatter = new EconomyFormatter(plugin, plugin::getEconomy);
         plugin.getReloadManager().register(this);
         init();
     }
