@@ -71,11 +71,5 @@
             <artifactId>Slimefun4</artifactId>
             <version>RC-36</version>
         </dependency>
-        <dependency>
-            <groupId>com.discordsrv</groupId>
-            <artifactId>discordsrv</artifactId>
-            <version>1.24.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 </project>
