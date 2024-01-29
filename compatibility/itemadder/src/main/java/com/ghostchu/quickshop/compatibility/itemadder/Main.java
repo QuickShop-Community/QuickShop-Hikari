@@ -21,8 +21,8 @@ public final class Main extends CompatibilityModule implements ItemExpressionHan
     }
 
     @Override
-    public char getPrefix() {
-        return '➕';
+    public String getPrefix() {
+        return "itemadder";
     }
 
     @Override

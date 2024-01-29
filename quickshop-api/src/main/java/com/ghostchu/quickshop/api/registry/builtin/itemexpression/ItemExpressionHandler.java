@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public interface ItemExpressionHandler extends Comparable<ItemExpressionHandler> {
     @NotNull
     Plugin getPlugin();
-    char getPrefix();
+    String getPrefix();
     boolean match(ItemStack stack, String expression);
     int hashCode();
     @Override

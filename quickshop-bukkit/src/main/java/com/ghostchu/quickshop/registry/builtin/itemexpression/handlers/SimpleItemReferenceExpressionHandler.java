@@ -19,8 +19,8 @@ public class SimpleItemReferenceExpressionHandler implements ItemExpressionHandl
     }
 
     @Override
-    public char getPrefix() {
-        return '@';
+    public String getPrefix() {
+        return "@";
     }
 
     @Override

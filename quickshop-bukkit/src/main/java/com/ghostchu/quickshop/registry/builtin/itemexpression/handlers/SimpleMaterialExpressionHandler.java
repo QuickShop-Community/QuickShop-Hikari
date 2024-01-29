@@ -19,8 +19,8 @@ public class SimpleMaterialExpressionHandler implements ItemExpressionHandler {
     }
 
     @Override
-    public char getPrefix() {
-        return '\0'; // \0 mean no prefix, only should only be used in quickshop internal
+    public String getPrefix() {
+        return "";
     }
 
     @Override

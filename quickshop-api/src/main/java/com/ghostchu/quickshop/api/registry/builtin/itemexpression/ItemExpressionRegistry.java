@@ -17,7 +17,7 @@ public interface ItemExpressionRegistry extends Registry {
 
     void unregisterHandler(ItemExpressionHandler handler);
 
-    void unregisterHandler(char prefix);
+    void unregisterHandler(String prefix);
 
     void unregisterHandlers(Plugin plugin);
 }

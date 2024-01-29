@@ -36,8 +36,8 @@ public final class Main extends CompatibilityModule implements SlimefunAddon, It
     }
 
     @Override
-    public char getPrefix() {
-        return '⚪';
+    public String getPrefix() {
+        return "slimefun";
     }
 
     @Override

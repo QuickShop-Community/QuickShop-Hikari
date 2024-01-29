@@ -22,8 +22,8 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
     }
 
     @Override
-    public char getPrefix() {
-        return '%';
+    public String getPrefix() {
+        return "%";
     }
 
     @Override

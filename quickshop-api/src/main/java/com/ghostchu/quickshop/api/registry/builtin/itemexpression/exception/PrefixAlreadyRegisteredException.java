@@ -4,18 +4,18 @@ import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpression
 import org.bukkit.plugin.Plugin;
 
 public class PrefixAlreadyRegisteredException extends Exception {
-    private final char prefix;
+    private final String prefix;
     private final Plugin plugin;
     private final ItemExpressionHandler handler;
 
-    public PrefixAlreadyRegisteredException(char prefix, Plugin pluginInstance, ItemExpressionHandler handler) {
+    public PrefixAlreadyRegisteredException(String prefix, Plugin pluginInstance, ItemExpressionHandler handler) {
         super("The prefix " + prefix + " already in use, registered by " + pluginInstance.getName() + " with handler " + handler.getClass().getName() + ", pick another one prefix!");
         this.prefix = prefix;
         this.plugin = pluginInstance;
         this.handler = handler;
     }
 
-    public char getPrefix() {
+    public String getPrefix() {
         return prefix;
     }
 
