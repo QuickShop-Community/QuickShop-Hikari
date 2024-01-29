@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.compatibility.slimefun;
+package com.ghostchu.quickshop.compatibility.itemadder;
 
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionHandler;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
