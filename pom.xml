@@ -117,6 +117,8 @@
                                         <include>org.apache.commons:commons-compress:*</include>
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
+                                        <include>io.vertx:vertx-core:*</include>
+                                        <include>io.vertx:vertx-web:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -147,6 +149,10 @@
                                     <relocation>
                                         <pattern>com.mohistmc.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>io.vertx.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.io.vertx.</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>
@@ -380,6 +386,7 @@
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
         <module>addon/reremake-migrator</module>
+        <module>addon/webui</module>
     </modules>
 
 </project>
