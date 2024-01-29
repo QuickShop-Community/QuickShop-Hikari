@@ -51,6 +51,7 @@ public final class Main extends JavaPlugin implements Listener {
         restAPI.get("/global/recent").handler(Recent::new);
         restAPI.get("/user/shops").handler(UserShopsListing::new);
         restAPI.get("/user/history").handler(UserHistory::new);
+        restAPI.get("/user/transaction").handler(UserHistory::new);
         restAPI.get("/shops").handler(ServerShopsListing::new);
         restAPI.get("/shop/:id").handler(ShopDetails::new);
         restAPI.get("/shop/:id/history").handler(ShopHistory::new);
