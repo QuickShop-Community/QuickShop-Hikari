@@ -358,6 +358,7 @@
         <module>compatibility/chestprotect</module>
         <module>compatibility/angelchest</module>
         <module>compatibility/slimefun</module>
+        <module>compatibility/itemadder</module>
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
         <module>addon/discount</module>
