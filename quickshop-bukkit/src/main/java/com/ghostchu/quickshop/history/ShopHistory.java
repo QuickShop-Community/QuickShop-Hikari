@@ -41,10 +41,10 @@ public class ShopHistory {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? GROUP BY `time`, `id` ORDER BY `time` DESC";
+                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
                 SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
                 @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute();
+                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -61,10 +61,10 @@ public class ShopHistory {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 String SQL = "SELECT SUM(`money`) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? GROUP BY `time`, `id` ORDER BY `time` DESC";
+                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
                 SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
                 @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute();
+                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getDouble(1);
@@ -81,10 +81,10 @@ public class ShopHistory {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 String SQL = "SELECT COUNT(*) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? GROUP BY `time`, `id` ORDER BY `time` DESC";
+                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
                 SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
                 @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute();
+                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -153,6 +153,7 @@ public class ShopHistory {
         }
         return historyRecords;
     }
+
     public record ShopSummary(long recentPurchases24h, long recentPurchases3d, long recentPurchases7d,
                               long recentPurchases30d, long totalPurchases,
                               double recentPurchasesBalance24h, double recentPurchasesBalance3d,
@@ -176,6 +177,7 @@ public class ShopHistory {
                     '}';
         }
     }
+
     public record ShopHistoryRecord(Timestamp date, long shopId, long dataId, UUID buyer,
                                     ShopOperationEnum shopType, int amount, double money, double tax
     ) {

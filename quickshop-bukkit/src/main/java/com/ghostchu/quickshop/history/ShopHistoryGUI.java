@@ -221,12 +221,19 @@ public class ShopHistoryGUI {
                     record.tax()).forLocale();
             ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
             if (PackageUtil.parsePackageProperly("renderSkullTexture").asBoolean(true)) {
-                skullProvider.provide(record.buyer()).thenAccept(skull -> stack.setItemMeta(skull.getItemMeta()));
+                skullProvider.provide(record.buyer()).thenAccept(skull -> {
+                    stack.setItemMeta(skull.getItemMeta());
+                    // Reapply the name and lore
+                    plugin.getPlatform().setDisplayName(stack, plugin.text().of(player, "history.shop.log-icon-title",
+                            format.format(record.date())).forLocale());
+                    plugin.getPlatform().setLore(stack, lore);
+                });
             }
             plugin.getPlatform().setDisplayName(stack, plugin.text().of(player, "history.shop.log-icon-title",
                     format.format(record.date())).forLocale());
             plugin.getPlatform().setLore(stack, lore);
-            stack.setAmount(Math.min(stack.getMaxStackSize(), record.amount()));
+            int amount = Math.min(stack.getMaxStackSize(), record.amount());
+            stack.setAmount(Math.max(amount, 1)); // Sometimes the amount could be zero
             body.addItem(new GuiItem(stack, cancelEvent()));
         }
     }
