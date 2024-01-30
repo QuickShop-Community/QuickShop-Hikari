@@ -127,6 +127,7 @@ permissions:
       quickshop.permission: true
       quickshop.benefit: true
       quickshop.sign: true
+      quickshop.history: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -154,6 +155,7 @@ permissions:
       quickshop.other.use: true
       quickshop.other.benefit: true
       quickshop.other.sign: true
+      quickshop.other.history: true
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
@@ -345,4 +347,10 @@ permissions:
     default: op
   quickshop.sign:
     description: Permission to change the shop sign type
+    default: op
+  quickshop.history:
+    description: Permission to view the shop history
+    default: op
+  quickshop.other.history:
+    description: Permission to view the other's shop history
     default: op
