@@ -24,6 +24,11 @@ public class SimpleMaterialExpressionHandler implements ItemExpressionHandler {
     }
 
     @Override
+    public String getInternalPrefix0() {
+        return getPrefix();
+    }
+
+    @Override
     public boolean match(ItemStack stack, String expression) {
         return stack.getType().equals(Material.matchMaterial(expression));
     }

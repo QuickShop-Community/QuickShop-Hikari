@@ -24,6 +24,11 @@ public class SimpleItemReferenceExpressionHandler implements ItemExpressionHandl
     }
 
     @Override
+    public String getInternalPrefix0() {
+        return getPrefix();
+    }
+
+    @Override
     public boolean match(ItemStack stack, String expression) {
         return QuickShop.getInstance().getItemMatcher().matches(stack, QuickShop.getInstance().getItemMarker().get(expression));
     }

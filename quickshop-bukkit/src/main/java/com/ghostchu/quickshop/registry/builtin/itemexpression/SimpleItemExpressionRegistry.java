@@ -29,7 +29,7 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
     public boolean match(ItemStack stack, String expression) {
         for (ItemExpressionHandler handler : handlers) {
             if (handler.getPrefix().isBlank() || expression.startsWith(handler.getPrefix())) {
-                if (handler.match(stack, StringUtils.substringAfter(expression, handler.getPrefix() + ":"))) {
+                if (handler.match(stack, StringUtils.substringAfter(expression, handler.getInternalPrefix0()))) {
                     return true;
                 }
             }

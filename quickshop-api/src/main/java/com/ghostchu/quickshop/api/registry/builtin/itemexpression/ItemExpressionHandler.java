@@ -8,6 +8,9 @@ public interface ItemExpressionHandler extends Comparable<ItemExpressionHandler>
     @NotNull
     Plugin getPlugin();
     String getPrefix();
+    default String getInternalPrefix0(){
+        return getPrefix()+":";
+    }
     boolean match(ItemStack stack, String expression);
     int hashCode();
     @Override

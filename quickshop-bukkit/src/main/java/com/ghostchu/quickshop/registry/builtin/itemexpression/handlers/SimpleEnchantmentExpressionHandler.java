@@ -27,6 +27,11 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
     }
 
     @Override
+    public String getInternalPrefix0() {
+        return getPrefix();
+    }
+
+    @Override
     public boolean match(ItemStack stack, String expression) {
         // spilt with |
         String[] split = expression.split("\\|");
