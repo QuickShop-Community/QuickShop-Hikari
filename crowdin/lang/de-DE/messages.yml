@@ -361,37 +361,39 @@ controlpanel:
   mode-selling-hover: <yellow>Klicke, um den Shop in den KAUF-Modus zu ändern.
   empty-hover: <yellow>Klicke hier um den Shop zu leeren.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: hinter
-  week: <red>{0} Woche
-  weeks: <red>{0} Wochen
-  year: <red>{0} Jahr
+  week: "{0} week"
+  weeks: "{0} weeks"
+  year: "{0} year"
   before: vor
   scheduled: Geplant
-  years: <red>{0} Jahre
+  years: "{0} years"
   scheduled-in: Geplant in {0}
-  second: <red>{0} Sekunde
+  second: "{0} second"
   std-past-format: 'vor {5}{4}{3}{2}{1}{0}'
   std-time-format: HH:mm:ss
-  seconds: <red>{0} Sekunden
-  hour: <red>{0} Stunde
+  seconds: "{0} seconds"
+  hour: "{0} hour"
   scheduled-at: Geplant am {0}
   after: nach
-  day: <red>{0} Tag
+  day: "{0} day"
   recent: Kürzlich
   between: zwischen
-  hours: <red>{0} Stunden
-  months: <red>{0} Monate
+  hours: "{0} hours"
+  months: "{0} months"
   longtimeago: vor langer Zeit
   between-format: zwischen {0} und {1}
-  minutes: <red>{0} Minuten
+  minutes: "{0} minutes"
   justnow: Gerade eben
-  minute: <red>{0} Minute
+  minute: "{0} minute"
   std-format: dd.MM.yyyy HH:mm:ss
   future-plain-text: Zukunft
-  month: <red>{0} Monat
+  month: "{0} month"
   future: in {0}
-  days: <red>{0} Tage
+  days: "{0} days"
 command:
   reloading: <green>Konfiguation neu geladen. <yellow>Manche Änderungen benötigen eventuell einen Neustart um aktiv zu werden.
   description:
@@ -429,6 +431,8 @@ command:
     removeall: <yellow>Entferne ALLE Shops eines bestimmten Spielers
     unban: <yellow>Entbannt einen Spieler vom Shop
     transfer: <yellow>Übertrage ALLE Shops eines Spielers auf einen anderen
+    transferall: <yellow>Übertrage ALLE Shops eines Spielers auf einen anderen
+    transferownership: <yellow>Transfer the shop you're looking at to someone else
     size: <yellow>Ändere die Pro-Menge Anzahl eines Shops
     supercreate: <yellow>Erstellen eines Shops, während alle Schutzprüfungen umgangen werden
     taxaccount: <yellow>Legt das Steuerkonto fest, welches der Shop verwenden soll
@@ -439,6 +443,7 @@ command:
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
+    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -511,6 +516,8 @@ permission:
     set-stack-amount: <yellow>Berechtigung welche Benutzern erlaubt, die Stackmenge zu ändern.
     set-currency: <yellow>Berechtigung welche Benutzern erlaubt, die Shop-Währung zu ändern.
     set-name: <yellow>Berechtigung welche Benutzern erlaubt, den Shopnamen zu ändern.
+    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>Standardgruppe für alle Benutzer ausser dem Shopeigentümer.
     staff: <yellow>Systemgruppe für Shop-Mitarbeiter.
@@ -635,7 +642,13 @@ importing-failed: <red>Import der Datenbank fehlgeschlagen, bitte überprüfe di
 imported-database: <green>Datenbank importiert von <yellow>{0}</yellow>.
 transfer-sent: <green>Shop-Übertragungsanfrage an <yellow>{0}</yellow> gesendet.
 transfer-request: <yellow>Spieler <aqua>{0}</aqua> möchte gerne seine Shops auf dich übertragen. Möchtest du diese Anfrage akzeptieren?
+transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
 transfer-ask: |-
+  <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
+transferall-ask: |-
+  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transfer-single-ask: |-
   <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
 transfer-accepted-fromside: <green>Spieler <aqua>{0}</aqua> hat deinen Shop-Übertragungsantrag akzeptiert.
 transfer-accepted-toside: <green>Du hast <aqua>{0}</aqua>'s Tranfer-Anfrage akzeptiert.
@@ -1347,6 +1360,7 @@ addon:
     commands:
       list: <yellow>Zeigt alle Shops welche dir oder einem bestimmten Spieler gehören
     table-prefix: '<yellow><green>{0}</green>''s Shops <gray>(Gesamt: {1})</gray>: '
+    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
     entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3}, {4}, {5}</gray>\n<aqua>Preis <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: <red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen.
@@ -1472,3 +1486,36 @@ compatibility:
   elitemobs:
     soulbound-disallowed: Du kannst Items mit Seelenverzauberung von EliteMobs nicht handeln.
 internet-paste-forbidden-privacy-reason: "<red>Fehlgeschlagen! Basierend auf deinen Privatsphäre-Einstellungen ist QuickShop nicht berechtigt, deinen Paste im Internet hochzuladen. Aktiviere DIAGNOSTIC Berechtigungen in den Privatsphäre-Einstellungen in der config.yml oder verwende <aqua>/quickshop paste --file</aqua>."
+no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
+sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
+delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+suggest-wait: "<green>Please wait... Calculating recommend price."
+history:
+  shop:
+    gui-title: "View purchase history"
+    header-icon-description:
+      - "<white>Type: <yellow>{0}</yellow></white>"
+      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2}</yellow></white>"
+      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Location: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Time: {0}</green>"
+    log-icon-description:
+      - "<white>Purchaser: <yellow>{0}</yellow></white>"
+      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{3}</yellow></white>"
+      - "<white>Tax: <yellow>{4}</yellow></white>"
+    query-icon: "<gray>Please wait, querying...</gray>"
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    current-page: "<white>Page {0}</white>"
+    summary-icon-title: "<green>Shop Summary"
+    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
+    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
