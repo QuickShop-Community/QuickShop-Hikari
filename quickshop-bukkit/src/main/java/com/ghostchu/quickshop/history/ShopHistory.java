@@ -38,12 +38,13 @@ public class ShopHistory {
         this.shop = shop;
     }
 
-    private CompletableFuture<LinkedHashMap<UUID,Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to){
+
+    private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
             try {
                 String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT "+n;
+                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
                 SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
                 @Cleanup
                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
@@ -133,7 +134,7 @@ public class ShopHistory {
         CompletableFuture<Double> totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now());
 
         CompletableFuture<Long> totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now());
-        CompletableFuture<LinkedHashMap<UUID,Long>> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now());
+        CompletableFuture<LinkedHashMap<UUID, Long>> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now());
 
         return CompletableFuture.supplyAsync(() -> new ShopSummary(
                 recentPurchases24h.join(),
@@ -183,7 +184,7 @@ public class ShopHistory {
                               double recentPurchasesBalance24h, double recentPurchasesBalance3d,
                               double recentPurchasesBalance7d,
                               double recentPurchasesBalance30d, double totalBalance,
-                              long uniquePurchasers, LinkedHashMap<UUID,Long> valuableCustomers) {
+                              long uniquePurchasers, LinkedHashMap<UUID, Long> valuableCustomers) {
         @Override
         public String toString() {
             return "ShopSummary{" +

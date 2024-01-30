@@ -547,6 +547,7 @@ command:
     database: <yellow>View and maintain the QuickShop Database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
+    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
   bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
   no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: This feature is not enabled in the config file.
@@ -1742,6 +1743,9 @@ internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy se
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
 delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <purple>{1}</purple>, the lowest priced store is priced at <purple>{2}</purple>, the average price is <purple>{3}</purple>, and the median price is <purple>{4}</purple>. <newline><yellow>It's recommended that you set your price around <gold>{4}</gold>.</yellow>"
+suggest-wait: "<green>Please wait... Calculating recommend price."
 history:
   shop:
     gui-title: "View purchase history"

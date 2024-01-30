@@ -10,16 +10,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URLDecoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +37,42 @@ public class CommonUtil {
             joiner.add(str);
         }
         return joiner.toString();
+    }
+
+    public static double min(@NotNull List<Double> total){
+        double min = Double.MAX_VALUE;
+        for (Double i : total) {
+            min = Math.min(i, min);
+        }
+        return  min;
+    }
+
+    public static double max(@NotNull List<Double> total){
+        double max = Double.MIN_VALUE;
+        for (Double i : total) {
+            max = Math.max(i, max);
+        }
+        return max;
+    }
+
+    public static double avg(@NotNull List<Double> total){
+        double t = 0;
+        for (Double v : total) {
+            t += v;
+        }
+        return t / total.size();
+    }
+
+    public static double med(@NotNull List<Double> total) {
+        double j;
+        Collections.sort(total);
+        int size = total.size();
+        if (size % 2 == 1) {
+            j = total.get((size - 1) / 2);
+        } else {
+            j = (total.get(size / 2 - 1) + total.get(size / 2) + 0.0) / 2;
+        }
+        return j;
     }
 
     @Nullable

@@ -364,7 +364,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .hidden(true)
                 .executor(new SubCommand_SilentHistory(plugin))
                 .build());
-
+        registerCmd(CommandContainer.builder()
+                .prefix("suggestprice")
+                .permission("quickshop.suggestprice")
+                .executor(new SubCommand_SuggestPrice(plugin))
+                .build());
     }
 
     /**

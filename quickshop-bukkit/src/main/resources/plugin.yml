@@ -128,6 +128,7 @@ permissions:
       quickshop.benefit: true
       quickshop.sign: true
       quickshop.history: true
+      quickshop.suggestprice: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -353,4 +354,7 @@ permissions:
     default: op
   quickshop.other.history:
     description: Permission to view the other's shop history
+    default: op
+  quickshop.suggestprice:
+    description: Suggest the shop recommend price
     default: op
