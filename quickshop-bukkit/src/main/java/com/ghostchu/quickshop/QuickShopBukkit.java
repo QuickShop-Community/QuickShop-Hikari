@@ -148,7 +148,7 @@ public class QuickShopBukkit extends JavaPlugin {
         }
         if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimization"))) {
             getLogger().info("Please wait... Determining the reachable mirror server...");
-            if (GeoUtil.inChinaRegion()) {
+            if (GeoUtil.preferChinaServers()) {
                 getLogger().info("Dependencies resolver selected: China optimized");
                 if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableChinaOptimizationAliyunPublicRepository"))) {
                     getLogger().info("Registered repository: Aliyun Public Mirror");
