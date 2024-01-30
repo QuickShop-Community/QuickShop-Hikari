@@ -31,7 +31,7 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
         Util.asyncThreadRun(() -> {
             List<Double> matched = plugin.getShopManager().getAllShops().stream()
                     .filter(s -> s.getShopType() == shop.getShopType())
-                    .filter(s-> Objects.equals(s.getCurrency(), shop.getCurrency()))
+                    .filter(s -> Objects.equals(s.getCurrency(), shop.getCurrency()))
                     .filter(s -> plugin.getItemMatcher().matches(shop.getItem(), s.getItem()))
                     .map(Shop::getPrice)
                     .toList();
@@ -43,11 +43,11 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
             double max = CommonUtil.max(matched);
             double avg = CommonUtil.avg(matched);
             double med = CommonUtil.med(matched);
-            plugin.text().of(sender, "price-suggest", matched.size(), format(max, shop), format(min, shop), format(avg, shop),format(med, shop)).send();
+            plugin.text().of(sender, "price-suggest", matched.size(), format(max, shop), format(min, shop), format(avg, shop), format(med, shop), format(med, shop)).send();
         });
     }
 
-    private String format(double d, Shop shop){
-       return plugin.getShopManager().format(d, shop);
+    private String format(double d, Shop shop) {
+        return plugin.getShopManager().format(d, shop);
     }
 }
