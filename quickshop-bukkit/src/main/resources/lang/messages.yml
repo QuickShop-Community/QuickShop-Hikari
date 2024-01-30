@@ -463,6 +463,8 @@ controlpanel:
   mode-selling-hover: <yellow>Click to change the shop to BUY mode.
   empty-hover: <yellow>Click to clear the inventory of the shop.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: behind
   week: "{0} week"
@@ -640,6 +642,8 @@ permission:
     set-currency: <yellow>Permission to allow users who have this to set the shop
       currency.
     set-name: <yellow>Permission to allow users who have this to set the shop name.
+    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>Default group for all users except shop owner.
     staff: <yellow>System group for shop staff.
@@ -1736,6 +1740,7 @@ compatibility:
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
+delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
 history:
   shop:
     gui-title: "View purchase history"
@@ -1761,3 +1766,5 @@ history:
     total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
     total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
     total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
