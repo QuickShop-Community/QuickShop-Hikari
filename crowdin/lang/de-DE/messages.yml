@@ -1352,16 +1352,16 @@ addon:
     message: <red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen.
   limited:
     commands:
-      limit: <yellow>Setze ein Limit welches die käufe welcher der Spieler pro Zeitraum machen kann einschränkt
+      limit: <yellow>Lege ein Limit fest, welches die Käufe des Spielers, in einem bestimmten Zeitraum einschränkt
     titles:
       title: <green>Kauf erfolgreich
       subtitle: <aqua>Du kannst auch <gold>{0}</gold> weitere in diesem Shop kaufen
     reach-the-limit: <red>Du hast das Limit in diesem Shop erreicht. Du kannst auch <green>{0}</green> Items kaufen, aber du versuchst <yellow>{1}</yellow> Items zu kaufen.
     success-reset: <green>Einschränkungen dieses Shops erfolgreich zurückgesetzt
     success-remove: <green>All Einschränkungen in diesem Shop wurden erfolgreich entfernt
-    success-setup: <green>Einschränkungseinstellungen für diesen Shop wurden erfolgreich gespeichert
+    success-setup: <green>Die Einschränkungseinstellungen für diesen Shop wurden erfolgreich gespeichert
     trade-limit-reached-cancel-reason: <red>Einschränkung dieses Shops erreicht
-    remains-limits: '<gold>Deine verbleibendes Kaufvolumen in diesem Shop: <yellow>{0}</yellow>'
+    remains-limits: '<gold>Dein verbleibendes Kaufvolumen in diesem Shop: <yellow>{0}'
     remains-limits-before-reset-period-note: '<gold>Dieser Shop erneuert sein Kaufvolumen alle <yellow>{0}</yellow>'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
@@ -1446,7 +1446,7 @@ suite:
       Raum: {9}
       Lagerbestand: {10}
   limited:
-    command-description: <yellow>Setze ein Limit welches bestimmt, wie viele käufe der Spieler pro Zeitraum machen kann.
+    command-description: <yellow>Lege ein Limit fest, welches die Käufe des Spielers, in einem bestimmten Zeitraum einschränkt.
     reach-the-quota-limit: <red>Du hast das Kauflimit in diesem Shop erreicht ({0}/{1}).
     quota-reset-countdown: <yellow>Das Kontingent in diesem Shop wird in {0} zurückgesetzt.
     quota-reset-player-successfully: <green>Das Kontingent für den Spieler {0} in diesem Shop wurde erfolgreich zurückgesetzt.
