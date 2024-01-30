@@ -652,6 +652,7 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
+
     /*
      * Cancels the menu for broken shop block
      */

@@ -387,6 +387,7 @@
         <module>addon/displaycontrol</module>
         <module>addon/reremake-migrator</module>
         <module>addon/webui</module>
+
     </modules>
 
 </project>
