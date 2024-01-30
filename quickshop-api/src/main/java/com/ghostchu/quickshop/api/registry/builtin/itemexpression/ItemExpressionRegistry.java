@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.registry.builtin.itemexpression;
 
 import com.ghostchu.quickshop.api.registry.Registry;
-import com.ghostchu.quickshop.api.registry.builtin.itemexpression.exception.PrefixAlreadyRegisteredException;
+import com.ghostchu.quickshop.api.registry.PrefixAlreadyRegisteredException;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
