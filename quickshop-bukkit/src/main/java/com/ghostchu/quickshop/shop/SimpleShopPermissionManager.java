@@ -163,6 +163,9 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             List<String> perms = yamlConfiguration.getStringList(namespace + ".staff");
             perms.add(BuiltInShopPermission.SET_SIGN_TYPE.getNamespacedNode());
             perms.add(BuiltInShopPermission.VIEW_PURCHASE_LOGS.getNamespacedNode());
+            perms = yamlConfiguration.getStringList(namespace + ".administrator");
+            perms.add(BuiltInShopPermission.SET_SIGN_TYPE.getNamespacedNode());
+            perms.add(BuiltInShopPermission.VIEW_PURCHASE_LOGS.getNamespacedNode());
             yamlConfiguration.set("version", 2);
             yamlConfiguration.save(file);
         }
