@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -35,6 +36,27 @@ public class ShopHistory {
 //        }
         this.shopId = shop.getShopId();
         this.shop = shop;
+    }
+
+    private CompletableFuture<LinkedHashMap<UUID,Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to){
+        return CompletableFuture.supplyAsync(() -> {
+            LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
+            try {
+                String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
+                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT "+n;
+                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+                @Cleanup
+                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+                ResultSet set = query.getResultSet();
+                while (set.next()) {
+                    orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
+                }
+                return orderedMap;
+            } catch (SQLException exception) {
+                plugin.logger().warn("Failed to summary valuable customers", exception);
+                return orderedMap;
+            }
+        }, QuickExecutor.getDatabaseExecutor());
     }
 
     private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
@@ -111,6 +133,7 @@ public class ShopHistory {
         CompletableFuture<Double> totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now());
 
         CompletableFuture<Long> totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now());
+        CompletableFuture<LinkedHashMap<UUID,Long>> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now());
 
         return CompletableFuture.supplyAsync(() -> new ShopSummary(
                 recentPurchases24h.join(),
@@ -123,7 +146,8 @@ public class ShopHistory {
                 recentPurchasesBalance7d.join(),
                 recentPurchasesBalance30d.join(),
                 totalPurchasesBalance.join(),
-                totalUniquePurchases.join()
+                totalUniquePurchases.join(),
+                valuableCustomers.join()
         ), QuickExecutor.getDatabaseExecutor());
 
     }
@@ -135,7 +159,7 @@ public class ShopHistory {
         SQLQuery query = DataTables.LOG_PURCHASE.createQuery()
                 .addCondition("shop", shopId)
                 .orderBy("time", false)
-                .setPageLimit(page - 1, pageSize)
+                .setPageLimit((page - 1) * pageSize, pageSize)
                 .build().execute();
         try (query) {
             ResultSet set = query.getResultSet();
@@ -159,7 +183,7 @@ public class ShopHistory {
                               double recentPurchasesBalance24h, double recentPurchasesBalance3d,
                               double recentPurchasesBalance7d,
                               double recentPurchasesBalance30d, double totalBalance,
-                              long uniquePurchasers) {
+                              long uniquePurchasers, LinkedHashMap<UUID,Long> valuableCustomers) {
         @Override
         public String toString() {
             return "ShopSummary{" +

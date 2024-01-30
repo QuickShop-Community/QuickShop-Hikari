@@ -129,6 +129,19 @@ public class ShopHistoryGUI {
         header.clear();
         header.addItem(new GuiItem(getSummaryIcon(), cancelEvent()), 0, 0);
         header.addItem(new GuiItem(getHeaderIcon(), cancelEvent()), 4, 0);
+        header.addItem(new GuiItem(getValuableCustomerIcon(), cancelEvent()), 8, 0);
+    }
+
+    private ItemStack getValuableCustomerIcon() {
+        if (summary == null) {
+            return queryingPlaceHolderItem();
+        }
+        ItemStack itemStack = new ItemStack(Material.DIAMOND);
+        plugin.getPlatform().setDisplayName(itemStack, plugin.text().of(player, "history.shop.top-n-valuable-customers-title", summary.valuableCustomers().size()).forLocale());
+        List<Component> description = new ArrayList<>(summary.valuableCustomers().size());
+        summary.valuableCustomers().forEach((uuid, count) -> description.add(plugin.text().of(player, "history.shop.top-n-valuable-customers-entry", QUserImpl.createSync(plugin.getPlayerFinder(), uuid).getDisplay(), count).forLocale()));
+        plugin.getPlatform().setLore(itemStack, description);
+        return itemStack;
     }
 
     private ItemStack getSummaryIcon() {
