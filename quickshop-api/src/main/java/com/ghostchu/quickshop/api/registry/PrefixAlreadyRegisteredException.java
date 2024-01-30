@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.registry.builtin.itemexpression.exception;
+package com.ghostchu.quickshop.api.registry;
 
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionHandler;
 import org.bukkit.plugin.Plugin;
