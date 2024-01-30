@@ -64,6 +64,7 @@ public class CommonUtil {
     }
 
     public static double med(@NotNull List<Double> total) {
+        total = new ArrayList<>(total);
         double j;
         Collections.sort(total);
         int size = total.size();
