@@ -6,17 +6,15 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class SubCommand_Sign implements CommandHandler<Player> {
 
@@ -44,14 +42,8 @@ public class SubCommand_Sign implements CommandHandler<Player> {
         }
         String signType = parser.getArgs().get(0);
         Material material = Material.matchMaterial(signType.trim());
-        if(material == null){
+        if(material == null || !Tag.WALL_SIGNS.isTagged(material)){
             plugin.text().of(sender,"sign-type-invalid", signType).send();
-            return;
-        }
-        material = mapToItemSign(material);
-        if(material == null){
-            plugin.text().of("internal-error").send();
-            plugin.logger().warn("Failed to map {}: Target material are not exists.", signType);
             return;
         }
         for (Sign sign : shop.getSigns()) {
@@ -61,39 +53,15 @@ public class SubCommand_Sign implements CommandHandler<Player> {
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
     }
 
-    @Nullable
-    private Material mapToItemSign(Material wallSign){
-        String wallSignName = wallSign.name();
-        String signName = wallSignName.replace("_WALL_SIGN", "_SIGN");
-        Material material = Material.matchMaterial(signName);
-        if(material == null){
-            Log.debug("Material "+wallSignName+" mapping to "+signName+" failed. The target material are not exists.");
-            return null;
-        }
-        return material;
-    }
-
-    private List<Material> cachedSignMaterials = null;
-
-    private List<Material> getAvailableSignMaterials() {
-        if (cachedSignMaterials != null) {
-            return cachedSignMaterials;
-        }
-        List<Material> materials = new ArrayList<>();
-        for (Material value : Material.values()) {
-            if (Tag.WALL_SIGNS.isTagged(value)) {
-                materials.add(value);
-            }
-        }
-        cachedSignMaterials = materials;
-        return materials;
+    private Set<Material> getAvailableSignMaterials() {
+        return Tag.WALL_SIGNS.getValues();
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        return parser.getArgs().size() == 1 ? Collections.singletonList(plugin.text().of(sender, "tabcomplete.price").plain()) : Collections.emptyList();
+        return parser.getArgs().size() == 1 ? Tag.WALL_SIGNS.getValues().stream().map(Enum::name).toList() : Collections.emptyList();
     }
 
 }
