@@ -175,11 +175,9 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
-        if(stack.hasItemMeta()) {
-            ItemMeta meta = stack.getItemMeta();
-            meta.displayName(component);
-            stack.setItemMeta(meta);
-        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.displayName(component);
+        stack.setItemMeta(meta);
     }
 
     @Override
@@ -198,11 +196,9 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        if(stack.hasItemMeta()) {
-            ItemMeta meta = stack.getItemMeta();
-            meta.lore(new ArrayList<>(components));
-            stack.setItemMeta(meta);
-        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.lore(new ArrayList<>(components));
+        stack.setItemMeta(meta);
     }
 
 

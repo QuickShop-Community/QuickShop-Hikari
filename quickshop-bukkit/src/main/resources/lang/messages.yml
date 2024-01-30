@@ -465,35 +465,35 @@ controlpanel:
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
 timeunit:
   behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
+  week: "{0} week"
+  weeks: "{0} weeks"
+  year: "{0} year"
   before: before
   scheduled: scheduled
-  years: <red>{0} years
+  years: "{0} years"
   scheduled-in: scheduled in {0}
-  second: <red>{0} second
+  second: "{0} second"
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
   std-time-format: HH:mm:ss
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
+  seconds: "{0} seconds"
+  hour: "{0} hour"
   scheduled-at: scheduled at {0}
   after: after
-  day: <red>{0} day
+  day: "{0} day"
   recent: recent
   between: between
-  hours: <red>{0} hours
-  months: <red>{0} months
+  hours: "{0} hours"
+  months: "{0} months"
   longtimeago: long time ago
   between-format: between {0} and {1}
-  minutes: <red>{0} minutes
+  minutes: "{0} minutes"
   justnow: just now
-  minute: <red>{0} minute
+  minute: "{0} minute"
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: future
-  month: <red>{0} month
+  month: "{0} month"
   future: in {0}
-  days: <red>{0} days
+  days: "{0} days"
 command:
   reloading: <green>Configuration reloaded. <yellow>Some changes may require reboot
     to affect.
@@ -1739,9 +1739,25 @@ sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material
 history:
   shop:
     gui-title: "View purchase history"
-    header-chest-item: |
-      {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} x{4}
-      Location: {5}
+    header-icon-description:
+      - "<white>Type: <yellow>{0}</yellow></white>"
+      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2}</yellow></white>"
+      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Location: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Time: {0}</green>"
+    log-icon-description:
+      - "<white>Purchaser: <yellow>{0}</yellow></white>"
+      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{3}</yellow></white>"
+      - "<white>Tax: <yellow>{4}</yellow></white>"
+    query-icon: "<gray>Please wait, querying...</gray>"
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    current-page: "<white>Page {0}</white>"
+    summary-icon-title: "<green>Shop Summary"
+    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
+    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
