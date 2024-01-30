@@ -371,37 +371,39 @@ controlpanel:
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
   toggledisplay: '<green>悬浮物显示: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: 后面
-  week: <red>{0} 周
-  weeks: <red>{0} 周
-  year: <red>{0} 年
+  week: "{0} week"
+  weeks: "{0} weeks"
+  year: "{0} year"
   before: 前
   scheduled: 已计划
-  years: <red>{0} 年
+  years: "{0} years"
   scheduled-in: 计划在 {0}
-  second: <red>{0} 秒
+  second: "{0} second"
   std-past-format: '{5}{4}{3}{2}{1}{0}前'
   std-time-format: HH:mm:ss
-  seconds: <red>{0} 秒
-  hour: <red>{0} 时
+  seconds: "{0} seconds"
+  hour: "{0} hour"
   scheduled-at: 计划于 {0}
   after: 之后
-  day: <red>{0} 天
+  day: "{0} day"
   recent: 近期
   between: 之间
-  hours: <red>{0} 时
-  months: <red>{0} 月
+  hours: "{0} hours"
+  months: "{0} months"
   longtimeago: 很久前
   between-format: 在 {0} 和 {1} 之间
-  minutes: <red>{0} 分
+  minutes: "{0} minutes"
   justnow: 现在
-  minute: <red>{0} 分
+  minute: "{0} minute"
   std-format: yyyy/MM/dd HH:mm:ss
   future-plain-text: 未来
-  month: <red>{0} 月
+  month: "{0} month"
   future: 在 {0}
-  days: <red>{0} 天
+  days: "{0} days"
 command:
   reloading: <green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效.
   description:
@@ -439,6 +441,8 @@ command:
     removeall: <yellow>删除指定玩家的<aqua>所有<reset><yellow>商店
     unban: <yellow>解禁商店中的玩家
     transfer: <yellow>将某人的所有商店转移给其他人
+    transferall: <yellow>将某人的所有商店转移给其他人
+    transferownership: <yellow>Transfer the shop you're looking at to someone else
     size: <yellow>修改每次交易的物品数量
     supercreate: <yellow>越过所有区域保护检查创建商店
     taxaccount: <yellow>设置商店使用的税务账户
@@ -449,6 +453,7 @@ command:
     database: <yellow>查看和维护 QuickShop 数据库
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
     tag: <yellow>添加、 删除或查询商店标签
+    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
   bulk-size-not-set: '<red>用法: /quickshop size <数量>'
   no-type-given: '<red>用法: /quickshop find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -521,6 +526,8 @@ permission:
     set-stack-amount: <yellow>允许拥有此权限的用户设置商店堆叠金额
     set-currency: <yellow>允许拥有此权限的用户设置商店货币。
     set-name: <yellow>允许拥有此权限的用户设置商店名称。
+    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>除商店店主外，所有用户的默认权限组。
     staff: <yellow>商店助手的系统权限组
@@ -645,7 +652,13 @@ importing-failed: <red>导入数据失败，请检查服务器控制台。
 imported-database: <green>数据从 <yellow>{0}</yellow> 导入。
 transfer-sent: <green>商店转移请求已发送到 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？
+transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
 transfer-ask: |-
+  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+transferall-ask: |-
+  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transfer-single-ask: |-
   <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
@@ -1357,6 +1370,7 @@ addon:
     commands:
       list: <yellow>列出自己或其他玩家拥有的所有商店
     table-prefix: '<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: '
+    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
     entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
     message: <red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上
@@ -1482,3 +1496,36 @@ compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易拥有 EliteMobs 灵魂绑定附魔的物品。
 internet-paste-forbidden-privacy-reason: "<red>失败！根据您的隐私设置，QuickShop-Hikari不允许将您的Paste上传到互联网，在配置文件中启用DIAGNOSTIC配置项。 或使用 <aqua>/quickshop paste --file</aqua> 代替。"
+no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
+sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
+delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+suggest-wait: "<green>Please wait... Calculating recommend price."
+history:
+  shop:
+    gui-title: "View purchase history"
+    header-icon-description:
+      - "<white>Type: <yellow>{0}</yellow></white>"
+      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2}</yellow></white>"
+      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Location: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Time: {0}</green>"
+    log-icon-description:
+      - "<white>Purchaser: <yellow>{0}</yellow></white>"
+      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{3}</yellow></white>"
+      - "<white>Tax: <yellow>{4}</yellow></white>"
+    query-icon: "<gray>Please wait, querying...</gray>"
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    current-page: "<white>Page {0}</white>"
+    summary-icon-title: "<green>Shop Summary"
+    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
+    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
