@@ -138,6 +138,17 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
         }
 
+        // View purchase logs
+        if(plugin.perm().hasPermission(sender, "quickshop.other.history")
+                || (plugin.perm().hasPermission(sender, "quickshop.history") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.VIEW_PURCHASE_LOGS))){
+            Component text = plugin.text().of(sender, "controlpanel.history", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
+            Component hoverText = plugin.text().of(sender, "controlpanel.history-hover").forLocale();
+            String clickCommand = MsgUtil.fillArgs("/quickshop silenthistory {0}", shop.getRuntimeRandomUniqueId().toString());
+            components.add(text
+                    .hoverEvent(HoverEvent.showText(hoverText))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
+        }
+
         // --------------------- FUNCTION BUTTON ---------------------
 
         // Remove

@@ -196,7 +196,9 @@ public class PaperPlatform implements Platform {
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        stack.lore(new ArrayList<>(components));
+        ItemMeta meta = stack.getItemMeta();
+        meta.lore(new ArrayList<>(components));
+        stack.setItemMeta(meta);
     }
 
 

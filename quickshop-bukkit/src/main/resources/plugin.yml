@@ -115,7 +115,8 @@ permissions:
       quickshop.create.changeprice: true
       quickshop.create.double: true
       quickshop.create.cmd: true
-      quickshop.transfer: true
+      quickshop.transferall: true
+      quickshop.transferownership: true
       quickshop.find: true
       quickshop.fetchmessage: true
       quickshop.staff: true
@@ -125,6 +126,9 @@ permissions:
       quickshop.shopnaming: true
       quickshop.permission: true
       quickshop.benefit: true
+      quickshop.sign: true
+      quickshop.history: true
+      quickshop.suggestprice: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -135,6 +139,7 @@ permissions:
       quickshop.bypass.*: true
       quickshop.alerts: true
       quickshop.create.admin: true
+      quickshop.transferownershop.other: true
       quickshop.other.changeitem: true
       quickshop.other.changeamount: true
       quickshop.other.staff: true
@@ -150,7 +155,8 @@ permissions:
       quickshop.other.preview: true
       quickshop.other.use: true
       quickshop.other.benefit: true
-
+      quickshop.other.sign: true
+      quickshop.other.history: true
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
     default: op
@@ -201,6 +207,9 @@ permissions:
     default: op
   quickshop.other.amount:
     description: Allows a staff member to change the item amount per trade of someone else's shop.
+    default: op
+  quickshop.other.sign:
+    description: Allows a staff member to change the sign type of someone else's shop.
     default: op
   quickshop.setowner:
     description: Allows a staff member to change the owner of any shop.
@@ -324,4 +333,28 @@ permissions:
     default: op
   quickshop.other.benefit:
     description: Permission to bypass the benefit permission check
+    default: op
+  quickshop.transferall:
+    description: Permission to transfer all shops of a player to someone
+    default: op
+  quickshop.transferall.other:
+    description: Permission to transfer others all shops of a player to someone
+    default: op
+  quickshop.transferownership:
+    description: Permission to transfer a single shop of a player to someone
+    default: op
+  quickshop.transferownership.other:
+    description: Permission to transfer a single shop of a player to someone without permission check
+    default: op
+  quickshop.sign:
+    description: Permission to change the shop sign type
+    default: op
+  quickshop.history:
+    description: Permission to view the shop history
+    default: op
+  quickshop.other.history:
+    description: Permission to view the other's shop history
+    default: op
+  quickshop.suggestprice:
+    description: Suggest the shop recommend price
     default: op

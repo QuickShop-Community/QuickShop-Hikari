@@ -55,7 +55,7 @@ public class InventoryPreview implements Listener {
         } else {
             itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         }
-        previewStr = LegacyComponentSerializer.legacySection().serialize(plugin.text().of("quickshop-gui-preview").forLocale(locale));
+        previewStr = plugin.text().of("quickshop-gui-preview").legacy(locale);
         if (StringUtils.isEmpty(previewStr)) {
             previewStr = ChatColor.RED + "FIXME: Do not set quickshop-gui-preview to null or empty string.";
         }

@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.cache.Cache;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class SubCommand_Transfer implements CommandHandler<Player> {
+public class SubCommand_TransferOwnership implements CommandHandler<Player> {
 
     private final QuickShop plugin;
     private final Cache<UUID, PendingTransferTask> taskCache = CacheBuilder
@@ -29,7 +30,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             .expireAfterWrite(60, TimeUnit.SECONDS)
             .build();
 
-    public SubCommand_Transfer(QuickShop plugin) {
+    public SubCommand_TransferOwnership(QuickShop plugin) {
         this.plugin = plugin;
     }
 
@@ -38,6 +39,15 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().isEmpty()) {
             plugin.text().of(sender, "command.wrong-args").send();
+            return;
+        }
+        Shop targetShop = getLookingShop(sender);
+        if(targetShop == null){
+            plugin.text().of(sender, "not-looking-at-shop").send();
+            return;
+        }
+        if(!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)){
+            plugin.text().of(sender, "no-permission").send();
             return;
         }
         if (parser.getArgs().size() == 1) {
@@ -79,18 +89,18 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                         QUser senderQUser = QUserImpl.createFullFilled(sender);
                         QUser receiverQUser = QUserImpl.createFullFilled(receiver);
 
-                        List<Shop> shopsToTransfer = plugin.getShopManager().getAllShops(senderQUser);
+                        List<Shop> shopsToTransfer = List.of(targetShop);
                         PendingTransferTask task = new PendingTransferTask(senderQUser, receiverQUser, shopsToTransfer);
                         taskCache.put(uuid, task);
                         plugin.text().of(sender, "transfer-sent", name).send();
-                        plugin.text().of(receiver, "transfer-request", sender.getName()).send();
-                        plugin.text().of(receiver, "transfer-ask", 60).send();
+                        plugin.text().of(receiver, "transfer-single-request", sender.getName()).send();
+                        plugin.text().of(receiver, "transfer-single-ask", 60).send();
                     });
                 }
             }
         }
         if (parser.getArgs().size() == 2) {
-            if (!plugin.perm().hasPermission(sender, "quickshop.transfer.other")) {
+            if (!plugin.perm().hasPermission(sender, "quickshop.transferownership.other")) {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }

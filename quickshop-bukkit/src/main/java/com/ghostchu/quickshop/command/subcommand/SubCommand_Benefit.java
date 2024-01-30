@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Profile;
 import com.ghostchu.quickshop.util.Util;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -159,7 +158,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             return null;
         }
         if (parser.getArgs().size() == 3) {
-            return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.percentage").forLocale()));
+            return Collections.singletonList(plugin.text().of(sender, "tabcomplete.percentage").legacy());
         }
         return Collections.emptyList();
     }

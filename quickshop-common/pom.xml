@@ -5,7 +5,7 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>5.2.0.14</version>
+        <version>6.0.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -195,6 +195,12 @@
             <groupId>com.alessiodp.libby</groupId>
             <artifactId>libby-bukkit</artifactId> <!-- Replace bukkit if you're using another platform -->
             <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stefvanschie.inventoryframework</groupId>
+            <artifactId>IF</artifactId>
+            <version>0.10.13</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

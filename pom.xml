@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>5.2.0.14</version>
+    <version>6.0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -112,8 +112,13 @@
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
-                                        <include>com.alessiodp.libby:libby-core:*</include>
+                                        <include>org.apache.commons:commons-lang3:*</include>
+                                        <include>org.apache.commons:commons-text:*</include>
+                                        <include>org.apache.commons:commons-compress:*</include>
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
+                                        <include>com.alessiodp.libby:libby-core:*</include>
+                                        <include>io.vertx:vertx-core:*</include>
+                                        <include>io.vertx:vertx-web:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -134,8 +139,20 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
                                     </relocation>
                                     <relocation>
+                                        <pattern>org.apache.commons.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.apache.commons.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
                                         <pattern>com.alessiodp.libby.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.mohistmc.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>io.vertx.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.io.vertx.</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>
@@ -357,6 +374,8 @@
         <module>compatibility/reforges</module>
         <module>compatibility/chestprotect</module>
         <module>compatibility/angelchest</module>
+        <module>compatibility/slimefun</module>
+        <module>compatibility/itemsadder</module>
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
         <module>addon/discount</module>
@@ -367,6 +386,8 @@
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
         <module>addon/reremake-migrator</module>
+        <module>addon/webui</module>
+
     </modules>
 
 </project>

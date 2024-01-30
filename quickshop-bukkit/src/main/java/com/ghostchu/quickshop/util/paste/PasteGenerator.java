@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.paste.item.*;
 import lombok.Getter;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -306,7 +305,7 @@ public class PasteGenerator {
 
     @NotNull
     private String formatTime(long time) {
-        String timeUnit = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
+        String timeUnit = QuickShop.getInstance().text().of("timeunit.std-format").legacy(MsgUtil.getDefaultGameLanguageCode());
         SimpleDateFormat format;
         try {
             format = new SimpleDateFormat(timeUnit);

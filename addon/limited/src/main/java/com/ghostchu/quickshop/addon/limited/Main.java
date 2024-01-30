@@ -11,7 +11,6 @@ import com.ghostchu.quickshop.api.localization.text.Text;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -102,13 +101,8 @@ public final class Main extends JavaPlugin implements Listener {
             shop.setExtra(this, storage);
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
-                player.sendTitle(
-                        LegacyComponentSerializer.legacySection()
-                                .serialize(plugin.text().of(player, "addon.limited.titles.title")
-                                        .forLocale()),
-                        LegacyComponentSerializer.legacySection()
-                                .serialize(plugin.text().of(player, "addon.limited.titles.subtitle"
-                                        , (limit - playerUsedLimit)).forLocale()));
+                player.sendTitle(plugin.text().of(player, "addon.limited.titles.title").legacy(),
+                      plugin.text().of(player, "addon.limited.titles.subtitle", (limit - playerUsedLimit)).legacy());
             }
         }
     }

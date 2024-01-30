@@ -4,3 +4,5 @@ whitelist-mode: false
 ignore-disabled-worlds: true
 #Should we delete the shop in a land when the shop owner loses the permission for this land?
 delete-on-lose-permission: false
+#Delete all shops in the land when that land was deleted
+delete-shops-in-land-when-land-deleted: false
