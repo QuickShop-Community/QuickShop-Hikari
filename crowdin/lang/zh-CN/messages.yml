@@ -1528,3 +1528,4 @@ history:
     total-unique-purchasers: "<white>交易者总数： <yellow>{0}</yellow></white>"
     top-n-valuable-customers-title: "<gold>最高 {0} 与该商店交易次数最多的玩家</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    no-result: "<white>No result</white>"
