@@ -122,7 +122,7 @@ menu:
   total-value-of-chest: '<green>상자의 총 가격: <yellow>{0}원'
 currency-not-exists: <red>설정할 통화를 찾을 수 없습니다. 아마 철자가 틀렸거나 그 화폐는 이 세상에서 구할 수 없을 거예요.
 no-nearby-shop: <red>근처에서는 {0} 상점이 없습니다.
-translation-author: '번역: Chicki_yeah(번역에 이상한 부분이 있다면 치키이예#0032로 연락해주시면 수정하겠습니다.)'
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: 통합 {0} 이(가) 상점 거래를 거부(취소)시켰습니다.
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>성공적으로 상점 소유자를 서버로 설정했습니다.
@@ -1520,3 +1520,16 @@ history:
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>No result</white>"
+about:
+  text:
+    - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
+    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
+  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
+  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"

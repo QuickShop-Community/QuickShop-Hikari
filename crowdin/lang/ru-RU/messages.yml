@@ -122,7 +122,7 @@ menu:
   total-value-of-chest: '<green>Общая цена сундука: <yellow>{0}'
 currency-not-exists: <red>Не удается найти валюту, которую вы хотите установить. Возможно, вы ошиблись, или эта валюта недоступна в данном мире.
 no-nearby-shop: <red>Нет близлежащих магазинов, соответствующих {0}.
-translation-author: 'Переводчики: kyrtion, limbiz86, Cap_Scarlett, imDaniX'
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Интеграция {0} не позволяет провести сделку
 shop-transaction-failed: <red>Извините, но при обработке вашей покупки произошла внутренняя ошибка. Покупка была отменена. Пожалуйста, свяжитесь с администраторами сервера, если эта ошибка повторяется.
 success-change-owner-to-server: <green>Теперь сам сервер владеет этим магазином.
@@ -1520,3 +1520,16 @@ history:
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>No result</white>"
+about:
+  text:
+    - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
+    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
+  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
+  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
