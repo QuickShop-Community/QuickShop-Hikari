@@ -43,6 +43,8 @@ public class PasteGenerator {
                 </footer>
             </html>
             """;
+
+
     private static final String INLINE_STYLE = """
             /* Sakura.css v1.3.0
              * ================

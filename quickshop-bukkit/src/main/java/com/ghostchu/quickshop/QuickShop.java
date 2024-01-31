@@ -248,6 +248,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private MetricManager metricManager;
     @Getter
     private RegistryManager registry;
+    private DonationInfo donationInfo;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -441,6 +442,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         // Schedule this event can be run in next tick.
         Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
+        DonationInfo info = new DonationInfo(getConfig().getString("donation-key"));
+        if(info.isValid()){
+            this.donationInfo = info;
+        }else{
+            this.donationInfo = null;
+        }
     }
 
     @NotNull
@@ -1073,6 +1080,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public String getVersion() {
         return javaPlugin.getVersion();
     }
+    
+    @Nullable
+    public DonationInfo getDonationInfo() {return this.donationInfo; }
 
     public enum DatabaseDriverType {
         MYSQL,
