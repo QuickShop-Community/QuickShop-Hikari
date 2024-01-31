@@ -38,7 +38,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
 
             final List<String> requirePermissions = container.getPermissions();
 
-            if (requirePermissions != null) {
+            if (requirePermissions != null && !requirePermissions.isEmpty()) {
                 for (String requirePermission : requirePermissions) {
                     if (requirePermission != null && !plugin.perm().hasPermission(sender, requirePermission)) {
                         if (Util.isDevMode()) {
@@ -57,7 +57,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
 
             final List<String> selectivePermissions = container.getSelectivePermissions();
             boolean anyHit = false;
-            if(selectivePermissions != null){
+            if(selectivePermissions != null && !selectivePermissions.isEmpty()){
                 for (String selectivePermission : selectivePermissions) {
                     if(selectivePermission != null && plugin.perm().hasPermission(sender, selectivePermission)){
                         anyHit = true;
