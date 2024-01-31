@@ -19,6 +19,10 @@ public class ConfigUpdateScript {
         this.config = config;
         this.plugin = plugin;
     }
+    @UpdateScript(version = 1027)
+    public void donationKey() {
+        getConfig().set("donation-key", "");
+    }
     @UpdateScript(version = 1026)
     public void toggleEnchantsAndEffectList() {
         getConfig().set("shop.info-panel.show-enchantments", true);

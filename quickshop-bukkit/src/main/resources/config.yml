@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1026
+config-version: 1027
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -630,3 +630,6 @@ privacy:
 # Turn off this will stop recording transactions for metrics.
 transaction-metric:
   enable: true
+
+# Fill the donation key to show your donated QuickShop-Hikari in /quickshop about and QuickShop Paste.
+donation-key: ''
