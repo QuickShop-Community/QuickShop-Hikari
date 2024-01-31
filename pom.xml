@@ -397,7 +397,7 @@
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
         <module>addon/reremake-migrator</module>
-        <module>addon/webui</module>
+<!--        <module>addon/webui</module>-->
 
     </modules>
 
