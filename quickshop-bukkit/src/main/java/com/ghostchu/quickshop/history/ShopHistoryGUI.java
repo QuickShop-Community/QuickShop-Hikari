@@ -188,6 +188,12 @@ public class ShopHistoryGUI {
         return querying;
     }
 
+    private ItemStack noResultPlaceHolderItem() {
+        ItemStack querying = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        plugin.getPlatform().setDisplayName(querying, plugin.text().of(player, "history.shop.no-result").forLocale());
+        return querying;
+    }
+
 
     private void updateFooterPageIcons() {
         footer.clear();
@@ -217,6 +223,12 @@ public class ShopHistoryGUI {
         body.clear();
         String timeFormat = plugin.text().of(player, "timeunit.std-format").plain();
         SimpleDateFormat format = new SimpleDateFormat(timeFormat);
+        if(queryResult.isEmpty()){
+            for (int i = 0; i < body.getHeight()*body.getLength(); i++) {
+                body.addItem(new GuiItem(noResultPlaceHolderItem(), cancelEvent()));
+            }
+            return;
+        }
         for (ShopHistory.ShopHistoryRecord record : this.queryResult) {
             String userName = QUserImpl.createSync(plugin.getPlayerFinder(), record.buyer()).getDisplay();
             DataRecord dataRecord = plugin.getDatabaseHelper().getDataRecord(record.dataId()).join();
