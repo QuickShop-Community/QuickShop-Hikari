@@ -43,7 +43,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
             components.add(text
                     .hoverEvent(HoverEvent.showText(plugin.text().of(sender, "controlpanel.setowner-hover").forLocale()))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/quickshop setowner ")));
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/quickshop transferownership ")));
         }
         // Unlimited
         if (plugin.perm().hasPermission(sender, "quickshop.unlimited")) {

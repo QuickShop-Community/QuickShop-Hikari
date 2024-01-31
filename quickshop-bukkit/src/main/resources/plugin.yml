@@ -133,6 +133,7 @@ permissions:
     description: The permission that provide all moderator need have permissions
     default: op
     children:
+      quickshop.setowner: true
       quickshop.other.destroy: true
       quickshop.other.open: true
       quickshop.other.price: true
