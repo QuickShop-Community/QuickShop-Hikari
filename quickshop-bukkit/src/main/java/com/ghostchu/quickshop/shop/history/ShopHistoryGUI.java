@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -242,9 +243,17 @@ public class ShopHistoryGUI {
         for (ShopHistory.ShopHistoryRecord record : this.queryResult) {
             String userName = QUserImpl.createSync(plugin.getPlayerFinder(), record.buyer()).getDisplay();
             DataRecord dataRecord = plugin.getDatabaseHelper().getDataRecord(record.dataId()).join();
+            if (dataRecord == null) continue;
             Component itemName;
             try {
-                itemName = Util.getItemStackName(Util.deserialize(dataRecord.getItem()));
+                ItemStack historyItem = Util.deserialize(dataRecord.getItem());
+                if (historyItem == null) {
+                    historyItem = new ItemStack(Material.STONE);
+                    ItemMeta meta = historyItem.getItemMeta();
+                    meta.setDisplayName("Failed to deserialize item");
+                    historyItem.setItemMeta(meta);
+                }
+                itemName = Util.getItemStackName(historyItem);
             } catch (InvalidConfigurationException e) {
                 itemName = plugin.text().of(player, "internal-error").forLocale();
                 plugin.logger().error("Failed to deserialize itemstack {}", dataRecord.getItem(), e);
