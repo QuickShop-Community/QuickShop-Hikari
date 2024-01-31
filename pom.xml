@@ -147,6 +147,10 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
                                     <relocation>
+                                        <pattern>org.eclipse.aether.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.eclipse.aether.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
                                         <pattern>com.mohistmc.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
                                     </relocation>
