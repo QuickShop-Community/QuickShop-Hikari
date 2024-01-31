@@ -1536,3 +1536,4 @@ history:
     total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    no-result: "<white>No result</white>"
