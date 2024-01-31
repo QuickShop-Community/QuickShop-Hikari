@@ -81,22 +81,29 @@ public class ShopHistoryGUI {
         ItemStack headerSkullItem = new ItemStack(Material.PLAYER_HEAD);
         String shopName = shop.getShopName() == null ? shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
         Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName);
-        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
         List<Component> lore = plugin.text().ofList(player, "history.shop.header-icon-description", shop.getShopType().name(),
                         shop.getOwner().getDisplay(),
                         Util.getItemStackName(shop.getItem()),
                         shop.getPrice(), shop.getShopStackingAmount(),
                         shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ())
                 .forLocale();
+        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
         plugin.getPlatform().setLore(headerSkullItem, lore);
-
         if (PackageUtil.parsePackageProperly("renderSkullTexture").asBoolean(true)) {
             QUser owner = shopHistory.shop.getOwner();
             if (owner.isRealPlayer()) {
                 if (owner.getUniqueId() != null) {
-                    skullProvider.provide(owner.getUniqueId()).thenAccept(skull -> headerSkullItem.setItemMeta(skull.getItemMeta()));
+                    skullProvider.provide(owner.getUniqueId()).thenAccept(skull -> {
+                        headerSkullItem.setItemMeta(skull.getItemMeta());
+                        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
+                        plugin.getPlatform().setLore(headerSkullItem, lore);
+                    });
                 } else if (owner.getUsername() != null) {
-                    skullProvider.provide(owner.getUsername()).thenAccept(skull -> headerSkullItem.setItemMeta(skull.getItemMeta()));
+                    skullProvider.provide(owner.getUsername()).thenAccept(skull -> {
+                        headerSkullItem.setItemMeta(skull.getItemMeta());
+                        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
+                        plugin.getPlatform().setLore(headerSkullItem, lore);
+                    });
                 }
             }
         }
@@ -203,6 +210,7 @@ public class ShopHistoryGUI {
         plugin.getPlatform().setDisplayName(previousPage, plugin.text().of("history.shop.previous-page").forLocale());
         plugin.getPlatform().setDisplayName(currentPage, plugin.text().of("history.shop.current-page", page).forLocale());
         plugin.getPlatform().setDisplayName(nextPage, plugin.text().of("history.shop.next-page").forLocale());
+        currentPage.setAmount(Math.min(1, Math.max(page, currentPage.getMaxStackSize())));
         footer.addItem(new GuiItem(previousPage, e -> {
             e.setResult(Event.Result.DENY);
             e.setCancelled(true);
@@ -223,8 +231,8 @@ public class ShopHistoryGUI {
         body.clear();
         String timeFormat = plugin.text().of(player, "timeunit.std-format").plain();
         SimpleDateFormat format = new SimpleDateFormat(timeFormat);
-        if(queryResult.isEmpty()){
-            for (int i = 0; i < body.getHeight()*body.getLength(); i++) {
+        if (queryResult.isEmpty()) {
+            for (int i = 0; i < body.getHeight() * body.getLength(); i++) {
                 body.addItem(new GuiItem(noResultPlaceHolderItem(), cancelEvent()));
             }
             return;
