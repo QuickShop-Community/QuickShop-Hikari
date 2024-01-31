@@ -165,6 +165,10 @@ public class ShopHistory {
         try (query) {
             ResultSet set = query.getResultSet();
             while (set.next()) {
+                String type = set.getString("type");
+                if(!ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equals(type) && !ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equals(type)){
+                    continue;
+                }
                 Timestamp date = set.getTimestamp("time");
                 long shopId = set.getLong("shop");
                 long dataId = set.getLong("data");
