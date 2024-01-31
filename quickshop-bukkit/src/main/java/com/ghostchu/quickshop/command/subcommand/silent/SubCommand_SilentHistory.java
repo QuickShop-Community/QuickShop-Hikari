@@ -4,8 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.history.ShopHistory;
-import com.ghostchu.quickshop.history.ShopHistoryGUI;
+import com.ghostchu.quickshop.shop.history.ShopHistory;
+import com.ghostchu.quickshop.shop.history.ShopHistoryGUI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

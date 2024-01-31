@@ -1,8 +1,9 @@
-package com.ghostchu.quickshop.history;
+package com.ghostchu.quickshop.shop.history;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
+import com.ghostchu.quickshop.api.event.ShopHistoryGuiOpenEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.obj.QUserImpl;
@@ -114,6 +115,7 @@ public class ShopHistoryGUI {
     public void open() {
         refreshGui();
         chestGui.show(player);
+        new ShopHistoryGuiOpenEvent(shop, player, chestGui.getInventory()).callEvent();
     }
 
 

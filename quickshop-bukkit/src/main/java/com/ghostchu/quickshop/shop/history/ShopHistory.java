@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.history;
+package com.ghostchu.quickshop.shop.history;
 
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
