@@ -365,35 +365,35 @@ controlpanel:
   history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: назад
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
+  week: "{0} неделя"
+  weeks: "{0} недель"
+  year: "{0} год"
   before: до
   scheduled: запланировано
-  years: "{0} years"
+  years: "{0} лет"
   scheduled-in: запланировано через {0}
-  second: "{0} second"
+  second: "{0} секунда"
   std-past-format: '{5}{4}{3}{2}{1}{0}назад'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
+  seconds: "{0} секунд"
+  hour: "{0} час"
   scheduled-at: запланировано на {0}
   after: после
-  day: "{0} day"
+  day: "{0} день"
   recent: недавно
   between: между
-  hours: "{0} hours"
-  months: "{0} months"
+  hours: "{0} часов"
+  months: "{0} месяцев"
   longtimeago: давно
   between-format: между {0} и {1}
-  minutes: "{0} minutes"
+  minutes: "{0} минут"
   justnow: только что
-  minute: "{0} minute"
+  minute: "{0} минута"
   std-format: dd/MM/yyyy HH:mm:ss
   future-plain-text: будущее
-  month: "{0} month"
+  month: "{0} месяц"
   future: через {0}
-  days: "{0} days"
+  days: "{0} дней"
 command:
   reloading: '<green>Конфигурация перезагружена. <yellow>Некоторые изменения могут потребовать рестарта. <newline><gray>(Примечание: перезагрузка была изменена после 4.0.9.10, теперь мы только перезагружаем конфигурацию, но не весь плагин, чтобы убедиться, что сервер не крашнется)'
   description:
