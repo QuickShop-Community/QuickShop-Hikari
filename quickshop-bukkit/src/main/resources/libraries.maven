@@ -1,4 +1,4 @@
-org.slf4j:slf4j-jdk14:2.0.10
+org.slf4j:slf4j-jdk14:2.0.11
 com.google.code.gson:gson:2.10.1
 com.rollbar:rollbar-java:1.9.0
 cc.carm.lib:easysql-hikaricp:0.4.7
