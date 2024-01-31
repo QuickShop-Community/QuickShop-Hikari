@@ -117,8 +117,11 @@
                                         <include>org.apache.commons:commons-compress:*</include>
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
+                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
+                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-core:*</include>
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
+                                        <include>org.eclipse.aether:*:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -147,9 +150,13 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>org.eclipse.aether.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.eclipse.aether.</shadedPattern>
+                                        <pattern>com.ghostchu.lib.unofficial.com.alessiodp.libby.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.ghostchu.lib.unofficial.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
+<!--                                    <relocation>-->
+<!--                                        <pattern>org.eclipse.aether.</pattern>-->
+<!--                                        <shadedPattern>com.ghostchu.quickshop.shade.org.eclipse.aether.</shadedPattern>-->
+<!--                                    </relocation>-->
                                     <relocation>
                                         <pattern>com.mohistmc.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
