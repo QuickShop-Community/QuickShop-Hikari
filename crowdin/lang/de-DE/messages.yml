@@ -646,7 +646,7 @@ transfer-single-request: <yellow>Spieler <aqua>{0}</aqua> möchte gerne einen Sh
 transfer-ask: |-
   <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
 transferall-ask: |-
-  <gold>Schreibe <red>/quickshop transferall accept</red> zum akzeptieren oder <red>/quickshop transferall deny</red> zum ablehnen. Die Anfrage wird in <red>{0}</red> Sekunden ablaufen.
+  <gold>Schreibe <red>/quickshop transferall accept</red> zum Akzeptieren oder <red>/quickshop transferall deny</red> zum Ablehnen. Die Anfrage wird in <red>{0}</red> Sekunden ablaufen.
 transfer-single-ask: |-
   <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
 transfer-accepted-fromside: <green>Spieler <aqua>{0}</aqua> hat deinen Shop-Übertragungsantrag akzeptiert.
@@ -1489,7 +1489,7 @@ no-sign-type-given: "<red>Du musst ein Schildmaterial angeben. Verfügbare Schil
 sign-type-invalid: "<red>Der Typ <yellow>{0}</yellow> ist kein gültiges Schildmaterial."
 delete-controlpanel-button-confirm: "<red>Möchtest du wirklich diesen Shop entfernen? Klicke den <bold>[Shop entfernen]</bold> Knopf innerhalb von {0} Sekunden erneut zum bestätigen."
 cannot-suggest-price: "<red>Sorry, aktuell gibt es nicht genug Spieler welche das selbe Item handeln um daraus einen empfohlenen Preis zu generieren."
-price-suggest: "<green>Basierend auf daten von <aqua>{0}</aqua> Shops ist der höchste Preis für welchen ein Shop das Item verkauft <light_purple>{1}</light_purple>, der niedrigste Preis <light_purple>{2}</light_purple>, der durchschnittliche Preis <light_purple>{3}</light_purple> und der Zentralwert <light_purple>{4}</light_purple>.<newline><yellow>Es wird empfohlen, dass du den Preis nahe <gold>{5}</gold> setzt.</yellow>"
+price-suggest: "<green>Basierend auf den Daten von <aqua>{0}</aqua> Shops ist der höchste Preis, für welchen ein Shop das Item verkauft <light_purple>{1}</light_purple>, der niedrigste Preis <light_purple>{2}</light_purple>, der durchschnittliche Preis <light_purple>{3}</light_purple> und der Median Preis<light_purple>{4}</light_purple>.<newline><yellow>Es wird empfohlen, dass du den Preis auf um die <gold>{5}</gold> setzt.</yellow>"
 suggest-wait: "<green>Bitte warten... Berechne empfohlenen Preis."
 history:
   shop:
@@ -1525,7 +1525,7 @@ about:
     - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>Release <yellow>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Entwickler <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Klicke um Mitwirkende zu sehen'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[Zeige Mitwirkende auf GitHub]</click></hover></color></aqua>"
-    - "<aqua>Lokalisationsmitglieder <gold>({4})</gold>: <yellow>></yellow> <green>{5}</green></aqua>"
+    - "<aqua>Lokalisierte Mitglieder <gold>({4})</gold>: <yellow>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klicke um Crowdin Übersetzungs-Seite zu öffnen'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Hilf beim Übesetzen auf Crowdin]</click></hover></color></yellow>"
     - "<aqua>Spendenschlüssel <yellow>>></yellow> <green>{6}</green></aqua>"
     - "<gold>Unterstützt von der Community</gold> <red>Mit ❤ gemacht</red>"
