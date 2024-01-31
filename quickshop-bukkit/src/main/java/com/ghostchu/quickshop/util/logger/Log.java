@@ -22,7 +22,7 @@ import java.util.logging.Level;
 
 public class Log {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
-    private static final int BUFFER_SIZE = 500 * Type.values().length;
+    private static final int BUFFER_SIZE = 2000 * Type.values().length;
     private static final Queue<Record> LOGGER_BUFFER = EvictingQueue.create(BUFFER_SIZE);
     private static final boolean DISABLE_LOCATION_RECORDING;
     private static final StackWalker STACK_WALKER = StackWalker.getInstance();

@@ -36,9 +36,7 @@ public class PermissionManager {
     public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
         try {
             boolean result = provider.hasPermission(sender, permission);
-            if (Util.isDevMode()) {
-                Log.permission(sender.getName() + " : " + permission + " -> " + result);
-            }
+            Log.permission(sender.getName() + ": " + permission + "->" + result);
             return result;
         } catch (Exception th) {
             plugin.logger().warn("Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
