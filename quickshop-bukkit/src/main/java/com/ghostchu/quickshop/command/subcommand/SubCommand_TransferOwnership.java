@@ -41,15 +41,7 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
             plugin.text().of(sender, "command.wrong-args").send();
             return;
         }
-        Shop targetShop = getLookingShop(sender);
-        if(targetShop == null){
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-        if(!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)){
-            plugin.text().of(sender, "no-permission").send();
-            return;
-        }
+
         if (parser.getArgs().size() == 1) {
             switch (parser.getArgs().get(0)) {
                 case "accept", "allow", "yes" -> {
@@ -71,6 +63,15 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
                     task.cancel(true);
                 }
                 default -> {
+                    Shop targetShop = getLookingShop(sender);
+                    if(targetShop == null){
+                        plugin.text().of(sender, "not-looking-at-shop").send();
+                        return;
+                    }
+                    if(!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)){
+                        plugin.text().of(sender, "no-permission").send();
+                        return;
+                    }
                     String name = parser.getArgs().get(0);
                     plugin.getPlayerFinder().name2UuidFuture(name).whenComplete((uuid, throwable) -> {
                         if (uuid == null) {
@@ -98,35 +99,6 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
                     });
                 }
             }
-        }
-        if (parser.getArgs().size() == 2) {
-            if (!plugin.perm().hasPermission(sender, "quickshop.transferownership.other")) {
-                plugin.text().of(sender, "no-permission").send();
-                return;
-            }
-            Util.asyncThreadRun(() -> {
-                QUser fromQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(0));
-                QUser targetQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(1));
-
-                Player fromPlayer = fromQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-                Player targetPlayer = targetQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-
-                if (fromPlayer == null) {
-                    plugin.text().of(sender, "unknown-player", "fromPlayer").send();
-                    return;
-                }
-                if (targetPlayer == null) {
-                    plugin.text().of(sender, "unknown-player", "targetPlayer").send();
-                    return;
-                }
-                List<Shop> shopList = plugin.getShopManager().getAllShops(fromQUser);
-                PendingTransferTask task = new PendingTransferTask(fromQUser, targetQUser, shopList);
-                Util.mainThreadRun(() -> {
-                    task.commit(false);
-                    plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
-                });
-            });
-
         }
     }
 
