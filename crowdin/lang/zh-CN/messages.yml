@@ -123,7 +123,7 @@ menu:
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
 no-nearby-shop: <red>附近没有匹配 {0} 的商店。
-translation-author: 'Ghost_chu, Andre_601'
+translation-author: 'Ghost_chu, sandtechnology, Pemdow, YuanYuanOwO, RMSCA, 李馨雨'
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
 shop-transaction-failed: <red>抱歉，在处理您的购买时发生内部错误。购买已取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
@@ -1503,12 +1503,12 @@ price-suggest: "<green>基于来自 <aqua>{0}</aqua> 商店的数据 最高价�
 suggest-wait: "<green>请稍候... 计算推荐价格。"
 history:
   shop:
-    gui-title: "查看购买记录"
+    gui-title: "查看交易记录"
     header-icon-description:
       - "<white>类型： <yellow>{0}</yellow></white>"
       - "<white>所有者: <yellow>{1}</yellow></white>"
       - "<white>物品： <yellow>{2}</yellow></white>"
-      - "<white>价格： <yellow>{3} <aqua>{4}</aqua></yellow></white>"
+      - "<white>价格： <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
       - "<white>位置： <yellow>{5}</yellow></white>"
     log-icon-title: "<reset><green>时间： {0}</green>"
     log-icon-description:
@@ -1528,17 +1528,17 @@ history:
     total-unique-purchasers: "<white>交易者总数： <yellow>{0}</yellow></white>"
     top-n-valuable-customers-title: "<gold>前 {0} 个最有价值客户</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
-    no-result: "<white>No result</white>"
+    no-result: "<white>没有结果</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
-    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
-    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
-    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
-    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
-  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gra>"
-  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
+    - "<aqua>版本 <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>构建 <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>开发者 <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>点击查看贡献者'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看贡献者]</click></hover></color></aqua>"
+    - "<aqua>本地化成员 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>点击打开 Crowdin 翻译页面'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[帮助翻译Crowdin]</click></hover></color></yellow>"
+    - "<aqua>捐赠密钥 <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>由社区提供支持</gold> <red>用 ❤</red>"
+  valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>无效的捐赠密钥</gra>"
+  kofi-thanks: "<gold>特别感谢那些在 Ko-Fi 上支持 QuickShop 的人 :)</gold>"
