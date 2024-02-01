@@ -30,7 +30,7 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
         plugin.text().of(sender, "suggest-wait").send();
         Util.asyncThreadRun(() -> {
             List<Double> matched = plugin.getShopManager().getAllShops().stream()
-                    .filter(s -> s.getShopId() == shop.getShopId())
+                    .filter(s -> s.getShopId() != shop.getShopId())
                     .filter(s -> s.getShopType() == shop.getShopType())
                     .filter(s -> Objects.equals(s.getCurrency(), shop.getCurrency()))
                     .filter(s -> plugin.getItemMatcher().matches(shop.getItem(), s.getItem()))
