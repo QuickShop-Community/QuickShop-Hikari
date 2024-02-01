@@ -1,6 +1,10 @@
 package com.ghostchu.quickshop.compatibility.slimefun;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
+import com.ghostchu.quickshop.api.registry.Registry;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionHandler;
+import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -16,7 +20,12 @@ public final class Main extends CompatibilityModule implements SlimefunAddon, It
 
     @Override
     public void init() {
-        // There no init stuffs need to do
+        Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+        if(registry instanceof ItemExpressionRegistry itemExpressionRegistry){
+            if(itemExpressionRegistry.registerHandlerSafely(this)){
+                getLogger().info("Register Slimefun ItemExpressionHandler successfully!");
+            }
+        }
     }
 
     @NotNull

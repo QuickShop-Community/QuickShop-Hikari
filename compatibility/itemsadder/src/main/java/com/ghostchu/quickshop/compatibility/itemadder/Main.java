@@ -1,6 +1,10 @@
 package com.ghostchu.quickshop.compatibility.itemadder;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
+import com.ghostchu.quickshop.api.registry.Registry;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionHandler;
+import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +15,12 @@ public final class Main extends CompatibilityModule implements ItemExpressionHan
 
     @Override
     public void init() {
-        // There no init stuffs need to do
+        Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+        if(registry instanceof ItemExpressionRegistry itemExpressionRegistry){
+            if(itemExpressionRegistry.registerHandlerSafely(this)){
+                getLogger().info("Register ItemAdder ItemExpressionHandler successfully!");
+            }
+        }
     }
 
 
