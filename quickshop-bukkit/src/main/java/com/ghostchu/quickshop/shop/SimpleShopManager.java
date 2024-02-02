@@ -56,6 +56,7 @@ import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -1391,10 +1392,23 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
         }
-        if (plugin.getConfig().getBoolean("shop.info-panel.show-enchantments")) {
+
+        boolean respectItemFlag = plugin.getConfig().getBoolean("respect-item-flag");
+
+        boolean shouldDisplayEnchantments = plugin.getConfig().getBoolean("shop.info-panel.show-enchantments");
+        boolean shouldDisplayPotionEffects = plugin.getConfig().getBoolean("shop.info-panel.show-effects");
+
+        if (respectItemFlag) {
+            if (items.hasItemMeta()) {
+                shouldDisplayEnchantments = items.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_ENCHANTS);
+                shouldDisplayPotionEffects = items.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_POTION_EFFECTS);
+            }
+        }
+
+        if (shouldDisplayEnchantments) {
             MsgUtil.printEnchantment(shop, chatSheetPrinter);
         }
-        if (plugin.getConfig().getBoolean("shop.info-panel.show-effects")) {
+        if (shouldDisplayPotionEffects) {
             if (items.getItemMeta() instanceof PotionMeta potionMeta) {
                 PotionData potionData = potionMeta.getBasePotionData();
                 PotionEffectType potionEffectType = potionData.getType().getEffectType();
