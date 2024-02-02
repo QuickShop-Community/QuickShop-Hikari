@@ -522,9 +522,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @NotNull Map<UUID, String> getPermissionAudiences() {
-        Map<UUID,String> clonedPlayerGroup = new HashMap<>(playerGroup);
+        Map<UUID, String> clonedPlayerGroup = new HashMap<>(playerGroup);
         Optional<UUID> uuid = getOwner().getUniqueIdOptional();
-        if(uuid.isPresent()) {
+        if (uuid.isPresent()) {
             clonedPlayerGroup.put(getOwner().getUniqueId(), BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode());
         }
         return clonedPlayerGroup;
@@ -584,18 +584,21 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public int getRemainingSpace() {
-        Util.ensureThread(false);
-        if (this.unlimited) {
-            return -1;
+        if (Bukkit.isPrimaryThread()) {
+            if (this.unlimited) {
+                return -1;
+            }
+            if (this.getInventory() == null) {
+                Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
+                return 0;
+            }
+            int space = Util.countSpace(this.getInventory(), this);
+            new ShopInventoryCalculateEvent(this, space, -1).callEvent();
+            Log.debug("Space count is: " + space);
+            return space;
+        } else {
+            return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
         }
-        if (this.getInventory() == null) {
-            Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
-            return 0;
-        }
-        int space = Util.countSpace(this.getInventory(), this);
-        new ShopInventoryCalculateEvent(this, space, -1).callEvent();
-        Log.debug("Space count is: " + space);
-        return space;
     }
 
     /**
@@ -605,17 +608,20 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public int getRemainingStock() {
-        Util.ensureThread(false);
-        if (this.unlimited) {
-            return -1;
+        if (Bukkit.isPrimaryThread()) {
+            if (this.unlimited) {
+                return -1;
+            }
+            if (this.getInventory() == null) {
+                Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
+                return 0;
+            }
+            int stock = Util.countItems(this.getInventory(), this);
+            new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+            return stock;
+        } else {
+            return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getStock();
         }
-        if (this.getInventory() == null) {
-            Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
-            return 0;
-        }
-        int stock = Util.countItems(this.getInventory(), this);
-        new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
-        return stock;
     }
 
     /**

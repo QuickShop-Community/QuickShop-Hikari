@@ -17,6 +17,7 @@ import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
@@ -1778,6 +1779,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         return amount;
     }
+    @Override
+    @NotNull
+    public CompletableFuture<@NotNull  ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop){
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().queryInventoryCache(shop.getShopId());
+    }
+
 
     public static class InteractiveManager implements ShopManager.InteractiveManager {
         private final Map<UUID, Info> actions = Maps.newConcurrentMap();
@@ -1913,6 +1921,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return shops.next();
         }
     }
+
+
 
     static class TagParser {
         private final List<String> tags;
