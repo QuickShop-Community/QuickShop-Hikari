@@ -529,7 +529,7 @@ player-no-group: <yellow>Spieler {0} ist in keiner Gruppe in diesem Shop.
 player-in-group: <green>Spieler {0} ist in Gruppe <aqua>{1}</aqua> in diesem Shop.
 permission-required: <red>Du hast keine Berechtigung {0} um das in diesem Shop zu tun.
 no-permission-detailed: <red>Du hast keine Berechtigung <yellow>{0}</yellow> um dies zu tun.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
+paste-notice: "<yellow>Beachte: Wenn du einen Paste für die Fehlerbehebung erstellst, stell sicher, dass du den Fehler reproduzieren kannst, bevor du den Paste so schnell wie mögloch erstellst; wir benötigen die Protokolle, welche kurzzeitig im Pffer gehalten werden, für die Fehlerbehebung. Wenn du den Paste zu langsam erstellst, oder ohne zuerst den Fehler zu reproduzieren, oder den Server neu startest, ist die Paste-Aufnahme nutzlos."
 paste-uploading: <aqua>Bitte warte... Lade den Paste auf Pastebin hoch...
 paste-created: '<green>Paste erstellt. Klicke um im Browser zu öffnen: <yellow>{0}</yellow><newline><red>Warnung: <gray>Sende niemals Pastes zu Personen denen du nicht traust.'
 paste-created-local: |-
