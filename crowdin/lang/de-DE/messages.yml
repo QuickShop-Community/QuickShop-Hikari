@@ -77,7 +77,7 @@ flush-finished: <green>Die Nachrichten wurden erfolgreich abgerufen.
 no-price-given: <red>Bitte gebe einen gültigen Preis ein.
 shop-already-owned: <red>Dies ist bereits ein Shop.
 backup-success: <green>Backup erfolgreich.
-not-looking-at-shop: <red>Konnte keinen Ship finden! <yellow>Stell sicher, dass du einen ansiehst.
+not-looking-at-shop: <red>Konnte keinen Shop finden! <yellow>Stell sicher, dass du einen ansiehst.
 you-cant-afford-a-new-shop: <red>Du kannst dir dies nicht leisten. Es kosted <green>{0}</green> um einen neuen Shop zu erstellen.
 success-created-shop: <green>Shop erfolgreich erstellt.
 shop-creation-cancelled: <red>Die Shoperstellung wurde abgebrochen.
@@ -507,7 +507,7 @@ permission:
     delete: <yellow>Berechtigung welche Benutzern erlaubt, den Shop zu löschen.
     receive-alert: <yellow>Berechtigung um Spielern, welche es haben, zu erlauben Warnungen zu erhalten (z.B. Ausverkauft oder neuer handel).
     access-inventory: <yellow>Berechtigung welche Benutzern Zugriff auf das Shop-Inventar erlaubt.
-    ownership-transfer: <yellow>Berechtigung welche Benutzern erlaubt, den Shop zu übertragen.
+    ownership-transfer: <yellow>Berechtigung, welche Benutzern erlaubt, den Shop zu übertragen.
     management-permission: <yellow>Berechtigung um Spielern, welche es haben, zu erlauben die Gruppenberechtigungen und Benutzergruppen zu bearbeiten.
     toggle-display: <yellow>Berechtigung welche Benutzern erlaubt das anzeigen des Display-Item des Shops zu ändern.
     set-shoptype: <yellow>Berechtigung um Spielern, welche es haben, zu erlauben den Shop-Typ zu ändern (Zu kaufen/verkaufen ändern).
