@@ -529,6 +529,7 @@ player-no-group: <yellow>Oyuncu {0} bu dükkandaki herhangi bir grupta yer almı
 player-in-group: <green>Player {0} grupta <aqua>{1}</aqua> bu dükkanda.
 permission-required: <red>Bunu yapmak için bu dükkanda {0} izniniz yok.
 no-permission-detailed: <red>Bunu yapmak için izniniz <yellow>{0}</yellow> yok.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Lütfen bekleyiniz... Yapıştırmayı pastebin'e yükleniyor......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
