@@ -1541,5 +1541,5 @@ about:
     - "<aqua>捐赠密钥 <yellow>>></yellow> <green>{6}</green></aqua>"
     - "<gold>由社区提供支持</gold> <red>用 ❤</red>"
   valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gray>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>特别感谢那些在 Ko-Fi 上支持 QuickShop 的人 :)</gold>"
