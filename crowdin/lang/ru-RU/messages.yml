@@ -529,6 +529,7 @@ player-no-group: <yellow>Игрок {0} не состоит в группе эт
 player-in-group: <green>Игрок {0} находится в группе <aqua>{1}</aqua> в этом магазине.
 permission-required: <red>У вас нет разрешения {0} в этом магазине, чтобы это сделать.
 no-permission-detailed: <red>У вас нет разрешения <yellow>{0}</yellow>, чтобы сделать это.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Пожалуйста, подождите... Идет загрузка на pastebin......
 paste-created: '<green>Копия создана, нажмите, чтобы открыть в браузере: <yellow>{0}</yellow><newline><red>Предупреждение: <gray>Никогда не отправляйте тем, кому не доверяете.'
 paste-created-local: |-
