@@ -529,6 +529,7 @@ player-no-group: <yellow>Jogador {0} não está em nenhum grupo nesta loja.
 player-in-group: <green>O jogador {0} está no grupo <aqua>{1}</aqua> desta loja.
 permission-required: <red>Você não tem permissão de {0} nesta loja para fazer isso.
 no-permission-detailed: <red>Você não tem permissão para <yellow>{0}</yellow> para fazer isso.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Aguarde... Enviando a colagem para colar......
 paste-created: '<green>Colar criado, clique para abrir no navegador: <yellow>{0}</yellow><newline><red>Aviso: <gray>Nunca envie colar para quem você não confia.'
 paste-created-local: |-
