@@ -658,6 +658,7 @@ player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
 permission-required: <red>You don't have permission {0} in this shop to do this.
 no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do
   this.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning:
   <gray>Never send pastea to people you don''t trust.'
