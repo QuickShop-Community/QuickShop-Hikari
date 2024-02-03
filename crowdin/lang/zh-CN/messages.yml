@@ -539,6 +539,7 @@ player-no-group: <yellow>玩家 {0} 在这个商店中不属于组
 player-in-group: <green>玩家 {0} 属于组 <aqua>{1}</aqua> 在这个商店
 permission-required: <red>您在这个商店里没有权限 {0} 去做这个。
 no-permission-detailed: <red>您没有权限 <yellow>{0}</yellow> 去做这个。
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>请稍候... 正在上传Paste到pastebin...
 paste-created: '<green>Paste已创建，点击在浏览器中打开： <yellow>{0}</yellow><br><red>警告： <gray>永远不要将Paste发送给不信任的人。'
 paste-created-local: |-

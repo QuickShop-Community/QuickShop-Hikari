@@ -529,6 +529,7 @@ player-no-group: <yellow>Il Giocatore {0} non è in nessun gruppo in questo nego
 player-in-group: <green>Il Giocatore {0} è nel gruppo <aqua>{1}</aqua> di questo negozio.
 permission-required: <red>Non hai il permesso {0} per farlo in questo negozio.
 no-permission-detailed: <red>Non hai il permesso <yellow>{0}</yellow> per farlo.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Si prega di attendere... Caricamento del testo al pastebin......
 paste-created: '<green>Paste creata, clicca per aprirlo nel browser: <yellow>{0}</yellow><newline><red>Attenzione: <gray>Non mandare mai la paste a persone di cui non ti fidi.'
 paste-created-local: |-

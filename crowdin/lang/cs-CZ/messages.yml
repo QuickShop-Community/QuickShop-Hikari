@@ -529,6 +529,7 @@ player-no-group: <yellow>Hráč {0} není v žádné skupině v tomto obchodě.
 player-in-group: <green>Hráč {0} je ve skupině <aqua>{1}</aqua> v tomto obchodě.
 permission-required: <red>K tomu nemáte oprávnění {0} v tomto obchodě.
 no-permission-detailed: <red>K tomu nemáte oprávnění <yellow>{0}</yellow>.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Počkejte prosím... Nahrávání vložení do úložiště kopírování......
 paste-created: '<green>Vložte vytvořené, klikněte pro otevření v prohlížeči: <yellow>{0}</yellow><newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete.'
 paste-created-local: |-
