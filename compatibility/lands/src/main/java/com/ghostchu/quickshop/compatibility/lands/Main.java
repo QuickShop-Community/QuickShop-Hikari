@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
+import me.angeschossen.lands.api.events.LandDeleteEvent;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
 import me.angeschossen.lands.api.integration.LandsIntegration;
@@ -30,6 +31,7 @@ public final class Main extends CompatibilityModule {
     private boolean whitelist;
     private LandsIntegration landsIntegration;
     private boolean deleteWhenLosePermission;
+    private boolean deleteWhenLandDeleted;
 
     @Override
     public void init() {
@@ -37,6 +39,7 @@ public final class Main extends CompatibilityModule {
         ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
         whitelist = getConfig().getBoolean("whitelist-mode");
         deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
+        deleteWhenLandDeleted = getConfig().getBoolean("delete-shops-in-land-when-land-deleted");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -69,6 +72,14 @@ public final class Main extends CompatibilityModule {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLandsMember(PlayerLeaveLandEvent event) {
         if (!deleteWhenLosePermission) {
+            return;
+        }
+        deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLandsDeleted(LandDeleteEvent event) {
+        if (!deleteWhenLandDeleted) {
             return;
         }
         deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());

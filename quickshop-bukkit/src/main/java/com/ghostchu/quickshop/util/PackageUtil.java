@@ -16,9 +16,7 @@ public class PackageUtil {
         Log.Caller caller = Log.Caller.createSync(false);
         String str = caller.getClassName() + "." + name;
         String value = System.getProperty(str);
-        SysPropertiesParseResult result = new SysPropertiesParseResult(str, value);
-        Log.debug("Parsing the system properly for " + str + ": " + result);
-        return result;
+        return new SysPropertiesParseResult(str, value);
     }
 
     @Data

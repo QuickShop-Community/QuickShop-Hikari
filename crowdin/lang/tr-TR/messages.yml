@@ -122,7 +122,7 @@ menu:
   total-value-of-chest: '<green>Sandığın toplam değeri: <yellow>{0}'
 currency-not-exists: <red>Ayarlamak istediğiniz para birimi bulunamadı. Belki imlâ hatası yaptığınız ya da o para birimi dünyada mevcut değil.
 no-nearby-shop: <red>Yakınlarda {0} ile uyuşan market yok.
-translation-author: 'Çevirmen: Cazcez, NOYB, ZOYTRK#4529'
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>{0} entegrasyonu market ticaretini reddetti
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Market sahibi başarıyla Sunucu yapıldı.
@@ -361,37 +361,39 @@ controlpanel:
   mode-selling-hover: <yellow>Marketi ALMA moduna değiştirmek için tıkla.
   empty-hover: '%eMarketin envanterini temizlemek için tıkla.'
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: arkasında
-  week: <red>{0} hafta
-  weeks: <red>{0} haftalar
-  year: <red>{0} yıl
+  week: "{0} week"
+  weeks: "{0} weeks"
+  year: "{0} year"
   before: önce
   scheduled: Planlanan
-  years: <red>{0} yıl
+  years: "{0} years"
   scheduled-in: '{0}''da planlandı'
-  second: <red>{0} saniye
+  second: "{0} second"
   std-past-format: '{5}{4}{3}{2}{1}{0}önce'
   std-time-format: HH:mm:ss
-  seconds: <red>{0} saniye
-  hour: <red>{0} saat
+  seconds: "{0} seconds"
+  hour: "{0} hour"
   scheduled-at: '{0}''da planlandı'
   after: sonra
-  day: <red>{0} gün
+  day: "{0} day"
   recent: son
   between: arasında
-  hours: <red>{0} saat
-  months: <red>{0} ay
+  hours: "{0} hours"
+  months: "{0} months"
   longtimeago: uzun zaman önce
   between-format: '{0} ile {1}arasında'
-  minutes: <red>{0} dakika
+  minutes: "{0} minutes"
   justnow: az önce
-  minute: <red>{0} dakika
+  minute: "{0} minute"
   std-format: 'AA / gg / yyyy HH: aa: ss'
   future-plain-text: gelecek
-  month: <red>{0} ay
+  month: "{0} month"
   future: '{0} içinde'
-  days: <red>{0} günler
+  days: "{0} days"
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
@@ -429,6 +431,8 @@ command:
     removeall: <yellow>Belirli bir oyuncunun BÜTÜN marketlerini kaldır
     unban: <yellow>Bir oyuncunun bu marketteki yasaklamasını kaldırır
     transfer: <yellow>Birinin TÜM marketlerini bir başkasına devret
+    transferall: <yellow>Birinin TÜM marketlerini bir başkasına devret
+    transferownership: <yellow>Transfer the shop you're looking at to someone else
     size: <yellow>Bir marketin her yığınının miktarını değiştir
     supercreate: <yellow>Bütün koruma kontrollerini atlayarak bir market oluştur
     taxaccount: <yellow>Alışveriş yapılırken verginin aktarılacağı hesabı ayarlar
@@ -439,6 +443,7 @@ command:
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
+    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
   bulk-size-not-set: '<red>Kullanım: /qs size <miktar>'
   no-type-given: '<red>Kullanım: /qs find <item>'
   feature-not-enabled: Bu özellik yapılandırma dosyasında aktif değil.
@@ -511,6 +516,8 @@ permission:
     set-stack-amount: <yellow>Buna sahip kullanıcıların mağaza yığını tutarını ayarlamasına izin vermek için izin.
     set-currency: <yellow>Buna sahip kullanıcıların mağaza para birimini ayarlamasına izin vermek için İzin'i.
     set-name: <yellow>Buna sahip kullanıcıların mağaza adını ayarlamasına izin vermek için İzin'i.
+    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>Default group for all users excepted shop owner.
     staff: <yellow>System group for shop staffs.
@@ -522,6 +529,7 @@ player-no-group: <yellow>Oyuncu {0} bu dükkandaki herhangi bir grupta yer almı
 player-in-group: <green>Player {0} grupta <aqua>{1}</aqua> bu dükkanda.
 permission-required: <red>Bunu yapmak için bu dükkanda {0} izniniz yok.
 no-permission-detailed: <red>Bunu yapmak için izniniz <yellow>{0}</yellow> yok.
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Lütfen bekleyiniz... Yapıştırmayı pastebin'e yükleniyor......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
@@ -635,7 +643,13 @@ importing-failed: <red>Dışa aktarılamadı, lütfen sunucu konsolunu kontrol e
 imported-database: <green>Veritabanı <yellow>{0}</yellow>'a verildi.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
+transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
 transfer-ask: |-
+  <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
+transferall-ask: |-
+  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transfer-single-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
@@ -1347,6 +1361,7 @@ addon:
     commands:
       list: <yellow>Listing all shops owned by your or specific player
     table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
+    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
     entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: <red>Mağaza dışı ürünleri mağazaya koyamazsınız, mağaza dışı tüm ürünler bulunduğunuz yere düşer.
@@ -1472,3 +1487,50 @@ compatibility:
   elitemobs:
     soulbound-disallowed: EliteMobs Soulbound büyüsüne sahip eşyaların ticaretini yapamazsınız.
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
+no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
+sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
+delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+suggest-wait: "<green>Please wait... Calculating recommend price."
+history:
+  shop:
+    gui-title: "View purchase history"
+    header-icon-description:
+      - "<white>Type: <yellow>{0}</yellow></white>"
+      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2}</yellow></white>"
+      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Location: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Time: {0}</green>"
+    log-icon-description:
+      - "<white>Purchaser: <yellow>{0}</yellow></white>"
+      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{3}</yellow></white>"
+      - "<white>Tax: <yellow>{4}</yellow></white>"
+    query-icon: "<gray>Please wait, querying...</gray>"
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    current-page: "<white>Page {0}</white>"
+    summary-icon-title: "<green>Shop Summary"
+    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
+    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    no-result: "<white>No result</white>"
+about:
+  text:
+    - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
+    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
+  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
+  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"

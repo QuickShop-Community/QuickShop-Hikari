@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -100,14 +99,14 @@ public class SubCommand_Create implements CommandHandler<Player> {
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().size() == 1) {
-            return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.price").forLocale()));
+            return Collections.singletonList(plugin.text().of(sender, "tabcomplete.price").plain());
         }
         if (sender.getInventory().getItemInMainHand().getType().isAir()) {
             if (parser.getArgs().size() == 2) {
-                return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.item").forLocale()));
+                return Collections.singletonList(plugin.text().of(sender, "tabcomplete.item").plain());
             }
             if (parser.getArgs().size() == 3) {
-                return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale()));
+                return Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain());
             }
         }
         return Collections.emptyList();

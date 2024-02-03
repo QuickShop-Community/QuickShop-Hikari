@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -236,4 +237,5 @@ public interface DatabaseHelper {
      */
     CompletableFuture<Void> updateShop(@NotNull Shop shop);
 
+    CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(long shopId);
 }

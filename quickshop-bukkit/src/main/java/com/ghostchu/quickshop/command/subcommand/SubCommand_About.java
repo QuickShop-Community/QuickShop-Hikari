@@ -15,9 +15,8 @@ import kong.unirest.Unirest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,62 +27,40 @@ import java.util.List;
 
 public class SubCommand_About implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
-    private final LegacyComponentSerializer serializer;
     private KofiFetchCache fetchCache;
 
     public SubCommand_About(QuickShop plugin) {
         this.plugin = plugin;
-        this.serializer = LegacyComponentSerializer.legacySection();
     }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getInstance().getFork()));
-        MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.AQUA
-                + "Version "
-                + ChatColor.YELLOW
-                + ">> "
-                + ChatColor.GREEN
-                + QuickShop.getInstance().getVersion()));
+        String forkName = plugin.getFork();
+        String version = plugin.getVersion();
+        Component releaseType;
         if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/LTS")) {
-            MsgUtil.sendDirectMessage(sender, serializer.deserialize(
-                    ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + serializer.serialize(plugin.text().of(sender, "updatenotify.label.lts").forLocale())));
+            releaseType =  plugin.text().of(sender, "updatenotify.label.lts").forLocale();
         } else if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/RELEASE")) {
-            MsgUtil.sendDirectMessage(sender,
-                    serializer.deserialize(ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + serializer.serialize(plugin.text().of(sender, "updatenotify.label.stable").forLocale())));
-        } else {
-            MsgUtil.sendDirectMessage(sender,
-                    serializer.deserialize(ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + serializer.serialize(plugin.text().of(sender, "updatenotify.label.unstable").forLocale())));
+            releaseType = plugin.text().of(sender, "updatenotify.label.stable").forLocale();
+        }else{
+            releaseType = plugin.text().of(sender, "updatenotify.label.unstable").forLocale();
         }
-        MsgUtil.sendDirectMessage(sender,
-                serializer.deserialize(ChatColor.AQUA
-                        + "Developers "
-                        + ChatColor.YELLOW
-                        + ">> "
-                        + ChatColor.GREEN
-                        + CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors())));
-        MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.GOLD + "Powered by Community"));
-        MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.RED + "Made with ❤"));
+        String developers = CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors());
+        String languageCode = plugin.text().findRelativeLanguages(sender).getLocale();
+        Component localizedStaffs = plugin.text().of(sender, "translation-author").forLocale();
+        Component donationKey;
+        if(plugin.getDonationInfo() != null){
+            donationKey = plugin.text().of(sender, "about.valid-donation-key", plugin.getDonationInfo().getName()).forLocale()
+                    .clickEvent(ClickEvent.openUrl(plugin.getDonationInfo().getUrl()));
+        }else{
+            donationKey =  plugin.text().of(sender, "about.invalid-donation-key").forLocale();
+        }
+        plugin.text().ofList(sender, "about.text", forkName,version,releaseType,developers,languageCode,localizedStaffs,donationKey).send();
         Util.asyncThreadRun(() -> {
             try {
                 String json = fetchKofi();
                 if (json != null) {
-                    MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.LIGHT_PURPLE + "Special thanks to those who support to QuickShop-Hikari on Ko-fi :)"));
+                    plugin.text().of(sender, "about.kofi-thanks").send();
                     List<KoFiDTO> dto = JsonUtil.getGson().fromJson(json, new TypeToken<List<KoFiDTO>>() {
                     }.getType());
                     Component message = Component.empty();

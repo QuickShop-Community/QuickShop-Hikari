@@ -137,10 +137,18 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             try {
                 Files.move(file.toPath(), file.toPath().resolveSibling(file.getName() + ".corrupted." + UUID.randomUUID().toString().replace("-", "")));
                 loadConfiguration();
+
             } catch (IOException e) {
                 plugin.logger().error("Failed to move corrupted group configuration file", e);
             }
         }
+
+        try {
+            updateConfiguration(yamlConfiguration, file, namespace);
+        } catch (IOException e) {
+            plugin.logger().error("Failed to update group configuration file", e);
+        }
+
         yamlConfiguration.getKeys(true).forEach(group -> {
             if (yamlConfiguration.isList(group)) {
                 List<String> perms = yamlConfiguration.getStringList(group);
@@ -148,6 +156,19 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
                 Log.permission("Permission loaded for group " + group + ": " + CommonUtil.list2String(perms));
             }
         });
+    }
+
+    private void updateConfiguration(YamlConfiguration yamlConfiguration, File file, String namespace) throws IOException {
+        if (yamlConfiguration.getInt("version", 1) == 1) {
+            List<String> perms = yamlConfiguration.getStringList(namespace + ".staff");
+            perms.add(BuiltInShopPermission.SET_SIGN_TYPE.getNamespacedNode());
+            perms.add(BuiltInShopPermission.VIEW_PURCHASE_LOGS.getNamespacedNode());
+            perms = yamlConfiguration.getStringList(namespace + ".administrator");
+            perms.add(BuiltInShopPermission.SET_SIGN_TYPE.getNamespacedNode());
+            perms.add(BuiltInShopPermission.VIEW_PURCHASE_LOGS.getNamespacedNode());
+            yamlConfiguration.set("version", 2);
+            yamlConfiguration.save(file);
+        }
     }
 
     @Override

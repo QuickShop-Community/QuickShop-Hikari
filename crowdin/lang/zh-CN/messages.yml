@@ -123,7 +123,7 @@ menu:
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
 no-nearby-shop: <red>附近没有匹配 {0} 的商店。
-translation-author: '翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOwO'
+translation-author: 'Ghost_chu, sandtechnology, Pemdow, YuanYuanOwO, RMSCA, 李馨雨'
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
 shop-transaction-failed: <red>抱歉，在处理您的购买时发生内部错误。购买已取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
@@ -371,37 +371,39 @@ controlpanel:
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
   toggledisplay: '<green>悬浮物显示: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  history: '<green>历史： <yellow>[<bold><light_purple>预览</light_purple></bold>]</yellow>'
+  history-hover: <yellow>点击查看商店历史记录
 timeunit:
   behind: 后面
-  week: <red>{0} 周
-  weeks: <red>{0} 周
-  year: <red>{0} 年
+  week: "{0} 周"
+  weeks: "{0} 周"
+  year: "{0} 年"
   before: 前
   scheduled: 已计划
-  years: <red>{0} 年
+  years: "{0} 年"
   scheduled-in: 计划在 {0}
-  second: <red>{0} 秒
+  second: "{0} 秒"
   std-past-format: '{5}{4}{3}{2}{1}{0}前'
   std-time-format: HH:mm:ss
-  seconds: <red>{0} 秒
-  hour: <red>{0} 时
+  seconds: "{0} 秒"
+  hour: "{0} 时"
   scheduled-at: 计划于 {0}
   after: 之后
-  day: <red>{0} 天
+  day: "{0} 天"
   recent: 近期
   between: 之间
-  hours: <red>{0} 时
-  months: <red>{0} 月
+  hours: "{0} 时"
+  months: "{0} 月"
   longtimeago: 很久前
   between-format: 在 {0} 和 {1} 之间
-  minutes: <red>{0} 分
+  minutes: "{0} 分"
   justnow: 现在
-  minute: <red>{0} 分
+  minute: "{0} 分"
   std-format: yyyy/MM/dd HH:mm:ss
   future-plain-text: 未来
-  month: <red>{0} 月
+  month: "{0} 月"
   future: 在 {0}
-  days: <red>{0} 天
+  days: "{0} 天"
 command:
   reloading: <green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效.
   description:
@@ -439,6 +441,8 @@ command:
     removeall: <yellow>删除指定玩家的<aqua>所有<reset><yellow>商店
     unban: <yellow>解禁商店中的玩家
     transfer: <yellow>将某人的所有商店转移给其他人
+    transferall: <yellow>将某人的所有商店转移给其他人
+    transferownership: <yellow>将正在看向的商店转让给其他玩家
     size: <yellow>修改每次交易的物品数量
     supercreate: <yellow>越过所有区域保护检查创建商店
     taxaccount: <yellow>设置商店使用的税务账户
@@ -449,6 +453,7 @@ command:
     database: <yellow>查看和维护 QuickShop 数据库
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
     tag: <yellow>添加、 删除或查询商店标签
+    suggestprice: <yellow>根据其他商店的情况, 为商店提出建议价格
   bulk-size-not-set: '<red>用法: /quickshop size <数量>'
   no-type-given: '<red>用法: /quickshop find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -521,6 +526,8 @@ permission:
     set-stack-amount: <yellow>允许拥有此权限的用户设置商店堆叠金额
     set-currency: <yellow>允许拥有此权限的用户设置商店货币。
     set-name: <yellow>允许拥有此权限的用户设置商店名称。
+    set-sign-type: <yellow>更改商店牌子类型
+    view-purchase-logs: <yellow>查看商店交易日志的权限
   group:
     everyone: <yellow>除商店店主外，所有用户的默认权限组。
     staff: <yellow>商店助手的系统权限组
@@ -532,6 +539,7 @@ player-no-group: <yellow>玩家 {0} 在这个商店中不属于组
 player-in-group: <green>玩家 {0} 属于组 <aqua>{1}</aqua> 在这个商店
 permission-required: <red>您在这个商店里没有权限 {0} 去做这个。
 no-permission-detailed: <red>您没有权限 <yellow>{0}</yellow> 去做这个。
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>请稍候... 正在上传Paste到pastebin...
 paste-created: '<green>Paste已创建，点击在浏览器中打开： <yellow>{0}</yellow><br><red>警告： <gray>永远不要将Paste发送给不信任的人。'
 paste-created-local: |-
@@ -645,7 +653,12 @@ importing-failed: <red>导入数据失败，请检查服务器控制台。
 imported-database: <green>数据从 <yellow>{0}</yellow> 导入。
 transfer-sent: <green>商店转移请求已发送到 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？
+transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 想要将商店转让给您。您想要接受请求吗？
 transfer-ask: |-
+  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+transferall-ask: |-
+  <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+transfer-single-ask: |-
   <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
@@ -1357,6 +1370,7 @@ addon:
     commands:
       list: <yellow>列出自己或其他玩家拥有的所有商店
     table-prefix: '<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: '
+    table-prefix-pageable: '<yellow><green>{0}</green>的商店 <gray>（页面 {1}/{2})</gray>: '
     entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
     message: <red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上
@@ -1482,3 +1496,50 @@ compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易拥有 EliteMobs 灵魂绑定附魔的物品。
 internet-paste-forbidden-privacy-reason: "<red>失败！根据您的隐私设置，QuickShop-Hikari不允许将您的Paste上传到互联网，在配置文件中启用DIAGNOSTIC配置项。 或使用 <aqua>/quickshop paste --file</aqua> 代替。"
+no-sign-type-given: "<red>你需要给出牌子类型，该服务器上可用的牌子类型： {0}"
+sign-type-invalid: "<red><yellow>{0}</yellow>不是有效的牌子类型。"
+delete-controlpanel-button-confirm: "<red>您真的想要删除这家商店吗？再次点击 <bold>[删除商店]</bold> 按钮并在 {0} 秒内确认。"
+cannot-suggest-price: "<red>对不起，暂时没有更多的玩家与您交易相同的物品，没有足够的数据来生成建议的价格。"
+price-suggest: "<green>基于来自 <aqua>{0}</aqua> 商店的数据 最高价格的商店价格为 <light_purple>{1}</light_purple>价格最低的商店价格为 <light_purple>{2}</light_purple>平均价格为 <light_purple>{3}</light_purple>，中位价格为 <light_purple>{4}</light_purple> <newline><yellow>建议您将价格设置在 <gold>{5}</gold>。</yellow>"
+suggest-wait: "<green>请稍候... 计算推荐价格。"
+history:
+  shop:
+    gui-title: "查看交易记录"
+    header-icon-description:
+      - "<white>类型： <yellow>{0}</yellow></white>"
+      - "<white>所有者: <yellow>{1}</yellow></white>"
+      - "<white>物品： <yellow>{2}</yellow></white>"
+      - "<white>价格： <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>位置： <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>时间： {0}</green>"
+    log-icon-description:
+      - "<white>交易者: <yellow>{0}</yellow></white>"
+      - "<white>物品： <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>余额： <yellow>{3}</yellow></white>"
+      - "<white>税： <yellow>{4}</yellow></white>"
+    query-icon: "<gray>请稍候，正在查询...</gray>"
+    previous-page: "<white><< 前一页</white>"
+    next-page: "<white>下一页 >></white>"
+    current-page: "<white>页面 {0}</white>"
+    summary-icon-title: "<green>商店摘要"
+    recent-purchases: "<white>最近 <aqua>{0}</aqua> 购买： <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>最近 <aqua>{0}</aqua> 营业额： <yellow>{1}</yellow></white>"
+    total-purchases: "<white>交易总数： <yellow>{0}</yellow></white>"
+    total-balances: "<white>总营业额： <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>交易者总数： <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>前 {0} 个最有价值客户</gold>"
+    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    no-result: "<white>没有结果</white>"
+about:
+  text:
+    - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
+    - "<aqua>版本 <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>构建 <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>开发者 <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>点击查看贡献者'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看贡献者]</click></hover></color></aqua>"
+    - "<aqua>本地化成员 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>点击打开 Crowdin 翻译页面'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上帮助翻译]</click></hover></color></yellow>"
+    - "<aqua>捐赠密钥 <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>由社区提供支持</gold> <red>用 ❤</red>"
+  valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>无效的捐赠密钥</gra>"
+  kofi-thanks: "<gold>特别感谢那些在 Ko-Fi 上支持 QuickShop 的人 :)</gold>"

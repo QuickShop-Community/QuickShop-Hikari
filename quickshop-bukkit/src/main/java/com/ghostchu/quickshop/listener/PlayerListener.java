@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -625,7 +624,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerLocaleChangeEvent e) {
-        Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
+        Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").plain(e.getLocale()));
         plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getLocale(), e.getPlayer().getName())
                 .exceptionally(throwable -> {
                     Log.debug("Failed to set player locale: " + throwable.getMessage());
@@ -652,6 +651,7 @@ public class PlayerListener extends AbstractQSListener {
             }
         }
     }
+
 
     /*
      * Cancels the menu for broken shop block

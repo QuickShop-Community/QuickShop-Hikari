@@ -74,9 +74,15 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
-                        .prefix("transfer")
-                        .permission("quickshop.transfer")
-                        .executor(new SubCommand_Transfer(plugin))
+                        .prefix("transferall")
+                        .permission("quickshop.transferall")
+                        .executor(new SubCommand_TransferAll(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("transferownership")
+                        .permission("quickshop.transferownership")
+                        .executor(new SubCommand_TransferOwnership(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -342,7 +348,28 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .permission("quickshop.benefit")
                 .executor(new SubCommand_Benefit(plugin))
                 .build());
-
+        registerCmd(CommandContainer.builder()
+                .prefix("sign")
+                .permission("quickshop.sign")
+                .executor(new SubCommand_Sign(plugin))
+                .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("history")
+                .permission("quickshop.history")
+                .executor(new SubCommand_History(plugin))
+                .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("silenthistory")
+                .permission("quickshop.history")
+                .hidden(true)
+                .executor(new SubCommand_SilentHistory(plugin))
+                .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("suggestprice")
+                .permission("quickshop.suggestprice")
+                .executor(new SubCommand_SuggestPrice(plugin))
+                .build());
+        init();
     }
 
     /**
@@ -379,10 +406,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             }
         }
         if (sender instanceof Player player && playSoundOnCommand) {
-            ((Player) sender)
-                    .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
         }
-
         if (cmdArg.length == 0) {
             //Handle main command
             rootContainer.getExecutor().onCommand_Internal(capture(sender), commandLabel, EMPTY_ARGS);
@@ -490,7 +515,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             return Collections.emptyList();
         }
         if (sender instanceof Player player && playSoundOnTabComplete) {
-            ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
             return getRootContainer().getExecutor().onTabComplete_Internal(capture(sender), commandLabel, cmdArg);

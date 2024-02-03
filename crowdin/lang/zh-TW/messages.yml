@@ -122,7 +122,7 @@ menu:
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此貨幣在這個世界無法使用。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
-translation-author: '翻譯人員：Ghost_chu、Andre_601、flandretw'
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功地將商店店主轉交給伺服器。
@@ -366,37 +366,39 @@ controlpanel:
   mode-selling-hover: <yellow>點擊商店變更為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: 後面
-  week: <red>{0} 星期
-  weeks: <red>{0} 星期
-  year: <red>{0} 年
+  week: "{0} week"
+  weeks: "{0} weeks"
+  year: "{0} year"
   before: 之前
   scheduled: 已排程
-  years: <red>{0} 年
+  years: "{0} years"
   scheduled-in: 以排程在{0}
-  second: <red>{0} 秒
+  second: "{0} second"
   std-past-format: '{5}{4}{3}{2}{1}{0}之前'
   std-time-format: HH:mm:ss
-  seconds: <red>{0} 秒
-  hour: <red>{0} 小時
+  seconds: "{0} seconds"
+  hour: "{0} hour"
   scheduled-at: 以排程在{0}
   after: 經過
-  day: <red>{0} 天
+  day: "{0} day"
   recent: 最近
   between: 之間
-  hours: <red>{0} 小時
-  months: <red>{0} 月
+  hours: "{0} hours"
+  months: "{0} months"
   longtimeago: 很久以前
   between-format: 介於 {0} 與 {1} 之間
-  minutes: <red>{0} 分鐘
+  minutes: "{0} minutes"
   justnow: 剛才
-  minute: <red>{0} 分鐘
+  minute: "{0} minute"
   std-format: yyyy/MM/dd HH:mm:ss
   future-plain-text: 未來
-  month: <red>{0} 月
+  month: "{0} month"
   future: 在 {0}
-  days: <red>{0} 天
+  days: "{0} days"
 command:
   reloading: "<green>配置檔案已經重新載入。<yellow>某些更改可能需要重新啟動才能生效。<newline>\n<gray>（注意：版本 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件以確保伺服器不會崩潰。）"
   description:
@@ -434,6 +436,8 @@ command:
     removeall: <yellow>移除指定玩家的所有商店
     unban: <yellow>解除封禁商店中的玩家
     transfer: <yellow>將某人的所有商店轉移給其他人
+    transferall: <yellow>將某人的所有商店轉移給其他人
+    transferownership: <yellow>Transfer the shop you're looking at to someone else
     size: <yellow>變更每份物品的數量
     supercreate: <yellow>繞過所有保護檢查並建立商店
     taxaccount: <yellow>設定商店使用的稅金帳戶
@@ -444,6 +448,7 @@ command:
     database: <yellow>查看和維護 QuickShop 資料庫
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
     tag: <yellow>新增、刪除或查詢商店標籤
+    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
   bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
   no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: 此功能沒有在配置檔案中啟用
@@ -517,6 +522,8 @@ permission:
     set-stack-amount: <yellow>擁有此權限者得以設定商店堆疊數量。
     set-currency: <yellow>擁有此權限者得以設定商店交易貨幣。
     set-name: <yellow>擁有此權限者得以設定商店名稱。
+    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>預設身分組，商店主人不在其中。
     staff: <yellow>商店管理員的系統身分組
@@ -528,6 +535,7 @@ player-no-group: <yellow>玩家 {0} 在此商店不屬於任何身分組。
 player-in-group: <green>玩家 {0} 在此商店屬於 <aqua>{1}</aqua> 身分組。
 permission-required: <red>你需要權限 {0} 來在此商店執行此操作。
 no-permission-detailed: <red>你需要權限 <yellow>{0}</yellow> 來在此商店執行此操作。
+paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>請稍候，正在將複製內容上傳到 pastebin……
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
 paste-created-local: |-
@@ -644,7 +652,14 @@ importing-failed: <red>匯入資料庫失敗，請檢查伺服器控制台。
 imported-database: <green>正在從 <yellow>{0}</yellow> 匯入資料庫。
 transfer-sent: <green>商店轉移請求已傳送至 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 請求將他們的商店轉移給你。你想接受轉移嗎？
+transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
 transfer-ask: |-
+  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transferall-ask: |-
+  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
+transfer-single-ask: |-
   <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 已接受你的商店轉移請求。
@@ -1357,6 +1372,7 @@ addon:
     commands:
       list: <yellow>列出你或指定玩家擁有的所有商店
     table-prefix: '<yellow><green>{0}</green>的商店 <gray>（總共 {1})</gray>：'
+    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
     entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
     message: <red>你不能將非商店交易物品放入商店容器中，所有非商店交易的物品都會被直接丟到地上。
@@ -1482,3 +1498,50 @@ compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易擁有 EliteMobs 靈魂綁定附魔的物品。
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
+no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
+sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
+delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+suggest-wait: "<green>Please wait... Calculating recommend price."
+history:
+  shop:
+    gui-title: "View purchase history"
+    header-icon-description:
+      - "<white>Type: <yellow>{0}</yellow></white>"
+      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2}</yellow></white>"
+      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Location: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Time: {0}</green>"
+    log-icon-description:
+      - "<white>Purchaser: <yellow>{0}</yellow></white>"
+      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{3}</yellow></white>"
+      - "<white>Tax: <yellow>{4}</yellow></white>"
+    query-icon: "<gray>Please wait, querying...</gray>"
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    current-page: "<white>Page {0}</white>"
+    summary-icon-title: "<green>Shop Summary"
+    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
+    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    no-result: "<white>No result</white>"
+about:
+  text:
+    - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
+    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
+  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
+  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"

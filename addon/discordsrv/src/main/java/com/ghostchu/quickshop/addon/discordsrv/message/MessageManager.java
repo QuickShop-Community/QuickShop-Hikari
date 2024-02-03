@@ -29,6 +29,7 @@ public class MessageManager {
     public void register(@NotNull Object obj) {
         plugin.getLogger().info("Performing class scanning...");
         scanClass(obj);
+        plugin.getLogger().info("Class scanning completed...");
     }
 
     private void scanClass(@Nullable Object obj) {
@@ -36,14 +37,15 @@ public class MessageManager {
             return;
         }
         for (Method declaredMethod : obj.getClass().getDeclaredMethods()) {
-            AutoRegisterMessage annotation = declaredMethod.getAnnotation(AutoRegisterMessage.class);
-            if (annotation == null) {
-                continue;
-            }
-            if (StringUtils.isEmpty(annotation.key())) {
-                continue;
-            }
             try {
+                AutoRegisterMessage annotation = declaredMethod.getAnnotation(AutoRegisterMessage.class);
+                if (annotation == null) {
+                    continue;
+                }
+                if (StringUtils.isEmpty(annotation.key())) {
+                    continue;
+                }
+
                 if (declaredMethod.getReturnType() == String.class) {
                     this.regularMessageRegistry.put(annotation.key(), new AbstractMap.SimpleEntry<>(obj, declaredMethod));
                 } else if (declaredMethod.getReturnType() == MessageEmbed.class) {
@@ -51,8 +53,8 @@ public class MessageManager {
                 } else {
                     plugin.getLogger().warning("Skipping message " + obj.getClass().getName() + "." + declaredMethod.getName() + " for registering: Unsupported return type: " + declaredMethod.getReturnType().getName());
                 }
-            } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to register message: " + annotation.key(), e);
+            } catch (Throwable e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to register message: " + declaredMethod.getDeclaringClass().getName()+"."+declaredMethod.getName(), e);
             }
         }
     }

@@ -3,10 +3,13 @@ package com.ghostchu.quickshop.api.shop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -393,6 +396,8 @@ public interface ShopManager {
     @NotNull
     ShopManager.InteractiveManager getInteractiveManager();
 
+    @NotNull BlockState makeShopSign(@NotNull Block container, @NotNull Block signBlock, @Nullable Material signMaterial);
+
     @NotNull CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);
 
     CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);
@@ -406,6 +411,8 @@ public interface ShopManager {
     @NotNull List<String> listTags(@NotNull UUID tagger);
 
     void deleteShop(@NotNull Shop shop);
+
+    @NotNull CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop);
 
     /**
      * An getActions() alternative.

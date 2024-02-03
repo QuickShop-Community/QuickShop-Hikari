@@ -49,6 +49,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                     }
                 }
             }
+            plugin.text().of(sender,"paste-notice").send();
             if (parser.getArgs().stream().anyMatch(str -> str.contains("file"))) {
                 pasteToLocalFile(sender);
                 return;

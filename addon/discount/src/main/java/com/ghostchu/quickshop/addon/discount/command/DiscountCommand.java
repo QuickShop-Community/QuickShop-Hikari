@@ -35,7 +35,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().isEmpty()) {
-            quickshop.text().of(sender, "command-incorrect", "/quickshop discount <install/uninstall/create/remove/list/config/query>").send();
+            quickshop.text().of(sender, "command-incorrect", "/quickshop discount <install/uninstall/create/remove/list/config/info/listall>").send();
             return;
         }
         String[] passThroughArgs = new String[parser.getArgs().size() - 1];
@@ -48,8 +48,9 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             case "info" -> info(sender, passThroughArgs);
             case "config" -> config(sender, passThroughArgs);
             case "list" -> list(sender, passThroughArgs);
+            case "listall" -> listAll(sender, passThroughArgs);
             default ->
-                    quickshop.text().of(sender, "command-incorrect", "/quickshop discount <install/uninstall/create/remove/config/query>").send();
+                    quickshop.text().of(sender, "command-incorrect", "/quickshop discount <install/uninstall/create/remove/config/info/listall>").send();
         }
     }
 
@@ -292,7 +293,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             quickshop.text().of(sender, "command-type-mismatch", "Player").send();
             return;
         }
-        if (!p.hasPermission("quickshop.discount.list")) {
+        if (!p.hasPermission("quickshopaddon.discount.list")) {
             quickshop.text().of(sender, "no-permission").send();
             return;
         }
@@ -300,6 +301,17 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         printer.printHeader();
         printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
         main.getCodeManager().getCodes().stream().filter(code -> code.getOwner().equals(((Player) sender).getUniqueId())).forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
+        printer.printFooter();
+    }
+    private void listAll(CommandSender sender, String[] passThroughArgs) {
+        if (!sender.hasPermission("quickshopaddon.discount.listall")) {
+            quickshop.text().of(sender, "no-permission").send();
+            return;
+        }
+        ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+        printer.printHeader();
+        printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
+        main.getCodeManager().getCodes().forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
         printer.printFooter();
     }
 

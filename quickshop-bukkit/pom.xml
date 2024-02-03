@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>5.2.0.14</version>
+        <version>6.0.0.0</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -57,7 +57,10 @@
             <id>jitpack.io</id>
             <url>https://www.jitpack.io</url>
         </repository>
-
+        <repository>
+            <id>Mohist MC</id>
+            <url>https://maven.mohistmc.com/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -172,7 +175,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>EconomyCore</artifactId>
-            <version>0.1.2.6-Pre3</version>
+            <version>0.1.2.8-Pre-1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -281,5 +284,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.encryptor4j</groupId>
+            <artifactId>encryptor4j</artifactId>
+            <version>0.1.2</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.mohistmc</groupId>-->
+<!--            <artifactId>json</artifactId>-->
+<!--            <version>0.2</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

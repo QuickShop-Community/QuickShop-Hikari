@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
+import com.ghostchu.quickshop.localization.text.postprocessing.impl.FixClientItemItalicRenderProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.ForceReplaceFillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -174,7 +175,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         if (PackageUtil.parsePackageProperly("betaForceReplaceFillerProcessor").asBoolean(false)) {
             postProcessors.add(new ForceReplaceFillerProcessor());
         }
-        postProcessors.add(new PlaceHolderApiProcessor());
+        if(PackageUtil.parsePackageProperly("usePAPIPostProcess").asBoolean(true)) {
+            postProcessors.add(new PlaceHolderApiProcessor());
+        }
+        if(PackageUtil.parsePackageProperly("fixClientItemTextRenderAlwaysItalic").asBoolean(true)) {
+            postProcessors.add(new FixClientItemItalicRenderProcessor());
+        }
 
     }
 
@@ -808,18 +814,21 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
          */
         @NotNull
         private List<Component> postProcess(@NotNull List<Component> text) {
-            List<Component> texts = new ArrayList<>();
+            return text.stream().map(this::postProcess).toList();
+        }
+
+        private Component postProcess(Component component){
             for (PostProcessor postProcessor : this.manager.postProcessors) {
-                for (Component s : text) {
-                    try {
-                        texts.add(postProcessor.process(s, sender, args));
-                    } catch (Throwable th) {
-                        Log.debug("Failed to post processing text: " + s + " caused by " + th.getMessage() + " handler: " + postProcessor.getClass().getName());
-                    }
+                try {
+                component = postProcessor.process(component,sender,args);
+                } catch (Throwable th) {
+                    Log.debug("Failed to post processing text: " + component + " caused by " + th.getMessage() + " handler: " + postProcessor.getClass().getName());
                 }
             }
-            return texts;
+            return component;
         }
+
+
     }
 
     public static class Text implements com.ghostchu.quickshop.api.localization.text.Text {
@@ -915,6 +924,26 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             } else {
                 return forLocale(MsgUtil.getDefaultGameLanguageCode());
             }
+        }
+
+        @Override
+        public @NotNull String plain() {
+            return PlainTextComponentSerializer.plainText().serialize(forLocale());
+        }
+
+        @Override
+        public @NotNull String plain(@NotNull String locale) {
+            return PlainTextComponentSerializer.plainText().serialize(forLocale(locale));
+        }
+
+        @Override
+        public @NotNull String legacy() {
+            return LegacyComponentSerializer.legacySection().serialize(forLocale());
+        }
+
+        @Override
+        public @NotNull String legacy(@NotNull String locale) {
+            return LegacyComponentSerializer.legacySection().serialize(forLocale(locale));
         }
 
         /**

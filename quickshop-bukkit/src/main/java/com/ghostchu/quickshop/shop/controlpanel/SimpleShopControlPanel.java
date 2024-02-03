@@ -43,7 +43,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
             components.add(text
                     .hoverEvent(HoverEvent.showText(plugin.text().of(sender, "controlpanel.setowner-hover").forLocale()))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/quickshop setowner ")));
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/quickshop transferownership ")));
         }
         // Unlimited
         if (plugin.perm().hasPermission(sender, "quickshop.unlimited")) {
@@ -133,6 +133,17 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             Component text = plugin.text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.toggledisplay-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/quickshop silenttoggledisplay {0}", shop.getRuntimeRandomUniqueId().toString());
+            components.add(text
+                    .hoverEvent(HoverEvent.showText(hoverText))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
+        }
+
+        // View purchase logs
+        if(plugin.perm().hasPermission(sender, "quickshop.other.history")
+                || (plugin.perm().hasPermission(sender, "quickshop.history") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.VIEW_PURCHASE_LOGS))){
+            Component text = plugin.text().of(sender, "controlpanel.history", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
+            Component hoverText = plugin.text().of(sender, "controlpanel.history-hover").forLocale();
+            String clickCommand = MsgUtil.fillArgs("/quickshop silenthistory {0}", shop.getRuntimeRandomUniqueId().toString());
             components.add(text
                     .hoverEvent(HoverEvent.showText(hoverText))
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));

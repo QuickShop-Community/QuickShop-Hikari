@@ -1,11 +1,12 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
+import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.util.ItemExpression;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
@@ -125,13 +126,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         List<Function<ItemStack, Boolean>> items = new ArrayList<>();
         double min = section.getDouble("min", 0d);
         double max = section.getDouble("max", Double.MAX_VALUE);
+        ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry) plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
         for (String item : section.getStringList("items")) {
-            Optional<Function<ItemStack, Boolean>> func = new ItemExpression(plugin, item).getFunction();
-            if (func.isPresent()) {
-                items.add(func.get());
-            } else {
-                plugin.logger().warn("Failed to parse item expression: {}", item);
-            }
+            items.add(itemStack->itemExpressionRegistry.match(itemStack, item));
         }
         List<Pattern> currency = new ArrayList<>();
         for (String currencyStr1 : section.getStringList("currency")) {

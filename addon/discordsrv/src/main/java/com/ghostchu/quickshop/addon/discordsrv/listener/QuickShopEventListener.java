@@ -44,7 +44,7 @@ public class QuickShopEventListener implements Listener {
     private void notifyShopPurchase(ShopSuccessPurchaseEvent event) {
         Util.asyncThreadRun(() -> {
             MessageEmbed embed = plugin.getFactory().shopPurchasedSelf(event);
-            sendMessageIfEnabled(event.getShop().getOwner(), embed, NotificationFeature.USER_SHOP_PURCHASE);
+            //sendMessageIfEnabled(event.getShop().getOwner(), embed, NotificationFeature.USER_SHOP_PURCHASE);
             // Send to permission users
             for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                 sendMessageIfEnabled(uuid, event.getShop(), embed, NotificationFeature.USER_SHOP_PURCHASE);
@@ -64,7 +64,7 @@ public class QuickShopEventListener implements Listener {
             Util.asyncThreadRun(() -> {
                 // Send to owner
                 MessageEmbed embed = plugin.getFactory().shopOutOfStock(event);
-                sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_STOCK);
+                //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_STOCK);
                 // Send to permission users
                 for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                     sendMessageIfEnabled(uuid, event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_STOCK);
@@ -78,7 +78,7 @@ public class QuickShopEventListener implements Listener {
             Util.asyncThreadRun(() -> {
                 // Send to owner
                 MessageEmbed embed = plugin.getFactory().shopOutOfSpace(event);
-                sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_SPACE);
+                //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_SPACE);
                 // Send to permission users
                 for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                     if (event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
@@ -163,7 +163,7 @@ public class QuickShopEventListener implements Listener {
     private void notifyShopPriceChanged(ShopPriceChangeEvent event) {
         Util.asyncThreadRun(() -> {
             MessageEmbed embed = plugin.getFactory().priceChanged(event);
-            sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
+            //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
             // Send to permission users
             for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                 if (event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {

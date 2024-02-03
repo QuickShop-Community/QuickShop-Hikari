@@ -18,6 +18,8 @@ import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -696,6 +698,25 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         .build()
                         .executeFuture());
             }
+        });
+    }
+    @Override
+    public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(long shopId) {
+        return CompletableFuture.supplyAsync(() -> {
+            ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2);
+            try (SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
+                    .selectColumns("stock", "space")
+                    .addCondition("shop", shopId)
+                    .setLimit(1)
+                    .build().execute()) {
+                ResultSet set = query.getResultSet();
+                if (set.next()) {
+                    cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"));
+                }
+            } catch (SQLException exception) {
+                plugin.logger().warn("Cannot handle the inventory cache lookup for shop {}", shopId, exception);
+            }
+            return cache;
         });
     }
 

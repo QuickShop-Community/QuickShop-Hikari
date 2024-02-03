@@ -15,7 +15,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     EVERYONE("everyone", "everyone", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH),
     STAFF("staff", "staff", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH, ACCESS_INVENTORY,
             TOGGLE_DISPLAY, SET_SHOPTYPE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT,
-            SET_CURRENCY, RECEIVE_ALERT, SET_BENEFIT),
+            SET_CURRENCY, RECEIVE_ALERT, SET_BENEFIT, SET_SIGN_TYPE, VIEW_PURCHASE_LOGS),
     ADMINISTRATOR("administrator", "administrator", BuiltInShopPermission.values());
 
     private final String node;
