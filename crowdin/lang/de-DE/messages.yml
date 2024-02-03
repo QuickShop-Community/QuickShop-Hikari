@@ -1531,5 +1531,5 @@ about:
     - "<aqua>Spendenschlüssel <yellow>>></yellow> <green>{6}</green></aqua>"
     - "<gold>Unterstützt von der Community</gold> <red>Mit ❤ gemacht</red>"
   valid-donation-key: "<color:#00AFF1>Gebunden an <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gray>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Besonderer Dank geht an alle, welche QuickShop auf Ko-fi unterstützen :)</gold>"
