@@ -44,7 +44,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
             for (String s : warningPluginList) {
                 if (Bukkit.getPluginManager().getPlugin(s) != null) {
                     if (parser.getArgs().stream().noneMatch(str -> str.contains("--force"))) {
-                        plugin.text().of(sender, "i", s).send();
+                        plugin.text().of(sender, "paste-warning-plugin-find", s).send();
                         return;
                     }
                 }
