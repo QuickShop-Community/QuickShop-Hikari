@@ -343,7 +343,7 @@ controlpanel:
   stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  setowner: '<green>擁有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
@@ -370,35 +370,35 @@ controlpanel:
   history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: 後面
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
+  week: "{0} 星期"
+  weeks: "{0} 星期"
+  year: "{0} 年"
   before: 之前
   scheduled: 已排程
-  years: "{0} years"
+  years: "{0} 年"
   scheduled-in: 以排程在{0}
-  second: "{0} second"
+  second: "{0} 秒"
   std-past-format: '{5}{4}{3}{2}{1}{0}之前'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
+  seconds: "{0} 秒"
+  hour: "{0} 小時"
   scheduled-at: 以排程在{0}
   after: 經過
-  day: "{0} day"
+  day: "{0} 天"
   recent: 最近
   between: 之間
-  hours: "{0} hours"
-  months: "{0} months"
+  hours: "{0} 小時"
+  months: "{0} 月"
   longtimeago: 很久以前
   between-format: 介於 {0} 與 {1} 之間
-  minutes: "{0} minutes"
+  minutes: "{0} 分鐘"
   justnow: 剛才
-  minute: "{0} minute"
+  minute: "{0} 分鐘"
   std-format: yyyy/MM/dd HH:mm:ss
   future-plain-text: 未來
-  month: "{0} month"
+  month: "{0} 月"
   future: 在 {0}
-  days: "{0} days"
+  days: "{0} 天"
 command:
   reloading: "<green>配置檔案已經重新載入。<yellow>某些更改可能需要重新啟動才能生效。<newline>\n<gray>（注意：版本 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件以確保伺服器不會崩潰。）"
   description:
@@ -547,7 +547,7 @@ paste-451: |-
   If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
 paste-upload-failed: <red>上傳 Paste 到 {0} 失敗，正在嘗試其他的提供服務……
 paste-upload-failed-local: <red>上傳 Paste 失敗，正在嘗試在硬碟上產生 Paste……
-command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
+command-incorrect: '<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法： {0}。'
 successfully-set-player-group: <green>成功地將玩家 {0} 的身分組設定為 <aqua>{1}</aqua>。
 successfully-unset-player-group: <green>成功地移除此商店中的玩家身分組。
 successfully-set-player-permission: <green>成功地將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設定為 <aqua>{1}</aqua>。
@@ -634,34 +634,31 @@ database:
   purge-done-with-error: <red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。
   purge-players-cache: <yellow>請稍候，正在清理玩家快取
   purge-players-completed: |-
-    <green>Successfully purged {0} players caches from both memory and database.
-    <aqua>Note: You server performance may impact by this operation.
+    <green>成功地從記憶體和資料庫清除了 {0} 個玩家的快取。
+    <aqua>注意：此操作可能會影響伺服器效能。
   purge-players-error: <red>清除玩家快取失敗，請檢查伺服器控制台。
   suggestion:
-    trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
+    trim: <yellow>此資料庫需要修整資料庫內孤立的資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。
 always-counting-removal-early-warning: <red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。
 exporting-database: <green>正在匯出資料庫，請稍候……
 exporting-failed: <red>匯出資料庫失敗，請檢查伺服器控制台。
 exported-database: <green>匯出資料庫至 <yellow>{0}</yellow>。
 importing-not-found: <red>找不到檔案 <yellow>{0}</yellow>，請檢查檔案路徑是否正確。
 importing-early-warning: |-
-  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
+  <red><bold>警告：</bold><yellow>備份將被匯入目前的資料庫，如果你沒有備份，任何現有的資料都將被清除並永久遺失。
+  <red>你確定要繼續進行匯入作業？</red>輸入 <aqua>/qs recovery confirm</aqua> 以繼續。
 importing-database: <green>正在從備份中匯入資料庫，請稍候……
 importing-failed: <red>匯入資料庫失敗，請檢查伺服器控制台。
 imported-database: <green>正在從 <yellow>{0}</yellow> 匯入資料庫。
 transfer-sent: <green>商店轉移請求已傳送至 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 請求將他們的商店轉移給你。你想接受轉移嗎？
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 請求將他們的商店轉移給你。你想接受轉移嗎？
 transfer-ask: |-
-  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>輸入 <red>/qs transfer accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transfer deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>輸入 <red>/qs transferall accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transferall deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>輸入 <red>/qs transfer accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transfer deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 已接受你的商店轉移請求。
 transfer-accepted-toside: <green>你已接受 <aqua>{0}</aqua> 的轉移請求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 已拒絕你的商店轉移請求。
@@ -674,7 +671,7 @@ benefit-removed: <red>目標玩家已從商店的利益分配中移除。
 benefit-added: <green>玩家 <aqua>{0}</aqua> 已被新增到商店的利益分配中！
 benefit-updated: <green>玩家 <aqua>{0}</aqua> 的利益分配已更新！
 benefit-query: <green>此商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！
-benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%
+benefit-query-list: <yellow> - </yellow><white>玩家 <gold>{0}</gold>效益 <gold>{1}%
 tag-added: '<green>成功地將 <aqua>#{0}</aqua> 新增到此商店！'
 tag-add-duplicate: '<red>此商店已存在標籤 <aqua>#{0}</aqua>！'
 tag-removed: '<green>成功地從此商店刪除 <aqua>#{0}</aqua>！'
@@ -687,8 +684,8 @@ tag-query-no-tag: <red>此商店沒有標籤。
 tag-query-shops: '<green>此標籤包含 <yellow>{0}</yellow> 個商店：'
 tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>成功地批量處理 <yellow>{0}</yellow> 個商店
-batch-operations-based-on-tags-have-failure: <yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed.
-batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}'
+batch-operations-based-on-tags-have-failure: <yellow>總共 {0} 個商店在批處理中成功完成，但是有 <red>{1}</red> 個請求未完成。
+batch-operations-based-on-tags-have-failure-with-reason: '<yellow>總共 {0} 商店在批處理中成功完成，但是有 <red>{1}</red> 個請求未完成。原因： <gold>{2}'
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>錯誤訊息將傳送到聊天室的此訊息上方給你。
 addon:
   towny:
@@ -1316,7 +1313,7 @@ addon:
     invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
     invalid-discount-code: <red>此優惠代碼無效。
     discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}
+    discount-code-removed: <green>你的優惠代碼 <yellow>{0}</yellow> 已從商店 <aqua>{1} 移除
     invalid-code-type: <red>此優惠代碼類型 <yellow>{0}</yellow> 無效。
     invalid-usage-restriction: <red>使用限制 <yellow>{0}</yellow> 無效。
     invalid-threshold-restriction: <red>門檻限制 <yellow>{0}</yellow> 無效。
@@ -1427,7 +1424,7 @@ addon:
     server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
     starting-convert-progress: "<gold>Starting the convert progress, <red>DO NOT SHUTDOWN YOUR SERVER!</red>"
     executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-    completed: "<green>Done! Migrate completed, please restart your server and remove QuickShop-Reremake from plugins directory."
+    completed: "<green>讚啦！遷移完成，請重新啟動伺服器並從外掛程式目錄中刪除 QuickShop-Reremake。"
     join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
     join_blocking_finished: "<red>[QuickShop-Hikari Migrator] This server has just completed a data conversion and is waiting for a reboot to apply the changes, try again later!"
     failed: "<red>Migration progress exited with error, please check the server console."
@@ -1500,7 +1497,7 @@ compatibility:
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
-delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+delete-controlpanel-button-confirm: "<red>你真的想刪除這家商店嗎？在 {0} 秒內按兩下 <bold>[刪除商店]</bold> 按鈕來再次確認。"
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 suggest-wait: "<green>Please wait... Calculating recommend price."
