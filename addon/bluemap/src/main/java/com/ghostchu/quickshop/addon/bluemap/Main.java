@@ -42,10 +42,10 @@ public final class Main extends JavaPlugin implements Listener {
         getLogger().info("Registering the per shop permissions...");
         BlueMapAPI.onEnable(blueMapAPI -> {
             getLogger().info("Found BlueMap loaded! Hooking!");
+            this.blueMapAPI = blueMapAPI;
             createMarkerSet();
             Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::updateAllMarkers, 1, getConfig().getInt("refresh-per-seconds") * 20L);
         });
-
         BlueMapAPI.onDisable(api -> Bukkit.getScheduler().cancelTasks(this));
     }
 
