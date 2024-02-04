@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.0.0.0</version>
+    <version>6.0.0.1</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -112,9 +112,9 @@
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
-                                        <include>org.apache.commons:commons-lang3:*</include>
-                                        <include>org.apache.commons:commons-text:*</include>
-                                        <include>org.apache.commons:commons-compress:*</include>
+<!--                                        <include>org.apache.commons:commons-lang3:*</include>-->
+<!--                                        <include>org.apache.commons:commons-text:*</include>-->
+<!--                                        <include>org.apache.commons:commons-compress:*</include>-->
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
                                         <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
@@ -140,10 +140,6 @@
                                     <relocation>
                                         <pattern>de.themoep.minedown.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.apache.commons.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.apache.commons.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.alessiodp.libby.</pattern>

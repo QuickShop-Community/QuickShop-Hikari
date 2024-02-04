@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.compatibility.itemadder;
+package com.ghostchu.quickshop.compatibility.itemsadder;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
