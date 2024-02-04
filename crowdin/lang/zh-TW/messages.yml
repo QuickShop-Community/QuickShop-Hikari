@@ -335,38 +335,38 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  stack: '<green>每次交易數量：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   price-hover: <yellow>點擊變更商品價格。
   remove: <bold><red>[刪除商店]
   mode-buying-hover: <yellow>點擊商店變更為出售模式。
-  empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  empty: '<green>清空：移除所有商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
   stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>擁有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
+  setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
   setowner-hover: <yellow>點擊變更店主。
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  mode-buying: '<green>商店模式：<aqua>收購 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  unlimited: '<green>無限：{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   unlimited-hover: <yellow>點擊變更商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊移除此商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
-  refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  refill: '<green>補貨：重新填充商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>啟用/停用商店鎖保護。
   item-hover: <yellow>點擊變更商店物品
   infomation: '<green>商店控制面板：'
   mode-selling-hover: <yellow>點擊商店變更為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  toggledisplay: '<green>商店懸浮物品顯示：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
+  history: '<green>歷史： <yellow>[<bold><light_purple>查看</light_purple></bold>]</yellow>'
   history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: 後面
@@ -523,7 +523,7 @@ permission:
     set-currency: <yellow>擁有此權限者得以設定商店交易貨幣。
     set-name: <yellow>擁有此權限者得以設定商店名稱。
     set-sign-type: <yellow>Change the sign material that attached on the shop.
-    view-purchase-logs: <yellow>Permission to view shop purchase logs.
+    view-purchase-logs: <yellow>查看商店購買歷史記錄的許可權。
   group:
     everyone: <yellow>預設身分組，商店主人不在其中。
     staff: <yellow>商店管理員的系統身分組
@@ -1503,9 +1503,9 @@ price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest p
 suggest-wait: "<green>Please wait... Calculating recommend price."
 history:
   shop:
-    gui-title: "View purchase history"
+    gui-title: "查看購買歷史記錄"
     header-icon-description:
-      - "<white>Type: <yellow>{0}</yellow></white>"
+      - "<white>類型：<yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2}</yellow></white>"
       - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
