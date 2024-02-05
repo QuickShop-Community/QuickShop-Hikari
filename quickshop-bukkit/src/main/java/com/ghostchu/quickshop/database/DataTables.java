@@ -107,6 +107,9 @@ public enum DataTables {
 
         table.addColumn("money", "DECIMAL(32,2) NOT NULL"); // TOTAL MONEY
         table.addColumn("tax", "DECIMAL(32,2) NOT NULL DEFAULT 0"); // TAX
+        table.setIndex(IndexType.INDEX, "idx_log_purchase_shop", "shop");
+        table.setIndex(IndexType.INDEX, "idx.log_purchase_time", "time");
+        table.setIndex(IndexType.INDEX, "idx.log_purchase_buyer", "buyer");
     }),
 
     LOG_TRANSACTION("log_transaction", (table) -> {

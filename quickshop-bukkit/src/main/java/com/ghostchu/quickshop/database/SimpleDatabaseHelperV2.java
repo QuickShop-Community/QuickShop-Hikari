@@ -4,6 +4,7 @@ import cc.carm.lib.easysql.action.PreparedSQLBatchUpdateActionImpl;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
+import cc.carm.lib.easysql.api.enums.IndexType;
 import cc.carm.lib.easysql.manager.SQLManagerImpl;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
@@ -48,7 +49,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    private final int LATEST_DATABASE_VERSION = 14;
+    private final int LATEST_DATABASE_VERSION = 15;
 
     public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
         this.plugin = plugin;
@@ -700,6 +701,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
         });
     }
+
     @Override
     public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(long shopId) {
         return CompletableFuture.supplyAsync(() -> {
@@ -881,6 +883,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 parent.upgradeWorldNameLength();
                 currentDatabaseVersion = 14;
             }
+            if (currentDatabaseVersion == 14) {
+                logger.info("Data upgrading: Creating an Index for the log_purchase table to improve performance...");
+                parent.performLogPurchasesIndex();
+                currentDatabaseVersion = 15;
+            }
             parent.setDatabaseVersion(currentDatabaseVersion).join();
         }
 
@@ -898,6 +905,22 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 return false;
             }
             return true;
+        }
+    }
+
+    private void performLogPurchasesIndex() {
+        try {
+            getManager().alterTable(DataTables.LOG_PURCHASE.getName())
+                    .addIndex(IndexType.INDEX, "idx_log_purchase_shop", "shop")
+                    .execute();
+            getManager().alterTable(DataTables.LOG_PURCHASE.getName())
+                    .addIndex(IndexType.INDEX, "idx_log_purchase_time", "time")
+                    .execute();
+            getManager().alterTable(DataTables.LOG_PURCHASE.getName())
+                    .addIndex(IndexType.INDEX, "idx_log_purchase_buyer", "buyer")
+                    .execute();
+        } catch (SQLException e) {
+            plugin.logger().warn("Cannot setup the table index", e);
         }
     }
 
