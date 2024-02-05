@@ -1,17 +1,20 @@
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Base64;
 
 public class DonationInfo {
-    private static final String PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA52ZCRiVHe4SPnv7lo+gWwep9aO1qaF1Xmu59cVPrkJ1tPmqFXbdMQ01HX5MGjmcdw11I83Mj7JKR6amEkoGe0I9QfG8Gks89LTwFM1UydmN3v39VUCpSQwMzB7kCshqeynZhuiT0OCn6wa/vXs9lNOhlWsNXOQg9jKrdVatQ/n/V0+Vm4ZPO+D8EZ+NmIPE+wagKQfoJkdaWHHeVL1Z3TEYQJyidTLZj1lc4vPoVWPzbQeyMaNTTowdk3xNrIzANufn/R3i/NnkJ8rJlRt47wv1HsqIABPbclJ8GVr8BbGjs+Vt1jKc9XI/CRz9z2quJr/JvrVIQvUS3WaSt1RLvrQIDAQAB";
+    private static final String KONAMI_CHEAT_CODE = "UUDDLRLRAB";
     private final String userKey;
     private DonationData data;
 
@@ -40,6 +43,12 @@ public class DonationInfo {
     and I just want to add something in paste, so I don't think it is required to use RSA or something like that.
      */
     private void parse() {
+        if (this.userKey.equalsIgnoreCase(KONAMI_CHEAT_CODE)) {
+            this.data = new DonationData("KONAMI Cheat Code", CommonUtil.getNilUniqueId().toString(), "https://www.youtube.com/watch?v=dQw4w9WgXcQ", Instant.now().toString());
+            return;/**/
+        }
+
+        // Validate donation key if valid
         try {
             String original = new String(Base64.getDecoder().decode(this.userKey), StandardCharsets.UTF_8);
             DonationData info = JsonUtil.getGson().fromJson(original, DonationData.class);
@@ -65,6 +74,7 @@ public class DonationInfo {
 
     @NoArgsConstructor
     @Data
+    @AllArgsConstructor
     public static class DonationData {
         @SerializedName("name")
         private String name;
