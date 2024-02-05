@@ -57,7 +57,7 @@ public class ShopHistory {
                 plugin.logger().warn("Failed to summary valuable customers", exception);
                 return orderedMap;
             }
-        }, QuickExecutor.getDatabaseExecutor());
+        }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
     private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
@@ -77,7 +77,7 @@ public class ShopHistory {
                 plugin.logger().warn("Failed to summary unique purchasers", exception);
                 return 0L;
             }
-        }, QuickExecutor.getDatabaseExecutor());
+        }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
     private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
@@ -97,7 +97,7 @@ public class ShopHistory {
                 plugin.logger().warn("Failed to summary unique purchasers", exception);
                 return 0d;
             }
-        }, QuickExecutor.getDatabaseExecutor());
+        }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
     private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
@@ -117,7 +117,7 @@ public class ShopHistory {
                 plugin.logger().warn("Failed to summary unique purchasers", exception);
                 return 0L;
             }
-        }, QuickExecutor.getDatabaseExecutor());
+        }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
     public CompletableFuture<ShopSummary> generateSummary() throws SQLException {
@@ -149,7 +149,7 @@ public class ShopHistory {
                 totalPurchasesBalance.join(),
                 totalUniquePurchases.join(),
                 valuableCustomers.join()
-        ), QuickExecutor.getDatabaseExecutor());
+        ), QuickExecutor.getShopHistoryQueryExecutor());
 
     }
 

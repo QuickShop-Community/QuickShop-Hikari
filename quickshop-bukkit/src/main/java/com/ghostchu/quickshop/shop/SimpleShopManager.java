@@ -1685,7 +1685,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return CompletableFuture.supplyAsync(() -> plugin.getDatabaseHelper().listShopsTaggedBy(tagger, tag)
                         .stream()
                         .map(this::getShop).toList()
-                , QuickExecutor.getDatabaseExecutor());
+                , QuickExecutor.getCommonExecutor());
 
     }
 

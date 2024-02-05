@@ -15,6 +15,8 @@ import java.sql.DatabaseMetaData;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class BuiltInCollects {//Statistic
     private final QuickShop plugin;
@@ -69,17 +71,24 @@ public class BuiltInCollects {//Statistic
         return new SimplePie("statistic_database_types", () -> plugin.getDatabaseDriverType().name());
     }
 
-
+    private String databaseProduct = null;
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Product", description = "We collect this so we can know the database vendor that users using, and provide dedicated driver if possible.")
     public CustomChart statisticDatabaseProject() {
         return new SimplePie("statistic_database_product", () -> {
-            try (Connection connection = plugin.getSqlManager().getConnection()) {
-                DatabaseMetaData metaData = connection.getMetaData();
-                return metaData.getDatabaseProductName();
-            } catch (Throwable throwable) {
-                Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
-                return "Error";
+            if(databaseProduct != null){
+                return databaseProduct;
             }
+            CompletableFuture<String> future = CompletableFuture.supplyAsync(()->{
+                try (Connection connection = plugin.getSqlManager().getConnection()) {
+                    DatabaseMetaData metaData = connection.getMetaData();
+                    return metaData.getDatabaseProductName();
+                } catch (Throwable throwable) {
+                    Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
+                    return "Error";
+                }
+            });
+            databaseProduct = future.get(3, TimeUnit.SECONDS);
+            return databaseProduct;
         });
     }
 
