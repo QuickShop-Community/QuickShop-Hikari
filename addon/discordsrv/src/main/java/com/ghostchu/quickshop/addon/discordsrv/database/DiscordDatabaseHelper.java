@@ -66,8 +66,8 @@ public class DiscordDatabaseHelper {
                         .returnGeneratedKey()
                         .execute();
             }
+            return integer;
         }
-
     }
 
     @NotNull
