@@ -96,7 +96,6 @@ public class PlayerListener extends AbstractQSListener {
         }
         // ----Adventure dupe click workaround end----
         if (rateLimit.contains(e.getPlayer().getUniqueId())) {
-            Log.debug("Player " + e.getPlayer().getName() + " click the blocks too fast and reached the rate limit, ignoring the event...");
             return;
         }
         rateLimit.add(e.getPlayer().getUniqueId());

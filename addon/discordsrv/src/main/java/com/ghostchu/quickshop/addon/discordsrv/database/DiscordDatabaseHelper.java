@@ -52,21 +52,22 @@ public class DiscordDatabaseHelper {
                 .addCondition("player", playerUuid)
                 .build().execute();
              ResultSet set = query.getResultSet()) {
+            Integer integer;
             if (set.next()) {
-                return DiscordTables.DISCORD_PLAYERS.createUpdate()
+                integer = DiscordTables.DISCORD_PLAYERS.createUpdate()
                         .setLimit(1)
                         .addCondition("player", playerUuid)
                         .setColumnValues("notifaction", JsonUtil.getGson().toJson(settings))
                         .build().execute();
             } else {
-                return DiscordTables.DISCORD_PLAYERS.createInsert()
+                integer = DiscordTables.DISCORD_PLAYERS.createInsert()
                         .setColumnNames("player", "notifaction")
                         .setParams(playerUuid, JsonUtil.getGson().toJson(settings))
                         .returnGeneratedKey()
                         .execute();
             }
+            return integer;
         }
-
     }
 
     @NotNull

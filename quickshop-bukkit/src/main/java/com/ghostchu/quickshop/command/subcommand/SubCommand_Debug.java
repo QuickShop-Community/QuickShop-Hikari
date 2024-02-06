@@ -1,5 +1,9 @@
 package com.ghostchu.quickshop.command.subcommand;
 
+import cc.carm.lib.easysql.EasySQL;
+import cc.carm.lib.easysql.api.SQLQuery;
+import cc.carm.lib.easysql.hikari.HikariDataSource;
+import cc.carm.lib.easysql.hikari.pool.HikariPool;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
@@ -8,6 +12,7 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import com.google.common.cache.Cache;
 import net.kyori.adventure.text.Component;
@@ -19,15 +24,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -59,8 +62,104 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "set-property" -> handleProperty(sender, subParams);
             case "await-profile-io-tasks" -> handleProfileIOTasksInfo(sender, subParams);
             case "reset-shop-caches" -> handleShopCacheResetting(sender, subParams);
+            case "reset-dbmanager" -> handleDbManagerReset(sender, subParams);
+            case "dump-db-connections" -> handleDumpDbConnections(sender, subParams);
+            case "stop-db-any-queries" -> handleStopDbQueries(sender, subParams);
+            case "toggle-db-debugmode" -> handleToggleDbDebugMode(sender, subParams);
+            case "dump-hikaricp-status" -> handleDumpHikariCPStatus(sender, subParams);
+            case "set-hikaricp-capacity" -> handleSetHikariCPCapacity(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
+    }
+
+    private void handleSetHikariCPCapacity(CommandSender sender, List<String> subParams) {
+        int size = Integer.parseInt(subParams.get(0));
+        HikariDataSource hikariDataSource = (HikariDataSource) plugin.getSqlManager().getDataSource();
+        hikariDataSource.setMaximumPoolSize(size);
+        hikariDataSource.setMinimumIdle(size);
+        sender.sendMessage("MaximumPoolSize and MinimumIdle was set to "+size);
+    }
+
+    private void handleDbConnectionTest(CommandSender sender, List<String> subParams) {
+        sender.sendMessage("Please wait...");
+        try {
+            CompletableFuture.supplyAsync(() -> {
+                try (Connection connection = plugin.getSqlManager().getConnection()) {
+                    if (connection.isValid(1000)) {
+                        sender.sendMessage("HikariCP working!");
+                    } else {
+                        sender.sendMessage("HikariCP returned a dead connection!");
+                    }
+                } catch (SQLException e) {
+                    sender.sendMessage("Failed to test HikariCP");
+                    e.printStackTrace();
+                }
+                return null;
+            }).get(5, TimeUnit.SECONDS);
+        } catch (TimeoutException e) {
+            sender.sendMessage("HikariCP seems stop working, please clean up all active queries to release connection resources.");
+        } catch (ExecutionException | InterruptedException e) {
+            sender.sendMessage("Failed to test HikariCP");
+            e.printStackTrace();
+        }
+    }
+
+    private void handleStopDbQueries(CommandSender sender, List<String> subParams) {
+        long stopped = plugin.getSqlManager().getActiveQuery().values().stream().map(s -> {
+            s.close();
+            return null;
+        }).count();
+        sender.sendMessage("Stopped " + stopped + " active queries.");
+    }
+
+    private void handleDumpHikariCPStatus(CommandSender sender, List<String> subParams) {
+        HikariDataSource hikariDataSource = (HikariDataSource) plugin.getSqlManager().getDataSource();
+
+        sender.sendMessage("Catalog: " + hikariDataSource.getCatalog());
+        sender.sendMessage("PoolName: " + hikariDataSource.getPoolName());
+        sender.sendMessage("Connection Timeout: " + hikariDataSource.getConnectionTimeout());
+        sender.sendMessage("Idle Timeout: " + hikariDataSource.getIdleTimeout());
+        sender.sendMessage("Leak Detection Threshold: " + hikariDataSource.getLeakDetectionThreshold());
+        sender.sendMessage("MaximumPoolSize: " + hikariDataSource.getMaximumPoolSize());
+        sender.sendMessage("MinimumIdle: " + hikariDataSource.getMinimumIdle());
+        sender.sendMessage("MaxLifeTime: " + hikariDataSource.getMaxLifetime());
+        sender.sendMessage("ValidationTimeout: " + hikariDataSource.getValidationTimeout());
+        try {
+            Field poolField = hikariDataSource.getClass().getDeclaredField("pool");
+            poolField.setAccessible(true);
+            HikariPool hikariPool = (HikariPool) poolField.get(hikariDataSource);
+            sender.sendMessage("Active connections: " + hikariPool.getActiveConnections());
+            sender.sendMessage("Idle connections: " + hikariPool.getIdleConnections());
+            sender.sendMessage("Total connections: " + hikariPool.getTotalConnections());
+            sender.sendMessage("Threads Awaiting connections: " + hikariPool.getThreadsAwaitingConnection());
+        } catch (Exception e) {
+            plugin.logger().warn("Failed retrieve HikariPool internal state.", e);
+        }
+    }
+
+    private void handleToggleDbDebugMode(CommandSender sender, List<String> subParams) {
+        plugin.getSqlManager().setDebugMode(!plugin.getSqlManager().isDebugMode());
+        sender.sendMessage("Db Debug Mode: " + plugin.getSqlManager().isDebugMode());
+    }
+
+    private void handleDumpDbConnections(CommandSender sender, List<String> subParams) {
+        sender.sendMessage("Dumping active queries...");
+        for (Map.Entry<UUID, SQLQuery> e : plugin.getSqlManager().getActiveQuery().entrySet()) {
+            sender.sendMessage(e.getKey().toString() + ": " + e.getValue());
+        }
+    }
+
+    private void handleDbManagerReset(CommandSender sender, List<String> subParams) {
+        sender.sendMessage("Please wait...");
+        sender.sendMessage("Shutting down sql manager");
+        EasySQL.shutdownManager(this.plugin.getSqlManager());
+        sender.sendMessage("Clear executors...");
+        QuickExecutor.getHikaricpExecutor().shutdownNow().forEach(r -> sender.sendMessage("Unfinished HikariCP task: " + r));
+        QuickExecutor.setHikaricpExecutor(QuickExecutor.provideHikariCPExecutor());
+        QuickExecutor.getShopHistoryQueryExecutor().shutdownNow().forEach(r -> sender.sendMessage("Unfinished HistoryQuery task: " + r));
+        QuickExecutor.setShopHistoryQueryExecutor(QuickExecutor.provideShopHistoryQueryExecutor());
+        sender.sendMessage("Re-launch database connect progress!");
+        Util.asyncThreadRun(plugin::setupDatabase);
     }
 
     private void handleShopCacheResetting(CommandSender sender, List<String> subParams) {

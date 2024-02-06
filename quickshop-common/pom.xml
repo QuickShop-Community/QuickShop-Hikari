@@ -5,7 +5,7 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>6.0.0.4</version>
+        <version>6.0.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -65,12 +65,6 @@
             <artifactId>easysql-hikaricp</artifactId>
             <scope>compile</scope>
             <version>0.4.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <scope>compile</scope>
-            <version>1.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

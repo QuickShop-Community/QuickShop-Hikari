@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.util.metric.collect;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.metric.MetricCollectEntry;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
 import org.bstats.charts.*;
@@ -10,13 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class BuiltInCollects {//Statistic
     private final QuickShop plugin;
@@ -70,40 +65,40 @@ public class BuiltInCollects {//Statistic
     public CustomChart statisticDatabaseTypes() {
         return new SimplePie("statistic_database_types", () -> plugin.getDatabaseDriverType().name());
     }
-
-    private String databaseProduct = null;
-    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Product", description = "We collect this so we can know the database vendor that users using, and provide dedicated driver if possible.")
-    public CustomChart statisticDatabaseProject() {
-        return new SimplePie("statistic_database_product", () -> {
-            if(databaseProduct != null){
-                return databaseProduct;
-            }
-            CompletableFuture<String> future = CompletableFuture.supplyAsync(()->{
-                try (Connection connection = plugin.getSqlManager().getConnection()) {
-                    DatabaseMetaData metaData = connection.getMetaData();
-                    return metaData.getDatabaseProductName();
-                } catch (Throwable throwable) {
-                    Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
-                    return "Error";
-                }
-            });
-            databaseProduct = future.get(3, TimeUnit.SECONDS);
-            return databaseProduct;
-        });
-    }
-
-    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Version", description = "We collect this so we can know the database versions that users using, and provide/update dedicated driver or drop the support for too old database versions.")
-    public CustomChart statisticDatabaseVersion() {
-        return new SimplePie("statistic_database_version", () -> {
-            try (Connection connection = plugin.getSqlManager().getConnection()) {
-                DatabaseMetaData metaData = connection.getMetaData();
-                return metaData.getDatabaseProductName() + "@" + metaData.getDatabaseProductVersion();
-            } catch (Throwable throwable) {
-                Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
-                return "Error";
-            }
-        });
-    }
+//
+//    private String databaseProduct = null;
+//    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Product", description = "We collect this so we can know the database vendor that users using, and provide dedicated driver if possible.")
+//    public CustomChart statisticDatabaseProject() {
+//        return new SimplePie("statistic_database_product", () -> {
+//            if(databaseProduct != null){
+//                return databaseProduct;
+//            }
+//            CompletableFuture<String> future = CompletableFuture.supplyAsync(()->{
+//                try (Connection connection = plugin.getSqlManager().getConnection()) {
+//                    DatabaseMetaData metaData = connection.getMetaData();
+//                    return metaData.getDatabaseProductName();
+//                } catch (Throwable throwable) {
+//                    Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
+//                    return "Error";
+//                }
+//            });
+//            databaseProduct = future.get(3, TimeUnit.SECONDS);
+//            return databaseProduct;
+//        });
+//    }
+//
+//    @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Database Version", description = "We collect this so we can know the database versions that users using, and provide/update dedicated driver or drop the support for too old database versions.")
+//    public CustomChart statisticDatabaseVersion() {
+//        return new SimplePie("statistic_database_version", () -> {
+//            try (Connection connection = plugin.getSqlManager().getConnection()) {
+//                DatabaseMetaData metaData = connection.getMetaData();
+//                return metaData.getDatabaseProductName() + "@" + metaData.getDatabaseProductVersion();
+//            } catch (Throwable throwable) {
+//                Log.debug("Populate statistic database version failed: " + throwable.getClass().getName() + ": " + throwable.getMessage());
+//                return "Error";
+//            }
+//        });
+//    }
 
     @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Economy Types", description = "We collect this so we can know the percent of different economy types users.")
     public CustomChart statisticEconomyTypes() {

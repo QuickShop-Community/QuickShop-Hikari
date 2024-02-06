@@ -7,7 +7,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.util.Util;
-import lombok.Cleanup;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,16 +38,19 @@ public class ShopHistory {
         this.shop = shop;
     }
 
+    private boolean isValidSummaryRecordType(String type) {
+        return ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equalsIgnoreCase(type) || ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equalsIgnoreCase(type);
+    }
 
     private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
-            try {
-                String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", n="+n+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 while (set.next()) {
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
@@ -62,12 +65,12 @@ public class ShopHistory {
 
     private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -82,12 +85,12 @@ public class ShopHistory {
 
     private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                String SQL = "SELECT SUM(`money`) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT SUM(`money`) FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getDouble(1);
@@ -102,12 +105,12 @@ public class ShopHistory {
 
     private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                String SQL = "SELECT COUNT(*) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT COUNT(*) FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -121,35 +124,35 @@ public class ShopHistory {
     }
 
     public CompletableFuture<ShopSummary> generateSummary() throws SQLException {
-        CompletableFuture<Long> recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now());
-        CompletableFuture<Long> recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Long> recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Long> recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Long> totalPurchases = summaryPurchasesCount(Instant.MIN, Instant.now());
+        long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
+        long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
+        long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
+        long recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
+        long totalPurchases = summaryPurchasesCount(Instant.MIN, Instant.now()).join();
 
-        CompletableFuture<Double> recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now());
-        CompletableFuture<Double> recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Double> recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Double> recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Double> totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now());
+        double recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
+        double recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
+        double recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
+        double recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
+        double totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now()).join();
 
-        CompletableFuture<Long> totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now());
-        CompletableFuture<LinkedHashMap<UUID, Long>> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now());
+        long totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now()).join();
+        LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now()).join();
 
         return CompletableFuture.supplyAsync(() -> new ShopSummary(
-                recentPurchases24h.join(),
-                recentPurchases3d.join(),
-                recentPurchases7d.join(),
-                recentPurchases30d.join(),
-                totalPurchases.join(),
-                recentPurchasesBalance24h.join(),
-                recentPurchasesBalance3d.join(),
-                recentPurchasesBalance7d.join(),
-                recentPurchasesBalance30d.join(),
-                totalPurchasesBalance.join(),
-                totalUniquePurchases.join(),
-                valuableCustomers.join()
-        ), QuickExecutor.getShopHistoryQueryExecutor());
+                recentPurchases24h,
+                recentPurchases3d,
+                recentPurchases7d,
+                recentPurchases30d,
+                totalPurchases,
+                recentPurchasesBalance24h,
+                recentPurchasesBalance3d,
+                recentPurchasesBalance7d,
+                recentPurchasesBalance30d,
+                totalPurchasesBalance,
+                totalUniquePurchases,
+                valuableCustomers
+        ));
 
     }
 
@@ -157,27 +160,29 @@ public class ShopHistory {
     public List<ShopHistoryRecord> query(int page, int pageSize) throws SQLException {
         Util.ensureThread(true);
         List<ShopHistoryRecord> historyRecords = new ArrayList<>(pageSize);
-        SQLQuery query = DataTables.LOG_PURCHASE.createQuery()
-                .addCondition("shop", shopId)
-                .orderBy("time", false)
-                .setPageLimit((page - 1) * pageSize, pageSize)
-                .build().execute();
-        try (query) {
-            ResultSet set = query.getResultSet();
-            while (set.next()) {
-                String type = set.getString("type");
-                if(!ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equals(type) && !ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equals(type)){
-                    continue;
+        try (PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery")) {
+            SQLQuery query = DataTables.LOG_PURCHASE.createQuery()
+                    .addCondition("shop", shopId)
+                    .orderBy("time", false)
+                    .setPageLimit((page - 1) * pageSize, pageSize)
+                    .build().execute();
+            perfMonitor.setContext("shopId="+shopId+", page="+page+", pageSize="+pageSize);
+            try (query) {
+                ResultSet set = query.getResultSet();
+                while (set.next()) {
+                    if (!isValidSummaryRecordType(set.getString("type"))) {
+                        continue;
+                    }
+                    Timestamp date = set.getTimestamp("time");
+                    long shopId = set.getLong("shop");
+                    long dataId = set.getLong("data");
+                    UUID buyer = UUID.fromString(set.getString("buyer"));
+                    ShopOperationEnum shopType = ShopOperationEnum.valueOf(set.getString("type"));
+                    int amount = set.getInt("amount");
+                    double money = set.getDouble("money");
+                    double tax = set.getDouble("tax");
+                    historyRecords.add(new ShopHistoryRecord(date, shopId, dataId, buyer, shopType, amount, money, tax));
                 }
-                Timestamp date = set.getTimestamp("time");
-                long shopId = set.getLong("shop");
-                long dataId = set.getLong("data");
-                UUID buyer = UUID.fromString(set.getString("buyer"));
-                ShopOperationEnum shopType = ShopOperationEnum.valueOf(set.getString("type"));
-                int amount = set.getInt("amount");
-                double money = set.getDouble("money");
-                double tax = set.getDouble("tax");
-                historyRecords.add(new ShopHistoryRecord(date, shopId, dataId, buyer, shopType, amount, money, tax));
             }
         }
         return historyRecords;

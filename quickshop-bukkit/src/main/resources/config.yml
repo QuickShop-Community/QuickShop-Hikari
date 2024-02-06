@@ -152,6 +152,7 @@ database:
     useUnicode: true
     characterEncoding: utf8
     allowPublicKeyRetrieval: true
+    keepaliveTime: 60000
 
 #Limits the amount of shops a player can create and own.
 limits:
