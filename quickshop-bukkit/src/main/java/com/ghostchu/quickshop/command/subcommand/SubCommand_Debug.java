@@ -26,12 +26,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -65,10 +64,43 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "reset-shop-caches" -> handleShopCacheResetting(sender, subParams);
             case "reset-dbmanager" -> handleDbManagerReset(sender, subParams);
             case "dump-db-connections" -> handleDumpDbConnections(sender, subParams);
+            case "stop-db-any-queries" -> handleStopDbQueries(sender, subParams);
             case "toggle-db-debugmode" -> handleToggleDbDebugMode(sender, subParams);
             case "dump-hikaricp-status" -> handleDumpHikariCPStatus(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
+    }
+
+    private void handleDbConnectionTest(CommandSender sender, List<String> subParams) {
+        sender.sendMessage("Please wait...");
+        try {
+            CompletableFuture.supplyAsync(() -> {
+                try (Connection connection = plugin.getSqlManager().getConnection()) {
+                    if (connection.isValid(1000)) {
+                        sender.sendMessage("HikariCP working!");
+                    } else {
+                        sender.sendMessage("HikariCP returned a dead connection!");
+                    }
+                } catch (SQLException e) {
+                    sender.sendMessage("Failed to test HikariCP");
+                    e.printStackTrace();
+                }
+                return null;
+            }).get(5, TimeUnit.SECONDS);
+        } catch (TimeoutException e) {
+            sender.sendMessage("HikariCP seems stop working, please clean up all active queries to release connection resources.");
+        } catch (ExecutionException | InterruptedException e) {
+            sender.sendMessage("Failed to test HikariCP");
+            e.printStackTrace();
+        }
+    }
+
+    private void handleStopDbQueries(CommandSender sender, List<String> subParams) {
+        long stopped = plugin.getSqlManager().getActiveQuery().values().stream().map(s -> {
+            s.close();
+            return null;
+        }).count();
+        sender.sendMessage("Stopped " + stopped + " active queries.");
     }
 
     private void handleDumpHikariCPStatus(CommandSender sender, List<String> subParams) {
@@ -91,8 +123,8 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             sender.sendMessage("Idle connections: " + hikariPool.getIdleConnections());
             sender.sendMessage("Total connections: " + hikariPool.getTotalConnections());
             sender.sendMessage("Threads Awaiting connections: " + hikariPool.getThreadsAwaitingConnection());
-        }catch (Exception e){
-            plugin.logger().warn("Failed retrieve HikariPool internal state.",e);
+        } catch (Exception e) {
+            plugin.logger().warn("Failed retrieve HikariPool internal state.", e);
         }
     }
 
