@@ -37,16 +37,22 @@ public class ShopHistory {
         this.shop = shop;
     }
 
+    private boolean isValidSummaryRecordType(String type){
+        return ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equalsIgnoreCase(type) ||  ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equalsIgnoreCase(type);
+    }
 
     private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
-            String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
+            String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count`, `type` FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-            try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
+            try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
                 ResultSet set = query.getResultSet();
                 while (set.next()) {
+                    if(!isValidSummaryRecordType(set.getString("type"))){
+                        continue;
+                    }
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
                 }
                 return orderedMap;
@@ -60,7 +66,7 @@ public class ShopHistory {
     private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
@@ -78,7 +84,7 @@ public class ShopHistory {
     private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT SUM(`money`) FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
@@ -96,7 +102,7 @@ public class ShopHistory {
     private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(*) FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
@@ -156,8 +162,7 @@ public class ShopHistory {
         try (query) {
             ResultSet set = query.getResultSet();
             while (set.next()) {
-                String type = set.getString("type");
-                if (!ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equals(type) && !ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equals(type)) {
+                if(!isValidSummaryRecordType(set.getString("type"))){
                     continue;
                 }
                 Timestamp date = set.getTimestamp("time");
