@@ -52,7 +52,7 @@ public class DiscordDatabaseHelper {
                 .addCondition("player", playerUuid)
                 .build().execute();
              ResultSet set = query.getResultSet()) {
-            Integer integer = null;
+            Integer integer;
             if (set.next()) {
                 integer = DiscordTables.DISCORD_PLAYERS.createUpdate()
                         .setLimit(1)
