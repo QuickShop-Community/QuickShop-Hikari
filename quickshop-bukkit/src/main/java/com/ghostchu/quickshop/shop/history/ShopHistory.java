@@ -112,34 +112,34 @@ public class ShopHistory {
     }
 
     public CompletableFuture<ShopSummary> generateSummary() throws SQLException {
-        CompletableFuture<Long> recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now());
-        CompletableFuture<Long> recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Long> recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Long> recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Long> totalPurchases = summaryPurchasesCount(Instant.MIN, Instant.now());
+        long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
+        long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
+        long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
+        long recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
+        long totalPurchases = summaryPurchasesCount(Instant.MIN, Instant.now()).join();
 
-        CompletableFuture<Double> recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now());
-        CompletableFuture<Double> recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Double> recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Double> recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now());
-        CompletableFuture<Double> totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now());
+        double recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
+        double recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
+        double recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
+        double recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
+        double totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now()).join();
 
-        CompletableFuture<Long> totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now());
-        CompletableFuture<LinkedHashMap<UUID, Long>> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now());
+        long totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now()).join();
+        LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now()).join();
 
         return CompletableFuture.supplyAsync(() -> new ShopSummary(
-                recentPurchases24h.join(),
-                recentPurchases3d.join(),
-                recentPurchases7d.join(),
-                recentPurchases30d.join(),
-                totalPurchases.join(),
-                recentPurchasesBalance24h.join(),
-                recentPurchasesBalance3d.join(),
-                recentPurchasesBalance7d.join(),
-                recentPurchasesBalance30d.join(),
-                totalPurchasesBalance.join(),
-                totalUniquePurchases.join(),
-                valuableCustomers.join()
+                recentPurchases24h,
+                recentPurchases3d,
+                recentPurchases7d,
+                recentPurchases30d,
+                totalPurchases,
+                recentPurchasesBalance24h,
+                recentPurchasesBalance3d,
+                recentPurchasesBalance7d,
+                recentPurchasesBalance30d,
+                totalPurchasesBalance,
+                totalUniquePurchases,
+                valuableCustomers
         ));
 
     }
