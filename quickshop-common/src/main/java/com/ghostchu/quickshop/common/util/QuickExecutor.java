@@ -20,11 +20,11 @@ public class QuickExecutor {
     }
 
     public static ExecutorService provideShopHistoryQueryExecutor() {
-        return new ThreadPoolExecutor(1, 2, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+        return new ThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
     }
 
     public static ExecutorService provideHikariCPExecutor() {
-        return new ThreadPoolExecutor(2, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+        return new ThreadPoolExecutor(2, 8, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
     }
 
     public static ExecutorService getCommonExecutor() {
