@@ -67,8 +67,17 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "stop-db-any-queries" -> handleStopDbQueries(sender, subParams);
             case "toggle-db-debugmode" -> handleToggleDbDebugMode(sender, subParams);
             case "dump-hikaricp-status" -> handleDumpHikariCPStatus(sender, subParams);
+            case "set-hikaricp-capacity" -> handleSetHikariCPCapacity(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
+    }
+
+    private void handleSetHikariCPCapacity(CommandSender sender, List<String> subParams) {
+        int size = Integer.parseInt(subParams.get(0));
+        HikariDataSource hikariDataSource = (HikariDataSource) plugin.getSqlManager().getDataSource();
+        hikariDataSource.setMaximumPoolSize(size);
+        hikariDataSource.setMinimumIdle(size);
+        sender.sendMessage("MaximumPoolSize and MinimumIdle was set to "+size);
     }
 
     private void handleDbConnectionTest(CommandSender sender, List<String> subParams) {
