@@ -50,11 +50,9 @@ public class ShopHistory {
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
                  SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", n="+n+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 while (set.next()) {
-                    if (!isValidSummaryRecordType(set.getString("type"))) {
-                        continue;
-                    }
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
                 }
                 return orderedMap;
@@ -72,6 +70,7 @@ public class ShopHistory {
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
                  SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -91,6 +90,7 @@ public class ShopHistory {
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
                  SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getDouble(1);
@@ -110,6 +110,7 @@ public class ShopHistory {
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
                  SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -165,6 +166,7 @@ public class ShopHistory {
                     .orderBy("time", false)
                     .setPageLimit((page - 1) * pageSize, pageSize)
                     .build().execute();
+            perfMonitor.setContext("shopId="+shopId+", page="+page+", pageSize="+pageSize);
             try (query) {
                 ResultSet set = query.getResultSet();
                 while (set.next()) {
