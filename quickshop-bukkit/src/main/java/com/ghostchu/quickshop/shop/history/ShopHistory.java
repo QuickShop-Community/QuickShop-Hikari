@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.util.Util;
-import lombok.Cleanup;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,12 +41,10 @@ public class ShopHistory {
     private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
-            try {
-                String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?) GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
                 while (set.next()) {
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
@@ -62,12 +59,10 @@ public class ShopHistory {
 
     private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -82,12 +77,10 @@ public class ShopHistory {
 
     private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                String SQL = "SELECT SUM(`money`) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT SUM(`money`) FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getDouble(1);
@@ -102,12 +95,10 @@ public class ShopHistory {
 
     private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                String SQL = "SELECT COUNT(*) FROM %s " +
-                        "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
-                SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-                @Cleanup
-                SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute();
+            String SQL = "SELECT COUNT(*) FROM %s " +
+                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? AND (`type` = ? OR `type` = ?)";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to, ShopOperationEnum.PURCHASE_SELLING_SHOP.name(), ShopOperationEnum.PURCHASE_BUYING_SHOP.name()).execute()) {
                 ResultSet set = query.getResultSet();
                 if (set.next()) {
                     return set.getLong(1);
@@ -149,7 +140,7 @@ public class ShopHistory {
                 totalPurchasesBalance.join(),
                 totalUniquePurchases.join(),
                 valuableCustomers.join()
-        ), QuickExecutor.getShopHistoryQueryExecutor());
+        ));
 
     }
 
@@ -166,7 +157,7 @@ public class ShopHistory {
             ResultSet set = query.getResultSet();
             while (set.next()) {
                 String type = set.getString("type");
-                if(!ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equals(type) && !ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equals(type)){
+                if (!ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equals(type) && !ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equals(type)) {
                     continue;
                 }
                 Timestamp date = set.getTimestamp("time");

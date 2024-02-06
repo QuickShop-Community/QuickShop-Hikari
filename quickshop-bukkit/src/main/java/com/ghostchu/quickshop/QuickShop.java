@@ -129,7 +129,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private final PasteManager pasteManager = new PasteManager();
     /* Public QuickShop API End */
     private GameVersion gameVersion;
-    private SimpleDatabaseHelperV2 databaseHelper;
+    private volatile SimpleDatabaseHelperV2 databaseHelper;
     private SimpleCommandManager commandManager;
     private ItemMatcher itemMatcher;
     private SimpleShopManager shopManager;
@@ -219,7 +219,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private InteractionController interactionController;
     @Getter
-    private SQLManager sqlManager;
+    private volatile SQLManager sqlManager;
     @Getter
     @Nullable
     private QuickShopPAPI quickShopPAPI;
@@ -884,7 +884,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
      *
      * @return The setup result
      */
-    private boolean setupDatabase() {
+    public boolean setupDatabase() {
         logger.info("Setting up database...");
         HikariConfig config = HikariUtil.createHikariConfig();
         try {
