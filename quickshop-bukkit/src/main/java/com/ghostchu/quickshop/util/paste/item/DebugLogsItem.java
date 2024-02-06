@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -41,7 +40,7 @@ public class DebugLogsItem implements SubPasteItem {
         List<String> tail = CommonUtil.tail(debugLogs, 1000);
         tail.forEach(builder::add);
         return "<textarea readonly=\"true\" name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +
-                StringEscapeUtils.escapeHtml4(builder.toString()) +
+             builder +
                 "</textarea><br />";
     }
 }
