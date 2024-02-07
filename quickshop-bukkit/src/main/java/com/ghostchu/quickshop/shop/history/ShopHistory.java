@@ -83,6 +83,47 @@ public class ShopHistory {
         }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
+    private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n) {
+        return CompletableFuture.supplyAsync(() -> {
+            LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
+            String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
+                    "WHERE `shop`= ? GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, n).execute()) {
+                perfMonitor.setContext("shopId="+shopId+", n="+n);
+                ResultSet set = query.getResultSet();
+                while (set.next()) {
+                    orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
+                }
+                return orderedMap;
+            } catch (SQLException exception) {
+                plugin.logger().warn("Failed to summary valuable customers", exception);
+                return orderedMap;
+            }
+        }, QuickExecutor.getShopHistoryQueryExecutor());
+    }
+
+    private CompletableFuture<Long> summaryUniquePurchasers() {
+        return CompletableFuture.supplyAsync(() -> {
+            String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
+                    "WHERE `shop`= ?";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
+                perfMonitor.setContext("shopId="+shopId);
+                ResultSet set = query.getResultSet();
+                if (set.next()) {
+                    return set.getLong(1);
+                }
+                return 0L;
+            } catch (SQLException exception) {
+                plugin.logger().warn("Failed to summary unique purchasers", exception);
+                return 0L;
+            }
+        }, QuickExecutor.getShopHistoryQueryExecutor());
+    }
+
     private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT SUM(`money`) FROM %s " +
@@ -103,7 +144,29 @@ public class ShopHistory {
         }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
+    private CompletableFuture<Double> summaryPurchasesBalance() {
+        return CompletableFuture.supplyAsync(() -> {
+            String SQL = "SELECT SUM(`money`) FROM %s " +
+                    "WHERE `shop`= ?";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
+                perfMonitor.setContext("shopId="+shopId);
+                ResultSet set = query.getResultSet();
+                if (set.next()) {
+                    return set.getDouble(1);
+                }
+                return 0.0d;
+            } catch (SQLException exception) {
+                plugin.logger().warn("Failed to summary unique purchasers", exception);
+                return 0d;
+            }
+        }, QuickExecutor.getShopHistoryQueryExecutor());
+    }
+
     private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
+        if((from==null) != (to==null))
+            throw new IllegalStateException("from to must null or not null in same time");
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(*) FROM %s " +
                     "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
@@ -123,22 +186,40 @@ public class ShopHistory {
         }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
+    private CompletableFuture<Long> summaryPurchasesCount() {
+        return CompletableFuture.supplyAsync(() -> {
+            String SQL = "SELECT COUNT(*) FROM %s " +
+                    "WHERE `shop`= ?";
+            SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+            try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
+                perfMonitor.setContext("shopId="+shopId);
+                ResultSet set = query.getResultSet();
+                if (set.next()) {
+                    return set.getLong(1);
+                }
+                return 0L;
+            } catch (SQLException exception) {
+                plugin.logger().warn("Failed to summary unique purchasers", exception);
+                return 0L;
+            }
+        }, QuickExecutor.getShopHistoryQueryExecutor());
+    }
+
     public CompletableFuture<ShopSummary> generateSummary() throws SQLException {
         long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
         long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
         long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
         long recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
-        long totalPurchases = summaryPurchasesCount(Instant.MIN, Instant.now()).join();
-
+        long totalPurchases = summaryPurchasesCount().join();
         double recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
         double recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
         double recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
         double recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
-        double totalPurchasesBalance = summaryPurchasesBalance(Instant.MIN, Instant.now()).join();
-
-        long totalUniquePurchases = summaryUniquePurchasers(Instant.MIN, Instant.now()).join();
-        LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5, Instant.MIN, Instant.now()).join();
-
+        double totalPurchasesBalance = summaryPurchasesBalance().join();
+        long totalUniquePurchases = summaryUniquePurchasers().join();
+        LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5).join();
+        
         return CompletableFuture.supplyAsync(() -> new ShopSummary(
                 recentPurchases24h,
                 recentPurchases3d,
