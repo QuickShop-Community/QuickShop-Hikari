@@ -226,8 +226,9 @@ public class ContainerShop implements Shop, Reloadable {
             this.currency = section.getString("currency");
             section.set("currency", null);
             Log.debug("Shop " + this + " currency data upgrade successful.");
+            setDirty();
         }
-        setDirty();
+
     }
 
     /**

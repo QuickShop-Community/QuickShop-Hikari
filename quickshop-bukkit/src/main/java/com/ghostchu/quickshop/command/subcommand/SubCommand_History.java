@@ -20,7 +20,7 @@ public class SubCommand_History implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        final Shop shop = getLookingShop(sender);
+        Shop shop = getLookingShop(sender);
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
