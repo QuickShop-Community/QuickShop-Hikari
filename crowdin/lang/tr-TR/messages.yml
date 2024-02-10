@@ -365,14 +365,14 @@ controlpanel:
   history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: arkasında
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
+  week: "{0} hafta"
+  weeks: "{0} haftalar"
+  year: "{0} yıl"
   before: önce
   scheduled: Planlanan
-  years: "{0} years"
+  years: "{0} Yıllar"
   scheduled-in: '{0}''da planlandı'
-  second: "{0} second"
+  second: "{0} saniye"
   std-past-format: '{5}{4}{3}{2}{1}{0}önce'
   std-time-format: HH:mm:ss
   seconds: "{0} seconds"
