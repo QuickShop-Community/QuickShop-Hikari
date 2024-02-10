@@ -53,7 +53,7 @@ quick-fill:
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Yakınlardaki ortalama fiyat: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Envanter Kontrolü] <gray>Uyarı! QuickShop görüntülü öğe bulundu <gold>{2}</gold> Envanterde <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, ki bu olmamalı, Bu genellikle birisinin görüntüleme öğesini çoğaltmak için istismardan kötü niyetli olarak yararlandığı anlamına gelir."
 digits-reach-the-limit: <red>Fiyatta maksimum basamak sınırına ulaştın.
 currency-unset: <green>Marketin para birimi başarıyla kaldırıldı. Artık varsayılan ayarlar kullanılıyor.
 you-cant-create-shop-in-there: <red>Burada bir market oluşturma izniniz yok.
@@ -88,13 +88,13 @@ reloading-status:
   scheduled: <green>Yeniden yükleme tamamlandı. <gray>(Bazı değişikliklerin etki etmesi biraz zaman aldı)
   require-restart: <green>Yeniden yükleme tamamlandı. <yellow>(Bazı değişikliklerin etkilenmesi için sunucuyu yeniden başlatmak gerekebilir)
   failed: <red>Yeniden yükleme başarısız, sunucu konsolunu kontrol edin
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <red>{0} marketinden {1} tane {2} aldı ve {3} ({4} vergi) kazandın.
 not-enough-space: <red>Sadece {0} için daha fazla yerin var!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>{0} başarıyla market personellerinize eklendi.
 shops-recovering: Marketler yedekten kurtarılıyor...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>Bu sanal bir oynatıcıdır.\n<gray>Aynı ada sahip bu ada sahip bir sistem hesabını ifade eder.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>Bu gerçek bir oyuncu.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>\n<gray>Aynı ada sahip bir sanal sistem hesabı kullanmak istiyorsanız, <dark_gray>\"[]\"</dark_gray> Kullanıcı adının her iki tarafına: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Vergilerde <yellow>{0} <green>ödediniz.
   owner: '<green>Sahibi: {0}'
@@ -251,9 +251,9 @@ price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.
 shop-not-exist: <red>Orada market yok.
 bad-command-usage: <red>Kötü komut argümanları!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-starting: <green>Hayalet dükkanları kontrol etmeye başlıyor (eksik konteyner blokları). Mevcut olmayan tüm dükkanlar kaldırılacak...
+cleanghost-deleting: <yellow>Bozuk bir dükkan buldum <aqua>{0}</aqua> çünkü {1}, silmek için işaretleyin...
+cleanghost-deleted: <green>Toplam <yellow>{0}</yellow> Mağazalar silindi.
 shop-purchase-cancelled: <red>Market alımı iptal edildi.
 bypassing-lock: <red>Bir QuickShop kilidi atlanıyor!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -330,25 +330,25 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>Toplu miktar başına: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   price-hover: <yellow>Öğeye yeni bir fiyat belirlemek için tıkla.
   remove: <red><bold>[Marketi Kaldır]
   mode-buying-hover: <yellow>Marketi SATMA moduna değiştirmek için tıkla.
   empty: '<green>Boşalt: Tüm eşyaları boşalt <yellow>[<light_purple><bold>BOŞALT<yellow>]'
   stack-hover: <yellow>Yığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting: '<green>Her zaman sayıyor: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
+  setowner: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  price: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   currency-hover: <yellow>Bu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: 'Market modu: <aqua>Satış <yellow>[<light_purple><bold>Değiştir<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Sahibi değiştirmek için tıkla.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: '<green>Market modu: <aqua>Alma <yellow>[<bold><light_purple>Değiştir</light_purple>]'
+  item: '<green>Market Öğesi: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
+  unlimited: '<green>Sınırsız: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   unlimited-hover: <yellow>Mağaza sınırsızsa geçiş yapmak için tıkla.
   refill-hover: <yellow>Marketi doldurmak için tıkla.
   remove-hover: <yellow>Bu marketi kaldırmak için tıkla.
@@ -361,8 +361,8 @@ controlpanel:
   mode-selling-hover: <yellow>Marketi ALMA moduna değiştirmek için tıkla.
   empty-hover: '%eMarketin envanterini temizlemek için tıkla.'
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
-  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
-  history-hover: <yellow>Click to view shop history logs
+  history: '<green>Tarih: <yellow>[<bold><light_purple>Görünüm</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Mağaza geçmişi günlüklerini görüntülemek için tıklayın
 timeunit:
   behind: arkasında
   week: "{0} hafta"
@@ -375,27 +375,27 @@ timeunit:
   second: "{0} saniye"
   std-past-format: '{5}{4}{3}{2}{1}{0}önce'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
+  seconds: "{0} saniye"
+  hour: "{0} saat"
   scheduled-at: '{0}''da planlandı'
   after: sonra
-  day: "{0} day"
+  day: "{0} gün"
   recent: son
   between: arasında
-  hours: "{0} hours"
-  months: "{0} months"
+  hours: "{0} saat"
+  months: "{0} ay"
   longtimeago: uzun zaman önce
   between-format: '{0} ile {1}arasında'
-  minutes: "{0} minutes"
+  minutes: "{0} dakika"
   justnow: az önce
-  minute: "{0} minute"
+  minute: "{0} dakika"
   std-format: 'AA / gg / yyyy HH: aa: ss'
   future-plain-text: gelecek
-  month: "{0} month"
+  month: "{0} ay"
   future: '{0} içinde'
-  days: "{0} days"
+  days: "{0} günler"
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: <green>Yapılandırma yeniden yüklendi. <yellow>Bazı değişikliklerin etkilenmesi için yeniden başlatma gerekebilir.
   description:
     buy: <yellow>Bir marketi <light_purple>ALMA<yellow> moduna geçirir
     about: <yellow>QuickShop bilgilerini gösterir
@@ -432,7 +432,7 @@ command:
     unban: <yellow>Bir oyuncunun bu marketteki yasaklamasını kaldırır
     transfer: <yellow>Birinin TÜM marketlerini bir başkasına devret
     transferall: <yellow>Birinin TÜM marketlerini bir başkasına devret
-    transferownership: <yellow>Transfer the shop you're looking at to someone else
+    transferownership: <yellow>Baktığınız mağazayı başka birine devredin
     size: <yellow>Bir marketin her yığınının miktarını değiştir
     supercreate: <yellow>Bütün koruma kontrollerini atlayarak bir market oluştur
     taxaccount: <yellow>Alışveriş yapılırken verginin aktarılacağı hesabı ayarlar
@@ -441,9 +441,9 @@ command:
     permission: <yellow>Mağaza izin yönetimi
     lookup: <yellow>Aranabilir öğeler tablosunu yönetme
     database: <yellow>View and maintain QuickShop database
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
-    tag: <yellow>Add, remove or query tags of a shop
-    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    benefit: <yellow>Avantajları mağaza sahibi ve diğer oyuncular arasında bölme ayarları
+    tag: <yellow>Bir mağazanın etiketlerini ekleme, kaldırma veya sorgulama
+    suggestprice: <yellow>Diğer mağazalara göre dükkan aramak için tavsiye edilen bir fiyat önerin
   bulk-size-not-set: '<red>Kullanım: /qs size <miktar>'
   no-type-given: '<red>Kullanım: /qs find <item>'
   feature-not-enabled: Bu özellik yapılandırma dosyasında aktif değil.
@@ -516,8 +516,8 @@ permission:
     set-stack-amount: <yellow>Buna sahip kullanıcıların mağaza yığını tutarını ayarlamasına izin vermek için izin.
     set-currency: <yellow>Buna sahip kullanıcıların mağaza para birimini ayarlamasına izin vermek için İzin'i.
     set-name: <yellow>Buna sahip kullanıcıların mağaza adını ayarlamasına izin vermek için İzin'i.
-    set-sign-type: <yellow>Change the sign material that attached on the shop.
-    view-purchase-logs: <yellow>Permission to view shop purchase logs.
+    set-sign-type: <yellow>Mağazaya yapıştırılan işaret malzemesini değiştirin.
+    view-purchase-logs: <yellow>Mağaza satın alma günlüklerini görüntüleme izni.
   group:
     everyone: <yellow>Default group for all users excepted shop owner.
     staff: <yellow>System group for shop staffs.
@@ -621,7 +621,7 @@ database:
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
   generated-at: '<yellow>Generated at: <gold>{0}</gold>'
   purge-date: <red>You must given a date.
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`
+  purge-warning: <yellow>Bu işlem, mağaza oluşturma/değiştirme/silme, satın alma, işlem ve sistem günlükleri dahil olmak üzere veritabanınızda depolanan geçmişi temizleyecektir. Bu verileri silmek disk alanını boşaltabilir, ancak tüm geçmiş ölçümleri kaybolur ve ölçümlere bağlı diğer eklentiler çalışmayı durdurur. Bu işlemi yürütmeye devam etmek için '/quickshop database purgelogs \<before-days> Onaylamak'
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
   purge-done-with-error: <red>Purge task failed, check the server console for details.
@@ -689,10 +689,10 @@ addon:
     make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
     shop-owning-changing-notice: <grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission
-    target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
-    target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
-    target-shop-not-in-town-region: <red>The target shop is not in the town.
-    target-shop-not-in-nation-region: <red>The target shop is not in the nation.
+    target-shop-already-is-town-shop: <red>Hedef dükkan zaten bir kasabaya ait.
+    target-shop-already-is-nation-shop: <red>Hedef dükkan zaten bir kasabaya ait.
+    target-shop-not-in-town-region: <red>Hedef dükkan kasabada değil.
+    target-shop-not-in-nation-region: <red>Hedef dükkan kasabada değil.
     item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
     operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
     plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
