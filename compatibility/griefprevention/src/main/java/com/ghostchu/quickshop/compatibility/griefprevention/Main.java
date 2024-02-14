@@ -300,7 +300,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
             return;
         }
-        Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, griefPrevention.dataStore.getPlayerData(event.getAuthorizer()).lastClaim);
+        Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, null);
         if (claim == null) {
             return;
         }
