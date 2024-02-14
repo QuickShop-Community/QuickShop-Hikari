@@ -14,6 +14,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Hopper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,6 +23,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -144,6 +146,15 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (e.getBlockPlaced().getState() instanceof Hopper hopper) {
             hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
             hopper.update();
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlaceHopper(StructureGrowEvent e) {
+        for (BlockState block : e.getBlocks()) {
+            if (getShopNature(block.getLocation(), true) != null) {
+                e.setCancelled(true);
+            }
         }
     }
 
