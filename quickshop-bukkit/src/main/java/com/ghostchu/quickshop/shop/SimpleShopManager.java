@@ -1403,8 +1403,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (respectItemFlag) {
             if (items.hasItemMeta()) {
                 ItemMeta shopItemMeta = shop.getItem().getItemMeta();
-                shouldDisplayEnchantments = shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
-                shouldDisplayPotionEffects = shopItemMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+                shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
+                shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
             }
         }
 

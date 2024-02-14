@@ -150,7 +150,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlaceHopper(StructureGrowEvent e) {
+    public void onStructureGrow(StructureGrowEvent e) {
         for (BlockState block : e.getBlocks()) {
             if (getShopNature(block.getLocation(), true) != null) {
                 e.setCancelled(true);
