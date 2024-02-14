@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.cache.ShopCache;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -17,7 +18,6 @@ import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
-import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
@@ -59,6 +59,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -1401,8 +1402,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         if (respectItemFlag) {
             if (items.hasItemMeta()) {
-                shouldDisplayEnchantments = items.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_ENCHANTS);
-                shouldDisplayPotionEffects = items.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_POTION_EFFECTS);
+                ItemMeta shopItemMeta = shop.getItem().getItemMeta();
+                shouldDisplayEnchantments = shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
+                shouldDisplayPotionEffects = shopItemMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
             }
         }
 
@@ -1410,7 +1412,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             MsgUtil.printEnchantment(shop, chatSheetPrinter);
         }
         if (shouldDisplayPotionEffects) {
-            if (items.getItemMeta() instanceof PotionMeta potionMeta) {
+            if (items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
                 PotionData potionData = potionMeta.getBasePotionData();
                 PotionEffectType potionEffectType = potionData.getType().getEffectType();
                 if (potionEffectType != null) {
@@ -1779,9 +1781,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         return amount;
     }
+
     @Override
     @NotNull
-    public CompletableFuture<@NotNull  ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop){
+    public CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop) {
         Util.ensureThread(true);
         return plugin.getDatabaseHelper().queryInventoryCache(shop.getShopId());
     }
@@ -1921,7 +1924,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return shops.next();
         }
     }
-
 
 
     static class TagParser {
