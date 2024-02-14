@@ -90,7 +90,7 @@ public class ShopHistory {
                     "WHERE `shop`= ? GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, n).execute()) {
+                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
                 perfMonitor.setContext("shopId="+shopId+", n="+n);
                 ResultSet set = query.getResultSet();
                 while (set.next()) {
