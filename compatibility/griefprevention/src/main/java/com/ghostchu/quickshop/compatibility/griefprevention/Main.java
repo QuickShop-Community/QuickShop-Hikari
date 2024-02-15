@@ -51,29 +51,29 @@ public final class Main extends CompatibilityModule implements Listener {
         this.tradeLimits.addAll(toFlags(getConfig().getStringList("trade")));
         this.griefPrevention = (GriefPrevention) Bukkit.getPluginManager().getPlugin("GriefPrevention");
         Log.debug("GPCompat: Started up");
-       try{
-           getLogger().info("Registering unsafe event listener...");
-           Bukkit.getPluginManager().registerEvents(new Listener() {
+        try {
+            getLogger().info("Registering unsafe event listener...");
+            Bukkit.getPluginManager().registerEvents(new Listener() {
 
-               // Player can resize the main claim or the subclaim.
-               // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
-               @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-               public void onClaimResized(ClaimResizeEvent event) {
-                   if (!deleteOnClaimResized) {
-                       return;
-                   }
-                   Claim oldClaim = event.getFrom();
-                   Claim newClaim = event.getTo();
-                   if (oldClaim.parent == null) {
-                       handleMainClaimResized(oldClaim, newClaim);
-                   } else {
-                       handleSubClaimResized(oldClaim, newClaim);
-                   }
-               }
-           }, this);
-       }catch (Throwable e){
-           getLogger().info("Unable to register resize event handler, other listeners will sill working.");
-       }
+                // Player can resize the main claim or the subclaim.
+                // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
+                @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+                public void onClaimResized(ClaimResizeEvent event) {
+                    if (!deleteOnClaimResized) {
+                        return;
+                    }
+                    Claim oldClaim = event.getFrom();
+                    Claim newClaim = event.getTo();
+                    if (oldClaim.parent == null) {
+                        handleMainClaimResized(oldClaim, newClaim);
+                    } else {
+                        handleSubClaimResized(oldClaim, newClaim);
+                    }
+                }
+            }, this);
+        } catch (Throwable e) {
+            getLogger().info("Unable to register resize event handler, other listeners will sill working.");
+        }
     }
 
     private List<Flag> toFlags(List<String> flags) {
@@ -309,21 +309,21 @@ public final class Main extends CompatibilityModule implements Listener {
         Log.debug("GP-Compat: Starting override permission...");
         Location shopLoc = event.getShop().getLocation();
         if (!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
-            Log.debug("GP-Compat: World "+shopLoc.getWorld().getName()+" not enabled for claims");
+            Log.debug("GP-Compat: World " + shopLoc.getWorld().getName() + " not enabled for claims");
             return;
         }
         Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, null);
         if (claim == null) {
-            Log.debug("GP-Compat: Shop "+shopLoc+" position had no claim(s) exists.");
+            Log.debug("GP-Compat: Shop " + shopLoc + " position had no claim(s) exists.");
             return;
         }
         if (Objects.equals(event.getAuthorizer(), claim.getOwnerID())) {
             if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
-                Log.debug("GP-Compat: Shop "+shopLoc+"'s override request was approved.");
+                Log.debug("GP-Compat: Shop " + shopLoc + "'s override request was approved.");
             }
-        }else{
-            Log.debug("GP-Compat: Shop "+shopLoc+"'s requested authorizer "+event.getAuthorizer()+" are not match with claim owner "+claim.getOwnerID());
+        } else {
+            Log.debug("GP-Compat: Shop " + shopLoc + "'s requested authorizer " + event.getAuthorizer() + " are not match with claim owner " + claim.getOwnerID());
         }
     }
 
