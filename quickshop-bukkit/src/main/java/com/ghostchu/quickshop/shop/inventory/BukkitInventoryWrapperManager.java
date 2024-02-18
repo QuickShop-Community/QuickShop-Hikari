@@ -12,9 +12,11 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.inventory.InventoryHolder;
@@ -42,22 +44,15 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
             throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
         }
         BlockState block = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
-        if (PackageUtil.parsePackageProperly("forceLoadAnotherSideWhenInventoryLocate").asBoolean(false)) {
-            BlockData blockData = block.getBlockData();
-            if (blockData instanceof Chest chest) {
-                if (chest.getType() != Chest.Type.SINGLE) {
-                    // try load another side
-                    Block anotherBlock = Util.getSecondHalf(block.getBlock());
-                    anotherBlock.getChunk().load();
-                    if (PackageUtil.parsePackageProperly("forceUpdateAnotherSideAfterForceLoadAnotherSide").asBoolean(false)) {
-                        block.update();
-                        block = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
-                    }
-                }
-            }
-        }
         if (!(block instanceof InventoryHolder holder)) {
             throw new IllegalArgumentException("Invalid symbol link: Target block not a InventoryHolder (map changed/resetted?)");
+        }
+        if(holder instanceof DoubleChest doubleChest){
+            Location location = doubleChest.getLeftSide().getInventory().getLocation();
+            BlockState state = location.getBlock().getState();
+            if(state instanceof InventoryHolder leftSideHolder){
+                return new BukkitInventoryWrapper(leftSideHolder.getInventory());
+            }
         }
         return new BukkitInventoryWrapper(holder.getInventory());
     }
