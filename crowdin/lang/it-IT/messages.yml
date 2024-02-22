@@ -174,8 +174,8 @@ unknown-player: <red>Il giocatore di destinazione non esiste, per favore control
 player-offline: <red>Il giocatore scelto è attualmente offline.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
-  selling: SELLING
-  buying: BUYING
+  selling: VENDITA
+  buying: ACQUISTA
 language:
   qa-issues: '<yellow>Problemi di garanzia della qualità: <aqua>{0}%'
   code: '<yellow>Codice: <gold>{0}'
@@ -203,7 +203,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
-    modrinth: '[Modrinth]'
+    modrinth: 'Modrinth'
     basic: '[Basic]'
   list:
     - '{0} è stato rilasciato. Stai ancora usando {1}!'
@@ -517,7 +517,7 @@ permission:
     set-currency: <yellow>Permesso per consentire agli utenti scelti d'impostare la valuta del negozio.
     set-name: <yellow>Permesso per consentire agli utenti scelti di impostare il nome del negozio.
     set-sign-type: <yellow>Change the sign material that attached on the shop.
-    view-purchase-logs: <yellow>Permission to view shop purchase logs.
+    view-purchase-logs: <yellow>Permesso di visualizzare i log di acquisto del negozio.
   group:
     everyone: <yellow>Gruppo predefinito per tutti gli utenti eccetto il proprietario del negozio.
     staff: <yellow>Gruppo di sistema per il personale del negozio.
@@ -564,7 +564,7 @@ not-a-valid-time: |-
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
   <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: <red>You can't specify a time in the past.
+invalid-past-time: <red>Non è possibile specificare un'ora nel passato.
 debug:
   arguments-invalid: <red>Argomenti forniti <yellow>{0}</yellow> non validi.
   sign-located: '<green>Segno valido: <yellow>{0}</yellow>.'
@@ -581,9 +581,9 @@ debug:
   sql-completed: <green>Completato, {0} righe affette.
   sql-exception: <red>Si è verificato un errore durante l'esecuzione della query SQL, controlla la Console per ulteriori dettagli!
   sql-disabled: '<red>Per ragioni di sicurezza, le query SQL sono disabilitate su questo server. Se hai davvero bisogno di questa funzione, puoi aggiungere il seguente flag a questi argomenti di avvio: <aqua>{0}</aqua> con il valore `true` per attivarlo.'
-  force-shop-reload: <yellow>Forcing reload all loaded shops...
-  force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
-  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
+  force-shop-reload: <yellow>Forzando il reload di tutti i negozi caricati...
+  force-shop-reload-complete: <green>Forzato<aqua>{0}</aqua> il reload di tutti i negozi.
+  force-shop-loader-reload: <yellow>Forzando il reload...
   force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
   force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
@@ -1310,7 +1310,7 @@ addon:
     invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
     invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
     invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
-    invalid-expire-time: <red>You can't specify a time in the past.
+    invalid-expire-time: <red>Non è possibile specificare un'ora nel passato.
     invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
     discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
     discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>.
