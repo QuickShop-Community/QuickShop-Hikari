@@ -19,7 +19,7 @@ public class HikariUtil {
             throw new IllegalArgumentException("database.properties section in configuration not found");
         }
         for (String key : section.getKeys(false)) {
-            config.addDataSourceProperty(key, section.getString(key));
+            config.addDataSourceProperty(key, String.valueOf(section.get(key)));
         }
         Log.debug("HikariCP Config created with properties: " + config.getDataSourceProperties());
         return config;
