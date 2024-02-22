@@ -442,11 +442,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         // Schedule this event can be run in next tick.
         Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
-        DonationInfo info = new DonationInfo(getConfig().getString("donation-key"));
-        if(info.isValid()){
-            this.donationInfo = info;
-        }else{
-            this.donationInfo = null;
+        try {
+            DonationInfo info = new DonationInfo(getConfig().getString("donation-key"));
+            if (info.isValid()) {
+                this.donationInfo = info;
+            } else {
+                this.donationInfo = null;
+            }
+        }catch (Exception ignored){
         }
     }
 
