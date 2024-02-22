@@ -34,7 +34,7 @@ public class ConfigUpdateScript {
         getConfig().set("database.properties.maximum-pool-size", null);
         getConfig().set("database.properties.minimum-idle", null);
     }
-    @UpdateScript(version = 1027)
+    @UpdateScript(version = 1028)
     public void donationKey() {
         getConfig().set("donation-key", "");
     }
