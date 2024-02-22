@@ -38,6 +38,21 @@ public class ConfigUpdateScript {
     public void donationKey() {
         getConfig().set("donation-key", "");
     }
+    @UpdateScript(version = 1029)
+    public void fixDbSettings() {
+        long connectionTimeoutOld = getConfig().getLong("database.properties.connection-timeout", 60000);
+        getConfig().set("database.properties.connectionTimeout", connectionTimeoutOld);
+        long maximumPoolSizeOld = getConfig().getLong("database.properties.maximum-pool-size", 10);
+        getConfig().set("database.properties.maximumPoolSize", Math.max(maximumPoolSizeOld, 10));
+        long minimumIdleOld = getConfig().getLong("database.properties.minimum-idle", 10);
+        getConfig().set("database.properties.minimumIdle",Math.max(maximumPoolSizeOld, 10)); // keep same with maximumPoolSize
+
+        getConfig().set("database.properties.validation-timeout", null);
+        getConfig().set("database.properties.login-timeout", null);
+        getConfig().set("database.properties.connection-timeout", null);
+        getConfig().set("database.properties.maximum-pool-size", null);
+        getConfig().set("database.properties.minimum-idle", null);
+    }
     @UpdateScript(version = 1026)
     public void toggleEnchantsAndEffectList() {
         getConfig().set("shop.info-panel.show-enchantments", true);
