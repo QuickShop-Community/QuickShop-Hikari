@@ -549,73 +549,73 @@ paste-created-local: |-
   <red>Advarsel: <gray>Send aldri "pastes" til folk du ikke stoler på.
 paste-created-local-failed: <red>Klarte ikke å lagre "Paste" til lokal disk, vennligst sjekk disken din.
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
-paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
-paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
-command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
-successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
-successfully-unset-player-group: <green>Successfully remove player group in this shop.
-successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
-lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
-lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
-lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
-lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
-lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
-lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
-lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
-lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
-argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+  <gray><bold>TIPS:</bold> Ditt nåværende land eller region ser ut til å ha blokkert CloudFlare Workers-tjenesten, og QuickShop Paste kan ikke lastes ordentlig.
+  Hvis den påfølgende operasjonen mislykkes, prøv å legge til argumentet --file for å generere en lokal Paste: <dark_gray>/quickshop paste --file
+paste-upload-failed: <red>Feilet å laste opp paste til {0}, prøver en annen pastebin-leverandør...
+paste-upload-failed-local: <red>Feilet å laste opp paste, prøver nå å generere lokal paste...
+command-incorrect: '<red>Feil bruk av kommandoen, skriv /quickshop help for å sjekke kommandolisten. Bruk: {0}.'
+successfully-set-player-group: <green>Gruppen til {0} er nå satt til <aqua>{1}</aqua>.
+successfully-unset-player-group: <green>Spillergruppen er fjernet fra denne butikken.
+successfully-set-player-permission: <green>Spilleren {0} har fått tillatelse <aqua>{1}</aqua> i butikken <aqua>{2}</aqua>.
+lookup-item-created: <green>En gjenstand med navnet <aqua>{0}</aqua> har blitt opprettet i oppslagstabellen. Du kan nå referere til denne gjenstanden i konfigurasjonen.
+lookup-item-exists: <red>En gjenstand med navnet <yellow>{0}</yellow> finnes allerede i oppslagstabellen. Slett den eller velg et annet navn.
+lookup-item-not-found: <red>En gjenstand med navnet <yellow>{0}</yellow> eksisterer ikke.
+lookup-item-name-illegal: <red>Ugyldig navn på gjenstand. Kun alfanumeriske tegn og understreker er tillatt.
+lookup-item-name-regex: '<red>Navnet må stemme overens med denne regexen: <aqua>{0}</aqua>.'
+lookup-item-test-not-found: '<gold>Test: <yellow>Gjenstanden i hånden din er ikke registrert i oppslagstabellen.'
+lookup-item-test-found: '<gold>Test: <green>Gjenstanden i hånden din ble registrert som <aqua>{0}</aqua> i oppslagstabellen.'
+lookup-item-removed: <green>Den angitte gjenstanden <aqua>{0}</aqua> er fjernet fra oppslagstabellen.
+internal-error: <red>Det oppstod en intern feil. Vennligst kontakt serveradministratoren.
+argument-cannot-be: <red>Argumentet <aqua>{0}</aqua> kan ikke være <yellow>{1}</yellow>.
+argument-must-between: <red>Verdien til argumentet <aqua>{0}</aqua> må være mellom <yellow>{1}</yellow> og <yellow>{2}
+invalid-percentage: <red>Prosenten er ugyldig; du må legge til '%' etter prosenttallet.
 display-fallback: |-
-  <red>Due to an internal failure, a fallback message is being displayed.
-  The value of this item may not be localized or processed correctly.
-  Please contact the server administrator.
+  <red>På grunn av en intern feil vises det en reservebeskjed.
+  Verdien av denne gjenstanden kan ikke være lokalisert eller behandlet korrekt.
+  Vennligst kontakt serveradministratoren.
 not-a-valid-time: |-
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
-  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
-invalid-past-time: <red>You can't specify a time in the past.
+  <red>Strengen <yellow>{0}</yellow> er ikke et gyldig tidsstempel. Vennligst oppgi en <aqua>Zulu Time (ISO 8601)</aqua> eller <aqua>Unix Epoch Time i sekunder</aqua>.
+  <gold>Gyldige tidsstempel eksempler: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
+  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time i sekunder)</gray><br>
+invalid-past-time: <red>Du kan ikke angi en tid som allerede har vært.
 debug:
-  arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
-  sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
-  operation-missing: <red>You must specific an operation.
-  operation-invalid: <red>You must specific an valid operation.
-  invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
+  arguments-invalid: <red>De angitte argumentene <yellow>{0}</yellow> er ugyldige.
+  sign-located: '<green>Gyldig skilt: <yellow>{0}</yellow>.'
+  operation-missing: <red>Du må angi en operasjon.
+  operation-invalid: <red>Du må angi en gyldig operasjon.
+  invalid-base64-encoded-sql: <red>Den angitte SQL-operasjonen må være Base64-kodet.
   warning-sql: |-
-    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
-    <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
-  warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
-  sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
-  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
-  sql-completed: <green>Completed, {0} rows affected.
-  sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
-  sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
-  force-shop-reload: <yellow>Forcing reload all loaded shops...
-  force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
-  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
-  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
-  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
-  force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
-  force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
-  toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}
-  shop-internal-data: '<yellow>The internal data of this shop: </yellow>{0}'
-  handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
-  update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
-  update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}'
-  update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
-  update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}'
-  update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
-  update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
+    <bold><red>Advarsel:</red></bold> <yellow>Du utfører en SQL-setning. Dette kan ødelegge databasen din eller ødelegge data i databasen, selv om det tilhører en annen plugin.
+    <red>Ikke bekreft dette hvis du ikke stoler på den som sendte det til deg.
+  warning-sql-confirm: <yellow>For å bekrefte denne farlige handlingen, skriv <aqua>/quickshop debug database sql confirm {0}</aqua> innen de neste 60 sekundene.
+  warning-sql-confirm-hover: <yellow>Klikk for å bekrefte denne farlige handlingen.
+  sql-confirm-not-found: <yellow>Finner ikke handlingen du har angitt. Den kan være ugyldig eller ha utløpt.
+  sql-executing: '<yellow>Utfører SQL-setning: <aqua>{0}'
+  sql-completed: <green>Handlingen er fullført! {0} rader berørt.
+  sql-exception: <red>Det oppstod en feil under kjøring av SQL-spørringen. Sjekk konsollen for detaljer!
+  sql-disabled: '<red>Av sikkerhetsgrunner er SQL-spørringer deaktivert på denne serveren. Hvis du virkelig trenger denne funksjonen, kan du legge til følgende flagg i oppstartsargumentene: <aqua>{0}</aqua> med verdien ''true'' for å aktivere den.'
+  force-shop-reload: <yellow>Tvinger omlasting av alle butikker...
+  force-shop-reload-complete: <green>Tvangslastet <aqua>{0}</aqua> butikker på nytt.
+  force-shop-loader-reload: <yellow>Tvinger omstart av shop-loader...
+  force-shop-loader-reload-unloading-shops: <yellow>Frigjører <aqua>{0}</aqua> lastede butikker...
+  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Fjerner <aqua>{0}</aqua> butikker fra minnet...
+  force-shop-loader-reload-reloading-shop-loader: <yellow>Kaller på shop-loader for å omlaste alle butikker fra databasen...
+  force-shop-loader-reload-complete: <green>Shop-loader har lastet om alle butikkene!
+  toggle-shop-loaded-status: <aqua>Endre denne butikkens lastede status til <gold>{0}
+  shop-internal-data: '<yellow>De interne dataene til denne butikken: </yellow>{0}'
+  handler-list-not-valid-bukkit-event-class: <red>Den angitte klassen <yellow>{0}</yellow> er ikke en gyldig Bukkit hendelsesklasse.
+  update-player-shops-signs-no-username-given: <red>Du må oppgi et gyldig brukernavn.
+  update-player-shops-signs-create-async-task: <yellow>Oppretter asynkroniseringsoppgaver for å tvinge oppdatering av skilt...
+  update-player-shops-player-selected: '<yellow>Spiller valgt: <gold>{0}'
+  update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> butikker venter på oppdateringer.
+  update-player-shops-per-tick-threshold: '<yellow>Maks antall butikker som oppdateres per tick: <gold>{0}'
+  update-player-shops-complete: <green>Oppgave fullført, brukte <yellow>{0}ms</yellow> på oppdatering.
+  update-player-shops-task-started: <gold>Oppgavene er startet, vennligst vent til den er fullført.
 database:
-  scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
-  scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
-  already-scanning: <red>An scan task has been started, please wait until it finished.
-  trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
+  scanning: <green>Skanner de isolerte dataene i QuickShop-databasen. Databasebelastningen kan øke skanneprosessen. Dette kan ta litt tid...
+  scanning-async: <yellow>Skanner de isolerte dataene i QuickShop-databasen på en asynkron oppgavetråd. Databasebelastningen kan øke skannesprosessen. Dette kan ta litt tid. Hvis det mislykkes, prøv igjen senere.
+  already-scanning: <red>En skanneoppgave er startet. Vennligst vent til den er ferdig.
+  trim-warning: <red><bold>Advarsel:</bold> <yellow>Ta sikkerhetskopi av databasen din før du fortsetter med trimming av databasen for å unngå tap av data. Når du er klar, utfør <aqua>/quickshop database trim confirm</aqua> for å fortsette.
   status: '<yellow>Status: {0}'
   status-good: <green>Good
   status-bad: <yellow>Maintenance Required
@@ -1327,7 +1327,7 @@ addon:
     invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
     invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
     invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
-    invalid-expire-time: <red>You can't specify a time in the past.
+    invalid-expire-time: <red>Du kan ikke angi en tid som allerede har vært.
     invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
     discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
     discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
