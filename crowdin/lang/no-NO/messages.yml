@@ -335,89 +335,89 @@ language-info-panel:
   translate-on-crowdin: '[Oversett på Crowdin]'
 item-not-exist: <red>Gjenstanden <yellow>{0}</yellow> eksisterer ikke, vennligst sjekk stavingen din.
 shop-creation-failed: <red>Opprettelse av butikk feilet, vennligst ta kontakt med server administrator.
-inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
+inventory-space-full: <red>Din gjenværende inventarplass kan kun ha <green>{1}</green> flere gjenstander lagt til den. Prøv å tømme inventaret ditt!
 no-creative-break: <red>Du kan ikke ødelegge andre spillere sine butikker i kreativ modus. Bytt til overlevelsesmodus eller prøv å bruke superverktøyet {0} i stedet.
 booleanformat:
   success: <green>✔
-  failed: <green>✔
+  failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  stack: '<green>Per parti mengde: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   price-hover: <yellow>Klikk for å velge en ny pris for varen.
-  remove: <bold><red>[Remove Shop]
+  remove: <bold><red>[Fjern butikk]
   mode-buying-hover: <yellow>Klikk for å endre butikken til SELG modus.
-  empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
-  stack-hover: <yellow>Klikk for å sette antallet i pakken. Sett 1 for normal adferd.
-  alwayscounting-hover: <yellow>Klikk for å veksle om butikken skal alltid telle beholderen.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  empty: '<green>Tom: Fjern alle gjenstander <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  stack-hover: <yellow>Klikk for å angi antall gjenstander per parti. Sett til 1 for normal adferd.
+  alwayscounting-hover: <yellow>Klikk for å endre om butikken alltid skal telle innholdet i beholderen.
+  alwayscounting: '<green>Alltid telle: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  setowner: '<green>Eier: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  freeze: '<yellow>Frysmodus: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  price: '<green>Pris: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   currency-hover: <yellow>Klikk for å sette eller fjerne valutaen på butikken
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
+  lock: '<yellow>Butikklås: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  mode-selling: '<green>Butikkmodus: <aqua>Selger <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  currency: '<green>Valuta: <aqua>{0} <yellow>[<bold><light_purple>Sett</light_purple></bold>]'
   setowner-hover: <yellow>Klikk for å bytte eier.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  mode-buying: '<green>Butikkmodus: <aqua>Kjøper <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  item: '<green>Butikkvare: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  unlimited: '<green>Ubegrenset: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   unlimited-hover: <yellow>Klikk for å veksle om butikken er ubegrenset.
   refill-hover: <yellow>Klikk for å etterfylle butikken.
   remove-hover: <yellow>Klikk for å fjerne denne butikken.
   toggledisplay-hover: <yellow>Slå av/på butikkens utstillingsvare
-  refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  refill: '<green>Påfyll: Fyll på varene <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   freeze-hover: <yellow>Veksle butikkens frysestatus.
   lock-hover: <yellow>Aktiver/Deaktiver butikkens låsebeskyttelse.
   item-hover: <yellow>Klikk for å endre varen i butikken
   infomation: '<green>Butikkens kontrollpanel:'
   mode-selling-hover: <yellow>Klikk for å endre butikken til KJØP modus.
   empty-hover: <yellow>Klikk for å fjerne alle varer fra butikken.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
-  history-hover: <yellow>Click to view shop history logs
+  toggledisplay: '<green>Visningsvare: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  history: '<green>Historikk: <yellow>[<bold><light_purple>Vis</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Klikk for å se butikkens historikklogger
 timeunit:
-  behind: behind
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
-  before: before
-  scheduled: scheduled
-  years: "{0} years"
-  scheduled-in: scheduled in {0}
-  second: "{0} second"
-  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  behind: bak
+  week: "{0} uke"
+  weeks: "{0} uker"
+  year: "{0} år"
+  before: før
+  scheduled: planlagt
+  years: "{0} år"
+  scheduled-in: planlagt om {0}
+  second: "{0} sekund"
+  std-past-format: '{5}{4}{3}{2}{1}{0}siden'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
-  scheduled-at: scheduled at {0}
-  after: after
-  day: "{0} day"
-  recent: recent
-  between: between
-  hours: "{0} hours"
-  months: "{0} months"
-  longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: "{0} minutes"
-  justnow: just now
-  minute: "{0} minute"
+  seconds: "{0} sekunder"
+  hour: "{0} time"
+  scheduled-at: planlagt {0}
+  after: etter
+  day: "{0} dag"
+  recent: nylig
+  between: mellom
+  hours: "{0} timer"
+  months: "{0} måneder"
+  longtimeago: lenge siden
+  between-format: mellom {0} og {1}
+  minutes: "{0} minutter"
+  justnow: akkurat nå
+  minute: "{0} minutt"
   std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
-  month: "{0} month"
-  future: in {0}
-  days: "{0} days"
+  future-plain-text: fremtiden
+  month: "{0} måned"
+  future: om {0}
+  days: "{0} dager"
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: <green>Konfigurasjonen er lastet på nytt. <yellow>Noen endringer kan kreve omstart for å tre i kraft.
   description:
-    buy: <yellow>Endre en butikk til <light_purple>KJØP<yellow> modus
+    buy: <yellow>Endrer en butikk til <light_purple>KJØP</light_purple> <yellow>modus
     about: <yellow>Vis QuickShop info
-    language: <yellow>Bytt språk
+    language: <yellow>Endre det gjeldende språket som brukes
     purge: <yellow>Start fjerning av butikker i bakgrunnen
     paste: <yellow>Laster opp server data til Pastebin
     title: <green>QuickShop hjelp
     remove: <yellow>Fjerner butikken du ser på
     ban: <yellow>Utesteng en spiller fra butikken
     empty: <yellow>Fjerner alle gjenstander fra en butikk
-    alwayscounting: <yellow>Sett om butikken alltid skal telle containere selv om den er uendelig
+    alwayscounting: <yellow>Angi om butikken alltid skal telle innholdet i beholderen, selv når den er ubegrenset
     setowner: <yellow>Endre eierskap på en butikk.
     reload: <yellow>Laster om config.yml i QuickShop
     freeze: <yellow>Deaktiver eller Aktiver all handel
@@ -437,117 +437,117 @@ command:
     fetchmessage: <yellow>Vis uleste butikkmeldinger
     staff: <yellow>Administrere butikkens ansatte
     clean: <yellow>Fjerner alle aktive butikker uten innhold
-    refill: <yellow>Legger til angitt antall gjenstander til en butikk
+    refill: <yellow>Legger til et gitt antall gjenstander i en butikk
     help: <yellow>Vis QuickShop hjelp
     removeall: <yellow>Fjern ALLE butikker for en spesifisert spiller
     unban: <yellow>Opphev utestengelsen til en spiller på butikken
     transfer: <yellow>Overfør ALLE butikker fra en spiller til en annen
     transferall: <yellow>Overfør ALLE butikker fra en spiller til en annen
-    transferownership: <yellow>Transfer the shop you're looking at to someone else
-    size: <yellow>Endre antallet i pakken på en butikk
-    supercreate: <yellow>Opprett en butikk mens alle beskyttelse sjekker blir ignorert
-    taxaccount: <yellow>Sett avgift konto som butikken bruker
-    name: <yellow>Naming a shop to specific name
-    toggledisplay: <yellow>Slå av/på butikken vise varestatus
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
-    database: <yellow>View and maintain QuickShop database
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
-    tag: <yellow>Add, remove or query tags of a shop
-    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
-  bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
-  no-type-given: '<red>Usage: /quickshop find \<item>'
+    transferownership: <yellow>Overfør butikken du ser på til noen andre
+    size: <yellow>Endre per-parti mengde på en butikk
+    supercreate: <yellow>Opprett en butikk mens du omgår alle beskyttelseskontroller
+    taxaccount: <yellow>Angi skattekontoen som butikken bruker
+    name: <yellow>Endrer navnet på en bestemt butikk
+    toggledisplay: <yellow>Slå av/på butikkens utstillingsvare
+    permission: <yellow>Butikk tillatelsesadministrasjon
+    lookup: <yellow>Administrer oppslagsverket for gjenstander
+    database: <yellow>Vis og vedlikehold QuickShop-databasen
+    benefit: <yellow>Innstillinger for å dele fordeler mellom butikkeier og andre spillere
+    tag: <yellow>Legg til, fjern eller spørr etter tagger for en butikk
+    suggestprice: <yellow>Foreslå en anbefalt pris for en butikk som undersøkes, basert på andre butikker
+  bulk-size-not-set: '<red>Bruk: /quickshop size \<amount>'
+  no-type-given: '<red>Bruk: /quickshop find \<item>'
   feature-not-enabled: Denne funksjonen er ikke aktivert i konfigurasjonsfilen.
   now-debuging: <green>Utviklermodus er aktivert. Laster om QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
+  no-amount-given: <red>Ingen mengde oppgitt. Bruk <green>/quickshop refill <amount>
   no-owner-given: <red>Ingen eier er oppgitt
   disabled: '<red>Denne kommandoen er deaktivert: <yellow>{0}'
-  bulk-size-now: <green>Nå kan du handle <yellow>{0}x {1}
+  bulk-size-now: <green>Nå handles det med <yellow>{0}x {1}
   toggle-always-counting:
     counting: <green>Butikken teller nå alltid beholderen, selv om den er ubegrenset
-    not-counting: <green>Butikken respekterer nå ubegrenset istedet for antall
+    not-counting: <green>Butikken teller ikke lenger innholdet i beholderen
   cleaning: <green>Fjerner butikker uten innhold...
   now-nolonger-debuging: <green>Utviklermodus er deaktivert. Laster om QuickShop...
   toggle-unlimited:
     limited: <green>Butikken er nå begrenset
     unlimited: <green>Butikken er nå ubegrenset
-  transfer-success-other: <green>Overførte <yellow>{0} <green>butikker tilhørende <yellow>{1}<green> til <yellow>{2}
+  transfer-success-other: <green>Overførte <yellow>{0} {1}</yellow> sin(e) butikk(er) til <yellow>{2}
   no-trade-item: <green>Vennligst hold gjenstanden du vil selge i hånden for å endre
-  wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
+  wrong-args: <red>Ugyldig argument. Bruk <bold>/quickshop help</bold> for å se en liste over kommandoer.
   some-shops-removed: <yellow>{0} <green>butikk(er) ble fjernet
   new-owner: '<green>Ny eier: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Overførte <yellow>{0} <green>butikk(er) til <yellow>{1}
-  now-buying: <green>Denne butikken <light_purple>KJØPER <green>nå <yellow>{0}
-  now-selling: <green>Denne butikken <aqua>SELGER <green>nå <yellow>{0}
-  cleaned: <green>Fjernet <yellow>{0}<green> butikker.
+  transfer-success: <green>Overførte <yellow>{0}</yellow> butikk(er) til <yellow>{1}
+  now-buying: <green>Nå <light_purple>KJØPER</light_purple> {0}
+  now-selling: <green>Nå <aqua>SELGER</aqua> {0}
+  cleaned: <green>Fjernet <yellow>{0}</yellow> butikker.
   trade-item-now: <green>Nå kan du handle <yellow>{0}x {1}
   no-world-given: <red>Vennligst spesifiser en verden
-  format-disabled: <green>/{0} {1} &- {2}
+  format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>Den angitte verdien {0} er større eller lavere enn tillatt buntstørrelse
-currency-not-support: <red>Økonomi utvidelsen støtter ikke mulighet for multi-økonomi.
+currency-not-support: <red>Økonomi utvidelsen støtter ikke funksjonen for flere økonomier.
 trading-in-creative-mode-is-disabled: <red>Du kan ikke handle med denne butikken mens du er i kreativ modus.
-the-owner-cant-afford-to-buy-from-you: <red>Dette koster {0}, men butikkeier har bare {1}
-you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
+the-owner-cant-afford-to-buy-from-you: <red>Denne gjenstanden er verdt {0}, men butikkeieren har bare {1}
+you-cant-afford-shop-naming: <red>Du har ikke råd til å gi butikken et navn, det koster {0} å gi butikken et navn.
 inventory-error: |-
-  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
-  Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
+  <red>Kunne ikke behandle InventoryWrapper. Bruker du en tilleggsfunksjon for å omdirigere butikkens inventar?
+  Informasjon: Feil={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Vennligst kontakt serveradministratorene.
 integrations-check-failed-create: <red>Integrasjon {0} nektet opprettelse av butikken
-shop-out-of-space: <dark_purple>Butikken din på lokasjon {0}, {1}, {2} er nå full.
+shop-out-of-space: <dark_purple>Din butikk på {0}, {1}, {2} er full!
 admin-shop: AdminButikk
 no-anythings-in-your-hand: <red>Det er ingenting i hånden din.
 no-permission: <red>Du har ikke tillatelse til å gjøre det.
 chest-was-removed: <red>Kisten ble fjernet.
 you-cant-afford-to-buy: <red>Det koster {0}, men du har bare {1}
-shops-removed-in-world: <yellow>Totalt <aqua>{0}<yellow> butikker ble slettet i verden <aqua>{1}<yellow>.
-display-turn-off: <green>Vellykket deaktivering av butikkvisning.
-client-language-unsupported: <yellow>QuickShop støtter ikke ditt klientspråk. Vi går tilbake til {0} lokale nå.
+shops-removed-in-world: <yellow>Totalt <aqua>{0}</aqua> butikker har blitt slettet i verden <aqua>{1}</aqua>.
+display-turn-off: <green>Utstillingsvaren er slått av.
+client-language-unsupported: <yellow>QuickShop støtter ikke ditt klient språk. Faller tilbake til språkinnstillingen {0}...
 language-version: '63'
-not-managed-shop: <red>Du er ikke eieren eller moderator for denne butikken
+not-managed-shop: <red>Du er ikke eier eller moderator for denne butikken
 shop-cannot-trade-when-freezing: <red>Du kan ikke handle med denne butikken fordi den er frosset.
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>Ugyldig beholder, Du kan bare opprette butikken med blokker som har et inventar.
 permission:
-  header: <green>Shop Permission Details
-  header-player: <green>Shop Permission Details for {0}
-  header-group: <green>Shop Permission Details for group {0}
+  header: <green>Butikk Tillatelsesdetaljer
+  header-player: <green>Butikk Tillatelsesdetaljer for {0}
+  header-group: <green>Butikk Tillatelsesdetaljer for gruppe {0}
   table: <gold><bold>{0}</bold>:</gold> <gray>{1}
   item:
-    purchase: <yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)
-    show-information: <yellow>Permission to allow users who have this to see the shop information. (open shop info panel)
-    preview-shop: <yellow>Permission to allow users who have this to preview the shop. (preview item)
-    search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
-    delete: <yellow>Permission to allow users who have this to delete the shop.
-    receive-alert: <yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade).
-    access-inventory: <yellow>Permission to allow users who have this to access the shop inventory.
-    ownership-transfer: <yellow>Permission to allow users who have this to transfer the shop ownership.
-    management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
-    toggle-display: <yellow>Permission to allow users who have this to toggle the shop display item.
-    set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
-    set-price: <yellow>Permission to allow users who have this to set the shop price.
-    set-item: <yellow>Permission to allow users who have this to set the shop item.
-    set-stack-amount: <yellow>Permission to allow users who have this to set the shop stack amount.
-    set-currency: <yellow>Permission to allow users who have this to set the shop currency.
-    set-name: <yellow>Permission to allow users who have this to set the shop name.
-    set-sign-type: <yellow>Change the sign material that attached on the shop.
-    view-purchase-logs: <yellow>Permission to view shop purchase logs.
+    purchase: <yellow>Tillatelse til å la brukere som har dette kjøpe fra butikken. (inkludert kjøp og salg)
+    show-information: <yellow>Tillatelse til å la brukere som har dette se butikkinformasjonen. (åpne butikkinfo-panelet)
+    preview-shop: <yellow>Tillatelse til å la brukere som har dette forhåndsvise butikken. (forhåndsvis gjenstand)
+    search: <yellow>Tillatelse til å la brukere som har dette søke etter butikken. (fjerne tillatelse vil skjule butikken fra søkeresultatene)
+    delete: <yellow>Tillatelse til å la brukere som har dette slette butikken.
+    receive-alert: <yellow>Tillatelse til å la brukere som har dette motta varselmeldinger (for eksempel når noe er utsolgt eller det er nye handler).
+    access-inventory: <yellow>Tillatelse til å la brukere som har dette få tilgang til butikkens inventar.
+    ownership-transfer: <yellow>Tillatelse til å la brukere som har dette overføre eierskapet til butikken.
+    management-permission: <yellow>Tillatelse til å la brukere som har dette administrere gruppe tillatelser og redigere brukerens gruppe.
+    toggle-display: <yellow>Tillatelse til å la brukere som har dette å slå av og på utstillingsvaren i butikken.
+    set-shoptype: <yellow>Tillatelse til å la brukere som har dette å sette butikktypen (bytte til kjøp eller salg).
+    set-price: <yellow>Tillatelse til å la brukere som har dette å sette butikkprisen.
+    set-item: <yellow>Tillatelse til å la brukere som har dette å sette butikkvaren.
+    set-stack-amount: <yellow>Tillatelse til å la brukere som har dette å sette butikkens partimengde.
+    set-currency: <yellow>Tillatelse til å la brukere som har dette å sette butikkens valuta.
+    set-name: <yellow>Tillatelse til å la brukere som har dette å sette butikkens navn.
+    set-sign-type: <yellow>Endre materialet på skiltet som er festet på butikken.
+    view-purchase-logs: <yellow>Tillatelse til å se kjøpslogger for butikken.
   group:
-    everyone: <yellow>Default group for all users excepted shop owner.
-    staff: <yellow>System group for shop staffs.
-    administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
-invalid-group: <red>Invalid group name.
-invalid-permission: <red>Invalid permission.
-invalid-operation: <red>Invalid operation, only {0} are allowed.
-player-no-group: <yellow>Player {0} not in any group in this shop.
-player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
-permission-required: <red>You don't have permission {0} in this shop to do this.
-no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
-paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
-paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
+    everyone: <yellow>Standardgruppe for alle brukere unntatt butikkeier.
+    staff: <yellow>Systemgruppe for ansatte.
+    administrator: <red>Systemgruppe for administratorer. Brukerne i denne gruppen vil ha tillatelser som er nesten de samme som butikkeieren.
+invalid-group: <red>Ugyldig gruppenavn.
+invalid-permission: <red>Ugyldig tillatelse.
+invalid-operation: <red>Ugyldig operasjon, bare {0} er tillatt.
+player-no-group: <yellow>Spiller {0} er ikke i noen grupper i denne butikken.
+player-in-group: <green>Spiller {0} er i gruppe <aqua>{1}</aqua> i denne butikken.
+permission-required: <red>Du har ikke tillatelse {0} i denne butikken til å gjøre dette.
+no-permission-detailed: <red>Du har ikke tillatelsen <yellow>{0}</yellow> til å gjøre dette.
+paste-notice: "<yellow>Merk: Hvis du oppretter en \"Paste\" for feilsøkingsformål, må du sørge for å reprodusere feilen før du oppretter \"Paste\" så raskt som mulig; vi trenger loggene som er beholdt kortvarig i bufferen for å feilsøke. Hvis du oppretter en \"Paste\" for sakte eller uten først å reprodusere feilen eller omstartet serveren, vil \"Paste\" registrere ingenting og være ubrukelig."
+paste-uploading: <aqua>Vennligst vent... Laster opp "paste" til Pastebin......
+paste-created: '<green>"Paste" er opprettet, klikk for å åpne i nettleseren: <yellow>{0}</yellow><br><red>Advarsel: <gray>Send aldri "paste" til folk du ikke stoler på.'
 paste-created-local: |-
-  <green>Paste created and saved to your local disk at {0}
-  <red>Warning: <gray>Never send pastes to people you don't trust.
-paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
+  <green>"Paste" er opprettet og lagret på din lokale disk på {0}
+  <red>Advarsel: <gray>Send aldri "pastes" til folk du ikke stoler på.
+paste-created-local-failed: <red>Klarte ikke å lagre "Paste" til lokal disk, vennligst sjekk disken din.
 paste-451: |-
   <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
   If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
