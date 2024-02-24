@@ -12,130 +12,130 @@ thats-not-a-number: <red>Ugyldig nummer
 shop-name-disallowed: <red>Butikknavnet <yellow>{0}</yellow> er ikke tillatt. Velg et annet!
 console-only-danger: <red>Dette er en farlig kommando, den kan bare brukes i konsollen.
 not-a-number: <red>Du kan bare angi et nummer, du skrev {0}.
-not-looking-at-valid-shop-block: <red>Kunne ikke finne en blokk for å opprette butikk. Du må se på en gyldig blokk.
+not-looking-at-valid-shop-block: <red>Kunne ikke opprette butikk. Vennligst se på en gyldig blokktype og prøv igjen.
 shop-removed-cause-ongoing-fee: <red>Butikken din på lokasjon {0} ble fjernet fordi du ikke har nok penger til å beholde den!
 tabcomplete:
   amount: '[antall]'
   item: '[gjenstand]'
   price: '[pris]'
-  name: '[name]'
-  range: '[range]'
+  name: '[navn]'
+  range: '[rekkevidde]'
   currency: '[valuta navn]'
-  percentage: '[percentage%]'
+  percentage: '[prosent%]'
 taxaccount-unset: <green>Denne butikkens skattekonto følger nå server globale innstilling.
 blacklisted-item: <red>Du kan ikke selge denne gjenstanden fordi den er på svartelisten
-command-type-mismatch: <red>Denne kommandoen kan bare utføres av <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+command-type-mismatch: <red>Denne kommandoen kan bare utføres av <aqua>{0}</aqua>.
+server-crash-warning: '<red>ADVARSEL: Bruk av /quickshop reload kommandoen for å erstatte/slette QuickShop Jar filen kan krasje serveren mens den kjører.'
 you-cant-afford-to-change-price: <red>Det koster {0} å endre prisen i butikken.
-safe-mode: <red>QuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrator for å fikse feilene.
-forbidden-vanilla-behavior: <red>Dette er ikke mulig fordi det ikke samsvarer med vanilla atferd
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+safe-mode: <red>QuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrasjonen for å fikse denne feilen.
+forbidden-vanilla-behavior: <red>Dette er ikke mulig fordi det ikke samsvarer med vanilla adferd
+shop-out-of-space-name: <dark_purple>Butikken din {0} er full!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>Innlimingsfunksjonen er deaktivert! Du kan ikke be om teknisk støtte.
+  Årsak: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[egen] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Navn: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
+    - '<yellow>Eier: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Pris: <aqua>{0}'
     - '<yellow>Gjenstand: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Lokasjon: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Navn: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Eier: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Pris: <aqua>{price}'
     - '<yellow>Gjenstand: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
+    - '<yellow>Lokasjon: <aqua>{location}'
+  header: '<yellow>Du har flere butikker med navnet "<green>{0}</green>", velg en for å fortsette:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Kun for admin) <light_purple>{0}<dark_gray> nektet tillatelsessjekkene. Hvis dette ikke er forventet, prøv å legge til <light_purple>{1} <gray>i lytterens svarteliste. Konfigurasjonsveiledning: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Gjennomsnittlig pris i nærheten: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Inventarsjekk] <gray>Advarsel! Fant en QuickShop visningsgjenstand <gold>{2}</gold> i inventaret på <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, noe som ikke burde skje. Dette betyr vanligvis at noen misbruker feilen for å duplisere visningsgjenstanden."
 digits-reach-the-limit: <red>Du har nådd grensen for antall desimaler i prisen.
 currency-unset: <green>Butikkens valuta ble fjernet. Bruker standardinnstillinger.
-you-cant-create-shop-in-there: <red>Du har ikke tillatelse til å opprette en butikk på denne plasseringen.
+you-cant-create-shop-in-there: <red>Du har ikke tillatelse til å opprette en butikk på denne lokasjonen.
 no-pending-action: <red>Du har ingen ventende handlinger
-refill-success: <green>Påfyllingen ble vellykket
+refill-success: <green>Påfyllingen var vellykket
 failed-to-paste: <red>Kunne ikke laste opp data til Pastebin. Sjekk internettforbindelsen din og prøv igjen. (Se konsoll for detaljer)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Skriv i chat hvor mange pakker du ønsker å <aqua>KJØPE<green>. Det er <yellow>{0}<green> varer i hver pakke og du kan kjøpe totalt <yellow>{1}<green> pakker. Skriv <aqua>{2}<green> om du vil kjøpe alle.
+shop-out-of-stock-name: <dark_purple>Din butikk {0} har gått tom for {1}!
+shop-name-invalid: <red>Butikknavnet <yellow>{0}</yellow> er ugyldig. Vennligst velg et annet!
+how-many-buy-stack: <yellow>Skriv i chatten hvor mange partier du ønsker å <aqua>KJØPE</aqua>. Det er <green>{0}</green> gjenstander i hvert parti, og du kan kjøpe <green>{1}</green> partivarer. Skriv <aqua>{2}</aqua> i chatten for å kjøpe alt.
 exceeded-maximum: <red>Verdien overskrider maksimumsverdien i Java.
-unlimited-shop-owner-keeped: '<yellow>OBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt.'
-no-enough-money-to-keep-shops: <red>Du har ikke nok penger til å beholde butikkene! Alle butikker ble fjernet...
-3rd-plugin-build-check-failed: <red>Tredjeparts plugin <bold>{0}<reset><red> nektet sjekk av tillatelser. Har du satt opp korrekt tillatelser for tredjeparts pluginen?
+unlimited-shop-owner-keeped: '<yellow>OBS: Butikkeieren eier fortsatt en ubegrenset butikk, og du må selv sette den nye butikkeieren.'
+no-enough-money-to-keep-shops: <red>Du har ikke nok penger til å beholde butikkene! Alle dine butikker ble fjernet...
+3rd-plugin-build-check-failed: <red>Tredjepartsutvidelsen <bold>{0}</bold> avviste tillatelsessjekkene. Har du satt opp tillatelser der?
 not-a-integer: <red>Du kan bare angi et nummer, du skrev {0}.
 translation-country: 'Språksone: Norsk (no_NO)'
 buying-more-than-selling: '<red>ADVARSEL: Du kjøper gjenstander for mer enn hva du selger de for!'
 purchase-failed: '<red>Kjøp feilet: Intern feil. Vennligst kontakt serveradministratoren.'
 denied-put-in-item: <red>Du kan ikke legge denne varen i butikken din!
-shop-has-changed: <red>Butikken du prøvde å bruke er endret etter at du klikket på den!
-flush-finished: <red>Alle meldinger ble fjernet.
+shop-has-changed: <red>Butikken du prøvde å bruke, har endret seg siden sist du klikket på den!
+flush-finished: <green>Nylige meldinger ble slettet.
 no-price-given: <red>Vennligst oppgi en gyldig pris.
 shop-already-owned: <red>Dette er allerede en butikk.
 backup-success: <green>Sikkerhetskopiering vellykket.
-not-looking-at-shop: <red>Kunne ikke finne en QuickShop. Du må se på en butikk.
-you-cant-afford-a-new-shop: <red>Det koster {0} å opprette en ny butikk.
-success-created-shop: <red>Butikk er opprettet.
+not-looking-at-shop: <red>Kunne ikke finne en butikk! <yellow>Sørg for at du ser på en.
+you-cant-afford-a-new-shop: <red>Du har ikke råd til dette, det koster <green>{0}<red> å opprette en ny butikk.
+success-created-shop: <green>Butikken ble opprettet.
 shop-creation-cancelled: <red>Opprettelse av butikk ble kansellert.
-shop-owner-self-trade: <yellow>Du handler i din egen butikk, du vil ikke tjene penger på denne måten.
+shop-owner-self-trade: <yellow>Du handler i din egen butikk. <gray>Du kan ikke tjene penger på dette.
 purchase-out-of-space: <red>Denne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.
 reloading-status:
-  success: <green>Omlastning fullført uten noen feil.
-  scheduled: <green>Opplasting fullført. <gray>(Noen endringer tok en stund for å påvirke)
-  require-restart: <green>Omlasting fullført. &(Noen endringer krever at serveren starter på nytt)
+  success: <green>Utvidelsen ble lastet på nytt uten feil.
+  scheduled: <green>Omlasting fullført! <gray>(<yellow>Noen endringer kan ta litt tid før de blir aktive<gray>)
+  require-restart: <green>Omlasting fullført. <gray>(<yellow>Noen endringer krever at serveren starter på nytt for å tre i kraft<gray>)
   failed: <red>Omlastningen mislyktes, sjekk serverkonsollen
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
-not-enough-space: <red>Du har bare plass til {0} mer!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
-shop-staff-added: <red>Du ansatte {0} som medarbeider i din butikk.
+player-bought-from-your-store-tax: <green>{0} kjøpte {1} {2} fra butikken din, og du tjente {3} ({4} i skatter).
+not-enough-space: <red>Du har bare plass til <yellow>{0}<red> til!
+shop-name-success: <green>Butikknavnet ble endret til <yellow>{0}<green>.
+shop-staff-added: <yellow>{0} <green>ble lagt til som en ansatt i butikken din.
 shops-recovering: Gjenoppretter butikker fra sikkerhetskopi...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>Dette er en virtuell spiller.\n<gray>Denne refererer til en systemkonto med samme navn.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Brukernavn: <yellow>{1}</yellow></green>\n<green>Vises som: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>Dette er en eksisterende spiller.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Brukernavn: <yellow>{1}</yellow></green>\n<green>Vises som: <yellow>{2}</yellow></green>\n<gray>Hvis du ønsker å bruke en virtuell systemkonto med samme navn, legg til <dark_gray>\"[]\"</dark_gray> på begge sider av brukernavnet: <dark_gray>[{1}]</dark_gray>."
 menu:
-  sell-tax: <green>Du betalte skatt <yellow>{0}.
+  sell-tax: <green>Du betalte <yellow>{0}</yellow> i skatt.
   owner: '<green>Eier: {0}'
-  preview: <aqua>[Forhåndsvisning]
+  preview: <gray>[<aqua>Forhåndsvisning<gray>]
   enchants: <dark_purple>Fortryllelser
-  sell-tax-self: <green>Du betalte ikke skatt fordi du eier denne butikken.
+  sell-tax-self: <green>Du trengte ikke å betale skatt fordi du eier denne butikken.
   shop-information: '<green>Butikk informasjon:'
   item: '<green>Gjenstand: <yellow>{0}'
   price-per: <green>Pris per <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
-  successful-purchase: '<green>Vellykket kjøp:'
+  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> i skatt)
+  successful-purchase: '<green>Kjøpet var vellykket:'
   price-per-stack: <green>Pris per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Lagret Fortryllelser
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>Denne butikken <aqua>SELGER<green> gjenstander.
-  shop-stack: '<green>Antall i pakken: <yellow>{0}'
+  this-shop-is-selling: <green>Denne butikken <aqua>SELGER</aqua> varer.
+  shop-stack: '<green>Antall i partiet: <yellow>{0}'
   space: '<green>Plass: <yellow>{0}'
   effects: <green>Effekter
   damage-percent-remaining: <yellow>{0}% <green>gjenstår.
   item-holochat-data-too-large: <red>[Error] NBT informasjonen på gjenstanden er for stor til å vise
-  stock: '<green>Tilgjengelig <yellow>{0}'
-  this-shop-is-buying: <green>Denne butikken <light_purple>KJØPER<green> gjenstander.
+  stock: '<green>Lagerbeholdning: <yellow>{0}'
+  this-shop-is-buying: <green>Denne butikken <light_purple>KJØPER<green> varer.
   successfully-sold: '<green>Vellykket solgt:'
   total-value-of-chest: '<green>Total verdi for kisten: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finne valutaen du vil sette. Kanskje stavemåten er feil, eller at valuta ikke er tilgjengelig i denne verdenen.
 no-nearby-shop: <red>Ingen nærliggende butikker samsvarer med {0}.
-translation-author: 'Ghost_chu, Andre_601'
-integrations-check-failed-trade: <red>Integrasjon {0} avviste handelen
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
-success-change-owner-to-server: <red>Butikkens eier ble satt til Server.
-shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+translation-author: 'Baktus_79'
+integrations-check-failed-trade: <red>Integrasjon {0} nektet handel i butikken
+shop-transaction-failed: <red>Beklager, men det oppstod en intern feil under behandlingen av kjøpet ditt. Kjøpet har blitt kansellert og alle andre operasjoner er blitt tilbakestilt. Vennligst kontakt serveradministratorene hvis denne feilen vedvarer.
+success-change-owner-to-server: <green>Butikkeieren ble satt til Server.
+shop-name-not-found: <red>Butikken med navnet <yellow>{0}</yellow> eksisterer ikke.
+shop-name-too-long: <red>Dette butikknavnet er for langt (maks lengde {0}), vennligst velg et annet!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0} sine {1} {2} transaksjoner:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>Total {0}, inkludert {1} skatt.
+  unknown: <gray>(ukjent)
+  undefined: <gray>(uidentifisert)
+  no-results: <red>Ingen transaksjoner ble funnet.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
