@@ -617,60 +617,60 @@ database:
   already-scanning: <red>En skanneoppgave er startet. Vennligst vent til den er ferdig.
   trim-warning: <red><bold>Advarsel:</bold> <yellow>Ta sikkerhetskopi av databasen din før du fortsetter med trimming av databasen for å unngå tap av data. Når du er klar, utfør <aqua>/quickshop database trim confirm</aqua> for å fortsette.
   status: '<yellow>Status: {0}'
-  status-good: <green>Good
-  status-bad: <yellow>Maintenance Required
-  isolated: '<yellow>Isolated Data:'
-  isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
-  isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
-  isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}'
-  isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
-  last-purge-time: <yellow>Last time of trim at {0}
-  report-time: <yellow>Last time of scan at {0}
-  auto-scan-alert: <yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming.
-  auto-trim: <green>Auto trim has been enabled on this server, no manually trim required.
-  trim-complete: <green>Database trim completed, <yellow>{0}</yellow> isolated trimmed.
-  auto-trim-started: <green>Auto trim has been started, please wait...
-  trim-start: <green>Database trim started, please wait...
-  trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
-  generated-at: '<yellow>Generated at: <gold>{0}'
-  purge-date: <red>You must given a date.
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop database purgelogs \<before-days> confirm`
-  purge-task-created: <green>Task created! Database are silent purging history records in background.
-  purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
-  purge-done-with-error: <red>Purge task failed, check the server console for details.
-  purge-players-cache: <yellow>Please wait, purging players caches...
+  status-good: <green>God
+  status-bad: <yellow>Vedlikehold kreves
+  isolated: '<yellow>Isolert Data:'
+  isolated-data-ids: '<aqua>└<yellow> Dataposter: <gold>{0}'
+  isolated-shop-ids: '<aqua>└<yellow> Butikkindekser: <gold>{0}'
+  isolated-logs: '<aqua>└<yellow> Logger: <gold>{0}'
+  isolated-external-caches: '<aqua>└<yellow> Eksterne buffere: <gold>{0}'
+  last-purge-time: <yellow>Siste trimtidspunkt var {0}
+  report-time: <yellow>Siste skanning {0}
+  auto-scan-alert: <yellow>QuickShop-databasen på denne serveren krever vedlikehold. Fant <gold>{0}</gold> isolerte data som venter på trimming.
+  auto-trim: <green>Automatisk trimming er aktivert på denne serveren. Ingen manuell trimming nødvendig.
+  trim-complete: <green>Database trimming fullført. <yellow>{0}</yellow> isolerte data trimmet.
+  auto-trim-started: <green>Automatisk trimming startet, vennligst vent...
+  trim-start: <green>Database trimming startet, vennligst vent...
+  trim-exception: <red>Database trimming mislyktes. Det ble utløst et unntak under operasjonen. Sjekk serverkonsollen.
+  generated-at: '<yellow>Generert: <gold>{0}'
+  purge-date: <red>Du må oppgi en dato.
+  purge-warning: <yellow>Denne operasjonen vil rense historikken som er lagret i databasen din, inkludert butikkopprettelser/endringer/slettinger, kjøp, transaksjoner og systemlogger. Å slette disse dataene kan frigjøre diskplass, men all historikk vil gå tapt, og andre tillegg som er avhengige av historikk vil slutte å fungere. For å fortsette utfør `/quickshop database purgelogs \<before-days> confirm`
+  purge-task-created: <green>Oppgave opprettet! Databasen utfører rensing av historikk i bakgrunnen.
+  purge-done-with-line: <green>Rensing er fullført, totalt <gold>{0}</gold> linjer ble renset fra databasen.
+  purge-done-with-error: <red>Oppgave rensing feilet, sjekk konsollen for detaljer.
+  purge-players-cache: <yellow>Vennligst vent, renser buffer for spillere...
   purge-players-completed: |-
-    <green>Successfully purged {0} players caches from both memory and database.
-    <aqua>Note: You server performance may impact by this operation.
-  purge-players-error: <red>Failed to purge players caches, please check the server console.
+    <green>Renset {0} spillerbuffere fra både minnet og databasen.
+    <aqua>Merk: Ytelsen til serveren din kan påvirkes av denne operasjonen.
+  purge-players-error: <red>Kunne ikke rense spillernes buffer, sjekk serverens konsoll.
   suggestion:
-    trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
-always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
-exporting-database: <green>Exporting database, please wait...
-exporting-failed: <red>Failed to export database, please check the server console.
-exported-database: <green>Database exported to <yellow>{0}</yellow>.
-importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
+    trim: <yellow>Denne databasen krever trimming av isolerte data. Kjør <aqua>/ Quickshop database trim</aqua> for å trimme databasen.
+always-counting-removal-early-warning: <red>Funksjonen 'Alltid telle' er planlagt for fjerning. Du bør ikke lenger bruke den da den vil slutte å fungere i fremtiden.
+exporting-database: <green>Eksporterer databasen, vennligst vent...
+exporting-failed: <red>Kunne ikke eksportere databasen, vennligst sjekk serverkonsollen.
+exported-database: <green>Database eksportert til <yellow>{0}</yellow>.
+importing-not-found: <red>Fil <yellow>{0}</yellow> ble ikke funnet. Kontroller at filbanen er gyldig.
 importing-early-warning: |-
-  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
-importing-database: <green>Importing database from backup, please wait...
-importing-failed: <red>Failed to import database, please check the server console.
-imported-database: <green>Database imported from <yellow>{0}</yellow>.
-transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
-transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+  <red><bold>Advarsel:</bold> <yellow>Sikkerhetskopien vil bli importert til den gjeldende databasen. All eksisterende data vil bli slettet og gå tapt for alltid med mindre du har en annen sikkerhetskopi.
+  <red>Er du sikker på at du vil fortsette importprosedyren?</red> Skriv <aqua>/quickshop recovery confirm</aqua> for å fortsette.
+importing-database: <green>Importerer databasen fra sikkerhetskopi, vennligst vent...
+importing-failed: <red>Kunne ikke importere databasen, vennligst sjekk serverkonsollen.
+imported-database: <green>Database importert fra <yellow>{0}</yellow>.
+transfer-sent: <green>Forespørsel om butikkoverføring sendt til <yellow>{0}</yellow>.
+transfer-request: <yellow>Spiller <aqua>{0}</aqua> ønsker å overføre sine butikker til deg. Vil du godta forespørselen?
+transfer-single-request: <yellow>Spiller <aqua>{0}</aqua> ønsker å overføre en butikk til deg. Vil du godta forespørselen?
 transfer-ask: |-
-  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Skriv <red>/quickshop transfer accept</red> for å akseptere eller <red>/quickshop transfer deny</red> for å avslå.
+  Forespørselen vil utløpe etter <red>{0}</red> sekunder.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Skriv <red>/quickshop transferall accept</red> for å akseptere eller <red>/quickshop transferall deny</red> for å avslå.
+  Forespørselen vil utløpe etter <red>{0}</red> sekunder.
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
-transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
-transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
-transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
+  <gold>Skriv <red>/quickshop transfer accept</red> for å akseptere eller <red>/quickshop transfer deny</red> for å avslå.
+  Forespørselen vil utløpe etter <red>{0}</red> sekunder.
+transfer-accepted-fromside: <green>Spiller <aqua>{0}</aqua> aksepterte din forespørsel om butikkoverføring.
+transfer-accepted-toside: <green>Du aksepterte <aqua>{0}</aqua> sin forespørsel om overføring.
+transfer-rejected-fromside: <red>Spiller <aqua>{0}</aqua> avviste forespørselen om overføring.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>You can't transfer your shops to yourself.
