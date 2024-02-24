@@ -137,33 +137,33 @@ metric:
   undefined: <gray>(uidentifisert)
   no-results: <red>Ingen transaksjoner ble funnet.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    DELETE: <yellow>Spilleren slettet en butikk. Refunderte opprettelsesavgiften for butikken til eieren om mulig.
+    ONGOING_FEE: <yellow>Spilleren betalte den løpende avgiften på grunn av betalingsperioden.
+    PURCHASE_BUYING_SHOP: <yellow>Spilleren solgte noen gjenstander til en kjøpende butikk.
+    CREATE: <yellow>En spiller opprettet en butikk.
+    PURCHASE_SELLING_SHOP: <yellow>Spilleren kjøpte noen gjenstander fra en selgende butikk
+    PURCHASE: <yellow>Kjøpte gjenstand med en butikk
+  query-argument: 'Forespørselsargument: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Butikken {0} sine {1} {2} transaksjoner:'
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Gjennomfører målingssøk, Vennligst vent...
+  tax-hover: <yellow>{0} skatt
+  header-global: '<yellow>Serveren {0} {1} transaksjoner:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
   shop-hover: |-
     <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
-  time-hover: '<yellow>Time: {0}'
+    <gold>Pos: <gray>{1} {2} {3}, Verden: {4}
+    <gold>Eier: <gray>{5}
+    <gold>Butikktype: <gray>{6}
+    <gold>Vare: <gray>{7}
+    <gold>Pris: <gray>{8}
+  time-hover: '<yellow>Tid: {0}'
   amount-stack-hover: <yellow>{0}x stack
-permission-denied-3rd-party: '<red>Tillatelse nektet: Tredjeparts Plugin [{0}].'
+permission-denied-3rd-party: <red>Tillatelse nektet av tredjepartsutvidelsen {0}.
 you-dont-have-that-many-items: <red>Du har bare {0} {1}.
 complete: <green>Ferdig!
 translate-not-completed-yet-url: 'Oversettelsen av språket {0} er ikke fullført ennå {1}. Vil du hjelpe oss med å forbedre oversettelsen? Les her: {2}'
