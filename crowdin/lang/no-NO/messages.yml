@@ -1,8 +1,8 @@
 break-shop-use-supertool: <yellow>Du kan ødelegge butikken ved å bruke superverktøyet.
-fee-charged-for-price-change: <green>Du betalte <red>{0}<green> for å endre prisen.
+fee-charged-for-price-change: <green>Du betalte <red>{0}</red>for å endre prisen.
 not-allowed-to-create: <red>Du kan ikke opprette en butikk her.
 disabled-in-this-world: <red>QuickShop er deaktivert i denne verdenen
-how-much-to-trade-for: <green>Skriv i chat hvor mye du ønsker å selge <yellow>{1}x {0}<green> for.
+how-much-to-trade-for: <green>Skriv i chat hvor mye du ønsker å selge <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop oppdaget at språkinnstillingen for klienten din er endret. Vi bruker nå språkoppsettet {0} for deg.
 shops-backingup: Oppretter sikkerhetskopi av butikker fra databasen...
 _comment: Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-hikari i stedet.
@@ -73,7 +73,7 @@ translation-country: 'Språksone: Norsk (no_NO)'
 buying-more-than-selling: '<red>ADVARSEL: Du kjøper gjenstander for mer enn hva du selger de for!'
 purchase-failed: '<red>Kjøp feilet: Intern feil. Vennligst kontakt serveradministratoren.'
 denied-put-in-item: <red>Du kan ikke legge denne varen i butikken din!
-shop-has-changed: <red>Butikken du prøvde å bruke, har endret seg siden sist du klikket på den!
+shop-has-changed: <red>Butikken du prøvde å bruke har endret seg siden sist du klikket på den!
 flush-finished: <green>Nylige meldinger ble slettet.
 no-price-given: <red>Vennligst oppgi en gyldig pris.
 shop-already-owned: <red>Dette er allerede en butikk.
@@ -102,7 +102,7 @@ menu:
   preview: <gray>[<aqua>Forhåndsvisning<gray>]
   enchants: <dark_purple>Fortryllelser
   sell-tax-self: <green>Du trengte ikke å betale skatt fordi du eier denne butikken.
-  shop-information: '<green>Butikk informasjon:'
+  shop-information: '<green>Butikkinformasjon:'
   item: '<green>Gjenstand: <yellow>{0}'
   price-per: <green>Pris per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
@@ -227,7 +227,7 @@ updatenotify:
     - 'Dagens Nyheter: QuickShop har blitt oppdatert til {0}!'
     - Plugin k.i.a. Du bør oppdatere til {0}!
     - Oppdatering av {0} er igangsatt. Lagre oppdateringen!
-    - Det er en oppdatering tilgjengelig Kommandør. {0} har akkurat kommet!
+    - Det er en oppdatering tilgjengelig, Kommandør. {0} har akkurat kommet!
     - Se, stilen min---{0} ble oppdatert. Du bruker fortsatt {1}
     - Ahhhhhh! Ny oppdatering {0}! Oppdater!
     - Hva tenker du? {0} har blitt lansert! Oppdater!
@@ -275,7 +275,7 @@ shop-has-no-space: <red>Butikken har kun plass til {0} stykker til av {1}.
 safe-mode-admin: <red><bold>ADVARSEL:</bold> QuickShop-versjonen på denne serveren kjører for øyeblikket i sikkermodus. Funksjoner vil ikke fungere. Vennligst bruk <yellow>/quickshop</yellow>-kommandoen for å sjekke etter feil.
 shop-stock-too-low: <red>Butikken har kun {0} {1} igjen!
 world-not-exists: <red>Verden <yellow>{0}<red> finnes ikke
-how-many-sell: <green>Skriv i chat hvor mange du ønsker å <light_purple>SELGE<green>. Du kan selge <yellow>{0}<green>. Skriv <aqua>{1}<green> for å selge alle.
+how-many-sell: <green>Skriv i chat hvor mange du ønsker å <light_purple>SELGE</light_purple>. Du kan selge <yellow>{0}</yellow>. Skriv <aqua>{1}</aqua> for å selge alle.
 shop-freezed-at-location: <yellow>Din butikk {0} på {1} ble frosset!
 translation-contributors: 'Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
 empty-success: <green>Tømming av butikken ble gjennomført
@@ -326,7 +326,7 @@ price-too-high: <red>Butikkprisen er for høy! Du kan ikke sette en pris høyere
 plugin-cancelled: '<red>Operasjon avbrutt, Årsak: {0}'
 player-sold-to-your-store: <green>{0} solgte {1} {2} til din butikk.
 shop-out-of-stock: <dark_purple>Butikken din på lokasjon {0}, {1}, {2} har gått tom for {3}!
-how-many-buy: <green>Skriv i chat hvor mange du ønsker å <aqua>KJØPE</aqua><green>. Du kan kjøpe maks <yellow>{0}<green>. Skriv <aqua>{1}<green> om du vil kjøpe alle.
+how-many-buy: <green>Skriv i chat hvor mange du ønsker å <aqua>KJØPE</aqua>. Du kan kjøpe maks <yellow>{0}</yellow>. Skriv <aqua>{1}</aqua> om du vil kjøpe alle.
 language-info-panel:
   help: 'Hjelp oss: '
   code: 'Kode: '
@@ -356,11 +356,11 @@ controlpanel:
   lock: '<yellow>Butikklås: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   mode-selling: '<green>Butikkmodus: <aqua>Selger <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   currency: '<green>Valuta: <aqua>{0} <yellow>[<bold><light_purple>Sett</light_purple></bold>]'
-  setowner-hover: <yellow>Klikk for å bytte eier.
+  setowner-hover: <yellow>Klikk for å endre eier.
   mode-buying: '<green>Butikkmodus: <aqua>Kjøper <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   item: '<green>Butikkvare: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   unlimited: '<green>Ubegrenset: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
-  unlimited-hover: <yellow>Klikk for å veksle om butikken er ubegrenset.
+  unlimited-hover: <yellow>Klikk for å endre om butikken skal være ubegrenset.
   refill-hover: <yellow>Klikk for å etterfylle butikken.
   remove-hover: <yellow>Klikk for å fjerne denne butikken.
   toggledisplay-hover: <yellow>Slå av/på butikkens utstillingsvare
@@ -408,7 +408,7 @@ timeunit:
 command:
   reloading: <green>Konfigurasjonen er lastet på nytt. <yellow>Noen endringer kan kreve omstart for å tre i kraft.
   description:
-    buy: <yellow>Endrer en butikk til <light_purple>KJØP</light_purple> <yellow>modus
+    buy: <yellow>Endrer en butikk til <light_purple>KJØP</light_purple> modus
     about: <yellow>Vis QuickShop info
     language: <yellow>Endre det gjeldende språket som brukes
     purge: <yellow>Start fjerning av butikker i bakgrunnen
@@ -420,7 +420,7 @@ command:
     alwayscounting: <yellow>Angi om butikken alltid skal telle innholdet i beholderen, selv når den er ubegrenset
     setowner: <yellow>Endre eierskap på en butikk.
     reload: <yellow>Laster om config.yml i QuickShop
-    freeze: <yellow>Deaktiver eller Aktiver all handel
+    freeze: <yellow>Deaktiver eller aktiver all handel
     price: <yellow>Endre kjøp-/salgsprisen for en butikk
     find: <yellow>Finn nærmeste butikk av en bestemt type.
     create: <yellow>Lager en ny butikk fra den utvalgte kisten
@@ -433,7 +433,7 @@ command:
     item: <yellow>Endre gjenstand i en butikk
     debug: <yellow>Aktiverer utviklermodus
     unlimited: <yellow>Gir en butikk ubegrenset lagerbeholdning.
-    sell: <yellow>Endre en butikk til <light_purple>SELG<yellow> modus
+    sell: <yellow>Endre en butikk til <aqua>SELG</aqua> modus
     fetchmessage: <yellow>Vis uleste butikkmeldinger
     staff: <yellow>Administrere butikkens ansatte
     clean: <yellow>Fjerner alle aktive butikker uten innhold
@@ -484,7 +484,7 @@ command:
   trade-item-now: <green>Nå kan du handle <yellow>{0}x {1}
   no-world-given: <red>Vennligst spesifiser en verden
   format-disabled: <red>/{0} {1} <gray>- {2}
-  invalid-bulk-amount: <red>Den angitte verdien {0} er større eller lavere enn tillatt buntstørrelse
+  invalid-bulk-amount: <red>Den angitte verdien {0} er større eller lavere enn tillatt partistørrelse
 currency-not-support: <red>Økonomi utvidelsen støtter ikke funksjonen for flere økonomier.
 trading-in-creative-mode-is-disabled: <red>Du kan ikke handle med denne butikken mens du er i kreativ modus.
 the-owner-cant-afford-to-buy-from-you: <red>Denne gjenstanden er verdt {0}, men butikkeieren har bare {1}
@@ -494,7 +494,7 @@ inventory-error: |-
   Informasjon: Feil={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Vennligst kontakt serveradministratorene.
 integrations-check-failed-create: <red>Integrasjon {0} nektet opprettelse av butikken
 shop-out-of-space: <dark_purple>Din butikk på {0}, {1}, {2} er full!
-admin-shop: AdminButikk
+admin-shop: AdminShop
 no-anythings-in-your-hand: <red>Det er ingenting i hånden din.
 no-permission: <red>Du har ikke tillatelse til å gjøre det.
 chest-was-removed: <red>Kisten ble fjernet.
@@ -671,8 +671,8 @@ transfer-single-ask: |-
 transfer-accepted-fromside: <green>Spiller <aqua>{0}</aqua> aksepterte din forespørsel om butikkoverføring.
 transfer-accepted-toside: <green>Du aksepterte <aqua>{0}</aqua> sin forespørsel om overføring.
 transfer-rejected-fromside: <red>Spiller <aqua>{0}</aqua> avviste forespørselen om overføring.
-transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
-transfer-no-pending-operation: <red>You don't have pending transfer request yet.
+transfer-rejected-toside: <red>Du har avvist forespørselen om butikkoverføring fra <aqua>{0}</aqua>.
+transfer-no-pending-operation: <red>Du har ingen ventende overføringsforespørsler.
 transfer-no-self: <red>Du kan ikke overføre butikkene dine til deg selv.
 benefit-overflow: <red>Summen av alle fordeler kan ikke være større eller lik 100%.
 benefit-exists: <red>Spilleren er allerede i fordelslisten for denne butikken.
@@ -1441,49 +1441,49 @@ addon:
       config:
         copy-values: "<yellow>Kopierer verdier (totalt {0} oppføringer)..."
         copying-value: "<gray> - Kopierer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
-        migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-price-restriction: "<yellow>Migrerer innstillinger relatert til prisbegrensning..."
+        migrate-price-restriction-entry: "<gray> - Migrerer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
-        start-migrate: "<yellow>Migrating shops (total {0} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
-        register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
-        conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
+        start-migrate: "<yellow>Migrerer butikker (totalt {0} oppføringer)..."
+        migrate-entry: "<gray> - Migrerer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        unloading-reremake: "<gold>Deaktiverer Reremake for å unngå overskriving av data..."
+        register-entry: "<gray> - Registrerer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Lagrer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        saving-shops: "<yellow>Lagrer <gold>{0}</gold> butikker, dette kan ta litt tid™ (tiden avhenger av antall butikker)..."
+        conflict: "<gray> - KONFLIKT > Oppdager en konflikt mellom en Reremake-butikk og en eksisterende Hikari-butikksplassering. Tar en forhåndsdefinert atferd: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
-        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Migrerer oversettelsesfiler...</yellow>"
+        copy-values: "<yellow>Kopiere verdier i nasjonale innstillinger <gold>{0}</gold> (Totalt {1} oppføringer)..."
+        migrate-entry: "<gray> - Migrerer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         copying-value: "<gray> - Kopierer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
-        filtered-history-files: "<gray>Filtered {0} lines out of queue."
-        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Migrerer butikklogger (detaljer i konsollen), vennligst vent...</yellow>"
+        extract-history-files: "<gray>Vent mens vi pakker ut og legger til historikkloggene..."
+        filter-history-files: "<gray>Vent mens vi filtrerer historikkloggen..."
+        filtered-history-files: "<gray>Filtrert {0} linjer ut av køen."
+        import-entry: "<gray> - Migrerer <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
-    created: <green>You're successfully created a shop on AdvancedChests container!
-    permission-denied: <red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!
+    created: <green>Du har opprettet en butikk på en AdvancedChests beholder!
+    permission-denied: <red>Beklager! Du har ikke tillatelse til å opprette en butikk på en AdvancedChests beholder!
 suite:
   dynmap:
     title: '{0} - {1} - {2}'
     description: |-
-      Item: {0}
-      Owner: {1}
+      Gjenstand: {0}
+      Eier: {1}
       Type: {2} {3}
-      Price: {4}
-      Location: {5} {6}, {7}, {8}
-      Space: {9}
-      Stock: {10}
+      Pris: {4}
+      Lokasjon: {5} {6}, {7}, {8}
+      Plass: {9}
+      Lager: {10}
   limited:
-    command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
-    reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
-    quota-reset-countdown: <yellow>The quota in this shop will reset in {0}.
-    quota-reset-player-successfully: <green>The quota for player {0} in this shop has been reset successfully.
-    quota-reset-everybody-successfully: <green>The quota for everyone in this shop has been reset successfully.
-    quota-setup: <green>The purchase restriction now apply to this shop!
+    command-description: <yellow>Angi en grense som begrenser kjøpene en spiller kan gjøre i en periode.
+    reach-the-quota-limit: <red>Du har nådd kjøpsgrensen i denne butikken ({0}/{1}).
+    quota-reset-countdown: <yellow>Kvoten i denne butikken tilbakestilles {0}.
+    quota-reset-player-successfully: <green>Kvoten for spiller {0} i denne butikken har blitt tilbakestilt.
+    quota-reset-everybody-successfully: <green>Kvoten for alle, i denne butikken, er tilbakestilt.
+    quota-setup: <green>Kjøpsbegrensningen er nå lagt til denne butikken!
     quota-remove: <green>Kjøpsbegrensningen er nå fjernet fra denne butikken!
     subtitles:
       title: <green>Kjøpet gjennomført
