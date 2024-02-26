@@ -658,8 +658,7 @@ transfer-ask: |-
 transferall-ask: |-
   <gold>輸入 <red>/qs transferall accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transferall deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>輸入 <red>/qs transfer accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transfer deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 已接受你的商店轉移請求。
 transfer-accepted-toside: <green>你已接受 <aqua>{0}</aqua> 的轉移請求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 已拒絕你的商店轉移請求。
