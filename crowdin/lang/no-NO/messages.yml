@@ -666,8 +666,8 @@ transferall-ask: |-
   <gold>Skriv <red>/quickshop transferall accept</red> for å akseptere eller <red>/quickshop transferall deny</red> for å avslå.
   Forespørselen vil utløpe etter <red>{0}</red> sekunder.
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Skriv <red>/quickshop transfer accept</red> for å akseptere eller <red>/quickshop transfer deny</red> for å avslå.
+  Forespørselen vil utløpe etter <red>{0}</red> sekunder.
 transfer-accepted-fromside: <green>Spiller <aqua>{0}</aqua> aksepterte din forespørsel om butikkoverføring.
 transfer-accepted-toside: <green>Du aksepterte <aqua>{0}</aqua> sin forespørsel om overføring.
 transfer-rejected-fromside: <red>Spiller <aqua>{0}</aqua> avviste forespørselen om overføring.
