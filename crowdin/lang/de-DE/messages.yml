@@ -649,7 +649,8 @@ transfer-ask: |-
 transferall-ask: |-
   <gold>Schreibe <red>/quickshop transferall accept</red> zum Akzeptieren oder <red>/quickshop transferall deny</red> zum Ablehnen. Die Anfrage wird in <red>{0}</red> Sekunden ablaufen.
 transfer-single-ask: |-
-  <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
+  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Spieler <aqua>{0}</aqua> hat deinen Shop-Übertragungsantrag akzeptiert.
 transfer-accepted-toside: <green>Du hast <aqua>{0}</aqua>'s Tranfer-Anfrage akzeptiert.
 transfer-rejected-fromside: <red>Spieler <aqua>{0}</aqua> hat deine Shop-Übertragungsanfrage abgelehnt.
