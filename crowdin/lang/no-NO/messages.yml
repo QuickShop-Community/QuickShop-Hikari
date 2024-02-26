@@ -695,41 +695,41 @@ tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>Massebehandlet <yellow>{0}</yellow> butikker.
 batch-operations-based-on-tags-have-failure: <yellow>Totalt {0} butikker i massebehandlingen ble vellykket gjennomført, men <red>{1}</red> forespørsler ble ikke fullført.
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Totalt {0} butikker i massebehandlingen ble vellykket gjennomført, men <red>{1}</red> forespørsler ble ikke fullført. Årsak: <gold>{2}'
-batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>The error messages will send to you above this message in the chat.
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>Feilmeldingene vil vises over denne meldingen i chat.
 addon:
   towny:
     commands:
-      town: <yellow>Set or unset a shop to a Town shop
-      nation: <yellow>Set or unset a shop to a Nation shop
-    make-shop-owned-by-town: <green>You have made the shop owned by town <yellow>{0}</yellow>.
-    make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
-    make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop permission
-    target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
-    target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
-    target-shop-not-in-town-region: <red>The target shop is not in the town.
-    target-shop-not-in-nation-region: <red>The target shop is not in the nation.
-    item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
-    operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
-    plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
+      town: <yellow>Sett eller fjern en butikk til en Towny butikk
+      nation: <yellow>Sett eller fjern en butikk til en Towny Nation butikk
+    make-shop-owned-by-town: <green>Du har endret butikkens eier til byen <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-town: <green>Du har tilbakestilt butikkeierskapet, det overføres nå tilbake til den opprinnelige butikkeieren.
+    make-shop-owned-by-nation: <green>Du har endret butikkens eier til nasjonen <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-nation: <green>Du har tilbakestilt butikkeierskapet, det overføres nå tilbake til den opprinnelige butikkeieren.
+    shop-owning-changing-notice: <gray>Denne butikken eies nå av en by/nasjon. Den opprinnelige butikkeieren har blitt automatisk lagt til i administratorlisten. Endre eller legg til nye eiere/ansatte ved å bruke kommandoen /quickshop permission
+    target-shop-already-is-town-shop: <red>Butikken eies allerede av en by.
+    target-shop-already-is-nation-shop: <red>Butikken eies allerede av en nasjon.
+    target-shop-not-in-town-region: <red>Butikken er ikke i byen.
+    target-shop-not-in-nation-region: <red>Butikken er ikke i nasjonen.
+    item-not-allowed: <red>Denne butikkens gjenstander kan ikke brukes av by-/nasjonsbutikker. Velg en annen!
+    operation-disabled-due-shop-status: <red>Denne butikkens operasjon er deaktivert fordi det allerede er en by-/nasjonsbutikk.
+    plot-type-disallowed: <red>Du kan ikke opprette by-/nasjonsbutikk på denne typen tomt.
     flags:
-      own: <red>You can only create shops at your owned shop type towny plot.
-      modify: <red>You didn't have build permission on this towny plot.
-      shop-type: <red>You must create shop on a shop type towny plot.
+      own: <red>Du kan bare opprette butikker på en butikktomt i din egen by.
+      modify: <red>Du har ikke byggetillatelse på denne bytomten.
+      shop-type: <red>Du kan bare opprette en butikk i en Towny butikktomt.
   residence:
-    creation-flag-denied: <red>You don't have permission to create shops in this residence.
-    trade-flag-denied: <red>You don't have permission to purchase in this residence.
-    you-cannot-create-shop-in-wildness: <red>You can't create shop in wildness.
+    creation-flag-denied: <red>Du har ikke tillatelse til å opprette en butikk på denne tomten.
+    trade-flag-denied: <red>Du har ikke tillatelse til å handle på denne tomten.
+    you-cannot-create-shop-in-wildness: <red>Du kan ikke opprette butikk i villmarken.
   griefprevention:
-    creation-denied: <red>You don't have permission to create shops in this claim.
-    trade-denied: <red>You don't have permission to purchase shops in this claim.
+    creation-denied: <red>Du har ikke tillatelse til å opprette en butikk på denne tomten.
+    trade-denied: <red>Du har ikke tillatelse til å opprette en butikk på denne tomten.
   lands:
-    world-not-enabled: <red>You are not allowed to create or purchase in this world.
-    creation-denied: <red>You don't have permission to create shops in this Land area.
+    world-not-enabled: <red>Du har ikke lov til å opprette eller kjøpe butikker i denne verden.
+    creation-denied: <red>Du har ikke tillatelse til å opprette en butikk på dette Land område.
   plotsquared:
-    no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
-    no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
+    no-plot-whitelist-creation: <red>Du kan ikke opprette en butikk utenfor tomten.
+    no-plot-whitelist-trade: <red>Du kan ikke kjøpe en butikk utenfor tomten.
     creation-denied: <red>You don't have permission to create shops in this Plot.
     trade-denied: <red>You don't have permission to purchase shops in this Plot.
     flag:
@@ -1322,78 +1322,78 @@ addon:
     invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
     invalid-discount-code: <red>This discount code are invalid.
     discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}
-    invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
-    invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
-    invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
-    invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
+    discount-code-removed: <green>Din rabattkode <yellow>{0}</yellow> har blitt fjernet fra butikken <aqua>{1}
+    invalid-code-type: <red>Koden <yellow>{0}</yellow> er ugyldig.
+    invalid-usage-restriction: <red>Bruksbegrensningen <yellow>{0}</yellow> er ugyldig.
+    invalid-threshold-restriction: <red>Terskelbegrensningen <yellow>{0}</yellow> er ugyldig.
+    invalid-effect-scope: <red>Ugyldig omfang <yellow>{0}</yellow>.
     invalid-expire-time: <red>Du kan ikke angi en tid som allerede har vært.
-    invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
-    discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
-    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
-    discount-code-uninstalled: <green>You have uninstalled your discount code.
-    discount-code-query-nothing: <red>You hadn't install a discount code yet!
-    discount-code-query: '<green>You are using discount code: <yellow>{0}</yellow>.'
-    discount-code-applicable: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop!'
-    discount-code-applicable-with-threshold: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>not applicable</bold> in this shop!
-    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <bold><yellow>{0}</yellow></bold>, discount are not applied.
-    discount-code-no-permission: <red>You didn't have permission to use any discount code in this shop!
-    discount-code-has-been-expired: <red>Your discount has been expired!
-    discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
-    discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
-    discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
-    discount-code-config-shop-remove-failure: <red>This shop not exists in your discount code allow list.
-    discount-code-config-expire: <green>Successfully changed your code expire time.
-    discount-code-config-applied: <green>Config the discount code successfully!
+    invalid-discount-rate: <red>Rabattsatsen <yellow>{0}</yellow> er ugyldig, det kan bare være et heltall eller prosentsats.
+    discount-code-expired: <red>Huff! Din rabatt kode <yellow>{0}</yellow> er utløpt!
+    discount-code-installed: <green>Du har installert rabattkoden <gold>{0}</gold>. Rabattkoden vil automatisk bli brukt på tilgjengelige kjøp i alle påfølgende kjøp i løpet av denne perioden. For å avinstallere rabattkoden, kjør <aqua>/quickshop discount uninstall {0}</aqua>.
+    discount-code-uninstalled: <green>Du har avinstallert rabattkoden.
+    discount-code-query-nothing: <red>Du har ikke installert en rabattkode ennå!
+    discount-code-query: '<green>Du bruker rabattkode: <yellow>{0}</yellow>.'
+    discount-code-applicable: '<#bcef26>Din rabattkode <bold><yellow>{0}</yellow></bold> er <bold>gyldig</bold> i denne butikken!'
+    discount-code-applicable-with-threshold: '<#bcef26>Din rabattkode <bold><yellow>{0}</yellow></bold> er <bold>gyldig</bold> i denne butikken, men bare for kjøp som overstiger <yellow>{1}</yellow> i en enkelt transaksjon.'
+    discount-code-not-applicable: <red>Din rabattkode <bold><yellow>{0}</yellow></bold> er <bold>ikke gyldig</bold> i denne butikken!
+    discount-code-reach-the-limit: <red>Du har nådd bruksbegrensningen for rabattkoden <bold><yellow>{0}</yellow></bold>, rabatten blir ikke brukt.
+    discount-code-no-permission: <red>Du har ikke tillatelse til å bruke en rabattkode i denne butikken!
+    discount-code-has-been-expired: <red>Din rabatt er utløpt!
+    discount-code-config-shop-added: <green>Rabattkoden er nå lagt til i listen over tillatte koder for denne butikken.
+    discount-code-config-shop-add-failure: <red>Denne butikken er allerede på listen over tillatte rabattkoder.
+    discount-code-config-shop-removed: <green>Butikken er fjernet fra listen over tillatte rabattkoder.
+    discount-code-config-shop-remove-failure: <red>Denne butikken finnes ikke i din liste over tillatte rabattkoder.
+    discount-code-config-expire: <green>Endret kodens utløpstid.
+    discount-code-config-applied: <green>Konfigurasjon av rabattkoden var vellykket!
     discount-code-created-successfully: |
-      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
-      <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/quickshop discount config {0}</aqua> to edit your discount code anytime.
-    discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
+      <green>Din rabattkode <yellow>{0}</yellow> er opprettet!
+      <gold>Omfang: <aqua>{1}</aqua></gold>.
+      <gold>Delt med andre: <#bcef26>{2}</#bcef26></gold>.
+      <yellow>For kun <gray>Spesifikke Butikker</gray>-omfang: For å legge til butikker i din liste over tillatte rabattkoder, vennligst se på en butikk og utfør kommandoen <aqua>{3}</aqua>.
+      Du kan bruke <aqua>/quickshop discount config {0}</aqua> for å redigere din rabattkode når som helst.
+    discount-code-under-threshold: <red>Rabatten ble ikke brukt på ditt kjøp fordi den totale verdien er under rabattkodeterskelen <yellow>{0}</yellow>.
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
-    discount-code-list: '<gold>Listing your discount codes:'
-    discount-code-applied-in-purchase: '<#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    discount-code-list: '<gold>Viser rabattkodene dine:'
+    discount-code-applied-in-purchase: '<#bcef26>Din rabattkode <yellow>{0}</yellow> er blitt brukt på dette kjøpet, og du sparte <gold>{1}</gold>!'
     scope:
       this-shop: '{0}'
-      your-shops-owned: all your shops (owned)
-      your-shops-managed: all your shops (managed)
-      server: whole server
+      your-shops-owned: alle dine butikker (eid)
+      your-shops-managed: alle dine butikker (administrator)
+      server: hele serveren
     code-type:
-      SERVER_ALL_SHOPS: All shops on this server
-      PLAYER_ALL_SHOPS: All shops that created by code owner
-      SPECIFIC_SHOPS: Specific shops
+      SERVER_ALL_SHOPS: Alle butikker på denne serveren
+      PLAYER_ALL_SHOPS: Alle butikker som er opprettet av kode eieren
+      SPECIFIC_SHOPS: Spesifikke butikker
     discount-code-details: |-
-      <gold>Code: <yellow>{0}</yellow>
-      Creator: <yellow>{1}</yellow>
-      Applied to: <yellow>{2}</yellow>
-      Remaining usage: <yellow>{3}</yellow>
-      Expired on: <yellow>{4}</yellow>
-      Threshold: <yellow>{5}</yellow>
-      Discount: <yellow>{6}</yellow><br>
+      <gold>Kode: <yellow>{0}</yellow>
+      Opprettet av: <yellow>{1}</yellow>
+      Påført på: <yellow>{2}</yellow>
+      Gjenstående bruk: <yellow>{3}</yellow>
+      Utløper: <yellow>{4}</yellow>
+      Terskel: <yellow>{5}</yellow>
+      Rabatt: <yellow>{6}</yellow><br>
   list:
     commands:
-      list: <yellow>Listing all shops owned by your or specific player
-    table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
-    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+      list: <yellow>Viser alle butikkene eid av deg eller en spesifikk spiller
+    table-prefix: '<yellow>Butikkene til <green>{0}</green> <gray>(Total {1})</gray>: '
+    table-prefix-pageable: '<yellow>Butikkene til <green>{0}</green> <gray>(Side {1}/{2})</gray>: '
+    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Pris <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
-    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
+    message: <red>Du kan ikke legge ugyldige butikkvarer i butikkbeholderen, alle ugyldige butikkvarer vil bli sluppet ved din posisjon.
   limited:
     commands:
-      limit: <yellow>Set a limit that restrict the purchase that player can make in period
+      limit: <yellow>Angi en grense som begrenser kjøpene en spiller kan gjøre i en periode
     titles:
-      title: <green>Purchase Success
-      subtitle: <aqua>You can also purchase <gold>{0}</gold> more in this shop
-    reach-the-limit: <red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items.
-    success-reset: <green>Reset the restriction of this shop successfully
-    success-remove: <green>Successfully remove the all restriction of this shop
-    success-setup: <green>Restriction settings for this shop were saved successfully
-    trade-limit-reached-cancel-reason: <red>Reached the restriction of this shop
-    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
+      title: <green>Kjøpet gjennomført
+      subtitle: <aqua>Du kan kjøpe <gold>{0}</gold> ganger til i denne butikken
+    reach-the-limit: <red>Du har nådd grensen i denne butikken. Du kan kjøpe <green>{0}</green> gjenstander, men du prøver å kjøpe <yellow>{1}</yellow> gjenstander.
+    success-reset: <green>Tilbakestilling av restriksjoner i denne butikken er gjennomført
+    success-remove: <green>Alle restriksjoner ble fjernet fra denne butikken
+    success-setup: <green>Restriksjonsinnstillingene for denne butikken ble lagret vellykket
+    trade-limit-reached-cancel-reason: <red>Begrensningen for denne butikken er oppnådd
+    remains-limits: '<gold>Din gjenværende kjøpskvote i denne butikken: <yellow>{0}'
     remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
@@ -1484,15 +1484,15 @@ suite:
     quota-reset-player-successfully: <green>The quota for player {0} in this shop has been reset successfully.
     quota-reset-everybody-successfully: <green>The quota for everyone in this shop has been reset successfully.
     quota-setup: <green>The purchase restriction now apply to this shop!
-    quota-remove: <green>The purchase restriction now removed from this shop!
+    quota-remove: <green>Kjøpsbegrensningen er nå fjernet fra denne butikken!
     subtitles:
-      title: <green>Purchase Success
-      subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
+      title: <green>Kjøpet gjennomført
+      subtitle: <aqua>Du kan kjøpe <yellow>{0}</yellow> ganger til i denne butikken
   list:
-    command-description: <yellow>List all shops owned by yourself or another player.
-    table-prefix: <yellow>You owned total <aqua>{0}</aqua> shops on this server.
+    command-description: <yellow>Viser alle butikkene eid av deg eller en annen spiller.
+    table-prefix: <yellow>Du eier totalt <aqua>{0}</aqua> butikker på denne serveren.
     entry-syntax: <aqua>- <yellow>{0}
-    entry-syntax-fallback-name: '<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
+    entry-syntax-fallback-name: '<yellow>Gjenstand:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
     hover-text: |-
       <yellow>{0}
       <gray>{1} {2}, {3}, {4}
