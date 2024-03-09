@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>Du hast mehrere Shops mit dem Namem "<green>{0}</green>", wähle einen um fortzufahren:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(Nur für Admins) <light_purple>{0}<light_purple> hat die Berechtigungsprüfungen verweigert. Wenn dies nicht beabsichtigt ist, versuche <light_purple>{1}</light_purple> auf die Schwarze Liste der Listener hinzuzufügen. Konfigurationsguide (Auf Englisch): https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-Protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Durchschnittspreis in der Umgebung: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventar Prüfung] <gray>Warnung! Ein QuickShop Anzeigeitem <gold>{2}</gold> wurde in einem Inventar bei <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray> gefunden, was nicht passieren sollte. Dies bedeutet oftmals, dass jemand einen Exploit böswillig ausnutzt um das Anzeigeitem zu duplizieren."
 digits-reach-the-limit: <red>Du hast das Dezimalstellenlimit für den Preis erreicht.
