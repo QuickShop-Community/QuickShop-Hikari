@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.economy;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.NonSeparateAbstractEconomy;
 import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import lombok.ToString;
@@ -152,10 +153,12 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
         }
         CoinsUser user = CoinsEngineAPI.getUserData(name);
         if (user == null) {
+            Log.debug("User " + name + " not exists in CoinsEngine database, return for 0 balance");
             return 0.0;
         }
         Currency cur = getCurrency(world, currency);
         if (cur == null) {
+            Log.debug("Currency " + currency + " not exists in CoinsEngine database, return for 0 balance");
             return 0.0;
         }
         return user.getBalance(cur);
@@ -183,10 +186,12 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
         }
         CoinsUser user = CoinsEngineAPI.getUserData(name);
         if (user == null) {
+            Log.debug("User " + name + " not exists in CoinsEngine database, return for 0 balance");
             return 0.0;
         }
         Currency cur = getCurrency(world, currency);
         if (cur == null) {
+            Log.debug("Currency " + currency + " not exists in CoinsEngine database, return for 0 balance");
             return 0.0;
         }
         return user.getBalance(cur);
