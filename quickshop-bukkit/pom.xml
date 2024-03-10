@@ -226,7 +226,7 @@
         <dependency>
             <groupId>net.sourceforge.csvjdbc</groupId>
             <artifactId>csvjdbc</artifactId>
-            <version>1.0.41</version>
+            <version>1.0.42</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
