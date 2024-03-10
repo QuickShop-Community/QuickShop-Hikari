@@ -291,6 +291,13 @@
             <version>0.1.2</version>
         </dependency>
         <dependency>
+            <groupId>su.nightexpress.core</groupId>
+            <artifactId>NightCore</artifactId>
+            <version>2.5.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/nightcore-2.5.1.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>su.nightexpress.coinsengine</groupId>
             <artifactId>CoinsEngine</artifactId>
             <version>2.2.0.1</version>
