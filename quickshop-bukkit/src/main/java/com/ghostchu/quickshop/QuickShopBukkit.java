@@ -154,7 +154,7 @@ public class QuickShopBukkit extends JavaPlugin {
         if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableMirrorTesting"))) {
             GeoUtil.determineBestMirrorServer(getLogger()).forEach(m -> this.bukkitLibraryManager.addRepository(m.getRepoUrl()));
         }
-        this.bukkitLibraryManager.addMavenCentral();
+        //this.bukkitLibraryManager.addMavenCentral();
         this.bukkitLibraryManager.getRepositories().forEach(r -> {
             if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
                 getLogger().info("Registered repository: " + r);

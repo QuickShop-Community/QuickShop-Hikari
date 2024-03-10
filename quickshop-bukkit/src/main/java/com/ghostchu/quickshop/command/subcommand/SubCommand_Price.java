@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -102,7 +103,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         if (fee > 0) {
             SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
                     .core(plugin.getEconomy())
-                    .from(sender.getUniqueId())
+                    .from(QUserImpl.createFullFilled(sender))
                     .amount(fee)
                     .world(Objects.requireNonNull(shop.getLocation().getWorld()))
                     .currency(plugin.getCurrency())
