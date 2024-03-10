@@ -400,7 +400,7 @@ public class PlayerListener extends AbstractQSListener {
         final Inventory playerInventory = p.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
-        final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
+        final double traderBalance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
                 || plugin.perm().hasPermission(p, "quickshop.other.use")) {
@@ -540,7 +540,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
-        double balance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(),
+        double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(),
                 shop.getCurrency());
         amount = Math.min(amount, (int) Math.floor(balance / price));
         if (amount < 1) { // typed 'all' but the auto set amount is 0
