@@ -1,6 +1,6 @@
 org.apache.commons:commons-lang3:3.14.0
-org.apache.commons:commons-compress:1.25.0
-org.slf4j:slf4j-jdk14:2.0.11
+org.apache.commons:commons-compress:1.26.0
+org.slf4j:slf4j-jdk14:2.0.12
 com.google.code.gson:gson:2.10.1
 com.rollbar:rollbar-java:1.9.0
 cc.carm.lib:easysql-hikaricp:0.4.7
@@ -8,7 +8,7 @@ com.h2database:h2:2.1.214
 com.konghq:unirest-java:3.14.5
 com.github.juliomarcopineda:jdbc-stream:0.1.1
 one.util:streamex:0.8.2
-net.sourceforge.csvjdbc:csvjdbc:1.0.41
+net.sourceforge.csvjdbc:csvjdbc:1.0.42
 org.dom4j:dom4j:2.1.4
 com.vdurmont:semver4j:3.1.0
 com.ghostchu.crowdin:crowdinota:1.0.3
