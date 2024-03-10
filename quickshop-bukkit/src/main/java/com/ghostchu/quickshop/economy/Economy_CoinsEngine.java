@@ -17,6 +17,7 @@ import su.nightexpress.coinsengine.api.CoinsEngineAPI;
 import su.nightexpress.coinsengine.api.currency.Currency;
 import su.nightexpress.coinsengine.data.impl.CoinsUser;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 @ToString
@@ -70,7 +71,12 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
             return null;
         }
         if (currency == null) {
-            return null;
+            Currency backupCur = null;
+            Iterator<Currency> currencyIterator = CoinsEngineAPI.getCurrencyManager().getCurrencies().iterator();
+            if (currencyIterator.hasNext()) {
+                backupCur = currencyIterator.next();
+            }
+            return CoinsEngineAPI.getCurrencyManager().getVaultCurrency().orElse(backupCur);
         }
         return CoinsEngineAPI.getCurrency(currency);
     }

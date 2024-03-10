@@ -76,6 +76,9 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.allowLoan = Objects.requireNonNullElseGet(allowLoan, () -> plugin.getConfig().getBoolean("shop.allow-economy-loan", false));
         this.world = world;
         this.currency = currency;
+        if (this.currency == null) {
+            this.currency = plugin.getCurrency();
+        }
         this.benefit = benefit;
         if (this.benefit == null) {
             this.benefit = new SimpleBenefit();
@@ -91,50 +94,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         new EconomyTransactionEvent(this).callEvent();
-    }
-
-    public interface SimpleTransactionCallback extends TransactionCallback {
-        /**
-         * Calling while Transaction commit
-         *
-         * @param economyTransaction Transaction
-         * @return Does commit event has been cancelled
-         */
-        default boolean onCommit(@NotNull SimpleEconomyTransaction economyTransaction) {
-            return true;
-        }
-
-        /**
-         * Calling while Transaction commit failed
-         * Use EconomyTransaction#getLastError() to getting reason
-         * Use EconomyTransaction#getSteps() to getting the fail step
-         *
-         * @param economyTransaction Transaction
-         */
-        default void onFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
-            Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
-        }
-
-        /**
-         * Calling while Transaction commit successfully
-         *
-         * @param economyTransaction Transaction
-         */
-        default void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
-            Log.transaction("Transaction succeed: " + economyTransaction);
-        }
-
-        /**
-         * Calling while Tax processing failed
-         * Use EconomyTransaction#getLastError() to getting reason
-         * Use EconomyTransaction#getSteps() to getting the fail step
-         *
-         * @param economyTransaction Transaction
-         */
-        default void onTaxFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
-            Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
-        }
-
     }
 
     /**
@@ -423,6 +382,50 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
             return false;
         }
+    }
+
+    public interface SimpleTransactionCallback extends TransactionCallback {
+        /**
+         * Calling while Transaction commit
+         *
+         * @param economyTransaction Transaction
+         * @return Does commit event has been cancelled
+         */
+        default boolean onCommit(@NotNull SimpleEconomyTransaction economyTransaction) {
+            return true;
+        }
+
+        /**
+         * Calling while Transaction commit failed
+         * Use EconomyTransaction#getLastError() to getting reason
+         * Use EconomyTransaction#getSteps() to getting the fail step
+         *
+         * @param economyTransaction Transaction
+         */
+        default void onFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
+            Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
+        }
+
+        /**
+         * Calling while Transaction commit successfully
+         *
+         * @param economyTransaction Transaction
+         */
+        default void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
+            Log.transaction("Transaction succeed: " + economyTransaction);
+        }
+
+        /**
+         * Calling while Tax processing failed
+         * Use EconomyTransaction#getLastError() to getting reason
+         * Use EconomyTransaction#getSteps() to getting the fail step
+         *
+         * @param economyTransaction Transaction
+         */
+        default void onTaxFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
+            Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
+        }
+
     }
 
 
