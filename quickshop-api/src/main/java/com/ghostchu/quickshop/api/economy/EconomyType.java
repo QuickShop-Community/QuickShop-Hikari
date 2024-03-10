@@ -13,7 +13,8 @@ public enum EconomyType {
     RESERVE(1),
     //MIXED(2),
     GEMS_ECONOMY(3),
-    TNE(4);
+    TNE(4),
+    COINS_ENGINE(5);
 
     private final int id;
 

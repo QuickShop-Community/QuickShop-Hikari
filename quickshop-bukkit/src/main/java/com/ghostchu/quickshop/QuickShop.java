@@ -32,6 +32,7 @@ import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.economy.Economy_CoinsEngine;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
 import com.ghostchu.quickshop.economy.Economy_TNE;
 import com.ghostchu.quickshop.economy.Economy_Vault;
@@ -1128,6 +1129,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 case VAULT -> loadVault();
                 case GEMS_ECONOMY -> loadGemsEconomy();
                 case TNE -> loadTNE();
+                case COINS_ENGINE -> loadCoinsEngine();
                 default -> null;
             };
             abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
@@ -1142,6 +1144,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
             parent.economy = abstractEconomy;
             return true;
+        }
+
+        private AbstractEconomy loadCoinsEngine() {
+            return new Economy_CoinsEngine(parent);
         }
 
         // Vault may create exception, we need catch it.
