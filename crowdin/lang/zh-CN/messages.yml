@@ -31,7 +31,7 @@ safe-mode: <red>QuickShop 现在处于安全模式，您不能打开这个商店
 forbidden-vanilla-behavior: <red>该操作有悖于原版行为，因此已被禁止
 shop-out-of-space-name: <dark_purple>您名为 {0} 的商店已满！
 paste-disabled: |-
-  <red>Paste功能已被禁用！你不能请求技术支持。 
+  <red>Paste功能已被禁用！你不能请求技术支持。
   原因： {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
@@ -283,7 +283,7 @@ support-disable-reason:
   hot-reload: <yellow>热重载不受支持，请重启服务器并再次检查。
   outdated: <yellow>该版本的QuickShop已过时，在请求帮助之前更新到最新版本！
   bad-hosts: |-
-    <yellow>该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。 
+    <yellow>该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。
     在请求支持之前修复HOSTS, Windows 路径 C:\windows\system32\drivers\et\hosts
     Linux 路径/etc/hosts。
   privacy: <yellow>该服务器在破解（离线）模式下运行。如果你在代理下运行bukkit服务器，并且在代理上的online-mode=true，请正确配置代理相关设置。
