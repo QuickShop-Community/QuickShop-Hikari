@@ -55,6 +55,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -416,7 +417,20 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             Log.debug("Registering relative language " + langCode + " to " + result);
             languagesCache.put(langCode, result);
         }
-        Locale locale = LocaleUtils.toLocale(result);
+
+
+        String[] resultCode = result.split("_");
+        Locale locale = Locale.ROOT;
+        try {
+            if (resultCode.length == 2) {
+                locale = LocaleUtils.toLocale(resultCode[0] + "_" + resultCode[1].toUpperCase(Locale.ROOT));
+            } else {
+                locale = LocaleUtils.toLocale(result);
+            }
+        } catch (IllegalArgumentException e) {
+            Log.debug(Level.WARNING, "Failed to solve the player locale: " + locale + ": " + e.getMessage());
+        }
+
         return new ProxiedLocale(langCode, result, NumberFormat.getCompactNumberInstance(locale, NumberFormat.Style.SHORT), locale);
     }
 
