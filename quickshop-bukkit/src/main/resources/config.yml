@@ -97,6 +97,7 @@ include-offlineplayer-list: false
 #3=GemsEconomy with Multi-Currency on
 #4=TNE with Multi-Currency on
 #5=CoinsEngine with Multi-Currency on
+#6=Treasury with Multi-Currency on (experimental)
 #DO NOT TOUCH THIS IF YOU DON'T KNOW WHAT IT DOES. ASK FOR SUPPORT BEFORE TOUCHING THIS!
 economy-type: 0
 

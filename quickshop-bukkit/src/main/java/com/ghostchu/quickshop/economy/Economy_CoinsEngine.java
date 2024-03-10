@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.NonSeparateAbstractEconomy;
 import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -19,7 +19,7 @@ import su.nightexpress.coinsengine.data.impl.CoinsUser;
 import java.util.UUID;
 
 @ToString
-public class Economy_CoinsEngine extends AbstractEconomy {
+public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
     private final QuickShop plugin;
     private final BuiltInEconomyFormatter formatter;
     private boolean allowLoan;

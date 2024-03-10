@@ -32,10 +32,7 @@ import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.Economy_CoinsEngine;
-import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
-import com.ghostchu.quickshop.economy.Economy_TNE;
-import com.ghostchu.quickshop.economy.Economy_Vault;
+import com.ghostchu.quickshop.economy.*;
 import com.ghostchu.quickshop.listener.*;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
 import com.ghostchu.quickshop.metric.MetricListener;
@@ -1130,6 +1127,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 case GEMS_ECONOMY -> loadGemsEconomy();
                 case TNE -> loadTNE();
                 case COINS_ENGINE -> loadCoinsEngine();
+                case TREASURY -> loadTreasury();
                 default -> null;
             };
             abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
@@ -1144,6 +1142,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
             parent.economy = abstractEconomy;
             return true;
+        }
+
+        private AbstractEconomy loadTreasury() {
+            return new Economy_Treasury(parent);
         }
 
         private AbstractEconomy loadCoinsEngine() {
