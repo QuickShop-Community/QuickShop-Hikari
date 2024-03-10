@@ -633,10 +633,11 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
-        // Notify the player any messages they were sent
         plugin.getPlayerFinder().cache(e.getPlayer().getUniqueId(), e.getPlayer().getName());
+        // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-            MsgUtil.flush(e.getPlayer());
+            long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin.getJavaPlugin(), () -> MsgUtil.flush(e.getPlayer()), delay);
         }
     }
 
