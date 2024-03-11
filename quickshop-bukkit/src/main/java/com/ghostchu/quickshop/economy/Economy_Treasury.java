@@ -93,7 +93,7 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
             return null;
         }
         if (currency == null) {
-            return null;
+            return service.get().getPrimaryCurrency();
         }
         return service.get().findCurrency(currency).orElse(null);
     }
