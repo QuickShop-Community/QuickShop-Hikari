@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1027
+config-version: 1028
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -112,14 +112,6 @@ send-display-item-protection-alert: false
 
 #Allow QuickShop to send alerts when someone tries to steal from a shop.
 send-shop-protection-alert: false
-
-#Still WIP
-server-platform: 0
-
-#Select which chat system QuickShop should use.
-#0=BungeeChat (Spigot default)
-#1=Adventure (Removed In Current Version)
-chat-type: 0
 
 #MySQL database settings.
 database:
