@@ -22,7 +22,6 @@ enabled-languages:
 #We will get those files from mojang resources server:
 #0=Official
 #1=BMCLAPI (Unofficial China Mirror, https://bmclapidoc.bangbang93.com)
-#2=MCBBSMirror (Another OpenBMCLAPI Mirror, https://www.mcbbs.net)
 #You can choose which one you want to use for downloading resources.
 #By default, QuickShop use Mojang official server to downloading resources.
 mojangapi-mirror: 0
@@ -96,7 +95,7 @@ include-offlineplayer-list: false
 #0=Vault
 #3=GemsEconomy with Multi-Currency on
 #4=TNE with Multi-Currency on
-#5=CoinsEngine with Multi-Currency on
+#5=CoinsEngine with Multi-Currency on (experimental)
 #6=Treasury with Multi-Currency on (experimental)
 #DO NOT TOUCH THIS IF YOU DON'T KNOW WHAT IT DOES. ASK FOR SUPPORT BEFORE TOUCHING THIS!
 economy-type: 0
