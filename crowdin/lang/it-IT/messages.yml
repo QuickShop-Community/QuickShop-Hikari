@@ -444,6 +444,8 @@ command:
     benefit: <yellow>Impostazioni per dividere i benefici tra il proprietario del negozio e gli altri giocatori
     tag: <yellow>Aggiungi, rimuovi o interroga i tag di un negozio
     suggestprice: <yellow>Suggerisci un prezzo consigliato per cercare negozio, basato su altri negozi
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Utilizza: /qs size <amount>'
   no-type-given: '<red>Utilizza: /qs find <item>'
   feature-not-enabled: Questa funzione non è abilitata nel file di configurazione.

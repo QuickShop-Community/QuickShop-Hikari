@@ -455,6 +455,8 @@ command:
     benefit: <yellow>Configurações de divisão de benefícios entre o dono da loja e outros jogadores
     tag: <yellow>Adicione, remove ou procure tags de uma loja
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
   no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: Esse recurso não está ativado no arquivo de configuração.
