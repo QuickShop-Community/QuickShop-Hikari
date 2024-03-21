@@ -444,6 +444,8 @@ command:
     benefit: <yellow>Cài đặt phân chia lợi nhuận giữa chủ cửa hàng và những người chơi khác
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Sử dụng lệnh: /qs find <số lượng>'
   no-type-given: '<red>Sử dụng lệnh: /qs find <item>'
   feature-not-enabled: Tính năng này không được kích hoạt trong tệp cấu hình.
