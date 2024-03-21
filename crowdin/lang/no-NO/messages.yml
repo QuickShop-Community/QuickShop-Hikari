@@ -455,6 +455,8 @@ command:
     benefit: <yellow>Innstillinger for å dele fordeler mellom butikkeier og andre spillere
     tag: <yellow>Legg til, fjern eller spørr etter tagger for en butikk
     suggestprice: <yellow>Foreslå en anbefalt pris for en butikk som undersøkes, basert på andre butikker
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Bruk: /quickshop size \<amount>'
   no-type-given: '<red>Bruk: /quickshop find \<item>'
   feature-not-enabled: Denne funksjonen er ikke aktivert i konfigurasjonsfilen.
