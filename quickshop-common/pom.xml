@@ -208,6 +208,7 @@
             <groupId>com.vdurmont</groupId>
             <artifactId>semver4j</artifactId>
             <version>3.1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
