@@ -204,6 +204,11 @@
             <version>0.10.13</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>semver4j</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
