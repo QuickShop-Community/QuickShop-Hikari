@@ -383,15 +383,15 @@ timeunit:
   recent: 最近
   between: between
   hours: "{0} hours"
-  months: "{0} months"
+  months: "{0} ヶ月"
   longtimeago: long time ago
   between-format: between {0} and {1}
-  minutes: "{0} minutes"
-  justnow: just now
-  minute: "{0} minute"
+  minutes: "{0} 分"
+  justnow: たった今
+  minute: "{0} 分"
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: future
-  month: "{0} month"
+  month: "{0} ヶ月"
   future: in {0}
   days: "{0} days"
 command:
