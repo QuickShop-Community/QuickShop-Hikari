@@ -564,15 +564,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setPrice(double price) {
-        if (this.price == price) {
-            return;
-        }
         Util.ensureThread(false);
-        ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
-        if (Util.fireCancellableEvent(event)) {
-            Log.debug("A plugin cancelled the price change event.");
-            return;
-        }
         this.price = price;
         setDirty();
         setSignText();

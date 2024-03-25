@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -99,7 +100,11 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 return;
             }
         }
-
+        ShopPriceChangeEvent event = new ShopPriceChangeEvent(shop, shop.getPrice(), price);
+        if (Util.fireCancellableEvent(event)) {
+            Log.debug("A plugin cancelled the price change event.");
+            return;
+        }
         if (fee > 0) {
             SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
                     .core(plugin.getEconomy())
