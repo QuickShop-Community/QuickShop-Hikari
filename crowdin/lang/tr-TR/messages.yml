@@ -444,8 +444,6 @@ command:
     benefit: <yellow>Avantajları mağaza sahibi ve diğer oyuncular arasında bölme ayarları
     tag: <yellow>Bir mağazanın etiketlerini ekleme, kaldırma veya sorgulama
     suggestprice: <yellow>Diğer mağazalara göre dükkan aramak için tavsiye edilen bir fiyat önerin
-    history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Kullanım: /qs size <miktar>'
   no-type-given: '<red>Kullanım: /qs find <item>'
   feature-not-enabled: Bu özellik yapılandırma dosyasında aktif değil.

@@ -427,9 +427,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @Nullable InventoryWrapper getInventory() {
-        if (inventoryWrapper == null) {
+        if (inventoryWrapper == null || inventoryWrapper.isNeedUpdate()) {
             Util.ensureThread(false);
-            Log.debug("SymbolLink Applying: " + symbolLink);
+            Log.debug("Loading inventory from symbol link: " + symbolLink);
             try {
                 inventoryWrapper = locateInventory(symbolLink);
             } catch (Exception e) {

@@ -444,8 +444,6 @@ command:
     benefit: <yellow>Настройки разделения выгоды между владельцем магазина и другими игроками
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
-    history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Используйте: /qs size <количество>'
   no-type-given: '<red>Используйте: /qs find <предмет>'
   feature-not-enabled: Функция не включена в конфигурации.
