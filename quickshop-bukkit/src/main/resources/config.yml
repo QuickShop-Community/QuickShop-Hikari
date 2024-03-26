@@ -161,9 +161,8 @@ limits:
   #Here you can bind the limit to specific permissions.
   #Using the same format, you can add as many as you want!
   ranks:
-    quickshop:
-      #Players with quickshop.example permission can create 20 shops.
-      example: 20
+    #Players with quickshop.example permission can create 20 shops.
+    quickshop.example: 20
 
 #The list of blocks that can be used to create shops.
 #By default, chests are added to this list.

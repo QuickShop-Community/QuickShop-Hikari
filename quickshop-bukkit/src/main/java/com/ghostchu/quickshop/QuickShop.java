@@ -28,7 +28,6 @@ import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
-import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
@@ -578,7 +577,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     public final void onEnable() {
-        Timer enableTimer = new Timer(true);
         logger.info("QuickShop " + javaPlugin.getFork());
         registerService();
         /* Check the running envs is support or not. */
@@ -588,7 +586,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         logger.info("Reading the configuration...");
         initConfiguration();
-        logger.info("Developers: {}", CommonUtil.list2String(javaPlugin.getDescription().getAuthors()));
+        logger.info("Contributors: {}", CommonUtil.list2String(javaPlugin.getDescription().getAuthors()));
         logger.info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
         logger.info("Let's start loading the plugin");
         loadErrorReporter();
@@ -658,7 +656,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("Self Test")) {
             runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
         }
-        logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
 
     }
 

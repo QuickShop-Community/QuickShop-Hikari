@@ -39,13 +39,13 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class QuickShopBukkit extends JavaPlugin {
+    @Getter
+    private final java.util.logging.Logger bootstrapLogger = java.util.logging.Logger.getLogger("QuickShop-Hikari/Bootstrap");
     private Platform platform;
     private Logger logger;
     private QuickShop quickShop;
     private Throwable abortLoading;
     private BukkitLibraryManager bukkitLibraryManager;
-    @Getter
-    private final java.util.logging.Logger bootstrapLogger = java.util.logging.Logger.getLogger("QuickShop-Hikari/Bootstrap");
 
     @Override
     public void reloadConfig() {
@@ -55,9 +55,10 @@ public class QuickShopBukkit extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        long startLoadAt = System.currentTimeMillis();
         try {
-            bootstrapLogger.info("QuickShop-" + getFork() + " - Bootloader");
-            bootstrapLogger.info("Bootloader preparing for startup, please stand by...");
+            bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the initialization sequence");
+            bootstrapLogger.info("Bootloader preparing for startup, please wait...");
             bootstrapLogger.info("Initializing libraries...");
             loadLibraries();
             bootstrapLogger.info("Initializing platform...");
@@ -65,7 +66,7 @@ public class QuickShopBukkit extends JavaPlugin {
             bootstrapLogger.info("Boot QuickShop instance...");
             initQuickShop();
             // SLF4J now should available
-            logger.info("QuickShop-" + getFork() + " - Booting...");
+            bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Complete (" + (System.currentTimeMillis() - startLoadAt) + "ms). Waiting for enable...");
         } catch (Throwable e) {
             bootstrapLogger.log(Level.SEVERE, "Failed to startup the QuickShop-Hikari due unexpected exception!", e);
             Bukkit.getPluginManager().disablePlugin(this);
@@ -76,9 +77,9 @@ public class QuickShopBukkit extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        bootstrapLogger.info("Forwarding onDisable() to QuickShop instance...");
+        long shutdownAtTime = System.currentTimeMillis();
+        bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the shutdown sequence");
         this.quickShop.onDisable();
-        bootstrapLogger.info("Finishing up onDisable() in Bootloader...");
         bootstrapLogger.info("Cleaning up resources...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
@@ -86,6 +87,7 @@ public class QuickShopBukkit extends JavaPlugin {
         Unirest.shutDown(true);
         Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
         this.platform.shutdown();
+        bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> All Complete (" + (System.currentTimeMillis() - shutdownAtTime) + "ms)");
     }
 
     @Override
@@ -93,9 +95,10 @@ public class QuickShopBukkit extends JavaPlugin {
         if (abortLoading != null) {
             throw new IllegalStateException("Plugin is disabled due an loading error", abortLoading);
         }
-        bootstrapLogger.info("Forwarding onEnable() to QuickShop instance...");
+        long enableAtTime = System.currentTimeMillis();
+        bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the enable sequence");
         this.quickShop.onEnable();
-        bootstrapLogger.info("Finishing up onEnable() in Bootloader...");
+        bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> All Complete. (" + (System.currentTimeMillis() - enableAtTime) + "ms)");
     }
 
     /**
@@ -161,7 +164,7 @@ public class QuickShopBukkit extends JavaPlugin {
     }
 
     private void loadLibraries(LibraryManager manager) {
-        try (InputStream stream = getResource("libraries.maven")) {
+        try (InputStream stream = getResource("libraries.maven");) {
             if (stream == null) {
                 throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
             }
@@ -272,7 +275,7 @@ public class QuickShopBukkit extends JavaPlugin {
                 this.logger = LoggerFactory.getLogger(getDescription().getName());
             }
             logger.info("Slf4jLogger initialized");
-            logger.info("Platform initialized: {}", this.platform.getClass().getName());
+            bootstrapLogger.info("Platform initialized: " + this.platform.getClass().getName());
         } catch (Throwable e) {
             throw new Exception("Failed to initialize the platform", e);
         }
@@ -285,9 +288,7 @@ public class QuickShopBukkit extends JavaPlugin {
     private void initQuickShop() {
         bootstrapLogger.info("Creating QuickShop instance...");
         this.quickShop = new QuickShop(this, logger, platform);
-        bootstrapLogger.info("Forwarding onLoad() to QuickShop instance...");
         this.quickShop.onLoad();
-        bootstrapLogger.info("Finishing up onLoad() in Bootloader...");
     }
 
     @NotNull
