@@ -3,6 +3,7 @@ package com.ghostchu.quickshop;
 import com.alessiodp.libby.BukkitLibraryManager;
 import com.alessiodp.libby.Library;
 import com.alessiodp.libby.LibraryManager;
+import com.alessiodp.libby.classloader.URLClassLoaderHelper;
 import com.alessiodp.libby.logging.adapters.JDKLogAdapter;
 import com.alessiodp.libby.logging.adapters.LogAdapter;
 import com.comphenix.protocol.utility.Util;
@@ -33,10 +34,15 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
+import static java.util.Objects.requireNonNull;
 
 public class QuickShopBukkit extends JavaPlugin {
     @Getter
@@ -158,20 +164,40 @@ public class QuickShopBukkit extends JavaPlugin {
         });
         try {
             loadLibraries(this.bukkitLibraryManager);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             bootstrapLogger.log(Level.SEVERE, e.getMessage() + " The startup cannot continue.", e);
         }
     }
 
-    private void loadLibraries(LibraryManager manager) {
-        try (InputStream stream = getResource("libraries.maven");) {
+    private void loadLibraries(LibraryManager manager) throws IOException {
+        // Generate library list, ignore all dependencies that server provided already
+        List<Library> libraryList = generateLibraryList();
+        // Preload jars from our cached libraries directory, don't load all jars, it may conflict when have multiple versiosn
+        preloadJars(manager, libraryList);
+        // re-generate list again so we only cares the remains libraries
+        libraryList = generateLibraryList();
+        // Download remains libraries, if there is zero, nothing will be run
+        bootstrapLogger.info("Loading " + libraryList.size() + " libraries...");
+        for (int i = 0; i < libraryList.size(); i++) {
+            Library load = libraryList.get(i);
+            bootstrapLogger.info("Loading library " + load.toString() + " [" + (i + 1) + "/" + libraryList.size() + "]");
+            if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
+                for (String url : load.getUrls()) {
+                    bootstrapLogger.info(load + " url selected: " + url);
+                }
+            }
+            manager.loadLibrary(load);
+        }
+    }
+
+    private List<Library> generateLibraryList() throws IOException {
+        List<Library> libraryList = new ArrayList<>();
+        try (InputStream stream = getResource("libraries.maven")) {
             if (stream == null) {
                 throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
             }
             String dat = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
             String[] libraries = dat.split("\n");
-            List<Library> libraryList = new ArrayList<>();
-            int skipped = 0;
             for (String library : libraries) {
                 if (library.isBlank() || library.startsWith("#") || library.startsWith("//")) continue;
                 library = library.trim();
@@ -182,11 +208,11 @@ public class QuickShopBukkit extends JavaPlugin {
                 }
                 if (testClass != null) {
                     if (Util.classExists(testClass) && Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.reuseDependencies", "true"))) {
-                        skipped++;
                         continue;
                     }
+                } else {
+                    bootstrapLogger.warning(library + " didn't have a test class which will cause always load the LibraryManager to resolve the dependencies");
                 }
-
                 String[] libExplode = cases[0].split(":");
                 if (libExplode.length < 3) {
                     throw new IllegalArgumentException("[" + library + "] not a valid maven dependency syntax");
@@ -210,20 +236,48 @@ public class QuickShopBukkit extends JavaPlugin {
                 Library lib = libBuilder.build();
                 libraryList.add(lib);
             }
-            bootstrapLogger.info("Loading " + libraryList.size() + " libraries (" + skipped + " skipped libraries)...");
-            for (int i = 0; i < libraryList.size(); i++) {
-                Library load = libraryList.get(i);
-                bootstrapLogger.info("Loading library " + load.toString() + " [" + (i + 1) + "/" + libraryList.size() + "]");
-                if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
-                    for (String url : load.getUrls()) {
-                        bootstrapLogger.info(load + " url selected: " + url);
-                    }
-                }
-                manager.loadLibrary(load);
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot download the libraries, the first time install/upgrade need the Internet connection.", e);
         }
+        return libraryList;
+    }
+
+    private Path locateJar(LibraryManager manager, List<Library> libraryList, Path libDirectory, Library library) {
+        Path file = libDirectory.resolve(library.getPath());
+        if (Files.exists(file)) {
+            // Early return only if library isn't a snapshot, since snapshot libraries are always re-downloaded
+            if (!library.isSnapshot()) {
+                // Relocate the file
+                if (library.hasRelocations()) {
+                    file = manager.relocate(file, requireNonNull(library.getRelocatedPath(), "relocationPath"), library.getRelocations());
+                }
+                return file;
+            }
+            return file;
+        }
+        return null;
+    }
+
+    private void preloadJars(LibraryManager manager, List<Library> libraryList) {
+        Path libDirectory = new File(getDataFolder(), "lib").toPath();
+        List<Path> found = new ArrayList<>();
+        for (Library library : libraryList) {
+            Path locatedJar = locateJar(manager, libraryList, libDirectory, library);
+            if (locatedJar != null && locatedJar.toFile().exists()) {
+                found.add(locatedJar);
+            }
+        }
+
+        URLClassLoaderHelper urlClassLoaderHelper = new URLClassLoaderHelper((URLClassLoader) getClass().getClassLoader(), manager);
+        int preloaded = 0;
+        for (Path path : found) {
+            File file = path.toFile();
+            if (!file.exists()) {
+                bootstrapLogger.info("File not exists: " + file.getAbsolutePath());
+                continue;
+            }
+            preloaded++;
+            urlClassLoaderHelper.addToClasspath(file.toPath());
+        }
+        bootstrapLogger.info("Loaded " + preloaded + " pre-loaded jars");
     }
 
 
