@@ -83,7 +83,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onClick(PlayerInteractEvent e) {
-        if (PackageUtil.parsePackageProperly("ignoreCancelledInteractEvent").asBoolean(true)) {
+        if (e.isCancelled() && PackageUtil.parsePackageProperly("ignoreCancelledInteractEvent").asBoolean(true)) {
             return;
         }
         if (e.getHand() != EquipmentSlot.HAND) {
