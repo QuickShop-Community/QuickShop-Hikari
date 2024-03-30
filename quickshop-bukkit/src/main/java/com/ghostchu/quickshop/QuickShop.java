@@ -446,7 +446,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             } else {
                 this.donationInfo = null;
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
         }
     }
 
@@ -698,13 +698,18 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 logger.info("Using Virtual Item display, loading ProtocolLib support...");
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null) {
-                    logger.info("Successfully loaded ProtocolLib support!");
-                    virtualDisplayItemManager = new VirtualDisplayItemManager(this);
-                    if (getConfig().getBoolean("shop.per-player-shop-sign")) {
-                        signHooker = new SignHooker(this);
-                        logger.info("Successfully registered per-player shop sign!");
-                    } else {
-                        signHooker = null;
+                    try {
+                        logger.info("Successfully loaded ProtocolLib support!");
+                        virtualDisplayItemManager = new VirtualDisplayItemManager(this);
+                        if (getConfig().getBoolean("shop.per-player-shop-sign")) {
+                            signHooker = new SignHooker(this);
+                            logger.info("Successfully registered per-player shop sign!");
+                        } else {
+                            signHooker = null;
+                        }
+                    } catch (Exception e) {
+                        logger.warn("Failed to initialize the virtual display item, try update your ProtocolLib to latest dev build and make sure QuickShop-Hikari up-to-date.", e);
+                        throw e;
                     }
                 } else {
                     logger.warn("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
@@ -1078,9 +1083,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public String getVersion() {
         return javaPlugin.getVersion();
     }
-    
+
     @Nullable
-    public DonationInfo getDonationInfo() {return this.donationInfo; }
+    public DonationInfo getDonationInfo() {
+        return this.donationInfo;
+    }
 
     public enum DatabaseDriverType {
         MYSQL,
