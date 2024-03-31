@@ -286,7 +286,7 @@ unknown-owner: Tuntematon
 restricted-prices: '<red>Rajattu hinta tuotteelle {0}: vähintään {1}, enintään {2}'
 nearby-shop-this-way: <green>Kauppa on {0} kuution päässä sinusta.
 owner-bypass-check: <yellow>Ohitit kaikki tarkastukset. Vaihto onnistui! (Olet nyt kaupan omistaja!)
-april-rick-and-roll-easter-egg: "<green>-------------------------------------------------------</green>\n<rainbow><bold>RAJOITETTU AIKANA -- QuickShop-Hikari</bold></rainbow>\n<yellow>Hanki <gold>PREMIUM</gold> partikkeliefekti kaikkiin QuickShop-palvelimiin!</yellow>\n<aqua>Lunasta se katsomalla videon tutoriaali alla!</aqua>\n<hover:show_text:'<gold>Klikkaa avataksesi palkintoja lunastaaksesi sivun selaimessasi.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>-------------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Arkku Täynnä
