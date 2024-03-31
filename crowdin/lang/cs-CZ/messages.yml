@@ -105,7 +105,7 @@ menu:
   item: '<green>Položka: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>za </green>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>
+  item-name-and-price-tax: <yellow>{0} {1} <green>za</green> {2} <gray>(<green>{3}</green> daň)
   successful-purchase: '<green>Úspěšně zakoupeno:'
   price-per-stack: <green>Cena za <yellow>{2} kusů {0} - {1}
   stored-enchants: <dark_purple>Uložené očarování
