@@ -286,7 +286,7 @@ unknown-owner: Không xác định
 restricted-prices: '<red>Giá hạn chế cho {0}: Tối thiểu {1}, tối đa {2}'
 nearby-shop-this-way: <green>Shop cách {0} blocks từ vị trí của bạn.
 owner-bypass-check: <yellow>Bỏ qua tất cả các kiểm tra. Giao dịch thành công! (Bây giờ bạn là chủ cửa hàng!)
-april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>SỰ KIỆN GIỚI HẠN -- QuickShop-Hikari</bold></rainbow>\n<yellow>Hãy nhận <gold>PREMIUM</gold> hiệu ứng hạt trên tất cả các máy chủ QuickShop!</yellow>\n<aqua>Bằng cách xem video hướng dẫn bên dưới!</aqua>\n<hover:show_text:'<gold>Nhấp để mở trang nhận phần thưởng trong trình duyệt của bạn.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Hết chỗ trống

@@ -286,7 +286,7 @@ unknown-owner: Desconegut
 restricted-prices: '<red>Preu restringit per {0}: Mínim {1}, màxim {2}.'
 nearby-shop-this-way: <green>La botiga és a {0} blocs de tu.
 owner-bypass-check: <yellow>Intercanviat amb èxit! (Ara ets el propietari de la botiga!)
-april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>\n<yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>\n<aqua>Claim it by watch the video tutorial below!</aqua>\n<hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Sense espai
