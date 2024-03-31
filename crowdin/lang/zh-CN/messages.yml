@@ -296,7 +296,7 @@ unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'点击这里获取QuickShop-Hikari开发者提供的限时奖励！'><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7/'><green>点击这里获取QuickShop-Hikari开发者提供的限时奖励！</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: 空间不足
@@ -454,6 +454,8 @@ command:
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
     tag: <yellow>添加、 删除或查询商店标签
     suggestprice: <yellow>根据其他商店的情况, 为商店提出建议价格
+    history: <yellow>查看商店的历史交易记录
+    sign: <yellow>更改商店的告示牌类型
   bulk-size-not-set: '<red>用法: /quickshop size <数量>'
   no-type-given: '<red>用法: /quickshop find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
