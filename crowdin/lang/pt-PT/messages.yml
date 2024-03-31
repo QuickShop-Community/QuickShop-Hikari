@@ -286,7 +286,7 @@ unknown-owner: Desconhecido
 restricted-prices: '<red>Preço restrito para {0}: Mínimo de {1}, máximo de {2}'
 nearby-shop-this-way: <green>A loja está a {0} blocos de você.
 owner-bypass-check: <yellow>Ignorado todas as verificações, operação bem sucedida! (Agora <newline>você é o dono da loja!)
-april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>EVENTO POR TEMPO LIMITADO -- QuickShop-Hikari</bold></rainbow>\n<yellow>Obtenha o <gold>PRÊMIO</gold>de efeito de partícula em todos os servidores QuickShop!</yellow>\n<aqua>Reivindique-o assistindo ao tutorial em vídeo abaixo!</aqua>\n<hover:show_text:'<gold>Clique para abrir a página de reivindicação de recompensas em seu navegador.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Sem espaço
