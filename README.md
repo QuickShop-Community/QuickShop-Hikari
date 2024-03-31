@@ -253,3 +253,7 @@ public class MyPlugin extends JavaPlugin {
 
 }
 ```
+
+## Repository Activity
+
+![analytics](https://repobeats.axiom.co/api/embed/68f324fa6d712dac64864744345936175d35ece1.svg "Repobeats analytics image")
