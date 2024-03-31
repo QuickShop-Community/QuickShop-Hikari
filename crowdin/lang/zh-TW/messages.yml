@@ -449,6 +449,8 @@ command:
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
     tag: <yellow>新增、刪除或查詢商店標籤
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
   no-type-given: '<red>Usage: /quickshop find \<item>'
   feature-not-enabled: 此功能沒有在配置檔案中啟用
