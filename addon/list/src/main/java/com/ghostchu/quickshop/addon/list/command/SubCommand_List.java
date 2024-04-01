@@ -56,7 +56,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().size() == 1) {
-            if (sender.hasPermission("quickshopaddon.list.other")) {
+            if (quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
                 return getPlayerList();
             }
         }
@@ -67,7 +67,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     }
 
     private void lookupSelf(Player sender, int page) {
-        if (!sender.hasPermission("quickshopaddon.list.self")) {
+        if (!quickshop.perm().hasPermission(sender, "quickshopaddon.list.self")) {
             quickshop.text().of(sender, "no-permission").send();
             return;
         }
@@ -75,7 +75,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     }
 
     private void lookupOther(@NotNull Player sender, @NotNull String userName, int page) {
-        if (!sender.hasPermission("quickshopaddon.list.other")) {
+        if (!quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
             quickshop.text().of(sender, "no-permission").send();
             return;
         }

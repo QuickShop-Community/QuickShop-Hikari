@@ -37,7 +37,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             return;
         }
         if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.MANAGEMENT_PERMISSION)
-           && !sender.hasPermission("quickshop.permission.bypass")){
+                && !plugin.perm().hasPermission(sender, "quickshop.permission.bypass")) {
             plugin.text().of(sender, "no-permission").send();
             return;
         }
