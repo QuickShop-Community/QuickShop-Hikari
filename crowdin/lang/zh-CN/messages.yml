@@ -52,7 +52,7 @@ quick-fill:
   header: '<yellow>您有多个名称为“<green>{0}</green>”的商店，选择其中一个继续：'
   entry-normal: ' <yellow>- <red>{0} <aqua>{1} <light_purple>'
   entry-cooperation: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果这不是预期结果，请尝试添加 <light_purple>{1} <gray> 到监听器黑名单中。<gray>配置指南：https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker#resolve-the-plugin-conflicting'
+3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果这不是预期结果，请尝试添加 <light_purple>{1} <gray> 到监听器黑名单中。配置指南：https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker#resolve-the-plugin-conflicting'
 average-price-nearby: '<green>附近的平均价格： <yellow>{0}'
 inventory-check-global-alert: "<red>[背包检查] <gray>警告！找到QuickShop悬浮物 <gold>{2}</gold> 在背包中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，这不应该发生，这通常意味着有人恶意利用漏洞来复制悬浮物。"
 digits-reach-the-limit: <red>您的价格中的小数点后位数超过上限。
@@ -296,7 +296,7 @@ unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
-april-rick-and-roll-easter-egg: "<hover:show_text:'点击这里获取QuickShop-Hikari开发者提供的限时奖励！'><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7/'><green>点击这里获取QuickShop-Hikari开发者提供的限时奖励！</green></click></hover>"
+april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>限时活动 -- QuickShop-Hikari</bold></rainbow>\n<yellow>获取你的 <gold>高级</gold> 粒子效果并在所有安装 QuickShop 的服务器上使用!</yellow>\n<aqua>点击下面的链接观看领取教程视频!</aqua>\n<hover:show_text:'<gold>点击以在浏览器中打开.</gold><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'>https://www.bilibili.com/video/BV1GJ411x7h7</click></hover>\n<green>---------------------------------------------------</green>"
 signs:
   item-right: ''
   out-of-space: 空间不足
@@ -661,7 +661,7 @@ transfer-ask: |-
 transferall-ask: |-
   <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-single-ask: |-
-  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。
