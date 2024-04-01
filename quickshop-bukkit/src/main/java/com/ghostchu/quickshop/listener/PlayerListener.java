@@ -14,7 +14,7 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
-import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitEigenCodeDrivenInventoryWrapper;
 import com.ghostchu.quickshop.util.ExpiringSet;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -356,7 +356,7 @@ public class PlayerListener extends AbstractQSListener {
         final Inventory playerInventory = p.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
-        int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
+        int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitEigenCodeDrivenInventoryWrapper(playerInventory));
         ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
                 || plugin.perm().hasPermission(p, "quickshop.other.use")) {
@@ -378,7 +378,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionBuying(p, new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -405,7 +405,7 @@ public class PlayerListener extends AbstractQSListener {
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
         final double traderBalance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(), shop.getCurrency());
-        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
+        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitEigenCodeDrivenInventoryWrapper(playerInventory));
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
                 || plugin.perm().hasPermission(p, "quickshop.other.use")) {
             Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
@@ -426,7 +426,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (arg == 0) {
                     return true;
                 }
-                plugin.getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+                plugin.getShopManager().actionSelling(p, new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
         return true;
@@ -467,7 +467,7 @@ public class PlayerListener extends AbstractQSListener {
         int amount;
         int shopHaveSpaces =
                 Util.countSpace(shop.getInventory(), shop);
-        int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+        int invHaveItems = Util.countItems(new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), shop);
         // Check if shop owner has enough money
         double ownerBalance = eco
                 .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
@@ -534,7 +534,7 @@ public class PlayerListener extends AbstractQSListener {
     private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
         int amount;
         int shopHaveItems = shop.getRemainingStock();
-        int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+        int invHaveSpaces = Util.countSpace(new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), shop);
         if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveItems, invHaveSpaces);
         } else {

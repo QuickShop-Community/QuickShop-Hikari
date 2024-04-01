@@ -9,29 +9,35 @@ import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Supplier;
 
-public class BukkitInventoryWrapper implements InventoryWrapper {
+@ApiStatus.Internal
+public class BukkitListenerDrivenInventoryWrapper implements InventoryWrapper, BukkitListenerDrivenInventoryListener {
     private final Inventory inventory;
     private final InventoryWrapperManager manager;
-    private final Supplier<String> eigenCodeProvider;
-    private final String eigenCode;
+    private final Location location;
+    private boolean needUpdate;
 
-    public BukkitInventoryWrapper(@NotNull Inventory inventory) {
-        this(inventory, () -> null);
-    }
-
-    public BukkitInventoryWrapper(@NotNull Inventory inventory, Supplier<String> eigenCodeProvider) {
+    public BukkitListenerDrivenInventoryWrapper(@NotNull Inventory inventory, Location location) {
         this.inventory = inventory;
         this.manager = QuickShop.getInstance().getInventoryWrapperManager();
-        this.eigenCodeProvider = eigenCodeProvider;
-        this.eigenCode = eigenCodeProvider.get();
+        this.location = location.clone();
+        QuickShop.getInstance().getInvWrapperUpdateManager().registerListener(this);
     }
+
+    @Override
+    public boolean notify(Location updated) {
+        if (location.equals(updated)) {
+            needUpdate = true;
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public @NotNull InventoryWrapperIterator iterator() {
@@ -89,7 +95,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public boolean isNeedUpdate() {
-        return Objects.equals(eigenCode, eigenCodeProvider.get());
+        return needUpdate;
     }
 
     @Override
@@ -106,5 +112,12 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     @Override
     public void setContents(ItemStack[] itemStacks) {
         inventory.setStorageContents(itemStacks);
+    }
+
+    @Override
+    public String toString() {
+        return "BukkitListenerDrivenInventoryWrapper{" +
+                "inventory=" + inventory +
+                '}';
     }
 }

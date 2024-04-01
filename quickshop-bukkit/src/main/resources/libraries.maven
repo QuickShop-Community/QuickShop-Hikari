@@ -2,6 +2,7 @@ org.apache.commons:commons-lang3:3.14.0@com.ghostchu.crowdin.CrowdinOTA
 org.apache.commons:commons-compress:1.26.0@org.apache.commons.compress.archivers.zip.ZipFile
 org.slf4j:slf4j-jdk14:2.0.12@org.slf4j.jul.JDK14LoggerAdapter
 com.google.code.gson:gson:2.10.1@com.google.gson.Gson
+com.google.guava:guava:33.1.0-jre
 com.rollbar:rollbar-java:1.9.0@com.rollbar.notifier.Rollbar
 cc.carm.lib:easysql-hikaricp:0.4.7@cc.carm.lib.easysql.hikari.HikariDataSource
 com.h2database:h2:2.1.214@org.h2.Driver

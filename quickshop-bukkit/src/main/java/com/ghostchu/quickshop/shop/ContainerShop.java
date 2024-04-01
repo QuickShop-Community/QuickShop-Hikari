@@ -429,7 +429,12 @@ public class ContainerShop implements Shop, Reloadable {
     public @Nullable InventoryWrapper getInventory() {
         if (inventoryWrapper == null || inventoryWrapper.isNeedUpdate()) {
             Util.ensureThread(false);
-            Log.debug("Loading inventory from symbol link: " + symbolLink);
+            if (inventoryWrapper != null && inventoryWrapper.isNeedUpdate()) {
+                Log.debug("(Re-)loading inventory from symbol link: " + symbolLink + " (InventoryWrapper declared it need to be re-newed)");
+            } else {
+                Log.debug("Loading inventory from symbol link: " + symbolLink);
+            }
+
             try {
                 inventoryWrapper = locateInventory(symbolLink);
             } catch (Exception e) {
