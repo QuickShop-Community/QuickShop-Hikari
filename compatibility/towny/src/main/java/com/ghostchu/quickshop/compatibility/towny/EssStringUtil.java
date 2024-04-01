@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.compatibility.towny;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("all")
 public class EssStringUtil {
     private static final Pattern INVALIDFILECHARS = Pattern.compile("[^a-z0-9-]");
     private static final Pattern STRICTINVALIDCHARS = Pattern.compile("[^a-z0-9]");

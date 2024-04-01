@@ -308,7 +308,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.metricManager = new MetricManager(this);
         logger.info("Loading player name and unique id mapping...");
         this.playerFinder = new FastPlayerFinder(this);
-        loadChatProcessor();
         loadTextManager();
         logger.info("Register InventoryWrapper...");
         this.inventoryWrapperRegistry.register(javaPlugin, this.inventoryWrapperManager);

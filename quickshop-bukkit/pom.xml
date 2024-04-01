@@ -216,12 +216,6 @@
             <version>3.14.5</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.juliomarcopineda</groupId>
-            <artifactId>jdbc-stream</artifactId>
-            <version>0.1.1</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/net.sourceforge.csvjdbc/csvjdbc -->
         <dependency>
             <groupId>net.sourceforge.csvjdbc</groupId>
@@ -284,12 +278,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <dependency>
-            <groupId>org.encryptor4j</groupId>
-            <artifactId>encryptor4j</artifactId>
-            <version>0.1.2</version>
-        </dependency>
         <dependency>
             <groupId>su.nightexpress.core</groupId>
             <artifactId>NightCore</artifactId>
@@ -310,23 +298,5 @@
             <version>2.0.1</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>datafixerupper</artifactId>
-            <version>6.0.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>datafixerupper</artifactId>
-            <version>6.0.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <!--        <dependency>-->
-<!--            <groupId>com.mohistmc</groupId>-->
-<!--            <artifactId>json</artifactId>-->
-<!--            <version>0.2</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
     </dependencies>
 </project>
