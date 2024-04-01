@@ -1,8 +1,9 @@
-package com.ghostchu.quickshop.permission;
+package com.ghostchu.quickshop.permission.impl;
 
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
 import com.ghostchu.quickshop.api.permission.ProviderIsEmptyException;
+import com.ghostchu.quickshop.permission.PermissionInformationContainer;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

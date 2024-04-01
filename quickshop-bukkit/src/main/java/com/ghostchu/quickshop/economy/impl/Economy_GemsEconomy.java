@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economy;
+package com.ghostchu.quickshop.economy.impl;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.NonSeparateAbstractEconomy;

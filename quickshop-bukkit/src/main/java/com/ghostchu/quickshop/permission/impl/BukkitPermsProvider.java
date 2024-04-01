@@ -1,7 +1,8 @@
-package com.ghostchu.quickshop.permission;
+package com.ghostchu.quickshop.permission.impl;
 
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
+import com.ghostchu.quickshop.permission.PermissionInformationContainer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
