@@ -32,16 +32,11 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
         this.formatter = new BuiltInEconomyFormatter(plugin);
         plugin.getReloadManager().register(this);
         init();
-        setupEconomy();
     }
 
 
     private void init() {
         this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
-    }
-
-    private void setupEconomy() {
-
     }
 
     @Override

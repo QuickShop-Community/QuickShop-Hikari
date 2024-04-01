@@ -312,6 +312,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         });
     }
 
+    @Override
     public boolean shopIsNotValid(@Nullable QUser qUser, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendDirectMessage(qUser, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));

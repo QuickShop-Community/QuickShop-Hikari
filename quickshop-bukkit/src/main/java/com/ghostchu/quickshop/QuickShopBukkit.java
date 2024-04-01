@@ -164,7 +164,7 @@ public class QuickShopBukkit extends JavaPlugin {
     }
 
     private void loadLibraries(LibraryManager manager) {
-        try (InputStream stream = getResource("libraries.maven");) {
+        try (InputStream stream = getResource("libraries.maven")) {
             if (stream == null) {
                 throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
             }

@@ -61,7 +61,6 @@ import java.util.concurrent.CompletableFuture;
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
     // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
-    @SuppressWarnings({"AliDeprecation", "deprecation"})
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
     private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
     @NotNull

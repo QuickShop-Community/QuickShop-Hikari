@@ -37,7 +37,7 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
     private final BuiltInEconomyFormatter formatter;
     private boolean allowLoan;
     @Nullable
-    private String lastError = null;
+    private final String lastError = null;
     @Getter
     private Service<EconomyProvider> service;
 

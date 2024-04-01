@@ -381,10 +381,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         updateConfig();
     }
 
-    private void loadChatProcessor() {
-
-    }
-
     private void loadTextManager() {
         logger.info("Loading translations (This may take a while)...");
         try {

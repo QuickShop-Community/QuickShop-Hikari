@@ -235,7 +235,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "com.ghostchu:quickshop-bukkit:VERSION HERE";
+  compileOnly "com.ghostchu:quickshop-bukkit:VERSION HERE"
 }
 ```
 

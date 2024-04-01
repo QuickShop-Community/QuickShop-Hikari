@@ -12,6 +12,8 @@ public interface ItemExpressionHandler extends Comparable<ItemExpressionHandler>
         return getPrefix()+":";
     }
     boolean match(ItemStack stack, String expression);
+
+    @Override
     int hashCode();
     @Override
     default int compareTo(@NotNull ItemExpressionHandler o){

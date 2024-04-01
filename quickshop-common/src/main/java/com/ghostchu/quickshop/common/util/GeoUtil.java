@@ -106,7 +106,7 @@ public class GeoUtil {
                     }
                     String key = kv[0];
                     String value = kv[1];
-                    if (key.equalsIgnoreCase("loc") && !value.equalsIgnoreCase("CN")) {
+                    if ("loc".equalsIgnoreCase(key) && !"CN".equalsIgnoreCase(value)) {
                         inChinaRegion = false;
                         break;
                     }

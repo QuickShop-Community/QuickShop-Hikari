@@ -38,7 +38,7 @@ import java.util.zip.GZIPInputStream;
 
 public class ShopLogsMigrate extends AbstractMigrateComponent {
     private final String template = "[2023-11-11 19:35:43.502] ";
-    DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
+    final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
 
     public ShopLogsMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender) {
         super(main, hikari, reremake, sender);

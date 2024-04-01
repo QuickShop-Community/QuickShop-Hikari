@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SubCommand_SilentRemove extends SubCommand_SilentBase {
     private static final int CONFIRM_TIMEOUT = 5;
-    private Cache<UUID, UUID> deleteConfirmation = CacheBuilder.newBuilder()
+    private final Cache<UUID, UUID> deleteConfirmation = CacheBuilder.newBuilder()
             .expireAfterWrite(CONFIRM_TIMEOUT, TimeUnit.SECONDS)
             .build();
 

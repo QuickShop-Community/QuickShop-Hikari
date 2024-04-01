@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -283,11 +284,7 @@ public class Log {
             return CompletableFuture.supplyAsync(() -> {
                 StringBuilder sb = new StringBuilder();
                 Log.Caller caller;
-                if (this.caller == null) {
-                    caller = new Caller("<NO RECORDING>", "<NO RECORDING>", "<NO RECORDING>", -1);
-                } else {
-                    caller = this.caller;
-                }
+                caller = Objects.requireNonNullElseGet(this.caller, () -> new Caller("<NO RECORDING>", "<NO RECORDING>", "<NO RECORDING>", -1));
                 String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
                 sb.append("[");
                 sb.append(caller.getThreadName());

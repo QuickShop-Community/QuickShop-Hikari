@@ -29,9 +29,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPluginLoad(PluginEnableEvent event) {
-        if (event.getPlugin().getName().equalsIgnoreCase("EcoEnchants")
-                || event.getPlugin().getName().equalsIgnoreCase("libreforge")
-                || event.getPlugin().getName().equalsIgnoreCase("eco"))
+        if ("EcoEnchants".equalsIgnoreCase(event.getPlugin().getName())
+                || "libreforge".equalsIgnoreCase(event.getPlugin().getName())
+                || "eco".equalsIgnoreCase(event.getPlugin().getName()))
             Bukkit.getScheduler().runTaskLater(this, this::initEcoEnchantEnchantmentTranslationKeys, 1);
     }
 
