@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.listener;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.shop.inventory.BukkitEigenCodeDrivenInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.Location;
@@ -31,7 +31,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryOpenEvent event) {
-        Util.inventoryCheck(new BukkitEigenCodeDrivenInventoryWrapper(event.getInventory()));
+        Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -52,7 +52,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                         + " at "
                         + loc
                         + " trying pickup the DisplayItem,  you should teleport to that location and to check detail..");
-        Util.inventoryCheck(new BukkitEigenCodeDrivenInventoryWrapper(event.getInventory()));
+        Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
     }
 
     private void sendAlert(@NotNull String msg) {
@@ -98,7 +98,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                 "[DisplayGuard] Player "
                         + event.getPlayer().getName()
                         + " trying hook item use Fishing Rod, QuickShop already removed it.");
-        Util.inventoryCheck(new BukkitEigenCodeDrivenInventoryWrapper(event.getPlayer().getInventory()));
+        Util.inventoryCheck(new BukkitInventoryWrapper(event.getPlayer().getInventory()));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -110,7 +110,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
             return;
         }
         event.setCancelled(true);
-        Util.inventoryCheck(new BukkitEigenCodeDrivenInventoryWrapper(event.getPlayer().getInventory()));
+        Util.inventoryCheck(new BukkitInventoryWrapper(event.getPlayer().getInventory()));
         sendAlert(
                 "[DisplayGuard] Player  "
                         + event.getPlayer().getName()

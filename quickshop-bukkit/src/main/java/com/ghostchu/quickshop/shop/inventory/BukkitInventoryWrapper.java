@@ -16,17 +16,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class BukkitEigenCodeDrivenInventoryWrapper implements InventoryWrapper {
+public class BukkitInventoryWrapper implements InventoryWrapper {
     private final Inventory inventory;
     private final InventoryWrapperManager manager;
     private final Supplier<String> eigenCodeProvider;
     private final String eigenCode;
 
-    public BukkitEigenCodeDrivenInventoryWrapper(@NotNull Inventory inventory) {
+    public BukkitInventoryWrapper(@NotNull Inventory inventory) {
         this(inventory, () -> null);
     }
 
-    public BukkitEigenCodeDrivenInventoryWrapper(@NotNull Inventory inventory, Supplier<String> eigenCodeProvider) {
+    public BukkitInventoryWrapper(@NotNull Inventory inventory, Supplier<String> eigenCodeProvider) {
         this.inventory = inventory;
         this.manager = QuickShop.getInstance().getInventoryWrapperManager();
         this.eigenCodeProvider = eigenCodeProvider;

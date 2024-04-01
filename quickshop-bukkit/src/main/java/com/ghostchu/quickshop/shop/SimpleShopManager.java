@@ -19,7 +19,7 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
-import com.ghostchu.quickshop.shop.inventory.BukkitEigenCodeDrivenInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.inventory.BukkitListenerDrivenInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -1537,7 +1537,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         int amount;
         int shopHaveSpaces =
                 Util.countSpace(shop.getInventory(), shop);
-        int invHaveItems = Util.countItems(new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), shop);
+        int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
         // Check if shop owner has enough money
         double ownerBalance = eco
                 .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
@@ -1552,7 +1552,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {
-            amount = Util.countItems(new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), shop);
+            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
@@ -1659,7 +1659,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionBuying(p, new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+            actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
         } else if (shop.isSelling()) {
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
@@ -1674,7 +1674,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionSelling(p, new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+            actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
         } else {
             plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.logger().warn("Shop data broken? Loc: {}", shop.getLocation());
@@ -1744,13 +1744,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
         int amount;
         int shopHaveItems = shop.getRemainingStock();
-        int invHaveSpaces = Util.countSpace(new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), shop);
+        int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
         if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveItems, invHaveSpaces);
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
             // items from the shop.
-            amount = Util.countSpace(new BukkitEigenCodeDrivenInventoryWrapper(p.getInventory()), shop);
+            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
