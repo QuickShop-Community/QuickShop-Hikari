@@ -66,7 +66,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
                 plugin.logger().warn("Failed to save migrated  price-restriction.yml.yml to plugin folder!", e);
             }
         }
-        this.undefinedMax = configuration.getDouble("undefined.max", 999999999999999999999999999999.99d);
+        this.undefinedMax = configuration.getDouble("undefined.max", 99999999999999999999999999999.99d);
         this.undefinedMin = configuration.getDouble("undefined.min", 0.0d);
         this.wholeNumberOnly = configuration.getBoolean("whole-number-only", false);
         if (!configuration.getBoolean("enable", false)) {
@@ -108,7 +108,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         }
         if (configuration.getInt("version") == 2) {
             if (configuration.getDouble("undefined.max") == -1) {
-                configuration.set("undefined.max", 999999999999999999999999999999.99); // DECIMAL (32,2) MAX
+                configuration.set("undefined.max", 99999999999999999999999999999.99d); // DECIMAL (32,2) MAX
             }
             configuration.set("version", 3);
             anyChanges = true;
