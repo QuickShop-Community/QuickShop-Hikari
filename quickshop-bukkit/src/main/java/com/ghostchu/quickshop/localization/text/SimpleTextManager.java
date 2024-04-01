@@ -144,7 +144,6 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                 try {
                     configuration.loadFromString(Files.readString(file.toPath(), StandardCharsets.UTF_8));
                     languageFilesManager.deploy(locale, configuration);
-                    Log.debug("Override file loaded for " + locale + " with file " + file.getAbsolutePath());
                 } catch (InvalidConfigurationException | IOException e) {
                     plugin.logger().warn("Failed to override translation for {}.", locale, e);
                 }
@@ -283,7 +282,6 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                         YamlConfiguration configuration = new YamlConfiguration();
                         configuration.loadFromString(new String(zipFile.getInputStream(entry).readAllBytes(), StandardCharsets.UTF_8));
                         availableLang.put(locale.toLowerCase(Locale.ROOT).replace("-", "_"), configuration);
-                        Log.debug("Bundled language file: " + locale + " at " + entry.getName() + " loaded.");
                     } catch (IOException | InvalidConfigurationException e) {
                         plugin.logger().warn("Failed to load bundled translation.", e);
                     }
