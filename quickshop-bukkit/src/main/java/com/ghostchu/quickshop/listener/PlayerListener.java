@@ -83,6 +83,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onClick(PlayerInteractEvent e) {
+        // Deprecated: Can use useInteractedBlock() == Result.DENY instead
         if (e.isCancelled() && PackageUtil.parsePackageProperly("ignoreCancelledInteractEvent").asBoolean(true)) {
             return;
         }
