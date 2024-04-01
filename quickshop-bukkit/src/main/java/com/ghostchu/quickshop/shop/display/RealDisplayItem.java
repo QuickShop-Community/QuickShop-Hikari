@@ -77,7 +77,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         Util.ensureThread(false);
         Location location = this.getDisplayLocation();
         if (this.item != null && location != null) {
-            this.item.teleport(location);
+            PaperLib.teleportAsync(this.item, location);
             return;
         }
         fixDisplayMovedOld();
