@@ -89,7 +89,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public boolean isNeedUpdate() {
-        return Objects.equals(eigenCode, eigenCodeProvider.get());
+        return !Objects.equals(eigenCode, eigenCodeProvider.get());
     }
 
     @Override
