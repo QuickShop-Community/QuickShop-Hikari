@@ -343,6 +343,9 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isBuying()) {
             return false;
         }
+        if (!plugin.perm().hasPermission(p, "quickshop.use")) {
+            return false;
+        }
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
         this.playClickSound(p);
@@ -389,6 +392,9 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
         if (!shop.isSelling()) {
+            return false;
+        }
+        if (!plugin.perm().hasPermission(p, "quickshop.use")) {
             return false;
         }
         plugin.getShopManager().sendShopInfo(p, shop);
