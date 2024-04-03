@@ -1,5 +1,5 @@
-org.apache.commons:commons-lang3:3.14.0@com.ghostchu.crowdin.CrowdinOTA
-org.apache.commons:commons-compress:1.26.0@org.apache.commons.compress.archivers.zip.ZipFile
+org.apache.commons:commons-lang3:3.14.0@org.apache.commons.lang3.StringUtils
+org.apache.commons:commons-compress:1.25.0@org.apache.commons.compress.archivers.zip.ZipFile
 org.slf4j:slf4j-jdk14:2.0.12@org.slf4j.jul.JDK14LoggerAdapter
 com.google.code.gson:gson:2.10.1@com.google.gson.Gson
 com.google.guava:guava:33.1.0-jre
