@@ -92,6 +92,7 @@ player-bought-from-your-store-tax: <green>{0} hat {1} {2} von deinem Shop gekauf
 not-enough-space: <red>Du hast nur Platz für <yellow>{0}</yellow> weitere!
 shop-name-success: <green>Shopname erfolgreich geändert zu <yellow>{0}</yellow>.
 shop-staff-added: <yellow>{0} <yellow>wurde erfolgreich als Shopmitarbeiter zu deinem Shop hinzugefügt.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Stelle Shops von Backups wieder her...
 virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>Bezieht sich auf ein Systemkonto mit dem selben Namen.</gray>\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>"
 real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
