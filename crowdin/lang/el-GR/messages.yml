@@ -1,70 +1,70 @@
 break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+not-allowed-to-create: <red>Δεν μπορείτε να δημιουργήσετε κατάστημα εδώ.
+disabled-in-this-world: <red>Το QuickShop είναι απενεργοποιημένο σε αυτόν τον κόσμο
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
-shops-backingup: Creating Shop-backup from database...
+shops-backingup: Δημιουργία αντιγράφου ασφαλείας καταστημάτων από τη βάση δεδομένων...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
+thats-not-a-number: <red>Μη έγκυρος αριθμός
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
-not-a-number: <red>You can only input a number, your input was {0}.
+not-a-number: <red>Μπορείτε να εισάγετε μόνο αριθμούς, η είσοδος σας ήταν {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>Το κατάστημά σας στο {0} αφαιρέθηκε επειδή δεν είχατε αρκετά χρήματα για να το κρατήσετε!
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
-  price: '[price]'
-  name: '[name]'
-  range: '[range]'
-  currency: '[currency name]'
-  percentage: '[percentage%]'
+  amount: '[ποσό]'
+  item: '[αντικείμενο]'
+  price: '[τιμή]'
+  name: '[όνομα]'
+  range: '[εύρος]'
+  currency: 'Ονομασία συναλλάγματος'
+  percentage: '[ποσοστό%]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
-you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
+server-crash-warning: '<red>ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Η χρήση της εντολής /quickshop reload για την αντικατάσταση/διαγραφή του αρχείου QuickShop Jar ενδέχεται να διακόψει τη λειτουργία του διακομιστή ενώ εκτελείται.'
+you-cant-afford-to-change-price: <red>Κοστίζει {0} για να αλλάξετε την τιμή στο κατάστημά σας.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Το κατάστημά σας {0} είναι γεμάτο!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>Η λειτουργία επικόλλησης έχει απενεργοποιηθεί! Δεν μπορείτε να ζητήσετε τεχνική υποστήριξη.
+  Λόγος: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[δικό του] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Όνομα: <aqua>{0}'
+    - '<yellow>Ιδιοκτήτης: <aqua>{0}'
+    - '<yellow>Τύπος: <aqua>{0}'
+    - '<yellow>Τιμή: <aqua>{0}'
+    - '<yellow>Αντικείμενο: <aqua>{0}'
+    - '<yellow>Τοποθεσία: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Όνομα: <aqua>{name}'
+    - '<yellow>Ιδιοκτήτης: <aqua>{owner}'
+    - '<yellow>Τύπος: <aqua>{type}'
+    - '<yellow>Τιμή: <aqua>{price}'
+    - '<yellow>Αντικείμενο: <aqua>{item}'
+    - '<yellow>Τοποθεσία: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Μόνο για διαχειριστές) <light_purple>{0}<dark_gray> αρνήθηκε τους ελέγχους αδειών. Εάν αυτό δεν αναμένεται, δοκιμάστε να προσθέσετε <light_purple>{1} <gray>στη μαύρη λίστα ακροατών. Οδηγός ρυθμίσεων: https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
-digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
-currency-unset: <green>Shop currency removed successfully. Using default settings now.
-you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
+inventory-check-global-alert: "<red>[Έλεγχος αποθέματος] <gray>Προειδοποίηση! Βρέθηκε ένα στοιχείο εμφάνισης του QuickShop <gold>{2}</gold> στο απόθεμα στο <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, κάτι που δεν πρέπει να συμβεί, Αυτό συνήθως σημαίνει ότι κάποιος εκμεταλλεύεται κακόβουλα το exploit για να αντιγράψει το στοιχείο εμφάνισης."
+digits-reach-the-limit: <red>Έχετε φτάσει τα όρια των δεκαδικών ψηφίων στην τιμή.
+currency-unset: <green>Το νόμισμα καταστήματος καταργήθηκε με επιτυχία. Χρήση προεπιλεγμένων ρυθμίσεων τώρα.
+you-cant-create-shop-in-there: <red>Δεν έχετε άδεια να δημιουργήσετε ένα κατάστημα σε αυτή την τοποθεσία.
 no-pending-action: <red>You do not have any pending actions
-refill-success: <green>Refill successful
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+refill-success: <green>Η αναπλήρωση ολοκληρώθηκε με επιτυχία
+failed-to-paste: <red>Αποτυχία αποστολής των δεδομένων στο Pastebin. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και προσπαθήστε ξανά. (Ανατρέξτε στην κονσόλα για λεπτομέρειες)
+shop-out-of-stock-name: <dark_purple>Το κατάστημά σας {0} έχει εξαντληθεί από {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
+exceeded-maximum: <red>Η τιμή υπερέβη τη μέγιστη τιμή στην Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All shops have been removed...
 3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission setup in there?
