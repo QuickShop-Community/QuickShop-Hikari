@@ -93,6 +93,7 @@ player-bought-from-your-store-tax: <green>{0} kjøpte {1} {2} fra butikken din, 
 not-enough-space: <red>Du har bare plass til <yellow>{0}<red> til!
 shop-name-success: <green>Butikknavnet ble endret til <yellow>{0}<green>.
 shop-staff-added: <yellow>{0} <green>ble lagt til som en ansatt i butikken din.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Gjenoppretter butikker fra sikkerhetskopi...
 virtual-player-component-hover: "<gray>Dette er en virtuell spiller.\n<gray>Denne refererer til en systemkonto med samme navn.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Brukernavn: <yellow>{1}</yellow></green>\n<green>Vises som: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Dette er en eksisterende spiller.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Brukernavn: <yellow>{1}</yellow></green>\n<green>Vises som: <yellow>{2}</yellow></green>\n<gray>Hvis du ønsker å bruke en virtuell systemkonto med samme navn, legg til <dark_gray>\"[]\"</dark_gray> på begge sider av brukernavnet: <dark_gray>[{1}]</dark_gray>."
