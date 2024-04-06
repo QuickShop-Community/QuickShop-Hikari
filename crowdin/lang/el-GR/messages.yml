@@ -69,14 +69,14 @@ unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimit
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All shops have been removed...
 3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission setup in there?
 not-a-integer: <red>You must input a integer, your input was {0}.
-translation-country: 'Language Zone: English (en_US)'
+translation-country: 'Γλώσσα: Ελληνικά (el_GR)'
 buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
 purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
+denied-put-in-item: <red>Δεν μπορείτε να βάλετε αυτό το προϊόν στο κατάστημά σας!
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
-shop-already-owned: <red>This is already a shop.
+shop-already-owned: <red>Αυτό είναι ήδη ένα κατάστημα.
 backup-success: <green>Backup successfull.
 not-looking-at-shop: <red>Could not find a QuickShop. You need to look at one.
 you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
@@ -89,17 +89,17 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} αγόρασε {1} {2} από το κατάστημά σας και κερδίσατε {3} ({4} σε φόρους).
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
-shop-staff-empty: <yellow>This shop have no staff members.
-shops-recovering: Recovering shops from backup...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+shop-staff-empty: <yellow>Αυτό το κατάστημα δεν έχει μέλη προσωπικού.
+shops-recovering: Ανάκτηση καταστημάτων από αντίγραφα ασφαλείας...
+virtual-player-component-hover: "<gray>Αυτός είναι ένας εικονικός παίκτης.\n<gray>Αναφέρεται σε έναν λογαριασμό συστήματος με αυτό το όνομα με το ίδιο όνομα.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Όνομα χρήστη: <yellow>{1}</yellow></green>\n<green>Εμφάνιση ως: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>Αυτός είναι ένας πραγματικός παίκτης που υπάρχει.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Όνομα χρήστη: <yellow>{1}</yellow></green>\n<green>Εμφάνιση ως: <yellow>{2}</yellow></green>\n<gray>Εάν θέλετε να χρησιμοποιήσετε έναν λογαριασμό εικονικού συστήματος με το ίδιο όνομα, προσθέστε <dark_gray>\"[]\"</dark_gray> και στις δύο πλευρές του ονόματος χρήστη: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Owner: {0}'
+  owner: '<green>Ιδιοκτήτης: {0}'
   preview: <aqua>[Item Preview]
   enchants: <dark_purple>Enchantments
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
