@@ -93,6 +93,7 @@ player-bought-from-your-store-tax: <green>{0} 从你的商店里购买了 {1} {2
 not-enough-space: <red>背包空间不足，剩余 {0}
 shop-name-success: <green>成功地将商店名称设置为 <yellow>{0}<green>
 shop-staff-added: <green>已成功地添加助手 <yellow>{0}<green> 到你的商店。
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: 正在从备份中恢复商店...
 virtual-player-component-hover: "<gray>这是虚拟玩家\n<gray>是指一个具有相同名称的系统帐户</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>这是一个真正存在的玩家\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>\n<gray>如果您希望使用同名的虚拟系统帐户 将 <dark_gray>\"[]\"</dark_gray> 添加到用户名的两边： <dark_gray>[{1}]</dark_gray>"

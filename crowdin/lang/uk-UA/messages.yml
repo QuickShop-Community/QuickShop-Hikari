@@ -93,6 +93,7 @@ player-bought-from-your-store-tax: <green>{0} Придбати {1} {2} з ваш
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Відновлення магазинів із резервної копії...
 virtual-player-component-hover: "<gray>Це віртуальний плеєр.\n<gray>Відноситься до системного облікового запису з таким ім'ям з таким же ім'ям.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Це реально існуючий гравець.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>\n<gray>Якщо ви хочете використовувати обліковий запис віртуальної системи з таким же ім'ям, додайте <dark_gray>\"[]\"</dark_gray> з обох боків імені користувача: <dark_gray>[{1}]</dark_gray>."
