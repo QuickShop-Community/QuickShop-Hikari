@@ -35,8 +35,8 @@ public final class Main extends CompatibilityModule implements EventListener {
     }
 
     private boolean cancelEvent(@Nullable Item item, @Nullable ItemStack itemStack) {
-        if (item == null) {
-            return AbstractDisplayItem.checkIsGuardItemStack(itemStack);
+        if (item != null) {
+            return AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
         }
 
         if (itemStack != null) {
