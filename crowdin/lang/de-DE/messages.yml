@@ -92,7 +92,7 @@ player-bought-from-your-store-tax: <green>{0} hat {1} {2} von deinem Shop gekauf
 not-enough-space: <red>Du hast nur Platz für <yellow>{0}</yellow> weitere!
 shop-name-success: <green>Shopname erfolgreich geändert zu <yellow>{0}</yellow>.
 shop-staff-added: <yellow>{0} <yellow>wurde erfolgreich als Shopmitarbeiter zu deinem Shop hinzugefügt.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Dieser Shop hat keine Mitarbeiter.
 shops-recovering: Stelle Shops von Backups wieder her...
 virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>Bezieht sich auf ein Systemkonto mit dem selben Namen.</gray>\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>"
 real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
@@ -287,7 +287,7 @@ unknown-owner: Unbekannt
 restricted-prices: '<red>Eingeschränkter Preis für {0}: Mindestens {1}, maximal {2}'
 nearby-shop-this-way: <green>Shop ist {0} Blöcke von dir entfernt.
 owner-bypass-check: <yellow>Alle Prüfungen wurden umgangen. Handel erfolgreich! (Sie sind jetzt der Besitzer des Ladens!)
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Anklicken um im Browser zu öffnen für eine limitierte Belohnung!'><click:open_url:'https://www.youtube.com/watch?v?dQw4w9WgXcQ'><green>Klicke hier um eine limitierte Belohnung von den QuickShop-Hikari Entwicklern zu erhalten!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Kein Platz
@@ -445,8 +445,8 @@ command:
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
     suggestprice: <yellow>Empfiehlt einen Preis für den angesehenen Shop, basierend auf anderen Shops
-    history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
+    history: <yellow>Zeige den Transaktionsverlauf eines Shops
+    sign: <yellow>Ändere das Material des Schildes eines Shops
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
