@@ -88,8 +88,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                                     default -> plugin.text().of(sender, "command.wrong-args").send();
                                 }
                                 if (permissionGroup != null) {
-                                    BuiltInShopPermissionGroup finalPermissionGroup = permissionGroup;
-                                    Util.mainThreadRun(() -> shop.setPlayerGroup(uuid, finalPermissionGroup));
+                                    shop.setPlayerGroup(uuid, permissionGroup);
                                 }
                             })
                             .exceptionally(throwable -> {

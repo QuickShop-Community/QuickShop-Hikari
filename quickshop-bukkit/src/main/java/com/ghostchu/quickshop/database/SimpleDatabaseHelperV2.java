@@ -14,12 +14,12 @@ import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
-import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -83,7 +83,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     /**
      * Verifies that all required columns exist.
      */
-    public void checkColumns() throws Exception {
+    public void checkColumns() {
         plugin.logger().info("Checking and updating database columns, it may take a while...");
         try (PerfMonitor ignored = new PerfMonitor("Perform database schema upgrade")) {
             new DatabaseUpgrade(this).upgrade();

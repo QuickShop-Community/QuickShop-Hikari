@@ -1,7 +1,7 @@
-package com.ghostchu.quickshop.economy;
+package com.ghostchu.quickshop.economy.impl;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.NonSeparateAbstractEconomy;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import lombok.ToString;
 import net.tnemc.core.EconomyManager;
 import net.tnemc.core.TNECore;
 import net.tnemc.core.account.Account;
+import net.tnemc.core.account.PlayerAccount;
 import net.tnemc.core.account.holdings.HoldingsEntry;
 import net.tnemc.core.account.holdings.modify.HoldingsModifier;
 import net.tnemc.core.actions.source.PluginSource;
@@ -19,7 +20,6 @@ import net.tnemc.core.currency.format.CurrencyFormatter;
 import net.tnemc.core.transaction.Transaction;
 import net.tnemc.core.transaction.TransactionResult;
 import net.tnemc.core.utils.exceptions.InvalidTransactionException;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -31,7 +31,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @ToString
-public class Economy_TNE extends AbstractEconomy {
+public class Economy_TNE extends NonSeparateAbstractEconomy {
 
     private final QuickShop plugin;
     private boolean allowLoan;
@@ -112,7 +112,6 @@ public class Economy_TNE extends AbstractEconomy {
         final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
 
         if (account.isPresent() && currencyOpt.isPresent()) {
-
             return runTransaction(account.get(), currencyOpt.get(), world.getName(), BigDecimal.valueOf(amount), "give", false);
         }
         return false;
@@ -128,7 +127,14 @@ public class Economy_TNE extends AbstractEconomy {
      */
     @Override
     public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
+        if (!isValid()) {
+            return false;
+        }
+        final Optional<PlayerAccount> account = TNECore.api().getPlayerAccount(name);
+        final Optional<Currency> currencyOpt = TNECore.eco().currency().findCurrency(currency);
+        if (account.isPresent() && currencyOpt.isPresent()) {
+            return runTransaction(account.get(), currencyOpt.get(), world.getName(), BigDecimal.valueOf(amount), "give", false);
+        }
         return false;
     }
 

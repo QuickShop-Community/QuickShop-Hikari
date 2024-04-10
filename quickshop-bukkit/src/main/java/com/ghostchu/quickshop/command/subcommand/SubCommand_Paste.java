@@ -97,7 +97,6 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
                     plugin.text().of(sender, "paste-451").send();
                 }
-                return;
             }
         }, () -> plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send());
         return true;

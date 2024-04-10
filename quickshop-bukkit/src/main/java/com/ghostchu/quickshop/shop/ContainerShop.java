@@ -61,18 +61,19 @@ import java.util.concurrent.CompletableFuture;
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
     // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
-    @SuppressWarnings({"AliDeprecation", "deprecation"})
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
     private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
     @NotNull
     private final Location location;
-    private final YamlConfiguration extra;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @NotNull
     private final Map<UUID, String> playerGroup;
+    @EqualsAndHashCode.Exclude
+    private final boolean isDeleted = false;
+    private YamlConfiguration extra;
     private long shopId;
     private QUser owner;
     private double price;
@@ -87,8 +88,6 @@ public class ContainerShop implements Shop, Reloadable {
     private AbstractDisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
-    @EqualsAndHashCode.Exclude
-    private final boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
     @EqualsAndHashCode.Exclude
@@ -165,7 +164,7 @@ public class ContainerShop implements Shop, Reloadable {
             @NotNull QUser owner,
             boolean unlimited,
             @NotNull ShopType type,
-            @NotNull YamlConfiguration extra,
+            @Nullable YamlConfiguration extra,
             @Nullable String currency,
             boolean disableDisplay,
             @Nullable QUser taxAccount,
@@ -415,6 +414,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @NotNull ConfigurationSection getExtra(@NotNull Plugin plugin) {
+        if (this.extra == null) {
+            this.extra = new YamlConfiguration();
+        }
         ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
         if (section == null) {
             section = extra.createSection(plugin.getName());
@@ -427,9 +429,14 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @Nullable InventoryWrapper getInventory() {
-        if (inventoryWrapper == null) {
+        if (inventoryWrapper == null || inventoryWrapper.isNeedUpdate()) {
             Util.ensureThread(false);
-            Log.debug("SymbolLink Applying: " + symbolLink);
+            if (inventoryWrapper != null && inventoryWrapper.isNeedUpdate()) {
+                Log.debug("(Re-)loading inventory from symbol link: " + symbolLink + " (InventoryWrapper declared it need to be re-newed)");
+            } else {
+                Log.debug("Loading inventory from symbol link: " + symbolLink);
+            }
+
             try {
                 inventoryWrapper = locateInventory(symbolLink);
             } catch (Exception e) {
@@ -564,15 +571,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setPrice(double price) {
-        if (this.price == price) {
-            return;
-        }
         Util.ensureThread(false);
-        ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
-        if (Util.fireCancellableEvent(event)) {
-            Log.debug("A plugin cancelled the price change event.");
-            return;
-        }
         this.price = price;
         setDirty();
         setSignText();
@@ -1249,7 +1248,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public @NotNull String saveExtraToYaml() {
-        return extra.saveToString();
+        return extra == null ? "" : extra.saveToString();
     }
 
     @Override
@@ -1337,7 +1336,27 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
+        if (this.extra == null) {
+            this.extra = new YamlConfiguration();
+        }
         extra.set(plugin.getName(), data);
+        // compress extra to null if possible
+        boolean anyValid = false;
+        for (String key : extra.getKeys(false)) {
+            if (!extra.isConfigurationSection(key)) {
+                anyValid = true;
+                break;
+            }
+            ConfigurationSection section = extra.getConfigurationSection(key);
+            if (section == null) continue;
+            if (!section.getKeys(false).isEmpty()) {
+                anyValid = true;
+                break;
+            }
+        }
+        if (!anyValid) {
+            this.extra = null;
+        }
         setDirty();
     }
 
@@ -1376,7 +1395,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
         if (group == BuiltInShopPermissionGroup.EVERYONE) {
-            this.getPermissionAudiences().remove(player);
+            this.playerGroup.remove(player);
         } else {
             setPlayerGroup(player, group.getNamespacedNode());
         }

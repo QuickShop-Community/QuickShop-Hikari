@@ -206,7 +206,7 @@ public class ShopHistory {
         }, QuickExecutor.getShopHistoryQueryExecutor());
     }
 
-    public CompletableFuture<ShopSummary> generateSummary() throws SQLException {
+    public CompletableFuture<ShopSummary> generateSummary() {
         long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
         long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
         long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();

@@ -338,7 +338,10 @@ public class ShopLoader implements SubPasteItem {
             }
         }
 
-        private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString) {
+        private @Nullable YamlConfiguration deserializeExtra(@NotNull String extraString) {
+            if (StringUtils.isEmpty(extraString)) {
+                return null;
+            }
             YamlConfiguration yamlConfiguration = new YamlConfiguration();
             try {
                 yamlConfiguration.loadFromString(extraString);

@@ -51,12 +51,12 @@ quick-fill:
   header: '<yellow>Du hast mehrere Shops mit dem Namem "<green>{0}</green>", wähle einen um fortzufahren:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(Nur für Admins) <light_purple>{0}<light_purple> hat die Berechtigungsprüfungen verweigert. Wenn dies nicht beabsichtigt ist, versuche <light_purple>{1}</light_purple> auf die Schwarze Liste der Listener hinzuzufügen. Konfigurationsguide (Auf Englisch): https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-Protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Nur für Admins) <light_purple>{0}<dark_gray> hat Berechtigungsprüfungen abgelehnt. Sofern dies nicht gewollt ist, versuch <light_purple>{1} <gray>zur Listener-Blacklist hinzuzufügen. Konfigurations-Anleitung: https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Durchschnittspreis in der Umgebung: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventar Prüfung] <gray>Warnung! Ein QuickShop Anzeigeitem <gold>{2}</gold> wurde in einem Inventar bei <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray> gefunden, was nicht passieren sollte. Dies bedeutet oftmals, dass jemand einen Exploit böswillig ausnutzt um das Anzeigeitem zu duplizieren."
-digits-reach-the-limit: <red>Du hast das Limit an Dezimalstellen im Preis erreicht.
+digits-reach-the-limit: <red>Du hast das Dezimalstellenlimit für den Preis erreicht.
 currency-unset: <green>Shopwährung erfolgreich entfernt. Verwende jetzt Standardeinstellungen.
-you-cant-create-shop-in-there: <red>Du hast keine Berechtigung einen Shop and dieser Position zu erstellen.
+you-cant-create-shop-in-there: <red>Du hast keine Berechtigung einen Shop an dieser Position zu erstellen.
 no-pending-action: <red>Du hast keine ausstehenden Aktionen
 refill-success: <green>Auffüllen erfolgreich
 failed-to-paste: <red>Der Upload zu Pastebin war nicht möglich. Bitte überprüfe deine Internetverbindung und versuche es erneut. (Siehe Konsole für Details)
@@ -92,6 +92,7 @@ player-bought-from-your-store-tax: <green>{0} hat {1} {2} von deinem Shop gekauf
 not-enough-space: <red>Du hast nur Platz für <yellow>{0}</yellow> weitere!
 shop-name-success: <green>Shopname erfolgreich geändert zu <yellow>{0}</yellow>.
 shop-staff-added: <yellow>{0} <yellow>wurde erfolgreich als Shopmitarbeiter zu deinem Shop hinzugefügt.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Stelle Shops von Backups wieder her...
 virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>Bezieht sich auf ein Systemkonto mit dem selben Namen.</gray>\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>"
 real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
@@ -286,7 +287,7 @@ unknown-owner: Unbekannt
 restricted-prices: '<red>Eingeschränkter Preis für {0}: Mindestens {1}, maximal {2}'
 nearby-shop-this-way: <green>Shop ist {0} Blöcke von dir entfernt.
 owner-bypass-check: <yellow>Alle Prüfungen wurden umgangen. Handel erfolgreich! (Sie sind jetzt der Besitzer des Ladens!)
-april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>ZEITLICH BEGRENZTES EVENT -- QuickShop-Hikari</bold></rainbow>\n<yellow>Hol dir deinen <gold>PREMIUM</gold> Partikeleffekt auf allen Servern mit QuickShop!</yellow>\n<aqua>Erhalte es durch das schauen des Video Tutorials hier</aqua>\n<hover:show_text:'<gold>Klicke um die Belohnungsseite im Browser zu öffnen.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Kein Platz
@@ -444,6 +445,8 @@ command:
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
     suggestprice: <yellow>Empfiehlt einen Preis für den angesehenen Shop, basierend auf anderen Shops
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -649,7 +652,7 @@ transfer-ask: |-
 transferall-ask: |-
   <gold>Schreibe <red>/quickshop transferall accept</red> zum Akzeptieren oder <red>/quickshop transferall deny</red> zum Ablehnen. Die Anfrage wird in <red>{0}</red> Sekunden ablaufen.
 transfer-single-ask: |-
-  <gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren oder <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
+  <gold>Schreibe <red>/quickshop transferownership accept</red> um zu Akzeptieren und <red>/quickshop transferownership deny</red> um Abzulehnen. Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen.
 transfer-accepted-fromside: <green>Spieler <aqua>{0}</aqua> hat deinen Shop-Übertragungsantrag akzeptiert.
 transfer-accepted-toside: <green>Du hast <aqua>{0}</aqua>'s Tranfer-Anfrage akzeptiert.
 transfer-rejected-fromside: <red>Spieler <aqua>{0}</aqua> hat deine Shop-Übertragungsanfrage abgelehnt.
@@ -1531,5 +1534,5 @@ about:
     - "<aqua>Spendenschlüssel <yellow>>></yellow> <green>{6}</green></aqua>"
     - "<gold>Unterstützt von der Community</gold> <red>Mit ❤ gemacht</red>"
   valid-donation-key: "<color:#00AFF1>Gebunden an <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gra>"
+  invalid-donation-key: "<gray>Ungültiger Spendenschlüssel</gray>"
   kofi-thanks: "<gold>Besonderer Dank geht an alle, welche QuickShop auf Ko-fi unterstützen :)</gold>"

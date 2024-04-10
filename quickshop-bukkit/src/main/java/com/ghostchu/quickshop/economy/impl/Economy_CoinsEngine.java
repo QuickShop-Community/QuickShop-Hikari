@@ -1,40 +1,37 @@
-package com.ghostchu.quickshop.economy;
+package com.ghostchu.quickshop.economy.impl;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.NonSeparateAbstractEconomy;
 import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-import me.xanium.gemseconomy.api.GemsEconomyAPI;
-import me.xanium.gemseconomy.currency.Currency;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.coinsengine.api.CoinsEngineAPI;
+import su.nightexpress.coinsengine.api.currency.Currency;
+import su.nightexpress.coinsengine.data.impl.CoinsUser;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 @ToString
-public class Economy_GemsEconomy extends AbstractEconomy {
-
+public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
     private final QuickShop plugin;
     private final BuiltInEconomyFormatter formatter;
     private boolean allowLoan;
-    @Getter
-    @Setter
-    private GemsEconomyAPI api;
 
-    public Economy_GemsEconomy(@NotNull QuickShop plugin) {
+    public Economy_CoinsEngine(@NotNull QuickShop plugin) {
         super();
         this.plugin = plugin;
         this.formatter = new BuiltInEconomyFormatter(plugin);
         plugin.getReloadManager().register(this);
         init();
-        setupEconomy();
     }
 
 
@@ -42,18 +39,14 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
     }
 
-    private void setupEconomy() {
-        this.api = new GemsEconomyAPI();
-    }
-
     @Override
     public @NotNull String getName() {
-        return "BuiltIn-GemsEconomy";
+        return "BuiltIn-CoinsEngine";
     }
 
     @Override
     public String getProviderName() {
-        return "GemsEconomy";
+        return "CoinsEngine";
     }
 
     /**
@@ -73,9 +66,14 @@ public class Economy_GemsEconomy extends AbstractEconomy {
             return null;
         }
         if (currency == null) {
-            return null;
+            Currency backupCur = null;
+            Iterator<Currency> currencyIterator = CoinsEngineAPI.getCurrencyManager().getCurrencies().iterator();
+            if (currencyIterator.hasNext()) {
+                backupCur = currencyIterator.next();
+            }
+            return CoinsEngineAPI.getCurrencyManager().getVaultCurrency().orElse(backupCur);
         }
-        return this.api.getCurrency(currency);
+        return CoinsEngineAPI.getCurrency(currency);
     }
 
 
@@ -84,7 +82,15 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         if (!isValid()) {
             return false;
         }
-        this.api.deposit(plugin.getPlayerFinder().name2Uuid(name), amount, getCurrency(world, currency));
+        CoinsUser user = CoinsEngineAPI.getUserData(name);
+        if (user == null) {
+            return false;
+        }
+        Currency cur = getCurrency(world, currency);
+        if (cur == null) {
+            return false;
+        }
+        user.addBalance(cur, amount);
         return true;
     }
 
@@ -101,7 +107,15 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         if (!isValid()) {
             return false;
         }
-        this.api.deposit(name, amount, getCurrency(world, currency));
+        CoinsUser user = CoinsEngineAPI.getUserData(name);
+        if (user == null) {
+            return false;
+        }
+        Currency cur = getCurrency(world, currency);
+        if (cur == null) {
+            return false;
+        }
+        user.addBalance(cur, amount);
         return true;
     }
 
@@ -138,7 +152,17 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         if (!isValid()) {
             return 0.0;
         }
-        return this.api.getBalance(plugin.getPlayerFinder().name2Uuid(name), getCurrency(world, currency));
+        CoinsUser user = CoinsEngineAPI.getUserData(name);
+        if (user == null) {
+            Log.debug("User " + name + " not exists in CoinsEngine database, return for 0 balance");
+            return 0.0;
+        }
+        Currency cur = getCurrency(world, currency);
+        if (cur == null) {
+            Log.debug("Currency " + currency + " not exists in CoinsEngine database, return for 0 balance");
+            return 0.0;
+        }
+        return user.getBalance(cur);
     }
 
     private String formatInternal(double balance, @Nullable String currency) {
@@ -161,7 +185,17 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         if (!isValid()) {
             return 0.0;
         }
-        return this.api.getBalance(name, getCurrency(world, currency));
+        CoinsUser user = CoinsEngineAPI.getUserData(name);
+        if (user == null) {
+            Log.debug("User " + name + " not exists in CoinsEngine database, return for 0 balance");
+            return 0.0;
+        }
+        Currency cur = getCurrency(world, currency);
+        if (cur == null) {
+            Log.debug("Currency " + currency + " not exists in CoinsEngine database, return for 0 balance");
+            return 0.0;
+        }
+        return user.getBalance(cur);
     }
 
     /**
@@ -194,7 +228,15 @@ public class Economy_GemsEconomy extends AbstractEconomy {
                 return false;
             }
         }
-        this.api.withdraw(name, amount, getCurrency(world, currency));
+        CoinsUser user = CoinsEngineAPI.getUserData(name);
+        if (user == null) {
+            return false;
+        }
+        Currency cur = getCurrency(world, currency);
+        if (cur == null) {
+            return false;
+        }
+        user.removeBalance(cur, amount);
         return true;
     }
 
@@ -242,13 +284,21 @@ public class Economy_GemsEconomy extends AbstractEconomy {
                 return false;
             }
         }
-        this.api.withdraw(plugin.getPlayerFinder().name2Uuid(name), amount, getCurrency(world, currency));
+        CoinsUser user = CoinsEngineAPI.getUserData(name);
+        if (user == null) {
+            return false;
+        }
+        Currency cur = getCurrency(world, currency);
+        if (cur == null) {
+            return false;
+        }
+        user.addBalance(cur, amount);
         return true;
     }
 
     @Override
     public @Nullable String getLastError() {
-        return "Cannot provide: GemsEconomy doesn't support enhanced error tracing.";
+        return "Cannot provide: CoinsEngine doesn't support enhanced error tracing.";
     }
 
     /**
@@ -258,7 +308,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
      */
     @Override
     public boolean isValid() {
-        return this.api != null;
+        return Bukkit.getPluginManager().isPluginEnabled("CoinsEngine");
     }
 
 

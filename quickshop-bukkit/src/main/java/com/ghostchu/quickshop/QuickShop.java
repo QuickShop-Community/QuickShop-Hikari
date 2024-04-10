@@ -28,13 +28,10 @@ import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
-import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
-import com.ghostchu.quickshop.economy.Economy_TNE;
-import com.ghostchu.quickshop.economy.Economy_Vault;
+import com.ghostchu.quickshop.economy.impl.*;
 import com.ghostchu.quickshop.listener.*;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
 import com.ghostchu.quickshop.metric.MetricListener;
@@ -52,6 +49,7 @@ import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
+import com.ghostchu.quickshop.shop.inventory.InventoryWrapperUpdateManager;
 import com.ghostchu.quickshop.shop.signhooker.SignHooker;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
@@ -249,6 +247,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private RegistryManager registry;
     private DonationInfo donationInfo;
+    @Getter
+    private InventoryWrapperUpdateManager invWrapperUpdateManager;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -308,7 +308,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.metricManager = new MetricManager(this);
         logger.info("Loading player name and unique id mapping...");
         this.playerFinder = new FastPlayerFinder(this);
-        loadChatProcessor();
         loadTextManager();
         logger.info("Register InventoryWrapper...");
         this.inventoryWrapperRegistry.register(javaPlugin, this.inventoryWrapperManager);
@@ -381,10 +380,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         updateConfig();
     }
 
-    private void loadChatProcessor() {
-
-    }
-
     private void loadTextManager() {
         logger.info("Loading translations (This may take a while)...");
         try {
@@ -449,7 +444,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             } else {
                 this.donationInfo = null;
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
         }
     }
 
@@ -580,7 +575,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     public final void onEnable() {
-        Timer enableTimer = new Timer(true);
         logger.info("QuickShop " + javaPlugin.getFork());
         registerService();
         /* Check the running envs is support or not. */
@@ -590,7 +584,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         logger.info("Reading the configuration...");
         initConfiguration();
-        logger.info("Developers: {}", CommonUtil.list2String(javaPlugin.getDescription().getAuthors()));
+        logger.info("Contributors: {}", CommonUtil.list2String(javaPlugin.getDescription().getAuthors()));
         logger.info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
         logger.info("Let's start loading the plugin");
         loadErrorReporter();
@@ -621,6 +615,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Registering commands...");
         this.permissionChecker = new PermissionChecker(this);
         loadCommandHandler();
+        this.invWrapperUpdateManager = new InventoryWrapperUpdateManager(this);
+        this.invWrapperUpdateManager.register();
         this.shopManager = new SimpleShopManager(this);
         // Limit
         //this.registerLimitRanks();
@@ -660,7 +656,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("Self Test")) {
             runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
         }
-        logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
 
     }
 
@@ -703,13 +698,18 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 logger.info("Using Virtual Item display, loading ProtocolLib support...");
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null) {
-                    logger.info("Successfully loaded ProtocolLib support!");
-                    virtualDisplayItemManager = new VirtualDisplayItemManager(this);
-                    if (getConfig().getBoolean("shop.per-player-shop-sign")) {
-                        signHooker = new SignHooker(this);
-                        logger.info("Successfully registered per-player shop sign!");
-                    } else {
-                        signHooker = null;
+                    try {
+                        logger.info("Successfully loaded ProtocolLib support!");
+                        virtualDisplayItemManager = new VirtualDisplayItemManager(this);
+                        if (getConfig().getBoolean("shop.per-player-shop-sign")) {
+                            signHooker = new SignHooker(this);
+                            logger.info("Successfully registered per-player shop sign!");
+                        } else {
+                            signHooker = null;
+                        }
+                    } catch (Exception e) {
+                        logger.warn("Failed to initialize the virtual display item, try update your ProtocolLib to latest dev build and make sure QuickShop-Hikari up-to-date.", e);
+                        throw e;
                     }
                 } else {
                     logger.warn("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
@@ -1083,9 +1083,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public String getVersion() {
         return javaPlugin.getVersion();
     }
-    
+
     @Nullable
-    public DonationInfo getDonationInfo() {return this.donationInfo; }
+    public DonationInfo getDonationInfo() {
+        return this.donationInfo;
+    }
 
     public enum DatabaseDriverType {
         MYSQL,
@@ -1128,6 +1130,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 case VAULT -> loadVault();
                 case GEMS_ECONOMY -> loadGemsEconomy();
                 case TNE -> loadTNE();
+                case COINS_ENGINE -> loadCoinsEngine();
+                case TREASURY -> loadTreasury();
                 default -> null;
             };
             abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
@@ -1142,6 +1146,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
             parent.economy = abstractEconomy;
             return true;
+        }
+
+        private AbstractEconomy loadTreasury() {
+            return new Economy_Treasury(parent);
+        }
+
+        private AbstractEconomy loadCoinsEngine() {
+            return new Economy_CoinsEngine(parent);
         }
 
         // Vault may create exception, we need catch it.

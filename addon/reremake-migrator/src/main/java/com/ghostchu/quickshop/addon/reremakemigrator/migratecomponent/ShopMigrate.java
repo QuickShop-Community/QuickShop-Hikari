@@ -9,7 +9,7 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.ContainerShop;
-import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitListenerDrivenInventoryWrapper;
 import com.ghostchu.quickshop.util.ProgressMonitor;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import com.google.common.io.Files;
@@ -83,7 +83,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
                         reremakeShop.isDisableDisplay(),
                         reremakeShop.getTaxAccountActual() == null ? null : QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getTaxAccountActual()),
                         getHikari().getJavaPlugin().getName(),
-                        getHikari().getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(container.getInventory())),
+                        getHikari().getInventoryWrapperManager().mklink(new BukkitListenerDrivenInventoryWrapper(container.getInventory(), block.getLocation())),
                         null,
                         Collections.emptyMap(),
                         new SimpleBenefit()

@@ -83,7 +83,7 @@ public class GeoUtil {
         if (list.isEmpty()) {
             return Collections.emptyList();
         }
-        return list.stream().filter(e->e.getValue()!=Long.MAX_VALUE).limit(3).map(Map.Entry::getKey).toList();
+        return list.stream().filter(e -> e.getValue() != Long.MAX_VALUE).limit(3).map(Map.Entry::getKey).toList();
     }
 
     public static boolean inChinaRegion() {
@@ -106,7 +106,7 @@ public class GeoUtil {
                     }
                     String key = kv[0];
                     String value = kv[1];
-                    if (key.equalsIgnoreCase("loc") && !value.equalsIgnoreCase("CN")) {
+                    if ("loc".equalsIgnoreCase(key) && !"CN".equalsIgnoreCase(value)) {
                         inChinaRegion = false;
                         break;
                     }

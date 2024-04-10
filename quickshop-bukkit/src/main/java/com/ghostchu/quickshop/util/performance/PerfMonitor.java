@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 public class PerfMonitor implements AutoCloseable {

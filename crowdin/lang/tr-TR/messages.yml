@@ -92,6 +92,7 @@ player-bought-from-your-store-tax: <red>{0} marketinden {1} tane {2} aldı ve {3
 not-enough-space: <red>Sadece {0} için daha fazla yerin var!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>{0} başarıyla market personellerinize eklendi.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Marketler yedekten kurtarılıyor...
 virtual-player-component-hover: "<gray>Bu sanal bir oynatıcıdır.\n<gray>Aynı ada sahip bu ada sahip bir sistem hesabını ifade eder.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Bu gerçek bir oyuncu.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>\n<gray>Aynı ada sahip bir sanal sistem hesabı kullanmak istiyorsanız, <dark_gray>\"[]\"</dark_gray> Kullanıcı adının her iki tarafına: <dark_gray>[{1}]</dark_gray>."
@@ -444,6 +445,8 @@ command:
     benefit: <yellow>Avantajları mağaza sahibi ve diğer oyuncular arasında bölme ayarları
     tag: <yellow>Bir mağazanın etiketlerini ekleme, kaldırma veya sorgulama
     suggestprice: <yellow>Diğer mağazalara göre dükkan aramak için tavsiye edilen bir fiyat önerin
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Kullanım: /qs size <miktar>'
   no-type-given: '<red>Kullanım: /qs find <item>'
   feature-not-enabled: Bu özellik yapılandırma dosyasında aktif değil.

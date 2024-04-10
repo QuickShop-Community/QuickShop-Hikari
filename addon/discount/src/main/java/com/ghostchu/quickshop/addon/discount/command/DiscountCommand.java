@@ -293,7 +293,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             quickshop.text().of(sender, "command-type-mismatch", "Player").send();
             return;
         }
-        if (!p.hasPermission("quickshopaddon.discount.list")) {
+        if (!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.list")) {
             quickshop.text().of(sender, "no-permission").send();
             return;
         }
@@ -304,7 +304,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         printer.printFooter();
     }
     private void listAll(CommandSender sender, String[] passThroughArgs) {
-        if (!sender.hasPermission("quickshopaddon.discount.listall")) {
+        if (!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.listall")) {
             quickshop.text().of(sender, "no-permission").send();
             return;
         }

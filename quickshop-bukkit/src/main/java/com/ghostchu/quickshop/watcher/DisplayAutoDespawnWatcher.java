@@ -50,6 +50,9 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
             if (!shop.isLoaded()) {
                 continue;
             }
+            if (shop.isDisableDisplay()) {
+                continue;
+            }
             Location location = shop.getLocation();
             World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
             AbstractDisplayItem displayItem = ((ContainerShop) shop).getDisplayItem();

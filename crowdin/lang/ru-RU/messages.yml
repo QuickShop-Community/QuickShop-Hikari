@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[совместный] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Средняя цена: <yellow>{0}'
 inventory-check-global-alert: "<red>[Проверка Инвентаря] <gray> Внимание! Найден отображаемый предмет БыстрогоМагазина <gold>{2}</gold> в инвентаре в <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, что не должно было произойти, обычно это значит, что кто-то эксплуатирует уязвимость для дублирования отображаемого предмета."
 digits-reach-the-limit: <red>Вы достигли пределов десятичных знаков в цене.
@@ -92,6 +92,7 @@ player-bought-from-your-store-tax: <green>{0} купил {1} {2} в вашем �
 not-enough-space: <red>В вашем инвентаре осталось место только для {0} предметов!
 shop-name-success: <green>Название магазина успешно изменено на <yellow>{0}<green>.
 shop-staff-added: <green>{0} успешно добавлен в качестве сотрудника вашего магазина.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Восстановление магазинов из резервной копии...
 virtual-player-component-hover: "<gray> Является виртуальным игроком. \n<gray> Обращается к системному аккаунту этого имени с таким же именем. </gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Имя Пользователя: <yellow>{1}</yellow></green>\n<green> Показывать как: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
@@ -286,7 +287,7 @@ unknown-owner: Неизвестно
 restricted-prices: '<red>Цена ограничена {0}: от {1} до {2}'
 nearby-shop-this-way: <green>Магазин находится в {0} блоках от вас.
 owner-bypass-check: <yellow>Вы прошли все проверки, вы можете торговать! (Теперь вы владелец магазина!)
-april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>\n<yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>\n<aqua>Claim it by watch the video tutorial below!</aqua>\n<hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Нет места
@@ -444,6 +445,8 @@ command:
     benefit: <yellow>Настройки разделения выгоды между владельцем магазина и другими игроками
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Используйте: /qs size <количество>'
   no-type-given: '<red>Используйте: /qs find <предмет>'
   feature-not-enabled: Функция не включена в конфигурации.
@@ -650,7 +653,8 @@ transferall-ask: |-
   <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
 transfer-single-ask: |-
-  <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
+  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
+  The request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.

@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.permission;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
+import com.ghostchu.quickshop.permission.impl.BukkitPermsProvider;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;

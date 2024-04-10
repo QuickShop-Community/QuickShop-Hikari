@@ -20,6 +20,7 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitListenerDrivenInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -93,8 +94,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     .weakValues()
                     .initialCapacity(50)
                     .build();
-    private ShopCache shopCache;
     private final EconomyFormatter formatter;
+    private ShopCache shopCache;
     @Getter
     @Nullable
     private QUser cacheTaxAccount;
@@ -236,7 +237,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .taxAccount(taxAccount)
                 .currency(shop.getCurrency())
                 .world(shop.getLocation().getWorld())
-                .to(buyer);
+                .to(buyerQUser);
         if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
             builder.taxModifier(0.0d);
         }
@@ -311,6 +312,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         });
     }
 
+    @Override
     public boolean shopIsNotValid(@Nullable QUser qUser, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendDirectMessage(qUser, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
@@ -357,8 +359,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(p, "not-a-number", message).send();
             return;
         }
-
-        if (info.getLocation().getBlock().getState() instanceof InventoryHolder holder) {
+        BlockState state = info.getLocation().getBlock().getState();
+        if (state instanceof InventoryHolder holder) {
             // Create the basic shop
             ContainerShop shop = new ContainerShop(
                     plugin,
@@ -374,7 +376,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     false,
                     null,
                     plugin.getJavaPlugin().getName(),
-                    plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
+                    plugin.getInventoryWrapperManager().mklink(new BukkitListenerDrivenInventoryWrapper((holder).getInventory(), state.getLocation())),
                     null,
                     Collections.emptyMap(),
                     new SimpleBenefit());
@@ -450,7 +452,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
                 .core(eco)
-                .from(seller)
+                .from(sellerQUser)
                 .amount(total)
                 .taxModifier(taxModifier)
                 .taxAccount(taxAccount)
@@ -471,7 +473,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!transaction.checkBalance()) {
             plugin.text().of(seller, "you-cant-afford-to-buy",
                     format(total, shop.getLocation().getWorld(), shop.getCurrency()),
-                    format(eco.getBalance(seller, shop.getLocation().getWorld(),
+                    format(eco.getBalance(sellerQUser, shop.getLocation().getWorld(),
                                     shop.getCurrency()), shop.getLocation().getWorld(),
                             shop.getCurrency())).send();
             return;
@@ -686,7 +688,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                     .taxAccount(cacheTaxAccount)
                                     .taxModifier(0.0)
                                     .core(plugin.getEconomy())
-                                    .from(p.getUniqueId())
+                                    .from(QUserImpl.createFullFilled(p))
                                     .to(null)
                                     .amount(createCost)
                                     .currency(plugin.getCurrency())
@@ -1753,7 +1755,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
-        double balance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(),
+        double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(),
                 shop.getCurrency());
         amount = Math.min(amount, (int) Math.floor(balance / price));
         if (amount < 1) { // typed 'all' but the auto set amount is 0
@@ -1871,6 +1873,59 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
+    static class TagParser {
+        private final List<String> tags;
+        private final ShopManager shopManager;
+        private final UUID tagger;
+        private final Map<String, List<Shop>> singleCaching = new HashMap<>();
+
+        public TagParser(UUID tagger, ShopManager shopManager, List<String> tags) {
+            Util.ensureThread(true);
+            this.shopManager = shopManager;
+            this.tags = tags;
+            this.tagger = tagger;
+        }
+
+        public List<Shop> parseTags() {
+            List<Shop> finalShop = new ArrayList<>();
+            for (String tag : tags) {
+                ParseResult result = parseSingleTag(tag);
+                if (result.getBehavior() == Behavior.INCLUDE) {
+                    finalShop.addAll(result.getShops());
+                } else if (result.getBehavior() == Behavior.EXCLUDE) {
+                    finalShop.removeAll(result.getShops());
+                }
+            }
+            return finalShop;
+        }
+
+        public ParseResult parseSingleTag(String tag) throws IllegalArgumentException {
+            Util.ensureThread(true);
+            Behavior behavior = Behavior.INCLUDE;
+            if (tag.startsWith("-")) {
+                behavior = Behavior.EXCLUDE;
+            }
+            String tagName = tag.substring(1);
+            if (tagName.isEmpty()) {
+                throw new IllegalArgumentException("Tag name can't be empty");
+            }
+            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t) -> shopManager.queryTaggedShops(tagger, t).join());
+            return new ParseResult(behavior, shops);
+        }
+
+        enum Behavior {
+            INCLUDE,
+            EXCLUDE
+        }
+
+        @AllArgsConstructor
+        @Data
+        static class ParseResult {
+            private final Behavior behavior;
+            private final List<Shop> shops;
+        }
+    }
+
     public class ShopIterator implements Iterator<Shop> {
 
         private final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
@@ -1922,60 +1977,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return this.next(); // Skip to the next one (Empty iterator?)
             }
             return shops.next();
-        }
-    }
-
-
-    static class TagParser {
-        private final List<String> tags;
-        private final ShopManager shopManager;
-        private final UUID tagger;
-        private final Map<String, List<Shop>> singleCaching = new HashMap<>();
-
-        public TagParser(UUID tagger, ShopManager shopManager, List<String> tags) {
-            Util.ensureThread(true);
-            this.shopManager = shopManager;
-            this.tags = tags;
-            this.tagger = tagger;
-        }
-
-        public List<Shop> parseTags() {
-            List<Shop> finalShop = new ArrayList<>();
-            for (String tag : tags) {
-                ParseResult result = parseSingleTag(tag);
-                if (result.getBehavior() == Behavior.INCLUDE) {
-                    finalShop.addAll(result.getShops());
-                } else if (result.getBehavior() == Behavior.EXCLUDE) {
-                    finalShop.removeAll(result.getShops());
-                }
-            }
-            return finalShop;
-        }
-
-        public ParseResult parseSingleTag(String tag) throws IllegalArgumentException {
-            Util.ensureThread(true);
-            Behavior behavior = Behavior.INCLUDE;
-            if (tag.startsWith("-")) {
-                behavior = Behavior.EXCLUDE;
-            }
-            String tagName = tag.substring(1);
-            if (tagName.isEmpty()) {
-                throw new IllegalArgumentException("Tag name can't be empty");
-            }
-            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t) -> shopManager.queryTaggedShops(tagger, t).join());
-            return new ParseResult(behavior, shops);
-        }
-
-        @AllArgsConstructor
-        @Data
-        static class ParseResult {
-            private final Behavior behavior;
-            private final List<Shop> shops;
-        }
-
-        enum Behavior {
-            INCLUDE,
-            EXCLUDE
         }
     }
 }

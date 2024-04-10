@@ -83,9 +83,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     public boolean commit() {
         try (PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
             return this.commit(new SimpleTransactionCallback() {
-                @Override
-                public void onSuccess(@NotNull SimpleInventoryTransaction inventoryTransaction) {
-                }
             });
         }
     }

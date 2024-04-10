@@ -31,7 +31,7 @@ safe-mode: <red>QuickShop 现在处于安全模式，您不能打开这个商店
 forbidden-vanilla-behavior: <red>该操作有悖于原版行为，因此已被禁止
 shop-out-of-space-name: <dark_purple>您名为 {0} 的商店已满！
 paste-disabled: |-
-  <red>Paste功能已被禁用！你不能请求技术支持。 
+  <red>Paste功能已被禁用！你不能请求技术支持。
   原因： {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
@@ -93,6 +93,7 @@ player-bought-from-your-store-tax: <green>{0} 从你的商店里购买了 {1} {2
 not-enough-space: <red>背包空间不足，剩余 {0}
 shop-name-success: <green>成功地将商店名称设置为 <yellow>{0}<green>
 shop-staff-added: <green>已成功地添加助手 <yellow>{0}<green> 到你的商店。
+shop-staff-empty: <yellow>此商店没有商店助手。
 shops-recovering: 正在从备份中恢复商店...
 virtual-player-component-hover: "<gray>这是虚拟玩家\n<gray>是指一个具有相同名称的系统帐户</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>这是一个真正存在的玩家\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>\n<gray>如果您希望使用同名的虚拟系统帐户 将 <dark_gray>\"[]\"</dark_gray> 添加到用户名的两边： <dark_gray>[{1}]</dark_gray>"
@@ -283,7 +284,7 @@ support-disable-reason:
   hot-reload: <yellow>热重载不受支持，请重启服务器并再次检查。
   outdated: <yellow>该版本的QuickShop已过时，在请求帮助之前更新到最新版本！
   bad-hosts: |-
-    <yellow>该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。 
+    <yellow>该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。
     在请求支持之前修复HOSTS, Windows 路径 C:\windows\system32\drivers\et\hosts
     Linux 路径/etc/hosts。
   privacy: <yellow>该服务器在破解（离线）模式下运行。如果你在代理下运行bukkit服务器，并且在代理上的online-mode=true，请正确配置代理相关设置。
@@ -454,6 +455,8 @@ command:
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
     tag: <yellow>添加、 删除或查询商店标签
     suggestprice: <yellow>根据其他商店的情况, 为商店提出建议价格
+    history: <yellow>查看商店的历史交易记录
+    sign: <yellow>更改商店的告示牌类型
   bulk-size-not-set: '<red>用法: /quickshop size <数量>'
   no-type-given: '<red>用法: /quickshop find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。

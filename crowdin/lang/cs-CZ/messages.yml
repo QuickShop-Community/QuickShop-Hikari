@@ -92,6 +92,7 @@ player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop a
 not-enough-space: <red>Zbývá ti jen {0} volných míst!
 shop-name-success: <green>Název obchodu byl úspěšně nastaven na <yellow>{0}<green>.
 shop-staff-added: <green>Uživatel {0} byl úspěšně přidán do vašeho obchodu.
+shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Obnovování obchodů ze zálohy...
 virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
@@ -105,7 +106,7 @@ menu:
   item: '<green>Položka: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>za </green>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>
+  item-name-and-price-tax: <yellow>{0} {1} <green>za</green> {2} <gray>(<green>{3}</green> daň)
   successful-purchase: '<green>Úspěšně zakoupeno:'
   price-per-stack: <green>Cena za <yellow>{2} kusů {0} - {1}
   stored-enchants: <dark_purple>Uložené očarování
@@ -444,6 +445,8 @@ command:
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    history: <yellow>View the history transactions of a shop
+    sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Použití: <gray>/qs size <amount>'
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.

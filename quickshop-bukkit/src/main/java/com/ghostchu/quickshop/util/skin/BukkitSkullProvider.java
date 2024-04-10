@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class BukkitSkullProvider implements SkullProvider {
-    private Cache<Object, ItemStack> profileCache = CacheBuilder.newBuilder()
+    private final Cache<Object, ItemStack> profileCache = CacheBuilder.newBuilder()
             .expireAfterAccess(12, TimeUnit.HOURS)
             .maximumSize(512)
             .build();
