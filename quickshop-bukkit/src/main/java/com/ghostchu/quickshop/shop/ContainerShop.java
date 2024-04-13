@@ -584,10 +584,10 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public int getRemainingSpace() {
+        if (this.unlimited) {
+            return -1;
+        }
         if (Bukkit.isPrimaryThread()) {
-            if (this.unlimited) {
-                return -1;
-            }
             if (this.getInventory() == null) {
                 Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
                 return 0;
@@ -608,10 +608,10 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public int getRemainingStock() {
+        if (this.unlimited) {
+            return -1;
+        }
         if (Bukkit.isPrimaryThread()) {
-            if (this.unlimited) {
-                return -1;
-            }
             if (this.getInventory() == null) {
                 Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
                 return 0;
