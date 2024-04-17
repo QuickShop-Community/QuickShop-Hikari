@@ -432,6 +432,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt) {
+        return listShops(null, deleteIfCorrupt);
+    }
+    @Override
+    public @NotNull List<ShopRecord> listShops(@Nullable String worldFilter, boolean deleteIfCorrupt) {
         List<ShopRecord> shopRecords = new ArrayList<>();
         String SQL = "SELECT * FROM " + DataTables.DATA.getName()
                 + " INNER JOIN " + DataTables.SHOPS.getName()
@@ -441,11 +445,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         try (SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
             ResultSet rs = query.getResultSet();
             while (rs.next()) {
+                String world = rs.getString("world");
+                if (worldFilter != null && !worldFilter.equals(world)) {
+                    continue;
+                }
                 long shopId = rs.getLong("shop");
                 int x = rs.getInt("x");
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
-                String world = rs.getString("world");
                 DataRecord dataRecord = new SimpleDataRecord(plugin.getPlayerFinder(), rs);
                 InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
                 shopRecords.add(new ShopRecord(dataRecord, infoRecord));

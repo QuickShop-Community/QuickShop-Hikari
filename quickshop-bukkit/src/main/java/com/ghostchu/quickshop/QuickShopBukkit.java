@@ -5,7 +5,7 @@ import com.alessiodp.libby.Library;
 import com.alessiodp.libby.LibraryManager;
 import com.alessiodp.libby.logging.adapters.JDKLogAdapter;
 import com.alessiodp.libby.logging.adapters.LogAdapter;
-import com.comphenix.protocol.utility.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GeoUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
@@ -181,7 +181,7 @@ public class QuickShopBukkit extends JavaPlugin {
                     testClass = cases[1];
                 }
                 if (testClass != null) {
-                    if (Util.classExists(testClass) && Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.reuseDependencies", "false"))) {
+                    if (CommonUtil.isClassAvailable(testClass) && Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.reuseDependencies", "false"))) {
                         skipped++;
                         continue;
                     }

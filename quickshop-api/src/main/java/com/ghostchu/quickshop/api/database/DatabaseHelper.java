@@ -114,6 +114,8 @@ public interface DatabaseHelper {
 
     @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt);
 
+    @NotNull List<ShopRecord> listShops(@Nullable String worldFilter, boolean deleteIfCorrupt);
+
     @NotNull List<Long> listShopsTaggedBy(@NotNull UUID tagger, @NotNull String tag);
 
     @NotNull List<String> listTags(@NotNull UUID tagger);
