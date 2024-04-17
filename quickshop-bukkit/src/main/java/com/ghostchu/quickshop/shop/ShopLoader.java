@@ -82,7 +82,7 @@ public class ShopLoader implements SubPasteItem {
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
         plugin.logger().info("Loading shops from database...");
         Timer dbFetchTimer = new Timer(true);
-        List<ShopRecord> records = plugin.getDatabaseHelper().listShops(deleteCorruptShops);
+        List<ShopRecord> records = plugin.getDatabaseHelper().listShops(worldName, deleteCorruptShops);
         plugin.logger().info("Used {}ms to fetch {} shops from database.", dbFetchTimer.stopAndGetTimePassed(), records.size());
         plugin.logger().info("Loading shops into memory...");
         Timer shopTotalTimer = new Timer(true);
