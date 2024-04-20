@@ -252,7 +252,7 @@ tableformat:
 quickshop-gui-preview: Pré-visualização de itens do QuickShop GUI
 translate-not-completed-yet-click: A tradução do idioma {0} ainda não foi concluída por {1}. Você quer nos ajudar a melhorar a tradução? Clique aqui!
 taxaccount-invalid: <red>A conta não é inválida, por favor insira um nome de jogador ou uuid(com traços).
-player-bought-from-your-store: <red>{0} comprou {1} {2} da sua loja e você pagou {3} em impostos.
+player-bought-from-your-store: <green>{0} comprou {1} {2} da sua loja, você recebeu {3}.
 reached-maximum-can-create: <red>Você já criou o máximo de lojas! ({0}/{1})
 reached-maximum-create-limit: <red>Você atingiu o número máximo de lojas que você pode criar
 translation-version: 'Versão de suporte: Hikari'
