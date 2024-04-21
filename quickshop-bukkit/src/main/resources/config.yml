@@ -451,6 +451,7 @@ shop:
 #https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
 blacklist:
   - Bedrock
+
 database-loading-blacklist-worlds:
   - "the world that shop won't to be loaded"
 

@@ -78,9 +78,9 @@ public class ShopLoader implements SubPasteItem {
                 plugin.logger().warn("World {} not exists, skip loading shops in this world.", worldName);
                 return;
             }
-        }
-        if (plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
-            return;
+            if (plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
+                return;
+            }
         }
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
         plugin.logger().info("Loading shops from database...");
@@ -139,6 +139,9 @@ public class ShopLoader implements SubPasteItem {
         // World check
         if (worldName != null) {
             if (!worldName.equals(infoRecord.getWorld())) {
+                return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
+            }
+            if (plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
                 return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
             }
         }
