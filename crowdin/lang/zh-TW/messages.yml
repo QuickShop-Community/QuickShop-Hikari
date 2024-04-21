@@ -5,7 +5,7 @@ disabled-in-this-world: <red>此世界已停用 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
-_comment: 你好翻譯者！假若你正在從 Github 或其他代管平台編輯，你應此前往 https://crowdin.com/project/quickshop-hikari 進行翻譯。
+_comment: 你好翻譯者！假若你正在從 Github 或其它代管平台編輯，你應此前往 https://crowdin.com/project/quickshop-hikari 進行翻譯。
 unlimited-shop-owner-changed: <yellow>此無限商店的店主已經變更成 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
@@ -123,7 +123,7 @@ menu:
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此貨幣在這個世界無法使用。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
-translation-author: 'Ghost_chu, Andre_601'
+translation-author: 'Ghost_chu、Andre_601、flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功地將商店店主轉交給伺服器。
@@ -170,8 +170,8 @@ nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動！
 edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
 inventory-unavailable: |-
-  <red>不存在或無效的 InventoryWrapper。您是否使用外掛程式來重新綁定商店庫存？
-  資訊：InventoryWrapper={0}、WrapperProvider={1}、SymbolLink={2}，請聯絡伺服器管理員。
+  <red>不存在或無效的 InventoryWrapper。你是否使用外掛程式來重新綁定商店庫存？
+  資訊：InventoryWrapper={0}、WrapperProvider={1}、SymbolLink={2}。請聯絡伺服器管理員。
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: <red>目標玩家離線。
@@ -187,8 +187,8 @@ language:
   name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
 warn-to-paste: |-
-  <yellow>收集資料並上傳到 Pastebin。這可能需要一段時間...
-  <red><bold>警告：</bold> 資料將公開一週！它可能會洩露您的伺服器設定和其他敏感資訊。確保您只將其傳送到 <bold>值得信賴的工作人員／開發人員。
+  <yellow>收集資料並上傳到 Pastebin。這可能需要一段時間……
+  <red><bold>警告：</bold>資料將會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送該連結的人是<bold>值得信賴的工作人員 / 開發人員。
 how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
@@ -548,7 +548,7 @@ paste-created-local-failed: <red>儲存 Paste 到硬碟失敗，請檢查你的�
 paste-451: |-
   <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
   If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
-paste-upload-failed: <red>上傳 Paste 到 {0} 失敗，正在嘗試其他的提供服務……
+paste-upload-failed: <red>上傳 Paste 到 {0} 失敗，正在嘗試其它的提供服務……
 paste-upload-failed-local: <red>上傳 Paste 失敗，正在嘗試在硬碟上產生 Paste……
 command-incorrect: '<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法： {0}。'
 successfully-set-player-group: <green>成功地將玩家 {0} 的身分組設定為 <aqua>{1}</aqua>。
