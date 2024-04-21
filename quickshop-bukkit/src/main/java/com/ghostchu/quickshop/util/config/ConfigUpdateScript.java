@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -18,6 +19,11 @@ public class ConfigUpdateScript {
     public ConfigUpdateScript(@NotNull FileConfiguration config, @NotNull QuickShop plugin) {
         this.config = config;
         this.plugin = plugin;
+    }
+
+    @UpdateScript(version = 1029)
+    public void configWorldLoadingBlacklist() {
+        getConfig().set("database-loading-blacklist-worlds", Collections.emptyList());
     }
 
     @UpdateScript(version = 1028)
