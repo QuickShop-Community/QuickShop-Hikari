@@ -181,7 +181,7 @@ public class QuickShopBukkit extends JavaPlugin {
                     testClass = cases[1];
                 }
                 if (testClass != null) {
-                    if (CommonUtil.isClassAvailable(testClass) && Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.reuseDependencies", "false"))) {
+                    if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.reuseDependencies", "false")) && CommonUtil.isClassAvailable(testClass)) {
                         skipped++;
                         continue;
                     }

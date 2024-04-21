@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1028
+config-version: 1029
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -451,6 +451,9 @@ shop:
 #https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
 blacklist:
   - Bedrock
+
+database-loading-blacklist-worlds:
+  - "the world that shop won't to be loaded"
 
 #Enable or disable plugin support.
 plugin:
