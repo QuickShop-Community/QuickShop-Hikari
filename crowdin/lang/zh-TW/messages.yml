@@ -6,7 +6,7 @@ how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} �
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
 _comment: 你好翻譯者！假若你正在從 Github 或其它代管平台編輯，你應此前往 https://crowdin.com/project/quickshop-hikari 進行翻譯。
-unlimited-shop-owner-changed: <yellow>此無限商店的店主已經變更成 {0}。
+unlimited-shop-owner-changed: <yellow>已變更此無限商店擁有者為 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
 shop-name-disallowed: <red>商店的名稱 <yellow>{0}</yellow> 已被禁止使用。請嘗試使用另一個名稱！
@@ -25,7 +25,7 @@ tabcomplete:
 taxaccount-unset: <green>此商店的稅金帳戶現在按照伺服器全域設定。
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣
 command-type-mismatch: <red>此指令只能由 <aqua>{0} <red>執行。
-server-crash-warning: '<red>警告：使用  /quickshop reload 重新載入命令替換/刪除 QuickShop Jar 檔可能會在伺服器運行時崩潰。'
+server-crash-warning: '<red>警告：使用 /quickshop reload 重新載入命令替換 / 刪除 QuickShop Jar 檔可能會在伺服器運行時崩潰。'
 you-cant-afford-to-change-price: <red>你需要花費 {0} 來變更商品價格。
 safe-mode: <red>QuickShop 現在處於安全模式，你無法打開此商店容器，請聯絡伺服器管理員以修復錯誤！
 forbidden-vanilla-behavior: <red>此操作不符合原版行為，因此被禁止。
@@ -36,14 +36,14 @@ quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>名稱：<aqua>{0}'
-    - '<yellow>店主：<aqua>{0}'
+    - '<yellow>擁有者：<aqua>{0}'
     - '<yellow>類型：<aqua>{0}'
     - '<yellow>價格：<aqua>{0}'
     - '<yellow>物品：<aqua>{0}'
     - '<yellow>座標：<aqua>{0}'
   hover-arg-filled:
     - '<yellow>名稱：<aqua>{name}'
-    - '<yellow>店主：<aqua>{owner}'
+    - '<yellow>擁有者：<aqua>{owner}'
     - '<yellow>類型：<aqua>{type}'
     - '<yellow>價格：<aqua>{price}'
     - '<yellow>物品：<aqua>{item}'
@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>你有多個名為「<green>{0}<yellow>」的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。如果不是預期所見到的，請新增 <light_purple>{1} <gray>進監聽黑名單。配置指南：https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>附近的平均價格：<yellow>{0}'
 inventory-check-global-alert: "<red>[庫存檢查] <gray>警告！找到商店全息顯示<gold>{2}</gold> 在庫存中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，這不應該發生，這通常意味著有人惡意利用該漏洞來複製顯示專案。"
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
@@ -64,7 +64,7 @@ shop-out-of-stock-name: <dark_purple>你在 {0} 出售 {1} 的商店已售罄一
 shop-name-invalid: <red>商店的名稱 <yellow>{0}</yellow> 無效。請嘗試使用另一個名稱！
 how-many-buy-stack: <yellow>在聊天室中輸入你想 <aqua>購買</aqua> 的數量，每份中有 <green>{0}</green> 個物品，你目前可以買 <green>{1}</green> 份。輸入 <aqua>{2}</aqua> 來購買所有物品。
 exceeded-maximum: <red>此值超出了 Java 中的最大值。
-unlimited-shop-owner-keeped: '<yellow>注意：此商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
+unlimited-shop-owner-keeped: '<yellow>注意：此商店擁有者還是屬於無限商店類型，你需要自己重新設定新的商店擁有者。'
 no-enough-money-to-keep-shops: <red>你沒有足夠的金錢維持你的商店經營！所以你所有的商店已被移除……
 3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}</bold> 拒絕檢查權限操作，請問你有權限建立商店嗎？
 not-a-integer: <red>輸入一定是數字，但你輸入了 {0}。
@@ -82,7 +82,7 @@ you-cant-afford-a-new-shop: <red>需要花費 <green>{0}<red> 才能建立商店
 success-created-shop: <green>已成功地建立商店。
 shop-creation-cancelled: <red>已取消建立商店。
 shop-owner-self-trade: <yellow>你正在跟自己開的商店進行交易。<gray>所以你的餘額不會改變。
-purchase-out-of-space: <red>此商店空間不足！請聯絡商店店主或商店員工清空商店。
+purchase-out-of-space: <red>此商店空間不足！請聯絡商店擁有者或商店員工清空商店。
 reloading-status:
   success: <green>插件成功地重新載入且沒有發生任何錯誤。
   scheduled: <green>重新載入完成！<gray>（<yellow>一些更改需要一段時間後作用<gray>）
@@ -98,7 +98,7 @@ virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用
 real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請添加 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側： <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>你付了 <yellow>{0}</yellow> 的稅。
-  owner: '<green>店主：{0}'
+  owner: '<green>擁有者：{0}'
   preview: <gray>[<aqua>物品預覽<gray>]
   enchants: <dark_purple>附魔
   sell-tax-self: <green>因為你是商店主人，所以不需要繳稅。
@@ -126,7 +126,7 @@ no-nearby-shop: <red>找不到符合 {0} 的商店。
 translation-author: 'Ghost_chu、Andre_601、flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
-success-change-owner-to-server: <green>成功地將商店店主轉交給伺服器。
+success-change-owner-to-server: <green>成功地將商店擁有者轉交給伺服器。
 shop-name-not-found: <red>商店名稱：<yellow>{0}</yellow> 並不存在。
 shop-name-too-long: <red>商店的名稱太長了（最大長度 {0}），請再想想別的吧！
 metric:
@@ -155,7 +155,12 @@ metric:
   na: <gray>N/A
   transaction-count: <yellow>{0} 總共
   shop-hover: |-
-    <yellow>{0}<newline><gold>位置: <gray>{1} {2} {3}, 地圖: {4}<newline><gold>持有人: <gray>{5}<newline><gold>商店類型: <gray>{6}<newline><gold>物品: <gray>{7}<newline><gold>價格: <gray>{8}
+    <yellow>{0}
+    <gold>座標：<gray>{1} {2} {3}，世界：{4}
+    <gold>擁有者：<gray>{5}
+    <gold>商店類型：<gray>{6}
+    <gold>物品：<gray>{7}
+    <gold>價格：<gray>{8}
   time-hover: '<yellow>時間：{0}'
   amount-stack-hover: <yellow>{0} 組
 permission-denied-3rd-party: <red>權限被第三方插件 {0} 拒絕。
@@ -230,7 +235,7 @@ updatenotify:
     - Ko～ko～da～yo～ QuickShop 有新的更新 {0}～
     - 派蒙想告訴你 QuickShop 有新的更新 {0}！
   remote-disable-warning: '<red>此版本的 QuickShop 已被遠端伺服器標記為停用，這意味著此版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊：{0}。在你切換到穩定版本之前，此警告將繼續出現，但不會影響伺服器的效能。'
-purchase-out-of-stock: <red>此商店已缺貨，請聯絡商店店主或商店員工補充庫存。
+purchase-out-of-stock: <red>此商店已缺貨，請聯絡商店擁有者或商店員工補充庫存。
 nearby-shop-entry: '<green>-資訊：{0} 價格：<aqua>{1} <green>X：<aqua>{2} <green>Y：<aqua>{3} <green>Z：<aqua>{4} <green>距離：<aqua>{5} <green> 個方塊'
 chest-title: QuickShop 商店
 console-only: <red>此指令只能在控制台執行。
@@ -254,7 +259,7 @@ no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
 price-too-cheap: <red>價格必須大於 <yellow>${0}
 shop-not-exist: <red>商店不存在。
 bad-command-usage: <red>無效的指令！
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>該指令將清理<red>所有</red>在不允許建立商店的世界的──出售/購買不允許的物品，以及<bold><red>所有在伺服器沒有載入世界的商店</red></bold>。請確保你的商店資料備份完整後繼續使用 <aqua>/quickshop cleanghost confirm </aqua> 以繼續。
 cleanghost-starting: <green>正在開始檢查幽靈商店（缺少容器方塊）。所有不存在的商店將被移除……
 cleanghost-deleting: <yellow>發現一個損壞的商店 <aqua>{0}</aqua> 因為 {1}，標記將它刪除……
 cleanghost-deleted: <green>總共 <yellow>{0}</yellow> 個商店已被刪除。
@@ -267,7 +272,7 @@ price-is-now: <green>現在你的商店定價是 <yellow>{0}。
 shops-arent-locked: <red>請注意，商店無法防盜！如果你想要防盜功能，請使用 LWC、Lockette 等插件鎖住商店。
 that-is-locked: <red>此商店已上鎖。
 shop-has-no-space: <red>此商店只能再裝下 {0} 個 {1} 而已。
-safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
+safe-mode-admin: <red><bold>警告：</bold>此伺服器上的 QuickShop 現在在安全模式下運行，沒有任何功能可供使用，請輸入 <yellow>/quickshop </yellow>指令以檢查任何錯誤！
 shop-stock-too-low: <red>此商店只剩 {0} 個 {1}！
 world-not-exists: <red>世界 <yellow>{0}<red> 不存在
 how-many-sell: <green>在聊天室中輸入你想要 <light_purple>出售 <green>的數量，你有 <yellow>{0} <green>個可以出售。輸入 <aqua>{1} <green>賣出全部。
@@ -291,7 +296,7 @@ supertool-is-disabled: <red>超級工具已被停用，現在不能使用超級�
 unknown-owner: 未知
 restricted-prices: '<red>{0} 是無效的價格：最高 {1}，最低 {2}。'
 nearby-shop-this-way: <green>商店距離你 {0} 格遠。
-owner-bypass-check: <yellow>繞過所有檢查並完成交易（因為你是商店店主！）
+owner-bypass-check: <yellow>繞過所有檢查並完成交易（因為你是商店擁有者！）
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
@@ -343,17 +348,17 @@ controlpanel:
   empty: '<green>清空：移除所有商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
   stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
-  alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
+  alwayscounting: '<green>持續計算數量：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
+  setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
-  setowner-hover: <yellow>點擊變更店主。
+  setowner-hover: <yellow>點擊變更擁有者。
   mode-buying: '<green>商店模式：<aqua>收購 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  item: '<green>商店物品：{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   unlimited: '<green>無限：{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   unlimited-hover: <yellow>點擊變更商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
@@ -361,7 +366,7 @@ controlpanel:
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
   refill: '<green>補貨：重新填充商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
   freeze-hover: <yellow>切換商店凍結狀態。
-  lock-hover: <yellow>啟用/停用商店鎖保護。
+  lock-hover: <yellow>啟用 / 停用商店鎖保護。
   item-hover: <yellow>點擊變更商店物品
   infomation: '<green>商店控制面板：'
   mode-selling-hover: <yellow>點擊商店變更為收購模式。
@@ -401,7 +406,7 @@ timeunit:
   future: 在 {0}
   days: "{0} 天"
 command:
-  reloading: "<green>配置檔案已經重新載入。<yellow>某些更改可能需要重新啟動才能生效。<newline>\n<gray>（注意：版本 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件以確保伺服器不會崩潰。）"
+  reloading: <green>配置檔案已經重新載入。<yellow>某些變更可能需要重新啟動才能生效。
   description:
     buy: <yellow>變更成 <light_purple>收購 <yellow>模式
     about: <yellow>顯示關於 QuickShop 的資訊
@@ -438,7 +443,7 @@ command:
     unban: <yellow>解除封禁商店中的玩家
     transfer: <yellow>將某人的所有商店轉移給其他人
     transferall: <yellow>將某人的所有商店轉移給其他人
-    transferownership: <yellow>Transfer the shop you're looking at to someone else
+    transferownership: <yellow>將你正在查看的商店轉讓給其他人
     size: <yellow>變更每份物品的數量
     supercreate: <yellow>繞過所有保護檢查並建立商店
     taxaccount: <yellow>設定商店使用的稅金帳戶
@@ -451,13 +456,13 @@ command:
     tag: <yellow>新增、刪除或查詢商店標籤
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
     history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
-  bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
-  no-type-given: '<red>Usage: /quickshop find \<item>'
+    sign: <yellow>變更商店告示牌材質
+  bulk-size-not-set: '<red>用法：/quickshop size \<amount>'
+  no-type-given: '<red>用法：/quickshop find \<item>'
   feature-not-enabled: 此功能沒有在配置檔案中啟用
   now-debuging: <green>成功地啟用開發者模式，正在重新載入 QuickShop……
-  no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
-  no-owner-given: <red>未指定新的商店店主
+  no-amount-given: <red>沒有提供數量。請使用：<green>/quickshoo refill \<amount>
+  no-owner-given: <red>未指定商店擁有者
   disabled: '<red>此指令已被停用：<yellow>{0}'
   bulk-size-now: <green>現在開始交易 <yellow>{0} 個 {1}
   toggle-always-counting:
@@ -470,9 +475,9 @@ command:
     unlimited: <green>此商店現在已沒有數量限制
   transfer-success-other: <green>將<yellow> {0} {1}<green>的商店轉移到<yellow> {2}
   no-trade-item: <green>請在主手持有要變更的交易商品
-  wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
+  wrong-args: <red>無效的參數，使用 <bold>/quickshop help </bold>查看指令列表。
   some-shops-removed: <yellow>{0} <green>的商店已移除
-  new-owner: '<green>新商店店主：<yellow>{0}'
+  new-owner: '<green>新商店擁有者：<yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>將<yellow> {0} <green>商店轉移到<yellow> {1}
   now-buying: <green>商店正在 <light_purple>收購 <yellow>{0}
@@ -484,7 +489,7 @@ command:
   invalid-bulk-amount: <red>指定的值 {0} 大於最大堆疊或小於 1
 currency-not-support: <red>此經濟插件不支援多重經濟（multi-economy） 功能。
 trading-in-creative-mode-is-disabled: <red>你不能在創造模式中使用商店交易。
-the-owner-cant-afford-to-buy-from-you: <red>此商品價格 {0} ，但店主只剩 {1} 了。
+the-owner-cant-afford-to-buy-from-you: <red>此商品價格 {0} 元，但商店擁有者只剩 {1} 元了。
 you-cant-afford-shop-naming: <red>你沒有足夠的金錢命名商店, 命名商店需要{0}.
 inventory-error: |-
   <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
@@ -525,12 +530,12 @@ permission:
     set-stack-amount: <yellow>擁有此權限者得以設定商店堆疊數量。
     set-currency: <yellow>擁有此權限者得以設定商店交易貨幣。
     set-name: <yellow>擁有此權限者得以設定商店名稱。
-    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    set-sign-type: <yellow>變更商店告示牌材質
     view-purchase-logs: <yellow>查看商店購買歷史記錄的許可權。
   group:
-    everyone: <yellow>預設身分組，商店主人不在其中。
+    everyone: <yellow>預設身分組，商店擁有者不在其中。
     staff: <yellow>商店管理員的系統身分組
-    administrator: <red>管理員的系統身分組，在其中的玩家會擁有與商店主人幾乎相同的權限。
+    administrator: <red>管理員的系統身分組，在其中的玩家會擁有與商店擁有者幾乎相同的權限。
 invalid-group: <red>組名無效
 invalid-permission: <red>無效的權限
 invalid-operation: <red>無效的操作，只有 {0} 是被允許的
@@ -540,17 +545,17 @@ permission-required: <red>你需要權限 {0} 來在此商店執行此操作。
 no-permission-detailed: <red>你需要權限 <yellow>{0}</yellow> 來在此商店執行此操作。
 paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>請稍候，正在將複製內容上傳到 pastebin……
-paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
+paste-created: '<green>已建立 Paste，點擊以在瀏覽器中打開：<yellow>{0}</yellow><br><red>警告：<gray>永遠別將 Paste 傳送給你不信任的人。'
 paste-created-local: |-
-  <green>Paste created and saved to your local disk at {0}
-  <red>Warning: <gray>Never send pastes to people you don't trust.
+  <green>已建立 Paste 並且已儲存在你的硬碟路徑 {0}
+  <red>警告：<gray>永遠別將 Paste 傳送給你不信任的人。
 paste-created-local-failed: <red>儲存 Paste 到硬碟失敗，請檢查你的硬碟。
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
+  <gray><bold>小提示：</bold>你目前所在的地區貌似不讓你連結到 CloudFlare Workers 服務，因此 Paste 功能可能沒辦法正常載入。
+  如果接下來的操作失敗了，你可以試試加上 --file 變數來將 Paste 儲存在硬碟上：<dark_gray>/quickshop paste --file
 paste-upload-failed: <red>上傳 Paste 到 {0} 失敗，正在嘗試其它的提供服務……
 paste-upload-failed-local: <red>上傳 Paste 失敗，正在嘗試在硬碟上產生 Paste……
-command-incorrect: '<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法： {0}。'
+command-incorrect: '<red>指令用法錯誤，輸入/quickshop help 來尋求幫助。用法：{0}。'
 successfully-set-player-group: <green>成功地將玩家 {0} 的身分組設定為 <aqua>{1}</aqua>。
 successfully-unset-player-group: <green>成功地移除此商店中的玩家身分組。
 successfully-set-player-permission: <green>成功地將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設定為 <aqua>{1}</aqua>。
@@ -582,9 +587,9 @@ debug:
   operation-invalid: <red>你必須指定一個有效的操作。
   invalid-base64-encoded-sql: <red>所提供的 SQL 必須為 base64 編碼。
   warning-sql: |-
-    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
-    <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
+    <bold><red>警告：</red></bold><yellow>你正在執行一個 SQL 敘述句，即使它屬於其他插件，這仍可能會損壞你的資料庫或破壞資料庫中的任何資料。
+    <red>如果你不信任向你傳送此指令的人，請不要確認。
+  warning-sql-confirm: <yellow>若要確認此危險的操作，請在 60 秒內輸入 <aqua>/quickshop debug database sql confirm {0}</aqua>。
   warning-sql-confirm-hover: <yellow>點擊以確認此危險操作。
   sql-confirm-not-found: <yellow>沒有找到你給予的操作，此操作可能無效或過期。
   sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
@@ -612,7 +617,7 @@ database:
   scanning: <green>正在掃描 QuickShop 資料庫中的孤立資料，在掃描過程中資料庫負載可能會增加，且這可能需要等候一段時間……
   scanning-async: <yellow>正在掃描異步任務線程上 QuickShop 資料庫中的孤立資料，掃描過程中資料庫負載可能會增加，這可能需要等候一段時間，請稍後再試。
   already-scanning: <red>掃描任務已啟動，請等待完成。
-  trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
+  trim-warning: <red><bold>警告：</bold><yellow>在繼續資料庫修整之前，請先備份你的資料庫以避免資料遺失。準備好後執行 <aqua>/quickshop database trim confirm</aqua> 以繼續。
   status: '<yellow>狀態：{0}'
   status-good: <green>良好
   status-bad: <yellow>需要維護
@@ -631,7 +636,7 @@ database:
   trim-exception: <red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。
   generated-at: '<yellow>Generated at: <gold>{0}'
   purge-date: <red>你必須給出一個日期。
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>此操作將清除儲存在資料庫中的歷史記錄，包括商店建立/修改/刪除、購買、交易和系統日誌。刪除這些資料可以釋出硬碟空間，但所有歷史資料都會遺失，依賴計量的其他插件將停止運行。若要繼續執行此操作，請執行指令 `/quickshop database purgelogs \<before-days> 以確認`
   purge-task-created: <green>已建立任務！資料庫將在背景清除歷史記錄。
   purge-done-with-line: <green>已完成清除任務，總共 <gold>{0}</gold> 行已從資料庫中清除。
   purge-done-with-error: <red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。
@@ -641,7 +646,7 @@ database:
     <aqua>注意：此操作可能會影響伺服器效能。
   purge-players-error: <red>清除玩家快取失敗，請檢查伺服器控制台。
   suggestion:
-    trim: <yellow>此資料庫需要修整資料庫內孤立的資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。
+    trim: <yellow>此資料庫需要修整資料庫內孤立的資料，執行指令<aqua>/quickshop database trim</aqua> 以修整資料庫。
 always-counting-removal-early-warning: <red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。
 exporting-database: <green>正在匯出資料庫，請稍候……
 exporting-failed: <red>匯出資料庫失敗，請檢查伺服器控制台。
@@ -649,7 +654,7 @@ exported-database: <green>匯出資料庫至 <yellow>{0}</yellow>。
 importing-not-found: <red>找不到檔案 <yellow>{0}</yellow>，請檢查檔案路徑是否正確。
 importing-early-warning: |-
   <red><bold>警告：</bold><yellow>備份將被匯入目前的資料庫，如果你沒有備份，任何現有的資料都將被清除並永久遺失。
-  <red>你確定要繼續進行匯入作業？</red>輸入 <aqua>/qs recovery confirm</aqua> 以繼續。
+  <red>你確定要繼續進行匯入作業？</red>輸入 <aqua>/quickshop recovery confirm</aqua> 以繼續。
 importing-database: <green>正在從備份中匯入資料庫，請稍候……
 importing-failed: <red>匯入資料庫失敗，請檢查伺服器控制台。
 imported-database: <green>正在從 <yellow>{0}</yellow> 匯入資料庫。
@@ -657,12 +662,14 @@ transfer-sent: <green>商店轉移請求已傳送至 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 請求將他們的商店轉移給你。你想接受轉移嗎？
 transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 請求將他們的商店轉移給你。你想接受轉移嗎？
 transfer-ask: |-
-  <gold>輸入 <red>/qs transfer accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transfer deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
+  <gold>輸入 <red>/quickshop transfer accept</red> 以接受，或輸入 <red>/quickshop transfer deny</red> 以拒絕。
+  請求將在 <red>{0}</red> 秒後過期。
 transferall-ask: |-
-  <gold>輸入 <red>/qs transferall accept</red> 以接受。</gold><newline><gold>輸入 <red>/qs transferall deny</red> 以拒絕。</gold><newline><gold>請求將在 <red>{0}</red> 秒後過期。
+  <gold>輸入 <red>/quickshop transferall accept</red> 以接受，或輸入 <red>/quickshop transferall deny</red> 以拒絕。
+  請求將在 <red>{0}</red> 秒後過期。
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>輸入 <red>/quickshop transferall accept</red> 以接受，或輸入 <red>/qs transferall deny</red> 以拒絕。
+  請求將在 <red>{0}</red> 秒後過期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 已接受你的商店轉移請求。
 transfer-accepted-toside: <green>你已接受 <aqua>{0}</aqua> 的轉移請求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 已拒絕你的商店轉移請求。
@@ -697,10 +704,10 @@ addon:
       town: <yellow>將商店設定或取消設置為城鎮（town）商店
       nation: <yellow>將商店設定或取消設置為國家（Nation）商店
     make-shop-owned-by-town: <green>你已將商店設為 <yellow>{0}</yellow> 鎮（town）擁有。
-    make-shop-no-longer-owned-by-town: <green>你已重置商店所有權，它現在轉移回原來的商店主人。
+    make-shop-no-longer-owned-by-town: <green>你已重置商店所有權，它現在轉移回原來的商店擁有者。
     make-shop-owned-by-nation: <green>你已將商店設為 <yellow>{0}</yellow> 國（Nation）擁有。
-    make-shop-no-longer-owned-by-nation: <green>你已重置商店所有權，它現在轉移回原來的商店主人。
-    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop permission
+    make-shop-no-longer-owned-by-nation: <green>你已重置商店所有權，它現在轉移回原來的擁有者。
+    shop-owning-changing-notice: <gray>此商店現在由城鎮（town） / 國家（Nation）擁有，原始商店擁有者已自動新增到管理員列表中，使用指令 /quickshop permission 修改或新增任何新的擁有者 / 員工
     target-shop-already-is-town-shop: <red>目標商店已歸城鎮（town）所有。
     target-shop-already-is-nation-shop: <red>目標商店已歸國家（Nation）所有。
     target-shop-not-in-town-region: <red>目標商店不在城鎮（town）內。
@@ -748,7 +755,7 @@ addon:
     feature-disabled-for-user: <aqua>你已 <red>停用</red> <gold>{0}</gold> 通知。
     link-help: <yellow>此伺服器使用 <gold>{0}</gold> 處理 Discord 驅動程式，請使用 <green>{0}</green> 連結你的 Discord 帳號。
     save-notifaction-exception: <red>儲存你的 Discord 通知設定時發生錯誤，請聯絡伺服器管理員。
-    feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}
+    feature-status-changed: <green>成功地設定通知 <aqua>{0}</aqua> 狀態為 <gold>{1}
     commands:
       discord:
         description: <yellow>管理你的 QuickShop Discord 設定
@@ -1005,7 +1012,7 @@ addon:
                 "inline": false
               },
               {
-                "name": "商店店主",
+                "name": "商店擁有者",
                 "value": "%%shop.owner.name%%",
                 "inline": true
               },
@@ -1200,7 +1207,7 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "商店店主",
+                        "name": "商店擁有者",
                         "value": "%%shop.owner.name%%",
                         "inline": true
                     },
@@ -1225,8 +1232,8 @@ addon:
       shop-permission-changed: |
         {
             "embed": {
-                "title": ":closed_lock_with_key: Your shop permission settings has been changed",
-                "description": "One of your shop's permission setting has been changed.",
+                "title": ":closed_lock_with_key: 商店權限設定已被更改",
+                "description": "你的商店的權限設定已被更改。",
                 "color": 15879747,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1239,22 +1246,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "QuickShop-Hikari Discord 訊息通知",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "商店",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "Player",
+                        "name": "玩家",
                         "value": "%%change-permission.player%%",
                         "inline": true
                     },
                     {
-                        "name": "Assign to group",
+                        "name": "分配給組",
                         "value": "%%change-permission.to-group%%",
                         "inline": true
                     },
@@ -1264,7 +1271,7 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "Permission granted (Inherit from group)",
+                        "name": "授予權限（繼承於組）",
                         "value": "```\\n%%change-permission.perms-list%%\\n```",
                         "inline": false
                     }
@@ -1325,7 +1332,7 @@ addon:
     invalid-expire-time: <red>你無法指定過去的時間。
     invalid-discount-rate: <red>折扣率 <yellow>{0}</yellow> 無效，它可以是固定數字或百分比。
     discount-code-expired: <red>金嗨（閩南語）！你的優惠代碼 <yellow>{0}</yellow> 已過期！
-    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
+    discount-code-installed: <green>你已安裝優惠代碼 <gold>{0}</gold>，優惠代碼將自動套用於本次會話期間所有可用的交易。如果要將優惠代碼解除安裝，請執行 <aqua>/quickshop discount uninstall {0}</aqua>。
     discount-code-uninstalled: <green>你已將你的優惠代碼解除安裝。
     discount-code-query-nothing: <red>你還沒安裝優惠代碼！
     discount-code-query: '<green>你正在使用優惠代碼：<yellow>{0}</yellow>。'
@@ -1342,11 +1349,11 @@ addon:
     discount-code-config-expire: <green>成功地變更了優惠代碼過期時間。
     discount-code-config-applied: <green>成功地配置優惠代碼！
     discount-code-created-successfully: |
-      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
-      <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/quickshop discount config {0}</aqua> to edit your discount code anytime.
+      <green>已成功地建立你的優惠代碼 <yellow>{0}</yellow>！
+      <gold>範圍：<aqua>{1}</aqua></gold>.
+      <gold>與他人分享：<#bcef26>{2}</#bcef26></gold>
+      <yellow>只適用於<gray>特定商店</gray> 範圍：將商店新增到你的優惠代碼允許列表，請注視著商店並執行指令 <aqua>{3}</aqua>。
+      你可以隨時使用 <aqua>/quickshop discount config {0}</aqua> 編輯你的優惠代碼。
     discount-code-under-threshold: <red>由於總價值低於優惠代碼門檻，所以優惠未適用於你的交易 <yellow>{0}</yellow>。
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
@@ -1362,13 +1369,13 @@ addon:
       PLAYER_ALL_SHOPS: 由優惠代碼擁有者建立的所有商店
       SPECIFIC_SHOPS: 指定商店
     discount-code-details: |-
-      <gold>Code: <yellow>{0}</yellow>
-      Creator: <yellow>{1}</yellow>
-      Applied to: <yellow>{2}</yellow>
-      Remaining usage: <yellow>{3}</yellow>
-      Expired on: <yellow>{4}</yellow>
-      Threshold: <yellow>{5}</yellow>
-      Discount: <yellow>{6}</yellow><br>
+      <gold>優惠代碼：<yellow>{0}</yellow>
+      建立者：<yellow>{1}</yellow>
+      套用於：<yellow>{2}</yellow>
+      剩餘使用量：<yellow>{3}</yellow>
+      過期時間：<yellow>{4}</yellow>
+      門檻：<yellow>{5}</yellow>
+      折扣：<yellow>{6}</yellow><br>
   list:
     commands:
       list: <yellow>列出你或指定玩家擁有的所有商店
@@ -1395,7 +1402,7 @@ addon:
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
     marker-description: |
       名稱：{0}
-      店主：{1}
+      擁有者：{1}
       物品：{2}
       價格：{4} {3} 個
       類型：{5}
@@ -1406,7 +1413,7 @@ addon:
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
     marker-description: |
       名稱：{0}
-      店主：{1}
+      擁有者：{1}
       物品：{2}
       價格：{4} {3} 個
       類型：{5}
@@ -1430,7 +1437,7 @@ addon:
     executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
     completed: "<green>讚啦！遷移完成，請重新啟動伺服器並從外掛程式目錄中刪除 QuickShop-Reremake。"
     join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
-    join_blocking_finished: "<red>[QuickShop-Hikari Migrator] This server has just completed a data conversion and is waiting for a reboot to apply the changes, try again later!"
+    join_blocking_finished: "<red>[QuickShop-Hikari 轉換器] 此伺服器剛剛完成資料轉換，正在等待重新啟動以套用變更，請稍後再試！"
     failed: "<red>Migration progress exited with error, please check the server console."
     modules:
       config:
@@ -1466,7 +1473,7 @@ suite:
     title: '{0} - {1} - {2}'
     description: |-
       物品：{0}
-      店主：{1}
+      擁有者：{1}
       類型：{2} {3}
       價格：{4}
       座標：{5} {6}, {7}, {8}
@@ -1498,7 +1505,7 @@ suite:
 compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易擁有 EliteMobs 靈魂綁定附魔的物品。
-internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
+internet-paste-forbidden-privacy-reason: "<red>失敗！根據你的隱私權設定，不允許 QuickShop-Hikari 將你的 paste 上傳到網路上，在 config.yml 的 privacy setting（隱私權設定）中開啟 DIAGNOSTIC（診斷）權限或使用 <aqua>/quickshop paste --file</aqua> 代替。"
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
 delete-controlpanel-button-confirm: "<red>你真的想刪除這家商店嗎？在 {0} 秒內按兩下 <bold>[刪除商店]</bold> 按鈕來再次確認。"
@@ -1510,7 +1517,7 @@ history:
     gui-title: "查看購買歷史記錄"
     header-icon-description:
       - "<white>類型：<yellow>{0}</yellow></white>"
-      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>擁有者：<yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2}</yellow></white>"
       - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
       - "<white>Location: <yellow>{5}</yellow></white>"
@@ -1538,9 +1545,9 @@ about:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
     - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>開發人員<yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>點擊查看貢獻者'><click:open_url:'https://github.com/Ghost -chu/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看貢獻者]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>點擊開啟 Crowdin 翻譯頁面><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上協助翻譯]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
     - "<gold>Powered by community</gold> <red>Made with ❤</red>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
