@@ -79,6 +79,9 @@ public class ShopLoader implements SubPasteItem {
                 return;
             }
         }
+        if (plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
+            return;
+        }
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
         plugin.logger().info("Loading shops from database...");
         Timer dbFetchTimer = new Timer(true);

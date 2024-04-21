@@ -13,7 +13,7 @@
                     <option name="goals">
                         <list>
                             <option value="versions:set"/>
-                            <option value="-DnewVersion=6.1.0.1"/>
+                            <option value="-DnewVersion=6.1.0.2"/>
                         </list>
                     </option>
                     <option name="multimoduleDir"/>
