@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
+import com.vdurmont.semver4j.Semver;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
@@ -57,7 +58,16 @@ public class NexusManager implements SubPasteItem {
             cachedResult = true;
             return true;
         }
-        this.cachedResult = plugin.getVersion().equals(cachedMetadata.getReleaseVersion());
+        Semver localVer = plugin.getSemVersion();
+        Semver remoteReleaseVer = new Semver(cachedMetadata.getReleaseVersion());
+        Semver remoteLatestVer = new Semver(cachedMetadata.getLatestVersion());
+        Semver selectedRemoteVer;
+        if (remoteReleaseVer.isGreaterThan(remoteLatestVer)) {
+            selectedRemoteVer = remoteReleaseVer;
+        } else {
+            selectedRemoteVer = remoteLatestVer;
+        }
+        this.cachedResult = selectedRemoteVer.isGreaterThan(localVer);
         return this.cachedResult;
     }
 
