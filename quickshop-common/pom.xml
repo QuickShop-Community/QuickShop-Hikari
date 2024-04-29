@@ -124,7 +124,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-logger-slf4j</artifactId>
             <scope>compile</scope>
-            <version>4.15.0</version>
+            <version>4.16.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -136,7 +136,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-ansi</artifactId>
             <scope>compile</scope>
-            <version>4.15.0</version>
+            <version>4.16.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -148,7 +148,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
             <scope>compile</scope>
-            <version>4.15.0</version>
+            <version>4.16.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
