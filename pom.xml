@@ -122,6 +122,7 @@
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
                                         <include>org.eclipse.aether:*:*</include>
+                                        <include>org.slf4j:slf4j-jdk14:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>

@@ -1,4 +1,3 @@
-org.slf4j:slf4j-jdk14:2.0.12@org.slf4j.jul.JDK14LoggerAdapter
 org.apache.commons:commons-lang3:3.14.0@org.apache.commons.lang3.StringUtils
 org.apache.commons:commons-compress:1.25.0@org.apache.commons.compress.archivers.zip.ZipFile
 com.google.code.gson:gson:2.10.1@com.google.gson.Gson
