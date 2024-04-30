@@ -311,6 +311,11 @@ public final class QUserImpl implements QUser {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(username, uniqueId, realPlayer);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof QUser qUser) {
             if (this.isRealPlayer() != qUser.isRealPlayer()) {

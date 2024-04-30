@@ -147,7 +147,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
         Util.asyncThreadRun(() -> {
             for (Map.Entry<QUser, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
                 String v = MsgUtil.decimalFormat(entry.getValue() * 100);
-                plugin.text().of(sender, "benefit-query-list", entry.getKey().getDisplay(), entry.getKey(), v + "%").send();
+                plugin.text().of(sender, "benefit-query-list", entry.getKey().getDisplay(), v + "%").send();
             }
         });
 
