@@ -92,7 +92,7 @@ player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {
 not-enough-space: <red>你只剩下 <yellow>{0}<red> 格空間可以裝東西！
 shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>。
 shop-staff-added: <green>已成功地新增員工 <yellow>{0}<green> 到你的商店。
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>此商店沒有任何員工
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
 virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用具有相同名稱的此名稱的系統帳戶。</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請添加 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側： <dark_gray>[{1}]</dark_gray>."
@@ -373,7 +373,7 @@ controlpanel:
   empty-hover: <yellow>點擊清除商店內庫存。
   toggledisplay: '<green>商店懸浮物品顯示：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
   history: '<green>歷史： <yellow>[<bold><light_purple>查看</light_purple></bold>]</yellow>'
-  history-hover: <yellow>Click to view shop history logs
+  history-hover: <yellow>點擊來去查閱商店銷售紀錄
 timeunit:
   behind: 後面
   week: "{0} 星期"
@@ -1282,7 +1282,7 @@ addon:
       player: 玩家
       item: 物品
       amount: 數量
-      balance: 餘額
+      balance: 花費
       balance-after-tax: 餘額（稅後）
       account: 你的帳戶餘額
       taxes: 稅金
@@ -1518,26 +1518,26 @@ history:
     header-icon-description:
       - "<white>類型：<yellow>{0}</yellow></white>"
       - "<white>擁有者：<yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2}</yellow></white>"
+      - "<white>商品:<yellow>{2}</yellow></white>"
       - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
-      - "<white>Location: <yellow>{5}</yellow></white>"
+      - "<white>商店位置:<yellow>{5}</yellow></white>"
     log-icon-title: "<reset><green>Time: {0}</green>"
     log-icon-description:
-      - "<white>Purchaser: <yellow>{0}</yellow></white>"
+      - "<white>買家:<yellow>{0}</yellow></white>"
       - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{3}</yellow></white>"
-      - "<white>Tax: <yellow>{4}</yellow></white>"
+      - "<white>花費:<yellow>{3}</yellow></white>"
+      - "<white>税:<yellow>{4}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    current-page: "<white>Page {0}</white>"
+    previous-page: "<white>上一頁</white>"
+    next-page: "<white>下一頁</white>"
+    current-page: "<white>第{0}頁</white>"
     summary-icon-title: "<green>Shop Summary"
     recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
     recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
     total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
     total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
     total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
-    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+    top-n-valuable-customers-title: "<gold>消費次數排行榜TOP{0}</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>No result</white>"
 about:
