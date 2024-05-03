@@ -455,7 +455,7 @@ command:
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
     tag: <yellow>新增、刪除或查詢商店標籤
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
-    history: <yellow>View the history transactions of a shop
+    history: <yellow>查看商店的歷史交易記錄
     sign: <yellow>變更商店告示牌材質
   bulk-size-not-set: '<red>用法：/quickshop size \<amount>'
   no-type-given: '<red>用法：/quickshop find \<item>'
@@ -1519,9 +1519,9 @@ history:
       - "<white>類型：<yellow>{0}</yellow></white>"
       - "<white>擁有者：<yellow>{1}</yellow></white>"
       - "<white>商品:<yellow>{2}</yellow></white>"
-      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>價格:<yellow>{3}<aqua>{4}</aqua></yellow></white>"
       - "<white>商店位置:<yellow>{5}</yellow></white>"
-    log-icon-title: "<reset><green>Time: {0}</green>"
+    log-icon-title: "<reset><green>消費時間:{0}</green>"
     log-icon-description:
       - "<white>買家:<yellow>{0}</yellow></white>"
       - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
