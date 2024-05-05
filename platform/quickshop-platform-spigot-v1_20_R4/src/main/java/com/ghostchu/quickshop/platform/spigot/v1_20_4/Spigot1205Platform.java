@@ -13,15 +13,12 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_20_R4.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R4.enchantments.CraftEnchantment;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_20_R4.potion.CraftPotionEffectType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.jetbrains.annotations.NotNull;
 
 public class Spigot1205Platform extends AbstractSpigotPlatform implements Platform {
@@ -64,11 +61,7 @@ public class Spigot1205Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
-        if (material.isBlock()) {
-            return postProcessingTranslationKey(Bukkit.getUnsafe().getBlockTranslationKey(material));
-        } else {
-            return postProcessingTranslationKey(Bukkit.getUnsafe().getItemTranslationKey(material));
-        }
+        return postProcessingTranslationKey(material.getTranslationKey());
     }
 
 
@@ -79,7 +72,7 @@ public class Spigot1205Platform extends AbstractSpigotPlatform implements Platfo
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
         //noinspection deprecation
-        return postProcessingTranslationKey(Bukkit.getUnsafe().getTranslationKey(type));
+        return postProcessingTranslationKey(type.getTranslationKey());
 //        Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
 //        if (op.isPresent()) {
 //            return postProcessingTranslationKey(op.get().getDescriptionId());
@@ -90,17 +83,12 @@ public class Spigot1205Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        if (potionEffectType instanceof PotionEffectTypeWrapper wrapper) {
-            potionEffectType = wrapper.getType();
-        }
-        CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType) potionEffectType;
-        return postProcessingTranslationKey(craftPotionEffectType.getHandle().getDescriptionId());
+        return postProcessingTranslationKey(potionEffectType.getTranslationKey());
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        CraftEnchantment craftEnchantment = (CraftEnchantment) enchantment;
-        return postProcessingTranslationKey(craftEnchantment.getHandle().getDescriptionId());
+        return postProcessingTranslationKey(enchantment.getTranslationKey());
     }
 
     @Override
