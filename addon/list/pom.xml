@@ -66,18 +66,5 @@
             <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.14.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-plain</artifactId>-->
-        <!--            <version>4.12.0</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
     </dependencies>
 </project>

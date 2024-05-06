@@ -78,6 +78,12 @@
             <artifactId>bentobox</artifactId>
             <version>1.24.1</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>org.eclipse.jdt.annotation</artifactId>
+                    <groupId>org.eclipse.jdt</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

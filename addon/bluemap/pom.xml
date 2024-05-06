@@ -73,6 +73,12 @@
             <artifactId>BlueMapAPI</artifactId>
             <version>2.7.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

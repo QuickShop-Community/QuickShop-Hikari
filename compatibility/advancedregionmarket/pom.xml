@@ -72,6 +72,28 @@
             <artifactId>advanced-region-market</artifactId>
             <version>3.5.4</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mc1-14adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mc1-20adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>placeholder-api-addon</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>we7adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>wg7adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
