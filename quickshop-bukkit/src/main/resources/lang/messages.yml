@@ -1792,4 +1792,4 @@ about:
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
-history-command-leave-blank: "<Leave this blank for query seeing store only>"
+history-command-leave-blank: "<Leave blank for seeing store>"
