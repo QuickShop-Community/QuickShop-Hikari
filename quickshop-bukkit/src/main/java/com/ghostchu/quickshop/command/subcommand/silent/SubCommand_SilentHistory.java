@@ -9,6 +9,8 @@ import com.ghostchu.quickshop.shop.history.ShopHistoryGUI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class SubCommand_SilentHistory extends SubCommand_SilentBase {
 
     public SubCommand_SilentHistory(QuickShop plugin) {
@@ -22,6 +24,6 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
             plugin.text().of(sender, "not-managed-shop").send();
             return;
         }
-        new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, shop)).open();
+        new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, List.of(shop))).open();
     }
 }

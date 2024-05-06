@@ -131,6 +131,8 @@ permissions:
       quickshop.benefit: true
       quickshop.sign: true
       quickshop.history: true
+      quickshop.history.owned: true
+      quickshop.history.accessible: true
       quickshop.suggestprice: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
@@ -143,6 +145,7 @@ permissions:
       quickshop.bypass.*: true
       quickshop.alerts: true
       quickshop.create.admin: true
+      quickshop.history.*: true
       quickshop.transferownershop.other: true
       quickshop.other.changeitem: true
       quickshop.other.changeamount: true
@@ -355,6 +358,15 @@ permissions:
     default: op
   quickshop.history:
     description: Permission to view the shop history
+    default: op
+  quickshop.history.owned:
+    description: Permission to view the shop history which owned
+    default: op
+  quickshop.history.accessible:
+    description: Permission to view the shop history which the store granted player VIEW_PURCHASE_LOGS permission
+    default: op
+  quickshop.history.global:
+    description: Permission to view the shop history on this server
     default: op
   quickshop.other.history:
     description: Permission to view the other's shop history
