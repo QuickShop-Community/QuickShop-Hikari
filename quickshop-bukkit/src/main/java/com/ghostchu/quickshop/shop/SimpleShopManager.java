@@ -1407,7 +1407,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (items.hasItemMeta()) {
                 ItemMeta shopItemMeta = shop.getItem().getItemMeta();
                 shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
-                shouldDisplayPotionEffects = shopItemMeta.hasItemFlag(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+                shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             }
         }
 
