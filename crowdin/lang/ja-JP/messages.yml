@@ -1500,6 +1500,7 @@ suggest-wait: "<green>Please wait... Calculating recommend price."
 history:
   shop:
     gui-title: "View purchase history"
+    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1512,6 +1513,12 @@ history:
       - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{3}</yellow></white>"
       - "<white>Tax: <yellow>{4}</yellow></white>"
+    log-icon-description-with-store-name:
+      - "<white>Store: <yellow>{0}</yellow></white>"
+      - "<white>Purchaser: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{4}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"
@@ -1538,3 +1545,4 @@ about:
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
+history-command-leave-blank: "<Leave blank for seeing store>"

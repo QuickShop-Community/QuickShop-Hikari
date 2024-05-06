@@ -1498,6 +1498,7 @@ suggest-wait: "<green>Bitte warten... Berechne empfohlenen Preis."
 history:
   shop:
     gui-title: "Zeige Kaufprotokolle"
+    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-description:
       - "<white>Typ: <yellow>{0}</yellow></white>"
       - "<white>Besitzer: <yellow>{1}</yellow></white>"
@@ -1510,6 +1511,12 @@ history:
       - "<white>Gegenstand: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>Guthaben: <yellow>{3}</yellow></white>"
       - "<white>Steuer: <yellow>{4}</yellow></white>"
+    log-icon-description-with-store-name:
+      - "<white>Store: <yellow>{0}</yellow></white>"
+      - "<white>Purchaser: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{4}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
     query-icon: "<gray>Bitte warten, abfrage...</gray>"
     previous-page: "<white><< Vorherige Seite</white>"
     next-page: "<white>Nächste Seite >></white>"
@@ -1536,3 +1543,4 @@ about:
   valid-donation-key: "<color:#00AFF1>Gebunden an <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Ungültiger Spendenschlüssel</gray>"
   kofi-thanks: "<gold>Besonderer Dank geht an alle, welche QuickShop auf Ko-fi unterstützen :)</gold>"
+history-command-leave-blank: "<Leave blank for seeing store>"

@@ -1516,6 +1516,7 @@ suggest-wait: "<green>Vennligst vent... Beregner anbefalt pris."
 history:
   shop:
     gui-title: "Se kjøpshistorikk"
+    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Eier: <yellow>{1}</yellow></white>"
@@ -1528,6 +1529,12 @@ history:
       - "<white>Gjenstand: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>Saldo: <yellow>{3}</yellow></white>"
       - "<white>Skatt: <yellow>{4}</yellow></white>"
+    log-icon-description-with-store-name:
+      - "<white>Store: <yellow>{0}</yellow></white>"
+      - "<white>Purchaser: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{4}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
     query-icon: "<gray>Vennligst vent, henter informasjon...</gray>"
     previous-page: "<white><< Forrige side</white>"
     next-page: "<white>Neste side >></white>"
@@ -1554,3 +1561,4 @@ about:
   valid-donation-key: "<color:#00AFF1>Bundet til <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Ugyldig donasjonsnøkkel</gray>"
   kofi-thanks: "<gold>Spesiell takk til de som støtter QuickShop på Ko-Fi :)</gold>"
+history-command-leave-blank: "<Leave blank for seeing store>"
