@@ -57,7 +57,7 @@ public interface Platform {
         return shopId;
     }
 
-    @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
+    @NotNull HoverEvent<?> getItemStackHoverEvent(@NotNull ItemStack stack);
 
     @NotNull Component getLine(@NotNull Sign sign, int line);
 

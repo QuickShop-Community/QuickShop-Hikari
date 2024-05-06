@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
-    private final Plugin plugin;
+    public final Plugin plugin;
     protected Map<String, String> translationMapping;
     private BukkitAudiences audience;
 
@@ -155,7 +155,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
+    public @NotNull HoverEvent<?> getItemStackHoverEvent(@NotNull ItemStack stack) {
         NamespacedKey namespacedKey = stack.getType().getKey();
         Key key = Key.key(namespacedKey.toString());
         ReadWriteNBT nbt = NBT.itemStackToNBT(stack);

@@ -9,6 +9,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.ItemLore;
@@ -36,18 +37,23 @@ public class Spigot1205Platform extends AbstractSpigotPlatform implements Platfo
     }
 
     @Override
-    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
-        NamespacedKey namespacedKey = stack.getType().getKey();
-        Key key = Key.key(namespacedKey.toString());
-        ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
-        BinaryTagHolder holder;
-        if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
-            holder = BinaryTagHolder.binaryTagHolder(nbt.toString());
-        } else {
-            //noinspection UnstableApiUsage
-            holder = BinaryTagHolder.of(nbt.toString());
-        }
-        return HoverEvent.showItem(key, stack.getAmount(), holder);
+    public @NotNull HoverEvent<?> getItemStackHoverEvent(@NotNull ItemStack stack) {
+        return HoverEvent.showText(Component.text("Click to preview the item")
+                .appendNewline()
+                .append(Component.text("× Item hover preview are not available at this time (Spigot 1.20.5+) due major item nbt related changes.").color(NamedTextColor.RED))
+                .appendNewline()
+                .append(Component.text("💡 Consider switch to Paper to use PaperAPI instead.").color(NamedTextColor.GRAY)));
+//        NamespacedKey namespacedKey = stack.getType().getKey();
+//        Key key = Key.key(namespacedKey.toString());
+//        ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
+//        BinaryTagHolder holder;
+//        if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
+//            holder = BinaryTagHolder.binaryTagHolder(nbt.toString());
+//        } else {
+//            //noinspection UnstableApiUsage
+//            holder = BinaryTagHolder.of(nbt.toString());
+//        }
+//        return HoverEvent.showItem(HoverEvent.ShowItem.showItem(key,stack.getAmount(), holder));
     }
 
     @Override

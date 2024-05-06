@@ -54,7 +54,7 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
+    public @NotNull HoverEvent<?> getItemStackHoverEvent(@NotNull ItemStack stack) {
         return stack.asHoverEvent();
     }
 
