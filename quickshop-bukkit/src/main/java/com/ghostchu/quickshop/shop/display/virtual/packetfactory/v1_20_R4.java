@@ -60,7 +60,7 @@ public class v1_20_R4 implements VirtualDisplayPacketFactory {
                 //Entity ID
                 .write(0, entityID);
         //Velocity x
-        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
         //UUID
         fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
         //Location

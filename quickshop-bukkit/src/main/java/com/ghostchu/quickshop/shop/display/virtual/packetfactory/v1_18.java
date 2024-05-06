@@ -60,7 +60,7 @@ public class v1_18 implements VirtualDisplayPacketFactory {
                 //Entity ID
                 .write(0, entityID);
         //int data to mark
-        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.fromName("DROPPED_ITEM"));
         fakeItemPacket.getIntegers().write(1, 0)
                 //Velocity y
                 .write(2, 0)

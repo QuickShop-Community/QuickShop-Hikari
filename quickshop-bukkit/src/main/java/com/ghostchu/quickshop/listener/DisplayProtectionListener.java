@@ -84,10 +84,9 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         if (event.getCaught() == null) {
             return;
         }
-        if (event.getCaught().getType() != EntityType.DROPPED_ITEM) {
+        if (!(event.getCaught() instanceof Item item)) {
             return;
         }
-        final Item item = (Item) event.getCaught();
         final ItemStack is = item.getItemStack();
         if (!AbstractDisplayItem.checkIsGuardItemStack(is)) {
             return;

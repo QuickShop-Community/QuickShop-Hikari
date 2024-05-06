@@ -62,12 +62,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -1135,10 +1132,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void unloadShop(@NotNull Shop shop) {
-      unloadShop(shop, false);
+        unloadShop(shop, false);
     }
+
     @Override
-    public void unloadShop(@NotNull Shop shop,boolean dontTouchWorld) {
+    public void unloadShop(@NotNull Shop shop, boolean dontTouchWorld) {
         //noinspection deprecation
         shop.handleUnloading(dontTouchWorld);
         this.loadedShops.remove(shop);
@@ -1409,7 +1407,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (items.hasItemMeta()) {
                 ItemMeta shopItemMeta = shop.getItem().getItemMeta();
                 shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
-                shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+                shouldDisplayPotionEffects = shopItemMeta.hasItemFlag(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             }
         }
 
@@ -1418,37 +1416,26 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (shouldDisplayPotionEffects) {
             if (items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
-                PotionData potionData = potionMeta.getBasePotionData();
-                PotionEffectType potionEffectType = potionData.getType().getEffectType();
-                if (potionEffectType != null) {
+                List<PotionEffect> effects = new ArrayList<>();
+                if (potionMeta.getBasePotionType() != null) {
+                    effects.addAll(potionMeta.getBasePotionType().getPotionEffects());
+                }
+                if (potionMeta.hasCustomEffects()) {
+                    effects.addAll(potionMeta.getCustomEffects());
+                }
+                for (PotionEffect potionEffect : effects) {
+                    int level = potionEffect.getAmplifier();
                     Component translation;
                     try {
-                        translation = plugin.getPlatform().getTranslation(potionEffectType);
+                        translation = plugin.getPlatform().getTranslation(potionEffect.getType());
                     } catch (Throwable th) {
-                        translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
-                        plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
+                        translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
+                        plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
                     }
-                    chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
-                    //Because the bukkit API limit, we can't get the actual effect level
                     chatSheetPrinter.printLine(Component.empty()
                             .color(NamedTextColor.YELLOW)
                             .append(translation)
-                    );
-                }
-                if (potionMeta.hasCustomEffects()) {
-                    for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
-                        int level = potionEffect.getAmplifier();
-                        Component translation;
-                        try {
-                            translation = plugin.getPlatform().getTranslation(potionEffect.getType());
-                        } catch (Throwable th) {
-                            translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
-                            plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
-                        }
-                        chatSheetPrinter.printLine(Component.empty()
-                                .color(NamedTextColor.YELLOW)
-                                .append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
-                    }
+                            .append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
                 }
             }
         }

@@ -58,7 +58,7 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
         fakeItemPacket.getIntegers()
                 //Entity ID
                 .write(0, entityID);
-        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.fromName("DROPPED_ITEM"));
         //UUID
         fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
         //Location

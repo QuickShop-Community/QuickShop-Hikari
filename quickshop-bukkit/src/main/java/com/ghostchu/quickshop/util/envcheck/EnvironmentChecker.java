@@ -73,7 +73,7 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "End of life Test", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer eolTest() {
         if (plugin.getGameVersion().isEndOfLife()) {
-            return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with end of life version, QuickShop may not work on this version in future, and you won't receive any in-game update notification anymore, upgrade your server version!");
+            return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with a end of life version, QuickShop may not work on this version in future, consider upgrade your server version!");
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
