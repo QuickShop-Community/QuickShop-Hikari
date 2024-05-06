@@ -57,7 +57,7 @@ public class VirtualDisplayItemManager {
             case v1_18_R1, v1_18_R2 -> new v1_18(plugin, this);
             case v1_19_R1 -> new v1_19_R1(plugin, this);
             case v1_19_R2, v1_19_R3, v1_20_R1 -> new v1_19_R2_TO_v1_20_R1(plugin, this);
-            case v1_20_R2, v1_20_R3 -> new v1_20_R2(plugin, this);
+            case v1_20_R2, v1_20_R3 -> new v1_20_R2_TO_v1_20_R3(plugin, this);
             case v1_20_R4 -> new v1_20_R4(plugin, this);
             default ->
                     throw new IllegalStateException("Unsupported Virtual Display Minecraft version: " + plugin.getGameVersion());
