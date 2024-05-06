@@ -328,6 +328,16 @@ public interface ShopManager {
     void unloadShop(@NotNull Shop shop);
 
     /**
+     * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+     * effects a lots of feature, make sure load it after create it.
+     *
+     * @param world The world the shop is in
+     * @param shop  The shop to load
+     * @param chunkUnloading If unloadShop called caused by chunk unloading, when this is true, QuickShop will try avoid any main-thread opreations to avoid load-unload-load loop
+     */
+    void unloadShop(@NotNull Shop shop, boolean chunkUnloading);
+
+    /**
      * Change the owner to unlimited shop owner.
      * It defined in configuration.
      */

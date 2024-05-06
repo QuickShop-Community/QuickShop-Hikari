@@ -256,7 +256,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
      * @return The Location that the item *should* be displaying at.
      */
     public @Nullable Location getDisplayLocation() {
-        Util.ensureThread(false);
         return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
@@ -310,8 +309,9 @@ public abstract class AbstractDisplayItem implements Reloadable {
 
     /**
      * Remove the display entity.
+     * @param dontTouchWorld When it is true, display impl should avoid touch the world to avoid unload-load loop
      */
-    public abstract void remove();
+    public abstract void remove(boolean dontTouchWorld);
 
     /**
      * Remove this shop's display in the whole world.(Not whole server)

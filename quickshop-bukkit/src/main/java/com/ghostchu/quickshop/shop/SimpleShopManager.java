@@ -1135,11 +1135,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void unloadShop(@NotNull Shop shop) {
+      unloadShop(shop, false);
+    }
+    @Override
+    public void unloadShop(@NotNull Shop shop,boolean dontTouchWorld) {
         //noinspection deprecation
-        shop.handleUnloading();
+        shop.handleUnloading(dontTouchWorld);
         this.loadedShops.remove(shop);
     }
-
 
     /**
      * Change the owner to unlimited shop owner.

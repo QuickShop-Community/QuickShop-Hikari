@@ -11,8 +11,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -95,7 +95,7 @@ public interface Platform {
 
     void setDisplayName(@NotNull ItemStack stack, @Nullable Component component);
 
-    void setDisplayName(@NotNull Item stack, @Nullable Component component);
+    void setDisplayName(@NotNull Entity entity, @Nullable Component component);
 
     void setLines(@NotNull Sign sign, @NotNull List<Component> component);
 

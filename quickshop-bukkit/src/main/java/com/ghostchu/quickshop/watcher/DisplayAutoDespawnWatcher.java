@@ -70,7 +70,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
                         displayItem.spawn();
                     }
                 } else if (displayItem.isSpawned()) {
-                    displayItem.remove();
+                    displayItem.remove(false);
                 }
             }
         }

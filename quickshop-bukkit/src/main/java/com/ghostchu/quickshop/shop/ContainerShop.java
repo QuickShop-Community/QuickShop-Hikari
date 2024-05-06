@@ -20,6 +20,7 @@ import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.shop.display.DisplayEntityDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -31,6 +32,7 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -320,7 +322,7 @@ public class ContainerShop implements Shop, Reloadable {
         boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
         if (!displayStatus) {
             if (this.displayItem != null) {
-                this.displayItem.remove();
+                this.displayItem.remove(false);
             }
             return;
         }
@@ -338,6 +340,7 @@ public class ContainerShop implements Shop, Reloadable {
                                 yield new RealDisplayItem(this);
                             }
                         }
+                        case ENTITY_DISPLAY -> new DisplayEntityDisplayItem(this);
                         default -> new RealDisplayItem(this);
                     };
                 }
@@ -484,7 +487,7 @@ public class ContainerShop implements Shop, Reloadable {
         this.item = item;
         this.originalItem = item;
         if (this.displayItem != null) {
-            this.displayItem.remove();
+            this.displayItem.remove(false);
         }
         this.displayItem = null;
         checkDisplay();
@@ -1079,7 +1082,7 @@ public class ContainerShop implements Shop, Reloadable {
      * Unload ContainerShop.
      */
     @Override
-    public void handleUnloading() {
+    public void handleUnloading(boolean dontTouchWorld) {
         Util.ensureThread(false);
         if (!this.isLoaded) {
             Log.debug("Dupe unload request, canceled.");
@@ -1089,7 +1092,7 @@ public class ContainerShop implements Shop, Reloadable {
             inventoryPreview.close();
         }
         if (this.displayItem != null) {
-            this.displayItem.remove();
+            this.displayItem.remove(dontTouchWorld);
         }
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);

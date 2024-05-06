@@ -16,8 +16,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -149,27 +149,44 @@ public abstract class AbstractSpigotPlatform implements Platform {
         //player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
     }
 
+
     @Override
-    public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
-        if (stack.getItemMeta() == null) {
-            return;
-        }
-        ItemMeta meta = stack.getItemMeta();
-        if (component == null) {
-            meta.setDisplayName(null);
-        } else {
-            meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
-        }
-        stack.setItemMeta(meta);
+    public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
+        NBT.modify(stack, nbt->{
+            ReadWriteNBT display = nbt.getOrCreateCompound("display");
+            if(components.isEmpty()){
+                display.removeKey("Lore");
+            }else{
+                List<String> gson = components.stream().map(c->GsonComponentSerializer.gson().serialize(c)).toList();
+                ReadWriteNBTList<String > list = display.getStringList("Lore");
+                list.clear();
+                list.addAll(gson);
+            }
+        });
     }
 
     @Override
-    public void setDisplayName(@NotNull Item stack, @Nullable Component component) {
-        if (component == null) {
-            stack.setCustomName(null);
-        } else {
-            stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
-        }
+    public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
+        NBT.modify(stack, nbt -> {
+            ReadWriteNBT display = nbt.getOrCreateCompound("display");
+            if (component == null) {
+                display.removeKey("Name");
+            } else {
+                display.setString("Name", GsonComponentSerializer.gson().serialize(component));
+            }
+        });
+    }
+
+
+    @Override
+    public void setDisplayName(@NotNull Entity entity, @Nullable Component component) {
+        NBT.modify(entity, nbt -> {
+            if (component == null) {
+                nbt.removeKey("CustomName");
+            } else {
+                nbt.setString("CustomName", GsonComponentSerializer.gson().serialize(component));
+            }
+        });
     }
 
     @Override
@@ -188,16 +205,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
         NBT.modify(sign, nbt -> {
             nbt.mergeCompound(root);
         });
-    }
-
-    @Override
-    public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        if (!stack.hasItemMeta()) {
-            return;
-        }
-        ItemMeta meta = stack.getItemMeta();
-        meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
-        stack.setItemMeta(meta);
     }
 
     @Override

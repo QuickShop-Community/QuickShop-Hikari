@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.entity.Item;
+import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,7 +12,7 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
     private final Shop shop;
 
     @NotNull
-    private final Item entity;
+    private final Entity entity;
 
     /**
      * This event called after QuickShop safe guarded (+protection flags and attributes) a display item.
@@ -20,7 +20,7 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
      * @param shop   the shop
      * @param entity the display item
      */
-    public ShopDisplayItemSafeGuardEvent(@NotNull Shop shop, @NotNull Item entity) {
+    public ShopDisplayItemSafeGuardEvent(@NotNull Shop shop, @NotNull Entity entity) {
         this.shop = shop;
         this.entity = entity;
     }
@@ -31,7 +31,7 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
      * @return the display item
      */
     @NotNull
-    public Item getEntity() {
+    public Entity getEntity() {
         return entity;
     }
 
