@@ -49,13 +49,13 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
             <artifactId>common</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -63,7 +63,7 @@
             <artifactId>Nova</artifactId>
             <version>0.8.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Nova-0.8.6.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Nova-0.8.6.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

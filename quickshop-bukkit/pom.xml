@@ -70,74 +70,85 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-api</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_18_R1</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_18_R2</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_19_R1</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_19_R2</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_19_R3</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_20_R1</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_20_R2</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_20_R3</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_20_R4</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-paper</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>5.0.0-SNAPSHOT</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <!--JsonConfiguration Dependency End-->
         <dependency>
@@ -151,6 +162,7 @@
                     <groupId>*</groupId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
         <dependency>
@@ -164,6 +176,7 @@
                     <groupId>*</groupId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>me.xanium</groupId>
@@ -177,6 +190,7 @@
                     <groupId>*</groupId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
@@ -189,6 +203,7 @@
                     <groupId>*</groupId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>io.papermc</groupId>
@@ -208,6 +223,7 @@
                     <groupId>*</groupId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
@@ -215,12 +231,14 @@
             <artifactId>h2</artifactId>
             <version>2.1.214</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
             <version>3.14.5</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.sourceforge.csvjdbc/csvjdbc -->
         <dependency>
@@ -228,6 +246,7 @@
             <artifactId>csvjdbc</artifactId>
             <version>1.0.42</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
         <dependency>
@@ -235,6 +254,7 @@
             <artifactId>dom4j</artifactId>
             <version>2.1.4</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.essentialsx</groupId>
@@ -259,18 +279,21 @@
                     <groupId>org.checkerframework</groupId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.crowdin</groupId>
             <artifactId>crowdinota</artifactId>
             <version>1.0.3</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.2</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
@@ -283,6 +306,7 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>su.nightexpress.core</groupId>
@@ -290,6 +314,7 @@
             <version>2.5.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/nightcore-2.5.1.jar</systemPath>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>su.nightexpress.coinsengine</groupId>
@@ -297,12 +322,14 @@
             <version>2.2.0.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/CoinsEngine-2.2.0.1.jar</systemPath>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>me.lokka30</groupId>
             <artifactId>treasury-api</artifactId>
             <version>2.0.1</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

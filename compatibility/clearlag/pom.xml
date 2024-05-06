@@ -50,13 +50,13 @@
         <dependency>
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
             <artifactId>common</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -64,7 +64,7 @@
             <artifactId>clearlag</artifactId>
             <version>3.2.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Clearlag-3.2.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Clearlag-3.2.2.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

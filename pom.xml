@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
-    <url>https://github.com/${developer}/${artifactId}</url>
+    <url>https://github.com/${developer}/${project.artifactId}</url>
 
     <properties>
         <java.version>17</java.version>
@@ -37,14 +37,14 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:${developer}/${artifactId}.git</connection>
-        <developerConnection>scm:git:git@github.com:${developer}/${artifactId}.git</developerConnection>
-        <url>https://github.com/${developer}/${artifactId}</url>
+        <connection>scm:git:git@github.com:${developer}/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:${developer}/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/${developer}/${project.artifactId}</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/${developer}/${name}/issues</url>
+        <url>https://github.com/${developer}/${project.name}/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -61,7 +61,7 @@
 
     <ciManagement>
         <system>GitHub Actions</system>
-        <url>https://github.com/${developer}/${artifactId}/actions/workflows/maven.yml</url>
+        <url>https://github.com/${developer}/${project.artifactId}/actions/workflows/maven.yml</url>
     </ciManagement>
 
     <pluginRepositories>
@@ -95,7 +95,7 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>${name}-${version}</finalName>
+                                <finalName>${project.name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
@@ -280,7 +280,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
+                            <outputDirectory>${project.basedir}/target/extra-resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
