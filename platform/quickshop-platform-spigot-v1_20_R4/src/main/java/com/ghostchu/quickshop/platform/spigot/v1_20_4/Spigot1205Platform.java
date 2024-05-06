@@ -4,17 +4,14 @@ import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.Util;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
 import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
-import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -22,7 +19,6 @@ import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_20_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -30,7 +26,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,14 +39,13 @@ public class Spigot1205Platform extends AbstractSpigotPlatform implements Platfo
     public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
         NamespacedKey namespacedKey = stack.getType().getKey();
         Key key = Key.key(namespacedKey.toString());
-        RegistryAccess access = ((CraftServer) Bukkit.getServer()).getServer().registryAccess();
-        Tag tag = CraftItemStack.asNMSCopy(stack).save(access);
+        ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
         BinaryTagHolder holder;
         if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
-            holder = BinaryTagHolder.binaryTagHolder(tag.toString());
+            holder = BinaryTagHolder.binaryTagHolder(nbt.toString());
         } else {
             //noinspection UnstableApiUsage
-            holder = BinaryTagHolder.of(tag.toString());
+            holder = BinaryTagHolder.of(nbt.toString());
         }
         return HoverEvent.showItem(key, stack.getAmount(), holder);
     }
@@ -79,30 +73,40 @@ public class Spigot1205Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
-        NBT.modify(stack, nbt->{
-            ReadWriteNBT itemComponents = nbt.getOrCreateCompound("components");
-            if (component == null) {
-                itemComponents.removeKey("minecraft:custom_name");
-            } else {
-                itemComponents.setString("minecraft:custom_name", GsonComponentSerializer.gson().serialize(component));
-            }
-        });
+        net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(stack);
+        if (component == null) {
+            nmsItemStack.remove(DataComponents.CUSTOM_NAME);
+            return;
+        }
+        String json = GsonComponentSerializer.gson().serialize(component);
+        nmsItemStack.set(DataComponents.CUSTOM_NAME,
+                net.minecraft.network.chat.Component.Serializer
+                        .fromJson(json,
+                                ((CraftServer) Bukkit.getServer())
+                                        .getServer()
+                                        .registryAccess()));
+        stack.setItemMeta(CraftItemStack.asBukkitCopy(nmsItemStack).getItemMeta());
     }
 
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        NBT.modify(stack, nbt->{
-            ReadWriteNBT itemComponents = nbt.getOrCreateCompound("components");
-            if (components.isEmpty()) {
-                itemComponents.removeKey("minecraft:lores");
-            } else {
-                List<String> gson = components.stream().map(c->GsonComponentSerializer.gson().serialize(c)).toList();
-                ReadWriteNBTList<String > list = itemComponents.getStringList("minecraft:lores");
-                list.clear();
-                list.addAll(gson);
-            }
-        });
+        net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(stack);
+        if (components.isEmpty()) {
+            nmsItemStack.remove(DataComponents.LORE);
+        } else {
+            List<net.minecraft.network.chat.Component> componentsList = components.stream()
+                    .map(c -> GsonComponentSerializer.gson().serialize(c))
+                    .map(json -> (net.minecraft.network.chat.Component)
+                            net.minecraft.network.chat.Component.Serializer
+                                    .fromJson(json,
+                                            ((CraftServer) Bukkit.getServer())
+                                                    .getServer()
+                                                    .registryAccess()))
+                    .toList();
+            nmsItemStack.set(DataComponents.LORE, new ItemLore(componentsList));
+        }
+        stack.setItemMeta(CraftItemStack.asBukkitCopy(nmsItemStack).getItemMeta());
     }
 
     private String postProcessingTranslationKey(String key) {

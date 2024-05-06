@@ -30,20 +30,6 @@ public class Spigot1193Platform extends AbstractSpigotPlatform implements Platfo
     }
 
     @Override
-    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
-        NamespacedKey namespacedKey = stack.getType().getKey();
-        Key key = Key.key(namespacedKey.toString());
-        BinaryTagHolder holder;
-        if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
-            holder = BinaryTagHolder.binaryTagHolder(CraftItemStack.asNMSCopy(stack).save(new CompoundTag()).toString());
-        } else {
-            //noinspection UnstableApiUsage
-            holder = BinaryTagHolder.of(CraftItemStack.asNMSCopy(stack).save(new CompoundTag()).toString());
-        }
-        return HoverEvent.showItem(key, stack.getAmount(), holder);
-    }
-
-    @Override
     public @NotNull String getMinecraftVersion() {
         try {
             return ((CraftServer) Bukkit.getServer()).getServer().getServerVersion();

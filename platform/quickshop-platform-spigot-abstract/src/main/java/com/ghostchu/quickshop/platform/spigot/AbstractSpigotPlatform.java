@@ -2,17 +2,22 @@ package com.ghostchu.quickshop.platform.spigot;
 
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
+import com.ghostchu.quickshop.platform.Util;
 import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -149,16 +154,31 @@ public abstract class AbstractSpigotPlatform implements Platform {
         //player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
     }
 
+    @Override
+    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
+        NamespacedKey namespacedKey = stack.getType().getKey();
+        Key key = Key.key(namespacedKey.toString());
+        ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
+        BinaryTagHolder holder;
+        if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
+            holder = BinaryTagHolder.binaryTagHolder(nbt.toString());
+        } else {
+            //noinspection UnstableApiUsage
+            holder = BinaryTagHolder.of(nbt.toString());
+        }
+        return HoverEvent.showItem(key, stack.getAmount(), holder);
+    }
+
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        NBT.modify(stack, nbt->{
+        NBT.modify(stack, nbt -> {
             ReadWriteNBT display = nbt.getOrCreateCompound("display");
-            if(components.isEmpty()){
+            if (components.isEmpty()) {
                 display.removeKey("Lore");
-            }else{
-                List<String> gson = components.stream().map(c->GsonComponentSerializer.gson().serialize(c)).toList();
-                ReadWriteNBTList<String > list = display.getStringList("Lore");
+            } else {
+                List<String> gson = components.stream().map(c -> GsonComponentSerializer.gson().serialize(c)).toList();
+                ReadWriteNBTList<String> list = display.getStringList("Lore");
                 list.clear();
                 list.addAll(gson);
             }
