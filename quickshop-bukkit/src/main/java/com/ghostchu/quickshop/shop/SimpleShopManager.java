@@ -56,6 +56,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
@@ -1407,7 +1408,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (items.hasItemMeta()) {
                 ItemMeta shopItemMeta = shop.getItem().getItemMeta();
                 shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
-                shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+                ItemFlag hidePotionEffect;
+                try {
+                    hidePotionEffect = ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP");
+                }catch (Exception e){
+                    hidePotionEffect = ItemFlag.valueOf("HIDE_POTION_EFFECTS"); // Remove this when we dropped 1.20.x support
+                }
+                shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(hidePotionEffect);
             }
         }
 
