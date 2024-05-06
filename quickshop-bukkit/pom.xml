@@ -350,12 +350,6 @@
             <version>1.25.0</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>2.0.13</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.ghostchu.lib.unofficial.com.alessiodp.libby</groupId>
             <artifactId>libby-core</artifactId> <!-- Replace bukkit if you're using another platform -->
             <version>2.0.2-SNAPSHOT</version>

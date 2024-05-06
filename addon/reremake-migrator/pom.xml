@@ -54,7 +54,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${project.name}-${version}</finalName>
+                            <finalName>${project.name}-${project.version}</finalName>
                             <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <minimizeJar>false</minimizeJar>
