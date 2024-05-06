@@ -1508,6 +1508,7 @@ suggest-wait: "<green>请稍候... 计算推荐价格。"
 history:
   shop:
     gui-title: "查看交易记录"
+    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-description:
       - "<white>类型： <yellow>{0}</yellow></white>"
       - "<white>所有者: <yellow>{1}</yellow></white>"
@@ -1520,6 +1521,12 @@ history:
       - "<white>物品： <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>余额： <yellow>{3}</yellow></white>"
       - "<white>税： <yellow>{4}</yellow></white>"
+    log-icon-description-with-store-name:
+      - "<white>Store: <yellow>{0}</yellow></white>"
+      - "<white>Purchaser: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{4}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
     previous-page: "<white><< 前一页</white>"
     next-page: "<white>下一页 >></white>"
@@ -1546,3 +1553,4 @@ about:
   valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>无效的捐赠密钥</gray>"
   kofi-thanks: "<gold>特别感谢那些在 Ko-Fi 上支持 QuickShop 的人 :)</gold>"
+history-command-leave-blank: "<Leave blank for seeing store>"
