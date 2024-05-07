@@ -351,7 +351,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <scope>compile</scope>
-            <version>1.25.0</version>
+            <version>1.26.0</version>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.lib.unofficial.com.alessiodp.libby</groupId>
