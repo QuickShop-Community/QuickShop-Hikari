@@ -113,6 +113,7 @@
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
+                                        <include>net.kyori:*</include>
 <!--                                        <include>org.apache.commons:commons-lang3:*</include>-->
 <!--                                        <include>org.apache.commons:commons-text:*</include>-->
 <!--                                        <include>org.apache.commons:commons-compress:*</include>-->
@@ -179,7 +180,6 @@
                                             <exclude>META-INF/*.kotlin_module</exclude>
                                             <exclude>META-INF/*.txt</exclude>
                                             <exclude>META-INF/proguard/*</exclude>
-                                            <exclude>META-INF/services/*</exclude>
                                             <exclude>META-INF/versions/9/*</exclude>
                                             <exclude>*License*</exclude>
                                             <exclude>*LICENSE*</exclude>

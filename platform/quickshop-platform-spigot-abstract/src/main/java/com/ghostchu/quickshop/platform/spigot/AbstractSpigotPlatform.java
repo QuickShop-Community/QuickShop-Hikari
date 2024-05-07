@@ -39,8 +39,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
-    protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
     public final Plugin plugin;
+    protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
     protected Map<String, String> translationMapping;
     private BukkitAudiences audience;
 
@@ -132,7 +132,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
         return MiniMessage.miniMessage();
     }
 
-
     @Override
     public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
         if (this.audience == null) {
@@ -155,7 +154,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull HoverEvent<?> getItemStackHoverEvent(@NotNull ItemStack stack) {
+    public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
         NamespacedKey namespacedKey = stack.getType().getKey();
         Key key = Key.key(namespacedKey.toString());
         ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
@@ -166,9 +165,9 @@ public abstract class AbstractSpigotPlatform implements Platform {
             //noinspection UnstableApiUsage
             holder = BinaryTagHolder.of(nbt.toString());
         }
-        return HoverEvent.showItem(key, stack.getAmount(), holder);
+        HoverEvent he = HoverEvent.showItem(key, stack.getAmount(), holder);
+        return oldComponent.hoverEvent(he);
     }
-
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {

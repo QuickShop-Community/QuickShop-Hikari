@@ -280,8 +280,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             List<Component> sendList = new ArrayList<>();
             Component notify = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(),
                             amount,
-                            Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                            Util.getItemStackName(shop.getItem())).forLocale(langCode);
+            notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
             sendList.add(notify);
             if (space == amount) {
                 Component spaceWarn;
@@ -289,13 +289,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     spaceWarn = plugin.text().of("shop-out-of-space",
                                     shop.getLocation().getBlockX(),
                                     shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ()).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                                    shop.getLocation().getBlockZ()).forLocale(langCode);
                 } else {
                     spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 }
+                spaceWarn = plugin.getPlatform().setItemStackHoverEvent(spaceWarn, shop.getItem());
                 sendList.add(spaceWarn);
             }
             for (Component component : sendList) {
@@ -1349,8 +1348,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             previewComponentPrePopulateEvent.callEvent();
             previewItemStack = previewComponentPrePopulateEvent.getItemStack();
             Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack))
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
+            previewComponent = plugin.getPlatform().setItemStackHoverEvent(previewComponent, shop.getItem());
             ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
             itemPreviewComponentPopulateEvent.callEvent();
             previewComponent = itemPreviewComponentPopulateEvent.getComponent();
@@ -1362,9 +1361,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             ItemStack previewItemStack = shop.getItem().clone();
             ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
             previewComponentPrePopulateEvent.callEvent();
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewComponentPrePopulateEvent.getItemStack()))
-            );
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", plugin.getPlatform().setItemStackHoverEvent(Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack()), previewComponentPrePopulateEvent.getItemStack())).forLocale());
         }
 
         if (Util.isTool(items.getType()) && plugin.getConfig().getBoolean("shop.info-panel.show-durability")) {
@@ -1467,16 +1464,15 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                 amount * shop.getItem().getAmount(),
                                 Util.getItemStackName(shop.getItem()),
                                 this.formatter.format(total - tax, shop),
-                                this.formatter.format(tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                                this.formatter.format(tax, shop)).forLocale(langCode);
             } else {
                 notify = plugin.text().of("player-bought-from-your-store",
                                 seller,
                                 amount * shop.getItem().getAmount(),
                                 Util.getItemStackName(shop.getItem()),
-                                this.formatter.format(total - tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                                this.formatter.format(total - tax, shop)).forLocale(langCode);
             }
+            notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
             sendList.add(notify);
             // Transfers the item from A to B
             if (stock == amount) {
@@ -1486,13 +1482,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                     shop.getLocation().getBlockX(),
                                     shop.getLocation().getBlockY(),
                                     shop.getLocation().getBlockZ(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 } else {
                     stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 }
+                stockWarn = plugin.getPlatform().setItemStackHoverEvent(stockWarn, shop.getItem());
                 sendList.add(stockWarn);
             }
             for (Component component : sendList) {

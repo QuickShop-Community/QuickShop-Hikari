@@ -53,10 +53,6 @@ public class PaperPlatform implements Platform {
         return displayName;
     }
 
-    @Override
-    public @NotNull HoverEvent<?> getItemStackHoverEvent(@NotNull ItemStack stack) {
-        return stack.asHoverEvent();
-    }
 
     @Override
     public @NotNull Component getLine(@NotNull Sign sign, int line) {
@@ -76,6 +72,11 @@ public class PaperPlatform implements Platform {
     @Override
     public @NotNull String getMinecraftVersion() {
         return Bukkit.getMinecraftVersion();
+    }
+
+    @Override
+    public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
+        return oldComponent.hoverEvent(stack.asHoverEvent());
     }
 
     @Override
