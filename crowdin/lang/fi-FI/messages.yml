@@ -601,6 +601,26 @@ debug:
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}</gold>'
   update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
   update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
+  item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
+  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
+  hikari-cp-working: "<green>Pass! HikariCP working well!"
+  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
+  hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
+  queries-stopped: "<green>Stopped <white>{0}</white> active queries."
+  queries-dumping: "<yellow>Dumping active queries..."
+  restart-database-manager: "<yellow>Restarting SQLManager..."
+  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
+  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
+  restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
+  restart-database-manager-done: "<green>Done!"
+  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
+  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
+  property-removed: "<green>Removed property key <white>{0}</white>"
+  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
