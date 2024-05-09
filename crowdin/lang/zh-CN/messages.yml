@@ -611,6 +611,26 @@ debug:
   update-player-shops-per-tick-threshold: '<yellow>最大商店可以每（tick）更新：<gold>{0}'
   update-player-shops-complete: <green>任务已完成，已使用 <yellow>{0} 毫秒</yellow>更新。
   update-player-shops-task-started: <gold>任务已开始，请等待完成。
+  item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
+  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
+  hikari-cp-working: "<green>Pass! HikariCP working well!"
+  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
+  hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
+  queries-stopped: "<green>Stopped <white>{0}</white> active queries."
+  queries-dumping: "<yellow>Dumping active queries..."
+  restart-database-manager: "<yellow>Restarting SQLManager..."
+  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
+  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
+  restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
+  restart-database-manager-done: "<green>Done!"
+  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
+  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
+  property-removed: "<green>Removed property key <white>{0}</white>"
+  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
 database:
   scanning: <green>正在 QuickShop 数据库中扫描孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间...
   scanning-async: <yellow>正在异步任务线程上扫描 QuickShop 数据库中孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间，请稍后再试。
