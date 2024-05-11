@@ -37,13 +37,37 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.BiConsumer;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+    private final Map<String, BiConsumer<CommandSender, List<String>>> subParamMapping = new HashMap<>();
 
     public SubCommand_Debug(QuickShop plugin) {
         this.plugin = plugin;
+        subParamMapping.put("debug", (sender,subParams)->switchDebug(sender));
+        subParamMapping.put("dev", (sender,subParams)->switchDebug(sender));
+        subParamMapping.put("devmode", (sender,subParams)->switchDebug(sender));
+        subParamMapping.put("signs", (sender,subParams)->handleSigns(sender));
+        subParamMapping.put("database", this::handleDatabase);
+        subParamMapping.put("updateplayersigns", this::handleSignsUpdate);
+        subParamMapping.put("force-shops-reload", this::handleShopsReload);
+        subParamMapping.put("force-shoploader-reload", this::handleShopsLoaderReload);
+        subParamMapping.put("check-shop-status", this::handleShopDebug);
+        subParamMapping.put("toggle-shop-load-status", this::handleShopLoading);
+        subParamMapping.put("check-shop-debug", this::handleShopInfo);
+        subParamMapping.put("set-property", this::handleShopsReload);
+        subParamMapping.put("force-shops-reload", this::handleProperty);
+        subParamMapping.put("reset-shop-caches", this::handleShopCacheResetting);
+        subParamMapping.put("reset-dbmanager", this::handleDbManagerReset);
+        subParamMapping.put("dump-db-connections", this::handleDumpDbConnections);
+        subParamMapping.put("stop-db-any-queries", this::handleStopDbQueries);
+        subParamMapping.put("toggle-db-debugmode", this::handleToggleDbDebugMode);
+        subParamMapping.put("dump-hikaricp-status", this::handleDumpHikariCPStatus);
+        subParamMapping.put("set-hikaricp-capacity", this::handleSetHikariCPCapacity);
+        subParamMapping.put("item-info", this::handleItemInfo);
+        subParamMapping.put("mark-all-shops-dirty", this::handleShopsDirtyAndSave);
     }
 
     @Override
@@ -54,29 +78,15 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
         List<String> subParams = new ArrayList<>(parser.getArgs());
         subParams.remove(0);
-        switch (parser.getArgs().get(0)) {
-            case "debug", "dev", "devmode" -> switchDebug(sender);
-            case "handlerlist" -> handleHandlerList(sender, subParams);
-            case "signs" -> handleSigns(sender);
-            case "database" -> handleDatabase(sender, subParams);
-            case "updateplayersigns" -> handleSignsUpdate(sender, subParams);
-            case "force-shops-reload" -> handleShopsReload(sender, subParams);
-            case "force-shoploader-reload" -> handleShopsLoaderReload(sender, subParams);
-            case "check-shop-status" -> handleShopDebug(sender, subParams);
-            case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
-            case "check-shop-debug" -> handleShopInfo(sender, subParams);
-            case "set-property" -> handleProperty(sender, subParams);
-            case "reset-shop-caches" -> handleShopCacheResetting(sender, subParams);
-            case "reset-dbmanager" -> handleDbManagerReset(sender, subParams);
-            case "dump-db-connections" -> handleDumpDbConnections(sender, subParams);
-            case "stop-db-any-queries" -> handleStopDbQueries(sender, subParams);
-            case "toggle-db-debugmode" -> handleToggleDbDebugMode(sender, subParams);
-            case "dump-hikaricp-status" -> handleDumpHikariCPStatus(sender, subParams);
-            case "set-hikaricp-capacity" -> handleSetHikariCPCapacity(sender, subParams);
-            case "item-info" -> handleItemInfo(sender, subParams);
-            case "mark-all-shops-dirty" -> handleShopsDirtyAndSave(sender, subParams);
-            default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+        String arg = parser.getArgs().get(0);
+
+        BiConsumer<CommandSender, List<String>> executor =  subParamMapping.get(arg);
+        if(executor == null){
+            plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+            return;
         }
+
+        executor.accept(sender, subParams);
     }
 
     private void handleShopsDirtyAndSave(CommandSender sender, List<String> subParams) {
@@ -380,6 +390,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if(parser.getArgs().size() == 1){
+            return List.copyOf(subParamMapping.keySet());
+        }
         return Collections.emptyList();
     }
 
