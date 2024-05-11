@@ -32,7 +32,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -1428,16 +1427,12 @@ public class ContainerShop implements Shop, Reloadable {
         Log.debug("Globally sign text setting...");
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
-            if (plugin.getGameVersion().isSignTextDyeSupport()) {
-                DyeColor dyeColor = Util.getDyeColor();
-                if (dyeColor != null) {
-                    sign.setColor(dyeColor);
-                }
+            DyeColor dyeColor = Util.getDyeColor();
+            if (dyeColor != null) {
+                sign.setColor(dyeColor);
             }
-            if (plugin.getGameVersion().isSignGlowingSupport()) {
-                boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
-                sign.setGlowingText(isGlowing);
-            }
+            boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+            sign.setGlowingText(isGlowing);
             sign.update(true);
             //plugin.getPlatform().setLine(sign, i, lines.get(i));
             plugin.getPlatform().setLines(sign, lines);
