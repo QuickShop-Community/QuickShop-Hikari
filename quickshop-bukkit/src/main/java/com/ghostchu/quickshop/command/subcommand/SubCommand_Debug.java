@@ -74,8 +74,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "dump-hikaricp-status" -> handleDumpHikariCPStatus(sender, subParams);
             case "set-hikaricp-capacity" -> handleSetHikariCPCapacity(sender, subParams);
             case "item-info" -> handleItemInfo(sender, subParams);
+            case "mark-all-shops-dirty" -> handleShopsDirtyAndSave(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
+    }
+
+    private void handleShopsDirtyAndSave(CommandSender sender, List<String> subParams) {
+        plugin.getShopManager().getAllShops().forEach(Shop::setDirty);
+        plugin.text().of(sender, "debug.marked-as-dirty").send();
     }
 
     private void handleItemInfo(CommandSender sender, List<String> subParams) {
