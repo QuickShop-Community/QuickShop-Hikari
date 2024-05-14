@@ -20,7 +20,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.shop.inventory.BukkitListenerDrivenInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -56,16 +55,18 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -279,20 +280,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             String langCode = plugin.text().findRelativeLanguages(buyerQUser, true).getLocale();
             List<Component> sendList = new ArrayList<>();
             Component notify = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(),
-                            amount,
-                            Util.getItemStackName(shop.getItem())).forLocale(langCode);
+                    amount,
+                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
             notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
             sendList.add(notify);
             if (space == amount) {
                 Component spaceWarn;
                 if (shop.getShopName() == null) {
                     spaceWarn = plugin.text().of("shop-out-of-space",
-                                    shop.getLocation().getBlockX(),
-                                    shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ()).forLocale(langCode);
+                            shop.getLocation().getBlockX(),
+                            shop.getLocation().getBlockY(),
+                            shop.getLocation().getBlockZ()).forLocale(langCode);
                 } else {
                     spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
+                            Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 }
                 spaceWarn = plugin.getPlatform().setItemStackHoverEvent(spaceWarn, shop.getItem());
                 sendList.add(spaceWarn);
@@ -373,7 +374,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     false,
                     null,
                     plugin.getJavaPlugin().getName(),
-                    plugin.getInventoryWrapperManager().mklink(new BukkitListenerDrivenInventoryWrapper((holder).getInventory(), state.getLocation())),
+                    plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
                     null,
                     Collections.emptyMap(),
                     new SimpleBenefit());
@@ -1323,6 +1324,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @param p    Target player
      * @param shop The shop
      */
+    @SuppressWarnings("removal")
     @Override
     public void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
         if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)
@@ -1408,7 +1410,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 ItemFlag hidePotionEffect;
                 try {
                     hidePotionEffect = ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP");
-                }catch (Exception e){
+                } catch (Exception e) {
                     hidePotionEffect = ItemFlag.valueOf("HIDE_POTION_EFFECTS"); // Remove this when we dropped 1.20.x support
                 }
                 shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(hidePotionEffect);
@@ -1419,27 +1421,66 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             MsgUtil.printEnchantment(shop, chatSheetPrinter);
         }
         if (shouldDisplayPotionEffects) {
-            if (items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
-                List<PotionEffect> effects = new ArrayList<>();
-                if (potionMeta.getBasePotionType() != null) {
-                    effects.addAll(potionMeta.getBasePotionType().getPotionEffects());
-                }
-                if (potionMeta.hasCustomEffects()) {
-                    effects.addAll(potionMeta.getCustomEffects());
-                }
-                for (PotionEffect potionEffect : effects) {
-                    int level = potionEffect.getAmplifier();
-                    Component translation;
-                    try {
-                        translation = plugin.getPlatform().getTranslation(potionEffect.getType());
-                    } catch (Throwable th) {
-                        translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
-                        plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+            if (plugin.getGameVersion().isNewPotionAPI()) {
+                if (items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
+                    List<PotionEffect> effects = new ArrayList<>();
+                    if (potionMeta.getBasePotionType() != null) {
+                        effects.addAll(potionMeta.getBasePotionType().getPotionEffects());
                     }
-                    chatSheetPrinter.printLine(Component.empty()
-                            .color(NamedTextColor.YELLOW)
-                            .append(translation)
-                            .append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                    if (potionMeta.hasCustomEffects()) {
+                        effects.addAll(potionMeta.getCustomEffects());
+                    }
+                    for (PotionEffect potionEffect : effects) {
+                        int level = potionEffect.getAmplifier();
+                        Component translation;
+                        try {
+                            translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                        } catch (Throwable th) {
+                            translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
+                            plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+                        }
+                        chatSheetPrinter.printLine(Component.empty()
+                                .color(NamedTextColor.YELLOW)
+                                .append(translation)
+                                .append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                    }
+                }
+            } else {
+                if (shouldDisplayPotionEffects) {
+                    if (items.getItemMeta() instanceof PotionMeta potionMeta) {
+                        PotionData potionData = potionMeta.getBasePotionData();
+                        PotionEffectType potionEffectType = potionData.getType().getEffectType();
+                        if (potionEffectType != null) {
+                            Component translation;
+                            try {
+                                translation = plugin.getPlatform().getTranslation(potionEffectType);
+                            } catch (Throwable th) {
+                                translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
+                                plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
+                            }
+                            chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
+                            //Because the bukkit API limit, we can't get the actual effect level
+                            chatSheetPrinter.printLine(Component.empty()
+                                    .color(NamedTextColor.YELLOW)
+                                    .append(translation)
+                            );
+                        }
+                        if (potionMeta.hasCustomEffects()) {
+                            for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                                int level = potionEffect.getAmplifier();
+                                Component translation;
+                                try {
+                                    translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                                } catch (Throwable th) {
+                                    translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
+                                    plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+                                }
+                                chatSheetPrinter.printLine(Component.empty()
+                                        .color(NamedTextColor.YELLOW)
+                                        .append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1460,17 +1501,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             Component notify;
             if (plugin.getConfig().getBoolean("show-tax")) {
                 notify = plugin.text().of("player-bought-from-your-store-tax",
-                                seller,
-                                amount * shop.getItem().getAmount(),
-                                Util.getItemStackName(shop.getItem()),
-                                this.formatter.format(total - tax, shop),
-                                this.formatter.format(tax, shop)).forLocale(langCode);
+                        seller,
+                        amount * shop.getItem().getAmount(),
+                        Util.getItemStackName(shop.getItem()),
+                        this.formatter.format(total - tax, shop),
+                        this.formatter.format(tax, shop)).forLocale(langCode);
             } else {
                 notify = plugin.text().of("player-bought-from-your-store",
-                                seller,
-                                amount * shop.getItem().getAmount(),
-                                Util.getItemStackName(shop.getItem()),
-                                this.formatter.format(total - tax, shop)).forLocale(langCode);
+                        seller,
+                        amount * shop.getItem().getAmount(),
+                        Util.getItemStackName(shop.getItem()),
+                        this.formatter.format(total - tax, shop)).forLocale(langCode);
             }
             notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
             sendList.add(notify);
@@ -1479,13 +1520,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 Component stockWarn;
                 if (shop.getShopName() == null) {
                     stockWarn = plugin.text().of("shop-out-of-stock",
-                                    shop.getLocation().getBlockX(),
-                                    shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
+                            shop.getLocation().getBlockX(),
+                            shop.getLocation().getBlockY(),
+                            shop.getLocation().getBlockZ(),
+                            Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 } else {
                     stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode);
+                            Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 }
                 stockWarn = plugin.getPlatform().setItemStackHoverEvent(stockWarn, shop.getItem());
                 sendList.add(stockWarn);

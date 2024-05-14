@@ -49,7 +49,6 @@ import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
-import com.ghostchu.quickshop.shop.inventory.InventoryWrapperUpdateManager;
 import com.ghostchu.quickshop.shop.signhooker.SignHooker;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
@@ -247,8 +246,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private RegistryManager registry;
     private DonationInfo donationInfo;
-    @Getter
-    private InventoryWrapperUpdateManager invWrapperUpdateManager;
+//    @Getter
+//    private InventoryWrapperUpdateManager invWrapperUpdateManager;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -618,8 +617,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Registering commands...");
         this.permissionChecker = new PermissionChecker(this);
         loadCommandHandler();
-        this.invWrapperUpdateManager = new InventoryWrapperUpdateManager(this);
-        this.invWrapperUpdateManager.register();
+//        this.invWrapperUpdateManager = new InventoryWrapperUpdateManager(this);
+//        this.invWrapperUpdateManager.register();
         this.shopManager = new SimpleShopManager(this);
         // Limit
         //this.registerLimitRanks();

@@ -33,7 +33,6 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -103,8 +102,6 @@ public class ContainerShop implements Shop, Reloadable {
     private QUser taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
-    @EqualsAndHashCode.Exclude
-    private InventoryWrapper inventoryWrapper;
     @NotNull
     private String symbolLink;
     @Nullable
@@ -431,23 +428,15 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @Nullable InventoryWrapper getInventory() {
-        if (inventoryWrapper == null || inventoryWrapper.isNeedUpdate()) {
-            Util.ensureThread(false);
-            if (inventoryWrapper != null && inventoryWrapper.isNeedUpdate()) {
-                Log.debug("(Re-)loading inventory from symbol link: " + symbolLink + " (InventoryWrapper declared it need to be re-newed)");
-            } else {
-                Log.debug("Loading inventory from symbol link: " + symbolLink);
+        Util.ensureThread(false);
+        try {
+            InventoryWrapper inventoryWrapper = locateInventory(symbolLink);
+            if (inventoryWrapper.isValid()) {
+                return inventoryWrapper;
             }
-
-            try {
-                inventoryWrapper = locateInventory(symbolLink);
-            } catch (Exception e) {
-                Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
-                return null;
-            }
-        }
-        if (inventoryWrapper.isValid()) {
-            return inventoryWrapper;
+        } catch (Exception e) {
+            Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
+            return null;
         }
         if (!createBackup) {
             createBackup = false;
@@ -1050,17 +1039,17 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         try (PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
-            inventoryWrapper = locateInventory(symbolLink);
-        } catch (Exception e) {
-            plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, e.getClass().getName(), e.getMessage());
-            if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
-                plugin.logger().warn("Deleting corrupt shop...");
-                plugin.getShopManager().deleteShop(this);
-            } else {
-                plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
-                plugin.getShopManager().deleteShop(this);
+            if (getInventory() == null) {
+                plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
+                if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
+                    plugin.logger().warn("Deleting corrupt shop...");
+                    plugin.getShopManager().deleteShop(this);
+                } else {
+                    plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
+                    plugin.getShopManager().unloadShop(this);
+                }
+                return;
             }
-            return;
         }
         if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
             return;
@@ -1368,7 +1357,6 @@ public class ContainerShop implements Shop, Reloadable {
         if (provider == null) {
             throw new IllegalArgumentException("The manager " + manager.getClass().getName() + " not registered in registry.");
         }
-        this.inventoryWrapper = wrapper;
         this.inventoryWrapperProvider = provider;
         this.symbolLink = manager.mklink(wrapper);
         setDirty();
@@ -1581,19 +1569,33 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public String toString() {
-
-        return "Shop " +
-                (location.getWorld() == null ? "unloaded world" : location.getWorld().getName()) +
-                "(" +
-                location.getBlockX() +
-                ", " +
-                location.getBlockY() +
-                ", " +
-                location.getBlockZ() +
-                ")" +
-                " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false, MsgUtil.getDefaultGameLanguageLocale())) + " - " + getOwner() +
-                ", Unlimited: " + isUnlimited() +
-                ", Item: " + LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(getItem())) +
-                ", Price: " + getPrice();
+        return "ContainerShop{" +
+                "location=" + location +
+                ", plugin=" + plugin +
+                ", runtimeRandomUniqueId=" + runtimeRandomUniqueId +
+                ", playerGroup=" + playerGroup +
+                ", isDeleted=" + isDeleted +
+                ", extra=" + extra +
+                ", shopId=" + shopId +
+                ", owner=" + owner +
+                ", price=" + price +
+                ", shopType=" + shopType +
+                ", unlimited=" + unlimited +
+                ", item=" + item +
+                ", originalItem=" + originalItem +
+                ", displayItem=" + displayItem +
+                ", isLoaded=" + isLoaded +
+                ", createBackup=" + createBackup +
+                ", inventoryPreview=" + inventoryPreview +
+                ", dirty=" + dirty +
+                ", updating=" + updating +
+                ", currency='" + currency + '\'' +
+                ", disableDisplay=" + disableDisplay +
+                ", taxAccount=" + taxAccount +
+                ", inventoryWrapperProvider='" + inventoryWrapperProvider + '\'' +
+                ", symbolLink='" + symbolLink + '\'' +
+                ", shopName='" + shopName + '\'' +
+                ", benefit=" + benefit +
+                '}';
     }
 }
