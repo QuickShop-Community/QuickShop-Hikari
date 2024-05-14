@@ -3,6 +3,8 @@ package com.ghostchu.quickshop.api;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * Utilities to help QuickShop quickly check server supported features
  *
@@ -10,46 +12,17 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public enum GameVersion {
-    v1_5_R1(false, true, false, false),
-    v1_5_R2(false, true, false, false),
-    v1_5_R3(false, true, false, false),
-    v1_6_R1(false, true, false, false),
-    v1_6_R2(false, true, false, false),
-    v1_6_R3(false, true, false, false),
-    v1_7_R1(false, true, false, false),
-    v1_7_R2(false, true, false, false),
-    v1_7_R3(false, true, false, false),
-    v1_7_R4(false, true, false, false),
-    v1_8_R1(false, true, false, false),
-    v1_8_R2(false, true, false, false),
-    v1_8_R3(false, true, false, false),
-    v1_9_R1(false, true, false, false),
-    v1_9_R2(false, true, false, false),
-    v1_10_R1(false, true, false, false),
-    v1_11_R1(false, true, false, false),
-    v1_12_R1(false, true, false, false),
-    v1_12_R2(false, true, false, false),
-    v1_13_R1(false, true, false, false),
-    v1_13_R2(false, true, false, false),
-    v1_14_R1(false, true, false, false),
-    v1_14_R2(false, true, false, false),
-    v1_15_R1(false, true, false, false),
-    v1_15_R2(false, true, false, false),
-    v1_16_R1(false, true, false, false),
-    v1_16_R2(false, true, false, false),
-    v1_16_R3(false, true, false, false),
-    v1_16_R4(false, true, false, false),
-    v1_17_R1(false, true, false, true),
-    v1_18_R1(false, true, false, true),
-    v1_18_R2(true, true, true, true),
-    v1_19_R1(true, true, true, true),
-    v1_19_R2(true, true, true, true),
-    v1_19_R3(true, true, true, true),
-    v1_20_R1(true, true, true, true),
-    v1_20_R2(true, false, true, true),
-    v1_20_R3(true, false, true, true),
-    v1_20_R4(true, false, false, true),
-    UNKNOWN(true, false, false, true);
+    v1_18_R1(new String[]{"1.18", "1.18.1"}, false, true, false, true),
+    v1_18_R2(new String[]{"1.18.2"}, true, true, true, true),
+    v1_19_R1(new String[]{"1.19", "1.19.1"}, true, true, true, true),
+    v1_19_R2(new String[]{"1.19.2"}, true, true, true, true),
+    v1_19_R3(new String[]{"1.19.3", "1.19.4"}, true, true, true, true),
+    v1_20_R1(new String[]{"1.20", "1.20.1"}, true, true, true, true),
+    v1_20_R2(new String[]{"1.20.2", "1.20.3"}, true, false, true, true),
+    v1_20_R3(new String[]{"1.20.4", "1.20.5"}, true, false, true, true),
+    v1_20_R4(new String[]{"1.20.6"}, true, false, true, true),
+    UNKNOWN(new String[0], true, false, false, true);
+    private final String[] mcVersion;
     /**
      * CoreSupports - Check does QuickShop most features supports this server version
      */
@@ -70,7 +43,8 @@ public enum GameVersion {
      */
     private final boolean newNmsName;
 
-    GameVersion(boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName) {
+    GameVersion(String[] mcVersion, boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName) {
+        this.mcVersion = mcVersion;
         this.coreSupports = coreSupports;
         this.endOfLife = endOfLife;
         this.virtualDisplaySupports = virtualDisplaySupports;
@@ -88,6 +62,9 @@ public enum GameVersion {
     public static GameVersion get(@NotNull String nmsVersion) {
         for (GameVersion version : GameVersion.values()) {
             if (version.name().equals(nmsVersion)) {
+                return version;
+            }
+            if(Arrays.asList(version.mcVersion).contains(nmsVersion)){
                 return version;
             }
         }

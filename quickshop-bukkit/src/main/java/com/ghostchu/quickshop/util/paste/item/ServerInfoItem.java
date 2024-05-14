@@ -25,7 +25,7 @@ public class ServerInfoItem implements SubPasteItem {
         QuickShop plugin = QuickShop.getInstance();
         this.serverName = Bukkit.getServer().getName();
         this.build = Bukkit.getServer().getVersion();
-        this.nmsVersion = ReflectFactory.getNMSVersion();
+        this.nmsVersion = ReflectFactory.getNMSVersion()+"/"+plugin.getPlatform().getMinecraftVersion();
         this.dataVersion = String.valueOf(Bukkit.getServer().getUnsafe().getDataVersion());
         this.moddedServerType = "Bukkit";
         if (PaperLib.isSpigot()) {
