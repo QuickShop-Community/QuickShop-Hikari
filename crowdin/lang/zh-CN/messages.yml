@@ -631,7 +631,7 @@ debug:
   property-security-block: "<red>请求被拒绝，出于安全原因，您只能更改启动脚本 <aqua>com.ghostchu.quickshop</aqua> 或 <aqua>quickshop</aqua> 的属性。"
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
-  marked-as-dirty: "<green>Marked all founded stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
+  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
 database:
   scanning: <green>正在 QuickShop 数据库中扫描孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间...
   scanning-async: <yellow>正在异步任务线程上扫描 QuickShop 数据库中孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间，请稍后再试。
