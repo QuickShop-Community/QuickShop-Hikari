@@ -9,7 +9,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
-import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
@@ -75,27 +74,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         subParamMapping.put("item-info", this::handleItemInfo);
         subParamMapping.put("mark-all-shops-dirty", this::handleShopsDirtyAndSave);
         subParamMapping.put("clean-display-entities", this::handleDisplayEntities);
-        subParamMapping.put("remove-container-shop-inventory-wrapper-cache", this::handleRemoveInventoryWrapperCache);
-    }
-
-    private void handleRemoveInventoryWrapperCache(CommandSender sender, List<String> strings) {
-        Shop shop = getLookingShop(sender);
-        if (shop == null) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-        ContainerShop containerShop = (ContainerShop) shop;
-
-        try {
-            Field f = containerShop.getClass().getDeclaredField("inventoryWrapper");
-            f.setAccessible(true);
-            f.set(containerShop, null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        sender.sendMessage("Cleared! Re-locating InventoryWrapper...");
-        shop.getInventory();
     }
 
     private void handleDisplayEntities(CommandSender sender, List<String> strings) {
