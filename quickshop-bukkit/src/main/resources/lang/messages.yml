@@ -1815,3 +1815,4 @@ about:
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
+shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
