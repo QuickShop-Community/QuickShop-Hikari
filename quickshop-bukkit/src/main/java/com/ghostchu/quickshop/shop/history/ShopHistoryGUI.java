@@ -19,6 +19,7 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -69,7 +70,7 @@ public class ShopHistoryGUI {
     private void reQuery() {
         Util.ensureThread(true);
         try {
-            this.queryResult = shopHistory.query(page, body.getLength() * body.getLength());
+            this.queryResult = shopHistory.query(page, body.getLength() * body.getHeight());
             if (summary == null) {
                 summary = shopHistory.generateSummary().join();
                 Log.debug(summary.toString());
@@ -233,14 +234,14 @@ public class ShopHistoryGUI {
             e.setResult(Event.Result.DENY);
             e.setCancelled(true);
             page = Math.max(1, page - 1);
-            refreshGui();
+            Util.mainThreadRun(this::refreshGui);
         }), 0, 0);
         footer.addItem(new GuiItem(currentPage, cancelEvent()), 4, 0);
         footer.addItem(new GuiItem(nextPage, e -> {
             e.setResult(Event.Result.DENY);
             e.setCancelled(true);
             page = page + 1;
-            refreshGui();
+            Util.mainThreadRun(this::refreshGui);
         }), 8, 0);
     }
 
