@@ -94,6 +94,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     .initialCapacity(50)
                     .build();
     private final EconomyFormatter formatter;
+    @Getter
     private ShopCache shopCache;
     @Getter
     @Nullable
@@ -164,10 +165,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         map.put(ShopCacheNamespacedKey.SINGLE, new ImmutablePair<>(this::getShop, null));
         map.put(ShopCacheNamespacedKey.INCLUDE_ATTACHED, new ImmutablePair<>(this::getShopIncludeAttached, null));
         this.shopCache = new SimpleShopCache(plugin, map);
-    }
-
-    public ShopCache getShopCache() {
-        return shopCache;
     }
 
     @Override
