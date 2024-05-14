@@ -79,7 +79,7 @@ public class NexusManager implements SubPasteItem {
     }
 
     @Nullable
-    public NexusMetadata fetchMetadata() {
+    private NexusMetadata fetchMetadata() {
         try {
             HttpResponse<String> resp = Unirest.get(NEXUS_ROOT_METADATA_URL).asString();
             if (!resp.isSuccess()) {
