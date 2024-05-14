@@ -193,10 +193,8 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleStopDbQueries(CommandSender sender, List<String> subParams) {
-        long stopped = plugin.getSqlManager().getActiveQuery().values().stream().map(s -> {
-            s.close();
-            return null;
-        }).count();
+        long stopped = plugin.getSqlManager().getActiveQuery().values().size();
+        plugin.getSqlManager().getActiveQuery().values().forEach(SQLQuery::close);
         plugin.text().of(sender, "debug.queries-stopped", stopped).send();
     }
 
