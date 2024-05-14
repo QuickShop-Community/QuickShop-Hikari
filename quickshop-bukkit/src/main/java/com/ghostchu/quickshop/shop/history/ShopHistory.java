@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.shop.history;
 
-import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -26,8 +25,8 @@ public class ShopHistory {
         this.plugin = plugin;
         this.shops = shops;
         for (Shop shop : shops) {
-            long shopId= shop.getShopId();
-            if(shopId <= 0){
+            long shopId = shop.getShopId();
+            if (shopId <= 0) {
                 continue;
             }
             shopsMapping.put(shopId, shop);
@@ -136,7 +135,7 @@ public class ShopHistory {
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
                  Connection connection = plugin.getSqlManager().getConnection();
                  PreparedStatement ps = connection.prepareStatement(SQL)) {
-                perfMonitor.setContext("shopIds=" +shopsMapping.keySet());
+                perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
                 mappingPreparedStatement(ps, 1);
                 @Cleanup
                 ResultSet set = ps.executeQuery();
@@ -284,14 +283,13 @@ public class ShopHistory {
     public List<ShopHistoryRecord> query(int page, int pageSize) throws SQLException {
         Util.ensureThread(true);
         List<ShopHistoryRecord> historyRecords = new ArrayList<>(pageSize);
-        String SQL = "SELECT * FROM %s WHERE `shop` IN ("+shopIdsPlaceHolders+") ORDER BY `time` DESC LIMIT "+(page - 1) * pageSize+","+pageSize;
+        String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC LIMIT " + (page - 1) * pageSize + "," + pageSize;
         SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-        try (PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery")) {
-            Connection connection = plugin.getSqlManager().getConnection();
-            PreparedStatement ps = connection.prepareStatement(SQL);
+        try (PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
+             Connection connection = plugin.getSqlManager().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
             mappingPreparedStatement(ps, 1);
             perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", page=" + page + ", pageSize=" + pageSize);
-
             try (ResultSet set = ps.executeQuery()) {
                 while (set.next()) {
                     if (!isValidSummaryRecordType(set.getString("type"))) {
