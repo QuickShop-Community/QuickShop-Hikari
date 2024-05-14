@@ -64,8 +64,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         subParamMapping.put("check-shop-status", this::handleShopDebug);
         subParamMapping.put("toggle-shop-load-status", this::handleShopLoading);
         subParamMapping.put("check-shop-debug", this::handleShopInfo);
-        subParamMapping.put("set-property", this::handleShopsReload);
-        subParamMapping.put("force-shops-reload", this::handleProperty);
+        subParamMapping.put("set-property", this::handleProperty);
         subParamMapping.put("reset-shop-caches", this::handleShopCacheResetting);
         subParamMapping.put("reset-dbmanager", this::handleDbManagerReset);
         subParamMapping.put("dump-db-connections", this::handleDumpDbConnections);
