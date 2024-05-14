@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.*;
@@ -15,6 +16,7 @@ import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -300,7 +302,19 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         BlockState state = info.getLocation().getBlock().getState();
         if (state instanceof InventoryHolder holder) {
             // Create the basic shop
-            ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(), price, info.getItem(), createQUser, false, ShopType.SELLING, new YamlConfiguration(), null, false, null, plugin.getJavaPlugin().getName(), plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())), null, Collections.emptyMap(), new SimpleBenefit());
+            String symbolLink;
+            InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
+            if (manager instanceof BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
+                symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
+            } else {
+                symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+            }
+            ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
+                    price, info.getItem(), createQUser, false,
+                    ShopType.SELLING, new YamlConfiguration(), null, false,
+                    null, plugin.getJavaPlugin().getName(),
+                    symbolLink,
+                    null, Collections.emptyMap(), new SimpleBenefit());
             createShop(shop, info.getSignBlock(), info.isBypassed());
         } else {
             plugin.text().of(p, "invalid-container").send();
@@ -1039,6 +1053,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     public @NotNull PriceLimiter getPriceLimiter() {
         return this.priceLimiter;
     }
+
     /**
      * Gets a shop in a specific location
      *
@@ -1175,60 +1190,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         return amount;
     }
 
-
-    public class ShopIterator implements Iterator<Shop> {
-
-        protected final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
-
-        protected Iterator<Map<Location, Shop>> chunks;
-
-        protected Iterator<Shop> shops;
-
-        public ShopIterator() {
-            worlds = getShops().values().iterator();
-        }
-
-        /**
-         * Returns true if there is still more shops to iterate over.
-         */
-        @Override
-        public boolean hasNext() {
-            if (shops == null || !shops.hasNext()) {
-                if (chunks == null || !chunks.hasNext()) {
-                    if (!worlds.hasNext()) {
-                        return false;
-                    } else {
-                        chunks = worlds.next().values().iterator();
-                        return hasNext();
-                    }
-                } else {
-                    shops = chunks.next().values().iterator();
-                    return hasNext();
-                }
-            }
-            return true;
-        }
-
-        /**
-         * Fetches the next shop. Throws NoSuchElementException if there are no more shops.
-         */
-        @Override
-        public @NotNull Shop next() {
-            if (shops == null || !shops.hasNext()) {
-                if (chunks == null || !chunks.hasNext()) {
-                    if (!worlds.hasNext()) {
-                        throw new NoSuchElementException("No more shops to iterate over!");
-                    }
-                    chunks = worlds.next().values().iterator();
-                }
-                shops = chunks.next().values().iterator();
-            }
-            if (!shops.hasNext()) {
-                return this.next(); // Skip to the next one (Empty iterator?)
-            }
-            return shops.next();
-        }
-    }
     public static class InteractiveManager implements ShopManager.InteractiveManager {
         private final Map<UUID, Info> actions = Maps.newConcurrentMap();
         private final QuickShop plugin;
@@ -1311,6 +1272,60 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                     plugin.getBungeeListener().notifyForForward(p);
                 }
             }
+        }
+    }
+
+    public class ShopIterator implements Iterator<Shop> {
+
+        protected final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
+
+        protected Iterator<Map<Location, Shop>> chunks;
+
+        protected Iterator<Shop> shops;
+
+        public ShopIterator() {
+            worlds = getShops().values().iterator();
+        }
+
+        /**
+         * Returns true if there is still more shops to iterate over.
+         */
+        @Override
+        public boolean hasNext() {
+            if (shops == null || !shops.hasNext()) {
+                if (chunks == null || !chunks.hasNext()) {
+                    if (!worlds.hasNext()) {
+                        return false;
+                    } else {
+                        chunks = worlds.next().values().iterator();
+                        return hasNext();
+                    }
+                } else {
+                    shops = chunks.next().values().iterator();
+                    return hasNext();
+                }
+            }
+            return true;
+        }
+
+        /**
+         * Fetches the next shop. Throws NoSuchElementException if there are no more shops.
+         */
+        @Override
+        public @NotNull Shop next() {
+            if (shops == null || !shops.hasNext()) {
+                if (chunks == null || !chunks.hasNext()) {
+                    if (!worlds.hasNext()) {
+                        throw new NoSuchElementException("No more shops to iterate over!");
+                    }
+                    chunks = worlds.next().values().iterator();
+                }
+                shops = chunks.next().values().iterator();
+            }
+            if (!shops.hasNext()) {
+                return this.next(); // Skip to the next one (Empty iterator?)
+            }
+            return shops.next();
         }
     }
 }
