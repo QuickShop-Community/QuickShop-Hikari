@@ -723,7 +723,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.successful-purchase").forLocale());
         if (showTax) {
-            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price-tax", Component.text(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), format(total, shop), tax).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price-tax", Component.text(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), format(total, shop), format(tax,shop)).forLocale());
         } else {
             chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), format(total, shop)).forLocale());
         }
