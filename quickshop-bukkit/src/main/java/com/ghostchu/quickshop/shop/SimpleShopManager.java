@@ -868,9 +868,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                                 translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
                                 plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
                             }
-                            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW)
-                                    .append(translation)
-                                    .append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
                         }
                     }
                 } else {
@@ -888,8 +886,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                                 }
                                 chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
                                 //Because the bukkit API limit, we can't get the actual effect level
-                                int level = potionData.isExtended() ? 2 : 1;
-                                chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(translation).append(Component.text(" " + RomanNumber.toRoman(level))));
+                                chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(translation));
                             }
                             if (potionMeta.hasCustomEffects()) {
                                 for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
