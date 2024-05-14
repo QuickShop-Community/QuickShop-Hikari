@@ -635,6 +635,7 @@ debug:
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
   marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
+  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
 database:
   scanning: <green>Skanner de isolerte dataene i QuickShop-databasen. Databasebelastningen kan øke skanneprosessen. Dette kan ta litt tid...
   scanning-async: <yellow>Skanner de isolerte dataene i QuickShop-databasen på en asynkron oppgavetråd. Databasebelastningen kan øke skannesprosessen. Dette kan ta litt tid. Hvis det mislykkes, prøv igjen senere.
