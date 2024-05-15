@@ -424,7 +424,7 @@ public interface Shop {
 
     @Deprecated()
     @ApiStatus.Internal
-    void handleUnloading();
+    void handleUnloading(boolean dontTouchWorld);
 
     /**
      * open a preview for shop item

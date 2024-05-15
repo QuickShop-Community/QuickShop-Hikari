@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class v1_20_R2 implements VirtualDisplayPacketFactory {
+public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
     private final QuickShop plugin;
     private final VirtualDisplayItemManager manager;
 
-    public v1_20_R2(QuickShop plugin, VirtualDisplayItemManager manager) {
+    public v1_20_R2_TO_v1_20_R3(QuickShop plugin, VirtualDisplayItemManager manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
@@ -60,7 +60,7 @@ public class v1_20_R2 implements VirtualDisplayPacketFactory {
                 //Entity ID
                 .write(0, entityID);
         //Velocity x
-        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.valueOf("DROPPED_ITEM"));
         //UUID
         fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
         //Location

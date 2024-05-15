@@ -136,8 +136,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
                                 location.getBlockY(),
                                 location.getBlockZ(),
                                 shopDoubleEntry.getValue().intValue()
-                        ).forLocale()
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack));
+                        ).forLocale();
+                entryComponent = plugin.getPlatform().setItemStackHoverEvent(entryComponent, shop.getItem());
                 MsgUtil.sendDirectMessage(sender, entryComponent);
             }
 

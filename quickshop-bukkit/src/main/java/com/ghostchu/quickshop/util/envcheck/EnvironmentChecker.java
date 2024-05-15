@@ -59,13 +59,11 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
     public ResultContainer coreSupportTest() {
-        String nmsVersion = ReflectFactory.getNMSVersion();
-        GameVersion gameVersion = GameVersion.get(nmsVersion);
-        if (!gameVersion.isCoreSupports()) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.getPlatform().getMinecraftVersion() + " (" + nmsVersion + ")");
+        if (!plugin.getGameVersion().isCoreSupports()) {
+            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.getPlatform().getMinecraftVersion() + " (" + ReflectFactory.getNMSVersion() + ")");
         }
-        if (gameVersion == GameVersion.UNKNOWN) {
-            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
+        if (plugin.getGameVersion() == GameVersion.UNKNOWN) {
+            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + ReflectFactory.getNMSVersion() + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
@@ -73,16 +71,14 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "End of life Test", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer eolTest() {
         if (plugin.getGameVersion().isEndOfLife()) {
-            return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with end of life version, QuickShop may not work on this version in future, and you won't receive any in-game update notification anymore, upgrade your server version!");
+            return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with a end of life version, QuickShop may not work on this version in future, consider upgrade your server version!");
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
     public ResultContainer gamerVersionSupportTest() {
-        String nmsVersion = ReflectFactory.getNMSVersion();
-        GameVersion gameVersion = GameVersion.get(nmsVersion);
-        if (gameVersion == GameVersion.UNKNOWN) {
+        if (plugin.getGameVersion() == GameVersion.UNKNOWN) {
             return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
@@ -335,15 +331,13 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer virtualDisplaySupportTest() {
-        String nmsVersion = ReflectFactory.getNMSVersion();
-        GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!plugin.isDisplayEnabled()) {
             return new ResultContainer(CheckResult.PASSED, "The display are disabled.");
         }
         if (AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             return new ResultContainer(CheckResult.PASSED, "The display type is not virtual item.");
         }
-        if (!gameVersion.isVirtualDisplaySupports()) {
+        if (!plugin.getGameVersion().isVirtualDisplaySupports()) {
             AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             return new ResultContainer(CheckResult.WARNING, "Your server version are not supports Virtual DisplayItem, resetting to RealDisplayItem...");
         }

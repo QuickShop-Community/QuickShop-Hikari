@@ -611,6 +611,28 @@ debug:
   update-player-shops-per-tick-threshold: '<yellow>最大商店可以每（tick）更新：<gold>{0}'
   update-player-shops-complete: <green>任务已完成，已使用 <yellow>{0} 毫秒</yellow>更新。
   update-player-shops-task-started: <gold>任务已开始，请等待完成。
+  item-info-store-as-string: "<green>您正在查看的商店： <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-info-hand-as-string: "<green>您手中的物品： <gold>{0}</gold> Hash： <white>{1}</white>"
+  item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolsize 和 MinimumIdle 已设置为 <white>{0}</white>"
+  hikari-cp-testing: "<green>请稍候，正在测试 HikariCP 连接..."
+  hikari-cp-working: "<green>通过！HikariCP运行良好！"
+  hikari-cp-not-working: "<red>失败！HikariCP返回的连接未正常工作！(未在 1 秒内通过测试)"
+  hikari-cp-timeout: "<red>HikariCP 在获取有效连接时超时，请清理所有活动查询以释放连接资源。"
+  queries-stopped: "<green>停止 <white>{0}</white> 活动查询。"
+  queries-dumping: "<yellow>正在转储活动查询..."
+  restart-database-manager: "<yellow>重新启动 SQLManager..."
+  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
+  restart-database-manager-unfinished-task: "<yellow>未完成的任务： <white>{0}</white>"
+  restart-database-manager-unfinished-task-history-query: "<yellow>未完成的任务（历史查询）： <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>通过初始序列重新启动 SQLManager (通过 async 执行器)"
+  restart-database-manager-done: "<green>完成！"
+  property-incorrect: "<yellow>您必须输入属性键值（且只输入一个）。例如，aaa=bbb"
+  property-security-block: "<red>请求被拒绝，出于安全原因，您只能更改启动脚本 <aqua>com.ghostchu.quickshop</aqua> 或 <aqua>quickshop</aqua> 的属性。"
+  property-removed: "<green>Removed property key <white>{0}</white>"
+  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
+  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
+  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
 database:
   scanning: <green>正在 QuickShop 数据库中扫描孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间...
   scanning-async: <yellow>正在异步任务线程上扫描 QuickShop 数据库中孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间，请稍后再试。
@@ -1508,6 +1530,7 @@ suggest-wait: "<green>请稍候... 计算推荐价格。"
 history:
   shop:
     gui-title: "查看交易记录"
+    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-description:
       - "<white>类型： <yellow>{0}</yellow></white>"
       - "<white>所有者: <yellow>{1}</yellow></white>"
@@ -1520,6 +1543,12 @@ history:
       - "<white>物品： <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>余额： <yellow>{3}</yellow></white>"
       - "<white>税： <yellow>{4}</yellow></white>"
+    log-icon-description-with-store-name:
+      - "<white>商店： <yellow>{0}</yellow></white>"
+      - "<white>交易者: <yellow>{1}</yellow></white>"
+      - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>余额： <yellow>{4}</yellow></white>"
+      - "<white>税： <yellow>{5}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
     previous-page: "<white><< 前一页</white>"
     next-page: "<white>下一页 >></white>"
@@ -1546,3 +1575,5 @@ about:
   valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>无效的捐赠密钥</gray>"
   kofi-thanks: "<gold>特别感谢那些在 Ko-Fi 上支持 QuickShop 的人 :)</gold>"
+history-command-leave-blank: "<Leave blank for seeing store>"
+shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."

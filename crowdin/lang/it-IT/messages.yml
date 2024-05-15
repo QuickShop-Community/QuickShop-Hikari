@@ -92,9 +92,9 @@ player-bought-from-your-store-tax: <green>{0} ha acquistato {1} {2} dal tuo nego
 not-enough-space: <red>Hai spazio solo per altri {0}!
 shop-name-success: <green>Impostato con successo il nome del negozio a <yellow>{0}<green>.
 shop-staff-added: <green>Aggiunto con successo {0} come membro dello staff per il tuo negozio.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Questo negozio non ha membri dello staff.
 shops-recovering: Recupero negozi dal backup...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
+virtual-player-component-hover: "<gray>Questo è un giocatore virtuale.\n<gray>Si riferisce a un account di sistema con lo stesso nome.</gray>\n<green>UUUID: <yellow>{0}</yellow></green>\n<green>Nome utente: <yellow>{1}</yellow></green>\n<green>Mostra come: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Hai pagato <yellow>{0} <green>tasse incluse.
@@ -601,6 +601,28 @@ debug:
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}</gold>'
   update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
   update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
+  item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
+  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
+  hikari-cp-working: "<green>Pass! HikariCP working well!"
+  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
+  hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
+  queries-stopped: "<green>Stopped <white>{0}</white> active queries."
+  queries-dumping: "<yellow>Dumping active queries..."
+  restart-database-manager: "<yellow>Restarting SQLManager..."
+  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
+  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
+  restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
+  restart-database-manager-done: "<green>Done!"
+  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
+  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
+  property-removed: "<green>Removed property key <white>{0}</white>"
+  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
+  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
+  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
@@ -1500,6 +1522,7 @@ suggest-wait: "<green>Please wait... Calculating recommend price."
 history:
   shop:
     gui-title: "View purchase history"
+    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1512,6 +1535,12 @@ history:
       - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{3}</yellow></white>"
       - "<white>Tax: <yellow>{4}</yellow></white>"
+    log-icon-description-with-store-name:
+      - "<white>Store: <yellow>{0}</yellow></white>"
+      - "<white>Purchaser: <yellow>{1}</yellow></white>"
+      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Balance: <yellow>{4}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"
@@ -1538,3 +1567,5 @@ about:
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
+history-command-leave-blank: "<Leave blank for seeing store>"
+shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."

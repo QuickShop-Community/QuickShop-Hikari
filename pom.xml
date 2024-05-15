@@ -6,11 +6,11 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.1.0.2</version>
+    <version>6.2.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
-    <url>https://github.com/${developer}/${artifactId}</url>
+    <url>https://github.com/${developer}/${project.artifactId}</url>
 
     <properties>
         <java.version>17</java.version>
@@ -37,14 +37,14 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:${developer}/${artifactId}.git</connection>
-        <developerConnection>scm:git:git@github.com:${developer}/${artifactId}.git</developerConnection>
-        <url>https://github.com/${developer}/${artifactId}</url>
+        <connection>scm:git:git@github.com:${developer}/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:${developer}/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/${developer}/${project.artifactId}</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/${developer}/${name}/issues</url>
+        <url>https://github.com/${developer}/${project.name}/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -61,7 +61,7 @@
 
     <ciManagement>
         <system>GitHub Actions</system>
-        <url>https://github.com/${developer}/${artifactId}/actions/workflows/maven.yml</url>
+        <url>https://github.com/${developer}/${project.artifactId}/actions/workflows/maven.yml</url>
     </ciManagement>
 
     <pluginRepositories>
@@ -78,16 +78,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.12.1</version>
+                    <version>3.13.0</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
+                        <release>${java.version}</release>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.5.2</version>
+                    <version>3.5.3</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -95,7 +96,7 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>${name}-${version}</finalName>
+                                <finalName>${project.name}-${project.version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
@@ -112,6 +113,7 @@
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
+                                        <include>net.kyori:*</include>
 <!--                                        <include>org.apache.commons:commons-lang3:*</include>-->
 <!--                                        <include>org.apache.commons:commons-text:*</include>-->
 <!--                                        <include>org.apache.commons:commons-compress:*</include>-->
@@ -122,6 +124,7 @@
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
                                         <include>org.eclipse.aether:*:*</include>
+                                        <include>org.slf4j:slf4j-jdk14:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -177,7 +180,6 @@
                                             <exclude>META-INF/*.kotlin_module</exclude>
                                             <exclude>META-INF/*.txt</exclude>
                                             <exclude>META-INF/proguard/*</exclude>
-                                            <exclude>META-INF/services/*</exclude>
                                             <exclude>META-INF/versions/9/*</exclude>
                                             <exclude>*License*</exclude>
                                             <exclude>*LICENSE*</exclude>
@@ -279,7 +281,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
+                            <outputDirectory>${project.basedir}/target/extra-resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/resources</directory>
@@ -309,7 +311,7 @@
             <dependency>
                 <groupId>org.spigotmc</groupId>
                 <artifactId>spigot-api</artifactId>
-                <version>1.20.4-R0.1-SNAPSHOT</version>
+                <version>1.20.6-R0.1-SNAPSHOT</version>
                 <scope>provided</scope>
                 <exclusions>
                     <exclusion>
@@ -321,7 +323,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.30</version>
+                <version>1.18.32</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -357,6 +359,7 @@
         <module>platform/quickshop-platform-spigot-v1_20_R1</module>
         <module>platform/quickshop-platform-spigot-v1_20_R2</module>
         <module>platform/quickshop-platform-spigot-v1_20_R3</module>
+        <module>platform/quickshop-platform-spigot-v1_20_R4</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

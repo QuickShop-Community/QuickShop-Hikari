@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.1.0.2</version>
+        <version>6.2.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -57,26 +57,56 @@
         <dependency>
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
             <artifactId>common</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>EcoEnchants</artifactId>
-            <version>12.3.5</version>
+            <version>12.5.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>eco</artifactId>
-            <version>6.69.0</version>
+            <version>6.69.2</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>maven-artifact</artifactId>
+                    <groupId>org.apache.maven</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>caffeine</artifactId>
+                    <groupId>com.github.ben-manes.caffeine</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>adventure-api</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>adventure-text-serializer-gson</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>adventure-text-serializer-legacy</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>kotlin-stdlib</artifactId>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>kotlinx-coroutines-core-jvm</artifactId>
+                    <groupId>org.jetbrains.kotlinx</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

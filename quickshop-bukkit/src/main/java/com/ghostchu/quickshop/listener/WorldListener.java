@@ -88,7 +88,7 @@ public class WorldListener extends AbstractQSListener {
             }
             for (final Shop shop : inChunk.values()) {
                 if (shop.isLoaded()) { //Don't unload already unloaded shops.
-                    shop.handleUnloading();
+                    plugin.getShopManager().unloadShop(shop,true);
                 }
             }
         }

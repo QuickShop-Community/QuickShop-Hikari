@@ -11,6 +11,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -52,10 +53,6 @@ public class PaperPlatform implements Platform {
         return displayName;
     }
 
-    @Override
-    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
-        return stack.asHoverEvent();
-    }
 
     @Override
     public @NotNull Component getLine(@NotNull Sign sign, int line) {
@@ -75,6 +72,11 @@ public class PaperPlatform implements Platform {
     @Override
     public @NotNull String getMinecraftVersion() {
         return Bukkit.getMinecraftVersion();
+    }
+
+    @Override
+    public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
+        return oldComponent.hoverEvent(stack.asHoverEvent());
     }
 
     @Override
@@ -181,10 +183,9 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void setDisplayName(@NotNull Item stack, @Nullable Component component) {
-        stack.customName(component);
+    public void setDisplayName(@NotNull Entity entity, @Nullable Component component) {
+        entity.customName(component);
     }
-
 
     @Override
     public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {

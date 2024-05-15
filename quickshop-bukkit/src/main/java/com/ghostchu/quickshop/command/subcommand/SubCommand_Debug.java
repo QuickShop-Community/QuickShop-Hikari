@@ -11,21 +11,30 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import com.google.common.cache.Cache;
+import com.google.common.hash.Hashing;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -34,13 +43,57 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.BiConsumer;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+    private final Map<String, BiConsumer<CommandSender, List<String>>> subParamMapping = new HashMap<>();
 
     public SubCommand_Debug(QuickShop plugin) {
         this.plugin = plugin;
+        subParamMapping.put("debug", (sender, subParams) -> switchDebug(sender));
+        subParamMapping.put("dev", (sender, subParams) -> switchDebug(sender));
+        subParamMapping.put("devmode", (sender, subParams) -> switchDebug(sender));
+        subParamMapping.put("signs", (sender, subParams) -> handleSigns(sender));
+        subParamMapping.put("database", this::handleDatabase);
+        subParamMapping.put("updateplayersigns", this::handleSignsUpdate);
+        subParamMapping.put("force-shops-reload", this::handleShopsReload);
+        subParamMapping.put("force-shoploader-reload", this::handleShopsLoaderReload);
+        subParamMapping.put("check-shop-status", this::handleShopDebug);
+        subParamMapping.put("toggle-shop-load-status", this::handleShopLoading);
+        subParamMapping.put("check-shop-debug", this::handleShopInfo);
+        subParamMapping.put("set-property", this::handleProperty);
+        subParamMapping.put("reset-shop-caches", this::handleShopCacheResetting);
+        subParamMapping.put("reset-dbmanager", this::handleDbManagerReset);
+        subParamMapping.put("dump-db-connections", this::handleDumpDbConnections);
+        subParamMapping.put("stop-db-any-queries", this::handleStopDbQueries);
+        subParamMapping.put("toggle-db-debugmode", this::handleToggleDbDebugMode);
+        subParamMapping.put("dump-hikaricp-status", this::handleDumpHikariCPStatus);
+        subParamMapping.put("set-hikaricp-capacity", this::handleSetHikariCPCapacity);
+        subParamMapping.put("item-info", this::handleItemInfo);
+        subParamMapping.put("mark-all-shops-dirty", this::handleShopsDirtyAndSave);
+        subParamMapping.put("clean-display-entities", this::handleDisplayEntities);
+    }
+
+    private void handleDisplayEntities(CommandSender sender, List<String> strings) {
+        List<Entity> entities = new ArrayList<>();
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof Item itemEntity) {
+                    if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
+                        entities.add(entity);
+                    }
+                }
+                if (entity instanceof ItemDisplay itemDisplay) {
+                    if (AbstractDisplayItem.checkIsGuardItemStack(itemDisplay.getItemStack())) {
+                        entities.add(entity);
+                    }
+                }
+            }
+        }
+        entities.forEach(Entity::remove);
+        plugin.text().of(sender, "debug.display-removed", entities.size()).send();
     }
 
     @Override
@@ -51,26 +104,35 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
         List<String> subParams = new ArrayList<>(parser.getArgs());
         subParams.remove(0);
-        switch (parser.getArgs().get(0)) {
-            case "debug", "dev", "devmode" -> switchDebug(sender);
-            case "handlerlist" -> handleHandlerList(sender, subParams);
-            case "signs" -> handleSigns(sender);
-            case "database" -> handleDatabase(sender, subParams);
-            case "updateplayersigns" -> handleSignsUpdate(sender, subParams);
-            case "force-shops-reload" -> handleShopsReload(sender, subParams);
-            case "force-shoploader-reload" -> handleShopsLoaderReload(sender, subParams);
-            case "check-shop-status" -> handleShopDebug(sender, subParams);
-            case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
-            case "check-shop-debug" -> handleShopInfo(sender, subParams);
-            case "set-property" -> handleProperty(sender, subParams);
-            case "reset-shop-caches" -> handleShopCacheResetting(sender, subParams);
-            case "reset-dbmanager" -> handleDbManagerReset(sender, subParams);
-            case "dump-db-connections" -> handleDumpDbConnections(sender, subParams);
-            case "stop-db-any-queries" -> handleStopDbQueries(sender, subParams);
-            case "toggle-db-debugmode" -> handleToggleDbDebugMode(sender, subParams);
-            case "dump-hikaricp-status" -> handleDumpHikariCPStatus(sender, subParams);
-            case "set-hikaricp-capacity" -> handleSetHikariCPCapacity(sender, subParams);
-            default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+        String arg = parser.getArgs().get(0);
+
+        BiConsumer<CommandSender, List<String>> executor = subParamMapping.get(arg);
+        if (executor == null) {
+            plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+            return;
+        }
+
+        executor.accept(sender, subParams);
+    }
+
+    private void handleShopsDirtyAndSave(CommandSender sender, List<String> subParams) {
+        plugin.getShopManager().getAllShops().forEach(Shop::setDirty);
+        plugin.text().of(sender, "debug.marked-as-dirty").send();
+    }
+
+    private void handleItemInfo(CommandSender sender, List<String> subParams) {
+        if (!(sender instanceof Player player)) {
+            return;
+        }
+        String hand = player.getInventory().getItemInMainHand().getItemMeta().getAsString();
+        plugin.text().of(sender, "debug.item-info-hand-as-string", hand, Hashing.crc32().hashString(hand, StandardCharsets.UTF_8).toString()).send();
+        Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            String store = shop.getItem().getItemMeta().getAsString();
+            plugin.text().of(sender, "debug.item-info-store-as-string", store, Hashing.crc32().hashString(store, StandardCharsets.UTF_8).toString()).send();
+            boolean hand2Store = plugin.getItemMatcher().matches(player.getInventory().getItemInMainHand(), shop.getItem());
+            boolean store2Hand = plugin.getItemMatcher().matches(shop.getItem(), player.getInventory().getItemInMainHand());
+            plugin.text().of(sender, "debug.item-matching-result", hand2Store, store2Hand).send();
         }
     }
 
@@ -79,39 +141,39 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         HikariDataSource hikariDataSource = (HikariDataSource) plugin.getSqlManager().getDataSource();
         hikariDataSource.setMaximumPoolSize(size);
         hikariDataSource.setMinimumIdle(size);
-        sender.sendMessage("MaximumPoolSize and MinimumIdle was set to "+size);
+        plugin.text().of(sender, "debug.hikari-cp-size-tweak", size).send();
+        ;
     }
 
     private void handleDbConnectionTest(CommandSender sender, List<String> subParams) {
-        sender.sendMessage("Please wait...");
+        plugin.text().of(sender, "debug.hikari-cp-testing").send();
         try {
             CompletableFuture.supplyAsync(() -> {
                 try (Connection connection = plugin.getSqlManager().getConnection()) {
                     if (connection.isValid(1000)) {
-                        sender.sendMessage("HikariCP working!");
+                        plugin.text().of(sender, "debug.hikari-cp-working").send();
+                        ;
                     } else {
-                        sender.sendMessage("HikariCP returned a dead connection!");
+                        plugin.text().of(sender, "debug.hikari-cp-not-working");
                     }
                 } catch (SQLException e) {
-                    sender.sendMessage("Failed to test HikariCP");
+                    plugin.text().of(sender, "internal-error").send();
                     e.printStackTrace();
                 }
                 return null;
             }).get(5, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
-            sender.sendMessage("HikariCP seems stop working, please clean up all active queries to release connection resources.");
+            plugin.text().of(sender, "debug.hikari-cp-timeout").send();
         } catch (ExecutionException | InterruptedException e) {
-            sender.sendMessage("Failed to test HikariCP");
+            plugin.text().of(sender, "internal-error").send();
             e.printStackTrace();
         }
     }
 
     private void handleStopDbQueries(CommandSender sender, List<String> subParams) {
-        long stopped = plugin.getSqlManager().getActiveQuery().values().stream().map(s -> {
-            s.close();
-            return null;
-        }).count();
-        sender.sendMessage("Stopped " + stopped + " active queries.");
+        long stopped = plugin.getSqlManager().getActiveQuery().values().size();
+        plugin.getSqlManager().getActiveQuery().values().forEach(SQLQuery::close);
+        plugin.text().of(sender, "debug.queries-stopped", stopped).send();
     }
 
     private void handleDumpHikariCPStatus(CommandSender sender, List<String> subParams) {
@@ -145,23 +207,23 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     private void handleDumpDbConnections(CommandSender sender, List<String> subParams) {
-        sender.sendMessage("Dumping active queries...");
+        plugin.text().of(sender, "debug.queries-dumping").send();
         for (Map.Entry<UUID, SQLQuery> e : plugin.getSqlManager().getActiveQuery().entrySet()) {
             sender.sendMessage(e.getKey().toString() + ": " + e.getValue());
         }
     }
 
     private void handleDbManagerReset(CommandSender sender, List<String> subParams) {
-        sender.sendMessage("Please wait...");
-        sender.sendMessage("Shutting down sql manager");
+        plugin.text().of(sender, "debug.restart-database-manager").send();
         EasySQL.shutdownManager(this.plugin.getSqlManager());
-        sender.sendMessage("Clear executors...");
-        QuickExecutor.getHikaricpExecutor().shutdownNow().forEach(r -> sender.sendMessage("Unfinished HikariCP task: " + r));
+        plugin.text().of(sender, "debug.restart-database-manager-clear-executors").send();
+        QuickExecutor.getHikaricpExecutor().shutdownNow().forEach(r -> plugin.text().of(sender, "debug.restart-database-manager-unfinished-task", r).send());
         QuickExecutor.setHikaricpExecutor(QuickExecutor.provideHikariCPExecutor());
-        QuickExecutor.getShopHistoryQueryExecutor().shutdownNow().forEach(r -> sender.sendMessage("Unfinished HistoryQuery task: " + r));
+        QuickExecutor.getShopHistoryQueryExecutor().shutdownNow().forEach(r -> plugin.text().of(sender, "debug.restart-database-manager-unfinished-task-history-query", r).send());
         QuickExecutor.setShopHistoryQueryExecutor(QuickExecutor.provideShopHistoryQueryExecutor());
-        sender.sendMessage("Re-launch database connect progress!");
+        plugin.text().of(sender, "debug.restart-database-manager-reconnect").send();
         Util.asyncThreadRun(plugin::setupDatabase);
+        plugin.text().of(sender, "debug.restart-database-manager-done").send();
     }
 
     private void handleShopCacheResetting(CommandSender sender, List<String> subParams) {
@@ -173,16 +235,16 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleProperty(CommandSender sender, List<String> subParams) {
         if (subParams.isEmpty()) {
-            sender.sendMessage("Error: You must enter a property key=value set.");
+            plugin.text().of(sender, "debug.property-incorrect").send();
             return;
         }
         if (subParams.size() > 1) {
-            sender.sendMessage("Error: You must enter a (and only one) property key=value set. E.g   aaa=bbb");
+            plugin.text().of(sender, "debug.property-incorrect").send();
             return;
         }
         String[] split = subParams.get(0).split("=");
         if (split.length < 1) {
-            sender.sendMessage("Error: You must enter a (and only one) property key=value set. E.g   aaa=bbb");
+            plugin.text().of(sender, "debug.property-incorrect").send();
             return;
         }
         String key = split[0];
@@ -191,15 +253,15 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             value = split[1];
         }
         if (!key.startsWith("com.ghostchu.quickshop") && !key.startsWith("quickshop")) {
-            sender.sendMessage("Error: You can only set the quickshop related properties for safety.");
+            plugin.text().of(sender, "debug.property-security-block").send();
             return;
         }
         if (value == null) {
             System.clearProperty(key);
-            sender.sendMessage("Property " + key + " has been deleted.");
+            plugin.text().of(sender, "debug.property-removed", key).send();
         } else {
             String oldOne = System.setProperty(key, value);
-            sender.sendMessage("Property " + key + " has been changed from " + oldOne + " to " + value);
+            plugin.text().of(sender, "debug.property-changed", key, oldOne, value).send();
         }
     }
 
@@ -275,7 +337,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleHandlerList(@NotNull CommandSender sender, List<String> remove) {
         if (remove.isEmpty()) {
-            MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
             plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
             return;
         }
@@ -354,6 +415,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 1) {
+            return List.copyOf(subParamMapping.keySet()).stream().filter(s->s.startsWith(parser.getArgs().get(0))).toList();
+        }
         return Collections.emptyList();
     }
 

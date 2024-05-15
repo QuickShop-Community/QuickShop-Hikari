@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.shop.history;
 
-import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -8,50 +7,67 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
+import lombok.Cleanup;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class ShopHistory {
-    private final long shopId;
-    protected final Shop shop;
+    protected final List<Shop> shops;
+    protected final Map<Long, Shop> shopsMapping = new HashMap<>();
+    private final String shopIdsPlaceHolders;
     private final QuickShop plugin;
 
-    public ShopHistory(QuickShop plugin, Shop shop) {
+    public ShopHistory(QuickShop plugin, List<Shop> shops) {
         this.plugin = plugin;
-        if (shop.getShopId() < 0) {
-            throw new IllegalStateException("The shop " + shop + " had no shopId persist in database");
+        this.shops = shops;
+        for (Shop shop : shops) {
+            long shopId = shop.getShopId();
+            if (shopId <= 0) {
+                continue;
+            }
+            shopsMapping.put(shopId, shop);
         }
-//        Long dataId = plugin.getDatabaseHelper().locateShopDataId( shop.getShopId()).join();
-//        if(dataId == null){
-//            throw new IllegalStateException("The shop "+shop +" had no dataId persist in database" );
-//        }
-        this.shopId = shop.getShopId();
-        this.shop = shop;
+        this.shopIdsPlaceHolders = generatePlaceHolders(shopsMapping.size());
     }
 
     private boolean isValidSummaryRecordType(String type) {
         return ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equalsIgnoreCase(type) || ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equalsIgnoreCase(type);
     }
 
+    private String generatePlaceHolders(int size) {
+        StringJoiner joiner = new StringJoiner(",");
+        for (int i = 0; i < size; i++) {
+            joiner.add("?");
+        }
+        return joiner.toString();
+    }
+
+    private void mappingPreparedStatement(PreparedStatement statement, int startAt) throws SQLException {
+        List<Long> ids = new ArrayList<>(shopsMapping.keySet());
+        for (int i = startAt; i < startAt + ids.size(); i++) {
+            statement.setLong(i, ids.get(i - startAt));
+        }
+    }
+
     private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
             String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ? GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
+                    "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")  GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
-                perfMonitor.setContext("shopId="+shopId+", n="+n+", from="+from+", to="+to);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
+                ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
+                mappingPreparedStatement(ps, 3);
+                perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", n=" + n + ", from=" + from + ", to=" + to);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 while (set.next()) {
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
                 }
@@ -66,12 +82,17 @@ public class ShopHistory {
     private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
+                    "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
-                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
+                ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
+                mappingPreparedStatement(ps, 3);
+                perfMonitor.setContext("shopId=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 if (set.next()) {
                     return set.getLong(1);
                 }
@@ -87,12 +108,14 @@ public class ShopHistory {
         return CompletableFuture.supplyAsync(() -> {
             LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
             String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
-                    "WHERE `shop`= ? GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
+                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ") GROUP BY `buyer` ORDER BY `count` DESC LIMIT " + n;
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
-                perfMonitor.setContext("shopId="+shopId+", n="+n);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                mappingPreparedStatement(ps, 1);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 while (set.next()) {
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
                 }
@@ -107,12 +130,15 @@ public class ShopHistory {
     private CompletableFuture<Long> summaryUniquePurchasers() {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
-                    "WHERE `shop`= ?";
+                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ")";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
-                perfMonitor.setContext("shopId="+shopId);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
+                mappingPreparedStatement(ps, 1);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 if (set.next()) {
                     return set.getLong(1);
                 }
@@ -127,12 +153,17 @@ public class ShopHistory {
     private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT SUM(`money`) FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
+                    "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
-                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
+                ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
+                mappingPreparedStatement(ps, 3);
+                perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 if (set.next()) {
                     return set.getDouble(1);
                 }
@@ -147,12 +178,15 @@ public class ShopHistory {
     private CompletableFuture<Double> summaryPurchasesBalance() {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT SUM(`money`) FROM %s " +
-                    "WHERE `shop`= ?";
+                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ")";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
-                perfMonitor.setContext("shopId="+shopId);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
+                mappingPreparedStatement(ps, 1);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 if (set.next()) {
                     return set.getDouble(1);
                 }
@@ -165,16 +199,21 @@ public class ShopHistory {
     }
 
     private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
-        if((from==null) != (to==null))
+        if ((from == null) != (to == null))
             throw new IllegalStateException("from to must null or not null in same time");
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(*) FROM %s " +
-                    "WHERE `shop`= ? AND `time` >= ? AND `time` <= ?";
+                    "WHERE `time` >= ? AND `time` <= ?  AND `shop` IN (" + this.shopIdsPlaceHolders + ")";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId, from, to).execute()) {
-                perfMonitor.setContext("shopId="+shopId+", from="+from+", to="+to);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
+                ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
+                mappingPreparedStatement(ps, 3);
+                perfMonitor.setContext("shopId=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 if (set.next()) {
                     return set.getLong(1);
                 }
@@ -189,12 +228,15 @@ public class ShopHistory {
     private CompletableFuture<Long> summaryPurchasesCount() {
         return CompletableFuture.supplyAsync(() -> {
             String SQL = "SELECT COUNT(*) FROM %s " +
-                    "WHERE `shop`= ?";
+                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ")";
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
             try (PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
-                 SQLQuery query = plugin.getSqlManager().createQuery().withPreparedSQL(SQL).setParams(shopId).execute()) {
-                perfMonitor.setContext("shopId="+shopId);
-                ResultSet set = query.getResultSet();
+                 Connection connection = plugin.getSqlManager().getConnection();
+                 PreparedStatement ps = connection.prepareStatement(SQL)) {
+                mappingPreparedStatement(ps, 1);
+                perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
+                @Cleanup
+                ResultSet set = ps.executeQuery();
                 if (set.next()) {
                     return set.getLong(1);
                 }
@@ -219,7 +261,7 @@ public class ShopHistory {
         double totalPurchasesBalance = summaryPurchasesBalance().join();
         long totalUniquePurchases = summaryUniquePurchasers().join();
         LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5).join();
-        
+
         return CompletableFuture.supplyAsync(() -> new ShopSummary(
                 recentPurchases24h,
                 recentPurchases3d,
@@ -241,15 +283,14 @@ public class ShopHistory {
     public List<ShopHistoryRecord> query(int page, int pageSize) throws SQLException {
         Util.ensureThread(true);
         List<ShopHistoryRecord> historyRecords = new ArrayList<>(pageSize);
-        try (PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery")) {
-            SQLQuery query = DataTables.LOG_PURCHASE.createQuery()
-                    .addCondition("shop", shopId)
-                    .orderBy("time", false)
-                    .setPageLimit((page - 1) * pageSize, pageSize)
-                    .build().execute();
-            perfMonitor.setContext("shopId="+shopId+", page="+page+", pageSize="+pageSize);
-            try (query) {
-                ResultSet set = query.getResultSet();
+        String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC LIMIT " + (page - 1) * pageSize + "," + pageSize;
+        SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
+        try (PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
+             Connection connection = plugin.getSqlManager().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
+            mappingPreparedStatement(ps, 1);
+            perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", page=" + page + ", pageSize=" + pageSize);
+            try (ResultSet set = ps.executeQuery()) {
                 while (set.next()) {
                     if (!isValidSummaryRecordType(set.getString("type"))) {
                         continue;

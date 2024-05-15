@@ -123,10 +123,13 @@ public class RealDisplayItem extends AbstractDisplayItem {
     }
 
     @Override
-    public void remove() {
+    public void remove(boolean dontTouchWorld) {
         Util.ensureThread(false);
         if (this.item == null) {
             Log.debug("Ignore the Item removing because the Item is already gone or it's a left shop.");
+            return;
+        }
+        if(dontTouchWorld){
             return;
         }
         this.item.remove();
@@ -148,10 +151,9 @@ public class RealDisplayItem extends AbstractDisplayItem {
         List<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
 
         for (Entity entity : elist) {
-            if (entity.getType() != EntityType.DROPPED_ITEM) {
+            if (!(entity instanceof Item eItem)) {
                 continue;
             }
-            Item eItem = (Item) entity;
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (AbstractDisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
@@ -167,7 +169,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public void respawn() {
         Util.ensureThread(false);
-        remove();
+        remove(false);
         spawn();
     }
 

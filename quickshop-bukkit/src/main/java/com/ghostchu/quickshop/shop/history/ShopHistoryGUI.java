@@ -42,7 +42,7 @@ public class ShopHistoryGUI {
     private final OutlinePane body;
     private final StaticPane footer;
     private final Player player;
-    private final Shop shop;
+    private final List<Shop> shops;
     private final SkullProvider skullProvider;
     private final ProxiedLocale locale;
     private int page = 1;
@@ -55,7 +55,7 @@ public class ShopHistoryGUI {
         this.shopHistory = shopHistory;
         this.player = player;
         this.locale = plugin.getTextManager().findRelativeLanguages(player);
-        this.shop = shopHistory.shop;
+        this.shops = shopHistory.shops;
         this.chestGui = new ChestGui(6, plugin.text().of(player, "history.shop.gui-title").legacy());
         this.header = new StaticPane(0, 0, 9, 1);
         this.body = new OutlinePane(0, 1, 9, 4);
@@ -69,13 +69,13 @@ public class ShopHistoryGUI {
     private void reQuery() {
         Util.ensureThread(true);
         try {
-            this.queryResult = shopHistory.query(page, body.getLength() * body.getLength());
+            this.queryResult = shopHistory.query(page, body.getLength() * body.getHeight());
             if (summary == null) {
                 summary = shopHistory.generateSummary().join();
                 Log.debug(summary.toString());
             }
         } catch (SQLException e) {
-            plugin.logger().error("Couldn't query the shop history for shop {}.", shopHistory.shop, e);
+            plugin.logger().error("Couldn't query the shop history for shops {}.", shopHistory.shops, e);
             Util.mainThreadRun(() -> this.chestGui.getViewers().forEach(p -> {
                 p.closeInventory();
                 plugin.text().of(p, "internal-error", p).send();
@@ -84,43 +84,50 @@ public class ShopHistoryGUI {
     }
 
     private ItemStack getHeaderIcon() {
-        ItemStack headerSkullItem = new ItemStack(Material.PLAYER_HEAD);
-        String shopName = shop.getShopName() == null ? shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
-        Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName);
-        List<Component> lore = plugin.text().ofList(player, "history.shop.header-icon-description", shop.getShopType().name(),
-                        shop.getOwner().getDisplay(),
-                        Util.getItemStackName(shop.getItem()),
-                        shop.getPrice(), shop.getShopStackingAmount(),
-                        shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ())
-                .forLocale();
-        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
-        plugin.getPlatform().setLore(headerSkullItem, lore);
-        if (PackageUtil.parsePackageProperly("renderSkullTexture").asBoolean(true)) {
-            QUser owner = shopHistory.shop.getOwner();
-            if (owner.isRealPlayer()) {
-                if (owner.getUniqueId() != null) {
-                    skullProvider.provide(owner.getUniqueId()).thenAccept(skull -> {
-                        headerSkullItem.setItemMeta(skull.getItemMeta());
-                        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
-                        plugin.getPlatform().setLore(headerSkullItem, lore);
-                    });
-                } else if (owner.getUsername() != null) {
-                    skullProvider.provide(owner.getUsername()).thenAccept(skull -> {
-                        headerSkullItem.setItemMeta(skull.getItemMeta());
-                        plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
-                        plugin.getPlatform().setLore(headerSkullItem, lore);
-                    });
+        if (shops.size() == 1) {
+            ItemStack headerSkullItem = new ItemStack(Material.PLAYER_HEAD);
+            Shop shop = shops.get(0);
+            String shopName = shop.getShopName() == null ? shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
+            final List<Component> lore = plugin.text().ofList(player, "history.shop.header-icon-description", shop.getShopType().name(),
+                            shop.getOwner().getDisplay(),
+                            Util.getItemStackName(shop.getItem()),
+                            shop.getPrice(), shop.getShopStackingAmount(),
+                            shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ())
+                    .forLocale();
+            Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName);
+            plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
+            plugin.getPlatform().setLore(headerSkullItem, lore);
+            if (PackageUtil.parsePackageProperly("renderSkullTexture").asBoolean(true)) {
+                QUser owner = shop.getOwner();
+                if (owner.isRealPlayer()) {
+                    if (owner.getUniqueId() != null) {
+                        skullProvider.provide(owner.getUniqueId()).thenAccept(skull -> {
+                            headerSkullItem.setItemMeta(skull.getItemMeta());
+                            plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
+                            plugin.getPlatform().setLore(headerSkullItem, lore);
+                        });
+                    } else if (owner.getUsername() != null) {
+                        skullProvider.provide(owner.getUsername()).thenAccept(skull -> {
+                            headerSkullItem.setItemMeta(skull.getItemMeta());
+                            plugin.getPlatform().setDisplayName(headerSkullItem, shopNameComponent);
+                            plugin.getPlatform().setLore(headerSkullItem, lore);
+                        });
+                    }
                 }
             }
+            return headerSkullItem;
+        } else {
+            ItemStack headerItem = new ItemStack(Material.CHEST);
+            plugin.getPlatform().setDisplayName(headerItem, plugin.text().of(player, "history.shop.header-icon-multiple-shop", shops.size()).forLocale());
+            return headerItem;
         }
-        return headerSkullItem;
     }
 
 
     public void open() {
         refreshGui();
         chestGui.show(player);
-        new ShopHistoryGuiOpenEvent(shop, player, chestGui.getInventory()).callEvent();
+        new ShopHistoryGuiOpenEvent(shops, player, chestGui.getInventory()).callEvent();
     }
 
 
@@ -131,12 +138,16 @@ public class ShopHistoryGUI {
         updateFooterPageIcons();
         chestGui.update();
         CompletableFuture.supplyAsync(() -> {
-            reQuery();
-            updateHeaderIcon();
-            updateFooterPageIcons();
-            updateBodyWithResult();
-            return null;
-        }).thenAccept((ignored) -> Util.mainThreadRun(chestGui::update));
+                    reQuery();
+                    updateHeaderIcon();
+                    updateFooterPageIcons();
+                    updateBodyWithResult();
+                    return null;
+                }).thenAccept((ignored) -> Util.mainThreadRun(chestGui::update))
+                .exceptionally(e -> {
+                    plugin.logger().warn("Failed to update History GUI", e);
+                    return null;
+                });
     }
 
     private void updateHeaderIcon() {
@@ -222,14 +233,14 @@ public class ShopHistoryGUI {
             e.setResult(Event.Result.DENY);
             e.setCancelled(true);
             page = Math.max(1, page - 1);
-            refreshGui();
+            Util.mainThreadRun(this::refreshGui);
         }), 0, 0);
         footer.addItem(new GuiItem(currentPage, cancelEvent()), 4, 0);
         footer.addItem(new GuiItem(nextPage, e -> {
             e.setResult(Event.Result.DENY);
             e.setCancelled(true);
             page = page + 1;
-            refreshGui();
+            Util.mainThreadRun(this::refreshGui);
         }), 8, 0);
     }
 
@@ -262,20 +273,30 @@ public class ShopHistoryGUI {
                 itemName = plugin.text().of(player, "internal-error").forLocale();
                 plugin.logger().error("Failed to deserialize itemstack {}", dataRecord.getItem(), e);
             }
-            List<Component> lore = plugin.text().ofList(player, "history.shop.log-icon-description",
+            Shop shop = shopHistory.shopsMapping.get(record.shopId());
+            if (shop == null) continue;
+            String shopName = shop.getShopName() == null ? shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
+            List<Component> lore = plugin.text().ofList(player, "history.shop.log-icon-description-with-store-name",
+                    shopName,
                     userName,
                     itemName, record.amount(),
                     record.money(),
                     record.tax()).forLocale();
-            ItemStack stack = new ItemStack(Material.PLAYER_HEAD);
-            if (PackageUtil.parsePackageProperly("renderSkullTexture").asBoolean(true)) {
-                skullProvider.provide(record.buyer()).thenAccept(skull -> {
-                    stack.setItemMeta(skull.getItemMeta());
-                    // Reapply the name and lore
-                    plugin.getPlatform().setDisplayName(stack, plugin.text().of(player, "history.shop.log-icon-title",
-                            format.format(record.date())).forLocale());
-                    plugin.getPlatform().setLore(stack, lore);
-                });
+            ItemStack stack;
+
+            if (shops.size() == 1) {
+                stack = new ItemStack(Material.PLAYER_HEAD);
+                if (PackageUtil.parsePackageProperly("renderSkullTexture").asBoolean(true)) {
+                    skullProvider.provide(record.buyer()).thenAccept(skull -> {
+                        stack.setItemMeta(skull.getItemMeta());
+                        // Reapply the name and lore
+                        plugin.getPlatform().setDisplayName(stack, plugin.text().of(player, "history.shop.log-icon-title",
+                                format.format(record.date())).forLocale());
+                        plugin.getPlatform().setLore(stack, lore);
+                    });
+                }
+            } else {
+                stack = shop.getItem().clone();
             }
             plugin.getPlatform().setDisplayName(stack, plugin.text().of(player, "history.shop.log-icon-title",
                     format.format(record.date())).forLocale());

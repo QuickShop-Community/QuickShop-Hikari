@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
@@ -49,7 +51,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    private final int LATEST_DATABASE_VERSION = 15;
+    private final int LATEST_DATABASE_VERSION = 16;
 
     public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
         this.plugin = plugin;
@@ -829,6 +831,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return match;
     }
 
+    private void makeBackup() {
+        File backupFile = new File(new File(plugin.getDataFolder(), "backup"), System.currentTimeMillis() + "-I-told-you-backup-database-before-1.20.5-upgrade.zip");
+        try {
+            new DatabaseIOUtil(this).exportTables(backupFile);
+        } catch (SQLException | IOException e) {
+            plugin.logger().warn("Failed to backup database", e);
+        }
+    }
 
     static class DatabaseUpgrade {
         private final SimpleDatabaseHelperV2 parent;
@@ -894,6 +904,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 logger.info("Data upgrading: Creating an Index for the log_purchase table to improve performance...");
                 parent.performLogPurchasesIndex();
                 currentDatabaseVersion = 15;
+            }
+            if (currentDatabaseVersion == 15) {
+                logger.info("Data upgrading: Just create a backup to avoid of somebody forget to backup database while upgrading to 1.20.5...");
+                parent.makeBackup();
+                currentDatabaseVersion = 16;
             }
             parent.setDatabaseVersion(currentDatabaseVersion).join();
         }

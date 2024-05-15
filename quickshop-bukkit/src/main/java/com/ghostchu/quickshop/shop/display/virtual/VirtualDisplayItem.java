@@ -93,7 +93,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
 
     @Override
-    public void remove() {
+    public void remove(boolean dontTouchWorld) {
         if (isSpawned()) {
             sendPacketToAll(fakeItemDestroyPacket);
             unload();
@@ -109,7 +109,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     @Override
     public void respawn() {
         Util.ensureThread(false);
-        remove();
+        remove(false);
         spawn();
     }
 

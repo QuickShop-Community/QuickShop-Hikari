@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.1.0.2</version>
+        <version>6.2.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -57,15 +57,88 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.intellectualsites.plotsquared/plotsquared-bukkit -->
         <dependency>
-            <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared-Bukkit</artifactId>
-            <version>6.11.1</version>
+            <groupId>com.intellectualsites.plotsquared</groupId>
+            <artifactId>plotsquared-bukkit</artifactId>
+            <version>7.3.8</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>SquirrelID</artifactId>
                     <groupId>com.github.EngineHub</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>Arkitektonika-Client</artifactId>
+                    <groupId>com.intellectualsites.arkitektonika</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>Paster</artifactId>
+                    <groupId>com.intellectualsites.paster</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>ServerLib</artifactId>
+                    <groupId>dev.notmyfault.serverlib</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>squirrelid</artifactId>
+                    <groupId>org.enginehub</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>adventure-platform-bukkit</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paperlib</artifactId>
+                    <groupId>io.papermc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bstats-bukkit</artifactId>
+                    <groupId>org.bstats</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>PRTree</artifactId>
+                    <groupId>com.intellectualsites.prtree</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>adventure-api</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>adventure-text-minimessage</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>aopalliance</artifactId>
+                    <groupId>aopalliance</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>cloud-services</artifactId>
+                    <groupId>cloud.commandframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guice-assistedinject</artifactId>
+                    <groupId>com.google.inject.extensions</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spotbugs-annotations</artifactId>
+                    <groupId>com.github.spotbugs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -79,18 +152,74 @@
                     <groupId>org.bstats</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>fastutil</artifactId>
+                    <groupId>it.unimi.dsi</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paperlib</artifactId>
+                    <groupId>io.papermc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>antlr4</artifactId>
+                    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>antlr4-runtime</artifactId>
+                    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jchronic</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jlibnoise</artifactId>
+                    <groupId>com.sk89q.lib</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>lin-bus-format-snbt</artifactId>
+                    <groupId>org.enginehub.lin-bus.format</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>lin-bus-tree</artifactId>
+                    <groupId>org.enginehub.lin-bus</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>rhino-runtime</artifactId>
+                    <groupId>org.mozilla</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paranamer</artifactId>
+                    <groupId>com.thoughtworks.paranamer</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
             <artifactId>common</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

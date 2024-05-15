@@ -355,7 +355,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("history")
-                .permission("quickshop.history")
+                .selectivePermission("quickshop.history")
+                .selectivePermission("quickshop.other.history")
+                .selectivePermission("quickshop.history.owned")
+                .selectivePermission("quickshop.history.accessible")
+                .selectivePermission("quickshop.history.global")
                 .executor(new SubCommand_History(plugin))
                 .build());
         registerCmd(CommandContainer.builder()

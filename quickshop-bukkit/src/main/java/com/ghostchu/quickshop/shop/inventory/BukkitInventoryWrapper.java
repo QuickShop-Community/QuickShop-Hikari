@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -106,5 +108,12 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     @Override
     public void setContents(ItemStack[] itemStacks) {
         inventory.setStorageContents(itemStacks);
+    }
+    @Override
+    public String toString() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("inventory", inventory.toString());
+        map.put("inventoryType", inventory.getClass().getName());
+        return JsonUtil.getGson().toJson(map);
     }
 }

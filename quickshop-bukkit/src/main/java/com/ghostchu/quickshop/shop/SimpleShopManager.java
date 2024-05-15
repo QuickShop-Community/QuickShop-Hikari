@@ -4,49 +4,34 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.*;
-import com.ghostchu.quickshop.api.shop.cache.ShopCache;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
-import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
-import com.ghostchu.quickshop.shop.cache.BoxedShop;
-import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.shop.inventory.BukkitListenerDrivenInventoryWrapper;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import io.papermc.lib.PaperLib;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -68,34 +53,17 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Function;
 
 /**
  * Manage a lot of shops.
  */
-public class SimpleShopManager implements ShopManager, Reloadable {
-
-    private static final DecimalFormat STANDARD_FORMATTER = new DecimalFormat("#.#########");
-    private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
-    private final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
-    // the performance impact on busy server
-    private final InteractiveManager interactiveManager;
-    private final QuickShop plugin;
-    private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
-            CacheBuilder.newBuilder()
-                    .expireAfterAccess(10, TimeUnit.MINUTES)
-                    .maximumSize(50)
-                    .weakValues()
-                    .initialCapacity(50)
-                    .build();
-    private final EconomyFormatter formatter;
-    private ShopCache shopCache;
+public class SimpleShopManager extends AbstractShopManager implements ShopManager, Reloadable {
+    protected final InteractiveManager interactiveManager;
     @Getter
     @Nullable
     private QUser cacheTaxAccount;
@@ -119,15 +87,23 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private boolean useShopCache;
 
     public SimpleShopManager(@NotNull QuickShop plugin) {
+        super(plugin);
         Util.ensureThread(false);
-        this.plugin = plugin;
-        this.interactiveManager = new InteractiveManager(plugin);
-        this.formatter = new EconomyFormatter(plugin, plugin::getEconomy);
         plugin.getReloadManager().register(this);
+        this.interactiveManager = new InteractiveManager(plugin);
         init();
     }
 
-    private void init() {
+
+    @Override
+    public @NotNull ShopManager.InteractiveManager getInteractiveManager() {
+        return this.interactiveManager;
+    }
+
+
+    @Override
+    public void init() {
+        super.init();
         Log.debug("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
@@ -160,25 +136,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
         this.useShopableChecks = PackageUtil.parsePackageProperly("shoppableChecks").asBoolean(false);
         this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
-        Map<@NotNull ShopCacheNamespacedKey, @NotNull Pair<@NotNull Function<Location, Shop>, @Nullable Cache<Location, BoxedShop>>> map = new HashMap<>();
-        // SINGLE
-        map.put(ShopCacheNamespacedKey.SINGLE, new ImmutablePair<>(this::getShop, null));
-        map.put(ShopCacheNamespacedKey.INCLUDE_ATTACHED, new ImmutablePair<>(this::getShopIncludeAttached, null));
-        this.shopCache = new SimpleShopCache(plugin, map);
-    }
 
-    public ShopCache getShopCache() {
-        return shopCache;
     }
 
     @Override
-    public void actionBuying(
-            @NotNull Player buyer,
-            @NotNull InventoryWrapper buyerInventory,
-            @NotNull AbstractEconomy eco,
-            @NotNull Info info,
-            @NotNull Shop shop,
-            int amount) {
+    public void actionBuying(@NotNull Player buyer, @NotNull InventoryWrapper buyerInventory, @NotNull AbstractEconomy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
         QUser buyerQUser = QUserImpl.createFullFilled(buyer);
         if (!plugin.perm().hasPermission(buyer, "quickshop.other.use") && !shop.playerAuthorize(buyer.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
             plugin.text().of("no-permission").send();
@@ -198,10 +160,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         int count = Util.countItems(buyerInventory, shop);
         // Not enough items
         if (amount > count) {
-            plugin.text().of(buyer,
-                    "you-dont-have-that-many-items",
-                    Component.text(count),
-                    Util.getItemStackName(shop.getItem())).send();
+            plugin.text().of(buyer, "you-dont-have-that-many-items", Component.text(count), Util.getItemStackName(shop.getItem())).send();
             return;
         }
         if (amount < 1) {
@@ -230,29 +189,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         SimpleEconomyTransaction transaction;
-        SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
-                .core(eco)
-                .amount(total)
-                .taxModifier(taxModifier)
-                .taxAccount(taxAccount)
-                .currency(shop.getCurrency())
-                .world(shop.getLocation().getWorld())
-                .to(buyerQUser);
+        SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder().core(eco).amount(total).taxModifier(taxModifier).taxAccount(taxAccount).currency(shop.getCurrency()).world(shop.getLocation().getWorld()).to(buyerQUser);
         if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
             builder.taxModifier(0.0d);
         }
-        if (!shop.isUnlimited()
-                || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
-                && shop.isUnlimited())) {
+        if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
             transaction = builder.from(shop.getOwner()).build();
         } else {
             transaction = builder.from(null).build();
         }
         if (!transaction.checkBalance()) {
-            plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
-                    format(total, shop.getLocation().getWorld(), shop.getCurrency()),
-                    format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                            shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
+            plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
             return;
         }
         if (!transaction.failSafeCommit()) {
@@ -280,24 +227,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Util.asyncThreadRun(() -> {
             String langCode = plugin.text().findRelativeLanguages(buyerQUser, true).getLocale();
             List<Component> sendList = new ArrayList<>();
-            Component notify = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(),
-                            amount,
-                            Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            Component notify = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem())).forLocale(langCode);
+            notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
             sendList.add(notify);
             if (space == amount) {
                 Component spaceWarn;
                 if (shop.getShopName() == null) {
-                    spaceWarn = plugin.text().of("shop-out-of-space",
-                                    shop.getLocation().getBlockX(),
-                                    shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ()).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                    spaceWarn = plugin.text().of("shop-out-of-space", shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale(langCode);
                 } else {
-                    spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                    spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 }
+                spaceWarn = plugin.getPlatform().setItemStackHoverEvent(spaceWarn, shop.getItem());
                 sendList.add(spaceWarn);
             }
             for (Component component : sendList) {
@@ -362,24 +302,19 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         BlockState state = info.getLocation().getBlock().getState();
         if (state instanceof InventoryHolder holder) {
             // Create the basic shop
-            ContainerShop shop = new ContainerShop(
-                    plugin,
-                    -1,
-                    info.getLocation(),
-                    price,
-                    info.getItem(),
-                    createQUser,
-                    false,
-                    ShopType.SELLING,
-                    new YamlConfiguration(),
-                    null,
-                    false,
-                    null,
-                    plugin.getJavaPlugin().getName(),
-                    plugin.getInventoryWrapperManager().mklink(new BukkitListenerDrivenInventoryWrapper((holder).getInventory(), state.getLocation())),
-                    null,
-                    Collections.emptyMap(),
-                    new SimpleBenefit());
+            String symbolLink;
+            InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
+            if (manager instanceof BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
+                symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
+            } else {
+                symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+            }
+            ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
+                    price, info.getItem(), createQUser, false,
+                    ShopType.SELLING, new YamlConfiguration(), null, false,
+                    null, plugin.getJavaPlugin().getName(),
+                    symbolLink,
+                    null, Collections.emptyMap(), new SimpleBenefit());
             createShop(shop, info.getSignBlock(), info.isBypassed());
         } else {
             plugin.text().of(p, "invalid-container").send();
@@ -387,13 +322,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public void actionSelling(
-            @NotNull Player seller,
-            @NotNull InventoryWrapper sellerInventory,
-            @NotNull AbstractEconomy eco,
-            @NotNull Info info,
-            @NotNull Shop shop,
-            int amount) {
+    public void actionSelling(@NotNull Player seller, @NotNull InventoryWrapper sellerInventory, @NotNull AbstractEconomy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
         QUser sellerQUser = QUserImpl.createFullFilled(seller);
 
@@ -409,8 +338,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             stock = 10000;
         }
         if (stock < amount) {
-            plugin.text().of(seller, "shop-stock-too-low", Component.text(stock),
-                    Util.getItemStackName(shop.getItem())).send();
+            plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
             return;
         }
         int playerSpace = Util.countSpace(sellerInventory, shop);
@@ -450,32 +378,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 taxAccount = this.cacheTaxAccount;
             }
         }
-        SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
-                .core(eco)
-                .from(sellerQUser)
-                .amount(total)
-                .taxModifier(taxModifier)
-                .taxAccount(taxAccount)
-                .benefit(shop.getShopBenefit())
-                .world(shop.getLocation().getWorld())
-                .currency(shop.getCurrency());
+        SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder().core(eco).from(sellerQUser).amount(total).taxModifier(taxModifier).taxAccount(taxAccount).benefit(shop.getShopBenefit()).world(shop.getLocation().getWorld()).currency(shop.getCurrency());
         if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
             builder.taxModifier(0.0d);
         }
-        if (!shop.isUnlimited()
-                || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
-                && shop.isUnlimited())) {
+        if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
             transaction = builder.to(shop.getOwner()).build();
         } else {
             transaction = builder.to(null).build();
         }
 
         if (!transaction.checkBalance()) {
-            plugin.text().of(seller, "you-cant-afford-to-buy",
-                    format(total, shop.getLocation().getWorld(), shop.getCurrency()),
-                    format(eco.getBalance(sellerQUser, shop.getLocation().getWorld(),
-                                    shop.getCurrency()), shop.getLocation().getWorld(),
-                            shop.getCurrency())).send();
+            plugin.text().of(seller, "you-cant-afford-to-buy", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(sellerQUser, shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
             return;
         }
         if (!transaction.failSafeCommit()) {
@@ -497,37 +411,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         notifyBought(sellerQUser, shop, amount, stock, transaction.getTax(), total);
     }
 
-    /**
-     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
-     * by yourself
-     *
-     * @param shop The shop to add
-     */
-    private void addShopToLookupTable(@NotNull Shop shop) {
-        String world = shop.getLocation().getWorld().getName();
-        Map<ShopChunk, Map<Location, Shop>> inWorld =
-                this.getShops()
-                        .computeIfAbsent(world, k -> new MapMaker().initialCapacity(3).makeMap());
-        // There's no world storage yet. We need to create that map.
-        // Put it in the data universe
-        // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
-        // location rounded to the nearest 16.
-        int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
-        int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
-        // Get the chunk set from the world info
-        ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
-        Map<Location, Shop> inChunk =
-                inWorld.computeIfAbsent(shopChunk, k -> new MapMaker().initialCapacity(1).makeMap());
-        // That chunk data hasn't been created yet - Create it!
-        // Put it in the world
-        // Put the shop in its location in the chunk list.
-        inChunk.put(shop.getLocation(), shop);
-    }
-
-    @Override
-    public void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop) {
-        shopRuntimeUUIDCaching.put(shop.getRuntimeRandomUniqueId(), shop);
-    }
 
     /**
      * Removes all shops from memory and the world. Does not delete them from the database. Call
@@ -539,10 +422,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         plugin.logger().info("Unloading loaded shops...");
         getLoadedShops().forEach(this::unloadShop);
         plugin.logger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
-        CompletableFuture<?> saveTask = CompletableFuture.allOf(
-                plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
-                        .map(Shop::update)
-                        .toArray(CompletableFuture[]::new));
+        CompletableFuture<?> saveTask = CompletableFuture.allOf(plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toArray(CompletableFuture[]::new));
         try {
             if (PackageUtil.parsePackageProperly("unlimitedWait").asBoolean()) {
                 saveTask.get();
@@ -556,7 +436,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         this.interactiveManager.reset();
         this.shops.clear();
-        this.shopCache.invalidateAll(null);
+        shopCache.invalidateAll(null);
     }
 
     /**
@@ -593,9 +473,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         // Check if item has been blacklisted
-        if (plugin.getShopItemBlackList().isBlacklisted(shop.getItem())
-                && !plugin.perm()
-                .hasPermission(p, "quickshop.bypass." + shop.getItem().getType().name().toLowerCase(Locale.ROOT))) {
+        if (plugin.getShopItemBlackList().isBlacklisted(shop.getItem()) && !plugin.perm().hasPermission(p, "quickshop.bypass." + shop.getItem().getType().name().toLowerCase(Locale.ROOT))) {
             plugin.text().of(p, "blacklisted-item").send();
             return;
         }
@@ -628,8 +506,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         // Check if player and server allow double chest shop
-        if (Util.isDoubleChest(shop.getLocation().getBlock().getBlockData())
-                && !plugin.perm().hasPermission(p, "quickshop.create.double")) {
+        if (Util.isDoubleChest(shop.getLocation().getBlock().getBlockData()) && !plugin.perm().hasPermission(p, "quickshop.create.double")) {
             plugin.text().of(p, "no-double-chests").send();
             return;
         }
@@ -643,9 +520,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             } else {
                 Material signType = signBlock.getType();
-                if (signType != Material.WATER
-                        && !signType.isAir()
-                        && !allowNoSpaceForSign) {
+                if (signType != Material.WATER && !signType.isAir() && !allowNoSpaceForSign) {
                     plugin.text().of(p, "failed-to-put-sign").send();
                     return;
                 }
@@ -655,16 +530,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Price limit checking
         PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
         switch (priceCheckResult.getStatus()) {
-            case REACHED_PRICE_MIN_LIMIT -> plugin.text().of(p, "price-too-cheap",
-                    Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
-                            : Double.toString(priceCheckResult.getMin()))).send();
-            case REACHED_PRICE_MAX_LIMIT -> plugin.text().of(p, "price-too-high",
-                    Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
-                            : Double.toString(priceCheckResult.getMin()))).send();
-            case PRICE_RESTRICTED -> plugin.text().of(p, "restricted-prices",
-                    Util.getItemStackName(shop.getItem()),
-                    Component.text(priceCheckResult.getMin()),
-                    Component.text(priceCheckResult.getMax())).send();
+            case REACHED_PRICE_MIN_LIMIT ->
+                    plugin.text().of(p, "price-too-cheap", Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax()) : Double.toString(priceCheckResult.getMin()))).send();
+            case REACHED_PRICE_MAX_LIMIT ->
+                    plugin.text().of(p, "price-too-high", Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax()) : Double.toString(priceCheckResult.getMin()))).send();
+            case PRICE_RESTRICTED ->
+                    plugin.text().of(p, "restricted-prices", Util.getItemStackName(shop.getItem()), Component.text(priceCheckResult.getMin()), Component.text(priceCheckResult.getMax())).send();
             case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
             case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
             case PASS -> {
@@ -683,21 +554,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     createCost = 0;
                 }
                 if (createCost > 0) {
-                    SimpleEconomyTransaction economyTransaction =
-                            SimpleEconomyTransaction.builder()
-                                    .taxAccount(cacheTaxAccount)
-                                    .taxModifier(0.0)
-                                    .core(plugin.getEconomy())
-                                    .from(QUserImpl.createFullFilled(p))
-                                    .to(null)
-                                    .amount(createCost)
-                                    .currency(plugin.getCurrency())
-                                    .world(shop.getLocation().getWorld())
-                                    .build();
+                    SimpleEconomyTransaction economyTransaction = SimpleEconomyTransaction.builder().taxAccount(cacheTaxAccount).taxModifier(0.0).core(plugin.getEconomy()).from(QUserImpl.createFullFilled(p)).to(null).amount(createCost).currency(plugin.getCurrency()).world(shop.getLocation().getWorld()).build();
                     if (!economyTransaction.checkBalance()) {
-                        plugin.text().of(p, "you-cant-afford-a-new-shop",
-                                format(createCost, shop.getLocation().getWorld(),
-                                        shop.getCurrency())).send();
+                        plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.getLocation().getWorld(), shop.getCurrency())).send();
                         return;
                     }
                     if (!economyTransaction.failSafeCommit()) {
@@ -734,308 +593,42 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     /**
-     * Format the price use formatter
+     * Checks other plugins to make sure they can use the chest they're making a shop.
      *
-     * @param d price
-     * @return formatted price
+     * @param p The player to check
+     * @return True if they're allowed to place a shop there.
      */
     @Override
-    public @NotNull String format(double d, @NotNull World world, @Nullable String currency) {
-        return formatter.format(d, world, currency);
-    }
-
-    /**
-     * Format the price use formatter
-     *
-     * @param d price
-     * @return formatted price
-     */
-    @Override
-    public @NotNull String format(double d, @NotNull Shop shop) {
-        return formatter.format(d, shop);
-    }
-
-    /**
-     * @return Returns the Map. Info contains what their last question etc was.
-     * @deprecated Use getInteractiveManager instead. This way won't trigger the BungeeCord notification.
-     */
-    @SuppressWarnings("removal")
-    @Override
-    @Deprecated(forRemoval = true)
-    public @NotNull Map<UUID, Info> getActions() {
-        return this.interactiveManager.actions;
-    }
-
-    /**
-     * Returns all shops in the memory, include unloaded.
-     *
-     * <p>Make sure you have caching this, because this need a while to get all shops
-     *
-     * @return All shop in the database
-     */
-    @Override
-    public @NotNull List<Shop> getAllShops() {
-        try (PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
-            final List<Shop> shopsCollected = new ArrayList<>();
-            for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
-                for (final Map<Location, Shop> shopData : shopMapData.values()) {
-                    shopsCollected.addAll(shopData.values());
+    public boolean isReachedLimit(@NotNull QUser p) {
+        Util.ensureThread(false);
+        if (plugin.getRankLimiter().isLimit()) {
+            int owned = 0;
+            if (useOldCanBuildAlgorithm) {
+                owned = getAllShops(p).size();
+            } else {
+                for (final Shop shop : getAllShops(p)) {
+                    if (!shop.isUnlimited()) {
+                        owned++;
+                    }
                 }
             }
-            return shopsCollected;
+            int max = plugin.getRankLimiter().getShopLimit(p);
+            Log.debug("CanBuildShop check for " + p.getDisplay() + " owned: " + owned + "; max: " + max);
+            return owned + 1 > max;
         }
+        return false;
     }
 
     /**
-     * Get all loaded shops.
-     *
-     * @return All loaded shops.
+     * Change the owner to unlimited shop owner.
+     * It defined in configuration.
      */
     @Override
-    public @NotNull Set<Shop> getLoadedShops() {
-        return this.loadedShops;
+    public void migrateOwnerToUnlimitedShopOwner(@NotNull Shop shop) {
+        shop.setOwner(this.cacheUnlimitedShopAccount);
+        shop.setSignText(plugin.text().findRelativeLanguages(shop.getOwner(), false));
     }
 
-    /**
-     * Get a players all shops.
-     *
-     * <p>Make sure you have caching this, because this need a while to get player's all shops
-     *
-     * @param playerUUID The player's uuid.
-     * @return The list have this player's all shops.
-     */
-    @Override
-    public @NotNull List<Shop> getAllShops(@NotNull QUser playerUUID) {
-        final List<Shop> playerShops = new ArrayList<>(10);
-        for (final Shop shop : getAllShops()) {
-            if (shop.getOwner().equals(playerUUID)) {
-                playerShops.add(shop);
-            }
-        }
-        return playerShops;
-    }
-
-    @Override
-    public @NotNull List<Shop> getAllShops(@NotNull UUID playerUUID) {
-        final List<Shop> playerShops = new ArrayList<>(10);
-        for (final Shop shop : getAllShops()) {
-            UUID shopUuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
-            if (playerUUID.equals(shopUuid)) {
-                playerShops.add(shop);
-            }
-        }
-        return playerShops;
-    }
-
-    @Override
-    public @NotNull PriceLimiter getPriceLimiter() {
-        return this.priceLimiter;
-    }
-
-    /**
-     * Gets a shop by shop Id
-     *
-     * @param shopId shop Id
-     * @return The shop object
-     */
-    @Override
-    public @Nullable Shop getShop(long shopId) {
-        for (Shop shop : getAllShops()) {
-            if (shop.getShopId() == shopId) {
-                return shop;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets a shop in a specific location
-     *
-     * @param loc The location to get the shop from
-     * @return The shop at that location
-     */
-    @Override
-    public @Nullable Shop getShop(@NotNull Location loc) {
-        return getShop(loc, !useShopableChecks);
-    }
-
-    @Override
-    public @Nullable Shop getShopViaCache(@NotNull Location loc) {
-        if (!this.useShopCache) {
-            return getShop(loc);
-        }
-        return shopCache.get(ShopCacheNamespacedKey.SINGLE, loc, true);
-    }
-
-    /**
-     * Gets a shop in a specific location
-     *
-     * @param loc                  The location to get the shop from
-     * @param skipShopableChecking whether to check is shopable, this will cause chunk loading
-     * @return The shop at that location
-     */
-    @Override
-    public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
-        if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
-            return null;
-        }
-        ShopChunk shopChunk = SimpleShopChunk.fromLocation(loc);
-        final Map<Location, Shop> inChunk = getShops(shopChunk);
-        if (inChunk == null) {
-            return null;
-        }
-        loc = loc.clone();
-        // Fix double chest XYZ issue
-        loc.setX(loc.getBlockX());
-        loc.setY(loc.getBlockY());
-        loc.setZ(loc.getBlockZ());
-        // We can do this because WorldListener updates the world reference so
-        // the world in loc is the same as world in inChunk.get(loc)
-        return inChunk.get(loc);
-    }
-
-    @Override
-    @Nullable
-    public Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId) {
-        return getShopFromRuntimeRandomUniqueId(runtimeRandomUniqueId, false);
-    }
-
-    @Override
-    @Nullable
-    public Shop getShopFromRuntimeRandomUniqueId(
-            @NotNull UUID runtimeRandomUniqueId, boolean includeInvalid) {
-        Shop shop = shopRuntimeUUIDCaching.getIfPresent(runtimeRandomUniqueId);
-        if (shop == null) {
-            for (Shop shopWithoutCache : this.getLoadedShops()) {
-                if (shopWithoutCache.getRuntimeRandomUniqueId().equals(runtimeRandomUniqueId)) {
-                    return shopWithoutCache;
-                }
-            }
-            return null;
-        }
-        if (includeInvalid) {
-            return shop;
-        }
-        if (shop.isValid()) {
-            return shop;
-        }
-        return null;
-    }
-
-    /**
-     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
-     *
-     * @param loc The location to get the shop from
-     * @return The shop at that location
-     */
-    @Override
-    public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
-        if (loc == null) {
-            Log.debug("Location is null.");
-            return null;
-        }
-        return findShopIncludeAttached(loc, false);
-    }
-
-    @Override
-    public @Nullable Shop getShopIncludeAttachedViaCache(@Nullable Location loc) {
-        if (loc == null) {
-            Log.debug("Location is null.");
-            return null;
-        }
-        if (!this.useShopCache) {
-            return getShopIncludeAttached(loc);
-        }
-        return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
-    }
-
-    /**
-     * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
-     * through a 3D map.
-     *
-     * @return a new shop iterator object.
-     */
-    @Override
-    public @NotNull Iterator<Shop> getShopIterator() {
-        return new ShopIterator();
-    }
-
-    /**
-     * Returns a map of World - Chunk - Shop
-     *
-     * @return a map of World - Chunk - Shop
-     */
-    @Override
-    public @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
-        return this.shops;
-    }
-
-    /**
-     * Returns a map of Shops
-     *
-     * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are
-     *          used.
-     * @return Shops
-     */
-    @Override
-    public @Nullable Map<Location, Shop> getShops(@NotNull Chunk c) {
-        return getShops(c.getWorld().getName(), c.getX(), c.getZ());
-    }
-
-    @Override
-    public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
-        final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
-        if (inWorld == null) {
-            return null;
-        }
-        return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));
-    }
-
-    @Override
-    public @Nullable Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk) {
-        return getShops(shopChunk.getWorld(), shopChunk.getX(), shopChunk.getZ());
-    }
-
-    /**
-     * Returns a map of Chunk - Shop
-     *
-     * @param world The name of the world (case sensitive) to get the list of shops from
-     * @return a map of Chunk - Shop
-     */
-    @Override
-    public @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world) {
-        return this.shops.get(world);
-    }
-
-    /**
-     * Get the all shops in the world.
-     *
-     * @param world The world you want get the shops.
-     * @return The list have this world all shops
-     */
-    @Override
-    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
-        final List<Shop> worldShops = new ArrayList<>();
-        for (final Shop shop : getAllShops()) {
-            Location location = shop.getLocation();
-            if (location.isWorldLoaded() && Objects.equals(location.getWorld(), world)) {
-                worldShops.add(shop);
-            }
-        }
-        return worldShops;
-    }
-
-    @Override
-    public @NotNull List<Shop> getShopsInWorld(@NotNull String worldName) {
-        final List<Shop> worldShops = new ArrayList<>();
-        for (final Shop shop : getAllShops()) {
-            Location location = shop.getLocation();
-            if (location.isWorldLoaded() && StringUtils.equals(worldName, location.getWorld().getName())) {
-                worldShops.add(shop);
-            }
-        }
-        return worldShops;
-    }
 
     @Override
     public double getTax(@NotNull Shop shop, @NotNull QUser p) {
@@ -1085,8 +678,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (info == null) {
                 return; // multithreaded means this can happen
             }
-            if (info.getLocation().getWorld() != p.getLocation().getWorld()
-                    || info.getLocation().distanceSquared(p.getLocation()) > 25) {
+            if (info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25) {
                 plugin.text().of(p, "not-looking-at-shop").send();
                 return;
             }
@@ -1099,106 +691,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         });
     }
 
-    /**
-     * Checks other plugins to make sure they can use the chest they're making a shop.
-     *
-     * @param p The player to check
-     * @return True if they're allowed to place a shop there.
-     */
-    @Override
-    public boolean isReachedLimit(@NotNull QUser p) {
-        Util.ensureThread(false);
-        if (plugin.getRankLimiter().isLimit()) {
-            int owned = 0;
-            if (useOldCanBuildAlgorithm) {
-                owned = getAllShops(p).size();
-            } else {
-                for (final Shop shop : getAllShops(p)) {
-                    if (!shop.isUnlimited()) {
-                        owned++;
-                    }
-                }
-            }
-            int max = plugin.getRankLimiter().getShopLimit(p);
-            Log.debug("CanBuildShop check for " + p.getDisplay() + " owned: " + owned + "; max: " + max);
-            return owned + 1 > max;
-        }
-        return false;
-    }
-
-    @Override
-    public void loadShop(@NotNull Shop shop) {
-        //noinspection deprecation
-        shop.handleLoading();
-        this.loadedShops.add(shop);
-    }
-
-    @Override
-    public void unloadShop(@NotNull Shop shop) {
-        //noinspection deprecation
-        shop.handleUnloading();
-        this.loadedShops.remove(shop);
-    }
-
-
-    /**
-     * Change the owner to unlimited shop owner.
-     * It defined in configuration.
-     */
-    @Override
-    public void migrateOwnerToUnlimitedShopOwner(@NotNull Shop shop) {
-        shop.setOwner(this.cacheUnlimitedShopAccount);
-        shop.setSignText(plugin.text().findRelativeLanguages(shop.getOwner(), false));
-    }
-
-    @Override
-    public CompletableFuture<?> registerShop(@NotNull Shop shop, boolean persist) {
-        // save to database
-        addShopToLookupTable(shop);
-        if (!persist) return CompletableFuture.completedFuture(null);
-        return plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop)
-                .thenAccept(id -> {
-                    Log.debug("DEBUG: Setting shop id");
-                    shop.setShopId(id);
-                    Log.debug("DEBUG: Creating shop map");
-                    plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
-                    Log.debug("DEBUG: Creating shop successfully");
-                    shop.setDirty();
-                    new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
-                })
-                .exceptionally(err -> {
-                    processCreationFail(shop, shop.getOwner(), err);
-                    return null;
-                });
-    }
-
-    @Override
-    public CompletableFuture<?> unregisterShop(@NotNull Shop shop, boolean persist) {
-        removeShopFromLookupTable(shop);
-        if (!persist) return CompletableFuture.completedFuture(null);
-        Location loc = shop.getLocation();
-        return plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-                .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b) -> null)
-                .exceptionally(throwable -> {
-                    plugin.logger().warn("Failed to remove shop from database", throwable);
-                    return null;
-                });
-    }
-
-    @Override
-    public void deleteShop(@NotNull Shop shop) {
-        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
-        if (shopDeleteEvent.callCancellableEvent()) {
-            Log.debug("Shop delete was cancelled by 3rd-party plugin");
-            return;
-        }
-        for (Sign s : shop.getSigns()) {
-            s.getBlock().setType(Material.AIR);
-        }
-        refundShop(shop);
-        unloadShop(shop);
-        unregisterShop(shop, true);
-    }
 
     private void refundShop(Shop shop) {
         World world = shop.getLocation().getWorld();
@@ -1207,24 +699,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             SimpleEconomyTransaction transaction;
             if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && shop.getTaxAccountActual() != null) {
                 cost = Math.min(cost, plugin.getEconomy().getBalance(shop.getTaxAccountActual(), world, plugin.getCurrency()));
-                transaction =
-                        SimpleEconomyTransaction.builder()
-                                .amount(cost)
-                                .core(plugin.getEconomy())
-                                .currency(plugin.getCurrency())
-                                .world(world)
-                                .from(shop.getTaxAccountActual())
-                                .to(shop.getOwner())
-                                .build();
+                transaction = SimpleEconomyTransaction.builder().amount(cost).core(plugin.getEconomy()).currency(plugin.getCurrency()).world(world).from(shop.getTaxAccountActual()).to(shop.getOwner()).build();
             } else {
-                transaction =
-                        SimpleEconomyTransaction.builder()
-                                .amount(cost)
-                                .core(plugin.getEconomy())
-                                .currency(plugin.getCurrency())
-                                .world(world)
-                                .to(shop.getOwner())
-                                .build();
+                transaction = SimpleEconomyTransaction.builder().amount(cost).core(plugin.getEconomy()).currency(plugin.getCurrency()).world(world).to(shop.getOwner()).build();
             }
             if (!transaction.failSafeCommit()) {
                 plugin.logger().warn("Shop deletion refund failed. Reason: {}", transaction.getLastError());
@@ -1232,29 +709,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
-    /**
-     * Removes a shop from the world. Does NOT remove it from the database. * REQUIRES * the world
-     * to be loaded Call shop.onUnload by your self.
-     *
-     * @param shop The shop to remove
-     */
-    private void removeShopFromLookupTable(@NotNull Shop shop) {
-        Location loc = shop.getLocation();
-        String world = Objects.requireNonNull(loc.getWorld()).getName();
-        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
-        if (inWorld == null) {
-            return;
-        }
-        int x = (int) Math.floor((loc.getBlockX()) / 16.0);
-        int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
-        ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
-        Map<Location, Shop> inChunk = inWorld.get(shopChunk);
-        if (inChunk == null) {
-            return;
-        }
-        inChunk.remove(loc);
-        shopCache.invalidate(null, shop.getLocation());
-    }
 
     /**
      * Send a purchaseSuccess message for a player.
@@ -1269,16 +723,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.successful-purchase").forLocale());
         if (showTax) {
-            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price-tax",
-                    Component.text(amount * shop.getItem().getAmount()),
-                    Util.getItemStackName(shop.getItem()),
-                    format(total, shop),
-                    tax).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price-tax", Component.text(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), format(total, shop), format(tax,shop)).forLocale());
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price",
-                    Component.text(amount * shop.getItem().getAmount()),
-                    Util.getItemStackName(shop.getItem()),
-                    format(total, shop)).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(purchaser, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), format(total, shop)).forLocale());
         }
         MsgUtil.printEnchantment(shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
@@ -1296,17 +743,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(seller);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(seller, "menu.successfully-sold").forLocale());
-        chatSheetPrinter.printLine(
-                plugin.text().of(seller,
-                        "menu.item-name-and-price",
-                        amount,
-                        Util.getItemStackName(shop.getItem()),
-                        format(total, shop)).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(seller, "menu.item-name-and-price", amount, Util.getItemStackName(shop.getItem()), format(total, shop)).forLocale());
         if (showTax) {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
-                    chatSheetPrinter.printLine(
-                            plugin.text().of(seller, "menu.sell-tax", format(tax, shop)).forLocale());
+                    chatSheetPrinter.printLine(plugin.text().of(seller, "menu.sell-tax", format(tax, shop)).forLocale());
                 } else {
                     chatSheetPrinter.printLine(plugin.text().of(seller, "menu.sell-tax-self").forLocale());
                 }
@@ -1322,140 +763,151 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @param p    Target player
      * @param shop The shop
      */
+    @SuppressWarnings("removal")
     @Override
     public void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
-        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)
-                && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
-            return;
-        }
-        if (Util.fireCancellableEvent(new ShopInfoPanelEvent(shop, p.getUniqueId()))) {
-            Log.debug("ShopInfoPanelEvent cancelled by some plugin");
-            return;
-        }
-        ProxiedLocale locale = plugin.text().findRelativeLanguages(p);
-        // Potentially faster with an array?
-        ItemStack items = shop.getItem();
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName(locale)).forLocale());
-        // Enabled
-        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
-                || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
-            ItemStack previewItemStack = shop.getItem().clone();
-            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
-            previewComponentPrePopulateEvent.callEvent();
-            previewItemStack = previewComponentPrePopulateEvent.getItemStack();
-            Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewItemStack))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
-            ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
-            itemPreviewComponentPopulateEvent.callEvent();
-            previewComponent = itemPreviewComponentPopulateEvent.getComponent();
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(shop.getItem())).forLocale()
-                    .append(Component.text("   "))
-                    .append(previewComponent)
-            );
-        } else {
-            ItemStack previewItemStack = shop.getItem().clone();
-            ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
-            previewComponentPrePopulateEvent.callEvent();
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(previewComponentPrePopulateEvent.getItemStack()))
-            );
-        }
-
-        if (Util.isTool(items.getType()) && plugin.getConfig().getBoolean("shop.info-panel.show-durability")) {
-            chatSheetPrinter.printLine(
-                    plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
-        }
-        if (shop.isSelling()) {
-            if (shop.getRemainingStock() == -1) {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.stock", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
+        try {
+            if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION) && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
+                return;
+            }
+            if (Util.fireCancellableEvent(new ShopInfoPanelEvent(shop, p.getUniqueId()))) {
+                Log.debug("ShopInfoPanelEvent cancelled by some plugin");
+                return;
+            }
+            ProxiedLocale locale = plugin.text().findRelativeLanguages(p);
+            // Potentially faster with an array?
+            ItemStack items = shop.getItem();
+            ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+            chatSheetPrinter.printHeader();
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName(locale)).forLocale());
+            // Enabled
+            if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP) || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
+                ItemStack previewItemStack = shop.getItem().clone();
+                ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
+                previewComponentPrePopulateEvent.callEvent();
+                previewItemStack = previewComponentPrePopulateEvent.getItemStack();
+                Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
+                previewComponent = plugin.getPlatform().setItemStackHoverEvent(previewComponent, shop.getItem());
+                ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
+                itemPreviewComponentPopulateEvent.callEvent();
+                previewComponent = itemPreviewComponentPopulateEvent.getComponent();
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", Util.getItemStackName(shop.getItem())).forLocale().append(Component.text("   ")).append(previewComponent));
             } else {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.stock", Component.text(shop.getRemainingStock())).forLocale());
+                ItemStack previewItemStack = shop.getItem().clone();
+                ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
+                previewComponentPrePopulateEvent.callEvent();
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", plugin.getPlatform().setItemStackHoverEvent(Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack()), previewComponentPrePopulateEvent.getItemStack())).forLocale());
             }
-        } else {
-            if (shop.getRemainingSpace() == -1) {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.space", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
+
+            if (Util.isTool(items.getType()) && plugin.getConfig().getBoolean("shop.info-panel.show-durability")) {
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
+            }
+            if (shop.isSelling()) {
+                if (shop.getRemainingStock() == -1) {
+                    chatSheetPrinter.printLine(plugin.text().of(p, "menu.stock", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
+                } else {
+                    chatSheetPrinter.printLine(plugin.text().of(p, "menu.stock", Component.text(shop.getRemainingStock())).forLocale());
+                }
             } else {
-                chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.space", Component.text(shop.getRemainingSpace())).forLocale());
+                if (shop.getRemainingSpace() == -1) {
+                    chatSheetPrinter.printLine(plugin.text().of(p, "menu.space", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
+                } else {
+                    chatSheetPrinter.printLine(plugin.text().of(p, "menu.space", Component.text(shop.getRemainingSpace())).forLocale());
+                }
             }
-        }
-        if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", Util.getItemStackName(shop.getItem()), format(shop.getPrice(), shop)).forLocale());
-        } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", Util.getItemStackName(shop.getItem()), format(shop.getPrice(), shop), shop.getItem().getAmount()).forLocale());
-        }
-        if (shop.isBuying()) {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-buying").forLocale());
-        } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
-        }
-
-        boolean respectItemFlag = plugin.getConfig().getBoolean("respect-item-flag");
-
-        boolean shouldDisplayEnchantments = plugin.getConfig().getBoolean("shop.info-panel.show-enchantments");
-        boolean shouldDisplayPotionEffects = plugin.getConfig().getBoolean("shop.info-panel.show-effects");
-
-        if (respectItemFlag) {
-            if (items.hasItemMeta()) {
-                ItemMeta shopItemMeta = shop.getItem().getItemMeta();
-                shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
-                shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+            if (shop.getItem().getAmount() == 1) {
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", Util.getItemStackName(shop.getItem()), format(shop.getPrice(), shop)).forLocale());
+            } else {
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", Util.getItemStackName(shop.getItem()), format(shop.getPrice(), shop), shop.getItem().getAmount()).forLocale());
             }
-        }
+            if (shop.isBuying()) {
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-buying").forLocale());
+            } else {
+                chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
+            }
 
-        if (shouldDisplayEnchantments) {
-            MsgUtil.printEnchantment(shop, chatSheetPrinter);
-        }
-        if (shouldDisplayPotionEffects) {
-            if (items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
-                PotionData potionData = potionMeta.getBasePotionData();
-                PotionEffectType potionEffectType = potionData.getType().getEffectType();
-                if (potionEffectType != null) {
-                    Component translation;
+            boolean respectItemFlag = plugin.getConfig().getBoolean("respect-item-flag");
+
+            boolean shouldDisplayEnchantments = plugin.getConfig().getBoolean("shop.info-panel.show-enchantments");
+            boolean shouldDisplayPotionEffects = plugin.getConfig().getBoolean("shop.info-panel.show-effects");
+
+            if (respectItemFlag) {
+                if (items.hasItemMeta()) {
+                    ItemMeta shopItemMeta = shop.getItem().getItemMeta();
+                    shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
+                    ItemFlag hidePotionEffect;
                     try {
-                        translation = plugin.getPlatform().getTranslation(potionEffectType);
-                    } catch (Throwable th) {
-                        translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
-                        plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
+                        hidePotionEffect = ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP");
+                    } catch (Exception e) {
+                        hidePotionEffect = ItemFlag.valueOf("HIDE_POTION_EFFECTS"); // Remove this when we dropped 1.20.x support
                     }
-                    chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
-                    //Because the bukkit API limit, we can't get the actual effect level
-                    chatSheetPrinter.printLine(Component.empty()
-                            .color(NamedTextColor.YELLOW)
-                            .append(translation)
-                    );
+                    shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(hidePotionEffect);
                 }
-                if (potionMeta.hasCustomEffects()) {
-                    for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
-                        int level = potionEffect.getAmplifier();
-                        Component translation;
-                        try {
-                            translation = plugin.getPlatform().getTranslation(potionEffect.getType());
-                        } catch (Throwable th) {
-                            translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
-                            plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+            }
+
+            if (shouldDisplayEnchantments) {
+                MsgUtil.printEnchantment(shop, chatSheetPrinter);
+            }
+            if (shouldDisplayPotionEffects) {
+                if (plugin.getGameVersion().isNewPotionAPI()) {
+                    if (items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
+                        List<PotionEffect> effects = new ArrayList<>();
+                        if (potionMeta.getBasePotionType() != null) {
+                            effects.addAll(potionMeta.getBasePotionType().getPotionEffects());
                         }
-                        chatSheetPrinter.printLine(Component.empty()
-                                .color(NamedTextColor.YELLOW)
-                                .append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                        if (potionMeta.hasCustomEffects()) {
+                            effects.addAll(potionMeta.getCustomEffects());
+                        }
+                        for (PotionEffect potionEffect : effects) {
+                            int level = potionEffect.getAmplifier();
+                            Component translation;
+                            try {
+                                translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                            } catch (Throwable th) {
+                                translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
+                                plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+                            }
+                            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                        }
+                    }
+                } else {
+                    if (items.getItemMeta() instanceof PotionMeta potionMeta) {
+                        PotionData potionData = potionMeta.getBasePotionData();
+                        PotionEffectType potionEffectType = potionData.getType().getEffectType();
+                        if (potionEffectType != null) {
+                            Component translation;
+                            try {
+                                translation = plugin.getPlatform().getTranslation(potionEffectType);
+                            } catch (Throwable th) {
+                                translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
+                                plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
+                            }
+                            chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
+                            //Because the bukkit API limit, we can't get the actual effect level
+                            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(translation));
+                        }
+                        if (potionMeta.hasCustomEffects()) {
+                            for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                                int level = potionEffect.getAmplifier();
+                                Component translation;
+                                try {
+                                    translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                                } catch (Throwable th) {
+                                    translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
+                                    plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+                                }
+                                chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                            }
+                        }
                     }
                 }
             }
+            chatSheetPrinter.printFooter();
+        } catch (Exception e) {
+            plugin.text().of(p, "shop-information-not-shown-due-an-internal-error").send();
+            plugin.logger().warn("Unable to show shop information panel to player {}", p.getName(), e);
         }
-        chatSheetPrinter.printFooter();
-
-    }
-
-    @Override
-    public @NotNull ShopManager.InteractiveManager getInteractiveManager() {
-        return this.interactiveManager;
     }
 
 
@@ -1465,37 +917,21 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             List<Component> sendList = new ArrayList<>();
             Component notify;
             if (plugin.getConfig().getBoolean("show-tax")) {
-                notify = plugin.text().of("player-bought-from-your-store-tax",
-                                seller,
-                                amount * shop.getItem().getAmount(),
-                                Util.getItemStackName(shop.getItem()),
-                                this.formatter.format(total - tax, shop),
-                                this.formatter.format(tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                notify = plugin.text().of("player-bought-from-your-store-tax", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(total - tax, shop), this.formatter.format(tax, shop)).forLocale(langCode);
             } else {
-                notify = plugin.text().of("player-bought-from-your-store",
-                                seller,
-                                amount * shop.getItem().getAmount(),
-                                Util.getItemStackName(shop.getItem()),
-                                this.formatter.format(total - tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                notify = plugin.text().of("player-bought-from-your-store", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(total - tax, shop)).forLocale(langCode);
             }
+            notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
             sendList.add(notify);
             // Transfers the item from A to B
             if (stock == amount) {
                 Component stockWarn;
                 if (shop.getShopName() == null) {
-                    stockWarn = plugin.text().of("shop-out-of-stock",
-                                    shop.getLocation().getBlockX(),
-                                    shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                    stockWarn = plugin.text().of("shop-out-of-stock", shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 } else {
-                    stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
-                                    Util.getItemStackName(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                    stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
                 }
+                stockWarn = plugin.getPlatform().setItemStackHoverEvent(stockWarn, shop.getItem());
                 sendList.add(stockWarn);
             }
             for (Component component : sendList) {
@@ -1526,8 +962,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 signBlockState.setBlockData(wallSignBlockData);
             }
         } else {
-            plugin.logger().warn(
-                    "Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
+            plugin.logger().warn("Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
         }
         signBlockState.update(true);
         return signBlockState;
@@ -1536,13 +971,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
         int amount;
-        int shopHaveSpaces =
-                Util.countSpace(shop.getInventory(), shop);
+        int shopHaveSpaces = Util.countSpace(shop.getInventory(), shop);
         int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
         // Check if shop owner has enough money
-        double ownerBalance = eco
-                .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                        shop.getCurrency());
+        double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
         int ownerCanAfford;
         if (shop.getPrice() != 0) {
             ownerCanAfford = (int) (ownerBalance / shop.getPrice());
@@ -1564,62 +996,96 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (amount < 1) { // typed 'all' but the auto set amount is 0
             if (shopHaveSpaces == 0) {
                 // when typed 'all' but the shop doesn't have any empty space
-                plugin.text().of(p, "shop-has-no-space", Component.text(shopHaveSpaces),
-                        Util.getItemStackName(shop.getItem())).send();
+                plugin.text().of(p, "shop-has-no-space", Component.text(shopHaveSpaces), Util.getItemStackName(shop.getItem())).send();
                 return 0;
             }
             if (ownerCanAfford == 0 && (!shop.isUnlimited() || payUnlimitedShopOwner)) {
                 // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                 // item (and shop isn't unlimited or pay-unlimited is true)
-                plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
-                        plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
-                                shop.getCurrency()),
-                        plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
-                                shop.getCurrency())).send();
+                plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you", plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(), shop.getCurrency())).send();
                 return 0;
             }
             // when typed 'all' but player doesn't have any items to sell
-            plugin.text().of(p, "you-dont-have-that-many-items",
-                    Component.text(amount),
-                    Util.getItemStackName(shop.getItem())).send();
+            plugin.text().of(p, "you-dont-have-that-many-items", Component.text(amount), Util.getItemStackName(shop.getItem())).send();
             return 0;
         }
         return amount;
     }
 
-    @Nullable
-    public Shop findShopIncludeAttached(@NotNull Location loc, boolean fromAttach) {
-        Shop shop = getShop(loc);
-
-        // failed, get attached shop
-        if (shop == null) {
-            Block block = loc.getBlock();
-            if (!Util.isShoppables(block.getType())) {
-                return null;
-            }
-            final Block currentBlock = loc.getBlock();
-            if (!fromAttach) {
-                // sign
-                if (Util.isWallSign(currentBlock.getType())) {
-                    final Block attached = Util.getAttached(currentBlock);
-                    if (attached != null) {
-                        shop = this.findShopIncludeAttached(attached.getLocation(), true);
-                    }
-                } else {
-                    // optimize for performance
-                    BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
-                    if (!(state instanceof InventoryHolder holder)) {
-                        return null;
-                    }
-                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
-                    if (half != null) {
-                        shop = getShop(half.getLocation());
-                    }
-                }
-            }
-        }
-        return shop;
+    /**
+     * @return Returns the Map. Info contains what their last question etc was.
+     * @deprecated Use getInteractiveManager instead. This way won't trigger the BungeeCord notification.
+     */
+    @SuppressWarnings("removal")
+    @Override
+    @Deprecated(forRemoval = true)
+    public @NotNull Map<UUID, Info> getActions() {
+        return this.interactiveManager.actions;
     }
+
+
+    @Override
+    public @Nullable Shop getShopIncludeAttachedViaCache(@Nullable Location loc) {
+        if (loc == null) {
+            Log.debug("Location is null.");
+            return null;
+        }
+        if (!this.useShopCache) {
+            return getShopIncludeAttached(loc);
+        }
+        return shopCache.get(ShopCacheNamespacedKey.INCLUDE_ATTACHED, loc, true);
+    }
+
+    /**
+     * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
+     * through a 3D map.
+     *
+     * @return a new shop iterator object.
+     */
+    @Override
+    public @NotNull Iterator<Shop> getShopIterator() {
+        return new SimpleShopManager.ShopIterator();
+    }
+
+    @Override
+    public @NotNull PriceLimiter getPriceLimiter() {
+        return this.priceLimiter;
+    }
+
+    /**
+     * Gets a shop in a specific location
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location
+     */
+    @Override
+    public @Nullable Shop getShop(@NotNull Location loc) {
+        return getShop(loc, !useShopableChecks);
+    }
+
+    @Override
+    public @Nullable Shop getShopViaCache(@NotNull Location loc) {
+        if (!this.useShopCache) {
+            return getShop(loc);
+        }
+        return shopCache.get(ShopCacheNamespacedKey.SINGLE, loc, true);
+    }
+
+    @Override
+    public void deleteShop(@NotNull Shop shop) {
+        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
+        if (shopDeleteEvent.callCancellableEvent()) {
+            Log.debug("Shop delete was cancelled by 3rd-party plugin");
+            return;
+        }
+        for (Sign s : shop.getSigns()) {
+            s.getBlock().setType(Material.AIR);
+        }
+        refundShop(shop);
+        unloadShop(shop);
+        unregisterShop(shop, true);
+    }
+
 
     private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
@@ -1655,8 +1121,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     // instead of output cancelled message (when typed neither integer or 'all'), just let
                     // player know that there should be positive number or 'all'
                     plugin.text().of(p, "not-a-integer", message).send();
-                    Log.debug(
-                            "Receive the chat " + message + " and it format failed: " + message);
+                    Log.debug("Receive the chat " + message + " and it format failed: " + message);
                     return;
                 }
             }
@@ -1682,59 +1147,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
-    @NotNull
-    @Override
-    public CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag) {
-        Util.ensureThread(true);
-        return CompletableFuture.supplyAsync(() -> plugin.getDatabaseHelper().listShopsTaggedBy(tagger, tag)
-                        .stream()
-                        .map(this::getShop).toList()
-                , QuickExecutor.getCommonExecutor());
-
-    }
-
-    @Override
-    public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop) {
-        return plugin.getDatabaseHelper().removeShopAllTag(tagger, shop.getShopId());
-    }
-
-    @Override
-    public CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag) {
-        tag = tag.trim().toLowerCase(Locale.ROOT);
-        tag = tag.replace(" ", "_");
-        return plugin.getDatabaseHelper().removeTagFromShops(tagger, tag);
-    }
-
-    @Override
-    public CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
-        tag = tag.trim().toLowerCase(Locale.ROOT);
-        tag = tag.replace(" ", "_");
-        return plugin.getDatabaseHelper().removeShopTag(tagger, shop.getShopId(), tag);
-    }
-
-    @Override
-    public CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
-        tag = tag.trim().toLowerCase(Locale.ROOT);
-        tag = tag.replace(" ", "_");
-        return plugin.getDatabaseHelper().tagShop(tagger, shop.getShopId(), tag);
-    }
-
-    @Override
-    @NotNull
-    public List<String> listTags(@NotNull UUID tagger) {
-        Util.ensureThread(true);
-        return plugin.getDatabaseHelper().listTags(tagger);
-    }
-
-    private void processCreationFail(@NotNull Shop shop, @NotNull QUser owner, @NotNull Throwable e2) {
-        plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-        plugin.text().of(owner, "shop-creation-failed").send();
-        Util.mainThreadRun(() -> {
-            unloadShop(shop);
-            unregisterShop(shop, true);
-            removeShopFromLookupTable(shop);
-        });
-    }
 
     @Override
     public ReloadResult reloadModule() {
@@ -1755,42 +1167,26 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
-        double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(),
-                shop.getCurrency());
+        double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(), shop.getCurrency());
         amount = Math.min(amount, (int) Math.floor(balance / price));
         if (amount < 1) { // typed 'all' but the auto set amount is 0
             // when typed 'all' but player can't buy any items
             if (!shop.isUnlimited() && shopHaveItems < 1) {
                 // but also the shop's stock is 0
-                plugin.text().of(p, "shop-stock-too-low",
-                        Component.text(shop.getRemainingStock()),
-                        Util.getItemStackName(shop.getItem())).send();
+                plugin.text().of(p, "shop-stock-too-low", Component.text(shop.getRemainingStock()), Util.getItemStackName(shop.getItem())).send();
                 return 0;
             } else {
                 // when if player's inventory is full
                 if (invHaveSpaces <= 0) {
-                    plugin.text().of(p, "not-enough-space",
-                            Component.text(invHaveSpaces)).send();
+                    plugin.text().of(p, "not-enough-space", Component.text(invHaveSpaces)).send();
                     return 0;
                 }
-                plugin.text().of(p, "you-cant-afford-to-buy",
-                        plugin.getShopManager().format(price, shop.getLocation().getWorld(),
-                                shop.getCurrency()),
-                        plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
-                                shop.getCurrency())).send();
+                plugin.text().of(p, "you-cant-afford-to-buy", plugin.getShopManager().format(price, shop.getLocation().getWorld(), shop.getCurrency()), plugin.getShopManager().format(balance, shop.getLocation().getWorld(), shop.getCurrency())).send();
             }
             return 0;
         }
         return amount;
     }
-
-    @Override
-    @NotNull
-    public CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop) {
-        Util.ensureThread(true);
-        return plugin.getDatabaseHelper().queryInventoryCache(shop.getShopId());
-    }
-
 
     public static class InteractiveManager implements ShopManager.InteractiveManager {
         private final Map<UUID, Info> actions = Maps.newConcurrentMap();
@@ -1837,6 +1233,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             this.actions.clear();
         }
 
+        public Map<UUID, Info> getActions() {
+            return actions;
+        }
+
         @Override
         public Info get(UUID uuid) {
             return this.actions.get(uuid);
@@ -1873,66 +1273,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
-    static class TagParser {
-        private final List<String> tags;
-        private final ShopManager shopManager;
-        private final UUID tagger;
-        private final Map<String, List<Shop>> singleCaching = new HashMap<>();
-
-        public TagParser(UUID tagger, ShopManager shopManager, List<String> tags) {
-            Util.ensureThread(true);
-            this.shopManager = shopManager;
-            this.tags = tags;
-            this.tagger = tagger;
-        }
-
-        public List<Shop> parseTags() {
-            List<Shop> finalShop = new ArrayList<>();
-            for (String tag : tags) {
-                ParseResult result = parseSingleTag(tag);
-                if (result.getBehavior() == Behavior.INCLUDE) {
-                    finalShop.addAll(result.getShops());
-                } else if (result.getBehavior() == Behavior.EXCLUDE) {
-                    finalShop.removeAll(result.getShops());
-                }
-            }
-            return finalShop;
-        }
-
-        public ParseResult parseSingleTag(String tag) throws IllegalArgumentException {
-            Util.ensureThread(true);
-            Behavior behavior = Behavior.INCLUDE;
-            if (tag.startsWith("-")) {
-                behavior = Behavior.EXCLUDE;
-            }
-            String tagName = tag.substring(1);
-            if (tagName.isEmpty()) {
-                throw new IllegalArgumentException("Tag name can't be empty");
-            }
-            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t) -> shopManager.queryTaggedShops(tagger, t).join());
-            return new ParseResult(behavior, shops);
-        }
-
-        enum Behavior {
-            INCLUDE,
-            EXCLUDE
-        }
-
-        @AllArgsConstructor
-        @Data
-        static class ParseResult {
-            private final Behavior behavior;
-            private final List<Shop> shops;
-        }
-    }
-
     public class ShopIterator implements Iterator<Shop> {
 
-        private final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
+        protected final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
 
-        private Iterator<Map<Location, Shop>> chunks;
+        protected Iterator<Map<Location, Shop>> chunks;
 
-        private Iterator<Shop> shops;
+        protected Iterator<Shop> shops;
 
         public ShopIterator() {
             worlds = getShops().values().iterator();
