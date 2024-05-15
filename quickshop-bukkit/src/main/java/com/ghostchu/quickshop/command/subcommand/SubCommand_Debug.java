@@ -262,7 +262,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         } else {
             String oldOne = System.setProperty(key, value);
             plugin.text().of(sender, "debug.property-changed", key, oldOne, value).send();
-            sender.sendMessage("Property " + key + " has been changed from " + oldOne + " to " + value);
         }
     }
 
