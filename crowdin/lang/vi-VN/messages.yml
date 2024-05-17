@@ -532,32 +532,32 @@ player-no-group: <yellow>Người chơi {0} không thuộc bất kỳ nhóm nào
 player-in-group: <green>Người chơi {0} nằm trong nhóm <aqua>{1}</aqua> trong cửa hàng này.
 permission-required: <red>Bạn không có quyền {0} trong cửa hàng này để làm điều này.
 no-permission-detailed: <red>Bạn không có quyền <yellow>{0}</yellow> để làm điều này.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
-paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
+paste-notice: "<yellow>Lưu ý: Nếu bạn đang tạo \"Paste\" cho mục đích khắc phục sự cố, hãy đảm bảo làm lại quá trình gây ra lỗi trước khi tạo \"Paste\" càng nhanh càng tốt; Chúng tôi cần các bản ghi giữ lại một thời gian ngắn trong bộ đệm để khắc phục sự cố. Nếu bạn tạo \"Paste\" quá chậm hoặc không làm lại quá trình gây ra lỗi trước hoặc khởi động lại máy chủ thì \"Paste\" sẽ không có giá trị và vô dụng."
+paste-uploading: <aqua>Vui lòng chờ... Đảng tải paste lên pastebin......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
   <green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust.
-paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
+paste-created-local-failed: <red>Không thể lưu "paste" vào ổ cứng của bạn, vui lòng kiểm tra ổ cứng của bạn.
 paste-451: |-
   <gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
 command-incorrect: '<red>Command usage incorrect, type /qs help to check help. Usage: {0}.'
-successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
+successfully-set-player-group: <green>Đã thành công đặt người chơi từ nhóm {0} đến <aqua>{1}</aqua>.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
-successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
+successfully-set-player-permission: <green>Đã thành công cho {0} quyền <aqua>{1}</aqua> trong cửa hàng <aqua>{2}</aqua>.
 lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
-lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
+lookup-item-exists: <red>Đã có vật phẩm <yellow>{0}</yellow> đã tồn tại trong cửa hàng dưới dạng vật phẩm trưng bày, hãy xóa hoặc chọn tên khác.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
 lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
-lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
+lookup-item-name-regex: '<red>Tên phải khớp với biểu thức này: <aqua>{0}</aqua>.'
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+internal-error: <red>Đã xảy ra lỗi nội bộ, vui lòng liên hệ với quản trị viên máy chủ.
+argument-cannot-be: <red>Tham số <aqua>{0}</aqua> không thể trở thành <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Tỷ lệ phần trăm không hợp lệ, bạn phải thêm '%' sau số phần trăm.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
