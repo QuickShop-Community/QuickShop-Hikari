@@ -51,9 +51,9 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0}<light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Chỉ admin) <light_purple>{0} <dark_gray>đã từ chối kiểm tra quyền, Nếu điều này không hoạt động, hãy thử thêm <light_purple>{1} <gray>vào danh sách đen. Hướng dẫn điều chỉnh: https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Giá trung bình lân cận: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Kiểm tra túi đồ] <gray>Cảnh báo! Đã tìm thấy bảng hiển thị thông tin QuickShop <gold>{2}</gold> trong túi đồ <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, điều này không nên xảy ra vì có ai đó đang cố gắng sửa dụng lỗ hổng để sao chép bảng hiển thị thông tin vật phẩm."
 digits-reach-the-limit: <red>Bạn đã đạt đến giới hạn của số thập phân trong giá.
 currency-unset: <green>Đã xóa thành công đơn vị tiền tệ của cửa hàng. Sử dụng mặt định.
 you-cant-create-shop-in-there: <red>Bạn không có quyền tạo cửa hàng tại ví trị này.
