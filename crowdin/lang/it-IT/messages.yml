@@ -51,9 +51,9 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> ha negato il controllo dei permessi. Se questo non era previsto, prova ad aggiungere <light_purple>{1} <gray>alla lista nera degli ascoltatori. Guida alla configurazione:https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Prezzo medio nelle vicinanze: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Controllo Inventario] <gray>Attenzione! Trovato un elemento di visualizzazione QuickShop <gold>{2}</gold> nell'inventario di <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, che non dovrebbe accadere, Questo di solito significa che qualcuno sta sfruttando maliziosamente l'exploit per duplicare il display-item."
 digits-reach-the-limit: <red>Hai raggiunto i limiti dei decimali nel prezzo.
 currency-unset: <green>Valuta del negozio rimossa con successo. Utilizzando le impostazioni predefinite.
 you-cant-create-shop-in-there: <red>Non hai il permesso di creare un negozio in questa posizione.
@@ -95,7 +95,7 @@ shop-staff-added: <green>Aggiunto con successo {0} come membro dello staff per i
 shop-staff-empty: <yellow>Questo negozio non ha membri dello staff.
 shops-recovering: Recupero negozi dal backup...
 virtual-player-component-hover: "<gray>Questo è un giocatore virtuale.\n<gray>Si riferisce a un account di sistema con lo stesso nome.</gray>\n<green>UUUID: <yellow>{0}</yellow></green>\n<green>Nome utente: <yellow>{1}</yellow></green>\n<green>Mostra come: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+real-player-component-hover: "<gray>Questo è un vero e proprio giocatore esistente.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nome utente: <yellow>{1}</yellow></green>\n<green>Mostra come: <yellow>{2}</yellow></green>\n<gray>Se desideri utilizzare un account di sistema virtuale con lo stesso nome, aggiungi <dark_gray>\"[]\"</dark_gray> ai lati del nome utente: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Hai pagato <yellow>{0} <green>tasse incluse.
   owner: '<green>Proprietario: {0}'
@@ -209,20 +209,20 @@ updatenotify:
   list:
     - '{0} è stato rilasciato. Stai ancora usando {1}!'
     - Boom! Nuovo aggiornamento {0} in arrivo. Aggiorna!
-    - Sorpresa! {0} è uscito. Sei su {1}
+    - Sorpresa! {0} è uscito. Stai usando {1}
     - Sembra che tu abbia bisogno di un aggiornamento. {0} è stato rilasciato!
     - Ooops! {0} è stato rilasciato. Sei il {1}!
-    - Te lo dico... QS è stato aggiornato a {0}. Perché non hai ancora aggiornato?
-    - Fix e... Scusami, ma {0} è stato rilasciato!
-    - Errore. Nope. Questo non è un errore. {0} è stato rilasciato!
+    - Lo giuro... QS è stato aggiornato a {0}. Perché non hai ancora aggiornato?
+    - Fix e... Scusa, ma {0} è stato rilasciato!
+    - Err... No! Questo non è un errore. {0} è stato rilasciato!
     - Ah! {0} è uscito! Perché stai ancora usando {1}?
     - 'Notizia del giorno: QuickShop è stato aggiornato a {0}!'
     - Aggiorna a {0}. Mi sono stufato di inventarmi un messaggio per implorarti di aggiornare!
-    - Aggiornamento {0} attivato. Salva aggiornamento!
+    - Aggiornamento {0} innescato. Salva l'aggiornamento!
     - C'è un aggiornamento disponibile per lei, Comandante. {0} è appena uscito!
     - Guarda il mio stile---{0} aggiornato. Stai ancora usando {1}
     - Ahhhhhhh! Nuovo aggiornamento {0}! Aggiornami!
-    - Cosa ne pensi? {0} è stato rilasciato! Aggiornamento!
+    - Cosa ne pensi? {0} è stato rilasciato! Aggiorna!
     - Dottore, QuickShop ha un nuovo aggiornamento {0}! Dovresti aggiornare~
     - Ko~ko~da~yo~ QuickShop ha un nuovo aggiornamento {0}~
     - Paimon vuole dirti che QuickShop ha un nuovo aggiornamento {0}!
@@ -252,9 +252,9 @@ price-too-cheap: <red>Il prezzo deve essere superiore di <yellow> ${0}
 shop-not-exist: <red>Non c'è nessun negozio.
 bad-command-usage: <red>Argomento di comando errato!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-starting: <green>Inizio a controllare se ci sono negozi fantasmi (contenitori mancanti). Tutti i negozi non esistenti verranno rimossi...
+cleanghost-deleting: <yellow>Trovato un negozio corrotto <aqua>{0}</aqua> a causa di {1}, segnalo per eliminarlo...
+cleanghost-deleted: <green>In totale <yellow>{0}</yellow> negozi sono stati cancellati.
 shop-purchase-cancelled: <red>Acquisto annullato.
 bypassing-lock: <red>Bypassa un blocco QuickShop!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -287,7 +287,7 @@ unknown-owner: '&2Sconosciuto'
 restricted-prices: '<red>Prezzo ristretto per {0}: Minimo {1}, max {2}'
 nearby-shop-this-way: <green>Il negozio è a {0} blocchi di distanza da te.
 owner-bypass-check: <yellow>Bypassato tutti i controlli. Eseguito con successo! (Ora sei il proprietario del negozio!)
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Clicca qui per ricevere i tuoi premi a tempo limitato, messi in palio dallo sviluppatore QuickShop-Hikari!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Spazio pieno
@@ -339,17 +339,17 @@ controlpanel:
   stack-hover: <yellow>Fare clic per impostare la quantità di articolo per sfuso. Imposta a 1 per comportamento normale.
   alwayscounting-hover: <yellow>Fai clic per attivare/disattivare se il negozio conta sempre il contenitore.
   alwayscounting: '<green>Conta sempre: {0}<yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Proprietario: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Proprietario: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   freeze: '<yellow>Modalità congelato: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Prezzo: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
+  price: '<green>Prezzo: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   currency-hover: <yellow>Clicca per impostare o rimuovere la valuta che questo negozio sta usando
   lock: '<yellow>Negozio chiuso: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Modalità negozio: <aqua>Vendita <yellow>[<light_purple><bold>Cambia<yellow>]'
+  mode-selling: '<green>Modalità negozio: <aqua>Vendita <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   currency: '<green>Valuta: <aqua>{0}<yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Clicca per cambiare proprietario.
-  mode-buying: '<green> Modalità del negozio: <aqua>Acquisto <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: '<green> Modalità del negozio: <aqua>Acquisto <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   item: '<green>Oggetto del negozio: {0}<yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Illimitato: {0}<yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Illimitato: {0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   unlimited-hover: <yellow>Clicca per attivare/disattivare se il negozio è illimitato.
   refill-hover: <yellow>Clicca per ricaricare il negozio.
   remove-hover: <yellow>Clicca per rimuovere questo negozio.
@@ -361,8 +361,8 @@ controlpanel:
   infomation: '<green>Pannello di Controllo Negozio:'
   mode-selling-hover: <yellow>Clicca per cambiare la modalità del negozio in ACQUISTO.
   empty-hover: <yellow>Clicca per cancellare l'inventario del negozio.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
-  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
+  history: '<green>Storico: <yellow>[<bold><light_purple>Visualizza</light_purple></bold>]</yellow>'
   history-hover: <yellow>Clicca per visualizzare i log della cronologia del negozio
 timeunit:
   behind: dietro
@@ -445,8 +445,8 @@ command:
     benefit: <yellow>Impostazioni per dividere i benefici tra il proprietario del negozio e gli altri giocatori
     tag: <yellow>Aggiungi, rimuovi o interroga i tag di un negozio
     suggestprice: <yellow>Suggerisci un prezzo consigliato per cercare negozio, basato su altri negozi
-    history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
+    history: <yellow>Visualizza la cronologia delle transazioni di un negozio
+    sign: <yellow>Cambia il materiale del cartello di un negozio
   bulk-size-not-set: '<red>Utilizza: /qs size <amount>'
   no-type-given: '<red>Utilizza: /qs find <item>'
   feature-not-enabled: Questa funzione non è abilitata nel file di configurazione.
@@ -555,9 +555,9 @@ lookup-item-test-not-found: '<gold>Test: <yellow>L''oggetto nella tua mano non �
 lookup-item-test-found: '<gold>Test: <green>L''oggetto nella tua mano è stato registrato sotto il nome di <aqua>{0}</aqua> nella tabella di ricerca.'
 lookup-item-removed: <green>L'oggetto specifico <aqua>{0}</aqua> è stato rimosso con successo dalla tabella di ricerca.
 internal-error: <red>Si è verificato un errore interno, si prega di contattare l'amministratore del server.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+argument-cannot-be: <red>L'argomento <aqua>{0}</aqua> non può essere <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Percentuale non valida, è necessario aggiungere '%' dopo il numero percentuale.
 display-fallback: |-
   <red>A causa di un errore interno, viene visualizzato un messaggio di fallback.
   Il valore di questo elemento potrebbe non essere localizzato o elaborato correttamente.
@@ -587,22 +587,22 @@ debug:
   force-shop-reload: <yellow>Forzando il reload di tutti i negozi caricati...
   force-shop-reload-complete: <green>Forzato<aqua>{0}</aqua> il reload di tutti i negozi.
   force-shop-loader-reload: <yellow>Forzando il reload...
-  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
-  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
+  force-shop-loader-reload-unloading-shops: <yellow>Sto scaricando <aqua>{0}</aqua> negozi caricati...
+  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Rimozione di <aqua>{0}</aqua> negozi dalla memoria...
   force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
   force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
+  update-player-shops-signs-no-username-given: <red>Devi fornire un nome utente valido.
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
-  update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
+  update-player-shops-player-shops: <yellow>In totale <gold>{0}</gold> negozi in attesa di aggiornamenti.
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}</gold>'
-  update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
-  update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
-  item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
-  item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
+  update-player-shops-complete: <green>Operazione completata. Impiegati <yellow>{0} ms</yellow> per aggiornare.
+  update-player-shops-task-started: <gold>L'operazione è stata avviata, per favore attendi il suo completamento.
+  item-info-store-as-string: "<green>Il negozio che stai cercando: <gold>{0}</gold> Hash: <white>{1}</white>"
+  item-info-hand-as-string: "<green>L'oggetto che hai in mano: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
   hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
   hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
@@ -1515,7 +1515,7 @@ compatibility:
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
-delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+delete-controlpanel-button-confirm: "<red>Vuoi davvero rimuovere questo negozio? Clicca di nuovo il pulsante <bold>[Rimuovi negozio]</bold> entro {0} secondi per confermare."
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 suggest-wait: "<green>Please wait... Calculating recommend price."
