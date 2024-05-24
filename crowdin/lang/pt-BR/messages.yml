@@ -25,7 +25,7 @@ tabcomplete:
 taxaccount-unset: <green>A taxa dessa loja agora está seguindo a taxa global.
 blacklisted-item: <red>Você não pode vender este item porque ele está na lista negra
 command-type-mismatch: <red>Este comando só pode ser executado por<aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+server-crash-warning: '<red>O servidor pode crashar após executar o comando /qs reload se você substituir/deletar o arquivo Jar do plugin QuickShop enquanto o servidor é executado.'
 you-cant-afford-to-change-price: <red>Custa {0} para alterar o preço na sua loja.
 safe-mode: <red>QuickShop agora está em modo seguro, você não pode abrir esta loja, por favor entre em contato com o administrador do servidor para corrigir os erros.
 forbidden-vanilla-behavior: <red>A operação é proibida porque não é compatível com o comportamento de baunilha
@@ -377,35 +377,35 @@ controlpanel:
   history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: atras de
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
+  week: "{0} semana"
+  weeks: "{0} semanas"
+  year: "{0} ano"
   before: antes de
   scheduled: agendado
-  years: "{0} years"
+  years: "{0} anos"
   scheduled-in: Agendado para {0}
-  second: "{0} second"
+  second: "{0} segundo"
   std-past-format: '{5}{4}{3}{2}{1}{0}atrás'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
+  seconds: "{0} segundos"
+  hour: "{0} hora"
   scheduled-at: agendado em {0}
   after: após
-  day: "{0} day"
+  day: "{0} dia"
   recent: recente
   between: entre
-  hours: "{0} hours"
-  months: "{0} months"
+  hours: "{0} horas"
+  months: "{0} meses"
   longtimeago: há muito tempo atrás
   between-format: entre {0} e {1}
-  minutes: "{0} minutes"
+  minutes: "{0} minutos"
   justnow: neste momento
-  minute: "{0} minute"
+  minute: "{0} minuto"
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: futuro
-  month: "{0} month"
+  month: "{0} mês"
   future: em {0}
-  days: "{0} days"
+  days: "{0} dias"
 command:
   reloading: '<green>Configuração recarregada. <yellow>Algumas alterações podem exigir reinicialização para afetar. <newline><gray>(Aviso: Recarregar o comportamento após 4..9.10 agora só recarregamos a configuração mas não todo o plugin para garantir que o servidor não falhe.)'
   description:
