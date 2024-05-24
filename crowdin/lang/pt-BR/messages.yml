@@ -552,11 +552,10 @@ paste-created-local: |-
   <red>Warning: <gray>Never send pastes to people you don't trust.
 paste-created-local-failed: <red>Não foi possível salvar a pasta em seu disco local. Verifique o seu disco.
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
+  <gray><b>DICA: </b> Seu país ou região parece ter bloqueado o serviço de funcionários da CloudFlare e a colagem do QuickShop pode não ser carregada corretamente.<newline><gray>Se a operação subsequente falhar, tente adicionar o parâmetro adicional --file para gerar um colar local: <dark_gray>/qs colar --file</dark_gray>
 paste-upload-failed: <red>Falha ao carregar a pasta para {0}, tentar outro provedor de colagem...
 paste-upload-failed-local: <red>Falha ao enviar, tentando gerar a colagem local...
-command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
+command-incorrect: '<red>Uso do comando incorreto, digite /qs ajuda para verificar a ajuda. Uso: {0}.'
 successfully-set-player-group: <green>O grupo {0} do jogador foi definido com sucesso para <aqua>{1}</aqua>.
 successfully-unset-player-group: <green>O grupo de jogadores foi removido com sucesso nesta loja.
 successfully-set-player-permission: <green>Permissão {0} de jogador <aqua>{1}</aqua> definida com sucesso na loja <aqua>{2}</aqua>.
@@ -570,16 +569,17 @@ lookup-item-test-found: '<gold>Teste: <green>O item da mão foi registrado como 
 lookup-item-removed: <green>O item especificado <aqua>{0}</aqua> foi removido com sucesso da tabela de pesquisa.
 internal-error: <red>Um erro interno ocorreu, entre em contato com o administrador do servidor.
 argument-cannot-be: <red>O argumento <aqua>{0}</aqua> não pode ser <yellow>{1}</yellow>.
-argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
+argument-must-between: <red>O valor do argumento <aqua>{0}</aqua> deve ser entre <yellow>{1}</yellow> e <yellow>{2}</yellow>
 invalid-percentage: <red>Porcentagem inválida, você deve adicionar '%' após o número de porcentagem.
 display-fallback: |-
   <red>Devido a uma falha interna, uma mensagem de indisponibilidade está sendo mostrada.
   O valor desse item não pode ser localizado ou processado corretamente.
   Por favor contate o administrador do servidor.
 not-a-valid-time: |-
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
-  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
+  <red>A string não <yellow>{0}</yellow> um carimbo de data/hora válido, insira um <aqua>Zulu Time (ISO 8601)</aqua> ou <aqua>Unix Epoch Time em segundos</aqua>.
+  <gold>Exemplo de carimbo de data/hora válido: (para Sat, 17 Dec 2022 10:31:37 GMT)</gold>
+  <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
+  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time em segundos)</grey>
 invalid-past-time: <red>Você não pode especificar um horário no passado.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
@@ -588,8 +588,8 @@ debug:
   operation-invalid: <red>You must specific an valid operation.
   invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
   warning-sql: |-
-    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
-    <red>Don't confirm this if you don't trust who send you this.
+    <red><bold>Aviso:</bold></red><yellow>Você está executando uma declaração SQL, isso pode corromper seu banco de dados ou destruir quaisquer dados no banco de dados, mesmo que pertença a outros plugins.
+    <red>Não confirme se você não confia em quem lhe enviou esse comando.
   warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
   warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
   sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
