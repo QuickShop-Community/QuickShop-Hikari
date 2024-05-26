@@ -15,6 +15,7 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -488,10 +489,7 @@ public class Util {
         if (component == null) {
             return true;
         }
-        if (component.equals(Component.empty())) {
-            return true;
-        }
-        return component.equals(Component.text(""));
+        return PlainTextComponentSerializer.plainText().serialize(component).isBlank();
     }
 
     public static boolean useEnchantmentForEnchantedBook() {
