@@ -61,7 +61,7 @@ body:
 
         If you can't create a paste, should you upload other files such as the `latest.log` file to https://paste.helpch.at and share the URL.
 
-        If QuickShop is unable to generate a Paste will it create a file under `plugins/QuickShop/`
+        If QuickShop is unable to generate a Paste will it create a file under `plugins/QuickShop-Hikari/`
       placeholder: 'https://paste.helpch.at/...'
     validations:
       required: true
