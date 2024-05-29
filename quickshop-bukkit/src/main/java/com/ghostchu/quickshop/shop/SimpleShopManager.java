@@ -860,7 +860,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                             effects.addAll(potionMeta.getCustomEffects());
                         }
                         for (PotionEffect potionEffect : effects) {
-                            int level = potionEffect.getAmplifier();
+                            int level = potionEffect.getAmplifier() + 1;
                             Component translation;
                             try {
                                 translation = plugin.getPlatform().getTranslation(potionEffect.getType());
