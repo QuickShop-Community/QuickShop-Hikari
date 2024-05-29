@@ -99,11 +99,14 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     public void onExplode(EntityExplodeEvent e) {
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
             final Block b = e.blockList().get(i);
-            final Shop shop = getShopNature(b.getLocation(), true);
-
+            Shop shop = getShopNature(b.getLocation(), true);
+            if (shop == null) {
+                shop = getShopNextTo(b.getLocation());
+            }
             if (shop == null) {
                 continue;
             }
+
             if (plugin.getConfig().getBoolean("protect.explode")) {
                 e.setCancelled(true);
             } else {
