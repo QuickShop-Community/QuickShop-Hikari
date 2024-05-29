@@ -67,7 +67,7 @@ public class NexusManager implements SubPasteItem {
         } else {
             selectedRemoteVer = remoteLatestVer;
         }
-        this.cachedResult = selectedRemoteVer.isGreaterThan(localVer);
+        this.cachedResult = !selectedRemoteVer.isGreaterThan(localVer);
         return this.cachedResult;
     }
 

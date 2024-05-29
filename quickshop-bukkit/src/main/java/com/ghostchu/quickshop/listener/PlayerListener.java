@@ -653,7 +653,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoinEasterEgg(PlayerJoinEvent e) {
-        if (plugin.perm().hasPermission(e.getPlayer(), "quickshop.alert")) {
+        if (plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts")) {
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || PackageUtil.parsePackageProperly("april-rickandroll").asBoolean()) {

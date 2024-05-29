@@ -225,9 +225,9 @@ public class ShopHistoryGUI {
         ItemStack previousPage = new ItemStack(Material.PAPER);
         ItemStack currentPage = new ItemStack(Material.BOOK);
         ItemStack nextPage = new ItemStack(Material.PAPER);
-        plugin.getPlatform().setDisplayName(previousPage, plugin.text().of("history.shop.previous-page").forLocale());
-        plugin.getPlatform().setDisplayName(currentPage, plugin.text().of("history.shop.current-page", page).forLocale());
-        plugin.getPlatform().setDisplayName(nextPage, plugin.text().of("history.shop.next-page").forLocale());
+        plugin.getPlatform().setDisplayName(previousPage, plugin.text().of(player, "history.shop.previous-page").forLocale());
+        plugin.getPlatform().setDisplayName(currentPage, plugin.text().of(player, "history.shop.current-page", page).forLocale());
+        plugin.getPlatform().setDisplayName(nextPage, plugin.text().of(player, "history.shop.next-page").forLocale());
         currentPage.setAmount(Math.min(1, Math.max(page, currentPage.getMaxStackSize())));
         footer.addItem(new GuiItem(previousPage, e -> {
             e.setResult(Event.Result.DENY);
