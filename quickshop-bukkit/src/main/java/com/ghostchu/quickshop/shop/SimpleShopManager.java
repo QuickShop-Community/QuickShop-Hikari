@@ -491,7 +491,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             Result result = plugin.getPermissionChecker().canBuild(p, shop.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
-                if (plugin.perm().hasPermission(p, "quickshop.alert")) {
+                if (plugin.perm().hasPermission(p, "quickshop.alerts")) {
                     plugin.text().of(p, "3rd-plugin-build-check-failed-admin", result.getMessage(), result.getListener()).send();
                 }
                 Log.debug("Failed to create shop because protection check failed, found:" + result.getMessage());
