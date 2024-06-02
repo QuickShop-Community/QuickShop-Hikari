@@ -99,10 +99,10 @@ public abstract class AbstractDisplayItem implements Reloadable {
                 if (defaultMark.equals(ShopProtectionFlag.getMark())) {
                     return true;
                 }
-                if (shopProtectionFlag.getShopLocation() != null) {
+                if (shopProtectionFlag.getShopLocation() != null && !shopProtectionFlag.getShopLocation().isBlank()) {
                     return true;
                 }
-                if (shopProtectionFlag.getItemStackString() != null) {
+                if (shopProtectionFlag.getItemStackString() != null && !shopProtectionFlag.getShopLocation().isBlank()) {
                     return true;
                 }
             } catch (JsonSyntaxException e) {
