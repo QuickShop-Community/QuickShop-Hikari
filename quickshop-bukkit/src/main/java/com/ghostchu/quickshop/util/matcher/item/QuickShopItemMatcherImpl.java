@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -265,18 +266,37 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     if (potion1.hasCustomEffects() && !Arrays.deepEquals(potion1.getCustomEffects().toArray(), potion2.getCustomEffects().toArray())) {
                         return false;
                     }
-                    PotionData data1 = potion1.getBasePotionData();
-                    PotionData data2 = potion2.getBasePotionData();
-                    if (!data1.equals(data2)) {
-                        return false;
+
+                    if(plugin.getGameVersion().isNewPotionAPI()){
+                        List<PotionEffect> effects1 = new ArrayList<>();
+                        List<PotionEffect> effects2 = new ArrayList<>();
+                        if (potion1.getBasePotionType() != null) {
+                            effects1.addAll(potion1.getBasePotionType().getPotionEffects());
+                        }
+                        if (potion1.hasCustomEffects()) {
+                            effects1.addAll(potion1.getCustomEffects());
+                        }
+                        if (potion2.getBasePotionType() != null) {
+                            effects2.addAll(potion2.getBasePotionType().getPotionEffects());
+                        }
+                        if (potion2.hasCustomEffects()) {
+                            effects2.addAll(potion2.getCustomEffects());
+                        }
+                        return CommonUtil.listDisorderMatches(effects1, effects2);
+                    }else {
+                        PotionData data1 = potion1.getBasePotionData();
+                        PotionData data2 = potion2.getBasePotionData();
+                        if (!data1.equals(data2)) {
+                            return false;
+                        }
+                        if (!data2.getType().equals(data1.getType())) {
+                            return false;
+                        }
+                        if (data1.isExtended() != data2.isExtended()) {
+                            return false;
+                        }
+                        return data1.isUpgraded() == data2.isUpgraded();
                     }
-                    if (!data2.getType().equals(data1.getType())) {
-                        return false;
-                    }
-                    if (data1.isExtended() != data2.isExtended()) {
-                        return false;
-                    }
-                    return data1.isUpgraded() == data2.isUpgraded();
                 }
                 return true;
             }));
