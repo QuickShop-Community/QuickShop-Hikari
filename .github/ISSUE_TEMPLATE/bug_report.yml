@@ -82,9 +82,11 @@ body:
           required: true
         - label: I confirm that QuickShop-Hikari has been updated to the latest stable version released on Modrinth (or the latest CI version)
           required: true
-        - label: I have not read these checkboxes and therefore I just ticked them all.
+        - label: I confirm that I have not read these checkboxes and therefore I just ticked them all.
           required: true
         - label: "I confirm that I'm using QuickShop-Hikari, not QuickShop-Reremake, and I'm well aware that they're maintained by different people, and that Reremake issues shouldn't be reported here."
           required: true
         - label: "I confirm that I am running a server that is not a Hybird Server, (e.g. Mohist, Magma, CatServer, Banner, etc.), and I am aware that QuickShop-Hikari may not function properly on a Forge/Fabric hybrid server, and I am running at my own risk on such a server program, and I am aware that the I run such server-side programs at my own risk and know that I will not receive any support or help for this behavior."
+          required: true
+        - label: "I am well aware that if the Issue Ticket is not filled out correctly and completely, it will simply be closed without any response or reason."
           required: true
