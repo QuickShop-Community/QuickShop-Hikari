@@ -243,7 +243,7 @@ tableformat:
 quickshop-gui-preview: QuickShop GUI Itemvorschau
 translate-not-completed-yet-click: Die Übersetzung von der Sprache {0} wurde noch nicht von {1} fertiggestellt. Möchtest du uns helfen, die Übersetzung zu verbessern? Klicke hier!
 taxaccount-invalid: <red>Zielkonto ist ungültig. Bitte verwende einen gültigen Spielernamen oder UUID (Mit Bindestrichen).
-player-bought-from-your-store: <red>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ( Steuern) verdient.
+player-bought-from-your-store: <red>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} verdient.
 reached-maximum-can-create: <red>Du hast bereits das Maximum von {0}/{1} Shops erstellt!
 reached-maximum-create-limit: <red>Du hast die maximale Anzahl an Shops erreicht, welche du erstellen kannst
 translation-version: 'Unterstützte Version: Hikari'
