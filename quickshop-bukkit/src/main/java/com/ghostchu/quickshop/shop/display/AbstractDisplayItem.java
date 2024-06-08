@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.shop.display;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.shop.datatype.ShopProtectionFlag;
 import com.ghostchu.quickshop.util.Util;
@@ -11,14 +10,14 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import com.google.common.collect.Lists;
-import com.google.gson.JsonSyntaxException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,6 +35,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     protected ItemStack guardedIstack;
     private boolean pendingRemoval;
     private static boolean virtualDisplayDoesntWork = false;
+    private static final NamespacedKey DISPLAY_MARK_NAMESPACE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "display_protection");
 
     protected AbstractDisplayItem(Shop shop) {
         this.shop = shop;
@@ -83,34 +83,10 @@ public abstract class AbstractDisplayItem implements Reloadable {
             return false;
         }
         ItemMeta iMeta = itemStack.getItemMeta();
-        if (!iMeta.hasLore()) {
+        if (iMeta == null) {
             return false;
         }
-        String defaultMark = ShopProtectionFlag.getDefaultMark();
-        for (String lore : iMeta.getLore()) {
-            try {
-                if (!CommonUtil.isJson(lore)) {
-                    continue;
-                }
-                ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);
-                if (shopProtectionFlag == null) {
-                    continue;
-                }
-                if (defaultMark.equals(ShopProtectionFlag.getMark())) {
-                    return true;
-                }
-                if (shopProtectionFlag.getShopLocation() != null && !shopProtectionFlag.getShopLocation().isBlank()) {
-                    return true;
-                }
-                if (shopProtectionFlag.getItemStackString() != null && !shopProtectionFlag.getShopLocation().isBlank()) {
-                    return true;
-                }
-            } catch (JsonSyntaxException e) {
-                // Ignore
-            }
-        }
-
-        return false;
+        return iMeta.getPersistentDataContainer().has(DISPLAY_MARK_NAMESPACE);
     }
 
     protected void init() {
@@ -122,50 +98,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
         }
     }
 
-    /**
-     * Check the itemStack is target shop's display
-     *
-     * @param itemStack Target ItemStack
-     * @param shop      Target shop
-     * @return Is target shop's display
-     */
-    public static boolean checkIsTargetShopDisplay(@NotNull final ItemStack itemStack, @NotNull Shop shop) {
-        if (!PLUGIN.isDisplayEnabled()) {
-            return false;
-        }
-        if (getNowUsing() == DisplayType.VIRTUALITEM) {
-            return false;
-        }
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        ItemMeta iMeta = itemStack.getItemMeta();
-        if (!iMeta.hasLore()) {
-            return false;
-        }
-        String defaultMark = ShopProtectionFlag.getDefaultMark();
-        String shopLocation = shop.getLocation().toString();
-        for (String lore : iMeta.getLore()) {
-            try {
-                if (!CommonUtil.isJson(lore)) {
-                    continue;
-                }
-                ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);
-                if (shopProtectionFlag == null) {
-                    continue;
-                }
-                if (!ShopProtectionFlag.getMark().equals(defaultMark)) {
-                    continue;
-                }
-                if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
-                    return true;
-                }
-            } catch (JsonSyntaxException e) {
-                // Ignore
-            }
-        }
-        return false;
-    }
 
     /**
      * Create a new itemStack with protect flag.
@@ -189,8 +121,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
             iMeta.setDisplayName(null);
         }
         ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
-        String protectFlag = JsonUtil.getGson().toJson(shopProtectionFlag);
-        iMeta.setLore(Lists.newArrayList(protectFlag));
+        itemStack.getItemMeta().getPersistentDataContainer().set(DISPLAY_MARK_NAMESPACE, PersistentDataType.STRING, JsonUtil.getGson().toJson(shopProtectionFlag));
         itemStack.setItemMeta(iMeta);
         return itemStack;
     }
@@ -309,6 +240,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
 
     /**
      * Remove the display entity.
+     *
      * @param dontTouchWorld When it is true, display impl should avoid touch the world to avoid unload-load loop
      */
     public abstract void remove(boolean dontTouchWorld);

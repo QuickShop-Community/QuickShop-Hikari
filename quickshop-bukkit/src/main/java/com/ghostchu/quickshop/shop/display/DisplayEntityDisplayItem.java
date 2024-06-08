@@ -12,12 +12,9 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.AxisAngle4f;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +114,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem {
             Log.debug("Ignore the Item removing because the Item is already gone or it's a left shop.");
             return;
         }
-        if(dontTouchWorld){
+        if (dontTouchWorld) {
             return;
         }
         this.displayEntity.remove();
@@ -146,8 +143,8 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem {
             if (eItem.getItemStack() == null) {
                 continue;
             }
-            if (!eItem.getUniqueId().equals(displayUUID)) {
-                if (AbstractDisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
+            if(AbstractDisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
+                if (!eItem.getUniqueId().equals(displayUUID)) {
                     Log.debug("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;

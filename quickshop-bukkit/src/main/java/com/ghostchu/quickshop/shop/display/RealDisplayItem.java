@@ -12,7 +12,6 @@ import io.papermc.lib.PaperLib;
 import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -129,7 +128,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
             Log.debug("Ignore the Item removing because the Item is already gone or it's a left shop.");
             return;
         }
-        if(dontTouchWorld){
+        if (dontTouchWorld) {
             return;
         }
         this.item.remove();
@@ -155,8 +154,8 @@ public class RealDisplayItem extends AbstractDisplayItem {
                 continue;
             }
             UUID displayUUID = this.item.getUniqueId();
-            if (!eItem.getUniqueId().equals(displayUUID)) {
-                if (AbstractDisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
+            if(AbstractDisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
+                if (!eItem.getUniqueId().equals(displayUUID)) {
                     Log.debug("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
