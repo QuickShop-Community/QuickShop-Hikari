@@ -173,7 +173,7 @@ shop-purged-start: <green>已開始商店清理，請查看控制台以獲得詳
 economy-transaction-failed: <red>抱歉，由於系統發生錯誤，你的交易已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動！
-edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
+edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互衝突，你需要解除安裝其中一個。
 inventory-unavailable: |-
   <red>不存在或無效的 InventoryWrapper。你是否使用外掛程式來重新綁定商店庫存？
   資訊：InventoryWrapper={0}、WrapperProvider={1}、SymbolLink={2}。請聯絡伺服器管理員。
@@ -259,7 +259,7 @@ no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
 price-too-cheap: <red>價格必須大於 <yellow>${0}
 shop-not-exist: <red>商店不存在。
 bad-command-usage: <red>無效的指令！
-cleanghost-warning: <yellow>該指令將清理<red>所有</red>在不允許建立商店的世界的──出售/購買不允許的物品，以及<bold><red>所有在伺服器沒有載入世界的商店</red></bold>。請確保你的商店資料備份完整後繼續使用 <aqua>/quickshop cleanghost confirm </aqua> 以繼續。
+cleanghost-warning: <yellow>此指令將清理<red>所有</red>在不允許建立商店的世界的出售 / 購買不允許的物品，以及<bold><red>所有在伺服器沒有載入世界的商店</red></bold>。請確保你的商店資料備份完整後繼續使用 <aqua>/quickshop cleanghost confirm </aqua> 以繼續。
 cleanghost-starting: <green>正在開始檢查幽靈商店（缺少容器方塊）。所有不存在的商店將被移除……
 cleanghost-deleting: <yellow>發現一個損壞的商店 <aqua>{0}</aqua> 因為 {1}，標記將它刪除……
 cleanghost-deleted: <green>總共 <yellow>{0}</yellow> 個商店已被刪除。
@@ -618,8 +618,8 @@ debug:
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
   hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
   hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
-  hikari-cp-working: "<green>Pass! HikariCP working well!"
-  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
+  hikari-cp-working: "<green>通過！HikariCP 運作正常！"
+  hikari-cp-not-working: "<red>失敗！HikariCP 返回的連接無法運作！（未在 1 秒內通過測試）"
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
   queries-stopped: "<green>Stopped <white>{0}</white> active queries."
   queries-dumping: "<yellow>Dumping active queries..."
@@ -628,16 +628,16 @@ debug:
   restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>透過初始化序列重新啟動 SQLManager（透過 async 執行器）"
-  restart-database-manager-done: "<green>Done!"
+  restart-database-manager-done: "<green>完成！"
   property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
-  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
+  property-security-block: "<red>請求遭到拒絕，出於安全原因，你只能變更啟動腳本 <aqua>com.ghostchu.quickshop</aqua> 或 <aqua>quickshop</aqua> 的屬性。"
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
   marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
-  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
+  display-removed: "<green>已從世界成功地移除 <yellow>{0}</yellow> QuickShop 顯示物品 / 實體。"
 database:
   scanning: <green>正在掃描 QuickShop 資料庫中的孤立資料，在掃描過程中資料庫負載可能會增加，且這可能需要等候一段時間……
-  scanning-async: <yellow>正在掃描異步任務線程上 QuickShop 資料庫中的孤立資料，掃描過程中資料庫負載可能會增加，這可能需要等候一段時間，請稍後再試。
+  scanning-async: <yellow>正在掃描非同步任務線程上 QuickShop 資料庫中的孤立資料，掃描過程中資料庫負載可能會增加，這可能需要等候一段時間，請稍後再試。
   already-scanning: <red>掃描任務已啟動，請等待完成。
   trim-warning: <red><bold>警告：</bold><yellow>在繼續資料庫修整之前，請先備份你的資料庫以避免資料遺失。準備好後執行 <aqua>/quickshop database trim confirm</aqua> 以繼續。
   status: '<yellow>狀態：{0}'
@@ -658,7 +658,7 @@ database:
   trim-exception: <red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。
   generated-at: '<yellow>Generated at: <gold>{0}'
   purge-date: <red>你必須給出一個日期。
-  purge-warning: <yellow>此操作將清除儲存在資料庫中的歷史記錄，包括商店建立/修改/刪除、購買、交易和系統日誌。刪除這些資料可以釋出硬碟空間，但所有歷史資料都會遺失，依賴計量的其他插件將停止運行。若要繼續執行此操作，請執行指令 `/quickshop database purgelogs \<before-days> 以確認`
+  purge-warning: <yellow>此操作將清除儲存在資料庫中的歷史記錄，包括商店建立 / 修改 / 刪除、購買、交易和系統日誌。刪除這些資料可以釋出硬碟空間，但所有歷史資料都會遺失，依賴計量的其他插件將停止運行。若要繼續執行此操作，請執行指令 `/quickshop database purgelogs \<before-days> 以確認`
   purge-task-created: <green>已建立任務！資料庫將在背景清除歷史記錄。
   purge-done-with-line: <green>已完成清除任務，總共 <gold>{0}</gold> 行已從資料庫中清除。
   purge-done-with-error: <red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。
@@ -770,8 +770,8 @@ addon:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: 和 QuickShop 的文字系統一樣，Discord 插件也會自動偵測使用者語言並使用此語言傳送Discord 訊息， 它遵守 QuickShop-Hikar i的語言系統設定。
     __to_message_designer: '使用 GUI 設計你的 Discord 訊息：https://glitchiii.github.io/embedbuilder/，然後複製 JSON 代碼並貼到語言檔案中，然後在這裡開始！'
-    discord-enabled: <aqua>成功地 <green>開啟</green> 你的 QuickShop Discord 通知訊息，現在起你可以從 Discord 接收商店訊息。
-    discord-disabled: <aqua>成功地 <red>停用</red> 你的 QuickShop Discord 通知訊息，现在你將不再收到來自 Discord 的商店訊息。
+    discord-enabled: <aqua>已成功地 <green>開啟</green> 你的 QuickShop Discord 通知訊息，現在起你可以從 Discord 接收商店訊息。
+    discord-disabled: <aqua>已成功地 <red>停用</red> 你的 QuickShop Discord 通知訊息，现在你將不再收到來自 Discord 的商店訊息。
     discord-not-integrated: <red>你尚未連結你的 Discord 帳號！請先連結你的 Discord 帳號！
     feature-enabled-for-user: <aqua>你 <green>已啟用 </green> <gold>{0}</gold> 通知。
     feature-disabled-for-user: <aqua>你已 <red>停用</red> <gold>{0}</gold> 通知。
@@ -951,8 +951,8 @@ addon:
         {
         "embed":
           {
-              "title": ":mailbox_with_mail: Your shop has run out of space",
-              "description": "Your shop inventory is full of items!\\nYou need empty your shop container to free the space then you can continue to accept new items.",
+              "title": ":mailbox_with_mail: 你的商店空間已不足",
+              "description": "你的商店庫存已滿！\\n你需要清理你的商店以釋放空間。",
               "color": 16065893,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -965,12 +965,12 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord 訊息通知",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "商店",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   }
@@ -981,8 +981,8 @@ addon:
         {
             "embed":
                 {
-                    "title": ":mailbox_with_no_mail: Your shop has run out of stock",
-                    "description": "Your shop inventory is empty now!\\nYou need to refill the shop container with items to continue selling items!",
+                    "title": ":mailbox_with_no_mail: 你的商店已缺貨",
+                    "description": "你的商店庫存已空！\\n你需要在商店中重新補貨以繼續出售物品！",
                     "color": 16065893,
                     "author": {
                         "name": "QuickShop-Hikari",
@@ -995,12 +995,12 @@ addon:
                         "url": ""
                     },
                     "footer": {
-                        "text": "QuickShop-Hikari Discord Notification",
+                        "text": "QuickShop-Hikari Discord 訊息通知",
                         "icon_url": ""
                     },
                     "fields": [
                         {
-                            "name": "Shop",
+                            "name": "商店",
                             "value": "%%shop.display-name%%",
                             "inline": false
                         }
@@ -1358,9 +1358,9 @@ addon:
     discount-code-uninstalled: <green>你已將你的優惠代碼解除安裝。
     discount-code-query-nothing: <red>你還沒安裝優惠代碼！
     discount-code-query: '<green>你正在使用優惠代碼：<yellow>{0}</yellow>。'
-    discount-code-applicable: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop!'
+    discount-code-applicable: '<#bcef26>你的優惠代碼 <bold><yellow>{0}</yellow></bold> 在這間商店中<bold>可套用</bold>！'
     discount-code-applicable-with-threshold: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>not applicable</bold> in this shop!
+    discount-code-not-applicable: <red>你的優惠代碼 <bold><yellow>{0}</yellow></bold> 在這間商店中<bold>無法套用</bold>！
     discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <bold><yellow>{0}</yellow></bold>, discount are not applied.
     discount-code-no-permission: <red>你沒有在此商店使用任何優惠代碼的權限！
     discount-code-has-been-expired: <red>你的優惠代碼已過期！
@@ -1380,7 +1380,7 @@ addon:
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
     discount-code-list: '<gold>Listing your discount codes:'
-    discount-code-applied-in-purchase: '<#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    discount-code-applied-in-purchase: '<#bcef26>你的優惠代碼 <yellow>{0}</yellow> 已經套用到此交易，並且為你節省了 <gold>{1}</gold> 元！'
     scope:
       this-shop: '{0}'
       your-shops-owned: 所有你的商店（已擁有）
@@ -1453,43 +1453,43 @@ addon:
       displaycontrol: <yellow>切換你的 QuickShop 懸浮物顯示
   reremake-migrator:
     commands:
-      migratefromreremake: Migrate QuickShop-Reremake's data to QuickShop-Hikari
+      migratefromreremake: 遷移 QuickShop-Reremake 的資料到 QuickShop-Hikari
     server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
-    starting-convert-progress: "<gold>Starting the convert progress, <red>DO NOT SHUTDOWN YOUR SERVER!</red>"
-    executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+    starting-convert-progress: "<gold>正在開始遷移，<red>請勿關閉伺服器！</red>"
+    executing: "<gold>正在執行遷移組件 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
     completed: "<green>讚啦！遷移完成，請重新啟動伺服器並從外掛程式目錄中刪除 QuickShop-Reremake。"
-    join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
+    join_blocking_converting: "<red>[QuickShop-Hikari 遷移器] 此伺服器正在進行資料遷移，所以你現在無法加入伺服器，請稍後再試！"
     join_blocking_finished: "<red>[QuickShop-Hikari 轉換器] 此伺服器剛剛完成資料轉換，正在等待重新啟動以套用變更，請稍後再試！"
     failed: "<red>Migration progress exited with error, please check the server console."
     modules:
       config:
         copy-values: "<yellow>Copying values (total {0} entries)..."
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
-        migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-price-restriction: "<yellow>正在遷移與價格相關的設定……"
+        migrate-price-restriction-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
       shop:
-        start-migrate: "<yellow>Migrating shops (total {0} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>正在遷移商店（總共 {0} 個條目）……"
+        migrate-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
         unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
         register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
         saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
         conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
+        start-migrate: "<yellow>正在遷移檔案……</yellow>"
         copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
         copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
+        start-migrate: "<yellow>正在遷移商店記錄檔（請詳見控制台），請稍候……</yellow>"
         extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
         filter-history-files: "<gray>Please wait for us to filter the history log..."
         filtered-history-files: "<gray>Filtered {0} lines out of queue."
-        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        import-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
 compat:
   advancedchests:
-    created: <green>You're successfully created a shop on AdvancedChests container!
-    permission-denied: <red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!
+    created: <green>你已成功在 AdvancedChests 容器上建立商店！
+    permission-denied: <red>抱歉！你沒有在 AdvancedChests 容器上建立商店的權限！
 suite:
   dynmap:
     title: '{0} - {1} - {2}'
@@ -1581,6 +1581,6 @@ about:
     - "<gold>Powered by community</gold> <red>Made with ❤</red>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
-  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
+  kofi-thanks: "<gold>特別感謝那些在 Ko-fi 上支持 QuickShop 的人 :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
 shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
