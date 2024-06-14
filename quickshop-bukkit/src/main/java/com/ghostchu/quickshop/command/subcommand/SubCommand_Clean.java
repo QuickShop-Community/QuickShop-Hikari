@@ -40,7 +40,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
                     // Can be deleted safely.
                     i++;
                 }
-                if (!plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
+                if (plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
                     pendingRemoval.add(shop);
                     i++;
                 }
