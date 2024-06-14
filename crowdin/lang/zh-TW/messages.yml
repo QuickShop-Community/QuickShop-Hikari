@@ -284,7 +284,7 @@ support-disable-reason:
   hot-reload: <yellow>我們不支援重新載入指令，請你重新啟動伺服器後再試。
   outdated: <yellow>此版本的 Quickshop 已經過時，在請求技術支援前，請更新至最新版本！
   bad-hosts: |-
-    <yellow>The server's HOSTS have been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.
+    <yellow>此伺服器的 HOSTS 已被修改。QuickShop 需要特定的功能去正確地連接 Mojang API，請你在請求提供技術支援前先修改 HOSTS。
     Windows: C:\\windows\\system32\\drivers\\etc\\hosts
     Linux: /etc/hosts
   privacy: <yellow>此伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的 bukkit 伺服器及在代理伺服器設定 online-mode=true，請你將代理伺服器的相關配置正確設定。
@@ -297,7 +297,7 @@ unknown-owner: 未知
 restricted-prices: '<red>{0} 是無效的價格：最高 {1}，最低 {2}。'
 nearby-shop-this-way: <green>商店距離你 {0} 格遠。
 owner-bypass-check: <yellow>繞過所有檢查並完成交易（因為你是商店擁有者！）
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>快來點擊此處領取 QuickShop-Hikari 開發人員提供的限時獎勵吧！</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: 空間不足
@@ -350,12 +350,12 @@ controlpanel:
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>持續計算數量：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
   price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  lock: '<yellow>商店上：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
   mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
+  currency: '<green>貨幣：<aqua>{0} <yellow>[<bold><light_purple>設定</light_purple></bold>]'
   setowner-hover: <yellow>點擊變更擁有者。
   mode-buying: '<green>商店模式：<aqua>收購 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   item: '<green>商店物品：{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
@@ -492,8 +492,8 @@ trading-in-creative-mode-is-disabled: <red>你不能在創造模式中使用商�
 the-owner-cant-afford-to-buy-from-you: <red>此商品價格 {0} 元，但商店擁有者只剩 {1} 元了。
 you-cant-afford-shop-naming: <red>你沒有足夠的金錢命名商店, 命名商店需要{0}.
 inventory-error: |-
-  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
-  Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
+  <red> InventoryWrapper 執行失敗。你有沒有使用其他插件覆蓋了商店的物品欄存取？
+  資訊：Exception={0}、InventoryWrapper={1}、WrapperType={2}、WrapperProvider={3}、SymbolLink={4}。請聯絡伺服器管理員。
 integrations-check-failed-create: <red>集成模組 {0} 拒絕了建立商店的操作。
 shop-out-of-space: <dark_purple>你在 {0}, {1}, {2} 的商店已滿了。
 admin-shop: 系統商店
@@ -569,16 +569,16 @@ lookup-item-test-found: '<gold>測試：<green>你手中的物品在索引表中
 lookup-item-removed: <green>物品 <aqua>{0}</aqua>已成功地自物品索引表中移除。
 internal-error: <red>發生內部錯誤，請聯絡伺服器管理員。
 argument-cannot-be: <red>參數 <aqua>{0}</aqua> 不能為 <yellow>{1}</yellow>。
-argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
+argument-must-between: <red>參數 <aqua>{0}</aqua> 值必須在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之間
 invalid-percentage: <red>百分比無效，你必須在百分比的數字後加上「%」。
 display-fallback: |-
   <red>由於內部錯誤，正在顯示回饋訊息。
   此項目的值可能無法本地化或正確地處理。
   請聯絡伺服器管理員。
 not-a-valid-time: |-
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
-  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
+  <red>字符串 <yellow>{0}</yellow> 不是一個有效的時間戳記，請輸入 <aqua>Zulu 時間（ISO 8601）</aqua> 或 <aqua>Unix Epoch 時間</aqua>。
+  <gold>有效時間戳記的範例（適用於 GMT 2022 年 12 月 17 日 星期六 10:31:37 ）</gold><br><aqua>-<yellow>2022-12-17T10:31:37Z</yellow> <gray>（Zulu Time）</gray>
+  - <yellow>1671273097</yellow> <gray>（Unix Epoch 時間以秒計）</gray><br>
 invalid-past-time: <red>你無法指定過去的時間。
 debug:
   arguments-invalid: <red>提供參數 <yellow>{0}</yellow> 無效。
@@ -592,8 +592,8 @@ debug:
   warning-sql-confirm: <yellow>若要確認此危險的操作，請在 60 秒內輸入 <aqua>/quickshop debug database sql confirm {0}</aqua>。
   warning-sql-confirm-hover: <yellow>點擊以確認此危險操作。
   sql-confirm-not-found: <yellow>沒有找到你給予的操作，此操作可能無效或過期。
-  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
-  sql-completed: <green>操作已完成！{0} 行受到影響。
+  sql-executing: '<yellow>執行 SQL 敘述句：<aqua>{0}'
+  sql-completed: <green>操作已完成！已影響 {0} 行。
   sql-exception: <red>執行 SQL 查詢時發生錯誤，請查看控制台了解詳情！
   sql-disabled: '<red>出於安全原因，此伺服器中停用了 SQL 查詢，如果你確實需要此功能，可以在啟動參數中新增以下標記：<aqua>{0}</aqua> 並使用 「true」值來啟用它。'
   force-shop-reload: <yellow>正在強制重新載入以載入的商店……
@@ -603,14 +603,14 @@ debug:
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>正在從記憶體中移除 <aqua>{0}</aqua> 個商店……
   force-shop-loader-reload-reloading-shop-loader: <yellow>正在重新調用商店載入器以從資料庫重新載入所有商店……
   force-shop-loader-reload-complete: <green>商店載入器已重新載入所有的商店！
-  toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}
-  shop-internal-data: '<yellow>The internal data of this shop: </yellow>{0}'
+  toggle-shop-loaded-status: <aqua>切換此商店載入狀態為 <gold>{0}
+  shop-internal-data: '<yellow>此商店內部資料：</yellow>{0}'
   handler-list-not-valid-bukkit-event-class: <red>所提供的 class <yellow>{0}</yellow> 不是有效的 Bukkit event class。
   update-player-shops-signs-no-username-given: <red>你必須提供有效的玩家名稱。
   update-player-shops-signs-create-async-task: <yellow>正在為強制更新標誌建立異步任務……
   update-player-shops-player-selected: '<yellow>已選擇玩家：<gold>{0}'
   update-player-shops-player-shops: <yellow>共有 <gold>{0}</gold> 家商店等待更新。
-  update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}'
+  update-player-shops-per-tick-threshold: '<yellow>最大商店可以每（tick）更新：<gold>{0}'
   update-player-shops-complete: <green>任務已完成，已使用 <yellow>{0} 毫秒</yellow>更新。
   update-player-shops-task-started: <gold>任務已開始，請等候它完成。
   item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
@@ -623,11 +623,11 @@ debug:
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
   queries-stopped: "<green>Stopped <white>{0}</white> active queries."
   queries-dumping: "<yellow>Dumping active queries..."
-  restart-database-manager: "<yellow>Restarting SQLManager..."
+  restart-database-manager: "<yellow>正在重新啟動 SQLManager"
   restart-database-manager-clear-executors: "<yellow>Clearing executors..."
   restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
-  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
+  restart-database-manager-reconnect: "<yellow>透過初始化序列重新啟動 SQLManager（透過 async 執行器）"
   restart-database-manager-done: "<green>Done!"
   property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
