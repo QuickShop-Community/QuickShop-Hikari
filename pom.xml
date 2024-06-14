@@ -100,8 +100,8 @@
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
-                                <createSourcesJar>false</createSourcesJar>
-                                <createTestSourcesJar>false</createTestSourcesJar>
+                                <createSourcesJar>true</createSourcesJar>
+                                <createTestSourcesJar>true</createTestSourcesJar>
                                 <shadeSourcesContent>true</shadeSourcesContent>
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <artifactSet>
