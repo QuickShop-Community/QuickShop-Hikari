@@ -57,7 +57,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
                 return;
             }
-            if (!plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
+            if (plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
                 plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "blacklisted item").send();
                 plugin.getShopManager().deleteShop(shop);
                 deletionCounter.incrementAndGet();

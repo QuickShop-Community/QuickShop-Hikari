@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.4</version>
+    <version>6.2.0.5</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -311,7 +311,7 @@
             <dependency>
                 <groupId>org.spigotmc</groupId>
                 <artifactId>spigot-api</artifactId>
-                <version>1.20.6-R0.1-SNAPSHOT</version>
+                <version>1.21-R0.1-SNAPSHOT</version>
                 <scope>provided</scope>
                 <exclusions>
                     <exclusion>
@@ -360,6 +360,7 @@
         <module>platform/quickshop-platform-spigot-v1_20_R2</module>
         <module>platform/quickshop-platform-spigot-v1_20_R3</module>
         <module>platform/quickshop-platform-spigot-v1_20_R4</module>
+        <module>platform/quickshop-platform-spigot-v1_21_R1</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
