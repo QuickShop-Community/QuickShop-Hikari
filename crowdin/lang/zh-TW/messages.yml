@@ -1,7 +1,7 @@
 break-shop-use-supertool: <yellow>你可以使用超級工具破壞商店。
 fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 變更商店定價。
 not-allowed-to-create: <red>你無法在此建立商店。
-disabled-in-this-world: <red>此世界已停用 QuickShop
+disabled-in-this-world: <red>已停用此世界的 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
@@ -63,7 +63,7 @@ failed-to-paste: <red>將資料上傳至 Pastebin 失敗，請檢查你的連線
 shop-out-of-stock-name: <dark_purple>你在 {0} 出售 {1} 的商店已售罄一空！
 shop-name-invalid: <red>商店的名稱 <yellow>{0}</yellow> 無效。請嘗試使用另一個名稱！
 how-many-buy-stack: <yellow>在聊天室中輸入你想 <aqua>購買</aqua> 的數量，每份中有 <green>{0}</green> 個物品，你目前可以買 <green>{1}</green> 份。輸入 <aqua>{2}</aqua> 來購買所有物品。
-exceeded-maximum: <red>此值超出了 Java 中的最大值。
+exceeded-maximum: <red>此值已超過 Java 中的最大值。
 unlimited-shop-owner-keeped: '<yellow>注意：此商店擁有者還是屬於無限商店類型，你需要自己重新設定新的商店擁有者。'
 no-enough-money-to-keep-shops: <red>你沒有足夠的金錢維持你的商店經營！所以你所有的商店已被移除……
 3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}</bold> 拒絕檢查權限操作，請問你有權限建立商店嗎？
@@ -111,17 +111,17 @@ menu:
   price-per-stack: <green>每 <yellow>{2}<green> 個 <yellow>{0}<green> 組價格 <yellow>{1}
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[錯誤]
-  this-shop-is-selling: <green>此商店正在 <aqua>出售</aqua> 物品。
+  this-shop-is-selling: <green>此商店正在<aqua>出售<green>物品。
   shop-stack: '<green>每份物品的數量：<yellow>{0}'
   space: '<green>空間：<yellow>{0}'
   effects: <green>藥水效果
   damage-percent-remaining: <green>剩餘 <yellow>{0}% <green>點耐久度。
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
-  this-shop-is-buying: <green>此商店正在 <light_purple>出售<green> 物品。
+  this-shop-is-buying: <green>此商店正在<light_purple>收購<green>物品。
   successfully-sold: '<green>成功地出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
-currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此貨幣在這個世界無法使用。
+currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此世界無法使用貨幣。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
 translation-author: 'Ghost_chu、Andre_601、flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
@@ -271,7 +271,7 @@ shop-now-freezed: <green>你已凍結了商店，現在沒有人可以與這間�
 price-is-now: <green>現在你的商店定價是 <yellow>{0}。
 shops-arent-locked: <red>請注意，商店無法防盜！如果你想要防盜功能，請使用 LWC、Lockette 等插件鎖住商店。
 that-is-locked: <red>此商店已上鎖。
-shop-has-no-space: <red>此商店只能再裝下 {0} 個 {1} 而已。
+shop-has-no-space: <red>此商店只能再裝下 {0} 個 {1}。
 safe-mode-admin: <red><bold>警告：</bold>此伺服器上的 QuickShop 現在在安全模式下運行，沒有任何功能可供使用，請輸入 <yellow>/quickshop </yellow>指令以檢查任何錯誤！
 shop-stock-too-low: <red>此商店只剩 {0} 個 {1}！
 world-not-exists: <red>世界 <yellow>{0}<red> 不存在
