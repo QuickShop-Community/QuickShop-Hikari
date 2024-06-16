@@ -95,8 +95,8 @@ shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>�
 shop-staff-added: <green>已成功地新增員工 <yellow>{0}<green> 到你的商店。
 shop-staff-empty: <yellow>此商店沒有任何員工
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
-virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用具有相同名稱的此名稱的系統帳戶。</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID： <yellow>{0}</yellow></green>\n<green>使用者名稱： <yellow>{1}</yellow></green>\n<green>顯示為： <yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請添加 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側： <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>這是一個虛擬玩家。\n<gray>引用具有相同名稱的此名稱的系統帳戶。</gray>\n<green>UUID：<yellow>{0}</yellow></green>\n<green>使用者名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>這是一個真實存在的玩家。\n<green>UUID：<yellow>{0}</yellow></green>\n<green>使用者名稱：<yellow>{1}</yellow></green>\n<green>顯示為：<yellow>{2}</yellow></green>\n<gray>如果要使用同名的虛擬系統帳戶，請新增 <dark_gray>\"[]\"</dark_gray> 到使用者名的兩側：<dark_gray>[{1}]</dark_gray>。"
 menu:
   sell-tax: <green>你付了 <yellow>{0}</yellow> 的稅。
   owner: '<green>擁有者：{0}'
@@ -149,7 +149,7 @@ metric:
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
   player-hover: |-
     <yellow>{0}
-    <gold>UUID： <gray>{1}
+    <gold>UUID：<gray>{1}
   looking-up: <yellow>正在進行指標搜尋，請稍候……
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易：'
@@ -342,7 +342,7 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>每次交易數量：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
+  stack: '<green>每次交易數量：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   price-hover: <yellow>點擊變更商品價格。
   remove: <bold><red>[刪除商店]
   mode-buying-hover: <yellow>點擊商店變更為出售模式。
@@ -352,15 +352,15 @@ controlpanel:
   alwayscounting: '<green>持續計算數量：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
-  price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
+  price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>商店上：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
-  mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
+  mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   currency: '<green>貨幣：<aqua>{0} <yellow>[<bold><light_purple>設定</light_purple></bold>]'
   setowner-hover: <yellow>點擊變更擁有者。
-  mode-buying: '<green>商店模式：<aqua>收購 <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  item: '<green>商店物品：{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  unlimited: '<green>無限：{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
+  mode-buying: '<green>商店模式：<aqua>收購 <yellow>[<bold><light_purple>變更</light_purple></bold>]'
+  item: '<green>商店物品：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
+  unlimited: '<green>無限：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   unlimited-hover: <yellow>點擊變更商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊移除此商店。
@@ -719,7 +719,7 @@ tag-query-shops: '<green>此標籤包含 <yellow>{0}</yellow> 個商店：'
 tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>成功地批量處理 <yellow>{0}</yellow> 個商店
 batch-operations-based-on-tags-have-failure: <yellow>總共 {0} 個商店在批處理中成功完成，但是有 <red>{1}</red> 個請求未完成。
-batch-operations-based-on-tags-have-failure-with-reason: '<yellow>總共 {0} 商店在批處理中成功完成，但是有 <red>{1}</red> 個請求未完成。原因： <gold>{2}'
+batch-operations-based-on-tags-have-failure-with-reason: '<yellow>總共 {0} 商店在批處理中成功完成，但是有 <red>{1}</red> 個請求未完成。原因：<gold>{2}'
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>錯誤訊息將傳送到聊天室的此訊息上方給你。
 addon:
   towny:
@@ -1550,7 +1550,7 @@ history:
       - "<white>買家：<yellow>{0}</yellow></white>"
       - "<white>物品：<yellow>{1}<aqua>{2}</aqua></yellow></white>"
       - "<white>花費：<yellow>{3}</yellow></white>"
-      - "<white>税:<yellow>{4}</yellow></white>"
+      - "<white>税金：<yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>商店：<yellow>{0}</yellow></white>"
       - "<white>買家：<yellow>{1}</yellow></white>"
