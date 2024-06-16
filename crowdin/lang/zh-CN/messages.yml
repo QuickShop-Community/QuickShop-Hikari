@@ -642,10 +642,10 @@ database:
   status-good: <green>良好
   status-bad: <yellow>需要维护
   isolated: '<yellow>孤立的数据：'
-  isolated-data-ids: '<yellow><aqua>└</aqua> 数据记录项: <gold>{0}'
-  isolated-shop-ids: '<yellow><aqua>└</aqua> 商店索引项: <gold>{0}'
-  isolated-logs: '<yellow><aqua>└</aqua> 日志项: <gold>{0}'
-  isolated-external-caches: '<yellow><aqua>└</aqua> 缓存项: <gold>{0}'
+  isolated-data-ids: '<aqua>└<yellow> 数据记录项: <gold>{0}'
+  isolated-shop-ids: '<aqua>└<yellow> 商店索引: <gold>{0}'
+  isolated-logs: '<aqua>└<yellow> 日志: <gold>{0}'
+  isolated-external-caches: '<aqua>└<yellow> 缓存项: <gold>{0}'
   last-purge-time: <yellow>最后清理时间 {0}
   report-time: <yellow>上次扫描时间 {0}
   auto-scan-alert: <yellow>此服务器上的 QuickShop 数据库需要维护。找到 <gold>{0}</gold> 个孤立的数据等待清理。
@@ -1477,7 +1477,7 @@ addon:
         start-migrate: "<yellow>正在迁移商店日志（详情请检查控制台），请稍候...</yellow>"
         extract-history-files: "<gray>请等待解压并追加历史日志..."
         filter-history-files: "<gray>请等待我们筛选历史日志..."
-        filtered-history-files: "<gray>从队列中筛选出 {0} 行"
+        filtered-history-files: "<gray>从队列中筛选出 {0} 行。"
         import-entry: "<gray> - 转换 <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:

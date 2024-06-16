@@ -31,7 +31,8 @@ safe-mode: <red>QuickShop 現在處於安全模式，你無法打開此商店容
 forbidden-vanilla-behavior: <red>此操作不符合原版行為，因此被禁止。
 shop-out-of-space-name: <dark_purple>你的商店 {0} 已滿！
 paste-disabled: |-
-  <red>原始碼儲存功能被禁止! 你將無法請求技術支援。原因: {0}
+  <red>已停用 Paste 功能！你將無法請求技術支援。
+  原因：{0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -543,7 +544,7 @@ player-no-group: <yellow>玩家 {0} 在此商店不屬於任何身分組。
 player-in-group: <green>玩家 {0} 在此商店屬於 <aqua>{1}</aqua> 身分組。
 permission-required: <red>你需要權限 {0} 來在此商店執行此操作。
 no-permission-detailed: <red>你需要權限 <yellow>{0}</yellow> 來在此商店執行此操作。
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
+paste-notice: "<yellow>注意：如果你正在為故障排除目的建立 Paste 報告。一定要在建立 Paste 報告之前重新實現錯誤；我們需要在緩衝區短暫保留記錄檔以解決問題。如果您建立 Paste 報告速度太慢，或沒有重新實現錯誤或重新啟動伺服器，則 Paste 報告將不記錄任何內容且變得無用。"
 paste-uploading: <aqua>請稍候，正在將複製內容上傳到 pastebin……
 paste-created: '<green>已建立 Paste，點擊以在瀏覽器中打開：<yellow>{0}</yellow><br><red>警告：<gray>永遠別將 Paste 傳送給你不信任的人。'
 paste-created-local: |-
@@ -617,19 +618,19 @@ debug:
   item-info-hand-as-string: "<green>你手中的物品：<gold>{0}</gold> Hash：<white>{1}</white>"
   item-matching-result: "<green>Hand2Store：<aqua>{0}</aqua>、Store2Hand：<aqua>{1}</aqua>"
   hikari-cp-size-tweak: "<green>已設定為 HikariCP MaximumPoolSize 和 MinimumIdle <white>{0}</white>"
-  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
+  hikari-cp-testing: "<green>請稍候，正在測試 HikariCP 連線……"
   hikari-cp-working: "<green>通過！HikariCP 運作正常！"
   hikari-cp-not-working: "<red>失敗！HikariCP 返回的連接無法運作！（未在 1 秒內通過測試）"
-  hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
+  hikari-cp-timeout: "<red>HikariCP 在獲得有效連線時逾時，請清理所有活動查詢以釋放連線資源。"
   queries-stopped: "<green>已停止 <white>{0}</white> 活動查詢。"
-  queries-dumping: "<yellow>Dumping active queries..."
+  queries-dumping: "<yellow>正在轉除活動查詢……"
   restart-database-manager: "<yellow>正在重新啟動 SQLManager"
-  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
+  restart-database-manager-clear-executors: "<yellow>正在清除執行器……"
   restart-database-manager-unfinished-task: "<yellow>未完成的任務：<white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>未完成的任務（歷史查詢）：<white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>透過初始化序列重新啟動 SQLManager（透過 async 執行器）"
   restart-database-manager-done: "<green>完成！"
-  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
+  property-incorrect: "<yellow>您必須輸入屬性值（且只輸入一個）。例如 aaa=bbb"
   property-security-block: "<red>請求遭到拒絕，出於安全原因，你只能變更啟動腳本 <aqua>com.ghostchu.quickshop</aqua> 或 <aqua>quickshop</aqua> 的屬性。"
   property-removed: "<green>已移除屬性鍵 <white>{0}</white>"
   property-changed: "<green>屬性鍵 <white>{0}</white> 已從 <white>{1}</white> 更改為 <white>{2}</white>"
@@ -644,10 +645,10 @@ database:
   status-good: <green>良好
   status-bad: <yellow>需要維護
   isolated: '<yellow>孤立資料：'
-  isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
-  isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
-  isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}'
-  isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
+  isolated-data-ids: '<aqua>└<yellow> 資料記錄：<gold>{0}'
+  isolated-shop-ids: '<aqua>└<yellow> 商店索引：<gold>{0}'
+  isolated-logs: '<aqua>└<yellow> 記錄檔：<gold>{0}'
+  isolated-external-caches: '<aqua>└<yellow>外部快取：<gold>{0}'
   last-purge-time: <yellow>上次修整時間為 {0}
   report-time: <yellow>上次掃描時間為 {0}
   auto-scan-alert: <yellow>此伺服器上的 QuickShop 資料庫需要維護。已發現 <gold>{0}</gold> 孤立資料等待修整。
@@ -656,7 +657,7 @@ database:
   auto-trim-started: <green>已開始自動修整，請稍候……
   trim-start: <green>已開始修整資料庫，請稍候……
   trim-exception: <red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。
-  generated-at: '<yellow>Generated at: <gold>{0}'
+  generated-at: '<yellow>生成於：<gold>{0}'
   purge-date: <red>你必須給出一個日期。
   purge-warning: <yellow>此操作將清除儲存在資料庫中的歷史記錄，包括商店建立 / 修改 / 刪除、購買、交易和系統日誌。刪除這些資料可以釋出硬碟空間，但所有歷史資料都會遺失，依賴計量的其他插件將停止運行。若要繼續執行此操作，請執行指令 `/quickshop database purgelogs \<before-days> 以確認`
   purge-task-created: <green>已建立任務！資料庫將在背景清除歷史記錄。
@@ -765,7 +766,7 @@ addon:
   worldguard:
     creation-flag-test-failed: <red>你沒有在此 WorldGuard 保護區建立商店的權限。
     trade-flag-test-failed: <red>你沒有在此 WorldGuard 保護區與商店交易的權限。
-    reached-per-region-amount-limit: "<red>You have reached the maximum amount of shops in this region."
+    reached-per-region-amount-limit: "<red>您已達到該地區商店的最大數量。"
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
     __to_users: 和 QuickShop 的文字系統一樣，Discord 插件也會自動偵測使用者語言並使用此語言傳送Discord 訊息， 它遵守 QuickShop-Hikar i的語言系統設定。
@@ -1319,11 +1320,11 @@ addon:
           code: \<code>
         create:
           rate: |
-            Command Hint:
-            Argument: \<rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            指令提示：
+            參數：\<rate>
+            描述：你將會得到的實際百分比或金錢
+            輸入 `30%` = 價格 * 0.3
+            輸入 `50` = 價格 - 50
           max-usage: |
             指令提示：
             參數： [max-usage]
@@ -1343,7 +1344,7 @@ addon:
             Zulu 範例：2022-12-17T10:31:37Z
             UNIX 範例：1671273097
     discount-code-already-exists: <red>抱歉，你的優惠代碼名稱已被使用。
-    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
+    invalid-discount-code-regex: '<red>優惠代碼必須匹配正則表達式：<yellow>{0}'
     invalid-discount-code: <red>此優惠代碼無效。
     discount-code-added: <green>你的優惠代碼 <yellow>{0}</yellow> 已新增到商店 <aqua>{1}
     discount-code-removed: <green>你的優惠代碼 <yellow>{0}</yellow> 已從商店 <aqua>{1} 移除
@@ -1379,7 +1380,7 @@ addon:
     discount-code-under-threshold: <red>由於總價值低於優惠代碼門檻，所以優惠未適用於你的交易 <yellow>{0}</yellow>。
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
-    discount-code-list: '<gold>Listing your discount codes:'
+    discount-code-list: '<gold>正在列出你的優惠代碼：'
     discount-code-applied-in-purchase: '<#bcef26>你的優惠代碼 <yellow>{0}</yellow> 已經套用到此交易，並且為你節省了 <gold>{1}</gold> 元！'
     scope:
       this-shop: '{0}'
@@ -1417,8 +1418,8 @@ addon:
     success-remove: <green>成功地移除此商店的所有限制
     success-setup: <green>成功地保存此商店的限制設置
     trade-limit-reached-cancel-reason: <red>已達到了此商店的交易限制
-    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
-    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}'
+    remains-limits: '<gold>你在此商店剩餘的交易數量：<yellow>{0}'
+    remains-limits-before-reset-period-note: '<gold>此商店將重設他們的購買數量：<yellow>{0}'
   dynmap:
     markerset-title: QuickShop-Hikari 商店
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
@@ -1454,23 +1455,23 @@ addon:
   reremake-migrator:
     commands:
       migratefromreremake: 遷移 QuickShop-Reremake 的資料到 QuickShop-Hikari
-    server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
+    server-not-empty: "<red>轉換過程中不允許玩家在伺服器上在線，請開啟伺服器白名單或維護模式。"
     starting-convert-progress: "<gold>正在開始遷移，<red>請勿關閉伺服器！</red>"
     executing: "<gold>正在執行遷移組件 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
     completed: "<green>讚啦！遷移完成，請重新啟動伺服器並從外掛程式目錄中刪除 QuickShop-Reremake。"
     join_blocking_converting: "<red>[QuickShop-Hikari 遷移器] 此伺服器正在進行資料遷移，所以你現在無法加入伺服器，請稍後再試！"
     join_blocking_finished: "<red>[QuickShop-Hikari 轉換器] 此伺服器剛剛完成資料轉換，正在等待重新啟動以套用變更，請稍後再試！"
-    failed: "<red>Migration progress exited with error, please check the server console."
+    failed: "<red>遷移進度退出並出現錯誤，請檢查伺服器控制台。"
     modules:
       config:
-        copy-values: "<yellow>Copying values (total {0} entries)..."
+        copy-values: "<yellow>正在複製值（總共 {0} 個項目）……"
         copying-value: "<gray> - 正在複製 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
         migrate-price-restriction: "<yellow>正在遷移與價格相關的設定……"
         migrate-price-restriction-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
       shop:
         start-migrate: "<yellow>正在遷移商店（總共 {0} 個項目）……"
         migrate-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
-        unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
+        unloading-reremake: "<gold>正在解除載入 Reremake 以避免資料覆蓋……"
         register-entry: "<gray> - 正在註冊 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
         save-entry: "<gray> - 正在儲存 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
         saving-shops: "<yellow>正在儲存 <gold>{0}</gold> 商店，這可能需要一段時間™（基於商店的數量）……"
@@ -1482,9 +1483,9 @@ addon:
         copying-value: "<gray> - 正在複製 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
       shop-logs:
         start-migrate: "<yellow>正在遷移商店記錄檔（請詳見控制台），請稍候……</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
-        filtered-history-files: "<gray>Filtered {0} lines out of queue."
+        extract-history-files: "<gray>請等待我們解壓縮並附加歷史記錄檔……"
+        filter-history-files: "<gray>請等待我們篩選歷史記錄檔……"
+        filtered-history-files: "<gray>從序列中篩選出 {0} 行。"
         import-entry: "<gray> - 正在遷移 <aqua>{0}</aqua> <dark_gray>（{1} / {2}）</dark_gray>……"
 compat:
   advancedchests:
@@ -1521,19 +1522,19 @@ suite:
       <yellow>{0}
       <gray>{1} {2}, {3}, {4}
       <aqua>{5} - <yellow>{6}
-      {7} items each stack.
+      每組 {7} 個物品。
   shopitemonly:
     message: <red>你不能將非商店交易物品放入商店容器中，所有非商店交易的物品都會被直接丟到地上。
 compatibility:
   elitemobs:
     soulbound-disallowed: 你不能交易擁有 EliteMobs 靈魂綁定附魔的物品。
 internet-paste-forbidden-privacy-reason: "<red>失敗！根據你的隱私權設定，不允許 QuickShop-Hikari 將你的 paste 上傳到網路上，在 config.yml 的 privacy setting（隱私權設定）中開啟 DIAGNOSTIC（診斷）權限或使用 <aqua>/quickshop paste --file</aqua> 代替。"
-no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
+no-sign-type-given: "<red>你需要提供告示牌類型，此伺服器可供使用的告示牌類型：{0}"
 sign-type-invalid: "<red>告示牌 <yellow>{0}</yellow> 是無效的材質。"
 delete-controlpanel-button-confirm: "<red>你真的想刪除這家商店嗎？在 {0} 秒內按兩下 <bold>[刪除商店]</bold> 按鈕來再次確認。"
-cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+cannot-suggest-price: "<red>對不起，目前沒有更多的人和你交易相同的物品，也沒有足夠的資料來生成建議的價格。"
 price-suggest: "<green>基於來自 <aqua>{0}</aqua> 商店的資料，價格最高的商店價格為 <light_purple>{1}</light_purple> 元，價格最低的商店價格為 <light_purple>{2}</light_purple> 元，平均價格為 <light_purple>{3}</light_purple> 元，中位數價格為 <light_purple>{4}</light_purple> 元。<newline><yellow>建議你將價格設定在 <gold>{5}</gold> 元。</yellow>"
-suggest-wait: "<green>Please wait... Calculating recommend price."
+suggest-wait: "<green>請稍候……正在計算建議價格。"
 history:
   shop:
     gui-title: "查看購買歷史記錄"
@@ -1541,26 +1542,26 @@ history:
     header-icon-description:
       - "<white>類型：<yellow>{0}</yellow></white>"
       - "<white>擁有者：<yellow>{1}</yellow></white>"
-      - "<white>商品:<yellow>{2}</yellow></white>"
-      - "<white>價格:<yellow>{3}<aqua>{4}</aqua></yellow></white>"
-      - "<white>商店位置:<yellow>{5}</yellow></white>"
-    log-icon-title: "<reset><green>消費時間:{0}</green>"
+      - "<white>物品：<yellow>{2}</yellow></white>"
+      - "<white>價格：<yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>座標：<yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>時間：{0}</green>"
     log-icon-description:
       - "<white>買家：<yellow>{0}</yellow></white>"
       - "<white>物品：<yellow>{1}<aqua>{2}</aqua></yellow></white>"
-      - "<white>花費:<yellow>{3}</yellow></white>"
+      - "<white>花費：<yellow>{3}</yellow></white>"
       - "<white>税:<yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>商店：<yellow>{0}</yellow></white>"
       - "<white>買家：<yellow>{1}</yellow></white>"
       - "<white>物品：<yellow>{2}<aqua>{3}</aqua></yellow></white>"
-      - "<white>金額：<yellow>{4}</yellow></white>"
+      - "<white>花費：<yellow>{4}</yellow></white>"
       - "<white>税：<yellow>{5}</yellow></white>"
     query-icon: "<gray>請稍候，正在查詢……</gray>"
     previous-page: "<white>上一頁</white>"
     next-page: "<white>下一頁</white>"
     current-page: "<white>第{0}頁</white>"
-    summary-icon-title: "<green>Shop Summary"
+    summary-icon-title: "<green>商店摘要"
     recent-purchases: "<white>最近 <aqua>{0}</aqua> 購買：<yellow>{1}</yellow></white>"
     recent-purchase-balance: "<white>最近 <aqua>{0}</aqua> 營業額：<yellow>{1}</yellow></white>"
     total-purchases: "<white>總購買：<yellow>{0}</yellow></white>"
@@ -1582,5 +1583,5 @@ about:
   valid-donation-key: "<color:#00AFF1>綁定到 <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>無效的贊助密鑰</gray>"
   kofi-thanks: "<gold>特別感謝那些在 Ko-fi 上支持 QuickShop 的人 :)</gold>"
-history-command-leave-blank: "<Leave blank for seeing store>"
-shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
+history-command-leave-blank: "<參數為空時查詢面前的商店>"
+shop-information-not-shown-due-an-internal-error: "<red>發生內部錯誤。商店資訊面板可能顯示不完整，請聯絡伺服器管理員。"
