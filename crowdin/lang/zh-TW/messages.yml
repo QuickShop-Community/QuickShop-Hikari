@@ -454,7 +454,7 @@ command:
     database: <yellow>查看和維護 QuickShop 資料庫
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
     tag: <yellow>新增、刪除或查詢商店標籤
-    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    suggestprice: <yellow>基於其它商店的情況，為商店提出建議價格
     history: <yellow>查看商店的歷史交易記錄
     sign: <yellow>變更商店告示牌材質
   bulk-size-not-set: '<red>用法：/quickshop size \<amount>'
@@ -1532,7 +1532,7 @@ no-sign-type-given: "<red>You need give a sign material, the sign materials that
 sign-type-invalid: "<red>告示牌 <yellow>{0}</yellow> 是無效的材質。"
 delete-controlpanel-button-confirm: "<red>你真的想刪除這家商店嗎？在 {0} 秒內按兩下 <bold>[刪除商店]</bold> 按鈕來再次確認。"
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
-price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+price-suggest: "<green>基於來自 <aqua>{0}</aqua> 商店的資料，價格最高的商店價格為 <light_purple>{1}</light_purple> 元，價格最低的商店價格為 <light_purple>{2}</light_purple> 元，平均價格為 <light_purple>{3}</light_purple> 元，中位數價格為 <light_purple>{4}</light_purple> 元。<newline><yellow>建議你將價格設定在 <gold>{5}</gold> 元。</yellow>"
 suggest-wait: "<green>Please wait... Calculating recommend price."
 history:
   shop:
@@ -1561,26 +1561,26 @@ history:
     next-page: "<white>下一頁</white>"
     current-page: "<white>第{0}頁</white>"
     summary-icon-title: "<green>Shop Summary"
-    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
-    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
-    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
-    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    recent-purchases: "<white>最近 <aqua>{0}</aqua> 購買：<yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>最近 <aqua>{0}</aqua> 營業額：<yellow>{1}</yellow></white>"
+    total-purchases: "<white>總購買：<yellow>{0}</yellow></white>"
+    total-balances: "<white>總營業額：<yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>總交易者：<yellow>{0}</yellow></white>"
     top-n-valuable-customers-title: "<gold>消費次數排行榜TOP{0}</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
-    no-result: "<white>No result</white>"
+    no-result: "<white>暫無結果</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
-    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>版本 <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>正式版 <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>開發人員<yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>點擊查看貢獻者'><click:open_url:'https://github.com/Ghost -chu/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看貢獻者]</click></hover></color></aqua>"
-    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "<aqua>本地化成員 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>點擊開啟 Crowdin 翻譯頁面><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上協助翻譯]</click></hover></color></yellow>"
-    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
-    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
-  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gra>"
+    - "<aqua>贊助密鑰 <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "<gold>由社區支援</gold> <red>用 ❤ 發電</red>"
+  valid-donation-key: "<color:#00AFF1>綁定到 <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>無效的贊助密鑰</gray>"
   kofi-thanks: "<gold>特別感謝那些在 Ko-fi 上支持 QuickShop 的人 :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
 shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
