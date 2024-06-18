@@ -60,6 +60,25 @@ public class ShopHistoryGUI {
         this.header = new StaticPane(0, 0, 9, 1);
         this.body = new OutlinePane(0, 1, 9, 4);
         this.footer = new StaticPane(0, 5, 9, 1);
+        this.header.setOnClick(e -> {
+            if (e.getCursor() != null) {
+                e.setCancelled(true);
+                e.setResult(Event.Result.DENY);
+            }
+        });
+        this.body.setOnClick(e -> {
+            if (e.getCursor() != null) {
+                e.setCancelled(true);
+                e.setResult(Event.Result.DENY);
+            }
+        });
+        this.footer.setOnClick(e -> {
+            if (e.getCursor() != null) {
+                e.setCancelled(true);
+                e.setResult(Event.Result.DENY);
+            }
+        });
+
         chestGui.addPane(header);
         chestGui.addPane(body);
         chestGui.addPane(footer);
