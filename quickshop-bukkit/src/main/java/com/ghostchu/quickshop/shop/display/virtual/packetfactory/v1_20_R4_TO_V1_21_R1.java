@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class v1_20_R4 implements VirtualDisplayPacketFactory {
+public class v1_20_R4_TO_V1_21_R1 implements VirtualDisplayPacketFactory {
     private final QuickShop plugin;
     private final VirtualDisplayItemManager manager;
 
-    public v1_20_R4(QuickShop plugin, VirtualDisplayItemManager manager) {
+    public v1_20_R4_TO_V1_21_R1(QuickShop plugin, VirtualDisplayItemManager manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
