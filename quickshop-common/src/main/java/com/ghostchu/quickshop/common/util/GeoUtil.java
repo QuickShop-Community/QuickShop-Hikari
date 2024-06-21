@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.common.util;
 
 import com.ghostchu.quickshop.common.util.mirror.MavenCentralMirror;
+import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class GeoUtil {
 
     private static long sendGetTest(String urlStr) {
         try {
+            @Cleanup
             HttpClient client = HttpClient.newBuilder()
                     .connectTimeout(Duration.of(5, ChronoUnit.SECONDS))
                     .followRedirects(HttpClient.Redirect.ALWAYS)
