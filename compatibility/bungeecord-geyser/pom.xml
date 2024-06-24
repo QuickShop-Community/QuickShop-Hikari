@@ -12,22 +12,14 @@
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
     <artifactId>bungeecord-geyser</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>Compat-BungeeCord-Geyser</name>
 
     <description>Compatibility module for Geyser that installed on BungeeCord</description>
-    <properties>
-        <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

@@ -13,16 +13,12 @@
     </parent>
 
     <artifactId>quickshop-platform-spigot-v1_19_R2</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>quickshop-platform-spigot-v1_19_R2</name>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
 
             <plugin>
                 <groupId>net.md-5</groupId>

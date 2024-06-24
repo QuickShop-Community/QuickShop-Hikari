@@ -80,9 +80,10 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.13.0</version>
                     <configuration>
+                        <skip>true</skip>
+                        <skipMain>true</skipMain>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
-                        <release>${java.version}</release>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -114,12 +115,13 @@
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
                                         <include>net.kyori:*</include>
-<!--                                        <include>org.apache.commons:commons-lang3:*</include>-->
-<!--                                        <include>org.apache.commons:commons-text:*</include>-->
-<!--                                        <include>org.apache.commons:commons-compress:*</include>-->
+                                        <!--                                        <include>org.apache.commons:commons-lang3:*</include>-->
+                                        <!--                                        <include>org.apache.commons:commons-text:*</include>-->
+                                        <!--                                        <include>org.apache.commons:commons-compress:*</include>-->
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
-                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
+                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*
+                                        </include>
                                         <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-core:*</include>
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
@@ -134,7 +136,8 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>de.tr7zw.changeme.nbtapi</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi
+                                        </shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>org.bstats</pattern>
@@ -150,12 +153,14 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>com.ghostchu.lib.unofficial.com.alessiodp.libby.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.ghostchu.lib.unofficial.com.alessiodp.libby.</shadedPattern>
+                                        <shadedPattern>
+                                            com.ghostchu.quickshop.shade.com.ghostchu.lib.unofficial.com.alessiodp.libby.
+                                        </shadedPattern>
                                     </relocation>
-<!--                                    <relocation>-->
-<!--                                        <pattern>org.eclipse.aether.</pattern>-->
-<!--                                        <shadedPattern>com.ghostchu.quickshop.shade.org.eclipse.aether.</shadedPattern>-->
-<!--                                    </relocation>-->
+                                    <!--                                    <relocation>-->
+                                    <!--                                        <pattern>org.eclipse.aether.</pattern>-->
+                                    <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.org.eclipse.aether.</shadedPattern>-->
+                                    <!--                                    </relocation>-->
                                     <relocation>
                                         <pattern>com.mohistmc.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
@@ -231,6 +236,14 @@
                         </execution>
                     </executions>
                     <configuration>
+                        <useNativeGit>true</useNativeGit>
+                        <offline>true</offline>
+                        <includeOnlyProperties>
+                            <includeOnlyProperty>^git.build.(time|version|host|user)$</includeOnlyProperty>
+                            <includeOnlyProperty>^git.commit.(id|message|time|user)$</includeOnlyProperty>
+                            <includeOnlyProperty>^git.(branch|dirty|remote)$</includeOnlyProperty>
+                            <includeOnlyProperty>^git.remote.(origin-url)$</includeOnlyProperty>
+                        </includeOnlyProperties>
                         <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                         <verbose>false</verbose>
                         <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
@@ -243,9 +256,25 @@
                         </gitDescribe>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>io.takari.maven.plugins</groupId>
+                    <artifactId>takari-lifecycle-plugin</artifactId>
+                    <version>2.1.5</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <proc>proc</proc>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <sourceJar>true</sourceJar>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>io.takari.maven.plugins</groupId>
+                <artifactId>takari-lifecycle-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
@@ -270,31 +299,31 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/target/extra-resources</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <filtering>true</filtering>
-                                    <includes>
-                                        <include>*</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-resources-plugin</artifactId>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>copy-resources</id>-->
+            <!--                        <phase>initialize</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>copy-resources</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <outputDirectory>${project.basedir}/target/extra-resources</outputDirectory>-->
+            <!--                            <resources>-->
+            <!--                                <resource>-->
+            <!--                                    <directory>src/main/resources</directory>-->
+            <!--                                    <filtering>true</filtering>-->
+            <!--                                    <includes>-->
+            <!--                                        <include>*</include>-->
+            <!--                                    </includes>-->
+            <!--                                </resource>-->
+            <!--                            </resources>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
@@ -398,7 +427,7 @@
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
         <module>addon/reremake-migrator</module>
-<!--        <module>addon/webui</module>-->
+        <!--        <module>addon/webui</module>-->
 
     </modules>
 

@@ -12,15 +12,11 @@
     </parent>
     <groupId>com.ghostchu.quickshop.addon</groupId>
     <artifactId>plan</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>Addon-Plan</name>
 
     <description>Showcase the metrics about QuickShop-Hikari on your Plan page</description>
-    <properties>
-        <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <repositories>
         <repository>
@@ -31,10 +27,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -11,11 +11,7 @@
 
     <artifactId>quickshop-common</artifactId>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
-
+    <packaging>takari-jar</packaging>
     <repositories>
         <repository>
             <id>maven-snapshots</id>

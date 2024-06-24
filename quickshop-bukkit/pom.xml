@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>QuickShop-Hikari</name>
 

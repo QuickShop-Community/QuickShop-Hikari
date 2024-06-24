@@ -13,7 +13,7 @@
     </parent>
 
     <artifactId>quickshop-platform-paper</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
     <name>quickshop-platform-paper</name>
 
     <build>
