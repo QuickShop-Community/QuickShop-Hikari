@@ -130,9 +130,9 @@ permissions:
       quickshop.permission: true
       quickshop.benefit: true
       quickshop.sign: true
-      quickshop.history: true
-      quickshop.history.owned: true
-      quickshop.history.accessible: true
+      #quickshop.history: true
+      #quickshop.history.owned: true
+      #quickshop.history.accessible: true
       quickshop.suggestprice: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
