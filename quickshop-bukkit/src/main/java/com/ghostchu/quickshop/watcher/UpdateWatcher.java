@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.watcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -22,10 +23,10 @@ import java.util.Random;
 public class UpdateWatcher implements Listener {
     private final Random random = new Random();
     private final QuickShop plugin = QuickShop.getInstance();
-    private BukkitTask cronTask = null;
+    private WrappedTask cronTask = null;
 
     public void init() {
-        cronTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin.getJavaPlugin(), () -> {
+        cronTask = QuickShop.folia().getImpl().runTimerAsync(() -> {
             if (!plugin.getNexusManager().isLatest()) {
                 plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.getNexusManager().getLatestVersion());
                 plugin.logger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");

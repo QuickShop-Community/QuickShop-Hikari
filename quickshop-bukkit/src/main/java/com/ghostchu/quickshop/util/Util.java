@@ -104,11 +104,8 @@ public class Util {
             runnable.run();
             return;
         }
-        if (!Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin.getJavaPlugin(), runnable);
-        }
+
+        QuickShop.folia().getImpl().runTimerAsync(runnable, 0, 0);
     }
 
     /**
@@ -959,11 +956,7 @@ public class Util {
      * @param runnable The runnable
      */
     public static void mainThreadRun(@NotNull Runnable runnable) {
-        if (Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTask(plugin.getJavaPlugin(), runnable);
-        }
+        QuickShop.folia().getImpl().runTimer(runnable, 0, 0);
     }
 
     /**

@@ -16,6 +16,7 @@
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <reloc>com.ghostchu.quickshop.shade</reloc>
     </properties>
 
     <licenses>
@@ -107,6 +108,7 @@
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <artifactSet>
                                     <includes>
+                                        <include>com.tcoded.folialib:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
@@ -130,6 +132,10 @@
                                     </includes>
                                 </artifactSet>
                                 <relocations>
+                                    <relocation>
+                                        <pattern>com.tcoded.folialib</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
+                                    </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
@@ -396,7 +402,7 @@
         <module>compatibility/openinv</module>
         <module>compatibility/advancedregionmarket</module>
         <module>compatibility/bentobox</module>
-        <module>compatibility/superiorskyblock</module>
+        <!--<module>compatibility/superiorskyblock</module> -->
         <module>compatibility/griefprevention</module>
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>

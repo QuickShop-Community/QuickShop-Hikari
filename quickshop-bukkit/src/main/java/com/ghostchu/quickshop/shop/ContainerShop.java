@@ -1428,7 +1428,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         if (plugin.getSignHooker() != null) {
             Log.debug("Start sign broadcast...");
-            Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+            QuickShop.folia().getImpl().runLater(() -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
             Log.debug("Sign broadcast completed.");
         }
     }

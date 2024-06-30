@@ -65,6 +65,10 @@
             <id>sonatype-oss-snapshots1</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>devmart-other</id>
+            <url>https://nexuslite.gcnt.net/repos/other/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -359,6 +363,12 @@
             <artifactId>commons-compress</artifactId>
             <scope>compile</scope>
             <version>1.25.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.3.4</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.lib.unofficial.com.alessiodp.libby</groupId>

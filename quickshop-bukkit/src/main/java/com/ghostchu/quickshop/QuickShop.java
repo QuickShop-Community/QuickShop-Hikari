@@ -67,6 +67,7 @@ import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
 import lombok.Getter;
 import lombok.Setter;
@@ -103,6 +104,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
      */
     @ApiStatus.Internal
     private static QuickShop instance;
+
+    private final FoliaLib folia;
     /**
      * The manager to check permissions.
      */
@@ -253,6 +256,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.javaPlugin = javaPlugin;
         this.logger = logger;
         this.platform = platform;
+        this.folia = new FoliaLib(javaPlugin);
     }
 
     /**
@@ -402,7 +406,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (unregisterListeners) {
             HandlerList.unregisterAll(javaPlugin);
         }
-        Bukkit.getScheduler().cancelTasks(javaPlugin);
+        QuickShop.folia().getImpl().cancelAllTasks();
     }
 
     /**
@@ -649,7 +653,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         /* Delay the Economy system load, give a chance to let economy system register. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Log.debug("Scheduled economy system loading.");
-        Bukkit.getScheduler().runTaskLater(javaPlugin, economyLoader::load, 1);
+        QuickShop.folia().getImpl().runLater(economyLoader::load, 1);
         registerTasks();
         Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
@@ -806,7 +810,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                     logger.error("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
                 }
                 logger.info("Registering DisplayCheck task....");
-                Bukkit.getScheduler().runTaskTimer(javaPlugin, () -> {
+                QuickShop.folia().getImpl().runTimer(() -> {
                     for (Shop shop : getShopManager().getLoadedShops()) {
                         //Shop may be deleted or unloaded when iterating
                         if (!shop.isLoaded()) {
@@ -1013,7 +1017,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             logWatcher.close();
         }
         logger.info("Shutting down scheduled timers...");
-        Bukkit.getScheduler().cancelTasks(javaPlugin);
+        QuickShop.folia().getImpl().cancelAllTasks();
         if (calendarWatcher != null) {
             logger.info("Shutting down event calendar watcher...");
             calendarWatcher.stop();
@@ -1064,6 +1068,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     public @NotNull TextManager text() {
         return this.textManager;
+    }
+
+    public static FoliaLib folia() {
+        return instance.folia;
     }
 
     /**
