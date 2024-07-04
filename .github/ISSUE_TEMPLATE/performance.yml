@@ -55,7 +55,7 @@ body:
         Gifs or Videos are also welcome if they can help explaining the issue.
       placeholder: 'When I used Quickshop did ... happen.'
     validations:
-      required: true
+      required: false
   - type: 'input'
     attributes:
       label: '`/quickshop paste` URL'
