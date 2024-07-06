@@ -242,7 +242,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <useNativeGit>true</useNativeGit>
+                        <useNativeGit>false</useNativeGit>
                         <offline>true</offline>
                         <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                         <verbose>false</verbose>
@@ -402,7 +402,7 @@
         <module>compatibility/openinv</module>
         <module>compatibility/advancedregionmarket</module>
         <module>compatibility/bentobox</module>
-        <!--<module>compatibility/superiorskyblock</module> -->
+        <module>compatibility/superiorskyblock</module>
         <module>compatibility/griefprevention</module>
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>

@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.platform;
 import com.vdurmont.semver4j.Semver;
 import de.tr7zw.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
