@@ -105,7 +105,7 @@ public class Util {
             return;
         }
 
-        QuickShop.folia().getImpl().runTimerAsync(runnable, 0, 0);
+        QuickShop.folia().getImpl().runLaterAsync(runnable, 0);
     }
 
     /**
@@ -956,7 +956,18 @@ public class Util {
      * @param runnable The runnable
      */
     public static void mainThreadRun(@NotNull Runnable runnable) {
-        QuickShop.folia().getImpl().runTimer(runnable, 0, 0);
+        QuickShop.folia().getImpl().runLater(runnable, 0);
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
+    public static void mainThreadRun(@NotNull Runnable runnable, long delay) {
+        QuickShop.folia().getImpl().runLater(runnable, delay);
     }
 
     /**

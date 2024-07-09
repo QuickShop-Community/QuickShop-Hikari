@@ -439,7 +439,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             logWatcher = null;
         }
         // Schedule this event can be run in next tick.
-        Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
+        //Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent(), 20L);
         try {
             DonationInfo info = new DonationInfo(getConfig().getString("donation-key"));
             if (info.isValid()) {
@@ -634,7 +634,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         signUpdateWatcher = new SignUpdateWatcher();
         //shopContainerWatcher = new ShopContainerWatcher();
         shopSaveWatcher = new ShopDataSaveWatcher(this);
-        shopSaveWatcher.runTaskTimerAsynchronously(javaPlugin, 0, 20L * 60L * 5L);
+        shopSaveWatcher.start(0, 20L * 60L * 5L);
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
@@ -854,10 +854,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private void registerTasks() {
         calendarWatcher = new CalendarWatcher(this);
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
-        signUpdateWatcher.runTaskTimer(javaPlugin, 0, 10);
+        signUpdateWatcher.start(0, 10);
         //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
         if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(javaPlugin, 10, 10);
+            logWatcher.start(10, 10);
             logger.info("Log actions is enabled. Actions will be logged in the qs.log file!");
         }
         this.registerOngoingFee();
@@ -959,11 +959,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private void registerOngoingFee() {
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             ongoingFeeWatcher = new OngoingFeeWatcher(this);
-            ongoingFeeWatcher.runTaskTimerAsynchronously(javaPlugin, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
+            ongoingFeeWatcher.start(0, getConfig().getInt("shop.ongoing-fee.ticks"));
             logger.info("Ongoing fee feature is enabled.");
         } else {
             if (ongoingFeeWatcher != null) {
-                ongoingFeeWatcher.cancel();
+                ongoingFeeWatcher.stop();
                 ongoingFeeWatcher = null;
             }
         }
@@ -994,7 +994,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         if (getShopSaveWatcher() != null) {
             logger.info("Stopping shop auto save...");
-            getShopSaveWatcher().cancel();
+            getShopSaveWatcher().stop();
         }
         if (getShopManager() != null) {
             logger.info("Saving all in-memory changed shops...");

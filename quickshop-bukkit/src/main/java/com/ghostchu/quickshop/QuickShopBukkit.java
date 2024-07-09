@@ -243,12 +243,17 @@ public class QuickShopBukkit extends JavaPlugin {
             switch (platformId) {
                 case 1 -> {
                     bootstrapLogger.info("Platform detected: Spigot");
+                    bootstrapLogger.warning("=================================================================");
+                    bootstrapLogger.warning("=========================   ATTENTION   =========================");
+                    bootstrapLogger.warning("=================================================================");
                     bootstrapLogger.warning("Use Paper or Paper's fork to get best performance and enhanced features!");
+                    bootstrapLogger.warning("Spigot lacks modern functionality and overall performance fixes.");
+                    bootstrapLogger.warning("=================================================================");
 
                     initNbtApi();
 
                     //noinspection deprecation
-                    String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
+                    final String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
                     this.platform = switch (internalNMSVersion) {
                         case "v1_18_R1" -> new Spigot1181Platform(this);
                         case "v1_18_R2" -> new Spigot1182Platform(this);

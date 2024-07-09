@@ -1,25 +1,26 @@
 package com.ghostchu.quickshop.common.util;
 
 import com.ghostchu.quickshop.common.util.mirror.MavenCentralMirror;
-import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class GeoUtil {
@@ -38,10 +39,9 @@ public class GeoUtil {
         });
     }
 
-    private static long sendGetTest(String urlStr) {
+    /*private static long sendGetTest(String urlStr) {
 
         try {
-            @Cleanup
             final HttpClient client = HttpClient.newBuilder()
                     .connectTimeout(Duration.of(5, ChronoUnit.SECONDS))
                     .followRedirects(HttpClient.Redirect.ALWAYS)
@@ -59,6 +59,33 @@ public class GeoUtil {
             return System.currentTimeMillis() - time;
         } catch (Throwable e) {
             return Long.MAX_VALUE;
+        }
+    }*/
+
+    private static long sendGetTest(String urlStr) {
+
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(urlStr);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(5));
+            connection.setReadTimeout((int) TimeUnit.SECONDS.toMillis(5));
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestMethod("GET");
+
+            final long time = System.currentTimeMillis();
+            final int responseCode = connection.getResponseCode();
+            if (responseCode != 200) {
+                return Long.MAX_VALUE;
+            }
+
+            return System.currentTimeMillis() - time;
+        } catch (Exception e) {
+            return Long.MAX_VALUE;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 

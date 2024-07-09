@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin implements Listener {
         this.dynmapAPI = (DynmapAPI) Bukkit.getPluginManager().getPlugin("dynmap");
         this.markerAPI = this.dynmapAPI.getMarkerAPI();
         Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getScheduler().runTaskLater(this, this::updateAllMarkers, 80);
+        QuickShop.folia().getImpl().runLater(this::updateAllMarkers, 80);
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -108,6 +108,7 @@
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <artifactSet>
                                     <includes>
+                                        <include>com.tcoded:*</include>
                                         <include>com.tcoded.folialib:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
@@ -360,6 +361,12 @@
                 <artifactId>annotations</artifactId>
                 <version>24.1.0</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.tcoded</groupId>
+                <artifactId>FoliaLib</artifactId>
+                <version>0.3.4</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
