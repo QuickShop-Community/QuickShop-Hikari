@@ -236,7 +236,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <useNativeGit>true</useNativeGit>
+                        <useNativeGit>false</useNativeGit>
                         <offline>true</offline>
                         <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                         <verbose>false</verbose>

@@ -57,6 +57,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Modern Minecraft is Java 21... -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <skip>true</skip>
+                    <skipMain>true</skipMain>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.takari.maven.plugins</groupId>
+                <artifactId>takari-lifecycle-plugin</artifactId>
+                <version>2.1.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <proc>proc</proc>
+                    <source>21</source>
+                    <target>21</target>
+                    <sourceJar>true</sourceJar>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
