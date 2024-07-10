@@ -241,7 +241,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <useNativeGit>false</useNativeGit>
+                        <useNativeGit>true</useNativeGit>
                         <offline>true</offline>
                         <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                         <verbose>false</verbose>
@@ -249,7 +249,7 @@
                         <prefix>git</prefix>
                         <format>json</format>
                         <gitDescribe>
-                            <skip>false</skip>
+                            <skip>true</skip>
                             <always>false</always>
                             <dirty>-dirty</dirty>
                         </gitDescribe>
