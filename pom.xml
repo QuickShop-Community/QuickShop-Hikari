@@ -16,6 +16,7 @@
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
     </properties>
 
     <licenses>
@@ -107,6 +108,7 @@
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <artifactSet>
                                     <includes>
+                                        <include>net.tnemc:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
@@ -120,8 +122,7 @@
                                         <!--                                        <include>org.apache.commons:commons-compress:*</include>-->
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
-                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*
-                                        </include>
+                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-core:*</include>
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
@@ -131,30 +132,34 @@
                                 </artifactSet>
                                 <relocations>
                                     <relocation>
+                                        <pattern>net.tnemc</pattern>
+                                        <shadedPattern>${qs.relocation}.tne</shadedPattern>
+                                    </relocation>
+                                    <relocation>
                                         <pattern>io.papermc.lib.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.io.papermc.lib.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>de.tr7zw.changeme.nbtapi</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi
+                                        <shadedPattern>${qs.relocation}.de.tr7zw.changeme.nbtapi
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>org.bstats</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.bstats</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.org.bstats</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>de.themoep.minedown.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.de.themoep.minedown.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.alessiodp.libby.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.ghostchu.lib.unofficial.com.alessiodp.libby.</pattern>
                                         <shadedPattern>
-                                            com.ghostchu.quickshop.shade.com.ghostchu.lib.unofficial.com.alessiodp.libby.
+                                            ${qs.relocation}.com.ghostchu.lib.unofficial.com.alessiodp.libby.
                                         </shadedPattern>
                                     </relocation>
                                     <!--                                    <relocation>-->
@@ -236,7 +241,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <useNativeGit>false</useNativeGit>
+                        <useNativeGit>true</useNativeGit>
                         <offline>true</offline>
                         <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                         <verbose>false</verbose>
@@ -244,7 +249,7 @@
                         <prefix>git</prefix>
                         <format>json</format>
                         <gitDescribe>
-                            <skip>false</skip>
+                            <skip>true</skip>
                             <always>false</always>
                             <dirty>-dirty</dirty>
                         </gitDescribe>

@@ -10,4 +10,3 @@ net.sourceforge.csvjdbc:csvjdbc:1.0.42@org.relique.jdbc.csv.CsvDriver
 org.dom4j:dom4j:2.1.4@org.dom4j.io.SAXReader
 com.vdurmont:semver4j:3.1.0@com.vdurmont.semver4j.Semver
 com.ghostchu.crowdin:crowdinota:1.0.3@com.ghostchu.crowdin.CrowdinOTA
-com.github.stefvanschie.inventoryframework:IF:0.10.13@com.github.stefvanschie.inventoryframework.gui.GuiItem
