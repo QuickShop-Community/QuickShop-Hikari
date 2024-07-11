@@ -311,8 +311,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.javaPlugin = javaPlugin;
         this.logger = logger;
         this.platform = platform;
-
-        this.menuHandler = new BukkitMenuHandler(javaPlugin, true);
         this.helperMethods = new BukkitHelper();
     }
 
@@ -639,6 +637,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     public final void onEnable() {
         logger.info("QuickShop " + javaPlugin.getFork());
+        this.menuHandler = new BukkitMenuHandler(javaPlugin, true);
         registerService();
         /* Check the running envs is support or not. */
         logger.info("Starting plugin self-test, please wait...");
