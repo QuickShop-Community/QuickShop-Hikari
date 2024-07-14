@@ -6,15 +6,15 @@
 
 [codeScore]: https://app.codiga.io/public/project/32011/QuickShop-Hikari/dashboard
 
-[license]: https://github.com/Ghost-chu/QuickShop-Hikari/blob/hikari/LICENSE
+[license]: https://github.com/Quickshop-Community/QuickShop-Hikari/blob/hikari/LICENSE
 
-[contributors]: https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors
+[contributors]: https://github.com/Quickshop-Community/QuickShop-Hikari/graphs/contributors
 
 [fossaStatus]: https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_shield
 
 [fossaStatusLarge]: https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_large
 
-[quickshop-hikari]: https://github.com/Ghost-chu/QuickShop-Hikari
+[quickshop-hikari]: https://github.com/Quickshop-Community/QuickShop-Hikari
 
 [quickshop-potato]: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/
 
@@ -104,8 +104,8 @@ the latest versions of Minecraft.
 
 ## Community & Support
 
-[Discussions](https://github.com/Ghost-chu/QuickShop-Hikari/discussions)  
-[Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)  
+[Discussions](https://github.com/Quickshop-Community/QuickShop-Hikari/discussions)  
+[Bug Tracker](https://github.com/Quickshop-Community/QuickShop-Hikari/issues)  
 [Discord](https://discord.gg/Bu3dVtmsD3)
 
 ## Features

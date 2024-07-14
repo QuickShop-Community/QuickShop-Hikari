@@ -36,7 +36,7 @@ public final class Main extends CompatibilityModule implements SlimefunAddon, It
 
     @Override
     public String getBugTrackerURL() {
-        return "https://github.com/Ghost-chu/QuickShop-Hikari/issues";
+        return "https://github.com/Quickshop-Community/QuickShop-Hikari/issues";
     }
 
     @Override
