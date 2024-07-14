@@ -232,7 +232,7 @@ public final class EnvironmentChecker {
 //                String key = kv[0];
 //                String value = kv[1];
 //                if (key.equalsIgnoreCase("loc") && value.equalsIgnoreCase("CN")) {
-//                    return new ResultContainer(CheckResult.DISABLE_PLUGIN, "自 Hikari-4.1.0.3 开始，由于潜在的法律法规风险，我们暂时停止向处于中国大陆的服务器提供服务，有关更多信息，请参考：https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/about/netease");
+//                    return new ResultContainer(CheckResult.DISABLE_PLUGIN, "自 Hikari-4.1.0.3 开始，由于潜在的法律法规风险，我们暂时停止向处于中国大陆的服务器提供服务，有关更多信息，请参考：https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/about/netease");
 //                }
 //            }
 //        }
