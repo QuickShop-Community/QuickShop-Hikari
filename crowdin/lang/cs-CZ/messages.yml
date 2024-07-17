@@ -88,7 +88,7 @@ reloading-status:
   scheduled: <green>Obnovení dokončeno. <gray>(Může chvíli trvat, než se změny projeví)
   require-restart: <green>Obnovení dokončeno. <yellow>(Změny vyžadují restartování serveru)
   failed: <red>Obnovení selhalo, zkontrolujte konzoli serveru
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} koupil {1} {2} z vašeho obchodu a vy jste vydělali {3} ({4} daně).
 not-enough-space: <red>Zbývá ti jen {0} volných míst!
 shop-name-success: <green>Název obchodu byl úspěšně nastaven na <yellow>{0}<green>.
 shop-staff-added: <green>Uživatel {0} byl úspěšně přidán do vašeho obchodu.
@@ -243,7 +243,7 @@ tableformat:
 quickshop-gui-preview: Náhled GUI položky v QuickShopu
 translate-not-completed-yet-click: Překlad jazyka {0} ještě nebyl dokončen uživatelem {1}. Chcete nám pomoci zlepšit překlad? Klikněte zde!
 taxaccount-invalid: <red>Cílový účet není platný, zadejte prosím platné jméno hráče nebo uuid(s pomlčkami).
-player-bought-from-your-store: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>{0} zakoupil {1} {2} z tvého obchodu a ty jsi zaplatil {3} na daních.
+player-bought-from-your-store: <green>{0} si koupil {1} {2} z vašeho obchodu a získali jste {3}.
 reached-maximum-can-create: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Již jste vytvořili maximum {0}/{1} obchodů!
 reached-maximum-create-limit: <red>Dosáhli jste maximálního počtu obchodů, které můžete vytvořit
 translation-version: 'Verze podpory: Hikari'
