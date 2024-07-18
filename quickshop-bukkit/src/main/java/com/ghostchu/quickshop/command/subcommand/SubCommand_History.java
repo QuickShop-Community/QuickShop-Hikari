@@ -5,8 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.history.ShopHistory;
-import com.ghostchu.quickshop.shop.history.ShopHistoryGUI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +38,7 @@ public class SubCommand_History implements CommandHandler<Player> {
                 plugin.text().of(sender, "no-permission");
                 return;
             }
-            new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, List.of(shop))).open();
+           // new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, List.of(shop))).open();
             return;
         }
         List<Shop> shops = new ArrayList<>();
@@ -72,7 +70,7 @@ public class SubCommand_History implements CommandHandler<Player> {
                 return;
             }
         }
-        new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, shops)).open();
+        //new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, shops)).open();
         return;
     }
 

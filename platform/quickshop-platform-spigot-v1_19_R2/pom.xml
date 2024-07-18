@@ -8,21 +8,17 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.5</version>
+        <version>6.2.0.6</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>quickshop-platform-spigot-v1_19_R2</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>quickshop-platform-spigot-v1_19_R2</name>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
 
             <plugin>
                 <groupId>net.md-5</groupId>

@@ -4,12 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.history.ShopHistory;
-import com.ghostchu.quickshop.shop.history.ShopHistoryGUI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class SubCommand_SilentHistory extends SubCommand_SilentBase {
 
@@ -24,6 +20,6 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
             plugin.text().of(sender, "not-managed-shop").send();
             return;
         }
-        new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, List.of(shop))).open();
+        //new ShopHistoryGUI(plugin, sender, new ShopHistory(plugin, List.of(shop))).open();
     }
 }

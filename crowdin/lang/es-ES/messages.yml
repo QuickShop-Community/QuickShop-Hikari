@@ -53,7 +53,7 @@ quick-fill:
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denegó las comprobaciones de permisos, si esto no está excepcionado, intente añadir <light_purple>{1} <gray>a la lista negra de escucha. <gray>Configurar Guía: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Precio medio en esta zona: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[[Inventory Check] ¡Aviso! Encontró un elemento de QuickShop <gold>{2}</gold> en inventario en <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, que no debería ocurrir, Esto generalmente significa que alguien está explotando malintencionadamente el exploit para duplicar el elemento de visualización."
 digits-reach-the-limit: <red>Has alcanzado el límite de decimales en el precio.
 currency-unset: <green>Divisa de la tienda ha sido removida con éxito. Usando la configuración predeterminada ahora.
 you-cant-create-shop-in-there: <red>No tienes permiso para crear una tienda en este lugar.
@@ -88,14 +88,14 @@ reloading-status:
   scheduled: <green>Recarga completada. <gray>(Algunos cambios requieren un tiempo para hacer efecto)
   require-restart: <green>Recarga completada. <gray>(Algunos cambios requieren un reinicio del servidor para hacer efecto)
   failed: <red>Recarga fallida, comprueba la consola del servidor
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} Comprado {1} {2} de tu tienda y ganaste {3} ({4} en impuestos).
 not-enough-space: <red>¡Sólo tienes sitio para {0} más!
 shop-name-success: <green>Nombre de la tienda establecido a <yellow>{0}<green>.
 shop-staff-added: <green>Agregado a {0} como personal de tu tienda con éxito.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Esta tienda no tiene personal.
 shops-recovering: Recuperando tiendas desde la copia de seguridad...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>Este es un jugador virtual.\n<gray>Hace referencia a una cuenta del sistema con este nombre con el mismo nombre.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nombre de usuario: <yellow>{1}</yellow></green>\n<green>Mostrar como: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>Este es un jugador que existe realmente.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nombre de usuario: <yellow>{1}</yellow></green>\n<green>Mostrar como: <yellow>{2}</yellow></green>\n<gray>Si desea utilizar una cuenta de sistema virtual con el mismo nombre, agregue <dark_gray>\"[]\"</dark_gray> a ambos lados del nombre de usuario: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Pagaste <yellow>{0} <green>en impuestos.
   owner: '<green>Propietario: {0}'
@@ -123,7 +123,7 @@ menu:
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No se puede encontrar la divisa que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.
 no-nearby-shop: <red>No hay ninguna tienda en la zona que coincida con {0}.
-translation-author: 'Ghost_chu, Andre_601'
+translation-author: 'Ghost_chu, Andre_601, alexbm0'
 integrations-check-failed-trade: La integración {0} impide la creación de la tienda
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Establecido exitosamente el dueño de la tienda al Servidor.
@@ -175,8 +175,8 @@ unknown-player: <red>Dicho jugador no existe, por favor revisa el nombre de usua
 player-offline: <red>The target player currently is offline.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
-  selling: SELLING
-  buying: BUYING
+  selling: VENTA
+  buying: COMPRA
 language:
   qa-issues: '<yellow>Problemas de garantía de calidad: <aqua>{0}%'
   code: '<yellow>Código: <gold>{0}'
@@ -252,9 +252,9 @@ price-too-cheap: <red>El precio debe ser mayor a <yellow>${0}
 shop-not-exist: <red>No hay ninguna tienda.
 bad-command-usage: <red>¡Argumentos incorrectos!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-starting: <green>Empezando a comprobar si hay tiendas fantasma (faltan bloques de contenedores). Se eliminarán todas las tiendas que no existan...
+cleanghost-deleting: <yellow>Has encontrado una tienda corrupta <aqua>{0}</aqua> porque {1}, márcalo para eliminarlo...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> Las tiendas han sido eliminadas.
 shop-purchase-cancelled: <red>Compra cancelada.
 bypassing-lock: <red>¡Omitiendo el bloqueo de una QuickShop!
 bungee-cross-server-msg: '<yellow>Tienda Rápida CSM: <green>{0}'
@@ -362,39 +362,39 @@ controlpanel:
   mode-selling-hover: <yellow>Click para cambiar a modo de COMPRA.
   empty-hover: <yellow>Click para limpiar el inventario de la tienda.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
-  history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
-  history-hover: <yellow>Click to view shop history logs
+  history: '<green>Historial: <yellow>[<bold><light_purple>Ver</light_purple></bold>]</yellow>'
+  history-hover: <yellow>Haga clic para ver los registros del historial de la tienda
 timeunit:
-  behind: behind
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
-  before: before
-  scheduled: scheduled
-  years: "{0} years"
-  scheduled-in: scheduled in {0}
-  second: "{0} second"
-  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  behind: atrás
+  week: "{0} semana"
+  weeks: "{0} Semanas"
+  year: "{0} año"
+  before: antes
+  scheduled: programado
+  years: "{0} años"
+  scheduled-in: programado en {0}
+  second: "{0} segundo"
+  std-past-format: '{5}{4}{3}{2}{1}{0}hace'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
-  scheduled-at: scheduled at {0}
-  after: after
-  day: "{0} day"
-  recent: recent
-  between: between
-  hours: "{0} hours"
-  months: "{0} months"
-  longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: "{0} minutes"
+  seconds: "{0} segundos"
+  hour: "{0} hora"
+  scheduled-at: programado en {0}
+  after: después
+  day: "{0} día"
+  recent: reciente
+  between: entre
+  hours: "{0} horas"
+  months: "{0} meses"
+  longtimeago: hace mucho tiempo
+  between-format: entre {0} y {1}
+  minutes: "{0} minutos"
   justnow: justo ahora
-  minute: "{0} minute"
+  minute: "{0} minuto"
   std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
-  month: "{0} month"
+  future-plain-text: futuro
+  month: "{0} mes"
   future: en {0}
-  days: "{0} days"
+  days: "{0} días"
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
@@ -433,7 +433,7 @@ command:
     unban: <yellow>Banear a un jugador de la tienda
     transfer: <yellow>Transferir TODAS las tiendas de alguien a otros
     transferall: <yellow>Transferir TODAS las tiendas de alguien a otros
-    transferownership: <yellow>Transfer the shop you're looking at to someone else
+    transferownership: <yellow>Transfiere la tienda que estás viendo a otra persona
     size: <yellow>Cambiar cantidad de artículos por stack de una tienda
     supercreate: '&Crear una tienda circunvalando todas las comprobaciones de seguridad'
     taxaccount: <yellow>Configure la cuenta de impuestos que compra usando
@@ -442,11 +442,11 @@ command:
     permission: <yellow>Gestión de permisos de la tienda
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>View and maintain QuickShop database
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
-    tag: <yellow>Add, remove or query tags of a shop
-    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
-    history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
+    benefit: <yellow>Configuración de dividir los beneficios entre el dueño de la tienda y otros jugadores
+    tag: <yellow>Añadir, eliminar o consultar etiquetas de una tienda
+    suggestprice: <yellow>Sugerir un precio recomendado para mostrar en la tienda, basado en otras tiendas
+    history: <yellow>Ver el historial de transacciones de una tienda
+    sign: <yellow>Cambiar el material de señal de una tienda
   bulk-size-not-set: '<red>Usa: /qs size <cantidad>'
   no-type-given: '<red>Uso: /qs find <artículo>'
   feature-not-enabled: La característica no está habilitada en la configuración.
@@ -519,8 +519,8 @@ permission:
     set-stack-amount: <yellow>Permiso para permitir a los usuarios que tienen esto establecer la cantidad de la pila de la tienda.
     set-currency: <yellow>Permiso para permitir a los usuarios que tienen esto establecer la moneda de la tienda.
     set-name: <yellow>Permiso para permitir a los usuarios que tienen esto establecer el nombre de la tienda.
-    set-sign-type: <yellow>Change the sign material that attached on the shop.
-    view-purchase-logs: <yellow>Permission to view shop purchase logs.
+    set-sign-type: <yellow>Cambia la etiqueta del material que se asignó a la tienda.
+    view-purchase-logs: <yellow>Permiso para ver los registros de compras de la tienda.
   group:
     everyone: <yellow>Default group for all users excepted shop owner.
     staff: <yellow>System group for shop staffs.
@@ -547,14 +547,14 @@ successfully-set-player-group: <green>Se ha establecido correctamente el grupo d
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
 successfully-set-player-permission: <green>Se ha establecido correctamente el permiso <aqua>{1}</aqua> al jugador{0} en la tienda <aqua>{2}</aqua>.
 lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
-lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
+lookup-item-exists: <red>Un elemento llamado <yellow>{0}</yellow> ya existe en la tabla de búsqueda, elimínela o elija otro nombre.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
 lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
-lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
+lookup-item-name-regex: '<red>El nombre debe coincidir con esta expresión regular: <aqua>{0}</aqua>.'
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
+internal-error: <red>Se ha producido un error interno, póngase en contacto con el administrador del servidor.
 argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
 invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.

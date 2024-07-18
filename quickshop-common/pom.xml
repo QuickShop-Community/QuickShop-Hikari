@@ -5,17 +5,13 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>6.2.0.5</version>
+        <version>6.2.0.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>quickshop-common</artifactId>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
-
+    <packaging>takari-jar</packaging>
     <repositories>
         <repository>
             <id>maven-snapshots</id>
@@ -51,7 +47,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>2.11.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
+break-shop-use-supertool: <yellow>Galite sulaužyti parduotuvę naudodami super įrankį.
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
 not-allowed-to-create: <red>Tu negali čia sukurti parduotuvės.
 disabled-in-this-world: <red>Parduotuvės yra išjungtos šiame pasaulyje
@@ -25,7 +25,7 @@ tabcomplete:
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command can only be executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+server-crash-warning: 'If you want custom the language file, use language override system'
 you-cant-afford-to-change-price: <red>Tai kainuoja {0} kad pakeisti kaina jūsų parduotuvėje.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>This operation is forbidden due to it not being consistent with vanilla behaviour

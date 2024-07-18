@@ -8,11 +8,16 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.5</version>
+        <version>6.2.0.6</version>
     </parent>
 
+    <properties>
+        <tnml.version>1.5.0.1-SNAPSHOT-11</tnml.version>
+        <tnil.version>0.1.7.6-Pre-9</tnil.version>
+    </properties>
+
     <artifactId>quickshop-bukkit</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>QuickShop-Hikari</name>
 
@@ -179,7 +184,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.5</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -202,6 +207,65 @@
                 </exclusion>
             </exclusions>
             <optional>true</optional>
+        </dependency>
+
+        <!-- TNE-related Libraries -->
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNML-Folia</artifactId>
+            <version>${tnml.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.tnemc</groupId>
+                    <artifactId>TNIL-Bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.tnemc</groupId>
+                    <artifactId>TNIL-CORE</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNML-Bukkit</artifactId>
+            <version>${tnml.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.tnemc</groupId>
+                    <artifactId>TNIL-Bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.tnemc</groupId>
+                    <artifactId>TNIL-CORE</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNIL-Bukkit</artifactId>
+            <version>${tnil.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNML-CORE</artifactId>
+            <version>${tnml.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.tnemc</groupId>
+                    <artifactId>TNIL-Core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNIL-Core</artifactId>
+            <version>${tnil.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
@@ -343,12 +407,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.github.stefvanschie.inventoryframework</groupId>
-            <artifactId>IF</artifactId>
-            <version>0.10.13</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
             <scope>compile</scope>
@@ -358,7 +416,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <scope>compile</scope>
-            <version>1.25.0</version>
+            <version>1.26.2</version>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.lib.unofficial.com.alessiodp.libby</groupId>

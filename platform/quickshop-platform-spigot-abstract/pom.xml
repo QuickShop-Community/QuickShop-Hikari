@@ -8,21 +8,17 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.5</version>
+        <version>6.2.0.6</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>quickshop-platform-spigot-abstract</artifactId>
-    <packaging>jar</packaging>
+    <packaging>takari-jar</packaging>
 
     <name>quickshop-platform-spigot-abstract</name>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -66,7 +62,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.12.4</version>
+            <version>2.13.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

@@ -21,7 +21,12 @@ import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import com.ghostchu.quickshop.api.shop.PlayerFinder;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
+import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
+import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
@@ -31,8 +36,22 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.impl.*;
-import com.ghostchu.quickshop.listener.*;
+import com.ghostchu.quickshop.economy.impl.Economy_CoinsEngine;
+import com.ghostchu.quickshop.economy.impl.Economy_GemsEconomy;
+import com.ghostchu.quickshop.economy.impl.Economy_TNE;
+import com.ghostchu.quickshop.economy.impl.Economy_Treasury;
+import com.ghostchu.quickshop.economy.impl.Economy_Vault;
+import com.ghostchu.quickshop.listener.BlockListener;
+import com.ghostchu.quickshop.listener.BungeeListener;
+import com.ghostchu.quickshop.listener.ChatListener;
+import com.ghostchu.quickshop.listener.ChunkListener;
+import com.ghostchu.quickshop.listener.CustomInventoryListener;
+import com.ghostchu.quickshop.listener.DisplayProtectionListener;
+import com.ghostchu.quickshop.listener.InternalListener;
+import com.ghostchu.quickshop.listener.LockListener;
+import com.ghostchu.quickshop.listener.PlayerListener;
+import com.ghostchu.quickshop.listener.ShopProtectionListener;
+import com.ghostchu.quickshop.listener.WorldListener;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
 import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
@@ -43,17 +62,33 @@ import com.ghostchu.quickshop.registry.builtin.itemexpression.SimpleItemExpressi
 import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleEnchantmentExpressionHandler;
 import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleItemReferenceExpressionHandler;
 import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleMaterialExpressionHandler;
-import com.ghostchu.quickshop.shop.*;
+import com.ghostchu.quickshop.shop.InteractionController;
+import com.ghostchu.quickshop.shop.ShopLoader;
+import com.ghostchu.quickshop.shop.ShopPurger;
+import com.ghostchu.quickshop.shop.SimpleShopItemBlackList;
+import com.ghostchu.quickshop.shop.SimpleShopManager;
+import com.ghostchu.quickshop.shop.SimpleShopPermissionManager;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.signhooker.SignHooker;
-import com.ghostchu.quickshop.util.*;
+import com.ghostchu.quickshop.util.DonationInfo;
+import com.ghostchu.quickshop.util.FastPlayerFinder;
+import com.ghostchu.quickshop.util.ItemMarker;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.PermissionChecker;
+import com.ghostchu.quickshop.util.ReflectFactory;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
 import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
-import com.ghostchu.quickshop.util.envcheck.*;
+import com.ghostchu.quickshop.util.envcheck.CheckResult;
+import com.ghostchu.quickshop.util.envcheck.EnvCheckEntry;
+import com.ghostchu.quickshop.util.envcheck.EnvironmentChecker;
+import com.ghostchu.quickshop.util.envcheck.ResultContainer;
+import com.ghostchu.quickshop.util.envcheck.ResultReport;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -63,13 +98,24 @@ import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.privacy.PrivacyController;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.util.updater.NexusManager;
-import com.ghostchu.quickshop.watcher.*;
+import com.ghostchu.quickshop.watcher.CalendarWatcher;
+import com.ghostchu.quickshop.watcher.DisplayAutoDespawnWatcher;
+import com.ghostchu.quickshop.watcher.LogWatcher;
+import com.ghostchu.quickshop.watcher.OngoingFeeWatcher;
+import com.ghostchu.quickshop.watcher.ShopDataSaveWatcher;
+import com.ghostchu.quickshop.watcher.SignUpdateWatcher;
+import com.ghostchu.quickshop.watcher.UpdateWatcher;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.vdurmont.semver4j.Semver;
 import lombok.Getter;
 import lombok.Setter;
+import net.tnemc.item.bukkit.BukkitHelper;
+import net.tnemc.item.providers.HelperMethods;
+import net.tnemc.menu.bukkit.BukkitMenuHandler;
+import net.tnemc.menu.core.MenuHandler;
+import net.tnemc.menu.core.manager.MenuManager;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -87,8 +133,16 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
@@ -124,6 +178,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private final EconomyLoader economyLoader = new EconomyLoader(this);
     @Getter
     private final PasteManager pasteManager = new PasteManager();
+
+    protected MenuHandler menuHandler;
+    protected HelperMethods helperMethods;
+
     /* Public QuickShop API End */
     private GameVersion gameVersion;
     private volatile SimpleDatabaseHelperV2 databaseHelper;
@@ -253,6 +311,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.javaPlugin = javaPlugin;
         this.logger = logger;
         this.platform = platform;
+        this.helperMethods = new BukkitHelper();
     }
 
     /**
@@ -578,6 +637,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     public final void onEnable() {
         logger.info("QuickShop " + javaPlugin.getFork());
+        this.menuHandler = new BukkitMenuHandler(javaPlugin, true);
         registerService();
         /* Check the running envs is support or not. */
         logger.info("Starting plugin self-test, please wait...");
