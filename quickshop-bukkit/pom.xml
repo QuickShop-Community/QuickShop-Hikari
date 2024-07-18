@@ -12,8 +12,8 @@
     </parent>
 
     <properties>
-        <tnml.version>1.5.0.1-SNAPSHOT-6</tnml.version>
-        <tnil.version>0.1.7.5-Pre-7</tnil.version>
+        <tnml.version>1.5.0.1-SNAPSHOT-11</tnml.version>
+        <tnil.version>0.1.7.6-Pre-9</tnil.version>
     </properties>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -184,7 +184,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.5</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
