@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.6</version>
+    <version>6.2.0.7</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -20,6 +20,11 @@
     </properties>
 
     <licenses>
+        <license>
+            <name>AGPL v3 License</name>
+            <url>https://www.gnu.org/licenses/</url>
+            <distribution>repo</distribution>
+        </license>
         <license>
             <name>GPL v3 License</name>
             <url>https://www.gnu.org/licenses/</url>

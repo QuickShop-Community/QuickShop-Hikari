@@ -337,7 +337,7 @@ public class ShopLoader implements SubPasteItem {
         private @Nullable ItemStack deserializeItem(@NotNull String itemConfig) {
             try {
                 return Util.deserialize(itemConfig);
-            } catch (InvalidConfigurationException e) {
+            } catch (Exception e) {
                 QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
                 Log.debug("Failed to load data to the ItemStack: " + itemConfig);
                 return null;

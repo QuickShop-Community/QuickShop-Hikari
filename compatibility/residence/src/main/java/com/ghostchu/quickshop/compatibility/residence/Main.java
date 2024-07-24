@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -22,6 +23,7 @@ public final class Main extends CompatibilityModule {
     private static final String CREATE_FLAG = "quickshop-create";
     private static final String TRADE_FLAG = "quickshop-trade";
     private boolean whitelist;
+    private boolean defaultTrade;
 
     @Override
     public void init() {
@@ -32,8 +34,14 @@ public final class Main extends CompatibilityModule {
             return;
         }
         whitelist = getConfig().getBoolean("whitelist-mode");
+        defaultTrade = getConfig().getBoolean("trade-default", false);
         FlagPermissions.addFlag(CREATE_FLAG);
         FlagPermissions.addFlag(TRADE_FLAG);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onJoin(final PlayerJoinEvent event) {
+
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -97,8 +105,8 @@ public final class Main extends CompatibilityModule {
             return;
         }
         event.getPurchaser().getBukkitPlayer().ifPresent(player -> {
-            if (!playerHas(residence.getPermissions(), player, TRADE_FLAG, false)) {
-                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, TRADE_FLAG, false)) {
+            if (!playerHas(residence.getPermissions(), player, TRADE_FLAG, defaultTrade)) {
+                if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, TRADE_FLAG, defaultTrade)) {
                     event.setCancelled(true, getApi().getTextManager().of(player, "addon.residence.trade-flag-denied").forLocale());
                 }
             }

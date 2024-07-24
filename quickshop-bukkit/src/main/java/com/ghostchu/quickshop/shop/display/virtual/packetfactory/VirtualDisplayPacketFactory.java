@@ -17,7 +17,6 @@ public interface VirtualDisplayPacketFactory {
     @NotNull
     PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack);
 
-    @NotNull
     PacketContainer createFakeItemVelocityPacket(int entityID);
 
     @NotNull

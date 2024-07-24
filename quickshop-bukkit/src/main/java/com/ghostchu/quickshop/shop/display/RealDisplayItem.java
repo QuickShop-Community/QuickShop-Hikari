@@ -147,7 +147,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
 
         boolean removed = false;
 
-        List<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
+        final List<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
 
         for (Entity entity : elist) {
             if (!(entity instanceof Item eItem)) {
@@ -226,6 +226,8 @@ public class RealDisplayItem extends AbstractDisplayItem {
             Log.debug("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
+
+        System.out.println("Spawn Display for Shop: " + shop.getShopId());
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         try {
             this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack, this::safeGuard);
