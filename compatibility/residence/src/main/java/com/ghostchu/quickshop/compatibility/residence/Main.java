@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -35,13 +34,9 @@ public final class Main extends CompatibilityModule {
         }
         whitelist = getConfig().getBoolean("whitelist-mode");
         defaultTrade = getConfig().getBoolean("trade-default", false);
+
         FlagPermissions.addFlag(CREATE_FLAG);
         FlagPermissions.addFlag(TRADE_FLAG);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onJoin(final PlayerJoinEvent event) {
-
     }
 
     @EventHandler(ignoreCancelled = true)

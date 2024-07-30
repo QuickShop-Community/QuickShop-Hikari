@@ -22,7 +22,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import net.tnemc.item.bukkit.BukkitCalculationsProvider;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -72,6 +74,25 @@ public class TNEItemMatcherImpl implements ItemMatcher {
    */
   @Override
   public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
+
+    if(original == null || tester == null) {
+      return false;
+    }
+
+    final int originalFish = fishData(original);
+    final int testerFish = fishData(tester);
+    if(originalFish > -1 || testerFish > -1) {
+      return originalFish == testerFish;
+    }
+
     return calc.itemsEqual(BukkitItemStack.locale(original), BukkitItemStack.locale(tester));
+  }
+
+  //TODO: Move this inside TNIL using the new updated code that will support PDC.
+  public Integer fishData(ItemStack stack) {
+    if(stack.getItemMeta() != null) {
+      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER, -1);
+    }
+    return -1;
   }
 }

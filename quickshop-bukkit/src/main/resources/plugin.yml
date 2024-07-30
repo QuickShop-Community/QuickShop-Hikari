@@ -18,6 +18,7 @@ softdepend:
   - CoinsEngine
   - Treasury
   - BetterEconomy # Depends on Treasury
+  - TheNewEconomy
 api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 #libraries:
