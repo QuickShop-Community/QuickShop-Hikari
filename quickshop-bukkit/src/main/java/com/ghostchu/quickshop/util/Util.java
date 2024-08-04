@@ -33,6 +33,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -459,23 +460,27 @@ public class Util {
                 return getFirstEnchantmentName(enchantmentStorageMeta);
             }
         }
-//        if (plugin.getConfig().getBoolean("shop.use-effect-for-potion-item") && itemStack.getType().name().endsWith("POTION")) {
-//            ItemMeta meta = itemStack.getItemMeta();
-//            if (meta instanceof PotionMeta potionMeta) {
-//                PotionData potionData = potionMeta.getBasePotionData();
-//                PotionEffectType potionEffectType = potionData.getType().getEffectType();
-//                if (potionEffectType != null) {
-//                    //Because the bukkit API limit, we can't get the actual effect level
-//                    return plugin.getPlatform().getTranslation(potionEffectType);
-//                } else if (potionMeta.hasCustomEffects()) {
-//                    PotionEffect potionEffect = potionMeta.getCustomEffects().get(0);
-//                    if (potionEffect != null) {
-//                        int level = potionEffect.getAmplifier();
-//                        return plugin.getPlatform().getTranslation(potionEffect.getType()).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level)));
-//                    }
-//                }
-//            }
-//        }
+
+        if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("MUSIC_DISC")) {
+
+            final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
+            final String[] split = working.split("_");
+            if(split.length >= 3) {
+
+                return Component.text(split[1] + " " + split[2]);
+            }
+        }
+
+        if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("SMITHING_TEMPLATE")) {
+
+            final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
+            final String[] split = working.split("_");
+            if(split.length >= 2) {
+
+                return Component.text(split[0] + " " + split[1]);
+            }
+        }
+
         if (itemStack.hasItemMeta() && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
             return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
         }
@@ -498,7 +503,7 @@ public class Util {
         if (!meta.hasStoredEnchants()) {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
-        Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
+        final Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
         Component name;
         try {
             name = plugin.getPlatform().getTranslation(entry.getKey());

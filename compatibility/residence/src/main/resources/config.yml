@@ -2,3 +2,5 @@
 whitelist-mode: false
 #Allow residence owner grant all shops full-control permission in their claim.
 allow-permission-override: true
+#Whether to apply the trade flag by default.
+trade-default: false

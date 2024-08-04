@@ -30,6 +30,7 @@ delete-shop-on-plot-unclaimed: true
 #0=standard
 #1=essentials
 #2=gringotts-towny (wip)
+#3=TheNewEconomy
 uuid-conversion: 0
 
 #Which checks does a player need to pass to create a shop?

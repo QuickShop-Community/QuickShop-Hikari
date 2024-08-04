@@ -683,7 +683,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
-     * Changes a shop type to Bu ying or Selling. Also updates the signs nearby.
+     * Changes a shop type to Buying or Selling. Also updates the signs nearby.
      *
      * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
      */

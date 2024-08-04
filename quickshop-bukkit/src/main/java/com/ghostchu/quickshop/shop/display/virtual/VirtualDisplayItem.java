@@ -39,8 +39,10 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
     VirtualDisplayItem(VirtualDisplayItemManager manager, VirtualDisplayPacketFactory packetFactory, Shop shop) {
         super(shop);
+
         this.entityID = manager.generateEntityId();
         this.manager = manager;
+        this.manager.shopEntities.put(shop.getShopId(), entityID);
         this.virtualDisplayPacketFactory = packetFactory;
         this.fakeItemSpawnPacket = virtualDisplayPacketFactory.createFakeItemSpawnPacket(entityID, getDisplayLocation());
         this.fakeItemMetaPacket = virtualDisplayPacketFactory.createFakeItemMetaPacket(entityID, getOriginalItemStack().clone());
@@ -94,8 +96,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
     @Override
     public void remove(boolean dontTouchWorld) {
+        sendPacketToAll(fakeItemDestroyPacket);
         if (isSpawned()) {
-            sendPacketToAll(fakeItemDestroyPacket);
             unload();
             isSpawned = false;
         }
@@ -165,9 +167,12 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
 
     public void sendFakeItem(@NotNull Player player) {
+        sendPacket(player, fakeItemDestroyPacket);
         sendPacket(player, fakeItemSpawnPacket);
         sendPacket(player, fakeItemMetaPacket);
-        sendPacket(player, fakeItemVelocityPacket);
+        if(fakeItemVelocityPacket != null) {
+            sendPacket(player, fakeItemVelocityPacket);
+        }
     }
 
     public void sendDestroyItem(@NotNull Player player) {
@@ -179,9 +184,12 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
 
     public void sendFakeItemToAll() {
+        sendPacketToAll(fakeItemDestroyPacket);
         sendPacketToAll(fakeItemSpawnPacket);
         sendPacketToAll(fakeItemMetaPacket);
-        sendPacketToAll(fakeItemVelocityPacket);
+        if(fakeItemVelocityPacket != null) {
+            sendPacketToAll(fakeItemVelocityPacket);
+        }
     }
 
     private void sendPacketToAll(@NotNull PacketContainer packet) {

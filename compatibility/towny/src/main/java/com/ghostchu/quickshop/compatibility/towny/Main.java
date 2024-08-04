@@ -15,6 +15,7 @@ import com.ghostchu.quickshop.compatibility.towny.compat.UuidConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.essentials.EssentialsConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.general.GeneralConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.gringotts.towny.GringottsTownyConversion;
+import com.ghostchu.quickshop.compatibility.towny.compat.tne.TNEConversion;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -132,6 +133,7 @@ public final class Main extends CompatibilityModule implements Listener {
         uuidConversion = switch (getConfig().getInt("uuid-conversion", 0)) {
             case 1 -> new EssentialsConversion();
             case 2 -> new GringottsTownyConversion();
+            case 3 -> new TNEConversion();
             default -> new GeneralConversion();
         };
         reflectChanges();

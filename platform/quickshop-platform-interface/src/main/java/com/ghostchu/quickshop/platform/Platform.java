@@ -34,8 +34,8 @@ public interface Platform {
 
     default @NotNull String getMinecraftVersion() {
         // 1.20.4-R0.1-SNAPSHOT
-        String versionString = Bukkit.getServer().getBukkitVersion();
-        Semver semver = new Semver(versionString, Semver.SemverType.LOOSE);
+        final String versionString = Bukkit.getServer().getBukkitVersion();
+        final Semver semver = new Semver(versionString, Semver.SemverType.LOOSE);
         if (semver.getPatch() == null) {
             return semver.getMajor() + "." + semver.getMinor();
         } else {
