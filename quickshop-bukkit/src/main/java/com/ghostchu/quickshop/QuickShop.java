@@ -92,6 +92,7 @@ import com.ghostchu.quickshop.util.envcheck.ResultReport;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import com.ghostchu.quickshop.util.matcher.item.TNEItemMatcherImpl;
 import com.ghostchu.quickshop.util.metric.MetricManager;
 import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -746,6 +747,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     private void loadItemMatcher() {
         ItemMatcher defItemMatcher = switch (getConfig().getInt("matcher.work-type")) {
+            case 3 -> new TNEItemMatcherImpl(this);
             case 1 -> new BukkitItemMatcherImpl(this);
             case 0 -> new QuickShopItemMatcherImpl(this);
             default -> throw new IllegalStateException("Unexpected value: " + getConfig().getInt("matcher.work-type"));
