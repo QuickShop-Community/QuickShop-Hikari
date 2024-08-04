@@ -227,7 +227,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
             return;
         }
 
-        System.out.println("Spawn Display for Shop: " + shop.getShopId());
+        Log.debug("Spawn Display for Shop: " + shop.getShopId());
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         try {
             this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack, this::safeGuard);
