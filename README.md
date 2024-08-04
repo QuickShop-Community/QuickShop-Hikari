@@ -198,6 +198,8 @@ You may opt-out by setting `disabled-metrics` to `true` in the config.yml.
 
 ## License
 
+Quickshop-Hikari is dual licensed under GPLv3 and AGPLv3. New contributions will follow the updated license of AGPLv3.
+
 [![fossaStatusImageLarge]][fossaStatusLarge]
 
 ## Developer API
