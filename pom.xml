@@ -114,6 +114,8 @@
                                 <artifactSet>
                                     <includes>
                                         <include>net.tnemc:*</include>
+                                        <include>com.tcoded:*</include>
+                                        <include>com.tcoded.folialib:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
@@ -139,6 +141,10 @@
                                     <relocation>
                                         <pattern>net.tnemc</pattern>
                                         <shadedPattern>${qs.relocation}.tne</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.tcoded.folialib</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>

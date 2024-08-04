@@ -124,21 +124,8 @@ public class QuickShopBukkit extends JavaPlugin {
             bootstrapLogger.warning("Warning! You have disabled libraries resolver! Make sure you added libraries in plugin.yml!");
             return;
         }
-//        LogAdapter adapter = new LogAdapter() {
-//            @Override
-//            public void log(@NotNull LogLevel logLevel, @Nullable String s) {
-//                // silent
-//            }
-//
-//            @Override
-//            public void log(@NotNull LogLevel logLevel, @Nullable String s, @Nullable Throwable throwable) {
-//                // silent
-//            }
-//        };
         LogAdapter adapter = new JDKLogAdapter(getLogger());
-//        if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
-//            adapter = new JDKLogAdapter(getLogger());
-//        }
+
         this.bukkitLibraryManager = new BukkitLibraryManager(quickShopBukkit, "lib", adapter);
         if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableMavenLocal"))) {
             this.bukkitLibraryManager.addMavenLocal();

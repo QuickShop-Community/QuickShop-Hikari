@@ -960,8 +960,20 @@ public class Util {
      *
      * @param runnable The runnable
      */
+    public static void regionThread(final Location location, @NotNull Runnable runnable) {
+        //QuickShop.folia().getImpl().runLater(runnable, 1);
+        QuickShop.folia().getImpl().runAtLocationLater(location, runnable, 1);
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
     public static void mainThreadRun(@NotNull Runnable runnable) {
-        QuickShop.folia().getImpl().runLater(runnable, 0);
+        QuickShop.folia().getImpl().runLater(runnable, 1);
     }
 
     /**
