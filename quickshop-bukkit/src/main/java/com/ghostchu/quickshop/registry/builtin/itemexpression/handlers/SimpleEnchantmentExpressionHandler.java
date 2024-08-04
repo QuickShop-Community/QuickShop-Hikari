@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,12 +63,23 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
             return false;
         }
 
-        int finalMinLevel = minLevel;
-        int level = stack.getEnchantmentLevel(enchantment);
+        int level = 0;
+        // This is required for enchantment books as they store enchantments differently for some reason.
+        // We'll check both stored enchantments and regular enchantments, as it is possible to "enchant"
+        // an enchanted book with an enchantment, rather than adding a stored enchantment.
+        // Some plugins may do this by accident.
+        if (stack.getItemMeta() instanceof EnchantmentStorageMeta meta) {
+            level = meta.getStoredEnchantLevel(enchantment);
+        }
+        if (level == 0) {
+            level = stack.getEnchantmentLevel(enchantment);
+        }
+
         if (level == 0) {
             return false;
         }
-        if (finalMinLevel != -1 && level < finalMinLevel) {
+
+        if (minLevel != -1 && level < minLevel) {
             return false;
         }
         //noinspection RedundantIfStatement

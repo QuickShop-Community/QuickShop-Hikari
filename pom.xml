@@ -16,7 +16,7 @@
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <reloc>com.ghostchu.quickshop.shade</reloc>
+        <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
     </properties>
 
     <licenses>
@@ -90,7 +90,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.5.3</version>
+                    <version>3.6.0</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -108,8 +108,7 @@
                                 <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <artifactSet>
                                     <includes>
-                                        <include>com.tcoded:*</include>
-                                        <include>com.tcoded.folialib:*</include>
+                                        <include>net.tnemc:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
@@ -123,8 +122,7 @@
                                         <!--                                        <include>org.apache.commons:commons-compress:*</include>-->
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
-                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*
-                                        </include>
+                                        <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-core:*</include>
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
@@ -134,34 +132,34 @@
                                 </artifactSet>
                                 <relocations>
                                     <relocation>
-                                        <pattern>com.tcoded.folialib</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
+                                        <pattern>net.tnemc</pattern>
+                                        <shadedPattern>${qs.relocation}.tne</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.io.papermc.lib.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>de.tr7zw.changeme.nbtapi</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi
+                                        <shadedPattern>${qs.relocation}.de.tr7zw.changeme.nbtapi
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>org.bstats</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.bstats</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.org.bstats</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>de.themoep.minedown.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.de.themoep.minedown.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.alessiodp.libby.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.alessiodp.libby.</shadedPattern>
+                                        <shadedPattern>${qs.relocation}.com.alessiodp.libby.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.ghostchu.lib.unofficial.com.alessiodp.libby.</pattern>
                                         <shadedPattern>
-                                            com.ghostchu.quickshop.shade.com.ghostchu.lib.unofficial.com.alessiodp.libby.
+                                            ${qs.relocation}.com.ghostchu.lib.unofficial.com.alessiodp.libby.
                                         </shadedPattern>
                                     </relocation>
                                     <!--                                    <relocation>-->
@@ -232,7 +230,7 @@
                 <plugin>
                     <groupId>io.github.git-commit-id</groupId>
                     <artifactId>git-commit-id-maven-plugin</artifactId>
-                    <version>5.0.0</version>
+                    <version>9.0.1</version>
                     <executions>
                         <execution>
                             <id>get-the-git-infos</id>
@@ -243,7 +241,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <useNativeGit>false</useNativeGit>
+                        <useNativeGit>true</useNativeGit>
                         <offline>true</offline>
                         <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                         <verbose>false</verbose>
@@ -251,7 +249,7 @@
                         <prefix>git</prefix>
                         <format>json</format>
                         <gitDescribe>
-                            <skip>false</skip>
+                            <skip>true</skip>
                             <always>false</always>
                             <dirty>-dirty</dirty>
                         </gitDescribe>
@@ -260,7 +258,7 @@
                 <plugin>
                     <groupId>io.takari.maven.plugins</groupId>
                     <artifactId>takari-lifecycle-plugin</artifactId>
-                    <version>2.1.5</version>
+                    <version>2.1.6</version>
                     <extensions>true</extensions>
                     <configuration>
                         <proc>proc</proc>
@@ -283,7 +281,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.16.2</version>
+                <version>2.17.1</version>
                 <configuration>
                     <generateBackupPoms>true</generateBackupPoms>
                 </configuration>
@@ -361,12 +359,6 @@
                 <artifactId>annotations</artifactId>
                 <version>24.1.0</version>
                 <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.tcoded</groupId>
-                <artifactId>FoliaLib</artifactId>
-                <version>0.3.4</version>
-                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

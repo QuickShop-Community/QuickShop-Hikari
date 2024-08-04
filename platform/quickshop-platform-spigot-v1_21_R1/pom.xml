@@ -19,6 +19,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>net.md-5</groupId>
                 <artifactId>specialsource-maven-plugin</artifactId>
@@ -33,7 +34,8 @@
                         <configuration>
                             <srgIn>org.spigotmc:minecraft-server:1.21-R0.1-SNAPSHOT:txt:maps-mojang</srgIn>
                             <reverse>true</reverse>
-                            <remappedDependencies>org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:jar:remapped-mojang</remappedDependencies>
+                            <remappedDependencies>org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:jar:remapped-mojang
+                            </remappedDependencies>
                             <remappedArtifactAttached>true</remappedArtifactAttached>
                             <remappedClassifierName>remapped-obf</remappedClassifierName>
                         </configuration>
@@ -49,11 +51,13 @@
                                 ${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar
                             </inputFile>
                             <srgIn>org.spigotmc:minecraft-server:1.21-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
-                            <remappedDependencies>org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:jar:remapped-obf</remappedDependencies>
+                            <remappedDependencies>org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:jar:remapped-obf
+                            </remappedDependencies>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!-- Modern Minecraft is Java 21... -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -68,7 +72,7 @@
             <plugin>
                 <groupId>io.takari.maven.plugins</groupId>
                 <artifactId>takari-lifecycle-plugin</artifactId>
-                <version>2.1.5</version>
+                <version>2.1.6</version>
                 <extensions>true</extensions>
                 <configuration>
                     <proc>proc</proc>
@@ -88,8 +92,8 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
         <repository>
             <id>CodeMC</id>
@@ -115,7 +119,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.12.4</version>
+            <version>2.13.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

@@ -39,31 +39,7 @@ public class GeoUtil {
         });
     }
 
-    /*private static long sendGetTest(String urlStr) {
-
-        try {
-            final HttpClient client = HttpClient.newBuilder()
-                    .connectTimeout(Duration.of(5, ChronoUnit.SECONDS))
-                    .followRedirects(HttpClient.Redirect.ALWAYS)
-                    .build();
-            final HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(urlStr))
-                    .timeout(Duration.of(5, ChronoUnit.SECONDS))
-                    .GET()
-                    .build();
-            final long time = System.currentTimeMillis();
-            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                return Long.MAX_VALUE;
-            }
-            return System.currentTimeMillis() - time;
-        } catch (Throwable e) {
-            return Long.MAX_VALUE;
-        }
-    }*/
-
     private static long sendGetTest(String urlStr) {
-
         HttpURLConnection connection = null;
         try {
             URL url = new URL(urlStr);
@@ -91,8 +67,8 @@ public class GeoUtil {
 
     @NotNull
     public static List<MavenCentralMirror> determineBestMirrorServer(Logger logger) {
-        final List<CompletableFuture<Void>> testEntry = new ArrayList<>();
-        final Map<MavenCentralMirror, Long> mirrorPingMap = new ConcurrentSkipListMap<>();
+        List<CompletableFuture<Void>> testEntry = new ArrayList<>();
+        Map<MavenCentralMirror, Long> mirrorPingMap = new ConcurrentSkipListMap<>();
         for (MavenCentralMirror value : MavenCentralMirror.values()) {
             testEntry.add(CompletableFuture.supplyAsync(() -> {
                 mirrorPingMap.put(value, sendGetTest(value.getTestUrl()));
@@ -100,7 +76,7 @@ public class GeoUtil {
             }));
         }
         testEntry.forEach(CompletableFuture::join);
-        final List<Map.Entry<MavenCentralMirror, Long>> list = new ArrayList<>(mirrorPingMap.entrySet());
+        List<Map.Entry<MavenCentralMirror, Long>> list = new ArrayList<>(mirrorPingMap.entrySet());
         list.sort(Map.Entry.comparingByValue());
         logger.info("Maven repository mirror test result:");
         list.forEach(e -> {

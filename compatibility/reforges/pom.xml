@@ -61,13 +61,13 @@
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>Reforges</artifactId>
-            <version>6.57.1</version>
+            <version>6.65.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>eco</artifactId>
-            <version>6.69.2</version>
+            <version>6.71.6</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
