@@ -566,18 +566,8 @@ public class Util {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         final Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        Component name;
-        try {
-            name = plugin.getPlatform().getTranslation(entry.getKey());
-        } catch (Throwable throwable) {
-            name = MsgUtil.setHandleFailedHover(null, Component.text(entry.getKey().getKey().getKey()));
-            plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
-        }
-        if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
-            return name;
-        } else {
-            return name.append(Component.text(" " + RomanNumber.toRoman(entry.getValue())));
-        }
+        Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+        return name;
     }
 
     public static int getItemTotalAmountsInMap(@NotNull Map<Integer, ItemStack> map) {
