@@ -87,12 +87,11 @@ public class SubCommand_Find implements CommandHandler<Player> {
             //Check distance
             if (distance <= maxDistance) {
                 //Collect valid shop that trading items we want
-                if (!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)) {
-                    if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
-                        if (plugin.getItemMarker().get(originLookFor) == null) {
-                            continue;
-                        }
-                    }
+                if (!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)
+                        && !shop.getItem().getType().name().toLowerCase().contains(lookFor)
+                        && !Util.findStringInList(Util.getEnchantsForItemStack(shop.getItem()), lookFor)
+                        && plugin.getItemMarker().get(originLookFor) == null) {
+                    continue;
                 }
                 if (excludeOutOfStock) {
                     if ((shop.isSelling() && shop.getRemainingStock() == 0) || (shop.isBuying() && shop.getRemainingSpace() == 0)) {

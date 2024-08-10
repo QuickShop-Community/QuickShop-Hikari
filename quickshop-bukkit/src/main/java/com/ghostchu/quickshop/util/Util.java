@@ -497,6 +497,55 @@ public class Util {
         return PlainTextComponentSerializer.plainText().serialize(component).isBlank();
     }
 
+    @NotNull
+    public static boolean findStringInComponent(@NotNull Component component, @NotNull String find) {
+        String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
+        return plainText.replace(' ', '_').contains(find.toLowerCase());
+    }
+
+    @NotNull
+    public static boolean findStringInList(@NotNull List<Component> components, @NotNull String find) {
+        for (Component name : components) {
+            if (findStringInComponent(name, find))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all enchants that can be found on an item stack
+     *
+     * @param itemStack The enchanted item
+     * @return The names of enchants contained on the enchanted item with levels
+     */
+    @NotNull
+    public static List<Component> getEnchantsForItemStack(@NotNull ItemStack itemStack) {
+        List<Component> enchants = new ArrayList<>();
+        if (!itemStack.hasItemMeta()) {
+            return enchants;
+        }
+
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+            for (Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
+                Component name;
+                try {
+                    name = plugin.getPlatform().getTranslation(entry.getKey());
+                } catch (Throwable throwable) {
+                    name = MsgUtil.setHandleFailedHover(null, Component.text(entry.getKey().getKey().getKey()));
+                    plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
+                }
+                if (entry.getValue() > 1) {
+                    name.append(Component.text(" " + RomanNumber.toRoman(entry.getValue())));
+                }
+                enchants.add(name);
+            }
+        }
+
+        return enchants;
+    }
+
     public static boolean useEnchantmentForEnchantedBook() {
         return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
