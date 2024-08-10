@@ -497,12 +497,26 @@ public class Util {
         return PlainTextComponentSerializer.plainText().serialize(component).isBlank();
     }
 
+    /**
+     * Find a string in a component
+     *
+     * @param component The component to check
+     * @param find The string to check for
+     * @return A boolean of whether the component contains the string
+     */
     @NotNull
     public static boolean findStringInComponent(@NotNull Component component, @NotNull String find) {
         String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
         return plainText.replace(' ', '_').contains(find.toLowerCase());
     }
 
+    /**
+     * Check for a string in a List of Components
+     *
+     * @param components A List<Component> of the components to check
+     * @param find The string to look for amongst the components
+     * @return A boolean of whether the string was found in the list of components
+     */
     @NotNull
     public static boolean findStringInList(@NotNull List<Component> components, @NotNull String find) {
         for (Component name : components) {
@@ -542,6 +556,13 @@ public class Util {
         return enchants;
     }
 
+    /**
+     * Take enchantment and level and turn the Name and Level into a Component
+     *
+     * @param enchantment The enchantment to get the name of
+     * @param level The numeric level of the enchantment
+     * @return A component with the name of the Enchantment and it's Level as Roman Numerals
+     */
     public static Component enchantmentDataToComponent(@NotNull Enchantment enchantment, @NotNull Integer level) {
         Component name;
         try {
