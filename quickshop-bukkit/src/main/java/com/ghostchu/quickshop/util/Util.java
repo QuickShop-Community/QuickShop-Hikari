@@ -506,7 +506,7 @@ public class Util {
      */
     @NotNull
     public static boolean findStringInComponent(@NotNull Component component, @NotNull String find) {
-        String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
+        final String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
         return plainText.replace(' ', '_').contains(find.toLowerCase());
     }
 
@@ -535,20 +535,20 @@ public class Util {
      */
     @NotNull
     public static List<Component> getEnchantsForItemStack(@NotNull ItemStack itemStack) {
-        List<Component> enchants = new ArrayList<>();
+        final List<Component> enchants = new ArrayList<>();
         if (!itemStack.hasItemMeta()) {
             return enchants;
         }
 
-        ItemMeta meta = itemStack.getItemMeta();
+        final ItemMeta meta = itemStack.getItemMeta();
         if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
             for (Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
-                Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
                 enchants.add(name);
             }
         } else {
             for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-                Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
                 enchants.add(name);
             }
         }
@@ -587,8 +587,7 @@ public class Util {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         final Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
-        return name;
+        return enchantmentDataToComponent(entry.getKey(), entry.getValue());
     }
 
     public static int getItemTotalAmountsInMap(@NotNull Map<Integer, ItemStack> map) {
