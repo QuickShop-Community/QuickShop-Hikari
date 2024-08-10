@@ -394,7 +394,7 @@ public abstract class AbstractShopManager implements ShopManager {
                 } else {
                     // optimize for performance
                     BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
-                    if (!(state instanceof InventoryHolder holder)) {
+                    if (!(state instanceof InventoryHolder)) {
                         return null;
                     }
                     @Nullable final Block half = Util.getSecondHalf(currentBlock);

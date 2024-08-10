@@ -179,7 +179,8 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isSelling()) {
-                    if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
+
+                    if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -196,7 +197,7 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isBuying()) {
-                    if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                    if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
