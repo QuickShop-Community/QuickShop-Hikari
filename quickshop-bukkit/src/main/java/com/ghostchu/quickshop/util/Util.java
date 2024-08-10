@@ -529,21 +529,31 @@ public class Util {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
             for (Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
-                Component name;
-                try {
-                    name = plugin.getPlatform().getTranslation(entry.getKey());
-                } catch (Throwable throwable) {
-                    name = MsgUtil.setHandleFailedHover(null, Component.text(entry.getKey().getKey().getKey()));
-                    plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
-                }
-                if (entry.getValue() > 1) {
-                    name.append(Component.text(" " + RomanNumber.toRoman(entry.getValue())));
-                }
+                Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                enchants.add(name);
+            }
+        } else {
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
                 enchants.add(name);
             }
         }
 
         return enchants;
+    }
+
+    public static Component enchantmentDataToComponent(@NotNull Enchantment enchantment, @NotNull Integer level) {
+        Component name;
+        try {
+            name = plugin.getPlatform().getTranslation(enchantment);
+        } catch (Throwable throwable) {
+            name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
+            plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
+        }
+        if (level > 1) {
+            name.append(Component.text(" " + RomanNumber.toRoman(level)));
+        }
+        return name;
     }
 
     public static boolean useEnchantmentForEnchantedBook() {
