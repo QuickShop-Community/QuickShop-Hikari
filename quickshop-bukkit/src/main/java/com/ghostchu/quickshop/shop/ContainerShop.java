@@ -315,7 +315,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void checkDisplay() {
         Util.ensureThread(false);
-        boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
+        final boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
         if (!displayStatus) {
             if (this.displayItem != null) {
                 this.displayItem.remove(false);
@@ -324,7 +324,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         if (this.displayItem == null) {
             try {
-                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
                 if (provider != null) {
                     this.displayItem = provider.provide(this);
                 } else {
