@@ -60,9 +60,8 @@ public class VirtualDisplayItemManager {
             case v1_19_R1 -> new v1_19_R1(plugin, this);
             case v1_19_R2, v1_19_R3, v1_20_R1 -> new v1_19_R2_TO_v1_20_R1(plugin, this);
             case v1_20_R2, v1_20_R3 -> new v1_20_R2_TO_v1_20_R3(plugin, this);
-            case v1_20_R4, v1_21_R1 -> new v1_21_R1(plugin, this);
-          default ->
-                    throw new IllegalStateException("Unsupported Virtual Display Minecraft version: " + plugin.getGameVersion());
+            //case v1_20_R4, v1_21_R1 -> new v1_21_R1(plugin, this);
+          default -> new v1_21_R1(plugin, this);
         };
         this.chunkSendingPacketAdapter = packetFactory.getChunkSendPacketAdapter();
         this.chunkUnloadingPacketAdapter = packetFactory.getChunkUnloadPacketAdapter();
