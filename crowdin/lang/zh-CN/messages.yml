@@ -684,7 +684,7 @@ transfer-ask: |-
 transferall-ask: |-
   <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-single-ask: |-
-  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。
