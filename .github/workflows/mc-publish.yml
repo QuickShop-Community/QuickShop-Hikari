@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -43,7 +43,7 @@ jobs:
             paper
             purpur
           game-versions: |
-            >=1.18.2 <=1.21
+            >=1.18.2 <=1.21.1
           game-version-filter: releases
           java: |
             17
