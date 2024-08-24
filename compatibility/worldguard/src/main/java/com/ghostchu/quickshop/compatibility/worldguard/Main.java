@@ -60,7 +60,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 Bukkit.getPluginManager().disablePlugin(this);
                 return;
             }
-            existing = registry.get("quickshophikari-reade");
+            existing = registry.get("quickshophikari-trade");
             if (existing instanceof StateFlag tradeFlag) {
                 this.tradeFlag = tradeFlag;
             } else {
