@@ -12,8 +12,8 @@
     </parent>
 
     <properties>
-        <tnml.version>1.5.0.1-SNAPSHOT-17</tnml.version>
-        <tnil.version>0.1.7.6-LEGACY-11</tnil.version>
+        <tnml.version>1.5.0.1-SNAPSHOT-19</tnml.version>
+        <tnil.version>0.1.7.6-LEGACY-13</tnil.version>
     </properties>
 
     <artifactId>quickshop-bukkit</artifactId>
