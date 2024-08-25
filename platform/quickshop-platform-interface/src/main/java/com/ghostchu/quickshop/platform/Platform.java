@@ -48,8 +48,9 @@ public interface Platform {
         if (!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             return null;
         }
-        NBTItem nbtItem = new NBTItem(stack);
-        String shopId = nbtItem.getString("shopId");
+
+        final NBTItem nbtItem = new NBTItem(stack);
+        final String shopId = nbtItem.getString("shopId");
         if (shopId == null || shopId.isEmpty() || shopId.isBlank()) {
             return null;
         }

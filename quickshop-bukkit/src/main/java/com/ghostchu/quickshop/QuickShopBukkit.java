@@ -252,7 +252,7 @@ public class QuickShopBukkit extends JavaPlugin {
                         case "v1_20_R3" -> new Spigot1203Platform(this);
                         case "v1_20_R4" -> new Spigot1205Platform(this);
                         case "v1_21_R1" -> new Spigot1210Platform(this);
-                        case "v1_21_1_R1" -> new Spigot1211Platform(this);
+                        case "v1_21_R2" -> new Spigot1211Platform(this);
                         default -> {
                             bootstrapLogger.warning("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
                             Bukkit.getPluginManager().disablePlugin(this);

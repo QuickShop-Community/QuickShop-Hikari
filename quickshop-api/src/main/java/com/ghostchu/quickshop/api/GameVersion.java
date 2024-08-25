@@ -64,6 +64,7 @@ public enum GameVersion {
      */
     @NotNull
     public static GameVersion get(@NotNull String nmsVersion) {
+
         for (GameVersion version : GameVersion.values()) {
             if (version.name().equals(nmsVersion)) {
                 return version;

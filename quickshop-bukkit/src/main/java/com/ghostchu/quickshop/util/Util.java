@@ -494,6 +494,86 @@ public class Util {
         return PlainTextComponentSerializer.plainText().serialize(component).isBlank();
     }
 
+    /**
+     * Find a string in a component
+     *
+     * @param component The component to check
+     * @param find The string to check for
+     * @return A boolean of whether the component contains the string
+     */
+    @NotNull
+    public static boolean findStringInComponent(@NotNull Component component, @NotNull String find) {
+        final String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
+        return plainText.replace(' ', '_').contains(find.toLowerCase());
+    }
+
+    /**
+     * Check for a string in a List of Components
+     *
+     * @param components A List<Component> of the components to check
+     * @param find The string to look for amongst the components
+     * @return A boolean of whether the string was found in the list of components
+     */
+    @NotNull
+    public static boolean findStringInList(@NotNull List<Component> components, @NotNull String find) {
+        for (Component name : components) {
+            if (findStringInComponent(name, find))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all enchants that can be found on an item stack
+     *
+     * @param itemStack The enchanted item
+     * @return The names of enchants contained on the enchanted item with levels
+     */
+    @NotNull
+    public static List<Component> getEnchantsForItemStack(@NotNull ItemStack itemStack) {
+        final List<Component> enchants = new ArrayList<>();
+        if (!itemStack.hasItemMeta()) {
+            return enchants;
+        }
+
+        final ItemMeta meta = itemStack.getItemMeta();
+        if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+            for (Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
+                final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                enchants.add(name);
+            }
+        } else {
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                enchants.add(name);
+            }
+        }
+
+        return enchants;
+    }
+
+    /**
+     * Take enchantment and level and turn the Name and Level into a Component
+     *
+     * @param enchantment The enchantment to get the name of
+     * @param level The numeric level of the enchantment
+     * @return A component with the name of the Enchantment and it's Level as Roman Numerals
+     */
+    public static Component enchantmentDataToComponent(@NotNull Enchantment enchantment, @NotNull Integer level) {
+        Component name;
+        try {
+            name = plugin.getPlatform().getTranslation(enchantment);
+        } catch (Throwable throwable) {
+            name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
+            plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
+        }
+        if (level > 1) {
+            name.append(Component.text(" " + RomanNumber.toRoman(level)));
+        }
+        return name;
+    }
+
     public static boolean useEnchantmentForEnchantedBook() {
         return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
@@ -504,18 +584,7 @@ public class Util {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         final Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        Component name;
-        try {
-            name = plugin.getPlatform().getTranslation(entry.getKey());
-        } catch (Throwable throwable) {
-            name = MsgUtil.setHandleFailedHover(null, Component.text(entry.getKey().getKey().getKey()));
-            plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
-        }
-        if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
-            return name;
-        } else {
-            return name.append(Component.text(" " + RomanNumber.toRoman(entry.getValue())));
-        }
+        return enchantmentDataToComponent(entry.getKey(), entry.getValue());
     }
 
     public static int getItemTotalAmountsInMap(@NotNull Map<Integer, ItemStack> map) {

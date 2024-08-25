@@ -158,7 +158,7 @@
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_21_1_R1</artifactId>
+            <artifactId>quickshop-platform-spigot-v1_21_R2</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
             <optional>true</optional>

@@ -52,7 +52,7 @@ quick-fill:
   header: '<yellow>您有多个名称为“<green>{0}</green>”的商店，选择其中一个继续：'
   entry-normal: ' <yellow>- <red>{0} <aqua>{1} <light_purple>'
   entry-cooperation: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果这不是预期结果，请尝试添加 <light_purple>{1} <gray> 到监听器黑名单中。配置指南：https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker#resolve-the-plugin-conflicting'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>附近的平均价格： <yellow>{0}'
 inventory-check-global-alert: "<red>[背包检查] <gray>警告！找到QuickShop悬浮物 <gold>{2}</gold> 在背包中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，这不应该发生，这通常意味着有人恶意利用漏洞来复制悬浮物。"
 digits-reach-the-limit: <red>您的价格中的小数点后位数超过上限。
@@ -684,7 +684,7 @@ transfer-ask: |-
 transferall-ask: |-
   <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-single-ask: |-
-  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。
@@ -1567,7 +1567,7 @@ about:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
     - "<aqua>版本 <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>构建 <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>开发者 <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>点击查看贡献者'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看贡献者]</click></hover></color></aqua>"
+    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>本地化成员 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>点击打开 Crowdin 翻译页面'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上帮助翻译]</click></hover></color></yellow>"
     - "<aqua>捐赠密钥 <yellow>>></yellow> <green>{6}</green></aqua>"
