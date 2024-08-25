@@ -63,7 +63,7 @@
 //            return;
 //        }
 //        // Delay 1 tick to allow chest merge
-//        Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
+//        QuickShop.folia().getImpl().runLater(() -> {
 //            BlockState state = placed.getState();
 //            if (state instanceof InventoryHolder holder) {
 //                if (holder.getInventory() instanceof DoubleChestInventory doubleChestInventory) {

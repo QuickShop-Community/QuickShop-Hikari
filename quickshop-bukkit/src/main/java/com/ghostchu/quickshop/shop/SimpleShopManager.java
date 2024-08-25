@@ -299,17 +299,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             plugin.text().of(p, "not-a-number", message).send();
             return;
         }
-        BlockState state = info.getLocation().getBlock().getState();
+
+        final BlockState state = info.getLocation().getBlock().getState();
         if (state instanceof InventoryHolder holder) {
             // Create the basic shop
             String symbolLink;
-            InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
+            final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
             if (manager instanceof BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
                 symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
             } else {
                 symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
             }
-            ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
+            final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
                     price, info.getItem(), createQUser, false,
                     ShopType.SELLING, new YamlConfiguration(), null, false,
                     null, plugin.getJavaPlugin().getName(),
@@ -672,7 +673,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         // Use from the main thread, because Bukkit hates life
         String finalMessage = message;
 
-        Util.mainThreadRun(() -> {
+        Util.regionThread(p.getLocation(), () -> {
             // They wanted to do something.
             Info info = getInteractiveManager().remove(p.getUniqueId());
             if (info == null) {

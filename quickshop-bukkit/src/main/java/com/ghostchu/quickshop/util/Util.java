@@ -105,11 +105,8 @@ public class Util {
             runnable.run();
             return;
         }
-        if (!Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin.getJavaPlugin(), runnable);
-        }
+
+        QuickShop.folia().getImpl().runLaterAsync(runnable, 0);
     }
 
     /**
@@ -1032,12 +1029,31 @@ public class Util {
      *
      * @param runnable The runnable
      */
+    public static void regionThread(final Location location, @NotNull Runnable runnable) {
+        //QuickShop.folia().getImpl().runLater(runnable, 1);
+        QuickShop.folia().getImpl().runAtLocationLater(location, runnable, 1);
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
     public static void mainThreadRun(@NotNull Runnable runnable) {
-        if (Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTask(plugin.getJavaPlugin(), runnable);
-        }
+        QuickShop.folia().getImpl().runLater(runnable, 1);
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
+    public static void mainThreadRun(@NotNull Runnable runnable, long delay) {
+        QuickShop.folia().getImpl().runLater(runnable, delay);
     }
 
     /**

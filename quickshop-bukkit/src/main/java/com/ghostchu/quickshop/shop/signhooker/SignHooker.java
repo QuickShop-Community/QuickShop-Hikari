@@ -62,7 +62,7 @@ public class SignHooker {
                 if (shops == null) {
                     return;
                 }
-                Bukkit.getScheduler().runTaskLater(PLUGIN.getJavaPlugin(), () -> shops.forEach((loc, shop) -> updatePerPlayerShopSign(player, loc, shop)), 2);
+                QuickShop.folia().getImpl().runLater(() -> shops.forEach((loc, shop) -> updatePerPlayerShopSign(player, loc, shop)), 2);
             }
         };
 

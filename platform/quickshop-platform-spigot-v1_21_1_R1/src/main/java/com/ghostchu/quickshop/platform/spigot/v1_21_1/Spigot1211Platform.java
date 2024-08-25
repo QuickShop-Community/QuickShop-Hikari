@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.platform.spigot.v1_20_4;
+package com.ghostchu.quickshop.platform.spigot.v1_21_1;
 
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
@@ -11,8 +11,8 @@ import net.minecraft.world.item.component.ItemLore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
-import org.bukkit.craftbukkit.v1_20_R4.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_21_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -24,9 +24,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-public class Spigot1205Platform extends AbstractSpigotPlatform implements Platform {
+public class Spigot1211Platform extends AbstractSpigotPlatform implements Platform {
 
-    public Spigot1205Platform(@NotNull Plugin plugin) {
+    public Spigot1211Platform(@NotNull Plugin plugin) {
         super(plugin);
     }
 
