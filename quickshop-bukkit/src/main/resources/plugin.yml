@@ -1,5 +1,7 @@
 name: QuickShop-Hikari
 main: com.ghostchu.quickshop.QuickShopBukkit
+#Has to be included for folia support
+folia-supported: true
 softdepend:
   - Vault
   - Reserve

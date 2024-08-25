@@ -4,10 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,13 +17,13 @@ import java.util.Calendar;
  *
  * @author Ghost_chu
  */
-public class CalendarWatcher extends BukkitRunnable {
+public class CalendarWatcher implements Runnable {
     @Getter
     private final File calendarFile = new File(Util.getCacheFolder(), "calendar.cache");
     @Getter
     private final YamlConfiguration configuration;
     private final QuickShop plugin;
-    private BukkitTask task;
+    private WrappedTask task;
 
     public CalendarWatcher(QuickShop plugin) {
         this.plugin = plugin;
@@ -114,7 +113,7 @@ public class CalendarWatcher extends BukkitRunnable {
     }
 
     public void start() {
-        task = this.runTaskTimerAsynchronously(plugin.getJavaPlugin(), 20, 20);
+        task = QuickShop.folia().getImpl().runTimerAsync(this, 20, 20);
     }
 
     public void stop() {

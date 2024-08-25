@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.compatibility.ecoenchants;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
@@ -9,7 +10,6 @@ import com.willfp.ecoenchants.EcoEnchantsPlugin;
 import com.willfp.ecoenchants.display.EnchantDisplay;
 import com.willfp.ecoenchants.enchant.EcoEnchant;
 import com.willfp.ecoenchants.enchant.EcoEnchants;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -32,7 +32,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if ("EcoEnchants".equalsIgnoreCase(event.getPlugin().getName())
                 || "libreforge".equalsIgnoreCase(event.getPlugin().getName())
                 || "eco".equalsIgnoreCase(event.getPlugin().getName()))
-            Bukkit.getScheduler().runTaskLater(this, this::initEcoEnchantEnchantmentTranslationKeys, 1);
+            QuickShop.folia().getImpl().runLater(this::initEcoEnchantEnchantmentTranslationKeys, 1);
     }
 
     @Override

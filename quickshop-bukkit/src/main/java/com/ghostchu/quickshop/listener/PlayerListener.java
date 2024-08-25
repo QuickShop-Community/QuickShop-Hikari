@@ -179,7 +179,8 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isSelling()) {
-                    if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
+
+                    if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -196,7 +197,7 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isBuying()) {
-                    if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                    if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -647,7 +648,7 @@ public class PlayerListener extends AbstractQSListener {
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin.getJavaPlugin(), () -> MsgUtil.flush(e.getPlayer()), delay);
+            QuickShop.folia().getImpl().runLaterAsync(() -> MsgUtil.flush(e.getPlayer()), delay);
         }
     }
 
@@ -657,7 +658,7 @@ public class PlayerListener extends AbstractQSListener {
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || PackageUtil.parsePackageProperly("april-rickandroll").asBoolean()) {
-                Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), (() -> plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
+                QuickShop.folia().getImpl().runLater((() -> plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
             }
         }
     }

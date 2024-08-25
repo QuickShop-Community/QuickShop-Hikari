@@ -10,10 +10,10 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.WarningSender;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -22,9 +22,10 @@ import java.util.Objects;
  * Check the shops after server booted up, make sure shop can correct self-deleted when container
  * lost.
  */
-public class OngoingFeeWatcher extends BukkitRunnable {
+public class OngoingFeeWatcher implements Runnable {
     private final QuickShop plugin;
     private final WarningSender warningSender;
+    WrappedTask task = null;
 
     public OngoingFeeWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -95,6 +96,20 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         }
     }
 
+    public void start(int i, int i2) {
+        task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
+    }
+
+    public void stop() {
+        try {
+            if (task != null && !task.isCancelled()) {
+                task.cancel();
+            }
+        } catch (IllegalStateException ex) {
+            Log.debug("Task already cancelled " + ex.getMessage());
+        }
+    }
+
     /**
      * Remove shop and send alert to shop owner
      *
@@ -111,5 +126,4 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 + " Z:"
                 + shop.getLocation().getBlockZ())).forLocale());
     }
-
 }

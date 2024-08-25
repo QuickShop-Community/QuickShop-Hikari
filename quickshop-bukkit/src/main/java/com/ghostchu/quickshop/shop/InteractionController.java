@@ -28,7 +28,7 @@ public class InteractionController implements Reloadable, SubPasteItem {
     }
 
     public void loadInteractionConfig() {
-        File configFile = new File(plugin.getDataFolder(), "interaction.yml");
+        final File configFile = new File(plugin.getDataFolder(), "interaction.yml");
         if (!configFile.exists()) {
             try {
                 Files.copy(plugin.getJavaPlugin().getResource("interaction.yml"), configFile.toPath());
@@ -36,7 +36,7 @@ public class InteractionController implements Reloadable, SubPasteItem {
                 plugin.logger().warn("Failed to copy interaction.yml to plugin folder!", e);
             }
         }
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        final FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         behaviorMap.clear();
         for (Interaction value : Interaction.values()) {
             try {

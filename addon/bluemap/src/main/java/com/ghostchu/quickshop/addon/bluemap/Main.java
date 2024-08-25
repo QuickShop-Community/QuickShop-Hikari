@@ -10,7 +10,6 @@ import de.bluecolored.bluemap.api.markers.MarkerSet;
 import de.bluecolored.bluemap.api.markers.POIMarker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -44,9 +43,9 @@ public final class Main extends JavaPlugin implements Listener {
             getLogger().info("Found BlueMap loaded! Hooking!");
             this.blueMapAPI = blueMapAPI;
             createMarkerSet();
-            Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::updateAllMarkers, 1, getConfig().getInt("refresh-per-seconds") * 20L);
+            QuickShop.folia().getImpl().runTimerAsync(this::updateAllMarkers, 1, getConfig().getInt("refresh-per-seconds") * 20L);
         });
-        BlueMapAPI.onDisable(api -> Bukkit.getScheduler().cancelTasks(this));
+        BlueMapAPI.onDisable(api -> QuickShop.folia().getImpl().cancelAllTasks());
     }
 
     @NotNull

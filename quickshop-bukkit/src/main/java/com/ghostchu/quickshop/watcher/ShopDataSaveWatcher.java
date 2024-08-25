@@ -4,13 +4,15 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.logger.Log;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ShopDataSaveWatcher extends BukkitRunnable {
+public class ShopDataSaveWatcher implements Runnable {
     private final QuickShop plugin;
     private CompletableFuture<Void> saveTask;
+
+    WrappedTask task = null;
 
     public ShopDataSaveWatcher(QuickShop plugin) {
         this.plugin = plugin;
@@ -35,5 +37,19 @@ public class ShopDataSaveWatcher extends BukkitRunnable {
                     plugin.logger().warn("Error while saving shops, all failed shops will attempt save again in next time", e);
                     return null;
                 });
+    }
+
+    public void start(int i, long i2) {
+        task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
+    }
+
+    public void stop() {
+        try {
+            if (task != null && !task.isCancelled()) {
+                task.cancel();
+            }
+        } catch (IllegalStateException ex) {
+            Log.debug("Task already cancelled " + ex.getMessage());
+        }
     }
 }
