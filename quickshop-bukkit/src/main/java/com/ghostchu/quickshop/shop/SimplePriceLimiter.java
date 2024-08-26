@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
@@ -28,7 +29,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -186,6 +191,50 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
     }
 
+    /**
+     * Check the price restriction rules
+     *
+     * @param user    the user
+     * @param itemStack the item to check
+     * @param currency  the currency
+     * @param price     the price
+     * @return the result
+     */
+    /*
+    Use item stack to reserve the extent ability
+     */
+    @Override
+    @NotNull
+    public PriceLimiterCheckResult check(@NotNull QUser user, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
+        if (Double.isInfinite(price) || Double.isNaN(price)) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
+        }
+        if (wholeNumberOnly) {
+            try {
+                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
+            } catch (ArithmeticException exception) {
+                Log.debug(exception.getMessage());
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
+            }
+        }
+        for (RuleSet rule : rules.values()) {
+            if (!rule.isApply(user, itemStack, currency)) {
+                continue;
+            }
+            if (rule.isAllowed(price)) {
+                continue;
+            }
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
+        }
+        if (undefinedMin != -1 && price < undefinedMin) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
+        }
+        if (undefinedMax != -1 && price > undefinedMax) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
+        }
+        return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
+    }
+
     @Override
     public ReloadResult reloadModule() throws Exception {
         loadConfiguration();
@@ -264,6 +313,31 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
          */
         public boolean isApply(@NotNull CommandSender sender, @NotNull ItemStack item, @Nullable String currency) {
             if (QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission)) {
+                return false;
+            }
+            if (currency != null) {
+                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches())) {
+                    return false;
+                }
+            }
+            for (Function<ItemStack, Boolean> fun : items) {
+                if (fun.apply(item)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Check if the rule is allowed to apply to the given price.
+         *
+         * @param user   the user
+         * @param item     the item
+         * @param currency the currency
+         * @return true if the rule is allowed to apply
+         */
+        public boolean isApply(@NotNull QUser user, @NotNull ItemStack item, @Nullable String currency) {
+            if (QuickShop.getPermissionManager().hasPermission(user, this.bypassPermission)) {
                 return false;
             }
             if (currency != null) {

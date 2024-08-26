@@ -3,7 +3,20 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.ShopClickEvent;
+import com.ghostchu.quickshop.api.event.ShopInventoryCalculateEvent;
+import com.ghostchu.quickshop.api.event.ShopInventoryChangedEvent;
+import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopLoadEvent;
+import com.ghostchu.quickshop.api.event.ShopOwnerNameGettingEvent;
+import com.ghostchu.quickshop.api.event.ShopPlayerGroupSetEvent;
+import com.ghostchu.quickshop.api.event.ShopSignUpdateEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxAccountChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxAccountGettingEvent;
+import com.ghostchu.quickshop.api.event.ShopTypeChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopUnloadEvent;
+import com.ghostchu.quickshop.api.event.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -34,7 +47,11 @@ import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -52,7 +69,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -776,11 +802,11 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public @NotNull List<Sign> getSigns() {
         Util.ensureThread(false);
-        List<Sign> signs = new ArrayList<>(4);
+        final List<Sign> signs = new ArrayList<>(4);
         if (this.getLocation().getWorld() == null) {
             return Collections.emptyList();
         }
-        Block[] blocks = new Block[4];
+        final Block[] blocks = new Block[4];
         blocks[0] = location.getBlock().getRelative(BlockFace.EAST);
         blocks[1] = location.getBlock().getRelative(BlockFace.NORTH);
         blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
@@ -789,7 +815,7 @@ public class ContainerShop implements Shop, Reloadable {
             if (b == null) {
                 continue;
             }
-            BlockState state = PaperLib.getBlockState(b, false).getState();
+            final BlockState state = PaperLib.getBlockState(b, false).getState();
             if (!(state instanceof Sign sign)) {
                 continue;
             }

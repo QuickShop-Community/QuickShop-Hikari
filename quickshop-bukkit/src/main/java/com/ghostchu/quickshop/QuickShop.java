@@ -30,6 +30,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferOwnership;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -53,6 +54,9 @@ import com.ghostchu.quickshop.listener.PlayerListener;
 import com.ghostchu.quickshop.listener.ShopProtectionListener;
 import com.ghostchu.quickshop.listener.WorldListener;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
+import com.ghostchu.quickshop.menu.ShopHistoryMenu;
+import com.ghostchu.quickshop.menu.ShopKeeperMenu;
+import com.ghostchu.quickshop.menu.ShopStaffMenu;
 import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
@@ -81,6 +85,7 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.PermissionChecker;
 import com.ghostchu.quickshop.util.ReflectFactory;
+import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
 import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
@@ -109,11 +114,17 @@ import com.ghostchu.quickshop.watcher.UpdateWatcher;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitHelper;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.HelperMethods;
 import net.tnemc.menu.bukkit.BukkitMenuHandler;
 import net.tnemc.menu.core.MenuHandler;
@@ -146,8 +157,15 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
+
+    public static final Cache<UUID, ShopUtil.PendingTransferTask> taskCache = CacheBuilder
+            .newBuilder()
+            .expireAfterWrite(60, TimeUnit.SECONDS)
+            .build();
+
     /**
      * If running environment test
      */
@@ -645,6 +663,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.folia = new FoliaLib(javaPlugin);
 
         this.menuHandler = new BukkitMenuHandler(javaPlugin, true);
+
+        MenuManager.instance().addMenu(new ShopHistoryMenu());
+        MenuManager.instance().addMenu(new ShopKeeperMenu());
+        MenuManager.instance().addMenu(new ShopStaffMenu());
+
         registerService();
         /* Check the running envs is support or not. */
         logger.info("Starting plugin self-test, please wait...");
@@ -1143,6 +1166,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         return Reloadable.super.reloadModule();
     }
 
+    public AbstractItemStack<?> stack() {
+        if(PaperLib.isPaper()) {
+            return new PaperItemStack();
+        }
+        return new BukkitItemStack();
+    }
+
     public @NotNull TextManager text() {
         return this.textManager;
     }
@@ -1155,6 +1185,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @NotNull
     public String getFork() {
         return javaPlugin.getFork();
+    }
+
+    public static MenuHandler menu() {
+        return instance.menuHandler;
     }
 
     /**

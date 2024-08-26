@@ -5,7 +5,11 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PasteManager {
     private final Map<Plugin, List<WeakReference<SubPasteItem>>> registry = new LinkedHashMap<>();

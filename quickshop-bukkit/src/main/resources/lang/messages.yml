@@ -1766,6 +1766,51 @@ delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? C
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 suggest-wait: "<green>Please wait... Calculating recommend price."
+
+gui:
+  shared:
+    previous-page: "Previous Page"
+    next-page: "Next Page"
+    previous-menu: "Previous Menu"
+  player:
+    select:
+      - "<yellow>Click to select this player.</yellow>"
+  staff:
+    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
+    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
+    add-staff: "<green>Add Staff Member</green>"
+    head-icon:
+      display: "<aqua>{0}</aqua>"
+      lore:
+        - "<yellow>Left click to remove staff member.</yellow>"
+        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>to this staff member.</yellow>"
+  keeper:
+    title: "Shop Keeper"
+    change-icon:
+      display: "<bold><green>Change Price</green></bold>"
+      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      lore:
+        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+    mode-icon:
+      display: "<bold><green>Change Mode</green></bold>"
+      lore:
+        - "<white>Click to toggle between buying/selling mode.</white>"
+        - "<white>Current Mode: </white><red>{0}</red>"
+        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+    staff-icon:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      lore:
+        - "<white>Click to manage your shop's staff.</white>"
+    remove-icon:
+      display: "<bold><red>Delete Shop</red></bold>"
+      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      lore:
+        - "<white>Click to delete your shop.</white>"
+        - "<grey>You can also break the sign/chest.</grey>"
+
 history:
   shop:
     gui-title: "View purchase history"
