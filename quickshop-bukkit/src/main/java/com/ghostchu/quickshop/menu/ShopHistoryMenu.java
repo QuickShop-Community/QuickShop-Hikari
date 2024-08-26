@@ -18,7 +18,9 @@ package com.ghostchu.quickshop.menu;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.menu.history.MainPage;
 import net.tnemc.menu.core.Menu;
+import net.tnemc.menu.core.Page;
 
 /**
  * ShopHistoryMenu
@@ -28,11 +30,19 @@ import net.tnemc.menu.core.Menu;
  */
 public class ShopHistoryMenu extends Menu {
 
+  public static final String SHOPS_DATA = "SHOPS_LIST";
+  public static final String SHOPS_PAGE = "SHOPS_PAGE_ID";
+
   public ShopHistoryMenu() {
 
     this.rows = 4;
     this.name = "qs:history";
 
     setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "history.shop.gui-title").legacy()));
+
+    final Page main = new Page(1);
+    final MainPage mainPageOpen = new MainPage(this.name, this.name, 1, 1, SHOPS_PAGE, this.rows, "history.shop.log-icon-description-with-store-name");
+    main.setOpen(mainPageOpen::handle);
+    addPage(main);
   }
 }

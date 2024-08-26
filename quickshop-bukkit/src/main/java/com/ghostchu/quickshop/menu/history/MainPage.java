@@ -18,12 +18,22 @@ package com.ghostchu.quickshop.menu.history;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;
+import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.builder.IconBuilder;
@@ -36,17 +46,23 @@ import net.tnemc.menu.core.icon.action.impl.RunnableAction;
 import net.tnemc.menu.core.icon.action.impl.SwitchPageAction;
 import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.ghostchu.quickshop.menu.ShopStaffMenu.STAFF_ADD;
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getList;
-import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getShop;
+import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getPlayer;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.legacy;
 
 /**
@@ -86,46 +102,120 @@ public class MainPage {
     final Optional<MenuViewer> viewer = callback.getPlayer().viewer();
     if(viewer.isPresent()) {
 
+      final Optional<Object> shopsData = viewer.get().findData(SHOPS_DATA);
+      final Player player = Bukkit.getPlayer(viewer.get().uuid());
+      if(shopsData.isPresent() && player != null) {
 
-      final Optional<Shop> shop = getShop(viewer.get());
-      if(shop.isPresent()) {
-
-        final List<UUID> staffs = shop.get().playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);
+        final ProxiedLocale locale = QuickShop.getInstance().getTextManager().findRelativeLanguages(player);
 
         callback.getPage().getIcons().clear();
         final UUID id = viewer.get().uuid();
-        final Player viewerPlayer = Bukkit.getPlayer(id);
-        if(viewerPlayer != null) {
-          final int offset = 9;
-          final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
-          final int items = (menuRows - 1) * offset;
-          final int start = ((page - 1) * offset);
 
-          final int maxPages = (staffs.size() / items) + (((staffs.size() % items) > 0)? 1 : 0);
+        final int offset = 9;
+        final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
+        final int items = (menuRows - 1) * offset;
+        final int start = ((page - 1) * offset);
+
+        Util.asyncThreadRun(()->{
+
+          final List<Shop> shops = (ArrayList<Shop>)shopsData.get();
+          final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
+          List<ShopHistory.ShopHistoryRecord> queryResult = null;
+          ShopHistory.ShopSummary summary = null;
+
+          try {
+            queryResult = shopHistory.query(page, items);
+            summary = shopHistory.generateSummary().join();
+            Log.debug(summary.toString());
+
+          } catch(Exception e) {
+            QuickShop.getInstance().logger().error("Couldn't query the shop history for shops {}.", shopHistory.shops(), e);
+            viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+          }
+
+          if(queryResult == null) {
+            return;
+          }
+
+          final int maxPages = (queryResult.size() / items) + (((queryResult.size() % items) > 0)? 1 : 0);
 
           final int prev = (page <= 1)? maxPages : page - 1;
           final int next = (page >= maxPages)? 1 : page + 1;
+
+          //header icon
+          final Shop shop = shops.get(0);
+          final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
+          final String shopName = shop.getShopName() == null? world + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
+          if(shops.size() > 1) {
+
+            final QUser owner = shop.getOwner();
+            SkullProfile ownerProfile = null;
+            if(owner.isRealPlayer() && owner.getUniqueId() != null) {
+
+              ownerProfile = new SkullProfile();
+              ownerProfile.setUuid(owner.getUniqueId());
+            }
+
+            callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
+                    .display(LegacyComponentSerializer.legacySection().deserialize(shopName))
+                    .lore(getList(id, "history.shop.header-icon-description",
+                            shop.getShopType().name(),
+                            shop.getOwner().getDisplay(),
+                            Util.getItemStackName(shop.getItem()),
+                            shop.getPrice(), shop.getShopStackingAmount(),
+                            shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
+                                    + ", " + shop.getLocation().getBlockY() + ", "
+                                    + shop.getLocation().getBlockZ()))
+                    .profile(ownerProfile))
+                    .withActions(new SwitchPageAction(returnMenu, returnPage))
+                    .withSlot(4)
+                    .build());
+          } else {
+
+            callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("CHEST", 1)
+                    .display(get(id, "history.shop.header-icon-multiple-shop", shops.size())))
+                    .withSlot(4)
+                    .build());
+          }
+
+          if(summary != null) {
+
+            //summary icon
+            final List<Component> description = new ArrayList<>();
+            description.add(get(id, "history.shop.total-unique-purchasers", locale.getNumberFormat().format(summary.uniquePurchasers())));
+            description.add(get(id, "history.shop.recent-purchases", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h())));
+            description.add(get(id, "history.shop.recent-purchases", days(id, 3), locale.getNumberFormat().format(summary.recentPurchases3d())));
+            description.add(get(id, "history.shop.recent-purchases", days(id, 7), locale.getNumberFormat().format(summary.recentPurchases7d())));
+            description.add(get(id, "history.shop.recent-purchases", days(id, 30), locale.getNumberFormat().format(summary.recentPurchases30d())));
+            description.add(get(id, "history.shop.total-purchases", locale.getNumberFormat().format(summary.totalPurchases())));
+            description.add(get(id, "history.shop.recent-purchase-balance", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchasesBalance24h())));
+            description.add(get(id, "history.shop.recent-purchase-balance", days(id, 3), locale.getNumberFormat().format(summary.recentPurchasesBalance3d())));
+            description.add(get(id, "history.shop.recent-purchase-balance", days(id, 7), locale.getNumberFormat().format(summary.recentPurchasesBalance7d())));
+            description.add(get(id, "history.shop.recent-purchase-balance", days(id, 30), locale.getNumberFormat().format(summary.recentPurchasesBalance30d())));
+            description.add(get(id, "history.shop.total-balances", locale.getNumberFormat().format(summary.totalBalance())));
+
+            callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("OAK_SIGN", 1)
+                    .display(get(id, "history.shop.summary-icon-title"))
+                    .lore(description))
+                    .withSlot(0)
+                    .build());
+          }
+
 
           if(maxPages > 1) {
 
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
                     .display(get(id, "gui.shared.previous-page")))
                     .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
-                    .withSlot(0)
+                    .withSlot(3)
                     .build());
 
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
                     .display(get(id, "gui.shared.next-page")))
                     .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
-                    .withSlot(8)
+                    .withSlot(5)
                     .build());
           }
-
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                  .display(get(id, "gui.staff.add-staff")))
-                  .withActions(new SwitchPageAction(menuName, STAFF_ADD))
-                  .withSlot(2)
-                  .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("BARRIER", 1)
                   .display(get(id, "gui.shared.previous-menu")))
@@ -134,9 +224,9 @@ public class MainPage {
                   .build());
 
           int i = 0;
-          for(final UUID uuid : staffs) {
-
-            final Optional<OfflinePlayer> player = QuickShopPage.getPlayer(uuid);
+          for(final ShopHistory.ShopHistoryRecord record : queryResult) {
+            final String userName = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), record.buyer()).getDisplay();
+            final DataRecord dataRecord = QuickShop.getInstance().getDatabaseHelper().getDataRecord(record.dataId()).join();
 
             if(i < start) {
 
@@ -146,65 +236,77 @@ public class MainPage {
             }
             if(i >= (start + items)) break;
 
-            SkullProfile profile = null;
+            if(dataRecord == null) continue;
+            int max = 64;
+            Component itemName;
             try {
-
-              if(player.isPresent() && player.get().hasPlayedBefore()) {
-                profile = new SkullProfile();
-
-                profile.setUuid(uuid);
+              ItemStack historyItem = Util.deserialize(dataRecord.getItem());
+              if(historyItem == null) {
+                historyItem = new ItemStack(Material.STONE);
+                final ItemMeta meta = historyItem.getItemMeta();
+                if(meta != null) {
+                  meta.setDisplayName("Failed to deserialize item");
+                  historyItem.setItemMeta(meta);
+                }
               }
+              itemName = Util.getItemStackName(historyItem);
+              max = historyItem.getMaxStackSize();
+            } catch(InvalidConfigurationException e) {
+              itemName = get(id, "internal-error");
+              QuickShop.getInstance().logger().error("Failed to deserialize itemstack {}", dataRecord.getItem(), e);
+            }
 
-            } catch(Exception ignore) {}
+            final Shop shop1 = shopHistory.shopsMapping().get(record.shopId());
+            if(shop1 == null) {
+              i++;
+              continue;
+            }
 
-            final String name = (player.isPresent() && player.get().getName() != null)? player.get().getName() : uuid.toString();
-            callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                    .display(get(id, "gui.staff.head-icon.display", name))
-                    .lore(getList(id, iconLore))
-                    .profile(profile))
-                    .withActions(new ChatAction((message->{
+            final List<Component> lore = getList(id, "history.shop.log-icon-description-with-store-name",
+                    shopName,
+                    userName,
+                    itemName, record.amount(),
+                    record.money(),
+                    record.tax());
 
-                      if(!message.getMessage().isEmpty()) {
+            final String timeFormat = QuickShop.getInstance().text().of(player, "timeunit.std-format").plain();
+            final SimpleDateFormat format = new SimpleDateFormat(timeFormat);
+            AbstractItemStack<ItemStack> stack = new BukkitItemStack();
 
-                        if(message.getMessage().equalsIgnoreCase("confirm")) {
+            if(shops.size() == 1) {
+              stack = stack.of("PLAYER_HEAD", 1)
+                      .display(get(id, "history.shop.log-icon-title",
+                              format.format(record.date())))
+                      .lore(lore);
 
-                          shop.get().setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
-                          QuickShop.getInstance().text().of(id, "shop-staff-deleted", name).send();
-                          viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
-                          return true;
-                        }
-                        return true;
-                      }
-                      message.getPlayer().message(legacy(id, "gui.staff.confirm-remove", name));
-                      return false;
-                    }), ActionType.LEFT_CLICK), new RunnableAction((run)->run.player().message(legacy(id, "gui.staff.confirm-remove", name)), ActionType.LEFT_CLICK))
-                    .withActions(new ChatAction((message->{
+              final Optional<OfflinePlayer> offline = getPlayer(record.buyer());
+              if(offline.isPresent() && offline.get().hasPlayedBefore()) {
 
-                      if(!message.getMessage().isEmpty()) {
+                final SkullProfile profile = new SkullProfile();
+                profile.setUuid(record.buyer());
+                stack = stack.profile(profile);
+              }
+            } else {
+              stack = stack.of(shop.getItem().clone());
+            }
+            stack = stack.amount(Math.min(max, record.amount()));
+            stack = stack.lore(lore);
+            stack = stack.display(get(id, "history.shop.log-icon-title", format.format(record.date())));
 
-                        if(message.getMessage().equalsIgnoreCase("confirm")) {
-                          if(shop.get().playerAuthorize(id, BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
-
-                            Util.mainThreadRun(() ->ShopUtil.transferRequest(id, uuid, name, shop.get()));
-                          } else {
-
-                            QuickShop.getInstance().text().of(id, "no-permission").send();
-                          }
-                          viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
-                          return true;
-                        }
-                        return true;
-                      }
-                      message.getPlayer().message(legacy(id, "gui.staff.confirm-transfer", name));
-                      return false;
-                    }), ActionType.RIGHT_CLICK), new RunnableAction((run)->run.player().message(legacy(id, "gui.staff.confirm-transfer", name)), ActionType.RIGHT_CLICK))
-                    .withSlot(offset + (i - start))
-                    .build());
+            callback.getPage().addIcon(new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
             i++;
           }
-        }
+        });
       }
     }
+  }
+
+  private Component hours(final UUID id, final int hours) {
+    return get(id, "timeunit.hours", hours);
+  }
+
+  private Component days(final UUID id, final int days) {
+    return get(id, "timeunit.days", days);
   }
 }

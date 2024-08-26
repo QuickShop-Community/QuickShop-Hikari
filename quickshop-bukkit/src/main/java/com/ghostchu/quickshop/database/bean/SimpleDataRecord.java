@@ -80,7 +80,7 @@ public class SimpleDataRecord implements DataRecord {
 
     @NotNull
     public Map<String, Object> generateParams() {
-        Map<String, Object> map = new LinkedHashMap<>();
+        final Map<String, Object> map = new LinkedHashMap<>();
         map.put("owner", owner.serialize());
         map.put("item", item);
         map.put("name", name);

@@ -65,7 +65,7 @@ public class ShopHistory {
 
     private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
         return CompletableFuture.supplyAsync(() -> {
-            LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
+            final LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
             String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
                     "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")  GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
             SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
@@ -77,7 +77,7 @@ public class ShopHistory {
                 mappingPreparedStatement(ps, 3);
                 perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", n=" + n + ", from=" + from + ", to=" + to);
                 @Cleanup
-                ResultSet set = ps.executeQuery();
+                final ResultSet set = ps.executeQuery();
                 while (set.next()) {
                     orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
                 }
@@ -347,5 +347,13 @@ public class ShopHistory {
     public record ShopHistoryRecord(Timestamp date, long shopId, long dataId, UUID buyer,
                                     ShopOperationEnum shopType, int amount, double money, double tax
     ) {
+    }
+
+    public List<Shop> shops() {
+        return shops;
+    }
+
+    public Map<Long, Shop> shopsMapping() {
+        return shopsMapping;
     }
 }
