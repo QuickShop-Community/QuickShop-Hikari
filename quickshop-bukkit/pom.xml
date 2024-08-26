@@ -421,7 +421,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <scope>compile</scope>
-            <version>1.26.2</version>
+            <version>1.27.1</version>
         </dependency>
         <dependency>
             <groupId>com.tcoded</groupId>
