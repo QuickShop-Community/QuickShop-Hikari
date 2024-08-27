@@ -113,7 +113,7 @@ public class MainPage extends QuickShopPage {
                   message.getPlayer().message(legacy(id, enter, amount));
 
                   return false;
-                }))
+                }), new RunnableAction(click->new RunnableAction((run)->run.player().message(legacy(id, "gui.trade.custom.multiple", amount)))))
                 .withSlot(35).build());
 
         //64, 16, 8, 4, 2, 1
