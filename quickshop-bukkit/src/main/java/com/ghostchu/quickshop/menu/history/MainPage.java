@@ -125,7 +125,7 @@ public class MainPage {
         final Shop shop = shops.get(0);
         final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
         final String shopName = shop.getShopName() == null? world + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
-        if(shops.size() > 1) {
+        if(shops.size() == 1) {
 
           final QUser owner = shop.getOwner();
           SkullProfile ownerProfile = null;
@@ -194,13 +194,15 @@ public class MainPage {
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                  .display(get(id, "gui.shared.previous-page")))
+                  .display(get(id, "gui.shared.previous-page"))
+                  .lore(List.of(get(id, "history.shop.current-page", page))))
                   .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                   .withSlot(3)
                   .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
-                  .display(get(id, "gui.shared.next-page")))
+                  .display(get(id, "gui.shared.next-page"))
+                  .lore(List.of(get(id, "history.shop.current-page", page))))
                   .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                   .withSlot(5)
                   .build());
@@ -257,7 +259,7 @@ public class MainPage {
           AbstractItemStack<ItemStack> stack = new BukkitItemStack();
 
           if(shops.size() == 1) {
-            stack = stack.of("PLAYER_HEAD", 1)
+            stack = stack.of("PLAYER_HEAD", Math.min(max, record.amount()))
                     .display(get(id, "history.shop.log-icon-title",
                             format.format(record.date())))
                     .lore(lore);
@@ -270,9 +272,8 @@ public class MainPage {
               stack = stack.profile(profile);
             }
           } else {
-            stack = stack.of(shop.getItem().clone());
+            stack = stack.of(shop.getItem().getType().getKey().toString(), Math.min(max, record.amount()));
           }
-          stack = stack.amount(Math.min(max, record.amount()));
           stack = stack.lore(lore);
           stack = stack.display(get(id, "history.shop.log-icon-title", format.format(record.date())));
 
