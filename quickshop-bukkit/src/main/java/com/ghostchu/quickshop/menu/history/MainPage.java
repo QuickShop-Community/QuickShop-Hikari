@@ -223,6 +223,7 @@ public class MainPage {
 
           if(dataRecord == null) continue;
           int max = 64;
+          String type = "STONE";
           Component itemName;
           try {
             ItemStack historyItem = Util.deserialize(dataRecord.getItem());
@@ -234,17 +235,12 @@ public class MainPage {
                 historyItem.setItemMeta(meta);
               }
             }
+            type = historyItem.getType().getKey().getKey();
             itemName = Util.getItemStackName(historyItem);
             max = historyItem.getMaxStackSize();
           } catch(InvalidConfigurationException e) {
             itemName = get(id, "internal-error");
             QuickShop.getInstance().logger().error("Failed to deserialize itemstack {}", dataRecord.getItem(), e);
-          }
-
-          final Shop shop1 = shopHistory.shopsMapping().get(record.shopId());
-          if(shop1 == null) {
-            i++;
-            continue;
           }
 
           final List<Component> lore = getList(id, "history.shop.log-icon-description-with-store-name",
@@ -272,7 +268,7 @@ public class MainPage {
               stack = stack.profile(profile);
             }
           } else {
-            stack = stack.of(shop.getItem().getType().getKey().toString(), Math.min(max, record.amount()));
+            stack = stack.of(type, Math.min(max, record.amount()));
           }
           stack = stack.lore(lore);
           stack = stack.display(get(id, "history.shop.log-icon-title", format.format(record.date())));

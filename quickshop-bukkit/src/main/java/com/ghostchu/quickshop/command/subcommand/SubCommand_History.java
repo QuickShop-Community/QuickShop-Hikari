@@ -107,6 +107,7 @@ public class SubCommand_History implements CommandHandler<Player> {
                 });
 
             } catch(Exception e) {
+                MenuManager.instance().removeViewer(sender.getUniqueId());
                 plugin.text().of(sender.getUniqueId(), "internal-error", sender.getUniqueId()).send();
                 QuickShop.getInstance().logger().error("Couldn't query the shop history for shops {}.", shopHistory.shops(), e);
             }
