@@ -153,13 +153,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
+
+    public static Queue<UUID> inShop = new ConcurrentLinkedQueue<>();
 
     public static final Cache<UUID, ShopUtil.PendingTransferTask> taskCache = CacheBuilder
             .newBuilder()

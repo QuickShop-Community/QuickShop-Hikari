@@ -118,7 +118,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         rateLimit.add(e.getPlayer().getUniqueId());
 
-        Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
+        final Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
 
         if (shopSearched.getKey() == null && shopSearched.getValue() == ClickType.AIR) {
             return;
@@ -648,8 +648,14 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
+        final UUID id = e.getPlayer().getUniqueId();
+
+        if(MenuManager.instance().inMenu(id) || !QuickShop.inShop.contains(id)) {
+            return;
+        }
+
         try {
-            Location location = e.getInventory().getLocation();
+            final Location location = e.getInventory().getLocation();
             if (location == null) {
                 return; /// ignored as workaround, GH-303
             }
@@ -664,6 +670,8 @@ public class PlayerListener extends AbstractQSListener {
             }
         } catch (NullPointerException ignored) {
         }
+
+        QuickShop.inShop.remove(id);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

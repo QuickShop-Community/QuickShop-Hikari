@@ -112,7 +112,6 @@ public class MainPage {
         final int start = ((page - 1) * offset);
 
         final List<Shop> shops = (ArrayList<Shop>)shopsData.get();
-        final ShopHistory shopHistory = new ShopHistory(QuickShop.getInstance(), shops);
         final List<ShopHistory.ShopHistoryRecord> queryResult = (List<ShopHistory.ShopHistoryRecord>)historyData.get();
         final ShopHistory.ShopSummary summary = (ShopHistory.ShopSummary)summaryData.get();
 
@@ -157,39 +156,36 @@ public class MainPage {
                   .build());
         }
 
-        if(summary != null) {
+        //summary icon
+        final List<Component> description = new ArrayList<>();
+        description.add(get(id, "history.shop.total-unique-purchasers", locale.getNumberFormat().format(summary.uniquePurchasers())));
+        description.add(get(id, "history.shop.recent-purchases", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h())));
+        description.add(get(id, "history.shop.recent-purchases", days(id, 3), locale.getNumberFormat().format(summary.recentPurchases3d())));
+        description.add(get(id, "history.shop.recent-purchases", days(id, 7), locale.getNumberFormat().format(summary.recentPurchases7d())));
+        description.add(get(id, "history.shop.recent-purchases", days(id, 30), locale.getNumberFormat().format(summary.recentPurchases30d())));
+        description.add(get(id, "history.shop.total-purchases", locale.getNumberFormat().format(summary.totalPurchases())));
+        description.add(get(id, "history.shop.recent-purchase-balance", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchasesBalance24h())));
+        description.add(get(id, "history.shop.recent-purchase-balance", days(id, 3), locale.getNumberFormat().format(summary.recentPurchasesBalance3d())));
+        description.add(get(id, "history.shop.recent-purchase-balance", days(id, 7), locale.getNumberFormat().format(summary.recentPurchasesBalance7d())));
+        description.add(get(id, "history.shop.recent-purchase-balance", days(id, 30), locale.getNumberFormat().format(summary.recentPurchasesBalance30d())));
+        description.add(get(id, "history.shop.total-balances", locale.getNumberFormat().format(summary.totalBalance())));
 
-          //summary icon
-          final List<Component> description = new ArrayList<>();
-          description.add(get(id, "history.shop.total-unique-purchasers", locale.getNumberFormat().format(summary.uniquePurchasers())));
-          description.add(get(id, "history.shop.recent-purchases", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h())));
-          description.add(get(id, "history.shop.recent-purchases", days(id, 3), locale.getNumberFormat().format(summary.recentPurchases3d())));
-          description.add(get(id, "history.shop.recent-purchases", days(id, 7), locale.getNumberFormat().format(summary.recentPurchases7d())));
-          description.add(get(id, "history.shop.recent-purchases", days(id, 30), locale.getNumberFormat().format(summary.recentPurchases30d())));
-          description.add(get(id, "history.shop.total-purchases", locale.getNumberFormat().format(summary.totalPurchases())));
-          description.add(get(id, "history.shop.recent-purchase-balance", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchasesBalance24h())));
-          description.add(get(id, "history.shop.recent-purchase-balance", days(id, 3), locale.getNumberFormat().format(summary.recentPurchasesBalance3d())));
-          description.add(get(id, "history.shop.recent-purchase-balance", days(id, 7), locale.getNumberFormat().format(summary.recentPurchasesBalance7d())));
-          description.add(get(id, "history.shop.recent-purchase-balance", days(id, 30), locale.getNumberFormat().format(summary.recentPurchasesBalance30d())));
-          description.add(get(id, "history.shop.total-balances", locale.getNumberFormat().format(summary.totalBalance())));
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("OAK_SIGN", 1)
+                .display(get(id, "history.shop.summary-icon-title"))
+                .lore(description))
+                .withSlot(0)
+                .build());
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("OAK_SIGN", 1)
-                  .display(get(id, "history.shop.summary-icon-title"))
-                  .lore(description))
-                  .withSlot(0)
-                  .build());
-
-          final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
-          for(Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
-            valuableDescription.add(get(id, "history.shop.top-n-valuable-customers-entry",
-                    QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
-                            entry.getKey()).getDisplay(), entry.getValue()));
-          }
-
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("DIAMOND", 1)
-                  .display(get(id, "history.shop.top-n-valuable-customers-title", summary.valuableCustomers().size()))
-                  .lore(valuableDescription)).withSlot(8).build());
+        final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
+        for(Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
+          valuableDescription.add(get(id, "history.shop.top-n-valuable-customers-entry",
+                  QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
+                          entry.getKey()).getDisplay(), entry.getValue()));
         }
+
+        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("DIAMOND", 1)
+                .display(get(id, "history.shop.top-n-valuable-customers-title", summary.valuableCustomers().size()))
+                .lore(valuableDescription)).withSlot(8).build());
 
         if(maxPages > 1) {
 

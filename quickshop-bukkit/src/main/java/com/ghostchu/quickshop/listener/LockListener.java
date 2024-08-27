@@ -110,6 +110,8 @@ public class LockListener extends AbstractProtectionListener {
             plugin.text().of(p, "that-is-locked").send();
             e.setCancelled(true);
         }
+
+        QuickShop.inShop.add(p.getUniqueId());
     }
 
     /*

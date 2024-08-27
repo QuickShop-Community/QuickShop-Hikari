@@ -386,7 +386,8 @@ public abstract class AbstractShopManager implements ShopManager {
 
         // failed, get attached shop
         if (shop == null) {
-            Block block = loc.getBlock();
+
+            final Block block = loc.getBlock();
             if (!Util.isShoppables(block.getType())) {
                 return null;
             }
