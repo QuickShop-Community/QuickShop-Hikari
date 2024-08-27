@@ -290,29 +290,31 @@ public class ShopHistory {
     }
 
 
-    public List<ShopHistoryRecord> query(int page, int pageSize) throws SQLException {
+    public List<ShopHistoryRecord> query() throws SQLException {
         Util.ensureThread(true);
-        List<ShopHistoryRecord> historyRecords = new ArrayList<>(pageSize);
-        String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC LIMIT " + (page - 1) * pageSize + "," + pageSize;
+        final List<ShopHistoryRecord> historyRecords = new ArrayList<>();
+        //String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC LIMIT " + (page - 1) * pageSize + "," + pageSize;
+        String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC";
         SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
         try (PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
              Connection connection = plugin.getSqlManager().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL)) {
             mappingPreparedStatement(ps, 1);
-            perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", page=" + page + ", pageSize=" + pageSize);
+            perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
             try (ResultSet set = ps.executeQuery()) {
                 while (set.next()) {
                     if (!isValidSummaryRecordType(set.getString("type"))) {
                         continue;
                     }
-                    Timestamp date = set.getTimestamp("time");
-                    long shopId = set.getLong("shop");
-                    long dataId = set.getLong("data");
-                    UUID buyer = UUID.fromString(set.getString("buyer"));
-                    ShopOperationEnum shopType = ShopOperationEnum.valueOf(set.getString("type"));
-                    int amount = set.getInt("amount");
-                    double money = set.getDouble("money");
-                    double tax = set.getDouble("tax");
+
+                    final Timestamp date = set.getTimestamp("time");
+                    final long shopId = set.getLong("shop");
+                    final long dataId = set.getLong("data");
+                    final UUID buyer = UUID.fromString(set.getString("buyer"));
+                    final ShopOperationEnum shopType = ShopOperationEnum.valueOf(set.getString("type"));
+                    final int amount = set.getInt("amount");
+                    final double money = set.getDouble("money");
+                    final double tax = set.getDouble("tax");
                     historyRecords.add(new ShopHistoryRecord(date, shopId, dataId, buyer, shopType, amount, money, tax));
                 }
             }
