@@ -37,7 +37,7 @@ public class ShopHistoryMenu extends Menu {
 
   public ShopHistoryMenu() {
 
-    this.rows = 4;
+    this.rows = 6;
     this.name = "qs:history";
 
     setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "history.shop.gui-title").legacy()));
