@@ -429,6 +429,28 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isSelling()) {
             return false;
         }
+
+        final AbstractEconomy eco = plugin.getEconomy();
+        int arg;
+        if (all) {
+            arg = sellingShopAllCalc(eco, shop, p);
+        } else {
+            arg = shop.getShopStackingAmount();
+        }
+
+        if (arg == 0) {
+            return true;
+        }
+        return buyFromShop(p, shop, arg, direct, all);
+    }
+
+    public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, int arg, boolean direct, boolean all) {
+        if (shop == null) {
+            return false;
+        }
+        if (!shop.isSelling()) {
+            return false;
+        }
         if (!plugin.perm().hasPermission(p, "quickshop.use")) {
             return false;
         }
@@ -458,15 +480,6 @@ public class PlayerListener extends AbstractQSListener {
                     plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
                 }
             } else {
-                int arg;
-                if (all) {
-                    arg = sellingShopAllCalc(eco, shop, p);
-                } else {
-                    arg = shop.getShopStackingAmount();
-                }
-                if (arg == 0) {
-                    return true;
-                }
                 plugin.getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }

@@ -103,11 +103,6 @@ public class MainPage extends QuickShopPage {
                 .withSlot(10).build());
 
         //Mode Toggle Icon
-        /*open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                .display(get(id, "gui.keeper.mode-icon.display"))
-                .lore(getList(id, "gui.keeper.mode-icon.lore", shop.get().getShopType().name())))
-                .withSlot(12).build());*/
-
         final AbstractItemStack<?> buyingStack = QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
                 .display(get(id, "gui.keeper.mode-icon.display"))
                 .lore(getList(id, "gui.keeper.mode-icon.lore", "SELLING", "BUYING"));

@@ -1769,9 +1769,9 @@ suggest-wait: "<green>Please wait... Calculating recommend price."
 
 gui:
   shared:
-    previous-page: "Previous Page"
-    next-page: "Next Page"
-    previous-menu: "Previous Menu"
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    previous-menu: "<white>Previous Menu</white>"
   player:
     select:
       - "<yellow>Click to select this player.</yellow>"
@@ -1785,6 +1785,32 @@ gui:
         - "<yellow>Left click to remove staff member.</yellow>"
         - "<yellow>Right click to transfer ownership</yellow>"
         - "<yellow>to this staff member.</yellow>"
+  trade:
+    title: "Shop Browser"
+    custom:
+      display: "<bold><blue>Custom Order</blue></bold>"
+      lore-buy:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to buy.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+        - "<white>Stock: <bold><red>{1}</red></bold>"
+      lore-sell:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to sell.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+        - "<white>You Have: <bold><red>{1}</red></bold>"
+      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+    quantity:
+      display-buy: "<bold><green>Buy {0}</green></bold>"
+      display-sell: "<bold><green>Sell {0}</green></bold>"
+      lore:
+        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
+        - "<white>Total: </white><bold><green>{2}</green></bold>"
   keeper:
     title: "Shop Keeper"
     change-icon:

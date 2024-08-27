@@ -17,7 +17,22 @@ package com.ghostchu.quickshop.menu.trade;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.menu.core.builder.IconBuilder;
+import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
+import net.tnemc.menu.core.icon.action.impl.ChatAction;
+import net.tnemc.menu.core.icon.action.impl.RunnableAction;
+import net.tnemc.menu.core.viewer.MenuViewer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * MainPage
@@ -29,5 +44,110 @@ public class MainPage extends QuickShopPage {
 
   public MainPage() {
     super(1);
+
+    setOpen(this::handle);
+  }
+
+  public void handle(final PageOpenCallback open) {
+
+    open.getPage().getIcons().clear();
+
+    final UUID id = open.getPlayer().identifier();
+
+    final Optional<MenuViewer> viewer = open.getPlayer().viewer();
+    if(viewer.isPresent()) {
+
+      final Optional<Shop> shop = getShop(viewer.get());
+      final Player player = Bukkit.getPlayer(id);
+      if(shop.isPresent() && player != null) {
+
+        final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
+
+        //Set up our borders
+        final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of("WHITE_STAINED_GLASS_PANE", 1));
+        open.getPage().setRow(1, borderBuilder);
+        open.getPage().setRow(5, borderBuilder);
+
+        final ItemStack shopItem = shop.get().getItem();
+        final int amount = shopItem.getAmount();
+        final int stock = shop.get().getRemainingStock();
+        String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
+        if(!shop.get().isBuying()) {
+          //TODO: Calculate items in player's inventory.
+        }
+
+        open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(13).build());
+
+        final String lore = (shop.get().isBuying())? "gui.trade.custom.lore-buy" : "gui.trade.custom.lore-sell";
+        final String enter = (shop.get().isBuying())? "gui.trade.custom.enter-buy" : "gui.trade.custom.enter-sell";
+        open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PAPER", 1)
+                .display(get(id, "gui.trade.custom.display"))
+                .lore(getList(id, lore, amount, stockString)))
+                .withActions(new ChatAction((message)->{
+
+                  if(!message.getMessage().isEmpty()) {
+
+                    try {
+
+                      final int quantity = Integer.parseInt(message.getMessage());
+
+                      if(quantity == 0) {
+                        return true;
+                      }
+
+                      if(!shop.get().isUnlimited() && quantity > stock) {
+                        message.getPlayer().message(legacy(id, "gui.trade.custom.stock"));
+                        return false;
+                      }
+
+                      if((quantity % amount) > 0) {
+                        message.getPlayer().message(legacy(id, "gui.trade.custom.multiple", amount));
+                        return false;
+                      }
+
+                      //TODO: Transaction
+                      return true;
+
+                    } catch(NumberFormatException ignore) {}
+                  }
+                  message.getPlayer().message(legacy(id, enter, amount));
+
+                  return false;
+                }))
+                .withSlot(35).build());
+
+        //64, 16, 8, 4, 2, 1
+        final int[] quantities = new int[] {
+                1, 2, 4, 8, 16, 64
+        };
+
+        final int[] quantitySlots = new int[] {
+                27, 28, 29, 30, 31, 32
+        };
+
+        final String display = (shop.get().isBuying())? "gui.trade.quantity.display-buy" : "gui.trade.quantity.display-sell";
+
+        for(int i = 0; i < quantities.length; i++) {
+
+          final int quantity = quantities[i];
+          final int slot = quantitySlots[i];
+          final int adjustedAmount = (amount * quantity);
+
+          open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", adjustedAmount)
+                  .display(get(id, display, "x" + adjustedAmount))
+                  .lore(getList(id, "gui.trade.quantity.lore", eco.format(shop.get().getPrice(),
+                                  shop.get().getLocation().getWorld(),
+                                  shop.get().getCurrency()),
+                          amount,
+                          eco.format((adjustedAmount * shop.get().getPrice()),
+                                  shop.get().getLocation().getWorld(),
+                                  shop.get().getCurrency()))))
+                  .withActions(new RunnableAction((click->{
+                    //TODO: Transaction
+                  })))
+                  .withSlot(slot).build());
+        }
+      }
+    }
   }
 }
