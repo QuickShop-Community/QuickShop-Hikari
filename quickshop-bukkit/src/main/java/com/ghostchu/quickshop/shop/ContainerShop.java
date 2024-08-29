@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -33,8 +34,6 @@ import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.shop.display.DisplayEntityDisplayItem;
-import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -111,7 +110,7 @@ public class ContainerShop implements Shop, Reloadable {
     private ItemStack originalItem;
     @Nullable
     @EqualsAndHashCode.Exclude
-    private AbstractDisplayItem displayItem;
+    private AbstractDisplayItem displayItem = null;
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
     @EqualsAndHashCode.Exclude
@@ -341,7 +340,8 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void checkDisplay() {
         Util.ensureThread(false);
-        final boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
+        boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
+
         if (!displayStatus) {
             if (this.displayItem != null) {
                 this.displayItem.remove(false);
@@ -351,42 +351,50 @@ public class ContainerShop implements Shop, Reloadable {
         if (this.displayItem == null) {
             try {
                 final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getVirtualDisplayItemManager() == null) {
+                    plugin.logger().warn("Using invalid display provider.");
+                    return;
+                }
+
                 if (provider != null) {
                     this.displayItem = provider.provide(this);
                 } else {
-                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
-                        case VIRTUALITEM -> {
-                            if (plugin.getVirtualDisplayItemManager() != null) {
-                                yield plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
-                            } else {
-                                yield new RealDisplayItem(this);
-                            }
+
+                    if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+
+                        if (plugin.getVirtualDisplayItemManager() != null) {
+                            this.displayItem = plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
                         }
-                        case ENTITY_DISPLAY -> new DisplayEntityDisplayItem(this);
-                        default -> new RealDisplayItem(this);
-                    };
+                    }
+                }
+
+                if(this.displayItem == null) {
+                    plugin.logger().warn("Using invalid display provider.");
+                    return;
                 }
             } catch (Throwable anyError) {
                 plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
                 return;
             }
         }
-        if (!this.displayItem.isSpawned()) {
-            /* Not spawned yet. */
-            this.displayItem.spawn();
-        } else {
-            /* If not spawned, we didn't need check these, only check them when we need. */
-            if (this.displayItem.checkDisplayNeedRegen()) {
-                this.displayItem.fixDisplayNeedRegen();
+        if(this.displayItem != null) {
+            if (!this.displayItem.isSpawned()) {
+                /* Not spawned yet. */
+                this.displayItem.spawn();
             } else {
-                /* If display was regened, we didn't need check it moved, performance! */
-                if (this.displayItem.checkDisplayIsMoved()) {
-                    this.displayItem.fixDisplayMoved();
+                /* If not spawned, we didn't need check these, only check them when we need. */
+                if (this.displayItem.checkDisplayNeedRegen()) {
+                    this.displayItem.fixDisplayNeedRegen();
+                } else {
+                    /* If display was regened, we didn't need check it moved, performance! */
+                    if (this.displayItem.checkDisplayIsMoved()) {
+                        this.displayItem.fixDisplayMoved();
+                    }
                 }
             }
+            /* Dupe is always need check, if enabled display */
+            this.displayItem.removeDupe();
         }
-        /* Dupe is always need check, if enabled display */
-        this.displayItem.removeDupe();
     }
 
     @Override

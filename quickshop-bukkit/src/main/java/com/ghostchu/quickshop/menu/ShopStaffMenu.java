@@ -17,8 +17,8 @@ package com.ghostchu.quickshop.menu;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.menu.staff.PlayerSelectionPage;
 import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
+import com.ghostchu.quickshop.menu.staff.PlayerSelectionPage;
 import com.ghostchu.quickshop.menu.staff.StaffSelectionPage;
 import net.tnemc.menu.core.Page;
 

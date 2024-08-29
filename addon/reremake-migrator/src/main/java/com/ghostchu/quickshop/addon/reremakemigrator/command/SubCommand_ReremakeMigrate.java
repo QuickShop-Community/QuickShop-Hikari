@@ -2,7 +2,11 @@ package com.ghostchu.quickshop.addon.reremakemigrator.command;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
-import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.*;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ConfigMigrate;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.MigrateComponent;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ShopLogsMigrate;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.ShopMigrate;
+import com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent.TranslationMigrateComponent;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.ProgressMonitor;

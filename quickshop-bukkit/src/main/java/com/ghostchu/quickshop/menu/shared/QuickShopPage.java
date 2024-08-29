@@ -45,12 +45,7 @@ public class QuickShopPage extends Page {
 
   public static Optional<OfflinePlayer> getPlayer(final UUID uuid) {
 
-    for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-      if(player.getUniqueId().equals(uuid)) {
-        return Optional.of(player);
-      }
-    }
-    return Optional.empty();
+    return Optional.of(Bukkit.getOfflinePlayer(uuid));
   }
 
   public static Optional<Shop> getShop(final MenuViewer player) {

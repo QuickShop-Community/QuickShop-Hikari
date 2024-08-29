@@ -1,6 +1,10 @@
 package com.ghostchu.quickshop.common.util;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class QuickExecutor {
     private static ExecutorService HIKARICP_EXECUTOR;

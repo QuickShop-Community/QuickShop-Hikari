@@ -2,7 +2,12 @@ package com.ghostchu.quickshop.addon.plan;
 
 import com.djrapitops.plan.extension.CallEvents;
 import com.djrapitops.plan.extension.DataExtension;
-import com.djrapitops.plan.extension.annotation.*;
+import com.djrapitops.plan.extension.annotation.PluginInfo;
+import com.djrapitops.plan.extension.annotation.StringProvider;
+import com.djrapitops.plan.extension.annotation.Tab;
+import com.djrapitops.plan.extension.annotation.TabInfo;
+import com.djrapitops.plan.extension.annotation.TabOrder;
+import com.djrapitops.plan.extension.annotation.TableProvider;
 import com.djrapitops.plan.extension.icon.Color;
 import com.djrapitops.plan.extension.icon.Family;
 import com.djrapitops.plan.extension.icon.Icon;

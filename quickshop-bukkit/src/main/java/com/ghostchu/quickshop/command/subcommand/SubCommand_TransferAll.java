@@ -16,18 +16,15 @@ package com.ghostchu.quickshop.command.subcommand;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,8 +32,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static com.ghostchu.quickshop.QuickShop.taskCache;
 

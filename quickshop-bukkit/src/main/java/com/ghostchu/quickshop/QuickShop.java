@@ -30,7 +30,6 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
-import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferOwnership;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -130,6 +129,8 @@ import net.tnemc.item.providers.HelperMethods;
 import net.tnemc.menu.bukkit.BukkitMenuHandler;
 import net.tnemc.menu.core.MenuHandler;
 import net.tnemc.menu.core.manager.MenuManager;
+import net.tnemc.menu.folia.FoliaMenuHandler;
+import net.tnemc.menu.paper.PaperMenuHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -164,7 +165,7 @@ import java.util.concurrent.TimeUnit;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
 
-    public static Queue<UUID> inShop = new ConcurrentLinkedQueue<>();
+    public static final Queue<UUID> inShop = new ConcurrentLinkedQueue<>();
 
     public static final Cache<UUID, ShopUtil.PendingTransferTask> taskCache = CacheBuilder
             .newBuilder()
@@ -497,6 +498,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public void reloadConfigSubModule() {
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
+        final int type = getConfig().getInt("shop.display-type");
+        if(type != 2 && type != 900) {
+            this.display = false;
+        }
+
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
@@ -667,7 +673,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
         this.folia = new FoliaLib(javaPlugin);
 
-        this.menuHandler = new BukkitMenuHandler(javaPlugin, true);
+        if(this.folia.isFolia()) {
+            this.menuHandler = new FoliaMenuHandler(javaPlugin, true);
+        } else if(this.folia.isPaper()) {
+            this.menuHandler = new PaperMenuHandler(javaPlugin, true);
+        } else {
+            this.menuHandler = new BukkitMenuHandler(javaPlugin, true);
+        }
 
         MenuManager.instance().addMenu(new ShopHistoryMenu());
         MenuManager.instance().addMenu(new ShopKeeperMenu());

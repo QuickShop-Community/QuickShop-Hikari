@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -35,10 +34,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryPickupItemEvent event) {
-        ItemStack itemStack = event.getItem().getItemStack();
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
+        final ItemStack itemStack = event.getItem().getItemStack();
         if (!AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             return; // We didn't care that
         }
@@ -63,9 +59,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(ItemDespawnEvent event) {
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
         final ItemStack itemStack = event.getEntity().getItemStack();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -74,9 +67,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerFishEvent event) {
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
         if (event.getState() != State.CAUGHT_ENTITY) {
             return;
         }
@@ -104,9 +94,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         if (!AbstractDisplayItem.checkIsGuardItemStack(event.getArmorStandItem())) {
             return;
         }
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
         event.setCancelled(true);
         Util.inventoryCheck(new BukkitInventoryWrapper(event.getPlayer().getInventory()));
         sendAlert(
@@ -117,9 +104,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void portal(EntityPortalEvent event) {
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
         if (!(event.getEntity() instanceof Item itemEntity)) {
             return;
         }

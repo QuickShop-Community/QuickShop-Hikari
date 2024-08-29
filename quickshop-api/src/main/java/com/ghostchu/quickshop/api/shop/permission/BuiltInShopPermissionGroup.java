@@ -8,7 +8,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Locale;
 
-import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.*;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.ACCESS_INVENTORY;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.PREVIEW_SHOP;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.PURCHASE;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.RECEIVE_ALERT;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SEARCH;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_BENEFIT;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_CURRENCY;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_ITEM;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_PRICE;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_SHOPTYPE;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_SIGN_TYPE;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_STACK_AMOUNT;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SHOW_INFORMATION;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.TOGGLE_DISPLAY;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.VIEW_PURCHASE_LOGS;
 
 public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     BLOCKED("blocked", "blocked"),

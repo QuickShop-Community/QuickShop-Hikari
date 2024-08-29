@@ -366,7 +366,7 @@ public final class EnvironmentChecker {
             plugin.getVirtualDisplayItemManager().setTestPassed(false);
             AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             plugin.logger().warn("Failed to load the VirtualDisplayItem, self-test failure", testResult);
-            return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItem test failed, resetting to RealDisplayItem...");
+            return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItem test failed, turning off displays");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }

@@ -15,7 +15,11 @@ import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.events.*;
+import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
+import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -26,7 +30,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public final class Main extends CompatibilityModule implements Listener {
     private GriefPrevention griefPrevention;
