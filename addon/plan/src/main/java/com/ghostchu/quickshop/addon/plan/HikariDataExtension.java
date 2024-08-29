@@ -116,7 +116,7 @@ public class HikariDataExtension implements DataExtension {
             String type = switch (shop.getShopType()) {
                 case BUYING -> "Buying";
                 case SELLING -> "Selling";
-                case LOCKED -> "Locked";
+                case FROZEN -> "Frozen";
             };
             String location = dataUtil.loc2String(shop.getLocation());
             tableBuilder.addRow(owner, item, price, type, location);
@@ -180,7 +180,7 @@ public class HikariDataExtension implements DataExtension {
             final String type = switch (shop.getShopType()) {
                 case BUYING -> "Buying";
                 case SELLING -> "Selling";
-                case LOCKED -> "Locked";
+                case FROZEN -> "Frozen";
             };
             String location = dataUtil.loc2String(shop.getLocation());
             tableBuilder.addRow(item, price, type, location);

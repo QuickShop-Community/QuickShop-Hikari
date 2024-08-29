@@ -154,13 +154,19 @@ public final class Main extends JavaPlugin implements Listener {
             shopName = posStr;
         }
         Marker marker = markerSet.findMarker("quickshop-hikari-shop-" + shop.getShopId());
+        final String type = switch(shop.getShopType()) {
+          case SELLING -> plain(text().of("shop-type.selling").forLocale());
+          case BUYING -> plain(text().of("shop-type.buying").forLocale());
+          case FROZEN -> plain(text().of("shop-type.frozen").forLocale());
+        };
+
         String markerName = plain(text().of("addon.dynmap.marker-name",
                 shopName,
                 plain(shop.ownerName()),
                 plain(Util.getItemStackName(shop.getItem())),
                 plugin.getShopManager().format(shop.getPrice(), shop),
                 shop.getShopStackingAmount(),
-                shop.getShopType() == ShopType.SELLING ? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
+                type,
                 shop.isUnlimited(),
                 posStr
         ).forLocale());

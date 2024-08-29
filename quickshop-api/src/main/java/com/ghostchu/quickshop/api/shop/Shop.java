@@ -317,6 +317,12 @@ public interface Shop {
      * @return yes or no
      */
     boolean isBuying();
+    /**
+     * Get shop is frozen or not
+     *
+     * @return yes or no
+     */
+    boolean isFrozen();
 
     /**
      * Gets if shop is dirty

@@ -760,6 +760,11 @@ public class ContainerShop implements Shop, Reloadable {
                 tradingStringKey = isStackingShop() ? "signs.stack-selling" : "signs.selling";
                 noRemainingStringKey = "signs.out-of-stock";
             }
+            case FROZEN -> {
+                shopRemaining = 0;
+                tradingStringKey = "signs.freeze";
+                noRemainingStringKey = "signs.out-of-stock";
+            }
             default -> {
                 shopRemaining = 0;
                 tradingStringKey = "MissingKey for shop type:" + shopType;
@@ -896,6 +901,11 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public boolean isBuying() {
         return this.shopType == ShopType.BUYING;
+    }
+
+    @Override
+    public boolean isFrozen() {
+        return this.shopType == ShopType.FROZEN;
     }
 
     private boolean isDeleted() {

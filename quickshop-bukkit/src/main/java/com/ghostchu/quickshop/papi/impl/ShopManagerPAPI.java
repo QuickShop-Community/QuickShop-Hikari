@@ -83,6 +83,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
             case "all" -> allShops.size();
             case "selling" -> allShops.stream().filter(shop -> shop.getShopType() == ShopType.SELLING).count();
             case "buying" -> allShops.stream().filter(shop -> shop.getShopType() == ShopType.BUYING).count();
+            case "freeze" -> allShops.stream().filter(shop -> shop.getShopType() == ShopType.FROZEN).count();
             case "loaded" -> shopManager.getLoadedShops().size();
             case "unloaded" -> allShops.size() - shopManager.getLoadedShops().size();
             default -> null;
@@ -99,6 +100,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
             case "all" -> belongToPlayers.size();
             case "selling" -> belongToPlayers.stream().filter(shop -> shop.getShopType() == ShopType.SELLING).count();
             case "buying" -> belongToPlayers.stream().filter(shop -> shop.getShopType() == ShopType.BUYING).count();
+            case "freeze" -> belongToPlayers.stream().filter(shop -> shop.getShopType() == ShopType.FROZEN).count();
             case "loaded" -> shopManager.getLoadedShops().size();
             case "unloaded" -> belongToPlayers.stream().filter(shop -> !shop.isLoaded()).count();
             default -> null;

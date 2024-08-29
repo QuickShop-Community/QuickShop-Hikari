@@ -17,6 +17,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_Empty;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Export;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_FetchMessage;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Find;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Freeze;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Help;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_History;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Info;
@@ -50,6 +51,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferOwnership;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Unlimited;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentBuy;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentEmpty;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentFreeze;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentHistory;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentPreview;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentRemove;
@@ -168,6 +170,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
+                        .prefix("freeze")
+                        .hidden(true)
+                        .permission("quickshop.togglefreeze")
+                        .executor(new SubCommand_Freeze(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
                         .prefix("silentbuy")
                         .hidden(true)
                         .permission("quickshop.create.buy")
@@ -179,6 +188,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .hidden(true)
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_SilentSell(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("silentfreeze")
+                        .hidden(true)
+                        .permission("quickshop.togglefreeze")
+                        .executor(new SubCommand_SilentFreeze(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()

@@ -109,20 +109,31 @@ public class MainPage extends QuickShopPage {
 
         final AbstractItemStack<?> sellingStack = QuickShop.getInstance().stack().of("RED_WOOL", 1)
                 .display(get(id, "gui.keeper.mode-icon.display"))
-                .lore(getList(id, "gui.keeper.mode-icon.lore", "BUYING", "SELLING"));
+                .lore(getList(id, "gui.keeper.mode-icon.lore", "BUYING", "FROZEN"));
 
-        final String modeState = (shop.get().getShopType().equals(ShopType.BUYING))? "BUYING" : "SELLING";
+        final AbstractItemStack<?> frozenStack = QuickShop.getInstance().stack().of("RED_WOOL", 1)
+                .display(get(id, "gui.keeper.mode-icon.display"))
+                .lore(getList(id, "gui.keeper.mode-icon.lore", "FROZEN", "SELLING"));
+
+        String modeState = (shop.get().getShopType().equals(ShopType.BUYING))? "BUYING" : "SELLING";
+        if(shop.get().getShopType().equals(ShopType.FROZEN)) {
+          modeState = "FROZEN";
+        }
         final StateIcon changeIcon = new StateIcon(buyingStack, null, "SHOP_TYPE", modeState, (currentState)->{
           if(currentState.toUpperCase(Locale.ROOT).equals("SELLING")) {
             Util.mainThreadRun(() ->shop.get().setShopType(ShopType.BUYING));
             return "BUYING";
+          } else if(currentState.toUpperCase(Locale.ROOT).equals("FROZEN")) {
+            Util.mainThreadRun(() ->shop.get().setShopType(ShopType.SELLING));
+            return "SELLING";
           }
-          Util.mainThreadRun(() ->shop.get().setShopType(ShopType.SELLING));
-          return "SELLING";
+          Util.mainThreadRun(() ->shop.get().setShopType(ShopType.FROZEN));
+          return "FROZEN";
         });
         changeIcon.setSlot(12);
         changeIcon.addState("SELLING", buyingStack);
         changeIcon.addState("BUYING", sellingStack);
+        changeIcon.addState("FROZEN", frozenStack);
         open.getPage().addIcon(changeIcon);
 
         //Staff Icon - done(needs tested/needs other menu completed)

@@ -232,6 +232,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: SELLING
   buying: BUYING
+  frozen: FROZEN
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -386,7 +387,7 @@ signs:
   status-unavailable: <red>
   out-of-stock: Out of Stock
   stack-buying: Buying {0}
-  freeze: Trading is disbled
+  freeze: Out of Service
   price: '{0} each'
   buying: Buying {0}
   header: '{1}{0}'
@@ -524,6 +525,7 @@ command:
     sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
     fetchmessage: <yellow>Show unread shop messages
     staff: <yellow>Manage your shop staff
+    staffall: <yellow>Manage your shop staff of all shops you own.
     clean: <yellow>Removes all (loaded) shops without any stock
     refill: <yellow>Adds a given number of items to a shop
     help: <yellow>Shows the QuickShop help

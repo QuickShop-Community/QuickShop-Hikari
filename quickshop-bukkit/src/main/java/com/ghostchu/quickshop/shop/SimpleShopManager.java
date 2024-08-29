@@ -172,6 +172,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             plugin.text().of("no-permission").send();
             return;
         }
+
+        if(shop.isFrozen()) {
+            plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
+            return;
+        }
+
         if (shopIsNotValid(buyerQUser, info, shop)) {
             return;
         }
@@ -360,6 +366,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         if (shopIsNotValid(sellerQUser, info, shop)) {
             return;
         }
+
+        if(shop.isFrozen()) {
+            plugin.text().of(seller, "shop-cannot-trade-when-freezing").send();
+            return;
+        }
+
         int stock = shop.getRemainingStock();
         if (stock == -1) {
             stock = 10000;

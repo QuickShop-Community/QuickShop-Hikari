@@ -11,5 +11,5 @@ public enum ShopOperationEnum {
     CREATE,
     DELETE,
     ONGOING_FEE,
-    LOCKED
+    FROZEN
 }
