@@ -166,6 +166,12 @@ public class PlayerListener extends AbstractQSListener {
             }
             case TRADE_UI -> {
                 if (shopSearched.getKey() != null) {
+
+                    if(shopSearched.getKey().isFrozen()) {
+                        plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                        return;
+                    }
+
                     final MenuViewer viewer = new MenuViewer(e.getPlayer().getUniqueId());
                     viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shopSearched.getKey().getShopId());
                     MenuManager.instance().addViewer(viewer);
@@ -182,6 +188,12 @@ public class PlayerListener extends AbstractQSListener {
                         e.setUseItemInHand(Event.Result.DENY);
                     }
                 } else {
+
+                    if(shopSearched.getKey().isFrozen()) {
+                        plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                        return;
+                    }
+
                     if (shopSearched.getKey().isBuying()) {
                         if (sellToShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
                             e.setCancelled(true);
@@ -204,6 +216,11 @@ public class PlayerListener extends AbstractQSListener {
                 {
                     return;
                 }
+
+                if(shopSearched.getKey().isFrozen()) {
+                    plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                    return;
+                }
                 if (shopSearched.getKey().isBuying()) {
                     if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
@@ -222,6 +239,11 @@ public class PlayerListener extends AbstractQSListener {
                 }
             }
             case TRADE_DIRECT_ALL -> {
+
+                if(shopSearched.getKey().isFrozen()) {
+                    plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                    return;
+                }
                 if (shopSearched.getKey().isSelling()) {
                     if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
