@@ -97,6 +97,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
         return switch (shop.getShopType()) {
             case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
             case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
+            case LOCKED -> ShopOperationEnum.LOCKED;
         };
     }
 }

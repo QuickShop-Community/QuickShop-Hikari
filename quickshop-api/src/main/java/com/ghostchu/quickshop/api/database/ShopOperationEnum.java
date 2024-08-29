@@ -10,5 +10,6 @@ public enum ShopOperationEnum {
     PURCHASE_BUYING_SHOP,
     CREATE,
     DELETE,
-    ONGOING_FEE
+    ONGOING_FEE,
+    LOCKED
 }

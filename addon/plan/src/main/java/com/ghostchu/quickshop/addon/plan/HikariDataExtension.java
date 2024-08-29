@@ -116,6 +116,7 @@ public class HikariDataExtension implements DataExtension {
             String type = switch (shop.getShopType()) {
                 case BUYING -> "Buying";
                 case SELLING -> "Selling";
+                case LOCKED -> "Locked";
             };
             String location = dataUtil.loc2String(shop.getLocation());
             tableBuilder.addRow(owner, item, price, type, location);
@@ -169,14 +170,17 @@ public class HikariDataExtension implements DataExtension {
                 .columnThree("Type", Icon.called("code-branch").build())
                 .columnFour("Location", Icon.called("location-arrow").build());
         for (Shop shop : main.getQuickShop().getShopManager().getAllShops(playerUUID)) {
-            String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
+
+            final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
             String price = df.format(shop.getPrice());
             if (main.getQuickShop().getEconomy() != null) {
                 price = main.getQuickShop().getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency());
             }
-            String type = switch (shop.getShopType()) {
+
+            final String type = switch (shop.getShopType()) {
                 case BUYING -> "Buying";
                 case SELLING -> "Selling";
+                case LOCKED -> "Locked";
             };
             String location = dataUtil.loc2String(shop.getLocation());
             tableBuilder.addRow(item, price, type, location);

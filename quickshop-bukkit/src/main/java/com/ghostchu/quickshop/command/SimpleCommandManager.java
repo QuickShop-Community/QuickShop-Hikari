@@ -40,6 +40,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_SetOwner;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Sign;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Size;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Staff;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_StaffAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_SuggestPrice;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_SuperCreate;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_TaxAccount;
@@ -278,6 +279,12 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .prefix("staff")
                         .permission("quickshop.staff")
                         .executor(new SubCommand_Staff(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("staffall")
+                        .permission("quickshop.staffall")
+                        .executor(new SubCommand_StaffAll(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()

@@ -126,6 +126,7 @@ permissions:
       quickshop.find: true
       quickshop.fetchmessage: true
       quickshop.staff: true
+      quickshop.staffall: true
       quickshop.preview: true
       quickshop.currency: true
       quickshop.toggledisplay: true
@@ -226,6 +227,9 @@ permissions:
     default: op
   quickshop.staff:
     description: Allows a shop owner to manage their shop staff.
+    default: op
+  quickshop.staffall:
+    description: Allows a shop owner to manage their shop staff for all shops.
     default: op
   quickshop.other.staff:
     description: Allows a other player force editing the shop staffs.
