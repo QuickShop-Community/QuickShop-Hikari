@@ -133,6 +133,7 @@ permissions:
       quickshop.shopnaming: true
       quickshop.permission: true
       quickshop.benefit: true
+      quickshop.browse: true
       quickshop.sign: true
       #quickshop.history: true
       #quickshop.history.owned: true
@@ -347,6 +348,9 @@ permissions:
     default: op
   quickshop.other.benefit:
     description: Permission to bypass the benefit permission check
+    default: op
+  quickshop.browse:
+    description: Permission to use /quickshop browse
     default: op
   quickshop.transferall:
     description: Permission to transfer all shops of a player to someone
