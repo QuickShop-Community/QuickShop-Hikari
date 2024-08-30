@@ -816,7 +816,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 } else {
                     logger.warn("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
                     signHooker = null;
-                    getConfig().set("shop.display-type", 0);
+                    getConfig().set("shop.display-type", 3);
                     javaPlugin.saveConfig();
                 }
             }
