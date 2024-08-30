@@ -77,13 +77,13 @@ public class MainPage extends QuickShopPage {
 
         final ItemStack shopItem = shop.get().getItem();
         final int amount = shopItem.getAmount();
-        final int stock = (shop.get().isSelling())? -1 : shop.get().getRemainingStock();
+        final int stock = (shop.get().isBuying())? -1 : shop.get().getRemainingStock();
         final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
 
         open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(13).build());
 
-        final String lore = (shop.get().isBuying())? "gui.trade.custom.lore-buy" : "gui.trade.custom.lore-sell";
-        final String enter = (shop.get().isBuying())? "gui.trade.custom.enter-buy" : "gui.trade.custom.enter-sell";
+        final String lore = (shop.get().isSelling())? "gui.trade.custom.lore-buy" : "gui.trade.custom.lore-sell";
+        final String enter = (shop.get().isSelling())? "gui.trade.custom.enter-buy" : "gui.trade.custom.enter-sell";
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PAPER", 1)
                 .display(get(id, "gui.trade.custom.display"))
                 .lore(getList(id, lore, amount, stockString)))
@@ -138,7 +138,7 @@ public class MainPage extends QuickShopPage {
                 27, 28, 29, 30, 31, 32
         };
 
-        final String display = (shop.get().isBuying())? "gui.trade.quantity.display-buy" : "gui.trade.quantity.display-sell";
+        final String display = (shop.get().isSelling())? "gui.trade.quantity.display-buy" : "gui.trade.quantity.display-sell";
 
         for(int i = 0; i < quantities.length; i++) {
 
