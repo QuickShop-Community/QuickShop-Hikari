@@ -7,9 +7,9 @@ import org.jetbrains.annotations.Nullable;
  * The shop trading type *SELLING* or *BUYING*
  */
 public enum ShopType {
-    // SELLING = SELLMODE BUYING = BUY MODE
-    SELLING(0),
-    BUYING(1);
+    SELLING(0), // Sell Mode
+    BUYING(1), // Buy Mode
+    FROZEN(2); //Locked so no mode
     private final int id;
 
     ShopType(int id) {

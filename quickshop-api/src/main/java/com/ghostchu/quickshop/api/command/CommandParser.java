@@ -2,7 +2,12 @@ package com.ghostchu.quickshop.api.command;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * CommandParser is a utility class for parsing command arguments.

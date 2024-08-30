@@ -29,7 +29,6 @@ import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;

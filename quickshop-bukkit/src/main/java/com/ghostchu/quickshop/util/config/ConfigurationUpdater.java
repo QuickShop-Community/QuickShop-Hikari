@@ -16,7 +16,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class ConfigurationUpdater {
     private static final String CONFIG_VERSION_KEY = "config-version";
