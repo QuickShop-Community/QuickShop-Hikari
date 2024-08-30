@@ -124,9 +124,11 @@ public class InteractionController implements Reloadable, SubPasteItem {
      */
     public enum InteractionBehavior {
         TRADE_INTERACTION,
+        TRADE_UI,
         TRADE_DIRECT,
         TRADE_DIRECT_ALL,
         CONTROL_PANEL,
+        CONTROL_PANEL_UI,
         NONE
     }
 }

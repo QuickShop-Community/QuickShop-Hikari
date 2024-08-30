@@ -145,6 +145,13 @@ public class BlockListener extends AbstractProtectionListener {
         if (!this.updateSignWhenInventoryMoving) {
             return;
         }
+
+        if(event.getInitiator().getHolder() instanceof Player player) {
+            if(!QuickShop.inShop.contains(player.getUniqueId())) {
+                return;
+            }
+        }
+
         Location destination = event.getDestination().getLocation();
         Location source = event.getSource().getLocation();
         Shop destShop = null;
@@ -182,7 +189,7 @@ public class BlockListener extends AbstractProtectionListener {
 
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
-            Block blockAgainst = e.getBlockAgainst();
+            final Block blockAgainst = e.getBlockAgainst();
             if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !Util.isDoubleChest(blockAgainst.getBlockData())) {
                 chest = e.getBlockAgainst();
             } else {
@@ -190,12 +197,12 @@ public class BlockListener extends AbstractProtectionListener {
             }
         } else {
             //Get all chest in vertical Location
-            BlockFace placingChestFacing = ((Directional) (placingBlock.getBlockData())).getFacing();
+            final BlockFace placingChestFacing = ((Directional) (placingBlock.getBlockData())).getFacing();
             for (BlockFace face : Util.getVerticalFacing()) {
                 //just check the right side and left side
                 if (!face.equals(placingChestFacing) && !face.equals(placingChestFacing.getOppositeFace())) {
-                    Block nearByBlock = placingBlock.getRelative(face);
-                    BlockData nearByBlockData = nearByBlock.getBlockData();
+                    final Block nearByBlock = placingBlock.getRelative(face);
+                    final BlockData nearByBlockData = nearByBlock.getBlockData();
                     if (nearByBlock.getType() == Material.CHEST
                             //non double chest
                             && !Util.isDoubleChest(nearByBlockData)
@@ -217,7 +224,7 @@ public class BlockListener extends AbstractProtectionListener {
             return;
         }
 
-        Shop shop = getShopPlayer(chest.getLocation(), false);
+        final Shop shop = getShopPlayer(chest.getLocation(), false);
         if (shop != null) {
             if (!plugin.perm().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
@@ -235,15 +242,17 @@ public class BlockListener extends AbstractProtectionListener {
      */
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onSignUpdate(SignChangeEvent event) {
-        Block posShopBlock = Util.getAttached(event.getBlock());
+        final Block posShopBlock = Util.getAttached(event.getBlock());
         if (posShopBlock == null) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
         if (shop == null) {
             return;
         }
-        Player player = event.getPlayer();
+
+        final Player player = event.getPlayer();
         if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
                 && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
             plugin.text().of(player, "not-managed-shop").send();

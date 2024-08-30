@@ -39,7 +39,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -379,7 +386,8 @@ public abstract class AbstractShopManager implements ShopManager {
 
         // failed, get attached shop
         if (shop == null) {
-            Block block = loc.getBlock();
+
+            final Block block = loc.getBlock();
             if (!Util.isShoppables(block.getType())) {
                 return null;
             }

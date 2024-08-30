@@ -1,7 +1,15 @@
 package com.ghostchu.quickshop.addon.dynmap;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateSuccessEvent;
+import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopNamingEvent;
+import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
@@ -18,7 +26,11 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapAPI;
-import org.dynmap.markers.*;
+import org.dynmap.markers.GenericMarker;
+import org.dynmap.markers.Marker;
+import org.dynmap.markers.MarkerAPI;
+import org.dynmap.markers.MarkerIcon;
+import org.dynmap.markers.MarkerSet;
 import org.jetbrains.annotations.NotNull;
 
 public final class Main extends JavaPlugin implements Listener {
@@ -142,13 +154,19 @@ public final class Main extends JavaPlugin implements Listener {
             shopName = posStr;
         }
         Marker marker = markerSet.findMarker("quickshop-hikari-shop-" + shop.getShopId());
+        final String type = switch(shop.getShopType()) {
+          case SELLING -> plain(text().of("shop-type.selling").forLocale());
+          case BUYING -> plain(text().of("shop-type.buying").forLocale());
+          case FROZEN -> plain(text().of("shop-type.frozen").forLocale());
+        };
+
         String markerName = plain(text().of("addon.dynmap.marker-name",
                 shopName,
                 plain(shop.ownerName()),
                 plain(Util.getItemStackName(shop.getItem())),
                 plugin.getShopManager().format(shop.getPrice(), shop),
                 shop.getShopStackingAmount(),
-                shop.getShopType() == ShopType.SELLING ? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
+                type,
                 shop.isUnlimited(),
                 posStr
         ).forLocale());

@@ -29,10 +29,10 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
 
     @Override
     public void openControlPanel(@NotNull Player player, @NotNull Shop shop) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(player);
+        final ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(player);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(player, "controlpanel.infomation").forLocale());
-        List<Component> total = new ArrayList<>();
+        final List<Component> total = new ArrayList<>();
         for (ShopControlPanel entry : registry.keySet()) {
             try {
                 total.addAll(entry.generate(player, shop));

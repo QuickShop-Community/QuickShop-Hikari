@@ -10,7 +10,12 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -29,7 +34,7 @@ public interface CommandHandler<T extends CommandSender> {
     @Nullable
     default Shop getLookingShop(T sender) throws IllegalStateException {
         if (sender instanceof Player player) {
-            BlockIterator bIt = new BlockIterator(player, 10);
+            final BlockIterator bIt = new BlockIterator(player, 10);
             while (bIt.hasNext()) {
                 final Block b = bIt.next();
                 final Shop shop = QuickShopAPI.getInstance().getShopManager().getShop(b.getLocation());
@@ -45,7 +50,7 @@ public interface CommandHandler<T extends CommandSender> {
 
     default @NotNull CompletableFuture<@NotNull List<Shop>> getTaggedShops(T sender, @NotNull String tag) {
         if (sender instanceof Player player) {
-            UUID tagger = player.getUniqueId();
+            final UUID tagger = player.getUniqueId();
             return QuickShopAPI.getInstance().getShopManager().queryTaggedShops(tagger, tag);
         }
         throw new IllegalStateException("Sender is not player");
@@ -59,7 +64,7 @@ public interface CommandHandler<T extends CommandSender> {
      */
     @Nullable
     default Map<Long, Shop> getShopsByIds(@NotNull List<Long> ids) {
-        Map<Long, Shop> shops = new HashMap<>();
+        final Map<Long, Shop> shops = new HashMap<>();
         for (Long id : ids) {
             shops.put(id, QuickShopAPI.getInstance().getShopManager().getShop(id));
         }
@@ -67,11 +72,12 @@ public interface CommandHandler<T extends CommandSender> {
     }
 
     default void onCommand_Internal(T sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        StringJoiner joiner = new StringJoiner(" ");
+        final StringJoiner joiner = new StringJoiner(" ");
         for (String s : cmdArg) {
             joiner.add(s);
         }
-        CommandParser parser = new CommandParser(joiner.toString(), true);
+
+        final CommandParser parser = new CommandParser(joiner.toString(), true);
         try {
             onCommand(sender, commandLabel, parser);
         } catch (NotImplementedException e) {

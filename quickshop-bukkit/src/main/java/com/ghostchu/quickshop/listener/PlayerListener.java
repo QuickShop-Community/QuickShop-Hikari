@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.menu.ShopKeeperMenu;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
@@ -22,7 +23,14 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import org.bukkit.*;
+import net.tnemc.menu.bukkit.BukkitPlayer;
+import net.tnemc.menu.core.compatibility.MenuPlayer;
+import net.tnemc.menu.core.manager.MenuManager;
+import net.tnemc.menu.core.viewer.MenuViewer;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -35,7 +43,13 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLocaleChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -104,7 +118,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         rateLimit.add(e.getPlayer().getUniqueId());
 
-        Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
+        final Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
 
         if (shopSearched.getKey() == null && shopSearched.getValue() == ClickType.AIR) {
             return;
@@ -140,6 +154,32 @@ public class PlayerListener extends AbstractQSListener {
                     e.setUseItemInHand(Event.Result.DENY);
                 }
             }
+            case CONTROL_PANEL_UI -> {
+                if (shopSearched.getKey() != null) {
+                    final MenuViewer viewer = new MenuViewer(e.getPlayer().getUniqueId());
+                    viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shopSearched.getKey().getShopId());
+                    MenuManager.instance().addViewer(viewer);
+
+                    final MenuPlayer menuPlayer = new BukkitPlayer(e.getPlayer(), QuickShop.getInstance().getJavaPlugin());
+                    MenuManager.instance().open("qs:keeper", 1, menuPlayer);
+                }
+            }
+            case TRADE_UI -> {
+                if (shopSearched.getKey() != null) {
+
+                    if(shopSearched.getKey().isFrozen()) {
+                        plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                        return;
+                    }
+
+                    final MenuViewer viewer = new MenuViewer(e.getPlayer().getUniqueId());
+                    viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shopSearched.getKey().getShopId());
+                    MenuManager.instance().addViewer(viewer);
+
+                    final MenuPlayer menuPlayer = new BukkitPlayer(e.getPlayer(), QuickShop.getInstance().getJavaPlugin());
+                    MenuManager.instance().open("qs:trade", 1, menuPlayer);
+                }
+            }
             case TRADE_INTERACTION -> {
                 if (shopSearched.getKey() == null) {
                     if (e.getItem() != null && createShop(e.getPlayer(), e.getClickedBlock(), e.getBlockFace(), e.getHand(), e.getItem())) {
@@ -148,6 +188,12 @@ public class PlayerListener extends AbstractQSListener {
                         e.setUseItemInHand(Event.Result.DENY);
                     }
                 } else {
+
+                    if(shopSearched.getKey().isFrozen()) {
+                        plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                        return;
+                    }
+
                     if (shopSearched.getKey().isBuying()) {
                         if (sellToShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
                             e.setCancelled(true);
@@ -166,8 +212,12 @@ public class PlayerListener extends AbstractQSListener {
                 }
             }
             case TRADE_DIRECT -> {
-                if (shopSearched.getKey() == null) // No shop here
-                {
+                if (shopSearched.getKey() == null) {
+                    return;
+                }
+
+                if(shopSearched.getKey().isFrozen()) {
+                    plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
                     return;
                 }
                 if (shopSearched.getKey().isBuying()) {
@@ -188,6 +238,11 @@ public class PlayerListener extends AbstractQSListener {
                 }
             }
             case TRADE_DIRECT_ALL -> {
+
+                if(shopSearched.getKey().isFrozen()) {
+                    plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+                    return;
+                }
                 if (shopSearched.getKey().isSelling()) {
                     if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
@@ -395,6 +450,28 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isSelling()) {
             return false;
         }
+
+        final AbstractEconomy eco = plugin.getEconomy();
+        int arg;
+        if (all) {
+            arg = sellingShopAllCalc(eco, shop, p);
+        } else {
+            arg = shop.getShopStackingAmount();
+        }
+
+        if (arg == 0) {
+            return true;
+        }
+        return buyFromShop(p, shop, arg, direct, all);
+    }
+
+    public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, int arg, boolean direct, boolean all) {
+        if (shop == null) {
+            return false;
+        }
+        if (!shop.isSelling()) {
+            return false;
+        }
         if (!plugin.perm().hasPermission(p, "quickshop.use")) {
             return false;
         }
@@ -424,15 +501,6 @@ public class PlayerListener extends AbstractQSListener {
                     plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
                 }
             } else {
-                int arg;
-                if (all) {
-                    arg = sellingShopAllCalc(eco, shop, p);
-                } else {
-                    arg = shop.getShopStackingAmount();
-                }
-                if (arg == 0) {
-                    return true;
-                }
                 plugin.getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
@@ -614,8 +682,14 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
+        final UUID id = e.getPlayer().getUniqueId();
+
+        if(MenuManager.instance().inMenu(id) || !QuickShop.inShop.contains(id)) {
+            return;
+        }
+
         try {
-            Location location = e.getInventory().getLocation();
+            final Location location = e.getInventory().getLocation();
             if (location == null) {
                 return; /// ignored as workaround, GH-303
             }
@@ -630,6 +704,8 @@ public class PlayerListener extends AbstractQSListener {
             }
         } catch (NullPointerException ignored) {
         }
+
+        QuickShop.inShop.remove(id);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

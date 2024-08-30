@@ -3,7 +3,17 @@ package com.ghostchu.quickshop.compatibility.towny;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopOwnerNameGettingEvent;
+import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxAccountChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxAccountGettingEvent;
+import com.ghostchu.quickshop.api.event.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -42,7 +52,11 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
     @Getter

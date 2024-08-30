@@ -2,12 +2,26 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.ItemPreviewComponentPopulateEvent;
+import com.ghostchu.quickshop.api.event.ItemPreviewComponentPrePopulateEvent;
+import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.Info;
+import com.ghostchu.quickshop.api.shop.PriceLimiter;
+import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
@@ -32,7 +46,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -53,7 +72,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -146,6 +172,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             plugin.text().of("no-permission").send();
             return;
         }
+
+        if(shop.isFrozen()) {
+            plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
+            return;
+        }
+
         if (shopIsNotValid(buyerQUser, info, shop)) {
             return;
         }
@@ -334,6 +366,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         if (shopIsNotValid(sellerQUser, info, shop)) {
             return;
         }
+
+        if(shop.isFrozen()) {
+            plugin.text().of(seller, "shop-cannot-trade-when-freezing").send();
+            return;
+        }
+
         int stock = shop.getRemainingStock();
         if (stock == -1) {
             stock = 10000;
@@ -662,7 +700,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
-        QUser qUser = QUserImpl.createFullFilled(p);
+        final QUser qUser = QUserImpl.createFullFilled(p);
         if (!plugin.getShopManager().getInteractiveManager().containsKey(p.getUniqueId())) {
             return;
         }

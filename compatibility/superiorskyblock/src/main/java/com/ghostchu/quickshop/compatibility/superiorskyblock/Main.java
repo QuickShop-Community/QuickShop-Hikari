@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.compatibility.superiorskyblock;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.events.IslandBanEvent;
 import com.bgsoftware.superiorskyblock.api.events.IslandChunkResetEvent;
 import com.bgsoftware.superiorskyblock.api.events.IslandKickEvent;
 import com.bgsoftware.superiorskyblock.api.events.IslandQuitEvent;
@@ -45,7 +46,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private void deleteShops(@NotNull Island island, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
-        List<CompletableFuture<Chunk>> allFutures = this.getAllChunksAsync(island);
+        final List<CompletableFuture<Chunk>> allFutures = this.getAllChunksAsync(island);
         CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).thenAccept(v -> {
             List<Shop> pendingForDeletion = new ArrayList<>();
             allFutures.forEach(future -> {
@@ -67,7 +68,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private void deleteShops(@NotNull World world, int chunkX, int chunkZ, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
-        List<Shop> pendingForDeletion = new ArrayList<>();
+        final List<Shop> pendingForDeletion = new ArrayList<>();
         for (Shop shop : getShops(world.getName(), chunkX, chunkZ)) {
             if (shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
                 pendingForDeletion.add(shop);
@@ -87,6 +88,13 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler
+    public void deleteShops(IslandBanEvent event) {
+        if (deleteShopOnMemberLeave) {
+            deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
+        }
+    }
+
+    @EventHandler
     public void deleteShops(IslandUncoopPlayerEvent event) {
         deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandUncoopPlayerEvent");
     }
@@ -98,9 +106,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
-        Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
+        final Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
         event.getCreator().getBukkitPlayer().ifPresent(player -> {
-            SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+            final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
             if (island == null) {
                 return;
             }
@@ -127,7 +135,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
-        Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
+        final Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
         event.getCreator().getBukkitPlayer().ifPresent(player -> {
             SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
             if (island == null) {
@@ -149,8 +157,8 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        Location shopLoc = event.getShop().getLocation();
-        Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
+        final Location shopLoc = event.getShop().getLocation();
+        final Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
         if (island == null) {
             return;
         }
@@ -162,7 +170,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private List<CompletableFuture<Chunk>> getAllChunksAsync(Island island) {
-        List<CompletableFuture<Chunk>> chunkFutures = new ArrayList<>();
+        final List<CompletableFuture<Chunk>> chunkFutures = new ArrayList<>();
         for (World.Environment environment : World.Environment.values()) {
             try {
                 chunkFutures.addAll(island.getAllChunksAsync(environment, false, chunk -> {

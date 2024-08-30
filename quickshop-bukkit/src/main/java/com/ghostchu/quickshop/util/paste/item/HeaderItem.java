@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.DonationInfo;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,16 +45,7 @@ public class HeaderItem implements PasteItem {
         String base = TEMPLATE
                 .replace("{title}", "QuickShop-" + QuickShop.getInstance().getFork() + " // Paste ("+QuickShop.getInstance().getVersion()+")")
                 .replace("{content}", buildContent());
-        DonationInfo info = QuickShop.getInstance().getDonationInfo();
-        if (info != null) {
-            base = base.replace("{donation-header}", DONATED_HEADER
-                    .replace("{username}", info.getName())
-                    .replace("{url}", info.getUrl())
-
-            );
-        } else {
-            base = base.replace("{donation-header}", "");
-        }
+        base = base.replace("{donation-header}", "");
         return base;
     }
 
