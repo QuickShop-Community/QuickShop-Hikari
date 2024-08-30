@@ -79,7 +79,6 @@ import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.signhooker.SignHooker;
-import com.ghostchu.quickshop.util.DonationInfo;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -331,7 +330,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private MetricManager metricManager;
     @Getter
     private RegistryManager registry;
-    private DonationInfo donationInfo;
 //    @Getter
 //    private InventoryWrapperUpdateManager invWrapperUpdateManager;
 
@@ -529,15 +527,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         // Schedule this event can be run in next tick.
         //Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
-        try {
-            DonationInfo info = new DonationInfo(getConfig().getString("donation-key"));
-            if (info.isValid()) {
-                this.donationInfo = info;
-            } else {
-                this.donationInfo = null;
-            }
-        } catch (Exception ignored) {
-        }
     }
 
     @NotNull
@@ -1219,11 +1208,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @NotNull
     public String getVersion() {
         return javaPlugin.getVersion();
-    }
-
-    @Nullable
-    public DonationInfo getDonationInfo() {
-        return this.donationInfo;
     }
 
     public enum DatabaseDriverType {

@@ -15,7 +15,6 @@ import kong.unirest.Unirest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -48,13 +47,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
         String developers = CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors());
         String languageCode = plugin.text().findRelativeLanguages(sender).getLocale();
         Component localizedStaffs = plugin.text().of(sender, "translation-author").forLocale();
-        Component donationKey;
-        if(plugin.getDonationInfo() != null){
-            donationKey = plugin.text().of(sender, "about.valid-donation-key", plugin.getDonationInfo().getName()).forLocale()
-                    .clickEvent(ClickEvent.openUrl(plugin.getDonationInfo().getUrl()));
-        }else{
-            donationKey =  plugin.text().of(sender, "about.invalid-donation-key").forLocale();
-        }
+        final Component donationKey = plugin.text().of(sender, "about.invalid-donation-key").forLocale();
         plugin.text().ofList(sender, "about.text", forkName,version,releaseType,developers,languageCode,localizedStaffs,donationKey).send();
         Util.asyncThreadRun(() -> {
             try {
