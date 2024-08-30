@@ -700,7 +700,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
-        QUser qUser = QUserImpl.createFullFilled(p);
+        final QUser qUser = QUserImpl.createFullFilled(p);
         if (!plugin.getShopManager().getInteractiveManager().containsKey(p.getUniqueId())) {
             return;
         }

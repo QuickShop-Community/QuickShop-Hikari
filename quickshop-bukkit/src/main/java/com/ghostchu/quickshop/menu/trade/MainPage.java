@@ -19,9 +19,15 @@ package com.ghostchu.quickshop.menu.trade;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;
+import com.ghostchu.quickshop.shop.SimpleInfo;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import net.tnemc.core.menu.icons.actions.PageSwitchWithClose;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
 import net.tnemc.menu.core.icon.action.impl.ChatAction;
@@ -72,9 +78,6 @@ public class MainPage extends QuickShopPage {
         final int amount = shopItem.getAmount();
         final int stock = shop.get().getRemainingStock();
         String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
-        if(!shop.get().isBuying()) {
-          //TODO: Calculate items in player's inventory.
-        }
 
         open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(13).build());
 
@@ -105,7 +108,21 @@ public class MainPage extends QuickShopPage {
                         return false;
                       }
 
-                      //TODO: Transaction
+                      switch(shop.get().getShopType()) {
+                        case BUYING -> {
+
+                          final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                          QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
+                          viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+
+                        }
+                        case SELLING -> {
+
+                          final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                          QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
+                          viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                        }
+                      }
                       return true;
 
                     } catch(NumberFormatException ignore) {}
@@ -143,8 +160,22 @@ public class MainPage extends QuickShopPage {
                                   shop.get().getLocation().getWorld(),
                                   shop.get().getCurrency()))))
                   .withActions(new RunnableAction((click->{
-                    //TODO: Transaction
+                    switch(shop.get().getShopType()) {
+                      case BUYING -> {
+
+                        final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                        QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
+                        viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                      }
+                      case SELLING -> {
+
+                        final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                        QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
+                        viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                      }
+                    }
                   })))
+                  .withActions(new PageSwitchWithClose("qs:trade", -1))
                   .withSlot(slot).build());
         }
       }

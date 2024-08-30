@@ -212,8 +212,7 @@ public class PlayerListener extends AbstractQSListener {
                 }
             }
             case TRADE_DIRECT -> {
-                if (shopSearched.getKey() == null) // No shop here
-                {
+                if (shopSearched.getKey() == null) {
                     return;
                 }
 
