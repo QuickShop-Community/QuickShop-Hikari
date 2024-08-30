@@ -22,10 +22,11 @@ import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.menu.shared.PageSwitchWithCloseAction;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import net.tnemc.core.menu.icons.actions.PageSwitchWithClose;
+import com.ghostchu.quickshop.util.Util;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.builder.IconBuilder;
@@ -76,8 +77,8 @@ public class MainPage extends QuickShopPage {
 
         final ItemStack shopItem = shop.get().getItem();
         final int amount = shopItem.getAmount();
-        final int stock = shop.get().getRemainingStock();
-        String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
+        final int stock = (shop.get().isSelling())? -1 : shop.get().getRemainingStock();
+        final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
 
         open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(13).build());
 
@@ -98,7 +99,7 @@ public class MainPage extends QuickShopPage {
                         return true;
                       }
 
-                      if(!shop.get().isUnlimited() && quantity > stock) {
+                      if(!shop.get().isUnlimited() && quantity > stock && stock > -1) {
                         message.getPlayer().message(legacy(id, "gui.trade.custom.stock"));
                         return false;
                       }
@@ -107,21 +108,16 @@ public class MainPage extends QuickShopPage {
                         message.getPlayer().message(legacy(id, "gui.trade.custom.multiple", amount));
                         return false;
                       }
+                      if(shop.get().isBuying()) {
 
-                      switch(shop.get().getShopType()) {
-                        case BUYING -> {
+                        final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                        Util.mainThreadRun(()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                        viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                      } else {
 
-                          final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                          QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
-                          viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
-
-                        }
-                        case SELLING -> {
-
-                          final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                          QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
-                          viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
-                        }
+                        final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                        Util.mainThreadRun(()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                        viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
                       }
                       return true;
 
@@ -130,7 +126,7 @@ public class MainPage extends QuickShopPage {
                   message.getPlayer().message(legacy(id, enter, amount));
 
                   return false;
-                }), new RunnableAction(click->new RunnableAction((run)->run.player().message(legacy(id, "gui.trade.custom.multiple", amount)))))
+                }), new RunnableAction(click->click.player().message(legacy(id, enter, amount))))
                 .withSlot(35).build());
 
         //64, 16, 8, 4, 2, 1
@@ -160,22 +156,19 @@ public class MainPage extends QuickShopPage {
                                   shop.get().getLocation().getWorld(),
                                   shop.get().getCurrency()))))
                   .withActions(new RunnableAction((click->{
-                    switch(shop.get().getShopType()) {
-                      case BUYING -> {
+                    if(shop.get().isBuying()) {
 
-                        final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                        QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
-                        viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
-                      }
-                      case SELLING -> {
+                      final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                      Util.mainThreadRun(()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                      viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                    } else {
 
-                        final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                        QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity);
-                        viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
-                      }
+                      final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                      Util.mainThreadRun(()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                      viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
                     }
                   })))
-                  .withActions(new PageSwitchWithClose("qs:trade", -1))
+                  .withActions(new PageSwitchWithCloseAction("qs:trade", -1))
                   .withSlot(slot).build());
         }
       }

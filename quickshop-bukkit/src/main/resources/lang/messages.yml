@@ -1804,7 +1804,6 @@ gui:
         - "<white>you would like to sell.</white>"
         - "<yellow>Click to input custom quantity.</yellow>"
         - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>You Have: <bold><red>{1}</red></bold>"
       enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
       enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
       multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"

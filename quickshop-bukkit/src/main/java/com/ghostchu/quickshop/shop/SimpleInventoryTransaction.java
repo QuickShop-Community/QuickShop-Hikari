@@ -203,7 +203,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     @Override
     public List<Operation> rollback(boolean continueWhenFailed) {
         try (PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
-            List<Operation> operations = new ArrayList<>();
+            final List<Operation> operations = new ArrayList<>();
             while (!processingStack.isEmpty()) {
                 Operation operation = processingStack.pop();
                 try {
