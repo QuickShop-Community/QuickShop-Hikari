@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.intellectualsites.plotsquared</groupId>
             <artifactId>plotsquared-bukkit</artifactId>
-            <version>7.3.8</version>
+            <version>7.3.10</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
