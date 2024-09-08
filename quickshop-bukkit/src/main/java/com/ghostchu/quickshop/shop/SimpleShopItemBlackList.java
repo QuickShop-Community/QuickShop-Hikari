@@ -56,18 +56,18 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
             if (!is.hasItemMeta()) {
                 return false;
             }
-            ItemMeta meta = is.getItemMeta();
+            final ItemMeta meta = is.getItemMeta();
             if (meta == null) {
                 return false;
             }
             if (!meta.hasLore()) {
                 return false;
             }
-            List<String> originalLores = meta.getLore();
+            final List<String> originalLores = meta.getLore();
             if (originalLores == null) {
                 return false;
             }
-            List<String> strippedLores = new ArrayList<>(originalLores.size());
+            final List<String> strippedLores = new ArrayList<>(originalLores.size());
             for (String originalLore : originalLores) {
                 strippedLores.add(ChatColor.stripColor(originalLore));
             }

@@ -21,7 +21,7 @@ public class ItemContainerUtil {
      * @return a list of flattened contents
      */
     public static List<ItemStack> flattenContents(ItemStack stack, boolean recursive, boolean includeInput) {
-        List<ItemStack> flat = new ArrayList<>();
+        final List<ItemStack> flat = new ArrayList<>();
         if (includeInput) {
             flat.add(stack);
         }

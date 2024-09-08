@@ -173,7 +173,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         double minPrice = 0;
         double maxPrice = 0;
         boolean hasMaxPrice = false;
-        List<ItemStack> flattenedItems = ItemContainerUtil.flattenContents(itemStack, true, false);
+        final List<ItemStack> flattenedItems = ItemContainerUtil.flattenContents(itemStack, true, false);
 
         for (RuleSet rule : rules.values()) {
             if (rule.canBypass(sender) || !rule.isApplicableCurrency(currency)) {
