@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.util.ItemContainerUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
@@ -173,14 +174,36 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
                 return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
             }
         }
+
+        double minPrice = 0;
+        double maxPrice = 0;
+        boolean hasMaxPrice = false;
+        final List<ItemStack> flattenedItems = ItemContainerUtil.flattenContents(itemStack, true, false);
+
         for (RuleSet rule : rules.values()) {
-            if (!rule.isApply(sender, itemStack, currency)) {
+            if (rule.canBypass(sender) || !rule.isApplicableCurrency(currency)) {
                 continue;
             }
-            if (rule.isAllowed(price)) {
+
+            // we'll manually add the fist item, as we calculate on a single item basis for the parent item.
+            // otherwise we would be adding up all the items a player is holding, rather than one.
+            int itemTally = rule.isApply(itemStack) ? 1 : 0;
+            itemTally += rule.tallyApplicableItems(flattenedItems);
+            if (itemTally == 0) {
                 continue;
             }
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
+
+            if (rule.hasMinPrice()) {
+                minPrice += rule.getMin() * itemTally;
+            }
+            if (rule.hasMaxPrice()) {
+                hasMaxPrice = true;
+                maxPrice += rule.getMax() * itemTally;
+            }
+        }
+
+        if (price < minPrice || (hasMaxPrice && price > maxPrice)) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, minPrice, maxPrice);
         }
         if (undefinedMin != -1 && price < undefinedMin) {
             return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
@@ -294,11 +317,65 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
          * @return true if the rule is allowed for given price
          */
         public boolean isAllowed(double price) {
-            if (this.max != -1 && price > this.max) {
+            if (hasMaxPrice() && price > getMax()) {
                 return false;
             }
-            if (this.min != -1) {
-                return price >= this.min;
+            if (hasMinPrice()) {
+                return price >= getMin();
+            }
+            return true;
+        }
+
+        /**
+         * @return if this rule has a min price set.
+         */
+        public boolean hasMinPrice() {
+            return getMin() > 0;
+        }
+
+        /**
+         * @return if this rule has a max price set.
+         */
+        public boolean hasMaxPrice() {
+            return getMax() >= 0;
+        }
+
+        /**
+         * Tallies the number of items this rules applies to.
+         *
+         * @param stacks the items to tally
+         * @return the sum of the item counts this rules applies to
+         */
+        public int tallyApplicableItems(Iterable<ItemStack> stacks) {
+            int tally = 0;
+            for (ItemStack is : stacks) {
+                if (isApply(is)) {
+                    tally += is.getAmount();
+                }
+            }
+            return tally;
+        }
+
+        /**
+         * Checks if the provided CommandSender can bypass restrictions
+         *
+         * @param sender the CommandSender to check
+         * @return true if they can bypass, otherwise false.
+         */
+        public boolean canBypass(@NotNull CommandSender sender) {
+            return QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission);
+        }
+
+        /**
+         * Checks if the currency applies to this rule.
+         * Will return true if the currency is null
+         *
+         * @param currency the currency to check
+         * @return true if the currency either applies, or is null. false otherwise.
+         */
+        public boolean isApplicableCurrency(@Nullable String currency) {
+            if (currency != null) {
+                return this.currency.stream().anyMatch(pattern -> pattern.matcher(currency).matches());
             }
             return true;
         }
@@ -312,16 +389,21 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
          * @return true if the rule is allowed to apply
          */
         public boolean isApply(@NotNull CommandSender sender, @NotNull ItemStack item, @Nullable String currency) {
-            if (QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission)) {
+            if (canBypass(sender) || !isApplicableCurrency(currency)) {
                 return false;
             }
-            if (currency != null) {
-                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches())) {
-                    return false;
-                }
-            }
+            return isApply(item);
+        }
+
+        /**
+         * Check if a rule applies to an ItemStack
+         *
+         * @param stack the stack to check
+         * @return true if it applies, otherwise false.
+         */
+        public boolean isApply(ItemStack stack) {
             for (Function<ItemStack, Boolean> fun : items) {
-                if (fun.apply(item)) {
+                if (fun.apply(stack)) {
                     return true;
                 }
             }
