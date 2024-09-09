@@ -296,6 +296,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Super tool is disabled. Cannot break any shops.
 unknown-owner: Unknown
 restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Shop is {0} block(s) away from you.
 owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"

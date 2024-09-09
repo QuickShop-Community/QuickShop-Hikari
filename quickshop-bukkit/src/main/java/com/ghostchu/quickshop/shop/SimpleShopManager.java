@@ -31,10 +31,7 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
-import com.ghostchu.quickshop.util.ChatSheetPrinter;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -567,14 +564,30 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
 
         // Price limit checking
-        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
+        final PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
+        final String currency = shop.getCurrency() == null ? (plugin.getCurrency() == null ? "" : plugin.getCurrency()) : shop.getCurrency();
+
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT ->
                     plugin.text().of(p, "price-too-cheap", Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax()) : Double.toString(priceCheckResult.getMin()))).send();
             case REACHED_PRICE_MAX_LIMIT ->
                     plugin.text().of(p, "price-too-high", Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax()) : Double.toString(priceCheckResult.getMin()))).send();
-            case PRICE_RESTRICTED ->
-                    plugin.text().of(p, "restricted-prices", Util.getItemStackName(shop.getItem()), Component.text(priceCheckResult.getMin()), Component.text(priceCheckResult.getMax())).send();
+            case PRICE_RESTRICTED -> {
+                final double min = priceCheckResult.getMin();
+                final double max = priceCheckResult.getMax();
+
+                if (min > 0 && max >= 0) {
+                    plugin.text().of(p, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                            currency + min,
+                            currency + max).send();
+                } else if (min > 0) {
+                    plugin.text().of(p, "restricted-price-min", Util.getItemStackName(shop.getItem()),
+                            currency + min).send();
+                } else {
+                    plugin.text().of(p, "restricted-price-max", Util.getItemStackName(shop.getItem()),
+                            currency + max).send();
+                }
+            }
             case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
             case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
             case PASS -> {
@@ -595,7 +608,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                 if (createCost > 0) {
                     SimpleEconomyTransaction economyTransaction = SimpleEconomyTransaction.builder().taxAccount(cacheTaxAccount).taxModifier(0.0).core(plugin.getEconomy()).from(QUserImpl.createFullFilled(p)).to(null).amount(createCost).currency(plugin.getCurrency()).world(shop.getLocation().getWorld()).build();
                     if (!economyTransaction.checkBalance()) {
-                        plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.getLocation().getWorld(), shop.getCurrency())).send();
+                        plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop)).send();
                         return;
                     }
                     if (!economyTransaction.failSafeCommit()) {

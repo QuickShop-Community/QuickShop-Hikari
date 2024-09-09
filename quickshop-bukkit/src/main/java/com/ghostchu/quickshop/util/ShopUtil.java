@@ -29,7 +29,6 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -79,8 +78,6 @@ public class ShopUtil {
       return;
     }
 
-    final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
-
     double fee = 0;
 
     if (plugin.isPriceChangeRequiresFee()) {
@@ -102,20 +99,32 @@ public class ShopUtil {
     }
 
     final PriceLimiterCheckResult checkResult = limiter.check(user, shop.getItem(), plugin.getCurrency(), price);
+    final String currency = shop.getCurrency() == null ? (plugin.getCurrency() == null ? "" : plugin.getCurrency()) : shop.getCurrency();
 
     switch (checkResult.getStatus()) {
       case PRICE_RESTRICTED -> {
-        plugin.text().of(user.getUniqueId(), "restricted-prices", Util.getItemStackName(shop.getItem()),
-                Component.text(checkResult.getMin()),
-                Component.text(checkResult.getMax())).send();
+        final double min = checkResult.getMin();
+        final double max = checkResult.getMax();
+
+        if (min > 0 && max >= 0) {
+          plugin.text().of(user.getUniqueId(), "restricted-prices", Util.getItemStackName(shop.getItem()),
+                  currency + min,
+                  currency + max).send();
+        } else if (min > 0) {
+          plugin.text().of(user.getUniqueId(), "restricted-price-min", Util.getItemStackName(shop.getItem()),
+                  currency + min).send();
+        } else {
+          plugin.text().of(user.getUniqueId(), "restricted-price-max", Util.getItemStackName(shop.getItem()),
+                  currency + max).send();
+        }
         return;
       }
       case REACHED_PRICE_MIN_LIMIT -> {
-        plugin.text().of(user, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
+        plugin.text().of(user, "price-too-cheap", currency + checkResult.getMin()).send();
         return;
       }
       case REACHED_PRICE_MAX_LIMIT -> {
-        plugin.text().of(user, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
+        plugin.text().of(user, "price-too-high", currency + checkResult.getMax()).send();
         return;
       }
       case NOT_A_WHOLE_NUMBER -> {
