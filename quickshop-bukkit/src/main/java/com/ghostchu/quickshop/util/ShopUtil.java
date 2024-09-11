@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.util;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
@@ -29,8 +30,8 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,8 +80,6 @@ public class ShopUtil {
       return;
     }
 
-    final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
-
     double fee = 0;
 
     if (plugin.isPriceChangeRequiresFee()) {
@@ -103,19 +102,35 @@ public class ShopUtil {
 
     final PriceLimiterCheckResult checkResult = limiter.check(user, shop.getItem(), plugin.getCurrency(), price);
 
+    final String currency = shop.getCurrency() == null ? (plugin.getCurrency() == null ? "" : plugin.getCurrency()) : shop.getCurrency();
+    final World world = shop.getLocation().getWorld();
+    final AbstractEconomy econ = plugin.getEconomy();
+
+    final double min = checkResult.getMin();
+    final double max = checkResult.getMax();
+    final String minFormatted = econ != null ? econ.format(min, world, currency) : String.valueOf(min);
+    final String maxFormatted = econ != null ? econ.format(max, world, currency) : String.valueOf(max);
+
     switch (checkResult.getStatus()) {
       case PRICE_RESTRICTED -> {
-        plugin.text().of(user.getUniqueId(), "restricted-prices", Util.getItemStackName(shop.getItem()),
-                Component.text(checkResult.getMin()),
-                Component.text(checkResult.getMax())).send();
+        if (min > 0 && max >= 0) {
+          plugin.text().of(user.getUniqueId(), "restricted-prices",
+                  Util.getItemStackName(shop.getItem()), minFormatted, maxFormatted).send();
+        } else if (min > 0) {
+          plugin.text().of(user.getUniqueId(), "restricted-price-min",
+                  Util.getItemStackName(shop.getItem()), minFormatted).send();
+        } else {
+          plugin.text().of(user.getUniqueId(), "restricted-price-max",
+                  Util.getItemStackName(shop.getItem()), maxFormatted).send();
+        }
         return;
       }
       case REACHED_PRICE_MIN_LIMIT -> {
-        plugin.text().of(user, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
+        plugin.text().of(user, "price-too-cheap", minFormatted).send();
         return;
       }
       case REACHED_PRICE_MAX_LIMIT -> {
-        plugin.text().of(user, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
+        plugin.text().of(user, "price-too-high", maxFormatted).send();
         return;
       }
       case NOT_A_WHOLE_NUMBER -> {
