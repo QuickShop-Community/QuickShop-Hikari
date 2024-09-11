@@ -564,28 +564,32 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
 
         // Price limit checking
-        final PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
+        final PriceLimiterCheckResult priceResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
+
         final String currency = shop.getCurrency() == null ? (plugin.getCurrency() == null ? "" : plugin.getCurrency()) : shop.getCurrency();
+        final World world = shop.getLocation().getWorld();
+        final AbstractEconomy econ = plugin.getEconomy();
 
-        switch (priceCheckResult.getStatus()) {
+        final double min = priceResult.getMin();
+        final double max = priceResult.getMax();
+        final String minFormatted = econ != null ? econ.format(min, world, currency) : String.valueOf(min);
+        final String maxFormatted = econ != null ? econ.format(max, world, currency) : String.valueOf(max);
+
+        switch (priceResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT ->
-                    plugin.text().of(p, "price-too-cheap", Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax()) : Double.toString(priceCheckResult.getMin()))).send();
+                    plugin.text().of(p, "price-too-cheap", minFormatted).send();
             case REACHED_PRICE_MAX_LIMIT ->
-                    plugin.text().of(p, "price-too-high", Component.text((useDecFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax()) : Double.toString(priceCheckResult.getMin()))).send();
+                    plugin.text().of(p, "price-too-high", maxFormatted).send();
             case PRICE_RESTRICTED -> {
-                final double min = priceCheckResult.getMin();
-                final double max = priceCheckResult.getMax();
-
                 if (min > 0 && max >= 0) {
-                    plugin.text().of(p, "restricted-prices", Util.getItemStackName(shop.getItem()),
-                            currency + min,
-                            currency + max).send();
+                    plugin.text().of(p, "restricted-prices",
+                            Util.getItemStackName(shop.getItem()), minFormatted, maxFormatted).send();
                 } else if (min > 0) {
-                    plugin.text().of(p, "restricted-price-min", Util.getItemStackName(shop.getItem()),
-                            currency + min).send();
+                    plugin.text().of(p, "restricted-price-min",
+                            Util.getItemStackName(shop.getItem()), minFormatted).send();
                 } else {
-                    plugin.text().of(p, "restricted-price-max", Util.getItemStackName(shop.getItem()),
-                            currency + max).send();
+                    plugin.text().of(p, "restricted-price-max",
+                            Util.getItemStackName(shop.getItem()), maxFormatted).send();
                 }
             }
             case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
