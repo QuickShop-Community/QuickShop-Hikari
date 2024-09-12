@@ -55,9 +55,9 @@ public abstract class AbstractDisplayItem implements Reloadable {
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        final DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
         if (displayType == DisplayType.VIRTUALITEM && virtualDisplayDoesntWork) {
-            return DisplayType.REALITEM;
+            return DisplayType.CUSTOM;
         }
         return displayType;
     }

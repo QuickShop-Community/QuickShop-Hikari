@@ -3,8 +3,62 @@ package com.ghostchu.quickshop.command;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandManager;
-import com.ghostchu.quickshop.command.subcommand.*;
-import com.ghostchu.quickshop.command.subcommand.silent.*;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_About;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Amount;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Benefit;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Browse;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Buy;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Clean;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_CleanGhost;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Create;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Currency;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Database;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Debug;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Empty;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Export;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_FetchMessage;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Find;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Freeze;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Help;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_History;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Info;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Item;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Lookup;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Name;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Paste;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Permission;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Price;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Purge;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_ROOT;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Recovery;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Refill;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Reload;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Remove;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_RemoveAll;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_RemoveWorld;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Reset;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Sell;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_SetOwner;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Sign;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Size;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Staff;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_StaffAll;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_SuggestPrice;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_SuperCreate;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_TaxAccount;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_ToggleDisplay;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferAll;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferOwnership;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Unlimited;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentBuy;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentEmpty;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentFreeze;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentHistory;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentPreview;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentRemove;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentSell;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentToggleDisplay;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentUnlimited;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -117,6 +171,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
+                        .prefix("freeze")
+                        .hidden(true)
+                        .permission("quickshop.togglefreeze")
+                        .executor(new SubCommand_Freeze(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
                         .prefix("silentbuy")
                         .hidden(true)
                         .permission("quickshop.create.buy")
@@ -128,6 +189,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .hidden(true)
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_SilentSell(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("silentfreeze")
+                        .hidden(true)
+                        .permission("quickshop.togglefreeze")
+                        .executor(new SubCommand_SilentFreeze(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -228,6 +296,12 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .prefix("staff")
                         .permission("quickshop.staff")
                         .executor(new SubCommand_Staff(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("staffall")
+                        .permission("quickshop.staffall")
+                        .executor(new SubCommand_StaffAll(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -347,6 +421,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .prefix("benefit")
                 .permission("quickshop.benefit")
                 .executor(new SubCommand_Benefit(plugin))
+                .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("browse")
+                .permission("quickshop.browse")
+                .executor(new SubCommand_Browse(plugin))
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("sign")

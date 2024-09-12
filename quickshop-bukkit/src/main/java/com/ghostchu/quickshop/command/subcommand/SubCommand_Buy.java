@@ -34,6 +34,4 @@ public class SubCommand_Buy implements CommandHandler<Player> {
         }
         plugin.text().of(sender, "not-looking-at-shop").send();
     }
-
-
 }

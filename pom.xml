@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.6</version>
+    <version>6.2.0.7</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -20,6 +20,11 @@
     </properties>
 
     <licenses>
+        <license>
+            <name>AGPL v3 License</name>
+            <url>https://www.gnu.org/licenses/</url>
+            <distribution>repo</distribution>
+        </license>
         <license>
             <name>GPL v3 License</name>
             <url>https://www.gnu.org/licenses/</url>
@@ -90,7 +95,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.5.3</version>
+                    <version>3.6.0</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -109,6 +114,8 @@
                                 <artifactSet>
                                     <includes>
                                         <include>net.tnemc:*</include>
+                                        <include>com.tcoded:*</include>
+                                        <include>com.tcoded.folialib:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
@@ -134,6 +141,10 @@
                                     <relocation>
                                         <pattern>net.tnemc</pattern>
                                         <shadedPattern>${qs.relocation}.tne</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.tcoded.folialib</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
@@ -203,7 +214,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.3</version>
+                    <version>3.8.0</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
@@ -258,7 +269,7 @@
                 <plugin>
                     <groupId>io.takari.maven.plugins</groupId>
                     <artifactId>takari-lifecycle-plugin</artifactId>
-                    <version>2.1.5</version>
+                    <version>2.1.6</version>
                     <extensions>true</extensions>
                     <configuration>
                         <proc>proc</proc>
@@ -281,7 +292,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.16.2</version>
+                <version>2.17.1</version>
                 <configuration>
                     <generateBackupPoms>true</generateBackupPoms>
                 </configuration>
@@ -351,7 +362,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.32</version>
+                <version>1.18.34</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -359,6 +370,13 @@
                 <artifactId>annotations</artifactId>
                 <version>24.1.0</version>
                 <scope>provided</scope>
+            </dependency>
+            <!-- SLF4J is a real dickhead. -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>2.0.16</version>
+                <scope>runtime</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -389,6 +407,7 @@
         <module>platform/quickshop-platform-spigot-v1_20_R3</module>
         <module>platform/quickshop-platform-spigot-v1_20_R4</module>
         <module>platform/quickshop-platform-spigot-v1_21_R1</module>
+        <module>platform/quickshop-platform-spigot-v1_21_R2</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

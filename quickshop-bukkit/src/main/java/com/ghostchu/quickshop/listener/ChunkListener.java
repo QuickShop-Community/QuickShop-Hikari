@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -46,9 +45,6 @@ public class ChunkListener extends AbstractQSListener {
     }
 
     private void cleanDisplayItems(Chunk chunk) {
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
         for (Entity entity : chunk.getEntities()) {
             if (entity instanceof Item itemEntity) {
                 if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {

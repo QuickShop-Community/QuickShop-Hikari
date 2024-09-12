@@ -1,7 +1,9 @@
 package com.ghostchu.quickshop.util.performance;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.logger.Log;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
@@ -58,15 +60,16 @@ public class BatchBukkitExecutor<T> {
         started = true;
         startTime = Instant.now();
         CompletableFuture<Void> future = new CompletableFuture<>();
-        new BatchBukkitTask<>(tasks, consumer, maxTickMsUsage, future).runTaskTimer(plugin, 1L, 1L);
+        new BatchBukkitTask<>(tasks, consumer, maxTickMsUsage, future).start();
         return future;
     }
 
-    static class BatchBukkitTask<T> extends BukkitRunnable {
+    static class BatchBukkitTask<T> implements Runnable {
         public final Queue<T> tasks;
         public final Consumer<T> consumer;
         public final int maxTickMsUsage;
         private final CompletableFuture<Void> callback;
+        private WrappedTask task;
 
         public BatchBukkitTask(Queue<T> tasks, Consumer<T> consumer, int maxTickMsUsage, CompletableFuture<Void> callback) {
             this.tasks = tasks;
@@ -83,16 +86,26 @@ public class BatchBukkitExecutor<T> {
                     consumer.accept(tasks.poll());
                 } while (System.currentTimeMillis() - startAt < maxTickMsUsage && !tasks.isEmpty());
                 if (tasks.isEmpty()) {
-                    finish();
+                    stop();
                 }
                 return;
             }
-            finish();
+            stop();
         }
 
-        private void finish() {
-            this.cancel();
-            callback.complete(null);
+        public void start() {
+            task = QuickShop.folia().getImpl().runTimer(this, 1, 1);
+        }
+
+        public void stop() {
+            try {
+                if (task != null && !task.isCancelled()) {
+                    task.cancel();
+                    callback.complete(null);
+                }
+            } catch (IllegalStateException ex) {
+                Log.debug("Task already cancelled " + ex.getMessage());
+            }
         }
     }
 

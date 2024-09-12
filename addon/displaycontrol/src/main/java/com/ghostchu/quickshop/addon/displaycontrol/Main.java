@@ -62,7 +62,7 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
             return;
         }
         Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> this.playerClientMapping.entrySet().removeIf(e -> Bukkit.getPlayer(e.getKey()) == null), 60 * 20 * 60, 60 * 20 * 60);
+        QuickShop.folia().getImpl().runTimerAsync(() -> this.playerClientMapping.entrySet().removeIf(e -> Bukkit.getPlayer(e.getKey()) == null), 60 * 20 * 60, 60 * 20 * 60);
         plugin.getCommandManager().registerCmd(CommandContainer.builder()
                 .prefix("displaycontrol")
                 .permission("quickshopaddon.displaycontrol.use")

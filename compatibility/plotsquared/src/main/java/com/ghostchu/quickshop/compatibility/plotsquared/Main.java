@@ -12,7 +12,11 @@ import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
-import com.plotsquared.core.configuration.caption.*;
+import com.plotsquared.core.configuration.caption.Caption;
+import com.plotsquared.core.configuration.caption.CaptionMap;
+import com.plotsquared.core.configuration.caption.LocalizedCaptionMap;
+import com.plotsquared.core.configuration.caption.PerUserLocaleCaptionMap;
+import com.plotsquared.core.configuration.caption.TranslatableCaption;
 import com.plotsquared.core.events.PlotDeleteEvent;
 import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
@@ -25,7 +29,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public final class Main extends CompatibilityModule implements Listener {
     private boolean whiteList;

@@ -16,7 +16,13 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Tag;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -48,8 +54,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -104,11 +118,8 @@ public class Util {
             runnable.run();
             return;
         }
-        if (!Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin.getJavaPlugin(), runnable);
-        }
+
+        QuickShop.folia().getImpl().runLaterAsync(runnable, 0);
     }
 
     /**
@@ -462,23 +473,27 @@ public class Util {
                 return getFirstEnchantmentName(enchantmentStorageMeta);
             }
         }
-//        if (plugin.getConfig().getBoolean("shop.use-effect-for-potion-item") && itemStack.getType().name().endsWith("POTION")) {
-//            ItemMeta meta = itemStack.getItemMeta();
-//            if (meta instanceof PotionMeta potionMeta) {
-//                PotionData potionData = potionMeta.getBasePotionData();
-//                PotionEffectType potionEffectType = potionData.getType().getEffectType();
-//                if (potionEffectType != null) {
-//                    //Because the bukkit API limit, we can't get the actual effect level
-//                    return plugin.getPlatform().getTranslation(potionEffectType);
-//                } else if (potionMeta.hasCustomEffects()) {
-//                    PotionEffect potionEffect = potionMeta.getCustomEffects().get(0);
-//                    if (potionEffect != null) {
-//                        int level = potionEffect.getAmplifier();
-//                        return plugin.getPlatform().getTranslation(potionEffect.getType()).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level)));
-//                    }
-//                }
-//            }
-//        }
+
+        if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("MUSIC_DISC")) {
+
+            final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
+            final String[] split = working.split("_");
+            if(split.length >= 3) {
+
+                return Component.text(split[1] + " " + split[2]);
+            }
+        }
+
+        if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("SMITHING_TEMPLATE")) {
+
+            final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
+            final String[] split = working.split("_");
+            if(split.length >= 2) {
+
+                return Component.text(split[0] + " " + split[1]);
+            }
+        }
+
         if (itemStack.hasItemMeta() && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
             return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
         }
@@ -492,6 +507,86 @@ public class Util {
         return PlainTextComponentSerializer.plainText().serialize(component).isBlank();
     }
 
+    /**
+     * Find a string in a component
+     *
+     * @param component The component to check
+     * @param find The string to check for
+     * @return A boolean of whether the component contains the string
+     */
+    @NotNull
+    public static boolean findStringInComponent(@NotNull Component component, @NotNull String find) {
+        final String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
+        return plainText.replace(' ', '_').contains(find.toLowerCase());
+    }
+
+    /**
+     * Check for a string in a List of Components
+     *
+     * @param components A List<Component> of the components to check
+     * @param find The string to look for amongst the components
+     * @return A boolean of whether the string was found in the list of components
+     */
+    @NotNull
+    public static boolean findStringInList(@NotNull List<Component> components, @NotNull String find) {
+        for (Component name : components) {
+            if (findStringInComponent(name, find))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all enchants that can be found on an item stack
+     *
+     * @param itemStack The enchanted item
+     * @return The names of enchants contained on the enchanted item with levels
+     */
+    @NotNull
+    public static List<Component> getEnchantsForItemStack(@NotNull ItemStack itemStack) {
+        final List<Component> enchants = new ArrayList<>();
+        if (!itemStack.hasItemMeta()) {
+            return enchants;
+        }
+
+        final ItemMeta meta = itemStack.getItemMeta();
+        if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+            for (Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
+                final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                enchants.add(name);
+            }
+        } else {
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
+                enchants.add(name);
+            }
+        }
+
+        return enchants;
+    }
+
+    /**
+     * Take enchantment and level and turn the Name and Level into a Component
+     *
+     * @param enchantment The enchantment to get the name of
+     * @param level The numeric level of the enchantment
+     * @return A component with the name of the Enchantment and it's Level as Roman Numerals
+     */
+    public static Component enchantmentDataToComponent(@NotNull Enchantment enchantment, @NotNull Integer level) {
+        Component name;
+        try {
+            name = plugin.getPlatform().getTranslation(enchantment);
+        } catch (Throwable throwable) {
+            name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
+            plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
+        }
+        if (level > 1) {
+            name.append(Component.text(" " + RomanNumber.toRoman(level)));
+        }
+        return name;
+    }
+
     public static boolean useEnchantmentForEnchantedBook() {
         return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
@@ -501,19 +596,8 @@ public class Util {
         if (!meta.hasStoredEnchants()) {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
-        Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        Component name;
-        try {
-            name = plugin.getPlatform().getTranslation(entry.getKey());
-        } catch (Throwable throwable) {
-            name = MsgUtil.setHandleFailedHover(null, Component.text(entry.getKey().getKey().getKey()));
-            plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
-        }
-        if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
-            return name;
-        } else {
-            return name.append(Component.text(" " + RomanNumber.toRoman(entry.getValue())));
-        }
+        final Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
+        return enchantmentDataToComponent(entry.getKey(), entry.getValue());
     }
 
     public static int getItemTotalAmountsInMap(@NotNull Map<Integer, ItemStack> map) {
@@ -958,12 +1042,31 @@ public class Util {
      *
      * @param runnable The runnable
      */
+    public static void regionThread(final Location location, @NotNull Runnable runnable) {
+        //QuickShop.folia().getImpl().runLater(runnable, 1);
+        QuickShop.folia().getImpl().runAtLocationLater(location, runnable, 1);
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
     public static void mainThreadRun(@NotNull Runnable runnable) {
-        if (Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTask(plugin.getJavaPlugin(), runnable);
-        }
+        QuickShop.folia().getImpl().runLater(runnable, 1);
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
+    public static void mainThreadRun(@NotNull Runnable runnable, long delay) {
+        QuickShop.folia().getImpl().runLater(runnable, delay);
     }
 
     /**

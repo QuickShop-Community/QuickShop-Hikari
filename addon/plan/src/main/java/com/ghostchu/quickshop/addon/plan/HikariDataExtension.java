@@ -2,7 +2,12 @@ package com.ghostchu.quickshop.addon.plan;
 
 import com.djrapitops.plan.extension.CallEvents;
 import com.djrapitops.plan.extension.DataExtension;
-import com.djrapitops.plan.extension.annotation.*;
+import com.djrapitops.plan.extension.annotation.PluginInfo;
+import com.djrapitops.plan.extension.annotation.StringProvider;
+import com.djrapitops.plan.extension.annotation.Tab;
+import com.djrapitops.plan.extension.annotation.TabInfo;
+import com.djrapitops.plan.extension.annotation.TabOrder;
+import com.djrapitops.plan.extension.annotation.TableProvider;
 import com.djrapitops.plan.extension.icon.Color;
 import com.djrapitops.plan.extension.icon.Family;
 import com.djrapitops.plan.extension.icon.Icon;
@@ -111,6 +116,7 @@ public class HikariDataExtension implements DataExtension {
             String type = switch (shop.getShopType()) {
                 case BUYING -> "Buying";
                 case SELLING -> "Selling";
+                case FROZEN -> "Frozen";
             };
             String location = dataUtil.loc2String(shop.getLocation());
             tableBuilder.addRow(owner, item, price, type, location);
@@ -164,14 +170,17 @@ public class HikariDataExtension implements DataExtension {
                 .columnThree("Type", Icon.called("code-branch").build())
                 .columnFour("Location", Icon.called("location-arrow").build());
         for (Shop shop : main.getQuickShop().getShopManager().getAllShops(playerUUID)) {
-            String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
+
+            final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
             String price = df.format(shop.getPrice());
             if (main.getQuickShop().getEconomy() != null) {
                 price = main.getQuickShop().getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency());
             }
-            String type = switch (shop.getShopType()) {
+
+            final String type = switch (shop.getShopType()) {
                 case BUYING -> "Buying";
                 case SELLING -> "Selling";
+                case FROZEN -> "Frozen";
             };
             String location = dataUtil.loc2String(shop.getLocation());
             tableBuilder.addRow(item, price, type, location);

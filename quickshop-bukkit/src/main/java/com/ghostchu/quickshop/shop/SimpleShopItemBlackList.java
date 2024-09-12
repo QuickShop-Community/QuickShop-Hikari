@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
+import com.ghostchu.quickshop.util.ItemContainerUtil;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -42,36 +43,39 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
     @Override
     public boolean isBlacklisted(@NotNull ItemStack itemStack) {
         ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry) plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
-        for (String s : this.configBlacklist) {
-           if(itemExpressionRegistry.match(itemStack, s)){
-               return true;
-           }
-        }
-        if (BLACKLIST_LORES.isEmpty()) {
-            return false; // Fast return if empty
-        }
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return false;
-        }
-        if (!meta.hasLore()) {
-            return false;
-        }
-        List<String> originalLores = meta.getLore();
-        if (originalLores == null) {
-            return false;
-        }
-        List<String> strippedLores = new ArrayList<>(originalLores.size());
-        for (String originalLore : originalLores) {
-            strippedLores.add(ChatColor.stripColor(originalLore));
-        }
-        for (String loreLine : strippedLores) {
-            for (String blacklistLore : BLACKLIST_LORES) {
-                if (loreLine.contains(blacklistLore)) {
+        for (ItemStack is : ItemContainerUtil.flattenContents(itemStack, true, true)) {
+            for (String s : this.configBlacklist) {
+                if (itemExpressionRegistry.match(is, s)) {
                     return true;
+                }
+            }
+
+            if (BLACKLIST_LORES.isEmpty()) {
+                return false; // Fast return if empty
+            }
+            if (!is.hasItemMeta()) {
+                return false;
+            }
+            final ItemMeta meta = is.getItemMeta();
+            if (meta == null) {
+                return false;
+            }
+            if (!meta.hasLore()) {
+                return false;
+            }
+            final List<String> originalLores = meta.getLore();
+            if (originalLores == null) {
+                return false;
+            }
+            final List<String> strippedLores = new ArrayList<>(originalLores.size());
+            for (String originalLore : originalLores) {
+                strippedLores.add(ChatColor.stripColor(originalLore));
+            }
+            for (String loreLine : strippedLores) {
+                for (String blacklistLore : BLACKLIST_LORES) {
+                    if (loreLine.contains(blacklistLore)) {
+                        return true;
+                    }
                 }
             }
         }

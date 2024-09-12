@@ -12,13 +12,13 @@ public class EssentialsConversion implements UuidConversion {
     @Override
     public UUID convertTownyAccount(Town town) {
         String vaultAccountName = processAccount(town.getAccount().getName());
-        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(("NPC:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
     public UUID convertTownyAccount(Nation nation) {
         String vaultAccountName = processAccount(nation.getAccount().getName());
-        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(("NPC:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
     }
 
     private String processAccount(String accountName) {

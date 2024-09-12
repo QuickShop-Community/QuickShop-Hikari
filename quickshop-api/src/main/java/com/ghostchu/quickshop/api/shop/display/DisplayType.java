@@ -12,16 +12,16 @@ public enum DisplayType {
      * ARMORSTAND = USE ARMORSTAND DISPLAY
      * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
      * */
-    REALITEM(0),
+    //REALITEM(0),
     //  ARMORSTAND(1),
     VIRTUALITEM(2),
-    ENTITY_DISPLAY(3),
+    //ENTITY_DISPLAY(3),
     CUSTOM(900);
 
     private static final Map<Integer, DisplayType> TYPE_MAP;
 
     static {
-        Map<Integer, DisplayType> map = new HashMap<>(values().length);
+        final Map<Integer, DisplayType> map = new HashMap<>(values().length);
         for (DisplayType type : values()) {
             map.put(type.id, type);
         }

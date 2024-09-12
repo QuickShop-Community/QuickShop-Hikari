@@ -13,14 +13,15 @@ public class ReplaceableModulesItem implements SubPasteItem {
     private final String displayItem;
 
     public ReplaceableModulesItem() {
-        QuickShop plugin = QuickShop.getInstance();
+
+        final QuickShop plugin = QuickShop.getInstance();
         itemMatcher = plugin.getItemMatcher().getName() + "@" + plugin.getItemMatcher().getPlugin().getName();
         if (plugin.getEconomy() == null) {
             economyCore = "undefined@unknown";
         } else {
             economyCore = plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName();
         }
-        DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+        final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
         if (provider == null) {
             displayItem = AbstractDisplayItem.getNowUsing().name() + "@QuickShop-Hikari";
         } else {
@@ -40,7 +41,7 @@ public class ReplaceableModulesItem implements SubPasteItem {
 
     @NotNull
     private String buildContent() {
-        HTMLTable table = new HTMLTable(2, true);
+        final HTMLTable table = new HTMLTable(2, true);
         table.insert("Economy Core", economyCore);
         table.insert("Item Matcher", itemMatcher);
         table.insert("DisplayItem", displayItem);

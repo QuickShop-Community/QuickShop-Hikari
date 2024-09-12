@@ -1,5 +1,23 @@
 package com.ghostchu.quickshop.shop.display.virtual.packetfactory;
 
+/*
+ * QuickShop - Hikari
+ * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -7,7 +25,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
-import com.comphenix.protocol.wrappers.*;
+import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.WrappedDataValue;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
@@ -52,6 +74,8 @@ public class v1_20_R4_TO_V1_21_R1 implements VirtualDisplayPacketFactory {
 
     @Override
     public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location displayLocation) {
+
+
         //First, create a new packet to spawn item
         PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
         //and add data based on packet class in NMS  (global scope variable)

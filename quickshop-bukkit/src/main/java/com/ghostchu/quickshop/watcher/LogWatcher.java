@@ -1,12 +1,19 @@
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.logger.Log;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -17,10 +24,12 @@ import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class LogWatcher extends BukkitRunnable implements AutoCloseable {
+public class LogWatcher implements AutoCloseable, Runnable {
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
     private static final DateTimeFormatter LOG_FILE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
+
+    private WrappedTask task = null;
 
     private PrintWriter printWriter = null;
 
@@ -71,6 +80,20 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
             plugin.logger().error("Log file was not found!", e);
         } catch (IOException e) {
             plugin.logger().error("Could not create the log file!", e);
+        }
+    }
+
+    public void start(int i, int i2) {
+        task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
+    }
+
+    public void stop() {
+        try {
+            if (task != null && !task.isCancelled()) {
+                task.cancel();
+            }
+        } catch (IllegalStateException ex) {
+            Log.debug("Task already cancelled " + ex.getMessage());
         }
     }
 

@@ -6,8 +6,12 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.utility.MinecraftVersion;
-import com.comphenix.protocol.wrappers.*;
+import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.WrappedDataValue;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
@@ -23,12 +27,15 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
+    private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
     private final QuickShop plugin;
     private final VirtualDisplayItemManager manager;
 
@@ -51,48 +58,54 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
     }
 
     @Override
-    public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location displayLocation) {
+    public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location location) {
+        final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + entityID).getBytes(StandardCharsets.UTF_8));
+
         //First, create a new packet to spawn item
-        PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
-        //and add data based on packet class in NMS  (global scope variable)
-        //Reference: https://wiki.vg/Protocol#Spawn_Object
+        final PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+
+        //id and velocity
         fakeItemPacket.getIntegers()
-                //Entity ID
-                .write(0, entityID);
-        //Velocity x
+                .write(0, entityID)
+                .write(1, 0)
+                .write(2, 0)
+                .write(3, 0);
+
         fakeItemPacket.getEntityTypeModifier().write(0, EntityType.valueOf("DROPPED_ITEM"));
+
         //UUID
-        fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
+        fakeItemPacket.getUUIDs().write(0, identifier);
+
         //Location
         fakeItemPacket.getDoubles()
                 //X
-                .write(0, displayLocation.getX())
+                .write(0, location.getX())
                 //Y
-                .write(1, displayLocation.getY())
+                .write(1, location.getY())
                 //Z
-                .write(2, displayLocation.getZ());
+                .write(2, location.getZ());
         return fakeItemPacket;
     }
 
     @Override
     public @NotNull PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack) {
-        //Next, create a new packet to update item data (default is empty)
-        PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
-        //Entity ID
-        fakeItemMetaPacket.getIntegers().write(0, entityID);
+        final List<WrappedDataValue> values = new ArrayList<>();
+        values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-        //List<DataWatcher$Item> Type are more complex
-        //Create a DataWatcher
-        WrappedDataWatcher wpw = new WrappedDataWatcher();
-        //https://wiki.vg/index.php?title=Entity_metadata#Entity
         if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
-            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
-            wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
+
+            final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
+
+            values.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle())));
+            values.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
         }
 
-        //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-        wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+        //Next, create a new packet to update item data (default is empty)
+        final PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
+        //Entity ID
+        fakeItemMetaPacket.getIntegers().write(0, entityID);
+        fakeItemMetaPacket.getDataValueCollectionModifier().write(0, values);
+
         //Add it
         //For 1.19.2+, we need to use DataValue instead of WatchableObject
         //Check for new version protocolLib
@@ -101,31 +114,12 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
         }
-        //Convert List<WrappedWatchableObject> to List<WrappedDataValue>
-        List<WrappedWatchableObject> wrappedWatchableObjects = wpw.getWatchableObjects();
-        List<WrappedDataValue> wrappedDataValues = new java.util.LinkedList<>();
-        for (WrappedWatchableObject wrappedWatchableObject : wrappedWatchableObjects) {
-            WrappedDataWatcher.WrappedDataWatcherObject watchableObject = wrappedWatchableObject.getWatcherObject();
-            wrappedDataValues.add(new WrappedDataValue(watchableObject.getIndex(), watchableObject.getSerializer(), wrappedWatchableObject.getRawValue()));
-        }
-        fakeItemMetaPacket.getDataValueCollectionModifier().write(0, wrappedDataValues);
         return fakeItemMetaPacket;
     }
 
     @Override
-    public @NotNull PacketContainer createFakeItemVelocityPacket(int entityID) {
-        //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
-        PacketContainer fakeItemVelocityPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
-        fakeItemVelocityPacket.getIntegers()
-                //Entity ID
-                .write(0, entityID)
-                //Velocity x
-                .write(1, 0)
-                //Velocity y
-                .write(2, 0)
-                //Velocity z
-                .write(3, 0);
-        return fakeItemVelocityPacket;
+    public PacketContainer createFakeItemVelocityPacket(int entityID) {
+        return null;
     }
 
     @Override

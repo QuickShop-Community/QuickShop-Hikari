@@ -3,7 +3,17 @@ package com.ghostchu.quickshop.compatibility.towny;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopOwnerNameGettingEvent;
+import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxAccountChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxAccountGettingEvent;
+import com.ghostchu.quickshop.api.event.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -15,6 +25,7 @@ import com.ghostchu.quickshop.compatibility.towny.compat.UuidConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.essentials.EssentialsConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.general.GeneralConversion;
 import com.ghostchu.quickshop.compatibility.towny.compat.gringotts.towny.GringottsTownyConversion;
+import com.ghostchu.quickshop.compatibility.towny.compat.tne.TNEConversion;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -41,7 +52,11 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
     @Getter
@@ -132,6 +147,7 @@ public final class Main extends CompatibilityModule implements Listener {
         uuidConversion = switch (getConfig().getInt("uuid-conversion", 0)) {
             case 1 -> new EssentialsConversion();
             case 2 -> new GringottsTownyConversion();
+            case 3 -> new TNEConversion();
             default -> new GeneralConversion();
         };
         reflectChanges();

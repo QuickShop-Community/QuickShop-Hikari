@@ -20,6 +20,7 @@ import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1202Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_3.Spigot1203Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_4.Spigot1205Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1210Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1211Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
@@ -84,7 +85,7 @@ public class QuickShopBukkit extends JavaPlugin {
         this.quickShop.onDisable();
         bootstrapLogger.info("Cleaning up resources...");
         HandlerList.unregisterAll(this);
-        Bukkit.getScheduler().cancelTasks(this);
+        QuickShop.folia().getImpl().cancelAllTasks();
         Bukkit.getServicesManager().unregisterAll(this);
         Unirest.shutDown(true);
         Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
@@ -116,7 +117,6 @@ public class QuickShopBukkit extends JavaPlugin {
     private void loadLibraries() {
         resolveLibraries(this);
         new UnirestLibLoader(this);
-        new AdventureLibLoader(this);
     }
 
     private void resolveLibraries(QuickShopBukkit quickShopBukkit) {
@@ -124,21 +124,8 @@ public class QuickShopBukkit extends JavaPlugin {
             bootstrapLogger.warning("Warning! You have disabled libraries resolver! Make sure you added libraries in plugin.yml!");
             return;
         }
-//        LogAdapter adapter = new LogAdapter() {
-//            @Override
-//            public void log(@NotNull LogLevel logLevel, @Nullable String s) {
-//                // silent
-//            }
-//
-//            @Override
-//            public void log(@NotNull LogLevel logLevel, @Nullable String s, @Nullable Throwable throwable) {
-//                // silent
-//            }
-//        };
         LogAdapter adapter = new JDKLogAdapter(getLogger());
-//        if (Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
-//            adapter = new JDKLogAdapter(getLogger());
-//        }
+
         this.bukkitLibraryManager = new BukkitLibraryManager(quickShopBukkit, "lib", adapter);
         if (!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableMavenLocal"))) {
             this.bukkitLibraryManager.addMavenLocal();
@@ -243,12 +230,17 @@ public class QuickShopBukkit extends JavaPlugin {
             switch (platformId) {
                 case 1 -> {
                     bootstrapLogger.info("Platform detected: Spigot");
+                    bootstrapLogger.warning("=================================================================");
+                    bootstrapLogger.warning("=========================   ATTENTION   =========================");
+                    bootstrapLogger.warning("=================================================================");
                     bootstrapLogger.warning("Use Paper or Paper's fork to get best performance and enhanced features!");
+                    bootstrapLogger.warning("Spigot lacks modern functionality and overall performance fixes.");
+                    bootstrapLogger.warning("=================================================================");
 
                     initNbtApi();
 
                     //noinspection deprecation
-                    String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
+                    final String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
                     this.platform = switch (internalNMSVersion) {
                         case "v1_18_R1" -> new Spigot1181Platform(this);
                         case "v1_18_R2" -> new Spigot1182Platform(this);
@@ -260,6 +252,7 @@ public class QuickShopBukkit extends JavaPlugin {
                         case "v1_20_R3" -> new Spigot1203Platform(this);
                         case "v1_20_R4" -> new Spigot1205Platform(this);
                         case "v1_21_R1" -> new Spigot1210Platform(this);
+                        case "v1_21_R2" -> new Spigot1211Platform(this);
                         default -> {
                             bootstrapLogger.warning("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
                             Bukkit.getPluginManager().disablePlugin(this);
@@ -344,23 +337,6 @@ public class QuickShopBukkit extends JavaPlugin {
                 plugin.getBootstrapLogger().info("Unirest proxy authentication activated.");
                 Unirest.config().proxy(PackageUtil.parsePackageProperly("proxyHost").asString("127.0.0.1"), PackageUtil.parsePackageProperly("proxyPort").asInteger(1080), PackageUtil.parsePackageProperly("proxyUsername").asString(""), PackageUtil.parsePackageProperly("proxyPassword").asString(""));
             }
-        }
-    }
-
-    static class AdventureLibLoader {
-        public AdventureLibLoader(QuickShopBukkit plugin) {
-//            plugin.getBootstrapLogger().info("Loading the Adventure Chat Processor...");
-//            plugin.getBootstrapLogger().info("Adventure API loaded from: " + CommonUtil.getClassPath(Adventure.class));
-//            plugin.getBootstrapLogger().info("Adventure Bukkit Platform loaded from: " + CommonUtil.getClassPath(BukkitAudiences.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (Legacy) loaded from: " + CommonUtil.getClassPath(LegacyComponentSerializer.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (Gson) loaded from: " + CommonUtil.getClassPath(GsonComponentSerializer.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (Json) loaded from: " + CommonUtil.getClassPath(JSONComponentSerializer.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (BungeeChat) loaded from: " + CommonUtil.getClassPath(BungeeComponentSerializer.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (ViaVersion Facet) loaded from: " + CommonUtil.getClassPath(ViaFacet.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (ANSI) loaded from: " + CommonUtil.getClassPath(ANSIComponentSerializer.class));
-//            plugin.getBootstrapLogger().info("Adventure Text Serializer (Plain) loaded from: " + CommonUtil.getClassPath(PlainTextComponentSerializer.class));
-//            plugin.getBootstrapLogger().info("Adventure MiniMessage Lib loaded from: " + CommonUtil.getClassPath(MiniMessage.class));
-
         }
     }
 }

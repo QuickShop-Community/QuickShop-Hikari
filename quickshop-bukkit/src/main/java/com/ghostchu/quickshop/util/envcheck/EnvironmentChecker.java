@@ -17,7 +17,13 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public final class EnvironmentChecker {
     private static final String CHECK_PASSED_RETURNS = "Check passed";
@@ -360,7 +366,7 @@ public final class EnvironmentChecker {
             plugin.getVirtualDisplayItemManager().setTestPassed(false);
             AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
             plugin.logger().warn("Failed to load the VirtualDisplayItem, self-test failure", testResult);
-            return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItem test failed, resetting to RealDisplayItem...");
+            return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItem test failed, turning off displays");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }

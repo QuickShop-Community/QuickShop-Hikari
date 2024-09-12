@@ -1,12 +1,7 @@
 package com.ghostchu.quickshop.platform.spigot.v1_20_4;
 
 import com.ghostchu.quickshop.platform.Platform;
-import com.ghostchu.quickshop.platform.Util;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -15,7 +10,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.ItemLore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_20_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;

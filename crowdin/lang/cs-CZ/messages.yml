@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>Máte více obchodů s názvem "<green>{0}</green>", vyberte jeden pro pokračování:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(Pouze admini) <light_purple>{0} <dark_gray>zamítl kontrolu oprávnění, pokud to není výjimka, zkuste přidat <light_purple>{1} <gray>na blacklist. <gray>Konfigurace průvodce: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Okolní průměrná cena: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
 digits-reach-the-limit: <red>Dosáhli jste limitu desetinných míst v ceně.
@@ -88,7 +88,7 @@ reloading-status:
   scheduled: <green>Obnovení dokončeno. <gray>(Může chvíli trvat, než se změny projeví)
   require-restart: <green>Obnovení dokončeno. <yellow>(Změny vyžadují restartování serveru)
   failed: <red>Obnovení selhalo, zkontrolujte konzoli serveru
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} koupil {1} {2} z vašeho obchodu a vy jste vydělali {3} ({4} daně).
 not-enough-space: <red>Zbývá ti jen {0} volných míst!
 shop-name-success: <green>Název obchodu byl úspěšně nastaven na <yellow>{0}<green>.
 shop-staff-added: <green>Uživatel {0} byl úspěšně přidán do vašeho obchodu.
@@ -243,7 +243,7 @@ tableformat:
 quickshop-gui-preview: Náhled GUI položky v QuickShopu
 translate-not-completed-yet-click: Překlad jazyka {0} ještě nebyl dokončen uživatelem {1}. Chcete nám pomoci zlepšit překlad? Klikněte zde!
 taxaccount-invalid: <red>Cílový účet není platný, zadejte prosím platné jméno hráče nebo uuid(s pomlčkami).
-player-bought-from-your-store: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>{0} zakoupil {1} {2} z tvého obchodu a ty jsi zaplatil {3} na daních.
+player-bought-from-your-store: <green>{0} si koupil {1} {2} z vašeho obchodu a získali jste {3}.
 reached-maximum-can-create: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Již jste vytvořili maximum {0}/{1} obchodů!
 reached-maximum-create-limit: <red>Dosáhli jste maximálního počtu obchodů, které můžete vytvořit
 translation-version: 'Verze podpory: Hikari'
@@ -1558,7 +1558,7 @@ about:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
     - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/Ghost-chu/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
