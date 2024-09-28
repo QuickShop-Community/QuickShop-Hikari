@@ -21,15 +21,15 @@ public class NationCommand implements CommandHandler<Player> {
 
   private final Main plugin;
 
-  public NationCommand(Main plugin) {
+  public NationCommand(final Main plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.getApi().getTextManager().of(sender, "not-looking-at-shop").send();
       return;
@@ -39,13 +39,13 @@ public class NationCommand implements CommandHandler<Player> {
       plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-already-is-town-shop").send();
       return;
     }
-    Nation recordNation = TownyShopUtil.getShopNation(shop);
+    final Nation recordNation = TownyShopUtil.getShopNation(shop);
     if(recordNation != null) {
       if(TownyShopUtil.getShopOriginalOwner(shop).equals(sender.getUniqueId())
          || recordNation.getKing().getUUID().equals(sender.getUniqueId())) {
         // Turn it back to a normal shop
         shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
-        QUser qUser = QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop));
+        final QUser qUser = QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop));
         shop.setOwner(qUser);
         TownyShopUtil.setShopTown(shop, null);
         plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
@@ -58,7 +58,7 @@ public class NationCommand implements CommandHandler<Player> {
     if(TownyShopUtil.getShopNation(shop) != null) {
       // Turn it back to a normal shop
       shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
-      QUser qUser = QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop));
+      final QUser qUser = QUserImpl.createSync(plugin.getApi().getPlayerFinder(), TownyShopUtil.getShopOriginalOwner(shop));
       shop.setOwner(qUser);
       TownyShopUtil.setShopNation(shop, null);
       plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-nation").send();
@@ -66,21 +66,21 @@ public class NationCommand implements CommandHandler<Player> {
     }
 
     // Set as a nation shop
-    Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+    final Town town = TownyAPI.getInstance().getTown(shop.getLocation());
     if(town == null) {
       plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
       return;
     }
-    Nation nation = TownyAPI.getInstance().getTownNationOrNull(town);
+    final Nation nation = TownyAPI.getInstance().getTownNationOrNull(town);
     if(nation == null) {
       plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-nation-region").send();
       return;
     }
 
-    UUID uuid = plugin.getUuidConversion().convertTownyAccount(nation);
+    final UUID uuid = plugin.getUuidConversion().convertTownyAccount(nation);
     // Check if item and type are allowed
     if(plugin.getConfig().getBoolean("bank-mode.enable")) {
-      Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
+      final Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
       if(price == null) {
         plugin.getApi().getTextManager().of(sender, "addon.towny.item-not-allowed").send();
         return;
@@ -91,7 +91,7 @@ public class NationCommand implements CommandHandler<Player> {
         shop.setPrice(price);
       }
     }
-    UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
+    final UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
     TownyShopUtil.setShopOriginalOwner(shop, shopOwnerUUID);
     shop.setPlayerGroup(shopOwnerUUID, BuiltInShopPermissionGroup.ADMINISTRATOR);
     shop.setOwner(QUserImpl.createSync(plugin.getApi().getPlayerFinder(), uuid));

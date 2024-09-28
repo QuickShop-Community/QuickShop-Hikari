@@ -88,7 +88,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   @Nullable
   private CrowdinOTA crowdinOTA;
 
-  public SimpleTextManager(@NotNull QuickShop plugin) {
+  public SimpleTextManager(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);
@@ -123,16 +123,16 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     // then, load the translations from Crowdin
     try {
       if(crowdinOTA != null) {
-        OTAFileInstance fileInstance = crowdinOTA.getOtaInstance().getFileInstance(CROWDIN_LANGUAGE_FILE_PATH);
+        final OTAFileInstance fileInstance = crowdinOTA.getOtaInstance().getFileInstance(CROWDIN_LANGUAGE_FILE_PATH);
         if(fileInstance != null) {
-          for(String crowdinCode : fileInstance.getAvailableLocales()) {
-            String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
-            String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
+          for(final String crowdinCode : fileInstance.getAvailableLocales()) {
+            final String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
+            final String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
             if(content == null) {
               plugin.logger().warn("Failed to load translation for {}, the content is null.", mcCode);
               continue;
             }
-            YamlConfiguration configuration = new YamlConfiguration();
+            final YamlConfiguration configuration = new YamlConfiguration();
             try {
               configuration.loadFromString(content);
               languageFilesManager.deploy(mcCode, configuration);
@@ -150,12 +150,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     // and don't forget fix missing
     languageFilesManager.fillMissing(loadBuiltInFallback());
     // finally, load override translations
-    Collection<String> pending = getOverrideLocales(languageFilesManager.getDistributions().keySet());
+    final Collection<String> pending = getOverrideLocales(languageFilesManager.getDistributions().keySet());
     Log.debug("Pending: " + Arrays.toString(pending.toArray()));
     pending.forEach(locale->{
-      File file = getOverrideLocaleFile(locale);
+      final File file = getOverrideLocaleFile(locale);
       if(file.exists()) {
-        YamlConfiguration configuration = new YamlConfiguration();
+        final YamlConfiguration configuration = new YamlConfiguration();
         try {
           configuration.loadFromString(Files.readString(file.toPath(), StandardCharsets.UTF_8));
           languageFilesManager.deploy(locale, configuration);
@@ -169,11 +169,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     });
 
     // Remove disabled locales
-    List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
+    final List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
     enabledLanguagesRegex.replaceAll(s->s.toLowerCase(Locale.ROOT).replace("-", "_"));
-    Iterator<String> it = pending.iterator();
+    final Iterator<String> it = pending.iterator();
     while(it.hasNext()) {
-      String locale = it.next();
+      final String locale = it.next();
       if(!localeEnabled(locale, enabledLanguagesRegex)) {
         this.languageFilesManager.destroy(locale);
         it.remove();
@@ -203,7 +203,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
   private void initTagResolvers() {
 
-    File configFile = new File(plugin.getDataFolder(), "color-scheme.yml");
+    final File configFile = new File(plugin.getDataFolder(), "color-scheme.yml");
     if(!configFile.exists()) {
       try {
         Files.copy(plugin.getJavaPlugin().getResource("color-scheme.yml"), configFile.toPath());
@@ -211,22 +211,22 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         plugin.logger().warn("Failed to copy color-scheme.yml to plugin folder!", e);
       }
     }
-    FileConfiguration colorSchemeYaml = YamlConfiguration.loadConfiguration(configFile);
-    ConfigurationSection colorSchemeSection = colorSchemeYaml.getConfigurationSection("color-scheme");
+    final FileConfiguration colorSchemeYaml = YamlConfiguration.loadConfiguration(configFile);
+    final ConfigurationSection colorSchemeSection = colorSchemeYaml.getConfigurationSection("color-scheme");
     if(colorSchemeSection == null) {
       tagResolvers = new TagResolver[0];
       return;
     }
-    List<TagResolver> resolvers = new ArrayList<>();
+    final List<TagResolver> resolvers = new ArrayList<>();
     resolvers.add(TagResolver.standard());
     resolvers.add(TagResolver.resolver("color_scheme", (argumentQueue, context)->{
       if(!argumentQueue.hasNext()) {
         return null;
       }
-      Tag.Argument argument = argumentQueue.pop();
-      String code = argument.value();
-      String hex = colorSchemeSection.getString(code, "#ffffff");
-      TextColor textColor = TextColor.fromHexString(hex);
+      final Tag.Argument argument = argumentQueue.pop();
+      final String code = argument.value();
+      final String hex = colorSchemeSection.getString(code, "#ffffff");
+      final TextColor textColor = TextColor.fromHexString(hex);
       if(textColor == null) {
         return null;
       }
@@ -250,14 +250,14 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   @NotNull
   private FileConfiguration loadBuiltInFallback() {
 
-    YamlConfiguration configuration = new YamlConfiguration();
+    final YamlConfiguration configuration = new YamlConfiguration();
     try(InputStream inputStream = QuickShop.getInstance().getJavaPlugin().getResource("lang/messages.yml")) {
       if(inputStream == null) {
         plugin.logger().warn("Failed to load built-in fallback translation, fallback file not exists in jar.");
         return configuration;
       }
-      byte[] bytes = inputStream.readAllBytes();
-      String content = new String(bytes, StandardCharsets.UTF_8);
+      final byte[] bytes = inputStream.readAllBytes();
+      final String content = new String(bytes, StandardCharsets.UTF_8);
       configuration.loadFromString(content);
       return configuration;
     } catch(IOException | InvalidConfigurationException e) {
@@ -274,7 +274,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   @NotNull
   private Map<String, FileConfiguration> loadBundled() {
 
-    File jarFile;
+    final File jarFile;
     try {
       jarFile = Util.getPluginJarFile(plugin.getJavaPlugin());
     } catch(FileNotFoundException e) {
@@ -283,7 +283,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
     try(ZipFile zipFile = new ZipFile(jarFile, "UTF-8")) {
       // jar/lang/<region_code>/
-      Map<String, FileConfiguration> availableLang = new HashMap<>();
+      final Map<String, FileConfiguration> availableLang = new HashMap<>();
       zipFile.getEntries().asIterator().forEachRemaining(entry->{
         if(entry.isDirectory()) {
           return;
@@ -294,11 +294,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         if(!entry.getName().endsWith("messages.yml")) {
           return;
         }
-        String[] split = entry.getName().split("/");
-        String locale = split[split.length - 2];
+        final String[] split = entry.getName().split("/");
+        final String locale = split[split.length - 2];
         if(zipFile.canReadEntryData(entry)) {
           try {
-            YamlConfiguration configuration = new YamlConfiguration();
+            final YamlConfiguration configuration = new YamlConfiguration();
             configuration.loadFromString(new String(zipFile.getInputStream(entry).readAllBytes(), StandardCharsets.UTF_8));
             availableLang.put(locale.toLowerCase(Locale.ROOT).replace("-", "_"), configuration);
           } catch(IOException | InvalidConfigurationException e) {
@@ -323,31 +323,31 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    */
   @SneakyThrows(IOException.class)
   @NotNull
-  private Collection<String> getOverrideLocales(@NotNull Collection<String> pool) {
+  private Collection<String> getOverrideLocales(@NotNull final Collection<String> pool) {
 
-    File moduleFolder = new File(plugin.getDataFolder(), "overrides");
+    final File moduleFolder = new File(plugin.getDataFolder(), "overrides");
     if(!moduleFolder.exists()) {
       moduleFolder.mkdirs();
     }
     // create the pool overrides placeholder directories
     pool.forEach(single->{
-      File f = new File(moduleFolder, single);
+      final File f = new File(moduleFolder, single);
       if(!f.exists()) {
         f.mkdirs();
       }
     });
     //
-    File[] files = moduleFolder.listFiles();
+    final File[] files = moduleFolder.listFiles();
     if(files == null) {
       return pool;
     }
-    List<String> newPool = new ArrayList<>(pool);
-    for(File file : files) {
+    final List<String> newPool = new ArrayList<>(pool);
+    for(final File file : files) {
       if(file.isDirectory()) {
         // custom language
         newPool.add(file.getName());
         // create the paired file
-        File localeFile = new File(file, "messages.yml");
+        final File localeFile = new File(file, "messages.yml");
         if(!localeFile.exists()) {
           localeFile.getParentFile().mkdirs();
           localeFile.createNewFile();
@@ -362,7 +362,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   @NotNull
-  private File getOverrideLocaleFile(@NotNull String locale) {
+  private File getOverrideLocaleFile(@NotNull final String locale) {
 
     File file;
     // bug fixes workaround
@@ -385,9 +385,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   @Override
   public @NotNull String genBody() {
 
-    StringJoiner joiner = new StringJoiner("<br/>");
+    final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<h5>Metadata</h5>");
-    HTMLTable meta = new HTMLTable(2, true);
+    final HTMLTable meta = new HTMLTable(2, true);
     meta.insert("Fallback Language", DEFAULT_LOCALE);
     meta.insert("Locale Mapping Prefix", LOCALE_MAPPING_SYNTAX);
     meta.insert("Crowdin Language File Path", CROWDIN_LANGUAGE_FILE_PATH);
@@ -397,7 +397,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     joiner.add("<h5>Caching</h5>");
     joiner.add(GuavaCacheRender.renderTable(languagesCache.stats()));
     joiner.add("<h5>Post Processors</h5>");
-    HTMLTable postProcessorsTable = new HTMLTable(1, false);
+    final HTMLTable postProcessorsTable = new HTMLTable(1, false);
     postProcessorsTable.setTableTitle("Registered Processors");
     postProcessors.forEach(p->postProcessorsTable.insert(p.getClass().getName()));
     joiner.add(postProcessorsTable.render());
@@ -412,7 +412,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
   @Override
   @NotNull
-  public ProxiedLocale findRelativeLanguages(@Nullable String langCode) {
+  public ProxiedLocale findRelativeLanguages(@Nullable final String langCode) {
     //langCode may null when some plugins providing fake player
     if(langCode == null || langCode.isEmpty()) {
       return new ProxiedLocale(langCode, DEFAULT_LOCALE, NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT), Locale.ROOT);
@@ -423,14 +423,14 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       if(availableLanguages.contains(langCode)) {
         result = langCode;
       } else {
-        String[] splits = langCode.split("_", 2);
+        final String[] splits = langCode.split("_", 2);
         String start = langCode;
         String end = langCode;
         if(splits.length == 2) {
           start = splits[0] + "_";
           end = "_" + splits[1];
         }
-        for(String availableLanguage : availableLanguages) {
+        for(final String availableLanguage : availableLanguages) {
           if(availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
             result = availableLanguage;
             break;
@@ -442,7 +442,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
 
 
-    String[] resultCode = result.split("_");
+    final String[] resultCode = result.split("_");
     Locale locale = Locale.ROOT;
     try {
       if(resultCode.length == 2) {
@@ -466,9 +466,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The locale enabled status
    */
   @Override
-  public boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex) {
+  public boolean localeEnabled(@NotNull final String locale, @NotNull final List<String> regex) {
 
-    for(String languagesRegex : regex) {
+    for(final String languagesRegex : regex) {
       try {
         if(Pattern.matches(CommonUtil.createRegexFromGlob(languagesRegex), locale)) {
           return true;
@@ -483,7 +483,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   @NotNull
   private String getDefLocale() {
 
-    Iterator<String> defLocale = availableLanguages.iterator();
+    final Iterator<String> defLocale = availableLanguages.iterator();
     if(defLocale.hasNext()) {
       return defLocale.next();
     }
@@ -491,7 +491,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   @Override
-  public @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender) {
+  public @NotNull ProxiedLocale findRelativeLanguages(@Nullable final CommandSender sender) {
 
     if(sender instanceof Player player) {
       return findRelativeLanguages(player.getLocale());
@@ -508,7 +508,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    */
   @SneakyThrows(InvalidConfigurationException.class)
   @Override
-  public void register(@NotNull String locale, @NotNull String path, @NotNull String text) {
+  public void register(@NotNull final String locale, @NotNull final String path, @NotNull final String text) {
 
     FileConfiguration configuration = languageFilesManager.getDistribution(locale);
     if(configuration == null) {
@@ -520,12 +520,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   @Override
-  public @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender, boolean allowDbLoad) {
+  public @NotNull ProxiedLocale findRelativeLanguages(@Nullable final UUID sender, final boolean allowDbLoad) {
 
     if(sender == null) {
       return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
     }
-    Player player = Bukkit.getPlayer(sender);
+    final Player player = Bukkit.getPlayer(sender);
     if(player != null) {
       return findRelativeLanguages(player);
     }
@@ -541,7 +541,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   @Override
-  public @NotNull ProxiedLocale findRelativeLanguages(@Nullable QUser qUser, boolean allowDbLoad) {
+  public @NotNull ProxiedLocale findRelativeLanguages(@Nullable final QUser qUser, final boolean allowDbLoad) {
 
     if(qUser == null || !qUser.isRealPlayer()) {
       return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
@@ -558,7 +558,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The text object
    */
   @Override
-  public @NotNull Text of(@NotNull String path, @Nullable Object... args) {
+  public @NotNull Text of(@NotNull final String path, @Nullable final Object... args) {
 
     return new Text(this, (CommandSender)null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
@@ -573,7 +573,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The text object
    */
   @Override
-  public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
+  public @NotNull Text of(@Nullable final CommandSender sender, @NotNull final String path, final Object... args) {
 
     return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
@@ -588,32 +588,32 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The text object
    */
   @Override
-  public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
+  public @NotNull Text of(@Nullable final UUID sender, @NotNull final String path, final Object... args) {
 
     return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
 
   @Override
-  public @NotNull Text of(@Nullable QUser sender, @NotNull String path, @Nullable Object... args) {
+  public @NotNull Text of(@Nullable final QUser sender, @NotNull final String path, @Nullable final Object... args) {
 
     return new Text(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
 
   @Override
   @NotNull
-  public Component[] convert(@Nullable Object... args) {
+  public Component[] convert(@Nullable final Object... args) {
 
     if(args == null || args.length == 0) {
       return new Component[0];
     }
-    Component[] components = new Component[args.length];
+    final Component[] components = new Component[args.length];
     for(int i = 0; i < args.length; i++) {
-      Object obj = args[i];
+      final Object obj = args[i];
       if(obj == null) {
         components[i] = Component.text("null");
         continue;
       }
-      Class<?> clazz = obj.getClass();
+      final Class<?> clazz = obj.getClass();
       if(obj instanceof Component component) {
         components[i] = component;
         continue;
@@ -699,7 +699,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The text object
    */
   @Override
-  public @NotNull TextList ofList(@NotNull String path, Object... args) {
+  public @NotNull TextList ofList(@NotNull final String path, final Object... args) {
 
     return new TextList(this, (CommandSender)null, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
@@ -725,13 +725,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The text object
    */
   @Override
-  public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
+  public @NotNull TextList ofList(@Nullable final UUID sender, @NotNull final String path, final Object... args) {
 
     return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
 
   @Override
-  public com.ghostchu.quickshop.api.localization.text.@NotNull TextList ofList(@Nullable QUser sender, @NotNull String path, @Nullable Object... args) {
+  public com.ghostchu.quickshop.api.localization.text.@NotNull TextList ofList(@Nullable final QUser sender, @NotNull final String path, @Nullable final Object... args) {
 
     return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
@@ -746,7 +746,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
    * @return The text object
    */
   @Override
-  public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
+  public @NotNull TextList ofList(@Nullable final CommandSender sender, @NotNull final String path, final Object... args) {
 
     return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
@@ -760,7 +760,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     private final Component[] args;
     private final TagResolver[] tagResolvers;
 
-    private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+    private TextList(final SimpleTextManager manager, final CommandSender sender, final Map<String, FileConfiguration> mapping, final String path, final TagResolver[] tagResolvers, final Component... args) {
 
       this.manager = manager;
       this.sender = sender;
@@ -770,7 +770,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       this.args = args;
     }
 
-    private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+    private TextList(final SimpleTextManager manager, final UUID sender, final Map<String, FileConfiguration> mapping, final String path, final TagResolver[] tagResolvers, final Component... args) {
 
       this.manager = manager;
       if(sender != null) {
@@ -784,7 +784,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       this.args = args;
     }
 
-    public TextList(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+    public TextList(final SimpleTextManager manager, final QUser sender, final Map<String, FileConfiguration> mapping, final String path, final TagResolver[] tagResolvers, final Component... args) {
 
       this.manager = manager;
       if(sender != null) {
@@ -807,12 +807,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     @NotNull
-    public List<Component> forLocale(@NotNull String locale) {
+    public List<Component> forLocale(@NotNull final String locale) {
 
-      FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+      final FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
       if(index == null) {
         Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
-        String languageCode = MsgUtil.getDefaultGameLanguageCode();
+        final String languageCode = MsgUtil.getDefaultGameLanguageCode();
         if(languageCode.equals(locale)) {
           Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
           return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
@@ -820,12 +820,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           return forLocale(languageCode);
         }
       } else {
-        List<String> str = index.getStringList(path);
+        final List<String> str = index.getStringList(path);
         if(str.isEmpty()) {
           Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
           return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
         }
-        List<Component> components = str.stream().map(s->manager.plugin.getPlatform().miniMessage().deserialize(s, tagResolvers)).toList();
+        final List<Component> components = str.stream().map(s->manager.plugin.getPlatform().miniMessage().deserialize(s, tagResolvers)).toList();
         return postProcess(components);
       }
     }
@@ -854,13 +854,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     @Override
     public boolean isPresent() {
 
-      String locale;
+      final String locale;
       if(sender instanceof Player player) {
         locale = player.getLocale();
       } else {
         locale = MsgUtil.getDefaultGameLanguageCode();
       }
-      FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+      final FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
       return index != null;
     }
 
@@ -873,7 +873,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       if(sender == null) {
         return;
       }
-      for(Component s : forLocale()) {
+      for(final Component s : forLocale()) {
         MsgUtil.sendDirectMessage(sender, s);
       }
     }
@@ -886,14 +886,14 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      * @return The text that processed
      */
     @NotNull
-    private List<Component> postProcess(@NotNull List<Component> text) {
+    private List<Component> postProcess(@NotNull final List<Component> text) {
 
       return text.stream().map(this::postProcess).toList();
     }
 
     private Component postProcess(Component component) {
 
-      for(PostProcessor postProcessor : this.manager.postProcessors) {
+      for(final PostProcessor postProcessor : this.manager.postProcessors) {
         try {
           component = postProcessor.process(component, sender, args);
         } catch(Throwable th) {
@@ -914,7 +914,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     private final Component[] args;
     private final TagResolver[] tagResolvers;
 
-    private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+    private Text(final SimpleTextManager manager, final CommandSender sender, final Map<String, FileConfiguration> mapping, final String path, final TagResolver[] tagResolvers, final Component... args) {
 
       this.manager = manager;
       this.sender = sender;
@@ -924,7 +924,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       this.args = args;
     }
 
-    private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+    private Text(final SimpleTextManager manager, final UUID sender, final Map<String, FileConfiguration> mapping, final String path, final TagResolver[] tagResolvers, final Component... args) {
 
       this.manager = manager;
       if(sender != null) {
@@ -938,7 +938,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       this.args = args;
     }
 
-    public Text(SimpleTextManager manager, QUser sender, Map<String, FileConfiguration> mapping, String path, TagResolver[] tagResolvers, Component... args) {
+    public Text(final SimpleTextManager manager, final QUser sender, final Map<String, FileConfiguration> mapping, final String path, final TagResolver[] tagResolvers, final Component... args) {
 
       this.manager = manager;
       if(sender != null) {
@@ -961,9 +961,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
      */
     @Override
     @NotNull
-    public Component forLocale(@NotNull String locale) {
+    public Component forLocale(@NotNull final String locale) {
 
-      FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+      final FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
       if(index == null) {
         Log.debug("Index for " + locale + " is null");
         Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
@@ -974,19 +974,19 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           return forLocale(MsgUtil.getDefaultGameLanguageCode());
         }
       } else {
-        String str = index.getString(path);
+        final String str = index.getString(path);
         if(str == null) {
           Log.debug("The value about index " + index + " is null");
           Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
-          StringJoiner joiner = new StringJoiner(".");
-          String[] pathExploded = path.split("\\.");
-          for(String singlePath : pathExploded) {
+          final StringJoiner joiner = new StringJoiner(".");
+          final String[] pathExploded = path.split("\\.");
+          for(final String singlePath : pathExploded) {
             joiner.add(singlePath);
             Log.debug("Path debug: " + joiner + " is " + index.get(singlePath, "null"));
           }
           return LegacyComponentSerializer.legacySection().deserialize(path);
         }
-        Component component = manager.plugin.getPlatform().miniMessage().deserialize(str, tagResolvers);
+        final Component component = manager.plugin.getPlatform().miniMessage().deserialize(str, tagResolvers);
         return postProcess(component);
       }
     }
@@ -1014,7 +1014,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
 
     @Override
-    public @NotNull String plain(@NotNull String locale) {
+    public @NotNull String plain(@NotNull final String locale) {
 
       return PlainTextComponentSerializer.plainText().serialize(forLocale(locale));
     }
@@ -1026,7 +1026,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
 
     @Override
-    public @NotNull String legacy(@NotNull String locale) {
+    public @NotNull String legacy(@NotNull final String locale) {
 
       return LegacyComponentSerializer.legacySection().serialize(forLocale(locale));
     }
@@ -1039,13 +1039,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     @Override
     public boolean isPresent() {
 
-      String locale;
+      final String locale;
       if(sender instanceof Player player) {
         locale = player.getLocale();
       } else {
         locale = MsgUtil.getDefaultGameLanguageCode();
       }
-      FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+      final FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
       return index != null;
     }
 
@@ -1058,7 +1058,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       if(sender == null) {
         return;
       }
-      Component lang = forLocale();
+      final Component lang = forLocale();
       MsgUtil.sendDirectMessage(sender, lang);
     }
 
@@ -1072,7 +1072,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     @NotNull
     private Component postProcess(@NotNull Component text) {
 
-      for(PostProcessor postProcessor : this.manager.postProcessors) {
+      for(final PostProcessor postProcessor : this.manager.postProcessors) {
         try {
           text = postProcessor.process(text, sender, args);
         } catch(Exception e) {

@@ -23,13 +23,13 @@ public class SubCommand_StaffAll implements CommandHandler<Player> {
   private final QuickShop plugin;
   private final List<String> tabCompleteList = List.of("add", "del", "list", "clear");
 
-  public SubCommand_StaffAll(QuickShop plugin) {
+  public SubCommand_StaffAll(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final List<Shop> shops = plugin.getShopManager().getAllShops(sender.getUniqueId());
     if(!shops.isEmpty()) {
@@ -37,14 +37,14 @@ public class SubCommand_StaffAll implements CommandHandler<Player> {
         case 1 -> {
           switch(parser.getArgs().get(0)) {
             case "clear" -> {
-              for(Shop shop : shops) {
+              for(final Shop shop : shops) {
                 shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff->shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE));
               }
               plugin.text().of(sender, "shop-staff-cleared").send();
               return;
             }
             case "list" -> {
-              for(Shop shop : shops) {
+              for(final Shop shop : shops) {
                 final List<UUID> staffs = shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);
                 if(staffs.isEmpty()) {
                   MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
@@ -52,7 +52,7 @@ public class SubCommand_StaffAll implements CommandHandler<Player> {
                   return;
                 }
                 Util.asyncThreadRun(()->{
-                  for(UUID uuid : staffs) {
+                  for(final UUID uuid : staffs) {
                     MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
                             .append(Component.text(Optional.ofNullable(plugin.getPlayerFinder().uuid2Name(uuid)).orElse("Unknown")).color(NamedTextColor.GRAY)));
                   }
@@ -68,7 +68,7 @@ public class SubCommand_StaffAll implements CommandHandler<Player> {
           }
         }
         case 2 -> {
-          String name = parser.getArgs().get(1);
+          final String name = parser.getArgs().get(1);
           plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1))
                   .thenAccept(uuid->{
                     BuiltInShopPermissionGroup permissionGroup = null;
@@ -85,7 +85,7 @@ public class SubCommand_StaffAll implements CommandHandler<Player> {
                     }
                     if(permissionGroup != null) {
 
-                      for(Shop shop : shops) {
+                      for(final Shop shop : shops) {
                         shop.setPlayerGroup(uuid, permissionGroup);
                       }
                     }
@@ -109,12 +109,12 @@ public class SubCommand_StaffAll implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return tabCompleteList;
     } else if(parser.getArgs().size() == 2) {
-      String prefix = parser.getArgs().get(0).toLowerCase();
+      final String prefix = parser.getArgs().get(0).toLowerCase();
       if("add".equals(prefix) || "del".equals(parser.getArgs().get(0))) {
         return Util.getPlayerList();
       }

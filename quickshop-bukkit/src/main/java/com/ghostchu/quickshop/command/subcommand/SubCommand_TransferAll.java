@@ -39,14 +39,14 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_TransferAll(QuickShop plugin) {
+  public SubCommand_TransferAll(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.wrong-args").send();
@@ -55,7 +55,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
     if(parser.getArgs().size() == 1) {
       switch(parser.getArgs().get(0)) {
         case "accept", "allow", "yes" -> {
-          ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
+          final ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
           taskCache.invalidate(sender.getUniqueId());
           if(task == null) {
             plugin.text().of(sender, "transfer-no-pending-operation").send();
@@ -64,7 +64,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
           task.commit(true);
         }
         case "reject", "deny", "no" -> {
-          ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
+          final ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
           taskCache.invalidate(sender.getUniqueId());
           if(task == null) {
             plugin.text().of(sender, "transfer-no-pending-operation").send();
@@ -73,13 +73,13 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
           task.cancel(true);
         }
         default -> {
-          String name = parser.getArgs().get(0);
+          final String name = parser.getArgs().get(0);
           plugin.getPlayerFinder().name2UuidFuture(name).whenComplete((uuid, throwable)->{
             if(uuid == null) {
               plugin.text().of(sender, "unknown-player").send();
               return;
             }
-            Player receiver = Bukkit.getPlayer(uuid);
+            final Player receiver = Bukkit.getPlayer(uuid);
             if(receiver == null) {
               plugin.text().of(sender, "player-offline", name).send();
               return;
@@ -88,11 +88,11 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
               plugin.text().of(sender, "transfer-no-self", name).send();
               return;
             }
-            QUser senderQUser = QUserImpl.createFullFilled(sender);
-            QUser receiverQUser = QUserImpl.createFullFilled(receiver);
+            final QUser senderQUser = QUserImpl.createFullFilled(sender);
+            final QUser receiverQUser = QUserImpl.createFullFilled(receiver);
 
-            List<Shop> shopsToTransfer = plugin.getShopManager().getAllShops(senderQUser);
-            ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(senderQUser, receiverQUser, shopsToTransfer);
+            final List<Shop> shopsToTransfer = plugin.getShopManager().getAllShops(senderQUser);
+            final ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(senderQUser, receiverQUser, shopsToTransfer);
             taskCache.put(uuid, task);
             plugin.text().of(sender, "transfer-sent", name).send();
             plugin.text().of(receiver, "transfer-request", sender.getName()).send();
@@ -107,11 +107,11 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
         return;
       }
       Util.asyncThreadRun(()->{
-        QUser fromQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(0));
-        QUser targetQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(1));
+        final QUser fromQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(0));
+        final QUser targetQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(1));
 
-        Player fromPlayer = fromQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
-        Player targetPlayer = targetQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        final Player fromPlayer = fromQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
+        final Player targetPlayer = targetQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
 
         if(fromPlayer == null) {
           plugin.text().of(sender, "unknown-player", "fromPlayer").send();
@@ -123,7 +123,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
         }
 
         final List<Shop> shopList = plugin.getShopManager().getAllShops(fromQUser);
-        ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(fromQUser, targetQUser, shopList);
+        final ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(fromQUser, targetQUser, shopList);
         Util.mainThreadRun(()->{
           task.commit(false);
           plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
@@ -134,9 +134,9 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    List<String> list = Util.getPlayerList();
+    final List<String> list = Util.getPlayerList();
     list.add("accept");
     list.add("deny");
     return parser.getArgs().size() <= 2? list : Collections.emptyList();

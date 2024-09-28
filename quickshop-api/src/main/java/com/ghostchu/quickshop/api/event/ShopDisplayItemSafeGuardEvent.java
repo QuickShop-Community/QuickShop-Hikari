@@ -23,7 +23,7 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
    * @param shop   the shop
    * @param entity the display item
    */
-  public ShopDisplayItemSafeGuardEvent(@NotNull Shop shop, @NotNull Entity entity) {
+  public ShopDisplayItemSafeGuardEvent(@NotNull final Shop shop, @NotNull final Entity entity) {
 
     this.shop = shop;
     this.entity = entity;

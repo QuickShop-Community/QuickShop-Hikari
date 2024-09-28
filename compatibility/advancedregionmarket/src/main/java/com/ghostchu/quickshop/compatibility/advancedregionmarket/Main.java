@@ -26,17 +26,17 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onShopNeedDeletion(RemoveRegionEvent event) {
+  public void onShopNeedDeletion(final RemoveRegionEvent event) {
 
     handleDeletion(event.getRegion());
   }
 
-  private void handleDeletion(Region region) {
+  private void handleDeletion(final Region region) {
 
-    Vector minPoint = region.getRegion().getMinPoint();
-    Vector maxPoint = region.getRegion().getMaxPoint();
-    World world = region.getRegionworld();
-    Set<Chunk> chuckLocations = new HashSet<>();
+    final Vector minPoint = region.getRegion().getMinPoint();
+    final Vector maxPoint = region.getRegion().getMaxPoint();
+    final World world = region.getRegionworld();
+    final Set<Chunk> chuckLocations = new HashSet<>();
 
     for(int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
       for(int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
@@ -45,18 +45,18 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
 
-    HashMap<Location, Shop> shopMap = new HashMap<>();
+    final HashMap<Location, Shop> shopMap = new HashMap<>();
 
-    for(Chunk chunk : chuckLocations) {
-      Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : chuckLocations) {
+      final Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
       if(shopsInChunk != null) {
         shopMap.putAll(shopsInChunk);
       }
     }
-    for(Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
-      Location shopLocation = shopEntry.getKey();
+    for(final Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
+      final Location shopLocation = shopEntry.getKey();
       if(region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
-        Shop shop = shopEntry.getValue();
+        final Shop shop = shopEntry.getValue();
         if(shop != null) {
           getApi().getShopManager().deleteShop(shop);
         }
@@ -65,7 +65,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onShopNeedDeletion(RestoreRegionEvent event) {
+  public void onShopNeedDeletion(final RestoreRegionEvent event) {
 
     handleDeletion(event.getRegion());
   }

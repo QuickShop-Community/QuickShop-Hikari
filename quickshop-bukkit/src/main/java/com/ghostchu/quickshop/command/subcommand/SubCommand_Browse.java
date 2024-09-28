@@ -25,13 +25,13 @@ public class SubCommand_Browse implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Browse(QuickShop plugin) {
+  public SubCommand_Browse(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final MenuViewer viewer = new MenuViewer(sender.getUniqueId());
     MenuManager.instance().addViewer(viewer);
@@ -72,7 +72,7 @@ public class SubCommand_Browse implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return List.of("world", plugin.text().of(sender, "browse-command-leave-blank").plain());

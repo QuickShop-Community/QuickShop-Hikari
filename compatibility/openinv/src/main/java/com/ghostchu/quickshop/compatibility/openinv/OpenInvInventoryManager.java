@@ -12,7 +12,7 @@ public class OpenInvInventoryManager implements InventoryWrapperManager {
   private final IOpenInv openInv;
   private final Main plugin;
 
-  public OpenInvInventoryManager(IOpenInv openinv, Main plugin) {
+  public OpenInvInventoryManager(final IOpenInv openinv, final Main plugin) {
 
     this.openInv = openinv;
     this.plugin = plugin;
@@ -30,7 +30,7 @@ public class OpenInvInventoryManager implements InventoryWrapperManager {
    * @throws IllegalArgumentException If symbol link invalid
    */
   @Override
-  public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
+  public @NotNull InventoryWrapper locate(@NotNull final String symbolLink) throws IllegalArgumentException {
 
     return new EnderChestWrapper(UUID.fromString(symbolLink), this.openInv, plugin);
   }
@@ -45,7 +45,7 @@ public class OpenInvInventoryManager implements InventoryWrapperManager {
    * @throws IllegalArgumentException If cannot create symbol link for target Inventory.
    */
   @Override
-  public @NotNull String mklink(@NotNull InventoryWrapper wrapper) throws IllegalArgumentException {
+  public @NotNull String mklink(@NotNull final InventoryWrapper wrapper) throws IllegalArgumentException {
 
     if(wrapper instanceof EnderChestWrapper wrap) {
       return wrap.getUuid().toString();

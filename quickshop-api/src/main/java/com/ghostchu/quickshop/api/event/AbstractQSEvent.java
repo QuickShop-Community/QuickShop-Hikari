@@ -19,7 +19,7 @@ public abstract class AbstractQSEvent extends Event {
     super(!Bukkit.isPrimaryThread());
   }
 
-  protected AbstractQSEvent(boolean async) {
+  protected AbstractQSEvent(final boolean async) {
 
     super(async);
   }

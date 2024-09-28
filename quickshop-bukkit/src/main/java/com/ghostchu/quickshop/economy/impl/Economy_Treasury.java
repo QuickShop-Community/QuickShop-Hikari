@@ -42,7 +42,7 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   private Service<EconomyProvider> service;
 
 
-  public Economy_Treasury(@NotNull QuickShop plugin) {
+  public Economy_Treasury(@NotNull final QuickShop plugin) {
 
     super();
     this.plugin = plugin;
@@ -74,12 +74,12 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   }
 
   @Override
-  public String format(double balance, @NotNull World world, @Nullable String currency) {
+  public String format(final double balance, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return "Error";
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return formatInternal(balance);
     }
@@ -91,7 +91,7 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   }
 
   @Nullable
-  private Currency getCurrency(@NotNull World world, @Nullable String currency) {
+  private Currency getCurrency(@NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return null;
@@ -103,7 +103,7 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   }
 
 
-  private String formatInternal(double balance) {
+  private String formatInternal(final double balance) {
 
     if(!isValid()) {
       return "Error";
@@ -132,7 +132,7 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
    * @return exists
    */
   @Override
-  public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+  public boolean hasCurrency(@NotNull final World world, @NotNull final String currency) {
 
     return getCurrency(world, currency) != null;
   }
@@ -162,15 +162,15 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   }
 
   @Override
-  public boolean withdraw(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final QUser obj, final double amount, @NotNull final World world, @Nullable final String currency) {
 
-    Account account;
+    final Account account;
     if(obj.isRealPlayer()) {
       account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
     } else {
       account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return false;
     }
@@ -179,15 +179,15 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   }
 
   @Override
-  public boolean deposit(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final QUser obj, final double amount, @NotNull final World world, @Nullable final String currency) {
 
-    Account account;
+    final Account account;
     if(obj.isRealPlayer()) {
       account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
     } else {
       account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return false;
     }
@@ -196,15 +196,15 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
   }
 
   @Override
-  public double getBalance(@NotNull QUser obj, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final QUser obj, @NotNull final World world, @Nullable final String currency) {
 
-    Account account;
+    final Account account;
     if(obj.isRealPlayer()) {
       account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
     } else {
       account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return 0.0;
     }

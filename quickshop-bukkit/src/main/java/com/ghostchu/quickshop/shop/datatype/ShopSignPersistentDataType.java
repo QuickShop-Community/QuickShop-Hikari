@@ -26,14 +26,14 @@ public class ShopSignPersistentDataType
   @NotNull
   @Override
   public String toPrimitive(
-          @NotNull ShopSignStorage complex, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final ShopSignStorage complex, @NotNull final PersistentDataAdapterContext context) {
 
     return JsonUtil.getGson().toJson(complex);
   }
 
   @Override
   public @NotNull ShopSignStorage fromPrimitive(
-          @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
 
     return JsonUtil.getGson().fromJson(primitive, ShopSignStorage.class);
   }

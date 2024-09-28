@@ -59,7 +59,7 @@ public class CommandContainer {
    *
    * @return the text
    */
-  public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
+  public final @NotNull Component getDisableText(@NotNull final CommandSender sender) {
 
     if(this.getDisableCallback() != null) {
       return this.getDisableCallback().apply(sender);
@@ -83,7 +83,7 @@ public class CommandContainer {
   @ApiStatus.Internal
   public void bakeExecutorType() {
 
-    for(Method declaredMethod : getExecutor().getClass().getMethods()) {
+    for(final Method declaredMethod : getExecutor().getClass().getMethods()) {
       if("onCommand".equals(declaredMethod.getName()) || "onTabComplete".equals(declaredMethod.getName())) {
         if(declaredMethod.getParameterCount() != 3 || declaredMethod.isSynthetic() || declaredMethod.isBridge()) {
           continue;

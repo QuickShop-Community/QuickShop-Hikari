@@ -24,22 +24,22 @@ public class SimpleBenefit implements Benefit {
     this.benefits = new HashMap<>();
   }
 
-  public SimpleBenefit(Map<QUser, Double> benefits) {
+  public SimpleBenefit(final Map<QUser, Double> benefits) {
 
     this.benefits = benefits;
   }
 
   @NotNull
-  public static SimpleBenefit deserialize(@Nullable String json) {
+  public static SimpleBenefit deserialize(@Nullable final String json) {
 
     if(StringUtils.isEmpty(json)) {
       return new SimpleBenefit();
     }
-    Map<String, Double> map = JsonUtil.regular().fromJson(json, new TypeToken<Map<String, Double>>() {
+    final Map<String, Double> map = JsonUtil.regular().fromJson(json, new TypeToken<Map<String, Double>>() {
     }.getType());
-    Map<QUser, Double> parsed = new LinkedHashMap<>();
-    for(Map.Entry<String, Double> e : map.entrySet()) {
-      QUser qUser = QUserImpl.deserialize(QuickShop.getInstance().getPlayerFinder(), e.getKey(), QuickExecutor.getSecondaryProfileIoExecutor());
+    final Map<QUser, Double> parsed = new LinkedHashMap<>();
+    for(final Map.Entry<String, Double> e : map.entrySet()) {
+      final QUser qUser = QUserImpl.deserialize(QuickShop.getInstance().getPlayerFinder(), e.getKey(), QuickExecutor.getSecondaryProfileIoExecutor());
       parsed.put(qUser, e.getValue());
     }
     return new SimpleBenefit(parsed);
@@ -52,10 +52,10 @@ public class SimpleBenefit implements Benefit {
   }
 
   @Override
-  public double getOverflow(double newAdded) {
+  public double getOverflow(final double newAdded) {
 
     double sum = 0d;
-    for(Double value : benefits.values()) {
+    for(final Double value : benefits.values()) {
       sum += value;
     }
     sum += newAdded;
@@ -66,9 +66,9 @@ public class SimpleBenefit implements Benefit {
   }
 
   @Override
-  public void addBenefit(@NotNull QUser player, double benefit) throws BenefitOverflowException, BenefitExistsException {
+  public void addBenefit(@NotNull final QUser player, final double benefit) throws BenefitOverflowException, BenefitExistsException {
 
-    double overflow = getOverflow(benefit);
+    final double overflow = getOverflow(benefit);
     if(overflow != 0) {
       throw new BenefitOverflowException(overflow);
     }
@@ -79,7 +79,7 @@ public class SimpleBenefit implements Benefit {
   }
 
   @Override
-  public void removeBenefit(@NotNull QUser player) {
+  public void removeBenefit(@NotNull final QUser player) {
 
     benefits.remove(player);
   }
@@ -94,8 +94,8 @@ public class SimpleBenefit implements Benefit {
   @Override
   public String serialize() {
 
-    Map<String, Double> map = new LinkedHashMap<>();
-    for(Map.Entry<QUser, Double> e : this.benefits.entrySet()) {
+    final Map<String, Double> map = new LinkedHashMap<>();
+    for(final Map.Entry<QUser, Double> e : this.benefits.entrySet()) {
       map.put(e.getKey().serialize(), e.getValue());
     }
     return JsonUtil.regular().toJson(map);

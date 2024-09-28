@@ -24,19 +24,19 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   private final Lock LOCK = new ReentrantLock();
   private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
 
-  public SimpleShopControlPanelManager(QuickShop plugin) {
+  public SimpleShopControlPanelManager(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void openControlPanel(@NotNull Player player, @NotNull Shop shop) {
+  public void openControlPanel(@NotNull final Player player, @NotNull final Shop shop) {
 
     final ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(player);
     chatSheetPrinter.printHeader();
     chatSheetPrinter.printLine(plugin.text().of(player, "controlpanel.infomation").forLocale());
     final List<Component> total = new ArrayList<>();
-    for(ShopControlPanel entry : registry.keySet()) {
+    for(final ShopControlPanel entry : registry.keySet()) {
       try {
         total.addAll(entry.generate(player, shop));
       } catch(Exception e) {
@@ -52,7 +52,7 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   }
 
   @Override
-  public void register(@NotNull ShopControlPanel panel) {
+  public void register(@NotNull final ShopControlPanel panel) {
 
     LOCK.lock();
     try {
@@ -68,7 +68,7 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
     if(!LOCK.tryLock()) {
       throw new IllegalStateException("Cannot resort while another thread is sorting");
     }
-    List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
+    final List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
     list.sort((o1, o2)->o2.getValue().compareTo(o1.getValue()));
     registry.clear();
     list.forEach(k->registry.put(k.getKey(), k.getValue())); // Re-sort
@@ -76,12 +76,12 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   }
 
   @Override
-  public void unregister(@NotNull Plugin plugin) {
+  public void unregister(@NotNull final Plugin plugin) {
 
     LOCK.lock();
     try {
-      List<ShopControlPanel> pending = new ArrayList<>();
-      for(Map.Entry<ShopControlPanel, Integer> entry : registry.entrySet()) {
+      final List<ShopControlPanel> pending = new ArrayList<>();
+      for(final Map.Entry<ShopControlPanel, Integer> entry : registry.entrySet()) {
         if(entry.getKey().getPlugin().equals(plugin)) {
           pending.add(entry.getKey());
         }
@@ -94,7 +94,7 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   }
 
   @Override
-  public void unregister(@NotNull ShopControlPanel panel) {
+  public void unregister(@NotNull final ShopControlPanel panel) {
 
     LOCK.lock();
     try {

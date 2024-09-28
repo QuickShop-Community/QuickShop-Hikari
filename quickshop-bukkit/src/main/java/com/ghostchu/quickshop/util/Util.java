@@ -116,7 +116,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void asyncThreadRun(@NotNull Runnable runnable) {
+  public static void asyncThreadRun(@NotNull final Runnable runnable) {
 
     if(!plugin.getJavaPlugin().isEnabled()) {
       Log.debug(Level.WARNING, "Scheduler not available, executing task on current thread...");
@@ -134,7 +134,7 @@ public class Util {
    *
    * @return True if it can be made into a shop, otherwise false.
    */
-  public static boolean canBeShop(@NotNull Block b) {
+  public static boolean canBeShop(@NotNull final Block b) {
 
     if(isBlacklistWorld(b.getWorld())) {
       return false;
@@ -144,7 +144,7 @@ public class Util {
       return false;
     }
     final BlockState bs = PaperLib.getBlockState(b, false).getState();
-    boolean container = bs instanceof InventoryHolder;
+    final boolean container = bs instanceof InventoryHolder;
     if(!container) {
       if(Util.isDevMode()) {
         Log.debug(b.getType() + " not a container");
@@ -154,7 +154,7 @@ public class Util {
     return true;
   }
 
-  public static boolean isBlacklistWorld(@NotNull World world) {
+  public static boolean isBlacklistWorld(@NotNull final World world) {
 
     return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
   }
@@ -166,7 +166,7 @@ public class Util {
    *
    * @return Can or not
    */
-  public static boolean isShoppables(@NotNull Material material) {
+  public static boolean isShoppables(@NotNull final Material material) {
 
     return SHOPABLES.contains(material);
   }
@@ -180,12 +180,12 @@ public class Util {
    *
    * @return The number of items that match in this inventory.
    */
-  public static int countItems(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
+  public static int countItems(@Nullable final InventoryWrapper inv, @NotNull final ItemStack item) {
 
     if(inv == null) {
       return 0;
     }
-    ItemMatcher matcher = plugin.getItemMatcher();
+    final ItemMatcher matcher = plugin.getItemMatcher();
     if(inv instanceof CountableInventoryWrapper ciw) {
 
       return ciw.countItem(input->matcher.matches(item, input));
@@ -212,7 +212,7 @@ public class Util {
    *
    * @return The number of shop items that match in this inventory.
    */
-  public static int countItems(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
+  public static int countItems(@Nullable final InventoryWrapper inv, @NotNull final Shop shop) {
 
     if(inv == null) {
       return 0;
@@ -242,7 +242,7 @@ public class Util {
    *
    * @return The number of shop items that can be given to the inventory safely.
    */
-  public static int countSpace(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
+  public static int countSpace(@Nullable final InventoryWrapper inv, @NotNull final Shop shop) {
 
     if(inv == null) {
       return 0;
@@ -250,10 +250,10 @@ public class Util {
     if(inv instanceof CountableInventoryWrapper ciw) {
       return ciw.countSpace(shop::matches);
     } else {
-      ItemStack item = shop.getItem();
+      final ItemStack item = shop.getItem();
       int space = 0;
-      int itemMaxStackSize = getItemMaxStackSize(item.getType());
-      for(ItemStack iStack : inv) {
+      final int itemMaxStackSize = getItemMaxStackSize(item.getType());
+      for(final ItemStack iStack : inv) {
         if(iStack == null || iStack.getType() == Material.AIR) {
           space += itemMaxStackSize;
         } else if(shop.matches(iStack)) {
@@ -271,7 +271,7 @@ public class Util {
    *
    * @return Game StackSize or Custom
    */
-  public static int getItemMaxStackSize(@NotNull Material material) {
+  public static int getItemMaxStackSize(@NotNull final Material material) {
 
     return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
   }
@@ -285,18 +285,18 @@ public class Util {
    *
    * @return The number of items that can be given to the inventory safely.
    */
-  public static int countSpace(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
+  public static int countSpace(@Nullable final InventoryWrapper inv, @NotNull final ItemStack item) {
 
     if(inv == null) {
       return 0;
     }
-    ItemMatcher matcher = plugin.getItemMatcher();
+    final ItemMatcher matcher = plugin.getItemMatcher();
     if(inv instanceof CountableInventoryWrapper ciw) {
       return ciw.countSpace(input->matcher.matches(item, input));
     } else {
       int space = 0;
-      int itemMaxStackSize = getItemMaxStackSize(item.getType());
-      for(ItemStack iStack : inv) {
+      final int itemMaxStackSize = getItemMaxStackSize(item.getType());
+      for(final ItemStack iStack : inv) {
         if(iStack == null || iStack.getType() == Material.AIR) {
           space += itemMaxStackSize;
         } else if(matcher.matches(item, iStack)) {
@@ -313,10 +313,10 @@ public class Util {
    * @param logs logs
    */
   @Deprecated(forRemoval = true)
-  public static void debugLog(@NotNull String... logs) {
+  public static void debugLog(@NotNull final String... logs) {
 
-    Log.Caller caller = Log.Caller.create();
-    for(String log : logs) {
+    final Log.Caller caller = Log.Caller.create();
+    for(final String log : logs) {
       Log.debug(Level.INFO, log, caller);
     }
   }
@@ -334,16 +334,16 @@ public class Util {
   public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
 
     if(yaml == null) {
-      DumperOptions yamlOptions = new DumperOptions();
+      final DumperOptions yamlOptions = new DumperOptions();
       yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
       yamlOptions.setIndent(2);
       yaml = new Yaml(yamlOptions); //Caching it!
     }
-    YamlConfiguration yamlConfiguration = new YamlConfiguration();
-    Map<Object, Object> root = yaml.load(config);
+    final YamlConfiguration yamlConfiguration = new YamlConfiguration();
+    final Map<Object, Object> root = yaml.load(config);
     //noinspection unchecked
-    Map<String, Object> item = (Map<String, Object>)root.get("item");
-    int itemDataVersion = Integer.parseInt(String.valueOf(item.getOrDefault("v", "0")));
+    final Map<String, Object> item = (Map<String, Object>)root.get("item");
+    final int itemDataVersion = Integer.parseInt(String.valueOf(item.getOrDefault("v", "0")));
     try {
       // Try load the itemDataVersion to do some checks.
       //noinspection deprecation
@@ -381,9 +381,9 @@ public class Util {
    *
    * @param async on async thread or main server thread.
    */
-  public static void ensureThread(boolean async) {
+  public static void ensureThread(final boolean async) {
 
-    boolean isMainThread = Bukkit.isPrimaryThread();
+    final boolean isMainThread = Bukkit.isPrimaryThread();
     if(async) {
       if(isMainThread) {
         throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
@@ -403,7 +403,7 @@ public class Util {
    *
    * @return Equals or not.
    */
-  private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
+  private static boolean equalsBlockStateLocation(@NotNull final Location b1, @NotNull final Location b2) {
 
     return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2.getBlockZ());
   }
@@ -415,7 +415,7 @@ public class Util {
    *
    * @return The event is cancelled.
    */
-  public static boolean fireCancellableEvent(@NotNull Cancellable event) {
+  public static boolean fireCancellableEvent(@NotNull final Cancellable event) {
 
     if(!(event instanceof Event)) {
       throw new IllegalArgumentException("Cancellable must is event implement");
@@ -448,15 +448,15 @@ public class Util {
    */
   public static File getCacheFolder() {
 
-    QuickShop qs = QuickShop.getInstance();
+    final QuickShop qs = QuickShop.getInstance();
     if(qs != null) {
-      File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
+      final File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
       if(!cache.exists()) {
         cache.mkdirs();
       }
       return cache;
     } else {
-      File file = new File("cache");
+      final File file = new File("cache");
       file.mkdirs();
       return file;
     }
@@ -472,7 +472,7 @@ public class Util {
    * @deprecated Use Bukkit util not this one.
    */
   @NotNull
-  public static BlockFace getYawFace(float yaw) {
+  public static BlockFace getYawFace(final float yaw) {
     //noinspection ConstantValue
     if(yaw > 315 && yaw <= 45) {
       return BlockFace.NORTH;
@@ -486,7 +486,7 @@ public class Util {
   }
 
   @NotNull
-  public static Component getItemStackName(@NotNull ItemStack itemStack) {
+  public static Component getItemStackName(@NotNull final ItemStack itemStack) {
 
     Component result = getItemCustomName(itemStack);
     if(isEmptyComponent(result)) {
@@ -501,10 +501,10 @@ public class Util {
   }
 
   @Nullable
-  public static Component getItemCustomName(@NotNull ItemStack itemStack) {
+  public static Component getItemCustomName(@NotNull final ItemStack itemStack) {
 
     if(useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
-      ItemMeta meta = itemStack.getItemMeta();
+      final ItemMeta meta = itemStack.getItemMeta();
       if(meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
         return getFirstEnchantmentName(enchantmentStorageMeta);
       }
@@ -536,7 +536,7 @@ public class Util {
     return null;
   }
 
-  public static boolean isEmptyComponent(@Nullable Component component) {
+  public static boolean isEmptyComponent(@Nullable final Component component) {
 
     if(component == null) {
       return true;
@@ -553,7 +553,7 @@ public class Util {
    * @return A boolean of whether the component contains the string
    */
   @NotNull
-  public static boolean findStringInComponent(@NotNull Component component, @NotNull String find) {
+  public static boolean findStringInComponent(@NotNull final Component component, @NotNull final String find) {
 
     final String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
     return plainText.replace(' ', '_').contains(find.toLowerCase());
@@ -568,9 +568,9 @@ public class Util {
    * @return A boolean of whether the string was found in the list of components
    */
   @NotNull
-  public static boolean findStringInList(@NotNull List<Component> components, @NotNull String find) {
+  public static boolean findStringInList(@NotNull final List<Component> components, @NotNull final String find) {
 
-    for(Component name : components) {
+    for(final Component name : components) {
         if(findStringInComponent(name, find)) { return true; }
     }
 
@@ -585,7 +585,7 @@ public class Util {
    * @return The names of enchants contained on the enchanted item with levels
    */
   @NotNull
-  public static List<Component> getEnchantsForItemStack(@NotNull ItemStack itemStack) {
+  public static List<Component> getEnchantsForItemStack(@NotNull final ItemStack itemStack) {
 
     final List<Component> enchants = new ArrayList<>();
     if(!itemStack.hasItemMeta()) {
@@ -594,12 +594,12 @@ public class Util {
 
     final ItemMeta meta = itemStack.getItemMeta();
     if(meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
-      for(Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
+      for(final Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
         final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
         enchants.add(name);
       }
     } else {
-      for(Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+      for(final Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
         final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
         enchants.add(name);
       }
@@ -616,7 +616,7 @@ public class Util {
    *
    * @return A component with the name of the Enchantment and it's Level as Roman Numerals
    */
-  public static Component enchantmentDataToComponent(@NotNull Enchantment enchantment, @NotNull Integer level) {
+  public static Component enchantmentDataToComponent(@NotNull final Enchantment enchantment, @NotNull final Integer level) {
 
     Component name;
     try {
@@ -637,7 +637,7 @@ public class Util {
   }
 
   @NotNull
-  public static Component getFirstEnchantmentName(@NotNull EnchantmentStorageMeta meta) {
+  public static Component getFirstEnchantmentName(@NotNull final EnchantmentStorageMeta meta) {
 
     if(!meta.hasStoredEnchants()) {
       throw new IllegalArgumentException("Item does not have an enchantment!");
@@ -646,10 +646,10 @@ public class Util {
     return enchantmentDataToComponent(entry.getKey(), entry.getValue());
   }
 
-  public static int getItemTotalAmountsInMap(@NotNull Map<Integer, ItemStack> map) {
+  public static int getItemTotalAmountsInMap(@NotNull final Map<Integer, ItemStack> map) {
 
     int total = 0;
-    for(ItemStack value : map.values()) {
+    for(final ItemStack value : map.values()) {
       total += value.getAmount();
     }
     return total;
@@ -663,7 +663,7 @@ public class Util {
   @NotNull
   public static List<String> getPlayerList() {
 
-    List<String> tabList = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+    final List<String> tabList = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
     if(plugin.getConfig().getBoolean("include-offlineplayer-list")) {
       tabList.addAll(Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
     }
@@ -680,10 +680,10 @@ public class Util {
    * @throws FileNotFoundException If the plugin's Jar file could not be found
    */
   @NotNull
-  public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
+  public static File getPluginJarFile(@NotNull final Plugin plugin) throws FileNotFoundException {
 
-    String path = getPluginJarPath(plugin);
-    File file = new File(path);
+    final String path = getPluginJarPath(plugin);
+    final File file = new File(path);
     if(!file.exists()) {
       throw new FileNotFoundException("File not found: " + path);
     }
@@ -698,7 +698,7 @@ public class Util {
    * @return Class path
    */
   @NotNull
-  public static String getPluginJarPath(@NotNull Plugin plugin) {
+  public static String getPluginJarPath(@NotNull final Plugin plugin) {
 
     return CommonUtil.getClassPath(plugin.getClass());
   }
@@ -710,21 +710,21 @@ public class Util {
    *
    * @return the block which is also a chest and connected to b.
    */
-  public static Block getSecondHalf(@NotNull Block block) {
+  public static Block getSecondHalf(@NotNull final Block block) {
 
-    BlockData blockData = block.getBlockData();
+    final BlockData blockData = block.getBlockData();
     if(!(blockData instanceof org.bukkit.block.data.type.Chest chest)) {
       return null;
     }
     if(!isDoubleChest(chest)) {
       return null;
     }
-    BlockFace towardsLeft = getRightSide(chest.getFacing());
-    BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT? towardsLeft : towardsLeft.getOppositeFace();
+    final BlockFace towardsLeft = getRightSide(chest.getFacing());
+    final BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT? towardsLeft : towardsLeft.getOppositeFace();
     return block.getRelative(actuallyBlockFace);
   }
 
-  public static boolean isDoubleChest(@Nullable BlockData blockData) {
+  public static boolean isDoubleChest(@Nullable final BlockData blockData) {
 
     if(!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
       return false;
@@ -740,7 +740,7 @@ public class Util {
    * @return the right side for given blockFace, UP and DOWN will return itself
    */
   @NotNull
-  public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
+  public static BlockFace getRightSide(@NotNull final BlockFace blockFace) {
 
     return switch(blockFace) {
       case EAST -> BlockFace.SOUTH;
@@ -759,7 +759,7 @@ public class Util {
    * @return the sender unique id if sender is a player, otherwise nil unique id
    */
   @NotNull
-  public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
+  public static UUID getSenderUniqueId(@Nullable final CommandSender sender) {
 
     if(sender instanceof OfflinePlayer offlinePlayer) {
       return offlinePlayer.getUniqueId();
@@ -775,7 +775,7 @@ public class Util {
   @NotNull
   public static Material getSignMaterial() {
 
-    Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
+    final Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
     if(signMaterial != null) {
       return signMaterial;
     }
@@ -800,15 +800,15 @@ public class Util {
    * @return The percentage 'health' the tool has. (Opposite of total damage)
    */
   @NotNull
-  public static String getToolPercentage(@NotNull ItemStack item) {
+  public static String getToolPercentage(@NotNull final ItemStack item) {
 
     if(!(item.getItemMeta() instanceof Damageable)) {
       Log.debug(item.getType().name() + " not Damageable.");
       return "Error: NaN";
     }
-    double dura = ((Damageable)item.getItemMeta()).getDamage();
-    double max = item.getType().getMaxDurability();
-    DecimalFormat formatter = new DecimalFormat("0");
+    final double dura = ((Damageable)item.getItemMeta()).getDamage();
+    final double max = item.getType().getMaxDurability();
+    final DecimalFormat formatter = new DecimalFormat("0");
     return formatter.format((1 - dura / max) * 100.0);
   }
 
@@ -839,7 +839,7 @@ public class Util {
     CUSTOM_STACKSIZE.clear();
     devMode = plugin.getConfig().getBoolean("dev-mode");
 
-    for(String s : plugin.getConfig().getStringList("shop-blocks")) {
+    for(final String s : plugin.getConfig().getStringList("shop-blocks")) {
       Material mat = Material.matchMaterial(s.toUpperCase());
       if(mat == null) {
         mat = Material.matchMaterial(s);
@@ -851,8 +851,8 @@ public class Util {
       }
     }
 
-    for(String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
-      String[] data = material.split(":");
+    for(final String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
+      final String[] data = material.split(":");
       if(data.length != 2) {
         continue;
       }
@@ -860,7 +860,7 @@ public class Util {
       if("*".equalsIgnoreCase(data[0])) {
         BYPASSED_CUSTOM_STACKSIZE = Integer.parseInt(data[1]);
       }
-      Material mat = Material.matchMaterial(data[0]);
+      final Material mat = Material.matchMaterial(data[0]);
       if(mat == null || mat == Material.AIR) {
         plugin.logger().warn("{} not a valid material in custom-item-stacksize section.", material);
         continue;
@@ -878,7 +878,7 @@ public class Util {
    *
    * @param inv inv
    */
-  public static void inventoryCheck(@Nullable InventoryWrapper inv) {
+  public static void inventoryCheck(@Nullable final InventoryWrapper inv) {
 
     if(inv == null) {
       return;
@@ -887,16 +887,16 @@ public class Util {
       Log.debug("Skipped plugin gui inventory check.");
       return;
     }
-    InventoryWrapperIterator iterator = inv.iterator();
+    final InventoryWrapperIterator iterator = inv.iterator();
     try {
       while(iterator.hasNext()) {
-        ItemStack itemStack = iterator.next();
+        final ItemStack itemStack = iterator.next();
         if(itemStack == null) {
           continue;
         }
         if(AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
           // Found Item and remove it.
-          Location location = inv.getLocation();
+          final Location location = inv.getLocation();
           if(location == null) {
             return; // Virtual GUI
           }
@@ -917,7 +917,7 @@ public class Util {
    * @deprecated Use QuickShopAPI#getShopItemBlackList() instead
    */
   @Deprecated(forRemoval = true)
-  public static boolean isBlacklisted(@NotNull ItemStack stack) {
+  public static boolean isBlacklisted(@NotNull final ItemStack stack) {
 
     if(plugin == null) {
       throw new IllegalStateException("Plugin not fully started yet");
@@ -960,7 +960,7 @@ public class Util {
     }
   }
 
-  public static boolean isDisplayAllowBlock(@NotNull Material mat) {
+  public static boolean isDisplayAllowBlock(@NotNull final Material mat) {
 
     return mat.isTransparent() || isWallSign(mat);
   }
@@ -972,7 +972,7 @@ public class Util {
    *
    * @return is or not a wall_sign
    */
-  public static boolean isWallSign(@Nullable Material material) {
+  public static boolean isWallSign(@Nullable final Material material) {
 
     if(material == null) {
       return false;
@@ -987,7 +987,7 @@ public class Util {
    *
    * @return yes or not
    */
-  public static boolean isDyes(@NotNull Material material) {
+  public static boolean isDyes(@NotNull final Material material) {
 
     return material.name().toUpperCase().endsWith("_DYE");
   }
@@ -999,15 +999,15 @@ public class Util {
    *
    * @return true if the given location is loaded or not.
    */
-  public static boolean isLoaded(@NotNull Location loc) {
+  public static boolean isLoaded(@NotNull final Location loc) {
 
     if(!loc.isWorldLoaded()) {
       return false;
     }
     // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
     // location rounded to the nearest 16.
-    int x = (int)Math.floor((loc.getBlockX()) / 16.0);
-    int z = (int)Math.floor((loc.getBlockZ()) / 16.0);
+    final int x = (int)Math.floor((loc.getBlockX()) / 16.0);
+    final int z = (int)Math.floor((loc.getBlockZ()) / 16.0);
     return (loc.getWorld().isChunkLoaded(x, z));
   }
 
@@ -1020,9 +1020,9 @@ public class Util {
    *
    * @return boolean Available
    */
-  public static boolean isMethodAvailable(@NotNull String className, String method, Class<?>... args) {// nosemgrep
+  public static boolean isMethodAvailable(@NotNull final String className, final String method, final Class<?>... args) {// nosemgrep
     try {
-      Class<?> clazz = Class.forName(className);
+      final Class<?> clazz = Class.forName(className);
       try {
         clazz.getDeclaredMethod(method, args);
       } catch(NoSuchMethodException e) {
@@ -1042,9 +1042,9 @@ public class Util {
    *
    * @return true if a nearby shop was found, false otherwise.
    */
-  public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
+  public static boolean isOtherShopWithinHopperReach(@NotNull final Block b, @NotNull final Player p) {
 
-    Block bshop = Util.getAttached(b);
+    final Block bshop = Util.getAttached(b);
     if(bshop == null) {
       return false;
     }
@@ -1063,7 +1063,7 @@ public class Util {
    * @return The block the sign is attached to
    */
   @Nullable
-  public static Block getAttached(@NotNull Block b) {
+  public static Block getAttached(@NotNull final Block b) {
 
     final BlockData blockData = b.getBlockData();
     if(blockData instanceof final Directional directional) {
@@ -1078,7 +1078,7 @@ public class Util {
    *
    * @return Returns true if the item is a tool (Has durability) or false if it doesn't.
    */
-  public static boolean isTool(@NotNull Material mat) {
+  public static boolean isTool(@NotNull final Material mat) {
 
     return mat.getMaxDurability() != 0;
   }
@@ -1092,13 +1092,13 @@ public class Util {
    * @return The location the player should be facing to have their crosshairs on the location
    * lookAt Kudos to bergerkiller for most of this function
    */
-  public static @NotNull Location lookAt(@NotNull Location loc, @NotNull Location lookat) {
+  public static @NotNull Location lookAt(@NotNull Location loc, @NotNull final Location lookat) {
     // Clone the loc to prevent applied changes to the input loc
     loc = loc.clone();
     // Values of change in distance (make it relative)
-    double dx = lookat.getX() - loc.getX();
-    double dy = lookat.getY() - loc.getY();
-    double dz = lookat.getZ() - loc.getZ();
+    final double dx = lookat.getX() - loc.getX();
+    final double dy = lookat.getY() - loc.getY();
+    final double dz = lookat.getZ() - loc.getZ();
     // Set yaw
     if(dx != 0) {
       // Set yaw start value based on dx
@@ -1112,8 +1112,8 @@ public class Util {
       loc.setYaw((float)Math.PI);
     }
     // Get the distance from dx/dz
-    double dxz = Math.sqrt(Math.pow(dx, 2) + Math.pow(dz, 2));
-    float pitch = (float)-Math.atan(dy / dxz);
+    final double dxz = Math.sqrt(Math.pow(dx, 2) + Math.pow(dz, 2));
+    final float pitch = (float)-Math.atan(dy / dxz);
     // Set values, convert to degrees
     // Minecraft yaw (vertical) angles are inverted (negative)
     loc.setYaw(-loc.getYaw() * 180f / (float)Math.PI + 360);
@@ -1128,7 +1128,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void regionThread(final Location location, @NotNull Runnable runnable) {
+  public static void regionThread(final Location location, @NotNull final Runnable runnable) {
     //QuickShop.folia().getImpl().runLater(runnable, 1);
     QuickShop.folia().getImpl().runAtLocationLater(location, runnable, 1);
   }
@@ -1139,7 +1139,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void mainThreadRun(@NotNull Runnable runnable) {
+  public static void mainThreadRun(@NotNull final Runnable runnable) {
 
     QuickShop.folia().getImpl().runLater(runnable, 1);
   }
@@ -1150,7 +1150,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void mainThreadRun(@NotNull Runnable runnable, long delay) {
+  public static void mainThreadRun(@NotNull final Runnable runnable, final long delay) {
 
     QuickShop.folia().getImpl().runLater(runnable, delay);
   }
@@ -1163,9 +1163,9 @@ public class Util {
    * @return String serialized itemStack
    */
   @NotNull
-  public static String serialize(@NotNull ItemStack iStack) {
+  public static String serialize(@NotNull final ItemStack iStack) {
 
-    YamlConfiguration cfg = new YamlConfiguration();
+    final YamlConfiguration cfg = new YamlConfiguration();
     cfg.set("item", iStack);
     return cfg.saveToString();
   }
@@ -1176,9 +1176,9 @@ public class Util {
    * @param plugin Plugin instance
    * @param clazz  Class to unregister
    */
-  public static void unregisterListenerClazz(@NotNull Plugin plugin, @NotNull Class<? extends Listener> clazz) {
+  public static void unregisterListenerClazz(@NotNull final Plugin plugin, @NotNull final Class<? extends Listener> clazz) {
 
-    for(RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
+    for(final RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
       if(registeredListener.getListener().getClass().equals(clazz)) {
         HandlerList.unregisterAll(registeredListener.getListener());
       }

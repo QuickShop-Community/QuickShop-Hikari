@@ -25,7 +25,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
   private final Logger logger = plugin.getLogger();
   private FileConfiguration config = null;
 
-  public ConfigProvider(QuickShop plugin, File configFile) {
+  public ConfigProvider(final QuickShop plugin, final File configFile) {
 
     super(plugin.getJavaPlugin());
     this.configFile = configFile;
@@ -49,7 +49,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
    *
    * @param defaults is using default configuration
    */
-  public void reload(boolean defaults) {
+  public void reload(final boolean defaults) {
 
     if(!configFile.exists()) {
       plugin.saveDefaultConfig();
@@ -57,19 +57,19 @@ public class ConfigProvider extends QuickShopInstanceHolder {
     if(config == null) {
       config = new YamlConfiguration();
     }
-    try(InputStream defaultConfigStream = plugin.getResource(configFile.getName())) {
+    try(final InputStream defaultConfigStream = plugin.getResource(configFile.getName())) {
       config.load(configFile);
       if(defaultConfigStream != null) {
-        try(InputStreamReader reader = new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8)) {
+        try(final InputStreamReader reader = new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8)) {
           config.setDefaults(YamlConfiguration.loadConfiguration(reader));
         }
       }
-    } catch(IOException | InvalidConfigurationException exception) {
+    } catch(final IOException | InvalidConfigurationException exception) {
       if(!defaults) {
         logger.log(Level.SEVERE, "Cannot reading the configuration " + configFile.getName() + ", doing backup configuration and use default", exception);
         try {
           Files.copy(configFile.toPath(), plugin.getDataFolder().toPath().resolve(configFile.getName() + "-broken-" + UUID.randomUUID() + ".yml"), REPLACE_EXISTING);
-        } catch(IOException fatalException) {
+        } catch(final IOException fatalException) {
           throw new IllegalStateException("Failed to backup configuration " + configFile.getName(), fatalException);
         }
         plugin.saveResource(configFile.getName(), true);
@@ -85,7 +85,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
 
     try {
       get().save(configFile);
-    } catch(IOException e) {
+    } catch(final IOException e) {
       logger.log(Level.SEVERE, "Failed to save configuration " + configFile.getName(), e);
     }
   }

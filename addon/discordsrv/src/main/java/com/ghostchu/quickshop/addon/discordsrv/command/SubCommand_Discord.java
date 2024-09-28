@@ -24,30 +24,30 @@ public class SubCommand_Discord implements CommandHandler<Player> {
   private final QuickShop qs;
   private final Main plugin;
 
-  public SubCommand_Discord(QuickShop qs, Main plugin) {
+  public SubCommand_Discord(final QuickShop qs, final Main plugin) {
 
     this.qs = qs;
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() < 2) {
       qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
       return;
     }
-    NotificationFeature feature = getFeatureByName(parser.getArgs().get(0));
+    final NotificationFeature feature = getFeatureByName(parser.getArgs().get(0));
     if(feature == null) {
       qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
       return;
     }
-    boolean ops = "enable".equalsIgnoreCase(parser.getArgs().get(1));
+    final boolean ops = "enable".equalsIgnoreCase(parser.getArgs().get(1));
     Util.asyncThreadRun(()->{
       try {
-        Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(QUserImpl.createFullFilled(sender), feature, ops);
+        final Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(QUserImpl.createFullFilled(sender), feature, ops);
         Log.debug("Execute Discord Notifaction with id " + i + " affected");
-        Component text = qs.text().of(sender, "addon.discord.message-type-mapping." + feature.getConfigNode(), feature.getConfigNode(), ops).forLocale();
+        final Component text = qs.text().of(sender, "addon.discord.message-type-mapping." + feature.getConfigNode(), feature.getConfigNode(), ops).forLocale();
         qs.text().of(sender, "addon.discord.feature-status-changed", text, ops).send();
       } catch(SQLException e) {
         qs.text().of(sender, "addon.discord.save-notifaction-exception").send();
@@ -57,9 +57,9 @@ public class SubCommand_Discord implements CommandHandler<Player> {
   }
 
   @Nullable
-  private NotificationFeature getFeatureByName(String name) {
+  private NotificationFeature getFeatureByName(final String name) {
 
-    for(NotificationFeature value : NotificationFeature.values()) {
+    for(final NotificationFeature value : NotificationFeature.values()) {
       NotificationFeature selected = null;
       if(value.name().equalsIgnoreCase(name)) {
         selected = value;
@@ -78,7 +78,7 @@ public class SubCommand_Discord implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return Arrays.stream(NotificationFeature.values())

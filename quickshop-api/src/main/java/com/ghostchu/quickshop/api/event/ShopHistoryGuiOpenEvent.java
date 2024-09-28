@@ -21,7 +21,7 @@ public class ShopHistoryGuiOpenEvent extends AbstractQSEvent {
    * @param player    The player that open GUI
    * @param inventory The GUI itself
    */
-  public ShopHistoryGuiOpenEvent(List<Shop> shops, Player player, Inventory inventory) {
+  public ShopHistoryGuiOpenEvent(final List<Shop> shops, final Player player, final Inventory inventory) {
 
     this.player = player;
     this.shops = shops;

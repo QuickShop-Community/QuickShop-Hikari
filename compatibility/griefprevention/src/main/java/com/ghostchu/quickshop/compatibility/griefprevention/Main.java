@@ -68,13 +68,13 @@ public final class Main extends CompatibilityModule implements Listener {
         // Player can resize the main claim or the subclaim.
         // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-        public void onClaimResized(ClaimResizeEvent event) {
+        public void onClaimResized(final ClaimResizeEvent event) {
 
           if(!deleteOnClaimResized) {
             return;
           }
-          Claim oldClaim = event.getFrom();
-          Claim newClaim = event.getTo();
+          final Claim oldClaim = event.getFrom();
+          final Claim newClaim = event.getTo();
           if(oldClaim.parent == null) {
             handleMainClaimResized(oldClaim, newClaim);
           } else {
@@ -87,11 +87,11 @@ public final class Main extends CompatibilityModule implements Listener {
     }
   }
 
-  private List<Flag> toFlags(List<String> flags) {
+  private List<Flag> toFlags(final List<String> flags) {
 
-    List<Flag> result = new ArrayList<>(3);
-    for(String flagStr : flags) {
-      Flag flag = Flag.getFlag(flagStr);
+    final List<Flag> result = new ArrayList<>(3);
+    for(final String flagStr : flags) {
+      final Flag flag = Flag.getFlag(flagStr);
       if(flag != null) {
         result.add(flag);
       }
@@ -101,7 +101,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
   // Since only the main claim expires, we will call the handleMainClaimUnclaimedOrExpired method.
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onClaimExpired(ClaimExpirationEvent event) {
+  public void onClaimExpired(final ClaimExpirationEvent event) {
 
     if(!deleteOnClaimExpired) {
       return;
@@ -110,12 +110,12 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   // If it is the main claim, then we will delete all the shops that were inside of it.
-  private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
+  private void handleMainClaimUnclaimedOrExpired(final Claim claim, final String logMessage) {
 
-    for(Chunk chunk : claim.getChunks()) {
-      Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : claim.getChunks()) {
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
       if(shops != null) {
-        for(Shop shop : shops.values()) {
+        for(final Shop shop : shops.values()) {
           if(claim.contains(shop.getLocation(), false, false)) {
             getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
             getApi().getShopManager().deleteShop(shop);
@@ -128,12 +128,12 @@ public final class Main extends CompatibilityModule implements Listener {
 
   // If it is a main claim, then we will remove the shops if the main claim was resized (size was decreased).
   // A shop will be removed if the old claim contains it but the new claim doesn't.
-  private void handleMainClaimResized(Claim oldClaim, Claim newClaim) {
+  private void handleMainClaimResized(final Claim oldClaim, final Claim newClaim) {
 
-    for(Chunk chunk : oldClaim.getChunks()) {
-      Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : oldClaim.getChunks()) {
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
       if(shops != null) {
-        for(Shop shop : shops.values()) {
+        for(final Shop shop : shops.values()) {
           if(oldClaim.contains(shop.getLocation(), false, false) &&
              !newClaim.contains(shop.getLocation(), false, false)) {
             getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
@@ -148,18 +148,18 @@ public final class Main extends CompatibilityModule implements Listener {
   // We will never remove the shops of the claim owner.
   // We will remove a shop if the shop was inside the subclaim but now it is outside the subclaim.
   // We will remove a shop if the shop was outside the subclaim but now it is inside the subclaim.
-  private void handleSubClaimResized(Claim oldClaim, Claim newClaim) {
+  private void handleSubClaimResized(final Claim oldClaim, final Claim newClaim) {
 
     handleSubClaimResizedHelper(oldClaim, newClaim);
     handleSubClaimResizedHelper(newClaim, oldClaim);
   }
 
-  private void handleSubClaimResizedHelper(Claim claimVerifyChunks, Claim claimVerifyShop) {
+  private void handleSubClaimResizedHelper(final Claim claimVerifyChunks, final Claim claimVerifyShop) {
 
-    for(Chunk chunk : claimVerifyChunks.getChunks()) {
-      Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : claimVerifyChunks.getChunks()) {
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
       if(shops != null) {
-        for(Shop shop : shops.values()) {
+        for(final Shop shop : shops.values()) {
           if(!claimVerifyChunks.getOwnerID().equals(shop.getOwner().getUniqueId()) &&
              claimVerifyChunks.contains(shop.getLocation(), false, false) &&
              !claimVerifyShop.contains(shop.getLocation(), false, false)) {
@@ -175,7 +175,7 @@ public final class Main extends CompatibilityModule implements Listener {
   // It will remove a shop if the shop owner no longer has permission to build a shop there.
   // We will not delete the shops of the claim owner.
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onClaimTrustChanged(TrustChangedEvent event) {
+  public void onClaimTrustChanged(final TrustChangedEvent event) {
 
     if(!deleteOnClaimTrustChanged) {
       return;
@@ -186,23 +186,23 @@ public final class Main extends CompatibilityModule implements Listener {
     if(createLimit.toClaimPermission().isGrantedBy(event.getClaimPermission())) {
       return;
     }
-    for(Claim claim : event.getClaims()) {
+    for(final Claim claim : event.getClaims()) {
       handleClaimTrustChanged(Objects.requireNonNullElse(claim.parent, claim), event);
     }
   }
 
   // Helper to the Claim Trust Changed Event Handler (to avoid duplicate code above)
-  private void handleClaimTrustChanged(Claim claim, TrustChangedEvent event) {
+  private void handleClaimTrustChanged(final Claim claim, final TrustChangedEvent event) {
 
     if(event.isGiven()) {
       return;
     }
-    for(Chunk chunk : claim.getChunks()) {
-      Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : claim.getChunks()) {
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
       if(shops == null) {
         continue;
       }
-      for(Shop shop : shops.values()) {
+      for(final Shop shop : shops.values()) {
         if(claim.getOwnerID().equals(shop.getOwner().getUniqueId())) {
           continue;
         }
@@ -223,7 +223,7 @@ public final class Main extends CompatibilityModule implements Listener {
   // Player can unclaim the main claim or the subclaim.
   // So we need to call either the handleMainClaimUnclaimedOrExpired or the handleSubClaimUnclaimed method.
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onClaimUnclaimed(ClaimDeletedEvent event) {
+  public void onClaimUnclaimed(final ClaimDeletedEvent event) {
 
     if(!deleteOnClaimUnclaimed) {
       return;
@@ -237,12 +237,12 @@ public final class Main extends CompatibilityModule implements Listener {
 
   // If it is a subclaim, then we will not remove the shops of the main claim owner.
   // But we will remove all the others.
-  private void handleSubClaimUnclaimed(Claim subClaim) {
+  private void handleSubClaimUnclaimed(final Claim subClaim) {
 
-    for(Chunk chunk : subClaim.getChunks()) {
-      Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : subClaim.getChunks()) {
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
       if(shops != null) {
-        for(Shop shop : shops.values()) {
+        for(final Shop shop : shops.values()) {
           if(!subClaim.getOwnerID().equals(shop.getOwner().getUniqueId()) &&
              subClaim.contains(shop.getLocation(), false, false)) {
             getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
@@ -254,7 +254,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onCreation(ShopCreateEvent event) {
+  public void onCreation(final ShopCreateEvent event) {
 
     event.getCreator().getBukkitPlayer().ifPresent(p->{
       if(checkPermission(p, event.getShop().getLocation(), Collections.singletonList(createLimit))) {
@@ -264,16 +264,16 @@ public final class Main extends CompatibilityModule implements Listener {
     });
   }
 
-  private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
+  private boolean checkPermission(@NotNull final Player player, @NotNull final Location location, final List<Flag> limits) {
 
     if(!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
       return true;
     }
-    Claim claim = griefPrevention.dataStore.getClaimAt(location, false, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
+    final Claim claim = griefPrevention.dataStore.getClaimAt(location, false, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
     if(claim == null) {
       return !whiteList;
     }
-    for(Flag flag : limits) {
+    for(final Flag flag : limits) {
       if(!flag.check(claim, player)) {
         return false;
       }
@@ -282,7 +282,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onPreCreation(ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopPreCreateEvent event) {
 
     event.getCreator().getBukkitPlayer().ifPresent(p->{
       if(checkPermission(p, event.getLocation(), Collections.singletonList(createLimit))) {
@@ -297,7 +297,7 @@ public final class Main extends CompatibilityModule implements Listener {
   // So if a subclaim is created that will contain, initially, shops from others players, then we will remove them.
   // Because they won't have, initially, permission to create a shop in that subclaim.
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onSubClaimCreated(ClaimCreatedEvent event) {
+  public void onSubClaimCreated(final ClaimCreatedEvent event) {
 
     if(!deleteOnSubClaimCreated) {
       return;
@@ -305,10 +305,10 @@ public final class Main extends CompatibilityModule implements Listener {
     if(event.getClaim().parent == null) {
       return;
     }
-    for(Chunk chunk : event.getClaim().getChunks()) {
-      Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : event.getClaim().getChunks()) {
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
       if(shops != null) {
-        for(Shop shop : shops.values()) {
+        for(final Shop shop : shops.values()) {
           if(!event.getClaim().getOwnerID().equals(shop.getOwner().getUniqueId()) &&
              event.getClaim().contains(shop.getLocation(), false, false)) {
             getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
@@ -320,7 +320,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onTrading(ShopPurchaseEvent event) {
+  public void onTrading(final ShopPurchaseEvent event) {
 
     event.getPurchaser().getBukkitPlayer().ifPresent(p->{
       if(checkPermission(p, event.getShop().getLocation(), tradeLimits)) {
@@ -331,15 +331,15 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
 
     Log.debug("GP-Compat: Starting override permission...");
-    Location shopLoc = event.getShop().getLocation();
+    final Location shopLoc = event.getShop().getLocation();
     if(!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
       Log.debug("GP-Compat: World " + shopLoc.getWorld().getName() + " not enabled for claims");
       return;
     }
-    Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, null);
+    final Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, null);
     if(claim == null) {
       Log.debug("GP-Compat: Shop " + shopLoc + " position had no claim(s) exists.");
       return;
@@ -359,7 +359,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     BUILD {
       @Override
-      boolean check(Claim claim, Player player) {
+      boolean check(final Claim claim, final Player player) {
 
         return claim.allowBuild(player, Material.CHEST) == null;
       }
@@ -371,7 +371,7 @@ public final class Main extends CompatibilityModule implements Listener {
       }
     }, INVENTORY {
       @Override
-      boolean check(Claim claim, Player player) {
+      boolean check(final Claim claim, final Player player) {
 
         return claim.allowContainers(player) == null;
       }
@@ -383,7 +383,7 @@ public final class Main extends CompatibilityModule implements Listener {
       }
     }, ACCESS {
       @Override
-      boolean check(Claim claim, Player player) {
+      boolean check(final Claim claim, final Player player) {
 
         return claim.allowAccess(player) == null;
       }
@@ -395,9 +395,9 @@ public final class Main extends CompatibilityModule implements Listener {
       }
     };
 
-    public static Flag getFlag(String flag) {
+    public static Flag getFlag(final String flag) {
 
-      for(Flag value : Flag.values()) {
+      for(final Flag value : Flag.values()) {
         if(value.name().equalsIgnoreCase(flag)) {
           return value;
         }

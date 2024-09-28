@@ -17,7 +17,7 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
 
   private final QuickShop plugin;
 
-  public BukkitItemMatcherImpl(QuickShop plugin) {
+  public BukkitItemMatcherImpl(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -59,8 +59,8 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
     if(original == null && tester == null) {
       return true;
     }
-    boolean originalNull = original == null;
-    boolean testerNull = tester == null;
+    final boolean originalNull = original == null;
+    final boolean testerNull = tester == null;
     if(originalNull || testerNull) {
       return false;
     }
@@ -70,9 +70,9 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
     tester = tester.clone();
     tester.setAmount(1);
 
-    String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
+    final String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
     if(shopIdOrigin != null) {
-      String shopIdTester = plugin.getPlatform().getItemShopId(tester);
+      final String shopIdTester = plugin.getPlatform().getItemShopId(tester);
       if(shopIdOrigin.equals(shopIdTester)) {
         return true;
       }

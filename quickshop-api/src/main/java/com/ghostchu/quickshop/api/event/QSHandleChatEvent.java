@@ -16,7 +16,7 @@ public class QSHandleChatEvent extends AbstractQSEvent {
   private final QUser sender;
   private String message;
 
-  public QSHandleChatEvent(QUser sender, String message) {
+  public QSHandleChatEvent(final QUser sender, final String message) {
 
     this.sender = sender;
     this.message = message;
@@ -37,7 +37,7 @@ public class QSHandleChatEvent extends AbstractQSEvent {
    *
    * @param message The new chat content
    */
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
 
     this.message = message;
   }

@@ -31,7 +31,7 @@ public class UpdateWatcher implements Listener {
       if(!plugin.getNexusManager().isLatest()) {
         plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.getNexusManager().getLatestVersion());
         plugin.logger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for(final Player player : Bukkit.getOnlinePlayers()) {
           if(plugin.perm().hasPermission(player, "quickshop.alerts")) {
             MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
             MsgUtil.sendDirectMessage(player, ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(pickRandomMessage(player)));
@@ -44,14 +44,14 @@ public class UpdateWatcher implements Listener {
     }, 1, 20L * 60L * 60L);
   }
 
-  private Component pickRandomMessage(CommandSender sender) {
+  private Component pickRandomMessage(final CommandSender sender) {
 
-    List<Component> messages = plugin.text().ofList(sender, "updatenotify.list").forLocale();
+    final List<Component> messages = plugin.text().ofList(sender, "updatenotify.list").forLocale();
     int notifyNum = -1;
     if(messages.size() > 1) {
       notifyNum = random.nextInt(messages.size());
     }
-    Component notify;
+    final Component notify;
     if(notifyNum > 0) { // Translate bug.
       notify = messages.get(notifyNum);
     } else {
@@ -61,7 +61,7 @@ public class UpdateWatcher implements Listener {
   }
 
   @EventHandler
-  public void playerJoin(PlayerJoinEvent e) {
+  public void playerJoin(final PlayerJoinEvent e) {
 
     Util.asyncThreadRun(()->{
       if(!plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts") || plugin.getNexusManager().isLatest()) {

@@ -75,9 +75,9 @@ public class MainPage {
   protected final String iconLore;
   protected final IconAction[] actions;
 
-  public MainPage(String returnMenu, String menuName,
-                  final int menuPage, final int returnPage, String staffPageID,
-                  final int menuRows, String iconLore, final IconAction... actions) {
+  public MainPage(final String returnMenu, final String menuName,
+                  final int menuPage, final int returnPage, final String staffPageID,
+                  final int menuRows, final String iconLore, final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;
@@ -178,7 +178,7 @@ public class MainPage {
                                            .build());
 
         final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
-        for(Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
+        for(final Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
           valuableDescription.add(get(id, "history.shop.top-n-valuable-customers-entry",
                                       QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
                                                            entry.getKey()).getDisplay(), entry.getValue()));

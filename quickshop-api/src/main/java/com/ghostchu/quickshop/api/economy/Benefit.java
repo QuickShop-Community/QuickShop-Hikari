@@ -64,7 +64,7 @@ public interface Benefit {
 
     private final double overflow;
 
-    public BenefitOverflowException(double overflow) {
+    public BenefitOverflowException(final double overflow) {
 
       this.overflow = overflow;
     }

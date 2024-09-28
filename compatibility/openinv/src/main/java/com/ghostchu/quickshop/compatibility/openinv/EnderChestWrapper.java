@@ -22,11 +22,11 @@ public class EnderChestWrapper implements InventoryWrapper {
   private final Player player;
   private final Main plugin;
 
-  public EnderChestWrapper(UUID uuid, IOpenInv iOpenInv, Main plugin) {
+  public EnderChestWrapper(final UUID uuid, final IOpenInv iOpenInv, final Main plugin) {
 
     this.plugin = plugin;
     this.uuid = uuid;
-    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+    final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
     this.player = iOpenInv.loadPlayer(offlinePlayer);
 
   }
@@ -114,7 +114,7 @@ public class EnderChestWrapper implements InventoryWrapper {
   }
 
   @Override
-  public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+  public boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {
 
     player.getEnderChest().setContents(snapshot);
     return true;
@@ -126,7 +126,7 @@ public class EnderChestWrapper implements InventoryWrapper {
    * @param itemStacks the contents you want to set
    */
   @Override
-  public void setContents(ItemStack[] itemStacks) {
+  public void setContents(final ItemStack[] itemStacks) {
 
     player.getEnderChest().setContents(itemStacks);
   }

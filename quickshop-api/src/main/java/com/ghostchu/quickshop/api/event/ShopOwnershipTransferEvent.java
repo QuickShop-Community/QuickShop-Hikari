@@ -24,7 +24,7 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
    * @param oldOwner The old owner.
    * @param newOwner The new owner.
    */
-  public ShopOwnershipTransferEvent(@NotNull Shop shop, @NotNull QUser oldOwner, @NotNull QUser newOwner) {
+  public ShopOwnershipTransferEvent(@NotNull final Shop shop, @NotNull final QUser oldOwner, @NotNull final QUser newOwner) {
 
     this.shop = shop;
     this.oldOwner = oldOwner;
@@ -38,7 +38,7 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.reason = reason;

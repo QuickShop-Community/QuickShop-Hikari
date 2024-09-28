@@ -14,7 +14,7 @@ public class CalendarEvent extends AbstractQSEvent {
 
   private CalendarTriggerType calendarTriggerType;
 
-  public CalendarEvent(CalendarTriggerType calendarTriggerType) {
+  public CalendarEvent(final CalendarTriggerType calendarTriggerType) {
 
     this.calendarTriggerType = calendarTriggerType;
   }

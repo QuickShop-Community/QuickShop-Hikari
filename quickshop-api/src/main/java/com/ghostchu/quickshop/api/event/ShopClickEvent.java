@@ -24,7 +24,7 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
    *
    * @param shop The shop bought from
    */
-  public ShopClickEvent(@NotNull Shop shop, @NotNull Player player) {
+  public ShopClickEvent(@NotNull final Shop shop, @NotNull final Player player) {
 
     this.shop = shop;
     this.player = player;
@@ -37,7 +37,7 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

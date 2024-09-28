@@ -20,26 +20,26 @@ public class DataUtil {
 
   public final Main main;
 
-  public DataUtil(@NotNull Main main) {
+  public DataUtil(@NotNull final Main main) {
 
     this.main = main;
   }
 
   @NotNull
-  public String formatEconomy(@NotNull ShopMetricRecord record) {
+  public String formatEconomy(@NotNull final ShopMetricRecord record) {
 
-    Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
+    final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
     if(shop == null || main.getQuickShop().getEconomy() == null) {
-      DecimalFormat df = new DecimalFormat("#.00");
+      final DecimalFormat df = new DecimalFormat("#.00");
       return df.format(record.getTotal());
     }
     return main.getQuickShop().getEconomy().format(record.getTotal(), shop.getLocation().getWorld(), shop.getCurrency());
   }
 
   @NotNull
-  public String getItemName(@NotNull DataRecord dataRecord) {
+  public String getItemName(@NotNull final DataRecord dataRecord) {
 
-    ItemStack stack;
+    final ItemStack stack;
     try {
       stack = Util.deserialize(dataRecord.getItem());
     } catch(InvalidConfigurationException e) {
@@ -56,7 +56,7 @@ public class DataUtil {
   }
 
   @NotNull
-  public String getItemName(@NotNull ItemStack stack) {
+  public String getItemName(@NotNull final ItemStack stack) {
 
     String name = CommonUtil.prettifyText(stack.getType().name());
     if(stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
@@ -66,20 +66,20 @@ public class DataUtil {
   }
 
   @NotNull
-  public String getShopName(@NotNull ShopMetricRecord record, @NotNull DataRecord dataRecord) {
+  public String getShopName(@NotNull final ShopMetricRecord record, @NotNull final DataRecord dataRecord) {
 
-    StringBuilder nameBuilder = new StringBuilder();
-    Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
+    final StringBuilder nameBuilder = new StringBuilder();
+    final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
     if(shop == null) {
       nameBuilder.append("[Deleted] ");
     }
-    String shopName = dataRecord.getName();
+    final String shopName = dataRecord.getName();
     if(shopName != null) {
       nameBuilder.append(ChatColor.stripColor(shopName));
     } else {
       if(shop != null) {
-        Location location = shop.getLocation();
-        String template = "%s %s,%s,%s";
+        final Location location = shop.getLocation();
+        final String template = "%s %s,%s,%s";
         nameBuilder.append(String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
       } else {
         nameBuilder.append("N/A");
@@ -89,19 +89,19 @@ public class DataUtil {
   }
 
   @NotNull
-  public String loc2String(@NotNull Location location) {
+  public String loc2String(@NotNull final Location location) {
 
-    String template = "%s %s,%s,%s";
+    final String template = "%s %s,%s,%s";
     return String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
   }
 
   @NotNull
-  public String getPlayerName(@NotNull UUID uuid) {
+  public String getPlayerName(@NotNull final UUID uuid) {
 
     if(CommonUtil.getNilUniqueId().equals(uuid)) {
       return "[Server]";
     }
-    String name = main.getQuickShop().getPlayerFinder().uuid2Name(uuid);
+    final String name = main.getQuickShop().getPlayerFinder().uuid2Name(uuid);
     if(name == null || name.isEmpty()) {
       return uuid.toString();
     }

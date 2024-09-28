@@ -17,7 +17,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
 
   private final Main plugin;
 
-  public OpenInvCommand(Main openinv) {
+  public OpenInvCommand(final Main openinv) {
 
     this.plugin = openinv;
   }
@@ -30,7 +30,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
    * @param cmdArg       The arguments (/quickshop create stone will receive stone)
    */
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
     final Shop shop = getLookingShop(sender);
     if(shop == null) {
@@ -60,7 +60,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
    * @return Candidate list
    */
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
     return CommandHandler.super.onTabComplete(sender, commandLabel, cmdArg);
   }

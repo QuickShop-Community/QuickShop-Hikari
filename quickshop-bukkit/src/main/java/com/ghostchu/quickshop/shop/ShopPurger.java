@@ -22,7 +22,7 @@ public class ShopPurger {
   private final QuickShop plugin;
   private volatile boolean executing;
 
-  public ShopPurger(QuickShop plugin) {
+  public ShopPurger(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -44,19 +44,19 @@ public class ShopPurger {
 
     Util.ensureThread(true);
     executing = true;
-    DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
+    final DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
     if(!ioUtil.performBackup("shops-auto-purge")) {
       plugin.logger().warn("[Shop Purger] Purge progress declined due backup failure");
       return;
     }
     plugin.logger().info("[Shop Purger] Scanning and removing shops....");
-    List<Shop> pendingRemovalShops = new ArrayList<>();
-    int days = plugin.getConfig().getInt("purge.days", 360);
-    boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
-    boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
-    for(Shop shop : plugin.getShopManager().getAllShops()) {
+    final List<Shop> pendingRemovalShops = new ArrayList<>();
+    final int days = plugin.getConfig().getInt("purge.days", 360);
+    final boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
+    final boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
+    for(final Shop shop : plugin.getShopManager().getAllShops()) {
       try {
-        OfflinePlayer player = shop.getOwner().getUniqueIdIfRealPlayer().map(Bukkit::getOfflinePlayer).orElse(null);
+        final OfflinePlayer player = shop.getOwner().getUniqueIdIfRealPlayer().map(Bukkit::getOfflinePlayer).orElse(null);
         if(player == null) {
           return;
         }
@@ -64,7 +64,7 @@ public class ShopPurger {
           Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
           continue;
         }
-        long lastPlayed = player.getLastPlayed();
+        final long lastPlayed = player.getLastPlayed();
         if(lastPlayed == 0) {
           continue;
         }
@@ -75,7 +75,7 @@ public class ShopPurger {
           continue;
         }
         boolean markDeletion = player.isBanned() && deleteBanned;
-        long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
+        final long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
         if(noOfDaysBetween > days) {
           markDeletion = true;
         }
@@ -88,11 +88,11 @@ public class ShopPurger {
       }
     }
 
-    BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
+    final BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
     purgeExecutor.addTasks(pendingRemovalShops);
     purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop)->plugin.getShopManager().deleteShop(shop))
             .whenComplete((a, b)->{
-              long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+              final long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
               plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
                                    pendingRemovalShops.size(),
                                    usedTime);

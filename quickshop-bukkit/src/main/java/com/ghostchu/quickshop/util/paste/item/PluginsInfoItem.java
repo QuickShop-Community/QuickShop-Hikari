@@ -26,9 +26,9 @@ public class PluginsInfoItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    HTMLTable table = new HTMLTable(6);
+    final HTMLTable table = new HTMLTable(6);
     table.setTableTitle("Name", "Status", "Version", "API Version", "Addon", "Main-Class");
-    for(Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+    for(final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
       table.insert(plugin.getName(),
                    CommonUtil.boolean2Status(plugin.isEnabled()),
                    plugin.getDescription().getVersion(),
@@ -39,9 +39,9 @@ public class PluginsInfoItem implements SubPasteItem {
     return table.render();
   }
 
-  private boolean isAddon(Plugin plugin) {
+  private boolean isAddon(final Plugin plugin) {
 
-    String plugName = QuickShop.getInstance().getJavaPlugin().getName();
+    final String plugName = QuickShop.getInstance().getJavaPlugin().getName();
     return plugin.getDescription().getDepend().contains(plugName) || plugin.getDescription().getSoftDepend().contains(plugName);
   }
 }

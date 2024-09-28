@@ -45,7 +45,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
   protected Map<String, String> translationMapping;
   private BukkitAudiences audience;
 
-  public AbstractSpigotPlatform(@NotNull Plugin instance) {
+  public AbstractSpigotPlatform(@NotNull final Plugin instance) {
 
     this.plugin = instance;
     //TODO use method to replace
@@ -60,12 +60,12 @@ public abstract class AbstractSpigotPlatform implements Platform {
   @Deprecated
   public static String getNMSVersion() {
     // Should only works on Spigot, Paper are breaking this, do not use if possible
-    String name = Bukkit.getServer().getClass().getPackage().getName();
+    final String name = Bukkit.getServer().getClass().getPackage().getName();
     return name.substring(name.lastIndexOf('.') + 1);
   }
 
   @Override
-  public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
+  public @NotNull Component getDisplayName(@NotNull final ItemStack stack) {
 
     if(stack.getItemMeta() != null) {
       return LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
@@ -74,7 +74,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
+  public @NotNull Component getDisplayName(@NotNull final ItemMeta meta) {
 
     if(meta.hasDisplayName()) {
       return LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
@@ -83,13 +83,13 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public @NotNull Component getLine(@NotNull Sign sign, int line) {
+  public @NotNull Component getLine(@NotNull final Sign sign, final int line) {
 
     return LegacyComponentSerializer.legacySection().deserialize(sign.getLine(line));
   }
 
   @Override
-  public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
+  public @Nullable List<Component> getLore(@NotNull final ItemStack stack) {
 
     if(!stack.hasItemMeta()) {
       return null;
@@ -101,7 +101,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
+  public @Nullable List<Component> getLore(@NotNull final ItemMeta meta) {
 
     if(!meta.hasLore()) {
       return null;
@@ -110,31 +110,31 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull Material material) {
+  public @NotNull Component getTranslation(@NotNull final Material material) {
 
     return Component.translatable(getTranslationKey(material));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull EntityType entity) {
+  public @NotNull Component getTranslation(@NotNull final EntityType entity) {
 
     return Component.translatable(getTranslationKey(entity));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+  public @NotNull Component getTranslation(@NotNull final PotionEffectType potionEffectType) {
 
     return Component.translatable(getTranslationKey(potionEffectType));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+  public @NotNull Component getTranslation(@NotNull final Enchantment enchantment) {
 
     return Component.translatable(getTranslationKey(enchantment));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
+  public @NotNull Component getTranslation(@NotNull final ItemStack itemStack) {
 
     return Component.translatable(getTranslationKey(itemStack));
   }
@@ -146,7 +146,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+  public void sendMessage(@NotNull final CommandSender sender, @NotNull final Component component) {
 
     if(this.audience == null) {
       this.audience = BukkitAudiences.create(this.plugin);
@@ -164,37 +164,37 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
+  public void sendSignTextChange(@NotNull final Player player, @NotNull final Sign sign, final boolean glowing, @NotNull final List<Component> components) {
     //player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
   }
 
   @Override
-  public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
+  public @NotNull Component setItemStackHoverEvent(@NotNull final Component oldComponent, @NotNull final ItemStack stack) {
 
-    NamespacedKey namespacedKey = stack.getType().getKey();
-    Key key = Key.key(namespacedKey.toString());
-    ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
-    BinaryTagHolder holder;
+    final NamespacedKey namespacedKey = stack.getType().getKey();
+    final Key key = Key.key(namespacedKey.toString());
+    final ReadWriteNBT nbt = NBT.itemStackToNBT(stack);
+    final BinaryTagHolder holder;
     if(Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
       holder = BinaryTagHolder.binaryTagHolder(nbt.toString());
     } else {
       //noinspection UnstableApiUsage
       holder = BinaryTagHolder.of(nbt.toString());
     }
-    HoverEvent he = HoverEvent.showItem(key, stack.getAmount(), holder);
+    final HoverEvent he = HoverEvent.showItem(key, stack.getAmount(), holder);
     return oldComponent.hoverEvent(he);
   }
 
   @Override
-  public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
+  public void setLore(@NotNull final ItemStack stack, @NotNull final Collection<Component> components) {
 
     NBT.modify(stack, nbt->{
-      ReadWriteNBT display = nbt.getOrCreateCompound("display");
+      final ReadWriteNBT display = nbt.getOrCreateCompound("display");
       if(components.isEmpty()) {
         display.removeKey("Lore");
       } else {
-        List<String> gson = components.stream().map(c->GsonComponentSerializer.gson().serialize(c)).toList();
-        ReadWriteNBTList<String> list = display.getStringList("Lore");
+        final List<String> gson = components.stream().map(c->GsonComponentSerializer.gson().serialize(c)).toList();
+        final ReadWriteNBTList<String> list = display.getStringList("Lore");
         list.clear();
         list.addAll(gson);
       }
@@ -202,10 +202,10 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
+  public void setDisplayName(@NotNull final ItemStack stack, @Nullable final Component component) {
 
     NBT.modify(stack, nbt->{
-      ReadWriteNBT display = nbt.getOrCreateCompound("display");
+      final ReadWriteNBT display = nbt.getOrCreateCompound("display");
       if(component == null) {
         display.removeKey("Name");
       } else {
@@ -216,7 +216,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
 
   @Override
-  public void setDisplayName(@NotNull Entity entity, @Nullable Component component) {
+  public void setDisplayName(@NotNull final Entity entity, @Nullable final Component component) {
 
     NBT.modify(entity, nbt->{
       if(component == null) {
@@ -228,15 +228,15 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+  public void setLines(@NotNull final Sign sign, @NotNull final List<Component> component) {
 
-    String EMPTY_LINE_NBT = "{\"text\":\"\"}";
-    ReadWriteNBT root = NBT.createNBTObject();
-    ReadWriteNBT front_text = root.getOrCreateCompound("front_text"); // > 1.20
-    ReadWriteNBTList<String> messages = front_text.getStringList("messages"); // > 1.20
+    final String EMPTY_LINE_NBT = "{\"text\":\"\"}";
+    final ReadWriteNBT root = NBT.createNBTObject();
+    final ReadWriteNBT front_text = root.getOrCreateCompound("front_text"); // > 1.20
+    final ReadWriteNBTList<String> messages = front_text.getStringList("messages"); // > 1.20
     for(int i = 0; i < 4; i++) {
-      Component com = component.get(i);
-      String json = com == null? EMPTY_LINE_NBT : GsonComponentSerializer.gson().serialize(com);
+      final Component com = component.get(i);
+      final String json = com == null? EMPTY_LINE_NBT : GsonComponentSerializer.gson().serialize(com);
       root.setString("Text" + (i + 1), json);
       messages.add(json); // > 1.20
     }
@@ -247,19 +247,19 @@ public abstract class AbstractSpigotPlatform implements Platform {
   }
 
   @Override
-  public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+  public void updateTranslationMappingSection(@NotNull final Map<String, String> mapping) {
 
     this.translationMapping = mapping;
   }
 
   @Override
   @NotNull
-  public org.slf4j.Logger getSlf4jLogger(@NotNull Plugin parent) {
+  public org.slf4j.Logger getSlf4jLogger(@NotNull final Plugin parent) {
 
     return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
   }
 
-  private String postProcessingTranslationKey(String key) {
+  private String postProcessingTranslationKey(final String key) {
 
     return this.translationMapping.getOrDefault(key, key);
   }

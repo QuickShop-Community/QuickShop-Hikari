@@ -13,7 +13,7 @@ public class ShopCreationLog {
   private ShopInfoStorage shop;
   private BlockPos location;
 
-  public ShopCreationLog(QUser creator, ShopInfoStorage shop, BlockPos location) {
+  public ShopCreationLog(final QUser creator, final ShopInfoStorage shop, final BlockPos location) {
 
     this.creator = creator.serialize();
     this.shop = shop;

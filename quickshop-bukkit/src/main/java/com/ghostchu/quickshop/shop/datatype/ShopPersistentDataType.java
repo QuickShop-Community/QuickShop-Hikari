@@ -27,7 +27,7 @@ public class ShopPersistentDataType implements PersistentDataType<String, ShopPe
 
   @NotNull
   @Override
-  public String toPrimitive(@NotNull ShopPersistentData complex, @NotNull PersistentDataAdapterContext context) {
+  public String toPrimitive(@NotNull final ShopPersistentData complex, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return GSON.toJson(complex);
@@ -40,7 +40,7 @@ public class ShopPersistentDataType implements PersistentDataType<String, ShopPe
   @NotNull
   @Override
   public ShopPersistentData fromPrimitive(
-          @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return GSON.fromJson(primitive, ShopPersistentData.class);

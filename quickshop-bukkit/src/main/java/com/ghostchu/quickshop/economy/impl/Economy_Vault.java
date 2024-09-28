@@ -45,7 +45,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   private String lastError = null;
 
 
-  public Economy_Vault(@NotNull QuickShop plugin) {
+  public Economy_Vault(@NotNull final QuickShop plugin) {
 
     super();
     this.plugin = plugin;
@@ -65,7 +65,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
     if(!CommonUtil.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
       return false; // QUICKSHOP-YS I can't believe it broken almost a year and nobody found it, my sentry exploded.
     }
-    RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
+    final RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
     try {
       economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
     } catch(Exception e) {
@@ -99,13 +99,13 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final String name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
     }
     try {
-      EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(name, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(name, amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -123,7 +123,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final UUID name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -133,13 +133,13 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final OfflinePlayer trader, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
     }
     try {
-      EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(trader, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(trader, amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -161,13 +161,13 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public String format(double balance, @NotNull World world, @Nullable String currency) {
+  public String format(final double balance, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return "Error";
     }
     try {
-      String formatedBalance = Objects.requireNonNull(this.vault).format(balance);
+      final String formatedBalance = Objects.requireNonNull(this.vault).format(balance);
       if(formatedBalance == null) // Stupid Ecosystem
       {
         return formatInternal(balance);
@@ -179,7 +179,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final String name, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return 0.0;
@@ -196,7 +196,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
     }
   }
 
-  private String formatInternal(double balance) {
+  private String formatInternal(final double balance) {
 
     if(!isValid()) {
       return "Error";
@@ -205,7 +205,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final UUID name, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return 0.0;
@@ -215,7 +215,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final OfflinePlayer player, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return 0.0;
@@ -252,7 +252,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
    * @return exists
    */
   @Override
-  public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+  public boolean hasCurrency(@NotNull final World world, @NotNull final String currency) {
 
     return false;
   }
@@ -275,7 +275,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final String name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -284,7 +284,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       if((!allowLoan) && (getBalance(name, world, currency) < amount)) {
         return false;
       }
-      EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(name, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(name, amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -302,7 +302,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final UUID name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -311,7 +311,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @Override
-  public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final OfflinePlayer trader, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -320,7 +320,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       if((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
         return false;
       }
-      EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -369,7 +369,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @EventHandler
-  public void onServiceRegister(ServiceRegisterEvent event) {
+  public void onServiceRegister(final ServiceRegisterEvent event) {
 
     if(!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
       return;
@@ -378,7 +378,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
   }
 
   @EventHandler
-  public void onServiceUnregister(ServiceUnregisterEvent event) {
+  public void onServiceUnregister(final ServiceUnregisterEvent event) {
 
     if(!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
       return;

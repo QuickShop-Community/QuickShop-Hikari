@@ -262,7 +262,7 @@ public class PasteGenerator {
   private final long timestamp = System.currentTimeMillis();
   private final CommandSender sender;
 
-  public PasteGenerator(@Nullable CommandSender sender) {
+  public PasteGenerator(@Nullable final CommandSender sender) {
 
     this.sender = sender;
     add(new HeaderItem(System.currentTimeMillis(), Map.of()));
@@ -284,13 +284,13 @@ public class PasteGenerator {
     add(new PrivacyLogsItem());
     add(new MiscUtilItem());
     add(new DisplaySystemItem());
-    PasteManager pasteManager = QuickShop.getInstance().getPasteManager();
+    final PasteManager pasteManager = QuickShop.getInstance().getPasteManager();
     if(pasteManager != null) {
       pasteManager.getAllRegistered().forEach(this::add);
     }
   }
 
-  public void add(@NotNull PasteItem pasteItem) {
+  public void add(@NotNull final PasteItem pasteItem) {
 
     pasteItems.add(pasteItem);
   }
@@ -298,9 +298,9 @@ public class PasteGenerator {
   @NotNull
   public String render() {
 
-    StringBuilder builder = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     builder.append(bakeHeader()).append("\n");
-    for(PasteItem pasteItem : pasteItems) {
+    for(final PasteItem pasteItem : pasteItems) {
       try {
         builder.append(pasteItem.toHTML()).append("\n");
       } catch(Throwable e) {
@@ -331,9 +331,9 @@ public class PasteGenerator {
   }
 
   @NotNull
-  private String formatTime(long time) {
+  private String formatTime(final long time) {
 
-    String timeUnit = QuickShop.getInstance().text().of("timeunit.std-format").legacy(MsgUtil.getDefaultGameLanguageCode());
+    final String timeUnit = QuickShop.getInstance().text().of("timeunit.std-format").legacy(MsgUtil.getDefaultGameLanguageCode());
     SimpleDateFormat format;
     try {
       format = new SimpleDateFormat(timeUnit);

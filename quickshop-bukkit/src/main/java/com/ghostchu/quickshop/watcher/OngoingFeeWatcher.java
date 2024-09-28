@@ -28,7 +28,7 @@ public class OngoingFeeWatcher implements Runnable {
   private final WarningSender warningSender;
   WrappedTask task = null;
 
-  public OngoingFeeWatcher(@NotNull QuickShop plugin) {
+  public OngoingFeeWatcher(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     this.warningSender = new WarningSender(plugin, 6000);
@@ -43,42 +43,42 @@ public class OngoingFeeWatcher implements Runnable {
       return;
     }
 
-    boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
-    boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
-    double gobalCost = plugin.getConfig().getDouble("shop.ongoing-fee.cost-per-shop");
-    for(Shop shop : plugin.getShopManager().getAllShops()) {
+    final boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+    final boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
+    final double gobalCost = plugin.getConfig().getDouble("shop.ongoing-fee.cost-per-shop");
+    for(final Shop shop : plugin.getShopManager().getAllShops()) {
       if(!shop.isUnlimited() || !ignoreUnlimited) {
-        QUser shopOwner = shop.getOwner();
-        Location location = shop.getLocation();
+        final QUser shopOwner = shop.getOwner();
+        final Location location = shop.getLocation();
         if(!location.isWorldLoaded()) {
           //ignore unloaded world
           continue;
         }
         double cost = gobalCost;
-        World world = location.getWorld();
+        final World world = location.getWorld();
         //We must check balance manually to avoid shop missing hell when tax account broken
         if(allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), plugin.getCurrency()) >= cost) {
           QUser taxAccount = null;
           if(shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
           } else {
-            QUser uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheTaxAccount();
+            final QUser uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheTaxAccount();
             if(uuid != null) {
               taxAccount = uuid;
             }
           }
 
-          ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);
+          final ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);
           if(Util.fireCancellableEvent(event)) {
             continue;
           }
 
           cost = event.getCost();
-          double finalCost = cost;
+          final double finalCost = cost;
 
-          QUser finalTaxAccount = taxAccount;
+          final QUser finalTaxAccount = taxAccount;
           Util.mainThreadRun(()->{
-            SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
+            final SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
                     .allowLoan(allowLoan)
                     .currency(plugin.getCurrency())
                     .core(plugin.getEconomy())
@@ -87,7 +87,7 @@ public class OngoingFeeWatcher implements Runnable {
                     .to(finalTaxAccount)
                     .from(shopOwner).build();
 
-            boolean success = transaction.failSafeCommit();
+            final boolean success = transaction.failSafeCommit();
             if(!success) {
               warningSender.sendWarn("Unable to deposit ongoing fee to tax account, the last error is " + transaction.getLastError());
             }
@@ -99,7 +99,7 @@ public class OngoingFeeWatcher implements Runnable {
     }
   }
 
-  public void start(int i, int i2) {
+  public void start(final int i, final int i2) {
 
     task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
   }
@@ -120,7 +120,7 @@ public class OngoingFeeWatcher implements Runnable {
    *
    * @param shop The shop was remove cause no enough ongoing fee
    */
-  public void removeShop(@NotNull Shop shop) {
+  public void removeShop(@NotNull final Shop shop) {
 
     Util.mainThreadRun(()->plugin.getShopManager().deleteShop(shop));
     MsgUtil.send(shop, shop.getOwner(), plugin.text().of("shop-removed-cause-ongoing-fee", LegacyComponentSerializer.legacySection().deserialize("World:"

@@ -6,12 +6,12 @@ public enum DisplayOption {
   DISABLED(2);
   private final int id;
 
-  DisplayOption(int id) {
+  DisplayOption(final int id) {
 
     this.id = id;
   }
 
-  public boolean isDisplayAvailable(boolean bedrock) {
+  public boolean isDisplayAvailable(final boolean bedrock) {
 
     if(this == AUTO) {
       return !bedrock;
@@ -19,9 +19,9 @@ public enum DisplayOption {
     return this == ENABLED;
   }
 
-  public static DisplayOption fromId(int id) {
+  public static DisplayOption fromId(final int id) {
 
-    for(DisplayOption value : values()) {
+    for(final DisplayOption value : values()) {
       if(value.id == id) {
         return value;
       }

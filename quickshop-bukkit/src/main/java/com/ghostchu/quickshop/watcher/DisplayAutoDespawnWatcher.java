@@ -22,7 +22,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
   private final QuickShop plugin;
   private int range;
 
-  public DisplayAutoDespawnWatcher(@NotNull QuickShop plugin) {
+  public DisplayAutoDespawnWatcher(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);
@@ -35,7 +35,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
     this.range = plugin.getConfig().getInt("shop.display-despawn-range");
   }
 
-  public DisplayAutoDespawnWatcher(QuickShop plugin, int range) {
+  public DisplayAutoDespawnWatcher(final QuickShop plugin, final int range) {
 
     this.plugin = plugin;
     this.range = range;
@@ -51,7 +51,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
   @Override
   public void run() {
 
-    for(Shop shop : plugin.getShopManager().getLoadedShops()) {
+    for(final Shop shop : plugin.getShopManager().getLoadedShops()) {
       //Shop may be deleted or unloaded when iterating
       if(!shop.isLoaded()) {
         continue;
@@ -59,13 +59,13 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
       if(shop.isDisableDisplay()) {
         continue;
       }
-      Location location = shop.getLocation();
-      World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
-      AbstractDisplayItem displayItem = ((ContainerShop)shop).getDisplayItem();
+      final Location location = shop.getLocation();
+      final World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
+      final AbstractDisplayItem displayItem = ((ContainerShop)shop).getDisplayItem();
       if(displayItem != null) {
         // Check the range has player?
         boolean anyPlayerInRegion = false;
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for(final Player player : Bukkit.getOnlinePlayers()) {
           if((player.getWorld() == world) && (player.getLocation().distance(location) <= range)) {
             anyPlayerInRegion = true;
             break;
@@ -93,7 +93,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
   @Override
   public @NotNull String genBody() {
 
-    StringJoiner joiner = new StringJoiner("<br/>");
+    final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<b>Warning: DisplayAutoDespawnWatcher has been enabled, this may cause lag. This feature is not recommended</b>");
     joiner.add("<p>Range: " + range + "</p>");
     return joiner.toString();

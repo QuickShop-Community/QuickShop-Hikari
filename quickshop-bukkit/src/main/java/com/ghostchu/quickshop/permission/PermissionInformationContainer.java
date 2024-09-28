@@ -21,7 +21,7 @@ public class PermissionInformationContainer {
   @Nullable
   private String otherInfos;
 
-  public PermissionInformationContainer(@NotNull CommandSender sender, @NotNull String permission, @Nullable String groupName, @Nullable String otherInfos) {
+  public PermissionInformationContainer(@NotNull final CommandSender sender, @NotNull final String permission, @Nullable final String groupName, @Nullable final String otherInfos) {
 
     this.sender = sender;
     this.permission = permission;

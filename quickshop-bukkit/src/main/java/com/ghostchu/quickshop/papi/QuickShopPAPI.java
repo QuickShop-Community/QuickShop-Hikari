@@ -10,7 +10,7 @@ public class QuickShopPAPI extends PlaceholderExpansion {
 
   private final PAPIManager manager;
 
-  public QuickShopPAPI(@NotNull QuickShop plugin) {
+  public QuickShopPAPI(@NotNull final QuickShop plugin) {
 
     manager = new PAPIManager(plugin);
   }
@@ -53,7 +53,7 @@ public class QuickShopPAPI extends PlaceholderExpansion {
   }
 
   @Override
-  public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
+  public @Nullable String onRequest(@NotNull final OfflinePlayer player, @NotNull final String params) {
 
     return manager.handle(player, params);
   }

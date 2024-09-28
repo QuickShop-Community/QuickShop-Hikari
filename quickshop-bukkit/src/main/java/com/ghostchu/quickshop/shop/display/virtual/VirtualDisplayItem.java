@@ -42,7 +42,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
   private boolean isSpawned = false;
   //packets
 
-  VirtualDisplayItem(VirtualDisplayItemManager manager, VirtualDisplayPacketFactory packetFactory, Shop shop) {
+  VirtualDisplayItem(final VirtualDisplayItemManager manager, final VirtualDisplayPacketFactory packetFactory, final Shop shop) {
 
     super(shop);
 
@@ -70,7 +70,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
   }
 
   @Override
-  public boolean checkIsShopEntity(@NotNull Entity entity) {
+  public boolean checkIsShopEntity(@NotNull final Entity entity) {
 
     return false;
   }
@@ -98,16 +98,16 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
   }
 
   @Override
-  public boolean isApplicableForPlayer(Player player) {
+  public boolean isApplicableForPlayer(final Player player) {
 
-    DisplayApplicableCheckEvent event = new DisplayApplicableCheckEvent(shop, player.getUniqueId());
+    final DisplayApplicableCheckEvent event = new DisplayApplicableCheckEvent(shop, player.getUniqueId());
     event.setApplicable(true);
     event.callEvent();
     return event.isApplicable();
   }
 
   @Override
-  public void remove(boolean dontTouchWorld) {
+  public void remove(final boolean dontTouchWorld) {
 
     sendPacketToAll(fakeItemDestroyPacket);
     if(isSpawned()) {
@@ -131,7 +131,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
   }
 
   @Override
-  public void safeGuard(@Nullable Entity entity) {
+  public void safeGuard(@Nullable final Entity entity) {
 
   }
 
@@ -170,10 +170,10 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     chunkLocation = SimpleShopChunk.fromLocation(shop.getLocation());
     manager.put(chunkLocation, this);
     //Let nearby player can saw fake item
-    List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
+    final List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
     onlinePlayers.removeIf(p->!p.getWorld().equals(shop.getLocation().getWorld()));
-    for(Player onlinePlayer : onlinePlayers) {
-      double distance = onlinePlayer.getLocation().distance(shop.getLocation());
+    for(final Player onlinePlayer : onlinePlayers) {
+      final double distance = onlinePlayer.getLocation().distance(shop.getLocation());
       if(Math.abs(distance) > Bukkit.getViewDistance() * 16) {
         continue;
       }
@@ -183,7 +183,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
   }
 
-  public void sendFakeItem(@NotNull Player player) {
+  public void sendFakeItem(@NotNull final Player player) {
 
     sendPacket(player, fakeItemDestroyPacket);
     sendPacket(player, fakeItemSpawnPacket);
@@ -193,12 +193,12 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
   }
 
-  public void sendDestroyItem(@NotNull Player player) {
+  public void sendDestroyItem(@NotNull final Player player) {
 
     sendPacket(player, fakeItemDestroyPacket);
   }
 
-  private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
+  private void sendPacket(@NotNull final Player player, @NotNull final PacketContainer packet) {
 
     manager.getProtocolManager().sendServerPacket(player, packet);
   }
@@ -213,11 +213,11 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
   }
 
-  private void sendPacketToAll(@NotNull PacketContainer packet) {
+  private void sendPacketToAll(@NotNull final PacketContainer packet) {
 
-    Iterator<UUID> iterator = packetSenders.iterator();
+    final Iterator<UUID> iterator = packetSenders.iterator();
     while(iterator.hasNext()) {
-      Player nextPlayer = Bukkit.getPlayer(iterator.next());
+      final Player nextPlayer = Bukkit.getPlayer(iterator.next());
       if(nextPlayer == null) {
         iterator.remove();
       } else {

@@ -13,13 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentFreeze extends SubCommand_SilentBase {
 
-  public SubCommand_SilentFreeze(QuickShop plugin) {
+  public SubCommand_SilentFreeze(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @Override
-  protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
 
     if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
        && !plugin.perm().hasPermission(sender, "quickshop.create.admin")) {

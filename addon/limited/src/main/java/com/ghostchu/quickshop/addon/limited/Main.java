@@ -54,19 +54,19 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void shopPurchase(ShopPurchaseEvent event) {
+  public void shopPurchase(final ShopPurchaseEvent event) {
 
-    Shop shop = event.getShop();
-    ConfigurationSection storage = shop.getExtra(this);
+    final Shop shop = event.getShop();
+    final ConfigurationSection storage = shop.getExtra(this);
     if(storage.getInt("limit") < 1) {
       return;
     }
-    int limit = storage.getInt("limit");
-    UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
+    final int limit = storage.getInt("limit");
+    final UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
-      int playerUsedLimit = storage.getInt("data." + uuid, 0);
+      final int playerUsedLimit = storage.getInt("data." + uuid, 0);
       if(playerUsedLimit + event.getAmount() > limit) {
-        Text text = plugin.text().of(event.getPurchaser(), "addon.limited.trade-limit-reached-cancel-reason");
+        final Text text = plugin.text().of(event.getPurchaser(), "addon.limited.trade-limit-reached-cancel-reason");
         text.send();
         event.setCancelled(true, PlainTextComponentSerializer.plainText().serialize(text.forLocale()));
       }
@@ -74,36 +74,36 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopClick(ShopClickEvent event) {
+  public void shopClick(final ShopClickEvent event) {
 
-    Shop shop = event.getShop();
-    ConfigurationSection storage = shop.getExtra(this);
+    final Shop shop = event.getShop();
+    final ConfigurationSection storage = shop.getExtra(this);
     if(storage.getInt("limit") < 1) {
       Log.debug("Shop limit is not enabled on this shop.");
       return;
     }
-    int limit = storage.getInt("limit");
-    int playerUsedLimit = storage.getInt("data." + event.getClicker().getUniqueId(), 0);
+    final int limit = storage.getInt("limit");
+    final int playerUsedLimit = storage.getInt("data." + event.getClicker().getUniqueId(), 0);
     plugin.text().of(event.getClicker(), "addon.limited.remains-limits", limit - playerUsedLimit).send();
     Log.debug("Shop limit is enabled on this shop. Limit: " + limit + " Used: " + playerUsedLimit);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
-  public void shopPurchaseSuccess(ShopSuccessPurchaseEvent event) {
+  public void shopPurchaseSuccess(final ShopSuccessPurchaseEvent event) {
 
-    Shop shop = event.getShop();
-    ConfigurationSection storage = shop.getExtra(this);
+    final Shop shop = event.getShop();
+    final ConfigurationSection storage = shop.getExtra(this);
     if(storage.getInt("limit") < 1) {
       return;
     }
-    UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = event.getPurchaser().getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
-      int limit = storage.getInt("limit");
+      final int limit = storage.getInt("limit");
       int playerUsedLimit = storage.getInt("data." + uuid, 0);
       playerUsedLimit += event.getAmount();
       storage.set("data." + uuid, playerUsedLimit);
       shop.setExtra(this, storage);
-      Player player = Bukkit.getPlayer(uuid);
+      final Player player = Bukkit.getPlayer(uuid);
       if(player != null) {
         player.sendTitle(plugin.text().of(player, "addon.limited.titles.title").legacy(),
                          plugin.text().of(player, "addon.limited.titles.subtitle", (limit - playerUsedLimit)).legacy());
@@ -112,15 +112,15 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void scheduleEvent(CalendarEvent event) {
+  public void scheduleEvent(final CalendarEvent event) {
 
     if(event.getCalendarTriggerType() == CalendarEvent.CalendarTriggerType.SECOND
        || event.getCalendarTriggerType() == CalendarEvent.CalendarTriggerType.NOTHING_CHANGED) {
       return;
     }
     Util.asyncThreadRun(()->plugin.getShopManager().getAllShops().forEach(shop->{
-      ConfigurationSection manager = shop.getExtra(this);
-      int limit = manager.getInt("limit");
+      final ConfigurationSection manager = shop.getExtra(this);
+      final int limit = manager.getInt("limit");
       if(limit < 1) {
         return;
       }

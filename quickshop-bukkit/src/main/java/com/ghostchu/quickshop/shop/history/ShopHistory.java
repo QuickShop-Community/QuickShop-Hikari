@@ -32,12 +32,12 @@ public class ShopHistory {
   private final String shopIdsPlaceHolders;
   private final QuickShop plugin;
 
-  public ShopHistory(QuickShop plugin, List<Shop> shops) {
+  public ShopHistory(final QuickShop plugin, final List<Shop> shops) {
 
     this.plugin = plugin;
     this.shops = shops;
-    for(Shop shop : shops) {
-      long shopId = shop.getShopId();
+    for(final Shop shop : shops) {
+      final long shopId = shop.getShopId();
       if(shopId <= 0) {
         continue;
       }
@@ -46,29 +46,29 @@ public class ShopHistory {
     this.shopIdsPlaceHolders = generatePlaceHolders(shopsMapping.size());
   }
 
-  private boolean isValidSummaryRecordType(String type) {
+  private boolean isValidSummaryRecordType(final String type) {
 
     return ShopOperationEnum.PURCHASE_SELLING_SHOP.name().equalsIgnoreCase(type) || ShopOperationEnum.PURCHASE_BUYING_SHOP.name().equalsIgnoreCase(type);
   }
 
-  private String generatePlaceHolders(int size) {
+  private String generatePlaceHolders(final int size) {
 
-    StringJoiner joiner = new StringJoiner(",");
+    final StringJoiner joiner = new StringJoiner(",");
     for(int i = 0; i < size; i++) {
       joiner.add("?");
     }
     return joiner.toString();
   }
 
-  private void mappingPreparedStatement(PreparedStatement statement, int startAt) throws SQLException {
+  private void mappingPreparedStatement(final PreparedStatement statement, final int startAt) throws SQLException {
 
-    List<Long> ids = new ArrayList<>(shopsMapping.keySet());
+    final List<Long> ids = new ArrayList<>(shopsMapping.keySet());
     for(int i = startAt; i < startAt + ids.size(); i++) {
       statement.setLong(i, ids.get(i - startAt));
     }
   }
 
-  private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n, Instant from, Instant to) {
+  private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(final int n, final Instant from, final Instant to) {
 
     return CompletableFuture.supplyAsync(()->{
       final LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
@@ -94,7 +94,7 @@ public class ShopHistory {
     }, QuickExecutor.getShopHistoryQueryExecutor());
   }
 
-  private CompletableFuture<Long> summaryUniquePurchasers(Instant from, Instant to) {
+  private CompletableFuture<Long> summaryUniquePurchasers(final Instant from, final Instant to) {
 
     return CompletableFuture.supplyAsync(()->{
       String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
@@ -107,8 +107,7 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopId=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         if(set.next()) {
           return set.getLong(1);
         }
@@ -120,10 +119,10 @@ public class ShopHistory {
     }, QuickExecutor.getShopHistoryQueryExecutor());
   }
 
-  private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(int n) {
+  private CompletableFuture<LinkedHashMap<UUID, Long>> summaryTopNValuableCustomers(final int n) {
 
     return CompletableFuture.supplyAsync(()->{
-      LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
+      final LinkedHashMap<UUID, Long> orderedMap = new LinkedHashMap<>();
       String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ") GROUP BY `buyer` ORDER BY `count` DESC LIMIT " + n;
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
@@ -131,8 +130,7 @@ public class ShopHistory {
           Connection connection = plugin.getSqlManager().getConnection();
           PreparedStatement ps = connection.prepareStatement(SQL)) {
         mappingPreparedStatement(ps, 1);
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         while(set.next()) {
           orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
         }
@@ -155,8 +153,7 @@ public class ShopHistory {
           PreparedStatement ps = connection.prepareStatement(SQL)) {
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         mappingPreparedStatement(ps, 1);
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         if(set.next()) {
           return set.getLong(1);
         }
@@ -168,7 +165,7 @@ public class ShopHistory {
     }, QuickExecutor.getShopHistoryQueryExecutor());
   }
 
-  private CompletableFuture<Double> summaryPurchasesBalance(Instant from, Instant to) {
+  private CompletableFuture<Double> summaryPurchasesBalance(final Instant from, final Instant to) {
 
     return CompletableFuture.supplyAsync(()->{
       String SQL = "SELECT SUM(`money`) FROM %s " +
@@ -181,8 +178,7 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         if(set.next()) {
           return set.getDouble(1);
         }
@@ -205,8 +201,7 @@ public class ShopHistory {
           PreparedStatement ps = connection.prepareStatement(SQL)) {
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         mappingPreparedStatement(ps, 1);
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         if(set.next()) {
           return set.getDouble(1);
         }
@@ -218,7 +213,7 @@ public class ShopHistory {
     }, QuickExecutor.getShopHistoryQueryExecutor());
   }
 
-  private CompletableFuture<Long> summaryPurchasesCount(Instant from, Instant to) {
+  private CompletableFuture<Long> summaryPurchasesCount(final Instant from, final Instant to) {
 
     if((from == null) != (to == null)) {
       throw new IllegalStateException("from to must null or not null in same time");
@@ -234,8 +229,7 @@ public class ShopHistory {
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
         perfMonitor.setContext("shopId=" + shopsMapping.keySet() + ", from=" + from + ", to=" + to);
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         if(set.next()) {
           return set.getLong(1);
         }
@@ -258,8 +252,7 @@ public class ShopHistory {
           PreparedStatement ps = connection.prepareStatement(SQL)) {
         mappingPreparedStatement(ps, 1);
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
-        @Cleanup
-        ResultSet set = ps.executeQuery();
+        @Cleanup final ResultSet set = ps.executeQuery();
         if(set.next()) {
           return set.getLong(1);
         }
@@ -273,18 +266,18 @@ public class ShopHistory {
 
   public CompletableFuture<ShopSummary> generateSummary() {
 
-    long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
-    long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
-    long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
-    long recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
-    long totalPurchases = summaryPurchasesCount().join();
-    double recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
-    double recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
-    double recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
-    double recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
-    double totalPurchasesBalance = summaryPurchasesBalance().join();
-    long totalUniquePurchases = summaryUniquePurchasers().join();
-    LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5).join();
+    final long recentPurchases24h = summaryPurchasesCount(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
+    final long recentPurchases3d = summaryPurchasesCount(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
+    final long recentPurchases7d = summaryPurchasesCount(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
+    final long recentPurchases30d = summaryPurchasesCount(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
+    final long totalPurchases = summaryPurchasesCount().join();
+    final double recentPurchasesBalance24h = summaryPurchasesBalance(Instant.now().minus(24, ChronoUnit.HOURS), Instant.now()).join();
+    final double recentPurchasesBalance3d = summaryPurchasesBalance(Instant.now().minus(3, ChronoUnit.DAYS), Instant.now()).join();
+    final double recentPurchasesBalance7d = summaryPurchasesBalance(Instant.now().minus(7, ChronoUnit.DAYS), Instant.now()).join();
+    final double recentPurchasesBalance30d = summaryPurchasesBalance(Instant.now().minus(30, ChronoUnit.DAYS), Instant.now()).join();
+    final double totalPurchasesBalance = summaryPurchasesBalance().join();
+    final long totalUniquePurchases = summaryUniquePurchasers().join();
+    final LinkedHashMap<UUID, Long> valuableCustomers = summaryTopNValuableCustomers(5).join();
 
     return CompletableFuture.supplyAsync(()->new ShopSummary(
             recentPurchases24h,

@@ -33,7 +33,7 @@ public class DiscountCode {
 
   private long expiredTime;
 
-  public DiscountCode(@NotNull UUID owner, @NotNull String code, @NotNull CodeType codeType, @NotNull DiscountRate rate, int maxUsage, @NotNull Map<UUID, Integer> usages, @NotNull Set<Long> shopScope, double threshold, long expiredTime) {
+  public DiscountCode(@NotNull final UUID owner, @NotNull final String code, @NotNull final CodeType codeType, @NotNull final DiscountRate rate, final int maxUsage, @NotNull final Map<UUID, Integer> usages, @NotNull final Set<Long> shopScope, final double threshold, final long expiredTime) {
 
     this.owner = owner;
     this.code = code;
@@ -46,7 +46,7 @@ public class DiscountCode {
     this.expiredTime = expiredTime;
   }
 
-  public DiscountCode(@NotNull UUID owner, @NotNull String code, @NotNull CodeType codeType, @NotNull DiscountRate rate, int maxUsage, double threshold, long expiredTime) {
+  public DiscountCode(@NotNull final UUID owner, @NotNull final String code, @NotNull final CodeType codeType, @NotNull final DiscountRate rate, final int maxUsage, final double threshold, final long expiredTime) {
 
     this.owner = owner;
     this.code = code;
@@ -60,9 +60,9 @@ public class DiscountCode {
   }
 
   @Nullable
-  public static DiscountRate toDiscountRate(@NotNull String str) {
+  public static DiscountRate toDiscountRate(@NotNull final String str) {
 
-    DiscountRate discountRate;
+    final DiscountRate discountRate;
     try {
       if(str.endsWith("%")) {
         double v = Double.parseDouble(StringUtils.substringBeforeLast(str, "%"));
@@ -72,7 +72,7 @@ public class DiscountCode {
         }
         discountRate = new PercentageDiscountRate(v);
       } else {
-        double v = Double.parseDouble(str);
+        final double v = Double.parseDouble(str);
         if(v <= 0d) {
           return null;
         }
@@ -85,13 +85,13 @@ public class DiscountCode {
   }
 
   @Nullable
-  public static DiscountCode fromString(@NotNull String string) {
+  public static DiscountCode fromString(@NotNull final String string) {
 
-    DiscountCodeData data = JsonUtil.getGson().fromJson(string, DiscountCodeData.class);
+    final DiscountCodeData data = JsonUtil.getGson().fromJson(string, DiscountCodeData.class);
     if(data == null) {
       return null;
     }
-    DiscountRate rate;
+    final DiscountRate rate;
     if(data.getRateType() == RateType.PERCENTAGE) {
       rate = JsonUtil.getGson().fromJson(data.getRate(), PercentageDiscountRate.class);
     } else {
@@ -114,7 +114,7 @@ public class DiscountCode {
     return rate;
   }
 
-  public void setRate(@NotNull DiscountRate rate) {
+  public void setRate(@NotNull final DiscountRate rate) {
 
     this.rate = rate;
   }
@@ -124,7 +124,7 @@ public class DiscountCode {
     return expiredTime;
   }
 
-  public void setExpiredTime(long expiredTime) {
+  public void setExpiredTime(final long expiredTime) {
 
     this.expiredTime = expiredTime;
   }
@@ -146,12 +146,12 @@ public class DiscountCode {
     return maxUsage;
   }
 
-  public void setMaxUsage(int maxUsage) {
+  public void setMaxUsage(final int maxUsage) {
 
     this.maxUsage = maxUsage;
   }
 
-  public boolean addShopToScope(@NotNull Shop shop) {
+  public boolean addShopToScope(@NotNull final Shop shop) {
 
     if(codeType != CodeType.SPECIFIC_SHOPS) {
       throw new IllegalStateException("Cannot add shop to code scope, because this code is not a specific shop code.");
@@ -164,7 +164,7 @@ public class DiscountCode {
     return threshold;
   }
 
-  public void setThreshold(double threshold) {
+  public void setThreshold(final double threshold) {
 
     this.threshold = threshold;
   }
@@ -175,7 +175,7 @@ public class DiscountCode {
     return usages;
   }
 
-  public double apply(@NotNull UUID player, double total) {
+  public double apply(@NotNull final UUID player, final double total) {
 
     if(isExpired()) {
       return total;
@@ -187,7 +187,7 @@ public class DiscountCode {
       return total;
     }
     if(usages.containsKey(player)) {
-      int usage = usages.get(player);
+      final int usage = usages.get(player);
       usages.put(player, usage + 1);
     } else {
       usages.put(player, 1);
@@ -203,7 +203,7 @@ public class DiscountCode {
     return System.currentTimeMillis() > expiredTime;
   }
 
-  public int getRemainsUsage(UUID user) {
+  public int getRemainsUsage(final UUID user) {
 
     if(maxUsage == -1) {
       return Integer.MAX_VALUE;
@@ -220,7 +220,7 @@ public class DiscountCode {
     return codeType;
   }
 
-  public void setCodeType(CodeType codeType) {
+  public void setCodeType(final CodeType codeType) {
 
     this.codeType = codeType;
   }
@@ -231,7 +231,7 @@ public class DiscountCode {
   }
 
   @NotNull
-  public ApplicableType applicableShop(@NotNull UUID uuid, @NotNull Shop shop) {
+  public ApplicableType applicableShop(@NotNull final UUID uuid, @NotNull final Shop shop) {
     // permission test
     if(!shop.playerAuthorize(uuid, Main.instance, "discount_code_use")) {
       return ApplicableType.NO_PERMISSION;
@@ -246,7 +246,7 @@ public class DiscountCode {
     if(usage + 1 > maxUsage) {
       return ApplicableType.REACHED_THE_LIMIT;
     }
-    ApplicableType type = switch(codeType) {
+    final ApplicableType type = switch(codeType) {
       case SPECIFIC_SHOPS -> {
         if(shopScope.contains(shop.getShopId())) {
           yield ApplicableType.APPLICABLE;
@@ -275,7 +275,7 @@ public class DiscountCode {
   @NotNull
   public String saveToString() {
 
-    DiscountCodeData data = new DiscountCodeData(
+    final DiscountCodeData data = new DiscountCodeData(
             owner,
             code,
             codeType,
@@ -297,7 +297,7 @@ public class DiscountCode {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
 
     if(this == o) {
       return true;
@@ -343,19 +343,19 @@ public class DiscountCode {
 
     private final double rate;
 
-    public FixedDiscountRate(double rate) {
+    public FixedDiscountRate(final double rate) {
 
       this.rate = rate;
     }
 
     @Override
-    public double apply(double price) {
+    public double apply(final double price) {
 
       return Math.max(0.0d, price - rate);
     }
 
     @Override
-    public @NotNull Component format(@NotNull CommandSender sender, @NotNull TextManager textManager) {
+    public @NotNull Component format(@NotNull final CommandSender sender, @NotNull final TextManager textManager) {
 
       return textManager.of(sender, "addon.discount.fixed-off", String.format("%.2f", rate)).forLocale();
     }
@@ -365,7 +365,7 @@ public class DiscountCode {
 
     private final double percent;
 
-    public PercentageDiscountRate(double percent) {
+    public PercentageDiscountRate(final double percent) {
 
       if(percent > 1.0d) {
         throw new IllegalArgumentException("The percent must be less than 1.0");
@@ -377,13 +377,13 @@ public class DiscountCode {
     }
 
     @Override
-    public double apply(double price) {
+    public double apply(final double price) {
 
       return Math.max(0.0d, CalculateUtil.multiply(price, percent));
     }
 
     @Override
-    public @NotNull Component format(@NotNull CommandSender sender, @NotNull TextManager textManager) {
+    public @NotNull Component format(@NotNull final CommandSender sender, @NotNull final TextManager textManager) {
 
       return textManager.of(sender, "addon.discount.percentage-off", CalculateUtil.multiply(percent, 100)).forLocale();
     }

@@ -10,7 +10,7 @@ public abstract class AbstractQSListener implements Listener, Reloadable {
 
   protected final QuickShop plugin;
 
-  protected AbstractQSListener(QuickShop plugin) {
+  protected AbstractQSListener(final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);

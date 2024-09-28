@@ -13,7 +13,7 @@ public interface QSCancellable extends Cancellable {
   @Nullable
   Component getCancelReason();
 
-  default void setCancelled(boolean cancel, @Nullable String reason) {
+  default void setCancelled(final boolean cancel, @Nullable final String reason) {
 
     if(reason == null) {
       setCancelled(cancel, (Component)null);
@@ -26,7 +26,7 @@ public interface QSCancellable extends Cancellable {
 
   @Override
   @Deprecated
-  default void setCancelled(boolean cancel) {
+  default void setCancelled(final boolean cancel) {
 
     setCancelled(cancel, (Component)null);
   }

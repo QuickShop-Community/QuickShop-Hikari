@@ -41,7 +41,7 @@ public class PAPICache implements Reloadable {
   }
 
   @NotNull
-  public Optional<String> getCached(@NotNull UUID player, @NotNull String args, @NotNull BiFunction<UUID, String, String> loader) {
+  public Optional<String> getCached(@NotNull final UUID player, @NotNull final String args, @NotNull final BiFunction<UUID, String, String> loader) {
 
     try(PerfMonitor ignored = new PerfMonitor("PlaceHolder API Handling")) {
       return performCaches.get(compileUniqueKey(player, args), ()->Optional.ofNullable(loader.apply(player, args)));
@@ -52,12 +52,12 @@ public class PAPICache implements Reloadable {
   }
 
   @NotNull
-  private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
+  private String compileUniqueKey(@NotNull final UUID player, @NotNull final String queryString) {
 
     return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
   }
 
-  private long getShopsInWorld(@NotNull String world, boolean loadedOnly) {
+  private long getShopsInWorld(@NotNull final String world, final boolean loadedOnly) {
 
     return plugin.getShopManager().getAllShops().stream()
             .filter(shop->shop.getLocation().getWorld() != null)
@@ -66,10 +66,10 @@ public class PAPICache implements Reloadable {
             .count();
   }
 
-  private long getLoadedPlayerShops(@NotNull UUID uuid) {
+  private long getLoadedPlayerShops(@NotNull final UUID uuid) {
 
     return plugin.getShopManager().getLoadedShops().stream().filter(shop->{
-      UUID souid = shop.getOwner().getUniqueId();
+      final UUID souid = shop.getOwner().getUniqueId();
       if(souid == null) {
         return false;
       }
@@ -77,10 +77,10 @@ public class PAPICache implements Reloadable {
     }).count();
   }
 
-  private long getLoadedPlayerShops(@NotNull String name) {
+  private long getLoadedPlayerShops(@NotNull final String name) {
 
     return plugin.getShopManager().getLoadedShops().stream().filter(shop->{
-      String sousrname = shop.getOwner().getUsername();
+      final String sousrname = shop.getOwner().getUsername();
       if(sousrname == null) {
         return false;
       }
@@ -88,7 +88,7 @@ public class PAPICache implements Reloadable {
     }).count();
   }
 
-  private long getPlayerShopsInventoryUnavailable(@NotNull UUID uuid) {
+  private long getPlayerShopsInventoryUnavailable(@NotNull final UUID uuid) {
 
     return plugin.getShopManager().getAllShops(uuid).stream()
             .filter(Shop::inventoryAvailable)
@@ -106,9 +106,9 @@ public class PAPICache implements Reloadable {
   }
 
   @Nullable
-  public String readCache(@NotNull UUID player, @NotNull String queryString) {
+  public String readCache(@NotNull final UUID player, @NotNull final String queryString) {
 
-    Optional<String> cache = performCaches.getIfPresent(compileUniqueKey(player, queryString));
+    final Optional<String> cache = performCaches.getIfPresent(compileUniqueKey(player, queryString));
     //noinspection OptionalAssignedToNull
     if(cache == null || cache.isEmpty()) {
       return null;
@@ -123,7 +123,7 @@ public class PAPICache implements Reloadable {
     return Reloadable.super.reloadModule();
   }
 
-  public void writeCache(@NotNull UUID player, @NotNull String queryString, @NotNull String queryValue) {
+  public void writeCache(@NotNull final UUID player, @NotNull final String queryString, @NotNull final String queryValue) {
 
     performCaches.put(compileUniqueKey(player, queryString), Optional.of(queryValue));
   }
@@ -134,7 +134,7 @@ public class PAPICache implements Reloadable {
     private UUID player;
     private String queryString;
 
-    public CompiledUniqueKey(UUID player, String queryString) {
+    public CompiledUniqueKey(final UUID player, final String queryString) {
 
       this.player = player;
       this.queryString = queryString;

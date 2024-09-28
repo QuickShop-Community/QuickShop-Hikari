@@ -8,13 +8,13 @@ import org.bukkit.event.server.PluginEnableEvent;
 
 public class EconomySetupListener extends AbstractQSListener {
 
-  public EconomySetupListener(QuickShop plugin) {
+  public EconomySetupListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler
-  public void onPluginEnable(PluginEnableEvent event) {
+  public void onPluginEnable(final PluginEnableEvent event) {
 
     if(plugin.getEconomy() == null) {
       plugin.getEconomyLoader().load();

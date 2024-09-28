@@ -27,7 +27,7 @@ public class EconomyFormatter implements Reloadable {
   private boolean useDecimalFormat;
   private boolean currencySymbolOnRight;
 
-  public EconomyFormatter(QuickShop plugin, Supplier<AbstractEconomy> economy) {
+  public EconomyFormatter(final QuickShop plugin, final Supplier<AbstractEconomy> economy) {
 
     this.plugin = plugin;
     this.economy = economy;
@@ -42,9 +42,9 @@ public class EconomyFormatter implements Reloadable {
     this.disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
     this.useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
     this.currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
-    List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
+    final List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
     symbols.forEach(entry->{
-      String[] splits = entry.split(";", 2);
+      final String[] splits = entry.split(";", 2);
       if(splits.length < 2) {
         plugin.logger().warn("Invalid entry in alternate-currency-symbol-list: {}", entry);
         return;
@@ -61,19 +61,19 @@ public class EconomyFormatter implements Reloadable {
    *
    * @return The formatted string.
    */
-  public @NotNull String format(double n, @NotNull World world, @Nullable String currency) {
+  public @NotNull String format(final double n, @NotNull final World world, @Nullable final String currency) {
 
     return format(n, disableVaultFormat, world, currency);
   }
 
   @NotNull
-  public String format(double n, boolean internalFormat, @NotNull World world, @Nullable String currency) {
+  public String format(final double n, final boolean internalFormat, @NotNull final World world, @Nullable final String currency) {
 
     if(internalFormat) {
       return getInternalFormat(n, currency);
     }
     try {
-      String formatted = economy.get().format(n, world, currency);
+      final String formatted = economy.get().format(n, world, currency);
       if(StringUtils.isEmpty(formatted)) {
         Log.debug(
                 "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
@@ -88,16 +88,16 @@ public class EconomyFormatter implements Reloadable {
     }
   }
 
-  private String getInternalFormat(double amount, @Nullable String currency) {
+  private String getInternalFormat(final double amount, @Nullable final String currency) {
 
     if(StringUtils.isEmpty(currency)) {
       Log.debug("Format: Currency is null");
-      String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+      final String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
       return currencySymbolOnRight? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
     } else {
       Log.debug("Format: Currency is: [" + currency + "]");
-      String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-      String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
+      final String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+      final String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
       return currencySymbolOnRight? formatted + symbol : symbol + formatted;
     }
   }
@@ -111,13 +111,13 @@ public class EconomyFormatter implements Reloadable {
    * @return The formatted string.
    */
   @NotNull
-  public String format(double n, @NotNull Shop shop) {
+  public String format(final double n, @NotNull final Shop shop) {
 
     return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
   }
 
   @NotNull
-  public String format(double n, boolean internalFormat, @NotNull World world, @Nullable Shop shop) {
+  public String format(final double n, final boolean internalFormat, @NotNull final World world, @Nullable final Shop shop) {
 
     if(shop != null) {
       return format(n, internalFormat, world, shop.getCurrency());

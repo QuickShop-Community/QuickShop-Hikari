@@ -26,7 +26,7 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
   private boolean limit = false;
   private int def = 0;
 
-  public SimpleRankLimiter(QuickShop plugin) {
+  public SimpleRankLimiter(final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);
@@ -36,13 +36,13 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
 
   private void load() {
 
-    YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
+    final YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
     ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
     if(limitCfg != null) {
       this.limit = limitCfg.getBoolean("use", false);
       def = limitCfg.getInt("default");
       limitCfg = limitCfg.getConfigurationSection("ranks");
-      for(String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+      for(final String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
         limits.put(key, limitCfg.getInt(key));
       }
     } else {
@@ -59,10 +59,10 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
    * @return int Player's shop limit
    */
   @Override
-  public int getShopLimit(@NotNull QUser p) {
+  public int getShopLimit(@NotNull final QUser p) {
 
     int count = def;
-    for(Map.Entry<String, Integer> entry : limits.entrySet()) {
+    for(final Map.Entry<String, Integer> entry : limits.entrySet()) {
       if((entry.getValue() > count) && plugin.perm().hasPermission(p, entry.getKey())) {
         count = entry.getValue();
       }
@@ -97,9 +97,9 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
   @Override
   public @NotNull String genBody() {
 
-    HTMLTable table = new HTMLTable(2);
+    final HTMLTable table = new HTMLTable(2);
     table.setTableTitle("Permission", "Amount");
-    for(Map.Entry<String, Integer> entry : limits.entrySet()) {
+    for(final Map.Entry<String, Integer> entry : limits.entrySet()) {
       table.insert(entry.getKey(), String.valueOf(entry.getValue()));
     }
     return table.render();

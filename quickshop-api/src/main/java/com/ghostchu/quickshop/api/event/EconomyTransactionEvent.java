@@ -12,7 +12,7 @@ public class EconomyTransactionEvent extends AbstractQSEvent {
    *
    * @param transaction The transaction
    */
-  public EconomyTransactionEvent(@NotNull EconomyTransaction transaction) {
+  public EconomyTransactionEvent(@NotNull final EconomyTransaction transaction) {
 
     this.transaction = transaction;
   }

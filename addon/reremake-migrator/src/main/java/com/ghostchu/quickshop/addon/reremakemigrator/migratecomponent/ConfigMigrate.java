@@ -39,7 +39,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
           "effect", "matcher", "protect.explode", "protect.hopper", "protect.entity", "custom-item-stacksize", "purge", "debug"
   };
 
-  public ConfigMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender) {
+  public ConfigMigrate(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake, final CommandSender sender) {
 
     super(main, hikari, reremake, sender);
   }
@@ -57,7 +57,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
 
   private void migrateCommandAlias() {
 
-    List<String> commandAlias = getReremake().getConfig().getStringList("custom-commands");
+    final List<String> commandAlias = getReremake().getConfig().getStringList("custom-commands");
     if(!commandAlias.contains("qs")) {
       commandAlias.add("qs");
     }
@@ -73,7 +73,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
   private void migratePriceRestrictions() {
     // Generating price-restriction.yml, copy from SimplePriceLimiter.java
     text("modules.config.migrate-price-restriction").send();
-    File configFile = new File(getHikariJavaPlugin().getDataFolder(), "price-restriction.yml");
+    final File configFile = new File(getHikariJavaPlugin().getDataFolder(), "price-restriction.yml");
     if(!configFile.exists()) {
       try {
         Files.copy(getHikariJavaPlugin().getResource("price-restriction.yml"), configFile.toPath());
@@ -81,24 +81,24 @@ public class ConfigMigrate extends AbstractMigrateComponent {
         getHikari().logger().warn("Failed to copy price-restriction.yml.yml to plugin folder!", e);
       }
     }
-    FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+    final FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
     // migrate the minimum-price and maximum-price
     configuration.set("undefined.min", getReremake().getConfig().get("shop.minimum-price", "0.01"));
     configuration.set("undefined.max", getReremake().getConfig().get("shop.maximum-price", 999999999999999999999999999999.99d));
     configuration.set("enable", true);
     // migrate the whole-number setting from Reremake configuration
     configuration.set("whole-number-only", getReremake().getConfig().get("shop.whole-number-prices-only"));
-    List<String> str = getReremake().getConfig().getStringList("shop.price-restriction");
-    for(String record : new ProgressMonitor<>(str, (triple)->text("modules.migrate-price-restriction-entry", triple.getLeft(), triple.getMiddle()).send())) {
+    final List<String> str = getReremake().getConfig().getStringList("shop.price-restriction");
+    for(final String record : new ProgressMonitor<>(str, (triple)->text("modules.migrate-price-restriction-entry", triple.getLeft(), triple.getMiddle()).send())) {
       try {
-        String[] records = record.split(";");
+        final String[] records = record.split(";");
         if(records.length != 3) {
           continue;
         }
-        Material material = Material.matchMaterial(records[0]);
-        double min = Double.parseDouble(records[1]);
-        double max = Double.parseDouble(records[2]);
-        String name = UUID.randomUUID().toString().replace("-", "");
+        final Material material = Material.matchMaterial(records[0]);
+        final double min = Double.parseDouble(records[1]);
+        final double max = Double.parseDouble(records[2]);
+        final String name = UUID.randomUUID().toString().replace("-", "");
         if(material == null) {
           continue;
         }
@@ -121,14 +121,14 @@ public class ConfigMigrate extends AbstractMigrateComponent {
   private void copyValues() {
 
     text("modules.config.copy-values", DIRECT_COPY_KEYS.length).send();
-    for(String directCopyKey : new ProgressMonitor<>(DIRECT_COPY_KEYS, triple->
+    for(final String directCopyKey : new ProgressMonitor<>(DIRECT_COPY_KEYS, triple->
             text("modules.config.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
       copyValue(directCopyKey);
     }
     getHikariJavaPlugin().saveConfig();
   }
 
-  private void copyValue(String keyName) {
+  private void copyValue(final String keyName) {
 
     if(getReremake().getConfig().contains(keyName)) {
       getHikari().getConfig().set(keyName, getReremake().getConfig().get(keyName));

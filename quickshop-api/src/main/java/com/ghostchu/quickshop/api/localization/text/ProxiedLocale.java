@@ -16,7 +16,7 @@ public class ProxiedLocale {
   private String relative;
   private NumberFormat nf;
 
-  public ProxiedLocale(@Nullable String origin, String relative, @NotNull NumberFormat nf, @NotNull Locale locale) {
+  public ProxiedLocale(@Nullable final String origin, final String relative, @NotNull final NumberFormat nf, @NotNull final Locale locale) {
 
     this.origin = origin;
     this.relative = relative;

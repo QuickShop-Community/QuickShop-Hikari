@@ -33,16 +33,16 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                                                                );
   private final QuickShop plugin;
 
-  public SubCommand_Paste(QuickShop plugin) {
+  public SubCommand_Paste(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
     // do actions
     Util.asyncThreadRun(()->{
-      for(String s : warningPluginList) {
+      for(final String s : warningPluginList) {
         if(Bukkit.getPluginManager().getPlugin(s) != null) {
           if(parser.getArgs().stream().noneMatch(str->str.contains("--force"))) {
             plugin.text().of(sender, "consolespamfix-installed", s).send();
@@ -63,14 +63,14 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     });
   }
 
-  private boolean pasteToLocalFile(@NotNull CommandSender sender) {
+  private boolean pasteToLocalFile(@NotNull final CommandSender sender) {
 
     File file = new File(plugin.getDataFolder(), "paste");
     file.mkdirs();
     file = new File(file, "paste-" + UUID.randomUUID().toString().replace("-", "") + ".html");
     final String string = new PasteGenerator(sender).render();
     try {
-      boolean createResult = file.createNewFile();
+      final boolean createResult = file.createNewFile();
       Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
       try(FileWriter fwriter = new FileWriter(file)) {
         fwriter.write(string);
@@ -88,12 +88,12 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
   }
 
-  private boolean pasteToPastebin(@NotNull CommandSender sender) {
+  private boolean pasteToPastebin(@NotNull final CommandSender sender) {
 
     plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "Debug Paste", "User request to create a online debug paste", ()->{
       final String string = Paste.paste(new PasteGenerator(sender).render());
       if(string != null) {
-        String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
+        final String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
         Component component = plugin.text().of(sender, "paste-created", url).forLocale();
         component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
         MsgUtil.sendDirectMessage(sender, component);

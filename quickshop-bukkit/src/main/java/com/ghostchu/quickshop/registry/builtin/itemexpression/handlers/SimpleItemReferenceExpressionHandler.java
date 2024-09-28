@@ -10,7 +10,7 @@ public class SimpleItemReferenceExpressionHandler implements ItemExpressionHandl
 
   private final QuickShop plugin;
 
-  public SimpleItemReferenceExpressionHandler(QuickShop plugin) {
+  public SimpleItemReferenceExpressionHandler(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -34,7 +34,7 @@ public class SimpleItemReferenceExpressionHandler implements ItemExpressionHandl
   }
 
   @Override
-  public boolean match(ItemStack stack, String expression) {
+  public boolean match(final ItemStack stack, final String expression) {
 
     return QuickShop.getInstance().getItemMatcher().matches(stack, QuickShop.getInstance().getItemMarker().get(expression));
   }

@@ -15,14 +15,14 @@ public class MetricManager {
   private final QuickShop plugin;
   private final Metrics metrics;
 
-  public MetricManager(QuickShop plugin) {
+  public MetricManager(final QuickShop plugin) {
 
     this.plugin = plugin;
     this.metrics = new Metrics(plugin.getJavaPlugin(), 14281);
     initCollects();
   }
 
-  public void registerChart(MetricDataType dataType, String moduleName, String reason, CustomChart chart) {
+  public void registerChart(final MetricDataType dataType, final String moduleName, final String reason, final CustomChart chart) {
 
     if(chart == null) {
       return; // ignore
@@ -35,10 +35,10 @@ public class MetricManager {
     registerMetricCollector(new BuiltInCollects(plugin));
   }
 
-  public void registerMetricCollector(@NotNull Object object) {
+  public void registerMetricCollector(@NotNull final Object object) {
 
-    for(Method method : object.getClass().getDeclaredMethods()) {
-      MetricCollectEntry collectEntry = method.getAnnotation(MetricCollectEntry.class);
+    for(final Method method : object.getClass().getDeclaredMethods()) {
+      final MetricCollectEntry collectEntry = method.getAnnotation(MetricCollectEntry.class);
       if(collectEntry == null) {
         continue;
       }
@@ -47,7 +47,7 @@ public class MetricManager {
         continue;
       }
       try {
-        Object result = method.invoke(object, (Object[])null);
+        final Object result = method.invoke(object, (Object[])null);
         if(result != null) {
           registerChart(collectEntry.dataType(), collectEntry.moduleName(), collectEntry.description(),
                         (CustomChart)result);

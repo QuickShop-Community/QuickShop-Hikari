@@ -17,7 +17,7 @@ public class PerformanceLogsItem implements SubPasteItem {
 
   public PerformanceLogsItem() {
 
-    String timeFormat = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-time-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
+    final String timeFormat = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-time-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
     try {
       format = new SimpleDateFormat(timeFormat);
     } catch(IllegalArgumentException e) {
@@ -40,9 +40,9 @@ public class PerformanceLogsItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    StringJoiner builder = new StringJoiner("\n");
-    List<String> debugLogs = Log.fetchLogs(Log.Type.PERFORMANCE).stream().map(recordEntry->"[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry).toList();
-    List<String> tail = CommonUtil.tail(debugLogs, 1000);
+    final StringJoiner builder = new StringJoiner("\n");
+    final List<String> debugLogs = Log.fetchLogs(Log.Type.PERFORMANCE).stream().map(recordEntry->"[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry).toList();
+    final List<String> tail = CommonUtil.tail(debugLogs, 1000);
     tail.forEach(builder::add);
     return "<textarea readonly=\"true\" name=\"performancelogs\" style=\"height: 1000px; width: 100%;\">" +
            builder +

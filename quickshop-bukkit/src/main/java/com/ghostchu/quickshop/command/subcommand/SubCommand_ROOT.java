@@ -17,24 +17,24 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_ROOT(QuickShop plugin) {
+  public SubCommand_ROOT(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     new SubCommand_Help(plugin).onCommand(sender, commandLabel, parser);
   }
 
   @NotNull
   @Override
-  public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final List<String> candidate = new ArrayList<>();
     container:
-    for(CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
+    for(final CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
       if(!parser.getArgs().isEmpty() && !container.getPrefix().startsWith(parser.getArgs().get(0))) {
         continue;
       }
@@ -42,7 +42,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
       final List<String> requirePermissions = container.getPermissions();
 
       if(requirePermissions != null && !requirePermissions.isEmpty()) {
-        for(String requirePermission : requirePermissions) {
+        for(final String requirePermission : requirePermissions) {
           if(requirePermission != null && !plugin.perm().hasPermission(sender, requirePermission)) {
             if(Util.isDevMode()) {
               Log.debug(
@@ -61,7 +61,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
       final List<String> selectivePermissions = container.getSelectivePermissions();
       boolean anyHit = false;
       if(selectivePermissions != null && !selectivePermissions.isEmpty()) {
-        for(String selectivePermission : selectivePermissions) {
+        for(final String selectivePermission : selectivePermissions) {
           if(selectivePermission != null && plugin.perm().hasPermission(sender, selectivePermission)) {
             anyHit = true;
             break;

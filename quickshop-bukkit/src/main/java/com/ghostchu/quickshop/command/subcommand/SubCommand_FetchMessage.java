@@ -13,7 +13,7 @@ public class SubCommand_FetchMessage implements CommandHandler<Player> {
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     MsgUtil.flush(sender);
   }

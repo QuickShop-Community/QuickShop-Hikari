@@ -17,18 +17,18 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Export(QuickShop plugin) {
+  public SubCommand_Export(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public synchronized void onCommand(@NotNull final ConsoleCommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     plugin.text().of(sender, "exporting-database").send();
-    File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+    final File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
 
-    DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
+    final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
     Util.asyncThreadRun(()->{
       try {
         databaseIOUtil.exportTables(file);

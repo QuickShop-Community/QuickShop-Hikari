@@ -21,13 +21,13 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Name(QuickShop plugin) {
+  public SubCommand_Name(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
     if(shop == null) {
@@ -51,13 +51,13 @@ public class SubCommand_Name implements CommandHandler<Player> {
     // Then strip all of them, Shop name reference is disallow any color
     shopName = ChatColor.stripColor(shopName);
 
-    int maxLength = plugin.getConfig().getInt("shop.name-max-length", 32);
+    final int maxLength = plugin.getConfig().getInt("shop.name-max-length", 32);
     if(shopName.length() > maxLength) {
       plugin.text().of(sender, "shop-name-too-long", maxLength).send();
       return;
     }
 
-    double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
+    final double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
     SimpleEconomyTransaction transaction = null;
     if(fee > 0) {
       if(!plugin.perm().hasPermission(sender, "quickshop.bypass.namefee")) {
@@ -77,7 +77,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
         }
       }
     }
-    ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
+    final ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
     if(Util.fireCancellableEvent(namingEvent)) {
       Log.debug("Other plugin cancelled shop naming.");
       return;
@@ -96,7 +96,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
   @NotNull
   @Override
-  public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.name").legacy()) : Collections.emptyList();
   }

@@ -21,7 +21,7 @@ public class ConfigurationFixer {
   private final FileConfiguration externalConfig;
   private final FileConfiguration builtInConfig;
 
-  public ConfigurationFixer(QuickShop plugin, File externalConfigFile, FileConfiguration externalConfig, FileConfiguration builtInConfig) {
+  public ConfigurationFixer(final QuickShop plugin, final File externalConfigFile, final FileConfiguration externalConfig, final FileConfiguration builtInConfig) {
 
     this.plugin = plugin;
     this.externalConfigFile = externalConfigFile;
@@ -41,13 +41,13 @@ public class ConfigurationFixer {
     plugin.logger().warn("Backup - Creating backup for configuration...");
     try {
       Files.copy(externalConfigFile.toPath(), new File(externalConfigFile.getParent(), externalConfigFile.getName() + "." + System.currentTimeMillis()).toPath());
-    } catch(IOException ioException) {
+    } catch(final IOException ioException) {
       plugin.logger().warn("Failed to create file backup.", ioException);
     }
     plugin.logger().warn("Fix - Fixing the configuration, this may take a while...");
-    for(String key : builtInConfig.getKeys(true)) {
-      Object value = externalConfig.get(key);
-      Object buildInValue = builtInConfig.get(key);
+    for(final String key : builtInConfig.getKeys(true)) {
+      final Object value = externalConfig.get(key);
+      final Object buildInValue = builtInConfig.get(key);
       if(!(value instanceof ConfigurationSection) || !value.getClass().getTypeName().equals(Objects.requireNonNull(buildInValue).getClass().getTypeName())) {
         plugin.logger().warn("Fixing configuration use default value: {}", key);
         plugin.getConfig().set(key, buildInValue);
@@ -57,7 +57,7 @@ public class ConfigurationFixer {
     externalConfig.set("config-damaged", false);
     try {
       externalConfig.save(externalConfigFile);
-    } catch(IOException e) {
+    } catch(final IOException e) {
       plugin.logger().warn("Couldn't save fixed configuration!", e);
     }
     return true;

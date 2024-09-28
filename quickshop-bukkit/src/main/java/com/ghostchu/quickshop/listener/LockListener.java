@@ -38,7 +38,7 @@ public class LockListener extends AbstractProtectionListener {
    * Removes chests when they're destroyed.
    */
   @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-  public void onBreak(BlockBreakEvent e) {
+  public void onBreak(final BlockBreakEvent e) {
 
     Block b = e.getBlock();
     final Player p = e.getPlayer();
@@ -78,7 +78,7 @@ public class LockListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onClick(PlayerInteractEvent e) {
+  public void onClick(final PlayerInteractEvent e) {
 
     final Block b = e.getClickedBlock();
 
@@ -121,7 +121,7 @@ public class LockListener extends AbstractProtectionListener {
    * Handles hopper placement
    */
   @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-  public void onHopperPlace(BlockPlaceEvent e) {
+  public void onHopperPlace(final BlockPlaceEvent e) {
 
     final Block b = e.getBlock();
 
@@ -151,21 +151,21 @@ public class LockListener extends AbstractProtectionListener {
    * Listens for sign placement to prevent placing sign for creating protection
    */
   @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-  public void onSignPlace(BlockPlaceEvent event) {
+  public void onSignPlace(final BlockPlaceEvent event) {
 
-    Block placedBlock = event.getBlock();
+    final Block placedBlock = event.getBlock();
     if(!(placedBlock.getState() instanceof Sign)) {
       return;
     }
-    Block posShopBlock = Util.getAttached(placedBlock);
+    final Block posShopBlock = Util.getAttached(placedBlock);
     if(posShopBlock == null) {
       return;
     }
-    Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+    final Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
     if(shop == null) {
       return;
     }
-    Player player = event.getPlayer();
+    final Player player = event.getPlayer();
     if(!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)
        && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
       plugin.text().of(player, "that-is-locked").send();

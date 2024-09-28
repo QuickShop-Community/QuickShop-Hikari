@@ -43,15 +43,15 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
+  public @NotNull Component getDisplayName(@NotNull final ItemStack stack) {
 
     return stack.displayName();
   }
 
   @Override
-  public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
+  public @NotNull Component getDisplayName(@NotNull final ItemMeta meta) {
 
-    Component displayName = meta.displayName();
+    final Component displayName = meta.displayName();
     if(displayName == null) {
       return Component.empty();
     }
@@ -60,19 +60,19 @@ public class PaperPlatform implements Platform {
 
 
   @Override
-  public @NotNull Component getLine(@NotNull Sign sign, int line) {
+  public @NotNull Component getLine(@NotNull final Sign sign, final int line) {
 
     return sign.line(line);
   }
 
   @Override
-  public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
+  public @Nullable List<Component> getLore(@NotNull final ItemStack stack) {
 
     return stack.lore();
   }
 
   @Override
-  public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
+  public @Nullable List<Component> getLore(@NotNull final ItemMeta meta) {
 
     return meta.lore();
   }
@@ -84,48 +84,48 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
+  public @NotNull Component setItemStackHoverEvent(@NotNull final Component oldComponent, @NotNull final ItemStack stack) {
 
     return oldComponent.hoverEvent(stack.asHoverEvent());
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull Material material) {
+  public @NotNull Component getTranslation(@NotNull final Material material) {
 
     return Component.translatable(getTranslationKey(material));
   }
 
-  private String postProcessingTranslationKey(String key) {
+  private String postProcessingTranslationKey(final String key) {
 
     return this.translationMapping.getOrDefault(key, key);
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull EntityType entity) {
+  public @NotNull Component getTranslation(@NotNull final EntityType entity) {
 
     return Component.translatable(getTranslationKey(entity));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+  public @NotNull Component getTranslation(@NotNull final PotionEffectType potionEffectType) {
 
     return Component.translatable(getTranslationKey(potionEffectType));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+  public @NotNull Component getTranslation(@NotNull final Enchantment enchantment) {
 
     return Component.translatable(getTranslationKey(enchantment));
   }
 
   @Override
-  public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
+  public @NotNull Component getTranslation(@NotNull final ItemStack itemStack) {
 
     return Component.translatable(getTranslationKey(itemStack));
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Material material) {
+  public @NotNull String getTranslationKey(@NotNull final Material material) {
 
     String key;
     try {
@@ -137,7 +137,7 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull EntityType type) {
+  public @NotNull String getTranslationKey(@NotNull final EntityType type) {
 
     String key;
     try {
@@ -149,21 +149,21 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+  public @NotNull String getTranslationKey(@NotNull final PotionEffectType potionEffectType) {
 
-    String key = potionEffectType.translationKey();
+    final String key = potionEffectType.translationKey();
     return postProcessingTranslationKey(key);
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+  public @NotNull String getTranslationKey(@NotNull final Enchantment enchantment) {
 
-    String key = enchantment.translationKey();
+    final String key = enchantment.translationKey();
     return postProcessingTranslationKey(key);
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+  public @NotNull String getTranslationKey(@NotNull final ItemStack stack) {
 
     String key;
     try {
@@ -181,7 +181,7 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public void registerCommand(@NotNull String prefix, @NotNull Command command) {
+  public void registerCommand(@NotNull final String prefix, @NotNull final Command command) {
 
     Bukkit.getCommandMap().register(prefix, command);
     command.register(Bukkit.getCommandMap());
@@ -189,33 +189,33 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+  public void sendMessage(@NotNull final CommandSender sender, @NotNull final Component component) {
 
     sender.sendMessage(component);
   }
 
   @Override
-  public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
+  public void sendSignTextChange(@NotNull final Player player, @NotNull final Sign sign, final boolean glowing, @NotNull final List<Component> components) {
 
     player.sendSignChange(sign.getLocation(), components);
   }
 
   @Override
-  public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
+  public void setDisplayName(@NotNull final ItemStack stack, @Nullable final Component component) {
 
-    ItemMeta meta = stack.getItemMeta();
+    final ItemMeta meta = stack.getItemMeta();
     meta.displayName(component);
     stack.setItemMeta(meta);
   }
 
   @Override
-  public void setDisplayName(@NotNull Entity entity, @Nullable Component component) {
+  public void setDisplayName(@NotNull final Entity entity, @Nullable final Component component) {
 
     entity.customName(component);
   }
 
   @Override
-  public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+  public void setLines(@NotNull final Sign sign, @NotNull final List<Component> component) {
 
     for(int i = 0; i < Math.min(component.size(), 4); i++) {
       sign.line(i, component.get(i));
@@ -224,22 +224,22 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
+  public void setLore(@NotNull final ItemStack stack, @NotNull final Collection<Component> components) {
 
-    ItemMeta meta = stack.getItemMeta();
+    final ItemMeta meta = stack.getItemMeta();
     meta.lore(new ArrayList<>(components));
     stack.setItemMeta(meta);
   }
 
 
   @Override
-  public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+  public void updateTranslationMappingSection(@NotNull final Map<String, String> mapping) {
 
     this.translationMapping = mapping;
   }
 
   @Override
-  public @NotNull Logger getSlf4jLogger(@NotNull Plugin parent) {
+  public @NotNull Logger getSlf4jLogger(@NotNull final Plugin parent) {
 
     try {
       return parent.getSLF4JLogger();

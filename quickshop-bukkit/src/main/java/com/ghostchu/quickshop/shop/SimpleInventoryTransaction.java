@@ -32,7 +32,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   private String lastError;
 
   @Builder
-  public SimpleInventoryTransaction(@Nullable InventoryWrapper from, @Nullable InventoryWrapper to, @NotNull ItemStack item, int amount) {
+  public SimpleInventoryTransaction(@Nullable final InventoryWrapper from, @Nullable final InventoryWrapper to, @NotNull final ItemStack item, final int amount) {
 
     if(from == null && to == null) {
       throw new IllegalArgumentException("Both from and to are null");
@@ -53,7 +53,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
      *
      * @return Does commit event has been cancelled
      */
-    default boolean onCommit(@NotNull SimpleInventoryTransaction transaction) {
+    default boolean onCommit(@NotNull final SimpleInventoryTransaction transaction) {
 
       return true;
     }
@@ -64,7 +64,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
      *
      * @param transaction Transaction
      */
-    default void onFailed(@NotNull SimpleInventoryTransaction transaction) {
+    default void onFailed(@NotNull final SimpleInventoryTransaction transaction) {
 
     }
 
@@ -73,7 +73,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
      *
      * @param transaction Transaction
      */
-    default void onSuccess(@NotNull SimpleInventoryTransaction transaction) {
+    default void onSuccess(@NotNull final SimpleInventoryTransaction transaction) {
 
     }
 
@@ -101,7 +101,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
    * @return The transaction success.
    */
   @Override
-  public boolean commit(@NotNull TransactionCallback callback) {
+  public boolean commit(@NotNull final TransactionCallback callback) {
 
     Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
     if(!callback.onCommit(this)) {
@@ -124,7 +124,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
 
   @Override
-  public void setFrom(@Nullable InventoryWrapper from) {
+  public void setFrom(@Nullable final InventoryWrapper from) {
 
     this.from = from;
   }
@@ -137,7 +137,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   }
 
   @Override
-  public void setTo(@Nullable InventoryWrapper to) {
+  public void setTo(@Nullable final InventoryWrapper to) {
 
     this.to = to;
   }
@@ -150,7 +150,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   }
 
   @Override
-  public void setItem(@NotNull ItemStack item) {
+  public void setItem(@NotNull final ItemStack item) {
 
     this.item = item;
   }
@@ -163,7 +163,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   }
 
   @Override
-  public void setLastError(@Nullable String lastError) {
+  public void setLastError(@Nullable final String lastError) {
 
     this.lastError = lastError;
   }
@@ -175,7 +175,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   }
 
   @Override
-  public void setAmount(int amount) {
+  public void setAmount(final int amount) {
 
     this.amount = amount;
   }
@@ -196,7 +196,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   public boolean failSafeCommit() {
 
     Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
-    boolean result = commit();
+    final boolean result = commit();
     if(!result) {
       Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);
       rollback(true);
@@ -222,14 +222,14 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @SuppressWarnings("UnusedReturnValue")
   @NotNull
   @Override
-  public List<Operation> rollback(boolean continueWhenFailed) {
+  public List<Operation> rollback(final boolean continueWhenFailed) {
 
     try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
       final List<Operation> operations = new ArrayList<>();
       while(!processingStack.isEmpty()) {
-        Operation operation = processingStack.pop();
+        final Operation operation = processingStack.pop();
         try {
-          boolean result = operation.rollback();
+          final boolean result = operation.rollback();
           if(!result) {
             Log.transaction(Level.WARNING, "Rollback failed: " + operation);
             if(continueWhenFailed) {
@@ -256,7 +256,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     }
   }
 
-  private boolean executeOperation(@NotNull Operation operation) {
+  private boolean executeOperation(@NotNull final Operation operation) {
 
     try {
       processingStack.push(operation); // Item is special, economy fail won't do anything but item does.

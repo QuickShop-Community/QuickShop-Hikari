@@ -29,7 +29,7 @@ public class ShopItemChangeEvent extends AbstractQSEvent implements QSCancellabl
    * @param oldItem The old shop item
    * @param newItem The new shop item
    */
-  public ShopItemChangeEvent(@NotNull Shop shop, ItemStack oldItem, ItemStack newItem) {
+  public ShopItemChangeEvent(@NotNull final Shop shop, final ItemStack oldItem, final ItemStack newItem) {
 
     this.shop = shop;
     this.oldItem = oldItem.clone();
@@ -43,7 +43,7 @@ public class ShopItemChangeEvent extends AbstractQSEvent implements QSCancellabl
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

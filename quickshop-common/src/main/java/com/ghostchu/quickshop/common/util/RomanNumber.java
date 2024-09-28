@@ -30,14 +30,14 @@ public class RomanNumber {
 
   }
 
-  public static String toRoman(Integer number) {
+  public static String toRoman(final Integer number) {
 
     return toRoman(number == null? 1 : number);
   }
 
-  public static String toRoman(int number) {
+  public static String toRoman(final int number) {
 
-    Integer l = MAP.floorKey(number);
+    final Integer l = MAP.floorKey(number);
     if(l == null) {
       return MAP.get(1);
     }

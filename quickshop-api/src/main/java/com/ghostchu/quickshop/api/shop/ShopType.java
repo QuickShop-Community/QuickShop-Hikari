@@ -12,14 +12,14 @@ public enum ShopType {
   FROZEN(2); //Locked so no mode
   private final int id;
 
-  ShopType(int id) {
+  ShopType(final int id) {
 
     this.id = id;
   }
 
-  public static @Nullable ShopType fromString(@NotNull String string) {
+  public static @Nullable ShopType fromString(@NotNull final String string) {
 
-    for(ShopType type : ShopType.values()) {
+    for(final ShopType type : ShopType.values()) {
       if(type.name().equalsIgnoreCase(string)) {
         return type;
       }
@@ -28,9 +28,9 @@ public enum ShopType {
   }
 
 
-  public static @NotNull ShopType fromID(int id) {
+  public static @NotNull ShopType fromID(final int id) {
 
-    for(ShopType type : ShopType.values()) {
+    for(final ShopType type : ShopType.values()) {
       if(type.id == id) {
         return type;
       }
@@ -38,7 +38,7 @@ public enum ShopType {
     return SELLING;
   }
 
-  public static int toID(@NotNull ShopType shopType) {
+  public static int toID(@NotNull final ShopType shopType) {
 
     return shopType.id;
   }

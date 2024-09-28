@@ -24,7 +24,7 @@ public class ShopDeleteEvent extends AbstractQSEvent implements QSCancellable {
    * @param shop       Target shop
    * @param fromMemory Only delete from the memory? false = delete both in memory and database
    */
-  public ShopDeleteEvent(@NotNull Shop shop, boolean fromMemory) {
+  public ShopDeleteEvent(@NotNull final Shop shop, final boolean fromMemory) {
 
     this.shop = shop;
     this.fromMemory = fromMemory;
@@ -37,7 +37,7 @@ public class ShopDeleteEvent extends AbstractQSEvent implements QSCancellable {
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

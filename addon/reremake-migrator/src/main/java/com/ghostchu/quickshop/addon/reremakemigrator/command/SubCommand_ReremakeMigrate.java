@@ -26,7 +26,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
   private final org.maxgamer.quickshop.QuickShop reremake;
   private final AtomicBoolean running = new AtomicBoolean(false);
 
-  public SubCommand_ReremakeMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake) {
+  public SubCommand_ReremakeMigrate(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake) {
 
     this.plugin = main;
     this.hikari = hikari;
@@ -34,7 +34,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
   }
 
   @Override
-  public void onCommand(ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final ConsoleCommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(running.get()) {
       return;
@@ -47,9 +47,9 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
       hikari.text().of(sender, "addon.reremake-migrator.server-not-empty").send();
       return;
     }
-    boolean shouldOverrideExistShops = Boolean.parseBoolean(parser.getArgs().get(0));
-    boolean shouldMigrateTransactionLogs = Boolean.parseBoolean(parser.getArgs().get(1));
-    List<MigrateComponent> migrateComponentList = new ArrayList<>();
+    final boolean shouldOverrideExistShops = Boolean.parseBoolean(parser.getArgs().get(0));
+    final boolean shouldMigrateTransactionLogs = Boolean.parseBoolean(parser.getArgs().get(1));
+    final List<MigrateComponent> migrateComponentList = new ArrayList<>();
     migrateComponentList.add(new ConfigMigrate(plugin, hikari, reremake, sender));
     migrateComponentList.add(new TranslationMigrateComponent(plugin, hikari, reremake, sender));
     migrateComponentList.add(new ShopMigrate(plugin, hikari, reremake, sender, shouldOverrideExistShops));
@@ -59,8 +59,8 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
     Util.asyncThreadRun(()->{
       running.set(true);
       plugin.setDeniedMessage(hikari.text().of(sender, "addon.reremake-migrator.join_blocking_converting").forLocale());
-      for(MigrateComponent migrateComponent : new ProgressMonitor<>(migrateComponentList, triple->hikari.text().of(sender, "addon.reremake-migrator.executing", triple.getRight().getClass().getSimpleName(), triple.getLeft(), triple.getMiddle()).send())) {
-        String migrateComponentName = migrateComponent.getClass().getSimpleName();
+      for(final MigrateComponent migrateComponent : new ProgressMonitor<>(migrateComponentList, triple->hikari.text().of(sender, "addon.reremake-migrator.executing", triple.getRight().getClass().getSimpleName(), triple.getLeft(), triple.getMiddle()).send())) {
+        final String migrateComponentName = migrateComponent.getClass().getSimpleName();
         try {
           if(!migrateComponent.migrate()) {
             // Something failed during the migration?

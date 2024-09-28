@@ -9,7 +9,7 @@ public class PlanHook {
   private final Main main;
   private final CapabilityService capabilities = CapabilityService.getInstance();
 
-  public PlanHook(Main main) {
+  public PlanHook(final Main main) {
 
     this.main = main;
   }

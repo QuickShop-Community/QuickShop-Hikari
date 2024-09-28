@@ -38,7 +38,7 @@ public class ChatProcessorInfoItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    HTMLTable table = new HTMLTable(2, true);
+    final HTMLTable table = new HTMLTable(2, true);
     table.insert("Processor", IMPL);
     table.insert("Formatter", FORMATTER);
     table.insert("Adventure API", CommonUtil.getClassPathRelative(Adventure.class));

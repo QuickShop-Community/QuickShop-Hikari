@@ -46,7 +46,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
   private double undefinedMin = 0.0d;
   private double undefinedMax = Double.MAX_VALUE;
 
-  public SimplePriceLimiter(@NotNull QuickShop plugin) {
+  public SimplePriceLimiter(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     loadConfiguration();
@@ -57,7 +57,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
   public void loadConfiguration() {
 
     this.rules.clear();
-    File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
+    final File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
     if(!configFile.exists()) {
       try {
         Files.copy(plugin.getJavaPlugin().getResource("price-restriction.yml"), configFile.toPath());
@@ -66,7 +66,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
       }
     }
 
-    FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+    final FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
     if(performMigrate(configuration)) {
       try {
         configuration.save(configFile);
@@ -80,13 +80,13 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     if(!configuration.getBoolean("enable", false)) {
       return;
     }
-    ConfigurationSection rules = configuration.getConfigurationSection("rules");
+    final ConfigurationSection rules = configuration.getConfigurationSection("rules");
     if(rules == null) {
       plugin.logger().warn("Failed to read price-restriction.yml, syntax invalid!");
       return;
     }
-    for(String ruleName : rules.getKeys(false)) {
-      RuleSet rule = readRule(ruleName, rules.getConfigurationSection(ruleName));
+    for(final String ruleName : rules.getKeys(false)) {
+      final RuleSet rule = readRule(ruleName, rules.getConfigurationSection(ruleName));
       if(rule == null) {
         plugin.logger().warn("Failed to read rule {}, syntax invalid! Skipping...", ruleName);
         continue;
@@ -96,15 +96,15 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     plugin.logger().info("Loaded {} price restriction rules!", this.rules.size());
   }
 
-  private boolean performMigrate(@NotNull FileConfiguration configuration) {
+  private boolean performMigrate(@NotNull final FileConfiguration configuration) {
 
     boolean anyChanges = false;
     if(configuration.getInt("version", 1) == 1) {
       Log.debug("Migrating price-restriction.yml from version 1 to version 2");
-      ConfigurationSection rules = configuration.getConfigurationSection("rules");
+      final ConfigurationSection rules = configuration.getConfigurationSection("rules");
       if(rules != null) {
-        for(String ruleName : rules.getKeys(false)) {
-          ConfigurationSection rule = rules.getConfigurationSection(ruleName);
+        for(final String ruleName : rules.getKeys(false)) {
+          final ConfigurationSection rule = rules.getConfigurationSection(ruleName);
           if(rule != null) {
             Log.debug("Migrating: Structure upgrading for rule " + ruleName);
             rule.set("items", rule.getStringList("materials"));
@@ -127,23 +127,23 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
 
   @Nullable
   @Contract("_,null -> null")
-  private RuleSet readRule(@NotNull String ruleName, @Nullable ConfigurationSection section) {
+  private RuleSet readRule(@NotNull final String ruleName, @Nullable final ConfigurationSection section) {
 
     if(section == null) {
       return null;
     }
-    String bypassPermission = "quickshop.price.restriction.bypass." + ruleName;
-    List<Function<ItemStack, Boolean>> items = new ArrayList<>();
-    double min = section.getDouble("min", 0d);
-    double max = section.getDouble("max", Double.MAX_VALUE);
-    ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
-    for(String item : section.getStringList("items")) {
+    final String bypassPermission = "quickshop.price.restriction.bypass." + ruleName;
+    final List<Function<ItemStack, Boolean>> items = new ArrayList<>();
+    final double min = section.getDouble("min", 0d);
+    final double max = section.getDouble("max", Double.MAX_VALUE);
+    final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    for(final String item : section.getStringList("items")) {
       items.add(itemStack->itemExpressionRegistry.match(itemStack, item));
     }
-    List<Pattern> currency = new ArrayList<>();
-    for(String currencyStr1 : section.getStringList("currency")) {
+    final List<Pattern> currency = new ArrayList<>();
+    for(final String currencyStr1 : section.getStringList("currency")) {
       try {
-        Pattern pattern = Pattern.compile(currencyStr1);
+        final Pattern pattern = Pattern.compile(currencyStr1);
         currency.add(pattern);
       } catch(PatternSyntaxException e) {
         plugin.logger().warn("Failed to read rule {}'s a Currency option, invalid pattern {}! Skipping...", ruleName, currencyStr1);
@@ -167,7 +167,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
      */
   @Override
   @NotNull
-  public PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
+  public PriceLimiterCheckResult check(@NotNull final CommandSender sender, @NotNull final ItemStack itemStack, @Nullable final String currency, final double price) {
 
     if(Double.isInfinite(price) || Double.isNaN(price)) {
       return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
@@ -180,7 +180,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
       }
     }
-    for(RuleSet rule : rules.values()) {
+    for(final RuleSet rule : rules.values()) {
       if(!rule.isApply(sender, itemStack, currency)) {
         continue;
       }
@@ -213,7 +213,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
      */
   @Override
   @NotNull
-  public PriceLimiterCheckResult check(@NotNull QUser user, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
+  public PriceLimiterCheckResult check(@NotNull final QUser user, @NotNull final ItemStack itemStack, @Nullable final String currency, final double price) {
 
     if(Double.isInfinite(price) || Double.isNaN(price)) {
       return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
@@ -226,7 +226,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
       }
     }
-    for(RuleSet rule : rules.values()) {
+    for(final RuleSet rule : rules.values()) {
       if(!rule.isApply(user, itemStack, currency)) {
         continue;
       }
@@ -254,19 +254,19 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
   @Override
   public @NotNull String genBody() {
 
-    StringJoiner joiner = new StringJoiner("<br/>");
+    final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<h5>Metadata</h5>");
-    HTMLTable meta = new HTMLTable(2, true);
+    final HTMLTable meta = new HTMLTable(2, true);
     meta.insert("Undefined Minimum", undefinedMin);
     meta.insert("Undefined Maximum", undefinedMax);
     meta.insert("Only WholeNumber", wholeNumberOnly);
     meta.insert("Rules", rules.size());
     joiner.add(meta.render());
     joiner.add("<h5>Rules</h5>");
-    HTMLTable rules = new HTMLTable(5);
+    final HTMLTable rules = new HTMLTable(5);
     rules.setTableTitle("Rule Name", "Bypass Permission", "Items", "Currency", "Price Range");
-    for(Map.Entry<String, RuleSet> entry : this.rules.entrySet()) {
-      RuleSet rule = entry.getValue();
+    for(final Map.Entry<String, RuleSet> entry : this.rules.entrySet()) {
+      final RuleSet rule = entry.getValue();
       String currencies = CommonUtil.list2String(rule.getCurrency());
       if(StringUtils.isEmpty(currencies)) {
         currencies = "*";
@@ -292,7 +292,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     private final double min;
     private final double max;
 
-    public RuleSet(List<Function<ItemStack, Boolean>> items, String bypassPermission, List<Pattern> currency, double min, double max) {
+    public RuleSet(final List<Function<ItemStack, Boolean>> items, final String bypassPermission, final List<Pattern> currency, final double min, final double max) {
 
       this.items = items;
       this.bypassPermission = bypassPermission;
@@ -308,7 +308,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
      *
      * @return true if the rule is allowed for given price
      */
-    public boolean isAllowed(double price) {
+    public boolean isAllowed(final double price) {
 
       if(this.max != -1 && price > this.max) {
         return false;
@@ -328,7 +328,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
      *
      * @return true if the rule is allowed to apply
      */
-    public boolean isApply(@NotNull CommandSender sender, @NotNull ItemStack item, @Nullable String currency) {
+    public boolean isApply(@NotNull final CommandSender sender, @NotNull final ItemStack item, @Nullable final String currency) {
 
       if(QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission)) {
         return false;
@@ -338,7 +338,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
           return false;
         }
       }
-      for(Function<ItemStack, Boolean> fun : items) {
+      for(final Function<ItemStack, Boolean> fun : items) {
         if(fun.apply(item)) {
           return true;
         }
@@ -355,7 +355,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
      *
      * @return true if the rule is allowed to apply
      */
-    public boolean isApply(@NotNull QUser user, @NotNull ItemStack item, @Nullable String currency) {
+    public boolean isApply(@NotNull final QUser user, @NotNull final ItemStack item, @Nullable final String currency) {
 
       if(QuickShop.getPermissionManager().hasPermission(user, this.bypassPermission)) {
         return false;
@@ -365,7 +365,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
           return false;
         }
       }
-      for(Function<ItemStack, Boolean> fun : items) {
+      for(final Function<ItemStack, Boolean> fun : items) {
         if(fun.apply(item)) {
           return true;
         }

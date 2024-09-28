@@ -6,7 +6,7 @@ public class Util {
 
   }
 
-  public static boolean methodExists(Class<?> clazz, String methodName) {
+  public static boolean methodExists(final Class<?> clazz, final String methodName) {
 
     try {
       clazz.getDeclaredMethod(methodName);

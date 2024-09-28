@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 public class NbtApiInitializer {
 
-  public NbtApiInitializer(Logger logger) {
+  public NbtApiInitializer(final Logger logger) {
 
     if(checkNeedDownloadNbtApi()) {
       try {
@@ -41,25 +41,25 @@ public class NbtApiInitializer {
     return Bukkit.getPluginManager().getPlugin("NBTAPI") == null;
   }
 
-  private void init(Logger logger) throws IOException, InvalidPluginException, InvalidDescriptionException {
+  private void init(final Logger logger) throws IOException, InvalidPluginException, InvalidDescriptionException {
 
     logger.info("QuickShop-Hikari needs NBT-API on Spigot platform, downloading it from Modrinth...");
-    HttpResponse<String> response = Unirest
+    final HttpResponse<String> response = Unirest
             .get("https://api.modrinth.com/v2/project/nbtapi/version")
             .header("Content-Type", "application/json")
             .asString();
     if(!response.isSuccess()) {
       throw new IOException("Failed to download NBT-API from Modrinth: " + response.getStatus() + " - " + response.getStatusText() + ": " + response.getBody());
     }
-    ResponseProject[] responseProjects;
+    final ResponseProject[] responseProjects;
     try {
       responseProjects = JsonUtil.standard().fromJson(response.getBody(), ResponseProject[].class);
     } catch(JsonSyntaxException e) {
       throw new IOException("Failed to parse NBT-API response: " + response.getBody(), e);
     }
-    ResponseProject.FilesDTO dto = getFilesDTO(responseProjects);
+    final ResponseProject.FilesDTO dto = getFilesDTO(responseProjects);
     logger.info("Selected: " + dto);
-    Path path = Files.createTempDirectory("quickshop-nbtapi-tmp");
+    final Path path = Files.createTempDirectory("quickshop-nbtapi-tmp");
     File nbtapiTempFile = path.toFile();
     if(!nbtapiTempFile.exists()) {
       nbtapiTempFile.mkdirs();
@@ -67,13 +67,13 @@ public class NbtApiInitializer {
     nbtapiTempFile = new File(nbtapiTempFile, dto.getFilename());
 
     logger.info("Downloading NBT-API from Modrinth...");
-    HttpResponse<File> fileHttpResponse = Unirest.get(dto.getUrl()).asFile(nbtapiTempFile.getAbsolutePath());
+    final HttpResponse<File> fileHttpResponse = Unirest.get(dto.getUrl()).asFile(nbtapiTempFile.getAbsolutePath());
     if(!fileHttpResponse.isSuccess()) {
       throw new IOException("Failed to download NBT-API from Modrinth: " + fileHttpResponse.getStatus() + " - " + fileHttpResponse.getStatusText() + ": " + fileHttpResponse.getBody());
     }
     logger.info("Checking hash...");
 
-    String downloadedHash = Hashing.sha512().hashBytes(Files.readAllBytes(nbtapiTempFile.toPath())).toString();
+    final String downloadedHash = Hashing.sha512().hashBytes(Files.readAllBytes(nbtapiTempFile.toPath())).toString();
     if(!downloadedHash.equalsIgnoreCase(dto.getHashes().getSha512())) {
       logger.warning("Excepted: " + dto.getHashes().getSha512());
       logger.warning("Actual: " + downloadedHash);
@@ -82,12 +82,12 @@ public class NbtApiInitializer {
 
     logger.info("Installing NBT-API...");
 
-    File rootDirectory = new File("./");
-    File pluginsDirectory = new File(rootDirectory, "plugins");
+    final File rootDirectory = new File("./");
+    final File pluginsDirectory = new File(rootDirectory, "plugins");
     if(!pluginsDirectory.exists()) {
       throw new IOException("Failed to install NBT-API: Plugins directory not found.");
     }
-    File finalPluginFile = new File(pluginsDirectory, nbtapiTempFile.getName());
+    final File finalPluginFile = new File(pluginsDirectory, nbtapiTempFile.getName());
     Files.move(nbtapiTempFile.toPath(), finalPluginFile.toPath());
 
     logger.info("Loading NBT-API...");
@@ -95,14 +95,14 @@ public class NbtApiInitializer {
   }
 
   @NotNull
-  private ResponseProject.FilesDTO getFilesDTO(ResponseProject[] responseProjects) {
+  private ResponseProject.FilesDTO getFilesDTO(final ResponseProject[] responseProjects) {
 
     if(responseProjects.length == 0) {
       throw new IllegalStateException("Failed to download NBT-API: No matched version found.");
     }
-    ResponseProject project = responseProjects[0];
+    final ResponseProject project = responseProjects[0];
     ResponseProject.FilesDTO dto = null;
-    for(ResponseProject.FilesDTO file : project.getFiles()) {
+    for(final ResponseProject.FilesDTO file : project.getFiles()) {
       if(!file.getPrimary()) {
         continue;
       }

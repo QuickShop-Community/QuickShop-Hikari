@@ -21,7 +21,7 @@ public class ShopTaxEvent extends AbstractQSEvent {
    * @param tax  The tax
    * @param user The user (buyer/seller)
    */
-  public ShopTaxEvent(@NotNull Shop shop, double tax, @NotNull QUser user) {
+  public ShopTaxEvent(@NotNull final Shop shop, final double tax, @NotNull final QUser user) {
 
     this.shop = shop;
     this.tax = tax;
@@ -53,7 +53,7 @@ public class ShopTaxEvent extends AbstractQSEvent {
    *
    * @param tax New tax
    */
-  public void setTax(double tax) {
+  public void setTax(final double tax) {
 
     this.tax = tax;
   }

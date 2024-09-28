@@ -17,15 +17,15 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
 
   private final QuickShop plugin;
 
-  public SubCommand_Recovery(QuickShop plugin) {
+  public SubCommand_Recovery(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final ConsoleCommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    File file = new File(plugin.getDataFolder(), "recovery.zip");
+    final File file = new File(plugin.getDataFolder(), "recovery.zip");
     if(!file.exists()) {
       plugin.text().of(sender, "importing-not-found", "recovery.zip").send();
       return;
@@ -38,7 +38,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
 
     plugin.text().of(sender, "importing-database").send();
     Log.debug("Initializing database recovery...");
-    DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
+    final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
     Log.debug("Unloading all shops...");
     plugin.getShopManager().getAllShops().forEach(s->plugin.getShopManager().unloadShop(s));
     Log.debug("Clean up in-memory data...");

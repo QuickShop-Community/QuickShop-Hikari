@@ -11,13 +11,13 @@ import org.bukkit.event.inventory.InventoryInteractEvent;
 
 public class CustomInventoryListener extends AbstractQSListener {
 
-  public CustomInventoryListener(QuickShop plugin) {
+  public CustomInventoryListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void invEvent(InventoryInteractEvent e) {
+  public void invEvent(final InventoryInteractEvent e) {
 
     if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
       e.setCancelled(true);
@@ -25,7 +25,7 @@ public class CustomInventoryListener extends AbstractQSListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void invEvent(InventoryClickEvent e) {
+  public void invEvent(final InventoryClickEvent e) {
 
     if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
       e.setCancelled(true);
@@ -33,7 +33,7 @@ public class CustomInventoryListener extends AbstractQSListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void invEvent(InventoryDragEvent e) {
+  public void invEvent(final InventoryDragEvent e) {
 
     if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
       e.setCancelled(true);

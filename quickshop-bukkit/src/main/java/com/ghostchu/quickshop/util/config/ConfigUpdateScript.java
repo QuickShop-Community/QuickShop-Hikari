@@ -17,7 +17,7 @@ public class ConfigUpdateScript {
   @Getter
   private final FileConfiguration config;
 
-  public ConfigUpdateScript(@NotNull FileConfiguration config, @NotNull QuickShop plugin) {
+  public ConfigUpdateScript(@NotNull final FileConfiguration config, @NotNull final QuickShop plugin) {
 
     this.config = config;
     this.plugin = plugin;
@@ -39,11 +39,11 @@ public class ConfigUpdateScript {
   @UpdateScript(version = 1027)
   public void sqlSectionOptimization() {
 
-    long connectionTimeoutOld = getConfig().getLong("database.properties.connection-timeout", 60000);
+    final long connectionTimeoutOld = getConfig().getLong("database.properties.connection-timeout", 60000);
     getConfig().set("database.properties.connectionTimeout", connectionTimeoutOld);
-    long maximumPoolSizeOld = getConfig().getLong("database.properties.maximum-pool-size", 10);
+    final long maximumPoolSizeOld = getConfig().getLong("database.properties.maximum-pool-size", 10);
     getConfig().set("database.properties.maximumPoolSize", Math.max(maximumPoolSizeOld, 10));
-    long minimumIdleOld = getConfig().getLong("database.properties.minimum-idle", 10);
+    final long minimumIdleOld = getConfig().getLong("database.properties.minimum-idle", 10);
     getConfig().set("database.properties.minimumIdle", Math.max(maximumPoolSizeOld, 10)); // keep same with maximumPoolSize
 
     getConfig().set("database.properties.validation-timeout", null);
@@ -62,11 +62,11 @@ public class ConfigUpdateScript {
   @UpdateScript(version = 1029)
   public void fixDbSettings() {
 
-    long connectionTimeoutOld = getConfig().getLong("database.properties.connection-timeout", 60000);
+    final long connectionTimeoutOld = getConfig().getLong("database.properties.connection-timeout", 60000);
     getConfig().set("database.properties.connectionTimeout", connectionTimeoutOld);
-    long maximumPoolSizeOld = getConfig().getLong("database.properties.maximum-pool-size", 10);
+    final long maximumPoolSizeOld = getConfig().getLong("database.properties.maximum-pool-size", 10);
     getConfig().set("database.properties.maximumPoolSize", Math.max(maximumPoolSizeOld, 10));
-    long minimumIdleOld = getConfig().getLong("database.properties.minimum-idle", 10);
+    final long minimumIdleOld = getConfig().getLong("database.properties.minimum-idle", 10);
     getConfig().set("database.properties.minimumIdle", Math.max(maximumPoolSizeOld, 10)); // keep same with maximumPoolSize
 
     getConfig().set("database.properties.validation-timeout", null);
@@ -151,7 +151,7 @@ public class ConfigUpdateScript {
   @UpdateScript(version = 1017)
   public void addQsToCommands() {
 
-    List<String> getAlias = getConfig().getStringList("custom-commands");
+    final List<String> getAlias = getConfig().getStringList("custom-commands");
     getAlias.add("qs");
     getConfig().set("custom-commands", getAlias);
   }
@@ -202,7 +202,7 @@ public class ConfigUpdateScript {
   @UpdateScript(version = 1009)
   public void deleteSqlitePlayerMapping() {
 
-    File f = new File(Util.getCacheFolder(), "player_mapping.db");
+    final File f = new File(Util.getCacheFolder(), "player_mapping.db");
     if(f.exists()) {
       f.delete();
     }

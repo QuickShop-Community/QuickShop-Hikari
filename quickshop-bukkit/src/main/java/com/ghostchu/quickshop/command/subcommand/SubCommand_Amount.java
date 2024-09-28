@@ -13,13 +13,13 @@ public class SubCommand_Amount implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Amount(QuickShop plugin) {
+  public SubCommand_Amount(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.wrong-args").send();
@@ -37,7 +37,7 @@ public class SubCommand_Amount implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").legacy()) : Collections.emptyList();
   }

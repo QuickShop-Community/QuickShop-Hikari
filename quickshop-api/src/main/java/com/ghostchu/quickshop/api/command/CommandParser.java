@@ -23,7 +23,7 @@ public class CommandParser {
    *
    * @param raw raw command string - e.g. benefit add a b c d -tag:1 -tag:2 -foo:bar
    */
-  public CommandParser(@NotNull String raw, boolean trimTail) {
+  public CommandParser(@NotNull final String raw, final boolean trimTail) {
 
     this.raw = raw;
     parse(trimTail);
@@ -61,7 +61,7 @@ public class CommandParser {
     return raw;
   }
 
-  private void parse(boolean trimTail) {
+  private void parse(final boolean trimTail) {
 
     explode(trimTail);
     parseColon();
@@ -69,16 +69,16 @@ public class CommandParser {
 
   private void parseColon() {
 
-    Iterator<String> it = args.iterator();
+    final Iterator<String> it = args.iterator();
     while(it.hasNext()) {
-      String waiting = it.next();
+      final String waiting = it.next();
       if(!waiting.startsWith("-")) {
         continue;
       }
       if(!waiting.contains(":")) {
         continue;
       }
-      String[] spilt = waiting.split(":", 2);
+      final String[] spilt = waiting.split(":", 2);
       if(spilt.length < 2) {
         continue;
       }
@@ -89,18 +89,18 @@ public class CommandParser {
         continue;
       }
       it.remove();
-      List<String> registered = colonArgs.getOrDefault(spilt[0], new ArrayList<>());
+      final List<String> registered = colonArgs.getOrDefault(spilt[0], new ArrayList<>());
       registered.add(spilt[1]);
       colonArgs.put(spilt[0].toLowerCase(Locale.ROOT), registered);
     }
   }
 
-  private void explode(boolean trimTail) {
+  private void explode(final boolean trimTail) {
 
     StringBuilder buffer = new StringBuilder();
-    for(char c : raw.toCharArray()) {
+    for(final char c : raw.toCharArray()) {
       if(c == ' ') {
-        String newArg = buffer.toString();
+        final String newArg = buffer.toString();
         buffer = new StringBuilder();
         this.args.add(newArg);
       } else {

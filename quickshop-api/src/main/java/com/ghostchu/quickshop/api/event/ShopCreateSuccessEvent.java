@@ -23,7 +23,7 @@ public class ShopCreateSuccessEvent extends AbstractQSEvent {
    * @param creator The player creating the shop, the player might offline/not exist if creating by
    *                a plugin.
    */
-  public ShopCreateSuccessEvent(@NotNull Shop shop, @NotNull QUser creator) {
+  public ShopCreateSuccessEvent(@NotNull final Shop shop, @NotNull final QUser creator) {
 
     this.shop = shop;
     this.creator = creator;

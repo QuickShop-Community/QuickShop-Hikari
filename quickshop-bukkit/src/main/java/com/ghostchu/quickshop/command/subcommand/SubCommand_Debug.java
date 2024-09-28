@@ -55,7 +55,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
   private final QuickShop plugin;
   private final Map<String, BiConsumer<CommandSender, List<String>>> subParamMapping = new HashMap<>();
 
-  public SubCommand_Debug(QuickShop plugin) {
+  public SubCommand_Debug(final QuickShop plugin) {
 
     this.plugin = plugin;
     subParamMapping.put("debug", (sender, subParams)->switchDebug(sender));
@@ -82,11 +82,11 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     subParamMapping.put("clean-display-entities", this::handleDisplayEntities);
   }
 
-  private void handleDisplayEntities(CommandSender sender, List<String> strings) {
+  private void handleDisplayEntities(final CommandSender sender, final List<String> strings) {
 
-    List<Entity> entities = new ArrayList<>();
-    for(World world : Bukkit.getWorlds()) {
-      for(Entity entity : world.getEntities()) {
+    final List<Entity> entities = new ArrayList<>();
+    for(final World world : Bukkit.getWorlds()) {
+      for(final Entity entity : world.getEntities()) {
         if(entity instanceof Item itemEntity) {
           if(AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
             entities.add(entity);
@@ -104,17 +104,17 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       switchDebug(sender);
       return;
     }
-    List<String> subParams = new ArrayList<>(parser.getArgs());
+    final List<String> subParams = new ArrayList<>(parser.getArgs());
     subParams.remove(0);
-    String arg = parser.getArgs().get(0);
+    final String arg = parser.getArgs().get(0);
 
-    BiConsumer<CommandSender, List<String>> executor = subParamMapping.get(arg);
+    final BiConsumer<CommandSender, List<String>> executor = subParamMapping.get(arg);
     if(executor == null) {
       plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
       return;
@@ -123,40 +123,40 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     executor.accept(sender, subParams);
   }
 
-  private void handleShopsDirtyAndSave(CommandSender sender, List<String> subParams) {
+  private void handleShopsDirtyAndSave(final CommandSender sender, final List<String> subParams) {
 
     plugin.getShopManager().getAllShops().forEach(Shop::setDirty);
     plugin.text().of(sender, "debug.marked-as-dirty").send();
   }
 
-  private void handleItemInfo(CommandSender sender, List<String> subParams) {
+  private void handleItemInfo(final CommandSender sender, final List<String> subParams) {
 
     if(!(sender instanceof Player player)) {
       return;
     }
-    String hand = player.getInventory().getItemInMainHand().getItemMeta().getAsString();
+    final String hand = player.getInventory().getItemInMainHand().getItemMeta().getAsString();
     plugin.text().of(sender, "debug.item-info-hand-as-string", hand, Hashing.crc32().hashString(hand, StandardCharsets.UTF_8).toString()).send();
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop != null) {
-      String store = shop.getItem().getItemMeta().getAsString();
+      final String store = shop.getItem().getItemMeta().getAsString();
       plugin.text().of(sender, "debug.item-info-store-as-string", store, Hashing.crc32().hashString(store, StandardCharsets.UTF_8).toString()).send();
-      boolean hand2Store = plugin.getItemMatcher().matches(player.getInventory().getItemInMainHand(), shop.getItem());
-      boolean store2Hand = plugin.getItemMatcher().matches(shop.getItem(), player.getInventory().getItemInMainHand());
+      final boolean hand2Store = plugin.getItemMatcher().matches(player.getInventory().getItemInMainHand(), shop.getItem());
+      final boolean store2Hand = plugin.getItemMatcher().matches(shop.getItem(), player.getInventory().getItemInMainHand());
       plugin.text().of(sender, "debug.item-matching-result", hand2Store, store2Hand).send();
     }
   }
 
-  private void handleSetHikariCPCapacity(CommandSender sender, List<String> subParams) {
+  private void handleSetHikariCPCapacity(final CommandSender sender, final List<String> subParams) {
 
-    int size = Integer.parseInt(subParams.get(0));
-    HikariDataSource hikariDataSource = (HikariDataSource)plugin.getSqlManager().getDataSource();
+    final int size = Integer.parseInt(subParams.get(0));
+    final HikariDataSource hikariDataSource = (HikariDataSource)plugin.getSqlManager().getDataSource();
     hikariDataSource.setMaximumPoolSize(size);
     hikariDataSource.setMinimumIdle(size);
     plugin.text().of(sender, "debug.hikari-cp-size-tweak", size).send();
     ;
   }
 
-  private void handleDbConnectionTest(CommandSender sender, List<String> subParams) {
+  private void handleDbConnectionTest(final CommandSender sender, final List<String> subParams) {
 
     plugin.text().of(sender, "debug.hikari-cp-testing").send();
     try {
@@ -182,16 +182,16 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
   }
 
-  private void handleStopDbQueries(CommandSender sender, List<String> subParams) {
+  private void handleStopDbQueries(final CommandSender sender, final List<String> subParams) {
 
-    long stopped = plugin.getSqlManager().getActiveQuery().values().size();
+    final long stopped = plugin.getSqlManager().getActiveQuery().values().size();
     plugin.getSqlManager().getActiveQuery().values().forEach(SQLQuery::close);
     plugin.text().of(sender, "debug.queries-stopped", stopped).send();
   }
 
-  private void handleDumpHikariCPStatus(CommandSender sender, List<String> subParams) {
+  private void handleDumpHikariCPStatus(final CommandSender sender, final List<String> subParams) {
 
-    HikariDataSource hikariDataSource = (HikariDataSource)plugin.getSqlManager().getDataSource();
+    final HikariDataSource hikariDataSource = (HikariDataSource)plugin.getSqlManager().getDataSource();
 
     sender.sendMessage("Catalog: " + hikariDataSource.getCatalog());
     sender.sendMessage("PoolName: " + hikariDataSource.getPoolName());
@@ -203,9 +203,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     sender.sendMessage("MaxLifeTime: " + hikariDataSource.getMaxLifetime());
     sender.sendMessage("ValidationTimeout: " + hikariDataSource.getValidationTimeout());
     try {
-      Field poolField = hikariDataSource.getClass().getDeclaredField("pool");
+      final Field poolField = hikariDataSource.getClass().getDeclaredField("pool");
       poolField.setAccessible(true);
-      HikariPool hikariPool = (HikariPool)poolField.get(hikariDataSource);
+      final HikariPool hikariPool = (HikariPool)poolField.get(hikariDataSource);
       sender.sendMessage("Active connections: " + hikariPool.getActiveConnections());
       sender.sendMessage("Idle connections: " + hikariPool.getIdleConnections());
       sender.sendMessage("Total connections: " + hikariPool.getTotalConnections());
@@ -215,21 +215,21 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
   }
 
-  private void handleToggleDbDebugMode(CommandSender sender, List<String> subParams) {
+  private void handleToggleDbDebugMode(final CommandSender sender, final List<String> subParams) {
 
     plugin.getSqlManager().setDebugMode(!plugin.getSqlManager().isDebugMode());
     sender.sendMessage("Db Debug Mode: " + plugin.getSqlManager().isDebugMode());
   }
 
-  private void handleDumpDbConnections(CommandSender sender, List<String> subParams) {
+  private void handleDumpDbConnections(final CommandSender sender, final List<String> subParams) {
 
     plugin.text().of(sender, "debug.queries-dumping").send();
-    for(Map.Entry<UUID, SQLQuery> e : plugin.getSqlManager().getActiveQuery().entrySet()) {
+    for(final Map.Entry<UUID, SQLQuery> e : plugin.getSqlManager().getActiveQuery().entrySet()) {
       sender.sendMessage(e.getKey().toString() + ": " + e.getValue());
     }
   }
 
-  private void handleDbManagerReset(CommandSender sender, List<String> subParams) {
+  private void handleDbManagerReset(final CommandSender sender, final List<String> subParams) {
 
     plugin.text().of(sender, "debug.restart-database-manager").send();
     EasySQL.shutdownManager(this.plugin.getSqlManager());
@@ -243,15 +243,15 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "debug.restart-database-manager-done").send();
   }
 
-  private void handleShopCacheResetting(CommandSender sender, List<String> subParams) {
+  private void handleShopCacheResetting(final CommandSender sender, final List<String> subParams) {
 
-    SimpleShopManager shopManager = (SimpleShopManager)plugin.getShopManager();
-    SimpleShopCache simpleShopCache = (SimpleShopCache)shopManager.getShopCache();
+    final SimpleShopManager shopManager = (SimpleShopManager)plugin.getShopManager();
+    final SimpleShopCache simpleShopCache = (SimpleShopCache)shopManager.getShopCache();
     simpleShopCache.getCaches().values().forEach(Cache::invalidateAll);
     sender.sendMessage("Cleared!");
   }
 
-  private void handleProperty(CommandSender sender, List<String> subParams) {
+  private void handleProperty(final CommandSender sender, final List<String> subParams) {
 
     if(subParams.isEmpty()) {
       plugin.text().of(sender, "debug.property-incorrect").send();
@@ -261,12 +261,12 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "debug.property-incorrect").send();
       return;
     }
-    String[] split = subParams.get(0).split("=");
+    final String[] split = subParams.get(0).split("=");
     if(split.length < 1) {
       plugin.text().of(sender, "debug.property-incorrect").send();
       return;
     }
-    String key = split[0];
+    final String key = split[0];
     String value = null;
     if(split.length > 1) {
       value = split[1];
@@ -279,14 +279,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       System.clearProperty(key);
       plugin.text().of(sender, "debug.property-removed", key).send();
     } else {
-      String oldOne = System.setProperty(key, value);
+      final String oldOne = System.setProperty(key, value);
       plugin.text().of(sender, "debug.property-changed", key, oldOne, value).send();
     }
   }
 
-  private void handleShopInfo(CommandSender sender, List<String> subParams) {
+  private void handleShopInfo(final CommandSender sender, final List<String> subParams) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
@@ -294,9 +294,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     MsgUtil.sendDirectMessage(sender, shop.toString());
   }
 
-  private void handleShopLoading(CommandSender sender, List<String> remove) {
+  private void handleShopLoading(final CommandSender sender, final List<String> remove) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
@@ -309,9 +309,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "debug.toggle-shop-loaded-status", shop.isLoaded());
   }
 
-  private void handleShopDebug(CommandSender sender, List<String> remove) {
+  private void handleShopDebug(final CommandSender sender, final List<String> remove) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
@@ -319,10 +319,10 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "debug.shop-internal-data", shop.toString()).send();
   }
 
-  private void handleShopsLoaderReload(CommandSender sender, List<String> remove) {
+  private void handleShopsLoaderReload(final CommandSender sender, final List<String> remove) {
 
     plugin.text().of(sender, "debug.force-shop-loader-reload").send();
-    List<Shop> allShops = plugin.getShopManager().getAllShops();
+    final List<Shop> allShops = plugin.getShopManager().getAllShops();
     plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops-from-memory", allShops.size()).send();
     plugin.getShopManager().getAllShops().forEach(shop->plugin.getShopManager().unloadShop(shop));
     plugin.text().of(sender, "debug.force-shop-loader-reload-reloading-shop-loader").send();
@@ -330,17 +330,17 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
   }
 
-  private void handleShopsReload(CommandSender sender, List<String> remove) {
+  private void handleShopsReload(final CommandSender sender, final List<String> remove) {
 
     plugin.text().of(sender, "debug.force-shop-reload").send();
-    List<Shop> shops = new ArrayList<>(plugin.getShopManager().getLoadedShops());
+    final List<Shop> shops = new ArrayList<>(plugin.getShopManager().getLoadedShops());
     shops.forEach(s->plugin.getShopManager().unloadShop(s));
     shops.forEach(s->plugin.getShopManager().loadShop(s));
     plugin.text().of(sender, "debug.force-shop-reload-complete", shops.size()).send();
   }
 
 
-  public void switchDebug(@NotNull CommandSender sender) {
+  public void switchDebug(@NotNull final CommandSender sender) {
 
     final boolean debug = plugin.getConfig().getBoolean("dev-mode");
 
@@ -360,7 +360,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "command.now-debuging").send();
   }
 
-  private void handleHandlerList(@NotNull CommandSender sender, List<String> remove) {
+  private void handleHandlerList(@NotNull final CommandSender sender, final List<String> remove) {
 
     if(remove.isEmpty()) {
       plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
@@ -369,9 +369,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     printHandlerList(sender, remove.get(0));
   }
 
-  private void handleSigns(@NotNull CommandSender sender) {
+  private void handleSigns(@NotNull final CommandSender sender) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
@@ -379,7 +379,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     shop.getSigns().forEach(sign->plugin.text().of(sender, "debug.sign-located", sign.getLocation()).send());
   }
 
-  private void handleDatabase(@NotNull CommandSender sender, @NotNull List<String> remove) {
+  private void handleDatabase(@NotNull final CommandSender sender, @NotNull final List<String> remove) {
 
     if(remove.isEmpty()) {
       plugin.text().of("debug.operation-missing");
@@ -388,7 +388,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "debug.operation-invalid", remove.get(0)).send();
   }
 
-  private void handleSignsUpdate(CommandSender sender, List<String> remove) {
+  private void handleSignsUpdate(final CommandSender sender, final List<String> remove) {
 
     if(remove.isEmpty()) {
       plugin.text().of(sender, "debug.update-player-shops-signs-no-username-given").send();
@@ -401,9 +401,9 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         return;
       }
       plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
-      List<Shop> shops = plugin.getShopManager().getAllShops(uuid);
+      final List<Shop> shops = plugin.getShopManager().getAllShops(uuid);
       plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
-      BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
+      final BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
       updateExecutor.addTasks(shops);
       plugin.text().of(sender, "debug.update-player-shops-task-started", shops.size()).send();
       updateExecutor.startHandle(plugin.getJavaPlugin(), Shop::setSignText).whenComplete((aVoid, th)->{
@@ -411,14 +411,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
           plugin.text().of(sender, "internal-error", th.getMessage()).send();
           return;
         }
-        long usedTime = updateExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+        final long usedTime = updateExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
         plugin.text().of(sender, "debug.update-player-shops-complete", usedTime);
       });
     });
 
   }
 
-  public void printHandlerList(@NotNull CommandSender sender, String event) {
+  public void printHandlerList(@NotNull final CommandSender sender, final String event) {
 
     try {
       final Class<?> clazz = Class.forName(event);
@@ -426,7 +426,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       final Object[] obj = new Object[0];
       final HandlerList list = (HandlerList)method.invoke(null, obj);
 
-      for(RegisteredListener listener1 : list.getRegisteredListeners()) {
+      for(final RegisteredListener listener1 : list.getRegisteredListeners()) {
         MsgUtil.sendDirectMessage(sender,
                                   LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA
                                                                                         + listener1.getPlugin().getName()
@@ -444,7 +444,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return List.copyOf(subParamMapping.keySet()).stream().filter(s->s.startsWith(parser.getArgs().get(0))).toList();

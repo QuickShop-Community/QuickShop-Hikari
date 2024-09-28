@@ -17,7 +17,7 @@ public class ShopPersistentData {
   private final int z;
   private final boolean setup;
 
-  public ShopPersistentData(int x, int y, int z, String world, boolean setup) {
+  public ShopPersistentData(final int x, final int y, final int z, final String world, final boolean setup) {
 
     this.x = x;
     this.y = y;

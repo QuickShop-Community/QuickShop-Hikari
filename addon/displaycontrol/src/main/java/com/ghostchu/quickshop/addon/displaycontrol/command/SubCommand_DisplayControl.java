@@ -21,31 +21,31 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
   private final QuickShop qs;
   private final Main plugin;
 
-  public SubCommand_DisplayControl(QuickShop qs, Main plugin) {
+  public SubCommand_DisplayControl(final QuickShop qs, final Main plugin) {
 
     this.qs = qs;
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       qs.text().of(sender, "command-incorrect", "/quickshop displaycontrol <auto/enable/disable>").send();
       return;
     }
     DisplayOption option = DisplayOption.AUTO;
-    String userInput = parser.getArgs().get(0).trim();
+    final String userInput = parser.getArgs().get(0).trim();
     if("enable".equalsIgnoreCase(userInput)) {
       option = DisplayOption.ENABLED;
     }
     if("disable".equalsIgnoreCase(userInput)) {
       option = DisplayOption.DISABLED;
     }
-    DisplayOption optionFinCopy = option;
+    final DisplayOption optionFinCopy = option;
     Util.asyncThreadRun(()->{
       try {
-        Integer i = plugin.getDatabaseHelper().setDisplayDisableForPlayer(sender.getUniqueId(), optionFinCopy);
+        final Integer i = plugin.getDatabaseHelper().setDisplayDisableForPlayer(sender.getUniqueId(), optionFinCopy);
         Log.debug("Execute DisplayToggle with id " + i + " affected");
         qs.text().of(sender, "addon.displaycontrol.toggle", optionFinCopy.name()).send();
       } catch(SQLException e) {
@@ -57,7 +57,7 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
 
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return List.of("enable", "disable");

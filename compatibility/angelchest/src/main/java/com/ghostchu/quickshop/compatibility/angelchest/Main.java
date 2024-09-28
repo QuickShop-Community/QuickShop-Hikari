@@ -20,18 +20,18 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopPreCreateEvent event) {
 
-    AngelChest ac = angelChestPlugin.getAngelChestAtBlock(event.getLocation().getBlock());
+    final AngelChest ac = angelChestPlugin.getAngelChestAtBlock(event.getLocation().getBlock());
     if(ac != null) {
       event.setCancelled(true, (Component)null);
     }
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(ShopCreateEvent event) {
+  public void onPreCreation(final ShopCreateEvent event) {
 
-    AngelChest ac = angelChestPlugin.getAngelChestAtBlock(event.getShop().getLocation().getBlock());
+    final AngelChest ac = angelChestPlugin.getAngelChestAtBlock(event.getShop().getLocation().getBlock());
     if(ac != null) {
       event.setCancelled(true, "You can't create a shop on a AngelChest block!");
     }

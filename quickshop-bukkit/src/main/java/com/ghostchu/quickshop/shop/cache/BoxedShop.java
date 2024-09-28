@@ -10,7 +10,7 @@ public class BoxedShop {
   @Nullable
   private final WeakReference<Shop> shopWeakRef;
 
-  public BoxedShop(@Nullable Shop shop) {
+  public BoxedShop(@Nullable final Shop shop) {
 
     if(shop != null) {
       this.shopWeakRef = new WeakReference<>(shop);
@@ -28,7 +28,7 @@ public class BoxedShop {
   public boolean isValid() {
 
     if(shopWeakRef != null) {
-      Shop shop = shopWeakRef.get();
+      final Shop shop = shopWeakRef.get();
       if(shop != null) {
         return shop.isValid();
       }

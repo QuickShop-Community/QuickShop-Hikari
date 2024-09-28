@@ -7,7 +7,7 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
   private int stock;
   private int space;
 
-  public SimpleShopInventoryCountCache(int stock, int space) {
+  public SimpleShopInventoryCountCache(final int stock, final int space) {
 
     this.stock = stock;
     this.space = space;
@@ -19,7 +19,7 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
     return stock;
   }
 
-  public void setStock(int stock) {
+  public void setStock(final int stock) {
 
     this.stock = stock;
   }
@@ -30,7 +30,7 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
     return space;
   }
 
-  public void setSpace(int space) {
+  public void setSpace(final int space) {
 
     this.space = space;
   }

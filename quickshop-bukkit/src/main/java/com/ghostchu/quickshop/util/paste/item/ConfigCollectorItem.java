@@ -30,9 +30,9 @@ public class ConfigCollectorItem implements SubPasteItem {
     file.add(new File("spigot.yml"));
     file.add(new File("paper.yml"));
     // 1.19 and up paper configuration
-    File newConfigFolder = new File("config");
+    final File newConfigFolder = new File("config");
     if(newConfigFolder.exists() && newConfigFolder.isDirectory()) {
-      File[] filesInsideConfig = newConfigFolder.listFiles((dir, name)->name.endsWith(".yml") || name.endsWith(".yaml") || name.endsWith(".json") || name.endsWith(".toml"));
+      final File[] filesInsideConfig = newConfigFolder.listFiles((dir, name)->name.endsWith(".yml") || name.endsWith(".yaml") || name.endsWith(".json") || name.endsWith(".toml"));
       if(filesInsideConfig != null) {
         Collections.addAll(file, filesInsideConfig);
       }
@@ -58,9 +58,9 @@ public class ConfigCollectorItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    StringBuilder htmlBuilder = new StringBuilder();
-    for(File buildFile : file) {
-      String fileContent = readBuildFile(buildFile);
+    final StringBuilder htmlBuilder = new StringBuilder();
+    for(final File buildFile : file) {
+      final String fileContent = readBuildFile(buildFile);
       if(readBuildFile(buildFile) != null) // Hide the file in paste if file doesn't exist
       {
         htmlBuilder.append(fileContent);
@@ -70,7 +70,7 @@ public class ConfigCollectorItem implements SubPasteItem {
   }
 
   @Nullable
-  private String readBuildFile(@NotNull File file) {
+  private String readBuildFile(@NotNull final File file) {
 
     if(!file.exists()) {
       return null;
@@ -83,7 +83,7 @@ public class ConfigCollectorItem implements SubPasteItem {
 
   private String censor(@NotNull String string) {
 
-    String seedList = """
+    final String seedList = """
                       patch_red_mushroom
                       fossil_diamonds
                       seagrass_slightly_less_short
@@ -324,9 +324,9 @@ public class ConfigCollectorItem implements SubPasteItem {
                       buried_treasure
                       mineshaft
                                       """;
-    String[] paperSeedTypes = seedList.trim().split("\n");
-    List<String> seedType = Arrays.stream(paperSeedTypes).sorted((o1, o2)->{
-      int i = Integer.compare(o2.length(), o1.length());
+    final String[] paperSeedTypes = seedList.trim().split("\n");
+    final List<String> seedType = Arrays.stream(paperSeedTypes).sorted((o1, o2)->{
+      final int i = Integer.compare(o2.length(), o1.length());
       if(i == 0) {
         return o2.compareTo(o1);
       }
@@ -348,7 +348,7 @@ public class ConfigCollectorItem implements SubPasteItem {
             .replaceAll("key:.*", "key: ******")
             .replaceAll("seed=.*", "seed=******")
             .replaceAll("port=.*", "port=******");
-    for(String paperSeedType : seedType) {
+    for(final String paperSeedType : seedType) {
       string = string.replaceAll(paperSeedType + ":.*", "seed-protected: ******");
     }
     return string;
@@ -356,18 +356,18 @@ public class ConfigCollectorItem implements SubPasteItem {
   }
 
   @NotNull
-  private String readFile(@NotNull File file) {
+  private String readFile(@NotNull final File file) {
 
     if(!file.exists()) {
       return "Fail: No such file (" + CommonUtil.getRelativePath(file) + ")";
     }
 
     try {
-      List<String> lines = Files.readAllLines(file.toPath());
-      StringJoiner joiner = new StringJoiner("\n");
+      final List<String> lines = Files.readAllLines(file.toPath());
+      final StringJoiner joiner = new StringJoiner("\n");
       lines.forEach(joiner::add);
       return joiner.toString();
-    } catch(IOException e) {
+    } catch(final IOException e) {
       return "Fail: " + e.getMessage();
     }
   }

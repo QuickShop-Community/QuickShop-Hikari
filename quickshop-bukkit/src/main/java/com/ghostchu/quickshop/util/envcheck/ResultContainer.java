@@ -9,7 +9,7 @@ public class ResultContainer {
   private final CheckResult result;
   private String resultMessage;
 
-  public ResultContainer(@NotNull CheckResult result, @Nullable String resultMessage) {
+  public ResultContainer(@NotNull final CheckResult result, @Nullable final String resultMessage) {
 
     this.result = result;
     this.resultMessage = resultMessage;

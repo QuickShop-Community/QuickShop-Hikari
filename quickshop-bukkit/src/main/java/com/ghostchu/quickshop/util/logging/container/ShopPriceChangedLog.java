@@ -11,7 +11,7 @@ public class ShopPriceChangedLog {
   private double oldPrice;
   private double newPrice;
 
-  public ShopPriceChangedLog(ShopInfoStorage shop, double oldPrice, double newPrice) {
+  public ShopPriceChangedLog(final ShopInfoStorage shop, final double oldPrice, final double newPrice) {
 
     this.shop = shop;
     this.oldPrice = oldPrice;

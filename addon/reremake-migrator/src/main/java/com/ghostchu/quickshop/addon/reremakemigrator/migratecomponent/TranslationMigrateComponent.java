@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class TranslationMigrateComponent extends AbstractMigrateComponent {
 
-  public TranslationMigrateComponent(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender) {
+  public TranslationMigrateComponent(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake, final CommandSender sender) {
 
     super(main, hikari, reremake, sender);
   }
@@ -27,18 +27,18 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
   public boolean migrate() {
 
     text("modules.translation.start-migrate").send();
-    File reremakeOverrideFolder = new File(getReremake().getDataFolder(), "overrides");
+    final File reremakeOverrideFolder = new File(getReremake().getDataFolder(), "overrides");
     if(!reremakeOverrideFolder.exists()) {
       return true;
     }
-    File[] fileTree = reremakeOverrideFolder.listFiles();
+    final File[] fileTree = reremakeOverrideFolder.listFiles();
     if(fileTree == null) {
       getHikari().logger().warn("Skipping translation migrate (no file tree)");
       return true;
     }
 
-    for(File langFolder : new ProgressMonitor<>(fileTree, (triple)->text("modules.translation.migrate-entry", triple.getRight().getName(), triple.getLeft(), triple.getMiddle()))) {
-      File langJsonFile = new File(langFolder, "messages.json");
+    for(final File langFolder : new ProgressMonitor<>(fileTree, (triple)->text("modules.translation.migrate-entry", triple.getRight().getName(), triple.getLeft(), triple.getMiddle()))) {
+      final File langJsonFile = new File(langFolder, "messages.json");
       if(!langJsonFile.exists()) {
         continue;
       }
@@ -51,25 +51,25 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
     return true;
   }
 
-  private void migrateFile(File langFolder, File langJsonFile) throws IOException {
+  private void migrateFile(final File langFolder, final File langJsonFile) throws IOException {
 
-    File hikariOverrideFolder = new File(getHikari().getDataFolder(), "overrides");
-    File targetLangFolder = new File(hikariOverrideFolder, langFolder.getName());
+    final File hikariOverrideFolder = new File(getHikari().getDataFolder(), "overrides");
+    final File targetLangFolder = new File(hikariOverrideFolder, langFolder.getName());
     if(!targetLangFolder.exists()) {
       if(!targetLangFolder.mkdirs()) {
         throw new IOException("Failed to create lang " + langFolder.getName() + " directory.");
       }
     }
-    JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(langJsonFile);
+    final JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(langJsonFile);
     YamlConfiguration yamlConfiguration = new YamlConfiguration();
-    File targetLangFile = new File(targetLangFolder, langJsonFile.getName().replace(".json", ".yml"));
+    final File targetLangFile = new File(targetLangFolder, langJsonFile.getName().replace(".json", ".yml"));
     if(targetLangFile.exists()) {
       yamlConfiguration = YamlConfiguration.loadConfiguration(targetLangFile);
     }
     getHikari().logger().info("Migrating the Reremake language file: " + langJsonFile.getAbsolutePath() + "...");
-    Set<String> keys = jsonConfiguration.getKeys(true);
+    final Set<String> keys = jsonConfiguration.getKeys(true);
     text("modules.translation.copy-values", targetLangFolder.getName(), keys.size()).send();
-    for(String key : new ProgressMonitor<>(keys, (triple)->text("modules.translation.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
+    for(final String key : new ProgressMonitor<>(keys, (triple)->text("modules.translation.copying-value", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
       if("_comment".equals(key)) {
         continue;
       }
@@ -77,17 +77,17 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
         continue;
       }
       if(jsonConfiguration.isString(key)) {
-        String originalValue = jsonConfiguration.getString(key);
-        Component component = MineDown.parse(originalValue).compact();
-        String convertedValue = MiniMessage.miniMessage().serialize(component);
+        final String originalValue = jsonConfiguration.getString(key);
+        final Component component = MineDown.parse(originalValue).compact();
+        final String convertedValue = MiniMessage.miniMessage().serialize(component);
         yamlConfiguration.set(key, convertedValue);
       } else {
         if(jsonConfiguration.isList(key)) {
-          List<String> list = jsonConfiguration.getStringList(key);
-          List<String> convert = new ArrayList<>();
+          final List<String> list = jsonConfiguration.getStringList(key);
+          final List<String> convert = new ArrayList<>();
           list.forEach(s->{
-            Component component = MineDown.parse(s).compact();
-            String convertedValue = MiniMessage.miniMessage().serialize(component);
+            final Component component = MineDown.parse(s).compact();
+            final String convertedValue = MiniMessage.miniMessage().serialize(component);
             convert.add(convertedValue);
           });
           yamlConfiguration.set(key, convert);

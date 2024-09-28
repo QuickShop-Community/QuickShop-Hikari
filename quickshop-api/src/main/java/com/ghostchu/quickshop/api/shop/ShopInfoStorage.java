@@ -28,7 +28,7 @@ public class ShopInfoStorage {
   private final String symbolLink;
   private final Map<UUID, String> permission;
 
-  public ShopInfoStorage(String world, BlockPos position, QUser owner, double price, String item, int unlimited, int shopType, String extra, String currency, boolean disableDisplay, QUser taxAccount, String inventoryWrapperName, String symbolLink, Map<UUID, String> permission) {
+  public ShopInfoStorage(final String world, final BlockPos position, final QUser owner, final double price, final String item, final int unlimited, final int shopType, final String extra, final String currency, final boolean disableDisplay, final QUser taxAccount, final String inventoryWrapperName, final String symbolLink, final Map<UUID, String> permission) {
 
     this.world = world;
     this.position = position;

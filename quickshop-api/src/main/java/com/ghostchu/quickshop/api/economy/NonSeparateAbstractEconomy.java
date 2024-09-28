@@ -12,9 +12,9 @@ public abstract class NonSeparateAbstractEconomy extends AbstractEconomy {
 
 
   @Override
-  public boolean withdraw(@NotNull QUser qUser, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final QUser qUser, final double amount, @NotNull final World world, @Nullable final String currency) {
     // Handle UUID - Player
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
       return withdraw(uuid, amount, world, currency);
     }
@@ -31,9 +31,9 @@ public abstract class NonSeparateAbstractEconomy extends AbstractEconomy {
   }
 
   @Override
-  public boolean deposit(@NotNull QUser qUser, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final QUser qUser, final double amount, @NotNull final World world, @Nullable final String currency) {
     // Handle UUID - Player
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
       return deposit(uuid, amount, world, currency);
     }
@@ -50,9 +50,9 @@ public abstract class NonSeparateAbstractEconomy extends AbstractEconomy {
   }
 
   @Override
-  public double getBalance(@NotNull QUser qUser, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final QUser qUser, @NotNull final World world, @Nullable final String currency) {
     // Handle UUID - Player
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid != null) {
       return getBalance(uuid, world, currency);
     }
@@ -186,7 +186,7 @@ public abstract class NonSeparateAbstractEconomy extends AbstractEconomy {
    *
    * @return successed
    */
-  public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean transfer(@NotNull final UUID from, @NotNull final UUID to, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -204,7 +204,7 @@ public abstract class NonSeparateAbstractEconomy extends AbstractEconomy {
     return false;
   }
 
-  public boolean transfer(@NotNull String from, @NotNull String to, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean transfer(@NotNull final String from, @NotNull final String to, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;

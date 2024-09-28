@@ -34,17 +34,17 @@ public class Log {
     DISABLE_LOCATION_RECORDING = Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.util.logger."));
   }
 
-  public static void cron(@NotNull String message) {
+  public static void cron(@NotNull final String message) {
 
     cron(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+  public static void cron(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry;
+      final Record recordEntry;
       if(DISABLE_LOCATION_RECORDING) {
         recordEntry = new Record(level, Type.CRON, message, null);
       } else {
@@ -58,7 +58,7 @@ public class Log {
 
   }
 
-  private static void debugStdOutputs(Record recordEntry) {
+  private static void debugStdOutputs(final Record recordEntry) {
 
     recordEntry.generate().thenAccept(log->{
       if(Util.isDevMode()) {
@@ -67,22 +67,22 @@ public class Log {
     });
   }
 
-  public static void cron(@NotNull Level level, @NotNull String message) {
+  public static void cron(@NotNull final Level level, @NotNull final String message) {
 
     cron(level, message, Caller.create());
   }
 
-  public static void debug(@NotNull String message) {
+  public static void debug(@NotNull final String message) {
 
     debug(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+  public static void debug(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry;
+      final Record recordEntry;
       if(DISABLE_LOCATION_RECORDING) {
         recordEntry = new Record(level, Type.DEBUG, message, null);
       } else {
@@ -95,23 +95,23 @@ public class Log {
     }
   }
 
-  public static void debug(@NotNull Level level, @NotNull String message) {
+  public static void debug(@NotNull final Level level, @NotNull final String message) {
 
     debug(level, message, Caller.create());
   }
 
 
-  public static void privacy(@NotNull String message) {
+  public static void privacy(@NotNull final String message) {
 
     privacy(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void privacy(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+  public static void privacy(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry;
+      final Record recordEntry;
       if(DISABLE_LOCATION_RECORDING) {
         recordEntry = new Record(level, Type.PRIVACY, message, null);
       } else {
@@ -124,17 +124,17 @@ public class Log {
     }
   }
 
-  public static void privacy(@NotNull Level level, @NotNull String message) {
+  public static void privacy(@NotNull final Level level, @NotNull final String message) {
 
     privacy(level, message, Caller.create());
   }
 
 
-  public static void performance(@NotNull Level level, @NotNull String message, @NotNull Caller caller) {
+  public static void performance(@NotNull final Level level, @NotNull final String message, @NotNull final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry = new Record(level, Type.PERFORMANCE, message, caller);
+      final Record recordEntry = new Record(level, Type.PERFORMANCE, message, caller);
       LOGGER_BUFFER.offer(recordEntry);
       debugStdOutputs(recordEntry);
     } finally {
@@ -154,7 +154,7 @@ public class Log {
   }
 
   @NotNull
-  public static List<Record> fetchLogs(@NotNull Type type) {
+  public static List<Record> fetchLogs(@NotNull final Type type) {
 
     LOCK.readLock().lock();
     try {
@@ -165,12 +165,12 @@ public class Log {
   }
 
   @NotNull
-  public static List<Record> fetchLogsExclude(@NotNull Type... excludes) {
+  public static List<Record> fetchLogsExclude(@NotNull final Type... excludes) {
 
     LOCK.readLock().lock();
     try {
-      List<Record> records = new ArrayList<>();
-      for(Record recordEntry : LOGGER_BUFFER) {
+      final List<Record> records = new ArrayList<>();
+      for(final Record recordEntry : LOGGER_BUFFER) {
         if(ArrayUtils.contains(excludes, recordEntry.getType())) {
           continue;
         }
@@ -183,7 +183,7 @@ public class Log {
   }
 
   @NotNull
-  public static List<Record> fetchLogsLevel(@NotNull Type type, @NotNull Level level) {
+  public static List<Record> fetchLogsLevel(@NotNull final Type type, @NotNull final Level level) {
 
     LOCK.readLock().lock();
     try {
@@ -193,17 +193,17 @@ public class Log {
     }
   }
 
-  public static void permission(@NotNull String message) {
+  public static void permission(@NotNull final String message) {
 
     permission(Level.INFO, message, Caller.create(3, false));
   }
 
   @ApiStatus.Internal
-  public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+  public static void permission(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry;
+      final Record recordEntry;
       if(DISABLE_LOCATION_RECORDING) {
         recordEntry = new Record(level, Type.PERMISSION, message, null);
       } else {
@@ -217,22 +217,22 @@ public class Log {
 
   }
 
-  public static void permission(@NotNull Level level, @NotNull String message) {
+  public static void permission(@NotNull final Level level, @NotNull final String message) {
 
     permission(level, message, Caller.create(3, false));
   }
 
-  public static void timing(@NotNull String operation, @NotNull Timer timer) {
+  public static void timing(@NotNull final String operation, @NotNull final Timer timer) {
 
     timing(Level.INFO, operation, timer, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable Caller caller) {
+  public static void timing(@NotNull final Level level, @NotNull final String operation, @NotNull final Timer timer, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry;
+      final Record recordEntry;
       if(DISABLE_LOCATION_RECORDING) {
         recordEntry = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
       } else {
@@ -246,17 +246,17 @@ public class Log {
 
   }
 
-  public static void transaction(@NotNull String message) {
+  public static void transaction(@NotNull final String message) {
 
     transaction(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+  public static void transaction(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
-      Record recordEntry;
+      final Record recordEntry;
       if(DISABLE_LOCATION_RECORDING) {
         recordEntry = new Record(level, Type.TRANSACTION, message, null);
       } else {
@@ -269,7 +269,7 @@ public class Log {
     }
   }
 
-  public static void transaction(@NotNull Level level, @NotNull String message) {
+  public static void transaction(@NotNull final Level level, @NotNull final String message) {
 
     transaction(level, message, Caller.create());
   }
@@ -298,7 +298,7 @@ public class Log {
     @Nullable
     private final Caller caller;
 
-    public Record(@NotNull Level level, @NotNull Type type, @NotNull String message, @Nullable Caller caller) {
+    public Record(@NotNull final Level level, @NotNull final Type type, @NotNull final String message, @Nullable final Caller caller) {
 
       this.level = level;
       this.type = type;
@@ -309,10 +309,10 @@ public class Log {
     public CompletableFuture<String> generate() {
 
       return CompletableFuture.supplyAsync(()->{
-        StringBuilder sb = new StringBuilder();
-        Log.Caller caller;
+        final StringBuilder sb = new StringBuilder();
+        final Log.Caller caller;
         caller = Objects.requireNonNullElseGet(this.caller, ()->new Caller("<NO RECORDING>", "<NO RECORDING>", "<NO RECORDING>", -1));
-        String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
+        final String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
         sb.append("[");
         sb.append(caller.getThreadName());
         sb.append("/");
@@ -346,7 +346,7 @@ public class Log {
     private final String methodName;
     private final int lineNumber;
 
-    public Caller(@NotNull String threadName, @NotNull String className, @NotNull String methodName, int lineNumber) {
+    public Caller(@NotNull final String threadName, @NotNull final String className, @NotNull final String methodName, final int lineNumber) {
 
       this.threadName = threadName;
       this.className = className;
@@ -367,13 +367,13 @@ public class Log {
     }
 
     @NotNull
-    public static Caller createSync(boolean force) {
+    public static Caller createSync(final boolean force) {
 
       return create(3, force);
     }
 
     @NotNull
-    public static Caller create(int steps, boolean force) {
+    public static Caller create(final int steps, final boolean force) {
 
       if(!force) {
         if("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
@@ -382,10 +382,10 @@ public class Log {
       }
       return STACK_WALKER.walk(stream->stream.skip(steps).findFirst()
               .map(frame->{
-                String threadName = Thread.currentThread().getName();
-                String className = frame.getClassName();
-                String methodName = frame.getMethodName();
-                int codeLine = frame.getLineNumber();
+                final String threadName = Thread.currentThread().getName();
+                final String className = frame.getClassName();
+                final String methodName = frame.getMethodName();
+                final int codeLine = frame.getLineNumber();
                 return new Caller(threadName, className, methodName, codeLine);
               })
               .orElseGet(()->new Caller("<INVALID>", "<INVALID>", "<INVALID>", -1)));

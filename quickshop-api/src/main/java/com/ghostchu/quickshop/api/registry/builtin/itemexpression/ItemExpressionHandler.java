@@ -22,7 +22,7 @@ public interface ItemExpressionHandler extends Comparable<ItemExpressionHandler>
   int hashCode();
 
   @Override
-  default int compareTo(@NotNull ItemExpressionHandler o) {
+  default int compareTo(@NotNull final ItemExpressionHandler o) {
 
     return (getClass().getName() + getPrefix()).compareTo(o.getClass().getName() + o.getPrefix());
   }

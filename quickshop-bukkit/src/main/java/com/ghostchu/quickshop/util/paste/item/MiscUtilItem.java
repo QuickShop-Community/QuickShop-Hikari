@@ -15,9 +15,9 @@ public class MiscUtilItem implements SubPasteItem {
   @Override
   public @NotNull String genBody() {
 
-    StringJoiner joiner = new StringJoiner("<br/>");
+    final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<h5>General</h5>");
-    HTMLTable general = new HTMLTable(2, true);
+    final HTMLTable general = new HTMLTable(2, true);
     general.insert("Dye Color", String.valueOf(Util.getDyeColor()));
     general.insert("BungeeCord", Util.checkIfBungee());
     general.insert("Cache Folder", Util.getCacheFolder());
@@ -27,16 +27,16 @@ public class MiscUtilItem implements SubPasteItem {
     general.insert("Dev Mode (Debug Mode)", Util.isDevMode());
     joiner.add(general.render());
     joiner.add("<h5>Shopable Types</h5>");
-    HTMLTable shopable = new HTMLTable(2);
+    final HTMLTable shopable = new HTMLTable(2);
     shopable.setTableTitle("Bukkit Material", "Minecraft NamespacedKey");
-    for(Material material : Util.getShopables()) {
+    for(final Material material : Util.getShopables()) {
       shopable.insert(material.name(), material.getKey().toString());
     }
     joiner.add(shopable.render());
     joiner.add("<h5>Custom StackSize</h5>");
-    HTMLTable customStackSize = new HTMLTable(2);
+    final HTMLTable customStackSize = new HTMLTable(2);
     customStackSize.setTableTitle("Bukkit Material", "Minecraft NamespacedKey", "Override StackSize");
-    for(Map.Entry<Material, Integer> entry : Util.getCustomStacksize().entrySet()) {
+    for(final Map.Entry<Material, Integer> entry : Util.getCustomStacksize().entrySet()) {
       customStackSize.insert(entry.getKey().name(), entry.getKey().getKey().toString(), entry.getValue());
     }
     joiner.add(customStackSize.render());

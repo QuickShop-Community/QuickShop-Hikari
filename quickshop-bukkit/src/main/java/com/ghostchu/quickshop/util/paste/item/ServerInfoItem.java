@@ -24,7 +24,7 @@ public class ServerInfoItem implements SubPasteItem {
 
   public ServerInfoItem() {
 
-    QuickShop plugin = QuickShop.getInstance();
+    final QuickShop plugin = QuickShop.getInstance();
     this.serverName = Bukkit.getServer().getName();
     this.build = Bukkit.getServer().getVersion();
     this.nmsVersion = ReflectFactory.getNMSVersion() + "/" + plugin.getPlatform().getMinecraftVersion();
@@ -65,7 +65,7 @@ public class ServerInfoItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    HTMLTable table = new HTMLTable(2, true);
+    final HTMLTable table = new HTMLTable(2, true);
     table.insert("Server Name", serverName);
     table.insert("Build", build);
     table.insert("NMS Version", nmsVersion);

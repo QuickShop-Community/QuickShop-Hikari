@@ -21,16 +21,16 @@ public class DiscordSRVWrapper implements JDAWrapper {
   }
 
   @Override
-  public boolean isBind(@NotNull UUID player) {
+  public boolean isBind(@NotNull final UUID player) {
 
-    String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
+    final String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
     return discordId != null;
   }
 
   @Override
-  public void sendMessage(@NotNull UUID player, @NotNull String message) {
+  public void sendMessage(@NotNull final UUID player, @NotNull final String message) {
 
-    String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
+    final String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
     if(discordId == null) {
       return;
     }
@@ -40,9 +40,9 @@ public class DiscordSRVWrapper implements JDAWrapper {
 
 
   @Override
-  public void sendMessage(@NotNull UUID player, @NotNull MessageEmbed message) {
+  public void sendMessage(@NotNull final UUID player, @NotNull final MessageEmbed message) {
 
-    String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
+    final String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
     if(discordId == null) {
       return;
     }
@@ -50,9 +50,9 @@ public class DiscordSRVWrapper implements JDAWrapper {
   }
 
   @Override
-  public void sendChannelMessage(@NotNull String channelId, @NotNull String message) {
+  public void sendChannelMessage(@NotNull final String channelId, @NotNull final String message) {
 
-    GuildChannel channel = DiscordSRV.getPlugin().getJda().getGuildChannelById(channelId);
+    final GuildChannel channel = DiscordSRV.getPlugin().getJda().getGuildChannelById(channelId);
     if(channel == null) {
       return;
     }
@@ -64,9 +64,9 @@ public class DiscordSRVWrapper implements JDAWrapper {
   }
 
   @Override
-  public void sendChannelMessage(@NotNull String channelId, @NotNull MessageEmbed message) {
+  public void sendChannelMessage(@NotNull final String channelId, @NotNull final MessageEmbed message) {
 
-    GuildChannel channel = DiscordSRV.getPlugin().getJda().getGuildChannelById(channelId);
+    final GuildChannel channel = DiscordSRV.getPlugin().getJda().getGuildChannelById(channelId);
     if(channel == null) {
       return;
     }

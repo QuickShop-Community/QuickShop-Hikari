@@ -120,7 +120,7 @@ public interface EconomyTransaction {
      *
      * @return Does commit event has been cancelled
      */
-    default boolean onCommit(@NotNull EconomyTransaction economyTransaction) {
+    default boolean onCommit(@NotNull final EconomyTransaction economyTransaction) {
 
       return true;
     }
@@ -131,7 +131,7 @@ public interface EconomyTransaction {
      *
      * @param economyTransaction Transaction
      */
-    default void onFailed(@NotNull EconomyTransaction economyTransaction) {
+    default void onFailed(@NotNull final EconomyTransaction economyTransaction) {
 
     }
 
@@ -140,7 +140,7 @@ public interface EconomyTransaction {
      *
      * @param economyTransaction Transaction
      */
-    default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+    default void onSuccess(@NotNull final EconomyTransaction economyTransaction) {
 
     }
 
@@ -150,7 +150,7 @@ public interface EconomyTransaction {
      *
      * @param economyTransaction Transaction
      */
-    default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
+    default void onTaxFailed(@NotNull final EconomyTransaction economyTransaction) {
 
     }
 

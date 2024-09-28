@@ -18,7 +18,7 @@ public class DisplaySystemItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    HTMLTable table = new HTMLTable(2, true);
+    final HTMLTable table = new HTMLTable(2, true);
     table.insert("Display Enabled", plugin.isDisplayEnabled());
     table.insert("Display Provider", AbstractDisplayItem.getNowUsing().name());
     table.insert("VirtualDisplayItem Status", !AbstractDisplayItem.isVirtualDisplayDoesntWork());

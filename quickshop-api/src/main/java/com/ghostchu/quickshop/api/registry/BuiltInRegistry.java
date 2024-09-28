@@ -5,7 +5,7 @@ public enum BuiltInRegistry {
 
   private final String name;
 
-  BuiltInRegistry(String name) {
+  BuiltInRegistry(final String name) {
 
     this.name = name;
   }

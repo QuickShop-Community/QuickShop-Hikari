@@ -18,11 +18,11 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onRemove(EntityRemoveEvent event) {
+  public void onRemove(final EntityRemoveEvent event) {
 
-    Iterator<Entity> entityListIt = event.getEntityList().iterator();
+    final Iterator<Entity> entityListIt = event.getEntityList().iterator();
     while(entityListIt.hasNext()) {
-      Entity entity = entityListIt.next();
+      final Entity entity = entityListIt.next();
       if(entity instanceof Item item) {
         if(AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack())) {
           entityListIt.remove();

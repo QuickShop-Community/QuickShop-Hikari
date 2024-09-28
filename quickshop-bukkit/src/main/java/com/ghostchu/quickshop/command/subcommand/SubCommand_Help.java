@@ -16,20 +16,20 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Help(QuickShop plugin) {
+  public SubCommand_Help(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
   public void onCommand(
-          @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     sendHelp(sender, commandLabel);
   }
 
 
-  private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
+  private void sendHelp(@NotNull final CommandSender s, @NotNull final String commandLabel) {
 
     plugin.text().of(s, "command.description.title").send();
     String locale = MsgUtil.getDefaultGameLanguageCode();
@@ -37,13 +37,13 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
       locale = p.getLocale();
     }
     commandPrintingLoop:
-    for(CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
+    for(final CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
       if(!container.isHidden()) {
         boolean passed = false;
         //selectivePermissions
         final List<String> selectivePermissions = container.getSelectivePermissions();
         if(selectivePermissions != null && !selectivePermissions.isEmpty()) {
-          for(String selectivePermission : container.getSelectivePermissions()) {
+          for(final String selectivePermission : container.getSelectivePermissions()) {
             if(selectivePermission != null && !selectivePermission.isEmpty()) {
               if(plugin.perm().hasPermission(s, selectivePermission)) {
                 passed = true;
@@ -55,7 +55,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
         //requirePermissions
         final List<String> requirePermissions = container.getPermissions();
         if(requirePermissions != null && !requirePermissions.isEmpty()) {
-          for(String requirePermission : requirePermissions) {
+          for(final String requirePermission : requirePermissions) {
             if(requirePermission != null && !requirePermission.isEmpty() && !plugin.perm().hasPermission(s, requirePermission)) {
               continue commandPrintingLoop;
             }

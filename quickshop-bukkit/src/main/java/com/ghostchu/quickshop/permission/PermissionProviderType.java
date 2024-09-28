@@ -6,14 +6,14 @@ public enum PermissionProviderType {
 
   final int id;
 
-  PermissionProviderType(int id) {
+  PermissionProviderType(final int id) {
 
     this.id = id;
   }
 
-  public static PermissionProviderType fromID(int id) throws IllegalArgumentException {
+  public static PermissionProviderType fromID(final int id) throws IllegalArgumentException {
 
-    for(PermissionProviderType child : PermissionProviderType.values()) {
+    for(final PermissionProviderType child : PermissionProviderType.values()) {
       if(child.toID() == id) {
         return child;
       }

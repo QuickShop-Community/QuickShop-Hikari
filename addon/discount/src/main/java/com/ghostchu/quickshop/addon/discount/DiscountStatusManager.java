@@ -11,25 +11,25 @@ public class DiscountStatusManager {
 
   private final Map<UUID, String> PLAYER_STATUS = new HashMap<>();
 
-  public void set(@NotNull UUID player, @NotNull DiscountCode code) {
+  public void set(@NotNull final UUID player, @NotNull final DiscountCode code) {
 
     PLAYER_STATUS.put(player, code.getCode());
   }
 
-  public void unset(@NotNull UUID player) {
+  public void unset(@NotNull final UUID player) {
 
     PLAYER_STATUS.remove(player);
   }
 
   @Nullable
-  public DiscountCode get(UUID player, @NotNull DiscountCodeManager codeManager) {
+  public DiscountCode get(final UUID player, @NotNull final DiscountCodeManager codeManager) {
 
-    String codeStr = PLAYER_STATUS.get(player);
+    final String codeStr = PLAYER_STATUS.get(player);
     return codeManager.getCode(codeStr);
   }
 
   @Nullable
-  public String get(UUID player) {
+  public String get(final UUID player) {
 
     return PLAYER_STATUS.get(player);
   }

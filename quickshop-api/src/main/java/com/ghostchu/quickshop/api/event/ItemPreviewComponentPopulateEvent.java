@@ -10,7 +10,7 @@ public class ItemPreviewComponentPopulateEvent extends AbstractQSEvent {
   private final Player player;
   private Component component;
 
-  public ItemPreviewComponentPopulateEvent(@NotNull Component component, @Nullable Player p) {
+  public ItemPreviewComponentPopulateEvent(@NotNull final Component component, @Nullable final Player p) {
 
     this.component = component;
     this.player = p;
@@ -21,7 +21,7 @@ public class ItemPreviewComponentPopulateEvent extends AbstractQSEvent {
     return component;
   }
 
-  public void setComponent(Component component) {
+  public void setComponent(final Component component) {
 
     this.component = component;
   }

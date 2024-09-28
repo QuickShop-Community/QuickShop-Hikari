@@ -25,7 +25,7 @@ public class BukkitSkullProvider implements SkullProvider {
           .build();
 
   @Override
-  public CompletableFuture<ItemStack> provide(UUID owner) {
+  public CompletableFuture<ItemStack> provide(final UUID owner) {
 
     return CompletableFuture.supplyAsync(()->{
       try {
@@ -39,7 +39,7 @@ public class BukkitSkullProvider implements SkullProvider {
 
 
   @Override
-  public CompletableFuture<ItemStack> provide(String owner) {
+  public CompletableFuture<ItemStack> provide(final String owner) {
 
     return CompletableFuture.supplyAsync(()->{
       try {
@@ -52,10 +52,10 @@ public class BukkitSkullProvider implements SkullProvider {
   }
 
   @NotNull
-  private ItemStack load(OfflinePlayer offlinePlayer) {
+  private ItemStack load(final OfflinePlayer offlinePlayer) {
 
-    ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-    ItemMeta meta = head.getItemMeta();
+    final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+    final ItemMeta meta = head.getItemMeta();
     PlayerProfile profile = offlinePlayer.getPlayerProfile();
     if(!profile.isComplete()) {
       try {
@@ -70,12 +70,12 @@ public class BukkitSkullProvider implements SkullProvider {
     return head;
   }
 
-  private ItemStack load(UUID uuid) {
+  private ItemStack load(final UUID uuid) {
 
     return load(Bukkit.getOfflinePlayer(uuid));
   }
 
-  private ItemStack load(String owner) {
+  private ItemStack load(final String owner) {
 
     return load(Bukkit.getOfflinePlayer(owner));
   }

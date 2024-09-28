@@ -25,7 +25,7 @@ public class BatchBukkitExecutor<T> {
 
   }
 
-  public BatchBukkitExecutor(int maxTickMsUsage) {
+  public BatchBukkitExecutor(final int maxTickMsUsage) {
 
     this.maxTickMsUsage = maxTickMsUsage;
   }
@@ -35,7 +35,7 @@ public class BatchBukkitExecutor<T> {
     return startTime;
   }
 
-  public void addTask(@NotNull T task) {
+  public void addTask(@NotNull final T task) {
 
     if(started) {
       throw new IllegalStateException("This batch task has been started");
@@ -44,7 +44,7 @@ public class BatchBukkitExecutor<T> {
   }
 
   @SafeVarargs
-  public final void addTasks(@NotNull T... tasks) {
+  public final void addTasks(@NotNull final T... tasks) {
 
     if(started) {
       throw new IllegalStateException("This batch task has been started");
@@ -52,7 +52,7 @@ public class BatchBukkitExecutor<T> {
     this.tasks.addAll(Arrays.asList(tasks));
   }
 
-  public void addTasks(@NotNull Collection<T> tasks) {
+  public void addTasks(@NotNull final Collection<T> tasks) {
 
     if(started) {
       throw new IllegalStateException("This batch task has been started");
@@ -60,14 +60,14 @@ public class BatchBukkitExecutor<T> {
     this.tasks.addAll(tasks);
   }
 
-  public CompletableFuture<Void> startHandle(Plugin plugin, Consumer<T> consumer) {
+  public CompletableFuture<Void> startHandle(final Plugin plugin, final Consumer<T> consumer) {
 
     if(started) {
       throw new IllegalStateException("This batch task has been handled");
     }
     started = true;
     startTime = Instant.now();
-    CompletableFuture<Void> future = new CompletableFuture<>();
+    final CompletableFuture<Void> future = new CompletableFuture<>();
     new BatchBukkitTask<>(tasks, consumer, maxTickMsUsage, future).start();
     return future;
   }
@@ -80,7 +80,7 @@ public class BatchBukkitExecutor<T> {
     private final CompletableFuture<Void> callback;
     private WrappedTask task;
 
-    public BatchBukkitTask(Queue<T> tasks, Consumer<T> consumer, int maxTickMsUsage, CompletableFuture<Void> callback) {
+    public BatchBukkitTask(final Queue<T> tasks, final Consumer<T> consumer, final int maxTickMsUsage, final CompletableFuture<Void> callback) {
 
       this.tasks = tasks;
       this.consumer = consumer;
@@ -92,7 +92,7 @@ public class BatchBukkitExecutor<T> {
     public void run() {
 
       if(!tasks.isEmpty()) {
-        long startAt = System.currentTimeMillis();
+        final long startAt = System.currentTimeMillis();
         do {
           consumer.accept(tasks.poll());
         } while(System.currentTimeMillis() - startAt < maxTickMsUsage && !tasks.isEmpty());

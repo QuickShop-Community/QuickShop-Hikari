@@ -11,9 +11,9 @@ public class Paste {
   }
 
   @Nullable
-  public static String paste(@NotNull String content) {
+  public static String paste(@NotNull final String content) {
 
-    PasteInterface paster;
+    final PasteInterface paster;
     try {
       // Lucko Pastebin
       paster = new LuckoPastebinPaster();

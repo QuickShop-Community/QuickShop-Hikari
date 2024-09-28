@@ -26,7 +26,7 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
    *
    * @param shop The shop bought from
    */
-  public ShopAuthorizeCalculateEvent(@NotNull Shop shop, @NotNull UUID authorizer, @NotNull Plugin namespace, @NotNull String permission, boolean result) {
+  public ShopAuthorizeCalculateEvent(@NotNull final Shop shop, @NotNull final UUID authorizer, @NotNull final Plugin namespace, @NotNull final String permission, final boolean result) {
 
     this.shop = shop;
     this.authorizer = authorizer;
@@ -83,7 +83,7 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
    *
    * @param result true if permission is granted, false if not
    */
-  public void setResult(boolean result) {
+  public void setResult(final boolean result) {
 
     this.result = result;
   }

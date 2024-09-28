@@ -20,28 +20,28 @@ public class SubCommand_Limit implements CommandHandler<Player> {
 
   private final QuickShop quickshop;
 
-  public SubCommand_Limit(QuickShop quickshop) {
+  public SubCommand_Limit(final QuickShop quickshop) {
 
     this.quickshop = quickshop;
   }
 
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       quickshop.text().of(sender, "command.wrong-args").send();
       return;
     }
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       quickshop.text().of(sender, "not-looking-at-shop").send();
       return;
     }
-    ConfigurationSection manager = shop.getExtra(Main.instance);
+    final ConfigurationSection manager = shop.getExtra(Main.instance);
     switch(parser.getArgs().get(0)) {
       case "set" -> {
         try {
-          int limitAmount = Integer.parseInt(parser.getArgs().get(1));
+          final int limitAmount = Integer.parseInt(parser.getArgs().get(1));
           if(limitAmount > 0) {
             manager.set("limit", limitAmount);
             quickshop.text().of(sender, "addon.limited.success-setup").send();
@@ -68,7 +68,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
       }
       case "period" -> {
         try {
-          CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(parser.getArgs().get(1).toUpperCase(Locale.ROOT));
+          final CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(parser.getArgs().get(1).toUpperCase(Locale.ROOT));
           manager.set("period", type.name());
           quickshop.text().of(sender, "addon.limited.success-setup").send();
           shop.setExtra(Main.instance, manager);
@@ -80,7 +80,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
     if(cmdArg.length < 2) {
       return List.of("set", "unset", "reset", "period");

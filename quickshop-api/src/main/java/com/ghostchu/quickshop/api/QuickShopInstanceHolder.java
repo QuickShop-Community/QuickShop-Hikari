@@ -6,7 +6,7 @@ public class QuickShopInstanceHolder {
 
   protected final Plugin plugin;
 
-  public QuickShopInstanceHolder(Plugin plugin) {
+  public QuickShopInstanceHolder(final Plugin plugin) {
 
     this.plugin = plugin;
   }

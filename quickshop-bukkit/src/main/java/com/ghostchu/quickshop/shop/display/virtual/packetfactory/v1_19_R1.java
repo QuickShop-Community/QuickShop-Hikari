@@ -32,7 +32,7 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
   private final QuickShop plugin;
   private final VirtualDisplayItemManager manager;
 
-  public v1_19_R1(QuickShop plugin, VirtualDisplayItemManager manager) {
+  public v1_19_R1(final QuickShop plugin, final VirtualDisplayItemManager manager) {
 
     this.plugin = plugin;
     this.manager = manager;
@@ -53,9 +53,9 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location displayLocation) {
+  public @NotNull PacketContainer createFakeItemSpawnPacket(final int entityID, @NotNull final Location displayLocation) {
     //First, create a new packet to spawn item
-    PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+    final PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
     //and add data based on packet class in NMS  (global scope variable)
     //Reference: https://wiki.vg/Protocol#Spawn_Object
     fakeItemPacket.getIntegers()
@@ -76,18 +76,18 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack) {
+  public @NotNull PacketContainer createFakeItemMetaPacket(final int entityID, @NotNull final ItemStack itemStack) {
     //Next, create a new packet to update item data (default is empty)
-    PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
+    final PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
     //Entity ID
     fakeItemMetaPacket.getIntegers().write(0, entityID);
 
     //List<DataWatcher$Item> Type are more complex
     //Create a DataWatcher
-    WrappedDataWatcher wpw = new WrappedDataWatcher();
+    final WrappedDataWatcher wpw = new WrappedDataWatcher();
     //https://wiki.vg/index.php?title=Entity_metadata#Entity
     if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-      String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
+      final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
       wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
       wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
     }
@@ -101,9 +101,9 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemVelocityPacket(int entityID) {
+  public @NotNull PacketContainer createFakeItemVelocityPacket(final int entityID) {
     //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
-    PacketContainer fakeItemVelocityPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
+    final PacketContainer fakeItemVelocityPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
     fakeItemVelocityPacket.getIntegers()
             //Entity ID
             .write(0, entityID)
@@ -117,9 +117,9 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemDestroyPacket(int entityID) {
+  public @NotNull PacketContainer createFakeItemDestroyPacket(final int entityID) {
     //Also make a DestroyPacket to remove it
-    PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+    final PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
     //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
     //Entity to remove
     try {
@@ -136,23 +136,23 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
 
     return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
       @Override
-      public void onPacketSending(@NotNull PacketEvent event) {
+      public void onPacketSending(@NotNull final PacketEvent event) {
 
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
         if(player == null || !player.isOnline()) {
           return;
         }
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
         //chunk x
-        int x = integerStructureModifier.read(0);
+        final int x = integerStructureModifier.read(0);
         //chunk z
-        int z = integerStructureModifier.read(1);
+        final int z = integerStructureModifier.read(1);
 
         manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(VirtualDisplayItem target : targetList) {
+          for(final VirtualDisplayItem target : targetList) {
             if(!target.isSpawned()) {
               continue;
             }
@@ -173,23 +173,23 @@ public class v1_19_R1 implements VirtualDisplayPacketFactory {
 
     return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
       @Override
-      public void onPacketSending(@NotNull PacketEvent event) {
+      public void onPacketSending(@NotNull final PacketEvent event) {
 
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
         if(player == null || !player.isOnline()) {
           return;
         }
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
         //chunk x
-        int x = integerStructureModifier.read(0);
+        final int x = integerStructureModifier.read(0);
         //chunk z
-        int z = integerStructureModifier.read(1);
+        final int z = integerStructureModifier.read(1);
 
         manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(VirtualDisplayItem target : targetList) {
+          for(final VirtualDisplayItem target : targetList) {
             if(!target.isSpawned()) {
               continue;
             }

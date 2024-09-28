@@ -12,9 +12,9 @@ public class InventoryWrapperRegistry {
   private final Map<String, InventoryWrapperManager> registry = new MapMaker().makeMap();
 
   @Nullable
-  public String find(InventoryWrapperManager manager) {
+  public String find(final InventoryWrapperManager manager) {
 
-    for(Map.Entry<String, InventoryWrapperManager> entry : registry.entrySet()) {
+    for(final Map.Entry<String, InventoryWrapperManager> entry : registry.entrySet()) {
       if(entry.getValue() == manager || entry.getValue().equals(manager)) {
         return entry.getKey();
       }
@@ -23,12 +23,12 @@ public class InventoryWrapperRegistry {
   }
 
   @Nullable
-  public InventoryWrapperManager get(String pluginName) {
+  public InventoryWrapperManager get(final String pluginName) {
 
     return registry.get(pluginName);
   }
 
-  public void register(@NotNull Plugin plugin, @NotNull InventoryWrapperManager manager) {
+  public void register(@NotNull final Plugin plugin, @NotNull final InventoryWrapperManager manager) {
 
     if(registry.containsKey(plugin.getName())) {
       plugin.getLogger().warning("Nag Author: Plugin " + plugin.getName() + " already have a registered InventoryWrapperManager: "
@@ -39,7 +39,7 @@ public class InventoryWrapperRegistry {
     registry.put(plugin.getName(), manager);
   }
 
-  public void unregister(@NotNull Plugin plugin) {
+  public void unregister(@NotNull final Plugin plugin) {
 
     registry.remove(plugin.getName());
   }

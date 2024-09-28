@@ -21,7 +21,7 @@ public final class Main extends CompatibilityModule implements SlimefunAddon, It
   @Override
   public void init() {
 
-    Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    final Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
     if(registry instanceof ItemExpressionRegistry itemExpressionRegistry) {
       if(itemExpressionRegistry.registerHandlerSafely(this)) {
         getLogger().info("Register Slimefun ItemExpressionHandler successfully!");
@@ -55,10 +55,10 @@ public final class Main extends CompatibilityModule implements SlimefunAddon, It
   }
 
   @Override
-  public boolean match(ItemStack stack, String expression) {
+  public boolean match(final ItemStack stack, final String expression) {
 
-    Map<String, SlimefunItem> slimefunItemMap = Slimefun.getRegistry().getSlimefunItemIds();
-    SlimefunItem slimefunItem = slimefunItemMap.get(expression);
+    final Map<String, SlimefunItem> slimefunItemMap = Slimefun.getRegistry().getSlimefunItemIds();
+    final SlimefunItem slimefunItem = slimefunItemMap.get(expression);
     if(slimefunItem == null) {
       return false;
     }

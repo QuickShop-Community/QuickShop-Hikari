@@ -20,15 +20,15 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_SuperCreate(QuickShop plugin) {
+  public SubCommand_SuperCreate(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    ItemStack item = sender.getInventory().getItemInMainHand();
+    final ItemStack item = sender.getInventory().getItemInMainHand();
     if(item.getType() == Material.AIR) {
       plugin.text().of(sender, "no-anythings-in-your-hand").send();
       return;
@@ -56,7 +56,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain()) : Collections.emptyList();
   }

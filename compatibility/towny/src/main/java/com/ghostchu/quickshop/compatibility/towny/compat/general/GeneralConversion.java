@@ -10,13 +10,13 @@ import java.util.UUID;
 public class GeneralConversion implements UuidConversion {
 
   @Override
-  public UUID convertTownyAccount(Town town) {
+  public UUID convertTownyAccount(final Town town) {
 
     return QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName());
   }
 
   @Override
-  public UUID convertTownyAccount(Nation nation) {
+  public UUID convertTownyAccount(final Nation nation) {
 
     return QuickShop.getInstance().getPlayerFinder().name2Uuid(nation.getAccount().getName());
   }

@@ -8,9 +8,9 @@ import org.jetbrains.annotations.Nullable;
 public interface PAPISubHandler {
 
   @Nullable
-  default String handle(@NotNull OfflinePlayer player, @NotNull String params) {
+  default String handle(@NotNull final OfflinePlayer player, @NotNull final String params) {
 
-    String raw = StringUtils.substringAfter(params, getPrefix() + "_");
+    final String raw = StringUtils.substringAfter(params, getPrefix() + "_");
     return handle0(player, raw);
   }
 

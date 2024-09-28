@@ -38,7 +38,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
    * @param amount             The amount they're buying
    * @param total              The total balance in this purchase
    */
-  public ShopPurchaseEvent(@NotNull Shop shop, @NotNull QUser purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total) {
+  public ShopPurchaseEvent(@NotNull final Shop shop, @NotNull final QUser purchaser, @NotNull final InventoryWrapper purchaserInventory, final int amount, final double total) {
 
     this.shop = shop;
     this.purchaser = purchaser;
@@ -64,7 +64,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;
@@ -115,7 +115,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
    *
    * @param total Total money
    */
-  public void setTotal(double total) {
+  public void setTotal(final double total) {
 
     this.total = total;
   }

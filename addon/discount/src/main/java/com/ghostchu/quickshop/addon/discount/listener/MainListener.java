@@ -22,18 +22,18 @@ public class MainListener implements Listener {
   private final Main main;
   private final QuickShop quickshop;
 
-  public MainListener(@NotNull Main main) {
+  public MainListener(@NotNull final Main main) {
 
     this.main = main;
     this.quickshop = QuickShop.getInstance();
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onPrePurchase(ShopInfoPanelEvent event) {
+  public void onPrePurchase(final ShopInfoPanelEvent event) {
 
-    UUID purchaser = event.getPurchaser();
-    Shop shop = event.getShop();
-    DiscountCode codeInstalled = main.getStatusManager().get(purchaser, main.getCodeManager());
+    final UUID purchaser = event.getPurchaser();
+    final Shop shop = event.getShop();
+    final DiscountCode codeInstalled = main.getStatusManager().get(purchaser, main.getCodeManager());
     if(codeInstalled == null) {
       Log.debug("Player doesn't have installed the discount code");
       return;
@@ -41,7 +41,7 @@ public class MainListener implements Listener {
     if(!shop.isSelling()) {
       return;
     }
-    String code = codeInstalled.getCode();
+    final String code = codeInstalled.getCode();
     Util.mainThreadRun(()->{
       switch(codeInstalled.applicableShop(purchaser, shop)) {
         case APPLICABLE ->
@@ -61,15 +61,15 @@ public class MainListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-  public void onPurchase(ShopPurchaseEvent event) {
+  public void onPurchase(final ShopPurchaseEvent event) {
 
-    QUser purchaserQUser = event.getPurchaser();
-    UUID purchaser = purchaserQUser.getUniqueIdIfRealPlayer().orElse(null);
+    final QUser purchaserQUser = event.getPurchaser();
+    final UUID purchaser = purchaserQUser.getUniqueIdIfRealPlayer().orElse(null);
     if(purchaser == null) {
       return;
     }
-    Shop shop = event.getShop();
-    DiscountCode codeInstalled = main.getStatusManager().get(purchaser, main.getCodeManager());
+    final Shop shop = event.getShop();
+    final DiscountCode codeInstalled = main.getStatusManager().get(purchaser, main.getCodeManager());
     if(codeInstalled == null) {
       Log.debug("Player doesn't have installed the discount code");
       return;
@@ -77,21 +77,21 @@ public class MainListener implements Listener {
     if(!shop.isSelling()) {
       return;
     }
-    String code = codeInstalled.getCode();
+    final String code = codeInstalled.getCode();
     switch(codeInstalled.applicableShop(purchaser, shop)) {
       case APPLICABLE -> {
-        double beforeDiscount = event.getTotal();
+        final double beforeDiscount = event.getTotal();
         event.setTotal(codeInstalled.apply(purchaser, event.getTotal()));
-        double discounted = beforeDiscount - event.getTotal();
+        final double discounted = beforeDiscount - event.getTotal();
         quickshop.text().of(purchaser, "addon.discount.discount-code-applied-in-purchase", code, quickshop.getEconomy().format(discounted, shop.getLocation().getWorld(), shop.getCurrency())).send();
       }
       case APPLICABLE_WITH_THRESHOLD -> {
         if(event.getTotal() < codeInstalled.getThreshold()) {
           quickshop.text().of(purchaser, "addon.discount.discount-code-under-threshold", quickshop.getEconomy().format(codeInstalled.getThreshold(), shop.getLocation().getWorld(), shop.getCurrency())).send();
         } else {
-          double beforeDiscount = event.getTotal();
+          final double beforeDiscount = event.getTotal();
           event.setTotal(codeInstalled.apply(purchaser, event.getTotal()));
-          double discounted = beforeDiscount - event.getTotal();
+          final double discounted = beforeDiscount - event.getTotal();
           quickshop.text().of(purchaser, "addon.discount.discount-code-applied-in-purchase", code, quickshop.getEconomy().format(discounted, shop.getLocation().getWorld(), shop.getCurrency())).send();
         }
       }
@@ -107,7 +107,7 @@ public class MainListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onQuit(PlayerQuitEvent event) {
+  public void onQuit(final PlayerQuitEvent event) {
 
     main.getStatusManager().unset(event.getPlayer().getUniqueId());
   }

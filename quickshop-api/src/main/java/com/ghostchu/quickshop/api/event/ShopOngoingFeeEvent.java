@@ -18,7 +18,7 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
   private boolean cancelled;
   private @Nullable Component cancelReason;
 
-  public ShopOngoingFeeEvent(Shop shop, QUser player, double cost) {
+  public ShopOngoingFeeEvent(final Shop shop, final QUser player, final double cost) {
 
     this.shop = shop;
     this.player = player;
@@ -32,7 +32,7 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;
@@ -53,7 +53,7 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
    *
    * @param cost The ongoing fee
    */
-  public void setCost(double cost) {
+  public void setCost(final double cost) {
 
     this.cost = cost;
   }

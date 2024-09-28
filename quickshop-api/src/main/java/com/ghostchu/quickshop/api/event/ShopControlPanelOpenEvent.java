@@ -22,7 +22,7 @@ public class ShopControlPanelOpenEvent extends AbstractQSEvent implements QSCanc
    * @param shop   The shop bought from
    * @param sender The player which receiving shop control panel message
    */
-  public ShopControlPanelOpenEvent(@NotNull Shop shop, @NotNull CommandSender sender) {
+  public ShopControlPanelOpenEvent(@NotNull final Shop shop, @NotNull final CommandSender sender) {
 
     this.shop = shop;
     this.sender = sender;
@@ -35,7 +35,7 @@ public class ShopControlPanelOpenEvent extends AbstractQSEvent implements QSCanc
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

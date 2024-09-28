@@ -265,7 +265,7 @@ public interface Shop {
    * @return String arrays represents sign texts: Index | Content Line 0: Header Line 1: Shop Type
    * Line 2: Shop Item Name Line 3: Price
    */
-  default List<Component> getSignText(@NotNull ProxiedLocale locale) {
+  default List<Component> getSignText(@NotNull final ProxiedLocale locale) {
     //backward support
     throw new UnsupportedOperationException();
   }

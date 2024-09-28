@@ -69,13 +69,13 @@ public class PlayerListener extends AbstractQSListener {
   private final ExpiringSet<UUID> adventureWorkaround = new ExpiringSet<>(1, TimeUnit.SECONDS);
   private final ExpiringSet<UUID> rateLimit = new ExpiringSet<>(125, TimeUnit.MILLISECONDS);
 
-  public PlayerListener(QuickShop plugin) {
+  public PlayerListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-  public void onAdventureClick(PlayerAnimationEvent event) {
+  public void onAdventureClick(final PlayerAnimationEvent event) {
 
     if(event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
       return;
@@ -86,9 +86,9 @@ public class PlayerListener extends AbstractQSListener {
     }
     adventureWorkaround.add(event.getPlayer().getUniqueId());
     // ----Adventure dupe click workaround end----
-    Block focused = event.getPlayer().getTargetBlockExact(5);
+    final Block focused = event.getPlayer().getTargetBlockExact(5);
     if(focused != null) {
-      PlayerInteractEvent interactEvent
+      final PlayerInteractEvent interactEvent
               = new PlayerInteractEvent(event.getPlayer(),
                                         focused.getType() == Material.AIR? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
                                         event.getPlayer().getInventory().getItemInMainHand(),
@@ -99,7 +99,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.LOW)
-  public void onClick(PlayerInteractEvent e) {
+  public void onClick(final PlayerInteractEvent e) {
     // Deprecated: Can use useInteractedBlock() == Result.DENY instead
     if(e.isCancelled() && PackageUtil.parsePackageProperly("ignoreCancelledInteractEvent").asBoolean(true)) {
       return;
@@ -266,7 +266,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @NotNull
-  public Map.Entry<@Nullable Shop, @NotNull ClickType> searchShop(@Nullable Block b, @NotNull Player p) {
+  public Map.Entry<@Nullable Shop, @NotNull ClickType> searchShop(@Nullable final Block b, @NotNull final Player p) {
 
     if(b == null) {
       return new AbstractMap.SimpleEntry<>(null, ClickType.AIR);
@@ -284,7 +284,7 @@ public class PlayerListener extends AbstractQSListener {
       } else if(Util.isDoubleChest(b.getBlockData())) {
         attached = Util.getSecondHalf(b);
         if(attached != null) {
-          Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+          final Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
           if(secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner().getUniqueId())) {
             // If player not the owner of the shop, make him select the second half of the
             // shop
@@ -297,7 +297,7 @@ public class PlayerListener extends AbstractQSListener {
     return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SHOPBLOCK);
   }
 
-  private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
+  private void openControlPanel(@NotNull final Player p, @NotNull final Shop shop) {
 
     MsgUtil.sendControlPanelInfo(p, shop);
     this.playClickSound(p);
@@ -305,9 +305,9 @@ public class PlayerListener extends AbstractQSListener {
     shop.setSignText(plugin.text().findRelativeLanguages(p));
   }
 
-  public boolean createShop(@NotNull Player player, @Nullable Block block, @NotNull BlockFace blockFace, @NotNull EquipmentSlot hand, @NotNull ItemStack item) {
+  public boolean createShop(@NotNull final Player player, @Nullable final Block block, @NotNull final BlockFace blockFace, @NotNull final EquipmentSlot hand, @NotNull final ItemStack item) {
 
-    QUser qUser = QUserImpl.createFullFilled(player);
+    final QUser qUser = QUserImpl.createFullFilled(player);
     if(block == null) {
       return false; // This shouldn't happen because we have checked action type.
     }
@@ -315,7 +315,7 @@ public class PlayerListener extends AbstractQSListener {
       return false; // Only survival :)
     }
 
-    ItemStack stack = item.clone();
+    final ItemStack stack = item.clone();
     if(stack.getType().isAir()) {
       return false; // Air cannot be used for trade
     }
@@ -362,13 +362,13 @@ public class PlayerListener extends AbstractQSListener {
       return false;
     }
     // Finds out where the sign should be placed for the shop
-    Block last;
+    final Block last;
     if(Util.getVerticalFacing().contains(blockFace)) {
       last = block.getRelative(blockFace);
     } else {
-      Location playerLocation = player.getLocation();
-      double x = playerLocation.getX() - block.getX();
-      double z = playerLocation.getZ() - block.getZ();
+      final Location playerLocation = player.getLocation();
+      final double x = playerLocation.getX() - block.getX();
+      final double z = playerLocation.getZ() - block.getZ();
       if(Math.abs(x) > Math.abs(z)) {
         if(x > 0) {
           last = block.getRelative(BlockFace.EAST);
@@ -385,7 +385,7 @@ public class PlayerListener extends AbstractQSListener {
     }
     // Send creation menu.
     final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
-    ShopPreCreateEvent spce = new ShopPreCreateEvent(qUser, block.getLocation());
+    final ShopPreCreateEvent spce = new ShopPreCreateEvent(qUser, block.getLocation());
     if(Util.fireCancellableEvent(spce)) {
       Log.debug("ShopPreCreateEvent cancelled");
       return false;
@@ -398,7 +398,7 @@ public class PlayerListener extends AbstractQSListener {
     return false;
   }
 
-  public boolean sellToShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
+  public boolean sellToShop(@NotNull final Player p, @Nullable final Shop shop, final boolean direct, final boolean all) {
 
     if(shop == null) {
       return false;
@@ -422,11 +422,11 @@ public class PlayerListener extends AbstractQSListener {
     final Inventory playerInventory = p.getInventory();
     final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
     final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
-    int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
-    ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
+    final int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
+    final ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
     if(shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
        || plugin.perm().hasPermission(p, "quickshop.other.use")) {
-      Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
+      final Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
       actions.put(p.getUniqueId(), info);
       if(!direct) {
         if(shop.isStackingShop()) {
@@ -435,7 +435,7 @@ public class PlayerListener extends AbstractQSListener {
           plugin.text().of(p, "how-many-sell", items, tradeAllWord).send();
         }
       } else {
-        int arg;
+        final int arg;
         if(all) {
           arg = buyingShopAllCalc(eco, shop, p);
         } else {
@@ -450,7 +450,7 @@ public class PlayerListener extends AbstractQSListener {
     return true;
   }
 
-  public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
+  public boolean buyFromShop(@NotNull final Player p, @Nullable final Shop shop, final boolean direct, final boolean all) {
 
     if(shop == null) {
       return false;
@@ -460,7 +460,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     final AbstractEconomy eco = plugin.getEconomy();
-    int arg;
+    final int arg;
     if(all) {
       arg = sellingShopAllCalc(eco, shop, p);
     } else {
@@ -473,7 +473,7 @@ public class PlayerListener extends AbstractQSListener {
     return buyFromShop(p, shop, arg, direct, all);
   }
 
-  public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, int arg, boolean direct, boolean all) {
+  public boolean buyFromShop(@NotNull final Player p, @Nullable final Shop shop, final int arg, final boolean direct, final boolean all) {
 
     if(shop == null) {
       return false;
@@ -496,12 +496,12 @@ public class PlayerListener extends AbstractQSListener {
     final double price = shop.getPrice();
     final Inventory playerInventory = p.getInventory();
     final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-    ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
+    final ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
     final double traderBalance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(), shop.getCurrency());
-    int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
+    final int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
     if(shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
        || plugin.perm().hasPermission(p, "quickshop.other.use")) {
-      Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
+      final Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
       actions.put(p.getUniqueId(), info);
       if(!direct) {
         if(shop.isStackingShop()) {
@@ -516,16 +516,16 @@ public class PlayerListener extends AbstractQSListener {
     return true;
   }
 
-  private void playClickSound(@NotNull Player player) {
+  private void playClickSound(@NotNull final Player player) {
 
     if(plugin.getConfig().getBoolean("effect.sound.onclick")) {
       player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
     }
   }
 
-  private int getPlayerCanSell(@NotNull Shop shop, double ownerBalance, double price, @NotNull InventoryWrapper playerInventory) {
+  private int getPlayerCanSell(@NotNull final Shop shop, final double ownerBalance, final double price, @NotNull final InventoryWrapper playerInventory) {
 
-    boolean isContainerCountingNeeded = shop.isUnlimited();
+    final boolean isContainerCountingNeeded = shop.isUnlimited();
     if(shop.isFreeShop()) {
       return isContainerCountingNeeded? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
     }
@@ -549,17 +549,17 @@ public class PlayerListener extends AbstractQSListener {
     return items;
   }
 
-  private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
+  private int buyingShopAllCalc(@NotNull final AbstractEconomy eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
-    int shopHaveSpaces =
+    final int shopHaveSpaces =
             Util.countSpace(shop.getInventory(), shop);
-    int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+    final int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
     // Check if shop owner has enough money
-    double ownerBalance = eco
+    final double ownerBalance = eco
             .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
                         shop.getCurrency());
-    int ownerCanAfford;
+    final int ownerCanAfford;
     if(shop.getPrice() != 0) {
       ownerCanAfford = (int)(ownerBalance / shop.getPrice());
     } else {
@@ -603,9 +603,9 @@ public class PlayerListener extends AbstractQSListener {
     return amount;
   }
 
-  private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
+  private int getPlayerCanBuy(@NotNull final Shop shop, final double traderBalance, final double price, @NotNull final InventoryWrapper playerInventory) {
 
-    boolean isContainerCountingNeeded = shop.isUnlimited();
+    final boolean isContainerCountingNeeded = shop.isUnlimited();
     if(shop.isFreeShop()) { // Free shop
       return isContainerCountingNeeded? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
     }
@@ -619,11 +619,11 @@ public class PlayerListener extends AbstractQSListener {
     return itemAmount;
   }
 
-  private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
+  private int sellingShopAllCalc(@NotNull final AbstractEconomy eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
-    int shopHaveItems = shop.getRemainingStock();
-    int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+    final int shopHaveItems = shop.getRemainingStock();
+    final int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
     if(!shop.isUnlimited()) {
       amount = Math.min(shopHaveItems, invHaveSpaces);
     } else {
@@ -632,9 +632,9 @@ public class PlayerListener extends AbstractQSListener {
       amount = invHaveSpaces;
     }
     // typed 'all', check if player has enough money than price * amount
-    double price = shop.getPrice();
-    double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(),
-                                    shop.getCurrency());
+    final double price = shop.getPrice();
+    final double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(),
+                                          shop.getCurrency());
     amount = Math.min(amount, (int)Math.floor(balance / price));
     if(amount < 1) { // typed 'all' but the auto set amount is 0
       // when typed 'all' but player can't buy any items
@@ -663,7 +663,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-  public void onDyeing(PlayerInteractEvent e) {
+  public void onDyeing(final PlayerInteractEvent e) {
 
     if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getItem() == null || !Util.isDyes(e.getItem().getType())) {
       return;
@@ -681,13 +681,13 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-  public void onSignEditing(SignChangeEvent e) {
+  public void onSignEditing(final SignChangeEvent e) {
 
     final Block block = e.getBlock();
     if(!Util.isWallSign(block.getType())) {
       return;
     }
-    BlockState state = e.getBlock().getState();
+    final BlockState state = e.getBlock().getState();
     if(state instanceof Sign sign) {
       if(sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
         e.setCancelled(true);
@@ -697,7 +697,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onInventoryClose(InventoryCloseEvent e) {
+  public void onInventoryClose(final InventoryCloseEvent e) {
 
     final UUID id = e.getPlayer().getUniqueId();
 
@@ -726,7 +726,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onJoin(PlayerLocaleChangeEvent e) {
+  public void onJoin(final PlayerLocaleChangeEvent e) {
 
     Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").plain(e.getLocale()));
     plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getLocale(), e.getPlayer().getName())
@@ -737,22 +737,22 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onJoin(PlayerJoinEvent e) {
+  public void onJoin(final PlayerJoinEvent e) {
 
     plugin.getPlayerFinder().cache(e.getPlayer().getUniqueId(), e.getPlayer().getName());
     // Notify the player any messages they were sent
     if(plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-      long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
+      final long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
       QuickShop.folia().getImpl().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
     }
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onJoinEasterEgg(PlayerJoinEvent e) {
+  public void onJoinEasterEgg(final PlayerJoinEvent e) {
 
     if(plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts")) {
-      Date date = new Date();
-      LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      final Date date = new Date();
+      final LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       if((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || PackageUtil.parsePackageProperly("april-rickandroll").asBoolean()) {
         QuickShop.folia().getImpl().runLater((()->plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
       }
@@ -764,13 +764,13 @@ public class PlayerListener extends AbstractQSListener {
    * Cancels the menu for broken shop block
    */
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onPlayerBreakShopCreationChest(BlockBreakEvent event) {
+  public void onPlayerBreakShopCreationChest(final BlockBreakEvent event) {
 
-    @Nullable Player player = event.getPlayer();
+    @Nullable final Player player = event.getPlayer();
     if(player == null) {
       return;
     }
-    ShopManager.InteractiveManager actionMap = plugin.getShopManager().getInteractiveManager();
+    final ShopManager.InteractiveManager actionMap = plugin.getShopManager().getInteractiveManager();
     final Info info = actionMap.get(player.getUniqueId());
     if(info != null && info.getLocation().equals(event.getBlock().getLocation())) {
       actionMap.remove(player.getUniqueId());
@@ -783,7 +783,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPlayerQuit(PlayerQuitEvent e) {
+  public void onPlayerQuit(final PlayerQuitEvent e) {
     // Remove them from the menu
     plugin.getShopManager().getInteractiveManager().remove(e.getPlayer().getUniqueId());
     plugin.getDatabaseHelper().updatePlayerProfile(e.getPlayer().getUniqueId(), e.getPlayer().getLocale(), e.getPlayer().getName())
@@ -794,7 +794,7 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onTeleport(PlayerTeleportEvent e) {
+  public void onTeleport(final PlayerTeleportEvent e) {
 
     onMove(new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo()));
   }
@@ -803,7 +803,7 @@ public class PlayerListener extends AbstractQSListener {
    * Waits for a player to move too far from a shop, then cancels the menu.
    */
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-  public void onMove(PlayerMoveEvent e) {
+  public void onMove(final PlayerMoveEvent e) {
 
     final Info info = plugin.getShopManager().getInteractiveManager().get(e.getPlayer().getUniqueId());
     if(info == null) {

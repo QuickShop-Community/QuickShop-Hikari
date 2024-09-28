@@ -44,7 +44,7 @@ public class InternalListener extends AbstractQSListener {
   private boolean loggingBalance;
   private boolean loggingAction;
 
-  public InternalListener(QuickShop plugin) {
+  public InternalListener(final QuickShop plugin) {
 
     super(plugin);
     this.plugin = plugin;
@@ -71,7 +71,7 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopCreate(ShopCreateEvent event) {
+  public void shopCreate(final ShopCreateEvent event) {
 
     if(isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
       event.setCancelled(true, plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").forLocale());
@@ -82,7 +82,7 @@ public class InternalListener extends AbstractQSListener {
     }
   }
 
-  public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
+  public boolean isForbidden(@NotNull final Material shopMaterial, @NotNull final Material itemMaterial) {
 
     if(!Objects.equals(shopMaterial, itemMaterial)) {
       return false;
@@ -91,7 +91,7 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopDelete(ShopDeleteEvent event) {
+  public void shopDelete(final ShopDeleteEvent event) {
 
     if(loggingAction) {
       plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "Shop removed", event.getShop().saveToInfoStorage()));
@@ -99,12 +99,12 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
+  public void shopInventoryCalc(final ShopInventoryCalculateEvent event) {
 
     if(event.getShop().getShopId() < 1) {
       return;
     }
-    SpaceCache count = countUpdateCache.getIfPresent(event.getShop());
+    final SpaceCache count = countUpdateCache.getIfPresent(event.getShop());
     if(count != null && count.getSpace() == event.getSpace() && count.getStock() == event.getStock()) {
       return;
     }
@@ -117,7 +117,7 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopPrePurchase(ShopPurchaseEvent event) {
+  public void shopPrePurchase(final ShopPurchaseEvent event) {
 
     if(isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
       event.setCancelled(true, plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").forLocale());
@@ -130,7 +130,7 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopPriceChanges(ShopPriceChangeEvent event) {
+  public void shopPriceChanges(final ShopPriceChangeEvent event) {
 
     if(loggingAction) {
       plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getNewPrice()));
@@ -138,7 +138,7 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopPurchase(ShopSuccessPurchaseEvent event) {
+  public void shopPurchase(final ShopSuccessPurchaseEvent event) {
 
     if(loggingAction) {
       plugin.logEvent(new ShopPurchaseLog(event.getShop().saveToInfoStorage(),
@@ -164,7 +164,7 @@ public class InternalListener extends AbstractQSListener {
     private final int stock;
     private final int space;
 
-    public SpaceCache(int stock, int space) {
+    public SpaceCache(final int stock, final int space) {
 
       this.stock = stock;
       this.space = space;

@@ -14,7 +14,7 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
 
   private final QuickShop plugin;
 
-  public SimpleEnchantmentExpressionHandler(QuickShop plugin) {
+  public SimpleEnchantmentExpressionHandler(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -38,15 +38,15 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
   }
 
   @Override
-  public boolean match(ItemStack stack, String expression) {
+  public boolean match(final ItemStack stack, final String expression) {
     // spilt with |
-    String[] split = expression.split("\\|");
+    final String[] split = expression.split("\\|");
     if(split.length < 1) {
       return false;
     }
-    String key = split[0];
+    final String key = split[0];
     int minLevel = -1;
-    int maxLevel;
+    final int maxLevel;
     if(split.length > 1) {
       if(StringUtils.isNumeric(split[1])) {
         minLevel = Integer.parseInt(split[1]);
@@ -63,7 +63,7 @@ public class SimpleEnchantmentExpressionHandler implements ItemExpressionHandler
     } else {
       maxLevel = -1;
     }
-    Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(key));
+    final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(key));
     if(enchantment == null) {
       return false;
     }

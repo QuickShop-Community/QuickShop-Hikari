@@ -19,15 +19,15 @@ public enum EconomyType {
 
   private final int id;
 
-  EconomyType(int id) {
+  EconomyType(final int id) {
 
     this.id = id;
   }
 
   @NotNull
-  public static EconomyType fromID(int id) {
+  public static EconomyType fromID(final int id) {
 
-    for(EconomyType type : EconomyType.values()) {
+    for(final EconomyType type : EconomyType.values()) {
       if(type.id == id) {
         return type;
       }
@@ -35,7 +35,7 @@ public enum EconomyType {
     return UNKNOWN;
   }
 
-  public static int toID(@NotNull EconomyType economyType) {
+  public static int toID(@NotNull final EconomyType economyType) {
 
     return economyType.id;
   }

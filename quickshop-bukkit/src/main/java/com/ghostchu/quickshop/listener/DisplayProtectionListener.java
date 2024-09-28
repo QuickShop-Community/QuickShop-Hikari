@@ -23,26 +23,26 @@ import org.jetbrains.annotations.Nullable;
 
 public class DisplayProtectionListener extends AbstractProtectionListener {
 
-  public DisplayProtectionListener(QuickShop plugin) {
+  public DisplayProtectionListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-  public void inventory(InventoryOpenEvent event) {
+  public void inventory(final InventoryOpenEvent event) {
 
     Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-  public void inventory(InventoryPickupItemEvent event) {
+  public void inventory(final InventoryPickupItemEvent event) {
 
     final ItemStack itemStack = event.getItem().getItemStack();
     if(!AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
       return; // We didn't care that
     }
-    @Nullable Location loc = event.getInventory().getLocation();
-    @Nullable InventoryHolder holder = event.getInventory().getHolder();
+    @Nullable final Location loc = event.getInventory().getLocation();
+    @Nullable final InventoryHolder holder = event.getInventory().getHolder();
     event.setCancelled(true);
     sendAlert(
             "[DisplayGuard] Something  "
@@ -53,7 +53,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
     Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
   }
 
-  private void sendAlert(@NotNull String msg) {
+  private void sendAlert(@NotNull final String msg) {
 
     if(!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
       return;
@@ -62,7 +62,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-  public void item(ItemDespawnEvent event) {
+  public void item(final ItemDespawnEvent event) {
 
     final ItemStack itemStack = event.getEntity().getItemStack();
     if(AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
@@ -71,7 +71,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-  public void player(PlayerFishEvent event) {
+  public void player(final PlayerFishEvent event) {
 
     if(event.getState() != State.CAUGHT_ENTITY) {
       return;
@@ -96,7 +96,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-  public void player(PlayerArmorStandManipulateEvent event) {
+  public void player(final PlayerArmorStandManipulateEvent event) {
 
     if(!AbstractDisplayItem.checkIsGuardItemStack(event.getArmorStandItem())) {
       return;
@@ -110,7 +110,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-  public void portal(EntityPortalEvent event) {
+  public void portal(final EntityPortalEvent event) {
 
     if(!(event.getEntity() instanceof Item itemEntity)) {
       return;

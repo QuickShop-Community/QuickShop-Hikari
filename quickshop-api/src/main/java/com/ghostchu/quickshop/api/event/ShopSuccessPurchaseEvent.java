@@ -38,7 +38,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent {
    * @param total              The money in this purchase
    */
   public ShopSuccessPurchaseEvent(
-          @NotNull Shop shop, @NotNull QUser purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total, double tax) {
+          @NotNull final Shop shop, @NotNull final QUser purchaser, @NotNull final InventoryWrapper purchaserInventory, final int amount, final double total, final double tax) {
 
     this.shop = shop;
     this.purchaser = purchaser;

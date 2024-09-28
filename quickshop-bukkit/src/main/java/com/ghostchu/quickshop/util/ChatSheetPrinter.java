@@ -18,17 +18,17 @@ public class ChatSheetPrinter {
 
   private final CommandSender p;
 
-  public ChatSheetPrinter(CommandSender p) {
+  public ChatSheetPrinter(final CommandSender p) {
 
     this.p = p;
   }
 
-  public ChatSheetPrinter(QUser p) {
+  public ChatSheetPrinter(final QUser p) {
 
     this.p = p.getBukkitPlayer().orElse(null);
   }
 
-  public void printCenterLine(@NotNull Component text) {
+  public void printCenterLine(@NotNull final Component text) {
 
     if(Util.isEmptyComponent(text)) {
       return;
@@ -55,7 +55,7 @@ public class ChatSheetPrinter {
     printFullLine();
   }
 
-  public void printLine(@NotNull Component component) {
+  public void printLine(@NotNull final Component component) {
 
     if(Util.isEmptyComponent(component)) {
       return;

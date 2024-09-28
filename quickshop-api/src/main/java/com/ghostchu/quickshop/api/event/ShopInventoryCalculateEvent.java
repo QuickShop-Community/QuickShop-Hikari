@@ -15,7 +15,7 @@ public class ShopInventoryCalculateEvent extends AbstractQSEvent {
   private final int space;
   private final int stock;
 
-  public ShopInventoryCalculateEvent(Shop shop, int space, int stock) {
+  public ShopInventoryCalculateEvent(final Shop shop, final int space, final int stock) {
 
     this.shop = shop;
     this.space = space;

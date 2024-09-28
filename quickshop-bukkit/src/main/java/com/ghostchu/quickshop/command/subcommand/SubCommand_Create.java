@@ -23,15 +23,15 @@ public class SubCommand_Create implements CommandHandler<Player> {
   private final QuickShop plugin;
 
 
-  public SubCommand_Create(@NotNull QuickShop plugin) {
+  public SubCommand_Create(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    BlockIterator bIt = new BlockIterator(sender, 10);
+    final BlockIterator bIt = new BlockIterator(sender, 10);
     ItemStack item;
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.wrong-args").send();
@@ -43,8 +43,8 @@ public class SubCommand_Create implements CommandHandler<Player> {
         return;
       }
     } else {
-      String matName = parser.getArgs().get(1);
-      Material material = matchMaterial(matName);
+      final String matName = parser.getArgs().get(1);
+      final Material material = matchMaterial(matName);
       if(material == null) {
         plugin.text().of(sender, "item-not-exist", matName).send();
         return;
@@ -65,7 +65,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
     }
     Log.debug("Pending task for material: " + item);
 
-    String price = parser.getArgs().get(0);
+    final String price = parser.getArgs().get(0);
 
     while(bIt.hasNext()) {
       final Block b = bIt.next();
@@ -86,14 +86,14 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
     itemName = itemName.toUpperCase();
     itemName = itemName.replace(" ", "_");
-    Material material = Material.matchMaterial(itemName);
+    final Material material = Material.matchMaterial(itemName);
     if(isValidMaterial(material)) {
       return material;
     }
     return null;
   }
 
-  private boolean isValidMaterial(@Nullable Material material) {
+  private boolean isValidMaterial(@Nullable final Material material) {
 
     return material != null && !material.isAir();
   }
@@ -101,7 +101,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return Collections.singletonList(plugin.text().of(sender, "tabcomplete.price").plain());

@@ -22,20 +22,20 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
           .expireAfterWrite(CONFIRM_TIMEOUT, TimeUnit.SECONDS)
           .build();
 
-  public SubCommand_SilentRemove(QuickShop plugin) {
+  public SubCommand_SilentRemove(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @Override
-  protected void doSilentCommand(@NotNull Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
+  protected void doSilentCommand(@NotNull final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
 
     if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.DELETE)
        && !plugin.perm().hasPermission(sender, "quickshop.other.destroy")) {
       plugin.text().of(sender, "no-permission").send();
       return;
     }
-    boolean skipConfirmation = PackageUtil.parsePackageProperly("skipConfirmation").asBoolean(false);
+    final boolean skipConfirmation = PackageUtil.parsePackageProperly("skipConfirmation").asBoolean(false);
     if(sender.getUniqueId().equals(deleteConfirmation.getIfPresent(shop.getRuntimeRandomUniqueId())) || skipConfirmation) {
       plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop silentremove command", shop.saveToInfoStorage()));
       plugin.getShopManager().deleteShop(shop);

@@ -19,7 +19,7 @@ public class ItemExpression {
 //    @Nullable
 //    private final Function<ItemStack, Boolean> function;
 
-  public ItemExpression(@NotNull QuickShop plugin, @NotNull String item) {
+  public ItemExpression(@NotNull final QuickShop plugin, @NotNull final String item) {
 
     this.item = item;
 //        this.plugin = plugin;

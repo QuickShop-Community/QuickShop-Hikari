@@ -58,9 +58,9 @@ public class PlayerSelectionPage {
   protected final String iconLore;
   protected final IconAction[] actions;
 
-  public PlayerSelectionPage(String returnMenu, String menuName,
-                             final int menuPage, final int returnPage, String playerPageID,
-                             final int menuRows, String iconLore, final IconAction... actions) {
+  public PlayerSelectionPage(final String returnMenu, final String menuName,
+                             final int menuPage, final int returnPage, final String playerPageID,
+                             final int menuRows, final String iconLore, final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;
@@ -138,7 +138,7 @@ public class PlayerSelectionPage {
               profile.setUuid(uuid);
             }
 
-          } catch(Exception ignore) { }
+          } catch(final Exception ignore) { }
 
           final String name = (player.getName() != null)? player.getName() : uuid.toString();
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
@@ -165,7 +165,7 @@ public class PlayerSelectionPage {
 
     final List<UUID> staffs = shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);
 
-    for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+    for(final OfflinePlayer player : Bukkit.getOfflinePlayers()) {
 
       final UUID id = player.getUniqueId();
       if(id.equals(shop.getOwner().getUniqueId()) || staffs.contains(id)) {

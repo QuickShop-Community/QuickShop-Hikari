@@ -16,7 +16,7 @@ public class ShopProtectionFlag {
   private final String itemStackString;
   private final String shopLocation;
 
-  public ShopProtectionFlag(@NotNull String shopLocation, @NotNull String itemStackString) {
+  public ShopProtectionFlag(@NotNull final String shopLocation, @NotNull final String itemStackString) {
 
     this.shopLocation = shopLocation;
     this.itemStackString = itemStackString;

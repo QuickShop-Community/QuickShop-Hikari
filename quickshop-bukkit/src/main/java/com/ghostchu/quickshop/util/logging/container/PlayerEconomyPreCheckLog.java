@@ -11,7 +11,7 @@ public class PlayerEconomyPreCheckLog {
   private String player;
   private double holding;
 
-  public PlayerEconomyPreCheckLog(boolean beforeTrading, QUser player, double holding) {
+  public PlayerEconomyPreCheckLog(final boolean beforeTrading, final QUser player, final double holding) {
 
     this.beforeTrading = beforeTrading;
     this.player = player.serialize();

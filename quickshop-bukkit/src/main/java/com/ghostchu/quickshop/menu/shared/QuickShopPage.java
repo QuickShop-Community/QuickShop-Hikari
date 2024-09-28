@@ -40,7 +40,7 @@ import static com.ghostchu.quickshop.menu.ShopKeeperMenu.SHOP_DATA_ID;
  */
 public class QuickShopPage extends Page {
 
-  public QuickShopPage(int pageNumber) {
+  public QuickShopPage(final int pageNumber) {
 
     super(pageNumber);
   }
@@ -52,7 +52,7 @@ public class QuickShopPage extends Page {
 
   public static Optional<Shop> getShop(final MenuViewer player) {
 
-    Optional<Object> idObj = player.findData(SHOP_DATA_ID);
+    final Optional<Object> idObj = player.findData(SHOP_DATA_ID);
     if(idObj.isPresent()) {
 
       final Long shopId = (Long)idObj.get();
@@ -70,7 +70,7 @@ public class QuickShopPage extends Page {
    *
    * @return The legacy string representation of the text associated with the route and player.
    */
-  public static String legacy(final UUID player, final String route, @Nullable Object... args) {
+  public static String legacy(final UUID player, final String route, @Nullable final Object... args) {
 
     return QuickShop.getInstance().text().of(player, route, args).legacy();
   }
@@ -83,7 +83,7 @@ public class QuickShopPage extends Page {
    *
    * @return The component associated with the route and player.
    */
-  public static Component get(final UUID player, final String route, @Nullable Object... args) {
+  public static Component get(final UUID player, final String route, @Nullable final Object... args) {
 
     return QuickShop.getInstance().text().of(player, route, args).forLocale();
   }
@@ -96,7 +96,7 @@ public class QuickShopPage extends Page {
    *
    * @return A list of components associated with the route and player.
    */
-  public static List<Component> getList(final UUID player, final String route, @Nullable Object... args) {
+  public static List<Component> getList(final UUID player, final String route, @Nullable final Object... args) {
 
     return QuickShop.getInstance().text().ofList(player, route, args).forLocale();
   }

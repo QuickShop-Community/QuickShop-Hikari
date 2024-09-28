@@ -40,7 +40,7 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
   private final QuickShop plugin;
   private final VirtualDisplayItemManager manager;
 
-  public v1_20_R2_TO_v1_20_R3(QuickShop plugin, VirtualDisplayItemManager manager) {
+  public v1_20_R2_TO_v1_20_R3(final QuickShop plugin, final VirtualDisplayItemManager manager) {
 
     this.plugin = plugin;
     this.manager = manager;
@@ -61,7 +61,7 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location location) {
+  public @NotNull PacketContainer createFakeItemSpawnPacket(final int entityID, @NotNull final Location location) {
 
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + entityID).getBytes(StandardCharsets.UTF_8));
 
@@ -92,7 +92,7 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack) {
+  public @NotNull PacketContainer createFakeItemMetaPacket(final int entityID, @NotNull final ItemStack itemStack) {
 
     final List<WrappedDataValue> values = new ArrayList<>();
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
@@ -123,16 +123,16 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
   }
 
   @Override
-  public PacketContainer createFakeItemVelocityPacket(int entityID) {
+  public PacketContainer createFakeItemVelocityPacket(final int entityID) {
 
     return null;
   }
 
   @Override
-  public @NotNull PacketContainer createFakeItemDestroyPacket(int entityID) {
+  public @NotNull PacketContainer createFakeItemDestroyPacket(final int entityID) {
     //Also make a DestroyPacket to remove it
-    PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-    MinecraftVersion minecraftVersion = manager.getProtocolManager().getMinecraftVersion();
+    final PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+    final MinecraftVersion minecraftVersion = manager.getProtocolManager().getMinecraftVersion();
     //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
     //Entity to remove
     try {
@@ -149,23 +149,23 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
 
     return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
       @Override
-      public void onPacketSending(@NotNull PacketEvent event) {
+      public void onPacketSending(@NotNull final PacketEvent event) {
 
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
         if(player == null || !player.isOnline()) {
           return;
         }
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
         //chunk x
-        int x = integerStructureModifier.read(0);
+        final int x = integerStructureModifier.read(0);
         //chunk z
-        int z = integerStructureModifier.read(1);
+        final int z = integerStructureModifier.read(1);
 
         manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(VirtualDisplayItem target : targetList) {
+          for(final VirtualDisplayItem target : targetList) {
             if(!target.isSpawned()) {
               continue;
             }
@@ -186,23 +186,23 @@ public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
 
     return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
       @Override
-      public void onPacketSending(@NotNull PacketEvent event) {
+      public void onPacketSending(@NotNull final PacketEvent event) {
 
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
         if(player == null || !player.isOnline()) {
           return;
         }
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
-        ChunkCoordIntPair pair = intPairStructureModifier.read(0);
+        final StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
+        final ChunkCoordIntPair pair = intPairStructureModifier.read(0);
         //chunk x
-        int x = pair.getChunkX();
+        final int x = pair.getChunkX();
         //chunk z
-        int z = pair.getChunkZ();
+        final int z = pair.getChunkZ();
         manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(VirtualDisplayItem target : targetList) {
+          for(final VirtualDisplayItem target : targetList) {
             if(!target.isSpawned()) {
               continue;
             }

@@ -21,20 +21,20 @@ public class EmbedMessageParser {
   private final static String ZERO_WIDTH_SPACE = "\u200E";
 
   @NotNull
-  public MessageEmbed parse(@NotNull String json) {
+  public MessageEmbed parse(@NotNull final String json) {
     // test json
     if(!CommonUtil.isJson(json)) {
       throw new IllegalArgumentException("Invalid json: " + json);
     }
     // map check
-    Map<String, Object> map = JsonUtil.getGson().fromJson(json, new TypeToken<Map<String, Object>>() {
+    final Map<String, Object> map = JsonUtil.getGson().fromJson(json, new TypeToken<Map<String, Object>>() {
     }.getType());
     if(!map.containsKey("embed") && map.containsKey("embeds")) {
       throw new IllegalArgumentException("json argument are multiple embeds! only single embed message is supported!");
     }
-    PackageDTO packageDto = JsonUtil.getGson().fromJson(json, PackageDTO.class);
-    PackageDTO.EmbedDTO dto = packageDto.getEmbed();
-    EmbedBuilder builder = new EmbedBuilder();
+    final PackageDTO packageDto = JsonUtil.getGson().fromJson(json, PackageDTO.class);
+    final PackageDTO.EmbedDTO dto = packageDto.getEmbed();
+    final EmbedBuilder builder = new EmbedBuilder();
     if(dto.getTitle() != null) {
       builder.setTitle(dto.getTitle());
     }
@@ -58,7 +58,7 @@ public class EmbedMessageParser {
     }
     builder.setTimestamp(Instant.now());
     if(dto.getFields() != null) {
-      for(PackageDTO.EmbedDTO.FieldsDTO field : dto.getFields()) {
+      for(final PackageDTO.EmbedDTO.FieldsDTO field : dto.getFields()) {
         if(field != null && field.getName() != null && field.getValue() != null) {
           String fieldName = field.getName();
           String fieldValue = field.getValue();
@@ -76,7 +76,7 @@ public class EmbedMessageParser {
   }
 
   @Nullable
-  private String emptyDefault(@Nullable String v) {
+  private String emptyDefault(@Nullable final String v) {
 
     if(v == null || StringUtils.isBlank(v) || !v.startsWith("http")) {
       return null;

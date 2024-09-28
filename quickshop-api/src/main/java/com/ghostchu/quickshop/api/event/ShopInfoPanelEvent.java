@@ -31,7 +31,7 @@ public class ShopInfoPanelEvent extends AbstractQSEvent implements QSCancellable
    * @param shop      The shop bought from
    * @param purchaser The player purchasing, may offline if purchase by plugin
    */
-  public ShopInfoPanelEvent(@NotNull Shop shop, @NotNull UUID purchaser) {
+  public ShopInfoPanelEvent(@NotNull final Shop shop, @NotNull final UUID purchaser) {
 
     this.shop = shop;
     this.purchaser = purchaser;
@@ -75,7 +75,7 @@ public class ShopInfoPanelEvent extends AbstractQSEvent implements QSCancellable
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

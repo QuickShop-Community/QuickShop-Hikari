@@ -33,7 +33,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   private boolean hopperProtect;
   private boolean hopperOwnerExclude;
 
-  public ShopProtectionListener(@NotNull QuickShop plugin) {
+  public ShopProtectionListener(@NotNull final QuickShop plugin) {
 
     super(plugin);
     init();
@@ -46,7 +46,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void onBlockExplode(BlockExplodeEvent e) {
+  public void onBlockExplode(final BlockExplodeEvent e) {
 
     for(int i = 0, a = e.blockList().size(); i < a; i++) {
       final Block b = e.blockList().get(i);
@@ -73,7 +73,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
    * @return The shop
    */
   @Nullable
-  private Shop getShopNextTo(@NotNull Location loc) {
+  private Shop getShopNextTo(@NotNull final Location loc) {
 
     final Block b = Util.getAttached(loc.getBlock());
     // Util.getAttached(b)
@@ -88,7 +88,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
    * Handles shops breaking through entity changes (like Wither etc.)
    */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void onEntityBlockChange(EntityChangeBlockEvent e) {
+  public void onEntityBlockChange(final EntityChangeBlockEvent e) {
 
     if(!plugin.getConfig().getBoolean("protect.entity", true)) {
       return;
@@ -102,7 +102,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
    * Handles shops breaking through explosions
    */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void onExplode(EntityExplodeEvent e) {
+  public void onExplode(final EntityExplodeEvent e) {
 
     for(int i = 0, a = e.blockList().size(); i < a; i++) {
       final Block b = e.blockList().get(i);
@@ -124,7 +124,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-  public void onInventoryMove(InventoryMoveItemEvent event) {
+  public void onInventoryMove(final InventoryMoveItemEvent event) {
 
     if(!this.hopperProtect) {
       return;
@@ -141,7 +141,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
     if(this.hopperOwnerExclude) {
       if(event.getDestination().getHolder() instanceof Hopper hopper) {
-        HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
+        final HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
         if(hopperPersistentData != null) {
           if(shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             return;
@@ -153,7 +153,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onPlaceHopper(BlockPlaceEvent e) {
+  public void onPlaceHopper(final BlockPlaceEvent e) {
 
     if(e.getBlockPlaced().getState() instanceof Hopper hopper) {
       hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
@@ -162,9 +162,9 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onStructureGrow(StructureGrowEvent e) {
+  public void onStructureGrow(final StructureGrowEvent e) {
 
-    for(BlockState block : e.getBlocks()) {
+    for(final BlockState block : e.getBlocks()) {
       if(getShopNature(block.getLocation(), true) != null) {
         e.setCancelled(true);
       }

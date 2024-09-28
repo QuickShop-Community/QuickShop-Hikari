@@ -20,37 +20,37 @@ public class GrabConcurrentTask<T> {
   private final ExecutorService service;
 
   @SafeVarargs
-  public GrabConcurrentTask(@NotNull ExecutorService service, @NotNull Supplier<T>... suppliers) {
+  public GrabConcurrentTask(@NotNull final ExecutorService service, @NotNull final Supplier<T>... suppliers) {
 
     this.service = service;
     this.suppliers = new ArrayList<>(List.of(suppliers));
   }
 
-  public void addSupplier(@NotNull Supplier<T> element) {
+  public void addSupplier(@NotNull final Supplier<T> element) {
 
     suppliers.add(element);
   }
 
   @Nullable
-  public T invokeAll(String executeName, long timeout, @NotNull TimeUnit unit, @Nullable Predicate<T> condition) throws InterruptedException {
+  public T invokeAll(final String executeName, final long timeout, @NotNull final TimeUnit unit, @Nullable Predicate<T> condition) throws InterruptedException {
     // Submit all tasks into executor
-    for(Supplier<T> supplier : suppliers) {
+    for(final Supplier<T> supplier : suppliers) {
       service.submit(new GrabConcurrentExecutor<>(executeName, deque, supplier));
     }
     if(condition == null) {
       condition = t->true;
     }
-    Instant instant = Instant.now();
-    Instant timeoutInstant = instant.plus(timeout, unit.toChronoUnit());
-    long timeoutEpochSecond = timeoutInstant.getEpochSecond();
+    final Instant instant = Instant.now();
+    final Instant timeoutInstant = instant.plus(timeout, unit.toChronoUnit());
+    final long timeoutEpochSecond = timeoutInstant.getEpochSecond();
     T value;
     do {
       // loop timed out
-      long loopAllowedWaitingTime = timeoutEpochSecond - Instant.now().getEpochSecond();
+      final long loopAllowedWaitingTime = timeoutEpochSecond - Instant.now().getEpochSecond();
       if(loopAllowedWaitingTime <= 0) {
         return null;
       }
-      Optional<T> element = deque.poll(loopAllowedWaitingTime, TimeUnit.SECONDS);
+      final Optional<T> element = deque.poll(loopAllowedWaitingTime, TimeUnit.SECONDS);
       //noinspection OptionalAssignedToNull
       if(element == null) {
         // poll timed out
@@ -67,7 +67,7 @@ public class GrabConcurrentTask<T> {
     private final Supplier<T> supplier;
     private final String executeName;
 
-    public GrabConcurrentExecutor(@NotNull String executeName, @NotNull LinkedBlockingDeque<Optional<T>> targetDeque, @NotNull Supplier<T> supplier) {
+    public GrabConcurrentExecutor(@NotNull final String executeName, @NotNull final LinkedBlockingDeque<Optional<T>> targetDeque, @NotNull final Supplier<T> supplier) {
 
       this.executeName = executeName;
       this.targetDeque = targetDeque;

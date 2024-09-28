@@ -23,19 +23,19 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Benefit(QuickShop plugin) {
+  public SubCommand_Benefit(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
       return;
     }
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
@@ -57,13 +57,13 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
   }
 
-  private void addBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
+  private void addBenefit(final Player sender, final Shop shop, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() < 3) {
       plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
       return;
     }
-    String player = parser.getArgs().get(1);
+    final String player = parser.getArgs().get(1);
 
     QUserImpl.createAsync(plugin.getPlayerFinder(), player).thenAccept(qUser->{
       if(qUser == null) {
@@ -82,10 +82,10 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
         plugin.text().of(sender, "invalid-percentage", parser.getArgs().get(0)).send();
         return;
       }
-      String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
+      final String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
       Util.mainThreadRun(()->{
         try {
-          double percent = Double.parseDouble(percentageStr);
+          final double percent = Double.parseDouble(percentageStr);
           if(Double.isInfinite(percent) || Double.isNaN(percent)) {
             plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
             return;
@@ -94,7 +94,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
             return;
           }
-          Benefit benefit = shop.getShopBenefit();
+          final Benefit benefit = shop.getShopBenefit();
           benefit.addBenefit(qUser, percent / 100d);
           shop.setShopBenefit(benefit);
           plugin.text().of(sender, "benefit-added", qUser.getDisplay()).send();
@@ -120,20 +120,20 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
   }
 
-  private void removeBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
+  private void removeBenefit(final Player sender, final Shop shop, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() < 2) {
       plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
       return;
     }
-    String player = parser.getArgs().get(1);
+    final String player = parser.getArgs().get(1);
 
     QUserImpl.createAsync(plugin.getPlayerFinder(), player).thenAccept((qUser)->{
               if(qUser == null) {
                 plugin.text().of(sender, "unknown-player", player).send();
                 return;
               }
-              Benefit benefit = shop.getShopBenefit();
+              final Benefit benefit = shop.getShopBenefit();
               benefit.removeBenefit(qUser);
               shop.setShopBenefit(benefit);
               plugin.text().of(sender, "benefit-removed", qUser.getDisplay()).send();
@@ -146,12 +146,12 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
   }
 
-  private void queryBenefit(Player sender, Shop shop, @NotNull CommandParser parser) {
+  private void queryBenefit(final Player sender, final Shop shop, @NotNull final CommandParser parser) {
 
     plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
     Util.asyncThreadRun(()->{
-      for(Map.Entry<QUser, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
-        String v = MsgUtil.decimalFormat(entry.getValue() * 100);
+      for(final Map.Entry<QUser, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
+        final String v = MsgUtil.decimalFormat(entry.getValue() * 100);
         plugin.text().of(sender, "benefit-query-list", entry.getKey().getDisplay(), v + "%").send();
       }
     });
@@ -161,7 +161,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return List.of("add", "remove");

@@ -47,7 +47,7 @@ public interface Platform {
   }
 
   @Nullable
-  default String getItemShopId(@NotNull ItemStack stack) {
+  default String getItemShopId(@NotNull final ItemStack stack) {
 
     if(!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
       return null;

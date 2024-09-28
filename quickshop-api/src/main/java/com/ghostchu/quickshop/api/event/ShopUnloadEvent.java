@@ -16,7 +16,7 @@ public class ShopUnloadEvent extends AbstractQSEvent {
    *
    * @param shop The shop to unload
    */
-  public ShopUnloadEvent(@NotNull Shop shop) {
+  public ShopUnloadEvent(@NotNull final Shop shop) {
 
     this.shop = shop;
   }

@@ -21,7 +21,7 @@ public class MockPlugin implements Plugin {
 
   private final String pluginName;
 
-  public MockPlugin(String pluginName) {
+  public MockPlugin(final String pluginName) {
 
     this.pluginName = pluginName;
   }
@@ -49,7 +49,7 @@ public class MockPlugin implements Plugin {
 
   @Nullable
   @Override
-  public InputStream getResource(@NotNull String s) {
+  public InputStream getResource(@NotNull final String s) {
 
     return null;
   }
@@ -65,7 +65,7 @@ public class MockPlugin implements Plugin {
   }
 
   @Override
-  public void saveResource(@NotNull String s, boolean b) {
+  public void saveResource(@NotNull final String s, final boolean b) {
 
   }
 
@@ -116,20 +116,20 @@ public class MockPlugin implements Plugin {
   }
 
   @Override
-  public void setNaggable(boolean b) {
+  public void setNaggable(final boolean b) {
 
   }
 
   @Nullable
   @Override
-  public ChunkGenerator getDefaultWorldGenerator(@NotNull String s, @Nullable String s1) {
+  public ChunkGenerator getDefaultWorldGenerator(@NotNull final String s, @Nullable final String s1) {
 
     return null;
   }
 
   @Nullable
   @Override
-  public BiomeProvider getDefaultBiomeProvider(@NotNull String s, @Nullable String s1) {
+  public BiomeProvider getDefaultBiomeProvider(@NotNull final String s, @Nullable final String s1) {
 
     return null;
   }
@@ -149,14 +149,14 @@ public class MockPlugin implements Plugin {
   }
 
   @Override
-  public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+  public boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String s, @NotNull final String[] strings) {
 
     return false;
   }
 
   @Nullable
   @Override
-  public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+  public List<String> onTabComplete(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String s, @NotNull final String[] strings) {
 
     return null;
   }

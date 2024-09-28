@@ -14,13 +14,13 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_TaxAccount(QuickShop plugin) {
+  public SubCommand_TaxAccount(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
     if(shop != null) {
@@ -47,7 +47,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return null;
   }

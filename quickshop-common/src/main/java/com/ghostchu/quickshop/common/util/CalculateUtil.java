@@ -16,22 +16,22 @@ public final class CalculateUtil {
 
   }
 
-  public static double add(double number1, double number2) {
+  public static double add(final double number1, final double number2) {
 
     return (BigDecimal.valueOf(number1).add(BigDecimal.valueOf(number2), MATH_CONTEXT)).doubleValue();
   }
 
-  public static double divide(double number1, double number2) {
+  public static double divide(final double number1, final double number2) {
 
     return (BigDecimal.valueOf(number1).divide(BigDecimal.valueOf(number2), MATH_CONTEXT)).doubleValue();
   }
 
-  public static double multiply(double number1, double number2) {
+  public static double multiply(final double number1, final double number2) {
 
     return (BigDecimal.valueOf(number1).multiply(BigDecimal.valueOf(number2), MATH_CONTEXT)).doubleValue();
   }
 
-  public static double subtract(double number1, double number2) {
+  public static double subtract(final double number1, final double number2) {
 
     return (BigDecimal.valueOf(number1).subtract(BigDecimal.valueOf(number2), MATH_CONTEXT)).doubleValue();
   }

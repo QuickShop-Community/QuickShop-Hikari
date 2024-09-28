@@ -110,20 +110,20 @@ public final class Main {
   private ProxyServer proxy;
 
   @Subscribe
-  public void onProxyInitialization(ProxyInitializeEvent event) {
+  public void onProxyInitialization(final ProxyInitializeEvent event) {
 
     proxy.getChannelRegistrar().register(QUICKSHOP_BUNGEE_CHANNEL);
   }
 
   @Subscribe
-  public void onProxyShutdown(ProxyShutdownEvent event) {
+  public void onProxyShutdown(final ProxyShutdownEvent event) {
 
     this.pendingForward.clear();
     proxy.getChannelRegistrar().unregister(QUICKSHOP_BUNGEE_CHANNEL);
   }
 
   @Subscribe
-  public void on(PluginMessageEvent event) {
+  public void on(final PluginMessageEvent event) {
 
     if(!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
       return;
@@ -133,13 +133,13 @@ public final class Main {
     if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
       // the receiver is a server when the proxy talks to a server
       if(event.getSource() instanceof ServerConnection) {
-        String command = in.readUTF();
+        final String command = in.readUTF();
         processCommand(command, in);
       }
     }
   }
 
-  private void processCommand(String command, ByteArrayDataInput in) {
+  private void processCommand(final String command, final ByteArrayDataInput in) {
 
     final UUID uuid = UUID.fromString(in.readUTF());
     switch(command) {
@@ -149,7 +149,7 @@ public final class Main {
   }
 
   @Subscribe(order = PostOrder.FIRST)
-  public void onChat(PlayerChatEvent event) {
+  public void onChat(final PlayerChatEvent event) {
 
     final Player player = event.getPlayer();
     final UUID uuid = player.getUniqueId();
@@ -163,7 +163,7 @@ public final class Main {
     }
   }
 
-  private void forwardMessage(Player player, String message) {
+  private void forwardMessage(final Player player, final String message) {
 
     final ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF(SUB_CHANNEL_FORWARD);
@@ -174,19 +174,19 @@ public final class Main {
   }
 
   @Subscribe(order = PostOrder.FIRST)
-  public void onDisconnect(DisconnectEvent event) {
+  public void onDisconnect(final DisconnectEvent event) {
 
     pendingForward.remove(event.getPlayer().getUniqueId());
   }
 
   @Subscribe(order = PostOrder.FIRST)
-  public void onServerSwitch(ServerPreConnectEvent event) {
+  public void onServerSwitch(final ServerPreConnectEvent event) {
 
     pendingForward.remove(event.getPlayer().getUniqueId());
   }
 
   @Subscribe(order = PostOrder.FIRST)
-  public void onServerKick(ServerPostConnectEvent event) {
+  public void onServerKick(final ServerPostConnectEvent event) {
 
     pendingForward.remove(event.getPlayer().getUniqueId());
   }

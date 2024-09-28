@@ -71,7 +71,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
    */
 
   @Builder
-  public SimpleEconomyTransaction(@Nullable QUser from, @Nullable QUser to, double amount, double taxModifier, @Nullable QUser taxAccount, EconomyCore core, Boolean allowLoan, @NotNull World world, @Nullable String currency, boolean neverFail, @Nullable Benefit benefit) {
+  public SimpleEconomyTransaction(@Nullable final QUser from, @Nullable final QUser to, final double amount, final double taxModifier, @Nullable final QUser taxAccount, final EconomyCore core, final Boolean allowLoan, @NotNull final World world, @Nullable final String currency, final boolean neverFail, @Nullable final Benefit benefit) {
 
     this.from = from;
     this.to = to;
@@ -119,7 +119,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setFrom(@Nullable QUser from) {
+  public void setFrom(@Nullable final QUser from) {
 
     this.from = from;
   }
@@ -132,7 +132,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
    * @return The transaction success.
    */
   @Override
-  public boolean commit(@NotNull TransactionCallback callback) {
+  public boolean commit(@NotNull final TransactionCallback callback) {
 
     Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + core.getName());
     if(!callback.onCommit(this)) {
@@ -160,7 +160,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
       // Process benefit deposit
       Log.transaction("Benefit processing per-player...");
       double payout = 0d;
-      for(Map.Entry<QUser, Double> entry : benefit.getRegistry().entrySet()) {
+      for(final Map.Entry<QUser, Double> entry : benefit.getRegistry().entrySet()) {
         payout += entry.getValue();
         Log.transaction("Benefit for " + entry.getKey() + ", value: " + entry.getValue() + ". Payout = " + payout);
         if(!this.executeOperation(new DepositEconomyOperation(entry.getKey(), amountAfterTax * entry.getValue(), world, currency, core))) {
@@ -169,7 +169,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
           return false;
         }
       }
-      double ownerCanGet = CalculateUtil.multiply(amountAfterTax, (1 - payout));
+      final double ownerCanGet = CalculateUtil.multiply(amountAfterTax, (1 - payout));
       Log.transaction("Benefit for owner remaining: " + ownerCanGet);
       if(ownerCanGet > 0) {
         if(to != null && !this.executeOperation(new DepositEconomyOperation(to, ownerCanGet, world, currency, core))) {
@@ -195,7 +195,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setTo(@Nullable QUser to) {
+  public void setTo(@Nullable final QUser to) {
 
     this.to = to;
   }
@@ -207,7 +207,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setAmount(double amount) {
+  public void setAmount(final double amount) {
 
     this.amount = amount;
   }
@@ -219,7 +219,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setAmountAfterTax(double amountAfterTax) {
+  public void setAmountAfterTax(final double amountAfterTax) {
 
     this.amountAfterTax = amountAfterTax;
   }
@@ -231,7 +231,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setCore(@NotNull EconomyCore core) {
+  public void setCore(@NotNull final EconomyCore core) {
 
     this.core = core;
   }
@@ -249,7 +249,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setCurrency(@Nullable String currency) {
+  public void setCurrency(@Nullable final String currency) {
 
     this.currency = currency;
   }
@@ -261,7 +261,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setTaxer(@Nullable QUser taxer) {
+  public void setTaxer(@Nullable final QUser taxer) {
 
     this.taxer = taxer;
   }
@@ -274,7 +274,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setWorld(@NotNull World world) {
+  public void setWorld(@NotNull final World world) {
 
     this.world = world;
   }
@@ -287,13 +287,13 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setLastError(@NotNull String lastError) {
+  public void setLastError(@NotNull final String lastError) {
 
     this.lastError = lastError;
   }
 
   @Override
-  public void setAllowLoan(boolean allowLoan) {
+  public void setAllowLoan(final boolean allowLoan) {
 
     this.allowLoan = allowLoan;
   }
@@ -307,7 +307,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   public boolean failSafeCommit() {
 
     Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
-    boolean result = commit();
+    final boolean result = commit();
     if(!result) {
       Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);
       rollback(true);
@@ -326,7 +326,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     try(PerfMonitor ignored = new PerfMonitor("Economy Transaction - Commit")) {
       return this.commit(new SimpleTransactionCallback() {
         @Override
-        public void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
+        public void onSuccess(@NotNull final SimpleEconomyTransaction economyTransaction) {
 
         }
       });
@@ -345,7 +345,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   }
 
   @Override
-  public void setTax(double tax) {
+  public void setTax(final double tax) {
 
     this.tax = tax;
   }
@@ -361,12 +361,12 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
   @SuppressWarnings("UnusedReturnValue")
   @NotNull
   @Override
-  public List<Operation> rollback(boolean continueWhenFailed) {
+  public List<Operation> rollback(final boolean continueWhenFailed) {
 
     try(PerfMonitor ignored = new PerfMonitor("Economy Transaction - Rollback")) {
-      List<Operation> operations = new ArrayList<>();
+      final List<Operation> operations = new ArrayList<>();
       while(!processingStack.isEmpty()) {
-        Operation operation = processingStack.pop();
+        final Operation operation = processingStack.pop();
         if(!operation.isCommitted()) {
           continue;
         }
@@ -374,7 +374,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
           continue;
         }
         try {
-          boolean result = operation.rollback();
+          final boolean result = operation.rollback();
           if(!result) {
             if(continueWhenFailed) {
               operations.add(operation);
@@ -398,7 +398,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     }
   }
 
-  private boolean executeOperation(@NotNull Operation operation) {
+  private boolean executeOperation(@NotNull final Operation operation) {
 
     if(operation.isCommitted()) {
       throw new IllegalStateException("Operation already committed");
@@ -407,7 +407,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
       throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
     }
     try {
-      boolean result = operation.commit();
+      final boolean result = operation.commit();
       if(!result) {
         return false;
       }
@@ -429,7 +429,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      *
      * @return Does commit event has been cancelled
      */
-    default boolean onCommit(@NotNull SimpleEconomyTransaction economyTransaction) {
+    default boolean onCommit(@NotNull final SimpleEconomyTransaction economyTransaction) {
 
       return true;
     }
@@ -440,7 +440,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      *
      * @param economyTransaction Transaction
      */
-    default void onFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
+    default void onFailed(@NotNull final SimpleEconomyTransaction economyTransaction) {
 
       Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
     }
@@ -450,7 +450,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      *
      * @param economyTransaction Transaction
      */
-    default void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
+    default void onSuccess(@NotNull final SimpleEconomyTransaction economyTransaction) {
 
       Log.transaction("Transaction succeed: " + economyTransaction);
     }
@@ -461,7 +461,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      *
      * @param economyTransaction Transaction
      */
-    default void onTaxFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
+    default void onTaxFailed(@NotNull final SimpleEconomyTransaction economyTransaction) {
 
       Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
     }

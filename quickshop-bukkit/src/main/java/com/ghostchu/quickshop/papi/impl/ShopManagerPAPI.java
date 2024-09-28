@@ -17,7 +17,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
   private final QuickShop plugin;
   private final ShopManager shopManager;
 
-  public ShopManagerPAPI(@NotNull QuickShop plugin) {
+  public ShopManagerPAPI(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     this.shopManager = plugin.getShopManager();
@@ -31,13 +31,13 @@ public class ShopManagerPAPI implements PAPISubHandler {
 
   @Override
   @Nullable
-  public String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed) {
+  public String handle0(@NotNull final OfflinePlayer player, @NotNull final String paramsTrimmed) {
 
-    String[] args = paramsTrimmed.split("_");
+    final String[] args = paramsTrimmed.split("_");
     if(args.length < 1) {
       return null;
     }
-    String[] passThroughArgs = new String[args.length - 1];
+    final String[] passThroughArgs = new String[args.length - 1];
     System.arraycopy(args, 1, passThroughArgs, 0, passThroughArgs.length);
 
     return switch(args[0]) {
@@ -48,44 +48,44 @@ public class ShopManagerPAPI implements PAPISubHandler {
   }
 
   @Nullable
-  private String handleGlobal(@NotNull OfflinePlayer player, @NotNull String[] passThroughArgs) {
+  private String handleGlobal(@NotNull final OfflinePlayer player, @NotNull final String[] passThroughArgs) {
 
     if(passThroughArgs.length < 2) {
       return null;
     }
-    String type = passThroughArgs[0];
-    String condition = passThroughArgs[1];
+    final String type = passThroughArgs[0];
+    final String condition = passThroughArgs[1];
     if(!"total".equalsIgnoreCase(type)) {
       return null;
     }
-    String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
+    final String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
     System.arraycopy(passThroughArgs, 1, passThroughArgsChild, 0, passThroughArgsChild.length);
     return handleGlobalTotal(player, passThroughArgsChild);
   }
 
   @Nullable
-  private String handlePlayer(@NotNull OfflinePlayer player, String[] passThroughArgs) {
+  private String handlePlayer(@NotNull final OfflinePlayer player, final String[] passThroughArgs) {
 
     if(passThroughArgs.length < 2) {
       return null;
     }
-    String type = passThroughArgs[0];
-    String condition = passThroughArgs[1];
+    final String type = passThroughArgs[0];
+    final String condition = passThroughArgs[1];
     if(!"total".equalsIgnoreCase(type)) {
       return null;
     }
-    String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
+    final String[] passThroughArgsChild = new String[passThroughArgs.length - 1];
     System.arraycopy(passThroughArgs, 1, passThroughArgsChild, 0, passThroughArgsChild.length);
     return handlePlayerTotal(player.getUniqueId(), passThroughArgsChild);
   }
 
   @Nullable
-  private String handleGlobalTotal(@NotNull OfflinePlayer player, String[] passThroughArgsChild) {
+  private String handleGlobalTotal(@NotNull final OfflinePlayer player, final String[] passThroughArgsChild) {
 
     if(passThroughArgsChild.length < 1) {
       return null;
     }
-    List<Shop> allShops = shopManager.getAllShops();
+    final List<Shop> allShops = shopManager.getAllShops();
     return String.valueOf(switch(passThroughArgsChild[0]) {
       case "all" -> allShops.size();
       case "selling" ->
@@ -101,12 +101,12 @@ public class ShopManagerPAPI implements PAPISubHandler {
   }
 
   @Nullable
-  private String handlePlayerTotal(@NotNull UUID player, String[] passThroughArgsChild) {
+  private String handlePlayerTotal(@NotNull final UUID player, final String[] passThroughArgsChild) {
 
     if(passThroughArgsChild.length < 1) {
       return null;
     }
-    List<Shop> belongToPlayers = shopManager.getAllShops(player);
+    final List<Shop> belongToPlayers = shopManager.getAllShops(player);
     return String.valueOf(switch(passThroughArgsChild[0]) {
       case "all" -> belongToPlayers.size();
       case "selling" ->

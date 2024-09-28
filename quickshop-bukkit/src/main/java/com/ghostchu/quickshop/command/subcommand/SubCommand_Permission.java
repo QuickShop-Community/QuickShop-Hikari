@@ -23,7 +23,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Permission(QuickShop plugin) {
+  public SubCommand_Permission(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -36,9 +36,9 @@ public class SubCommand_Permission implements CommandHandler<Player> {
    * @param parser       The arguments (/quickshop create stone will receive stone)
    */
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
@@ -64,7 +64,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
     if(parser.getArgs().size() > 3) {
       group = parser.getArgs().get(3);
     }
-    ChatSheetPrinter sheet = new ChatSheetPrinter(sender);
+    final ChatSheetPrinter sheet = new ChatSheetPrinter(sender);
     if(type == null) {
       plugin.text().of(sender, "bad-command-usage-detailed", "user,group").send();
       return;
@@ -120,7 +120,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             sheet.printHeader();
             sheet.printLine(plugin.text().of(sender, "permission.header").forLocale());
             Util.asyncThreadRun(()->{
-              for(Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
+              for(final Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
                 String name = plugin.getPlayerFinder().uuid2Name(map.getKey());
                 if(name == null) {
                   name = "unknown";
@@ -147,7 +147,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
    * @return Candidate list
    */
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return List.of("user", "group");

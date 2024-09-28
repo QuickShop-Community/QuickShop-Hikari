@@ -11,7 +11,7 @@ public class SimpleMaterialExpressionHandler implements ItemExpressionHandler {
 
   private final QuickShop plugin;
 
-  public SimpleMaterialExpressionHandler(QuickShop plugin) {
+  public SimpleMaterialExpressionHandler(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -35,7 +35,7 @@ public class SimpleMaterialExpressionHandler implements ItemExpressionHandler {
   }
 
   @Override
-  public boolean match(ItemStack stack, String expression) {
+  public boolean match(final ItemStack stack, final String expression) {
 
     return stack.getType().equals(Material.matchMaterial(expression));
   }

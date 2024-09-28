@@ -32,27 +32,27 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     return api;
   }
 
-  public List<Shop> getShops(@NotNull String worldName, int minX, int minZ, int maxX, int maxZ) {
+  public List<Shop> getShops(@NotNull final String worldName, final int minX, final int minZ, final int maxX, final int maxZ) {
 
-    List<Shop> shopsList = new ArrayList<>();
+    final List<Shop> shopsList = new ArrayList<>();
     for(int x = minX >> 4; x <= maxX >> 4; x++) {
       for(int z = minZ >> 4; z <= maxZ >> 4; z++) {
-        Map<Location, Shop> shops = this.api.getShopManager().getShops(worldName, x, z);
+        final Map<Location, Shop> shops = this.api.getShopManager().getShops(worldName, x, z);
         if(shops != null) {
           shopsList.addAll(shops.values());
         }
       }
     }
-    BoundingBox boundingBox = new BoundingBox(minX, Integer.MIN_VALUE, minZ, maxX, Integer.MAX_VALUE, maxZ);
+    final BoundingBox boundingBox = new BoundingBox(minX, Integer.MIN_VALUE, minZ, maxX, Integer.MAX_VALUE, maxZ);
     return shopsList.stream().filter(s->boundingBox.contains(s.getLocation().toVector())).toList();
   }
 
-  public List<Shop> getShops(@NotNull String worldName, int chunkX, int chunkZ) {
+  public List<Shop> getShops(@NotNull final String worldName, final int chunkX, final int chunkZ) {
 
-    List<Shop> shopsList = new ArrayList<>();
+    final List<Shop> shopsList = new ArrayList<>();
     for(int x = chunkX; x <= chunkX; x++) {
       for(int z = chunkZ; z <= chunkZ; z++) {
-        Map<Location, Shop> shops = this.api.getShopManager().getShops(worldName, x, z);
+        final Map<Location, Shop> shops = this.api.getShopManager().getShops(worldName, x, z);
         if(shops != null) {
           shopsList.addAll(shops.values());
         }
@@ -95,14 +95,14 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
   public abstract void init();
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onQuickShopReload(QSConfigurationReloadEvent event) {
+  public void onQuickShopReload(final QSConfigurationReloadEvent event) {
 
     reloadConfig();
     init();
     getLogger().info("Reloading configuration...");
   }
 
-  public void recordDeletion(@Nullable QUser qUser, @NotNull Shop shop, @NotNull String reason) {
+  public void recordDeletion(@Nullable QUser qUser, @NotNull final Shop shop, @NotNull final String reason) {
 
     if(qUser == null) {
       qUser = QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "UNKNOWN", false);

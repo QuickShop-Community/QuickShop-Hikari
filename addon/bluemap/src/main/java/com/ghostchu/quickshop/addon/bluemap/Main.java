@@ -53,7 +53,7 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @NotNull
-  public String plain(@NotNull Component component) {
+  public String plain(@NotNull final Component component) {
 
     return PlainTextComponentSerializer.plainText().serialize(component);
   }
@@ -80,17 +80,17 @@ public final class Main extends JavaPlugin implements Listener {
     plugin.getShopManager().getAllShops().forEach(this::updateShopMarker);
   }
 
-  public void updateShopMarker(Shop shop) {
+  public void updateShopMarker(final Shop shop) {
 
-    Optional<BlueMapWorld> bWorld = blueMapAPI.getWorld(shop.getLocation().getWorld());
+    final Optional<BlueMapWorld> bWorld = blueMapAPI.getWorld(shop.getLocation().getWorld());
     if(bWorld.isEmpty()) {
       return;
     }
-    for(BlueMapMap map : bWorld.get().getMaps()) {
-      MarkerSet markerSet = map.getMarkerSets().computeIfAbsent("quickshop-hikari-shops", (key)->createMarkerSet());
-      String markerName = fillPlaceholders(getConfig().getString("marker-label"), shop);
-      String desc = fillPlaceholders(getConfig().getString("marker-detail"), shop);
-      POIMarker marker = POIMarker.builder()
+    for(final BlueMapMap map : bWorld.get().getMaps()) {
+      final MarkerSet markerSet = map.getMarkerSets().computeIfAbsent("quickshop-hikari-shops", (key)->createMarkerSet());
+      final String markerName = fillPlaceholders(getConfig().getString("marker-label"), shop);
+      final String desc = fillPlaceholders(getConfig().getString("marker-detail"), shop);
+      final POIMarker marker = POIMarker.builder()
               .label(markerName)
               .position(shop.getLocation().getX(),
                         shop.getLocation().getY(),
@@ -103,12 +103,12 @@ public final class Main extends JavaPlugin implements Listener {
     }
   }
 
-  private String fillPlaceholders(String s, Shop shop) {
+  private String fillPlaceholders(String s, final Shop shop) {
 
-    Location loc = shop.getLocation();
-    String x = String.valueOf(loc.getX());
-    String y = String.valueOf(loc.getY());
-    String z = String.valueOf(loc.getZ());
+    final Location loc = shop.getLocation();
+    final String x = String.valueOf(loc.getX());
+    final String y = String.valueOf(loc.getY());
+    final String z = String.valueOf(loc.getZ());
     s = s.replace("%owner%", plain(shop.ownerName()));
     s = s.replace("%item%", shop.getItem().getType().name());
     s = s.replace("%price%", String.valueOf(shop.getPrice()));

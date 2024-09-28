@@ -31,7 +31,7 @@ public final class EnvironmentChecker {
   private final QuickShop plugin;
   private final List<Method> tests = new ArrayList<>();
 
-  public EnvironmentChecker(QuickShop plugin) {
+  public EnvironmentChecker(final QuickShop plugin) {
 
     this.plugin = plugin;
     this.registerTests(this.getClass()); //register self
@@ -42,9 +42,9 @@ public final class EnvironmentChecker {
    *
    * @param clazz The class contains test
    */
-  public void registerTests(@NotNull Class<?> clazz) {
+  public void registerTests(@NotNull final Class<?> clazz) {
 
-    for(Method declaredMethod : clazz.getDeclaredMethods()) {
+    for(final Method declaredMethod : clazz.getDeclaredMethods()) {
       registerTest(declaredMethod);
     }
   }
@@ -54,9 +54,9 @@ public final class EnvironmentChecker {
    *
    * @param method The test method
    */
-  public void registerTest(@NotNull Method method) {
+  public void registerTest(@NotNull final Method method) {
 
-    EnvCheckEntry envCheckEntry = method.getAnnotation(EnvCheckEntry.class);
+    final EnvCheckEntry envCheckEntry = method.getAnnotation(EnvCheckEntry.class);
     if(envCheckEntry == null) {
       return;
     }
@@ -99,14 +99,14 @@ public final class EnvironmentChecker {
 
   public boolean isOutdatedJvm() {
 
-    String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
-    String[] splitVersion = jvmVersion.split("\\.");
+    final String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
+    final String[] splitVersion = jvmVersion.split("\\.");
     if(splitVersion.length < 1) {
       Log.debug("Failed to parse jvm version to check: " + jvmVersion);
       return false;
     }
     try {
-      int majorVersion = Integer.parseInt(splitVersion[0]);
+      final int majorVersion = Integer.parseInt(splitVersion[0]);
       return majorVersion < 17; //Target JDK/JRE version
     } catch(NumberFormatException ignored) {
       Log.debug("Failed to parse jvm major version to check: " + splitVersion[0]);
@@ -139,7 +139,7 @@ public final class EnvironmentChecker {
   @EnvCheckEntry(name = "ModdedServer Database Driver Test", priority = 5)
   public ResultContainer moddedServerDatabaseDriverTest() {
 
-    boolean trigged = (isForgeBasedServer() || isFabricBasedServer()) && !plugin.getConfig().getBoolean("database.mysql", false);
+    final boolean trigged = (isForgeBasedServer() || isFabricBasedServer()) && !plugin.getConfig().getBoolean("database.mysql", false);
     if(trigged && Bukkit.getPluginManager().getPlugin("Mohist") == null) {
       return new ResultContainer(CheckResult.STOP_WORKING, "You can't use H2 database driver on Forge/Fabric hybird server (it's buggy and will destroy your data on Arclight). Use a MySQL server instead. If you're running Mohist or other no-bug software, add -Dcom.ghostchu.quickshop.util.envcheck.EnvironmentChecker.skip.MODDEDSERVER_DATABASE_DRIVER_TEST=true to startup flag to skip this check.");
     }
@@ -204,9 +204,9 @@ public final class EnvironmentChecker {
   @EnvCheckEntry(name = "EcoEnchants V11 Check", priority = 12, stage = EnvCheckEntry.Stage.ON_ENABLE)
   public ResultContainer ecoEnchantsNewerVersionWarning() {
 
-    Plugin eePluginInstance = Bukkit.getPluginManager().getPlugin("EcoEnchants");
+    final Plugin eePluginInstance = Bukkit.getPluginManager().getPlugin("EcoEnchants");
     if(eePluginInstance != null) {
-      Semver semver = new Semver(eePluginInstance.getDescription().getVersion());
+      final Semver semver = new Semver(eePluginInstance.getDescription().getVersion());
       if(semver.getMajor() == 12 && semver.getMinor() <= 2 && semver.getPatch() < 1) {
         plugin.logger().warn("=================================================");
         plugin.logger().warn("WARNING: Risk of irreversible data corruption! Plugin startup is paused!");
@@ -260,22 +260,22 @@ public final class EnvironmentChecker {
 //        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
 //    }
 
-  public ResultReport run(EnvCheckEntry.Stage stage) {
+  public ResultReport run(final EnvCheckEntry.Stage stage) {
 
     sortTests();
 
-    Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
+    final Map<EnvCheckEntry, ResultContainer> results = new LinkedHashMap<>();
     boolean skipAllTest = false;
     ResultContainer executeResult = null;
 
     CheckResult gResult = CheckResult.PASSED;
-    for(Method declaredMethod : this.tests) {
+    for(final Method declaredMethod : this.tests) {
       if(skipAllTest) {
         break;
       }
       CheckResult result = CheckResult.PASSED;
       try {
-        EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
+        final EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
         if(Arrays.stream(envCheckEntry.stage()).noneMatch(entry->entry == stage)) {
           Log.debug("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
           continue;
@@ -336,8 +336,8 @@ public final class EnvironmentChecker {
   private void sortTests() {
 
     tests.sort((o1, o2)->{
-      EnvCheckEntry e1 = o1.getAnnotation(EnvCheckEntry.class);
-      EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
+      final EnvCheckEntry e1 = o1.getAnnotation(EnvCheckEntry.class);
+      final EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
       return Integer.compare(e1.priority(), e2.priority());
     });
   }
@@ -345,8 +345,8 @@ public final class EnvironmentChecker {
   @EnvCheckEntry(name = "Spigot Based Server Test", priority = 2)
   public ResultContainer spigotBasedServer() {
 
-    ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
-    ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
+    final ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
+    final ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
     if(!PaperLib.isSpigot()) {
       return failed;
     }
@@ -381,7 +381,7 @@ public final class EnvironmentChecker {
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
       return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");
     }
-    Throwable testResult = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
+    final Throwable testResult = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
     if(testResult != null) {
       plugin.getVirtualDisplayItemManager().setTestPassed(false);
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
@@ -399,7 +399,7 @@ public final class EnvironmentChecker {
     } catch(ClassNotFoundException e) {
       return new ResultContainer(CheckResult.SKIPPED, "ProtocolLib not detected.");
     }
-    String stringClassLoader = ProtocolLibrary.getProtocolManager().getClass().getClassLoader().toString();
+    final String stringClassLoader = ProtocolLibrary.getProtocolManager().getClass().getClassLoader().toString();
     if(stringClassLoader.contains("pluginEnabled=true") && !stringClassLoader.contains("plugin=ProtocolLib")) {
       plugin.logger().warn("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
                            "QuickShop can't ensure the ProtocolLib is working correctly! Info: {}", stringClassLoader);

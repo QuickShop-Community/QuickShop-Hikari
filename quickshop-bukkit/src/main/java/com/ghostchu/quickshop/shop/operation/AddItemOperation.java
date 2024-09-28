@@ -30,7 +30,7 @@ public class AddItemOperation implements Operation {
    * @param amount amount to add
    * @param inv    The {@link InventoryWrapper} to add to
    */
-  public AddItemOperation(@NotNull ItemStack item, int amount, @NotNull InventoryWrapper inv) {
+  public AddItemOperation(@NotNull final ItemStack item, final int amount, @NotNull final InventoryWrapper inv) {
 
     this.item = item.clone();
     this.amount = amount;
@@ -45,12 +45,12 @@ public class AddItemOperation implements Operation {
     this.snapshot = inv.createSnapshot();
     int remains = this.amount;
     int lastRemains = -1;
-    ItemStack target = this.item.clone();
+    final ItemStack target = this.item.clone();
     while(remains > 0) {
-      int stackSize = Math.min(remains, itemMaxStackSize);
+      final int stackSize = Math.min(remains, itemMaxStackSize);
       target.setAmount(stackSize);
       Log.debug("Committing add item operation, remains: " + remains + ", stackSize: " + stackSize + ", target: " + target);
-      Map<Integer, ItemStack> notSaved = inv.addItem(target);
+      final Map<Integer, ItemStack> notSaved = inv.addItem(target);
       if(notSaved.isEmpty()) {
         remains -= stackSize;
       } else {

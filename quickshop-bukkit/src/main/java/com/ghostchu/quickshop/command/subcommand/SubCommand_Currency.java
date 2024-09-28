@@ -21,13 +21,13 @@ public class SubCommand_Currency implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Currency(QuickShop plugin) {
+  public SubCommand_Currency(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
     if(shop != null) {
@@ -47,8 +47,8 @@ public class SubCommand_Currency implements CommandHandler<Player> {
           return;
         }
 
-        PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-        PriceLimiterCheckResult checkResult = limiter.check(sender, shop.getItem(), parser.getArgs().get(0), shop.getPrice());
+        final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+        final PriceLimiterCheckResult checkResult = limiter.check(sender, shop.getItem(), parser.getArgs().get(0), shop.getPrice());
         if(checkResult.getStatus() != PriceLimiterStatus.PASS) {
           plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                            Component.text(checkResult.getMin()),
@@ -70,7 +70,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return Collections.emptyList();
   }

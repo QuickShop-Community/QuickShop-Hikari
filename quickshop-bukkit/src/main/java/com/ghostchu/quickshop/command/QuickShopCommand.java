@@ -13,21 +13,21 @@ public class QuickShopCommand extends BukkitCommand {
 
   private final CommandManager manager;
 
-  public QuickShopCommand(@NotNull String name, CommandManager commandManager, @NotNull List<String> aliases) {
+  public QuickShopCommand(@NotNull final String name, final CommandManager commandManager, @NotNull final List<String> aliases) {
 
     super(name, "QuickShop command", "/quickshop", aliases);
     this.manager = commandManager;
   }
 
   @Override
-  public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+  public boolean execute(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final String[] args) {
 
     return this.manager.onCommand(sender, this, commandLabel, args);
   }
 
   @NotNull
   @Override
-  public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+  public List<String> tabComplete(@NotNull final CommandSender sender, @NotNull final String alias, @NotNull final String[] args) throws IllegalArgumentException {
 
     List<String> items = this.manager.onTabComplete(sender, this, alias, args);
     if(items == null) {

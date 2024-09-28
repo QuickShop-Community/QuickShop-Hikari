@@ -17,13 +17,13 @@ import java.time.temporal.ChronoUnit;
  */
 public class ChatListener extends AbstractQSListener {
 
-  public ChatListener(QuickShop plugin) {
+  public ChatListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onChat(AsyncPlayerChatEvent e) {
+  public void onChat(final AsyncPlayerChatEvent e) {
 
     if(e.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancel-chat-event")) {
       Log.debug("Ignored a chat event (Cancelled by another plugin, you can force process by turn on ignore-cancel-chat-event)");

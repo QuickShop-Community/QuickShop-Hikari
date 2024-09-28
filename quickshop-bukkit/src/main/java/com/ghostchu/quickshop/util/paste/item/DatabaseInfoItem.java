@@ -31,9 +31,9 @@ public class DatabaseInfoItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    try(Connection conn = QuickShop.getInstance().getSqlManager().getConnection()) {
-      DatabaseMetaData meta = conn.getMetaData();
-      HTMLTable table = new HTMLTable(2, true);
+    try(final Connection conn = QuickShop.getInstance().getSqlManager().getConnection()) {
+      final DatabaseMetaData meta = conn.getMetaData();
+      final HTMLTable table = new HTMLTable(2, true);
       table.insert("Product", meta.getDatabaseProductName());
       table.insert("Version", meta.getDatabaseProductVersion());
       table.insert("Driver", meta.getDriverName());
@@ -42,14 +42,14 @@ public class DatabaseInfoItem implements SubPasteItem {
         processFullReportGenerate(meta, table);
       }
       return table.render();
-    } catch(SQLException exception) {
+    } catch(final SQLException exception) {
       return "<p>Failed to connect to database or getting metadata.</p>";
     }
   }
 
-  private void processFullReportGenerate(@NotNull DatabaseMetaData meta, @NotNull HTMLTable table) {
+  private void processFullReportGenerate(@NotNull final DatabaseMetaData meta, @NotNull final HTMLTable table) {
 
-    List<Class<?>> allowedClasses = Arrays.asList(
+    final List<Class<?>> allowedClasses = Arrays.asList(
             String.class,
             Boolean.class,
             Long.class,
@@ -59,18 +59,18 @@ public class DatabaseInfoItem implements SubPasteItem {
             Double.class,
             Byte.class,
             Character.class
-                                                 );
-    for(Method method : meta.getClass().getDeclaredMethods()) {
+                                                       );
+    for(final Method method : meta.getClass().getDeclaredMethods()) {
       if(method.canAccess(meta)) {
         if(allowedClasses.contains(method.getReturnType())) {
           try {
-            Object value = method.invoke(meta);
+            final Object value = method.invoke(meta);
             if(value != null) {
               table.insert(VERBOSE_PREFIX + method.getName(), value.toString());
             } else {
               table.insert(VERBOSE_PREFIX + method.getName(), "null");
             }
-          } catch(Exception exception) {
+          } catch(final Exception exception) {
             //ignore
             table.insert(VERBOSE_PREFIX + method.getName(), exception.getMessage());
           }

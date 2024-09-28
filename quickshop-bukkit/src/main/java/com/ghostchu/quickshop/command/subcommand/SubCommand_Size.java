@@ -22,19 +22,19 @@ public class SubCommand_Size implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Size(QuickShop plugin) {
+  public SubCommand_Size(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.bulk-size-not-set").send();
       return;
     }
-    int amount;
+    final int amount;
     try {
       amount = Integer.parseInt(parser.getArgs().get(0));
     } catch(NumberFormatException e) {
@@ -53,10 +53,10 @@ public class SubCommand_Size implements CommandHandler<Player> {
           plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
           return;
         }
-        ItemStack pendingItemStack = shop.getItem().clone();
+        final ItemStack pendingItemStack = shop.getItem().clone();
         pendingItemStack.setAmount(amount);
-        PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-        PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
+        final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+        final PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
         if(checkResult.getStatus() != PriceLimiterStatus.PASS) {
           plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                            Component.text(checkResult.getMin()),
@@ -75,7 +75,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain()) : Collections.emptyList();
   }

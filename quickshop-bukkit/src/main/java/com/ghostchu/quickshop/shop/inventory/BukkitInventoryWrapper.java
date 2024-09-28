@@ -25,12 +25,12 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
   private final Supplier<String> eigenCodeProvider;
   private final String eigenCode;
 
-  public BukkitInventoryWrapper(@NotNull Inventory inventory) {
+  public BukkitInventoryWrapper(@NotNull final Inventory inventory) {
 
     this(inventory, ()->null);
   }
 
-  public BukkitInventoryWrapper(@NotNull Inventory inventory, Supplier<String> eigenCodeProvider) {
+  public BukkitInventoryWrapper(@NotNull final Inventory inventory, final Supplier<String> eigenCodeProvider) {
 
     this.inventory = inventory;
     this.manager = QuickShop.getInstance().getInventoryWrapperManager();
@@ -53,8 +53,8 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
   @Override
   public @NotNull ItemStack[] createSnapshot() {
 
-    ItemStack[] content = this.inventory.getContents();
-    ItemStack[] snapshot = new ItemStack[content.length];
+    final ItemStack[] content = this.inventory.getContents();
+    final ItemStack[] snapshot = new ItemStack[content.length];
     for(int i = 0; i < content.length; i++) {
       if(content[i] != null) {
         snapshot[i] = content[i].clone();
@@ -107,20 +107,20 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
   }
 
   @Override
-  public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+  public boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {
 
     this.inventory.setContents(snapshot);
     return true;
   }
 
   @Override
-  public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+  public @NotNull Map<Integer, ItemStack> addItem(final ItemStack... itemStacks) {
 
     return inventory.addItem(itemStacks);
   }
 
   @Override
-  public void setContents(ItemStack[] itemStacks) {
+  public void setContents(final ItemStack[] itemStacks) {
 
     inventory.setStorageContents(itemStacks);
   }
@@ -128,7 +128,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
   @Override
   public String toString() {
 
-    Map<String, Object> map = new HashMap<>();
+    final Map<String, Object> map = new HashMap<>();
     map.put("inventory", inventory.toString());
     map.put("inventoryType", inventory.getClass().getName());
     return JsonUtil.getGson().toJson(map);

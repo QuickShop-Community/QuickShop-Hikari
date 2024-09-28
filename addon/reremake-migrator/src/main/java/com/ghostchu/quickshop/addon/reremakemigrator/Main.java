@@ -62,18 +62,18 @@ public class Main extends JavaPlugin implements Listener {
     return reremake;
   }
 
-  public void setDeniedMessage(String deniedMessage) {
+  public void setDeniedMessage(final String deniedMessage) {
 
     this.deniedMessage = deniedMessage;
   }
 
-  public void setDeniedMessage(Component deniedMessage) {
+  public void setDeniedMessage(final Component deniedMessage) {
 
     this.deniedMessage = LegacyComponentSerializer.legacySection().serialize(deniedMessage);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void onPlayerJoin(AsyncPlayerPreLoginEvent event) {
+  public void onPlayerJoin(final AsyncPlayerPreLoginEvent event) {
 
     if(this.deniedMessage != null) {
       event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, this.deniedMessage);

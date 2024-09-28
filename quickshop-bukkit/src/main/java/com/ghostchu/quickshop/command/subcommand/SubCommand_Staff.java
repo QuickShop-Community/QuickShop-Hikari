@@ -26,15 +26,15 @@ public class SubCommand_Staff implements CommandHandler<Player> {
   private final QuickShop plugin;
   private final List<String> tabCompleteList = List.of("add", "del", "list", "clear");
 
-  public SubCommand_Staff(QuickShop plugin) {
+  public SubCommand_Staff(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    BlockIterator bIt = new BlockIterator(sender, 10);
+    final BlockIterator bIt = new BlockIterator(sender, 10);
     while(bIt.hasNext()) {
       final Block b = bIt.next();
       final Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -59,7 +59,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 return;
               }
               Util.asyncThreadRun(()->{
-                for(UUID uuid : staffs) {
+                for(final UUID uuid : staffs) {
                   MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
                           .append(Component.text(Optional.ofNullable(plugin.getPlayerFinder().uuid2Name(uuid)).orElse("Unknown")).color(NamedTextColor.GRAY)));
                 }
@@ -74,7 +74,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
           }
         }
         case 2 -> {
-          String name = parser.getArgs().get(1);
+          final String name = parser.getArgs().get(1);
           plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1))
                   .thenAccept(uuid->{
                     BuiltInShopPermissionGroup permissionGroup = null;
@@ -113,12 +113,12 @@ public class SubCommand_Staff implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return tabCompleteList;
     } else if(parser.getArgs().size() == 2) {
-      String prefix = parser.getArgs().get(0).toLowerCase();
+      final String prefix = parser.getArgs().get(0).toLowerCase();
       if("add".equals(prefix) || "del".equals(parser.getArgs().get(0))) {
         return Util.getPlayerList();
       }

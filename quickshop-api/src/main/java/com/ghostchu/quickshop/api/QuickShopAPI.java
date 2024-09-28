@@ -26,7 +26,7 @@ public interface QuickShopAPI {
 
   static QuickShopAPI getInstance() {
 
-    RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+    final RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
     if(provider == null) {
       throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
     }
@@ -35,7 +35,7 @@ public interface QuickShopAPI {
 
   static Plugin getPluginInstance() {
 
-    RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+    final RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
     if(provider == null) {
       throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
     }

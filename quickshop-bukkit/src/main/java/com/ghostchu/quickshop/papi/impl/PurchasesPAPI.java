@@ -23,7 +23,7 @@ public class PurchasesPAPI implements PAPISubHandler {
   private final QuickShop plugin;
   private final MetricQuery query;
 
-  public PurchasesPAPI(@NotNull QuickShop plugin) {
+  public PurchasesPAPI(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     this.query = new MetricQuery(plugin, (SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
@@ -37,13 +37,13 @@ public class PurchasesPAPI implements PAPISubHandler {
 
   @Override
   @Nullable
-  public String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed) {
+  public String handle0(@NotNull final OfflinePlayer player, @NotNull final String paramsTrimmed) {
 
-    String[] args = paramsTrimmed.split("_");
+    final String[] args = paramsTrimmed.split("_");
     if(args.length < 1) {
       return null;
     }
-    String[] passThroughArgs = new String[args.length - 1];
+    final String[] passThroughArgs = new String[args.length - 1];
     System.arraycopy(args, 1, passThroughArgs, 0, passThroughArgs.length);
 
     return switch(args[0]) {
@@ -54,20 +54,20 @@ public class PurchasesPAPI implements PAPISubHandler {
   }
 
   @Nullable
-  private String handleGlobal(@NotNull OfflinePlayer player, @NotNull String[] passThroughArgs) {
+  private String handleGlobal(@NotNull final OfflinePlayer player, @NotNull final String[] passThroughArgs) {
 
     if(passThroughArgs.length < 2) {
       return null;
     }
-    String type = passThroughArgs[0];
-    String days = passThroughArgs[1];
+    final String type = passThroughArgs[0];
+    final String days = passThroughArgs[1];
     if(!StringUtils.isNumeric(days)) {
       return null;
     }
-    ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
-    int recentDays = Integer.parseInt(days);
-    Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
-    long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
+    final ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
+    final int recentDays = Integer.parseInt(days);
+    final Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
+    final long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
             .filter(record->{
               if(shopType == null) {
                 return true;
@@ -84,20 +84,20 @@ public class PurchasesPAPI implements PAPISubHandler {
   }
 
   @Nullable
-  private String handlePlayer(@NotNull OfflinePlayer player, String[] passThroughArgs) {
+  private String handlePlayer(@NotNull final OfflinePlayer player, final String[] passThroughArgs) {
 
     if(passThroughArgs.length < 2) {
       return null;
     }
-    String type = passThroughArgs[0];
-    String days = passThroughArgs[1];
+    final String type = passThroughArgs[0];
+    final String days = passThroughArgs[1];
     if(!StringUtils.isNumeric(days)) {
       return null;
     }
-    ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
-    int recentDays = Integer.parseInt(days);
-    Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
-    long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
+    final ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
+    final int recentDays = Integer.parseInt(days);
+    final Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
+    final long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
             .filter(record->{
               if(shopType == null) {
                 return true;
@@ -111,7 +111,7 @@ public class PurchasesPAPI implements PAPISubHandler {
               return false;
             })
             .filter(record->{
-              QUser qUser = QUserImpl.createSync(plugin.getPlayerFinder(), record.getPlayer());
+              final QUser qUser = QUserImpl.createSync(plugin.getPlayerFinder(), record.getPlayer());
               return player.getUniqueId().equals(qUser.getUniqueId());
             }).count();
     return String.valueOf(count);

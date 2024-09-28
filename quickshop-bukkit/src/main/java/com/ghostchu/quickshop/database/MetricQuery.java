@@ -27,7 +27,7 @@ public class MetricQuery {
   private final SimpleDatabaseHelperV2 databaseHelper;
   private final QuickShop plugin;
 
-  public MetricQuery(QuickShop plugin, SimpleDatabaseHelperV2 databaseHelper) {
+  public MetricQuery(final QuickShop plugin, final SimpleDatabaseHelperV2 databaseHelper) {
 
     this.databaseHelper = databaseHelper;
     this.plugin = plugin;
@@ -36,9 +36,9 @@ public class MetricQuery {
 
   public long queryServerPurchaseCount() {
 
-    String sql = "SELECT COUNT(*) AS result FROM " + databaseHelper.getPrefix() + "log_purchase";
+    final String sql = "SELECT COUNT(*) AS result FROM " + databaseHelper.getPrefix() + "log_purchase";
     try(SQLQuery query = databaseHelper.getManager().createQuery().withPreparedSQL(sql).setParams(Collections.emptyList()).execute()) {
-      ResultSet set = query.getResultSet();
+      final ResultSet set = query.getResultSet();
       if(set.next()) {
         return set.getInt("result");
       } else {
@@ -50,19 +50,19 @@ public class MetricQuery {
   }
 
   @NotNull
-  public List<ShopTransactionRecord> queryTransactions(@NotNull Date startTime, long limit, boolean descending) {
+  public List<ShopTransactionRecord> queryTransactions(@NotNull final Date startTime, final long limit, final boolean descending) {
 
-    List<ShopTransactionRecord> list = new ArrayList<>();
+    final List<ShopTransactionRecord> list = new ArrayList<>();
     try(SQLQuery query = databaseHelper.getManager().createQuery()
             .inTable(databaseHelper.getPrefix() + "log_transaction")
             .addTimeCondition("time", startTime, null)
             .selectColumns()
             .setLimit(1000)
             .orderBy("id", !descending).build().execute()) {
-      ResultSet set = query.getResultSet();
+      final ResultSet set = query.getResultSet();
       while(set.next()) {
         //"time", "shop", "data", "buyer", "type", "amount", "money", "tax"
-        ShopTransactionRecord record = new ShopTransactionRecord(
+        final ShopTransactionRecord record = new ShopTransactionRecord(
                 set.getDate("time"),
                 UUID.fromString(set.getString("from")),
                 UUID.fromString(set.getString("to")),
@@ -82,17 +82,17 @@ public class MetricQuery {
   }
 
   // Use LinkedHashMap forced because we need keep the order.
-  public @NotNull LinkedHashMap<ShopMetricRecord, DataRecord> mapToDataRecord(@NotNull List<ShopMetricRecord> metricRecords) throws ExecutionException, InterruptedException {
+  public @NotNull LinkedHashMap<ShopMetricRecord, DataRecord> mapToDataRecord(@NotNull final List<ShopMetricRecord> metricRecords) throws ExecutionException, InterruptedException {
     // map ShopMetricRecord#getShopId to DataRecord with blocking future
-    LinkedHashMap<ShopMetricRecord, DataRecord> dataRecords = new LinkedHashMap<>();
-    for(ShopMetricRecord metricRecord : metricRecords) {
-      long shopId = metricRecord.getShopId();
-      Long dataId = databaseHelper.locateShopDataId(shopId).get();
+    final LinkedHashMap<ShopMetricRecord, DataRecord> dataRecords = new LinkedHashMap<>();
+    for(final ShopMetricRecord metricRecord : metricRecords) {
+      final long shopId = metricRecord.getShopId();
+      final Long dataId = databaseHelper.locateShopDataId(shopId).get();
       if(dataId == null) {
         Log.debug("dataId is null for shopId " + shopId);
         continue;
       }
-      DataRecord dataRecord = databaseHelper.getDataRecord(dataId).get();
+      final DataRecord dataRecord = databaseHelper.getDataRecord(dataId).get();
       dataRecords.put(metricRecord, dataRecord);
     }
     return dataRecords;
@@ -100,19 +100,19 @@ public class MetricQuery {
   }
 
   @NotNull
-  public List<ShopMetricRecord> queryServerPurchaseRecords(@NotNull Date startTime, int limit, boolean descending) {
+  public List<ShopMetricRecord> queryServerPurchaseRecords(@NotNull final Date startTime, final int limit, final boolean descending) {
 
-    List<ShopMetricRecord> list = new ArrayList<>();
+    final List<ShopMetricRecord> list = new ArrayList<>();
     try(SQLQuery query = databaseHelper.getManager().createQuery()
             .inTable(databaseHelper.getPrefix() + "log_purchase")
             .addTimeCondition("time", startTime, null)
             .selectColumns()
             .setLimit(limit)
             .orderBy("id", !descending).build().execute()) {
-      ResultSet set = query.getResultSet();
+      final ResultSet set = query.getResultSet();
       while(set.next()) {
         //"time", "shop", "data", "buyer", "type", "amount", "money", "tax"
-        ShopMetricRecord record = ShopMetricRecord.builder()
+        final ShopMetricRecord record = ShopMetricRecord.builder()
                 .time(set.getDate("time").getTime())
                 .shopId(set.getLong("shop"))
                 .type(ShopOperationEnum.valueOf(set.getString("type")))

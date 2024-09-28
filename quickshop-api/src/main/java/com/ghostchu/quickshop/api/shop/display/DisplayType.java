@@ -22,7 +22,7 @@ public enum DisplayType {
 
   static {
     final Map<Integer, DisplayType> map = new HashMap<>(values().length);
-    for(DisplayType type : values()) {
+    for(final DisplayType type : values()) {
       map.put(type.id, type);
     }
     TYPE_MAP = Collections.unmodifiableMap(map);
@@ -30,17 +30,17 @@ public enum DisplayType {
 
   private final int id;
 
-  DisplayType(int id) {
+  DisplayType(final int id) {
 
     this.id = id;
   }
 
-  public static @NotNull DisplayType fromID(int id) {
+  public static @NotNull DisplayType fromID(final int id) {
 
     return TYPE_MAP.getOrDefault(id, CUSTOM);
   }
 
-  public static int toID(@NotNull DisplayType displayType) {
+  public static int toID(@NotNull final DisplayType displayType) {
 
     return displayType.id;
   }

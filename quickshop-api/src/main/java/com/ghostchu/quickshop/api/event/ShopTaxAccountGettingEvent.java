@@ -13,7 +13,7 @@ public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
   @Nullable
   private QUser taxAccount;
 
-  public ShopTaxAccountGettingEvent(Shop shop, @Nullable QUser taxAccount) {
+  public ShopTaxAccountGettingEvent(final Shop shop, @Nullable final QUser taxAccount) {
 
     this.shop = shop;
     this.taxAccount = taxAccount;
@@ -45,7 +45,7 @@ public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
    *
    * @param taxAccount The tax account
    */
-  public void setTaxAccount(@Nullable QUser taxAccount) {
+  public void setTaxAccount(@Nullable final QUser taxAccount) {
 
     this.taxAccount = taxAccount;
   }

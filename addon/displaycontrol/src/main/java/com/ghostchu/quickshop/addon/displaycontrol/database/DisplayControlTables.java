@@ -33,29 +33,29 @@ public enum DisplayControlTables {
   private String prefix;
   private SQLManager manager;
 
-  DisplayControlTables(@NotNull String name,
-                       @NotNull SQLHandler<TableCreateBuilder> tableHandler) {
+  DisplayControlTables(@NotNull final String name,
+                       @NotNull final SQLHandler<TableCreateBuilder> tableHandler) {
 
     this.name = name;
     this.tableHandler = tableHandler;
   }
 
-  public static void initializeTables(@NotNull SQLManager sqlManager,
-                                      @NotNull String tablePrefix) throws SQLException {
+  public static void initializeTables(@NotNull final SQLManager sqlManager,
+                                      @NotNull final String tablePrefix) throws SQLException {
 
-    for(DisplayControlTables value : values()) {
+    for(final DisplayControlTables value : values()) {
       value.create(sqlManager, tablePrefix);
     }
   }
 
-  private void create(@NotNull SQLManager sqlManager, @NotNull String tablePrefix) throws SQLException {
+  private void create(@NotNull final SQLManager sqlManager, @NotNull final String tablePrefix) throws SQLException {
 
     if(this.manager == null) {
       this.manager = sqlManager;
     }
     this.prefix = tablePrefix;
 
-    TableCreateBuilder tableBuilder = sqlManager.createTable(this.getName());
+    final TableCreateBuilder tableBuilder = sqlManager.createTable(this.getName());
     tableHandler.accept(tableBuilder);
     tableBuilder.build().execute();
     Log.debug("Table creating:" + this.getName());
@@ -71,7 +71,7 @@ public enum DisplayControlTables {
     return this.createDelete(this.manager);
   }
 
-  public @NotNull DeleteBuilder createDelete(@NotNull SQLManager sqlManager) {
+  public @NotNull DeleteBuilder createDelete(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createDelete(this.getName());
   }
@@ -81,7 +81,7 @@ public enum DisplayControlTables {
     return this.createInsert(this.manager);
   }
 
-  public @NotNull InsertBuilder<PreparedSQLUpdateAction<Integer>> createInsert(@NotNull SQLManager sqlManager) {
+  public @NotNull InsertBuilder<PreparedSQLUpdateAction<Integer>> createInsert(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createInsert(this.getName());
   }
@@ -91,7 +91,7 @@ public enum DisplayControlTables {
     return this.createInsertBatch(this.manager);
   }
 
-  public @NotNull InsertBuilder<PreparedSQLUpdateBatchAction<Integer>> createInsertBatch(@NotNull SQLManager sqlManager) {
+  public @NotNull InsertBuilder<PreparedSQLUpdateBatchAction<Integer>> createInsertBatch(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createInsertBatch(this.getName());
   }
@@ -101,7 +101,7 @@ public enum DisplayControlTables {
     return this.createQuery(this.manager);
   }
 
-  public @NotNull TableQueryBuilder createQuery(@NotNull SQLManager sqlManager) {
+  public @NotNull TableQueryBuilder createQuery(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createQuery().inTable(this.getName());
   }
@@ -111,7 +111,7 @@ public enum DisplayControlTables {
     return this.createReplace(this.manager);
   }
 
-  public @NotNull ReplaceBuilder<PreparedSQLUpdateAction<Integer>> createReplace(@NotNull SQLManager sqlManager) {
+  public @NotNull ReplaceBuilder<PreparedSQLUpdateAction<Integer>> createReplace(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createReplace(this.getName());
   }
@@ -121,7 +121,7 @@ public enum DisplayControlTables {
     return this.createReplaceBatch(this.manager);
   }
 
-  public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull SQLManager sqlManager) {
+  public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createReplaceBatch(this.getName());
   }
@@ -131,7 +131,7 @@ public enum DisplayControlTables {
     return this.createUpdate(this.manager);
   }
 
-  public @NotNull UpdateBuilder createUpdate(@NotNull SQLManager sqlManager) {
+  public @NotNull UpdateBuilder createUpdate(@NotNull final SQLManager sqlManager) {
 
     return sqlManager.createUpdate(this.getName());
   }
@@ -141,7 +141,7 @@ public enum DisplayControlTables {
     return isExists(this.manager);
   }
 
-  public boolean isExists(@NotNull SQLManager manager) {
+  public boolean isExists(@NotNull final SQLManager manager) {
 
     boolean match = false;
     try {
@@ -167,7 +167,7 @@ public enum DisplayControlTables {
     return purgeTable(this.manager);
   }
 
-  public boolean purgeTable(@NotNull SQLManager sqlManager) {
+  public boolean purgeTable(@NotNull final SQLManager sqlManager) {
 
     try {
       sqlManager.createDelete(this.getName())

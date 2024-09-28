@@ -8,7 +8,7 @@ public class PluginGlobalAlertLog {
   private static int v = 1;
   private String content;
 
-  public PluginGlobalAlertLog(String content) {
+  public PluginGlobalAlertLog(final String content) {
 
     this.content = content;
   }

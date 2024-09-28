@@ -19,13 +19,13 @@ public class SubCommand_Item implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Item(QuickShop plugin) {
+  public SubCommand_Item(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
     // Loop through every block they're looking at upto 10 blocks away
     final Shop shop = getLookingShop(sender);
     if(shop != null) {
@@ -34,7 +34,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
         plugin.text().of(sender, "not-managed-shop").send();
         return;
       }
-      ItemStack itemStack = sender.getInventory().getItemInMainHand().clone();
+      final ItemStack itemStack = sender.getInventory().getItemInMainHand().clone();
       if(itemStack.getType() == Material.AIR) {
         plugin.text().of(sender, "command.no-trade-item").send();
         return;
@@ -46,8 +46,8 @@ public class SubCommand_Item implements CommandHandler<Player> {
       if(!plugin.isAllowStack() && !plugin.perm().hasPermission(sender, "quickshop.create.stacks")) {
         itemStack.setAmount(1);
       }
-      PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-      PriceLimiterCheckResult checkResult = limiter.check(sender, itemStack, shop.getCurrency(), shop.getPrice());
+      final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+      final PriceLimiterCheckResult checkResult = limiter.check(sender, itemStack, shop.getCurrency(), shop.getPrice());
       if(checkResult.getStatus() != PriceLimiterStatus.PASS) {
         plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                          Component.text(checkResult.getMin()),

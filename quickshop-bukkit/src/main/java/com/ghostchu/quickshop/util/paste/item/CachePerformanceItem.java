@@ -22,12 +22,12 @@ public class CachePerformanceItem implements SubPasteItem {
 
   private String buildPlayerLookupCache() {
 
-    CacheStats stats = ((FastPlayerFinder)plugin.getPlayerFinder()).getNameCache().stats();
+    final CacheStats stats = ((FastPlayerFinder)plugin.getPlayerFinder()).getNameCache().stats();
     return renderTable(stats);
   }
 
   @NotNull
-  private String renderTable(@NotNull CacheStats stats) {
+  private String renderTable(@NotNull final CacheStats stats) {
 
     return GuavaCacheRender.renderTable(stats);
   }
@@ -39,9 +39,9 @@ public class CachePerformanceItem implements SubPasteItem {
   }
 
   @NotNull
-  private String round(double d) {
+  private String round(final double d) {
 
-    NumberFormat nf = NumberFormat.getNumberInstance();
+    final NumberFormat nf = NumberFormat.getNumberInstance();
     nf.setMaximumFractionDigits(3);
     return nf.format(d);
   }

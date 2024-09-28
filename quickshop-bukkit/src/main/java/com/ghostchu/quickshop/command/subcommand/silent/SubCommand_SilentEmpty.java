@@ -13,13 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
 
-  public SubCommand_SilentEmpty(QuickShop plugin) {
+  public SubCommand_SilentEmpty(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @Override
-  protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
 
     if(!(shop instanceof final ContainerShop cs)) {
       plugin.text().of(sender, "not-looking-at-shop").send();

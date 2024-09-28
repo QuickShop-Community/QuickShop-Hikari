@@ -11,7 +11,7 @@ public class ComponentJoiner {
   private Component mainComponent = Component.empty();
   private boolean first = true;
 
-  public ComponentJoiner(@NotNull Component delimiter, @NotNull Component prefix, @NotNull Component suffix) {
+  public ComponentJoiner(@NotNull final Component delimiter, @NotNull final Component prefix, @NotNull final Component suffix) {
 
     this.delimiter = delimiter;
     this.prefix = prefix;
@@ -19,7 +19,7 @@ public class ComponentJoiner {
     mainComponent = mainComponent.append(prefix);
   }
 
-  public ComponentJoiner(@NotNull Component delimiter) {
+  public ComponentJoiner(@NotNull final Component delimiter) {
 
     this.delimiter = delimiter;
     this.prefix = Component.empty();
@@ -27,7 +27,7 @@ public class ComponentJoiner {
     mainComponent = mainComponent.append(prefix);
   }
 
-  public void append(@NotNull Component component) {
+  public void append(@NotNull final Component component) {
 
     if(first) {
       first = false;

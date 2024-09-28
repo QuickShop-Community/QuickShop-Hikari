@@ -46,11 +46,11 @@ public class InventoryPreview implements Listener {
    * @param itemStack The item you want create.
    * @param plugin    The plugin instance.
    */
-  public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull String locale) {
+  public InventoryPreview(@NotNull final QuickShop plugin, @NotNull final ItemStack itemStack, @NotNull final String locale) {
 
     Util.ensureThread(false);
     this.itemStack = itemStack.clone();
-    ItemMeta itemMeta;
+    final ItemMeta itemMeta;
     if(itemStack.hasItemMeta()) {
       itemMeta = this.itemStack.getItemMeta();
     } else {
@@ -79,7 +79,7 @@ public class InventoryPreview implements Listener {
       return;
     }
 
-    for(HumanEntity player : new ArrayList<>(inventory.getViewers())) {
+    for(final HumanEntity player : new ArrayList<>(inventory.getViewers())) {
       player.closeInventory();
     }
     inventory = null; // Destroy
@@ -88,14 +88,14 @@ public class InventoryPreview implements Listener {
   /**
    * Open the preview GUI for player.
    */
-  public void show(Player player) {
+  public void show(final Player player) {
 
     Util.ensureThread(false);
     if(itemStack == null || player == null || player.isSleeping()) // Null pointer exception
     {
       return;
     }
-    ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
+    final ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
     if(Util.fireCancellableEvent(shopInventoryPreview)) {
       Log.debug("Inventory preview was canceled by a plugin.");
       return;

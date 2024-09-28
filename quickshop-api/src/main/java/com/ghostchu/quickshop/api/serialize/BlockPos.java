@@ -13,7 +13,7 @@ public final class BlockPos {
   private final int z;
   private final String world;
 
-  public BlockPos(@NotNull Location location) {
+  public BlockPos(@NotNull final Location location) {
 
     this.x = location.getBlockX();
     this.y = location.getBlockY();
@@ -21,7 +21,7 @@ public final class BlockPos {
     this.world = location.getWorld().getName();
   }
 
-  public BlockPos(int x, int y, int z, String world) {
+  public BlockPos(final int x, final int y, final int z, final String world) {
 
     this.x = x;
     this.y = y;
@@ -63,10 +63,10 @@ public final class BlockPos {
            '}';
   }
 
-  public static BlockPos deserialize(String string) {
+  public static BlockPos deserialize(final String string) {
 
     try {
-      String[] split = string.split(";");
+      final String[] split = string.split(";");
       if(split.length < 5) {
         throw new IllegalArgumentException("Invalid input string for deserialization");
       }

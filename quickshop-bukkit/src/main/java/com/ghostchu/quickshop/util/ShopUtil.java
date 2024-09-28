@@ -75,7 +75,7 @@ public class ShopUtil {
     QuickShop.getInstance().text().of(receiver, "transfer-single-ask", 60).send();
   }
 
-  public static void setPrice(final QuickShop plugin, @NotNull QUser user, final double price, @NotNull Shop shop) {
+  public static void setPrice(final QuickShop plugin, @NotNull final QUser user, final double price, @NotNull final Shop shop) {
 
     if(user.getUniqueId() == null || user.getBukkitPlayer().isEmpty()) {
       return;
@@ -167,14 +167,14 @@ public class ShopUtil {
     private final QUser to;
     private final List<Shop> shops;
 
-    public PendingTransferTask(QUser from, QUser to, List<Shop> shops) {
+    public PendingTransferTask(final QUser from, final QUser to, final List<Shop> shops) {
 
       this.from = from;
       this.to = to;
       this.shops = shops;
     }
 
-    public void cancel(boolean sendMessage) {
+    public void cancel(final boolean sendMessage) {
 
       if(sendMessage) {
         QuickShop.getInstance().text().of(from, "transfer-rejected-fromside", to).send();
@@ -182,10 +182,10 @@ public class ShopUtil {
       }
     }
 
-    public void commit(boolean sendMessage) {
+    public void commit(final boolean sendMessage) {
 
-      for(Shop shop : shops) {
-        ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), to);
+      for(final Shop shop : shops) {
+        final ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), to);
         if(event.callCancellableEvent()) {
           continue;
         }

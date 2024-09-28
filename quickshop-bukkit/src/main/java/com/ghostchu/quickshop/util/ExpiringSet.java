@@ -10,7 +10,7 @@ public class ExpiringSet<T> {
   private final Cache<T, Long> cache;
   private final long lifetime;
 
-  public ExpiringSet(long lifetime, TimeUnit timeUnit) {
+  public ExpiringSet(final long lifetime, final TimeUnit timeUnit) {
 
     this.cache = CacheBuilder
             .newBuilder()
@@ -18,18 +18,18 @@ public class ExpiringSet<T> {
     this.lifetime = timeUnit.toMillis(lifetime);
   }
 
-  public void add(T item) {
+  public void add(final T item) {
 
     this.cache.put(item, System.currentTimeMillis() + this.lifetime);
   }
 
-  public boolean contains(T item) {
+  public boolean contains(final T item) {
 
-    Long timeout = this.cache.getIfPresent(item);
+    final Long timeout = this.cache.getIfPresent(item);
     return timeout != null && timeout > System.currentTimeMillis();
   }
 
-  public void remove(T item) {
+  public void remove(final T item) {
 
     this.cache.invalidate(item);
   }

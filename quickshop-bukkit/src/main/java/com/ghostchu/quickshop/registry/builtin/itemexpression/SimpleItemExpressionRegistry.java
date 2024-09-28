@@ -17,7 +17,7 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
   private final QuickShop plugin;
   private final Set<ItemExpressionHandler> handlers = new ConcurrentSkipListSet<>();
 
-  public SimpleItemExpressionRegistry(QuickShop quickShop) {
+  public SimpleItemExpressionRegistry(final QuickShop quickShop) {
 
     this.plugin = quickShop;
   }
@@ -29,9 +29,9 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
   }
 
   @Override
-  public boolean match(ItemStack stack, String expression) {
+  public boolean match(final ItemStack stack, final String expression) {
 
-    for(ItemExpressionHandler handler : handlers) {
+    for(final ItemExpressionHandler handler : handlers) {
       if(handler.getPrefix().isBlank() || expression.startsWith(handler.getPrefix())) {
         if(handler.match(stack, StringUtils.substringAfter(expression, handler.getInternalPrefix0()))) {
           return true;
@@ -42,9 +42,9 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
   }
 
   @Override
-  public void registerHandler(ItemExpressionHandler handler) throws PrefixAlreadyRegisteredException {
+  public void registerHandler(final ItemExpressionHandler handler) throws PrefixAlreadyRegisteredException {
 
-    for(ItemExpressionHandler itemExpressionHandler : handlers) {
+    for(final ItemExpressionHandler itemExpressionHandler : handlers) {
       if(itemExpressionHandler.getPrefix().equals(handler.getPrefix())) {
         // Same plugin register request
         if(!itemExpressionHandler.getPlugin().getName().equals(handler.getPlugin().getName())) {
@@ -58,7 +58,7 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
   }
 
   @Override
-  public boolean registerHandlerSafely(ItemExpressionHandler handler) {
+  public boolean registerHandlerSafely(final ItemExpressionHandler handler) {
 
     try {
       registerHandler(handler);
@@ -69,19 +69,19 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
   }
 
   @Override
-  public void unregisterHandler(ItemExpressionHandler handler) {
+  public void unregisterHandler(final ItemExpressionHandler handler) {
 
     handlers.remove(handler);
   }
 
   @Override
-  public void unregisterHandler(String prefix) {
+  public void unregisterHandler(final String prefix) {
 
     handlers.removeIf(h->h.getPrefix().equals(prefix));
   }
 
   @Override
-  public void unregisterHandlers(Plugin plugin) {
+  public void unregisterHandlers(final Plugin plugin) {
 
     handlers.removeIf(h->h.getPlugin().equals(plugin));
   }

@@ -45,7 +45,7 @@ public final class Main extends Plugin implements Listener {
   }
 
   @EventHandler
-  public void on(PluginMessageEvent event) {
+  public void on(final PluginMessageEvent event) {
 
     if(!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
       return;
@@ -62,7 +62,7 @@ public final class Main extends Plugin implements Listener {
     }
   }
 
-  private void processCommand(String command, ByteArrayDataInput in) {
+  private void processCommand(final String command, final ByteArrayDataInput in) {
 
     final UUID uuid = UUID.fromString(in.readUTF());
     switch(command) {
@@ -72,7 +72,7 @@ public final class Main extends Plugin implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onChat(ChatEvent event) {
+  public void onChat(final ChatEvent event) {
 
     if(event.getSender() instanceof ProxiedPlayer player) {
       final UUID uuid = player.getUniqueId();
@@ -83,7 +83,7 @@ public final class Main extends Plugin implements Listener {
     }
   }
 
-  private void forwardMessage(ProxiedPlayer player, String message) {
+  private void forwardMessage(final ProxiedPlayer player, final String message) {
 
     final ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF(SUB_CHANNEL_FORWARD);
@@ -92,19 +92,19 @@ public final class Main extends Plugin implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onDisconnect(PlayerDisconnectEvent event) {
+  public void onDisconnect(final PlayerDisconnectEvent event) {
 
     pendingForward.remove(event.getPlayer().getUniqueId());
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onServerSwitch(ServerSwitchEvent event) {
+  public void onServerSwitch(final ServerSwitchEvent event) {
 
     pendingForward.remove(event.getPlayer().getUniqueId());
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onServerKick(ServerKickEvent event) {
+  public void onServerKick(final ServerKickEvent event) {
 
     pendingForward.remove(event.getPlayer().getUniqueId());
   }

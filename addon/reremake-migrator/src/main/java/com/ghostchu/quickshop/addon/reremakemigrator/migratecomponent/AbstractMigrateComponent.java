@@ -13,7 +13,7 @@ public abstract class AbstractMigrateComponent implements MigrateComponent {
   private final org.maxgamer.quickshop.QuickShop reremake;
   private final CommandSender sender;
 
-  public AbstractMigrateComponent(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender) {
+  public AbstractMigrateComponent(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake, final CommandSender sender) {
 
     this.plugin = main;
     this.hikari = hikari;
@@ -50,7 +50,7 @@ public abstract class AbstractMigrateComponent implements MigrateComponent {
     return sender;
   }
 
-  public Text text(String modulePath, Object... objects) {
+  public Text text(final String modulePath, final Object... objects) {
 
     return getHikari().text().of(sender, "addon.reremake-migrator." + modulePath, objects);
   }

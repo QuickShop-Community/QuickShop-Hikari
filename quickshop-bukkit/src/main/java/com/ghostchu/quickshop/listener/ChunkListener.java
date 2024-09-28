@@ -22,13 +22,13 @@ import java.util.Map;
 
 public class ChunkListener extends AbstractQSListener {
 
-  public ChunkListener(QuickShop plugin) {
+  public ChunkListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onChunkLoad(ChunkLoadEvent e) {
+  public void onChunkLoad(final ChunkLoadEvent e) {
 
     if(e.isNewChunk()) {
       return;
@@ -38,17 +38,17 @@ public class ChunkListener extends AbstractQSListener {
       return;
     }
     cleanDisplayItems(e.getChunk());
-    String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
+    final String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
     try(PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(500, ChronoUnit.MILLIS))) {
-      for(Shop shop : inChunk.values()) {
+      for(final Shop shop : inChunk.values()) {
         plugin.getShopManager().loadShop(shop);
       }
     }
   }
 
-  private void cleanDisplayItems(Chunk chunk) {
+  private void cleanDisplayItems(final Chunk chunk) {
 
-    for(Entity entity : chunk.getEntities()) {
+    for(final Entity entity : chunk.getEntities()) {
       if(entity instanceof Item itemEntity) {
         if(AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
           itemEntity.remove();
@@ -59,13 +59,13 @@ public class ChunkListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onChunkUnload(ChunkUnloadEvent e) {
+  public void onChunkUnload(final ChunkUnloadEvent e) {
 
     final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
     if(inChunk == null) {
       return;
     }
-    for(Shop shop : inChunk.values()) {
+    for(final Shop shop : inChunk.values()) {
       try(PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(500, ChronoUnit.MILLIS))) {
         if(shop.isLoaded()) {
           plugin.getShopManager().unloadShop(shop);

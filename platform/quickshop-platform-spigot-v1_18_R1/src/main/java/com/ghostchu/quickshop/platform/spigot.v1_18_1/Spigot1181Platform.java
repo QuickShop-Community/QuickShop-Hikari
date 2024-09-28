@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class Spigot1181Platform extends AbstractSpigotPlatform implements Platform {
 
-  public Spigot1181Platform(@NotNull Plugin plugin) {
+  public Spigot1181Platform(@NotNull final Plugin plugin) {
 
     super(plugin);
   }
@@ -36,7 +36,7 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public void registerCommand(@NotNull String prefix, @NotNull Command command) {
+  public void registerCommand(@NotNull final String prefix, @NotNull final Command command) {
 
     ((CraftServer)Bukkit.getServer()).getCommandMap().register(prefix, command);
     command.register(((CraftServer)Bukkit.getServer()).getCommandMap());
@@ -44,7 +44,7 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Material material) {
+  public @NotNull String getTranslationKey(@NotNull final Material material) {
 
     if(material.isBlock()) {
       return CraftMagicNumbers.getBlock(material).getDescriptionId();
@@ -53,15 +53,15 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
     }
   }
 
-  private String postProcessingTranslationKey(String key) {
+  private String postProcessingTranslationKey(final String key) {
 
     return this.translationMapping.getOrDefault(key, key);
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull EntityType type) {
+  public @NotNull String getTranslationKey(@NotNull final EntityType type) {
 
-    Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
+    final Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
     if(op.isPresent()) {
       return postProcessingTranslationKey(op.get().getDescriptionId());
     } else {
@@ -70,21 +70,21 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+  public @NotNull String getTranslationKey(@NotNull final PotionEffectType potionEffectType) {
 
-    CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType)potionEffectType;
+    final CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType)potionEffectType;
     return postProcessingTranslationKey(craftPotionEffectType.getHandle().getDescriptionId());
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+  public @NotNull String getTranslationKey(@NotNull final Enchantment enchantment) {
 
-    CraftEnchantment craftEnchantment = (CraftEnchantment)enchantment;
+    final CraftEnchantment craftEnchantment = (CraftEnchantment)enchantment;
     return postProcessingTranslationKey(craftEnchantment.getHandle().getDescriptionId());
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+  public @NotNull String getTranslationKey(@NotNull final ItemStack stack) {
 
     return getTranslationKey(stack.getType());
   }

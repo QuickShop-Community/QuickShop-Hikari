@@ -36,7 +36,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   private static boolean virtualDisplayDoesntWork = false;
   private static final NamespacedKey DISPLAY_MARK_NAMESPACE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "display_protection");
 
-  protected AbstractDisplayItem(Shop shop) {
+  protected AbstractDisplayItem(final Shop shop) {
 
     this.shop = shop;
     this.originalItemStack = shop.getItem().clone();
@@ -44,7 +44,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     init();
   }
 
-  public static void setVirtualDisplayDoesntWork(boolean shouldDisable) {
+  public static void setVirtualDisplayDoesntWork(final boolean shouldDisable) {
 
     virtualDisplayDoesntWork = shouldDisable;
   }
@@ -86,7 +86,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     if(!itemStack.hasItemMeta()) {
       return false;
     }
-    ItemMeta iMeta = itemStack.getItemMeta();
+    final ItemMeta iMeta = itemStack.getItemMeta();
     if(iMeta == null) {
       return false;
     }
@@ -113,7 +113,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
    * @return New itemStack with protect flag.
    */
   @NotNull
-  public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+  public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull final Shop shop) {
 
     itemStack = itemStack.clone();
     ItemMeta iMeta = itemStack.getItemMeta();
@@ -127,7 +127,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
     if(!PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
       iMeta.setDisplayName(null);
     }
-    ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
+    final ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
     itemStack.getItemMeta().getPersistentDataContainer().set(DISPLAY_MARK_NAMESPACE, PersistentDataType.STRING, JsonUtil.getGson().toJson(shopProtectionFlag));
     itemStack.setItemMeta(iMeta);
     return itemStack;
@@ -143,7 +143,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
    */
   @NotNull
   public static ShopProtectionFlag createShopProtectionFlag(
-          @NotNull ItemStack itemStack, @NotNull Shop shop) {
+          @NotNull final ItemStack itemStack, @NotNull final Shop shop) {
 
     return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
   }

@@ -19,20 +19,20 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Clean(QuickShop plugin) {
+  public SubCommand_Clean(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     plugin.text().of(sender, "command.cleaning").send();
 
     final List<Shop> pendingRemoval = new ArrayList<>();
     int i = 0;
 
-    for(Shop shop : plugin.getShopManager().getAllShops()) {
+    for(final Shop shop : plugin.getShopManager().getAllShops()) {
       try {
         if(Util.isLoaded(shop.getLocation())
            && shop.isSelling()
@@ -51,7 +51,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
       }
     }
 
-    for(Shop shop : pendingRemoval) {
+    for(final Shop shop : pendingRemoval) {
       plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop clean", shop.saveToInfoStorage()));
       plugin.getShopManager().deleteShop(shop);
     }

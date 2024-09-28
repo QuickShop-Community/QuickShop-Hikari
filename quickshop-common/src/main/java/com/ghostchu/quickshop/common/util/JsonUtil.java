@@ -67,13 +67,13 @@ public final class JsonUtil {
   }
 
   @NotNull
-  public static JsonObject readObject(@NotNull Reader reader) {
+  public static JsonObject readObject(@NotNull final Reader reader) {
 
     return JsonParser.parseReader(reader).getAsJsonObject();
   }
 
   @NotNull
-  public static JsonObject readObject(@NotNull String s) {
+  public static JsonObject readObject(@NotNull final String s) {
 
     return JsonParser.parseString(s).getAsJsonObject();
   }
@@ -84,33 +84,33 @@ public final class JsonUtil {
   }
 
   @NotNull
-  public static String toString(@NotNull JsonElement element) {
+  public static String toString(@NotNull final JsonElement element) {
 
     return Objects.requireNonNull(standard().toJson(element));
   }
 
   @NotNull
-  public static String toStringPretty(@NotNull JsonElement element) {
+  public static String toStringPretty(@NotNull final JsonElement element) {
 
     return Objects.requireNonNull(prettyPrinting().toJson(element));
   }
 
-  public static void writeElement(@NotNull Appendable writer, @NotNull JsonElement element) {
+  public static void writeElement(@NotNull final Appendable writer, @NotNull final JsonElement element) {
 
     standard().toJson(element, writer);
   }
 
-  public static void writeElementPretty(@NotNull Appendable writer, @NotNull JsonElement element) {
+  public static void writeElementPretty(@NotNull final Appendable writer, @NotNull final JsonElement element) {
 
     prettyPrinting().toJson(element, writer);
   }
 
-  public static void writeObject(@NotNull Appendable writer, @NotNull JsonObject object) {
+  public static void writeObject(@NotNull final Appendable writer, @NotNull final JsonObject object) {
 
     standard().toJson(object, writer);
   }
 
-  public static void writeObjectPretty(@NotNull Appendable writer, @NotNull JsonObject object) {
+  public static void writeObjectPretty(@NotNull final Appendable writer, @NotNull final JsonObject object) {
 
     prettyPrinting().toJson(object, writer);
   }
@@ -122,13 +122,13 @@ public final class JsonUtil {
   public static class HiddenAnnotationExclusionStrategy implements ExclusionStrategy {
 
     @Override
-    public boolean shouldSkipField(FieldAttributes f) {
+    public boolean shouldSkipField(final FieldAttributes f) {
 
       return f.getAnnotation(Hidden.class) != null;
     }
 
     @Override
-    public boolean shouldSkipClass(Class<?> clazz) {
+    public boolean shouldSkipClass(final Class<?> clazz) {
 
       return clazz.getDeclaredAnnotation(Hidden.class) != null;
     }

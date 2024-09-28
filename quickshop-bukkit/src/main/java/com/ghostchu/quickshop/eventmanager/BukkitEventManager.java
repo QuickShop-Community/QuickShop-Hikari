@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public class BukkitEventManager implements QuickEventManager {
 
   @Override
-  public void callEvent(@NotNull Event event, @Nullable Consumer<Event> callBeforePassToMonitor) {
+  public void callEvent(@NotNull final Event event, @Nullable final Consumer<Event> callBeforePassToMonitor) {
 
     Bukkit.getPluginManager().callEvent(event);
   }

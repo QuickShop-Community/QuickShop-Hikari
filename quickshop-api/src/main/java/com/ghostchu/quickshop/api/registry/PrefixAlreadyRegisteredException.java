@@ -9,7 +9,7 @@ public class PrefixAlreadyRegisteredException extends Exception {
   private final Plugin plugin;
   private final ItemExpressionHandler handler;
 
-  public PrefixAlreadyRegisteredException(String prefix, Plugin pluginInstance, ItemExpressionHandler handler) {
+  public PrefixAlreadyRegisteredException(final String prefix, final Plugin pluginInstance, final ItemExpressionHandler handler) {
 
     super("The prefix " + prefix + " already in use, registered by " + pluginInstance.getName() + " with handler " + handler.getClass().getName() + ", pick another one prefix!");
     this.prefix = prefix;

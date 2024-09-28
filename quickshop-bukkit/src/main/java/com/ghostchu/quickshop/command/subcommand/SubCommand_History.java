@@ -29,13 +29,13 @@ public class SubCommand_History implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_History(QuickShop plugin) {
+  public SubCommand_History(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final List<Shop> shops = new ArrayList<>();
     if(parser.getArgs().isEmpty()) {
@@ -116,7 +116,7 @@ public class SubCommand_History implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return List.of("owned", "accessible", "global", plugin.text().of(sender, "history-command-leave-blank").plain());

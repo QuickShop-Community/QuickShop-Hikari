@@ -31,7 +31,7 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
 
   private final String descriptionKey;
 
-  BuiltInShopPermission(@NotNull String node, @NotNull String descriptionKey) {
+  BuiltInShopPermission(@NotNull final String node, @NotNull final String descriptionKey) {
 
     this.node = node;
     this.descriptionKey = descriptionKey;
@@ -50,13 +50,13 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
   }
 
   @Override
-  public boolean hasPermission(@NotNull BuiltInShopPermission permission) {
+  public boolean hasPermission(@NotNull final BuiltInShopPermission permission) {
 
     return this == permission;
   }
 
   @Override
-  public boolean hasPermission(@NotNull String permission) {
+  public boolean hasPermission(@NotNull final String permission) {
 
     return this.node.equals(permission);
   }

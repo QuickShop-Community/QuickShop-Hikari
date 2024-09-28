@@ -33,7 +33,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
   public abstract double getBalance(@NotNull QUser obj, @NotNull World world, @Nullable String currency);
 
   @Override
-  public boolean transfer(@NotNull QUser from, @NotNull QUser to, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean transfer(@NotNull final QUser from, @NotNull final QUser to, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;

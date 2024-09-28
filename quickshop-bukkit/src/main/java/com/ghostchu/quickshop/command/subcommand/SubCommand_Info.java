@@ -18,13 +18,13 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Info(QuickShop plugin) {
+  public SubCommand_Info(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     int buying = 0;
     int selling = 0;
@@ -32,13 +32,13 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
     int worlds = 0;
     int nostock = 0;
 
-    for(Map<ShopChunk, Map<Location, Shop>> inWorld :
+    for(final Map<ShopChunk, Map<Location, Shop>> inWorld :
             plugin.getShopManager().getShops().values()) {
       worlds++;
 
-      for(Map<Location, Shop> inChunk : inWorld.values()) {
+      for(final Map<Location, Shop> inChunk : inWorld.values()) {
         chunks++;
-        for(Shop shop : inChunk.values()) {
+        for(final Shop shop : inChunk.values()) {
           if(shop.isBuying()) {
             buying++;
           } else if(shop.isSelling()) {

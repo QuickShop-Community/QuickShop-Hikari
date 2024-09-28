@@ -21,7 +21,7 @@ public class VaultPermissionProvider implements PermissionProvider {
   @Deprecated
   public VaultPermissionProvider() {
 
-    RegisteredServiceProvider<Permission> rsp = Bukkit.getServicesManager().getRegistration(Permission.class);
+    final RegisteredServiceProvider<Permission> rsp = Bukkit.getServicesManager().getRegistration(Permission.class);
     if(rsp == null) {
       throw new ProviderIsEmptyException(getName());
     }
@@ -48,15 +48,15 @@ public class VaultPermissionProvider implements PermissionProvider {
    * @return hasPermission
    */
   @Override
-  public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final CommandSender sender, @NotNull final String permission) {
 
     return api.has(sender, permission);
   }
 
   @Override
-  public boolean hasPermission(@NotNull QUser sender, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final QUser sender, @NotNull final String permission) {
 
-    Player player = sender.getBukkitPlayer().orElse(null);
+    final Player player = sender.getBukkitPlayer().orElse(null);
     if(player == null) {
       return false;
     }
@@ -72,12 +72,12 @@ public class VaultPermissionProvider implements PermissionProvider {
    * @return Debug Infos
    */
   public @NotNull PermissionInformationContainer getDebugInfo(
-          @NotNull CommandSender sender, @NotNull String permission) {
+          @NotNull final CommandSender sender, @NotNull final String permission) {
 
     if(sender instanceof Server) {
       return new PermissionInformationContainer(sender, permission, null, "User is Console");
     }
-    OfflinePlayer offlinePlayer = (OfflinePlayer)sender;
+    final OfflinePlayer offlinePlayer = (OfflinePlayer)sender;
     return new PermissionInformationContainer(
             sender, permission, api.getPrimaryGroup(null, offlinePlayer), null);
   }

@@ -18,7 +18,7 @@ public class ShopPurchaseLog {
   private double balance;
   private double tax;
 
-  public ShopPurchaseLog(ShopInfoStorage shop, ShopType type, QUser trader, String itemName, String itemStack, int amount, double balance, double tax) {
+  public ShopPurchaseLog(final ShopInfoStorage shop, final ShopType type, final QUser trader, final String itemName, final String itemStack, final int amount, final double balance, final double tax) {
 
     this.shop = shop;
     this.type = type;

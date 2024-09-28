@@ -21,7 +21,7 @@ public class ShopSignUpdateEvent extends AbstractQSEvent {
    * @param shop Target shop
    * @param sign Updated sign
    */
-  public ShopSignUpdateEvent(@NotNull Shop shop, @NotNull Sign sign) {
+  public ShopSignUpdateEvent(@NotNull final Shop shop, @NotNull final Sign sign) {
 
     this.shop = shop;
     this.sign = sign;

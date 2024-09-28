@@ -14,23 +14,23 @@ public class TownyMaterialPriceLimiter {
   private final Map<Material, Double> prices = new HashMap<>();
   private final double percentage;
 
-  public TownyMaterialPriceLimiter(ConfigurationSection section, double percentage) {
+  public TownyMaterialPriceLimiter(final ConfigurationSection section, final double percentage) {
 
     this.percentage = percentage;
-    for(String key : section.getKeys(false)) {
-      Material mat = Material.matchMaterial(key);
+    for(final String key : section.getKeys(false)) {
+      final Material mat = Material.matchMaterial(key);
       if(mat == null) {
         JavaPlugin.getPlugin(Main.class).getLogger().warning("Invalid material in config: " + key);
       }
-      double price = section.getDouble(key);
+      final double price = section.getDouble(key);
       prices.put(mat, price);
     }
   }
 
   @Nullable
-  public Double getPrice(@NotNull Material material, boolean selling) {
+  public Double getPrice(@NotNull final Material material, final boolean selling) {
 
-    Double basePrice = prices.get(material);
+    final Double basePrice = prices.get(material);
     if(basePrice == null) {
       return null;
     }

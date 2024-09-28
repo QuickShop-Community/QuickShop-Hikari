@@ -45,7 +45,7 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onCreation(ShopCreateEvent event) {
+  public void onCreation(final ShopCreateEvent event) {
 
     if(landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
       if(!ignoreDisabledWorlds) {
@@ -53,13 +53,13 @@ public final class Main extends CompatibilityModule {
         return;
       }
     }
-    UUID playerUUID = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
+    final UUID playerUUID = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
     if(playerUUID == null) {
       return;
     }
-    Location loc = event.getShop().getLocation();
-    Chunk locChunk = loc.getChunk();
-    Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final Location loc = event.getShop().getLocation();
+    final Chunk locChunk = loc.getChunk();
+    final Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
     if(land != null) {
       if(land.getOwnerUID().equals(playerUUID) || land.isTrusted(playerUUID)) {
         return;
@@ -73,7 +73,7 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onLandsMember(PlayerLeaveLandEvent event) {
+  public void onLandsMember(final PlayerLeaveLandEvent event) {
 
     if(!deleteWhenLosePermission) {
       return;
@@ -82,7 +82,7 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onLandsDeleted(LandDeleteEvent event) {
+  public void onLandsDeleted(final LandDeleteEvent event) {
 
     if(!deleteWhenLandDeleted) {
       return;
@@ -90,20 +90,20 @@ public final class Main extends CompatibilityModule {
     deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
   }
 
-  private void deleteShopInLand(Land land, UUID target) {
+  private void deleteShopInLand(final Land land, final UUID target) {
     //Getting all shop with world-chunk-shop mapping
-    for(Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : getApi().getShopManager().getShops().entrySet()) {
+    for(final Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : getApi().getShopManager().getShops().entrySet()) {
       //Matching world
-      World world = getServer().getWorld(entry.getKey());
+      final World world = getServer().getWorld(entry.getKey());
       if(world != null) {
         //Matching chunk
-        for(Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
-          ShopChunk shopChunk = chunkedShopEntry.getKey();
+        for(final Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+          final ShopChunk shopChunk = chunkedShopEntry.getKey();
           if(land.hasChunk(world, shopChunk.getX(), shopChunk.getZ())) {
             //Matching Owner and delete it
-            Map<Location, Shop> shops = chunkedShopEntry.getValue();
-            for(Shop shop : shops.values()) {
-              UUID owner = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+            final Map<Location, Shop> shops = chunkedShopEntry.getValue();
+            for(final Shop shop : shops.values()) {
+              final UUID owner = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
               if(owner == null) {
                 continue;
               }
@@ -119,7 +119,7 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onLandsPermissionChanges(LandUntrustPlayerEvent event) {
+  public void onLandsPermissionChanges(final LandUntrustPlayerEvent event) {
 
     if(!deleteWhenLosePermission) {
       return;
@@ -128,7 +128,7 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopPreCreateEvent event) {
 
     if(landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
       if(!ignoreDisabledWorlds) {
@@ -136,9 +136,9 @@ public final class Main extends CompatibilityModule {
         return;
       }
     }
-    Location loc = event.getLocation();
-    Chunk locChunk = loc.getChunk();
-    Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final Location loc = event.getLocation();
+    final Chunk locChunk = loc.getChunk();
+    final Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
     if(land != null) {
       if(land.getOwnerUID().equals(event.getCreator().getUniqueId()) || land.isTrusted(event.getCreator().getUniqueId())) {
         return;
@@ -152,7 +152,7 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onTrading(ShopPurchaseEvent event) {
+  public void onTrading(final ShopPurchaseEvent event) {
 
     if(landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
       if(ignoreDisabledWorlds) {
@@ -163,11 +163,11 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
 
-    Location shopLoc = event.getShop().getLocation();
-    Chunk locChunk = shopLoc.getChunk();
-    Land land = landsIntegration.getLand(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final Location shopLoc = event.getShop().getLocation();
+    final Chunk locChunk = shopLoc.getChunk();
+    final Land land = landsIntegration.getLand(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
     if(land == null) {
       return;
     }

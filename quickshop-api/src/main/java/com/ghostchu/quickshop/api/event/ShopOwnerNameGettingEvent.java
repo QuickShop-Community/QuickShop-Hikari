@@ -13,7 +13,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
   private final QUser owner;
   private Component name;
 
-  public ShopOwnerNameGettingEvent(Shop shop, QUser owner, Component name) {
+  public ShopOwnerNameGettingEvent(final Shop shop, final QUser owner, final Component name) {
 
     this.shop = shop;
     this.owner = owner;
@@ -35,7 +35,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
    *
    * @param name New shop owner display name, just display, won't change actual shop owner
    */
-  public void setName(Component name) {
+  public void setName(final Component name) {
 
     this.name = name;
   }

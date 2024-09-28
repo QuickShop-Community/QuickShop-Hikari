@@ -19,7 +19,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @Override
   public void onEnable() {
     // Plugin startup logic
-    WorldEditPlugin worldEditPlugin = (WorldEditPlugin)Bukkit.getPluginManager().getPlugin("WorldEdit");
+    final WorldEditPlugin worldEditPlugin = (WorldEditPlugin)Bukkit.getPluginManager().getPlugin("WorldEdit");
     adapter = new WorldEditAdapter(worldEditPlugin);
     Bukkit.getPluginManager().registerEvents(adapter, this);
     super.onEnable();

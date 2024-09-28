@@ -18,7 +18,7 @@ public class PerfMonitor implements AutoCloseable {
   @Nullable
   private String context;
 
-  public PerfMonitor(@NotNull String name) {
+  public PerfMonitor(@NotNull final String name) {
 
     this.caller = Log.Caller.create();
     this.name = name;
@@ -26,7 +26,7 @@ public class PerfMonitor implements AutoCloseable {
     this.exceptedDuration = null;
   }
 
-  public PerfMonitor(@NotNull String name, @NotNull Duration exceptedDuration) {
+  public PerfMonitor(@NotNull final String name, @NotNull final Duration exceptedDuration) {
 
     this.caller = Log.Caller.create();
     this.name = name;
@@ -52,7 +52,7 @@ public class PerfMonitor implements AutoCloseable {
     return name;
   }
 
-  public void setContext(@Nullable String context) {
+  public void setContext(@Nullable final String context) {
 
     this.context = context;
   }
@@ -61,9 +61,9 @@ public class PerfMonitor implements AutoCloseable {
   @Override
   public void close() {
 
-    Duration passedDuration = getTimePassed();
-    String passed = passedDuration.toMillis() + "ms";
-    StringBuilder messageBuilder = new StringBuilder();
+    final Duration passedDuration = getTimePassed();
+    final String passed = passedDuration.toMillis() + "ms";
+    final StringBuilder messageBuilder = new StringBuilder();
     messageBuilder.append("The task [").append(name).append("] ");
     if(context != null) {
       messageBuilder.append("(").append(context).append(") ");

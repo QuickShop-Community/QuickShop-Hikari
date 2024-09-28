@@ -26,7 +26,7 @@ public class ShopInventoryPreviewEvent extends AbstractQSEvent implements QSCanc
    * @param player    Target plugin
    * @param itemStack The preview item, with preview flag.
    */
-  public ShopInventoryPreviewEvent(@NotNull Player player, @NotNull ItemStack itemStack) {
+  public ShopInventoryPreviewEvent(@NotNull final Player player, @NotNull final ItemStack itemStack) {
 
     this.player = player;
     this.itemStack = itemStack;
@@ -39,7 +39,7 @@ public class ShopInventoryPreviewEvent extends AbstractQSEvent implements QSCanc
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

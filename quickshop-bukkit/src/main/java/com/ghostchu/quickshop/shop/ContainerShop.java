@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.shop;
 
+
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
@@ -179,23 +180,23 @@ public class ContainerShop implements Shop, Reloadable {
    * @param extra     The extra data saved by addon
    */
   public ContainerShop(
-          @NotNull QuickShop plugin,
-          long shopId,
-          @NotNull Location location,
-          double price,
-          @NotNull ItemStack item,
-          @NotNull QUser owner,
-          boolean unlimited,
-          @NotNull ShopType type,
-          @Nullable YamlConfiguration extra,
-          @Nullable String currency,
-          boolean disableDisplay,
-          @Nullable QUser taxAccount,
-          @NotNull String inventoryWrapperProvider,
-          @NotNull String symbolLink,
-          @Nullable String shopName,
-          @NotNull Map<UUID, String> playerGroup,
-          @NotNull Benefit shopBenefit) {
+          @NotNull final QuickShop plugin,
+          final long shopId,
+          @NotNull final Location location,
+          final double price,
+          @NotNull final ItemStack item,
+          @NotNull final QUser owner,
+          final boolean unlimited,
+          @NotNull final ShopType type,
+          @Nullable final YamlConfiguration extra,
+          @Nullable final String currency,
+          final boolean disableDisplay,
+          @Nullable final QUser taxAccount,
+          @NotNull final String inventoryWrapperProvider,
+          @NotNull final String symbolLink,
+          @Nullable final String shopName,
+          @NotNull final Map<UUID, String> playerGroup,
+          @NotNull final Benefit shopBenefit) {
 
     this.shopId = shopId;
     this.shopName = shopName;
@@ -214,7 +215,7 @@ public class ContainerShop implements Shop, Reloadable {
       this.item.setAmount(1);
     }
     if(item.hasItemMeta()) {
-      ItemMeta meta = item.getItemMeta();
+      final ItemMeta meta = item.getItemMeta();
       if(meta.hasDisplayName() && meta.getDisplayName().matches("\\{.*}")) {
         //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
         meta.setDisplayName(meta.getDisplayName());
@@ -245,7 +246,7 @@ public class ContainerShop implements Shop, Reloadable {
 
   private void updateShopData() {
 
-    ConfigurationSection section = getExtra(plugin.getJavaPlugin());
+    final ConfigurationSection section = getExtra(plugin.getJavaPlugin());
     if(section.getString("currency") != null) {
       this.currency = section.getString("currency");
       section.set("currency", null);
@@ -262,21 +263,21 @@ public class ContainerShop implements Shop, Reloadable {
    * @param amount The amount to add to the shop.
    */
   @Override
-  public void add(@NotNull ItemStack item, int amount) {
+  public void add(@NotNull ItemStack item, final int amount) {
 
     Util.ensureThread(false);
     if(this.unlimited) {
       return;
     }
     item = item.clone();
-    int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
-    InventoryWrapper inv = this.getInventory();
+    final int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
+    final InventoryWrapper inv = this.getInventory();
     if(inv == null) {
       throw new IllegalArgumentException("Failed to add item to shop " + this + ", the inventory is null!");
     }
     int remains = amount;
     while(remains > 0) {
-      int stackSize = Math.min(remains, itemMaxStackSize);
+      final int stackSize = Math.min(remains, itemMaxStackSize);
       item.setAmount(stackSize);
       Objects.requireNonNull(inv).addItem(item);
       remains -= stackSize;
@@ -293,8 +294,8 @@ public class ContainerShop implements Shop, Reloadable {
    * @param amount         The amount to buy
    */
   @Override
-  public void buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory,
-                  @NotNull Location loc2Drop, int amount) throws Exception {
+  public void buy(@NotNull final QUser buyer, @NotNull final InventoryWrapper buyerInventory,
+                  @NotNull final Location loc2Drop, int amount) throws Exception {
 
     Util.ensureThread(false);
     amount = amount * item.getAmount();
@@ -303,7 +304,7 @@ public class ContainerShop implements Shop, Reloadable {
       return;
     }
     if(this.isUnlimited()) {
-      SimpleInventoryTransaction transaction = SimpleInventoryTransaction
+      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
               .builder()
               .from(buyerInventory)
               .to(null) // To void
@@ -317,13 +318,13 @@ public class ContainerShop implements Shop, Reloadable {
         throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
       }
     } else {
-      InventoryWrapper chestInv = this.getInventory();
+      final InventoryWrapper chestInv = this.getInventory();
       if(chestInv == null) {
         plugin.logger().warn("Failed to process buy, reason: {} x{} to shop {}: Inventory null.", item, amount, this);
         Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
         return;
       }
-      SimpleInventoryTransaction transaction = SimpleInventoryTransaction
+      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
               .builder()
               .from(buyerInventory)
               .to(chestInv) // To void
@@ -345,7 +346,7 @@ public class ContainerShop implements Shop, Reloadable {
   public void checkDisplay() {
 
     Util.ensureThread(false);
-    boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
+    final boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
 
     if(!displayStatus) {
       if(this.displayItem != null) {
@@ -377,7 +378,7 @@ public class ContainerShop implements Shop, Reloadable {
           plugin.logger().warn("Using invalid display provider.");
           return;
         }
-      } catch(Throwable anyError) {
+      } catch(final Throwable anyError) {
         plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
         return;
       }
@@ -403,7 +404,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void claimShopSign(@NotNull Sign sign) {
+  public void claimShopSign(@NotNull final Sign sign) {
 
     if(!sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
       sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
@@ -428,7 +429,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param currency The currency name; null to use default currency
    */
   @Override
-  public void setCurrency(@Nullable String currency) {
+  public void setCurrency(@Nullable final String currency) {
 
     if(Objects.equals(this.currency, currency)) {
       return;
@@ -456,7 +457,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @return The data table
    */
   @Override
-  public @NotNull ConfigurationSection getExtra(@NotNull Plugin plugin) {
+  public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
 
     if(this.extra == null) {
       this.extra = new YamlConfiguration();
@@ -476,11 +477,11 @@ public class ContainerShop implements Shop, Reloadable {
 
     Util.ensureThread(false);
     try {
-      InventoryWrapper inventoryWrapper = locateInventory(symbolLink);
+      final InventoryWrapper inventoryWrapper = locateInventory(symbolLink);
       if(inventoryWrapper.isValid()) {
         return inventoryWrapper;
       }
-    } catch(Exception e) {
+    } catch(final Exception e) {
       Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
       return null;
     }
@@ -513,10 +514,10 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setItem(@NotNull ItemStack item) {
+  public void setItem(@NotNull final ItemStack item) {
 
     Util.ensureThread(false);
-    ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
+    final ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
     if(Util.fireCancellableEvent(event)) {
       Log.debug("A plugin cancelled the item change event.");
       return;
@@ -555,7 +556,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param owner the new owner
    */
   @Override
-  public void setOwner(@NotNull QUser owner) {
+  public void setOwner(@NotNull final QUser owner) {
 
     Util.ensureThread(false);
     if(this.owner.equals(owner)) {
@@ -574,8 +575,8 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull Map<UUID, String> getPermissionAudiences() {
 
-    Map<UUID, String> clonedPlayerGroup = new HashMap<>(playerGroup);
-    Optional<UUID> uuid = getOwner().getUniqueIdOptional();
+    final Map<UUID, String> clonedPlayerGroup = new HashMap<>(playerGroup);
+    final Optional<UUID> uuid = getOwner().getUniqueIdOptional();
     if(uuid.isPresent()) {
       clonedPlayerGroup.put(getOwner().getUniqueId(), BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode());
     }
@@ -590,12 +591,12 @@ public class ContainerShop implements Shop, Reloadable {
    * @return the group
    */
   @Override
-  public @NotNull String getPlayerGroup(@NotNull UUID player) {
+  public @NotNull String getPlayerGroup(@NotNull final UUID player) {
 
     if(player.equals(getOwner().getUniqueId())) {
       return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
     }
-    String group = getPermissionAudiences().getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
+    final String group = getPermissionAudiences().getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
     if(plugin.getShopPermissionManager().hasGroup(group)) {
       return group;
     }
@@ -617,7 +618,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param price The new price of the shop.
    */
   @Override
-  public void setPrice(double price) {
+  public void setPrice(final double price) {
 
     Util.ensureThread(false);
     this.price = price;
@@ -641,11 +642,12 @@ public class ContainerShop implements Shop, Reloadable {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
         return 0;
       }
-      int space = Util.countSpace(this.getInventory(), this);
+      final int space = Util.countSpace(this.getInventory(), this);
       new ShopInventoryCalculateEvent(this, space, -1).callEvent();
       Log.debug("Space count is: " + space);
       return space;
     } else {
+
       return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
     }
   }
@@ -666,7 +668,7 @@ public class ContainerShop implements Shop, Reloadable {
         Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
         return 0;
       }
-      int stock = Util.countItems(this.getInventory(), this);
+      final int stock = Util.countItems(this.getInventory(), this);
       new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
       return stock;
     } else {
@@ -693,7 +695,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setShopId(long newId) {
+  public void setShopId(final long newId) {
 
     if(this.shopId != -1) {
       throw new IllegalStateException("Cannot set shop id once it fully created.");
@@ -719,7 +721,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param shopName shop name, null to remove currently name
    */
   @Override
-  public void setShopName(@Nullable String shopName) {
+  public void setShopName(@Nullable final String shopName) {
 
     if(StringUtils.equals(this.shopName, shopName)) {
       return;
@@ -754,7 +756,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
    */
   @Override
-  public void setShopType(@NotNull ShopType newShopType) {
+  public void setShopType(@NotNull final ShopType newShopType) {
 
     Util.ensureThread(false);
     if(this.shopType == newShopType) {
@@ -771,17 +773,17 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public List<Component> getSignText(@NotNull ProxiedLocale locale) {
+  public List<Component> getSignText(@NotNull final ProxiedLocale locale) {
 
     Util.ensureThread(false);
-    List<Component> lines = new ArrayList<>();
+    final List<Component> lines = new ArrayList<>();
     //Line 1
-    String headerKey = inventoryAvailable()? "signs.header-available" : "signs.header-unavailable";
+    final String headerKey = inventoryAvailable()? "signs.header-available" : "signs.header-unavailable";
     lines.add(plugin.text().of(headerKey, this.ownerName(false, locale)).forLocale(locale.getLocale()));
     //Line 2
-    String tradingStringKey;
-    String noRemainingStringKey;
-    int shopRemaining;
+    final String tradingStringKey;
+    final String noRemainingStringKey;
+    final int shopRemaining;
 
     switch(shopType) {
       case BUYING -> {
@@ -805,7 +807,7 @@ public class ContainerShop implements Shop, Reloadable {
         noRemainingStringKey = "MissingKey for shop type:" + shopType;
       }
     }
-    Component line2 = switch(shopRemaining) {
+    final Component line2 = switch(shopRemaining) {
       //Unlimited
       case -1 ->
               plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale())).forLocale(locale.getLocale());
@@ -819,16 +821,16 @@ public class ContainerShop implements Shop, Reloadable {
 
     //line 3
     if(plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
-      Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
-      Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
-      Component itemName = Util.getItemStackName(getItem());
+      final Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
+      final Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
+      final Component itemName = Util.getItemStackName(getItem());
       lines.add(left.append(itemName).append(right));
     } else {
       lines.add(plugin.text().of("signs.item-left").forLocale(locale.getLocale()).append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale(locale.getLocale()))));
     }
 
     //line 4
-    Component line4;
+    final Component line4;
     if(this.isStackingShop()) {
       line4 = plugin.text().of("signs.stack-price",
                                plugin.getShopManager().format(this.getPrice(), this),
@@ -860,12 +862,12 @@ public class ContainerShop implements Shop, Reloadable {
     blocks[1] = location.getBlock().getRelative(BlockFace.NORTH);
     blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
     blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
-    for(Block b : blocks) {
+    for(final Block b : blocks) {
       if(b == null) {
         continue;
       }
       final BlockState state = PaperLib.getBlockState(b, false).getState();
-      if(!(state instanceof Sign sign)) {
+      if(!(state instanceof final Sign sign)) {
         continue;
       }
       if(isShopSign(sign)) {
@@ -890,19 +892,19 @@ public class ContainerShop implements Shop, Reloadable {
         uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheTaxAccount();
       }
     }
-    ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
+    final ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
     event.callEvent();
     return event.getTaxAccount();
 
   }
 
   @Override
-  public void setTaxAccount(@Nullable QUser taxAccount) {
+  public void setTaxAccount(@Nullable final QUser taxAccount) {
 
     if(Objects.equals(taxAccount, this.taxAccount)) {
       return;
     }
-    ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
+    final ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
     if(Util.fireCancellableEvent(event)) {
       return;
     }
@@ -933,7 +935,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public boolean isAttached(@NotNull Block b) {
+  public boolean isAttached(@NotNull final Block b) {
 
     Util.ensureThread(false);
     return this.getLocation().getBlock().equals(Util.getAttached(b));
@@ -963,7 +965,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setDirty(boolean isDirty) {
+  public void setDirty(final boolean isDirty) {
 
     this.dirty = isDirty;
   }
@@ -975,7 +977,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setDisableDisplay(boolean disabled) {
+  public void setDisableDisplay(final boolean disabled) {
 
     if(this.disableDisplay == disabled) {
       return;
@@ -1017,16 +1019,16 @@ public class ContainerShop implements Shop, Reloadable {
    * @return Is shop info sign
    */
   @Override
-  public boolean isShopSign(@NotNull Sign sign) {
+  public boolean isShopSign(@NotNull final Sign sign) {
     // Check for new shop sign
-    Component[] lines = new Component[sign.getLines().length];
+    final Component[] lines = new Component[sign.getLines().length];
     for(int i = 0; i < sign.getLines().length; i++) {
       lines[i] = plugin.getPlatform().getLine(sign, i);
     }
     // Can be claim
 
     boolean empty = true;
-    for(Component line : lines) {
+    for(final Component line : lines) {
       if(!Util.isEmptyComponent(line)) {
         empty = false;
         break;
@@ -1073,7 +1075,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setUnlimited(boolean unlimited) {
+  public void setUnlimited(final boolean unlimited) {
 
     if(this.unlimited == unlimited) {
       return;
@@ -1107,23 +1109,23 @@ public class ContainerShop implements Shop, Reloadable {
    * @return True if the ItemStack is the same (Excludes amounts)
    */
   @Override
-  public boolean matches(@Nullable ItemStack item) {
+  public boolean matches(@Nullable final ItemStack item) {
 
     if(item == null) {
       return false;
     }
-    ItemStack givenItem = item.clone();
+    final ItemStack givenItem = item.clone();
     givenItem.setAmount(1);
-    ItemStack shopItem = this.item.clone();
+    final ItemStack shopItem = this.item.clone();
     shopItem.setAmount(1);
     return plugin.getItemMatcher().matches(shopItem, givenItem);
   }
 
   @Override
-  public void onClick(@NotNull Player clicker) {
+  public void onClick(@NotNull final Player clicker) {
 
     Util.ensureThread(false);
-    ShopClickEvent event = new ShopClickEvent(this, clicker);
+    final ShopClickEvent event = new ShopClickEvent(this, clicker);
     if(Util.fireCancellableEvent(event)) {
       Log.debug("Ignore shop click, because some plugin cancel it.");
       return;
@@ -1142,7 +1144,7 @@ public class ContainerShop implements Shop, Reloadable {
       Log.debug("Dupe load request, canceled.");
       return;
     }
-    try(PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
+    try(final PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
       if(getInventory() == null) {
         plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
         if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
@@ -1161,7 +1163,7 @@ public class ContainerShop implements Shop, Reloadable {
     this.isLoaded = true;
     //disable schedule check due to performance issue
     //plugin.getShopContainerWatcher().scheduleCheck(this);
-    try(PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
+    try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
       checkDisplay();
     }
     if(PackageUtil.parsePackageProperly("updateShopSignOnLoad").asBoolean(false)) {
@@ -1174,7 +1176,7 @@ public class ContainerShop implements Shop, Reloadable {
    * Unload ContainerShop.
    */
   @Override
-  public void handleUnloading(boolean dontTouchWorld) {
+  public void handleUnloading(final boolean dontTouchWorld) {
 
     Util.ensureThread(false);
     if(!this.isLoaded) {
@@ -1193,7 +1195,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void openPreview(@NotNull Player player) {
+  public void openPreview(@NotNull final Player player) {
 
     if(inventoryPreview == null) {
       inventoryPreview = new InventoryPreview(plugin, getItem().clone(), player.getLocale());
@@ -1203,13 +1205,13 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
+  public @NotNull Component ownerName(final boolean forceUsername, @NotNull final ProxiedLocale locale) {
 
     Component name;
     if(!forceUsername && isUnlimited()) {
       name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
     } else {
-      String playerName = this.getOwner().getUsername();
+      final String playerName = this.getOwner().getUsername();
 //            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
 //                CompletableFuture<String> future = CompletableFuture
 //                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
@@ -1237,14 +1239,14 @@ public class ContainerShop implements Shop, Reloadable {
                             );
 
     }
-    ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
+    final ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
     event.callEvent();
     name = event.getName();
     return name;
   }
 
   @Override
-  public @NotNull Component ownerName(@NotNull ProxiedLocale locale) {
+  public @NotNull Component ownerName(@NotNull final ProxiedLocale locale) {
 
     return ownerName(false, locale);
   }
@@ -1265,15 +1267,15 @@ public class ContainerShop implements Shop, Reloadable {
    * @return true if player has permission, false otherwise
    */
   @Override
-  public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
+  public boolean playerAuthorize(@NotNull final UUID player, @NotNull final Plugin namespace, @NotNull final String permission) {
 
     if(player.equals(getOwner().getUniqueId())) {
       Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
       return true;
     }
-    String group = getPlayerGroup(player);
-    boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-    ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
+    final String group = getPlayerGroup(player);
+    final boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+    final ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
     event.callEvent();
     Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.getResult());
     return event.getResult();
@@ -1289,31 +1291,31 @@ public class ContainerShop implements Shop, Reloadable {
    * @return true if player has permission, false otherwise
    */
   @Override
-  public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
+  public boolean playerAuthorize(@NotNull final UUID player, @NotNull final BuiltInShopPermission permission) {
 
     return playerAuthorize(player, plugin.getJavaPlugin(), permission.getRawNode());
   }
 
   @Override
-  public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
+  public List<UUID> playersCanAuthorize(@NotNull final BuiltInShopPermission permission) {
 
     return playersCanAuthorize(plugin.getJavaPlugin(), permission.getRawNode());
   }
 
   @Override
-  public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup) {
+  public List<UUID> playersCanAuthorize(@NotNull final BuiltInShopPermissionGroup permissionGroup) {
 
     return getPermissionAudiences().entrySet().stream().filter(entry->entry.getValue().equals(permissionGroup.getNamespacedNode())).map(Map.Entry::getKey).toList();
   }
 
   @Override
-  public List<UUID> playersCanAuthorize(@NotNull Plugin namespace, @NotNull String permission) {
+  public List<UUID> playersCanAuthorize(@NotNull final Plugin namespace, @NotNull final String permission) {
 
-    List<UUID> result = new ArrayList<>();
-    for(Map.Entry<UUID, String> uuidStringEntry : this.getPermissionAudiences().entrySet()) {
-      String group = uuidStringEntry.getValue();
+    final List<UUID> result = new ArrayList<>();
+    for(final Map.Entry<UUID, String> uuidStringEntry : this.getPermissionAudiences().entrySet()) {
+      final String group = uuidStringEntry.getValue();
       boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-      ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, uuidStringEntry.getKey(), namespace, permission, r);
+      final ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, uuidStringEntry.getKey(), namespace, permission, r);
       event.callEvent();
       r = event.getResult();
       if(r) {
@@ -1331,22 +1333,22 @@ public class ContainerShop implements Shop, Reloadable {
    * @param amount The amount to remove from the shop.
    */
   @Override
-  public void remove(@NotNull ItemStack item, int amount) {
+  public void remove(@NotNull ItemStack item, final int amount) {
 
     Util.ensureThread(false);
     if(this.unlimited) {
       return;
     }
     item = item.clone();
-    int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
-    InventoryWrapper inv = this.getInventory();
+    final int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
+    final InventoryWrapper inv = this.getInventory();
     if(inv == null) {
       plugin.logger().warn("Failed to process item remove, reason: {} x{} to shop {}: Inventory null.", item, amount, this);
       return;
     }
     int remains = amount;
     while(remains > 0) {
-      int stackSize = Math.min(remains, itemMaxStackSize);
+      final int stackSize = Math.min(remains, itemMaxStackSize);
       item.setAmount(stackSize);
       Objects.requireNonNull(inv).removeItem(item);
       remains -= stackSize;
@@ -1388,8 +1390,8 @@ public class ContainerShop implements Shop, Reloadable {
    * @param amount          The amount to sell
    */
   @Override
-  public void sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory,
-                   @NotNull Location loc2Drop, int amount) throws Exception {
+  public void sell(@NotNull final QUser seller, @NotNull final InventoryWrapper sellerInventory,
+                   @NotNull final Location loc2Drop, int amount) throws Exception {
 
     Util.ensureThread(false);
     amount = item.getAmount() * amount;
@@ -1399,7 +1401,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
     // Items to drop on floor
     if(this.isUnlimited()) {
-      SimpleInventoryTransaction transaction = SimpleInventoryTransaction
+      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
               .builder()
               .from(null)
               .to(sellerInventory) // To void
@@ -1413,12 +1415,12 @@ public class ContainerShop implements Shop, Reloadable {
         throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
       }
     } else {
-      InventoryWrapper chestInv = this.getInventory();
+      final InventoryWrapper chestInv = this.getInventory();
       if(chestInv == null) {
         plugin.logger().warn("Failed to process sell, reason: {} to shop {}: Inventory null.", item, amount);
         return;
       }
-      SimpleInventoryTransaction transactionTake = SimpleInventoryTransaction
+      final SimpleInventoryTransaction transactionTake = SimpleInventoryTransaction
               .builder()
               .from(chestInv)
               .to(sellerInventory) // To void
@@ -1448,7 +1450,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param data   The data table
    */
   @Override
-  public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
+  public void setExtra(@NotNull final Plugin plugin, @NotNull final ConfigurationSection data) {
 
     if(this.extra == null) {
       this.extra = new YamlConfiguration();
@@ -1456,12 +1458,12 @@ public class ContainerShop implements Shop, Reloadable {
     extra.set(plugin.getName(), data);
     // compress extra to null if possible
     boolean anyValid = false;
-    for(String key : extra.getKeys(false)) {
+    for(final String key : extra.getKeys(false)) {
       if(!extra.isConfigurationSection(key)) {
         anyValid = true;
         break;
       }
-      ConfigurationSection section = extra.getConfigurationSection(key);
+      final ConfigurationSection section = extra.getConfigurationSection(key);
       if(section == null) continue;
       if(!section.getKeys(false).isEmpty()) {
         anyValid = true;
@@ -1475,9 +1477,9 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager) {
+  public void setInventory(@NotNull final InventoryWrapper wrapper, @NotNull final InventoryWrapperManager manager) {
 
-    String provider = plugin.getInventoryWrapperRegistry().find(manager);
+    final String provider = plugin.getInventoryWrapperRegistry().find(manager);
     if(provider == null) {
       throw new IllegalArgumentException("The manager " + manager.getClass().getName() + " not registered in registry.");
     }
@@ -1489,7 +1491,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setPlayerGroup(@NotNull UUID player, @Nullable String group) {
+  public void setPlayerGroup(@NotNull final UUID player, @Nullable String group) {
 
     if(group == null) {
       group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
@@ -1504,7 +1506,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group) {
+  public void setPlayerGroup(@NotNull final UUID player, @Nullable BuiltInShopPermissionGroup group) {
 
     if(group == null) {
       group = BuiltInShopPermissionGroup.EVERYONE;
@@ -1537,17 +1539,17 @@ public class ContainerShop implements Shop, Reloadable {
    * @param lines The array of lines to change. Index is line number.
    */
   @Override
-  public void setSignText(@NotNull List<Component> lines) {
+  public void setSignText(@NotNull final List<Component> lines) {
 
     Util.ensureThread(false);
     Log.debug("Globally sign text setting...");
-    List<Sign> signs = this.getSigns();
-    for(Sign sign : signs) {
-      DyeColor dyeColor = Util.getDyeColor();
+    final List<Sign> signs = this.getSigns();
+    for(final Sign sign : signs) {
+      final DyeColor dyeColor = Util.getDyeColor();
       if(dyeColor != null) {
         sign.setColor(dyeColor);
       }
-      boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
       sign.setGlowingText(isGlowing);
       sign.update(true);
       //plugin.getPlatform().setLine(sign, i, lines.get(i));
@@ -1567,7 +1569,7 @@ public class ContainerShop implements Shop, Reloadable {
    * @param locale The locale to use for the sign text
    */
   @Override
-  public void setSignText(@NotNull ProxiedLocale locale) {
+  public void setSignText(@NotNull final ProxiedLocale locale) {
 
     Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
@@ -1590,7 +1592,7 @@ public class ContainerShop implements Shop, Reloadable {
       Log.debug("Skip shop database update because it not fully setup!");
       return CompletableFuture.completedFuture(null);
     }
-    ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
+    final ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
     if(Util.fireCancellableEvent(shopUpdateEvent)) {
       Log.debug("The Shop update action was canceled by a plugin.");
       return CompletableFuture.completedFuture(null);
@@ -1615,7 +1617,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setShopBenefit(@NotNull Benefit benefit) {
+  public void setShopBenefit(@NotNull final Benefit benefit) {
 
     this.benefit = benefit;
     setDirty();
@@ -1672,19 +1674,19 @@ public class ContainerShop implements Shop, Reloadable {
     return this.item.getType();
   }
 
-  private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
+  private @NotNull InventoryWrapper locateInventory(@Nullable final String symbolLink) {
 
     if(symbolLink == null || symbolLink.isEmpty()) {
       throw new IllegalStateException("Symbol link is empty, that's not right bro.");
     }
-    InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
+    final InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
     if(manager == null) {
       throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
     }
     try {
       // this.symbolLink = manager.mklink(inventoryWrapper);
       return manager.locate(symbolLink);
-    } catch(Exception e) {
+    } catch(final Exception e) {
       throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(), e);
     }
   }

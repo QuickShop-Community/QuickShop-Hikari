@@ -50,10 +50,10 @@ public class RollbarErrorReporter {
   private volatile boolean enabled;
 
 
-  public RollbarErrorReporter(@NotNull QuickShop plugin) {
+  public RollbarErrorReporter(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
-    Config config = ConfigBuilder.withAccessToken("feae3ac28ad84326b17c1c61e00bd981")
+    final Config config = ConfigBuilder.withAccessToken("feae3ac28ad84326b17c1c61e00bd981")
             .environment(Util.isDevEdition()? "development" : "production")
             .platform(Bukkit.getVersion())
             .codeVersion(QuickShop.getInstance().getVersion())
@@ -71,7 +71,7 @@ public class RollbarErrorReporter {
     enabled = true;
   }
 
-  private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
+  private void sendError0(@NotNull final Throwable throwable, @NotNull final String... context) {
 
     if(Bukkit.isPrimaryThread()) {
       plugin.logger().warn("Cannot send error on primary thread (I/O blocking). This error has been discard.");
@@ -102,7 +102,7 @@ public class RollbarErrorReporter {
         return;
       }
     }
-    @NotNull Throwable finalThrowable = throwable;
+    @NotNull final Throwable finalThrowable = throwable;
     plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "RollbarErrorReporter", "QuickShop detected a error, we will report it to Rollbar Error Tracker so QuickShop's developers will receive the notification so we can fix it.",
                                                 ()->{
                                                   try {
@@ -166,7 +166,7 @@ public class RollbarErrorReporter {
       throwable = throwable.getCause();
     }
 
-    StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+    final StackTraceElement[] stackTraceElements = throwable.getStackTrace();
 
     if(stackTraceElements.length == 0) {
       return PossiblyLevel.IMPOSSIBLE;
@@ -176,7 +176,7 @@ public class RollbarErrorReporter {
       return PossiblyLevel.CONFIRM;
     }
 
-    long errorCount = Arrays.stream(stackTraceElements)
+    final long errorCount = Arrays.stream(stackTraceElements)
             .limit(3)
             .filter(stackTraceElement->stackTraceElement.getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME))
             .count();
@@ -207,7 +207,7 @@ public class RollbarErrorReporter {
 
   private Map<String, Object> makeMapping() {
 
-    Map<String, Object> dataMapping = new LinkedHashMap<>();
+    final Map<String, Object> dataMapping = new LinkedHashMap<>();
     dataMapping.put("system_os", System.getProperty("os.name"));
     dataMapping.put("system_arch", System.getProperty("os.arch"));
     dataMapping.put("system_version", System.getProperty("os.version"));
@@ -236,7 +236,7 @@ public class RollbarErrorReporter {
    * @param throwable Throws
    * @param context   BreadCrumb
    */
-  public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
+  public void sendError(@NotNull final Throwable throwable, @NotNull final String... context) {
 
     QuickExecutor.getCommonExecutor().submit(()->sendError0(throwable, context));
   }
@@ -248,7 +248,7 @@ public class RollbarErrorReporter {
    *
    * @return dupecated
    */
-  public boolean canReport(@NotNull Throwable throwable) {
+  public boolean canReport(@NotNull final Throwable throwable) {
 
     if(!enabled) {
       return false;
@@ -269,14 +269,14 @@ public class RollbarErrorReporter {
       return false;
     }
 
-    PossiblyLevel possiblyLevel = checkWasCauseByQS(throwable);
+    final PossiblyLevel possiblyLevel = checkWasCauseByQS(throwable);
     if(possiblyLevel != PossiblyLevel.CONFIRM) {
       return false;
     }
     if(throwable.getMessage().startsWith("#")) {
       return false;
     }
-    StackTraceElement stackTraceElement;
+    final StackTraceElement stackTraceElement;
     if(throwable.getStackTrace().length < 3) {
       stackTraceElement = throwable.getStackTrace()[1];
     } else {
@@ -288,7 +288,7 @@ public class RollbarErrorReporter {
       resetIgnores();
       return false;
     }
-    String text =
+    final String text =
             stackTraceElement.getClassName()
             + "#"
             + stackTraceElement.getMethodName()
@@ -302,9 +302,9 @@ public class RollbarErrorReporter {
     }
   }
 
-  private boolean isDisallowedClazz(Class<?> clazz) {
+  private boolean isDisallowedClazz(final Class<?> clazz) {
 
-    for(Class<?> ignoredClazz : this.ignoredException) {
+    for(final Class<?> ignoredClazz : this.ignoredException) {
       if(ignoredClazz.isAssignableFrom(clazz) || ignoredClazz.equals(clazz)) {
         return true;
       }
@@ -335,7 +335,7 @@ public class RollbarErrorReporter {
     @Getter
     private final Filter preFilter;
 
-    GlobalExceptionFilter(@Nullable Filter preFilter) {
+    GlobalExceptionFilter(@Nullable final Filter preFilter) {
 
       this.preFilter = preFilter;
     }
@@ -348,12 +348,12 @@ public class RollbarErrorReporter {
      * @return true if the log record should be published.
      */
     @Override
-    public boolean isLoggable(@NotNull LogRecord rec) {
+    public boolean isLoggable(@NotNull final LogRecord rec) {
 
       if(!enabled) {
         return defaultValue(rec);
       }
-      Level level = rec.getLevel();
+      final Level level = rec.getLevel();
       if(level != Level.WARNING && level != Level.SEVERE) {
         return defaultValue(rec);
       }
@@ -365,7 +365,7 @@ public class RollbarErrorReporter {
         return defaultValue(rec);
       } else {
         sendError(rec.getThrown(), rec.getMessage());
-        PossiblyLevel possiblyLevel = checkWasCauseByQS(rec.getThrown());
+        final PossiblyLevel possiblyLevel = checkWasCauseByQS(rec.getThrown());
         if(possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
           return true;
         }
@@ -377,7 +377,7 @@ public class RollbarErrorReporter {
       }
     }
 
-    private boolean defaultValue(LogRecord rec) {
+    private boolean defaultValue(final LogRecord rec) {
 
       return preFilter == null || preFilter.isLoggable(rec);
     }
@@ -390,7 +390,7 @@ public class RollbarErrorReporter {
     @Getter
     private final Filter preFilter;
 
-    QuickShopExceptionFilter(@Nullable Filter preFilter) {
+    QuickShopExceptionFilter(@Nullable final Filter preFilter) {
 
       this.preFilter = preFilter;
     }
@@ -403,12 +403,12 @@ public class RollbarErrorReporter {
      * @return true if the log record should be published.
      */
     @Override
-    public boolean isLoggable(@NotNull LogRecord rec) {
+    public boolean isLoggable(@NotNull final LogRecord rec) {
 
       if(!enabled) {
         return defaultValue(rec);
       }
-      Level level = rec.getLevel();
+      final Level level = rec.getLevel();
       if(level != Level.WARNING && level != Level.SEVERE) {
         return defaultValue(rec);
       }
@@ -420,7 +420,7 @@ public class RollbarErrorReporter {
         return defaultValue(rec);
       } else {
         sendError(rec.getThrown(), rec.getMessage());
-        PossiblyLevel possiblyLevel = checkWasCauseByQS(rec.getThrown());
+        final PossiblyLevel possiblyLevel = checkWasCauseByQS(rec.getThrown());
         if(possiblyLevel == PossiblyLevel.IMPOSSIBLE) {
           return true;
         }
@@ -432,7 +432,7 @@ public class RollbarErrorReporter {
       }
     }
 
-    private boolean defaultValue(LogRecord rec) {
+    private boolean defaultValue(final LogRecord rec) {
 
       return preFilter == null || preFilter.isLoggable(rec);
     }

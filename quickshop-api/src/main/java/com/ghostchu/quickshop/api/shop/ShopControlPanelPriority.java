@@ -12,7 +12,7 @@ public enum ShopControlPanelPriority {
 
   private final int priority;
 
-  ShopControlPanelPriority(int priority) {
+  ShopControlPanelPriority(final int priority) {
 
     this.priority = priority;
   }

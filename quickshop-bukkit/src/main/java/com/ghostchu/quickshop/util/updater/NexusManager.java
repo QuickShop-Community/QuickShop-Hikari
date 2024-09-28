@@ -32,7 +32,7 @@ public class NexusManager implements SubPasteItem {
   private boolean cachedResult = true;
   private long lastCheck = 0;
 
-  public NexusManager(QuickShop plugin) {
+  public NexusManager(final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
@@ -62,10 +62,10 @@ public class NexusManager implements SubPasteItem {
       cachedResult = true;
       return true;
     }
-    Semver localVer = plugin.getSemVersion();
-    Semver remoteReleaseVer = new Semver(cachedMetadata.getReleaseVersion());
-    Semver remoteLatestVer = new Semver(cachedMetadata.getLatestVersion());
-    Semver selectedRemoteVer;
+    final Semver localVer = plugin.getSemVersion();
+    final Semver remoteReleaseVer = new Semver(cachedMetadata.getReleaseVersion());
+    final Semver remoteLatestVer = new Semver(cachedMetadata.getLatestVersion());
+    final Semver selectedRemoteVer;
     if(remoteReleaseVer.isGreaterThan(remoteLatestVer)) {
       selectedRemoteVer = remoteReleaseVer;
     } else {
@@ -87,9 +87,9 @@ public class NexusManager implements SubPasteItem {
   private NexusMetadata fetchMetadata() {
 
     try {
-      HttpResponse<String> resp = Unirest.get(NEXUS_ROOT_METADATA_URL).asString();
+      final HttpResponse<String> resp = Unirest.get(NEXUS_ROOT_METADATA_URL).asString();
       if(!resp.isSuccess()) {
-        Optional<UnirestParsingException> exceptionOptional = resp.getParsingError();
+        final Optional<UnirestParsingException> exceptionOptional = resp.getParsingError();
         if(exceptionOptional.isPresent()) {
           Log.debug("Failed to fetch metadata from Nexus: " + exceptionOptional.get().getMessage());
         } else {
@@ -113,7 +113,7 @@ public class NexusManager implements SubPasteItem {
     if(cachedMetadata == null) {
       return "<p>No metadata found.</p>";
     }
-    HTMLTable table = new HTMLTable(3);
+    final HTMLTable table = new HTMLTable(3);
     table.setTableTitle("Last Update", "Latest Version", "Release Version");
     table.insert(cachedMetadata.getLastUpdate(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
     return table.render();
@@ -132,7 +132,7 @@ public class NexusManager implements SubPasteItem {
     private String latestVersion;
     private String releaseVersion;
 
-    public NexusMetadata(long lastUpdate, String latestVersion, String releaseVersion) {
+    public NexusMetadata(final long lastUpdate, final String latestVersion, final String releaseVersion) {
 
       this.lastUpdate = lastUpdate;
       this.latestVersion = latestVersion;
@@ -140,32 +140,32 @@ public class NexusManager implements SubPasteItem {
     }
 
     @NotNull
-    public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException, SAXException {
+    public static NexusMetadata parse(@NotNull final String xml) throws DocumentException, IllegalStateException, SAXException {
 
-      SAXReader reader = new SAXReader();
+      final SAXReader reader = new SAXReader();
       reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-      Document document = reader.read(new StringReader(xml));
-      Element metadataElement = document.getRootElement();
+      final Document document = reader.read(new StringReader(xml));
+      final Element metadataElement = document.getRootElement();
       if(metadataElement == null) {
         throw new IllegalStateException("No root element found");
       }
-      Element versioning = metadataElement.element("versioning");
+      final Element versioning = metadataElement.element("versioning");
       if(versioning == null) {
         throw new IllegalStateException("No versioning element found");
       }
-      Element latest = versioning.element("latest");
+      final Element latest = versioning.element("latest");
       if(latest == null) {
         throw new IllegalStateException("No latest element found");
       }
-      Element release = versioning.element("release");
+      final Element release = versioning.element("release");
       if(release == null) {
         throw new IllegalStateException("No release element found");
       }
-      Element lastUpdate = versioning.element("lastUpdated");
+      final Element lastUpdate = versioning.element("lastUpdated");
       if(lastUpdate == null) {
         throw new IllegalStateException("No lastUpdated element found");
       }
-      NexusMetadata metadata = new NexusMetadata(Long.parseLong(lastUpdate.getText()), latest.getText(), release.getText());
+      final NexusMetadata metadata = new NexusMetadata(Long.parseLong(lastUpdate.getText()), latest.getText(), release.getText());
       Log.debug("Parsed NexusMetadata: " + metadata);
       return metadata;
     }

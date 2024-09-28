@@ -37,14 +37,14 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_TransferOwnership(QuickShop plugin) {
+  public SubCommand_TransferOwnership(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.wrong-args").send();
@@ -95,9 +95,9 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    List<String> list = Util.getPlayerList();
+    final List<String> list = Util.getPlayerList();
     list.add("accept");
     list.add("deny");
     return parser.getArgs().size() <= 2? list : Collections.emptyList();

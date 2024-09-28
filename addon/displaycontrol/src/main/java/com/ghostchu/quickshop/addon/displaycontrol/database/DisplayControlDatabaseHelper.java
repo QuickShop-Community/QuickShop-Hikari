@@ -17,7 +17,7 @@ public class DisplayControlDatabaseHelper {
 
   private final Main plugin;
 
-  public DisplayControlDatabaseHelper(@NotNull Main plugin, @NotNull SQLManager sqlManager, @NotNull String dbPrefix) throws SQLException {
+  public DisplayControlDatabaseHelper(@NotNull final Main plugin, @NotNull final SQLManager sqlManager, @NotNull final String dbPrefix) throws SQLException {
 
     this.plugin = plugin;
     try {
@@ -29,7 +29,7 @@ public class DisplayControlDatabaseHelper {
 
   }
 
-  public @NotNull Integer setDisplayDisableForPlayer(@NotNull UUID uuid, DisplayOption status) throws SQLException {
+  public @NotNull Integer setDisplayDisableForPlayer(@NotNull final UUID uuid, final DisplayOption status) throws SQLException {
 
     Util.ensureThread(true);
     try(SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createQuery()
@@ -55,7 +55,7 @@ public class DisplayControlDatabaseHelper {
   }
 
   @Nullable
-  public DisplayOption getDisplayOption(@NotNull UUID player) throws SQLException {
+  public DisplayOption getDisplayOption(@NotNull final UUID player) throws SQLException {
 
     Util.ensureThread(true);
     try(SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS
@@ -64,7 +64,7 @@ public class DisplayControlDatabaseHelper {
             .addCondition("player", player.toString()).setLimit(1).build().execute();
         ResultSet set = query.getResultSet()) {
       if(set.next()) {
-        int optionId = set.getInt("displayOption");
+        final int optionId = set.getInt("displayOption");
         return DisplayOption.fromId(optionId);
       }
       return DisplayOption.AUTO;

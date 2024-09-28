@@ -12,7 +12,7 @@ public class ShopRemoveLog {
   private String reason;
   private ShopInfoStorage shop;
 
-  public ShopRemoveLog(QUser player, String reason, ShopInfoStorage shop) {
+  public ShopRemoveLog(final QUser player, final String reason, final ShopInfoStorage shop) {
 
     this.player = player.serialize();
     this.reason = reason;

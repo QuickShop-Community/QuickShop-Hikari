@@ -23,7 +23,7 @@ public class ShopPlayerGroupSetEvent extends AbstractQSEvent {
    * @param oldGroup The old group.
    * @param newGroup The new group.
    */
-  public ShopPlayerGroupSetEvent(@NotNull Shop shop, @NotNull UUID player, @NotNull String oldGroup, @NotNull String newGroup) {
+  public ShopPlayerGroupSetEvent(@NotNull final Shop shop, @NotNull final UUID player, @NotNull final String oldGroup, @NotNull final String newGroup) {
 
     this.shop = shop;
     this.player = player;

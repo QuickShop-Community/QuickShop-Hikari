@@ -24,7 +24,7 @@ public class PAPIManager implements SubPasteItem {
   private final List<PAPISubHandler> handlers = new ArrayList<>();
   private final PAPICache cache = new PAPICache();
 
-  public PAPIManager(@NotNull QuickShop plugin) {
+  public PAPIManager(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
@@ -39,9 +39,9 @@ public class PAPIManager implements SubPasteItem {
     register(new TransactionAmountPAPI(plugin));
   }
 
-  public void register(@NotNull PAPISubHandler handler) {
+  public void register(@NotNull final PAPISubHandler handler) {
 
-    for(PAPISubHandler registered : handlers) {
+    for(final PAPISubHandler registered : handlers) {
       if(registered.getPrefix().equals(handler.getPrefix())) {
         throw new IllegalStateException("The prefix " + handler.getPrefix() + " is already registered by " + registered.getClass().getName() + "!");
       }
@@ -49,12 +49,12 @@ public class PAPIManager implements SubPasteItem {
     handlers.add(handler);
   }
 
-  public void unregister(@NotNull PAPISubHandler handler) {
+  public void unregister(@NotNull final PAPISubHandler handler) {
 
     handlers.remove(handler);
   }
 
-  public void unregister(@NotNull String prefix) {
+  public void unregister(@NotNull final String prefix) {
 
     handlers.removeIf(handler->handler.getPrefix().equals(prefix));
   }
@@ -66,11 +66,11 @@ public class PAPIManager implements SubPasteItem {
   }
 
   @Nullable
-  public String handle(@NotNull OfflinePlayer player, @NotNull String params) {
+  public String handle(@NotNull final OfflinePlayer player, @NotNull final String params) {
 
-    UUID playerUniqueId = player.getUniqueId();
+    final UUID playerUniqueId = player.getUniqueId();
     return cache.getCached(playerUniqueId, params, (uuid, parms)->{
-      for(PAPISubHandler handler : handlers) {
+      for(final PAPISubHandler handler : handlers) {
         Log.debug("Comparing with " + handler.getPrefix() + " and " + params);
         if(params.startsWith(handler.getPrefix())) {
           Log.debug("Match! Handling...");
@@ -85,11 +85,11 @@ public class PAPIManager implements SubPasteItem {
   @Override
   public @NotNull String genBody() {
 
-    StringJoiner joiner = new StringJoiner("<br/>");
+    final StringJoiner joiner = new StringJoiner("<br/>");
     joiner.add("<h5>Registered Placeholder Handler</h5>");
-    HTMLTable table = new HTMLTable(2);
+    final HTMLTable table = new HTMLTable(2);
     table.setTableTitle("Prefix", "Handler");
-    for(PAPISubHandler handler : handlers) {
+    for(final PAPISubHandler handler : handlers) {
       table.insert(handler.getPrefix(), handler.getClass().getName());
     }
     joiner.add(table.render());

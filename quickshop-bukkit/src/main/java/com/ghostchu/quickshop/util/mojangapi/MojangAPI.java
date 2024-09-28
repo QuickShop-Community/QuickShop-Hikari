@@ -21,26 +21,26 @@ public class MojangAPI {
 
   private final MojangApiMirror mirror;
 
-  public MojangAPI(MojangApiMirror mirror) {
+  public MojangAPI(final MojangApiMirror mirror) {
 
     this.mirror = mirror;
   }
 
 
   @NotNull
-  public AssetsAPI getAssetsAPI(@NotNull String serverVersion) {
+  public AssetsAPI getAssetsAPI(@NotNull final String serverVersion) {
 
     return new AssetsAPI(mirror, serverVersion);
   }
 
   @NotNull
-  public GameInfoAPI getGameInfoAPI(@NotNull String gameVersionJson) {
+  public GameInfoAPI getGameInfoAPI(@NotNull final String gameVersionJson) {
 
     return new GameInfoAPI(gameVersionJson);
   }
 
   @NotNull
-  public MetaAPI getMetaAPI(@NotNull String serverVersion) {
+  public MetaAPI getMetaAPI(@NotNull final String serverVersion) {
 
     return new MetaAPI(mirror, serverVersion);
   }
@@ -58,7 +58,7 @@ public class MojangAPI {
     private String sha1;
     private String id;
 
-    public AssetsFileData(String content, String sha1, String id) {
+    public AssetsFileData(final String content, final String sha1, final String id) {
 
       this.content = content;
       this.sha1 = sha1;
@@ -74,15 +74,15 @@ public class MojangAPI {
             .build();
     private final MojangApiMirror apiMirror;
 
-    public ResourcesAPI(MojangApiMirror mirror) {
+    public ResourcesAPI(final MojangApiMirror mirror) {
 
       this.apiMirror = mirror;
     }
 
-    public Optional<String> get(@NotNull String hash) {
+    public Optional<String> get(@NotNull final String hash) {
 
-      String url = apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash;
-      HttpResponse<String> response = Unirest.get(url).asString();
+      final String url = apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash;
+      final HttpResponse<String> response = Unirest.get(url).asString();
       if(!response.isSuccess()) {
         return Optional.empty();
       }
@@ -95,7 +95,7 @@ public class MojangAPI {
 
     private final MetaAPI metaAPI;
 
-    AssetsAPI(@NotNull MojangApiMirror apiMirror, @NotNull String version) {
+    AssetsAPI(@NotNull final MojangApiMirror apiMirror, @NotNull final String version) {
 
       this.metaAPI = new MetaAPI(apiMirror, version);
     }
@@ -107,15 +107,15 @@ public class MojangAPI {
      */
     public Optional<AssetsFileData> getGameAssetsFile() {
 
-      Optional<GameInfoAPI.DataBean> bean = getAssetsJson();
+      final Optional<GameInfoAPI.DataBean> bean = getAssetsJson();
       if(bean.isEmpty()) {
         return Optional.empty();
       }
-      GameInfoAPI.DataBean.AssetIndexBean assetIndexBean = bean.get().getAssetIndex();
+      final GameInfoAPI.DataBean.AssetIndexBean assetIndexBean = bean.get().getAssetIndex();
       if(assetIndexBean == null || assetIndexBean.getUrl() == null || assetIndexBean.getId() == null) {
         return Optional.empty();
       }
-      String data = Unirest.get(assetIndexBean.getUrl()).asString().getBody();
+      final String data = Unirest.get(assetIndexBean.getUrl()).asString().getBody();
       return Optional.of(new AssetsFileData(data, assetIndexBean.getSha1(), assetIndexBean.getId()));
     }
 
@@ -124,11 +124,11 @@ public class MojangAPI {
       if(!isAvailable()) {
         return Optional.empty();
       }
-      Optional<String> content = this.metaAPI.get();
+      final Optional<String> content = this.metaAPI.get();
       if(content.isEmpty()) {
         return Optional.empty();
       }
-      GameInfoAPI gameInfoAPI = new GameInfoAPI(content.get());
+      final GameInfoAPI gameInfoAPI = new GameInfoAPI(content.get());
       return Optional.of(gameInfoAPI.get());
     }
 
@@ -148,7 +148,7 @@ public class MojangAPI {
     private final String json;
     private final Gson gson = JsonUtil.getGson();
 
-    public GameInfoAPI(@NotNull String json) {
+    public GameInfoAPI(@NotNull final String json) {
 
       this.json = json;
     }
@@ -192,7 +192,7 @@ public class MojangAPI {
     private final String metaEndpoint;
     private final String version;
 
-    public MetaAPI(@NotNull MojangApiMirror mirror, @NotNull String version) {
+    public MetaAPI(@NotNull final MojangApiMirror mirror, @NotNull final String version) {
 
       this.version = version;
       this.metaEndpoint = mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json";
@@ -205,27 +205,27 @@ public class MojangAPI {
      */
     public Optional<String> get() {
 
-      HttpResponse<String> response = Unirest.get(metaEndpoint).asString();
+      final HttpResponse<String> response = Unirest.get(metaEndpoint).asString();
       if(!response.isSuccess()) {
         Log.debug("Request Meta Endpoint failed.");
         return Optional.empty();
       }
-      String result = response.getBody();
+      final String result = response.getBody();
       try {
-        JsonElement index = JsonParser.parseString(result);
+        final JsonElement index = JsonParser.parseString(result);
         if(!index.isJsonObject()) {
           return Optional.empty();
         }
-        JsonElement availableVersions = index.getAsJsonObject().get("versions");
+        final JsonElement availableVersions = index.getAsJsonObject().get("versions");
         if(!availableVersions.isJsonArray()) {
           return Optional.empty();
         }
-        for(JsonElement gameVersionData : availableVersions.getAsJsonArray()) {
+        for(final JsonElement gameVersionData : availableVersions.getAsJsonArray()) {
           if(gameVersionData.isJsonObject()) {
-            JsonElement gameId = gameVersionData.getAsJsonObject().get("id");
-            JsonElement gameIndexUrl = gameVersionData.getAsJsonObject().get("url");
+            final JsonElement gameId = gameVersionData.getAsJsonObject().get("id");
+            final JsonElement gameIndexUrl = gameVersionData.getAsJsonObject().get("url");
             if(Objects.equals(gameId.getAsString(), version)) {
-              HttpResponse<String> response1 = Unirest.get(gameIndexUrl.getAsString()).asString();
+              final HttpResponse<String> response1 = Unirest.get(gameIndexUrl.getAsString()).asString();
               if(!response1.isSuccess()) {
                 return Optional.empty();
               }

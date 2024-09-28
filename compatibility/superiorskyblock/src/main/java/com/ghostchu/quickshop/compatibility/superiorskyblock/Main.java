@@ -39,7 +39,7 @@ public final class Main extends CompatibilityModule implements Listener {
   private boolean deleteShopOnMemberLeave;
 
   @EventHandler
-  public void deleteShops(IslandQuitEvent event) {
+  public void deleteShops(final IslandQuitEvent event) {
 
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getPlayer().getUniqueId(), event.getPlayer().getUniqueId(), "IslandQuitEvent");
@@ -47,14 +47,14 @@ public final class Main extends CompatibilityModule implements Listener {
 
   }
 
-  private void deleteShops(@NotNull Island island, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
+  private void deleteShops(@NotNull final Island island, @Nullable final UUID shopOwnerToDelete, @NotNull final UUID deleteOperator, @NotNull final String deleteReason) {
 
     final List<CompletableFuture<Chunk>> allFutures = this.getAllChunksAsync(island);
     CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0])).thenAccept(v->{
-      List<Shop> pendingForDeletion = new ArrayList<>();
+      final List<Shop> pendingForDeletion = new ArrayList<>();
       allFutures.forEach(future->{
-        Chunk chunk = future.getNow(null);
-        for(Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
+        final Chunk chunk = future.getNow(null);
+        for(final Shop shop : getShops(chunk.getWorld().getName(), chunk.getX(), chunk.getZ())) {
           if(shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
             pendingForDeletion.add(shop);
           }
@@ -70,10 +70,10 @@ public final class Main extends CompatibilityModule implements Listener {
     });
   }
 
-  private void deleteShops(@NotNull World world, int chunkX, int chunkZ, @Nullable UUID shopOwnerToDelete, @NotNull UUID deleteOperator, @NotNull String deleteReason) {
+  private void deleteShops(@NotNull final World world, final int chunkX, final int chunkZ, @Nullable final UUID shopOwnerToDelete, @NotNull final UUID deleteOperator, @NotNull final String deleteReason) {
 
     final List<Shop> pendingForDeletion = new ArrayList<>();
-    for(Shop shop : getShops(world.getName(), chunkX, chunkZ)) {
+    for(final Shop shop : getShops(world.getName(), chunkX, chunkZ)) {
       if(shopOwnerToDelete == null || shopOwnerToDelete.equals(shop.getOwner().getUniqueId())) {
         pendingForDeletion.add(shop);
       }
@@ -85,7 +85,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(IslandKickEvent event) {
+  public void deleteShops(final IslandKickEvent event) {
 
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
@@ -93,7 +93,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(IslandBanEvent event) {
+  public void deleteShops(final IslandBanEvent event) {
 
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
@@ -101,19 +101,19 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(IslandUncoopPlayerEvent event) {
+  public void deleteShops(final IslandUncoopPlayerEvent event) {
 
     deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandUncoopPlayerEvent");
   }
 
   @EventHandler
-  public void deleteShopsOnChunkReset(IslandChunkResetEvent event) {
+  public void deleteShopsOnChunkReset(final IslandChunkResetEvent event) {
 
     deleteShops(event.getWorld(), event.getChunkX(), event.getChunkZ(), null, CommonUtil.getNilUniqueId(), "IslandChunkResetEvent");
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onCreation(ShopCreateEvent event) {
+  public void onCreation(final ShopCreateEvent event) {
 
     final Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
     event.getCreator().getBukkitPlayer().ifPresent(player->{
@@ -144,11 +144,11 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopPreCreateEvent event) {
 
     final Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
     event.getCreator().getBukkitPlayer().ifPresent(player->{
-      SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+      final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
       if(island == null) {
         return;
       }
@@ -167,7 +167,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
 
     final Location shopLoc = event.getShop().getLocation();
     final Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
@@ -181,10 +181,10 @@ public final class Main extends CompatibilityModule implements Listener {
     }
   }
 
-  private List<CompletableFuture<Chunk>> getAllChunksAsync(Island island) {
+  private List<CompletableFuture<Chunk>> getAllChunksAsync(final Island island) {
 
     final List<CompletableFuture<Chunk>> chunkFutures = new ArrayList<>();
-    for(World.Environment environment : World.Environment.values()) {
+    for(final World.Environment environment : World.Environment.values()) {
       try {
         chunkFutures.addAll(island.getAllChunksAsync(environment, false, chunk->{
         }));

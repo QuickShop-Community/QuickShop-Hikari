@@ -100,7 +100,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   private boolean playSoundOnTabComplete;
   private boolean playSoundOnCommand;
 
-  public SimpleCommandManager(QuickShop plugin) {
+  public SimpleCommandManager(final QuickShop plugin) {
 
     this.plugin = plugin;
     this.plugin.getReloadManager().register(this);
@@ -478,10 +478,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
 
   @Override
   public boolean onCommand(
-          @NotNull CommandSender sender,
-          @NotNull Command command,
-          @NotNull String commandLabel,
-          @NotNull String[] cmdArg) {
+          @NotNull final CommandSender sender,
+          @NotNull final Command command,
+          @NotNull final String commandLabel,
+          @NotNull final String[] cmdArg) {
 
     if(plugin.getBootError() != null) {
       if(cmdArg.length == 0) {
@@ -501,9 +501,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
       rootContainer.getExecutor().onCommand_Internal(capture(sender), commandLabel, EMPTY_ARGS);
     } else {
       //Handle subcommand
-      String[] passThroughArgs = new String[cmdArg.length - 1];
+      final String[] passThroughArgs = new String[cmdArg.length - 1];
       System.arraycopy(cmdArg, 1, passThroughArgs, 0, passThroughArgs.length);
-      for(CommandContainer container : cmds) {
+      for(final CommandContainer container : cmds) {
         if(!container.getPrefix().equalsIgnoreCase(cmdArg[0])) {
           continue;
         }
@@ -515,8 +515,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
           plugin.text().of(sender, "command-type-mismatch", container.getExecutorType().getSimpleName()).send();
           return true;
         }
-        List<String> requirePermissions = container.getPermissions();
-        List<String> selectivePermissions = container.getSelectivePermissions();
+        final List<String> requirePermissions = container.getPermissions();
+        final List<String> selectivePermissions = container.getSelectivePermissions();
         if(!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.EXECUTE)) {
           plugin.text().of(sender, "no-permission").send();
           return true;
@@ -539,23 +539,23 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   /**
    * Method for capturing generic type
    */
-  private <T1, T2 extends T1> T2 capture(T1 type) {
+  private <T1, T2 extends T1> T2 capture(final T1 type) {
 
     return (T2)type;
   }
 
-  private boolean isAdapt(CommandContainer container, CommandSender sender) {
+  private boolean isAdapt(final CommandContainer container, final CommandSender sender) {
 
     return container.getExecutorType().isInstance(sender);
   }
 
-  private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action) {
+  private boolean checkPermissions(final CommandSender sender, final String commandLabel, final String[] cmdArg, final List<String> permissionList, final PermissionType permissionType, final Action action) {
 
     if(permissionList == null || permissionList.isEmpty()) {
       return true;
     }
     if(permissionType == PermissionType.REQUIRE) {
-      for(String requirePermission : permissionList) {
+      for(final String requirePermission : permissionList) {
         if(requirePermission != null
            && !requirePermission.isEmpty()
            && !plugin.perm().hasPermission(sender, requirePermission)) {
@@ -573,7 +573,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
       }
       return true;
     } else {
-      for(String selectivePermission : permissionList) {
+      for(final String selectivePermission : permissionList) {
         if(selectivePermission != null && !selectivePermission.isEmpty()) {
           if(plugin.perm().hasPermission(sender, selectivePermission)) {
             return true;
@@ -597,10 +597,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
 
   @Override
   public @Nullable List<String> onTabComplete(
-          @NotNull CommandSender sender,
-          @NotNull Command command,
-          @NotNull String commandLabel,
-          @NotNull String[] cmdArg) {
+          @NotNull final CommandSender sender,
+          @NotNull final Command command,
+          @NotNull final String commandLabel,
+          @NotNull final String[] cmdArg) {
     // No args, it shouldn't happened
     if(plugin.getBootError() != null) {
       return Collections.emptyList();
@@ -612,17 +612,17 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
       return getRootContainer().getExecutor().onTabComplete_Internal(capture(sender), commandLabel, cmdArg);
     } else {
       // Tab-complete subcommand args
-      String[] passThroughArgs = new String[cmdArg.length - 1];
+      final String[] passThroughArgs = new String[cmdArg.length - 1];
       System.arraycopy(cmdArg, 1, passThroughArgs, 0, passThroughArgs.length);
-      for(CommandContainer container : cmds) {
+      for(final CommandContainer container : cmds) {
         if(!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
           continue;
         }
         if(!isAdapt(container, sender)) {
           return Collections.emptyList();
         }
-        List<String> requirePermissions = container.getPermissions();
-        List<String> selectivePermissions = container.getSelectivePermissions();
+        final List<String> requirePermissions = container.getPermissions();
+        final List<String> selectivePermissions = container.getSelectivePermissions();
         if(!checkPermissions(sender, commandLabel, passThroughArgs, requirePermissions, PermissionType.REQUIRE, Action.TAB_COMPLETE)) {
           return Collections.emptyList();
         }
@@ -647,7 +647,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
    * @throws IllegalStateException Will throw the error if register conflict.
    */
   @Override
-  public void registerCmd(@NotNull CommandContainer container) {
+  public void registerCmd(@NotNull final CommandContainer container) {
 
     if(cmds.contains(container)) {
       Log.debug("Dupe subcommand registering: " + container);
@@ -662,7 +662,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   }
 
   @Override
-  public void unregisterCmd(@NotNull String prefix) {
+  public void unregisterCmd(@NotNull final String prefix) {
 
     cmds.removeIf(commandContainer->commandContainer.getPrefix().equalsIgnoreCase(prefix));
     Log.debug(Level.INFO, "Unregistered subcommand: " + prefix, Log.Caller.create());
@@ -675,7 +675,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
    * @param container The command container to unregister
    */
   @Override
-  public void unregisterCmd(@NotNull CommandContainer container) {
+  public void unregisterCmd(@NotNull final CommandContainer container) {
 
     cmds.remove(container);
   }
@@ -683,9 +683,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   @Override
   public @NotNull String genBody() {
 
-    HTMLTable table = new HTMLTable(2);
+    final HTMLTable table = new HTMLTable(2);
     table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type", "Binding");
-    for(CommandContainer cmd : this.cmds) {
+    for(final CommandContainer cmd : this.cmds) {
       table.insert(cmd.getPrefix(), CommonUtil.list2String(cmd.getPermissions()), CommonUtil.list2String(cmd.getSelectivePermissions()), cmd.getExecutorType(), cmd.getExecutor().getClass().getName());
     }
     return table.render();
@@ -702,7 +702,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     TAB_COMPLETE("tab-complete");
     final String name;
 
-    Action(String name) {
+    Action(final String name) {
 
       this.name = name;
     }

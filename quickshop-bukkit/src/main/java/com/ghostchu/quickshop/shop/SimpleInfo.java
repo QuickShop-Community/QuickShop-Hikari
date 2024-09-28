@@ -29,11 +29,11 @@ public class SimpleInfo implements Info {
   private String shopData;
 
   public SimpleInfo(
-          @NotNull Location loc,
-          @NotNull ShopAction action,
-          @Nullable ItemStack item,
-          @Nullable Block last,
-          boolean bypass) {
+          @NotNull final Location loc,
+          @NotNull final ShopAction action,
+          @Nullable final ItemStack item,
+          @Nullable final Block last,
+          final boolean bypass) {
 
     this.loc = loc;
     this.action = action;
@@ -46,12 +46,12 @@ public class SimpleInfo implements Info {
   }
 
   public SimpleInfo(
-          @NotNull Location loc,
-          @NotNull ShopAction action,
-          @Nullable ItemStack item,
-          @Nullable Block last,
-          @Nullable Shop shop,
-          boolean bypass) {
+          @NotNull final Location loc,
+          @NotNull final ShopAction action,
+          @Nullable final ItemStack item,
+          @Nullable final Block last,
+          @Nullable final Shop shop,
+          final boolean bypass) {
 
     this.loc = loc;
     this.action = action;
@@ -79,7 +79,7 @@ public class SimpleInfo implements Info {
   }
 
   @Override
-  public void setAction(@NotNull ShopAction action) {
+  public void setAction(@NotNull final ShopAction action) {
 
     this.action = action;
   }
@@ -120,7 +120,7 @@ public class SimpleInfo implements Info {
    * @return hasChanged
    */
   @Override
-  public boolean hasChanged(@NotNull Shop shop) {
+  public boolean hasChanged(@NotNull final Shop shop) {
 
     return !this.shopData.equals(JsonUtil.getGson().toJson(shop.saveToInfoStorage()));
   }

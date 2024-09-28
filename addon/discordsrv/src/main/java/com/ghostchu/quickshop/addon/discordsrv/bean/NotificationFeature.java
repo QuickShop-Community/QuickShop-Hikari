@@ -17,7 +17,7 @@ public enum NotificationFeature {
   private final String configNode;
   private final boolean playerToggleable;
 
-  NotificationFeature(String configNode, String databaseNode, boolean playerToggleable) {
+  NotificationFeature(final String configNode, final String databaseNode, final boolean playerToggleable) {
 
     this.configNode = configNode;
     this.databaseNode = databaseNode;

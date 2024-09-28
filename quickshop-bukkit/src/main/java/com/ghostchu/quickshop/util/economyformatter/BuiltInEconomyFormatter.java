@@ -20,7 +20,7 @@ public class BuiltInEconomyFormatter implements Reloadable {
   private boolean useDecimalFormat;
   private boolean currencySymbolOnRight;
 
-  public BuiltInEconomyFormatter(QuickShop plugin) {
+  public BuiltInEconomyFormatter(final QuickShop plugin) {
 
     this.plugin = plugin;
     reloadModule();
@@ -33,9 +33,9 @@ public class BuiltInEconomyFormatter implements Reloadable {
     CURRENCY_SYMBOL_MAPPING.clear();
     this.useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
     this.currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
-    List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
+    final List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
     symbols.forEach(entry->{
-      String[] splits = entry.split(";", 2);
+      final String[] splits = entry.split(";", 2);
       if(splits.length < 2) {
         plugin.logger().warn("Invalid entry in alternate-currency-symbol-list: {}", entry);
       }
@@ -45,16 +45,16 @@ public class BuiltInEconomyFormatter implements Reloadable {
   }
 
 
-  public String getInternalFormat(double amount, @Nullable String currency) {
+  public String getInternalFormat(final double amount, @Nullable final String currency) {
 
     if(StringUtils.isEmpty(currency)) {
       Log.debug("Format: Currency is null");
-      String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+      final String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
       return currencySymbolOnRight? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
     } else {
       Log.debug("Format: Currency is: [" + currency + "]");
-      String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-      String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
+      final String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+      final String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
       return currencySymbolOnRight? formatted + symbol : symbol + formatted;
     }
   }

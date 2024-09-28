@@ -82,11 +82,11 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void playerLogin(AsyncPlayerPreLoginEvent event) {
+  public void playerLogin(final AsyncPlayerPreLoginEvent event) {
 
-    UUID uuid = event.getUniqueId();
+    final UUID uuid = event.getUniqueId();
     try {
-      DisplayOption displayOption = databaseHelper.getDisplayOption(uuid);
+      final DisplayOption displayOption = databaseHelper.getDisplayOption(uuid);
       this.playerDisplayStatus.put(uuid, displayOption);
     } catch(SQLException e) {
       getLogger().log(Level.WARNING, "Failed to getting the player display status from database", e);
@@ -94,23 +94,23 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void playerQuit(PlayerQuitEvent event) {
+  public void playerQuit(final PlayerQuitEvent event) {
 
     cleanup(event.getPlayer().getUniqueId());
   }
 
-  private void cleanup(UUID uuid) {
+  private void cleanup(final UUID uuid) {
 
     this.playerDisplayStatus.remove(uuid);
     this.playerClientMapping.remove(uuid);
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void displaySending(DisplayApplicableCheckEvent event) {
+  public void displaySending(final DisplayApplicableCheckEvent event) {
 
-    UUID uuid = event.getPlayer();
-    DisplayOption option = this.playerDisplayStatus.getOrDefault(uuid, DisplayOption.AUTO);
-    boolean bedrockClient = this.playerClientMapping.getOrDefault(uuid, ClientType.UNDISCOVERED).isBedrockType();
+    final UUID uuid = event.getPlayer();
+    final DisplayOption option = this.playerDisplayStatus.getOrDefault(uuid, DisplayOption.AUTO);
+    final boolean bedrockClient = this.playerClientMapping.getOrDefault(uuid, ClientType.UNDISCOVERED).isBedrockType();
     if(!option.isDisplayAvailable(bedrockClient)) {
       event.setApplicable(false);
     }
@@ -122,13 +122,13 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
   }
 
   @Override
-  public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
+  public void onPluginMessageReceived(@NotNull final String channel, @NotNull final Player player, final byte @NotNull [] message) {
 
     if(!channel.equalsIgnoreCase(BUNGEE_CHANNEL)) {
       return;
     }
-    ByteArrayDataInput in = ByteStreams.newDataInput(message);
-    String prefix = in.readUTF();
+    final ByteArrayDataInput in = ByteStreams.newDataInput(message);
+    final String prefix = in.readUTF();
     //noinspection SwitchStatementWithTooFewBranches
     switch(prefix) {
       case RESPONSE_PREFIX -> handleBungeeBedrockPlayerCallback(in);
@@ -136,13 +136,13 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
     }
   }
 
-  private void handleBungeeBedrockPlayerCallback(ByteArrayDataInput in) {
+  private void handleBungeeBedrockPlayerCallback(final ByteArrayDataInput in) {
 
     if(!PackageUtil.parsePackageProperly("acceptBungeeCordBedrockPlayerDiscoveryCallback").asBoolean(true)) {
       return;
     }
-    UUID uuid = UUID.fromString(in.readUTF());
-    int responseType = in.readShort();
+    final UUID uuid = UUID.fromString(in.readUTF());
+    final int responseType = in.readShort();
     ClientType clientType = ClientType.UNDISCOVERED;
     if(responseType == 0) {
       clientType = ClientType.JAVA_EDITION_PLAYER;

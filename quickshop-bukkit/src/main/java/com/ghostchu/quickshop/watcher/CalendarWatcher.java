@@ -26,7 +26,7 @@ public class CalendarWatcher implements Runnable {
   private final QuickShop plugin;
   private WrappedTask task;
 
-  public CalendarWatcher(QuickShop plugin) {
+  public CalendarWatcher(final QuickShop plugin) {
 
     this.plugin = plugin;
     if(!calendarFile.exists()) {
@@ -45,28 +45,28 @@ public class CalendarWatcher implements Runnable {
   @Override
   public void run() {
 
-    CalendarEvent.CalendarTriggerType type = getAndUpdate();
+    final CalendarEvent.CalendarTriggerType type = getAndUpdate();
     Util.mainThreadRun(()->new CalendarEvent(type).callEvent());
   }
 
   public CalendarEvent.CalendarTriggerType getAndUpdate() {
 
-    Calendar c = Calendar.getInstance();
+    final Calendar c = Calendar.getInstance();
     CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.NOTHING_CHANGED;
-    int secondRecord = configuration.getInt("second");
-    int minuteRecord = configuration.getInt("minute");
-    int hourRecord = configuration.getInt("hour");
-    int dayRecord = configuration.getInt("day");
-    int weekRecord = configuration.getInt("week");
-    int monthRecord = configuration.getInt("month");
-    int yearRecord = configuration.getInt("year");
-    int secondNow = c.get(Calendar.SECOND);
-    int minuteNow = c.get(Calendar.MINUTE);
-    int hourNow = c.get(Calendar.HOUR_OF_DAY);
-    int dayNow = c.get(Calendar.DAY_OF_MONTH);
-    int weekNow = c.get(Calendar.WEEK_OF_MONTH);
-    int monthNow = c.get(Calendar.MONTH);
-    int yearNow = c.get(Calendar.YEAR);
+    final int secondRecord = configuration.getInt("second");
+    final int minuteRecord = configuration.getInt("minute");
+    final int hourRecord = configuration.getInt("hour");
+    final int dayRecord = configuration.getInt("day");
+    final int weekRecord = configuration.getInt("week");
+    final int monthRecord = configuration.getInt("month");
+    final int yearRecord = configuration.getInt("year");
+    final int secondNow = c.get(Calendar.SECOND);
+    final int minuteNow = c.get(Calendar.MINUTE);
+    final int hourNow = c.get(Calendar.HOUR_OF_DAY);
+    final int dayNow = c.get(Calendar.DAY_OF_MONTH);
+    final int weekNow = c.get(Calendar.WEEK_OF_MONTH);
+    final int monthNow = c.get(Calendar.MONTH);
+    final int yearNow = c.get(Calendar.YEAR);
     if(secondNow != secondRecord) {
       type = CalendarEvent.CalendarTriggerType.SECOND;
     }

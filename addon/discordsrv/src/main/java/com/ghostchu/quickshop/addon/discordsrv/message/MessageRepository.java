@@ -22,28 +22,28 @@ public class MessageRepository {
   private final QuickShop plugin;
   private final EmbedMessageParser parser = new EmbedMessageParser();
 
-  public MessageRepository(QuickShop plugin) {
+  public MessageRepository(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @AutoRegisterMessage(key = "sold-to-your-shop")
-  public MessageEmbed soldToYourShop(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed soldToYourShop(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("sold-to-your-shop", langUser, placeHolders);
   }
 
   @NotNull
-  private MessageEmbed generateFromTemplate(@NotNull String key, @NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  private MessageEmbed generateFromTemplate(@NotNull final String key, @NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return applyPlaceHolders(parser.parse(textOfString(langUser, key)), placeHolders);
   }
 
   @NotNull
-  private MessageEmbed applyPlaceHolders(@NotNull MessageEmbed embed, @NotNull Map<String, String> placeholders) {
+  private MessageEmbed applyPlaceHolders(@NotNull final MessageEmbed embed, @NotNull final Map<String, String> placeholders) {
 
-    EmbedBuilder builder = new EmbedBuilder(embed);
-    for(Map.Entry<String, String> entry : placeholders.entrySet()) {
+    final EmbedBuilder builder = new EmbedBuilder(embed);
+    for(final Map.Entry<String, String> entry : placeholders.entrySet()) {
       if(StringUtils.isEmpty(entry.getValue())) {
         entry.setValue(ZERO_WIDTH_SPACE);
       }
@@ -51,7 +51,7 @@ public class MessageRepository {
     builder.setTitle(applyPlaceHolders(embed.getTitle(), placeholders));
     builder.setDescription(applyPlaceHolders(embed.getDescription(), placeholders));
     if(embed.getAuthor() != null) {
-      MessageEmbed.AuthorInfo authorInfo = applyPlaceHolders(embed.getAuthor(), placeholders);
+      final MessageEmbed.AuthorInfo authorInfo = applyPlaceHolders(embed.getAuthor(), placeholders);
       if(authorInfo != null) {
         builder.setAuthor(authorInfo.getName(), authorInfo.getUrl(), authorInfo.getIconUrl());
       }
@@ -64,14 +64,14 @@ public class MessageRepository {
     }
     builder.setTimestamp(Instant.now());
     if(embed.getFooter() != null) {
-      String text = applyPlaceHolders(embed.getFooter().getText(), placeholders);
-      String url = applyPlaceHolders(embed.getFooter().getIconUrl(), placeholders);
+      final String text = applyPlaceHolders(embed.getFooter().getText(), placeholders);
+      final String url = applyPlaceHolders(embed.getFooter().getIconUrl(), placeholders);
       builder.setFooter(text, url);
     }
-    List<MessageEmbed.Field> newFields = new ArrayList<>();
-    for(MessageEmbed.Field field : builder.getFields()) {
-      String title = applyPlaceHolders(field.getName(), placeholders);
-      String value = applyPlaceHolders(field.getValue(), placeholders);
+    final List<MessageEmbed.Field> newFields = new ArrayList<>();
+    for(final MessageEmbed.Field field : builder.getFields()) {
+      final String title = applyPlaceHolders(field.getName(), placeholders);
+      final String value = applyPlaceHolders(field.getValue(), placeholders);
       newFields.add(new MessageEmbed.Field(title, value, field.isInline()));
     }
     builder.clearFields();
@@ -80,19 +80,19 @@ public class MessageRepository {
   }
 
   @NotNull
-  private String textOfString(@Nullable QUser langUser, @NotNull String key) {
+  private String textOfString(@Nullable final QUser langUser, @NotNull final String key) {
 
     return PlainTextComponentSerializer.plainText().serialize(plugin.text().of(ADDON_TRANSLATION_KEY_PREFIX + key)
                                                                       .forLocale(plugin.text().findRelativeLanguages(langUser, false).getLocale()));
   }
 
   @Nullable
-  private String applyPlaceHolders(@Nullable String string, @NotNull Map<String, String> placeholders) {
+  private String applyPlaceHolders(@Nullable String string, @NotNull final Map<String, String> placeholders) {
 
     if(string == null) {
       return null;
     }
-    for(Map.Entry<String, String> entry : placeholders.entrySet()) {
+    for(final Map.Entry<String, String> entry : placeholders.entrySet()) {
       String value = entry.getValue();
       if(value == null) {
         value = "";
@@ -103,7 +103,7 @@ public class MessageRepository {
   }
 
   @Nullable
-  private MessageEmbed.AuthorInfo applyPlaceHolders(@Nullable MessageEmbed.AuthorInfo info, @NotNull Map<String, String> placeholders) {
+  private MessageEmbed.AuthorInfo applyPlaceHolders(@Nullable final MessageEmbed.AuthorInfo info, @NotNull final Map<String, String> placeholders) {
 
     if(info == null) {
       return null;
@@ -122,67 +122,67 @@ public class MessageRepository {
 
 
   @AutoRegisterMessage(key = "bought-from-your-shop")
-  public MessageEmbed boughtFromYourShop(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed boughtFromYourShop(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("bought-from-your-shop", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "out-of-space")
-  public MessageEmbed outOfSpace(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed outOfSpace(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("out-of-space", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "out-of-stock")
-  public MessageEmbed outOfStock(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed outOfStock(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("out-of-stock", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "shop-transfer-to-you")
-  public MessageEmbed shopTransferToYou(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed shopTransferToYou(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("shop-transfer-to-you", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "shop-price-changed")
-  public MessageEmbed shopPriceChanged(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed shopPriceChanged(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("shop-price-changed", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "shop-permission-changed")
-  public MessageEmbed shopPermissionChanged(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed shopPermissionChanged(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("shop-permission-changed", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "mod-shop-created")
-  public MessageEmbed modShopCreated(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed modShopCreated(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("mod-shop-created", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "mod-shop-transfer")
-  public MessageEmbed modShopTransfer(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed modShopTransfer(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("mod-shop-transfer", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "mod-remove-shop")
-  public MessageEmbed modShopRemoved(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed modShopRemoved(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("mod-remove-shop", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "mod-shop-price-changed")
-  public MessageEmbed modShopPriceChanged(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed modShopPriceChanged(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("mod-shop-price-changed", langUser, placeHolders);
   }
 
   @AutoRegisterMessage(key = "mod-shop-purchase")
-  public MessageEmbed modShopPurchase(@NotNull QUser langUser, @NotNull Map<String, String> placeHolders) {
+  public MessageEmbed modShopPurchase(@NotNull final QUser langUser, @NotNull final Map<String, String> placeHolders) {
 
     return generateFromTemplate("mod-shop-purchase", langUser, placeHolders);
   }

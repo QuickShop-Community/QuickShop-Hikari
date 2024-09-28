@@ -66,9 +66,9 @@ public class StaffSelectionPage {
   protected final String iconLore;
   protected final IconAction[] actions;
 
-  public StaffSelectionPage(String returnMenu, String menuName,
-                            final int menuPage, final int returnPage, String staffPageID,
-                            final int menuRows, String iconLore, final IconAction... actions) {
+  public StaffSelectionPage(final String returnMenu, final String menuName,
+                            final int menuPage, final int returnPage, final String staffPageID,
+                            final int menuRows, final String iconLore, final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;
@@ -156,7 +156,7 @@ public class StaffSelectionPage {
                 profile.setUuid(uuid);
               }
 
-            } catch(Exception ignore) { }
+            } catch(final Exception ignore) { }
 
             final String name = (player.isPresent() && player.get().getName() != null)? player.get().getName() : uuid.toString();
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)

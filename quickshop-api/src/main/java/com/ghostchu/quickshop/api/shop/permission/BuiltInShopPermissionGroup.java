@@ -36,7 +36,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
   private final String descriptionKey;
   private final List<BuiltInShopPermission> permissions;
 
-  BuiltInShopPermissionGroup(@NotNull String node, @NotNull String descriptionKey, @NotNull BuiltInShopPermission... permissions) {
+  BuiltInShopPermissionGroup(@NotNull final String node, @NotNull final String descriptionKey, @NotNull final BuiltInShopPermission... permissions) {
 
     this.node = node;
     this.descriptionKey = descriptionKey;
@@ -63,13 +63,13 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
    * @return True if the given permission is/or contains the given permission.
    */
   @Override
-  public boolean hasPermission(@NotNull BuiltInShopPermission permission) {
+  public boolean hasPermission(@NotNull final BuiltInShopPermission permission) {
 
     return this.getPermissions().contains(permission);
   }
 
   @Override
-  public boolean hasPermission(@NotNull String permission) {
+  public boolean hasPermission(@NotNull final String permission) {
 
     return node.contains(permission);
   }

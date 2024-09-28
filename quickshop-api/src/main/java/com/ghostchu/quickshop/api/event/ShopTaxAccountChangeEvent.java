@@ -25,7 +25,7 @@ public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCanc
    * @param shop          Target shop
    * @param newTaxAccount The new shop tax account
    */
-  public ShopTaxAccountChangeEvent(@NotNull Shop shop, @Nullable QUser newTaxAccount) {
+  public ShopTaxAccountChangeEvent(@NotNull final Shop shop, @Nullable final QUser newTaxAccount) {
 
     this.shop = shop;
     this.newTaxAccount = newTaxAccount;
@@ -38,7 +38,7 @@ public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCanc
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

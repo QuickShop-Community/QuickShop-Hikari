@@ -82,7 +82,7 @@ public interface InventoryTransaction {
      *
      * @return Does commit event has been cancelled
      */
-    default boolean onCommit(@NotNull InventoryTransaction transaction) {
+    default boolean onCommit(@NotNull final InventoryTransaction transaction) {
 
       return true;
     }
@@ -93,7 +93,7 @@ public interface InventoryTransaction {
      *
      * @param transaction Transaction
      */
-    default void onFailed(@NotNull InventoryTransaction transaction) {
+    default void onFailed(@NotNull final InventoryTransaction transaction) {
 
     }
 
@@ -102,7 +102,7 @@ public interface InventoryTransaction {
      *
      * @param transaction Transaction
      */
-    default void onSuccess(@NotNull InventoryTransaction transaction) {
+    default void onSuccess(@NotNull final InventoryTransaction transaction) {
 
     }
 

@@ -17,9 +17,9 @@ public class ServiceInjector {
 
   }
 
-  public static @Nullable <T> T getInjectedService(@NotNull Class<T> clazz, T def) {
+  public static @Nullable <T> T getInjectedService(@NotNull final Class<T> clazz, final T def) {
 
-    @Nullable RegisteredServiceProvider<? extends T> registeredServiceProvider =
+    @Nullable final RegisteredServiceProvider<? extends T> registeredServiceProvider =
             Bukkit.getServicesManager().getRegistration(clazz);
     if(registeredServiceProvider == null) {
       return def;

@@ -31,7 +31,7 @@ public class ItemMarker implements Reloadable, SubPasteItem {
   private final Pattern namePattern = Pattern.compile(NAME_REG_EXP);
   private YamlConfiguration configuration;
 
-  public ItemMarker(@NotNull QuickShop plugin) {
+  public ItemMarker(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     file = new File(plugin.getDataFolder(), "items-lookup.yml");
@@ -47,16 +47,16 @@ public class ItemMarker implements Reloadable, SubPasteItem {
       initDefaultConfiguration(file);
     }
     configuration = YamlConfiguration.loadConfiguration(file);
-    for(String key : configuration.getKeys(false)) {
+    for(final String key : configuration.getKeys(false)) {
       if(configuration.isItemStack(key)) {
         stacks.put(key, configuration.getItemStack(key));
       }
     }
   }
 
-  private void initDefaultConfiguration(@NotNull File file) {
+  private void initDefaultConfiguration(@NotNull final File file) {
 
-    YamlConfiguration yamlConfiguration = new YamlConfiguration();
+    final YamlConfiguration yamlConfiguration = new YamlConfiguration();
     yamlConfiguration.set("version", 1);
     try {
       //noinspection ResultOfMethodCallIgnored
@@ -75,15 +75,15 @@ public class ItemMarker implements Reloadable, SubPasteItem {
   }
 
   @Nullable
-  public ItemStack get(@NotNull String itemName) {
+  public ItemStack get(@NotNull final String itemName) {
 
     return stacks.get(itemName);
   }
 
   @Nullable
-  public String get(@NotNull ItemStack item) {
+  public String get(@NotNull final ItemStack item) {
 
-    for(Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
+    for(final Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
       if(plugin.getItemMatcher().matches(entry.getValue(), item)) {
         return entry.getKey();
       }
@@ -105,7 +105,7 @@ public class ItemMarker implements Reloadable, SubPasteItem {
   }
 
   @NotNull
-  public OperationResult remove(@NotNull String itemName) {
+  public OperationResult remove(@NotNull final String itemName) {
 
     if(!stacks.containsKey(itemName)) {
       return OperationResult.NOT_EXISTS;
@@ -132,7 +132,7 @@ public class ItemMarker implements Reloadable, SubPasteItem {
   }
 
   @NotNull
-  public OperationResult save(@NotNull String itemName, @NotNull ItemStack itemStack) {
+  public OperationResult save(@NotNull final String itemName, @NotNull final ItemStack itemStack) {
 
     if(stacks.containsKey(itemName)) {
       return OperationResult.NAME_CONFLICT;
@@ -153,9 +153,9 @@ public class ItemMarker implements Reloadable, SubPasteItem {
   @Override
   public @NotNull String genBody() {
 
-    HTMLTable table = new HTMLTable(2);
+    final HTMLTable table = new HTMLTable(2);
     table.setTableTitle("Name", "Item");
-    for(Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
+    for(final Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
       table.insert(entry.getKey(), PlainTextComponentSerializer.plainText().serialize(Util.getItemStackName(entry.getValue())) + " [" + entry.getValue().getType().getKey() + "]");
     }
     return table.render();

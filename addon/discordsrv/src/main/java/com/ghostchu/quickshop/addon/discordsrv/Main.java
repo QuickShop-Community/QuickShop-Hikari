@@ -37,9 +37,9 @@ public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
   private JDAWrapper jdaWrapper;
   private DiscordDatabaseHelper databaseHelper;
 
-  public void sendModeratorChannelMessage(@NotNull MessageEmbed embed) {
+  public void sendModeratorChannelMessage(@NotNull final MessageEmbed embed) {
 
-    String channelId = getConfig().getString("moderator-channel", "000000000000000000");
+    final String channelId = getConfig().getString("moderator-channel", "000000000000000000");
     if("000000000000000000".equals(channelId)) {
       return;
     }
@@ -60,7 +60,7 @@ public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
   @Override
   public void onEnable() {
 
-    QuickShop quickshop = QuickShop.getInstance();
+    final QuickShop quickshop = QuickShop.getInstance();
     saveDefaultConfig();
     manager = new MessageManager(this);
     manager.register(new MessageRepository(quickshop));
@@ -95,12 +95,12 @@ public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
   }
 
   @Deprecated
-  public boolean isServerNotifactionFeatureEnabled(@NotNull NotificationFeature feature) {
+  public boolean isServerNotifactionFeatureEnabled(@NotNull final NotificationFeature feature) {
 
     return isServerNotificationFeatureEnabled(feature);
   }
 
-  public boolean isServerNotificationFeatureEnabled(@NotNull NotificationFeature feature) {
+  public boolean isServerNotificationFeatureEnabled(@NotNull final NotificationFeature feature) {
 
     return getConfig().getBoolean("features." + feature.getConfigNode(), true);
   }
@@ -131,7 +131,7 @@ public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onQuickShopReload(QSConfigurationReloadEvent event) {
+  public void onQuickShopReload(final QSConfigurationReloadEvent event) {
 
     reloadConfig();
   }

@@ -34,20 +34,20 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
   private final Main main;
   private final QuickShop quickshop;
 
-  public DiscountCommand(Main main, QuickShop quickshop) {
+  public DiscountCommand(final Main main, final QuickShop quickshop) {
 
     this.main = main;
     this.quickshop = quickshop;
   }
 
   @Override
-  public void onCommand(CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       quickshop.text().of(sender, "command-incorrect", "/quickshop discount <install/uninstall/create/remove/list/config/info/listall>").send();
       return;
     }
-    String[] passThroughArgs = new String[parser.getArgs().size() - 1];
+    final String[] passThroughArgs = new String[parser.getArgs().size() - 1];
     System.arraycopy(parser.getArgs().toArray(new String[0]), 1, passThroughArgs, 0, passThroughArgs.length);
     switch(parser.getArgs().get(0)) {
       case "install" -> install(sender, passThroughArgs);
@@ -63,7 +63,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     }
   }
 
-  private void install(CommandSender sender, String[] passThroughArgs) {
+  private void install(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!(sender instanceof Player p)) {
       quickshop.text().of(sender, "command-type-mismatch", "Player").send();
@@ -73,8 +73,8 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
       quickshop.text().of(sender, "command-incorrect", "/quickshop discount install <code>").send();
       return;
     }
-    String codeStr = passThroughArgs[0];
-    DiscountCode code = main.getCodeManager().getCode(codeStr);
+    final String codeStr = passThroughArgs[0];
+    final DiscountCode code = main.getCodeManager().getCode(codeStr);
     if(code == null) {
       quickshop.text().of(sender, "addon.discount.invalid-discount-code").send();
       return;
@@ -83,7 +83,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     quickshop.text().of(sender, "addon.discount.discount-code-installed", code.getCode()).send();
   }
 
-  private void uninstall(CommandSender sender, String[] passThroughArgs) {
+  private void uninstall(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!(sender instanceof Player p)) {
       quickshop.text().of(sender, "command-type-mismatch", "Player").send();
@@ -93,7 +93,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     quickshop.text().of(sender, "addon.discount.discount-code-uninstalled").send();
   }
 
-  private void create(CommandSender sender, String[] passThroughArgs) {
+  private void create(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!(sender instanceof Player p)) {
       quickshop.text().of(sender, "command-type-mismatch", "Player").send();
@@ -108,10 +108,10 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
       quickshop.text().of(sender, "command-incorrect", "/quickshop discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
       return;
     }
-    String code = passThroughArgs[0];
-    String codeTypeStr = passThroughArgs[1];
+    final String code = passThroughArgs[0];
+    final String codeTypeStr = passThroughArgs[1];
     CodeType codeType = null;
-    for(CodeType value : CodeType.values()) {
+    for(final CodeType value : CodeType.values()) {
       if(value.name().equalsIgnoreCase(codeTypeStr)) {
         codeType = value;
         break;
@@ -141,14 +141,14 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
       }
     }
     if(passThroughArgs.length >= 6 && !"-1".equalsIgnoreCase(passThroughArgs[5])) {
-      Date date = CommonUtil.parseTime(passThroughArgs[5]);
+      final Date date = CommonUtil.parseTime(passThroughArgs[5]);
       if(date == null) {
         quickshop.text().of(sender, "not-a-valid-time", passThroughArgs[5]).send();
         return;
       }
       expiredOn = date.getTime();
     }
-    CodeCreationResponse response = main.getCodeManager().createDiscountCode(p, p.getUniqueId(), code, codeType, passThroughArgs[2], maxUsages, threshold, expiredOn);
+    final CodeCreationResponse response = main.getCodeManager().createDiscountCode(p, p.getUniqueId(), code, codeType, passThroughArgs[2], maxUsages, threshold, expiredOn);
     switch(response) {
       case PERMISSION_DENIED -> quickshop.text().of(sender, "no-permission").send();
       case INVALID_RATE ->
@@ -173,14 +173,14 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     Log.debug("Discount code created: " + main.getCodeManager().getCode(code));
   }
 
-  private void remove(CommandSender sender, String[] passThroughArgs) {
+  private void remove(final CommandSender sender, final String[] passThroughArgs) {
 
     if(passThroughArgs.length < 1) {
       quickshop.text().of(sender, "command-incorrect", "/quickshop discount remove <code>").send();
       return;
     }
-    String codeStr = passThroughArgs[0];
-    DiscountCode code = main.getCodeManager().getCode(codeStr);
+    final String codeStr = passThroughArgs[0];
+    final DiscountCode code = main.getCodeManager().getCode(codeStr);
     if(code == null) {
       quickshop.text().of(sender, "addon.discount.invalid-discount-code").send();
       return;
@@ -200,37 +200,37 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     quickshop.text().of(sender, "addon.discount.discount-code-removed", code.getCode()).send();
   }
 
-  private void info(CommandSender sender, String[] passThroughArgs) {
+  private void info(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!(sender instanceof Player p)) {
       quickshop.text().of(sender, "command-type-mismatch", "Player").send();
       return;
     }
-    DiscountCode code = main.getStatusManager().get(p.getUniqueId(), main.getCodeManager());
+    final DiscountCode code = main.getStatusManager().get(p.getUniqueId(), main.getCodeManager());
     if(code == null) {
       quickshop.text().of(sender, "addon.discount.discount-code-query-nothing").send();
       return;
     }
     String name = "Unknown";
-    String lookupName = quickshop.getPlayerFinder().uuid2Name(code.getOwner());
+    final String lookupName = quickshop.getPlayerFinder().uuid2Name(code.getOwner());
     if(lookupName != null) {
       name = lookupName;
     }
-    Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
-    String remainsUsage;
-    int remains = code.getRemainsUsage(((Player)sender).getUniqueId());
+    final Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
+    final String remainsUsage;
+    final int remains = code.getRemainsUsage(((Player)sender).getUniqueId());
     if(remains == -1) {
       remainsUsage = "Inf.";
     } else {
       remainsUsage = String.valueOf(remains);
     }
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-    String expiredOn = sdf.format(new Date(code.getExpiredTime()));
+    final String expiredOn = sdf.format(new Date(code.getExpiredTime()));
     quickshop.text().of(sender, "addon.discount.discount-code-details", code.getCode(), name, appliedTo, remainsUsage, expiredOn, code.getThreshold(), code.getRate().format(sender, quickshop.text())).send();
   }
 
-  private void config(CommandSender sender, String[] passThroughArgs) {
+  private void config(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!(sender instanceof Player p)) {
       quickshop.text().of(sender, "command-type-mismatch", "Player").send();
@@ -240,14 +240,14 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
       quickshop.text().of(sender, "command-incorrect", "/quickshop discount config <code> <addshop/removeshop/scope> [args]").send();
       return;
     }
-    DiscountCode code = main.getCodeManager().getCode(passThroughArgs[0]);
+    final DiscountCode code = main.getCodeManager().getCode(passThroughArgs[0]);
     if(code == null) {
       quickshop.text().of(sender, "addon.discount.invalid-discount-code", passThroughArgs[0]).send();
       return;
     }
     switch(passThroughArgs[1]) {
       case "addshop" -> {
-        Shop shop = getLookingShop(sender);
+        final Shop shop = getLookingShop(sender);
         if(shop == null) {
           quickshop.text().of(sender, "not-looking-at-shop").send();
           return;
@@ -264,7 +264,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
       }
       case "removeshop" -> {
-        Shop shop = getLookingShop(sender);
+        final Shop shop = getLookingShop(sender);
         if(shop == null) {
           quickshop.text().of(sender, "not-looking-at-shop").send();
           return;
@@ -291,9 +291,9 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
           quickshop.text().of(sender, "no-permission").send();
           return;
         }
-        String newScope = passThroughArgs[2].toUpperCase(Locale.ROOT).replace("-", "_");
+        final String newScope = passThroughArgs[2].toUpperCase(Locale.ROOT).replace("-", "_");
         try {
-          CodeType type = CodeType.valueOf(newScope);
+          final CodeType type = CodeType.valueOf(newScope);
           if(!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.create." + type.name().toLowerCase())) {
             quickshop.text().of(sender, "no-permission").send();
             return;
@@ -308,7 +308,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     }
   }
 
-  private void list(CommandSender sender, String[] passThroughArgs) {
+  private void list(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!(sender instanceof Player p)) {
       quickshop.text().of(sender, "command-type-mismatch", "Player").send();
@@ -318,20 +318,20 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
       quickshop.text().of(sender, "no-permission").send();
       return;
     }
-    ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+    final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
     printer.printHeader();
     printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
     main.getCodeManager().getCodes().stream().filter(code->code.getOwner().equals(((Player)sender).getUniqueId())).forEach(code->printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
     printer.printFooter();
   }
 
-  private void listAll(CommandSender sender, String[] passThroughArgs) {
+  private void listAll(final CommandSender sender, final String[] passThroughArgs) {
 
     if(!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.listall")) {
       quickshop.text().of(sender, "no-permission").send();
       return;
     }
-    ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+    final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
     printer.printHeader();
     printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
     main.getCodeManager().getCodes().forEach(code->printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
@@ -339,7 +339,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  public @Nullable List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
     if(cmdArg.length == 1) {
       return Arrays.asList("install", "uninstall", "create", "remove", "info", "config", "list");
@@ -395,11 +395,11 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     return Collections.emptyList();
   }
 
-  private List<String> tabCompleteHint(@NotNull CommandSender sender, @NotNull String key) {
+  private List<String> tabCompleteHint(@NotNull final CommandSender sender, @NotNull final String key) {
 
-    String str = PlainTextComponentSerializer.plainText().serialize(quickshop.text().of(sender, key).forLocale());
-    List<String> list = new ArrayList<>();
-    String[] explode = str.split("\n");
+    final String str = PlainTextComponentSerializer.plainText().serialize(quickshop.text().of(sender, key).forLocale());
+    final List<String> list = new ArrayList<>();
+    final String[] explode = str.split("\n");
     for(int i = 0; i < explode.length; i++) {
       list.add(i + ". " + explode[i]);
     }

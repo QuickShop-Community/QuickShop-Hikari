@@ -28,7 +28,7 @@ public class HTMLTable {
    *
    * @param maxColumns Table max columns, any more columns will be ignored
    */
-  public HTMLTable(int maxColumns) {
+  public HTMLTable(final int maxColumns) {
 
     this.columns = maxColumns;
     this.firstColumnBold = false;
@@ -40,7 +40,7 @@ public class HTMLTable {
    * @param maxColumns      Table max columns, any more columns will be ignored
    * @param firstColumnBold Whether the first column should be bolded
    */
-  public HTMLTable(int maxColumns, boolean firstColumnBold) {
+  public HTMLTable(final int maxColumns, final boolean firstColumnBold) {
 
     this.columns = maxColumns;
     this.firstColumnBold = firstColumnBold;
@@ -52,9 +52,9 @@ public class HTMLTable {
    * @param data The data to insert, any more columns which overflowed than maxColumns will be
    *             ignored
    */
-  public void insert(@NotNull Object... data) {
+  public void insert(@NotNull final Object... data) {
 
-    String[] f = new String[columns];
+    final String[] f = new String[columns];
     Arrays.fill(f, "");
     for(int i = 0; i < data.length; i++) {
       Object obj = data[i];
@@ -79,8 +79,8 @@ public class HTMLTable {
   @NotNull
   public String render() {
 
-    String thead = renderHead();
-    String tbody = renderBody();
+    final String thead = renderHead();
+    final String tbody = renderBody();
     return TEMPLATE
             .replace("{col}", renderColAttributes())
             .replace("{thead}", thead)
@@ -90,11 +90,11 @@ public class HTMLTable {
   @NotNull
   private String renderHead() {
 
-    StringBuilder tdBuilder = new StringBuilder();
+    final StringBuilder tdBuilder = new StringBuilder();
     if(title == null || title.length == 0) {
       return "";
     }
-    for(String headTitle : title) {
+    for(final String headTitle : title) {
       tdBuilder.append("<th>").append(headTitle).append("</th>");
     }
     return """
@@ -108,10 +108,10 @@ public class HTMLTable {
 
   private String renderBody() {
 
-    StringBuilder tdBuilder = new StringBuilder();
-    for(String[] line : data) {
+    final StringBuilder tdBuilder = new StringBuilder();
+    for(final String[] line : data) {
       tdBuilder.append("<tr>");
-      for(String recordEntry : line) {
+      for(final String recordEntry : line) {
         tdBuilder.append("<td>").append(recordEntry).append("</td>");
       }
       tdBuilder.append("</tr>");
@@ -121,7 +121,7 @@ public class HTMLTable {
 
   private String renderColAttributes() {
 //        String base ="<col style=\"width: {length}%;\">\n";
-    String base = "<col>\n";
+    final String base = "<col>\n";
     return base.replace("{length}", String.valueOf(100 / columns)).repeat(columns);
   }
 
@@ -130,7 +130,7 @@ public class HTMLTable {
    *
    * @param title The title, null to clear if already set.
    */
-  public void setTableTitle(@Nullable String... title) {
+  public void setTableTitle(@Nullable final String... title) {
 
     this.title = title;
   }

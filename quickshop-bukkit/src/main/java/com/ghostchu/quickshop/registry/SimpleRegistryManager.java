@@ -14,13 +14,13 @@ public class SimpleRegistryManager implements RegistryManager {
   private final Map<String, Registry> REGISTRY_LIST = new ConcurrentSkipListMap<>();
 
   @Override
-  public Registry getRegistry(BuiltInRegistry registry) {
+  public Registry getRegistry(final BuiltInRegistry registry) {
 
     return getRegistry(registry.getName());
   }
 
   @Override
-  public Registry getRegistry(String registryName) {
+  public Registry getRegistry(final String registryName) {
 
     return REGISTRY_LIST.get(registryName);
   }
@@ -32,7 +32,7 @@ public class SimpleRegistryManager implements RegistryManager {
   }
 
   @Override
-  public void registerRegistry(String namespacedName, Registry registry) {
+  public void registerRegistry(final String namespacedName, final Registry registry) {
 
     if(REGISTRY_LIST.get(namespacedName) != null) {
       throw new IllegalArgumentException("Registry " + namespacedName + " already registered in RegistryManager!");
@@ -41,7 +41,7 @@ public class SimpleRegistryManager implements RegistryManager {
   }
 
   @Override
-  public void unregisterRegistry(String namespacedName) {
+  public void unregisterRegistry(final String namespacedName) {
 
     this.REGISTRY_LIST.remove(namespacedName);
   }

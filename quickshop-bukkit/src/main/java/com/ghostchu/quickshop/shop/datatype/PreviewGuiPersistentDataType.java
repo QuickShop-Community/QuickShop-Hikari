@@ -26,7 +26,7 @@ public class PreviewGuiPersistentDataType
   @NotNull
   @Override
   public String toPrimitive(
-          @NotNull UUID complex, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final UUID complex, @NotNull final PersistentDataAdapterContext context) {
 
     return complex.toString();
   }
@@ -34,7 +34,7 @@ public class PreviewGuiPersistentDataType
   @NotNull
   @Override
   public UUID fromPrimitive(
-          @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return UUID.fromString(primitive);

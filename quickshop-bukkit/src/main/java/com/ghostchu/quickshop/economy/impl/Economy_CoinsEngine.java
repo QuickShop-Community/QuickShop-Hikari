@@ -27,7 +27,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
   private final BuiltInEconomyFormatter formatter;
   private boolean allowLoan;
 
-  public Economy_CoinsEngine(@NotNull QuickShop plugin) {
+  public Economy_CoinsEngine(@NotNull final QuickShop plugin) {
 
     super();
     this.plugin = plugin;
@@ -67,14 +67,14 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
   }
 
   @Nullable
-  private Currency getCurrency(@NotNull World world, @Nullable String currency) {
+  private Currency getCurrency(@NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return null;
     }
     if(currency == null) {
       Currency backupCur = null;
-      Iterator<Currency> currencyIterator = CoinsEngineAPI.getCurrencyManager().getCurrencies().iterator();
+      final Iterator<Currency> currencyIterator = CoinsEngineAPI.getCurrencyManager().getCurrencies().iterator();
       if(currencyIterator.hasNext()) {
         backupCur = currencyIterator.next();
       }
@@ -85,16 +85,16 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
 
 
   @Override
-  public boolean deposit(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final String name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
     }
-    CoinsUser user = CoinsEngineAPI.getUserData(name);
+    final CoinsUser user = CoinsEngineAPI.getUserData(name);
     if(user == null) {
       return false;
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return false;
     }
@@ -112,16 +112,16 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return True if success (Should be almost always)
    */
   @Override
-  public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final UUID name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
     }
-    CoinsUser user = CoinsEngineAPI.getUserData(name);
+    final CoinsUser user = CoinsEngineAPI.getUserData(name);
     if(user == null) {
       return false;
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return false;
     }
@@ -139,7 +139,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return True if success (Should be almost always)
    */
   @Override
-  public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean deposit(@NotNull final OfflinePlayer trader, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     return deposit(trader.getUniqueId(), amount, world, currency);
   }
@@ -153,7 +153,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return The balance in human readable text.
    */
   @Override
-  public String format(double balance, @NotNull World world, @Nullable String currency) {
+  public String format(final double balance, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return "Error";
@@ -162,17 +162,17 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
   }
 
   @Override
-  public double getBalance(@NotNull String name, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final String name, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return 0.0;
     }
-    CoinsUser user = CoinsEngineAPI.getUserData(name);
+    final CoinsUser user = CoinsEngineAPI.getUserData(name);
     if(user == null) {
       Log.debug("User " + name + " not exists in CoinsEngine database, return for 0 balance");
       return 0.0;
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       Log.debug("Currency " + currency + " not exists in CoinsEngine database, return for 0 balance");
       return 0.0;
@@ -180,7 +180,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
     return user.getBalance(cur);
   }
 
-  private String formatInternal(double balance, @Nullable String currency) {
+  private String formatInternal(final double balance, @Nullable final String currency) {
 
     if(!isValid()) {
       return "Error";
@@ -198,17 +198,17 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return Their current balance.
    */
   @Override
-  public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final UUID name, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return 0.0;
     }
-    CoinsUser user = CoinsEngineAPI.getUserData(name);
+    final CoinsUser user = CoinsEngineAPI.getUserData(name);
     if(user == null) {
       Log.debug("User " + name + " not exists in CoinsEngine database, return for 0 balance");
       return 0.0;
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       Log.debug("Currency " + currency + " not exists in CoinsEngine database, return for 0 balance");
       return 0.0;
@@ -225,7 +225,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return Their current balance.
    */
   @Override
-  public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+  public double getBalance(@NotNull final OfflinePlayer player, @NotNull final World world, @Nullable final String currency) {
 
     return getBalance(player.getUniqueId(), world, currency);
   }
@@ -240,7 +240,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return True if success, false if they didn't have enough cash
    */
   @Override
-  public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final UUID name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -250,11 +250,11 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
         return false;
       }
     }
-    CoinsUser user = CoinsEngineAPI.getUserData(name);
+    final CoinsUser user = CoinsEngineAPI.getUserData(name);
     if(user == null) {
       return false;
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return false;
     }
@@ -272,7 +272,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return True if success, false if they didn't have enough cash
    */
   @Override
-  public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final OfflinePlayer trader, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     return withdraw(trader.getUniqueId(), amount, world, currency);
   }
@@ -285,7 +285,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
    * @return exists
    */
   @Override
-  public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+  public boolean hasCurrency(@NotNull final World world, @NotNull final String currency) {
 
     return getCurrency(world, currency) != null;
   }
@@ -302,7 +302,7 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
   }
 
   @Override
-  public boolean withdraw(@NotNull String name, double amount, @NotNull World world, @Nullable String currency) {
+  public boolean withdraw(@NotNull final String name, final double amount, @NotNull final World world, @Nullable final String currency) {
 
     if(!isValid()) {
       return false;
@@ -312,11 +312,11 @@ public class Economy_CoinsEngine extends NonSeparateAbstractEconomy {
         return false;
       }
     }
-    CoinsUser user = CoinsEngineAPI.getUserData(name);
+    final CoinsUser user = CoinsEngineAPI.getUserData(name);
     if(user == null) {
       return false;
     }
-    Currency cur = getCurrency(world, currency);
+    final Currency cur = getCurrency(world, currency);
     if(cur == null) {
       return false;
     }

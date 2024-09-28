@@ -16,7 +16,7 @@ public final class Main extends CompatibilityModule implements ItemExpressionHan
   @Override
   public void init() {
 
-    Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    final Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
     if(registry instanceof ItemExpressionRegistry itemExpressionRegistry) {
       if(itemExpressionRegistry.registerHandlerSafely(this)) {
         getLogger().info("Register ItemAdder ItemExpressionHandler successfully!");
@@ -38,9 +38,9 @@ public final class Main extends CompatibilityModule implements ItemExpressionHan
   }
 
   @Override
-  public boolean match(ItemStack stack, String expression) {
+  public boolean match(final ItemStack stack, final String expression) {
 
-    CustomStack customStack = CustomStack.byItemStack(stack);
+    final CustomStack customStack = CustomStack.byItemStack(stack);
     if(customStack == null) {
       return false;
     }

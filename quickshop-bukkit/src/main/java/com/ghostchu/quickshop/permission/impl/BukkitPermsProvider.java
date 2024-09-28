@@ -23,7 +23,7 @@ public class BukkitPermsProvider implements PermissionProvider {
    * @return Debug Infos
    */
   public @NotNull PermissionInformationContainer getDebugInfo(
-          @NotNull CommandSender sender, @NotNull String permission) {
+          @NotNull final CommandSender sender, @NotNull final String permission) {
 
     return new PermissionInformationContainer(sender, permission, null, null);
   }
@@ -35,15 +35,15 @@ public class BukkitPermsProvider implements PermissionProvider {
   }
 
   @Override
-  public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final CommandSender sender, @NotNull final String permission) {
 
     return sender.hasPermission(permission);
   }
 
   @Override
-  public boolean hasPermission(@NotNull QUser sender, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final QUser sender, @NotNull final String permission) {
 
-    Player player = sender.getBukkitPlayer().orElse(null);
+    final Player player = sender.getBukkitPlayer().orElse(null);
     if(player == null) {
       return false;
     }

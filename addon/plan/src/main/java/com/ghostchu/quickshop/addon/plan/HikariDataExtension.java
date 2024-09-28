@@ -40,7 +40,7 @@ public class HikariDataExtension implements DataExtension {
   private final DataUtil dataUtil;
   private final DecimalFormat df = new DecimalFormat("#.00");
 
-  public HikariDataExtension(Main main) {
+  public HikariDataExtension(final Main main) {
 
     this.main = main;
     this.dataUtil = new DataUtil(main);
@@ -75,25 +75,25 @@ public class HikariDataExtension implements DataExtension {
   @Tab("Purchases")
   public Table purchasesTab() {
 
-    Table.Factory tableBuilder = Table.builder()
+    final Table.Factory tableBuilder = Table.builder()
             .columnOne("Player", Icon.called("user").build())
             .columnTwo("Action", Icon.called("code-branch").build())
             .columnThree("Shop", Icon.called("shopping-cart").build())
             .columnFour("Item(amount)", Icon.called("box").build())
             .columnFive("Balance", Icon.called("money-bill-wave").build());
-    List<ShopMetricRecord> records = this.metricQuery.queryServerPurchaseRecords(DateUtil.daysAgo(365), 1000, true).stream().filter(record->switch(record.getType()) {
+    final List<ShopMetricRecord> records = this.metricQuery.queryServerPurchaseRecords(DateUtil.daysAgo(365), 1000, true).stream().filter(record->switch(record.getType()) {
       //noinspection deprecation
       case PURCHASE, PURCHASE_BUYING_SHOP, PURCHASE_SELLING_SHOP -> true;
       default -> false;
     }).toList();
     try {
-      LinkedHashMap<ShopMetricRecord, DataRecord> recordsMapped = this.metricQuery.mapToDataRecord(records);
+      final LinkedHashMap<ShopMetricRecord, DataRecord> recordsMapped = this.metricQuery.mapToDataRecord(records);
       recordsMapped.forEach((metric, data)->{
-        String player = metric.getPlayer();
-        String action = CommonUtil.prettifyText(metric.getType().name());
-        String shop = dataUtil.getShopName(metric, data);
-        String item = dataUtil.getItemName(data) + " (" + metric.getAmount() + ")";
-        String balance = dataUtil.formatEconomy(metric);
+        final String player = metric.getPlayer();
+        final String action = CommonUtil.prettifyText(metric.getType().name());
+        final String shop = dataUtil.getShopName(metric, data);
+        final String item = dataUtil.getItemName(data) + " (" + metric.getAmount() + ")";
+        final String balance = dataUtil.formatEconomy(metric);
         tableBuilder.addRow(player, action, shop, item, balance);
       });
     } catch(ExecutionException | InterruptedException e) {
@@ -107,25 +107,25 @@ public class HikariDataExtension implements DataExtension {
   @Tab("Shops")
   public Table shopsTab() {
 
-    Table.Factory tableBuilder = Table.builder()
+    final Table.Factory tableBuilder = Table.builder()
             .columnOne("Owner", Icon.called("user").build())
             .columnTwo("Item", Icon.called("shopping-cart").build())
             .columnThree("Price", Icon.called("money-bill-wave").build())
             .columnFour("Type", Icon.called("code-branch").build())
             .columnFive("Location", Icon.called("location-arrow").build());
-    for(Shop shop : main.getQuickShop().getShopManager().getAllShops()) {
-      String owner = PlainTextComponentSerializer.plainText().serialize(shop.ownerName());
-      String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
+    for(final Shop shop : main.getQuickShop().getShopManager().getAllShops()) {
+      final String owner = PlainTextComponentSerializer.plainText().serialize(shop.ownerName());
+      final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
       if(main.getQuickShop().getEconomy() != null) {
         price = main.getQuickShop().getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency());
       }
-      String type = switch(shop.getShopType()) {
+      final String type = switch(shop.getShopType()) {
         case BUYING -> "Buying";
         case SELLING -> "Selling";
         case FROZEN -> "Frozen";
       };
-      String location = dataUtil.loc2String(shop.getLocation());
+      final String location = dataUtil.loc2String(shop.getLocation());
       tableBuilder.addRow(owner, item, price, type, location);
     }
     return tableBuilder.build();
@@ -135,33 +135,33 @@ public class HikariDataExtension implements DataExtension {
   // ======================= PLAYER PROVIDERS =======================
 
   @StringProvider(text = "Owned shops", description = "How many shops created and exists by this player", iconName = "hashtable", iconColor = Color.GREEN, priority = 100, showInPlayerTable = true)
-  public String shopCreatedPlayer(UUID playerUUID) {
+  public String shopCreatedPlayer(final UUID playerUUID) {
 
     return String.valueOf(main.getQuickShop().getShopManager().getAllShops(playerUUID).size());
   }
 
   @TableProvider(tableColor = Color.BLUE)
   @Tab("Purchases")
-  public Table purchasesTabPlayer(UUID playerUUID) {
+  public Table purchasesTabPlayer(final UUID playerUUID) {
 
-    Table.Factory tableBuilder = Table.builder()
+    final Table.Factory tableBuilder = Table.builder()
             .columnOne("Action", Icon.called("code-branch").build())
             .columnTwo("Location", Icon.called("location-arrow").build())
             .columnThree("Item(amount)", Icon.called("box").build())
             .columnFour("Balance", Icon.called("money-bill-wave").build());
 
-    List<ShopMetricRecord> records = this.metricQuery.queryServerPurchaseRecords(DateUtil.daysAgo(365), 50, true).stream().filter(record->switch(record.getType()) {
+    final List<ShopMetricRecord> records = this.metricQuery.queryServerPurchaseRecords(DateUtil.daysAgo(365), 50, true).stream().filter(record->switch(record.getType()) {
       //noinspection deprecation
       case PURCHASE, PURCHASE_BUYING_SHOP, PURCHASE_SELLING_SHOP -> true;
       default -> false;
     }).toList();
     try {
-      LinkedHashMap<ShopMetricRecord, DataRecord> recordsMapped = this.metricQuery.mapToDataRecord(records);
+      final LinkedHashMap<ShopMetricRecord, DataRecord> recordsMapped = this.metricQuery.mapToDataRecord(records);
       recordsMapped.forEach((metric, data)->{
-        String action = CommonUtil.prettifyText(metric.getType().name());
-        String shop = dataUtil.getShopName(metric, data);
-        String item = dataUtil.getItemName(data) + " (" + metric.getAmount() + ")";
-        String balance = dataUtil.formatEconomy(metric);
+        final String action = CommonUtil.prettifyText(metric.getType().name());
+        final String shop = dataUtil.getShopName(metric, data);
+        final String item = dataUtil.getItemName(data) + " (" + metric.getAmount() + ")";
+        final String balance = dataUtil.formatEconomy(metric);
         tableBuilder.addRow(action, shop, item, balance);
       });
     } catch(ExecutionException | InterruptedException e) {
@@ -172,14 +172,14 @@ public class HikariDataExtension implements DataExtension {
 
   @TableProvider(tableColor = Color.CYAN)
   @Tab("Shops")
-  public Table shopsTabPlayer(UUID playerUUID) {
+  public Table shopsTabPlayer(final UUID playerUUID) {
 
-    Table.Factory tableBuilder = Table.builder()
+    final Table.Factory tableBuilder = Table.builder()
             .columnOne("Item", Icon.called("shopping-cart").build())
             .columnTwo("Price", Icon.called("money-bill-wave").build())
             .columnThree("Type", Icon.called("code-branch").build())
             .columnFour("Location", Icon.called("location-arrow").build());
-    for(Shop shop : main.getQuickShop().getShopManager().getAllShops(playerUUID)) {
+    for(final Shop shop : main.getQuickShop().getShopManager().getAllShops(playerUUID)) {
 
       final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
@@ -192,7 +192,7 @@ public class HikariDataExtension implements DataExtension {
         case SELLING -> "Selling";
         case FROZEN -> "Frozen";
       };
-      String location = dataUtil.loc2String(shop.getLocation());
+      final String location = dataUtil.loc2String(shop.getLocation());
       tableBuilder.addRow(item, price, type, location);
     }
     return tableBuilder.build();

@@ -21,7 +21,7 @@ public class ShopUpdateEvent extends AbstractQSEvent implements QSCancellable {
    *
    * @param shop The shop bought from
    */
-  public ShopUpdateEvent(@NotNull Shop shop) {
+  public ShopUpdateEvent(@NotNull final Shop shop) {
 
     super();
     this.shop = shop;
@@ -34,7 +34,7 @@ public class ShopUpdateEvent extends AbstractQSEvent implements QSCancellable {
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

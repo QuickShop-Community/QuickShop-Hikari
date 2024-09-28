@@ -8,9 +8,9 @@ import java.util.Date;
 public class DateUtil {
 
   @NotNull
-  public static Date daysAgo(int ago) {
+  public static Date daysAgo(final int ago) {
 
-    Calendar cal = Calendar.getInstance();
+    final Calendar cal = Calendar.getInstance();
     cal.add(Calendar.DAY_OF_MONTH, -ago);
     return cal.getTime();
   }

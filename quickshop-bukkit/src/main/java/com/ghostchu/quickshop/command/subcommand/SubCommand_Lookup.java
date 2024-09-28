@@ -18,15 +18,15 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Lookup(QuickShop plugin) {
+  public SubCommand_Lookup(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    ItemStack item = sender.getInventory().getItemInMainHand();
+    final ItemStack item = sender.getInventory().getItemInMainHand();
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command-incorrect", "/quickshop lookup <create/remove/test> <name>").send();
       return;
@@ -38,7 +38,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
           plugin.text().of(sender, "no-anythings-in-your-hand").send();
           return;
         }
-        String name = plugin.getItemMarker().get(item);
+        final String name = plugin.getItemMarker().get(item);
         if(name == null) {
           plugin.text().of(sender, "lookup-item-test-not-found").send();
         } else {
@@ -49,7 +49,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
       plugin.text().of(sender, "command-incorrect", "/quickshop lookup <create/remove/test> <name>").send();
       return;
     }
-    String itemRefName = parser.getArgs().get(1);
+    final String itemRefName = parser.getArgs().get(1);
     switch(parser.getArgs().get(0).toLowerCase(Locale.ROOT)) {
       case "create" -> {
         if(sender.getInventory().getItemInMainHand().getType().isAir()) {
@@ -57,7 +57,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
           return;
         }
 
-        ItemMarker.OperationResult result = plugin.getItemMarker().save(itemRefName, item);
+        final ItemMarker.OperationResult result = plugin.getItemMarker().save(itemRefName, item);
         switch(result) {
           case SUCCESS -> plugin.text().of(sender, "lookup-item-created", itemRefName).send();
           case REGEXP_FAILURE ->
@@ -67,7 +67,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
         }
       }
       case "remove" -> {
-        ItemMarker.OperationResult result = plugin.getItemMarker().remove(itemRefName);
+        final ItemMarker.OperationResult result = plugin.getItemMarker().remove(itemRefName);
         switch(result) {
           case SUCCESS -> plugin.text().of(sender, "lookup-item-removed", itemRefName).send();
           case NOT_EXISTS -> plugin.text().of(sender, "lookup-item-not-found", itemRefName).send();
@@ -80,7 +80,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       return Arrays.asList("create", "remove", "test");

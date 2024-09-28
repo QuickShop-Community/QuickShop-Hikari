@@ -30,7 +30,7 @@ public class Timer {
    *
    * @param autoStart Auto set the timer
    */
-  public Timer(boolean autoStart) {
+  public Timer(final boolean autoStart) {
 
     if(autoStart) {
       start();
@@ -51,7 +51,7 @@ public class Timer {
    *
    * @param startTime New startTime
    */
-  public Timer(long startTime) {
+  public Timer(final long startTime) {
 
     this.startTime = startTime;
   }
@@ -63,7 +63,7 @@ public class Timer {
    *
    * @return time
    */
-  public long getPassedTimeOffsetFrom(long atTime) {
+  public long getPassedTimeOffsetFrom(final long atTime) {
 
     return (atTime - startTime) + passedTime;
   }
@@ -110,7 +110,7 @@ public class Timer {
    */
   public long stopAndGetTimePassed() {
 
-    long time = getPassedTime();
+    final long time = getPassedTime();
     startTime = 0;
     return time;
   }

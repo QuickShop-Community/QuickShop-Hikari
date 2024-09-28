@@ -34,7 +34,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
 
   private PrintWriter printWriter = null;
 
-  public LogWatcher(QuickShop plugin, File log) {
+  public LogWatcher(final QuickShop plugin, final File log) {
 
     try {
       boolean deleteFailed = false;
@@ -45,7 +45,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
         log.createNewFile();
       } else {
         if((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
-          Path logPath = plugin.getDataFolder().toPath().resolve("logs");
+          final Path logPath = plugin.getDataFolder().toPath().resolve("logs");
           Files.createDirectories(logPath);
           //Find a available name
           Path targetPath;
@@ -55,7 +55,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
             i++;
           } while(Files.exists(targetPath));
           Files.createFile(targetPath);
-          GzipParameters gzipParameters = new GzipParameters();
+          final GzipParameters gzipParameters = new GzipParameters();
           gzipParameters.setFilename(log.getName());
           try(GzipCompressorOutputStream archiveOutputStream = new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())), gzipParameters)) {
             Files.copy(log.toPath(), archiveOutputStream);
@@ -69,7 +69,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
           }
         }
       }
-      FileWriter logFileWriter;
+      final FileWriter logFileWriter;
       if(deleteFailed) {
         //If could not delete, just override it
         logFileWriter = new FileWriter(log, false);
@@ -85,7 +85,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
     }
   }
 
-  public void start(int i, int i2) {
+  public void start(final int i, final int i2) {
 
     task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
   }
@@ -110,7 +110,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
     }
   }
 
-  public void log(@NotNull String log) {
+  public void log(@NotNull final String log) {
 
     logs.add("[" + DATETIME_FORMATTER.format(Instant.now()) + "] " + log);
   }
@@ -122,9 +122,9 @@ public class LogWatcher implements AutoCloseable, Runnable {
       //Waiting for init
       return;
     }
-    Iterator<String> iterator = logs.iterator();
+    final Iterator<String> iterator = logs.iterator();
     while(iterator.hasNext()) {
-      String log = iterator.next();
+      final String log = iterator.next();
       printWriter.println(log);
       iterator.remove();
     }

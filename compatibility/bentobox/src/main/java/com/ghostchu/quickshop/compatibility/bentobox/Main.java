@@ -31,7 +31,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onIslandDeleted(IslandDeletedEvent event) {
+  public void onIslandDeleted(final IslandDeletedEvent event) {
 
     if(!deleteShopOnReset) {
       return;
@@ -42,13 +42,13 @@ public final class Main extends CompatibilityModule implements Listener {
     });
   }
 
-  private List<Shop> getShops(IslandDeletion island) {
+  private List<Shop> getShops(final IslandDeletion island) {
 
     return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onIslandKick(world.bentobox.bentobox.api.events.team.TeamKickEvent event) {
+  public void onIslandKick(final world.bentobox.bentobox.api.events.team.TeamKickEvent event) {
 
     if(!deleteShopOnLeave) {
       return;
@@ -61,13 +61,13 @@ public final class Main extends CompatibilityModule implements Listener {
     });
   }
 
-  private List<Shop> getShops(Island island) {
+  private List<Shop> getShops(final Island island) {
 
     return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onIslandLeave(world.bentobox.bentobox.api.events.team.TeamLeaveEvent event) {
+  public void onIslandLeave(final world.bentobox.bentobox.api.events.team.TeamLeaveEvent event) {
 
     if(!deleteShopOnLeave) {
       return;
@@ -81,7 +81,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onIslandResetted(IslandResettedEvent event) {
+  public void onIslandResetted(final IslandResettedEvent event) {
 
     if(!deleteShopOnReset) {
       return;
@@ -93,9 +93,9 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
 
-    Location shopLoc = event.getShop().getLocation();
+    final Location shopLoc = event.getShop().getLocation();
     BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island->{
       if(event.getAuthorizer().equals(island.getOwner())) {
         if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {

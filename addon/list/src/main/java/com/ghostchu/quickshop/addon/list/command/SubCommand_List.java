@@ -28,13 +28,13 @@ public class SubCommand_List implements CommandHandler<Player> {
 
   private final int pageSize = 10;
 
-  public SubCommand_List(QuickShop quickshop) {
+  public SubCommand_List(final QuickShop quickshop) {
 
     this.quickshop = quickshop;
   }
 
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     int page = 1;
     if(parser.getArgs().isEmpty()) {
@@ -57,7 +57,7 @@ public class SubCommand_List implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       if(quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
@@ -70,7 +70,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     return Collections.emptyList();
   }
 
-  private void lookupSelf(Player sender, int page) {
+  private void lookupSelf(final Player sender, final int page) {
 
     if(!quickshop.perm().hasPermission(sender, "quickshopaddon.list.self")) {
       quickshop.text().of(sender, "no-permission").send();
@@ -79,43 +79,43 @@ public class SubCommand_List implements CommandHandler<Player> {
     lookup(sender, sender.getUniqueId(), page);
   }
 
-  private void lookupOther(@NotNull Player sender, @NotNull String userName, int page) {
+  private void lookupOther(@NotNull final Player sender, @NotNull final String userName, final int page) {
 
     if(!quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
       quickshop.text().of(sender, "no-permission").send();
       return;
     }
-    UUID targetUser = quickshop.getPlayerFinder().name2Uuid(userName);
+    final UUID targetUser = quickshop.getPlayerFinder().name2Uuid(userName);
     lookup(sender, targetUser, page);
   }
 
-  private void lookup(@NotNull Player sender, @NotNull UUID lookupUser, int page) {
+  private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
 
     String name = quickshop.getPlayerFinder().uuid2Name(lookupUser);
     if(StringUtils.isEmpty(name)) {
       name = "Unknown";
     }
-    List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
-    ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+    final List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
+    final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
 
-    int startPos = (page - 1) * pageSize;
+    final int startPos = (page - 1) * pageSize;
     int counter = 0;
     int loopCounter = 0;
     printer.printHeader();
     printer.printLine(quickshop.text().of(sender, "addon.list.table-prefix-pageable", name, page, (int)Math.ceil((double)shops.size() / pageSize)).forLocale());
-    for(Shop shop : shops) {
+    for(final Shop shop : shops) {
       counter++;
       if(counter < startPos) {
         continue;
       }
       String shopName = shop.getShopName();
-      Location location = shop.getLocation();
-      String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+      final Location location = shop.getLocation();
+      final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
       if(StringUtils.isEmpty(shopName)) {
         shopName = combineLocation;
       }
-      Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
-      Component shopTypeComponent;
+      final Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
+      final Component shopTypeComponent;
       if(shop.isBuying()) {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-buying").forLocale();
       } else {

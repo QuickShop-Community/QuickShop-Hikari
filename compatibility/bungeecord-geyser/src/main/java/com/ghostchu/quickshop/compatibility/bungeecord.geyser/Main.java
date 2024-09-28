@@ -40,9 +40,9 @@ public final class Main extends Plugin implements Listener {
   }
 
   @EventHandler
-  public void switchServer(ServerConnectedEvent event) {
+  public void switchServer(final ServerConnectedEvent event) {
 
-    UUID uuid = event.getPlayer().getUniqueId();
+    final UUID uuid = event.getPlayer().getUniqueId();
     boolean isGeyserPlayer = false;
     boolean isFloodgatePlayer = false;
     if(isGeyserInstalled) {
@@ -54,7 +54,7 @@ public final class Main extends Plugin implements Listener {
         isFloodgatePlayer = FloodgateApi.getInstance().isFloodgateId(uuid);
       }
     }
-    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    final ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF(RESPONSE_PREFIX);
     out.writeUTF(uuid.toString());
     int playerType = 0; // 0=Java

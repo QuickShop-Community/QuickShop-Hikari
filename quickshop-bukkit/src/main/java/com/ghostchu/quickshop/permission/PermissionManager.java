@@ -22,7 +22,7 @@ public class PermissionManager {
    *
    * @param plugin Instance
    */
-  public PermissionManager(QuickShop plugin) {
+  public PermissionManager(final QuickShop plugin) {
 
     this.plugin = plugin;
     provider = new BukkitPermsProvider();
@@ -37,13 +37,13 @@ public class PermissionManager {
    *
    * @return The result of check
    */
-  public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final CommandSender sender, @NotNull final String permission) {
 
     try {
-      boolean result = provider.hasPermission(sender, permission);
+      final boolean result = provider.hasPermission(sender, permission);
       Log.permission(sender.getName() + ": " + permission + "->" + result);
       return result;
-    } catch(Exception th) {
+    } catch(final Exception th) {
       plugin.logger().warn("Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
       return false;
     }
@@ -57,15 +57,15 @@ public class PermissionManager {
    *
    * @return The result of check
    */
-  public boolean hasPermission(@NotNull QUser sender, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final QUser sender, @NotNull final String permission) {
 
     try {
-      boolean result = provider.hasPermission(sender, permission);
+      final boolean result = provider.hasPermission(sender, permission);
       if(Util.isDevMode()) {
         Log.permission(sender.getDisplay() + " : " + permission + " -> " + result);
       }
       return result;
-    } catch(Exception th) {
+    } catch(final Exception th) {
       plugin.logger().warn("Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
       return false;
     }

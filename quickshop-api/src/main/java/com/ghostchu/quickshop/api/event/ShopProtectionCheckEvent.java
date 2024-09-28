@@ -32,10 +32,10 @@ public class ShopProtectionCheckEvent extends AbstractQSEvent {
    * @param player   The player in was mentions in this event
    */
   public ShopProtectionCheckEvent(
-          @NotNull Location location,
-          @NotNull QUser player,
-          @NotNull ProtectionCheckStatus status,
-          @NotNull Event event) {
+          @NotNull final Location location,
+          @NotNull final QUser player,
+          @NotNull final ProtectionCheckStatus status,
+          @NotNull final Event event) {
 
     this.loc = location;
     this.player = player;

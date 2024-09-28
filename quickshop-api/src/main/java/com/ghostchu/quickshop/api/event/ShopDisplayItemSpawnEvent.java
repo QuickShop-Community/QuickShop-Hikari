@@ -32,7 +32,7 @@ public class ShopDisplayItemSpawnEvent extends AbstractQSEvent implements QSCanc
    * @param itemStack   Target ItemStack
    */
   public ShopDisplayItemSpawnEvent(
-          @NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull DisplayType displayType) {
+          @NotNull final Shop shop, @NotNull final ItemStack itemStack, @NotNull final DisplayType displayType) {
 
     this.shop = shop;
     this.itemStack = itemStack;
@@ -46,7 +46,7 @@ public class ShopDisplayItemSpawnEvent extends AbstractQSEvent implements QSCanc
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

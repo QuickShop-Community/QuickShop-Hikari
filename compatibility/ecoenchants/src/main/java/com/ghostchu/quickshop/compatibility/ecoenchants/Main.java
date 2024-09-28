@@ -29,7 +29,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPluginLoad(PluginEnableEvent event) {
+  public void onPluginLoad(final PluginEnableEvent event) {
 
     if("EcoEnchants".equalsIgnoreCase(event.getPlugin().getName())
        || "libreforge".equalsIgnoreCase(event.getPlugin().getName())
@@ -39,17 +39,17 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @Override
-  public void onQuickShopReload(QSConfigurationReloadEvent event) {
+  public void onQuickShopReload(final QSConfigurationReloadEvent event) {
 
     initEcoEnchantEnchantmentTranslationKeys();
   }
 
   private void initEcoEnchantEnchantmentTranslationKeys() {
 
-    Set<EcoEnchant> enchantSet = EcoEnchants.INSTANCE.values();
+    final Set<EcoEnchant> enchantSet = EcoEnchants.INSTANCE.values();
     getLogger().info("Found " + enchantSet.size() + " enchantments from EcoEnchants");
-    for(EcoEnchant value : enchantSet) {
-      String key = "ecoenchants:enchantment." + value.getId();
+    for(final EcoEnchant value : enchantSet) {
+      final String key = "ecoenchants:enchantment." + value.getId();
       getApi().registerLocalizedTranslationKeyMapping(key, value.getRawDisplayName());
       Log.debug("Registered EcoEnchant " + value.getId() + " with translation key override mapping: " + key + " -> " + value.getRawDisplayName());
     }
@@ -57,12 +57,12 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onItemPreviewPreparing(ItemPreviewComponentPrePopulateEvent event) {
+  public void onItemPreviewPreparing(final ItemPreviewComponentPrePopulateEvent event) {
 
     if(event.getPlayer() == null) {
       return;
     }
-    ItemStack stack = event.getItemStack().clone();
+    final ItemStack stack = event.getItemStack().clone();
     display.display(stack, event.getPlayer(), display.generateVarArgs(stack));
     display.display(stack, event.getPlayer(), new DisplayProperties(false, false, stack), display.generateVarArgs(stack));
     event.setItemStack(stack);

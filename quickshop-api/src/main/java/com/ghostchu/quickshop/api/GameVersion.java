@@ -46,7 +46,7 @@ public enum GameVersion {
 
   private final boolean newPotionAPI;
 
-  GameVersion(String[] mcVersion, boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName, boolean newPotionAPI) {
+  GameVersion(final String[] mcVersion, final boolean coreSupports, final boolean endOfLife, final boolean virtualDisplaySupports, final boolean newNmsName, final boolean newPotionAPI) {
 
     this.mcVersion = mcVersion;
     this.coreSupports = coreSupports;
@@ -65,9 +65,9 @@ public enum GameVersion {
    * @return The object contains supports details for GameVersion
    */
   @NotNull
-  public static GameVersion get(@NotNull String nmsVersion) {
+  public static GameVersion get(@NotNull final String nmsVersion) {
 
-    for(GameVersion version : GameVersion.values()) {
+    for(final GameVersion version : GameVersion.values()) {
       if(version.name().equals(nmsVersion)) {
         return version;
       }

@@ -15,7 +15,7 @@ public class ShopDataSaveWatcher implements Runnable {
 
   WrappedTask task = null;
 
-  public ShopDataSaveWatcher(QuickShop plugin) {
+  public ShopDataSaveWatcher(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -27,7 +27,7 @@ public class ShopDataSaveWatcher implements Runnable {
       Log.debug("Another save task still running!");
       return;
     }
-    CompletableFuture<?>[] shopsToSaveFuture = plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
+    final CompletableFuture<?>[] shopsToSaveFuture = plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
             .map(Shop::update)
             .toArray(CompletableFuture[]::new);
     saveTask = CompletableFuture.allOf(shopsToSaveFuture)
@@ -42,7 +42,7 @@ public class ShopDataSaveWatcher implements Runnable {
             });
   }
 
-  public void start(int i, long i2) {
+  public void start(final int i, final long i2) {
 
     task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
   }

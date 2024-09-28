@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Spigot1193Platform extends AbstractSpigotPlatform implements Platform {
 
-  public Spigot1193Platform(@NotNull Plugin plugin) {
+  public Spigot1193Platform(@NotNull final Plugin plugin) {
 
     super(plugin);
   }
@@ -34,7 +34,7 @@ public class Spigot1193Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public void registerCommand(@NotNull String prefix, @NotNull Command command) {
+  public void registerCommand(@NotNull final String prefix, @NotNull final Command command) {
 
     ((CraftServer)Bukkit.getServer()).getCommandMap().register(prefix, command);
     command.register(((CraftServer)Bukkit.getServer()).getCommandMap());
@@ -42,7 +42,7 @@ public class Spigot1193Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Material material) {
+  public @NotNull String getTranslationKey(@NotNull final Material material) {
 
     if(material.isBlock()) {
       //noinspection deprecation
@@ -53,13 +53,13 @@ public class Spigot1193Platform extends AbstractSpigotPlatform implements Platfo
     }
   }
 
-  private String postProcessingTranslationKey(String key) {
+  private String postProcessingTranslationKey(final String key) {
 
     return this.translationMapping.getOrDefault(key, key);
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull EntityType type) {
+  public @NotNull String getTranslationKey(@NotNull final EntityType type) {
     //noinspection deprecation
     return postProcessingTranslationKey(Bukkit.getUnsafe().getTranslationKey(type));
   }
@@ -70,19 +70,19 @@ public class Spigot1193Platform extends AbstractSpigotPlatform implements Platfo
     if(potionEffectType instanceof PotionEffectTypeWrapper wrapper) {
       potionEffectType = wrapper.getType();
     }
-    CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType)potionEffectType;
+    final CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType)potionEffectType;
     return postProcessingTranslationKey(craftPotionEffectType.getHandle().getDescriptionId());
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+  public @NotNull String getTranslationKey(@NotNull final Enchantment enchantment) {
 
-    CraftEnchantment craftEnchantment = (CraftEnchantment)enchantment;
+    final CraftEnchantment craftEnchantment = (CraftEnchantment)enchantment;
     return postProcessingTranslationKey(craftEnchantment.getHandle().getDescriptionId());
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+  public @NotNull String getTranslationKey(@NotNull final ItemStack stack) {
 
     return postProcessingTranslationKey(stack.getTranslationKey());
   }

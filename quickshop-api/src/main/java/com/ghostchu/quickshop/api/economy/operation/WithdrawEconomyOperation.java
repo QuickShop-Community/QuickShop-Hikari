@@ -20,7 +20,7 @@ public class WithdrawEconomyOperation implements Operation {
   private boolean committed = false;
   private boolean rollback = false;
 
-  public WithdrawEconomyOperation(@NotNull QUser account, double amount, @NotNull World world, @Nullable String currency, @NotNull EconomyCore economyCore) {
+  public WithdrawEconomyOperation(@NotNull final QUser account, final double amount, @NotNull final World world, @Nullable final String currency, @NotNull final EconomyCore economyCore) {
 
     this.account = account;
     this.amount = amount;
@@ -32,7 +32,7 @@ public class WithdrawEconomyOperation implements Operation {
   @Override
   public boolean commit() {
 
-    boolean result = economyCore.withdraw(account, amount, world, currency);
+    final boolean result = economyCore.withdraw(account, amount, world, currency);
     if(result) {
       committed = true;
     }
@@ -54,7 +54,7 @@ public class WithdrawEconomyOperation implements Operation {
   @Override
   public boolean rollback() {
 
-    boolean result = economyCore.deposit(account, amount, world, currency);
+    final boolean result = economyCore.deposit(account, amount, world, currency);
     if(result) {
       rollback = true;
     }

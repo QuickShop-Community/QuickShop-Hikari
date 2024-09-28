@@ -46,22 +46,22 @@ public final class Main extends JavaPlugin implements Listener {
 
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void invClose(InventoryCloseEvent event) {
+  public void invClose(final InventoryCloseEvent event) {
 
-    Inventory inventory = event.getInventory();
+    final Inventory inventory = event.getInventory();
     if(inventory == null) {
       return;
     }
-    Location invLocation = inventory.getLocation();
+    final Location invLocation = inventory.getLocation();
     if(invLocation == null) {
       return;
     }
-    Shop shop = plugin.getShopManager().getShopIncludeAttached(invLocation);
+    final Shop shop = plugin.getShopManager().getShopIncludeAttached(invLocation);
     if(shop == null) {
       return;
     }
-    List<ItemStack> pendingForRemoval = new ArrayList<>();
-    for(ItemStack stack : inventory.getStorageContents()) {
+    final List<ItemStack> pendingForRemoval = new ArrayList<>();
+    for(final ItemStack stack : inventory.getStorageContents()) {
       if(stack == null) {
         continue;
       }
@@ -76,7 +76,7 @@ public final class Main extends JavaPlugin implements Listener {
     if(pendingForRemoval.isEmpty()) {
       return;
     }
-    for(ItemStack item : pendingForRemoval) {
+    for(final ItemStack item : pendingForRemoval) {
       inventory.remove(item);
       invLocation.getWorld().dropItemNaturally(invLocation.add(0, 1, 0), item);
     }
@@ -85,7 +85,7 @@ public final class Main extends JavaPlugin implements Listener {
 
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public void invMove(InventoryMoveItemEvent event) {
+  public void invMove(final InventoryMoveItemEvent event) {
 
     if(event.getDestination() == null) { //Stupid CMIGUI plugin
       return;
@@ -93,7 +93,7 @@ public final class Main extends JavaPlugin implements Listener {
     if(event.getDestination().getLocation() == null) {
       return;
     }
-    Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getDestination().getLocation());
+    final Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getDestination().getLocation());
     if(shop == null) {
       return;
     }

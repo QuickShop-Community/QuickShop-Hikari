@@ -47,11 +47,11 @@ public final class Main extends CompatibilityModule implements Listener {
   public void onLoad() {
 
     saveDefaultConfig();
-    FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+    final FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
     try {
       // create a flag with the name "my-custom-flag", defaulting to true
-      StateFlag createFlag = new StateFlag("quickshophikari-create", getConfig().getBoolean("create.default-allow", false));
-      StateFlag tradeFlag = new StateFlag("quickshophikari-trade", getConfig().getBoolean("trade.default-allow", true));
+      final StateFlag createFlag = new StateFlag("quickshophikari-create", getConfig().getBoolean("create.default-allow", false));
+      final StateFlag tradeFlag = new StateFlag("quickshophikari-trade", getConfig().getBoolean("trade.default-allow", true));
       registry.register(createFlag);
       registry.register(tradeFlag);
       this.createFlag = createFlag;
@@ -87,16 +87,16 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
 
-    Location shopLoc = event.getShop().getLocation();
-    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    RegionManager manager = container.get(BukkitAdapter.adapt(shopLoc.getWorld()));
+    final Location shopLoc = event.getShop().getLocation();
+    final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+    final RegionManager manager = container.get(BukkitAdapter.adapt(shopLoc.getWorld()));
     if(manager == null) {
       return;
     }
-    ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(shopLoc.getX(), shopLoc.getY(), shopLoc.getZ()));
-    for(ProtectedRegion region : set.getRegions()) {
+    final ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(shopLoc.getX(), shopLoc.getY(), shopLoc.getZ()));
+    for(final ProtectedRegion region : set.getRegions()) {
       if(region.getOwners().contains(event.getAuthorizer())) {
         if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
           event.setResult(true);
@@ -106,12 +106,12 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void preCreation(ShopPreCreateEvent event) {
+  public void preCreation(final ShopPreCreateEvent event) {
 
     event.getCreator().getBukkitPlayer().ifPresent(player->{
-      LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-      RegionQuery query = container.createQuery();
+      final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+      final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+      final RegionQuery query = container.createQuery();
       if(!query.testState(BukkitAdapter.adapt(event.getLocation()), localPlayer, this.createFlag)) {
         event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.worldguard.creation-flag-test-failed").forLocale());
       }
@@ -120,18 +120,18 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void preCreation(ShopCreateEvent event) {
+  public void preCreation(final ShopCreateEvent event) {
 
     event.getCreator().getBukkitPlayer().ifPresent(player->{
-      LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-      RegionQuery query = container.createQuery();
+      final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+      final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+      final RegionQuery query = container.createQuery();
       if(!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.createFlag)) {
         event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.worldguard.creation-flag-test-failed").forLocale());
         return;
       }
-      Set<ProtectedRegion> regions = container.createQuery().getApplicableRegions(BukkitAdapter.adapt(event.getShop().getLocation())).getRegions();
-      List<Shop> shops = new ArrayList<>();
+      final Set<ProtectedRegion> regions = container.createQuery().getApplicableRegions(BukkitAdapter.adapt(event.getShop().getLocation())).getRegions();
+      final List<Shop> shops = new ArrayList<>();
       regions.forEach(r->shops.addAll(getRegionShops(r, event.getShop().getLocation().getWorld()).values()));
       if(limitPerRegion > 0) {
         if(shops.size() + 1 > limitPerRegion) {
@@ -141,11 +141,11 @@ public final class Main extends CompatibilityModule implements Listener {
     });
   }
 
-  private Map<Location, Shop> getRegionShops(ProtectedRegion region, World world) {
+  private Map<Location, Shop> getRegionShops(final ProtectedRegion region, final World world) {
 
-    BlockVector3 minPoint = region.getMinimumPoint();
-    BlockVector3 maxPoint = region.getMaximumPoint();
-    Set<Chunk> chuckLocations = new HashSet<>();
+    final BlockVector3 minPoint = region.getMinimumPoint();
+    final BlockVector3 maxPoint = region.getMaximumPoint();
+    final Set<Chunk> chuckLocations = new HashSet<>();
 
     for(int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
       for(int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
@@ -153,10 +153,10 @@ public final class Main extends CompatibilityModule implements Listener {
       }
     }
 
-    Map<Location, Shop> shopMap = new HashMap<>();
+    final Map<Location, Shop> shopMap = new HashMap<>();
 
-    for(Chunk chunk : chuckLocations) {
-      Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
+    for(final Chunk chunk : chuckLocations) {
+      final Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
       if(shopsInChunk != null) {
         shopMap.putAll(shopsInChunk);
       }
@@ -165,12 +165,12 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void preCreation(ShopPurchaseEvent event) {
+  public void preCreation(final ShopPurchaseEvent event) {
 
     event.getPurchaser().getBukkitPlayer().ifPresent(player->{
-      LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-      RegionQuery query = container.createQuery();
+      final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+      final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+      final RegionQuery query = container.createQuery();
       if(!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.tradeFlag)) {
         event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.worldguard.trade-flag-test-failed").forLocale());
       }

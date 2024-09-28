@@ -20,10 +20,10 @@ public class BootError {
 
   private final String[] errors;
 
-  public BootError(@NotNull Logger logger, @NotNull String... errors) {
+  public BootError(@NotNull final Logger logger, @NotNull final String... errors) {
 
     this.errors = errors;
-    for(String err : errors) {
+    for(final String err : errors) {
       logger.error(err);
     }
   }
@@ -40,10 +40,10 @@ public class BootError {
    *
    * @param sender The sender you want output the errors.
    */
-  public void printErrors(CommandSender sender) { //Do not use any method that not in CraftBukkit
+  public void printErrors(final CommandSender sender) { //Do not use any method that not in CraftBukkit
     sender.sendMessage(ChatColor.RED + "#####################################################");
     sender.sendMessage(ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
-    for(String issue : errors) {
+    for(final String issue : errors) {
       sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + issue);
     }
     sender.sendMessage(ChatColor.RED + "#####################################################");

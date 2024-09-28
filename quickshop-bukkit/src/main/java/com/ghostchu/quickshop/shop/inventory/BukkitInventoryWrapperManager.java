@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
 
   @Override
-  public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
+  public @NotNull InventoryWrapper locate(@NotNull final String symbolLink) throws IllegalArgumentException {
 
     try(PerfMonitor ignored = new PerfMonitor("Locate inventory wrapper")) {
       if(CommonUtil.isJson(symbolLink)) {
@@ -34,14 +34,14 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     }
   }
 
-  private InventoryWrapper locateNew(String symbolLink) {
+  private InventoryWrapper locateNew(final String symbolLink) {
 
-    BlockPos blockPos = BlockPos.deserialize(symbolLink);
-    World world = Bukkit.getWorld(blockPos.getWorld());
+    final BlockPos blockPos = BlockPos.deserialize(symbolLink);
+    final World world = Bukkit.getWorld(blockPos.getWorld());
     if(world == null) {
       throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
     }
-    BlockState state = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
+    final BlockState state = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
     if(!(state instanceof InventoryHolder holder)) {
       throw new IllegalArgumentException("Invalid symbol link: Target block not a InventoryHolder (map changed/resetted?)");
     }
@@ -49,18 +49,18 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
   }
 
   @Deprecated
-  private InventoryWrapper locateOld(String symbolLink) {
+  private InventoryWrapper locateOld(final String symbolLink) {
 
-    CommonHolder commonHolder = JsonUtil.standard().fromJson(symbolLink, CommonHolder.class);
+    final CommonHolder commonHolder = JsonUtil.standard().fromJson(symbolLink, CommonHolder.class);
     //noinspection SwitchStatementWithTooFewBranches
     switch(commonHolder.getHolder()) {
       case BLOCK -> {
-        BlockHolder blockHolder = JsonUtil.standard().fromJson(commonHolder.getContent(), BlockHolder.class);
-        World world = Bukkit.getWorld(blockHolder.getWorld());
+        final BlockHolder blockHolder = JsonUtil.standard().fromJson(commonHolder.getContent(), BlockHolder.class);
+        final World world = Bukkit.getWorld(blockHolder.getWorld());
         if(world == null) {
           throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
         }
-        BlockState block = world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getState();
+        final BlockState block = world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getState();
         if(!(block instanceof InventoryHolder holder)) {
           throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
         }
@@ -71,18 +71,18 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
   }
 
   @Override
-  public @NotNull String mklink(@NotNull InventoryWrapper wrapper) throws IllegalArgumentException {
+  public @NotNull String mklink(@NotNull final InventoryWrapper wrapper) throws IllegalArgumentException {
 
     try(PerfMonitor ignored = new PerfMonitor("Mklink inventory wrapper")) {
       if(wrapper.getLocation() != null) {
-        Block block = wrapper.getLocation().getBlock();
+        final Block block = wrapper.getLocation().getBlock();
         return new BlockPos(block.getLocation()).serialize();
       }
       throw new IllegalArgumentException("Target is invalid.");
     }
   }
 
-  public @NotNull String mklink(@NotNull Location location) throws IllegalArgumentException {
+  public @NotNull String mklink(@NotNull final Location location) throws IllegalArgumentException {
 
     try(PerfMonitor ignored = new PerfMonitor("Mklink inventory wrapper")) {
       return new BlockPos(location).serialize();
@@ -94,15 +94,15 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     BLOCK("block"), UNKNOWN("unknown");
     private final String typeString;
 
-    HolderType(String typeString) {
+    HolderType(final String typeString) {
 
       this.typeString = typeString;
     }
 
     @NotNull
-    public HolderType fromType(@NotNull String str) {
+    public HolderType fromType(@NotNull final String str) {
 
-      for(HolderType value : values()) {
+      for(final HolderType value : values()) {
         if(value.typeString.equals(str)) {
           return value;
         }
@@ -125,7 +125,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     private HolderType holder;
     private String content;
 
-    public CommonHolder(HolderType holder, String content) {
+    public CommonHolder(final HolderType holder, final String content) {
 
       this.holder = holder;
       this.content = content;
@@ -142,7 +142,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     private int y;
     private int z;
 
-    public BlockHolder(String world, int x, int y, int z) {
+    public BlockHolder(final String world, final int x, final int y, final int z) {
 
       this.world = world;
       this.x = x;

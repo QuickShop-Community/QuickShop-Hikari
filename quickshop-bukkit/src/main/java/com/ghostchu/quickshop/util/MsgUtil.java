@@ -48,7 +48,7 @@ public class MsgUtil {
   private static volatile Entry<String, String> cachedGameLanguageCode = null;
 
   @NotNull
-  public static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component) {
+  public static Component addLeftLine(@NotNull final CommandSender sender, @NotNull final Component component) {
 
     return PLUGIN.text().of(sender, "tableformat.left_begin").forLocale().append(component);
   }
@@ -60,7 +60,7 @@ public class MsgUtil {
    *
    * @return The result of translate.
    */
-  public static Component bool2String(boolean bool) {
+  public static Component bool2String(final boolean bool) {
 
     if(bool) {
       return PLUGIN.text().of("booleanformat.success").forLocale();
@@ -85,12 +85,12 @@ public class MsgUtil {
             });
   }
 
-  public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
+  public static void debugStackTrace(@NotNull final StackTraceElement[] traces) {
 
     if(!Util.isDevMode()) {
       return;
     }
-    for(StackTraceElement stackTraceElement : traces) {
+    for(final StackTraceElement stackTraceElement : traces) {
       final String className = stackTraceElement.getClassName();
       final String methodName = stackTraceElement.getMethodName();
       final int codeLine = stackTraceElement.getLineNumber();
@@ -99,12 +99,12 @@ public class MsgUtil {
     }
   }
 
-  public static String decimalFormat(double value) {
+  public static String decimalFormat(final double value) {
 
     if(decimalFormat == null) {
       //lazy initialize
       try {
-        String format = PLUGIN.getConfig().getString("decimal-format");
+        final String format = PLUGIN.getConfig().getString("decimal-format");
         decimalFormat = format == null? new DecimalFormat() : new DecimalFormat(format);
       } catch(Exception e) {
         QuickShop.getInstance().logger().warn("Error when processing decimal format, using system default!", e);
@@ -123,7 +123,7 @@ public class MsgUtil {
    * @return filled text
    */
   @NotNull
-  public static String fillArgs(@Nullable String raw, @Nullable String... args) {
+  public static String fillArgs(@Nullable String raw, @Nullable final String... args) {
 
     if(StringUtils.isEmpty(raw)) {
       return "";
@@ -145,7 +145,7 @@ public class MsgUtil {
    * @return filled component
    */
   @NotNull
-  public static Component fillArgs(@NotNull Component origin, @Nullable Component... args) {
+  public static Component fillArgs(@NotNull Component origin, @Nullable final Component... args) {
 
     for(int i = 0; i < args.length; i++) {
       origin = origin.replaceText(TextReplacementConfig.builder()
@@ -163,16 +163,16 @@ public class MsgUtil {
    *
    * @return True if success, False if the player is offline or null
    */
-  public static boolean flush(@NotNull OfflinePlayer p) {
+  public static boolean flush(@NotNull final OfflinePlayer p) {
 
-    Player player = p.getPlayer();
+    final Player player = p.getPlayer();
     if(player == null) {
       return false;
     }
-    UUID playerUniqueId = player.getUniqueId();
+    final UUID playerUniqueId = player.getUniqueId();
     PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
             .thenAccept(msgs->{
-              for(String msg : msgs) {
+              for(final String msg : msgs) {
                 PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
               }
               PLUGIN.getDatabaseHelper().cleanMessageForPlayer(playerUniqueId)
@@ -197,11 +197,11 @@ public class MsgUtil {
   @NotNull
   public static String getDefaultGameLanguageCode() {
 
-    String languageCode = PLUGIN.getConfig().getString("game-language", "default");
+    final String languageCode = PLUGIN.getConfig().getString("game-language", "default");
     if(cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
       return cachedGameLanguageCode.getValue();
     }
-    String result = getGameLanguageCode(languageCode);
+    final String result = getGameLanguageCode(languageCode);
     cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(languageCode, result);
     return result;
   }
@@ -212,11 +212,11 @@ public class MsgUtil {
   public static String getGameLanguageCode(@NotNull String languageCode) {
 
     if("default".equalsIgnoreCase(languageCode)) {
-      Locale locale = Locale.getDefault();
-      String language = locale.getLanguage();
-      String country = locale.getCountry();
-      boolean isLanguageEmpty = StringUtils.isEmpty(language);
-      boolean isCountryEmpty = StringUtils.isEmpty(country);
+      final Locale locale = Locale.getDefault();
+      final String language = locale.getLanguage();
+      final String country = locale.getCountry();
+      final boolean isLanguageEmpty = StringUtils.isEmpty(language);
+      final boolean isCountryEmpty = StringUtils.isEmpty(country);
       if(isLanguageEmpty && isCountryEmpty) {
         languageCode = "en_us";
       } else {
@@ -235,7 +235,7 @@ public class MsgUtil {
 
   @NotNull
   @Deprecated(since = "4.2.0.0")
-  public static Component getTranslateText(@NotNull ItemStack stack) {
+  public static Component getTranslateText(@NotNull final ItemStack stack) {
     //if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
     //    return PLUGIN.getPlatform().getTranslation(stack.getType());
     //} else {
@@ -244,29 +244,29 @@ public class MsgUtil {
   }
 
   @Deprecated
-  public static boolean isJson(String str) {
+  public static boolean isJson(final String str) {
 
     return CommonUtil.isJson(str);
   }
 
-  public static void printEnchantment(@NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
+  public static void printEnchantment(@NotNull final Shop shop, @NotNull final ChatSheetPrinter chatSheetPrinter) {
 
-    Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
+    final Map<Enchantment, Integer> enchantmentIntegerMap = new HashMap<>();
     if(shop.getItem().getItemMeta() != null) {
       enchantmentIntegerMap.putAll(shop.getItem().getItemMeta().getEnchants());
     }
     printEnchantment(chatSheetPrinter, enchantmentIntegerMap);
   }
 
-  private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
+  private static void printEnchantment(@NotNull final ChatSheetPrinter chatSheetPrinter, @NotNull final Map<Enchantment, Integer> enchs) {
 
     if(enchs.isEmpty()) {
       return;
     }
     chatSheetPrinter.printCenterLine(PLUGIN.text().of("menu.enchants").forLocale());
-    for(Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+    for(final Entry<Enchantment, Integer> entries : enchs.entrySet()) {
       //Use boxed object to avoid NPE
-      Integer level = entries.getValue();
+      final Integer level = entries.getValue();
       Component component;
       try {
         component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
@@ -279,7 +279,7 @@ public class MsgUtil {
   }
 
   @NotNull
-  private static HoverEvent<Component> getHandleFailedHoverEvent(@Nullable CommandSender sender, @Nullable HoverEvent<Component> oldHoverEvent) {
+  private static HoverEvent<Component> getHandleFailedHoverEvent(@Nullable final CommandSender sender, @Nullable final HoverEvent<Component> oldHoverEvent) {
 
     HoverEvent<Component> hoverEvent = HoverEvent.showText(PLUGIN.text().of(sender, "display-fallback").forLocale());
     if(oldHoverEvent != null) {
@@ -289,7 +289,7 @@ public class MsgUtil {
   }
 
   @NotNull
-  public static Component setHandleFailedHover(@Nullable CommandSender sender, @NotNull Component component) {
+  public static Component setHandleFailedHover(@Nullable final CommandSender sender, @NotNull final Component component) {
 
     return Component.empty().append(component.hoverEvent(
                                                     getHandleFailedHoverEvent(sender, null))
@@ -303,7 +303,7 @@ public class MsgUtil {
    * @param shop The shop purchased
    * @param uuid The uuid of the player to message
    */
-  public static void send(@NotNull Shop shop, @Nullable UUID uuid, @NotNull Component shopTransactionMessage) {
+  public static void send(@NotNull final Shop shop, @Nullable final UUID uuid, @NotNull final Component shopTransactionMessage) {
 
     send(uuid, shopTransactionMessage, shop.isUnlimited());
   }
@@ -312,9 +312,9 @@ public class MsgUtil {
    * @param shop  The shop purchased
    * @param qUser The uuid of the player to message
    */
-  public static void send(@NotNull Shop shop, @NotNull QUser qUser, @NotNull Component shopTransactionMessage) {
+  public static void send(@NotNull final Shop shop, @NotNull final QUser qUser, @NotNull final Component shopTransactionMessage) {
 
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     send(uuid, shopTransactionMessage, shop.isUnlimited());
   }
 
@@ -328,7 +328,7 @@ public class MsgUtil {
    *                               Deprecated for always use for bukkit deserialize method (costing
    *                               ~145ms)
    */
-  public static void send(@Nullable UUID uuid, @NotNull Component shopTransactionMessage, boolean isUnlimited) {
+  public static void send(@Nullable final UUID uuid, @NotNull final Component shopTransactionMessage, final boolean isUnlimited) {
 
     if(isUnlimited && PLUGIN.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
       return; // Ignore unlimited shops messages.
@@ -336,9 +336,9 @@ public class MsgUtil {
     if(uuid == null) {
       return;
     }
-    String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
+    final String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
     Log.debug(serialized);
-    OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
+    final OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
     if(!p.isOnline()) {
       PLUGIN.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis())
               .thenAccept(v->{
@@ -359,21 +359,21 @@ public class MsgUtil {
         Log.debug("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
       }
     } else {
-      Player player = p.getPlayer();
+      final Player player = p.getPlayer();
       if(player != null) {
         PLUGIN.getPlatform().sendMessage(player, shopTransactionMessage);
       }
     }
   }
 
-  public static void sendBungeeMessage(@NotNull String playerName, @NotNull Component message, @NotNull String locale) {
+  public static void sendBungeeMessage(@NotNull final String playerName, @NotNull final Component message, @NotNull final String locale) {
 
-    Component csmMessage = PLUGIN.text().of("bungee-cross-server-msg", message).forLocale(locale);
-    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    final Component csmMessage = PLUGIN.text().of("bungee-cross-server-msg", message).forLocale(locale);
+    final ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF("MessageRaw");
     out.writeUTF(playerName);
     out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
-    Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+    final Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
     if(player != null) {
       player.sendPluginMessage(PLUGIN.getJavaPlugin(), "BungeeCord", out.toByteArray());
     }
@@ -385,7 +385,7 @@ public class MsgUtil {
    * @param sender Target sender
    * @param shop   Target shop
    */
-  public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
+  public static void sendControlPanelInfo(@NotNull final CommandSender sender, @NotNull final Shop shop) {
 
     if(!(sender instanceof Player)) {
       return;
@@ -402,12 +402,12 @@ public class MsgUtil {
 
   }
 
-  public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
+  public static void sendDirectMessage(@NotNull final UUID sender, @Nullable final Component... messages) {
 
     sendDirectMessage(Bukkit.getPlayer(sender), messages);
   }
 
-  public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
+  public static void sendDirectMessage(@Nullable final CommandSender sender, @Nullable final Component... messages) {
 
     if(messages == null) {
       return;
@@ -415,7 +415,7 @@ public class MsgUtil {
     if(sender == null) {
       return;
     }
-    for(Component msg : messages) {
+    for(final Component msg : messages) {
       if(msg == null) {
         return;
       }
@@ -426,19 +426,19 @@ public class MsgUtil {
     }
   }
 
-  public static void sendDirectMessage(@Nullable QUser sender, @Nullable Component... messages) {
+  public static void sendDirectMessage(@Nullable final QUser sender, @Nullable final Component... messages) {
 
     if(sender == null) {
       return;
     }
-    UUID uuid = sender.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = sender.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid == null) {
       return;
     }
     sendDirectMessage(uuid, messages);
   }
 
-  public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
+  public static void sendDirectMessage(@Nullable final CommandSender sender, @Nullable final String... messages) {
 
     if(messages == null) {
       return;
@@ -446,7 +446,7 @@ public class MsgUtil {
     if(sender == null) {
       return;
     }
-    for(String msg : messages) {
+    for(final String msg : messages) {
       if(StringUtils.isEmpty(msg)) {
         return;
       }
@@ -459,11 +459,11 @@ public class MsgUtil {
    *
    * @param content The content to send.
    */
-  public static void sendGlobalAlert(@Nullable String content) {
+  public static void sendGlobalAlert(@Nullable final String content) {
 
     if(content == null) {
       Log.debug("Content is null");
-      Throwable throwable =
+      final Throwable throwable =
               new Throwable("Known issue: Global Alert accepted null string, what the fuck");
       PLUGIN.getSentryErrorReporter().sendError(throwable, "NullCheck");
       return;
@@ -478,11 +478,11 @@ public class MsgUtil {
    *
    * @param content The content to send.
    */
-  public static void sendGlobalAlert(@Nullable Component content) {
+  public static void sendGlobalAlert(@Nullable final Component content) {
 
     if(content == null) {
       Log.debug("Content is null");
-      Throwable throwable =
+      final Throwable throwable =
               new Throwable("Known issue: Global Alert accepted null string, what the fuck");
       PLUGIN.getSentryErrorReporter().sendError(throwable, "NullCheck");
       return;
@@ -497,9 +497,9 @@ public class MsgUtil {
    *
    * @param message The message you want send
    */
-  public static void sendMessageToOps(@NotNull String message) {
+  public static void sendMessageToOps(@NotNull final String message) {
 
-    for(Player player : Bukkit.getOnlinePlayers()) {
+    for(final Player player : Bukkit.getOnlinePlayers()) {
       if(QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
         MsgUtil.sendDirectMessage(player, LegacyComponentSerializer.legacySection().deserialize(message));
       }
@@ -511,9 +511,9 @@ public class MsgUtil {
    *
    * @param message The message you want send
    */
-  public static void sendMessageToOps(@NotNull Component message) {
+  public static void sendMessageToOps(@NotNull final Component message) {
 
-    for(Player player : Bukkit.getOnlinePlayers()) {
+    for(final Player player : Bukkit.getOnlinePlayers()) {
       if(QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
         MsgUtil.sendDirectMessage(player, message);
       }
@@ -521,7 +521,7 @@ public class MsgUtil {
   }
 
   @NotNull
-  public static Component formatPlayerProfile(@Nullable Profile profile, @Nullable CommandSender sender) {
+  public static Component formatPlayerProfile(@Nullable final Profile profile, @Nullable final CommandSender sender) {
 
     String name = null;
     String uuid = null;

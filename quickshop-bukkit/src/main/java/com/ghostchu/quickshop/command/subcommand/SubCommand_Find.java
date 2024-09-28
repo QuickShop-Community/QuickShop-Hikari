@@ -29,13 +29,13 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Find(QuickShop plugin) {
+  public SubCommand_Find(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.no-type-given").send();
@@ -67,17 +67,17 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
     //Rewrite by Ghost_chu - Use vector to replace old chunks finding.
 
-    Map<Shop, Double> aroundShops = new HashMap<>();
+    final Map<Shop, Double> aroundShops = new HashMap<>();
 
     //Choose finding source
-    Collection<Shop> scanPool;
+    final Collection<Shop> scanPool;
     if(allShops) {
       scanPool = plugin.getShopManager().getAllShops();
     } else {
       scanPool = plugin.getShopManager().getLoadedShops();
     }
     //Calc distance between player and shop
-    for(Shop shop : scanPool) {
+    for(final Shop shop : scanPool) {
       if(!Objects.equals(shop.getLocation().getWorld(), loc.getWorld())) {
         continue;
       }
@@ -88,8 +88,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
          && !plugin.perm().hasPermission(sender, "quickshop.other.search")) {
         continue;
       }
-      Vector shopVector = shop.getLocation().toVector();
-      double distance = shopVector.distance(playerVector);
+      final Vector shopVector = shop.getLocation().toVector();
+      final double distance = shopVector.distance(playerVector);
       //Check distance
       if(distance <= maxDistance) {
         //Collect valid shop that trading items we want
@@ -115,22 +115,22 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
     //Okay now all shops is our wanted shop in Map
 
-    List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double> comparingByValue(Double::compare).reversed()).toList();
+    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double> comparingByValue(Double::compare).reversed()).toList();
 
     //Function
     if(usingOldLogic) {
-      Map.Entry<Shop, Double> closest = sortedShops.get(0);
-      Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
+      final Map.Entry<Shop, Double> closest = sortedShops.get(0);
+      final Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
       PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
                              PlayerTeleportEvent.TeleportCause.UNKNOWN);
       plugin.text().of(sender, "nearby-shop-this-way", closest.getValue().intValue()).send();
     } else {
       plugin.text().of(sender, "nearby-shop-header", lookFor).send();
-      for(Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
-        Shop shop = shopDoubleEntry.getKey();
-        Location location = shop.getLocation();
+      for(final Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
+        final Shop shop = shopDoubleEntry.getKey();
+        final Location location = shop.getLocation();
         ItemStack previewItemStack = shop.getItem().clone();
-        ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, sender);
+        final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, sender);
         previewComponentPrePopulateEvent.callEvent();
         previewItemStack = previewComponentPrePopulateEvent.getItemStack();
         //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"

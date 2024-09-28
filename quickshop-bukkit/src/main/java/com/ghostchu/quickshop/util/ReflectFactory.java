@@ -21,7 +21,7 @@ public class ReflectFactory {
   public static String getNMSVersion() {
 
     if(nmsVersion == null) {
-      String name = Bukkit.getServer().getClass().getPackage().getName();
+      final String name = Bukkit.getServer().getClass().getPackage().getName();
       nmsVersion = name.substring(name.lastIndexOf('.') + 1);
     }
     return nmsVersion;

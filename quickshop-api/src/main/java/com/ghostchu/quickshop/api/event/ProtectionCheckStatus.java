@@ -9,7 +9,7 @@ public enum ProtectionCheckStatus {
 
   final int statusCode;
 
-  ProtectionCheckStatus(int statusCode) {
+  ProtectionCheckStatus(final int statusCode) {
 
     this.statusCode = statusCode;
   }

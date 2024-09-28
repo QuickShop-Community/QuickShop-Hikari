@@ -22,19 +22,19 @@ public class QuickSLF4JLogger {
    *
    * @return slf4j logger
    */
-  public static Logger initializeLoggerService(java.util.logging.Logger parent) {
+  public static Logger initializeLoggerService(final java.util.logging.Logger parent) {
     // set the class loader to the plugin one to find our own SLF4J provider in the plugin jar and not in the global
-    ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
+    final ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
 
-    ClassLoader pluginLoader = CommonUtil.class.getClassLoader();
+    final ClassLoader pluginLoader = CommonUtil.class.getClassLoader();
     Thread.currentThread().setContextClassLoader(pluginLoader);
 
     // Trigger provider search
     LoggerFactory.getLogger(parent.getName()).info("Initialize logging service");
     try {
       parent.setLevel(Level.ALL);
-      Class<JDK14LoggerAdapter> adapterClass = JDK14LoggerAdapter.class;
-      Constructor<JDK14LoggerAdapter> cons = adapterClass.getDeclaredConstructor(java.util.logging.Logger.class);
+      final Class<JDK14LoggerAdapter> adapterClass = JDK14LoggerAdapter.class;
+      final Constructor<JDK14LoggerAdapter> cons = adapterClass.getDeclaredConstructor(java.util.logging.Logger.class);
       cons.setAccessible(true);
       return cons.newInstance(parent);
     } catch(Throwable reflectEx) {

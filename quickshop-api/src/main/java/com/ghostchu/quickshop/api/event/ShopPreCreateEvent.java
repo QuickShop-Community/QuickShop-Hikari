@@ -28,7 +28,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
    * @param creator  Target player
    * @param location The location will create be shop
    */
-  public ShopPreCreateEvent(@NotNull QUser creator, @NotNull Location location) {
+  public ShopPreCreateEvent(@NotNull final QUser creator, @NotNull final Location location) {
 
     this.location = location;
     this.creator = creator;
@@ -41,7 +41,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

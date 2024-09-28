@@ -22,7 +22,7 @@ public class SystemInfoItem implements SubPasteItem {
 
   public SystemInfoItem() {
 
-    RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+    final RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
     this.os = System.getProperty("os.name");
     this.arch = System.getProperty("os.arch");
     this.version = System.getProperty("os.version");
@@ -50,7 +50,7 @@ public class SystemInfoItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    HTMLTable table = new HTMLTable(2, true);
+    final HTMLTable table = new HTMLTable(2, true);
     table.insert("OS", os);
     table.insert("Arch", arch);
     table.insert("Version", version);
@@ -58,7 +58,7 @@ public class SystemInfoItem implements SubPasteItem {
     table.insert("Java Version", javaVersion);
     table.insert("JVM Name", javaImplName);
     table.insert("Input Arguments", inputArgs);
-    String propertiesContent = """
+    final String propertiesContent = """
                                <details>
                                  <summary>System Properties (Click to open/close)</summary>
                                  {properties}

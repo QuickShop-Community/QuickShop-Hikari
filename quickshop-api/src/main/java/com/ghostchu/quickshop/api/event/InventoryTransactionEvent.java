@@ -12,7 +12,7 @@ public class InventoryTransactionEvent extends AbstractQSEvent {
    *
    * @param transaction The transaction
    */
-  public InventoryTransactionEvent(@NotNull InventoryTransaction transaction) {
+  public InventoryTransactionEvent(@NotNull final InventoryTransaction transaction) {
 
     this.transaction = transaction;
   }

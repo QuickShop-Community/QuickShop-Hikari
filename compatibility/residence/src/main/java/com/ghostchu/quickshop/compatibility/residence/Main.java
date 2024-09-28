@@ -28,7 +28,7 @@ public final class Main extends CompatibilityModule {
   @Override
   public void init() {
 
-    Plugin resPlug = getServer().getPluginManager().getPlugin("Residence");
+    final Plugin resPlug = getServer().getPluginManager().getPlugin("Residence");
     if(resPlug == null) {
       getLogger().info("Dependency not found: Residence");
       Bukkit.getPluginManager().disablePlugin(this);
@@ -42,10 +42,10 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onCreation(ShopCreateEvent event) {
+  public void onCreation(final ShopCreateEvent event) {
 
-    Location shopLoc = event.getShop().getLocation();
-    ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
+    final Location shopLoc = event.getShop().getLocation();
+    final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       if(whitelist) {
         event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
@@ -61,12 +61,12 @@ public final class Main extends CompatibilityModule {
     });
   }
 
-  private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
+  private boolean playerHas(final FlagPermissions permissions, final Player player, final String name, final boolean def) {
 
-    Flags internalFlag = Flags.getFlag(name);
+    final Flags internalFlag = Flags.getFlag(name);
     if(internalFlag == null) {
-      Map<String, Boolean> permPlayerMap = permissions.getPlayerFlags(player.getName());
-      Map<String, Boolean> permGlobalMap = permissions.getFlags();
+      final Map<String, Boolean> permPlayerMap = permissions.getPlayerFlags(player.getName());
+      final Map<String, Boolean> permGlobalMap = permissions.getFlags();
       if(permPlayerMap != null) {
         return permPlayerMap.getOrDefault(name, permGlobalMap.getOrDefault(name, def));
       } else {
@@ -78,10 +78,10 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopPreCreateEvent event) {
 
-    Location shopLoc = event.getLocation();
-    ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
+    final Location shopLoc = event.getLocation();
+    final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       if(whitelist) {
         event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
@@ -98,10 +98,10 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPurchase(ShopPurchaseEvent event) {
+  public void onPurchase(final ShopPurchaseEvent event) {
 
-    Location shopLoc = event.getShop().getLocation();
-    ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
+    final Location shopLoc = event.getShop().getLocation();
+    final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       return;
     }
@@ -115,13 +115,13 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
 
     if(!getConfig().getBoolean("allow-permission-override")) {
       return;
     }
-    Location shopLoc = event.getShop().getLocation();
-    ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
+    final Location shopLoc = event.getShop().getLocation();
+    final ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       return;
     }

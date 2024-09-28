@@ -29,7 +29,7 @@ public class SimpleShopModerator implements ShopModerator {
    *
    * @param owner The owner
    */
-  public SimpleShopModerator(@NotNull UUID owner) {
+  public SimpleShopModerator(@NotNull final UUID owner) {
 
     this.owner = owner;
     this.staffs = new ArrayList<>();
@@ -41,16 +41,16 @@ public class SimpleShopModerator implements ShopModerator {
    * @param owner  The owner
    * @param staffs The staffs
    */
-  public SimpleShopModerator(@NotNull UUID owner, @NotNull List<UUID> staffs) {
+  public SimpleShopModerator(@NotNull final UUID owner, @NotNull final List<UUID> staffs) {
 
     this.owner = owner;
     this.staffs = staffs;
   }
 
   @NotNull
-  public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
+  public static ShopModerator deserialize(@NotNull final String serilized) throws JsonSyntaxException {
     // Use Gson deserialize data
-    Gson gson = JsonUtil.regular();
+    final Gson gson = JsonUtil.regular();
     return gson.fromJson(serilized, SimpleShopModerator.class);
   }
 
@@ -62,7 +62,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @return Success
    */
   @Override
-  public boolean addStaff(@NotNull UUID player) {
+  public boolean addStaff(@NotNull final UUID player) {
 
     if(staffs.contains(player)) {
       return false;
@@ -88,7 +88,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @return Success
    */
   @Override
-  public boolean delStaff(@NotNull UUID player) {
+  public boolean delStaff(@NotNull final UUID player) {
 
     return staffs.remove(player);
   }
@@ -110,7 +110,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @param player Owner's UUID
    */
   @Override
-  public void setOwner(@NotNull UUID player) {
+  public void setOwner(@NotNull final UUID player) {
 
     this.owner = player;
   }
@@ -132,7 +132,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @param players staffs list
    */
   @Override
-  public void setStaffs(@NotNull List<UUID> players) {
+  public void setStaffs(@NotNull final List<UUID> players) {
 
     this.staffs = players;
   }
@@ -145,7 +145,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @return yes or no, return true when it is staff or owner
    */
   @Override
-  public boolean isModerator(@NotNull UUID player) {
+  public boolean isModerator(@NotNull final UUID player) {
 
     return isOwner(player) || isStaff(player);
   }
@@ -158,7 +158,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @return yes or no
    */
   @Override
-  public boolean isOwner(@NotNull UUID player) {
+  public boolean isOwner(@NotNull final UUID player) {
 
     return player.equals(owner);
   }
@@ -171,7 +171,7 @@ public class SimpleShopModerator implements ShopModerator {
    * @return yes or no
    */
   @Override
-  public boolean isStaff(@NotNull UUID player) {
+  public boolean isStaff(@NotNull final UUID player) {
 
     return staffs.contains(player);
   }
@@ -183,10 +183,10 @@ public class SimpleShopModerator implements ShopModerator {
   }
 
   @NotNull
-  public static String serialize(@NotNull ShopModerator shopModerator) {
+  public static String serialize(@NotNull final ShopModerator shopModerator) {
 
-    Gson gson = JsonUtil.getGson();
-    SimpleShopModerator gsonWorkaround = (SimpleShopModerator)shopModerator;
+    final Gson gson = JsonUtil.getGson();
+    final SimpleShopModerator gsonWorkaround = (SimpleShopModerator)shopModerator;
     return gson.toJson(gsonWorkaround); // Use Gson serialize this class
   }
 

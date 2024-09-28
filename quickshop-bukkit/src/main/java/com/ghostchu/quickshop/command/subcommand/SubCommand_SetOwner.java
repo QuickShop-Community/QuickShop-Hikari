@@ -20,13 +20,13 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_SetOwner(QuickShop plugin) {
+  public SubCommand_SetOwner(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.no-owner-given").send();
@@ -50,7 +50,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
                 plugin.text().of(sender, "unknown-player").send();
                 return;
               }
-              ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
+              final ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
               if(event.callCancellableEvent()) {
                 return;
               }
@@ -69,7 +69,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
   @NotNull
   @Override
   public List<String> onTabComplete(
-          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return parser.getArgs().size() <= 1? getPlayerList() : Collections.emptyList();
   }

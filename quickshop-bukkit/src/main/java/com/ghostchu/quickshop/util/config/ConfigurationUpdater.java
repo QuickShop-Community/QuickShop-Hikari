@@ -30,7 +30,7 @@ public class ConfigurationUpdater {
   private final ConfigurationSection configuration;
   private int selectedVersion = -1;
 
-  public ConfigurationUpdater(QuickShop plugin) {
+  public ConfigurationUpdater(final QuickShop plugin) {
 
     this.plugin = plugin;
     this.configuration = plugin.getConfig();
@@ -38,24 +38,24 @@ public class ConfigurationUpdater {
 
   private void brokenConfigurationFix() {
 
-    try(InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getJavaPlugin().getResource("config.yml"))), StandardCharsets.UTF_8)) {
+    try(final InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getJavaPlugin().getResource("config.yml"))), StandardCharsets.UTF_8)) {
       if(new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
         plugin.getJavaPlugin().reloadConfig();
       }
-    } catch(Exception e) {
+    } catch(final Exception e) {
       plugin.logger().warn("Failed to fix config.yml, plugin may not working properly.", e);
     }
   }
 
-  public void update(@NotNull Object configUpdateScript) {
+  public void update(@NotNull final Object configUpdateScript) {
 
     Log.debug("Starting configuration update...");
     writeServerUniqueId();
     selectedVersion = configuration.getInt(CONFIG_VERSION_KEY, -1);
-    for(Method method : getUpdateScripts(configUpdateScript)) {
+    for(final Method method : getUpdateScripts(configUpdateScript)) {
       try {
-        UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
-        int current = getConfiguration().getInt(CONFIG_VERSION_KEY);
+        final UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
+        final int current = getConfiguration().getInt(CONFIG_VERSION_KEY);
         if(current >= updateScript.version()) {
           continue;
         }
@@ -73,12 +73,12 @@ public class ConfigurationUpdater {
               method.invoke(configUpdateScript, current);
             }
           }
-        } catch(Exception e) {
+        } catch(final Exception e) {
           plugin.logger().warn("Failed to execute update script {} for version {}: {}, plugin may not working properly!", method.getName(), updateScript.version(), e.getMessage(), e);
         }
         getConfiguration().set(CONFIG_VERSION_KEY, updateScript.version());
         plugin.logger().info("[ConfigUpdater] Configuration updated to version " + updateScript.version());
-      } catch(Throwable throwable) {
+      } catch(final Throwable throwable) {
         plugin.logger().warn("Failed execute update script {} for updating to version {}, some configuration options may missing or outdated", method.getName(), method.getAnnotation(UpdateScript.class).version(), throwable);
       }
     }
@@ -88,7 +88,7 @@ public class ConfigurationUpdater {
     //Delete old example configuration files
     try {
       cleanupOldConfigs();
-    } catch(IOException e) {
+    } catch(final IOException e) {
       Log.debug("Failed to cleanup old configuration files: " + e.getMessage());
     }
 
@@ -96,7 +96,7 @@ public class ConfigurationUpdater {
 
   private void writeServerUniqueId() {
 
-    String serverUUID = plugin.getConfig().getString("server-uuid");
+    final String serverUUID = plugin.getConfig().getString("server-uuid");
     if(serverUUID == null || serverUUID.isEmpty() || !CommonUtil.isUUID(serverUUID)) {
       plugin.getConfig().set("server-uuid", UUID.randomUUID().toString());
     }
@@ -104,10 +104,10 @@ public class ConfigurationUpdater {
 
 
   @NotNull
-  public List<Method> getUpdateScripts(@NotNull Object configUpdateScript) {
+  public List<Method> getUpdateScripts(@NotNull final Object configUpdateScript) {
 
-    List<Method> methods = new ArrayList<>();
-    for(Method declaredMethod : configUpdateScript.getClass().getDeclaredMethods()) {
+    final List<Method> methods = new ArrayList<>();
+    for(final Method declaredMethod : configUpdateScript.getClass().getDeclaredMethods()) {
       if(declaredMethod.getAnnotation(UpdateScript.class) == null) {
         continue;
       }
@@ -126,7 +126,7 @@ public class ConfigurationUpdater {
       if(new File(plugin.getDataFolder(), "messages.yml").exists()) {
         Files.move(new File(plugin.getDataFolder(), "messages.yml").toPath(), new File(plugin.getDataFolder(), "messages.yml.outdated").toPath());
       }
-    } catch(Exception ignore) {
+    } catch(final Exception ignore) {
     }
   }
 }

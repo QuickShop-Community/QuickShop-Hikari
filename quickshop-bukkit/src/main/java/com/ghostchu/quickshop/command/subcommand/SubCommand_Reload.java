@@ -15,17 +15,17 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Reload(QuickShop plugin) {
+  public SubCommand_Reload(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     plugin.text().of(sender, "command.reloading").send();
     plugin.getJavaPlugin().reloadConfig();
-    Map<ReloadableContainer, ReloadResult> container = plugin.getReloadManager().reload();
+    final Map<ReloadableContainer, ReloadResult> container = plugin.getReloadManager().reload();
     sender.sendMessage(ChatColor.GOLD + "Reloaded " + container.size() + " modules.");
   }
 }

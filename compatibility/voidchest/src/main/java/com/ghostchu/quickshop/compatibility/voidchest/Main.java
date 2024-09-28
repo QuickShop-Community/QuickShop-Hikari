@@ -21,24 +21,24 @@ public final class Main extends CompatibilityModule implements EventListener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onVoidSellChunkItem(VoidSellChunkItemEvent event) {
+  public void onVoidSellChunkItem(final VoidSellChunkItemEvent event) {
 
     event.setCancelled(cancelEvent(event.getDroppedItem(), null));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onInstantItemSpawnEvent(InstantItemSpawnEvent event) {
+  public void onInstantItemSpawnEvent(final InstantItemSpawnEvent event) {
 
     event.setCancelled(cancelEvent(event.getItem(), event.getItemStack().getItemStack()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onItemSpawnEvent(ItemSpawnEvent event) {
+  public void onItemSpawnEvent(final ItemSpawnEvent event) {
 
     event.setCancelled(cancelEvent(event.getItem(), event.getItemStack().getItemStack()));
   }
 
-  private boolean cancelEvent(@Nullable Item item, @Nullable ItemStack itemStack) {
+  private boolean cancelEvent(@Nullable final Item item, @Nullable final ItemStack itemStack) {
 
     if(item != null) {
       return AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());

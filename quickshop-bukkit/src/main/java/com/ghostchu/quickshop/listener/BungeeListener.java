@@ -20,7 +20,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
   private static final String CHAT_COMMAND_REQUEST = "request";
   private static final String CHAT_COMMAND_CANCEL = "cancel";
 
-  public BungeeListener(QuickShop plugin) {
+  public BungeeListener(final QuickShop plugin) {
 
     super(plugin);
   }
@@ -43,12 +43,12 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
   }
 
   @EventHandler
-  public void onPlayerDisconnect(PlayerQuitEvent event) {
+  public void onPlayerDisconnect(final PlayerQuitEvent event) {
 
     notifyForCancel(event.getPlayer());
   }
 
-  public void notifyForCancel(Player player) {
+  public void notifyForCancel(final Player player) {
 
     if(!plugin.getJavaPlugin().isEnabled()) {
       return;
@@ -60,7 +60,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
     player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_CHANNEL, out.toByteArray());
   }
 
-  public void notifyForForward(Player player) {
+  public void notifyForForward(final Player player) {
 
     if(!plugin.getJavaPlugin().isEnabled()) {
       return;
@@ -73,7 +73,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
   }
 
   @Override
-  public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] bytes) {
+  public void onPluginMessageReceived(@NotNull final String channel, @NotNull final Player player, @NotNull final byte[] bytes) {
 
     if(!CHAT_FORWARD_CHANNEL.equalsIgnoreCase(channel)) {
       return;

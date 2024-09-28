@@ -61,9 +61,9 @@ public class MainPage {
   protected final String iconLore;
   protected final IconAction[] actions;
 
-  public MainPage(String returnMenu, String menuName,
-                  final int menuPage, final int returnPage, String staffPageID,
-                  final int menuRows, String iconLore, final IconAction... actions) {
+  public MainPage(final String returnMenu, final String menuName,
+                  final int menuPage, final int returnPage, final String staffPageID,
+                  final int menuRows, final String iconLore, final IconAction... actions) {
 
     this.returnMenu = returnMenu;
     this.menuName = menuName;

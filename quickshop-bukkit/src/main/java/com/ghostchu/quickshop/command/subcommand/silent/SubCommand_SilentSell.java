@@ -12,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentSell extends SubCommand_SilentBase {
 
-  public SubCommand_SilentSell(QuickShop plugin) {
+  public SubCommand_SilentSell(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @Override
-  protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
 
     if(!plugin.perm().hasPermission(sender, "quickshop.create.sell")) {
       plugin.text().of("no-permission").send();

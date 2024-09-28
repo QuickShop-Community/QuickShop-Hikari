@@ -12,7 +12,7 @@ public class HikariUtil {
 
   public static cc.carm.lib.easysql.hikari.HikariConfig createHikariConfig() {
 
-    cc.carm.lib.easysql.hikari.HikariConfig config = new cc.carm.lib.easysql.hikari.HikariConfig();
+    final cc.carm.lib.easysql.hikari.HikariConfig config = new cc.carm.lib.easysql.hikari.HikariConfig();
     ConfigurationSection section = QuickShop.getInstance().getConfig().getConfigurationSection("database");
     if(section == null) {
       throw new IllegalArgumentException("database section in configuration not found");
@@ -21,7 +21,7 @@ public class HikariUtil {
     if(section == null) {
       throw new IllegalArgumentException("database.properties section in configuration not found");
     }
-    for(String key : section.getKeys(false)) {
+    for(final String key : section.getKeys(false)) {
       config.addDataSourceProperty(key, String.valueOf(section.get(key)));
     }
     Log.debug("HikariCP Config created with properties: " + config.getDataSourceProperties());

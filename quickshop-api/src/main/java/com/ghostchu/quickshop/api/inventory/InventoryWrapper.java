@@ -29,13 +29,13 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
    *
    * @see ItemChanger
    */
-  default void changeItem(ItemChanger itemChanger) {
+  default void changeItem(final ItemChanger itemChanger) {
 
-    InventoryWrapperIterator iterator = iterator();
+    final InventoryWrapperIterator iterator = iterator();
     int index = 0;
     boolean shouldContinue = true;
     while(shouldContinue && iterator.hasNext()) {
-      ItemStack itemStack = iterator.next();
+      final ItemStack itemStack = iterator.next();
       shouldContinue = itemChanger.changeItem(index, itemStack);
       if(itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {
         iterator.setCurrent(null);
@@ -73,8 +73,8 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
   default ItemStack[] createSnapshot() {
 
     Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
-    List<ItemStack> contents = new ArrayList<>();
-    for(ItemStack stack : this) {
+    final List<ItemStack> contents = new ArrayList<>();
+    for(final ItemStack stack : this) {
       if(stack == null) {
         continue;
       }
@@ -141,24 +141,24 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
    * @return The map of containing item index and itemStack itself which is not fit
    */
   @NotNull
-  default Map<Integer, ItemStack> removeItem(ItemStack... itemStacks) {
+  default Map<Integer, ItemStack> removeItem(final ItemStack... itemStacks) {
 
     if(itemStacks.length == 0) {
       return Collections.emptyMap();
     }
-    InventoryWrapperIterator iterator = iterator();
-    Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
+    final InventoryWrapperIterator iterator = iterator();
+    final Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
     RemoveProcess:
     for(int i = 0; i < itemStacks.length; i++) {
-      ItemStack itemStackToRemove = itemStacks[i];
+      final ItemStack itemStackToRemove = itemStacks[i];
       while(iterator.hasNext()) {
-        ItemStack itemStack = iterator.next();
+        final ItemStack itemStack = iterator.next();
         // TODO: Need lots of verification, it cause mismatch between items under non-Bukkit item matcher
         if(itemStack != null && QuickShopAPI.getInstance().getItemMatcher().matches(itemStackToRemove, itemStack)) {
-          int couldRemove = itemStack.getAmount();
-          int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);
+          final int couldRemove = itemStack.getAmount();
+          final int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);
           itemStack.setAmount(itemStack.getAmount() - actuallyRemove);
-          int needsNow = itemStackToRemove.getAmount() - actuallyRemove;
+          final int needsNow = itemStackToRemove.getAmount() - actuallyRemove;
           itemStackToRemove.setAmount(needsNow);
           iterator.setCurrent(itemStack);
           if(needsNow == 0) {
@@ -182,14 +182,14 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
    *
    * @return The result of rollback.
    */
-  default boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+  default boolean restoreSnapshot(@NotNull final ItemStack[] snapshot) {
 
     Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
-    InventoryWrapperIterator it = iterator();
+    final InventoryWrapperIterator it = iterator();
     while(it.hasNext()) {
       it.remove();
     }
-    Map<Integer, ItemStack> result = addItem(snapshot);
+    final Map<Integer, ItemStack> result = addItem(snapshot);
     return result.isEmpty();
   }
 
@@ -201,28 +201,28 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
    * @return The map of containing item index and itemStack itself which is not fit
    */
   @NotNull
-  default Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+  default Map<Integer, ItemStack> addItem(final ItemStack... itemStacks) {
 
     if(itemStacks.length == 0) {
       return Collections.emptyMap();
     }
-    InventoryWrapperIterator iterator = iterator();
-    Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
+    final InventoryWrapperIterator iterator = iterator();
+    final Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
     AddProcess:
     for(int i = 0; i < itemStacks.length; i++) {
-      ItemStack itemStackToAdd = itemStacks[i];
+      final ItemStack itemStackToAdd = itemStacks[i];
       while(iterator.hasNext()) {
-        ItemStack itemStack = iterator.next();
+        final ItemStack itemStack = iterator.next();
         if(itemStack == null) {
           iterator.setCurrent(itemStackToAdd);
           itemStackToAdd.setAmount(0);
           continue AddProcess;
         } else {
           if(itemStack.isSimilar(itemStackToAdd)) {
-            int couldAdd = itemStack.getMaxStackSize() - Math.min(itemStack.getMaxStackSize(), itemStack.getAmount());
-            int actuallyAdd = Math.min(itemStackToAdd.getAmount(), couldAdd);
+            final int couldAdd = itemStack.getMaxStackSize() - Math.min(itemStack.getMaxStackSize(), itemStack.getAmount());
+            final int actuallyAdd = Math.min(itemStackToAdd.getAmount(), couldAdd);
             itemStack.setAmount(itemStack.getAmount() + actuallyAdd);
-            int needsNow = itemStackToAdd.getAmount() - actuallyAdd;
+            final int needsNow = itemStackToAdd.getAmount() - actuallyAdd;
             itemStackToAdd.setAmount(needsNow);
             iterator.setCurrent(itemStack);
             if(needsNow == 0) {

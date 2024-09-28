@@ -61,7 +61,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   private final int LATEST_DATABASE_VERSION = 16;
 
-  public SimpleDatabaseHelperV2(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws Exception {
+  public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
     this.plugin = plugin;
     this.manager = manager;
@@ -77,7 +77,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     if(PackageUtil.parsePackageProperly("skipDatabaseVersionCheck").asBoolean(false)) {
       return;
     }
-    int databaseVersion = getDatabaseVersion();
+    final int databaseVersion = getDatabaseVersion();
     if(databaseVersion > LATEST_DATABASE_VERSION) {
       throw new IllegalStateException("Database schema version " + databaseVersion + " is newer than this support max supported schema version " + LATEST_DATABASE_VERSION + ", downgrading the QuickShop-Hikari without restore the database from backup is disallowed cause it will break the data.");
     }
@@ -85,7 +85,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   public void checkTables() throws SQLException {
 
-    boolean metadataExists = DataTables.METADATA.isExists(manager, prefix);
+    final boolean metadataExists = DataTables.METADATA.isExists(manager, prefix);
     DataTables.initializeTables(manager, prefix);
     if(!metadataExists) {
       setDatabaseVersion(LATEST_DATABASE_VERSION);
@@ -116,7 +116,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .selectColumns("value")
             .setLimit(1)
             .build().execute()) {
-      ResultSet result = query.getResultSet();
+      final ResultSet result = query.getResultSet();
       if(!result.next()) {
         return -1; // Default latest version
       }
@@ -127,7 +127,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
   }
 
-  public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(int version) {
+  public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(final int version) {
 
     return DataTables.METADATA
             .createReplace()
@@ -140,12 +140,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public CompletableFuture<Integer> purgeIsolated() {
 
     return CompletableFuture.supplyAsync(()->{
-      List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
-      List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
-      List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
-      List<Long> shop2Tags = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.TAGS, "shop");
-      List<Long> shopAllIds = CommonUtil.linkLists(shop2LogChangesIds, shop2LogPurchaseIds, shop2Tags);
-      List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
+      final List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
+      final List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
+      final List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
+      final List<Long> shop2Tags = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.TAGS, "shop");
+      final List<Long> shopAllIds = CommonUtil.linkLists(shop2LogChangesIds, shop2LogPurchaseIds, shop2Tags);
+      final List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
       shopIsolatedFinal.retainAll(shopAllIds);
       shopIsolatedFinal.forEach(isolatedShopId->{
         try {
@@ -154,9 +154,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
           Log.debug("Failed to delete: " + e.getMessage());
         }
       });
-      List<Long> data2ShopIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.SHOPS, "data");
-      List<Long> data2LogPurchaseIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.LOG_PURCHASE, "data");
-      List<Long> dataIsolatedFinal = new ArrayList<>(data2ShopIds);
+      final List<Long> data2ShopIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.SHOPS, "data");
+      final List<Long> data2LogPurchaseIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.LOG_PURCHASE, "data");
+      final List<Long> dataIsolatedFinal = new ArrayList<>(data2ShopIds);
       dataIsolatedFinal.retainAll(data2LogPurchaseIds);
       dataIsolatedFinal.forEach(isolatedDataId->{
         try {
@@ -170,14 +170,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @NotNull
-  public List<Long> listAllANotExistsInB(DataTables aTable, String aId, DataTables bTable, String bId) {
+  public List<Long> listAllANotExistsInB(final DataTables aTable, final String aId, final DataTables bTable, final String bId) {
 
-    List<Long> isolatedIds = new ArrayList<>();
-    String SQL = "SELECT " + aId + " FROM " + aTable.getName() + " WHERE " + aId + " NOT IN (SELECT " + bId + " FROM " + bTable.getName() + ")";
+    final List<Long> isolatedIds = new ArrayList<>();
+    final String SQL = "SELECT " + aId + " FROM " + aTable.getName() + " WHERE " + aId + " NOT IN (SELECT " + bId + " FROM " + bTable.getName() + ")";
     try(SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
-      ResultSet rs = query.getResultSet();
+      final ResultSet rs = query.getResultSet();
       while(rs.next()) {
-        long id = rs.getLong(aId);
+        final long id = rs.getLong(aId);
         isolatedIds.add(id);
       }
     } catch(SQLException e) {
@@ -189,7 +189,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   private void fastBackup() {
 
     try {
-      DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
+      final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
       databaseIOUtil.performBackup("database-upgrade");
     } catch(Throwable throwable) {
       plugin.logger().warn("Failed to backup the database.", throwable);
@@ -263,9 +263,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   private void upgradeTablesEncoding() {
 
     fastBackup();
-    for(DataTables value : DataTables.values()) {
+    for(final DataTables value : DataTables.values()) {
       if(value.isExists(manager, prefix)) {
-        Integer integer = manager.executeSQL("ALTER TABLE `" + value.getName() + "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+        final Integer integer = manager.executeSQL("ALTER TABLE `" + value.getName() + "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
         Log.debug("Changing the table " + value.getName() + " charset to utf8mb4, returns " + integer + " lines changed.");
       } else {
         Log.debug("Table " + value.getName() + " not exists, skipping.");
@@ -280,7 +280,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   @Override
   @NotNull
-  public CompletableFuture<@NotNull Integer> cleanMessage(long weekAgo) {
+  public CompletableFuture<@NotNull Integer> cleanMessage(final long weekAgo) {
 
     return DataTables.MESSAGES.createDelete()
             .addTimeCondition("time", -1L, weekAgo)
@@ -289,7 +289,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> cleanMessageForPlayer(@NotNull UUID player) {
+  public @NotNull CompletableFuture<@NotNull Integer> cleanMessageForPlayer(@NotNull final UUID player) {
 
     return DataTables.MESSAGES.createDelete()
             .addCondition("receiver", player.toString())
@@ -297,12 +297,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Long> createData(@NotNull Shop shop) {
+  public @NotNull CompletableFuture<@NotNull Long> createData(@NotNull final Shop shop) {
 
-    SimpleDataRecord simpleDataRecord = ((ContainerShop)shop).createDataRecord();
+    final SimpleDataRecord simpleDataRecord = ((ContainerShop)shop).createDataRecord();
     return queryDataId(simpleDataRecord).thenCompose(id->{
       if(id == null) {
-        Map<String, Object> map = simpleDataRecord.generateParams();
+        final Map<String, Object> map = simpleDataRecord.generateParams();
         return DataTables.DATA.createInsert()
                 .setColumnNames(new ArrayList<>(map.keySet()))
                 .setParams(map.values())
@@ -315,7 +315,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   @Override
   @NotNull
-  public CompletableFuture<@NotNull Long> createShop(long dataId) {
+  public CompletableFuture<@NotNull Long> createShop(final long dataId) {
 
     Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
     return DataTables.SHOPS.createInsert()
@@ -326,7 +326,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@NotNull Void> createShopMap(long shopId, @NotNull Location location) {
+  public CompletableFuture<@NotNull Void> createShopMap(final long shopId, @NotNull final Location location) {
 
     Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
     return DataTables.SHOP_MAP.createReplace()
@@ -340,14 +340,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@Nullable DataRecord> getDataRecord(long dataId) {
+  public @NotNull CompletableFuture<@Nullable DataRecord> getDataRecord(final long dataId) {
 
     return DataTables.DATA.createQuery()
             .addCondition("id", dataId)
             .setLimit(1)
             .build()
             .executeFuture(query->{
-              ResultSet result = query.getResultSet();
+              final ResultSet result = query.getResultSet();
               if(result.next()) {
                 return new SimpleDataRecord(plugin.getPlayerFinder(), result);
               }
@@ -357,7 +357,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   @Override
   @NotNull
-  public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull UUID uuid) {
+  public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull final UUID uuid) {
 
     return DataTables.PLAYERS.createQuery()
             .addCondition("uuid", uuid.toString())
@@ -365,7 +365,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .setLimit(1)
             .build()
             .executeFuture(sqlQuery->{
-                             ResultSet set = sqlQuery.getResultSet();
+                             final ResultSet set = sqlQuery.getResultSet();
                              if(set.next()) {
                                return set.getString("locale");
                              }
@@ -375,9 +375,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser) {
+  public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull final QUser qUser) {
 
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid == null) {
       return null;
     }
@@ -385,7 +385,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable String> getPlayerName(@NotNull UUID uuid) {
+  public CompletableFuture<@Nullable String> getPlayerName(@NotNull final UUID uuid) {
 
     return DataTables.PLAYERS.createQuery()
             .addCondition("uuid", uuid.toString())
@@ -393,7 +393,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .setLimit(1)
             .build()
             .executeFuture(sqlQuery->{
-                             ResultSet set = sqlQuery.getResultSet();
+                             final ResultSet set = sqlQuery.getResultSet();
                              if(set.next()) {
                                return set.getString("cachedName");
                              }
@@ -403,7 +403,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable UUID> getPlayerUUID(@NotNull String name) {
+  public CompletableFuture<@Nullable UUID> getPlayerUUID(@NotNull final String name) {
 
     return DataTables.PLAYERS.createQuery()
             .addCondition("cachedName", name)
@@ -411,7 +411,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .setLimit(1)
             .build()
             .executeFuture(sqlQuery->{
-                             ResultSet set = sqlQuery.getResultSet();
+                             final ResultSet set = sqlQuery.getResultSet();
                              if(set.next()) {
                                return UUID.fromString(set.getString("uuid"));
                              }
@@ -421,7 +421,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull Object rec) {
+  public @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull final Object rec) {
 
     return DataTables.LOG_OTHERS.createInsert()
             .setColumnNames("type", "data")
@@ -430,9 +430,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord metricRecord) {
+  public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull final ShopMetricRecord metricRecord) {
 
-    CompletableFuture<Integer> future = new CompletableFuture<>();
+    final CompletableFuture<Integer> future = new CompletableFuture<>();
     plugin.getDatabaseHelper().locateShopDataId(metricRecord.getShopId()).whenCompleteAsync((dataId, err)->{
       if(err != null) {
         future.completeExceptionally(err);
@@ -455,7 +455,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error) {
+  public void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, final double amount, @Nullable final String currency, final double taxAmount, @Nullable final UUID taxAccount, @Nullable final String error) {
 
     if(from == null) {
       from = CommonUtil.getNilUniqueId();
@@ -470,33 +470,33 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt) {
+  public @NotNull List<ShopRecord> listShops(final boolean deleteIfCorrupt) {
 
     return listShops(null, deleteIfCorrupt);
   }
 
   @Override
-  public @NotNull List<ShopRecord> listShops(@Nullable String worldFilter, boolean deleteIfCorrupt) {
+  public @NotNull List<ShopRecord> listShops(@Nullable final String worldFilter, final boolean deleteIfCorrupt) {
 
-    List<ShopRecord> shopRecords = new ArrayList<>();
-    String SQL = "SELECT * FROM " + DataTables.DATA.getName()
-                 + " INNER JOIN " + DataTables.SHOPS.getName()
-                 + " ON " + DataTables.DATA.getName() + ".id = " + DataTables.SHOPS.getName() + ".data"
-                 + " INNER JOIN " + DataTables.SHOP_MAP.getName()
-                 + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id";
+    final List<ShopRecord> shopRecords = new ArrayList<>();
+    final String SQL = "SELECT * FROM " + DataTables.DATA.getName()
+                       + " INNER JOIN " + DataTables.SHOPS.getName()
+                       + " ON " + DataTables.DATA.getName() + ".id = " + DataTables.SHOPS.getName() + ".data"
+                       + " INNER JOIN " + DataTables.SHOP_MAP.getName()
+                       + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id";
     try(SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
-      ResultSet rs = query.getResultSet();
+      final ResultSet rs = query.getResultSet();
       while(rs.next()) {
-        String world = rs.getString("world");
+        final String world = rs.getString("world");
         if(worldFilter != null && !worldFilter.equals(world)) {
           continue;
         }
-        long shopId = rs.getLong("shop");
-        int x = rs.getInt("x");
-        int y = rs.getInt("y");
-        int z = rs.getInt("z");
-        DataRecord dataRecord = new SimpleDataRecord(plugin.getPlayerFinder(), rs);
-        InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
+        final long shopId = rs.getLong("shop");
+        final int x = rs.getInt("x");
+        final int y = rs.getInt("y");
+        final int z = rs.getInt("z");
+        final DataRecord dataRecord = new SimpleDataRecord(plugin.getPlayerFinder(), rs);
+        final InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
         shopRecords.add(new ShopRecord(dataRecord, infoRecord));
       }
     } catch(SQLException e) {
@@ -506,14 +506,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull List<Long> listShopsTaggedBy(@NotNull UUID tagger, @NotNull String tag) {
+  public @NotNull List<Long> listShopsTaggedBy(@NotNull final UUID tagger, @NotNull final String tag) {
 
-    List<Long> shopIds = new ArrayList<>();
+    final List<Long> shopIds = new ArrayList<>();
     try(SQLQuery query = DataTables.TAGS.createQuery()
             .addCondition("tagger", tagger.toString())
             .addCondition("tag", tag)
             .build().execute()) {
-      ResultSet set = query.getResultSet();
+      final ResultSet set = query.getResultSet();
       shopIds.add(set.getLong("shop"));
     } catch(SQLException e) {
       plugin.logger().error("Failed to list shops tagged by " + tagger + " with tag " + tag, e);
@@ -522,13 +522,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull List<String> listTags(@NotNull UUID tagger) {
+  public @NotNull List<String> listTags(@NotNull final UUID tagger) {
 
-    List<String> tags = new ArrayList<>();
+    final List<String> tags = new ArrayList<>();
     try(SQLQuery query = DataTables.TAGS.createQuery()
             .addCondition("tagger", tagger.toString())
             .build().execute()) {
-      ResultSet set = query.getResultSet();
+      final ResultSet set = query.getResultSet();
       tags.add(set.getString("tag"));
     } catch(SQLException e) {
       plugin.logger().error("Failed to list tags by " + tagger, e);
@@ -537,7 +537,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable Integer> removeShopTag(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag) {
+  public CompletableFuture<@Nullable Integer> removeShopTag(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
 
     return DataTables.TAGS.createDelete()
             .addCondition("tagger", tagger.toString())
@@ -546,7 +546,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull UUID tagger, @NotNull Long shopId) {
+  public CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull final UUID tagger, @NotNull final Long shopId) {
 
     return DataTables.TAGS.createDelete()
             .addCondition("tagger", tagger.toString())
@@ -555,7 +555,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable Integer> removeTagFromShops(@NotNull UUID tagger, @NotNull String tag) {
+  public CompletableFuture<@Nullable Integer> removeTagFromShops(@NotNull final UUID tagger, @NotNull final String tag) {
 
     return DataTables.TAGS.createDelete()
             .addCondition("tagger", tagger.toString())
@@ -564,7 +564,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag) {
+  public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
 
     return DataTables.TAGS.createInsert()
             .setColumnNames("tagger", "shop", "tag")
@@ -573,14 +573,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@Nullable Long> locateShopDataId(long shopId) {
+  public @NotNull CompletableFuture<@Nullable Long> locateShopDataId(final long shopId) {
 
     return DataTables.SHOPS.createQuery()
             .addCondition("id", shopId)
             .setLimit(1)
             .build()
             .executeFuture(query->{
-              ResultSet result = query.getResultSet();
+              final ResultSet result = query.getResultSet();
               if(result.next()) {
                 return result.getLong("data");
               }
@@ -590,7 +590,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   @Override
   @NotNull
-  public CompletableFuture<@Nullable Long> locateShopId(@NotNull String world, int x, int y, int z) {
+  public CompletableFuture<@Nullable Long> locateShopId(@NotNull final String world, final int x, final int y, final int z) {
 
     return DataTables.SHOP_MAP.createQuery()
             .addCondition("world", world)
@@ -599,7 +599,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .addCondition("z", z)
             .setLimit(1)
             .build().executeFuture(query->{
-              ResultSet result = query.getResultSet();
+              final ResultSet result = query.getResultSet();
               if(result.next()) {
                 return result.getLong("shop");
               } else {
@@ -609,7 +609,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> removeData(long dataId) {
+  public @NotNull CompletableFuture<@NotNull Integer> removeData(final long dataId) {
 
     Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
     return DataTables.DATA.createDelete()
@@ -618,7 +618,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> removeShop(long shopId) {
+  public @NotNull CompletableFuture<@NotNull Integer> removeShop(final long shopId) {
 
     Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
     return DataTables.SHOPS.createDelete()
@@ -627,7 +627,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> removeShopMap(@NotNull String world, int x, int y, int z) {
+  public @NotNull CompletableFuture<@NotNull Integer> removeShopMap(@NotNull final String world, final int x, final int y, final int z) {
     // TODO: Execute isolated data check in async thread
     return DataTables.SHOP_MAP.createDelete()
             .addCondition("world", world)
@@ -639,7 +639,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
+  public @NotNull CompletableFuture<@NotNull Integer> saveOfflineTransactionMessage(@NotNull final UUID player, @NotNull final String message, final long time) {
 
     return DataTables.MESSAGES.createInsert()
             .setColumnNames("receiver", "time", "content")
@@ -654,14 +654,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<List<String>> selectPlayerMessages(UUID player) {
+  public @NotNull CompletableFuture<List<String>> selectPlayerMessages(final UUID player) {
 
     return DataTables.MESSAGES.createQuery()
             .addCondition("receiver", player.toString())
             .selectColumns()
             .build()
             .executeFuture(dat->{
-              List<String> msgs = new ArrayList<>();
+              final List<String> msgs = new ArrayList<>();
               try(ResultSet set = dat.getResultSet()) {
                 while(set.next()) {
                   msgs.add(set.getString("content"));
@@ -672,7 +672,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull SQLQuery selectTable(@NotNull String table) throws SQLException {
+  public @NotNull SQLQuery selectTable(@NotNull final String table) throws SQLException {
 
     return manager.createQuery()
             .inTable(prefix + table)
@@ -682,7 +682,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   @Override
   @NotNull
-  public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @Nullable String locale, @NotNull String username) {
+  public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull final UUID uuid, @Nullable final String locale, @NotNull final String username) {
 
     if(locale != null) {
       return DataTables.PLAYERS.createReplace()
@@ -704,12 +704,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<Integer> updatePlayerProfileInBatch(List<Triple<UUID, String, String>> uuidLocaleUsername) {
+  public CompletableFuture<Integer> updatePlayerProfileInBatch(final List<Triple<UUID, String, String>> uuidLocaleUsername) {
 
-    List<Object[]> specificLocale = new ArrayList<>();
-    List<Triple<UUID, String, String>> unspecificLocale = new ArrayList<>();
+    final List<Object[]> specificLocale = new ArrayList<>();
+    final List<Triple<UUID, String, String>> unspecificLocale = new ArrayList<>();
 
-    for(Triple<UUID, String, String> user : uuidLocaleUsername) {
+    for(final Triple<UUID, String, String> user : uuidLocaleUsername) {
       if(user.getMiddle() == null) {
         unspecificLocale.add(user);
       } else {
@@ -717,11 +717,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       }
     }
 
-    var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl)getManager(), Integer.class,
+    final var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl)getManager(), Integer.class,
                                                         "INSERT INTO " + DataTables.PLAYERS.getName() + "(uuid, locale, cachedName) VALUES (?, ?, ?) " +
                                                         "ON DUPLICATE KEY UPDATE cachedName = ?"
     );
-    for(Triple<UUID, String, String> data : unspecificLocale) {
+    for(final Triple<UUID, String, String> data : unspecificLocale) {
       action.addParamsBatch(data.getLeft().toString(), "en_us", data.getRight(), data.getRight());
     }
 
@@ -732,7 +732,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull Integer> updateExternalInventoryProfileCache(long shopId, int space, int stock) {
+  public @NotNull CompletableFuture<@NotNull Integer> updateExternalInventoryProfileCache(final long shopId, final int space, final int stock) {
 
     Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
     return DataTables.EXTERNAL_CACHE.createReplace()
@@ -742,12 +742,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<Void> updateShop(@NotNull Shop shop) {
+  public CompletableFuture<Void> updateShop(@NotNull final Shop shop) {
 
-    SimpleDataRecord simpleDataRecord = ((ContainerShop)shop).createDataRecord();
-    Location loc = shop.getLocation();
+    final SimpleDataRecord simpleDataRecord = ((ContainerShop)shop).createDataRecord();
+    final Location loc = shop.getLocation();
     // check if datarecord exists
-    long shopId = shop.getShopId();
+    final long shopId = shop.getShopId();
     if(shopId < 1) {
       Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
       return null;
@@ -770,7 +770,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(long shopId) {
+  public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(final long shopId) {
 
     return CompletableFuture.supplyAsync(()->{
       ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2);
@@ -779,7 +779,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
               .addCondition("shop", shopId)
               .setLimit(1)
               .build().execute()) {
-        ResultSet set = query.getResultSet();
+        final ResultSet set = query.getResultSet();
         if(set.next()) {
           cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"));
         }
@@ -791,19 +791,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @NotNull
-  public CompletableFuture<@Nullable Long> queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
+  public CompletableFuture<@Nullable Long> queryDataId(@NotNull final SimpleDataRecord simpleDataRecord) {
     // Check if dataRecord exists in database with same values
-    Map<String, Object> lookupParams = simpleDataRecord.generateLookupParams();
-    TableQueryBuilder builder = DataTables.DATA.createQuery();
+    final Map<String, Object> lookupParams = simpleDataRecord.generateLookupParams();
+    final TableQueryBuilder builder = DataTables.DATA.createQuery();
     builder.setLimit(1);
-    for(Map.Entry<String, Object> entry : lookupParams.entrySet()) {
+    for(final Map.Entry<String, Object> entry : lookupParams.entrySet()) {
       builder.addCondition(entry.getKey(), entry.getValue());
     }
     return builder.build()
             .executeFuture(query->{
-              ResultSet set = query.getResultSet();
+              final ResultSet set = query.getResultSet();
               if(set.next()) {
-                long id = set.getLong("id");
+                final long id = set.getLong("id");
                 Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
                 return id;
               }
@@ -813,7 +813,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   }
 
-  public CompletableFuture<Integer> purgeLogsRecords(@Nullable Date endDate) {
+  public CompletableFuture<Integer> purgeLogsRecords(@Nullable final Date endDate) {
 
     return CompletableFuture.supplyAsync(()->{
       int linesAffected = 0;
@@ -848,15 +848,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
    *
    * @throws SQLException If the database isn't connected
    */
-  public boolean hasColumn(@NotNull String table, @NotNull String column) throws SQLException {
+  public boolean hasColumn(@NotNull final String table, @NotNull final String column) throws SQLException {
 
     if(!hasTable(table)) {
       return false;
     }
-    String query = "SELECT * FROM " + table + " LIMIT 1";
+    final String query = "SELECT * FROM " + table + " LIMIT 1";
     boolean match = false;
     try(Connection connection = manager.getConnection(); PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
-      ResultSetMetaData metaData = rs.getMetaData();
+      final ResultSetMetaData metaData = rs.getMetaData();
       for(int i = 1; i <= metaData.getColumnCount(); i++) {
         if(metaData.getColumnLabel(i).equals(column)) {
           match = true;
@@ -879,9 +879,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
    *
    * @throws SQLException Throw exception when failed execute somethins on SQL
    */
-  public boolean hasTable(@NotNull String table) throws SQLException {
+  public boolean hasTable(@NotNull final String table) throws SQLException {
 
-    Connection connection = manager.getConnection();
+    final Connection connection = manager.getConnection();
     boolean match = false;
     try(ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
       while(rs.next()) {
@@ -898,7 +898,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   private void makeBackup() {
 
-    File backupFile = new File(new File(plugin.getDataFolder(), "backup"), System.currentTimeMillis() + "-I-told-you-backup-database-before-1.20.5-upgrade.zip");
+    final File backupFile = new File(new File(plugin.getDataFolder(), "backup"), System.currentTimeMillis() + "-I-told-you-backup-database-before-1.20.5-upgrade.zip");
     try {
       new DatabaseIOUtil(this).exportTables(backupFile);
     } catch(SQLException | IOException e) {
@@ -913,7 +913,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     private final Logger logger;
     private final SQLManager manager;
 
-    DatabaseUpgrade(SimpleDatabaseHelperV2 parent) {
+    DatabaseUpgrade(final SimpleDatabaseHelperV2 parent) {
 
       this.parent = parent;
       this.manager = parent.manager;
@@ -982,7 +982,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       parent.setDatabaseVersion(currentDatabaseVersion).join();
     }
 
-    private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
+    private boolean silentTableMoving(@NotNull final String originTableName, @NotNull final String newTableName) {
 
       try {
         if(parent.hasTable(originTableName)) {

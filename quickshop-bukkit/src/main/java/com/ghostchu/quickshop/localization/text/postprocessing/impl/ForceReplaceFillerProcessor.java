@@ -15,10 +15,10 @@ import org.jetbrains.annotations.Nullable;
 public class ForceReplaceFillerProcessor implements PostProcessor {
 
   @Override
-  public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
+  public @NotNull Component process(@NotNull final Component text, @Nullable final CommandSender sender, final Component... args) {
 
     String json = GsonComponentSerializer.gson().serialize(text);
-    String[] plainArgs = new String[args.length];
+    final String[] plainArgs = new String[args.length];
     for(int i = 0; i < args.length; i++) {
       plainArgs[i] = PlainTextComponentSerializer.plainText().serialize(args[i]);
     }

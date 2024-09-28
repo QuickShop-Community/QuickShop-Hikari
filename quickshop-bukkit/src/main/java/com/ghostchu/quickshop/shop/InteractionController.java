@@ -20,7 +20,7 @@ public class InteractionController implements Reloadable, SubPasteItem {
   private final QuickShop plugin;
   private final Map<Interaction, InteractionBehavior> behaviorMap = new EnumMap<>(Interaction.class);
 
-  public InteractionController(@NotNull QuickShop plugin) {
+  public InteractionController(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     loadInteractionConfig();
@@ -40,7 +40,7 @@ public class InteractionController implements Reloadable, SubPasteItem {
     }
     final FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
     behaviorMap.clear();
-    for(Interaction value : Interaction.values()) {
+    for(final Interaction value : Interaction.values()) {
       try {
         behaviorMap.put(value, InteractionBehavior.valueOf(config.getString(value.name())));
         if(value.isRightLick() && value.isShopBlock() && InteractionBehavior.valueOf(config.getString(value.name())) != InteractionBehavior.NONE) {
@@ -63,9 +63,9 @@ public class InteractionController implements Reloadable, SubPasteItem {
   @Override
   public @NotNull String genBody() {
 
-    HTMLTable table = new HTMLTable(2);
+    final HTMLTable table = new HTMLTable(2);
     table.setTableTitle("Interaction", "Behavior");
-    for(Interaction interaction : Interaction.values()) {
+    for(final Interaction interaction : Interaction.values()) {
       table.insert(interaction.name(), getBehavior(interaction).name());
     }
     return table.render();
@@ -79,7 +79,7 @@ public class InteractionController implements Reloadable, SubPasteItem {
    * @return the behavior
    */
   @NotNull
-  public InteractionBehavior getBehavior(@NotNull Interaction interaction) {
+  public InteractionBehavior getBehavior(@NotNull final Interaction interaction) {
 
     return behaviorMap.getOrDefault(interaction, InteractionBehavior.NONE);
   }

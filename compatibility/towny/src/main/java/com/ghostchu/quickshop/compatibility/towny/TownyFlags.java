@@ -9,16 +9,16 @@ public enum TownyFlags {
   SHOPTYPE,
   BANKTYPE;
 
-  public static List<TownyFlags> deserialize(List<String> list) {
+  public static List<TownyFlags> deserialize(final List<String> list) {
 
-    List<TownyFlags> result = new ArrayList<>();
+    final List<TownyFlags> result = new ArrayList<>();
     list.forEach(v->result.add(TownyFlags.valueOf(v.toUpperCase())));
     return result;
   }
 
-  public static List<String> serialize(List<TownyFlags> list) {
+  public static List<String> serialize(final List<TownyFlags> list) {
 
-    List<String> result = new ArrayList<>();
+    final List<String> result = new ArrayList<>();
     list.forEach(v->result.add(v.name()));
     return result;
   }

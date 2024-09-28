@@ -9,13 +9,13 @@ import java.util.UUID;
 public class GringottsTownyConversion implements UuidConversion {
 
   @Override
-  public UUID convertTownyAccount(Town town) {
+  public UUID convertTownyAccount(final Town town) {
 
     return town.getUUID();
   }
 
   @Override
-  public UUID convertTownyAccount(Nation nation) {
+  public UUID convertTownyAccount(final Nation nation) {
 
     return nation.getUUID();
   }

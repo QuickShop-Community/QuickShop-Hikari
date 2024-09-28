@@ -10,7 +10,7 @@ public class DisplayApplicableCheckEvent extends AbstractQSEvent {
   private final UUID player;
   private boolean applicable;
 
-  public DisplayApplicableCheckEvent(Shop shop, UUID player) {
+  public DisplayApplicableCheckEvent(final Shop shop, final UUID player) {
 
     this.shop = shop;
     this.player = player;
@@ -31,7 +31,7 @@ public class DisplayApplicableCheckEvent extends AbstractQSEvent {
     return applicable;
   }
 
-  public void setApplicable(boolean applicable) {
+  public void setApplicable(final boolean applicable) {
 
     this.applicable = applicable;
   }

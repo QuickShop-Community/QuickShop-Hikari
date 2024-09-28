@@ -26,13 +26,13 @@ import java.util.List;
 
 public class Spigot1210Platform extends AbstractSpigotPlatform implements Platform {
 
-  public Spigot1210Platform(@NotNull Plugin plugin) {
+  public Spigot1210Platform(@NotNull final Plugin plugin) {
 
     super(plugin);
   }
 
   @Override
-  public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
+  public @NotNull Component setItemStackHoverEvent(@NotNull final Component oldComponent, @NotNull final ItemStack stack) {
 
     return oldComponent.hoverEvent(HoverEvent.showText(Component.text("Click to preview the item")
                                                                .appendNewline()
@@ -53,7 +53,7 @@ public class Spigot1210Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public void registerCommand(@NotNull String prefix, @NotNull Command command) {
+  public void registerCommand(@NotNull final String prefix, @NotNull final Command command) {
 
     ((CraftServer)Bukkit.getServer()).getCommandMap().register(prefix, command);
     command.register(((CraftServer)Bukkit.getServer()).getCommandMap());
@@ -61,20 +61,20 @@ public class Spigot1210Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Material material) {
+  public @NotNull String getTranslationKey(@NotNull final Material material) {
 
     return postProcessingTranslationKey(material.getTranslationKey());
   }
 
   @Override
-  public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
+  public void setDisplayName(@NotNull final ItemStack stack, @Nullable final Component component) {
 
-    net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(stack);
+    final net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(stack);
     if(component == null) {
       nmsItemStack.remove(DataComponents.CUSTOM_NAME);
       return;
     }
-    String json = GsonComponentSerializer.gson().serialize(component);
+    final String json = GsonComponentSerializer.gson().serialize(component);
     nmsItemStack.set(DataComponents.CUSTOM_NAME,
                      net.minecraft.network.chat.Component.Serializer
                              .fromJson(json,
@@ -86,13 +86,13 @@ public class Spigot1210Platform extends AbstractSpigotPlatform implements Platfo
 
 
   @Override
-  public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
+  public void setLore(@NotNull final ItemStack stack, @NotNull final Collection<Component> components) {
 
-    net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(stack);
+    final net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(stack);
     if(components.isEmpty()) {
       nmsItemStack.remove(DataComponents.LORE);
     } else {
-      List<net.minecraft.network.chat.Component> componentsList = components.stream()
+      final List<net.minecraft.network.chat.Component> componentsList = components.stream()
               .map(c->GsonComponentSerializer.gson().serialize(c))
               .map(json->(net.minecraft.network.chat.Component)
                       net.minecraft.network.chat.Component.Serializer
@@ -106,13 +106,13 @@ public class Spigot1210Platform extends AbstractSpigotPlatform implements Platfo
     stack.setItemMeta(CraftItemStack.asBukkitCopy(nmsItemStack).getItemMeta());
   }
 
-  private String postProcessingTranslationKey(String key) {
+  private String postProcessingTranslationKey(final String key) {
 
     return this.translationMapping.getOrDefault(key, key);
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull EntityType type) {
+  public @NotNull String getTranslationKey(@NotNull final EntityType type) {
     //noinspection deprecation
     return postProcessingTranslationKey(type.getTranslationKey());
 //        Optional<net.minecraft.world.entity.EntityType<?>> op = net.minecraft.world.entity.EntityType.byString(type.getKey().toString());
@@ -124,19 +124,19 @@ public class Spigot1210Platform extends AbstractSpigotPlatform implements Platfo
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+  public @NotNull String getTranslationKey(@NotNull final PotionEffectType potionEffectType) {
 
     return postProcessingTranslationKey(potionEffectType.getTranslationKey());
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+  public @NotNull String getTranslationKey(@NotNull final Enchantment enchantment) {
 
     return postProcessingTranslationKey(enchantment.getTranslationKey());
   }
 
   @Override
-  public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+  public @NotNull String getTranslationKey(@NotNull final ItemStack stack) {
 
     return postProcessingTranslationKey(stack.getTranslationKey());
   }

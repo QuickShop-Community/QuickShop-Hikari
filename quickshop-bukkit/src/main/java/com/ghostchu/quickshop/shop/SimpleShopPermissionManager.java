@@ -33,7 +33,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
   private final Map<String, Set<String>> permissionMapping = new MapMaker().makeMap();
   private final QuickShop plugin;
 
-  public SimpleShopPermissionManager(@NotNull QuickShop plugin) {
+  public SimpleShopPermissionManager(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     loadConfiguration();
@@ -48,9 +48,9 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
   }
 
   @Override
-  public @NotNull List<String> getGroupPermissions(@NotNull String group) {
+  public @NotNull List<String> getGroupPermissions(@NotNull final String group) {
 
-    Set<String> set = this.permissionMapping.get(group);
+    final Set<String> set = this.permissionMapping.get(group);
     if(set == null) {
       return Collections.emptyList();
     }
@@ -58,31 +58,31 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
   }
 
   @Override
-  public boolean hasGroup(@NotNull String group) {
+  public boolean hasGroup(@NotNull final String group) {
 
     return permissionMapping.containsKey(group);
   }
 
   @Override
-  public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
+  public boolean hasPermission(@NotNull final String group, @NotNull final BuiltInShopPermission permission) {
 
     return hasPermission(group, plugin.getJavaPlugin(), permission.getRawNode());
   }
 
   @Override
-  public boolean hasPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
+  public boolean hasPermission(@NotNull final String group, @NotNull final Plugin namespace, @NotNull final String permission) {
 
     if(!permissionMapping.containsKey(group)) {
       return false;
     }
-    String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
-    boolean result = permissionMapping.get(group).contains(fullPermissionPath);
+    final String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+    final boolean result = permissionMapping.get(group).contains(fullPermissionPath);
     Log.permission("Check permission " + fullPermissionPath + " for group " + group + ": " + result);
     return result;
   }
 
   @Override
-  public void registerGroup(@NotNull String group, @NotNull Collection<String> permissions) {
+  public void registerGroup(@NotNull final String group, @NotNull final Collection<String> permissions) {
 
     if(permissionMapping.containsKey(group)) {
       throw new IllegalArgumentException("Group " + group + " already exists.");
@@ -92,18 +92,18 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
   }
 
   @Override
-  public void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
+  public void registerPermission(@NotNull final String group, @NotNull final Plugin namespace, @NotNull final String permission) {
 
     if(!permissionMapping.containsKey(group)) {
       throw new IllegalArgumentException("Group " + group + " does not exist.");
     }
-    String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+    final String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
     Log.permission("Register permission " + fullPermissionPath + " to group " + group);
     permissionMapping.get(group).add(fullPermissionPath);
   }
 
   @Override
-  public void unregisterGroup(@NotNull String group) {
+  public void unregisterGroup(@NotNull final String group) {
 
     if(!permissionMapping.containsKey(group)) {
       return;
@@ -113,21 +113,21 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
   }
 
   @Override
-  public void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
+  public void unregisterPermission(@NotNull final String group, @NotNull final Plugin namespace, @NotNull final String permission) {
 
     if(!permissionMapping.containsKey(group)) {
       return;
     }
-    String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+    final String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
     Log.permission("Unregister permission " + fullPermissionPath + " from group " + group);
     permissionMapping.get(group).remove(fullPermissionPath);
   }
 
-  private void initDefaultConfiguration(@NotNull File file) {
+  private void initDefaultConfiguration(@NotNull final File file) {
 
-    YamlConfiguration yamlConfiguration = new YamlConfiguration();
+    final YamlConfiguration yamlConfiguration = new YamlConfiguration();
     yamlConfiguration.set("version", 1);
-    for(BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
+    for(final BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
       yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).toList());
     }
     try {
@@ -144,12 +144,12 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
 
     Log.permission("Loading group configuration...");
     permissionMapping.clear();
-    File file = new File(plugin.getDataFolder(), "group.yml");
+    final File file = new File(plugin.getDataFolder(), "group.yml");
     if(!file.exists()) {
       initDefaultConfiguration(file);
     }
-    YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-    String namespace = plugin.getJavaPlugin().getName().toLowerCase(Locale.ROOT);
+    final YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+    final String namespace = plugin.getJavaPlugin().getName().toLowerCase(Locale.ROOT);
     if(!yamlConfiguration.isSet(namespace + ".everyone")
        || !yamlConfiguration.isSet(namespace + ".staff")
        || !yamlConfiguration.isSet(namespace + ".blocked")) {
@@ -171,14 +171,14 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
 
     yamlConfiguration.getKeys(true).forEach(group->{
       if(yamlConfiguration.isList(group)) {
-        List<String> perms = yamlConfiguration.getStringList(group);
+        final List<String> perms = yamlConfiguration.getStringList(group);
         this.permissionMapping.put(group, new HashSet<>(perms));
         Log.permission("Permission loaded for group " + group + ": " + CommonUtil.list2String(perms));
       }
     });
   }
 
-  private void updateConfiguration(YamlConfiguration yamlConfiguration, File file, String namespace) throws IOException {
+  private void updateConfiguration(final YamlConfiguration yamlConfiguration, final File file, final String namespace) throws IOException {
 
     if(yamlConfiguration.getInt("version", 1) == 1) {
       List<String> perms = yamlConfiguration.getStringList(namespace + ".staff");

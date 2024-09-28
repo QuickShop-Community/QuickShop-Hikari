@@ -332,7 +332,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 //    @Getter
 //    private InventoryWrapperUpdateManager invWrapperUpdateManager;
 
-  public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
+  public QuickShop(final QuickShopBukkit javaPlugin, final Logger logger, final Platform platform) {
 
     this.javaPlugin = javaPlugin;
     this.logger = logger;
@@ -420,13 +420,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }, javaPlugin, ServicePriority.High);
   }
 
-  private boolean runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
+  private boolean runtimeCheck(@NotNull final EnvCheckEntry.Stage stage) {
 
     environmentChecker = new EnvironmentChecker(this);
-    ResultReport resultReport = environmentChecker.run(stage);
-    StringJoiner joiner = new StringJoiner("\n", "", "");
+    final ResultReport resultReport = environmentChecker.run(stage);
+    final StringJoiner joiner = new StringJoiner("\n", "", "");
     if(resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-      for(Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
+      for(final Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
         if(result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
           joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
         }
@@ -441,7 +441,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       }
       case STOP_WORKING -> {
         setupBootError(new BootError(logger, joiner.toString()), true);
-        PluginCommand command = javaPlugin.getCommand("quickshop");
+        final PluginCommand command = javaPlugin.getCommand("quickshop");
         if(command != null) {
           Util.mainThreadRun(()->command.setTabCompleter(javaPlugin)); //Disable tab completer
         }
@@ -458,7 +458,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     javaPlugin.getDataFolder().mkdirs();
     try {
       javaPlugin.saveDefaultConfig();
-    } catch(IllegalArgumentException resourceNotFoundException) {
+    } catch(final IllegalArgumentException resourceNotFoundException) {
       logger.error("Failed to save config.yml from jar, The binary file of QuickShop may be corrupted. Please re-download from our website.");
     }
     javaPlugin.reloadConfig();
@@ -475,7 +475,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Loading translations (This may take a while)...");
     try {
       this.textManager = new SimpleTextManager(this);
-    } catch(NoSuchMethodError | NoClassDefFoundError e) {
+    } catch(final NoSuchMethodError | NoClassDefFoundError e) {
       logger.error("Failed to initialize text manager, the QuickShop doesn't compatible with your Server version. Did you up-to-date?", e);
       Bukkit.getPluginManager().disablePlugin(javaPlugin);
       throw new IllegalStateException("Cannot initialize text manager");
@@ -489,7 +489,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    * @param bootError           reason
    * @param unregisterListeners should we disable all listeners?
    */
-  public void setupBootError(BootError bootError, boolean unregisterListeners) {
+  public void setupBootError(final BootError bootError, final boolean unregisterListeners) {
 
     this.bootError = bootError;
     if(unregisterListeners) {
@@ -516,7 +516,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     this.loggingLocation = this.getConfig().getInt("logging.location");
     this.translationMapping = new HashMap<>();
     getConfig().getStringList("custom-translation-key").forEach(str->{
-      String[] split = str.split("=", 0);
+      final String[] split = str.split("=", 0);
       this.translationMapping.put(split[0], split[1]);
     });
     this.translationMapping.putAll(this.addonRegisteredMapping);
@@ -638,7 +638,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   @Override
-  public void logEvent(@NotNull Object eventObject) {
+  public void logEvent(@NotNull final Object eventObject) {
 
     if(this.getLogWatcher() == null) {
       return;
@@ -658,7 +658,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   @Override
-  public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
+  public void registerLocalizedTranslationKeyMapping(@NotNull final String translationKey, @NotNull final String key) {
 
     addonRegisteredMapping.put(translationKey, key);
     translationMapping.putAll(addonRegisteredMapping);
@@ -707,7 +707,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     registerService();
     /* Check the running envs is support or not. */
     logger.info("Starting plugin self-test, please wait...");
-    try(PerfMonitor ignored = new PerfMonitor("Self Test")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Self Test")) {
       runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
     }
     logger.info("Reading the configuration...");
@@ -723,11 +723,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     Util.initialize();
     try {
       loadVirtualDisplayItem();
-    } catch(Exception e) {
+    } catch(final Exception e) {
       logger.warn("Failed to process virtual display item system", e);
     }
     //Load the database
-    try(PerfMonitor ignored = new PerfMonitor("Initialize database")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Initialize database")) {
       initDatabase();
     }
     Util.asyncThreadRun(()->{
@@ -781,7 +781,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     registerCommunicationChannels();
     new QSConfigurationReloadEvent(javaPlugin).callEvent();
     load3rdParty();
-    try(PerfMonitor ignored = new PerfMonitor("Self Test")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Self Test")) {
       runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
     }
 
@@ -790,7 +790,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void loadRegistry() {
 
     logger.info("Setting up ItemExpressionRegistry...");
-    ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)this.registry.getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)this.registry.getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
     itemExpressionRegistry.registerHandlerSafely(new SimpleMaterialExpressionHandler(this));
     itemExpressionRegistry.registerHandlerSafely(new SimpleEnchantmentExpressionHandler(this));
     itemExpressionRegistry.registerHandlerSafely(new SimpleItemReferenceExpressionHandler(this));
@@ -806,7 +806,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         sentryErrorReporter = new RollbarErrorReporter(this);
         Log.debug("Error Reporter has been initialized.");
       }
-    } catch(Exception th) {
+    } catch(final Exception th) {
       logger.warn("Cannot load the Rollbar Error Reporter: {}", th.getMessage());
       logger.warn("Because the error reporter doesn't work, report this error to the developer. Thank you!");
     }
@@ -814,7 +814,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void loadItemMatcher() {
 
-    ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
+    final ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
       case 3 -> new TNEItemMatcherImpl(this);
       case 1 -> new BukkitItemMatcherImpl(this);
       case 0 -> new QuickShopItemMatcherImpl(this);
@@ -830,7 +830,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       //VirtualItem support
       if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
         logger.info("Using Virtual Item display, loading ProtocolLib support...");
-        Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+        final Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
         if(protocolLibPlugin != null) {
           try {
             logger.info("Successfully loaded ProtocolLib support!");
@@ -841,7 +841,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             } else {
               signHooker = null;
             }
-          } catch(Exception e) {
+          } catch(final Exception e) {
             logger.warn("Failed to initialize the virtual display item, try update your ProtocolLib to latest dev build and make sure QuickShop-Hikari up-to-date.", e);
             throw e;
           }
@@ -891,9 +891,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     if(PackageUtil.parsePackageProperly("bakeuuids").asBoolean(false)) {
       logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
-      Set<UUID> waitingForBake = new HashSet<>();
+      final Set<UUID> waitingForBake = new HashSet<>();
       this.shopManager.getAllShops().forEach(shop->{
-        UUID uuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+        final UUID uuid = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
         if(uuid != null && !this.playerFinder.isCached(uuid)) {
           waitingForBake.add(uuid);
         }
@@ -903,9 +903,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
           }
         });
       });
-      for(UUID uuid : waitingForBake) {
+      for(final UUID uuid : waitingForBake) {
         QuickExecutor.getSecondaryProfileIoExecutor().submit(()->{
-          String name = playerFinder.uuid2Name(uuid);
+          final String name = playerFinder.uuid2Name(uuid);
           if(name != null) {
             playerFinder.cache(uuid, name);
           }
@@ -944,7 +944,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         logger.info("Registering DisplayCheck task....");
         folia.getImpl().runTimerAsync(()->{
-          for(Shop shop : getShopManager().getLoadedShops()) {
+          for(final Shop shop : getShopManager().getLoadedShops()) {
             //Shop may be deleted or unloaded when iterating
             if(!shop.isLoaded()) {
               continue;
@@ -975,15 +975,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void registerShopLock() {
 
     Util.unregisterListenerClazz(javaPlugin, LockListener.class);
-    boolean useShopLock = getConfig().getBoolean("shop.lock");
+    final boolean useShopLock = getConfig().getBoolean("shop.lock");
     if(useShopLock) {
+
       new LockListener(this).register();
     }
   }
 
   private void registerUpdater() {
 
-    boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
+    final boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
     if(updaterEnabled) {
       updateWatcher = new UpdateWatcher();
       updateWatcher.init();
@@ -1024,7 +1025,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    */
   private void load3rdParty() {
 
-    boolean usePAPI = getConfig().getBoolean("plugin.PlaceHolderAPI.enable");
+    final boolean usePAPI = getConfig().getBoolean("plugin.PlaceHolderAPI.enable");
     if(usePAPI) {
       this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
       if(this.placeHolderAPI != null && placeHolderAPI.isEnabled()) {
@@ -1043,9 +1044,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public boolean setupDatabase() {
 
     logger.info("Setting up database...");
-    HikariConfig config = HikariUtil.createHikariConfig();
+    final HikariConfig config = HikariUtil.createHikariConfig();
     try {
-      ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
+      final ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
       if(Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
         databaseDriverType = DatabaseDriverType.MYSQL;
         // MySQL database - Required database be created first.
@@ -1053,12 +1054,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if(dbPrefix == null || "none".equals(dbPrefix)) {
           dbPrefix = "";
         }
-        String user = dbCfg.getString("user");
-        String pass = dbCfg.getString("password");
-        String host = dbCfg.getString("host");
-        String port = dbCfg.getString("port");
-        String database = dbCfg.getString("database");
-        boolean useSSL = dbCfg.getBoolean("usessl");
+        final String user = dbCfg.getString("user");
+        final String pass = dbCfg.getString("password");
+        final String host = dbCfg.getString("host");
+        final String port = dbCfg.getString("port");
+        final String database = dbCfg.getString("database");
+        final boolean useSSL = dbCfg.getBoolean("usessl");
         config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + useSSL);
         config.setUsername(user);
         config.setPassword(pass);
@@ -1069,7 +1070,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         Log.debug("Registering JDBC H2 driver...");
         Driver.load();
         logger.info("Create database backup...");
-        String driverClassName = Driver.class.getName();
+        final String driverClassName = Driver.class.getName();
         Log.debug("Setting up H2 driver class name to: " + driverClassName);
         config.setDriverClassName(driverClassName);
         config.setJdbcUrl("jdbc:h2:" + new File(javaPlugin.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";MODE=MYSQL");
@@ -1080,10 +1081,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       this.sqlManager.setExecutorPool(QuickExecutor.getHikaricpExecutor());
       // Make the database up to date
       this.databaseHelper = new SimpleDatabaseHelperV2(this, this.sqlManager, this.getDbPrefix());
-      DatabaseIOUtil ioUtil = new DatabaseIOUtil(databaseHelper);
+      final DatabaseIOUtil ioUtil = new DatabaseIOUtil(databaseHelper);
       ioUtil.performBackup("startup");
       return true;
-    } catch(Exception e) {
+    } catch(final Exception e) {
       logger.error("Error when connecting to the database", e);
       if(setupDBonEnableding) {
         bootError = BuiltInSolution.databaseError();
@@ -1095,11 +1096,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public void registerQuickShopCommands() {
 
     commandManager = new SimpleCommandManager(this);
-    List<String> customCommands = getConfig().getStringList("custom-commands");
-    Command quickShopCommand = new QuickShopCommand("quickshop", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
+    final List<String> customCommands = getConfig().getStringList("custom-commands");
+    final Command quickShopCommand = new QuickShopCommand("quickshop", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
     try {
       platform.registerCommand("quickshop-hikari", quickShopCommand);
-    } catch(Exception e) {
+    } catch(final Exception e) {
       logger.warn("Failed to register command aliases", e);
     }
     Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
@@ -1149,8 +1150,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     if(getShopManager() != null) {
       logger.info("Saving all in-memory changed shops...");
-      List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
-      CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
+      final List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+      final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
       CompletableFuture.allOf(completableFutures)
               .join();
     }
@@ -1196,7 +1197,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       this.signHooker.unload();
       logger.info("Unload SignHooker module successfully!");
     }
-    Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+    final Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
     if(protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
       ProtocolLibrary.getProtocolManager().removePacketListeners(javaPlugin);
       logger.info("Unload packet listeners successfully!");
@@ -1274,7 +1275,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     private final QuickShop parent;
 
-    public EconomyLoader(QuickShop parent) {
+    public EconomyLoader(final QuickShop parent) {
 
       this.parent = parent;
     }
@@ -1289,9 +1290,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     public boolean load() {
 
-      try(PerfMonitor ignored = new PerfMonitor("Loading Economy Bridge")) {
+      try(final PerfMonitor ignored = new PerfMonitor("Loading Economy Bridge")) {
         return setupEconomy();
-      } catch(Exception e) {
+      } catch(final Exception e) {
         if(parent.sentryErrorReporter != null) {
           parent.sentryErrorReporter.ignoreThrow();
         }
@@ -1343,9 +1344,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Nullable
     private AbstractEconomy loadVault() throws Exception {
 
-      Economy_Vault vault = new Economy_Vault(parent);
-      boolean taxEnabled = parent.getConfig().getDouble("tax", 0.0d) > 0;
-      String taxAccount = parent.getConfig().getString("tax-account", "tax");
+      final Economy_Vault vault = new Economy_Vault(parent);
+      final boolean taxEnabled = parent.getConfig().getDouble("tax", 0.0d) > 0;
+      final String taxAccount = parent.getConfig().getString("tax-account", "tax");
       if(!vault.isValid()) {
         return null;
       }
@@ -1355,7 +1356,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       if(StringUtils.isEmpty(taxAccount)) {
         return vault;
       }
-      OfflinePlayer tax;
+      final OfflinePlayer tax;
       if(CommonUtil.isUUID(taxAccount)) {
         tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
       } else {

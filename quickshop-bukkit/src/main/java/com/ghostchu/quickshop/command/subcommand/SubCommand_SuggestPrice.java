@@ -19,13 +19,13 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_SuggestPrice(QuickShop plugin) {
+  public SubCommand_SuggestPrice(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
     if(shop == null) {
@@ -41,7 +41,7 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
       Util.asyncThreadRun(()->{
         Shop shop1 = null;
 
-        for(Shop shopTest : plugin.getShopManager().getAllShops()) {
+        for(final Shop shopTest : plugin.getShopManager().getAllShops()) {
           if(plugin.getItemMatcher().matches(stack, shopTest.getItem())) {
             shop1 = shopTest;
             break;
@@ -93,7 +93,7 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
     }
     plugin.text().of(sender, "suggest-wait").send();
     Util.asyncThreadRun(()->{
-      List<Double> matched = plugin.getShopManager().getAllShops().stream()
+      final List<Double> matched = plugin.getShopManager().getAllShops().stream()
               .filter(s->s.getShopId() != shop.getShopId())
               .filter(s->s.getShopType() == shop.getShopType())
               .filter(s->Objects.equals(s.getCurrency(), shop.getCurrency()))
@@ -104,15 +104,15 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
         plugin.text().of(sender, "cannot-suggest-price", matched.size()).send();
         return;
       }
-      double min = CommonUtil.min(matched);
-      double max = CommonUtil.max(matched);
-      double avg = CommonUtil.avg(matched);
-      double med = CommonUtil.med(matched);
+      final double min = CommonUtil.min(matched);
+      final double max = CommonUtil.max(matched);
+      final double avg = CommonUtil.avg(matched);
+      final double med = CommonUtil.med(matched);
       plugin.text().of(sender, "price-suggest", matched.size(), format(max, shop), format(min, shop), format(avg, shop), format(med, shop), format(med, shop)).send();
     });
   }
 
-  private String format(double d, Shop shop) {
+  private String format(final double d, final Shop shop) {
 
     return plugin.getShopManager().format(d, shop);
   }

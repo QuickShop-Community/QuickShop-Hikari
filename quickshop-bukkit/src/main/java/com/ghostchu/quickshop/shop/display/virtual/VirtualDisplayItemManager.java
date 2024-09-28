@@ -40,7 +40,7 @@ public class VirtualDisplayItemManager {
 
   public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
 
-  public VirtualDisplayItemManager(QuickShop plugin) {
+  public VirtualDisplayItemManager(final QuickShop plugin) {
 
     try {
       this.plugin = plugin;
@@ -55,7 +55,7 @@ public class VirtualDisplayItemManager {
 
   public void load() {
 
-    String stringClassLoader = protocolManager.getClass().getClassLoader().toString();
+    final String stringClassLoader = protocolManager.getClass().getClassLoader().toString();
     if(stringClassLoader.contains("pluginEnabled=true") && !stringClassLoader.contains("plugin=ProtocolLib")) {
       plugin.logger().warn("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
                            "QuickShop can't ensure the ProtocolLib is working correctly! Info: {}", stringClassLoader);
@@ -78,16 +78,16 @@ public class VirtualDisplayItemManager {
     protocolManager.addPacketListener(chunkUnloadingPacketAdapter);
   }
 
-  public void put(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
+  public void put(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem value) {
     //Thread-safe was ensured by ONLY USE Map method to do something
-    List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
+    final List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
     chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal)->{
       mapOldVal.addAll(mapNewVal);
       return mapOldVal;
     });
   }
 
-  public void remove(@NotNull ShopChunk key, @NotNull VirtualDisplayItem value) {
+  public void remove(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem value) {
 
     chunksMapping.computeIfPresent(key, (mapOldKey, mapOldVal)->{
       mapOldVal.remove(value);
@@ -112,12 +112,12 @@ public class VirtualDisplayItemManager {
   }
 
   @NotNull
-  public VirtualDisplayItem createVirtualDisplayItem(@NotNull Shop shop) {
+  public VirtualDisplayItem createVirtualDisplayItem(@NotNull final Shop shop) {
 
     return new VirtualDisplayItem(this, packetFactory, shop);
   }
 
-  public void setTestPassed(boolean testPassed) {
+  public void setTestPassed(final boolean testPassed) {
 
     this.testPassed = testPassed;
   }

@@ -29,7 +29,7 @@ public class HopperPersistentDataType implements PersistentDataType<String, Hopp
 
   @NotNull
   @Override
-  public String toPrimitive(@NotNull HopperPersistentData complex, @NotNull PersistentDataAdapterContext context) {
+  public String toPrimitive(@NotNull final HopperPersistentData complex, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return GSON.toJson(complex);
@@ -42,7 +42,7 @@ public class HopperPersistentDataType implements PersistentDataType<String, Hopp
   @NotNull
   @Override
   public HopperPersistentData fromPrimitive(
-          @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return GSON.fromJson(primitive, HopperPersistentData.class);

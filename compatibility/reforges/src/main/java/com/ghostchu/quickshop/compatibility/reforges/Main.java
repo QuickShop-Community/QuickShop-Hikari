@@ -20,12 +20,12 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onItemPreviewPreparing(ItemPreviewComponentPrePopulateEvent event) {
+  public void onItemPreviewPreparing(final ItemPreviewComponentPrePopulateEvent event) {
 
     if(event.getPlayer() == null) {
       return;
     }
-    ItemStack stack = event.getItemStack().clone();
+    final ItemStack stack = event.getItemStack().clone();
     display.display(stack, event.getPlayer(), display.generateVarArgs(stack));
     display.display(stack, event.getPlayer(), new DisplayProperties(false, false, stack), display.generateVarArgs(stack));
     event.setItemStack(stack);

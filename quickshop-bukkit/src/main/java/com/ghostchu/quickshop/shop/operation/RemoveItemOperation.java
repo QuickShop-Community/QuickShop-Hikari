@@ -29,7 +29,7 @@ public class RemoveItemOperation implements Operation {
    * @param amount Amount to remove
    * @param inv    The {@link InventoryWrapper} that remove from
    */
-  public RemoveItemOperation(@NotNull ItemStack item, int amount, @NotNull InventoryWrapper inv) {
+  public RemoveItemOperation(@NotNull final ItemStack item, final int amount, @NotNull final InventoryWrapper inv) {
 
     this.item = item.clone();
     this.amount = amount;
@@ -46,10 +46,10 @@ public class RemoveItemOperation implements Operation {
     int remains = amount;
     int lastRemains = -1;
     while(remains > 0) {
-      int stackSize = Math.min(remains, itemMaxStackSize);
+      final int stackSize = Math.min(remains, itemMaxStackSize);
       item.setAmount(stackSize);
       Log.debug("Committing remove item operation, remains: " + remains + ", stackSize: " + stackSize + ", target: " + item);
-      Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
+      final Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
       if(notFit.isEmpty()) {
         remains -= stackSize;
       } else {

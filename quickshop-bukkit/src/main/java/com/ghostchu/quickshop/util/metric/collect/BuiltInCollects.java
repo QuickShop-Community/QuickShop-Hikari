@@ -20,7 +20,7 @@ import java.util.StringJoiner;
 public class BuiltInCollects {//Statistic
   private final QuickShop plugin;
 
-  public BuiltInCollects(QuickShop plugin) {
+  public BuiltInCollects(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -29,10 +29,10 @@ public class BuiltInCollects {//Statistic
   public CustomChart researchAddonsCompacts() {
 
     return new AdvancedPie("research_addons_or_compacts_discovered", ()->{
-      String myName = plugin.getJavaPlugin().getDescription().getName();
-      Map<String, Integer> data = new HashMap<>();
-      for(Plugin discoverPlugin : Bukkit.getPluginManager().getPlugins()) {
-        PluginDescriptionFile descriptionFile = discoverPlugin.getDescription();
+      final String myName = plugin.getJavaPlugin().getDescription().getName();
+      final Map<String, Integer> data = new HashMap<>();
+      for(final Plugin discoverPlugin : Bukkit.getPluginManager().getPlugins()) {
+        final PluginDescriptionFile descriptionFile = discoverPlugin.getDescription();
         if(descriptionFile.getDepend().contains(myName) || descriptionFile.getSoftDepend().contains(myName)) {
           data.put(descriptionFile.getName(), 1);
         }
@@ -54,7 +54,7 @@ public class BuiltInCollects {//Statistic
   public CustomChart researchProtectionListenerBlacklist() {
 
     return new AdvancedPie("research_protection_checker_blacklist", ()->{
-      Map<String, Integer> data = new HashMap<>();
+      final Map<String, Integer> data = new HashMap<>();
       plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(s->data.put(s, 1));
       return data;
     });
@@ -64,7 +64,7 @@ public class BuiltInCollects {//Statistic
   public CustomChart researchCommandAlias() {
 
     return new AdvancedPie("research_command_alias", ()->{
-      Map<String, Integer> data = new HashMap<>();
+      final Map<String, Integer> data = new HashMap<>();
       plugin.getConfig().getStringList("custom-commands").forEach(s->data.put(s, 1));
       return data;
     });
@@ -150,7 +150,7 @@ public class BuiltInCollects {//Statistic
   public CustomChart researchProtocolLibVersion() {
 
     return new SimplePie("research_protocollib_version", ()->{
-      Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+      final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
       if(protocolLib == null) {
         return "Not Installed";
       }
@@ -162,8 +162,8 @@ public class BuiltInCollects {//Statistic
   public CustomChart statisticServerSoftwareBuildVersion() {
 
     return new DrilldownPie("statistic_server_software_build_version", ()->{
-      Map<String, Map<String, Integer>> map = new HashMap<>();
-      Map<String, Integer> entry = new HashMap<>();
+      final Map<String, Map<String, Integer>> map = new HashMap<>();
+      final Map<String, Integer> entry = new HashMap<>();
       entry.put(Bukkit.getServer().getVersion(), 1);
       map.put(Bukkit.getServer().getName(), entry);
       return map;
@@ -180,13 +180,13 @@ public class BuiltInCollects {//Statistic
   public CustomChart researchGeyser() {
 
     return new SimplePie("research_geyser", ()->{
-      StringJoiner joiner = new StringJoiner("+");
+      final StringJoiner joiner = new StringJoiner("+");
       joiner.setEmptyValue("Not detected");
-      Plugin geyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
+      final Plugin geyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
       if(geyser != null) {
         joiner.add("Geyser-Spigot");
       }
-      Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate");
+      final Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate");
       if(floodgate != null) {
         joiner.add("Floodgate");
       }

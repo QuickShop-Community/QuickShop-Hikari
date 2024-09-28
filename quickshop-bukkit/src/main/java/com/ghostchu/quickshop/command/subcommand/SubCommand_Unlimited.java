@@ -13,13 +13,13 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Unlimited(QuickShop plugin) {
+  public SubCommand_Unlimited(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
     if(shop == null) {
@@ -31,7 +31,7 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
     if(shop.isUnlimited()) {
       plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
       if(plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-        QUser qUser = ((SimpleShopManager)plugin.getShopManager()).getCacheUnlimitedShopAccount();
+        final QUser qUser = ((SimpleShopManager)plugin.getShopManager()).getCacheUnlimitedShopAccount();
         plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
         plugin.text().of(sender, "unlimited-shop-owner-changed", qUser).send();
       }

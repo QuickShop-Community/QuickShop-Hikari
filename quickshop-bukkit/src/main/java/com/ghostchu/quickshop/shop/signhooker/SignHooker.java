@@ -30,7 +30,7 @@ public class SignHooker {
   private final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
   private PacketAdapter chunkAdapter;
 
-  public SignHooker(QuickShop plugin) {
+  public SignHooker(final QuickShop plugin) {
 
     PLUGIN = plugin;
     registerListener();
@@ -40,28 +40,28 @@ public class SignHooker {
 
     chunkAdapter = new PacketAdapter(PLUGIN.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
       @Override
-      public void onPacketSending(@NotNull PacketEvent event) {
+      public void onPacketSending(@NotNull final PacketEvent event) {
         //is really full chunk data
         //In 1.17, this value was removed, so read safely
-        Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
-        boolean isFull = boxedIsFull == null || boxedIsFull;
+        final Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
+        final boolean isFull = boxedIsFull == null || boxedIsFull;
         if(!isFull) {
           return;
         }
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
         if(player == null || !player.isOnline()) {
           return;
         }
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
         //chunk x
-        int x = integerStructureModifier.read(0);
+        final int x = integerStructureModifier.read(0);
         //chunk z
-        int z = integerStructureModifier.read(1);
+        final int z = integerStructureModifier.read(1);
 
-        Map<Location, Shop> shops = PLUGIN.getShopManager().getShops(player.getWorld().getName(), x, z);
+        final Map<Location, Shop> shops = PLUGIN.getShopManager().getShops(player.getWorld().getName(), x, z);
         if(shops == null) {
           return;
         }
@@ -73,7 +73,7 @@ public class SignHooker {
     Log.debug("SignHooker chunk adapter registered.");
   }
 
-  public void updatePerPlayerShopSign(Player player, Location location, Shop shop) {
+  public void updatePerPlayerShopSign(final Player player, final Location location, final Shop shop) {
 
     Util.ensureThread(false);
     if(!shop.isLoaded()) {
@@ -83,8 +83,8 @@ public class SignHooker {
       return;
     }
     Log.debug("Updating per-player packet sign: Player=" + player.getName() + ", Location=" + location + ", Shop=" + shop.getShopId());
-    List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
-    for(Sign sign : shop.getSigns()) {
+    final List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
+    for(final Sign sign : shop.getSigns()) {
       PLUGIN.getPlatform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
     }
   }
@@ -99,14 +99,14 @@ public class SignHooker {
     }
   }
 
-  public void updatePerPlayerShopSignBroadcast(Location location, Shop shop) {
+  public void updatePerPlayerShopSignBroadcast(final Location location, final Shop shop) {
 
-    World world = shop.getLocation().getWorld();
+    final World world = shop.getLocation().getWorld();
     if(world == null) {
       return;
     }
-    Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
-    for(Entity nearbyPlayer : nearbyPlayers) {
+    final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
+    for(final Entity nearbyPlayer : nearbyPlayers) {
       if(nearbyPlayer instanceof Player player) {
         updatePerPlayerShopSign(player, location, shop);
       }

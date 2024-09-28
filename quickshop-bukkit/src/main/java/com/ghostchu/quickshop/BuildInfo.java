@@ -22,14 +22,14 @@ public class BuildInfo {
   private final JenkinsInfo ciInfo;
 
   @SneakyThrows
-  public BuildInfo(@Nullable InputStream inputStream) {
+  public BuildInfo(@Nullable final InputStream inputStream) {
     // Read InputStream to String as UTF-8 encoding with Reader
     if(inputStream == null) {
       gitInfo = new GitInfo(new Properties());
       ciInfo = new JenkinsInfo(new Properties());
       return;
     }
-    Properties properties = new Properties();
+    final Properties properties = new Properties();
     properties.load(inputStream);
     this.gitInfo = new GitInfo(properties);
     this.ciInfo = new JenkinsInfo(properties);
@@ -68,7 +68,7 @@ public class BuildInfo {
     @Nullable
     private final String tags;
 
-    public GitInfo(@NotNull Properties properties) {
+    public GitInfo(@NotNull final Properties properties) {
 
       this.tags = properties.getProperty("git.tags");
       this.branch = properties.getProperty("git.branch");
@@ -208,10 +208,10 @@ public class BuildInfo {
     private final String projectBaseName;
 
 
-    public JenkinsInfo(@NotNull Properties properties) {
+    public JenkinsInfo(@NotNull final Properties properties) {
 
       this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
-      String idStr = properties.getProperty("ci.build.id");
+      final String idStr = properties.getProperty("ci.build.id");
       if(idStr != null) {
         int fid = -1;
         try {

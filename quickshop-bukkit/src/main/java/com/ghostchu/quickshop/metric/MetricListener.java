@@ -16,13 +16,13 @@ import org.bukkit.event.Listener;
 
 public class MetricListener extends AbstractQSListener implements Listener {
 
-  public MetricListener(QuickShop plugin) {
+  public MetricListener(final QuickShop plugin) {
 
     super(plugin);
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onCreate(ShopCreateSuccessEvent event) {
+  public void onCreate(final ShopCreateSuccessEvent event) {
 
     plugin.getDatabaseHelper().insertMetricRecord(
                     ShopMetricRecord.builder()
@@ -41,7 +41,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onDelete(ShopDeleteEvent event) {
+  public void onDelete(final ShopDeleteEvent event) {
 
     plugin.getDatabaseHelper().insertMetricRecord(
                     ShopMetricRecord.builder()
@@ -61,7 +61,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onDelete(ShopOngoingFeeEvent event) {
+  public void onDelete(final ShopOngoingFeeEvent event) {
 
     plugin.getDatabaseHelper().insertMetricRecord(
                     ShopMetricRecord.builder()
@@ -80,7 +80,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onPurchase(ShopSuccessPurchaseEvent event) {
+  public void onPurchase(final ShopSuccessPurchaseEvent event) {
 
     plugin.getDatabaseHelper().insertMetricRecord(
                     ShopMetricRecord.builder()
@@ -99,7 +99,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
             });
   }
 
-  private ShopOperationEnum wrapShopOperation(Shop shop) {
+  private ShopOperationEnum wrapShopOperation(final Shop shop) {
 
     return switch(shop.getShopType()) {
       case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;

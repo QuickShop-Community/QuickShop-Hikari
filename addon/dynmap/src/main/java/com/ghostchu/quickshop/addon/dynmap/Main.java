@@ -64,73 +64,73 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(WorldLoadEvent event) {
+  public void onEvent(final WorldLoadEvent event) {
 
     Util.mainThreadRun(this::updateAllMarkers);
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(WorldUnloadEvent event) {
+  public void onEvent(final WorldUnloadEvent event) {
 
     Util.mainThreadRun(this::updateAllMarkers);
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(QSConfigurationReloadEvent event) {
+  public void onEvent(final QSConfigurationReloadEvent event) {
 
     Util.mainThreadRun(this::updateAllMarkers);
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopCreateSuccessEvent event) {
+  public void onEvent(final ShopCreateSuccessEvent event) {
 
     updateShopMarker(event.getShop());
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopDeleteEvent event) {
+  public void onEvent(final ShopDeleteEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopPriceChangeEvent event) {
+  public void onEvent(final ShopPriceChangeEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopItemChangeEvent event) {
+  public void onEvent(final ShopItemChangeEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopOwnershipTransferEvent event) {
+  public void onEvent(final ShopOwnershipTransferEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopSuccessPurchaseEvent event) {
+  public void onEvent(final ShopSuccessPurchaseEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopTypeChangeEvent event) {
+  public void onEvent(final ShopTypeChangeEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(ShopNamingEvent event) {
+  public void onEvent(final ShopNamingEvent event) {
 
     Util.mainThreadRun(()->updateShopMarker(event.getShop()));
   }
 
   @NotNull
-  public String plain(@NotNull Component component) {
+  public String plain(@NotNull final Component component) {
 
     return PlainTextComponentSerializer.plainText().serialize(component);
   }
@@ -143,7 +143,7 @@ public final class Main extends JavaPlugin implements Listener {
 
   public MarkerSet getMarkerSet() {
 
-    String id = PackageUtil.parsePackageProperly("marker-id").asString("quickshop-hikari-shops");
+    final String id = PackageUtil.parsePackageProperly("marker-id").asString("quickshop-hikari-shops");
     MarkerSet markerSet = markerAPI.getMarkerSet(id);
     if(markerSet == null) {
       markerSet = markerAPI.createMarkerSet(id, plain(text().of("addon.dynmap.markerset-title").forLocale()), null, false);
@@ -159,18 +159,18 @@ public final class Main extends JavaPlugin implements Listener {
 
   public void updateAllMarkers() {
 
-    MarkerSet markerSet = getMarkerSet();
+    final MarkerSet markerSet = getMarkerSet();
     markerSet.getMarkers().forEach(GenericMarker::deleteMarker);
-    for(Shop shop : plugin.getShopManager().getAllShops()) {
+    for(final Shop shop : plugin.getShopManager().getAllShops()) {
       updateShopMarker(shop);
     }
   }
 
-  public void updateShopMarker(Shop shop) {
+  public void updateShopMarker(final Shop shop) {
 
-    MarkerSet markerSet = getMarkerSet();
+    final MarkerSet markerSet = getMarkerSet();
     String shopName = shop.getShopName();
-    String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
+    final String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
     if(shopName == null) {
       shopName = posStr;
     }
@@ -181,16 +181,16 @@ public final class Main extends JavaPlugin implements Listener {
       case FROZEN -> plain(text().of("shop-type.frozen").forLocale());
     };
 
-    String markerName = plain(text().of("addon.dynmap.marker-name",
-                                        shopName,
-                                        plain(shop.ownerName()),
-                                        plain(Util.getItemStackName(shop.getItem())),
-                                        plugin.getShopManager().format(shop.getPrice(), shop),
-                                        shop.getShopStackingAmount(),
-                                        type,
-                                        shop.isUnlimited(),
-                                        posStr
-                                       ).forLocale());
+    final String markerName = plain(text().of("addon.dynmap.marker-name",
+                                              shopName,
+                                              plain(shop.ownerName()),
+                                              plain(Util.getItemStackName(shop.getItem())),
+                                              plugin.getShopManager().format(shop.getPrice(), shop),
+                                              shop.getShopStackingAmount(),
+                                              type,
+                                              shop.isUnlimited(),
+                                              posStr
+                                             ).forLocale());
     if(marker == null) {
       marker = markerSet.createMarker("quickshop-hikari-shop-" + shop.getShopId()
               , markerName
@@ -205,16 +205,16 @@ public final class Main extends JavaPlugin implements Listener {
                          shop.getLocation().getY(),
                          shop.getLocation().getZ());
     }
-    String desc = plain(text().of("addon.dynmap.marker-description",
-                                  shopName,
-                                  plain(shop.ownerName()),
-                                  plain(Util.getItemStackName(shop.getItem())),
-                                  plugin.getShopManager().format(shop.getPrice(), shop),
-                                  shop.getShopStackingAmount(),
+    final String desc = plain(text().of("addon.dynmap.marker-description",
+                                        shopName,
+                                        plain(shop.ownerName()),
+                                        plain(Util.getItemStackName(shop.getItem())),
+                                        plugin.getShopManager().format(shop.getPrice(), shop),
+                                        shop.getShopStackingAmount(),
                                   shop.getShopType() == ShopType.SELLING? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
-                                  shop.isUnlimited(),
-                                  posStr
-                                 ).forLocale());
+                                        shop.isUnlimited(),
+                                        posStr
+                                       ).forLocale());
     marker.setDescription(desc.replace("\n", "<br/>"));
   }
 

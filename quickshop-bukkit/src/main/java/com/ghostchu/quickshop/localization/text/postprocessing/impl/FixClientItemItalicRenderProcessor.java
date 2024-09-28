@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class FixClientItemItalicRenderProcessor implements PostProcessor {
 
   @Override
-  public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
+  public @NotNull Component process(@NotNull Component text, @Nullable final CommandSender sender, final Component... args) {
 
     if(!text.hasDecoration(TextDecoration.ITALIC)) {
       text = text.decoration(TextDecoration.ITALIC, false);

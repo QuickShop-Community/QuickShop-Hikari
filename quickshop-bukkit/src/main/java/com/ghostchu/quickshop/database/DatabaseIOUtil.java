@@ -29,12 +29,12 @@ public class DatabaseIOUtil {
 
   private final SimpleDatabaseHelperV2 helper;
 
-  public DatabaseIOUtil(SimpleDatabaseHelperV2 helper) {
+  public DatabaseIOUtil(final SimpleDatabaseHelperV2 helper) {
 
     this.helper = helper;
   }
 
-  public boolean performBackup(String reason) {
+  public boolean performBackup(final String reason) {
 
     try {
       if(!QuickShop.getInstance().getConfig().getBoolean("backup-policy." + reason, true)) {
@@ -70,16 +70,16 @@ public class DatabaseIOUtil {
     }
   }
 
-  public void exportTables(@NotNull File zipFile) throws SQLException, IOException {
+  public void exportTables(@NotNull final File zipFile) throws SQLException, IOException {
     // zipFile.getParentFile().mkdirs();
     zipFile.createNewFile();
     try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
-      for(DataTables table : DataTables.values()) {
+      for(final DataTables table : DataTables.values()) {
         Log.debug("Exporting table " + table.name());
-        File tableCsv = new File(Util.getCacheFolder(), table.getName() + ".csv");
+        final File tableCsv = new File(Util.getCacheFolder(), table.getName() + ".csv");
         tableCsv.deleteOnExit();
         try(SQLQuery query = table.createQuery().build().execute()) {
-          ResultSet result = query.getResultSet();
+          final ResultSet result = query.getResultSet();
           writeToCSV(result, tableCsv);
           Log.debug("Exported table " + table.name() + " to " + tableCsv.getAbsolutePath());
         }
@@ -92,9 +92,9 @@ public class DatabaseIOUtil {
     }
   }
 
-  public void importTables(@NotNull File zipFile) throws SQLException, ClassNotFoundException {
+  public void importTables(@NotNull final File zipFile) throws SQLException, ClassNotFoundException {
     // Import from CSV
-    for(DataTables table : DataTables.values()) {
+    for(final DataTables table : DataTables.values()) {
       Log.debug("Purging table " + table.getName());
       table.purgeTable();
       Log.debug("Importing table " + table.getName() + " from " + zipFile.getAbsolutePath());
@@ -103,7 +103,7 @@ public class DatabaseIOUtil {
     }
   }
 
-  public void importFromCSV(@NotNull File zipFile, @NotNull DataTables table) throws SQLException, ClassNotFoundException {
+  public void importFromCSV(@NotNull final File zipFile, @NotNull final DataTables table) throws SQLException, ClassNotFoundException {
 
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
@@ -111,14 +111,14 @@ public class DatabaseIOUtil {
         Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                               ResultSet.CONCUR_READ_ONLY);
         ResultSet results = stmt.executeQuery("SELECT * FROM " + table.getName())) {
-      ResultSetMetaData metaData = results.getMetaData();
-      String[] columns = new String[metaData.getColumnCount()];
+      final ResultSetMetaData metaData = results.getMetaData();
+      final String[] columns = new String[metaData.getColumnCount()];
       for(int i = 0; i < columns.length; i++) {
         columns[i] = metaData.getColumnName(i + 1);
       }
       Log.debug("Parsed " + columns.length + " columns: " + CommonUtil.array2String(columns));
       while(results.next()) {
-        Object[] values = new String[columns.length];
+        final Object[] values = new String[columns.length];
         for(int i = 0; i < values.length; i++) {
           Log.debug("Copying column: " + columns[i]);
           values[i] = results.getObject(columns[i]);
@@ -132,7 +132,7 @@ public class DatabaseIOUtil {
     }
   }
 
-  public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {
+  public void writeToCSV(@NotNull final ResultSet set, @NotNull final File csvFile) throws SQLException, IOException {
 
     if(!csvFile.getParentFile().exists()) {
       csvFile.getParentFile().mkdirs();

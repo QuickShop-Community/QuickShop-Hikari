@@ -28,7 +28,7 @@ public class DisplayItemPersistentDataType
   @NotNull
   @Override
   public String toPrimitive(
-          @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final ShopProtectionFlag complex, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return JsonUtil.getGson().toJson(complex);
@@ -41,7 +41,7 @@ public class DisplayItemPersistentDataType
   @NotNull
   @Override
   public ShopProtectionFlag fromPrimitive(
-          @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
 
     try {
       return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);

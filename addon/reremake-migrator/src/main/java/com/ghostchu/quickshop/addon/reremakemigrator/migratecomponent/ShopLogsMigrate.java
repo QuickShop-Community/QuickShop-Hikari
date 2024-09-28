@@ -47,7 +47,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
   private final String template = "[2023-11-11 19:35:43.502] ";
   final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
 
-  public ShopLogsMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender) {
+  public ShopLogsMigrate(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake, final CommandSender sender) {
 
     super(main, hikari, reremake, sender);
   }
@@ -56,9 +56,9 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
   public boolean migrate() {
 
     text("modules.shop-logs.start-migrate").send();
-    File logsFile = new File(getReremake().getDataFolder(), "appended-qs.log");
-    File filteredFile = new File(getReremake().getDataFolder(), "filtered-qs.log");
-    File formattedFile = new File(getReremake().getDataFolder(), "formatted-qs.log");
+    final File logsFile = new File(getReremake().getDataFolder(), "appended-qs.log");
+    final File filteredFile = new File(getReremake().getDataFolder(), "filtered-qs.log");
+    final File formattedFile = new File(getReremake().getDataFolder(), "formatted-qs.log");
     try(PrintWriter printWriter = new PrintWriter(logsFile, StandardCharsets.UTF_8)) {
       logsFile.createNewFile();
       filteredFile.createNewFile();
@@ -78,10 +78,10 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     return true;
   }
 
-  private void importToDatabase(File filteredFile) throws IOException {
+  private void importToDatabase(final File filteredFile) throws IOException {
 
-    long sumLines = countLines(filteredFile);
-    BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
+    final long sumLines = countLines(filteredFile);
+    final BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
     try(bufferedReader) {
       String cursor;
       long count = 0;
@@ -89,9 +89,9 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
         try {
           count++;
           text("modules.shop-logs.import-entry", "<ENTRY TOO  LONG>", count, sumLines);
-          DatedLogEntry entry = JsonUtil.standard().fromJson(new String(Base64.getDecoder().decode(cursor), StandardCharsets.UTF_8), DatedLogEntry.class);
-          Date date = entry.getDate();
-          JsonObject jObj = JsonUtil.readObject(entry.getContent());
+          final DatedLogEntry entry = JsonUtil.standard().fromJson(new String(Base64.getDecoder().decode(cursor), StandardCharsets.UTF_8), DatedLogEntry.class);
+          final Date date = entry.getDate();
+          final JsonObject jObj = JsonUtil.readObject(entry.getContent());
           if(jObj.has("shop") && jObj.has("type") && jObj.has("trader")
              && jObj.has("itemStack") && jObj.has("amount")
              && jObj.has("balance")
@@ -115,9 +115,9 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     }
   }
 
-  private long countLines(File filteredFile) throws FileNotFoundException {
+  private long countLines(final File filteredFile) throws FileNotFoundException {
 
-    BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
+    final BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
     return bufferedReader.lines().count();
   }
 
@@ -142,28 +142,28 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
 //
 //    }
 
-  private void importThePurchaseRecord(Date date, JsonObject jObj) throws InvalidConfigurationException {
+  private void importThePurchaseRecord(final Date date, final JsonObject jObj) throws InvalidConfigurationException {
 
-    int amount = jObj.get("amount").getAsInt();
-    double balance = jObj.get("balance").getAsDouble();
-    double tax = jObj.get("tax").getAsDouble();
-    UUID trader = UUID.fromString(jObj.get("trader").getAsString());
-    ShopType type = ShopType.valueOf(jObj.get("type").getAsString());
-    JsonObject shop = jObj.get("shop").getAsJsonObject();
-    JsonObject pos = shop.get("position").getAsJsonObject();
-    World world = Bukkit.getWorld(pos.get("world").getAsString());
+    final int amount = jObj.get("amount").getAsInt();
+    final double balance = jObj.get("balance").getAsDouble();
+    final double tax = jObj.get("tax").getAsDouble();
+    final UUID trader = UUID.fromString(jObj.get("trader").getAsString());
+    final ShopType type = ShopType.valueOf(jObj.get("type").getAsString());
+    final JsonObject shop = jObj.get("shop").getAsJsonObject();
+    final JsonObject pos = shop.get("position").getAsJsonObject();
+    final World world = Bukkit.getWorld(pos.get("world").getAsString());
     if(world == null) {
       throw new IllegalArgumentException("World " + jObj.get("world").getAsString() + " not exists.");
     }
-    int x = pos.get("x").getAsInt();
-    int y = pos.get("y").getAsInt();
-    int z = pos.get("z").getAsInt();
-    Location location = new Location(world, x, y, z);
-    Shop shopInstance = getHikari().getShopManager().getShop(location);
+    final int x = pos.get("x").getAsInt();
+    final int y = pos.get("y").getAsInt();
+    final int z = pos.get("z").getAsInt();
+    final Location location = new Location(world, x, y, z);
+    final Shop shopInstance = getHikari().getShopManager().getShop(location);
     if(shopInstance == null) {
       throw new IllegalArgumentException("Shop at " + location + " not exists anymore");
     }
-    ShopMetricRecord shopMetricRecord = new ShopMetricRecord(
+    final ShopMetricRecord shopMetricRecord = new ShopMetricRecord(
             date.getTime(),
             shopInstance.getShopId(),
             type == ShopType.SELLING? ShopOperationEnum.PURCHASE_SELLING_SHOP : ShopOperationEnum.PURCHASE_BUYING_SHOP,
@@ -175,11 +175,11 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     getHikari().getDatabaseHelper().insertMetricRecord(shopMetricRecord);
   }
 
-  private void readAndFormatEntire(File filteredFile, File formattedFile) throws IOException {
+  private void readAndFormatEntire(final File filteredFile, final File formattedFile) throws IOException {
 
-    BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
+    final BufferedReader bufferedReader = new BufferedReader(new FileReader(filteredFile));
     formattedFile.createNewFile();
-    PrintWriter writer = new PrintWriter(formattedFile, StandardCharsets.UTF_8);
+    final PrintWriter writer = new PrintWriter(formattedFile, StandardCharsets.UTF_8);
     StringBuilder buffer = new StringBuilder();
     try(bufferedReader; writer) {
       String cursor;
@@ -187,7 +187,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
         if(_isNewLineStart(cursor)) {
           // Clean buffer
           if(!buffer.isEmpty()) {
-            DatedLogEntry formatted = _formatLine(buffer.toString());
+            final DatedLogEntry formatted = _formatLine(buffer.toString());
             if(formatted != null) {
               writer.println(Base64.getEncoder().encodeToString(JsonUtil.standard().toJson(formatted)
                                                                         .getBytes(StandardCharsets.UTF_8)));
@@ -214,27 +214,27 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
   }
 
   @Nullable
-  private DatedLogEntry _formatLine(String line) throws DateTimeParseException {
+  private DatedLogEntry _formatLine(final String line) throws DateTimeParseException {
 
-    String json = StringUtils.substringAfter(line, "] ");
+    final String json = StringUtils.substringAfter(line, "] ");
     if(!CommonUtil.isJson(json)) return null;
-    String dateStr = line.substring(1, template.length() - 1).trim();
-    TemporalAccessor accessor = DATETIME_FORMATTER.parse(dateStr);
+    final String dateStr = line.substring(1, template.length() - 1).trim();
+    final TemporalAccessor accessor = DATETIME_FORMATTER.parse(dateStr);
     return new DatedLogEntry(new Date(accessor.getLong(ChronoField.MILLI_OF_SECOND)), json);
   }
 
-  private boolean _isNewLineStart(String line) {
+  private boolean _isNewLineStart(final String line) {
 
     if(!line.startsWith("[")) return false;
     if(line.length() < template.length()) return false;
     return line.endsWith("] ");
   }
 
-  private void migrateAppendedLogs(File logsFile, File filteredFile) throws IOException {
+  private void migrateAppendedLogs(final File logsFile, final File filteredFile) throws IOException {
 
     text("modules.shop-logs.filter-history-files").send();
-    BufferedReader bufferedReader = new BufferedReader(new FileReader(logsFile));
-    PrintWriter writer = new PrintWriter(filteredFile, StandardCharsets.UTF_8);
+    final BufferedReader bufferedReader = new BufferedReader(new FileReader(logsFile));
+    final PrintWriter writer = new PrintWriter(filteredFile, StandardCharsets.UTF_8);
     long counter = 0;
     try(bufferedReader; writer) {
       String line;
@@ -255,23 +255,23 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     }
   }
 
-  private void appendFiles(File dataFolder, PrintWriter logsFile) throws IOException {
+  private void appendFiles(final File dataFolder, final PrintWriter logsFile) throws IOException {
 
     text("modules.shop-logs.extract-history-files").send();
-    File logsSubFolder = new File(dataFolder, "logs");
+    final File logsSubFolder = new File(dataFolder, "logs");
     if(logsSubFolder.exists()) {
-      File[] files = logsSubFolder.listFiles(f->f.getName().endsWith(".log.gz"));
+      final File[] files = logsSubFolder.listFiles(f->f.getName().endsWith(".log.gz"));
       if(files != null) {
-        for(File file : files) {
+        for(final File file : files) {
           try(GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
-            String content = new String(gzipInputStream.readAllBytes(), StandardCharsets.UTF_8);
+            final String content = new String(gzipInputStream.readAllBytes(), StandardCharsets.UTF_8);
             logsFile.println(content);
             logsFile.flush();
           }
         }
       }
     }
-    File mainLogFile = new File(dataFolder, "qs.log");
+    final File mainLogFile = new File(dataFolder, "qs.log");
     getHikari().logger().info("Selected main log file: " + mainLogFile.getAbsolutePath());
     if(mainLogFile.exists()) {
       try {

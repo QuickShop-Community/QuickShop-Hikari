@@ -29,7 +29,7 @@ public class QuickShopEventListener implements Listener {
   private final JDAWrapper jdaWrapper;
   private final DiscordDatabaseHelper databaseHelper;
 
-  public QuickShopEventListener(Main plugin) {
+  public QuickShopEventListener(final Main plugin) {
 
     this.plugin = plugin;
     this.jdaWrapper = plugin.getJdaWrapper();
@@ -37,7 +37,7 @@ public class QuickShopEventListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onPurchase(ShopSuccessPurchaseEvent event) {
+  public void onPurchase(final ShopSuccessPurchaseEvent event) {
 
     if(event.getShop().isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
       return;
@@ -48,50 +48,50 @@ public class QuickShopEventListener implements Listener {
     notifyShopOutOfSpace(event);
   }
 
-  private void notifyShopPurchase(ShopSuccessPurchaseEvent event) {
+  private void notifyShopPurchase(final ShopSuccessPurchaseEvent event) {
 
     Util.asyncThreadRun(()->{
-      MessageEmbed embed = plugin.getFactory().shopPurchasedSelf(event);
+      final MessageEmbed embed = plugin.getFactory().shopPurchasedSelf(event);
       //sendMessageIfEnabled(event.getShop().getOwner(), embed, NotificationFeature.USER_SHOP_PURCHASE);
       // Send to permission users
-      for(UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+      for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
         sendMessageIfEnabled(uuid, event.getShop(), embed, NotificationFeature.USER_SHOP_PURCHASE);
       }
     });
   }
 
-  private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
+  private void notifyModShopPurchase(final ShopSuccessPurchaseEvent event) {
 
     Util.asyncThreadRun(()->{
-      MessageEmbed embed = plugin.getFactory().modShopPurchase(event);
+      final MessageEmbed embed = plugin.getFactory().modShopPurchase(event);
       sendModeratorChannelMessageIfEnabled(embed, NotificationFeature.MOD_SHOP_PURCHASE);
     });
   }
 
-  private void notifyShopOutOfStock(ShopSuccessPurchaseEvent event) {
+  private void notifyShopOutOfStock(final ShopSuccessPurchaseEvent event) {
 
     if(event.getShop().isSelling() && event.getShop().getRemainingStock() == 0) {
       Util.asyncThreadRun(()->{
         // Send to owner
-        MessageEmbed embed = plugin.getFactory().shopOutOfStock(event);
+        final MessageEmbed embed = plugin.getFactory().shopOutOfStock(event);
         //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_STOCK);
         // Send to permission users
-        for(UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+        for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
           sendMessageIfEnabled(uuid, event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_STOCK);
         }
       });
     }
   }
 
-  private void notifyShopOutOfSpace(ShopSuccessPurchaseEvent event) {
+  private void notifyShopOutOfSpace(final ShopSuccessPurchaseEvent event) {
 
     if(event.getShop().isBuying() && event.getShop().getRemainingSpace() == 0) {
       Util.asyncThreadRun(()->{
         // Send to owner
-        MessageEmbed embed = plugin.getFactory().shopOutOfSpace(event);
+        final MessageEmbed embed = plugin.getFactory().shopOutOfSpace(event);
         //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_SPACE);
         // Send to permission users
-        for(UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+        for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
           if(event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
             sendMessageIfEnabled(uuid, event.getShop(), embed, NotificationFeature.USER_SHOP_OUT_OF_SPACE);
           }
@@ -101,9 +101,9 @@ public class QuickShopEventListener implements Listener {
 
   }
 
-  private void sendMessageIfEnabled(@NotNull QUser qUser, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+  private void sendMessageIfEnabled(@NotNull final QUser qUser, @NotNull final MessageEmbed embed, @NotNull final NotificationFeature feature) {
 
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid == null) {
       return;
     }
@@ -113,10 +113,10 @@ public class QuickShopEventListener implements Listener {
     }
   }
 
-  private void sendMessageIfEnabled(@NotNull QUser qUser, @NotNull Shop shop, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+  private void sendMessageIfEnabled(@NotNull final QUser qUser, @NotNull final Shop shop, @NotNull final MessageEmbed embed, @NotNull final NotificationFeature feature) {
 
     Util.ensureThread(true);
-    UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
+    final UUID uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
     if(uuid == null) {
       return;
     }
@@ -128,7 +128,7 @@ public class QuickShopEventListener implements Listener {
   }
 
 
-  private void sendMessageIfEnabled(@NotNull UUID uuid, @NotNull Shop shop, @NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+  private void sendMessageIfEnabled(@NotNull final UUID uuid, @NotNull final Shop shop, @NotNull final MessageEmbed embed, @NotNull final NotificationFeature feature) {
 
     Util.ensureThread(true);
     if(shop.playerAuthorize(uuid, plugin, "discordalert")) {
@@ -138,7 +138,7 @@ public class QuickShopEventListener implements Listener {
     }
   }
 
-  public void sendModeratorChannelMessageIfEnabled(@NotNull MessageEmbed embed, @NotNull NotificationFeature feature) {
+  public void sendModeratorChannelMessageIfEnabled(@NotNull final MessageEmbed embed, @NotNull final NotificationFeature feature) {
 
     Util.ensureThread(true);
     if(plugin.isServerNotificationFeatureEnabled(feature)) {
@@ -147,47 +147,47 @@ public class QuickShopEventListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopTransfer(ShopOwnershipTransferEvent event) {
+  public void onShopTransfer(final ShopOwnershipTransferEvent event) {
 
     notifyShopTransfer(event);
     notifyModShopTransfer(event);
   }
 
-  private void notifyShopTransfer(ShopOwnershipTransferEvent event) {
+  private void notifyShopTransfer(final ShopOwnershipTransferEvent event) {
 
     Util.asyncThreadRun(()->sendMessageIfEnabled(event.getNewOwner(), plugin.getFactory().shopTransferToYou(event), NotificationFeature.USER_SHOP_TRANSFER));
   }
 
-  private void notifyModShopTransfer(ShopOwnershipTransferEvent event) {
+  private void notifyModShopTransfer(final ShopOwnershipTransferEvent event) {
 
     Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modShopTransfer(event), NotificationFeature.MOD_SHOP_TRANSFER));
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopDelete(ShopDeleteEvent event) {
+  public void onShopDelete(final ShopDeleteEvent event) {
 
     notifyModShopRemoved(event);
   }
 
-  private void notifyModShopRemoved(ShopDeleteEvent event) {
+  private void notifyModShopRemoved(final ShopDeleteEvent event) {
 
     Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modShopRemoved(event), NotificationFeature.MOD_SHOP_REMOVED));
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopPriceChanged(ShopPriceChangeEvent event) {
+  public void onShopPriceChanged(final ShopPriceChangeEvent event) {
 
     notifyShopPriceChanged(event);
     notifyModShopPriceChanged(event);
   }
 
-  private void notifyShopPriceChanged(ShopPriceChangeEvent event) {
+  private void notifyShopPriceChanged(final ShopPriceChangeEvent event) {
 
     Util.asyncThreadRun(()->{
-      MessageEmbed embed = plugin.getFactory().priceChanged(event);
+      final MessageEmbed embed = plugin.getFactory().priceChanged(event);
       //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
       // Send to permission users
-      for(UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+      for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
         if(event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
           QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid)
                   .thenAccept(qUser->sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
@@ -201,24 +201,24 @@ public class QuickShopEventListener implements Listener {
 
   }
 
-  private void notifyModShopPriceChanged(ShopPriceChangeEvent event) {
+  private void notifyModShopPriceChanged(final ShopPriceChangeEvent event) {
 
     Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modPriceChanged(event), NotificationFeature.MOD_SHOP_PRICE_CHANGED));
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopPermissionChanged(ShopPlayerGroupSetEvent event) {
+  public void onShopPermissionChanged(final ShopPlayerGroupSetEvent event) {
 
     notifyShopPermissionChanged(event);
   }
 
-  private void notifyShopPermissionChanged(ShopPlayerGroupSetEvent event) {
+  private void notifyShopPermissionChanged(final ShopPlayerGroupSetEvent event) {
 
     Util.asyncThreadRun(()->{
-      MessageEmbed embed = plugin.getFactory().shopPermissionChanged(event);
+      final MessageEmbed embed = plugin.getFactory().shopPermissionChanged(event);
       sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PERMISSION_CHANGED);
       // Send to permission users
-      for(UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+      for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
         sendMessageIfEnabled(event.getPlayer(), event.getShop(), embed, NotificationFeature.USER_SHOP_PERMISSION_CHANGED);
       }
     });

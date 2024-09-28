@@ -28,7 +28,7 @@ public class ShopTypeChangeEvent extends AbstractQSEvent implements QSCancellabl
    * @param oldType The old shop type
    * @param newType The new shop type
    */
-  public ShopTypeChangeEvent(@NotNull Shop shop, ShopType oldType, ShopType newType) {
+  public ShopTypeChangeEvent(@NotNull final Shop shop, final ShopType oldType, final ShopType newType) {
 
     this.shop = shop;
     this.oldType = oldType;
@@ -42,7 +42,7 @@ public class ShopTypeChangeEvent extends AbstractQSEvent implements QSCancellabl
   }
 
   @Override
-  public void setCancelled(boolean cancel, @Nullable Component reason) {
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
     this.cancelled = cancel;
     this.cancelReason = reason;

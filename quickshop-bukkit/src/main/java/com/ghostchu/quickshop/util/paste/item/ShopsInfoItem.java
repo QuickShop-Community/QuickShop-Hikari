@@ -16,7 +16,7 @@ public class ShopsInfoItem implements SubPasteItem {
 
   public ShopsInfoItem() {
 
-    QuickShop plugin = QuickShop.getInstance();
+    final QuickShop plugin = QuickShop.getInstance();
     this.totalShops = String.valueOf(plugin.getShopManager().getAllShops().size());
     plugin.getShopManager().getAllShops().stream()
             .filter(shop->shop.getLocation().getWorld() != null)
@@ -46,7 +46,7 @@ public class ShopsInfoItem implements SubPasteItem {
   @NotNull
   private String buildContent() {
 
-    StringBuilder htmlBuilder = new StringBuilder();
+    final StringBuilder htmlBuilder = new StringBuilder();
     htmlBuilder.append("<p>Total Shops: ").append(totalShops).append("</p>");
     htmlBuilder.append("<h5>Shops in world</h5>");
     htmlBuilder.append("<ul>");

@@ -55,7 +55,7 @@ public class QuickExecutor {
     return PRIMARY_PROFILE_IO_EXECUTOR;
   }
 
-  public static void setPrimaryProfileIoExecutor(ExecutorService primaryProfileIoExecutor) {
+  public static void setPrimaryProfileIoExecutor(final ExecutorService primaryProfileIoExecutor) {
 
     PRIMARY_PROFILE_IO_EXECUTOR = primaryProfileIoExecutor;
   }
@@ -65,7 +65,7 @@ public class QuickExecutor {
     return SECONDARY_PROFILE_IO_EXECUTOR;
   }
 
-  public static void setSecondaryProfileIoExecutor(ExecutorService secondaryProfileIoExecutor) {
+  public static void setSecondaryProfileIoExecutor(final ExecutorService secondaryProfileIoExecutor) {
 
     SECONDARY_PROFILE_IO_EXECUTOR = secondaryProfileIoExecutor;
   }
@@ -75,22 +75,22 @@ public class QuickExecutor {
     return SHOP_HISTORY_QUERY_EXECUTOR;
   }
 
-  public static void setHikaricpExecutor(ExecutorService hikaricpExecutor) {
+  public static void setHikaricpExecutor(final ExecutorService hikaricpExecutor) {
 
     HIKARICP_EXECUTOR = hikaricpExecutor;
   }
 
-  public static void setShopSaveExecutor(ExecutorService shopSaveExecutor) {
+  public static void setShopSaveExecutor(final ExecutorService shopSaveExecutor) {
 
     SHOP_SAVE_EXECUTOR = shopSaveExecutor;
   }
 
-  public static void setShopHistoryQueryExecutor(ExecutorService shopHistoryQueryExecutor) {
+  public static void setShopHistoryQueryExecutor(final ExecutorService shopHistoryQueryExecutor) {
 
     SHOP_HISTORY_QUERY_EXECUTOR = shopHistoryQueryExecutor;
   }
 
-  public static void setCommonExecutor(ExecutorService commonExecutor) {
+  public static void setCommonExecutor(final ExecutorService commonExecutor) {
 
     COMMON_EXECUTOR = commonExecutor;
   }

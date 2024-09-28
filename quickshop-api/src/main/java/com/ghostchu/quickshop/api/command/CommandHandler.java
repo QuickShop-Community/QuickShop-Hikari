@@ -33,7 +33,7 @@ public interface CommandHandler<T extends CommandSender> {
    * @throws IllegalStateException if sender is not player
    */
   @Nullable
-  default Shop getLookingShop(T sender) throws IllegalStateException {
+  default Shop getLookingShop(final T sender) throws IllegalStateException {
 
     if(sender instanceof Player player) {
       final BlockIterator bIt = new BlockIterator(player, 10);
@@ -50,7 +50,7 @@ public interface CommandHandler<T extends CommandSender> {
     throw new IllegalStateException("Sender is not player");
   }
 
-  default @NotNull CompletableFuture<@NotNull List<Shop>> getTaggedShops(T sender, @NotNull String tag) {
+  default @NotNull CompletableFuture<@NotNull List<Shop>> getTaggedShops(final T sender, @NotNull final String tag) {
 
     if(sender instanceof Player player) {
       final UUID tagger = player.getUniqueId();
@@ -67,19 +67,19 @@ public interface CommandHandler<T extends CommandSender> {
    * @return The shops
    */
   @Nullable
-  default Map<Long, Shop> getShopsByIds(@NotNull List<Long> ids) {
+  default Map<Long, Shop> getShopsByIds(@NotNull final List<Long> ids) {
 
     final Map<Long, Shop> shops = new HashMap<>();
-    for(Long id : ids) {
+    for(final Long id : ids) {
       shops.put(id, QuickShopAPI.getInstance().getShopManager().getShop(id));
     }
     return shops;
   }
 
-  default void onCommand_Internal(T sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  default void onCommand_Internal(final T sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
     final StringJoiner joiner = new StringJoiner(" ");
-    for(String s : cmdArg) {
+    for(final String s : cmdArg) {
       joiner.add(s);
     }
 
@@ -102,7 +102,7 @@ public interface CommandHandler<T extends CommandSender> {
    * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
    * @param parser       The command parser which include arguments and colon arguments
    */
-  default void onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  default void onCommand(final T sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     throw new NotImplementedException("This method should be correctly implemented.");
   }
@@ -118,19 +118,19 @@ public interface CommandHandler<T extends CommandSender> {
    * instead.
    */
   @Deprecated(since = "4.2.0.0")
-  default void onCommand(T sender, @NotNull String commandLabel, @NotNull String[] cmdArgs) {
+  default void onCommand(final T sender, @NotNull final String commandLabel, @NotNull final String[] cmdArgs) {
 
     throw new NotImplementedException("This method is deprecated, please use onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
   }
 
   @Nullable
-  default List<String> onTabComplete_Internal(@NotNull T sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  default List<String> onTabComplete_Internal(@NotNull final T sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
-    StringJoiner joiner = new StringJoiner(" ");
-    for(String s : cmdArg) {
+    final StringJoiner joiner = new StringJoiner(" ");
+    for(final String s : cmdArg) {
       joiner.add(s);
     }
-    CommandParser parser = new CommandParser(joiner.toString(), false);
+    final CommandParser parser = new CommandParser(joiner.toString(), false);
     try {
       return onTabComplete(sender, commandLabel, parser);
     } catch(NotImplementedException e) {
@@ -152,7 +152,7 @@ public interface CommandHandler<T extends CommandSender> {
    * @return Candidate list
    */
   @Nullable
-  default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  default List<String> onTabComplete(@NotNull final T sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     throw new NotImplementedException("This method should be correctly implemented.");
   }
@@ -170,7 +170,7 @@ public interface CommandHandler<T extends CommandSender> {
    * {@link #onTabComplete(T, String, CommandParser)} instead.
    */
   @Deprecated(since = "4.2.0.0")
-  default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull String[] cmdArgs) {
+  default List<String> onTabComplete(@NotNull final T sender, @NotNull final String commandLabel, @NotNull final String[] cmdArgs) {
 
     throw new NotImplementedException("This method is deprecated, please use onTabComplete(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
   }

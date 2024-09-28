@@ -21,7 +21,7 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
   private final List<String> BLACKLIST_LORES = new ArrayList<>();
   private List<String> configBlacklist;
 
-  public SimpleShopItemBlackList(@NotNull QuickShop plugin) {
+  public SimpleShopItemBlackList(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     init();
@@ -32,7 +32,7 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
 
     BLACKLIST_LORES.clear();
     this.configBlacklist = plugin.getConfig().getStringList("blacklist");
-    List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
+    final List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
     configLoresBlackList.forEach(s->BLACKLIST_LORES.add(ChatColor.stripColor(s)));
   }
 
@@ -44,10 +44,10 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
    * @return true if blacklisted, false if not
    */
   @Override
-  public boolean isBlacklisted(@NotNull ItemStack itemStack) {
+  public boolean isBlacklisted(@NotNull final ItemStack itemStack) {
 
-    ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
-    for(String s : this.configBlacklist) {
+    final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    for(final String s : this.configBlacklist) {
       if(itemExpressionRegistry.match(itemStack, s)) {
         return true;
       }
@@ -58,23 +58,23 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
     if(!itemStack.hasItemMeta()) {
       return false;
     }
-    ItemMeta meta = itemStack.getItemMeta();
+    final ItemMeta meta = itemStack.getItemMeta();
     if(meta == null) {
       return false;
     }
     if(!meta.hasLore()) {
       return false;
     }
-    List<String> originalLores = meta.getLore();
+    final List<String> originalLores = meta.getLore();
     if(originalLores == null) {
       return false;
     }
-    List<String> strippedLores = new ArrayList<>(originalLores.size());
-    for(String originalLore : originalLores) {
+    final List<String> strippedLores = new ArrayList<>(originalLores.size());
+    for(final String originalLore : originalLores) {
       strippedLores.add(ChatColor.stripColor(originalLore));
     }
-    for(String loreLine : strippedLores) {
-      for(String blacklistLore : BLACKLIST_LORES) {
+    for(final String loreLine : strippedLores) {
+      for(final String blacklistLore : BLACKLIST_LORES) {
         if(loreLine.contains(blacklistLore)) {
           return true;
         }

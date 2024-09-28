@@ -28,11 +28,11 @@ public class GeoUtil {
   private static volatile Boolean inChinaRegion = null;
 
 
-  public static CompletableFuture<Integer> connectTest(String ipAddress, int port, int timeout) {
+  public static CompletableFuture<Integer> connectTest(final String ipAddress, final int port, final int timeout) {
 
     return CompletableFuture.supplyAsync(()->{
       try(Socket socket = new Socket()) {
-        long time = System.currentTimeMillis();
+        final long time = System.currentTimeMillis();
         socket.connect(new InetSocketAddress(InetAddress.getByName(ipAddress), port), timeout);
         return (int)(System.currentTimeMillis() - time);
       } catch(IOException ignored) {
@@ -41,11 +41,11 @@ public class GeoUtil {
     });
   }
 
-  private static long sendGetTest(String urlStr) {
+  private static long sendGetTest(final String urlStr) {
 
     HttpURLConnection connection = null;
     try {
-      URL url = new URL(urlStr);
+      final URL url = new URL(urlStr);
       connection = (HttpURLConnection)url.openConnection();
       connection.setConnectTimeout((int)TimeUnit.SECONDS.toMillis(5));
       connection.setReadTimeout((int)TimeUnit.SECONDS.toMillis(5));
@@ -69,18 +69,18 @@ public class GeoUtil {
   }
 
   @NotNull
-  public static List<MavenCentralMirror> determineBestMirrorServer(Logger logger) {
+  public static List<MavenCentralMirror> determineBestMirrorServer(final Logger logger) {
 
-    List<CompletableFuture<Void>> testEntry = new ArrayList<>();
-    Map<MavenCentralMirror, Long> mirrorPingMap = new ConcurrentSkipListMap<>();
-    for(MavenCentralMirror value : MavenCentralMirror.values()) {
+    final List<CompletableFuture<Void>> testEntry = new ArrayList<>();
+    final Map<MavenCentralMirror, Long> mirrorPingMap = new ConcurrentSkipListMap<>();
+    for(final MavenCentralMirror value : MavenCentralMirror.values()) {
       testEntry.add(CompletableFuture.supplyAsync(()->{
         mirrorPingMap.put(value, sendGetTest(value.getTestUrl()));
         return null;
       }));
     }
     testEntry.forEach(CompletableFuture::join);
-    List<Map.Entry<MavenCentralMirror, Long>> list = new ArrayList<>(mirrorPingMap.entrySet());
+    final List<Map.Entry<MavenCentralMirror, Long>> list = new ArrayList<>(mirrorPingMap.entrySet());
     list.sort(Map.Entry.comparingByValue());
     logger.info("Maven repository mirror test result:");
     list.forEach(e->{
@@ -99,23 +99,23 @@ public class GeoUtil {
   public static boolean inChinaRegion() {
     // Already know
     if(inChinaRegion != null) return inChinaRegion;
-    var client = HttpClient.newHttpClient();
+    final var client = HttpClient.newHttpClient();
     inChinaRegion = true;
-    var request = HttpRequest.newBuilder()
+    final var request = HttpRequest.newBuilder()
             .uri(URI.create("https://cloudflare.com/cdn-cgi/trace"))
             .timeout(Duration.ofSeconds(7))
             .build();
     try {
-      var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      String[] exploded = response.body().split("\n");
-      for(String s : exploded) {
+      final var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      final String[] exploded = response.body().split("\n");
+      for(final String s : exploded) {
         if(s.startsWith("loc=")) {
-          String[] kv = s.split("=");
+          final String[] kv = s.split("=");
           if(kv.length != 2) {
             continue;
           }
-          String key = kv[0];
-          String value = kv[1];
+          final String key = kv[0];
+          final String value = kv[1];
           if("loc".equalsIgnoreCase(key) && !"CN".equalsIgnoreCase(value)) {
             inChinaRegion = false;
             break;

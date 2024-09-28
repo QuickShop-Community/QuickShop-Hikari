@@ -27,7 +27,7 @@ public class DiscountCodeManager {
   private final File file;
   private YamlConfiguration config;
 
-  public DiscountCodeManager(Main main) throws IOException {
+  public DiscountCodeManager(final Main main) throws IOException {
 
     this.main = main;
     this.file = new File(main.getDataFolder(), "data.yml");
@@ -66,9 +66,9 @@ public class DiscountCodeManager {
   }
 
   @Nullable
-  public DiscountCode getCode(@NotNull String code) {
+  public DiscountCode getCode(@NotNull final String code) {
 
-    for(DiscountCode discountCode : this.codes) {
+    for(final DiscountCode discountCode : this.codes) {
       if(discountCode.getCode().equalsIgnoreCase(code)) {
         return discountCode;
       }
@@ -82,13 +82,13 @@ public class DiscountCodeManager {
     return codes;
   }
 
-  public void removeCode(@NotNull DiscountCode discountCode) {
+  public void removeCode(@NotNull final DiscountCode discountCode) {
 
     codes.remove(discountCode);
   }
 
   @NotNull
-  public CodeCreationResponse createDiscountCode(@NotNull CommandSender sender, @NotNull UUID owner, @NotNull String code, @NotNull CodeType codeType, @NotNull String rate, int maxUsage, double threshold, long expiredTime) {
+  public CodeCreationResponse createDiscountCode(@NotNull final CommandSender sender, @NotNull final UUID owner, @NotNull final String code, @NotNull final CodeType codeType, @NotNull final String rate, final int maxUsage, final double threshold, final long expiredTime) {
 
     if(!namePattern.matcher(code).matches()) {
       return CodeCreationResponse.REGEX_FAILURE;
@@ -105,14 +105,14 @@ public class DiscountCodeManager {
     if(expiredTime != -1 && expiredTime < 1) {
       return CodeCreationResponse.INVALID_EXPIRE_TIME;
     }
-    DiscountCode.DiscountRate discountRate = DiscountCode.toDiscountRate(rate);
+    final DiscountCode.DiscountRate discountRate = DiscountCode.toDiscountRate(rate);
     if(discountRate == null) {
       return CodeCreationResponse.INVALID_RATE;
     }
     if(!QuickShop.getPermissionManager().hasPermission(sender, "quickshopaddon.discount.create." + codeType.name().toLowerCase())) {
       return CodeCreationResponse.PERMISSION_DENIED;
     }
-    DiscountCode discountCode = new DiscountCode(owner, code, codeType, discountRate, maxUsage, threshold, expiredTime);
+    final DiscountCode discountCode = new DiscountCode(owner, code, codeType, discountRate, maxUsage, threshold, expiredTime);
     if(!this.codes.add(discountCode)) {
       return CodeCreationResponse.CODE_EXISTS;
     }

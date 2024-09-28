@@ -45,7 +45,7 @@ public class PermissionChecker implements Reloadable {
   private QuickEventManager eventManager;
 
 
-  public PermissionChecker(@NotNull QuickShop plugin) {
+  public PermissionChecker(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);
@@ -55,7 +55,7 @@ public class PermissionChecker implements Reloadable {
   private void init() {
 
     usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
-    List<String> listenerBlacklist = plugin.getConfig().getStringList("shop.protection-checking-blacklist");
+    final List<String> listenerBlacklist = plugin.getConfig().getStringList("shop.protection-checking-blacklist");
     listenerBlacklist.removeIf("ignored_listener"::equalsIgnoreCase); // Remove default demo rule
     if(listenerBlacklist.isEmpty()) {
       this.eventManager = new BukkitEventManager();
@@ -75,7 +75,7 @@ public class PermissionChecker implements Reloadable {
    * @return Result represent if you can build there
    */
   @NotNull
-  public Result canBuild(@NotNull Player player, @NotNull Location location) {
+  public Result canBuild(@NotNull final Player player, @NotNull final Location location) {
 
     return canBuild(player, location.getBlock());
   }
@@ -89,10 +89,10 @@ public class PermissionChecker implements Reloadable {
    * @return Result represent if you can build there
    */
   @NotNull
-  public Result canBuild(@NotNull Player player, @NotNull Block block) {
+  public Result canBuild(@NotNull final Player player, @NotNull final Block block) {
 
     try(PerfMonitor ignored = new PerfMonitor("Build Permission Check", Duration.of(1, ChronoUnit.SECONDS))) {
-      QUser qUser = QUserImpl.createFullFilled(player);
+      final QUser qUser = QUserImpl.createFullFilled(player);
       if(plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
         Log.debug("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
         return Result.SUCCESS;
@@ -102,30 +102,30 @@ public class PermissionChecker implements Reloadable {
         return Result.SUCCESS;
       }
 
-      AtomicBoolean qsCancelling = new AtomicBoolean(false);
+      final AtomicBoolean qsCancelling = new AtomicBoolean(false);
 
       final Result isCanBuild = new Result();
 
-      BlockBreakEvent beMainHand;
+      final BlockBreakEvent beMainHand;
 
       beMainHand = new BlockBreakEvent(block, player) {
 
         @Override
-        public void setCancelled(boolean cancel) {
+        public void setCancelled(final boolean cancel) {
           //tracking cancel plugin
           if(cancel && !isCancelled()) {
             if(qsCancelling.get()) {
               return;
             }
             Log.debug("An plugin blocked the protection checking event! See this stacktrace:");
-            for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            for(final StackTraceElement element : Thread.currentThread().getStackTrace()) {
               Log.debug(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
             }
             isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
             out:
-            for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            for(final StackTraceElement element : Thread.currentThread().getStackTrace()) {
 
-              for(RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
+              for(final RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
                 if(listener.getListener().getClass().getName().equals(element.getClassName())) {
                   isCanBuild.setResult(false);
                   isCanBuild.setMessage(listener.getPlugin().getName());
@@ -146,7 +146,7 @@ public class PermissionChecker implements Reloadable {
       //register a listener to cancel test event
       Bukkit.getPluginManager().registerEvents(new Listener() {
         @EventHandler(priority = EventPriority.HIGHEST)
-        public void onTestEvent(BlockBreakEvent event) {
+        public void onTestEvent(final BlockBreakEvent event) {
 
           if(event.equals(beMainHand)) {
             // Call for event for protection check end

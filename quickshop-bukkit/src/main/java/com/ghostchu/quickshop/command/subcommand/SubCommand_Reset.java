@@ -14,14 +14,14 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
   private final QuickShop plugin;
   private final List<String> tabCompleteList = List.of("config");
 
-  public SubCommand_Reset(QuickShop plugin) {
+  public SubCommand_Reset(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "command.no-type-given").send();
@@ -30,7 +30,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     switch(parser.getArgs().get(0)) {
       case "config" -> {
-        File config = new File(plugin.getDataFolder(), "config.yml");
+        final File config = new File(plugin.getDataFolder(), "config.yml");
         config.delete();
         plugin.getJavaPlugin().saveDefaultConfig();
         plugin.getJavaPlugin().reloadConfig();
@@ -43,7 +43,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
   @NotNull
   @Override
-  public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     return tabCompleteList;
   }

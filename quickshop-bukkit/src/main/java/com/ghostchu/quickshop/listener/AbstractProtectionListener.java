@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 public abstract class AbstractProtectionListener extends AbstractQSListener {
 
-  protected AbstractProtectionListener(@NotNull QuickShop plugin) {
+  protected AbstractProtectionListener(@NotNull final QuickShop plugin) {
 
     super(plugin);
     plugin.getReloadManager().register(this);
@@ -31,7 +31,7 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
    * @return The shop object
    */
   @Nullable
-  public Shop getShopNature(@NotNull Location location, boolean includeAttached) {
+  public Shop getShopNature(@NotNull final Location location, final boolean includeAttached) {
 
     return includeAttached? plugin.getShopManager().getShopIncludeAttached(location) : plugin.getShopManager().getShop(location);
   }
@@ -45,7 +45,7 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
    * @return The shop object
    */
   @Nullable
-  public Shop getShopPlayer(@NotNull Location location, boolean includeAttached) {
+  public Shop getShopPlayer(@NotNull final Location location, final boolean includeAttached) {
 
     return includeAttached? plugin.getShopManager().getShopIncludeAttached(location) : plugin.getShopManager().getShop(location);
   }
@@ -59,7 +59,7 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
    * @return The shop object
    */
   @Nullable
-  public Shop getShopRedstone(@NotNull Location location, boolean includeAttached) {
+  public Shop getShopRedstone(@NotNull final Location location, final boolean includeAttached) {
 
     if(includeAttached) {
       return plugin.getShopManager().getShopIncludeAttachedViaCache(location);

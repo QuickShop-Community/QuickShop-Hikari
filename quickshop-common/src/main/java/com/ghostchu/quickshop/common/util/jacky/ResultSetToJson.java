@@ -19,16 +19,16 @@ public class ResultSetToJson {
   }
 
   @NotNull
-  public static JsonArray resultSetToJsonArray(@NotNull ResultSet rs) {
+  public static JsonArray resultSetToJsonArray(@NotNull final ResultSet rs) {
 
-    JsonArray ja = new JsonArray();
+    final JsonArray ja = new JsonArray();
     try {
-      ResultSetMetaData rsmd = rs.getMetaData();
+      final ResultSetMetaData rsmd = rs.getMetaData();
       while(rs.next()) {
-        JsonObject element = new JsonObject();
+        final JsonObject element = new JsonObject();
         for(int i = 0; i < rsmd.getColumnCount(); i++) {
-          String columnName = rsmd.getColumnName(i + 1);
-          String columnValue = rs.getString(columnName);
+          final String columnName = rsmd.getColumnName(i + 1);
+          final String columnValue = rs.getString(columnName);
           element.addProperty(columnName, columnValue);
         }
         ja.add(element);
@@ -39,23 +39,23 @@ public class ResultSetToJson {
     return ja;
   }
 
-  public static String resultSetToJsonString(ResultSet rs) {
+  public static String resultSetToJsonString(final ResultSet rs) {
 
     return resultSetToJsonObject(rs).toString();
   }
 
   @NotNull
-  public static JsonObject resultSetToJsonObject(@NotNull ResultSet rs) {
+  public static JsonObject resultSetToJsonObject(@NotNull final ResultSet rs) {
 
-    JsonArray ja = new JsonArray();
-    JsonObject jo = new JsonObject();
+    final JsonArray ja = new JsonArray();
+    final JsonObject jo = new JsonObject();
     try {
-      ResultSetMetaData rsmd = rs.getMetaData();
+      final ResultSetMetaData rsmd = rs.getMetaData();
       while(rs.next()) {
-        JsonObject element = new JsonObject();
+        final JsonObject element = new JsonObject();
         for(int i = 0; i < rsmd.getColumnCount(); i++) {
-          String columnName = rsmd.getColumnName(i + 1);
-          String columnValue = rs.getString(columnName);
+          final String columnName = rsmd.getColumnName(i + 1);
+          final String columnValue = rs.getString(columnName);
           element.addProperty(columnName, columnValue);
         }
         ja.add(element);

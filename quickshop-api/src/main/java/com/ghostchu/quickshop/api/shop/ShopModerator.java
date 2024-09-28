@@ -28,7 +28,7 @@ public interface ShopModerator {
    * @throws JsonSyntaxException incorrect json string
    */
   @NotNull
-  static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
+  static ShopModerator deserialize(@NotNull final String serilized) throws JsonSyntaxException {
     // Use Gson deserialize data
     return GSON.fromJson(serilized, ShopModerator.class);
   }
@@ -41,7 +41,7 @@ public interface ShopModerator {
    * @return Json String
    */
   @NotNull
-  static String serialize(@NotNull ShopModerator shopModerator) {
+  static String serialize(@NotNull final ShopModerator shopModerator) {
 
     return GSON.toJson(shopModerator); // Use Gson serialize this class
   }

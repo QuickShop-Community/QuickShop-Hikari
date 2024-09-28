@@ -20,7 +20,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Database(QuickShop plugin) {
+  public SubCommand_Database(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -33,13 +33,13 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
    * @param cmdArg       The arguments (/quickshop create stone will receive stone)
    */
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
       return;
     }
-    List<String> subParams = new ArrayList<>(parser.getArgs());
+    final List<String> subParams = new ArrayList<>(parser.getArgs());
     subParams.remove(0);
     switch(parser.getArgs().get(0)) {
       case "trim" -> handleTrim(sender, subParams);
@@ -50,7 +50,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public @Nullable List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() < 2) {
       return List.of("trim");
@@ -58,14 +58,14 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     return Collections.emptyList();
   }
 
-  private void handleTrim(@NotNull CommandSender sender, @NotNull List<String> subParams) {
+  private void handleTrim(@NotNull final CommandSender sender, @NotNull final List<String> subParams) {
 
     if(subParams.isEmpty() || !"confirm".equalsIgnoreCase(subParams.get(0))) {
       plugin.text().of(sender, "database.trim-warning").send();
       return;
     }
     plugin.text().of(sender, "database.trim-start").send();
-    SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2)plugin.getDatabaseHelper();
+    final SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2)plugin.getDatabaseHelper();
     databaseHelper.purgeIsolated()
             .thenAccept(i->plugin.text().of(sender, "database.trim-complete", i).send())
             .exceptionally(err->{
@@ -98,7 +98,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
 //        printer.printFooter();
 //    }
 
-  private void purgeLogs(@NotNull CommandSender sender, @NotNull List<String> subParams) {
+  private void purgeLogs(@NotNull final CommandSender sender, @NotNull final List<String> subParams) {
     // TODO: Only purge before x days
     if(subParams.isEmpty()) {
       plugin.text().of(sender, "command-incorrect", "/quickshop database purgelogs <before-days>").send();
@@ -109,11 +109,11 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
       return;
     }
     try {
-      int days = Integer.parseInt(subParams.get(0));
-      Calendar calendar = Calendar.getInstance();
+      final int days = Integer.parseInt(subParams.get(0));
+      final Calendar calendar = Calendar.getInstance();
       calendar.add(Calendar.DATE, days);
       plugin.text().of(sender, "database.purge-task-created").send();
-      SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2)plugin.getDatabaseHelper();
+      final SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2)plugin.getDatabaseHelper();
       databaseHelper.purgeLogsRecords(calendar.getTime()).whenComplete((r, e)->{
         if(e != null) {
           plugin.logger().warn("Failed to execute database purge.", e);
@@ -135,7 +135,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     }
   }
 
-  private void purgePlayersCache(CommandSender sender, @NotNull List<String> subParams) {
+  private void purgePlayersCache(final CommandSender sender, @NotNull final List<String> subParams) {
 
     plugin.text().of(sender, "database.purge-players-cache").send();
     Util.asyncThreadRun(()->DataTables.PLAYERS

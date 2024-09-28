@@ -20,9 +20,9 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
    *
    * @return the default implementation for bukkit inventory
    */
-  static InventoryWrapperIterator ofBukkitInventory(Inventory inventory) {
+  static InventoryWrapperIterator ofBukkitInventory(final Inventory inventory) {
 
-    int size = inventory.getStorageContents().length;
+    final int size = inventory.getStorageContents().length;
     return new InventoryWrapperIterator() {
       int currentIndex = 0;
 
@@ -42,9 +42,9 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
       }
 
       @Override
-      public void setCurrent(ItemStack stack) {
+      public void setCurrent(final ItemStack stack) {
 
-        ItemStack[] storageItems = inventory.getStorageContents();
+        final ItemStack[] storageItems = inventory.getStorageContents();
         storageItems[Math.max(0, currentIndex - 1)] = stack;
         inventory.setStorageContents(storageItems);
       }
@@ -58,7 +58,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
    *
    * @return the default implementation for itemStack array
    */
-  static InventoryWrapperIterator ofItemStacks(ItemStack[] itemStacks) {
+  static InventoryWrapperIterator ofItemStacks(final ItemStack[] itemStacks) {
 
     return new InventoryWrapperIterator() {
       int currentIndex = 0;
@@ -79,7 +79,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
       }
 
       @Override
-      public void setCurrent(ItemStack stack) {
+      public void setCurrent(final ItemStack stack) {
 
         itemStacks[Math.max(0, currentIndex - 1)] = stack.clone();
       }

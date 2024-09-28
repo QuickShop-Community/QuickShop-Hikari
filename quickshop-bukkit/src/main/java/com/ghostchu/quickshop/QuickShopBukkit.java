@@ -61,7 +61,7 @@ public class QuickShopBukkit extends JavaPlugin {
   @Override
   public void onLoad() {
 
-    long startLoadAt = System.currentTimeMillis();
+    final long startLoadAt = System.currentTimeMillis();
     try {
       bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the initialization sequence");
       bootstrapLogger.info("Bootloader preparing for startup, please wait...");
@@ -84,7 +84,7 @@ public class QuickShopBukkit extends JavaPlugin {
   @Override
   public void onDisable() {
 
-    long shutdownAtTime = System.currentTimeMillis();
+    final long shutdownAtTime = System.currentTimeMillis();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the shutdown sequence");
     this.quickShop.onDisable();
     bootstrapLogger.info("Cleaning up resources...");
@@ -103,7 +103,7 @@ public class QuickShopBukkit extends JavaPlugin {
     if(abortLoading != null) {
       throw new IllegalStateException("Plugin is disabled due an loading error", abortLoading);
     }
-    long enableAtTime = System.currentTimeMillis();
+    final long enableAtTime = System.currentTimeMillis();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the enable sequence");
     this.quickShop.onEnable();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> All Complete. (" + (System.currentTimeMillis() - enableAtTime) + "ms)");
@@ -126,20 +126,20 @@ public class QuickShopBukkit extends JavaPlugin {
     new UnirestLibLoader(this);
   }
 
-  private void resolveLibraries(QuickShopBukkit quickShopBukkit) {
+  private void resolveLibraries(final QuickShopBukkit quickShopBukkit) {
 
     if(Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.doNotResolveLibraries"))) {
       bootstrapLogger.warning("Warning! You have disabled libraries resolver! Make sure you added libraries in plugin.yml!");
       return;
     }
-    LogAdapter adapter = new JDKLogAdapter(getLogger());
+    final LogAdapter adapter = new JDKLogAdapter(getLogger());
 
     this.bukkitLibraryManager = new BukkitLibraryManager(quickShopBukkit, "lib", adapter);
     if(!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableMavenLocal"))) {
       this.bukkitLibraryManager.addMavenLocal();
     }
     if(!Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.disableSpigotLocal"))) {
-      File relative = new File(getDataFolder().getParentFile().getParentFile(), "libraries");
+      final File relative = new File(getDataFolder().getParentFile().getParentFile(), "libraries");
       if(relative.exists()) {
         this.bukkitLibraryManager.addRepository(relative.toPath().toUri().toString());
       }
@@ -160,20 +160,20 @@ public class QuickShopBukkit extends JavaPlugin {
     }
   }
 
-  private void loadLibraries(LibraryManager manager) {
+  private void loadLibraries(final LibraryManager manager) {
 
     try(InputStream stream = getResource("libraries.maven")) {
       if(stream == null) {
         throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
       }
-      String dat = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-      String[] libraries = dat.split("\n");
-      List<Library> libraryList = new ArrayList<>();
+      final String dat = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+      final String[] libraries = dat.split("\n");
+      final List<Library> libraryList = new ArrayList<>();
       int skipped = 0;
       for(String library : libraries) {
         if(library.isBlank() || library.startsWith("#") || library.startsWith("//")) continue;
         library = library.trim();
-        String[] cases = library.split("@");
+        final String[] cases = library.split("@");
         String testClass = null;
         if(cases.length == 2) {
           testClass = cases[1];
@@ -185,13 +185,13 @@ public class QuickShopBukkit extends JavaPlugin {
           }
         }
 
-        String[] libExplode = cases[0].split(":");
+        final String[] libExplode = cases[0].split(":");
         if(libExplode.length < 3) {
           throw new IllegalArgumentException("[" + library + "] not a valid maven dependency syntax");
         }
-        String groupId = libExplode[0];
-        String artifactId = libExplode[1];
-        String version = libExplode[2];
+        final String groupId = libExplode[0];
+        final String artifactId = libExplode[1];
+        final String version = libExplode[2];
         String classifier = null;
         if(libExplode.length >= 4) {
           classifier = libExplode[3];
@@ -205,15 +205,15 @@ public class QuickShopBukkit extends JavaPlugin {
         if(classifier != null) {
           libBuilder = libBuilder.classifier(classifier);
         }
-        Library lib = libBuilder.build();
+        final Library lib = libBuilder.build();
         libraryList.add(lib);
       }
       bootstrapLogger.info("Loading " + libraryList.size() + " libraries (" + skipped + " skipped libraries)...");
       for(int i = 0; i < libraryList.size(); i++) {
-        Library load = libraryList.get(i);
+        final Library load = libraryList.get(i);
         bootstrapLogger.info("Loading library " + load.toString() + " [" + (i + 1) + "/" + libraryList.size() + "]");
         if(Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.QuickShopBukkit.verboseLibraryManager"))) {
-          for(String url : load.getUrls()) {
+          for(final String url : load.getUrls()) {
             bootstrapLogger.info(load + " url selected: " + url);
           }
         }
@@ -341,7 +341,7 @@ public class QuickShopBukkit extends JavaPlugin {
 
   static class UnirestLibLoader {
 
-    public UnirestLibLoader(QuickShopBukkit plugin) {
+    public UnirestLibLoader(final QuickShopBukkit plugin) {
 
       plugin.getBootstrapLogger().info("Initialing Unirest...");
       Unirest.config()

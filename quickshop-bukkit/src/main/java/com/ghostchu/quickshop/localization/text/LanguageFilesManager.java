@@ -19,19 +19,19 @@ public class LanguageFilesManager {
    * @param locale          The locale code
    * @param newDistribution The values from Distribution platform
    */
-  public void deploy(@NotNull String locale, @NotNull FileConfiguration newDistribution) {
+  public void deploy(@NotNull final String locale, @NotNull final FileConfiguration newDistribution) {
 
     if(!this.locale2ContentMapping.containsKey(locale)) {
       this.locale2ContentMapping.put(locale, newDistribution);
     } else {
-      FileConfiguration exists = this.locale2ContentMapping.get(locale);
+      final FileConfiguration exists = this.locale2ContentMapping.get(locale);
       merge(exists, newDistribution);
     }
   }
 
-  private void merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
+  private void merge(@NotNull final FileConfiguration alreadyRegistered, @NotNull final FileConfiguration newConfiguration) {
 
-    for(String key : newConfiguration.getKeys(true)) {
+    for(final String key : newConfiguration.getKeys(true)) {
       if(newConfiguration.isConfigurationSection(key)) {
         continue;
       }
@@ -39,16 +39,16 @@ public class LanguageFilesManager {
     }
   }
 
-  public void fillMissing(@NotNull FileConfiguration fallback) {
+  public void fillMissing(@NotNull final FileConfiguration fallback) {
 
-    for(FileConfiguration value : this.locale2ContentMapping.values()) {
+    for(final FileConfiguration value : this.locale2ContentMapping.values()) {
       mergeMissing(value, fallback);
     }
   }
 
-  private void mergeMissing(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
+  private void mergeMissing(@NotNull final FileConfiguration alreadyRegistered, @NotNull final FileConfiguration newConfiguration) {
 
-    for(String key : newConfiguration.getKeys(true)) {
+    for(final String key : newConfiguration.getKeys(true)) {
       if(newConfiguration.isConfigurationSection(key)) {
         continue;
       }
@@ -59,7 +59,7 @@ public class LanguageFilesManager {
     }
   }
 
-  public void destroy(@NotNull String locale) {
+  public void destroy(@NotNull final String locale) {
 
     this.locale2ContentMapping.remove(locale);
   }
@@ -71,7 +71,7 @@ public class LanguageFilesManager {
    *
    * @return The locale data, null if never deployed
    */
-  public @Nullable FileConfiguration getDistribution(@NotNull String locale) {
+  public @Nullable FileConfiguration getDistribution(@NotNull final String locale) {
 
     return this.locale2ContentMapping.get(locale);
   }
@@ -91,7 +91,7 @@ public class LanguageFilesManager {
    *
    * @param distributionPath The distribution path
    */
-  public void remove(@NotNull String distributionPath) {
+  public void remove(@NotNull final String distributionPath) {
 
     this.locale2ContentMapping.remove(distributionPath);
   }
@@ -102,7 +102,7 @@ public class LanguageFilesManager {
    * @param distributionPath The distribution path
    * @param locale           The locale
    */
-  public void remove(@NotNull String distributionPath, @NotNull String locale) {
+  public void remove(@NotNull final String distributionPath, @NotNull final String locale) {
 
     if(this.locale2ContentMapping.containsKey(distributionPath)) {
       this.locale2ContentMapping.remove(locale);

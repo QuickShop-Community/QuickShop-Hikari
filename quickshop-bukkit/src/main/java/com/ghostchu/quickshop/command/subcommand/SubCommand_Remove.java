@@ -14,13 +14,13 @@ public class SubCommand_Remove implements CommandHandler<Player> {
 
   private final QuickShop plugin;
 
-  public SubCommand_Remove(QuickShop plugin) {
+  public SubCommand_Remove(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
     if(shop == null) {

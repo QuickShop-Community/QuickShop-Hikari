@@ -17,12 +17,12 @@ public class Result {
     }
 
     @Override
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
 
     }
 
     @Override
-    public void setResult(boolean result) {
+    public void setResult(final boolean result) {
 
     }
 
@@ -52,7 +52,7 @@ public class Result {
 
   }
 
-  public Result(String message) {
+  public Result(final String message) {
 
     result = false;
     this.message = message;

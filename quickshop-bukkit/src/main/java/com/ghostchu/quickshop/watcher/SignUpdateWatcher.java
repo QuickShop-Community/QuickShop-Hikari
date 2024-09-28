@@ -19,8 +19,8 @@ public class SignUpdateWatcher implements Runnable {
   @Override
   public void run() {
 
-    Instant startTime = Instant.now();
-    Instant endTime = startTime.plusMillis(50);
+    final Instant startTime = Instant.now();
+    final Instant endTime = startTime.plusMillis(50);
     Shop shop = signUpdateQueue.poll();
     while(shop != null && !Instant.now().isAfter(endTime)) {
       shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(shop.getOwner(), false));
@@ -28,7 +28,7 @@ public class SignUpdateWatcher implements Runnable {
     }
   }
 
-  public void scheduleSignUpdate(@NotNull Shop shop) {
+  public void scheduleSignUpdate(@NotNull final Shop shop) {
 
     if(signUpdateQueue.contains(shop)) {
       return; // Ignore if schedule too frequently
@@ -37,7 +37,7 @@ public class SignUpdateWatcher implements Runnable {
   }
 
 
-  public void start(int i, int i2) {
+  public void start(final int i, final int i2) {
 
     task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
   }

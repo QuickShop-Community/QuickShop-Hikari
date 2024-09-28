@@ -9,9 +9,9 @@ import java.text.NumberFormat;
 public class GuavaCacheRender {
 
   @NotNull
-  public static String renderTable(@NotNull CacheStats stats) {
+  public static String renderTable(@NotNull final CacheStats stats) {
 
-    HTMLTable table = new HTMLTable(2, true);
+    final HTMLTable table = new HTMLTable(2, true);
     table.insert("Average Load Penalty", round(stats.averageLoadPenalty()));
     table.insert("Hit Rate", toPercentage(stats.hitRate()));
     table.insert("Miss Rate", toPercentage(stats.missRate()));
@@ -26,14 +26,14 @@ public class GuavaCacheRender {
   }
 
   @NotNull
-  private static String round(double d) {
+  private static String round(final double d) {
 
-    NumberFormat nf = NumberFormat.getNumberInstance();
+    final NumberFormat nf = NumberFormat.getNumberInstance();
     nf.setMaximumFractionDigits(3);
     return nf.format(d);
   }
 
-  private static String toPercentage(double n) {
+  private static String toPercentage(final double n) {
 
     return String.format("%.000f", n * 100) + "%";
   }

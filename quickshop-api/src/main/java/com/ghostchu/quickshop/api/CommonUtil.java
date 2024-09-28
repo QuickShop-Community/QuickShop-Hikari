@@ -9,7 +9,7 @@ public class CommonUtil {
 
   }
 
-  public static boolean isEmptyComponent(@Nullable Component component) {
+  public static boolean isEmptyComponent(@Nullable final Component component) {
 
     if(component == null) {
       return true;

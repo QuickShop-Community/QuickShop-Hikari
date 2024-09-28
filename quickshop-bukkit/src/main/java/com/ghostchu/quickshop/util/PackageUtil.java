@@ -14,11 +14,11 @@ public class PackageUtil {
    * @return ParseResult
    */
   @NotNull
-  public static PackageUtil.SysPropertiesParseResult parsePackageProperly(@NotNull String name) {
+  public static PackageUtil.SysPropertiesParseResult parsePackageProperly(@NotNull final String name) {
 
-    Log.Caller caller = Log.Caller.createSync(false);
-    String str = caller.getClassName() + "." + name;
-    String value = System.getProperty(str);
+    final Log.Caller caller = Log.Caller.createSync(false);
+    final String str = caller.getClassName() + "." + name;
+    final String value = System.getProperty(str);
     return new SysPropertiesParseResult(str, value);
   }
 
@@ -28,7 +28,7 @@ public class PackageUtil {
     private final String key;
     private final String value;
 
-    public SysPropertiesParseResult(String key, String value) {
+    public SysPropertiesParseResult(final String key, final String value) {
 
       this.key = key;
       this.value = value;
@@ -39,7 +39,7 @@ public class PackageUtil {
       return Boolean.parseBoolean(value);
     }
 
-    public boolean asBoolean(boolean def) {
+    public boolean asBoolean(final boolean def) {
 
       if(value == null) {
         return def;
@@ -47,7 +47,7 @@ public class PackageUtil {
       return Boolean.parseBoolean(value);
     }
 
-    public byte asByte(byte def) {
+    public byte asByte(final byte def) {
 
       if(value == null) {
         return def;
@@ -59,7 +59,7 @@ public class PackageUtil {
       }
     }
 
-    public double asDouble(double def) {
+    public double asDouble(final double def) {
 
       if(value == null) {
         return def;
@@ -71,7 +71,7 @@ public class PackageUtil {
       }
     }
 
-    public int asInteger(int def) {
+    public int asInteger(final int def) {
 
       if(value == null) {
         return def;
@@ -83,7 +83,7 @@ public class PackageUtil {
       }
     }
 
-    public long asLong(long def) {
+    public long asLong(final long def) {
 
       if(value == null) {
         return def;
@@ -95,7 +95,7 @@ public class PackageUtil {
       }
     }
 
-    public short asShort(short def) {
+    public short asShort(final short def) {
 
       if(value == null) {
         return def;
@@ -108,7 +108,7 @@ public class PackageUtil {
     }
 
     @NotNull
-    public String asString(@NotNull String def) {
+    public String asString(@NotNull final String def) {
 
       if(value == null) {
         return def;

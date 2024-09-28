@@ -4,7 +4,7 @@ public enum CheckResult {
   SKIPPED("Skip"), PASSED("Pass"), WARNING("Warning"), STOP_WORKING("Error"), DISABLE_PLUGIN("Fatal");
   private final String display;
 
-  CheckResult(String display) {
+  CheckResult(final String display) {
 
     this.display = display;
   }

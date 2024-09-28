@@ -35,7 +35,7 @@ public class SimpleDataRecord implements DataRecord {
 
   private final String benefit;
 
-  public SimpleDataRecord(QUser owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, QUser taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime, String benefit) {
+  public SimpleDataRecord(final QUser owner, final String item, final String name, final int type, final String currency, final double price, final boolean unlimited, final boolean hologram, final QUser taxAccount, final String permissions, final String extra, final String inventoryWrapper, final String inventorySymbolLink, final Date createTime, final String benefit) {
 
     this.owner = owner;
     this.item = item;
@@ -54,7 +54,7 @@ public class SimpleDataRecord implements DataRecord {
     this.benefit = benefit;
   }
 
-  public SimpleDataRecord(PlayerFinder finder, ResultSet set) throws SQLException {
+  public SimpleDataRecord(final PlayerFinder finder, final ResultSet set) throws SQLException {
 
     this.owner = QUserImpl.deserialize(finder, set.getString("owner"), QuickExecutor.getSecondaryProfileIoExecutor());
     this.item = set.getString("item");
@@ -64,7 +64,7 @@ public class SimpleDataRecord implements DataRecord {
     this.price = set.getDouble("price");
     this.unlimited = set.getBoolean("unlimited");
     this.hologram = set.getBoolean("hologram");
-    String taxAccountString = set.getString("tax_account");
+    final String taxAccountString = set.getString("tax_account");
     this.taxAccount = taxAccountString == null? null : QUserImpl.deserialize(finder, taxAccountString, QuickExecutor.getSecondaryProfileIoExecutor());
     this.permissions = set.getString("permissions");
     this.extra = set.getString("extra");
@@ -77,7 +77,7 @@ public class SimpleDataRecord implements DataRecord {
   @NotNull
   public Map<String, Object> generateLookupParams() {
 
-    Map<String, Object> map = new HashMap<>(generateParams());
+    final Map<String, Object> map = new HashMap<>(generateParams());
     map.remove("create_time");
     return map;
   }

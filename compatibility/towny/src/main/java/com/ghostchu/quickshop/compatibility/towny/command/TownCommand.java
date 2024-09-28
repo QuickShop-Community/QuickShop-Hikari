@@ -22,15 +22,15 @@ public class TownCommand implements CommandHandler<Player> {
 
   private final Main plugin;
 
-  public TownCommand(Main plugin) {
+  public TownCommand(final Main plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final String[] cmdArg) {
 
-    Shop shop = getLookingShop(sender);
+    final Shop shop = getLookingShop(sender);
     if(shop == null) {
       plugin.getApi().getTextManager().of(sender, "not-looking-at-shop").send();
       return;
@@ -42,7 +42,7 @@ public class TownCommand implements CommandHandler<Player> {
     }
     // Player permission check
     // Check if anybody already set it to town shop
-    Town recordTown = TownyShopUtil.getShopTown(shop);
+    final Town recordTown = TownyShopUtil.getShopTown(shop);
     if(recordTown != null) {
       if(TownyShopUtil.getShopOriginalOwner(shop).equals(sender.getUniqueId())
          || recordTown.getMayor().getUUID().equals(sender.getUniqueId())
@@ -60,13 +60,13 @@ public class TownCommand implements CommandHandler<Player> {
       }
     }
     // Set as a town shop
-    Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+    final Town town = TownyAPI.getInstance().getTown(shop.getLocation());
     if(town == null) {
       plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
       return;
     }
     if(plugin.getConfig().getBoolean("bank-mode.bank-plot-only", false)) {
-      TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.getLocation());
+      final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.getLocation());
       if(townBlock == null) {
         plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
         plugin.getLogger().warning("Failed to get townBlock at " + shop.getLocation() + " maybe a bug?");
@@ -77,10 +77,10 @@ public class TownCommand implements CommandHandler<Player> {
         return;
       }
     }
-    UUID uuid = plugin.getUuidConversion().convertTownyAccount(town);
+    final UUID uuid = plugin.getUuidConversion().convertTownyAccount(town);
     // Check if item and type are allowed
     if(plugin.getConfig().getBoolean("bank-mode.enable")) {
-      Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
+      final Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
       if(price == null) {
         plugin.getApi().getTextManager().of(sender, "addon.towny.item-not-allowed").send();
         return;
@@ -92,7 +92,7 @@ public class TownCommand implements CommandHandler<Player> {
       }
     }
 
-    UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
+    final UUID shopOwnerUUID = shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId());
     TownyShopUtil.setShopOriginalOwner(shop, shopOwnerUUID);
     TownyShopUtil.setShopTown(shop, town);
     shop.setPlayerGroup(shopOwnerUUID, BuiltInShopPermissionGroup.ADMINISTRATOR);

@@ -10,7 +10,7 @@ public class MetadataPAPI implements PAPISubHandler {
 
   private final QuickShop plugin;
 
-  public MetadataPAPI(@NotNull QuickShop plugin) {
+  public MetadataPAPI(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
   }
@@ -23,9 +23,9 @@ public class MetadataPAPI implements PAPISubHandler {
 
   @Override
   @Nullable
-  public String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed) {
+  public String handle0(@NotNull final OfflinePlayer player, @NotNull final String paramsTrimmed) {
 
-    String[] args = paramsTrimmed.split("_");
+    final String[] args = paramsTrimmed.split("_");
     if(args.length < 1) {
       return null;
     }

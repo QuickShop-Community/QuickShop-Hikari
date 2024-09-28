@@ -19,13 +19,13 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
 
   private final QuickShop plugin;
 
-  public SubCommand_CleanGhost(QuickShop plugin) {
+  public SubCommand_CleanGhost(final QuickShop plugin) {
 
     this.plugin = plugin;
   }
 
   @Override
-  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       plugin.text().of(sender, "cleanghost-warning").send();
@@ -38,8 +38,8 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
     }
 
     plugin.text().of(sender, "cleanghost-starting").send();
-    AtomicInteger deletionCounter = new AtomicInteger(0);
-    BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
+    final AtomicInteger deletionCounter = new AtomicInteger(0);
+    final BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
     updateExecutor.addTasks(plugin.getShopManager().getAllShops());
     updateExecutor.startHandle(plugin.getJavaPlugin(), (shop)->{
       if(shop == null) {
