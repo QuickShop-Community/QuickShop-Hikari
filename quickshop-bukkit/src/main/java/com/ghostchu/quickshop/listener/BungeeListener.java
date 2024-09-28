@@ -47,7 +47,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         if (!plugin.getJavaPlugin().isEnabled()) {
             return;
         }
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
         out.writeUTF(CHAT_COMMAND_CANCEL);
         out.writeUTF(player.getUniqueId().toString());
@@ -58,7 +58,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         if (!plugin.getJavaPlugin().isEnabled()) {
             return;
         }
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
         out.writeUTF(CHAT_COMMAND_REQUEST);
         out.writeUTF(player.getUniqueId().toString());
@@ -66,17 +66,22 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
     }
 
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] bytes) {
-        if (!CHAT_FORWARD_CHANNEL.equalsIgnoreCase(channel)) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] @NotNull bytes) {
+        if(!CHAT_FORWARD_CHANNEL.equalsIgnoreCase(channel)) {
             return;
         }
-        ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
-        String subChannel = in.readUTF();
-        if (!CHAT_FORWARD_SUB_CHANNEL_FORWARD.equalsIgnoreCase(subChannel)) {
-            return;
+
+        try {
+            final ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
+            final String subChannel = in.readUTF();
+            if(!CHAT_FORWARD_SUB_CHANNEL_FORWARD.equalsIgnoreCase(subChannel)) {
+                return;
+            }
+            final String chatMessage = in.readUTF();
+            Log.debug("Handling the plugin channel " + channel + " with sub channel " + subChannel + " on player " + player.getName() + " for message: " + chatMessage);
+            plugin.getShopManager().handleChat(player, chatMessage);
+        } catch(Exception ignore) {
+
         }
-        String chatMessage = in.readUTF();
-        Log.debug("Handling the plugin channel " + channel + " with sub channel " + subChannel + " on player " + player.getName() + " for message: " + chatMessage);
-        plugin.getShopManager().handleChat(player, chatMessage);
     }
 }

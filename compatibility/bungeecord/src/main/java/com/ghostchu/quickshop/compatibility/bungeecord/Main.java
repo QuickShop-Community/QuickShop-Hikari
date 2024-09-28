@@ -46,19 +46,20 @@ public final class Main extends Plugin implements Listener {
         if (!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
             return;
         }
-        ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
-        String subChannel = in.readUTF();
+
+        final ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
+        final String subChannel = in.readUTF();
         if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
             // the receiver is a server when the proxy talks to a server
             if (event.getReceiver() instanceof Server) {
-                String command = in.readUTF();
+                final String command = in.readUTF();
                 processCommand(command, in);
             }
         }
     }
 
     private void processCommand(String command, ByteArrayDataInput in) {
-        UUID uuid = UUID.fromString(in.readUTF());
+        final UUID uuid = UUID.fromString(in.readUTF());
         switch (command) {
             case CHAT_COMMAND_REQUEST -> this.pendingForward.add(uuid);
             case CHAT_COMMAND_CANCEL -> this.pendingForward.remove(uuid);
@@ -68,7 +69,7 @@ public final class Main extends Plugin implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(ChatEvent event) {
         if (event.getSender() instanceof ProxiedPlayer player) {
-            UUID uuid = player.getUniqueId();
+            final UUID uuid = player.getUniqueId();
             if (pendingForward.contains(uuid)) {
                 forwardMessage(player, event.getMessage());
                 event.setCancelled(true);
@@ -77,10 +78,10 @@ public final class Main extends Plugin implements Listener {
     }
 
     private void forwardMessage(ProxiedPlayer player, String message) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(SUB_CHANNEL_FORWARD);
         out.writeUTF(message);
-        player.sendData(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes());
+        player.sendData(QUICKSHOP_BUNGEE_CHANNEL, out.toByteArray());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

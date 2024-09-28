@@ -124,8 +124,8 @@ public final class Main {
         if (!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
             return;
         }
-        ByteArrayDataInput in = event.dataAsDataStream();
-        String subChannel = in.readUTF();
+        final ByteArrayDataInput in = event.dataAsDataStream();
+        final String subChannel = in.readUTF();
         if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
             // the receiver is a server when the proxy talks to a server
             if (event.getSource() instanceof ServerConnection) {
@@ -136,7 +136,7 @@ public final class Main {
     }
 
     private void processCommand(String command, ByteArrayDataInput in) {
-        UUID uuid = UUID.fromString(in.readUTF());
+        final UUID uuid = UUID.fromString(in.readUTF());
         switch (command) {
             case CHAT_COMMAND_REQUEST -> this.pendingForward.add(uuid);
             case CHAT_COMMAND_CANCEL -> this.pendingForward.remove(uuid);
@@ -145,12 +145,12 @@ public final class Main {
 
     @Subscribe(order = PostOrder.FIRST)
     public void onChat(PlayerChatEvent event) {
-        Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
+        final Player player = event.getPlayer();
+        final UUID uuid = player.getUniqueId();
         if (pendingForward.contains(uuid)) {
             forwardMessage(player, event.getMessage());
             // Workaround against kicking of players with valid signed key and client 1.19.1 or higher by velocity
-            ProtocolVersion protocol = player.getProtocolVersion();
+            final ProtocolVersion protocol = player.getProtocolVersion();
             if (player.getIdentifiedKey() == null || NO_SIGN_VERSIONS.contains(protocol)) {
                 event.setResult(PlayerChatEvent.ChatResult.denied());
             }
@@ -158,11 +158,11 @@ public final class Main {
     }
 
     private void forwardMessage(Player player, String message) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(SUB_CHANNEL_FORWARD);
         out.writeUTF(message);
         player.getCurrentServer().ifPresent(server ->
-                server.sendPluginMessage(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes())
+                server.sendPluginMessage(QUICKSHOP_BUNGEE_CHANNEL, out.toByteArray())
         );
     }
 

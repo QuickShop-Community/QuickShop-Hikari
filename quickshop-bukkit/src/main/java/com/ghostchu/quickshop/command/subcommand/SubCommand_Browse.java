@@ -48,10 +48,21 @@ public class SubCommand_Browse implements CommandHandler<Player> {
                             || sender.getLocation().getWorld() == null) {
                         return false;
                     }
+
+                    if(shop.getRemainingStock() == 0) {
+                        return false;
+                    }
+
                     return shop.getLocation().getWorld().getUID().equals(sender.getLocation().getWorld().getUID());
                 }).toList());
             } else {
-                shops.addAll(plugin.getShopManager().getAllShops());
+                shops.addAll(plugin.getShopManager().getAllShops().stream().filter(shop -> {
+
+                    if(shop.getRemainingStock() == 0) {
+                        return false;
+                    }
+                    return true;
+                }).toList());
             }
 
             viewer.addData(SHOPS_DATA, shops);
