@@ -13,65 +13,70 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseInfoItem implements SubPasteItem {
-    private static final String VERBOSE_PREFIX = "[verbose] ";
 
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
+  private static final String VERBOSE_PREFIX = "[verbose] ";
+
+  @Override
+  public @NotNull String genBody() {
+
+    return buildContent();
+  }
+
+  @Override
+  public @NotNull String getTitle() {
+
+    return "Database";
+  }
+
+  @NotNull
+  private String buildContent() {
+
+    try(Connection conn = QuickShop.getInstance().getSqlManager().getConnection()) {
+      DatabaseMetaData meta = conn.getMetaData();
+      HTMLTable table = new HTMLTable(2, true);
+      table.insert("Product", meta.getDatabaseProductName());
+      table.insert("Version", meta.getDatabaseProductVersion());
+      table.insert("Driver", meta.getDriverName());
+      table.insert("Driver Version", meta.getDriverVersion());
+      if(PackageUtil.parsePackageProperly("generateDatabaseFullReport").asBoolean()) {
+        processFullReportGenerate(meta, table);
+      }
+      return table.render();
+    } catch(SQLException exception) {
+      return "<p>Failed to connect to database or getting metadata.</p>";
     }
+  }
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Database";
-    }
+  private void processFullReportGenerate(@NotNull DatabaseMetaData meta, @NotNull HTMLTable table) {
 
-    @NotNull
-    private String buildContent() {
-        try (Connection conn = QuickShop.getInstance().getSqlManager().getConnection()) {
-            DatabaseMetaData meta = conn.getMetaData();
-            HTMLTable table = new HTMLTable(2, true);
-            table.insert("Product", meta.getDatabaseProductName());
-            table.insert("Version", meta.getDatabaseProductVersion());
-            table.insert("Driver", meta.getDriverName());
-            table.insert("Driver Version", meta.getDriverVersion());
-            if (PackageUtil.parsePackageProperly("generateDatabaseFullReport").asBoolean()) {
-                processFullReportGenerate(meta, table);
+    List<Class<?>> allowedClasses = Arrays.asList(
+            String.class,
+            Boolean.class,
+            Long.class,
+            Integer.class,
+            Short.class,
+            Float.class,
+            Double.class,
+            Byte.class,
+            Character.class
+                                                 );
+    for(Method method : meta.getClass().getDeclaredMethods()) {
+      if(method.canAccess(meta)) {
+        if(allowedClasses.contains(method.getReturnType())) {
+          try {
+            Object value = method.invoke(meta);
+            if(value != null) {
+              table.insert(VERBOSE_PREFIX + method.getName(), value.toString());
+            } else {
+              table.insert(VERBOSE_PREFIX + method.getName(), "null");
             }
-            return table.render();
-        } catch (SQLException exception) {
-            return "<p>Failed to connect to database or getting metadata.</p>";
+          } catch(Exception exception) {
+            //ignore
+            table.insert(VERBOSE_PREFIX + method.getName(), exception.getMessage());
+          }
         }
+      }
     }
 
-    private void processFullReportGenerate(@NotNull DatabaseMetaData meta, @NotNull HTMLTable table) {
-        List<Class<?>> allowedClasses = Arrays.asList(
-                String.class,
-                Boolean.class,
-                Long.class,
-                Integer.class,
-                Short.class,
-                Float.class,
-                Double.class,
-                Byte.class,
-                Character.class
-        );
-        for (Method method : meta.getClass().getDeclaredMethods()) {
-            if (method.canAccess(meta)) {
-                if (allowedClasses.contains(method.getReturnType())) {
-                    try {
-                        Object value = method.invoke(meta);
-                        if (value != null) {
-                            table.insert(VERBOSE_PREFIX + method.getName(), value.toString());
-                        } else {
-                            table.insert(VERBOSE_PREFIX + method.getName(), "null");
-                        }
-                    } catch (Exception exception) {
-                        //ignore
-                        table.insert(VERBOSE_PREFIX + method.getName(), exception.getMessage());
-                    }
-                }
-            }
-        }
-
-    }
+  }
 }

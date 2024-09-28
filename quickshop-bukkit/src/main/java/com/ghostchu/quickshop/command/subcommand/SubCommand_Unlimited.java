@@ -11,34 +11,36 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_Unlimited implements CommandHandler<Player> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Unlimited(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_Unlimited(QuickShop plugin) {
 
-    @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        final Shop shop = getLookingShop(sender);
-        if (shop == null) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-        shop.setUnlimited(!shop.isUnlimited());
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
-        if (shop.isUnlimited()) {
-            plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
-            if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-                QUser qUser = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
-                plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                plugin.text().of(sender, "unlimited-shop-owner-changed", qUser).send();
-            }
-            return;
-        }
-        plugin.text().of(sender, "command.toggle-unlimited.limited").send();
-        if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-            plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
-        }
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+
+    final Shop shop = getLookingShop(sender);
+    if(shop == null) {
+      plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
     }
+    shop.setUnlimited(!shop.isUnlimited());
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
+    if(shop.isUnlimited()) {
+      plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
+      if(plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+        QUser qUser = ((SimpleShopManager)plugin.getShopManager()).getCacheUnlimitedShopAccount();
+        plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
+        plugin.text().of(sender, "unlimited-shop-owner-changed", qUser).send();
+      }
+      return;
+    }
+    plugin.text().of(sender, "command.toggle-unlimited.limited").send();
+    if(plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+      plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
+    }
+  }
 
 }

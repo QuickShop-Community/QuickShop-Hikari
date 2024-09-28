@@ -42,8 +42,10 @@ public class TNEItemMatcherImpl implements ItemMatcher {
   private final QuickShop plugin;
 
   public TNEItemMatcherImpl(QuickShop plugin) {
+
     this.plugin = plugin;
   }
+
   /**
    * Gets the ItemMatcher provider name
    *
@@ -51,6 +53,7 @@ public class TNEItemMatcherImpl implements ItemMatcher {
    */
   @Override
   public @NotNull String getName() {
+
     return "TNE";
   }
 
@@ -61,6 +64,7 @@ public class TNEItemMatcherImpl implements ItemMatcher {
    */
   @Override
   public @NotNull Plugin getPlugin() {
+
     return this.plugin.getJavaPlugin();
   }
 
@@ -90,6 +94,7 @@ public class TNEItemMatcherImpl implements ItemMatcher {
 
   //TODO: Move this inside TNIL using the new updated code that will support PDC.
   public Integer fishData(ItemStack stack) {
+
     if(stack.getItemMeta() != null) {
       return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER, -1);
     }

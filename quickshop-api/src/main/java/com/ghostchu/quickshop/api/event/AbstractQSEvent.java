@@ -12,44 +12,50 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractQSEvent extends Event {
 
-    private static final HandlerList HANDLERS = new HandlerList();
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    protected AbstractQSEvent() {
-        super(!Bukkit.isPrimaryThread());
-    }
+  protected AbstractQSEvent() {
 
-    protected AbstractQSEvent(boolean async) {
-        super(async);
-    }
+    super(!Bukkit.isPrimaryThread());
+  }
 
-    /**
-     * Call event on Bukkit event bus and check if cancelled
-     *
-     * @return Returns true if cancelled, and false if didn't cancel
-     */
-    public boolean callCancellableEvent() {
-        Bukkit.getPluginManager().callEvent(this);
-        if (this instanceof Cancellable cancellable) {
-            return cancellable.isCancelled();
-        }
-        return false;
-    }
+  protected AbstractQSEvent(boolean async) {
 
-    /**
-     * Fire event on Bukkit event bus
-     */
-    public void callEvent() {
-        QuickShopAPI.getPluginInstance().getServer().getPluginManager().callEvent(this);
-    }
+    super(async);
+  }
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return getHandlerList();
-    }
+  /**
+   * Call event on Bukkit event bus and check if cancelled
+   *
+   * @return Returns true if cancelled, and false if didn't cancel
+   */
+  public boolean callCancellableEvent() {
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
+    Bukkit.getPluginManager().callEvent(this);
+    if(this instanceof Cancellable cancellable) {
+      return cancellable.isCancelled();
     }
+    return false;
+  }
+
+  /**
+   * Fire event on Bukkit event bus
+   */
+  public void callEvent() {
+
+    QuickShopAPI.getPluginInstance().getServer().getPluginManager().callEvent(this);
+  }
+
+  @NotNull
+  @Override
+  public HandlerList getHandlers() {
+
+    return getHandlerList();
+  }
+
+  public static HandlerList getHandlerList() {
+
+    return HANDLERS;
+  }
 
 }

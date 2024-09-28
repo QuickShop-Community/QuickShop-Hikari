@@ -38,12 +38,14 @@ public class TNEConversion implements UuidConversion {
 
   @Override
   public UUID convertTownyAccount(Town town) {
+
     final Optional<Account> account = TNECore.api().getAccount(town.getAccount().getName());
     return account.map(value->UUID.fromString(value.getIdentifier())).orElseGet(()->QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName()));
   }
 
   @Override
   public UUID convertTownyAccount(Nation nation) {
+
     final Optional<Account> account = TNECore.api().getAccount(nation.getAccount().getName());
     return account.map(value->UUID.fromString(value.getIdentifier())).orElseGet(()->QuickShop.getInstance().getPlayerFinder().name2Uuid(nation.getAccount().getName()));
   }

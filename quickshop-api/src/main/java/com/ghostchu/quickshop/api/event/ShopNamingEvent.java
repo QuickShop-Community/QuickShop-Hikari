@@ -10,67 +10,74 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ShopNamingEvent extends AbstractQSEvent implements QSCancellable {
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    @Nullable
-    private String name;
+  @Nullable
+  private String name;
 
-    private boolean cancelled;
+  private boolean cancelled;
 
-    private @Nullable Component cancelReason;
+  private @Nullable Component cancelReason;
 
-    /**
-     * Call when shop was renaming.
-     *
-     * @param shop The shop bought from
-     */
-    public ShopNamingEvent(@NotNull Shop shop, @NotNull String name) {
-        this.shop = shop;
-        this.name = name;
-    }
+  /**
+   * Call when shop was renaming.
+   *
+   * @param shop The shop bought from
+   */
+  public ShopNamingEvent(@NotNull Shop shop, @NotNull String name) {
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+    this.shop = shop;
+    this.name = name;
+  }
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+  @Override
+  public @Nullable Component getCancelReason() {
 
-    /**
-     * Gets the new shop name
-     *
-     * @return The new shop name, null if removing
-     */
-    @Nullable
-    public String getName() {
-        return name;
-    }
+    return this.cancelReason;
+  }
 
-    /**
-     * Sets the shop new name
-     *
-     * @param name Shop new name
-     */
-    public void setName(@Nullable String name) {
-        this.name = name;
-    }
+  @Override
+  public void setCancelled(boolean cancel, @Nullable Component reason) {
 
-    /**
-     * Getting the shops that clicked
-     *
-     * @return Clicked shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
+  /**
+   * Gets the new shop name
+   *
+   * @return The new shop name, null if removing
+   */
+  @Nullable
+  public String getName() {
+
+    return name;
+  }
+
+  /**
+   * Sets the shop new name
+   *
+   * @param name Shop new name
+   */
+  public void setName(@Nullable String name) {
+
+    this.name = name;
+  }
+
+  /**
+   * Getting the shops that clicked
+   *
+   * @return Clicked shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return this.cancelled;
+  }
 }

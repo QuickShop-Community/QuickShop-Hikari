@@ -34,65 +34,70 @@ import xyz.xenondevs.nova.api.protection.ProtectionIntegration;
 
 public final class Main extends CompatibilityModule implements Listener, ProtectionIntegration {
 
-    @Override
-    public boolean canBreak(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
-        Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if (shop == null)
-            return true;
-        return shop.getOwner().equals(offlinePlayer.getUniqueId());
-    }
+  @Override
+  public boolean canBreak(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
 
-    @Override
-    public boolean canHurtEntity(@NotNull OfflinePlayer offlinePlayer, @NotNull Entity entity, @Nullable ItemStack itemStack) {
-        if (itemStack != null)
-            if (AbstractDisplayItem.checkIsGuardItemStack(itemStack))
-                return false;
-        if (entity instanceof Item item)
-            return !AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
-        return true; // We don't care that
-    }
+    Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
+    if(shop == null) { return true; }
+    return shop.getOwner().equals(offlinePlayer.getUniqueId());
+  }
 
-    @Override
-    public boolean canInteractWithEntity(@NotNull OfflinePlayer offlinePlayer, @NotNull Entity entity, @Nullable ItemStack itemStack) {
-        if (itemStack != null)
-            if (AbstractDisplayItem.checkIsGuardItemStack(itemStack))
-                return false;
-        if (entity instanceof Item item)
-            return !AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
-        return true; // We don't care that
-    }
+  @Override
+  public boolean canHurtEntity(@NotNull OfflinePlayer offlinePlayer, @NotNull Entity entity, @Nullable ItemStack itemStack) {
 
-    @Override
-    public boolean canPlace(@NotNull OfflinePlayer offlinePlayer, @NotNull ItemStack itemStack, @NotNull Location location) {
-        Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if (shop == null)
-            return true;
-        return shop.getOwner().equals(offlinePlayer.getUniqueId());
+    if(itemStack != null) {
+      if(AbstractDisplayItem.checkIsGuardItemStack(itemStack)) { return false; }
     }
+    if(entity instanceof Item item) {
+      return !AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
+    }
+    return true; // We don't care that
+  }
 
-    @Override
-    public boolean canUseBlock(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
-        Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if (shop == null)
-            return true;
-        return shop.getOwner().equals(offlinePlayer.getUniqueId());
-    }
+  @Override
+  public boolean canInteractWithEntity(@NotNull OfflinePlayer offlinePlayer, @NotNull Entity entity, @Nullable ItemStack itemStack) {
 
-    @Override
-    public boolean canUseItem(@NotNull OfflinePlayer offlinePlayer, @NotNull ItemStack itemStack, @NotNull Location location) {
-        Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if (shop == null)
-            return true;
-        return shop.getOwner().equals(offlinePlayer.getUniqueId());
+    if(itemStack != null) {
+      if(AbstractDisplayItem.checkIsGuardItemStack(itemStack)) { return false; }
     }
+    if(entity instanceof Item item) {
+      return !AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
+    }
+    return true; // We don't care that
+  }
 
-    public void init() {
-        // There no init stuffs need to do
-    }
+  @Override
+  public boolean canPlace(@NotNull OfflinePlayer offlinePlayer, @NotNull ItemStack itemStack, @NotNull Location location) {
 
-    @Override
-    public void onEnable() {
-        xyz.xenondevs.nova.api.Nova.getNova().registerProtectionIntegration(this);
-        super.onEnable();
-    }
+    Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
+    if(shop == null) { return true; }
+    return shop.getOwner().equals(offlinePlayer.getUniqueId());
+  }
+
+  @Override
+  public boolean canUseBlock(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
+
+    Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
+    if(shop == null) { return true; }
+    return shop.getOwner().equals(offlinePlayer.getUniqueId());
+  }
+
+  @Override
+  public boolean canUseItem(@NotNull OfflinePlayer offlinePlayer, @NotNull ItemStack itemStack, @NotNull Location location) {
+
+    Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
+    if(shop == null) { return true; }
+    return shop.getOwner().equals(offlinePlayer.getUniqueId());
+  }
+
+  public void init() {
+    // There no init stuffs need to do
+  }
+
+  @Override
+  public void onEnable() {
+
+    xyz.xenondevs.nova.api.Nova.getNova().registerProtectionIntegration(this);
+    super.onEnable();
+  }
 }

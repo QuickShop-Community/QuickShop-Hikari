@@ -19,7 +19,6 @@ package com.ghostchu.quickshop.menu.browse;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
@@ -65,6 +64,7 @@ public class MainPage {
   public MainPage(String returnMenu, String menuName,
                   final int menuPage, final int returnPage, String staffPageID,
                   final int menuRows, String iconLore, final IconAction... actions) {
+
     this.returnMenu = returnMenu;
     this.menuName = menuName;
     this.menuPage = menuPage;
@@ -107,24 +107,24 @@ public class MainPage {
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                  .display(get(id, "gui.shared.previous-page"))
-                  .lore(List.of(get(id, "history.shop.current-page", page))))
-                  .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
-                  .withSlot(3)
-                  .build());
+                                                             .display(get(id, "gui.shared.previous-page"))
+                                                             .lore(List.of(get(id, "history.shop.current-page", page))))
+                                             .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
+                                             .withSlot(3)
+                                             .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
-                  .display(get(id, "gui.shared.next-page"))
-                  .lore(List.of(get(id, "history.shop.current-page", page))))
-                  .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
-                  .withSlot(5)
-                  .build());
+                                                             .display(get(id, "gui.shared.next-page"))
+                                                             .lore(List.of(get(id, "history.shop.current-page", page))))
+                                             .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
+                                             .withSlot(5)
+                                             .build());
         }
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("BOOK", 1)
-                .display(get(id, "history.shop.current-page", page)))
-                .withSlot(4)
-                .build());
+                                                           .display(get(id, "history.shop.current-page", page)))
+                                           .withSlot(4)
+                                           .build());
 
         int i = 0;
         for(final Shop shop : shops) {
@@ -151,10 +151,10 @@ public class MainPage {
           final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
           final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().getKey().toString(), shop.getShopStackingAmount())
                   .lore(getList(id, iconLore,
-                  shop.getOwner().getDisplay(),
-                  location,
-                  shop.getShopType(),
-                  eco.format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency())));
+                                shop.getOwner().getDisplay(),
+                                location,
+                                shop.getShopType(),
+                                eco.format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency())));
 
           callback.getPage().addIcon(new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
@@ -165,10 +165,12 @@ public class MainPage {
   }
 
   private Component hours(final UUID id, final int hours) {
+
     return get(id, "timeunit.hours", hours);
   }
 
   private Component days(final UUID id, final int days) {
+
     return get(id, "timeunit.days", days);
   }
 }

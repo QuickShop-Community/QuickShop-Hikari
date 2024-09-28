@@ -16,82 +16,90 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, SubPasteItem {
-    private final QuickShop plugin;
-    private final List<String> BLACKLIST_LORES = new ArrayList<>();
-    private List<String> configBlacklist;
 
-    public SimpleShopItemBlackList(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-        init();
-        plugin.getReloadManager().register(this);
+  private final QuickShop plugin;
+  private final List<String> BLACKLIST_LORES = new ArrayList<>();
+  private List<String> configBlacklist;
+
+  public SimpleShopItemBlackList(@NotNull QuickShop plugin) {
+
+    this.plugin = plugin;
+    init();
+    plugin.getReloadManager().register(this);
+  }
+
+  private void init() {
+
+    BLACKLIST_LORES.clear();
+    this.configBlacklist = plugin.getConfig().getStringList("blacklist");
+    List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
+    configLoresBlackList.forEach(s->BLACKLIST_LORES.add(ChatColor.stripColor(s)));
+  }
+
+  /**
+   * Check if an Item has been blacklisted for puchase.
+   *
+   * @param itemStack The ItemStack to check
+   *
+   * @return true if blacklisted, false if not
+   */
+  @Override
+  public boolean isBlacklisted(@NotNull ItemStack itemStack) {
+
+    ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    for(String s : this.configBlacklist) {
+      if(itemExpressionRegistry.match(itemStack, s)) {
+        return true;
+      }
     }
-
-    private void init() {
-        BLACKLIST_LORES.clear();
-        this.configBlacklist = plugin.getConfig().getStringList("blacklist");
-        List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
-        configLoresBlackList.forEach(s -> BLACKLIST_LORES.add(ChatColor.stripColor(s)));
+    if(BLACKLIST_LORES.isEmpty()) {
+      return false; // Fast return if empty
     }
-
-    /**
-     * Check if an Item has been blacklisted for puchase.
-     *
-     * @param itemStack The ItemStack to check
-     * @return true if blacklisted, false if not
-     */
-    @Override
-    public boolean isBlacklisted(@NotNull ItemStack itemStack) {
-        ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry) plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
-        for (String s : this.configBlacklist) {
-           if(itemExpressionRegistry.match(itemStack, s)){
-               return true;
-           }
-        }
-        if (BLACKLIST_LORES.isEmpty()) {
-            return false; // Fast return if empty
-        }
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return false;
-        }
-        if (!meta.hasLore()) {
-            return false;
-        }
-        List<String> originalLores = meta.getLore();
-        if (originalLores == null) {
-            return false;
-        }
-        List<String> strippedLores = new ArrayList<>(originalLores.size());
-        for (String originalLore : originalLores) {
-            strippedLores.add(ChatColor.stripColor(originalLore));
-        }
-        for (String loreLine : strippedLores) {
-            for (String blacklistLore : BLACKLIST_LORES) {
-                if (loreLine.contains(blacklistLore)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    if(!itemStack.hasItemMeta()) {
+      return false;
     }
-
-
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        init();
-        return Reloadable.super.reloadModule();
+    ItemMeta meta = itemStack.getItemMeta();
+    if(meta == null) {
+      return false;
     }
-
-    @Override
-    public @NotNull String genBody() {
-        return "<p>Blacklist Rules: " + configBlacklist.size() + "</p>";
+    if(!meta.hasLore()) {
+      return false;
     }
-
-    @Override
-    public @NotNull String getTitle() {
-        return "Shop Item Blacklist";
+    List<String> originalLores = meta.getLore();
+    if(originalLores == null) {
+      return false;
     }
+    List<String> strippedLores = new ArrayList<>(originalLores.size());
+    for(String originalLore : originalLores) {
+      strippedLores.add(ChatColor.stripColor(originalLore));
+    }
+    for(String loreLine : strippedLores) {
+      for(String blacklistLore : BLACKLIST_LORES) {
+        if(loreLine.contains(blacklistLore)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  @Override
+  public ReloadResult reloadModule() throws Exception {
+
+    init();
+    return Reloadable.super.reloadModule();
+  }
+
+  @Override
+  public @NotNull String genBody() {
+
+    return "<p>Blacklist Rules: " + configBlacklist.size() + "</p>";
+  }
+
+  @Override
+  public @NotNull String getTitle() {
+
+    return "Shop Item Blacklist";
+  }
 }

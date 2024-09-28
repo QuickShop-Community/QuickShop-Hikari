@@ -26,81 +26,83 @@ import java.util.UUID;
 
 public class SubCommand_Paste implements CommandHandler<CommandSender> {
 
-    private static final List<String> warningPluginList = List.of(
-            "ConsoleSpamFix",
-            "ConsoleFilter",
-            "LogFilter"
-    );
-    private final QuickShop plugin;
+  private static final List<String> warningPluginList = List.of(
+          "ConsoleSpamFix",
+          "ConsoleFilter",
+          "LogFilter"
+                                                               );
+  private final QuickShop plugin;
 
-    public SubCommand_Paste(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_Paste(QuickShop plugin) {
 
-    @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        // do actions
-        Util.asyncThreadRun(() -> {
-            for (String s : warningPluginList) {
-                if (Bukkit.getPluginManager().getPlugin(s) != null) {
-                    if (parser.getArgs().stream().noneMatch(str -> str.contains("--force"))) {
-                        plugin.text().of(sender, "consolespamfix-installed", s).send();
-                        return;
-                    }
-                }
-            }
-            plugin.text().of(sender,"paste-notice").send();
-            if (parser.getArgs().stream().anyMatch(str -> str.contains("file"))) {
-                pasteToLocalFile(sender);
-                return;
-            }
-            plugin.text().of(sender, "paste-uploading").send();
-            if (!pasteToPastebin(sender)) {
-                plugin.text().of(sender, "paste-upload-failed-local").send();
-                pasteToLocalFile(sender);
-            }
-        });
-    }
+    this.plugin = plugin;
+  }
 
-    private boolean pasteToLocalFile(@NotNull CommandSender sender) {
-        File file = new File(plugin.getDataFolder(), "paste");
-        file.mkdirs();
-        file = new File(file, "paste-" + UUID.randomUUID().toString().replace("-", "") + ".html");
-        final String string = new PasteGenerator(sender).render();
-        try {
-            boolean createResult = file.createNewFile();
-            Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
-            try (FileWriter fwriter = new FileWriter(file)) {
-                fwriter.write(string);
-                fwriter.flush();
-            }
-            plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
-            return true;
-        } catch (IOException e) {
-            if (plugin.getSentryErrorReporter() != null) {
-                plugin.getSentryErrorReporter().ignoreThrow();
-            }
-            plugin.logger().warn("Failed to save paste locally! The content will be send to the console", e);
-            plugin.text().of("paste-created-local-failed").send();
-            return false;
+  @Override
+  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+    // do actions
+    Util.asyncThreadRun(()->{
+      for(String s : warningPluginList) {
+        if(Bukkit.getPluginManager().getPlugin(s) != null) {
+          if(parser.getArgs().stream().noneMatch(str->str.contains("--force"))) {
+            plugin.text().of(sender, "consolespamfix-installed", s).send();
+            return;
+          }
         }
-    }
+      }
+      plugin.text().of(sender, "paste-notice").send();
+      if(parser.getArgs().stream().anyMatch(str->str.contains("file"))) {
+        pasteToLocalFile(sender);
+        return;
+      }
+      plugin.text().of(sender, "paste-uploading").send();
+      if(!pasteToPastebin(sender)) {
+        plugin.text().of(sender, "paste-upload-failed-local").send();
+        pasteToLocalFile(sender);
+      }
+    });
+  }
 
-    private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "Debug Paste", "User request to create a online debug paste", () -> {
-            final String string = Paste.paste(new PasteGenerator(sender).render());
-            if (string != null) {
-                String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
-                Component component = plugin.text().of(sender, "paste-created", url).forLocale();
-                component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
-                MsgUtil.sendDirectMessage(sender, component);
-                if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
-                    plugin.text().of(sender, "paste-451").send();
-                }
-            }
-        }, () -> plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send());
-        return true;
-    }
+  private boolean pasteToLocalFile(@NotNull CommandSender sender) {
 
+    File file = new File(plugin.getDataFolder(), "paste");
+    file.mkdirs();
+    file = new File(file, "paste-" + UUID.randomUUID().toString().replace("-", "") + ".html");
+    final String string = new PasteGenerator(sender).render();
+    try {
+      boolean createResult = file.createNewFile();
+      Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
+      try(FileWriter fwriter = new FileWriter(file)) {
+        fwriter.write(string);
+        fwriter.flush();
+      }
+      plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
+      return true;
+    } catch(IOException e) {
+      if(plugin.getSentryErrorReporter() != null) {
+        plugin.getSentryErrorReporter().ignoreThrow();
+      }
+      plugin.logger().warn("Failed to save paste locally! The content will be send to the console", e);
+      plugin.text().of("paste-created-local-failed").send();
+      return false;
+    }
+  }
+
+  private boolean pasteToPastebin(@NotNull CommandSender sender) {
+
+    plugin.getPrivacyController().privacyReview(MetricDataType.DIAGNOSTIC, "Debug Paste", "User request to create a online debug paste", ()->{
+      final String string = Paste.paste(new PasteGenerator(sender).render());
+      if(string != null) {
+        String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
+        Component component = plugin.text().of(sender, "paste-created", url).forLocale();
+        component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
+        MsgUtil.sendDirectMessage(sender, component);
+        if("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
+          plugin.text().of(sender, "paste-451").send();
+        }
+      }
+    }, ()->plugin.text().of(sender, "internet-paste-forbidden-privacy-reason").send());
+    return true;
+  }
 
 }

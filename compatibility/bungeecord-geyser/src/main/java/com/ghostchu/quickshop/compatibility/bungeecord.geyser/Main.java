@@ -15,56 +15,60 @@ import java.util.Set;
 import java.util.UUID;
 
 public final class Main extends Plugin implements Listener {
-    private static final String BUNGEE_CHANNEL = "quickshopcompat:bcgeyser";
-    private static final String RESPONSE_PREFIX = "CLIENTTYPE";
-    private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
-    private boolean isGeyserInstalled;
-    private boolean isFloodgateInstalled;
 
-    @Override
-    public void onEnable() {
-        getProxy().getPluginManager().registerListener(this, this);
-        getProxy().registerChannel(BUNGEE_CHANNEL);
-        isGeyserInstalled = getProxy().getPluginManager().getPlugin("Geyser-BungeeCord") != null;
-        isFloodgateInstalled = getProxy().getPluginManager().getPlugin("floodgate") != null;
-    }
+  private static final String BUNGEE_CHANNEL = "quickshopcompat:bcgeyser";
+  private static final String RESPONSE_PREFIX = "CLIENTTYPE";
+  private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
+  private boolean isGeyserInstalled;
+  private boolean isFloodgateInstalled;
 
-    @Override
-    public void onDisable() {
-        this.pendingForward.clear();
-        getProxy().getPluginManager().unregisterListener(this);
-        getProxy().unregisterChannel(BUNGEE_CHANNEL);
-    }
+  @Override
+  public void onEnable() {
 
-    @EventHandler
-    public void switchServer(ServerConnectedEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
-        boolean isGeyserPlayer = false;
-        boolean isFloodgatePlayer = false;
-        if (isGeyserInstalled) {
-            isGeyserPlayer = GeyserApi.api().isBedrockPlayer(uuid);
-        }
-        if (isFloodgateInstalled) {
-            isFloodgatePlayer = FloodgateApi.getInstance().isFloodgatePlayer(uuid);
-            if (!isFloodgatePlayer) {
-                isFloodgatePlayer = FloodgateApi.getInstance().isFloodgateId(uuid);
-            }
-        }
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(RESPONSE_PREFIX);
-        out.writeUTF(uuid.toString());
-        int playerType = 0; // 0=Java
-        String playerTypeDbgString = "Java Edition";
-        if (isGeyserPlayer) {
-            playerType++; // 1=Geyser
-            playerTypeDbgString = "Geyser (Bedrock)";
-        }
-        if (isFloodgatePlayer) {
-            playerType++; // 2=Floodgate, FG based on Geyser so increase the number
-            playerTypeDbgString = "Floodgate (Bedrock)";
-        }
-        out.writeShort(playerType);
-        getLogger().info("Player " + event.getPlayer().getName() + " client: " + playerTypeDbgString + ", forwarding to backend Spigot server.");
-        event.getServer().getInfo().sendData(BUNGEE_CHANNEL, out.toByteArray());
+    getProxy().getPluginManager().registerListener(this, this);
+    getProxy().registerChannel(BUNGEE_CHANNEL);
+    isGeyserInstalled = getProxy().getPluginManager().getPlugin("Geyser-BungeeCord") != null;
+    isFloodgateInstalled = getProxy().getPluginManager().getPlugin("floodgate") != null;
+  }
+
+  @Override
+  public void onDisable() {
+
+    this.pendingForward.clear();
+    getProxy().getPluginManager().unregisterListener(this);
+    getProxy().unregisterChannel(BUNGEE_CHANNEL);
+  }
+
+  @EventHandler
+  public void switchServer(ServerConnectedEvent event) {
+
+    UUID uuid = event.getPlayer().getUniqueId();
+    boolean isGeyserPlayer = false;
+    boolean isFloodgatePlayer = false;
+    if(isGeyserInstalled) {
+      isGeyserPlayer = GeyserApi.api().isBedrockPlayer(uuid);
     }
+    if(isFloodgateInstalled) {
+      isFloodgatePlayer = FloodgateApi.getInstance().isFloodgatePlayer(uuid);
+      if(!isFloodgatePlayer) {
+        isFloodgatePlayer = FloodgateApi.getInstance().isFloodgateId(uuid);
+      }
+    }
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    out.writeUTF(RESPONSE_PREFIX);
+    out.writeUTF(uuid.toString());
+    int playerType = 0; // 0=Java
+    String playerTypeDbgString = "Java Edition";
+    if(isGeyserPlayer) {
+      playerType++; // 1=Geyser
+      playerTypeDbgString = "Geyser (Bedrock)";
+    }
+    if(isFloodgatePlayer) {
+      playerType++; // 2=Floodgate, FG based on Geyser so increase the number
+      playerTypeDbgString = "Floodgate (Bedrock)";
+    }
+    out.writeShort(playerType);
+    getLogger().info("Player " + event.getPlayer().getName() + " client: " + playerTypeDbgString + ", forwarding to backend Spigot server.");
+    event.getServer().getInfo().sendData(BUNGEE_CHANNEL, out.toByteArray());
+  }
 }

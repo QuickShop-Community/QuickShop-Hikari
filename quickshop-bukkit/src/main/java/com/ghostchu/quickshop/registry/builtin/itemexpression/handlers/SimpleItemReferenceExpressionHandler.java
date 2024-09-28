@@ -7,29 +7,35 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class SimpleItemReferenceExpressionHandler implements ItemExpressionHandler {
-    private final QuickShop plugin;
 
-    public SimpleItemReferenceExpressionHandler(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  private final QuickShop plugin;
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return QuickShop.getInstance().getJavaPlugin();
-    }
+  public SimpleItemReferenceExpressionHandler(QuickShop plugin) {
 
-    @Override
-    public String getPrefix() {
-        return "@";
-    }
+    this.plugin = plugin;
+  }
 
-    @Override
-    public String getInternalPrefix0() {
-        return getPrefix();
-    }
+  @Override
+  public @NotNull Plugin getPlugin() {
 
-    @Override
-    public boolean match(ItemStack stack, String expression) {
-        return QuickShop.getInstance().getItemMatcher().matches(stack, QuickShop.getInstance().getItemMarker().get(expression));
-    }
+    return QuickShop.getInstance().getJavaPlugin();
+  }
+
+  @Override
+  public String getPrefix() {
+
+    return "@";
+  }
+
+  @Override
+  public String getInternalPrefix0() {
+
+    return getPrefix();
+  }
+
+  @Override
+  public boolean match(ItemStack stack, String expression) {
+
+    return QuickShop.getInstance().getItemMatcher().matches(stack, QuickShop.getInstance().getItemMarker().get(expression));
+  }
 }

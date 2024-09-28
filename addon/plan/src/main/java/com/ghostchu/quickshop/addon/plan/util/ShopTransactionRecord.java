@@ -11,12 +11,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class ShopTransactionRecord {
-    private Date time;
-    private UUID from;
-    private UUID to;
-    private String currency;
-    private double amount;
-    private UUID taxAccount;
-    private double taxAmount;
-    private String error;
+
+  private Date time;
+  private UUID from;
+  private UUID to;
+  private String currency;
+  private double amount;
+  private UUID taxAccount;
+  private double taxAmount;
+  private String error;
 }

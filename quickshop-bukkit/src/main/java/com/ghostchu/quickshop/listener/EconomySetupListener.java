@@ -7,24 +7,28 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginEnableEvent;
 
 public class EconomySetupListener extends AbstractQSListener {
-    public EconomySetupListener(QuickShop plugin) {
-        super(plugin);
-    }
 
-    @EventHandler
-    public void onPluginEnable(PluginEnableEvent event) {
-        if (plugin.getEconomy() == null) {
-            plugin.getEconomyLoader().load();
-        }
-    }
+  public EconomySetupListener(QuickShop plugin) {
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    super(plugin);
+  }
+
+  @EventHandler
+  public void onPluginEnable(PluginEnableEvent event) {
+
+    if(plugin.getEconomy() == null) {
+      plugin.getEconomyLoader().load();
     }
+  }
+
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
+
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
 }

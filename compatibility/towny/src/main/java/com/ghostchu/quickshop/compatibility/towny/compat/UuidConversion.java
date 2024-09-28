@@ -6,7 +6,8 @@ import com.palmergames.bukkit.towny.object.Town;
 import java.util.UUID;
 
 public interface UuidConversion {
-    UUID convertTownyAccount(Town town);
 
-    UUID convertTownyAccount(Nation nation);
+  UUID convertTownyAccount(Town town);
+
+  UUID convertTownyAccount(Nation nation);
 }

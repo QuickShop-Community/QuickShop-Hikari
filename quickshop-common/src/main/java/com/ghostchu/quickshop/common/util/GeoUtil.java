@@ -24,104 +24,108 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class GeoUtil {
-    private static volatile Boolean inChinaRegion = null;
+
+  private static volatile Boolean inChinaRegion = null;
 
 
-    public static CompletableFuture<Integer> connectTest(String ipAddress, int port, int timeout) {
-        return CompletableFuture.supplyAsync(() -> {
-            try (Socket socket = new Socket()) {
-                long time = System.currentTimeMillis();
-                socket.connect(new InetSocketAddress(InetAddress.getByName(ipAddress), port), timeout);
-                return (int) (System.currentTimeMillis() - time);
-            } catch (IOException ignored) {
-                return Integer.MAX_VALUE;
-            }
-        });
+  public static CompletableFuture<Integer> connectTest(String ipAddress, int port, int timeout) {
+
+    return CompletableFuture.supplyAsync(()->{
+      try(Socket socket = new Socket()) {
+        long time = System.currentTimeMillis();
+        socket.connect(new InetSocketAddress(InetAddress.getByName(ipAddress), port), timeout);
+        return (int)(System.currentTimeMillis() - time);
+      } catch(IOException ignored) {
+        return Integer.MAX_VALUE;
+      }
+    });
+  }
+
+  private static long sendGetTest(String urlStr) {
+
+    HttpURLConnection connection = null;
+    try {
+      URL url = new URL(urlStr);
+      connection = (HttpURLConnection)url.openConnection();
+      connection.setConnectTimeout((int)TimeUnit.SECONDS.toMillis(5));
+      connection.setReadTimeout((int)TimeUnit.SECONDS.toMillis(5));
+      connection.setInstanceFollowRedirects(true);
+      connection.setRequestMethod("GET");
+
+      final long time = System.currentTimeMillis();
+      final int responseCode = connection.getResponseCode();
+      if(responseCode != 200) {
+        return Long.MAX_VALUE;
+      }
+
+      return System.currentTimeMillis() - time;
+    } catch(Exception e) {
+      return Long.MAX_VALUE;
+    } finally {
+      if(connection != null) {
+        connection.disconnect();
+      }
     }
+  }
 
-    private static long sendGetTest(String urlStr) {
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(5));
-            connection.setReadTimeout((int) TimeUnit.SECONDS.toMillis(5));
-            connection.setInstanceFollowRedirects(true);
-            connection.setRequestMethod("GET");
+  @NotNull
+  public static List<MavenCentralMirror> determineBestMirrorServer(Logger logger) {
 
-            final long time = System.currentTimeMillis();
-            final int responseCode = connection.getResponseCode();
-            if (responseCode != 200) {
-                return Long.MAX_VALUE;
-            }
-
-            return System.currentTimeMillis() - time;
-        } catch (Exception e) {
-            return Long.MAX_VALUE;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+    List<CompletableFuture<Void>> testEntry = new ArrayList<>();
+    Map<MavenCentralMirror, Long> mirrorPingMap = new ConcurrentSkipListMap<>();
+    for(MavenCentralMirror value : MavenCentralMirror.values()) {
+      testEntry.add(CompletableFuture.supplyAsync(()->{
+        mirrorPingMap.put(value, sendGetTest(value.getTestUrl()));
+        return null;
+      }));
     }
-
-    @NotNull
-    public static List<MavenCentralMirror> determineBestMirrorServer(Logger logger) {
-        List<CompletableFuture<Void>> testEntry = new ArrayList<>();
-        Map<MavenCentralMirror, Long> mirrorPingMap = new ConcurrentSkipListMap<>();
-        for (MavenCentralMirror value : MavenCentralMirror.values()) {
-            testEntry.add(CompletableFuture.supplyAsync(() -> {
-                mirrorPingMap.put(value, sendGetTest(value.getTestUrl()));
-                return null;
-            }));
-        }
-        testEntry.forEach(CompletableFuture::join);
-        List<Map.Entry<MavenCentralMirror, Long>> list = new ArrayList<>(mirrorPingMap.entrySet());
-        list.sort(Map.Entry.comparingByValue());
-        logger.info("Maven repository mirror test result:");
-        list.forEach(e -> {
-            String cost = "DNF";
-            if (e.getValue() != Long.MAX_VALUE) {
-                cost = e.getValue() + "ms";
-            }
-            logger.info("[" + e.getKey().getRegion() + "] " + e.getKey().name() + ": " + cost);
-        });
-        if (list.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return list.stream().filter(e -> e.getValue() != Long.MAX_VALUE).limit(3).map(Map.Entry::getKey).toList();
+    testEntry.forEach(CompletableFuture::join);
+    List<Map.Entry<MavenCentralMirror, Long>> list = new ArrayList<>(mirrorPingMap.entrySet());
+    list.sort(Map.Entry.comparingByValue());
+    logger.info("Maven repository mirror test result:");
+    list.forEach(e->{
+      String cost = "DNF";
+      if(e.getValue() != Long.MAX_VALUE) {
+        cost = e.getValue() + "ms";
+      }
+      logger.info("[" + e.getKey().getRegion() + "] " + e.getKey().name() + ": " + cost);
+    });
+    if(list.isEmpty()) {
+      return Collections.emptyList();
     }
+    return list.stream().filter(e->e.getValue() != Long.MAX_VALUE).limit(3).map(Map.Entry::getKey).toList();
+  }
 
-    public static boolean inChinaRegion() {
-        // Already know
-        if (inChinaRegion != null) return inChinaRegion;
-        var client = HttpClient.newHttpClient();
-        inChinaRegion = true;
-        var request = HttpRequest.newBuilder()
-                .uri(URI.create("https://cloudflare.com/cdn-cgi/trace"))
-                .timeout(Duration.ofSeconds(7))
-                .build();
-        try {
-            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String[] exploded = response.body().split("\n");
-            for (String s : exploded) {
-                if (s.startsWith("loc=")) {
-                    String[] kv = s.split("=");
-                    if (kv.length != 2) {
-                        continue;
-                    }
-                    String key = kv[0];
-                    String value = kv[1];
-                    if ("loc".equalsIgnoreCase(key) && !"CN".equalsIgnoreCase(value)) {
-                        inChinaRegion = false;
-                        break;
-                    }
-                }
-            }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Cannot determine the server region: " + e.getClass().getName() + ": " + e.getMessage() + ", falling back to use CN mirror (Did your server behind the GFW, or no internet connection?)");
+  public static boolean inChinaRegion() {
+    // Already know
+    if(inChinaRegion != null) return inChinaRegion;
+    var client = HttpClient.newHttpClient();
+    inChinaRegion = true;
+    var request = HttpRequest.newBuilder()
+            .uri(URI.create("https://cloudflare.com/cdn-cgi/trace"))
+            .timeout(Duration.ofSeconds(7))
+            .build();
+    try {
+      var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      String[] exploded = response.body().split("\n");
+      for(String s : exploded) {
+        if(s.startsWith("loc=")) {
+          String[] kv = s.split("=");
+          if(kv.length != 2) {
+            continue;
+          }
+          String key = kv[0];
+          String value = kv[1];
+          if("loc".equalsIgnoreCase(key) && !"CN".equalsIgnoreCase(value)) {
+            inChinaRegion = false;
+            break;
+          }
         }
-        return inChinaRegion;
+      }
+    } catch(IOException | InterruptedException e) {
+      System.out.println("Cannot determine the server region: " + e.getClass().getName() + ": " + e.getMessage() + ", falling back to use CN mirror (Did your server behind the GFW, or no internet connection?)");
     }
+    return inChinaRegion;
+  }
 
 }

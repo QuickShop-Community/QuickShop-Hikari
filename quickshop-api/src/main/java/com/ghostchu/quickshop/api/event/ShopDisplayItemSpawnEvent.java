@@ -12,72 +12,79 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ShopDisplayItemSpawnEvent extends AbstractQSEvent implements QSCancellable {
 
-    @NotNull
-    private final DisplayType displayType;
+  @NotNull
+  private final DisplayType displayType;
 
-    @NotNull
-    private final ItemStack itemStack;
+  @NotNull
+  private final ItemStack itemStack;
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    private boolean cancelled;
-    private @Nullable Component cancelReason;
+  private boolean cancelled;
+  private @Nullable Component cancelReason;
 
-    /**
-     * This event is called before the shop display item created
-     *
-     * @param shop        Target shop
-     * @param displayType The displayType
-     * @param itemStack   Target ItemStack
-     */
-    public ShopDisplayItemSpawnEvent(
-            @NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull DisplayType displayType) {
-        this.shop = shop;
-        this.itemStack = itemStack;
-        this.displayType = displayType;
-    }
+  /**
+   * This event is called before the shop display item created
+   *
+   * @param shop        Target shop
+   * @param displayType The displayType
+   * @param itemStack   Target ItemStack
+   */
+  public ShopDisplayItemSpawnEvent(
+          @NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull DisplayType displayType) {
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+    this.shop = shop;
+    this.itemStack = itemStack;
+    this.displayType = displayType;
+  }
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+  @Override
+  public @Nullable Component getCancelReason() {
 
-    /**
-     * Gets the current display type
-     *
-     * @return DisplayType
-     */
-    public @NotNull DisplayType getDisplayType() {
-        return this.displayType;
-    }
+    return this.cancelReason;
+  }
 
-    /**
-     * Gets the ItemStack used for display
-     *
-     * @return The display ItemStack
-     */
-    public @NotNull ItemStack getItemStack() {
-        return this.itemStack;
-    }
+  @Override
+  public void setCancelled(boolean cancel, @Nullable Component reason) {
 
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
+  /**
+   * Gets the current display type
+   *
+   * @return DisplayType
+   */
+  public @NotNull DisplayType getDisplayType() {
+
+    return this.displayType;
+  }
+
+  /**
+   * Gets the ItemStack used for display
+   *
+   * @return The display ItemStack
+   */
+  public @NotNull ItemStack getItemStack() {
+
+    return this.itemStack;
+  }
+
+  /**
+   * Gets the shop
+   *
+   * @return the shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return this.cancelled;
+  }
 }

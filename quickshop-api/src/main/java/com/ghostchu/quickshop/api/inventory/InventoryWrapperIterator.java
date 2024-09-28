@@ -13,93 +13,103 @@ import java.util.NoSuchElementException;
 public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
 
-    /**
-     * Return the default implementation for bukkit inventory
-     *
-     * @param inventory bukkit inventory
-     * @return the default implementation for bukkit inventory
-     */
-    static InventoryWrapperIterator ofBukkitInventory(Inventory inventory) {
-        int size = inventory.getStorageContents().length;
-        return new InventoryWrapperIterator() {
-            int currentIndex = 0;
+  /**
+   * Return the default implementation for bukkit inventory
+   *
+   * @param inventory bukkit inventory
+   *
+   * @return the default implementation for bukkit inventory
+   */
+  static InventoryWrapperIterator ofBukkitInventory(Inventory inventory) {
 
-            @Override
-            public boolean hasNext() {
-                return currentIndex < size;
-            }
+    int size = inventory.getStorageContents().length;
+    return new InventoryWrapperIterator() {
+      int currentIndex = 0;
 
-            @Override
-            public ItemStack next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                return inventory.getStorageContents()[currentIndex++];
-            }
+      @Override
+      public boolean hasNext() {
 
-            @Override
-            public void setCurrent(ItemStack stack) {
-                ItemStack[] storageItems = inventory.getStorageContents();
-                storageItems[Math.max(0, currentIndex - 1)] = stack;
-                inventory.setStorageContents(storageItems);
-            }
-        };
-    }
+        return currentIndex < size;
+      }
 
-    /**
-     * Return the default implementation for itemStack array
-     *
-     * @param itemStacks itemStack array
-     * @return the default implementation for itemStack array
-     */
-    static InventoryWrapperIterator ofItemStacks(ItemStack[] itemStacks) {
-        return new InventoryWrapperIterator() {
-            int currentIndex = 0;
+      @Override
+      public ItemStack next() {
 
-            @Override
-            public boolean hasNext() {
-                return currentIndex < itemStacks.length;
-            }
+        if(!hasNext()) {
+          throw new NoSuchElementException();
+        }
+        return inventory.getStorageContents()[currentIndex++];
+      }
 
-            @Override
-            public ItemStack next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                return itemStacks[currentIndex++];
-            }
+      @Override
+      public void setCurrent(ItemStack stack) {
 
-            @Override
-            public void setCurrent(ItemStack stack) {
-                itemStacks[Math.max(0, currentIndex - 1)] = stack.clone();
-            }
-        };
-    }
+        ItemStack[] storageItems = inventory.getStorageContents();
+        storageItems[Math.max(0, currentIndex - 1)] = stack;
+        inventory.setStorageContents(storageItems);
+      }
+    };
+  }
 
-    @Override
-    boolean hasNext();
+  /**
+   * Return the default implementation for itemStack array
+   *
+   * @param itemStacks itemStack array
+   *
+   * @return the default implementation for itemStack array
+   */
+  static InventoryWrapperIterator ofItemStacks(ItemStack[] itemStacks) {
 
-    /**
-     * Get the next ItemStack instance
-     * To apply the changes, please use setCurrent method
-     *
-     * @return the next ItemStack instance
-     */
-    @Override
-    ItemStack next();
+    return new InventoryWrapperIterator() {
+      int currentIndex = 0;
 
-    /**
-     * Remove the current ItemStack from inventory
-     */
-    @Override
-    default void remove() {
-        setCurrent(null);
-    }
+      @Override
+      public boolean hasNext() {
 
-    /**
-     * Set the current ItemStack instance
-     *
-     * @param stack the itemStack need to set
-     */
-    void setCurrent(@Nullable ItemStack stack);
+        return currentIndex < itemStacks.length;
+      }
+
+      @Override
+      public ItemStack next() {
+
+        if(!hasNext()) {
+          throw new NoSuchElementException();
+        }
+        return itemStacks[currentIndex++];
+      }
+
+      @Override
+      public void setCurrent(ItemStack stack) {
+
+        itemStacks[Math.max(0, currentIndex - 1)] = stack.clone();
+      }
+    };
+  }
+
+  @Override
+  boolean hasNext();
+
+  /**
+   * Get the next ItemStack instance To apply the changes, please use setCurrent method
+   *
+   * @return the next ItemStack instance
+   */
+  @Override
+  ItemStack next();
+
+  /**
+   * Remove the current ItemStack from inventory
+   */
+  @Override
+  default void remove() {
+
+    setCurrent(null);
+  }
+
+  /**
+   * Set the current ItemStack instance
+   *
+   * @param stack the itemStack need to set
+   */
+  void setCurrent(@Nullable ItemStack stack);
 }

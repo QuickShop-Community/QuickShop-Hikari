@@ -35,173 +35,183 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class v1_20_R2_TO_v1_20_R3 implements VirtualDisplayPacketFactory {
-    private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
-    private final QuickShop plugin;
-    private final VirtualDisplayItemManager manager;
 
-    public v1_20_R2_TO_v1_20_R3(QuickShop plugin, VirtualDisplayItemManager manager) {
-        this.plugin = plugin;
-        this.manager = manager;
+  private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
+  private final QuickShop plugin;
+  private final VirtualDisplayItemManager manager;
+
+  public v1_20_R2_TO_v1_20_R3(QuickShop plugin, VirtualDisplayItemManager manager) {
+
+    this.plugin = plugin;
+    this.manager = manager;
+  }
+
+  @Override
+  public @Nullable Throwable testFakeItem() {
+
+    try {
+      createFakeItemSpawnPacket(0, new Location(Bukkit.getServer().getWorlds().get(0), 0, 0, 0));
+      createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
+      createFakeItemVelocityPacket(0);
+      createFakeItemDestroyPacket(0);
+      return null;
+    } catch(Exception throwable) {
+      return throwable;
+    }
+  }
+
+  @Override
+  public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location location) {
+
+    final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + entityID).getBytes(StandardCharsets.UTF_8));
+
+    //First, create a new packet to spawn item
+    final PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+
+    //id and velocity
+    fakeItemPacket.getIntegers()
+            .write(0, entityID)
+            .write(1, 0)
+            .write(2, 0)
+            .write(3, 0);
+
+    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.valueOf("DROPPED_ITEM"));
+
+    //UUID
+    fakeItemPacket.getUUIDs().write(0, identifier);
+
+    //Location
+    fakeItemPacket.getDoubles()
+            //X
+            .write(0, location.getX())
+            //Y
+            .write(1, location.getY())
+            //Z
+            .write(2, location.getZ());
+    return fakeItemPacket;
+  }
+
+  @Override
+  public @NotNull PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack) {
+
+    final List<WrappedDataValue> values = new ArrayList<>();
+    values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
+
+    if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+
+      final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
+
+      values.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle())));
+      values.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
     }
 
-    @Override
-    public @Nullable Throwable testFakeItem() {
-        try {
-            createFakeItemSpawnPacket(0, new Location(Bukkit.getServer().getWorlds().get(0), 0, 0, 0));
-            createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
-            createFakeItemVelocityPacket(0);
-            createFakeItemDestroyPacket(0);
-            return null;
-        } catch (Exception throwable) {
-            return throwable;
+    //Next, create a new packet to update item data (default is empty)
+    final PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
+    //Entity ID
+    fakeItemMetaPacket.getIntegers().write(0, entityID);
+    fakeItemMetaPacket.getDataValueCollectionModifier().write(0, values);
+
+    //Add it
+    //For 1.19.2+, we need to use DataValue instead of WatchableObject
+    //Check for new version protocolLib
+    try {
+      Class.forName("com.comphenix.protocol.wrappers.WrappedDataValue");
+    } catch(ClassNotFoundException e) {
+      throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
+    }
+    return fakeItemMetaPacket;
+  }
+
+  @Override
+  public PacketContainer createFakeItemVelocityPacket(int entityID) {
+
+    return null;
+  }
+
+  @Override
+  public @NotNull PacketContainer createFakeItemDestroyPacket(int entityID) {
+    //Also make a DestroyPacket to remove it
+    PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+    MinecraftVersion minecraftVersion = manager.getProtocolManager().getMinecraftVersion();
+    //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
+    //Entity to remove
+    try {
+      fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
+    } catch(NoSuchMethodError e) {
+      throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
+    }
+    // }
+    return fakeItemDestroyPacket;
+  }
+
+  @Override
+  public @NotNull PacketAdapter getChunkSendPacketAdapter() {
+
+    return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+      @Override
+      public void onPacketSending(@NotNull PacketEvent event) {
+
+        Player player = event.getPlayer();
+        if(player == null || !player.isOnline()) {
+          return;
         }
-    }
-
-    @Override
-    public @NotNull PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location location) {
-        final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + entityID).getBytes(StandardCharsets.UTF_8));
-
-        //First, create a new packet to spawn item
-        final PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
-
-        //id and velocity
-        fakeItemPacket.getIntegers()
-                .write(0, entityID)
-                .write(1, 0)
-                .write(2, 0)
-                .write(3, 0);
-
-        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.valueOf("DROPPED_ITEM"));
-
-        //UUID
-        fakeItemPacket.getUUIDs().write(0, identifier);
-
-        //Location
-        fakeItemPacket.getDoubles()
-                //X
-                .write(0, location.getX())
-                //Y
-                .write(1, location.getY())
-                //Z
-                .write(2, location.getZ());
-        return fakeItemPacket;
-    }
-
-    @Override
-    public @NotNull PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack) {
-        final List<WrappedDataValue> values = new ArrayList<>();
-        values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
-
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-
-            final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
-
-            values.add(new WrappedDataValue(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle())));
-            values.add(new WrappedDataValue(3, WrappedDataWatcher.Registry.get(Boolean.class), true));
+        if(player.getClass().getName().contains("TemporaryPlayer")) {
+          return;
         }
+        StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+        //chunk x
+        int x = integerStructureModifier.read(0);
+        //chunk z
+        int z = integerStructureModifier.read(1);
 
-        //Next, create a new packet to update item data (default is empty)
-        final PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
-        //Entity ID
-        fakeItemMetaPacket.getIntegers().write(0, entityID);
-        fakeItemMetaPacket.getDataValueCollectionModifier().write(0, values);
-
-        //Add it
-        //For 1.19.2+, we need to use DataValue instead of WatchableObject
-        //Check for new version protocolLib
-        try {
-            Class.forName("com.comphenix.protocol.wrappers.WrappedDataValue");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
-        }
-        return fakeItemMetaPacket;
-    }
-
-    @Override
-    public PacketContainer createFakeItemVelocityPacket(int entityID) {
-        return null;
-    }
-
-    @Override
-    public @NotNull PacketContainer createFakeItemDestroyPacket(int entityID) {
-        //Also make a DestroyPacket to remove it
-        PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-        MinecraftVersion minecraftVersion = manager.getProtocolManager().getMinecraftVersion();
-        //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
-        //Entity to remove
-        try {
-            fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
-        } catch (NoSuchMethodError e) {
-            throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
-        }
-        // }
-        return fakeItemDestroyPacket;
-    }
-
-    @Override
-    public @NotNull PacketAdapter getChunkSendPacketAdapter() {
-        return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
-            @Override
-            public void onPacketSending(@NotNull PacketEvent event) {
-                Player player = event.getPlayer();
-                if (player == null || !player.isOnline()) {
-                    return;
-                }
-                if (player.getClass().getName().contains("TemporaryPlayer")) {
-                    return;
-                }
-                StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
-                //chunk x
-                int x = integerStructureModifier.read(0);
-                //chunk z
-                int z = integerStructureModifier.read(1);
-
-                manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
-                    for (VirtualDisplayItem target : targetList) {
-                        if (!target.isSpawned()) {
-                            continue;
-                        }
-                        if (target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
-                            target.getPacketSenders().add(player.getUniqueId());
-                            target.sendDestroyItem(player);
-                            target.sendFakeItem(player);
-                        }
-                    }
-                    return targetList;
-                });
+        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(VirtualDisplayItem target : targetList) {
+            if(!target.isSpawned()) {
+              continue;
             }
-        };
-    }
-
-    @Override
-    public @NotNull PacketAdapter getChunkUnloadPacketAdapter() {
-        return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
-            @Override
-            public void onPacketSending(@NotNull PacketEvent event) {
-                Player player = event.getPlayer();
-                if (player == null || !player.isOnline()) {
-                    return;
-                }
-                if (player.getClass().getName().contains("TemporaryPlayer")) {
-                    return;
-                }
-                StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
-                ChunkCoordIntPair pair = intPairStructureModifier.read(0);
-                //chunk x
-                int x = pair.getChunkX();
-                //chunk z
-                int z = pair.getChunkZ();
-                manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
-                    for (VirtualDisplayItem target : targetList) {
-                        if (!target.isSpawned()) {
-                            continue;
-                        }
-                        target.sendDestroyItem(player);
-                        target.getPacketSenders().remove(player.getUniqueId());
-                    }
-                    return targetList;
-                });
+            if(target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
+              target.getPacketSenders().add(player.getUniqueId());
+              target.sendDestroyItem(player);
+              target.sendFakeItem(player);
             }
-        };
-    }
+          }
+          return targetList;
+        });
+      }
+    };
+  }
+
+  @Override
+  public @NotNull PacketAdapter getChunkUnloadPacketAdapter() {
+
+    return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
+      @Override
+      public void onPacketSending(@NotNull PacketEvent event) {
+
+        Player player = event.getPlayer();
+        if(player == null || !player.isOnline()) {
+          return;
+        }
+        if(player.getClass().getName().contains("TemporaryPlayer")) {
+          return;
+        }
+        StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
+        ChunkCoordIntPair pair = intPairStructureModifier.read(0);
+        //chunk x
+        int x = pair.getChunkX();
+        //chunk z
+        int z = pair.getChunkZ();
+        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(VirtualDisplayItem target : targetList) {
+            if(!target.isSpawned()) {
+              continue;
+            }
+            target.sendDestroyItem(player);
+            target.getPacketSenders().remove(player.getUniqueId());
+          }
+          return targetList;
+        });
+      }
+    };
+  }
 }

@@ -78,6 +78,7 @@ public class MainPage {
   public MainPage(String returnMenu, String menuName,
                   final int menuPage, final int returnPage, String staffPageID,
                   final int menuRows, String iconLore, final IconAction... actions) {
+
     this.returnMenu = returnMenu;
     this.menuName = menuName;
     this.menuPage = menuPage;
@@ -135,25 +136,25 @@ public class MainPage {
           }
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                  .display(LegacyComponentSerializer.legacySection().deserialize(shopName))
-                  .lore(getList(id, "history.shop.header-icon-description",
-                          shop.getShopType().name(),
-                          shop.getOwner().getDisplay(),
-                          Util.getItemStackName(shop.getItem()),
-                          shop.getPrice(), shop.getShopStackingAmount(),
-                          shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
-                                  + ", " + shop.getLocation().getBlockY() + ", "
-                                  + shop.getLocation().getBlockZ()))
-                  .profile(ownerProfile))
-                  .withActions(new SwitchPageAction(returnMenu, returnPage))
-                  .withSlot(4)
-                  .build());
+                                                             .display(LegacyComponentSerializer.legacySection().deserialize(shopName))
+                                                             .lore(getList(id, "history.shop.header-icon-description",
+                                                                           shop.getShopType().name(),
+                                                                           shop.getOwner().getDisplay(),
+                                                                           Util.getItemStackName(shop.getItem()),
+                                                                           shop.getPrice(), shop.getShopStackingAmount(),
+                                                                           shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
+                                                                           + ", " + shop.getLocation().getBlockY() + ", "
+                                                                           + shop.getLocation().getBlockZ()))
+                                                             .profile(ownerProfile))
+                                             .withActions(new SwitchPageAction(returnMenu, returnPage))
+                                             .withSlot(4)
+                                             .build());
         } else {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("CHEST", 1)
-                  .display(get(id, "history.shop.header-icon-multiple-shop", shops.size())))
-                  .withSlot(4)
-                  .build());
+                                                             .display(get(id, "history.shop.header-icon-multiple-shop", shops.size())))
+                                             .withSlot(4)
+                                             .build());
         }
 
         //summary icon
@@ -171,37 +172,37 @@ public class MainPage {
         description.add(get(id, "history.shop.total-balances", locale.getNumberFormat().format(summary.totalBalance())));
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("OAK_SIGN", 1)
-                .display(get(id, "history.shop.summary-icon-title"))
-                .lore(description))
-                .withSlot(0)
-                .build());
+                                                           .display(get(id, "history.shop.summary-icon-title"))
+                                                           .lore(description))
+                                           .withSlot(0)
+                                           .build());
 
         final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
         for(Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
           valuableDescription.add(get(id, "history.shop.top-n-valuable-customers-entry",
-                  QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
-                          entry.getKey()).getDisplay(), entry.getValue()));
+                                      QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
+                                                           entry.getKey()).getDisplay(), entry.getValue()));
         }
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("DIAMOND", 1)
-                .display(get(id, "history.shop.top-n-valuable-customers-title", summary.valuableCustomers().size()))
-                .lore(valuableDescription)).withSlot(8).build());
+                                                           .display(get(id, "history.shop.top-n-valuable-customers-title", summary.valuableCustomers().size()))
+                                                           .lore(valuableDescription)).withSlot(8).build());
 
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                  .display(get(id, "gui.shared.previous-page"))
-                  .lore(List.of(get(id, "history.shop.current-page", page))))
-                  .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
-                  .withSlot(3)
-                  .build());
+                                                             .display(get(id, "gui.shared.previous-page"))
+                                                             .lore(List.of(get(id, "history.shop.current-page", page))))
+                                             .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
+                                             .withSlot(3)
+                                             .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
-                  .display(get(id, "gui.shared.next-page"))
-                  .lore(List.of(get(id, "history.shop.current-page", page))))
-                  .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
-                  .withSlot(5)
-                  .build());
+                                                             .display(get(id, "gui.shared.next-page"))
+                                                             .lore(List.of(get(id, "history.shop.current-page", page))))
+                                             .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
+                                             .withSlot(5)
+                                             .build());
         }
 
         int i = 0;
@@ -240,11 +241,11 @@ public class MainPage {
           }
 
           final List<Component> lore = getList(id, "history.shop.log-icon-description-with-store-name",
-                  shopName,
-                  userName,
-                  itemName, record.amount(),
-                  record.money(),
-                  record.tax());
+                                               shopName,
+                                               userName,
+                                               itemName, record.amount(),
+                                               record.money(),
+                                               record.tax());
 
           final String timeFormat = QuickShop.getInstance().text().of(player, "timeunit.std-format").plain();
           final SimpleDateFormat format = new SimpleDateFormat(timeFormat);
@@ -253,7 +254,7 @@ public class MainPage {
           if(shops.size() == 1) {
             stack = stack.of("PLAYER_HEAD", Math.min(max, record.amount()))
                     .display(get(id, "history.shop.log-icon-title",
-                            format.format(record.date())))
+                                 format.format(record.date())))
                     .lore(lore);
 
             final Optional<OfflinePlayer> offline = getPlayer(record.buyer());
@@ -278,10 +279,12 @@ public class MainPage {
   }
 
   private Component hours(final UUID id, final int hours) {
+
     return get(id, "timeunit.hours", hours);
   }
 
   private Component days(final UUID id, final int days) {
+
     return get(id, "timeunit.days", days);
   }
 }

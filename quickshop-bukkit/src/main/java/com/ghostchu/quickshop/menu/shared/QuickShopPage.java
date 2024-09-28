@@ -39,7 +39,9 @@ import static com.ghostchu.quickshop.menu.ShopKeeperMenu.SHOP_DATA_ID;
  * @since 6.2.0.8
  */
 public class QuickShopPage extends Page {
+
   public QuickShopPage(int pageNumber) {
+
     super(pageNumber);
   }
 
@@ -53,20 +55,23 @@ public class QuickShopPage extends Page {
     Optional<Object> idObj = player.findData(SHOP_DATA_ID);
     if(idObj.isPresent()) {
 
-      final Long shopId = (Long) idObj.get();
+      final Long shopId = (Long)idObj.get();
       return Optional.ofNullable(QuickShop.getInstance().getShopManager().getShop(shopId));
     }
     return Optional.empty();
   }
 
   /**
-   * Retrieves the legacy string representation of the text associated with a given route and player.
+   * Retrieves the legacy string representation of the text associated with a given route and
+   * player.
    *
    * @param player The UUID of the player.
-   * @param route The route to retrieve the text.
+   * @param route  The route to retrieve the text.
+   *
    * @return The legacy string representation of the text associated with the route and player.
    */
   public static String legacy(final UUID player, final String route, @Nullable Object... args) {
+
     return QuickShop.getInstance().text().of(player, route, args).legacy();
   }
 
@@ -74,10 +79,12 @@ public class QuickShopPage extends Page {
    * Retrieves a component for a given route and player.
    *
    * @param player The UUID of the player.
-   * @param route The route to retrieve the component.
+   * @param route  The route to retrieve the component.
+   *
    * @return The component associated with the route and player.
    */
   public static Component get(final UUID player, final String route, @Nullable Object... args) {
+
     return QuickShop.getInstance().text().of(player, route, args).forLocale();
   }
 
@@ -85,10 +92,12 @@ public class QuickShopPage extends Page {
    * Retrieves a list of components for a given route and player.
    *
    * @param player The UUID of the player.
-   * @param route The route to retrieve the list of components.
+   * @param route  The route to retrieve the list of components.
+   *
    * @return A list of components associated with the route and player.
    */
   public static List<Component> getList(final UUID player, final String route, @Nullable Object... args) {
+
     return QuickShop.getInstance().text().ofList(player, route, args).forLocale();
   }
 }

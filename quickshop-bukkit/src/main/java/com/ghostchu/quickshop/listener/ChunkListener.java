@@ -22,62 +22,67 @@ import java.util.Map;
 
 public class ChunkListener extends AbstractQSListener {
 
-    public ChunkListener(QuickShop plugin) {
-        super(plugin);
+  public ChunkListener(QuickShop plugin) {
+
+    super(plugin);
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onChunkLoad(ChunkLoadEvent e) {
+
+    if(e.isNewChunk()) {
+      return;
+    }
+    final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+    if(inChunk == null) {
+      return;
+    }
+    cleanDisplayItems(e.getChunk());
+    String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
+    try(PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(500, ChronoUnit.MILLIS))) {
+      for(Shop shop : inChunk.values()) {
+        plugin.getShopManager().loadShop(shop);
+      }
+    }
+  }
+
+  private void cleanDisplayItems(Chunk chunk) {
+
+    for(Entity entity : chunk.getEntities()) {
+      if(entity instanceof Item itemEntity) {
+        if(AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
+          itemEntity.remove();
+          Log.debug("Removed shop display item at " + itemEntity.getLocation() + " while chunk loading, pending for regenerate.");
+        }
+      }
+    }
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onChunkUnload(ChunkUnloadEvent e) {
+
+    final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+    if(inChunk == null) {
+      return;
+    }
+    for(Shop shop : inChunk.values()) {
+      try(PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(500, ChronoUnit.MILLIS))) {
+        if(shop.isLoaded()) {
+          plugin.getShopManager().unloadShop(shop);
+        }
+      }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChunkLoad(ChunkLoadEvent e) {
-        if (e.isNewChunk()) {
-            return;
-        }
-        final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
-        if (inChunk == null) {
-            return;
-        }
-        cleanDisplayItems(e.getChunk());
-        String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
-        try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(500, ChronoUnit.MILLIS))) {
-            for (Shop shop : inChunk.values()) {
-                plugin.getShopManager().loadShop(shop);
-            }
-        }
-    }
+  }
 
-    private void cleanDisplayItems(Chunk chunk) {
-        for (Entity entity : chunk.getEntities()) {
-            if (entity instanceof Item itemEntity) {
-                if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
-                    itemEntity.remove();
-                    Log.debug("Removed shop display item at " + itemEntity.getLocation() + " while chunk loading, pending for regenerate.");
-                }
-            }
-        }
-    }
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChunkUnload(ChunkUnloadEvent e) {
-        final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
-        if (inChunk == null) {
-            return;
-        }
-        for (Shop shop : inChunk.values()) {
-            try (PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(500, ChronoUnit.MILLIS))) {
-                if (shop.isLoaded()) {
-                    plugin.getShopManager().unloadShop(shop);
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
 }

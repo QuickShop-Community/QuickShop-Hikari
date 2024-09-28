@@ -7,17 +7,20 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 /*
     This processor fixed the component on Item will render as ITALICS style on client.
     https://github.com/KyoriPowered/adventure/issues/534
  */
 @EqualsAndHashCode
 public class FixClientItemItalicRenderProcessor implements PostProcessor {
-    @Override
-    public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
-        if(!text.hasDecoration(TextDecoration.ITALIC)){
-            text = text.decoration(TextDecoration.ITALIC,false);
-        }
-        return text;
+
+  @Override
+  public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
+
+    if(!text.hasDecoration(TextDecoration.ITALIC)) {
+      text = text.decoration(TextDecoration.ITALIC, false);
     }
+    return text;
+  }
 }

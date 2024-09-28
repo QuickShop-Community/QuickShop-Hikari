@@ -13,17 +13,19 @@ import java.util.Map;
 
 public class SubCommand_Reload implements CommandHandler<CommandSender> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Reload(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_Reload(QuickShop plugin) {
 
-    @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        plugin.text().of(sender, "command.reloading").send();
-        plugin.getJavaPlugin().reloadConfig();
-        Map<ReloadableContainer, ReloadResult> container = plugin.getReloadManager().reload();
-        sender.sendMessage(ChatColor.GOLD + "Reloaded " + container.size() + " modules.");
-    }
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+
+    plugin.text().of(sender, "command.reloading").send();
+    plugin.getJavaPlugin().reloadConfig();
+    Map<ReloadableContainer, ReloadResult> container = plugin.getReloadManager().reload();
+    sender.sendMessage(ChatColor.GOLD + "Reloaded " + container.size() + " modules.");
+  }
 }

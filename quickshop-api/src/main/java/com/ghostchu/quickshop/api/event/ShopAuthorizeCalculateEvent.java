@@ -11,83 +11,90 @@ import java.util.UUID;
  */
 public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    private final Plugin namespace;
+  private final Plugin namespace;
 
-    private final String permission;
-    private final UUID authorizer;
+  private final String permission;
+  private final UUID authorizer;
 
-    private boolean result;
+  private boolean result;
 
-    /**
-     * Call when shop authorize was calculated
-     *
-     * @param shop The shop bought from
-     */
-    public ShopAuthorizeCalculateEvent(@NotNull Shop shop, @NotNull UUID authorizer, @NotNull Plugin namespace, @NotNull String permission, boolean result) {
-        this.shop = shop;
-        this.authorizer = authorizer;
-        this.namespace = namespace;
-        this.permission = permission;
-        this.result = result;
-    }
+  /**
+   * Call when shop authorize was calculated
+   *
+   * @param shop The shop bought from
+   */
+  public ShopAuthorizeCalculateEvent(@NotNull Shop shop, @NotNull UUID authorizer, @NotNull Plugin namespace, @NotNull String permission, boolean result) {
 
-    /**
-     * Gets the authorizer about this event
-     *
-     * @return authorizer
-     */
-    @NotNull
-    public UUID getAuthorizer() {
-        return authorizer;
-    }
+    this.shop = shop;
+    this.authorizer = authorizer;
+    this.namespace = namespace;
+    this.permission = permission;
+    this.result = result;
+  }
 
-    /**
-     * Gets the namespace of the permission
-     *
-     * @return namespace
-     */
-    @NotNull
-    public Plugin getNamespace() {
-        return namespace;
-    }
+  /**
+   * Gets the authorizer about this event
+   *
+   * @return authorizer
+   */
+  @NotNull
+  public UUID getAuthorizer() {
 
-    /**
-     * Getting the permission
-     *
-     * @return permission
-     */
-    @NotNull
-    public String getPermission() {
-        return permission;
-    }
+    return authorizer;
+  }
 
-    /**
-     * Gets the final result of permission check
-     *
-     * @return true if permission is granted, false if not
-     */
-    public boolean getResult() {
-        return result;
-    }
+  /**
+   * Gets the namespace of the permission
+   *
+   * @return namespace
+   */
+  @NotNull
+  public Plugin getNamespace() {
 
-    /**
-     * Sets the final result of permission check
-     *
-     * @param result true if permission is granted, false if not
-     */
-    public void setResult(boolean result) {
-        this.result = result;
-    }
+    return namespace;
+  }
 
-    /**
-     * Getting the shops that checking for
-     *
-     * @return Shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+  /**
+   * Getting the permission
+   *
+   * @return permission
+   */
+  @NotNull
+  public String getPermission() {
+
+    return permission;
+  }
+
+  /**
+   * Gets the final result of permission check
+   *
+   * @return true if permission is granted, false if not
+   */
+  public boolean getResult() {
+
+    return result;
+  }
+
+  /**
+   * Sets the final result of permission check
+   *
+   * @param result true if permission is granted, false if not
+   */
+  public void setResult(boolean result) {
+
+    this.result = result;
+  }
+
+  /**
+   * Getting the shops that checking for
+   *
+   * @return Shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
 }

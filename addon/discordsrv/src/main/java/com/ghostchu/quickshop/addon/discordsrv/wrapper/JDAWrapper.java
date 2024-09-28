@@ -6,13 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public interface JDAWrapper {
-    boolean isBind(@NotNull UUID player);
 
-    void sendMessage(@NotNull UUID player, @NotNull String message);
+  boolean isBind(@NotNull UUID player);
 
-    void sendMessage(@NotNull UUID player, @NotNull MessageEmbed message);
+  void sendMessage(@NotNull UUID player, @NotNull String message);
 
-    void sendChannelMessage(@NotNull String channelId, @NotNull String message);
+  void sendMessage(@NotNull UUID player, @NotNull MessageEmbed message);
 
-    void sendChannelMessage(@NotNull String channelId, @NotNull MessageEmbed message);
+  void sendChannelMessage(@NotNull String channelId, @NotNull String message);
+
+  void sendChannelMessage(@NotNull String channelId, @NotNull MessageEmbed message);
 }

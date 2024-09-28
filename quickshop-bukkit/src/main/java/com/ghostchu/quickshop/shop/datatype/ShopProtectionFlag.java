@@ -11,20 +11,24 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode
 @ToString
 public class ShopProtectionFlag {
-    private static final String MARK = "QuickShop DisplayItem";
-    private final String itemStackString;
-    private final String shopLocation;
 
-    public ShopProtectionFlag(@NotNull String shopLocation, @NotNull String itemStackString) {
-        this.shopLocation = shopLocation;
-        this.itemStackString = itemStackString;
-    }
+  private static final String MARK = "QuickShop DisplayItem";
+  private final String itemStackString;
+  private final String shopLocation;
 
-    public static String getMark() {
-        return getDefaultMark();
-    }
+  public ShopProtectionFlag(@NotNull String shopLocation, @NotNull String itemStackString) {
 
-    public static String getDefaultMark() {
-        return MARK;
-    }
+    this.shopLocation = shopLocation;
+    this.itemStackString = itemStackString;
+  }
+
+  public static String getMark() {
+
+    return getDefaultMark();
+  }
+
+  public static String getDefaultMark() {
+
+    return MARK;
+  }
 }

@@ -3,14 +3,16 @@ package com.ghostchu.quickshop.api.registry;
 import java.util.Map;
 
 public interface RegistryManager {
-    Registry getRegistry(BuiltInRegistry registry);
-    Registry getRegistry(String registryName);
 
-    Map<String, Registry> getRegistryList();
+  Registry getRegistry(BuiltInRegistry registry);
 
-    void registerRegistry(String namespacedName, Registry registry);
+  Registry getRegistry(String registryName);
 
-    void unregisterRegistry(String namespacedName);
+  Map<String, Registry> getRegistryList();
 
-    Map<String, Registry> getRegistries();
+  void registerRegistry(String namespacedName, Registry registry);
+
+  void unregisterRegistry(String namespacedName);
+
+  Map<String, Registry> getRegistries();
 }

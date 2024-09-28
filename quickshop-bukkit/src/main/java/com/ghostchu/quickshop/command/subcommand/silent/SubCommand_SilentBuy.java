@@ -13,23 +13,24 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentBuy extends SubCommand_SilentBase {
 
-    public SubCommand_SilentBuy(QuickShop plugin) {
-        super(plugin);
+  public SubCommand_SilentBuy(QuickShop plugin) {
+
+    super(plugin);
+  }
+
+  @Override
+  protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
+
+    if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
+       && !plugin.perm().hasPermission(sender, "quickshop.create.admin")) {
+      plugin.text().of(sender, "not-permission").send();
+      return;
     }
 
-    @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
-        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
-                && !plugin.perm().hasPermission(sender, "quickshop.create.admin")) {
-            plugin.text().of(sender, "not-permission").send();
-            return;
-        }
-
-        shop.setShopType(ShopType.BUYING);
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
-        MsgUtil.sendControlPanelInfo(sender, shop);
-        plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
-    }
-
+    shop.setShopType(ShopType.BUYING);
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
+    MsgUtil.sendControlPanelInfo(sender, shop);
+    plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+  }
 
 }

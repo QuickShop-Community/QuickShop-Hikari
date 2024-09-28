@@ -9,8 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 @EqualsAndHashCode
 public class PlaceHolderApiProcessor implements PostProcessor {
-    @Override
-    public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
+
+  @Override
+  public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
         /*if (sender instanceof OfflinePlayer offlinePlayer) {
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceHolderAPI")) {
                 String json = GsonComponentSerializer.gson().serialize(text);
@@ -18,7 +19,7 @@ public class PlaceHolderApiProcessor implements PostProcessor {
                 return GsonComponentSerializer.gson().deserialize(json);
             }
         }*/
-        return text;
-    }
+    return text;
+  }
 
 }

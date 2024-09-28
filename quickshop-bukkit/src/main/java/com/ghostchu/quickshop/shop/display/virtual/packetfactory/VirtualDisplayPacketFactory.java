@@ -8,21 +8,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface VirtualDisplayPacketFactory {
-    @Nullable
-    Throwable testFakeItem();
 
-    @NotNull
-    PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location displayLocation);
+  @Nullable
+  Throwable testFakeItem();
 
-    @NotNull
-    PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack);
+  @NotNull
+  PacketContainer createFakeItemSpawnPacket(int entityID, @NotNull Location displayLocation);
 
-    PacketContainer createFakeItemVelocityPacket(int entityID);
+  @NotNull
+  PacketContainer createFakeItemMetaPacket(int entityID, @NotNull ItemStack itemStack);
 
-    @NotNull
-    PacketContainer createFakeItemDestroyPacket(int entityID);
+  PacketContainer createFakeItemVelocityPacket(int entityID);
 
-    @NotNull PacketAdapter getChunkSendPacketAdapter();
+  @NotNull
+  PacketContainer createFakeItemDestroyPacket(int entityID);
 
-    @NotNull PacketAdapter getChunkUnloadPacketAdapter();
+  @NotNull
+  PacketAdapter getChunkSendPacketAdapter();
+
+  @NotNull
+  PacketAdapter getChunkUnloadPacketAdapter();
 }

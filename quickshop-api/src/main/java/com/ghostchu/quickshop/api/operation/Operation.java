@@ -4,32 +4,33 @@ package com.ghostchu.quickshop.api.operation;
  * The transaction Operation
  */
 public interface Operation {
-    /**
-     * Commit the operation
-     *
-     * @return true if successes
-     */
-    boolean commit();
 
-    /**
-     * Check if operation is committed
-     *
-     * @return true if committed
-     */
-    boolean isCommitted();
+  /**
+   * Commit the operation
+   *
+   * @return true if successes
+   */
+  boolean commit();
 
-    /**
-     * Check if operation is rolled back
-     *
-     * @return true if rolled back
-     */
-    boolean isRollback();
+  /**
+   * Check if operation is committed
+   *
+   * @return true if committed
+   */
+  boolean isCommitted();
 
-    /**
-     * Rollback the operation
-     *
-     * @return true if successes
-     */
+  /**
+   * Check if operation is rolled back
+   *
+   * @return true if rolled back
+   */
+  boolean isRollback();
 
-    boolean rollback();
+  /**
+   * Rollback the operation
+   *
+   * @return true if successes
+   */
+
+  boolean rollback();
 }

@@ -10,11 +10,13 @@ import java.util.Map;
  */
 @Data
 public class SimpleShopExtra {
-    private @NotNull String namespace;
-    private @NotNull Map<String, Object> data;
 
-    public SimpleShopExtra(@NotNull String namespace, @NotNull Map<String, Object> data) {
-        this.namespace = namespace;
-        this.data = data;
-    }
+  private @NotNull String namespace;
+  private @NotNull Map<String, Object> data;
+
+  public SimpleShopExtra(@NotNull String namespace, @NotNull Map<String, Object> data) {
+
+    this.namespace = namespace;
+    this.data = data;
+  }
 }

@@ -19,88 +19,90 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldListener extends AbstractQSListener {
 
-    public WorldListener(QuickShop plugin) {
-        super(plugin);
-    }
+  public WorldListener(QuickShop plugin) {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onWorldLoad(WorldLoadEvent e) {
-        /* *************************************
-         * This listener fixes any broken world references. Such as hashmap
-         * lookups will fail, because the World reference is different, but the
-         * world value is the same.
-         *  ************************************
-         */
-        final World world = e.getWorld();
+    super(plugin);
+  }
 
-        plugin.getShopLoader().loadShops(world.getName());
-        // New world data
-        final Map<ShopChunk, Map<Location, Shop>> inWorld = new ConcurrentHashMap<>(1);
-        // Old world data
-        final Map<ShopChunk, Map<Location, Shop>> oldInWorld =
-                plugin.getShopManager().getShops(world.getName());
-        // Nothing in the old world, therefore we don't care. No locations to
-        // update.
-        if (oldInWorld == null) {
-            return;
-        }
-
-        for (Entry<ShopChunk, Map<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
-            final Map<Location, Shop> inChunk = new ConcurrentHashMap<>(1);
-            // Put the new chunk were the old chunk was
-            inWorld.put(oldInChunk.getKey(), inChunk);
-
-            for (Entry<Location, Shop> entry : oldInChunk.getValue().entrySet()) {
-                final Shop shop = entry.getValue();
-
-                shop.getLocation().setWorld(world);
-                inChunk.put(shop.getLocation(), shop);
-            }
-        }
-        // Done - Now we can store the new world dataz!
-
-        plugin.getShopManager().getShops().put(world.getName(), inWorld);
-        // This is a workaround, because I don't get parsed chunk events when a
-        // world first loads....
-        // So manually tell all of these shops they're loaded.
-        for (final Chunk chunk : world.getLoadedChunks()) {
-            final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-
-            if (inChunk == null) {
-                continue;
-            }
-
-            for (Shop shop : inChunk.values()) {
-                plugin.getShopManager().loadShop(shop);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onWorldUnload(WorldUnloadEvent e) {
-        // This is a workaround, because I don't get parsed chunk events when a
-        // world unloads, I think...
-        // So manually tell all of these shops they're unloaded.
-        for (final Chunk chunk : e.getWorld().getLoadedChunks()) {
-            final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-            if (inChunk == null) {
-                continue;
-            }
-            for (final Shop shop : inChunk.values()) {
-                if (shop.isLoaded()) { //Don't unload already unloaded shops.
-                    plugin.getShopManager().unloadShop(shop,true);
-                }
-            }
-        }
-    }
-
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onWorldLoad(WorldLoadEvent e) {
+    /* *************************************
+     * This listener fixes any broken world references. Such as hashmap
+     * lookups will fail, because the World reference is different, but the
+     * world value is the same.
+     *  ************************************
      */
-    @Override
-    public ReloadResult reloadModule() {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    final World world = e.getWorld();
+
+    plugin.getShopLoader().loadShops(world.getName());
+    // New world data
+    final Map<ShopChunk, Map<Location, Shop>> inWorld = new ConcurrentHashMap<>(1);
+    // Old world data
+    final Map<ShopChunk, Map<Location, Shop>> oldInWorld =
+            plugin.getShopManager().getShops(world.getName());
+    // Nothing in the old world, therefore we don't care. No locations to
+    // update.
+    if(oldInWorld == null) {
+      return;
     }
+
+    for(Entry<ShopChunk, Map<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
+      final Map<Location, Shop> inChunk = new ConcurrentHashMap<>(1);
+      // Put the new chunk were the old chunk was
+      inWorld.put(oldInChunk.getKey(), inChunk);
+
+      for(Entry<Location, Shop> entry : oldInChunk.getValue().entrySet()) {
+        final Shop shop = entry.getValue();
+
+        shop.getLocation().setWorld(world);
+        inChunk.put(shop.getLocation(), shop);
+      }
+    }
+    // Done - Now we can store the new world dataz!
+
+    plugin.getShopManager().getShops().put(world.getName(), inWorld);
+    // This is a workaround, because I don't get parsed chunk events when a
+    // world first loads....
+    // So manually tell all of these shops they're loaded.
+    for(final Chunk chunk : world.getLoadedChunks()) {
+      final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+
+      if(inChunk == null) {
+        continue;
+      }
+
+      for(Shop shop : inChunk.values()) {
+        plugin.getShopManager().loadShop(shop);
+      }
+    }
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onWorldUnload(WorldUnloadEvent e) {
+    // This is a workaround, because I don't get parsed chunk events when a
+    // world unloads, I think...
+    // So manually tell all of these shops they're unloaded.
+    for(final Chunk chunk : e.getWorld().getLoadedChunks()) {
+      final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+      if(inChunk == null) {
+        continue;
+      }
+      for(final Shop shop : inChunk.values()) {
+        if(shop.isLoaded()) { //Don't unload already unloaded shops.
+          plugin.getShopManager().unloadShop(shop, true);
+        }
+      }
+    }
+  }
+
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
+
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
 }

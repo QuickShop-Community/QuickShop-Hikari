@@ -25,29 +25,32 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class SubCommand_About implements CommandHandler<CommandSender> {
-    private final QuickShop plugin;
 
-    public SubCommand_About(QuickShop plugin) {
-        this.plugin = plugin;
+  private final QuickShop plugin;
+
+  public SubCommand_About(QuickShop plugin) {
+
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+
+    String forkName = plugin.getFork();
+    String version = plugin.getVersion();
+    Component releaseType;
+    if(plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/LTS")) {
+      releaseType = plugin.text().of(sender, "updatenotify.label.lts").forLocale();
+    } else if(plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/RELEASE")) {
+      releaseType = plugin.text().of(sender, "updatenotify.label.stable").forLocale();
+    } else {
+      releaseType = plugin.text().of(sender, "updatenotify.label.unstable").forLocale();
     }
+    String developers = CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors());
+    String languageCode = plugin.text().findRelativeLanguages(sender).getLocale();
+    Component localizedStaffs = plugin.text().of(sender, "translation-author").forLocale();
+    final Component donationKey = plugin.text().of(sender, "about.invalid-donation-key").forLocale();
+    plugin.text().ofList(sender, "about.text", forkName, version, releaseType, developers, languageCode, localizedStaffs, donationKey).send();
 
-    @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        String forkName = plugin.getFork();
-        String version = plugin.getVersion();
-        Component releaseType;
-        if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/LTS")) {
-            releaseType =  plugin.text().of(sender, "updatenotify.label.lts").forLocale();
-        } else if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/RELEASE")) {
-            releaseType = plugin.text().of(sender, "updatenotify.label.stable").forLocale();
-        }else{
-            releaseType = plugin.text().of(sender, "updatenotify.label.unstable").forLocale();
-        }
-        String developers = CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors());
-        String languageCode = plugin.text().findRelativeLanguages(sender).getLocale();
-        Component localizedStaffs = plugin.text().of(sender, "translation-author").forLocale();
-        final Component donationKey = plugin.text().of(sender, "about.invalid-donation-key").forLocale();
-        plugin.text().ofList(sender, "about.text", forkName,version,releaseType,developers,languageCode,localizedStaffs,donationKey).send();
-
-    }
+  }
 }

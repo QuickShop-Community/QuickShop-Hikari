@@ -8,20 +8,23 @@ import org.bukkit.inventory.Inventory;
 import java.util.List;
 
 @Getter
-public class ShopHistoryGuiOpenEvent extends AbstractQSEvent{
-    private final Player player;
-    private final List<Shop> shops;
-    private final Inventory inventory;
+public class ShopHistoryGuiOpenEvent extends AbstractQSEvent {
 
-    /**
-     * Called when user opened a Shop History GUI
-     * @param shops The shops that related to GUI
-     * @param player The player that open GUI
-     * @param inventory The GUI itself
-     */
-    public ShopHistoryGuiOpenEvent(List<Shop> shops, Player player, Inventory inventory){
-        this.player = player;
-        this.shops = shops;
-        this.inventory = inventory;
-    }
+  private final Player player;
+  private final List<Shop> shops;
+  private final Inventory inventory;
+
+  /**
+   * Called when user opened a Shop History GUI
+   *
+   * @param shops     The shops that related to GUI
+   * @param player    The player that open GUI
+   * @param inventory The GUI itself
+   */
+  public ShopHistoryGuiOpenEvent(List<Shop> shops, Player player, Inventory inventory) {
+
+    this.player = player;
+    this.shops = shops;
+    this.inventory = inventory;
+  }
 }

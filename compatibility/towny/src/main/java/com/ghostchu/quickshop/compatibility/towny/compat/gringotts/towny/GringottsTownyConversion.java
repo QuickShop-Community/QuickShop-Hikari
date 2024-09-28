@@ -7,13 +7,16 @@ import com.palmergames.bukkit.towny.object.Town;
 import java.util.UUID;
 
 public class GringottsTownyConversion implements UuidConversion {
-    @Override
-    public UUID convertTownyAccount(Town town) {
-        return town.getUUID();
-    }
 
-    @Override
-    public UUID convertTownyAccount(Nation nation) {
-        return nation.getUUID();
-    }
+  @Override
+  public UUID convertTownyAccount(Town town) {
+
+    return town.getUUID();
+  }
+
+  @Override
+  public UUID convertTownyAccount(Nation nation) {
+
+    return nation.getUUID();
+  }
 }

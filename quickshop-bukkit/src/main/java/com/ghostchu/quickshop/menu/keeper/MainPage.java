@@ -55,6 +55,7 @@ import static com.ghostchu.quickshop.menu.ShopKeeperMenu.KEEPER_MAIN;
 public class MainPage extends QuickShopPage {
 
   public MainPage() {
+
     super(KEEPER_MAIN);
 
     setOpen(this::open);
@@ -80,27 +81,27 @@ public class MainPage extends QuickShopPage {
 
         //change icon - done(needs tested)
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PAPER", 1)
-                .display(get(id, "gui.keeper.change-icon.display"))
-                .lore(getList(id, "gui.keeper.change-icon.lore", priceObj)))
-                .withActions(new ChatAction((message->{
+                                                       .display(get(id, "gui.keeper.change-icon.display"))
+                                                       .lore(getList(id, "gui.keeper.change-icon.lore", priceObj)))
+                                       .withActions(new ChatAction((message->{
 
-                  if(!message.getMessage().isEmpty()) {
+                                         if(!message.getMessage().isEmpty()) {
 
-                    try {
+                                           try {
 
-                      final BigDecimal price = new BigDecimal(message.getMessage());
+                                             final BigDecimal price = new BigDecimal(message.getMessage());
 
-                      viewer.get().addData("SHOP_PRICE", price.doubleValue());
+                                             viewer.get().addData("SHOP_PRICE", price.doubleValue());
 
-                      Util.mainThreadRun(() ->ShopUtil.setPrice(QuickShop.getInstance(), QUserImpl.createFullFilled(player), price.doubleValue(), shop.get()));
-                      return true;
+                                             Util.mainThreadRun(()->ShopUtil.setPrice(QuickShop.getInstance(), QUserImpl.createFullFilled(player), price.doubleValue(), shop.get()));
+                                             return true;
 
-                    } catch(NumberFormatException ignore) {}
-                  }
-                  message.getPlayer().message(legacy(id, "gui.keeper.change-icon.enter"));
-                  return false;
-                })), new RunnableAction((run)->run.player().message(legacy(id, "gui.keeper.change-icon.enter"))))
-                .withSlot(10).build());
+                                           } catch(NumberFormatException ignore) { }
+                                         }
+                                         message.getPlayer().message(legacy(id, "gui.keeper.change-icon.enter"));
+                                         return false;
+                                       })), new RunnableAction((run)->run.player().message(legacy(id, "gui.keeper.change-icon.enter"))))
+                                       .withSlot(10).build());
 
         //Mode Toggle Icon
         final AbstractItemStack<?> buyingStack = QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
@@ -121,13 +122,13 @@ public class MainPage extends QuickShopPage {
         }
         final StateIcon changeIcon = new StateIcon(buyingStack, null, "SHOP_TYPE", modeState, (currentState)->{
           if(currentState.toUpperCase(Locale.ROOT).equals("SELLING")) {
-            Util.mainThreadRun(() ->shop.get().setShopType(ShopType.BUYING));
+            Util.mainThreadRun(()->shop.get().setShopType(ShopType.BUYING));
             return "BUYING";
           } else if(currentState.toUpperCase(Locale.ROOT).equals("FROZEN")) {
-            Util.mainThreadRun(() ->shop.get().setShopType(ShopType.SELLING));
+            Util.mainThreadRun(()->shop.get().setShopType(ShopType.SELLING));
             return "SELLING";
           }
-          Util.mainThreadRun(() ->shop.get().setShopType(ShopType.FROZEN));
+          Util.mainThreadRun(()->shop.get().setShopType(ShopType.FROZEN));
           return "FROZEN";
         });
         changeIcon.setSlot(12);
@@ -144,50 +145,50 @@ public class MainPage extends QuickShopPage {
         }
 
         if((!shop.get().playerAuthorize(id, BuiltInShopPermission.MANAGEMENT_PERMISSION)
-                && !QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.staff"))) {
+            && !QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.staff"))) {
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                  .display(get(id, "gui.keeper.staff-icon.no-permission"))
-                  .profile(profile))
-                  .withSlot(14)
-                  .withActions(new SwitchMenuAction("qs:staff")).build());
+                                                         .display(get(id, "gui.keeper.staff-icon.no-permission"))
+                                                         .profile(profile))
+                                         .withSlot(14)
+                                         .withActions(new SwitchMenuAction("qs:staff")).build());
         } else {
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                  .display(get(id, "gui.keeper.staff-icon.display"))
-                  .lore(getList(id, "gui.keeper.staff-icon.lore"))
-                  .profile(profile))
-                  .withSlot(14)
-                  .withActions(new SwitchMenuAction("qs:staff")).build());
+                                                         .display(get(id, "gui.keeper.staff-icon.display"))
+                                                         .lore(getList(id, "gui.keeper.staff-icon.lore"))
+                                                         .profile(profile))
+                                         .withSlot(14)
+                                         .withActions(new SwitchMenuAction("qs:staff")).build());
         }
 
         //Remove Icon - done(needs tested)
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("BARRIER", 1)
-                .display(get(id, "gui.keeper.remove-icon.display"))
-                .lore(getList(id, "gui.keeper.remove-icon.lore")))
-                .withActions(new ChatAction((message->{
+                                                       .display(get(id, "gui.keeper.remove-icon.display"))
+                                                       .lore(getList(id, "gui.keeper.remove-icon.lore")))
+                                       .withActions(new ChatAction((message->{
 
-                  if(!message.getMessage().isEmpty()) {
+                                         if(!message.getMessage().isEmpty()) {
 
-                    if(message.getMessage().equalsIgnoreCase("confirm")) {
-                      if(shop.get().playerAuthorize(id, BuiltInShopPermission.DELETE)
-                              || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.destroy")) {
+                                           if(message.getMessage().equalsIgnoreCase("confirm")) {
+                                             if(shop.get().playerAuthorize(id, BuiltInShopPermission.DELETE)
+                                                || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.destroy")) {
 
-                        Util.mainThreadRun(() ->QuickShop.getInstance().getShopManager().deleteShop(shop.get()));
-                        QuickShop.getInstance().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(player), "/quickshop remove command", shop.get().saveToInfoStorage()));
-                      } else {
+                                               Util.mainThreadRun(()->QuickShop.getInstance().getShopManager().deleteShop(shop.get()));
+                                               QuickShop.getInstance().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(player), "/quickshop remove command", shop.get().saveToInfoStorage()));
+                                             } else {
 
-                        QuickShop.getInstance().text().of(player, "no-permission").send();
-                      }
-                      viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
-                      return true;
-                    }
-                    return true;
-                  }
-                  message.getPlayer().message(legacy(id, "gui.keeper.remove-icon.confirm"));
-                  return false;
-                })), new RunnableAction((run)->run.player().message(legacy(id, "gui.keeper.remove-icon.confirm"))))
-                .withSlot(16).build());
+                                               QuickShop.getInstance().text().of(player, "no-permission").send();
+                                             }
+                                             viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                                             return true;
+                                           }
+                                           return true;
+                                         }
+                                         message.getPlayer().message(legacy(id, "gui.keeper.remove-icon.confirm"));
+                                         return false;
+                                       })), new RunnableAction((run)->run.player().message(legacy(id, "gui.keeper.remove-icon.confirm"))))
+                                       .withSlot(16).build());
       }
     }
   }

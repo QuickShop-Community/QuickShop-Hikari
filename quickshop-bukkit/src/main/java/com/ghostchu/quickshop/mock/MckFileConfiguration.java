@@ -6,20 +6,24 @@ import org.jetbrains.annotations.NotNull;
 
 @ToString
 public class MckFileConfiguration extends FileConfiguration {
-    @NotNull
-    @Override
-    public String saveToString() {
-        return "";
-    }
 
-    @Override
-    public void loadFromString(@NotNull String s) {
-    }
+  @NotNull
+  @Override
+  public String saveToString() {
 
-    @NotNull
-    @Override
-    protected String buildHeader() {
-        return "";
-    }
+    return "";
+  }
+
+  @Override
+  public void loadFromString(@NotNull String s) {
+
+  }
+
+  @NotNull
+  @Override
+  protected String buildHeader() {
+
+    return "";
+  }
 
 }

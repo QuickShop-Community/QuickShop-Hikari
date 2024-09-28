@@ -61,6 +61,7 @@ public class PlayerSelectionPage {
   public PlayerSelectionPage(String returnMenu, String menuName,
                              final int menuPage, final int returnPage, String playerPageID,
                              final int menuRows, String iconLore, final IconAction... actions) {
+
     this.returnMenu = returnMenu;
     this.menuName = menuName;
     this.menuPage = menuPage;
@@ -98,23 +99,23 @@ public class PlayerSelectionPage {
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                  .display(get(id, "gui.shared.previous-page")))
-                  .withActions(new DataAction(playerPageID, prev), new SwitchPageAction(menuName, menuPage))
-                  .withSlot(0)
-                  .build());
+                                                             .display(get(id, "gui.shared.previous-page")))
+                                             .withActions(new DataAction(playerPageID, prev), new SwitchPageAction(menuName, menuPage))
+                                             .withSlot(0)
+                                             .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
-                  .display(get(id, "gui.shared.next-page")))
-                  .withActions(new DataAction(playerPageID, next), new SwitchPageAction(menuName, menuPage))
-                  .withSlot(8)
-                  .build());
+                                                             .display(get(id, "gui.shared.next-page")))
+                                             .withActions(new DataAction(playerPageID, next), new SwitchPageAction(menuName, menuPage))
+                                             .withSlot(8)
+                                             .build());
         }
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("BARRIER", 1)
-                .display(get(id, "gui.shared.previous-menu")))
-                .withActions(new SwitchPageAction(returnMenu, returnPage))
-                .withSlot(4)
-                .build());
+                                                           .display(get(id, "gui.shared.previous-menu")))
+                                           .withActions(new SwitchPageAction(returnMenu, returnPage))
+                                           .withSlot(4)
+                                           .build());
 
         int i = 0;
         for(final OfflinePlayer player : players) {
@@ -137,20 +138,20 @@ public class PlayerSelectionPage {
               profile.setUuid(uuid);
             }
 
-          } catch(Exception ignore) {}
+          } catch(Exception ignore) { }
 
           final String name = (player.getName() != null)? player.getName() : uuid.toString();
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                  .display(Component.text(name))
-                  .lore(getList(id, iconLore))
-                  .profile(profile))
-                  .withActions(actions)
-                  .withActions(new RunnableAction((click)->{
-                    shop.get().setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
-                    QuickShop.getInstance().text().of(id, "shop-staff-added", name).send();
-                  }), new SwitchPageAction(returnMenu, returnPage))
-                  .withSlot(offset + (i - start))
-                  .build());
+                                                             .display(Component.text(name))
+                                                             .lore(getList(id, iconLore))
+                                                             .profile(profile))
+                                             .withActions(actions)
+                                             .withActions(new RunnableAction((click)->{
+                                               shop.get().setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
+                                               QuickShop.getInstance().text().of(id, "shop-staff-added", name).send();
+                                             }), new SwitchPageAction(returnMenu, returnPage))
+                                             .withSlot(offset + (i - start))
+                                             .build());
 
           i++;
         }
@@ -159,6 +160,7 @@ public class PlayerSelectionPage {
   }
 
   public List<OfflinePlayer> sorted(final Shop shop) {
+
     final List<OfflinePlayer> sortedPlayers = new ArrayList<>();
 
     final List<UUID> staffs = shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);

@@ -18,50 +18,56 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin implements Listener {
-    static Main instance;
-    private QuickShop plugin;
-    private Vertx vertx;
 
-    @Override
-    public void onLoad() {
-        instance = this;
-    }
+  static Main instance;
+  private QuickShop plugin;
+  private Vertx vertx;
 
-    @Override
-    public void onDisable() {
-        HandlerList.unregisterAll((Plugin) this);
-    }
+  @Override
+  public void onLoad() {
 
-    @Override
+    instance = this;
+  }
 
-    public void onEnable() {
-        saveDefaultConfig();
-        plugin = QuickShop.getInstance();
-        vertx = Vertx.vertx(new VertxOptions().setUseDaemonThread(true));
-        HttpServer server = vertx.createHttpServer();
-        Router restAPI = Router.router(vertx);
-        registerRoute(restAPI);
-        server.requestHandler(restAPI).listen(plugin.getConfig().getInt("httpd.port"));
-    }
+  @Override
+  public void onDisable() {
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void registerRoute(Router restAPI) {
-        restAPI.get("/static/*").handler(this::handleStaticAssets);
-        restAPI.get("/localized").handler(this::handleFrontendRequestLocalizedFiles);
-        restAPI.get("/global/recent").handler(Recent::new);
-        restAPI.get("/user/shops").handler(UserShopsListing::new);
-        restAPI.get("/user/history").handler(UserHistory::new);
-        restAPI.get("/user/transaction").handler(UserHistory::new);
-        restAPI.get("/shops").handler(ServerShopsListing::new);
-        restAPI.get("/shop/:id").handler(ShopDetails::new);
-        restAPI.get("/shop/:id/history").handler(ShopHistory::new);
-    }
+    HandlerList.unregisterAll((Plugin)this);
+  }
+
+  @Override
+
+  public void onEnable() {
+
+    saveDefaultConfig();
+    plugin = QuickShop.getInstance();
+    vertx = Vertx.vertx(new VertxOptions().setUseDaemonThread(true));
+    HttpServer server = vertx.createHttpServer();
+    Router restAPI = Router.router(vertx);
+    registerRoute(restAPI);
+    server.requestHandler(restAPI).listen(plugin.getConfig().getInt("httpd.port"));
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  private void registerRoute(Router restAPI) {
+
+    restAPI.get("/static/*").handler(this::handleStaticAssets);
+    restAPI.get("/localized").handler(this::handleFrontendRequestLocalizedFiles);
+    restAPI.get("/global/recent").handler(Recent::new);
+    restAPI.get("/user/shops").handler(UserShopsListing::new);
+    restAPI.get("/user/history").handler(UserHistory::new);
+    restAPI.get("/user/transaction").handler(UserHistory::new);
+    restAPI.get("/shops").handler(ServerShopsListing::new);
+    restAPI.get("/shop/:id").handler(ShopDetails::new);
+    restAPI.get("/shop/:id/history").handler(ShopHistory::new);
+  }
 
 
-    private void handleFrontendRequestLocalizedFiles(RoutingContext routingContext) {
-    }
+  private void handleFrontendRequestLocalizedFiles(RoutingContext routingContext) {
 
-    private void handleStaticAssets(RoutingContext ctx) {
+  }
 
-    }
+  private void handleStaticAssets(RoutingContext ctx) {
+
+  }
 }

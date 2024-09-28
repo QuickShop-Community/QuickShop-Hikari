@@ -19,101 +19,118 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class BukkitInventoryWrapper implements InventoryWrapper {
-    private final Inventory inventory;
-    private final InventoryWrapperManager manager;
-    private final Supplier<String> eigenCodeProvider;
-    private final String eigenCode;
 
-    public BukkitInventoryWrapper(@NotNull Inventory inventory) {
-        this(inventory, () -> null);
-    }
+  private final Inventory inventory;
+  private final InventoryWrapperManager manager;
+  private final Supplier<String> eigenCodeProvider;
+  private final String eigenCode;
 
-    public BukkitInventoryWrapper(@NotNull Inventory inventory, Supplier<String> eigenCodeProvider) {
-        this.inventory = inventory;
-        this.manager = QuickShop.getInstance().getInventoryWrapperManager();
-        this.eigenCodeProvider = eigenCodeProvider;
-        this.eigenCode = eigenCodeProvider.get();
-    }
+  public BukkitInventoryWrapper(@NotNull Inventory inventory) {
 
-    @Override
-    public @NotNull InventoryWrapperIterator iterator() {
-        return InventoryWrapperIterator.ofBukkitInventory(inventory);
-    }
+    this(inventory, ()->null);
+  }
 
-    @Override
-    public void clear() {
-        inventory.clear();
-    }
+  public BukkitInventoryWrapper(@NotNull Inventory inventory, Supplier<String> eigenCodeProvider) {
 
-    @Override
-    public @NotNull ItemStack[] createSnapshot() {
-        ItemStack[] content = this.inventory.getContents();
-        ItemStack[] snapshot = new ItemStack[content.length];
-        for (int i = 0; i < content.length; i++) {
-            if (content[i] != null) {
-                snapshot[i] = content[i].clone();
-            } else {
-                snapshot[i] = null;
-            }
+    this.inventory = inventory;
+    this.manager = QuickShop.getInstance().getInventoryWrapperManager();
+    this.eigenCodeProvider = eigenCodeProvider;
+    this.eigenCode = eigenCodeProvider.get();
+  }
 
-        }
-        return snapshot;
-    }
+  @Override
+  public @NotNull InventoryWrapperIterator iterator() {
 
-    @Override
-    public @NotNull InventoryWrapperManager getWrapperManager() {
-        return this.manager;
-    }
+    return InventoryWrapperIterator.ofBukkitInventory(inventory);
+  }
 
-    @Override
-    public InventoryHolder getHolder() {
-        return inventory.getHolder();
-    }
+  @Override
+  public void clear() {
 
-    @Override
-    public @NotNull InventoryWrapperType getInventoryType() {
-        return InventoryWrapperType.BUKKIT;
-    }
+    inventory.clear();
+  }
 
-    @Override
-    public @Nullable Location getLocation() {
-        return inventory.getLocation();
-    }
+  @Override
+  public @NotNull ItemStack[] createSnapshot() {
 
-    @Override
-    public boolean isValid() {
-        if (this.inventory.getHolder() != null) {
-            return true;
-        } else {
-            return this.inventory instanceof InventoryHolder;
-        }
-    }
+    ItemStack[] content = this.inventory.getContents();
+    ItemStack[] snapshot = new ItemStack[content.length];
+    for(int i = 0; i < content.length; i++) {
+      if(content[i] != null) {
+        snapshot[i] = content[i].clone();
+      } else {
+        snapshot[i] = null;
+      }
 
-    @Override
-    public boolean isNeedUpdate() {
-        return !Objects.equals(eigenCode, eigenCodeProvider.get());
     }
+    return snapshot;
+  }
 
-    @Override
-    public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
-        this.inventory.setContents(snapshot);
-        return true;
-    }
+  @Override
+  public @NotNull InventoryWrapperManager getWrapperManager() {
 
-    @Override
-    public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
-        return inventory.addItem(itemStacks);
-    }
+    return this.manager;
+  }
 
-    @Override
-    public void setContents(ItemStack[] itemStacks) {
-        inventory.setStorageContents(itemStacks);
+  @Override
+  public InventoryHolder getHolder() {
+
+    return inventory.getHolder();
+  }
+
+  @Override
+  public @NotNull InventoryWrapperType getInventoryType() {
+
+    return InventoryWrapperType.BUKKIT;
+  }
+
+  @Override
+  public @Nullable Location getLocation() {
+
+    return inventory.getLocation();
+  }
+
+  @Override
+  public boolean isValid() {
+
+    if(this.inventory.getHolder() != null) {
+      return true;
+    } else {
+      return this.inventory instanceof InventoryHolder;
     }
-    @Override
-    public String toString() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("inventory", inventory.toString());
-        map.put("inventoryType", inventory.getClass().getName());
-        return JsonUtil.getGson().toJson(map);
-    }
+  }
+
+  @Override
+  public boolean isNeedUpdate() {
+
+    return !Objects.equals(eigenCode, eigenCodeProvider.get());
+  }
+
+  @Override
+  public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+
+    this.inventory.setContents(snapshot);
+    return true;
+  }
+
+  @Override
+  public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+
+    return inventory.addItem(itemStacks);
+  }
+
+  @Override
+  public void setContents(ItemStack[] itemStacks) {
+
+    inventory.setStorageContents(itemStacks);
+  }
+
+  @Override
+  public String toString() {
+
+    Map<String, Object> map = new HashMap<>();
+    map.put("inventory", inventory.toString());
+    map.put("inventoryType", inventory.getClass().getName());
+    return JsonUtil.getGson().toJson(map);
+  }
 }

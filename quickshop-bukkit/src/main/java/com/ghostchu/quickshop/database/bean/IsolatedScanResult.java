@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class IsolatedScanResult<T> {
-    private final List<T> total;
-    private final List<T> isolated;
+
+  private final List<T> total;
+  private final List<T> isolated;
 }

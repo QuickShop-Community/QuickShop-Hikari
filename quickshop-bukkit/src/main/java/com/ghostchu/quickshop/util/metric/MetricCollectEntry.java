@@ -12,9 +12,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface MetricCollectEntry {
-    MetricDataType dataType();
 
-    String moduleName();
+  MetricDataType dataType();
 
-    String description();
+  String moduleName();
+
+  String description();
 }

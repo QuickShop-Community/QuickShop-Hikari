@@ -11,32 +11,35 @@ import java.util.List;
 
 public class SubCommand_Amount implements CommandHandler<Player> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Amount(QuickShop plugin) {
-        this.plugin = plugin;
+  public SubCommand_Amount(QuickShop plugin) {
+
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+
+    if(parser.getArgs().isEmpty()) {
+      plugin.text().of(sender, "command.wrong-args").send();
+      return;
     }
 
-    @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().isEmpty()) {
-            plugin.text().of(sender, "command.wrong-args").send();
-            return;
-        }
-
-        if (!plugin.getShopManager().getInteractiveManager().containsKey(sender.getUniqueId())) {
-            plugin.text().of(sender, "no-pending-action").send();
-            return;
-        }
-
-        plugin.getShopManager().handleChat(sender, parser.getArgs().get(0));
+    if(!plugin.getShopManager().getInteractiveManager().containsKey(sender.getUniqueId())) {
+      plugin.text().of(sender, "no-pending-action").send();
+      return;
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        return parser.getArgs().size() == 1 ? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").legacy()) : Collections.emptyList();
-    }
+    plugin.getShopManager().handleChat(sender, parser.getArgs().get(0));
+  }
+
+  @NotNull
+  @Override
+  public List<String> onTabComplete(
+          @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+
+    return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").legacy()) : Collections.emptyList();
+  }
 
 }

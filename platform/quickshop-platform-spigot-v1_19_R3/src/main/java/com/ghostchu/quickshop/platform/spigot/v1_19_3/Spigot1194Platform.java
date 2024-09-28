@@ -18,63 +18,72 @@ import org.jetbrains.annotations.NotNull;
 
 public class Spigot1194Platform extends AbstractSpigotPlatform implements Platform {
 
-    public Spigot1194Platform(@NotNull Plugin plugin) {
-        super(plugin);
-    }
+  public Spigot1194Platform(@NotNull Plugin plugin) {
 
-    @Override
-    public @NotNull String getMinecraftVersion() {
-        try {
-            return ((CraftServer) Bukkit.getServer()).getServer().getServerVersion();
-        } catch (Exception e) {
-            return super.getMinecraftVersion();
-        }
-    }
+    super(plugin);
+  }
 
-    @Override
-    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
-        ((CraftServer) Bukkit.getServer()).getCommandMap().register(prefix, command);
-        command.register(((CraftServer) Bukkit.getServer()).getCommandMap());
-        ((CraftServer) Bukkit.getServer()).syncCommands();
-    }
+  @Override
+  public @NotNull String getMinecraftVersion() {
 
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Material material) {
-        if (material.isBlock()) {
-            //noinspection deprecation
-            return postProcessingTranslationKey(Bukkit.getUnsafe().getBlockTranslationKey(material));
-        } else {
-            //noinspection deprecation
-            return postProcessingTranslationKey(Bukkit.getUnsafe().getItemTranslationKey(material));
-        }
+    try {
+      return ((CraftServer)Bukkit.getServer()).getServer().getServerVersion();
+    } catch(Exception e) {
+      return super.getMinecraftVersion();
     }
+  }
 
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
+  @Override
+  public void registerCommand(@NotNull String prefix, @NotNull Command command) {
 
-    @Override
-    public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        //noinspection deprecation
-        return postProcessingTranslationKey(Bukkit.getUnsafe().getTranslationKey(type));
-    }
+    ((CraftServer)Bukkit.getServer()).getCommandMap().register(prefix, command);
+    command.register(((CraftServer)Bukkit.getServer()).getCommandMap());
+    ((CraftServer)Bukkit.getServer()).syncCommands();
+  }
 
-    @Override
-    public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        if(potionEffectType instanceof PotionEffectTypeWrapper wrapper){
-            potionEffectType = wrapper.getType();
-        }
-        CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType) potionEffectType;
-        return postProcessingTranslationKey(craftPotionEffectType.getHandle().getDescriptionId());
-    }
+  @Override
+  public @NotNull String getTranslationKey(@NotNull Material material) {
 
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        CraftEnchantment craftEnchantment = (CraftEnchantment) enchantment;
-        return postProcessingTranslationKey(craftEnchantment.getHandle().getDescriptionId());
+    if(material.isBlock()) {
+      //noinspection deprecation
+      return postProcessingTranslationKey(Bukkit.getUnsafe().getBlockTranslationKey(material));
+    } else {
+      //noinspection deprecation
+      return postProcessingTranslationKey(Bukkit.getUnsafe().getItemTranslationKey(material));
     }
-    @Override
-    public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
-        return postProcessingTranslationKey(stack.getTranslationKey());
+  }
+
+  private String postProcessingTranslationKey(String key) {
+
+    return this.translationMapping.getOrDefault(key, key);
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull EntityType type) {
+    //noinspection deprecation
+    return postProcessingTranslationKey(Bukkit.getUnsafe().getTranslationKey(type));
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+
+    if(potionEffectType instanceof PotionEffectTypeWrapper wrapper) {
+      potionEffectType = wrapper.getType();
     }
+    CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType)potionEffectType;
+    return postProcessingTranslationKey(craftPotionEffectType.getHandle().getDescriptionId());
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+
+    CraftEnchantment craftEnchantment = (CraftEnchantment)enchantment;
+    return postProcessingTranslationKey(craftEnchantment.getHandle().getDescriptionId());
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+
+    return postProcessingTranslationKey(stack.getTranslationKey());
+  }
 }

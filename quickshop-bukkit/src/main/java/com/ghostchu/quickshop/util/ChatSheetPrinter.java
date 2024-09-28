@@ -15,47 +15,56 @@ import org.jetbrains.annotations.NotNull;
  A utils for print sheet on chat.
 */
 public class ChatSheetPrinter {
-    private final CommandSender p;
 
-    public ChatSheetPrinter(CommandSender p) {
-        this.p = p;
+  private final CommandSender p;
+
+  public ChatSheetPrinter(CommandSender p) {
+
+    this.p = p;
+  }
+
+  public ChatSheetPrinter(QUser p) {
+
+    this.p = p.getBukkitPlayer().orElse(null);
+  }
+
+  public void printCenterLine(@NotNull Component text) {
+
+    if(Util.isEmptyComponent(text)) {
+      return;
     }
 
-    public ChatSheetPrinter(QUser p) {
-        this.p = p.getBukkitPlayer().orElse(null);
-    }
+    MsgUtil.sendDirectMessage(p,
+                              QuickShop.getInstance().text().of(p, "tableformat.left_half_line").forLocale()
+                                      .append(text)
+                                      .append(QuickShop.getInstance().text().of(p, "tableformat.right_half_line").forLocale()));
+  }
 
-    public void printCenterLine(@NotNull Component text) {
-        if (Util.isEmptyComponent(text)) {
-            return;
-        }
+  public void printFooter() {
 
-        MsgUtil.sendDirectMessage(p,
-                QuickShop.getInstance().text().of(p, "tableformat.left_half_line").forLocale()
-                        .append(text)
-                        .append(QuickShop.getInstance().text().of(p, "tableformat.right_half_line").forLocale()));
-    }
+    printFullLine();
+  }
 
-    public void printFooter() {
-        printFullLine();
-    }
+  private void printFullLine() {
 
-    private void printFullLine() {
-        MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.full_line").forLocale());
-    }
+    MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.full_line").forLocale());
+  }
 
-    public void printHeader() {
-        printFullLine();
-    }
+  public void printHeader() {
 
-    public void printLine(@NotNull Component component) {
-        if (Util.isEmptyComponent(component)) {
-            return;
-        }
-        MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale().append(component));
-    }
+    printFullLine();
+  }
 
-    public CommandSender getSender() {
-        return p;
+  public void printLine(@NotNull Component component) {
+
+    if(Util.isEmptyComponent(component)) {
+      return;
     }
+    MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale().append(component));
+  }
+
+  public CommandSender getSender() {
+
+    return p;
+  }
 }

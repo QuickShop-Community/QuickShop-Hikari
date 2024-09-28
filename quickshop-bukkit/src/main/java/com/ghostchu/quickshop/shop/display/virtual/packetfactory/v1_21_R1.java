@@ -58,6 +58,7 @@ import java.util.UUID;
  * @since 6.2.0.7
  */
 public class v1_21_R1 implements VirtualDisplayPacketFactory {
+
   private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
   private final QuickShop plugin;
   private final VirtualDisplayItemManager manager;
@@ -70,13 +71,14 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
 
   @Override
   public @Nullable Throwable testFakeItem() {
+
     try {
       createFakeItemSpawnPacket(0, new Location(Bukkit.getServer().getWorlds().get(0), 0, 0, 0));
       createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
       createFakeItemVelocityPacket(0);
       createFakeItemDestroyPacket(0);
       return null;
-    } catch (Exception throwable) {
+    } catch(Exception throwable) {
       return throwable;
     }
   }
@@ -119,7 +121,7 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
     final List<WrappedDataValue> values = new ArrayList<>();
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+    if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -138,7 +140,7 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
     //Check for new version protocolLib
     try {
       Class.forName("com.comphenix.protocol.wrappers.WrappedDataValue");
-    } catch (ClassNotFoundException e) {
+    } catch(ClassNotFoundException e) {
       throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
     }
     return fakeItemMetaPacket;
@@ -146,6 +148,7 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
 
   @Override
   public PacketContainer createFakeItemVelocityPacket(int entityID) {
+
     return null;
   }
 
@@ -156,7 +159,7 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
 
     try {
       fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
-    } catch (NoSuchMethodError e) {
+    } catch(NoSuchMethodError e) {
       throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
     }
     return fakeItemDestroyPacket;
@@ -164,14 +167,16 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
 
   @Override
   public @NotNull PacketAdapter getChunkSendPacketAdapter() {
+
     return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
       @Override
       public void onPacketSending(@NotNull PacketEvent event) {
+
         Player player = event.getPlayer();
-        if (player == null || !player.isOnline()) {
+        if(player == null || !player.isOnline()) {
           return;
         }
-        if (player.getClass().getName().contains("TemporaryPlayer")) {
+        if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
         StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
@@ -180,12 +185,12 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
         //chunk z
         int z = integerStructureModifier.read(1);
 
-        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
-          for (VirtualDisplayItem target : targetList) {
-            if (!target.isSpawned()) {
+        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(VirtualDisplayItem target : targetList) {
+            if(!target.isSpawned()) {
               continue;
             }
-            if (target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
+            if(target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
               target.getPacketSenders().add(player.getUniqueId());
               target.sendDestroyItem(player);
               target.sendFakeItem(player);
@@ -199,14 +204,16 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
 
   @Override
   public @NotNull PacketAdapter getChunkUnloadPacketAdapter() {
+
     return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
       @Override
       public void onPacketSending(@NotNull PacketEvent event) {
+
         Player player = event.getPlayer();
-        if (player == null || !player.isOnline()) {
+        if(player == null || !player.isOnline()) {
           return;
         }
-        if (player.getClass().getName().contains("TemporaryPlayer")) {
+        if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
         StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
@@ -215,9 +222,9 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
         int x = pair.getChunkX();
         //chunk z
         int z = pair.getChunkZ();
-        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
-          for (VirtualDisplayItem target : targetList) {
-            if (!target.isSpawned()) {
+        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(VirtualDisplayItem target : targetList) {
+            if(!target.isSpawned()) {
               continue;
             }
             target.sendDestroyItem(player);

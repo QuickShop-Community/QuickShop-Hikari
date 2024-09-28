@@ -25,68 +25,73 @@ import java.util.function.Supplier;
 @Data
 @Builder
 public class CommandContainer {
-    @NotNull
-    private CommandHandler<?> executor;
 
-    private boolean hidden; // Hide from help, tabcomplete
-    /*
-      E.g you can use the command when having quickshop.removeall.self or quickshop.removeall.others permission
-    */
-    @Singular
-    private List<String> selectivePermissions;
-    @Singular
-    private List<String> permissions; // E.g quickshop.unlimited
-    @NotNull
-    private String prefix; // E.g /quickshop <prefix>
-    @Nullable
-    private Function<@NotNull String, @Nullable Component> description; // Will show in the /quickshop help, provide an arg that pass a player locale code
+  @NotNull
+  private CommandHandler<?> executor;
 
-    private boolean disabled; //Set command is disabled or not.
-    @Nullable
-    private Supplier<Boolean> disabledSupplier; //Set command is disabled or not.
-    @Nullable
-    private Supplier<Component> disablePlaceholder; //Set the text shown if command disabled
-    @Nullable
-    private Function<@Nullable CommandSender, @NotNull Component> disableCallback; //Set the callback that should return a text to shown
+  private boolean hidden; // Hide from help, tabcomplete
+  /*
+    E.g you can use the command when having quickshop.removeall.self or quickshop.removeall.others permission
+  */
+  @Singular
+  private List<String> selectivePermissions;
+  @Singular
+  private List<String> permissions; // E.g quickshop.unlimited
+  @NotNull
+  private String prefix; // E.g /quickshop <prefix>
+  @Nullable
+  private Function<@NotNull String, @Nullable Component> description; // Will show in the /quickshop help, provide an arg that pass a player locale code
 
-    private Class<?> executorType;
+  private boolean disabled; //Set command is disabled or not.
+  @Nullable
+  private Supplier<Boolean> disabledSupplier; //Set command is disabled or not.
+  @Nullable
+  private Supplier<Component> disablePlaceholder; //Set the text shown if command disabled
+  @Nullable
+  private Function<@Nullable CommandSender, @NotNull Component> disableCallback; //Set the callback that should return a text to shown
 
-    /**
-     * Gets the text should be shown while command was disabled.
-     *
-     * @param sender the sender
-     * @return the text
-     */
-    public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
-        if (this.getDisableCallback() != null) {
-            return this.getDisableCallback().apply(sender);
-        } else if (this.getDisablePlaceholder() != null && !CommonUtil.isEmptyComponent(this.getDisablePlaceholder().get())) {
-            return this.getDisablePlaceholder().get();
-        } else {
-            return Component.empty().color(NamedTextColor.GRAY).append(QuickShopAPI.getInstance().getTextManager().of(sender, "command.feature-not-enabled").forLocale());
-        }
+  private Class<?> executorType;
+
+  /**
+   * Gets the text should be shown while command was disabled.
+   *
+   * @param sender the sender
+   *
+   * @return the text
+   */
+  public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
+
+    if(this.getDisableCallback() != null) {
+      return this.getDisableCallback().apply(sender);
+    } else if(this.getDisablePlaceholder() != null && !CommonUtil.isEmptyComponent(this.getDisablePlaceholder().get())) {
+      return this.getDisablePlaceholder().get();
+    } else {
+      return Component.empty().color(NamedTextColor.GRAY).append(QuickShopAPI.getInstance().getTextManager().of(sender, "command.feature-not-enabled").forLocale());
     }
+  }
 
-    @ApiStatus.Internal
-    @NotNull
-    public Class<?> getExecutorType() {
-        if (executorType == null) {
-            bakeExecutorType();
-        }
-        return executorType;
-    }
+  @ApiStatus.Internal
+  @NotNull
+  public Class<?> getExecutorType() {
 
-    @ApiStatus.Internal
-    public void bakeExecutorType() {
-        for (Method declaredMethod : getExecutor().getClass().getMethods()) {
-            if ("onCommand".equals(declaredMethod.getName()) || "onTabComplete".equals(declaredMethod.getName())) {
-                if (declaredMethod.getParameterCount() != 3 || declaredMethod.isSynthetic() || declaredMethod.isBridge()) {
-                    continue;
-                }
-                executorType = declaredMethod.getParameterTypes()[0];
-                return;
-            }
-        }
-        executorType = Object.class;
+    if(executorType == null) {
+      bakeExecutorType();
     }
+    return executorType;
+  }
+
+  @ApiStatus.Internal
+  public void bakeExecutorType() {
+
+    for(Method declaredMethod : getExecutor().getClass().getMethods()) {
+      if("onCommand".equals(declaredMethod.getName()) || "onTabComplete".equals(declaredMethod.getName())) {
+        if(declaredMethod.getParameterCount() != 3 || declaredMethod.isSynthetic() || declaredMethod.isBridge()) {
+          continue;
+        }
+        executorType = declaredMethod.getParameterTypes()[0];
+        return;
+      }
+    }
+    executorType = Object.class;
+  }
 }
