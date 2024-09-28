@@ -194,7 +194,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 CommandContainer.builder()
                         .prefix("silentfreeze")
                         .hidden(true)
-                        .permission("quickshop.togglefreeze")
+                        .permission("quickshop.togglesilentfreeze")
                         .executor(new SubCommand_SilentFreeze(plugin))
                         .build());
         registerCmd(
