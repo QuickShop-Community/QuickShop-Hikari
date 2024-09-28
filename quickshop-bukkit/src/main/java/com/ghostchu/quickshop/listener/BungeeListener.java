@@ -66,7 +66,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
     }
 
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] @NotNull bytes) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] bytes) {
         if(!CHAT_FORWARD_CHANNEL.equalsIgnoreCase(channel)) {
             return;
         }
