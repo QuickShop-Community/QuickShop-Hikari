@@ -154,7 +154,8 @@ public class MainPage {
                                 shop.getOwner().getDisplay(),
                                 location,
                                 shop.getShopType(),
-                                eco.format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency())));
+                                eco.format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()),
+                                shop.getRemainingStock()));
 
           callback.getPage().addIcon(new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
