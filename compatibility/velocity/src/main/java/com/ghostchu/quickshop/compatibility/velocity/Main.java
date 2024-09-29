@@ -155,6 +155,7 @@ public final class Main {
     final UUID uuid = player.getUniqueId();
     if(pendingForward.contains(uuid)) {
       forwardMessage(player, event.getMessage());
+
       // Workaround against kicking of players with valid signed key and client 1.19.1 or higher by velocity
       final ProtocolVersion protocol = player.getProtocolVersion();
       if(player.getIdentifiedKey() == null || NO_SIGN_VERSIONS.contains(protocol)) {

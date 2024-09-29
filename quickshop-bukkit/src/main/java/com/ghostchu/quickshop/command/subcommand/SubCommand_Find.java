@@ -63,6 +63,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
     final int shopLimit = usingOldLogic? 1 : plugin.getConfig().getInt("shop.finding.limit");
     final boolean allShops = plugin.getConfig().getBoolean("shop.finding.all");
+    final boolean global = plugin.getConfig().getBoolean("shop.finding.global", false);
     final boolean excludeOutOfStock = plugin.getConfig().getBoolean("shop.finding.exclude-out-of-stock");
 
     //Rewrite by Ghost_chu - Use vector to replace old chunks finding.
@@ -91,7 +92,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
       final Vector shopVector = shop.getLocation().toVector();
       final double distance = shopVector.distance(playerVector);
       //Check distance
-      if(distance <= maxDistance) {
+      if(distance <= maxDistance || global) {
         //Collect valid shop that trading items we want
         if(!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)
            && !shop.getItem().getType().name().toLowerCase().contains(lookFor)
@@ -127,6 +128,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     } else {
       plugin.text().of(sender, "nearby-shop-header", lookFor).send();
       for(final Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
+
         final Shop shop = shopDoubleEntry.getKey();
         final Location location = shop.getLocation();
         ItemStack previewItemStack = shop.getItem().clone();
@@ -142,7 +144,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
                                                     location.getBlockZ(),
                                                     shopDoubleEntry.getValue().intValue()
                                                    ).forLocale();
-        entryComponent = plugin.getPlatform().setItemStackHoverEvent(entryComponent, shop.getItem());
+        entryComponent = plugin.getPlatform().setItemStackHoverEvent(entryComponent, previewItemStack);
         MsgUtil.sendDirectMessage(sender, entryComponent);
       }
 
