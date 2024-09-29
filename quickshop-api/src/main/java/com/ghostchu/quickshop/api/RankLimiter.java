@@ -9,12 +9,13 @@ import java.util.Map;
 public interface RankLimiter {
 
 
-    int getShopLimit(@NotNull QUser p);
+  int getShopLimit(@NotNull QUser p);
 
-    @Deprecated(forRemoval = true)
-    @ApiStatus.Internal
-    @ApiStatus.Obsolete
-    @NotNull Map<String, Integer> getLimits();
+  @Deprecated(forRemoval = true)
+  @ApiStatus.Internal
+  @ApiStatus.Obsolete
+  @NotNull
+  Map<String, Integer> getLimits();
 
-    boolean isLimit();
+  boolean isLimit();
 }

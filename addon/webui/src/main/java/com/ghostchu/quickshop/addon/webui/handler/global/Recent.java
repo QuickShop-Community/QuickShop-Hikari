@@ -4,6 +4,8 @@ import com.ghostchu.quickshop.addon.webui.handler.GeneralHandler;
 import io.vertx.ext.web.RoutingContext;
 
 public class Recent implements GeneralHandler {
-    public Recent(RoutingContext ctx) {
-    }
+
+  public Recent(RoutingContext ctx) {
+
+  }
 }

@@ -10,16 +10,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentPreview extends SubCommand_SilentBase {
 
-    public SubCommand_SilentPreview(QuickShop plugin) {
-        super(plugin);
-    }
+  public SubCommand_SilentPreview(final QuickShop plugin) {
 
-    @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
-        if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
-                || plugin.perm().hasPermission(sender, "quickshop.other.preview")) {
-            shop.openPreview(sender);
-        }
+    super(plugin);
+  }
+
+  @Override
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
+
+    if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
+       || plugin.perm().hasPermission(sender, "quickshop.other.preview")) {
+      shop.openPreview(sender);
     }
+  }
 
 }

@@ -5,13 +5,14 @@ import com.ghostchu.quickshop.QuickShopBukkit;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
 
 public interface MigrateComponent {
-    QuickShop getHikari();
 
-    QuickShopBukkit getHikariJavaPlugin();
+  QuickShop getHikari();
 
-    org.maxgamer.quickshop.QuickShop getReremake();
+  QuickShopBukkit getHikariJavaPlugin();
 
-    boolean migrate();
+  org.maxgamer.quickshop.QuickShop getReremake();
 
-    Main getPlugin();
+  boolean migrate();
+
+  Main getPlugin();
 }

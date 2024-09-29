@@ -10,40 +10,45 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class HopperPersistentDataType implements PersistentDataType<String, HopperPersistentData> {
-    public static final HopperPersistentDataType INSTANCE = new HopperPersistentDataType();
 
-    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+  public static final HopperPersistentDataType INSTANCE = new HopperPersistentDataType();
 
-    @Override
-    public @NotNull Class<String> getPrimitiveType() {
-        return String.class;
+  private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+  @Override
+  public @NotNull Class<String> getPrimitiveType() {
+
+    return String.class;
+  }
+
+  @Override
+  public @NotNull Class<HopperPersistentData> getComplexType() {
+
+    return HopperPersistentData.class;
+  }
+
+  @NotNull
+  @Override
+  public String toPrimitive(@NotNull final HopperPersistentData complex, @NotNull final PersistentDataAdapterContext context) {
+
+    try {
+      return GSON.toJson(complex);
+    } catch(Exception th) {
+      MsgUtil.debugStackTrace(th.getStackTrace());
+      return "";
     }
+  }
 
-    @Override
-    public @NotNull Class<HopperPersistentData> getComplexType() {
-        return HopperPersistentData.class;
-    }
+  @NotNull
+  @Override
+  public HopperPersistentData fromPrimitive(
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
 
-    @NotNull
-    @Override
-    public String toPrimitive(@NotNull HopperPersistentData complex, @NotNull PersistentDataAdapterContext context) {
-        try {
-            return GSON.toJson(complex);
-        } catch (Exception th) {
-            MsgUtil.debugStackTrace(th.getStackTrace());
-            return "";
-        }
+    try {
+      return GSON.fromJson(primitive, HopperPersistentData.class);
+    } catch(Exception th) {
+      MsgUtil.debugStackTrace(th.getStackTrace());
+      return new HopperPersistentData(new UUID(0, 0));
     }
-
-    @NotNull
-    @Override
-    public HopperPersistentData fromPrimitive(
-            @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
-        try {
-            return GSON.fromJson(primitive, HopperPersistentData.class);
-        } catch (Exception th) {
-            MsgUtil.debugStackTrace(th.getStackTrace());
-            return new HopperPersistentData(new UUID(0, 0));
-        }
-    }
+  }
 }

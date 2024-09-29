@@ -6,15 +6,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface PAPISubHandler {
-    @Nullable
-    default String handle(@NotNull OfflinePlayer player, @NotNull String params) {
-        String raw = StringUtils.substringAfter(params, getPrefix() + "_");
-        return handle0(player, raw);
-    }
 
-    @NotNull
-    String getPrefix();
+  @Nullable
+  default String handle(@NotNull final OfflinePlayer player, @NotNull final String params) {
 
-    @Nullable
-    String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed);
+    final String raw = StringUtils.substringAfter(params, getPrefix() + "_");
+    return handle0(player, raw);
+  }
+
+  @NotNull
+  String getPrefix();
+
+  @Nullable
+  String handle0(@NotNull OfflinePlayer player, @NotNull String paramsTrimmed);
 }

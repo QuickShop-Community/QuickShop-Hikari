@@ -6,25 +6,29 @@ import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.jetbrains.annotations.NotNull;
 
 public class DisplaySystemItem implements SubPasteItem {
-    private final QuickShop plugin = QuickShop.getInstance();
 
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
-    }
+  private final QuickShop plugin = QuickShop.getInstance();
 
-    @NotNull
-    private String buildContent() {
-        HTMLTable table = new HTMLTable(2, true);
-        table.insert("Display Enabled", plugin.isDisplayEnabled());
-        table.insert("Display Provider", AbstractDisplayItem.getNowUsing().name());
-        table.insert("VirtualDisplayItem Status", !AbstractDisplayItem.isVirtualDisplayDoesntWork());
-        return table.render();
-    }
+  @Override
+  public @NotNull String genBody() {
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Display Item Manager";
-    }
+    return buildContent();
+  }
+
+  @NotNull
+  private String buildContent() {
+
+    final HTMLTable table = new HTMLTable(2, true);
+    table.insert("Display Enabled", plugin.isDisplayEnabled());
+    table.insert("Display Provider", AbstractDisplayItem.getNowUsing().name());
+    table.insert("VirtualDisplayItem Status", !AbstractDisplayItem.isVirtualDisplayDoesntWork());
+    return table.render();
+  }
+
+  @Override
+  public @NotNull String getTitle() {
+
+    return "Display Item Manager";
+  }
 
 }

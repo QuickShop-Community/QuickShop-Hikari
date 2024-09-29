@@ -5,19 +5,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Paste {
-    private Paste() {
-    }
 
-    @Nullable
-    public static String paste(@NotNull String content) {
-        PasteInterface paster;
-        try {
-            // Lucko Pastebin
-            paster = new LuckoPastebinPaster();
-            return paster.pasteTheTextJson(content);
-        } catch (Exception ex) {
-            Log.debug(ex.getMessage());
-        }
+  private Paste() {
+
+  }
+
+  @Nullable
+  public static String paste(@NotNull final String content) {
+
+    final PasteInterface paster;
+    try {
+      // Lucko Pastebin
+      paster = new LuckoPastebinPaster();
+      return paster.pasteTheTextJson(content);
+    } catch(Exception ex) {
+      Log.debug(ex.getMessage());
+    }
 //        try {
 //            paster = new HelpChatPastebinPaster();
 //            return paster.pasteTheTextJson(content);
@@ -31,6 +34,6 @@ public class Paste {
 //        } catch (Exception ex) {
 //            Util.debugLog(ex.getMessage());
 //        }
-        return null;
-    }
+    return null;
+  }
 }

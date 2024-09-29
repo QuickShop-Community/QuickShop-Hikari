@@ -20,50 +20,53 @@ import java.util.Set;
 
 public final class Main extends CompatibilityModule implements Listener {
 
-    @Override
-    public void init() {
-        // There no init stuffs need to do
+  @Override
+  public void init() {
+    // There no init stuffs need to do
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onShopNeedDeletion(final RemoveRegionEvent event) {
+
+    handleDeletion(event.getRegion());
+  }
+
+  private void handleDeletion(final Region region) {
+
+    final Vector minPoint = region.getRegion().getMinPoint();
+    final Vector maxPoint = region.getRegion().getMaxPoint();
+    final World world = region.getRegionworld();
+    final Set<Chunk> chuckLocations = new HashSet<>();
+
+    for(int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
+      for(int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
+        chuckLocations.add(world.getChunkAt(x >> 4, z >> 4));
+      }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(RemoveRegionEvent event) {
-        handleDeletion(event.getRegion());
+
+    final HashMap<Location, Shop> shopMap = new HashMap<>();
+
+    for(final Chunk chunk : chuckLocations) {
+      final Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
+      if(shopsInChunk != null) {
+        shopMap.putAll(shopsInChunk);
+      }
     }
-
-    private void handleDeletion(Region region) {
-        Vector minPoint = region.getRegion().getMinPoint();
-        Vector maxPoint = region.getRegion().getMaxPoint();
-        World world = region.getRegionworld();
-        Set<Chunk> chuckLocations = new HashSet<>();
-
-        for (int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
-            for (int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
-                chuckLocations.add(world.getChunkAt(x >> 4, z >> 4));
-            }
+    for(final Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
+      final Location shopLocation = shopEntry.getKey();
+      if(region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
+        final Shop shop = shopEntry.getValue();
+        if(shop != null) {
+          getApi().getShopManager().deleteShop(shop);
         }
-
-
-        HashMap<Location, Shop> shopMap = new HashMap<>();
-
-        for (Chunk chunk : chuckLocations) {
-            Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
-            if (shopsInChunk != null) {
-                shopMap.putAll(shopsInChunk);
-            }
-        }
-        for (Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
-            Location shopLocation = shopEntry.getKey();
-            if (region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
-                Shop shop = shopEntry.getValue();
-                if (shop != null) {
-                    getApi().getShopManager().deleteShop(shop);
-                }
-            }
-        }
+      }
     }
+  }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(RestoreRegionEvent event) {
-        handleDeletion(event.getRegion());
-    }
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onShopNeedDeletion(final RestoreRegionEvent event) {
+
+    handleDeletion(event.getRegion());
+  }
 }

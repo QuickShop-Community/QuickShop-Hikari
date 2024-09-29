@@ -9,38 +9,41 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ShopSignUpdateEvent extends AbstractQSEvent {
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    @NotNull
-    private final Sign sign;
+  @NotNull
+  private final Sign sign;
 
-    /**
-     * Will call when shop sign was updated.
-     *
-     * @param shop Target shop
-     * @param sign Updated sign
-     */
-    public ShopSignUpdateEvent(@NotNull Shop shop, @NotNull Sign sign) {
-        this.shop = shop;
-        this.sign = sign;
-    }
+  /**
+   * Will call when shop sign was updated.
+   *
+   * @param shop Target shop
+   * @param sign Updated sign
+   */
+  public ShopSignUpdateEvent(@NotNull final Shop shop, @NotNull final Sign sign) {
 
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+    this.shop = shop;
+    this.sign = sign;
+  }
 
-    /**
-     * Gets the sign
-     *
-     * @return the sign
-     */
-    public @NotNull Sign getSign() {
-        return this.sign;
-    }
+  /**
+   * Gets the shop
+   *
+   * @return the shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  /**
+   * Gets the sign
+   *
+   * @return the sign
+   */
+  public @NotNull Sign getSign() {
+
+    return this.sign;
+  }
 }

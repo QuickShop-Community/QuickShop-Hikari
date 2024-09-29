@@ -17,22 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, SubPasteItem {
-    private final QuickShop plugin;
-    private final List<String> BLACKLIST_LORES = new ArrayList<>();
-    private List<String> configBlacklist;
 
-    public SimpleShopItemBlackList(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-        init();
-        plugin.getReloadManager().register(this);
-    }
-
-    private void init() {
-        BLACKLIST_LORES.clear();
-        this.configBlacklist = plugin.getConfig().getStringList("blacklist");
-        List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
-        configLoresBlackList.forEach(s -> BLACKLIST_LORES.add(ChatColor.stripColor(s)));
-    }
+  private final QuickShop plugin;
+  private final List<String> BLACKLIST_LORES = new ArrayList<>();
+  private List<String> configBlacklist;
 
     /**
      * Check if an Item has been blacklisted for puchase.
@@ -79,23 +67,28 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
                 }
             }
         }
-        return false;
+      }
     }
+    return false;
+  }
 
 
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        init();
-        return Reloadable.super.reloadModule();
-    }
+  @Override
+  public ReloadResult reloadModule() throws Exception {
 
-    @Override
-    public @NotNull String genBody() {
-        return "<p>Blacklist Rules: " + configBlacklist.size() + "</p>";
-    }
+    init();
+    return Reloadable.super.reloadModule();
+  }
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Shop Item Blacklist";
-    }
+  @Override
+  public @NotNull String genBody() {
+
+    return "<p>Blacklist Rules: " + configBlacklist.size() + "</p>";
+  }
+
+  @Override
+  public @NotNull String getTitle() {
+
+    return "Shop Item Blacklist";
+  }
 }

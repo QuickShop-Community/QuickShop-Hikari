@@ -11,57 +11,62 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
 
-    @NotNull
-    private final Shop shop;
-    private final Player player;
+  @NotNull
+  private final Shop shop;
+  private final Player player;
 
-    private boolean cancelled;
+  private boolean cancelled;
 
-    private @Nullable Component cancelReason;
+  private @Nullable Component cancelReason;
 
-    /**
-     * Call when shop was clicked.
-     *
-     * @param shop The shop bought from
-     */
-    public ShopClickEvent(@NotNull Shop shop, @NotNull Player player) {
-        this.shop = shop;
-        this.player = player;
-    }
+  /**
+   * Call when shop was clicked.
+   *
+   * @param shop The shop bought from
+   */
+  public ShopClickEvent(@NotNull final Shop shop, @NotNull final Player player) {
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+    this.shop = shop;
+    this.player = player;
+  }
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+  @Override
+  public @Nullable Component getCancelReason() {
 
-    /**
-     * Getting the player who clicked shop
-     *
-     * @return The player
-     */
-    public @NotNull Player getClicker() {
-        return this.player;
-    }
+    return this.cancelReason;
+  }
 
-    /**
-     * Getting the shops that clicked
-     *
-     * @return Clicked shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+  @Override
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
 
+  /**
+   * Getting the player who clicked shop
+   *
+   * @return The player
+   */
+  public @NotNull Player getClicker() {
+
+    return this.player;
+  }
+
+  /**
+   * Getting the shops that clicked
+   *
+   * @return Clicked shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return this.cancelled;
+  }
 
 }

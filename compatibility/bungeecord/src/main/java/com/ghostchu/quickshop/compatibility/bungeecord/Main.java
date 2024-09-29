@@ -21,80 +21,91 @@ import java.util.Set;
 import java.util.UUID;
 
 public final class Main extends Plugin implements Listener {
-    private static final String QUICKSHOP_BUNGEE_CHANNEL = "quickshop:bungee";
-    private static final String SUB_CHANNEL_FORWARD = "forward";
-    private static final String SUB_CHANNEL_COMMAND = "command";
-    private static final String CHAT_COMMAND_REQUEST = "request";
-    private static final String CHAT_COMMAND_CANCEL = "cancel";
-    private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
 
-    @Override
-    public void onEnable() {
-        getProxy().getPluginManager().registerListener(this, this);
-        getProxy().registerChannel(QUICKSHOP_BUNGEE_CHANNEL);
+  private static final String QUICKSHOP_BUNGEE_CHANNEL = "quickshop:bungee";
+  private static final String SUB_CHANNEL_FORWARD = "forward";
+  private static final String SUB_CHANNEL_COMMAND = "command";
+  private static final String CHAT_COMMAND_REQUEST = "request";
+  private static final String CHAT_COMMAND_CANCEL = "cancel";
+  private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
+
+  @Override
+  public void onEnable() {
+
+    getProxy().getPluginManager().registerListener(this, this);
+    getProxy().registerChannel(QUICKSHOP_BUNGEE_CHANNEL);
+  }
+
+  @Override
+  public void onDisable() {
+
+    this.pendingForward.clear();
+    getProxy().getPluginManager().unregisterListener(this);
+    getProxy().unregisterChannel(QUICKSHOP_BUNGEE_CHANNEL);
+  }
+
+  @EventHandler
+  public void on(final PluginMessageEvent event) {
+
+    if(!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
+      return;
     }
 
-    @Override
-    public void onDisable() {
-        this.pendingForward.clear();
-        getProxy().getPluginManager().unregisterListener(this);
-        getProxy().unregisterChannel(QUICKSHOP_BUNGEE_CHANNEL);
+    final ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
+    final String subChannel = in.readUTF();
+    if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
+      // the receiver is a server when the proxy talks to a server
+      if(event.getReceiver() instanceof Server) {
+        final String command = in.readUTF();
+        processCommand(command, in);
+      }
     }
+  }
 
-    @EventHandler
-    public void on(PluginMessageEvent event) {
-        if (!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
-            return;
-        }
-        ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
-        String subChannel = in.readUTF();
-        if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
-            // the receiver is a server when the proxy talks to a server
-            if (event.getReceiver() instanceof Server) {
-                String command = in.readUTF();
-                processCommand(command, in);
-            }
-        }
-    }
+  private void processCommand(final String command, final ByteArrayDataInput in) {
 
-    private void processCommand(String command, ByteArrayDataInput in) {
-        UUID uuid = UUID.fromString(in.readUTF());
-        switch (command) {
-            case CHAT_COMMAND_REQUEST -> this.pendingForward.add(uuid);
-            case CHAT_COMMAND_CANCEL -> this.pendingForward.remove(uuid);
-        }
+    final UUID uuid = UUID.fromString(in.readUTF());
+    switch(command) {
+      case CHAT_COMMAND_REQUEST -> this.pendingForward.add(uuid);
+      case CHAT_COMMAND_CANCEL -> this.pendingForward.remove(uuid);
     }
+  }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onChat(ChatEvent event) {
-        if (event.getSender() instanceof ProxiedPlayer player) {
-            UUID uuid = player.getUniqueId();
-            if (pendingForward.contains(uuid)) {
-                forwardMessage(player, event.getMessage());
-                event.setCancelled(true);
-            }
-        }
-    }
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onChat(final ChatEvent event) {
 
-    private void forwardMessage(ProxiedPlayer player, String message) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(SUB_CHANNEL_FORWARD);
-        out.writeUTF(message);
-        player.sendData(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes());
+    if(event.getSender() instanceof ProxiedPlayer player) {
+      final UUID uuid = player.getUniqueId();
+      if(pendingForward.contains(uuid)) {
+        forwardMessage(player, event.getMessage());
+        event.setCancelled(true);
+      }
     }
+  }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onDisconnect(PlayerDisconnectEvent event) {
-        pendingForward.remove(event.getPlayer().getUniqueId());
-    }
+  private void forwardMessage(final ProxiedPlayer player, final String message) {
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onServerSwitch(ServerSwitchEvent event) {
-        pendingForward.remove(event.getPlayer().getUniqueId());
-    }
+    final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    out.writeUTF(SUB_CHANNEL_FORWARD);
+    out.writeUTF(message);
+    player.sendData(QUICKSHOP_BUNGEE_CHANNEL, out.toByteArray());
+  }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onServerKick(ServerKickEvent event) {
-        pendingForward.remove(event.getPlayer().getUniqueId());
-    }
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onDisconnect(final PlayerDisconnectEvent event) {
+
+    pendingForward.remove(event.getPlayer().getUniqueId());
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onServerSwitch(final ServerSwitchEvent event) {
+
+    pendingForward.remove(event.getPlayer().getUniqueId());
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onServerKick(final ServerKickEvent event) {
+
+    pendingForward.remove(event.getPlayer().getUniqueId());
+  }
 }

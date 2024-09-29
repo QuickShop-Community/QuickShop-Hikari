@@ -30,192 +30,221 @@ import java.util.Map;
 @SuppressWarnings("removal")
 public class PaperPlatform implements Platform {
 
-    private Map<String, String> translationMapping;
+  private Map<String, String> translationMapping;
 
-    public PaperPlatform() {
-        this.translationMapping = new HashMap<>();
+  public PaperPlatform() {
+
+    this.translationMapping = new HashMap<>();
+  }
+
+  @Override
+  public void shutdown() {
+
+  }
+
+  @Override
+  public @NotNull Component getDisplayName(@NotNull final ItemStack stack) {
+
+    return stack.displayName();
+  }
+
+  @Override
+  public @NotNull Component getDisplayName(@NotNull final ItemMeta meta) {
+
+    final Component displayName = meta.displayName();
+    if(displayName == null) {
+      return Component.empty();
     }
+    return displayName;
+  }
 
-    @Override
-    public void shutdown() {
 
+  @Override
+  public @NotNull Component getLine(@NotNull final Sign sign, final int line) {
+
+    return sign.line(line);
+  }
+
+  @Override
+  public @Nullable List<Component> getLore(@NotNull final ItemStack stack) {
+
+    return stack.lore();
+  }
+
+  @Override
+  public @Nullable List<Component> getLore(@NotNull final ItemMeta meta) {
+
+    return meta.lore();
+  }
+
+  @Override
+  public @NotNull String getMinecraftVersion() {
+
+    return Bukkit.getMinecraftVersion();
+  }
+
+  @Override
+  public @NotNull Component setItemStackHoverEvent(@NotNull final Component oldComponent, @NotNull final ItemStack stack) {
+
+    return oldComponent.hoverEvent(stack.asHoverEvent());
+  }
+
+  @Override
+  public @NotNull Component getTranslation(@NotNull final Material material) {
+
+    return Component.translatable(getTranslationKey(material));
+  }
+
+  private String postProcessingTranslationKey(final String key) {
+
+    return this.translationMapping.getOrDefault(key, key);
+  }
+
+  @Override
+  public @NotNull Component getTranslation(@NotNull final EntityType entity) {
+
+    return Component.translatable(getTranslationKey(entity));
+  }
+
+  @Override
+  public @NotNull Component getTranslation(@NotNull final PotionEffectType potionEffectType) {
+
+    return Component.translatable(getTranslationKey(potionEffectType));
+  }
+
+  @Override
+  public @NotNull Component getTranslation(@NotNull final Enchantment enchantment) {
+
+    return Component.translatable(getTranslationKey(enchantment));
+  }
+
+  @Override
+  public @NotNull Component getTranslation(@NotNull final ItemStack itemStack) {
+
+    return Component.translatable(getTranslationKey(itemStack));
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull final Material material) {
+
+    String key;
+    try {
+      key = material.translationKey();
+    } catch(Throwable error) {
+      key = material.getTranslationKey();
     }
+    return postProcessingTranslationKey(key);
+  }
 
-    @Override
-    public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
-        return stack.displayName();
+  @Override
+  public @NotNull String getTranslationKey(@NotNull final EntityType type) {
+
+    String key;
+    try {
+      key = type.translationKey();
+    } catch(Throwable error) {
+      key = type.getTranslationKey();
     }
+    return postProcessingTranslationKey(key);
+  }
 
-    @Override
-    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
-        Component displayName = meta.displayName();
-        if (displayName == null) {
-            return Component.empty();
-        }
-        return displayName;
+  @Override
+  public @NotNull String getTranslationKey(@NotNull final PotionEffectType potionEffectType) {
+
+    final String key = potionEffectType.translationKey();
+    return postProcessingTranslationKey(key);
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull final Enchantment enchantment) {
+
+    final String key = enchantment.translationKey();
+    return postProcessingTranslationKey(key);
+  }
+
+  @Override
+  public @NotNull String getTranslationKey(@NotNull final ItemStack stack) {
+
+    String key;
+    try {
+      key = stack.getTranslationKey();
+    } catch(Throwable error) {
+      key = stack.translationKey();
     }
+    return postProcessingTranslationKey(key);
+  }
 
+  @Override
+  public @NotNull MiniMessage miniMessage() {
 
-    @Override
-    public @NotNull Component getLine(@NotNull Sign sign, int line) {
-        return sign.line(line);
+    return MiniMessage.miniMessage();
+  }
+
+  @Override
+  public void registerCommand(@NotNull final String prefix, @NotNull final Command command) {
+
+    Bukkit.getCommandMap().register(prefix, command);
+    command.register(Bukkit.getCommandMap());
+    Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+  }
+
+  @Override
+  public void sendMessage(@NotNull final CommandSender sender, @NotNull final Component component) {
+
+    sender.sendMessage(component);
+  }
+
+  @Override
+  public void sendSignTextChange(@NotNull final Player player, @NotNull final Sign sign, final boolean glowing, @NotNull final List<Component> components) {
+
+    player.sendSignChange(sign.getLocation(), components);
+  }
+
+  @Override
+  public void setDisplayName(@NotNull final ItemStack stack, @Nullable final Component component) {
+
+    final ItemMeta meta = stack.getItemMeta();
+    meta.displayName(component);
+    stack.setItemMeta(meta);
+  }
+
+  @Override
+  public void setDisplayName(@NotNull final Entity entity, @Nullable final Component component) {
+
+    entity.customName(component);
+  }
+
+  @Override
+  public void setLines(@NotNull final Sign sign, @NotNull final List<Component> component) {
+
+    for(int i = 0; i < Math.min(component.size(), 4); i++) {
+      sign.line(i, component.get(i));
     }
+    sign.update(true, false);
+  }
 
-    @Override
-    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
-        return stack.lore();
+  @Override
+  public void setLore(@NotNull final ItemStack stack, @NotNull final Collection<Component> components) {
+
+    final ItemMeta meta = stack.getItemMeta();
+    meta.lore(new ArrayList<>(components));
+    stack.setItemMeta(meta);
+  }
+
+
+  @Override
+  public void updateTranslationMappingSection(@NotNull final Map<String, String> mapping) {
+
+    this.translationMapping = mapping;
+  }
+
+  @Override
+  public @NotNull Logger getSlf4jLogger(@NotNull final Plugin parent) {
+
+    try {
+      return parent.getSLF4JLogger();
+    } catch(Throwable th) {
+      return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
     }
-
-    @Override
-    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
-        return meta.lore();
-    }
-
-    @Override
-    public @NotNull String getMinecraftVersion() {
-        return Bukkit.getMinecraftVersion();
-    }
-
-    @Override
-    public @NotNull Component setItemStackHoverEvent(@NotNull Component oldComponent, @NotNull ItemStack stack) {
-        return oldComponent.hoverEvent(stack.asHoverEvent());
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull Material material) {
-        return Component.translatable(getTranslationKey(material));
-    }
-
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull EntityType entity) {
-        return Component.translatable(getTranslationKey(entity));
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
-        return Component.translatable(getTranslationKey(potionEffectType));
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
-        return Component.translatable(getTranslationKey(enchantment));
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
-        return Component.translatable(getTranslationKey(itemStack));
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Material material) {
-        String key;
-        try {
-            key = material.translationKey();
-        } catch (Throwable error) {
-            key = material.getTranslationKey();
-        }
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        String key;
-        try {
-            key = type.translationKey();
-        } catch (Throwable error) {
-            key = type.getTranslationKey();
-        }
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        String key = potionEffectType.translationKey();
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        String key = enchantment.translationKey();
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
-        String key;
-        try {
-            key = stack.getTranslationKey();
-        } catch (Throwable error) {
-            key = stack.translationKey();
-        }
-        return postProcessingTranslationKey(key);
-    }
-
-    @Override
-    public @NotNull MiniMessage miniMessage() {
-        return MiniMessage.miniMessage();
-    }
-
-    @Override
-    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
-        Bukkit.getCommandMap().register(prefix, command);
-        command.register(Bukkit.getCommandMap());
-        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-    }
-
-    @Override
-    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
-        sender.sendMessage(component);
-    }
-
-    @Override
-    public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
-        player.sendSignChange(sign.getLocation(), components);
-    }
-
-    @Override
-    public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
-        ItemMeta meta = stack.getItemMeta();
-        meta.displayName(component);
-        stack.setItemMeta(meta);
-    }
-
-    @Override
-    public void setDisplayName(@NotNull Entity entity, @Nullable Component component) {
-        entity.customName(component);
-    }
-
-    @Override
-    public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
-        for (int i = 0; i < Math.min(component.size(), 4); i++) {
-            sign.line(i, component.get(i));
-        }
-        sign.update(true, false);
-    }
-
-    @Override
-    public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        ItemMeta meta = stack.getItemMeta();
-        meta.lore(new ArrayList<>(components));
-        stack.setItemMeta(meta);
-    }
-
-
-    @Override
-    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
-        this.translationMapping = mapping;
-    }
-
-    @Override
-    public @NotNull Logger getSlf4jLogger(@NotNull Plugin parent) {
-        try {
-            return parent.getSLF4JLogger();
-        } catch (Throwable th) {
-            return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
-        }
-    }
+  }
 }

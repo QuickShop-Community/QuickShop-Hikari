@@ -19,61 +19,64 @@ import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_Size implements CommandHandler<Player> {
-    private final QuickShop plugin;
 
-    public SubCommand_Size(QuickShop plugin) {
-        this.plugin = plugin;
+  private final QuickShop plugin;
+
+  public SubCommand_Size(final QuickShop plugin) {
+
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().isEmpty()) {
+      plugin.text().of(sender, "command.bulk-size-not-set").send();
+      return;
+    }
+    final int amount;
+    try {
+      amount = Integer.parseInt(parser.getArgs().get(0));
+    } catch(NumberFormatException e) {
+      plugin.text().of(sender, "not-a-integer", parser.getArgs().get(0)).send();
+      return;
+    }
+    final Shop shop = getLookingShop(sender);
+    if(shop != null) {
+      if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT)
+         || plugin.perm().hasPermission(sender, "quickshop.other.amount")) {
+        if(amount <= 0) {
+          plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
+          return;
+        }
+        if(amount > Util.getItemMaxStackSize(shop.getItem().getType()) && !plugin.getConfig().getBoolean("shop.disable-max-size-check-for-size-command", false)) {
+          plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
+          return;
+        }
+        final ItemStack pendingItemStack = shop.getItem().clone();
+        pendingItemStack.setAmount(amount);
+        final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+        final PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
+        if(checkResult.getStatus() != PriceLimiterStatus.PASS) {
+          plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
+                           Component.text(checkResult.getMin()),
+                           Component.text(checkResult.getMax())).send();
+          return;
+        }
+        shop.setItem(pendingItemStack);
+        plugin.text().of(sender, "command.bulk-size-now", shop.getItem().getAmount(), Util.getItemStackName(shop.getItem())).send();
+      } else {
+        plugin.text().of(sender, "not-managed-shop").send();
+      }
+    } else {
+      plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
-    @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().isEmpty()) {
-            plugin.text().of(sender, "command.bulk-size-not-set").send();
-            return;
-        }
-        int amount;
-        try {
-            amount = Integer.parseInt(parser.getArgs().get(0));
-        } catch (NumberFormatException e) {
-            plugin.text().of(sender, "not-a-integer", parser.getArgs().get(0)).send();
-            return;
-        }
-        final Shop shop = getLookingShop(sender);
-        if (shop != null) {
-            if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT)
-                    || plugin.perm().hasPermission(sender, "quickshop.other.amount")) {
-                if (amount <= 0) {
-                    plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
-                    return;
-                }
-                if (amount > Util.getItemMaxStackSize(shop.getItem().getType()) && !plugin.getConfig().getBoolean("shop.disable-max-size-check-for-size-command", false)) {
-                    plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
-                    return;
-                }
-                ItemStack pendingItemStack = shop.getItem().clone();
-                pendingItemStack.setAmount(amount);
-                PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-                PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
-                if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
-                    plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
-                            Component.text(checkResult.getMin()),
-                            Component.text(checkResult.getMax())).send();
-                    return;
-                }
-                shop.setItem(pendingItemStack);
-                plugin.text().of(sender, "command.bulk-size-now", shop.getItem().getAmount(), Util.getItemStackName(shop.getItem())).send();
-            } else {
-                plugin.text().of(sender, "not-managed-shop").send();
-            }
-        } else {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-        }
+  }
 
+  @Override
+  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        return parser.getArgs().size() == 1 ? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain()) : Collections.emptyList();
-    }
+    return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain()) : Collections.emptyList();
+  }
 }

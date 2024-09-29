@@ -5,23 +5,25 @@ import lombok.Data;
 
 @Data
 public class DatabaseStatusHolder {
-    private Status status;
-    private IsolatedScanResult<Long> dataIds;
-    private IsolatedScanResult<Long> shopIds;
-    private long reportGeneratedAt;
 
-    public DatabaseStatusHolder(Status status, IsolatedScanResult<Long> dataIds, IsolatedScanResult<Long> shopIds, long reportGeneratedAt) {
-        this.status = status;
-        this.dataIds = dataIds;
-        this.shopIds = shopIds;
-        this.reportGeneratedAt = reportGeneratedAt;
-    }
+  private Status status;
+  private IsolatedScanResult<Long> dataIds;
+  private IsolatedScanResult<Long> shopIds;
+  private long reportGeneratedAt;
+
+  public DatabaseStatusHolder(final Status status, final IsolatedScanResult<Long> dataIds, final IsolatedScanResult<Long> shopIds, final long reportGeneratedAt) {
+
+    this.status = status;
+    this.dataIds = dataIds;
+    this.shopIds = shopIds;
+    this.reportGeneratedAt = reportGeneratedAt;
+  }
 
 
-    public enum Status {
-        GOOD,
-        MAINTENANCE_REQUIRED,
-    }
+  public enum Status {
+    GOOD,
+    MAINTENANCE_REQUIRED,
+  }
 }
 
 

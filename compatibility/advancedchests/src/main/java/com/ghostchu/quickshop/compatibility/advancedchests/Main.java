@@ -21,85 +21,94 @@ import us.lynuxcraft.deadsilenceiv.advancedchests.utils.ChunkLocation;
 import java.util.Map;
 
 public final class Main extends CompatibilityModule implements Listener {
-    public AdvancedChestsInventoryManager manager;
 
-    public AdvancedChestsInventoryManager getManager() {
-        return manager;
+  public AdvancedChestsInventoryManager manager;
+
+  public AdvancedChestsInventoryManager getManager() {
+
+    return manager;
+  }
+
+
+  @Override
+  public void onLoad() {
+
+    super.onLoad();
+    manager = new AdvancedChestsInventoryManager(this);
+    getApi().getInventoryWrapperRegistry().register(this, manager);
+  }
+
+  @Override
+  public void onEnable() {
+
+    super.onEnable();
+  }
+
+  @Override
+  public void init() {
+    // There no init stuffs need to do
+  }
+
+  @Nullable
+  public AdvancedChest<?, ?> locateAdvancedChest(Location location) {
+
+    AdvancedChest<?, ?> result = AdvancedChestsAPI.getChestManager().getAdvancedChest(location);
+    if(result == null) {
+      result = AdvancedChestsAPI.getChestManager().getNonLoadableChest(location);
+    }
+    return result;
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onShopCreated(ShopCreateEvent event) {
+
+    Location createdPos = event.getShop().getLocation();
+    AdvancedChest<?, ?> advancedChests = locateAdvancedChest(createdPos);
+    if(advancedChests == null) {
+      return;
     }
 
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        manager = new AdvancedChestsInventoryManager(this);
-        getApi().getInventoryWrapperRegistry().register(this, manager);
+    if(!QuickShop.getPermissionManager().hasPermission(event.getCreator(), "quickshop.create.advancedchests")) {
+      event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "compat.advancedchests.permission-denied").forLocale());
+      return;
     }
+    Shop shop = event.getShop();
+    shop.setInventory(new AdvancedChestsWrapper(advancedChests, this), manager);
+    getApi().getTextManager().of(event.getCreator(), "compat.advancedchests.created").send();
+  }
 
-    @Override
-    public void onEnable() {
-        super.onEnable();
-    }
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onAdvancedChestRemoved(ChestRemoveEvent event) {
 
-    @Override
-    public void init() {
-        // There no init stuffs need to do
-    }
-
-    @Nullable
-    public AdvancedChest<?, ?> locateAdvancedChest(Location location) {
-        AdvancedChest<?, ?> result = AdvancedChestsAPI.getChestManager().getAdvancedChest(location);
-        if (result == null)
-            result = AdvancedChestsAPI.getChestManager().getNonLoadableChest(location);
-        return result;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopCreated(ShopCreateEvent event) {
-        Location createdPos = event.getShop().getLocation();
-        AdvancedChest<?, ?> advancedChests = locateAdvancedChest(createdPos);
-        if (advancedChests == null) {
-            return;
+    AdvancedChest<?, ?> advancedChests = event.getChest();
+    ChunkLocation chunkLocation = advancedChests.getChunkLocation();
+    Map<Location, Shop> shops = getApi().getShopManager().getShops(chunkLocation.getWorld().getName(), chunkLocation.getX(), chunkLocation.getZ());
+    if(shops == null) return;
+    for(Shop shop : shops.values()) {
+      InventoryWrapper inventory = shop.getInventory();
+      if(inventory == null) continue;
+      if(inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
+        if(advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
+          recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "AdvancedChests", false), shop, "AdvancedChest Removed");
+          getApi().getShopManager().deleteShop(shop);
         }
-
-        if (!QuickShop.getPermissionManager().hasPermission(event.getCreator(), "quickshop.create.advancedchests")) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "compat.advancedchests.permission-denied").forLocale());
-            return;
-        }
-        Shop shop = event.getShop();
-        shop.setInventory(new AdvancedChestsWrapper(advancedChests, this), manager);
-        getApi().getTextManager().of(event.getCreator(), "compat.advancedchests.created").send();
+      }
     }
+  }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onAdvancedChestRemoved(ChestRemoveEvent event) {
-        AdvancedChest<?, ?> advancedChests = event.getChest();
-        ChunkLocation chunkLocation = advancedChests.getChunkLocation();
-        Map<Location, Shop> shops = getApi().getShopManager().getShops(chunkLocation.getWorld().getName(), chunkLocation.getX(), chunkLocation.getZ());
-        if (shops == null) return;
-        for (Shop shop : shops.values()) {
-            InventoryWrapper inventory = shop.getInventory();
-            if (inventory == null) continue;
-            if (inventory.getHolder() instanceof AdvancedChestsWrapper advancedChestsWrapper) {
-                if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
-                    recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "AdvancedChests", false), shop, "AdvancedChest Removed");
-                    getApi().getShopManager().deleteShop(shop);
-                }
-            }
-        }
-    }
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onInventoryClose(InventoryCloseEvent e) {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onInventoryClose(InventoryCloseEvent e) {
-        AdvancedChest<?, ?> advancedChests = AdvancedChestsAPI.getInventoryManager().getAdvancedChest(e.getInventory());
-        if (advancedChests == null) return;
-        for (Shop shop : getApi().getShopManager().getLoadedShops()) {
-            InventoryWrapper inventory = shop.getInventory();
-            if (inventory == null) continue;
-            if (inventory instanceof AdvancedChestsWrapper advancedChestsWrapper) {
-                if (advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
-                    shop.setSignText(getApi().getTextManager().findRelativeLanguages(e.getPlayer()));
-                }
-            }
+    AdvancedChest<?, ?> advancedChests = AdvancedChestsAPI.getInventoryManager().getAdvancedChest(e.getInventory());
+    if(advancedChests == null) return;
+    for(Shop shop : getApi().getShopManager().getLoadedShops()) {
+      InventoryWrapper inventory = shop.getInventory();
+      if(inventory == null) continue;
+      if(inventory instanceof AdvancedChestsWrapper advancedChestsWrapper) {
+        if(advancedChestsWrapper.getAdvancedChest().getUniqueId().equals(advancedChests.getUniqueId())) {
+          shop.setSignText(getApi().getTextManager().findRelativeLanguages(e.getPlayer()));
         }
+      }
     }
+  }
 }

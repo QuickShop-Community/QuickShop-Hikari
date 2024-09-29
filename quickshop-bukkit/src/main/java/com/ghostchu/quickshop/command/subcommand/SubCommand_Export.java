@@ -14,29 +14,31 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
-    private final QuickShop plugin;
 
-    public SubCommand_Export(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  private final QuickShop plugin;
 
-    @Override
-    public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        plugin.text().of(sender, "exporting-database").send();
-        File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+  public SubCommand_Export(final QuickShop plugin) {
 
-        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
-        Util.asyncThreadRun(() -> {
-            try {
-                databaseIOUtil.exportTables(file);
-                plugin.text().of(sender, "exported-database", file.toString()).send();
-            } catch (SQLException | IOException e) {
-                plugin.logger().warn("Exporting database failed.", e);
-                plugin.text().of(sender, "exporting-failed", e.getMessage()).send();
-            }
-        });
+    this.plugin = plugin;
+  }
 
-    }
+  @Override
+  public synchronized void onCommand(@NotNull final ConsoleCommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
+    plugin.text().of(sender, "exporting-database").send();
+    final File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+
+    final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
+    Util.asyncThreadRun(()->{
+      try {
+        databaseIOUtil.exportTables(file);
+        plugin.text().of(sender, "exported-database", file.toString()).send();
+      } catch(SQLException | IOException e) {
+        plugin.logger().warn("Exporting database failed.", e);
+        plugin.text().of(sender, "exporting-failed", e.getMessage()).send();
+      }
+    });
+
+  }
 
 }

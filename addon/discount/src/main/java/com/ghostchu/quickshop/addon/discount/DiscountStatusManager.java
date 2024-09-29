@@ -8,24 +8,29 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DiscountStatusManager {
-    private final Map<UUID, String> PLAYER_STATUS = new HashMap<>();
 
-    public void set(@NotNull UUID player, @NotNull DiscountCode code) {
-        PLAYER_STATUS.put(player, code.getCode());
-    }
+  private final Map<UUID, String> PLAYER_STATUS = new HashMap<>();
 
-    public void unset(@NotNull UUID player) {
-        PLAYER_STATUS.remove(player);
-    }
+  public void set(@NotNull final UUID player, @NotNull final DiscountCode code) {
 
-    @Nullable
-    public DiscountCode get(UUID player, @NotNull DiscountCodeManager codeManager) {
-        String codeStr = PLAYER_STATUS.get(player);
-        return codeManager.getCode(codeStr);
-    }
+    PLAYER_STATUS.put(player, code.getCode());
+  }
 
-    @Nullable
-    public String get(UUID player) {
-        return PLAYER_STATUS.get(player);
-    }
+  public void unset(@NotNull final UUID player) {
+
+    PLAYER_STATUS.remove(player);
+  }
+
+  @Nullable
+  public DiscountCode get(final UUID player, @NotNull final DiscountCodeManager codeManager) {
+
+    final String codeStr = PLAYER_STATUS.get(player);
+    return codeManager.getCode(codeStr);
+  }
+
+  @Nullable
+  public String get(final UUID player) {
+
+    return PLAYER_STATUS.get(player);
+  }
 }

@@ -11,20 +11,23 @@ import java.util.Objects;
 @Data
 @Builder
 public class ShopSignStorage {
-    private static final boolean SHOP_SIGN = true;
-    private String world;
-    private int x;
-    private int y;
-    private int z;
 
-    public ShopSignStorage(String world, int x, int y, int z) {
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+  private static final boolean SHOP_SIGN = true;
+  private String world;
+  private int x;
+  private int y;
+  private int z;
 
-    public boolean equals(String world, int x, int y, int z) {
-        return Objects.equals(this.world, world) && this.x == x && this.y == y && this.z == z;
-    }
+  public ShopSignStorage(final String world, final int x, final int y, final int z) {
+
+    this.world = world;
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+
+  public boolean equals(final String world, final int x, final int y, final int z) {
+
+    return Objects.equals(this.world, world) && this.x == x && this.y == y && this.z == z;
+  }
 }

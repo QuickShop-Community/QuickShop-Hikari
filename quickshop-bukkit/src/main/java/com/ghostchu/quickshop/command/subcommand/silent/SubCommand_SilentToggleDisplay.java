@@ -9,15 +9,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentToggleDisplay extends SubCommand_SilentBase {
 
-    public SubCommand_SilentToggleDisplay(QuickShop plugin) {
-        super(plugin);
-    }
+  public SubCommand_SilentToggleDisplay(final QuickShop plugin) {
 
-    @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
-        shop.setDisableDisplay(!shop.isDisableDisplay());
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
-        MsgUtil.sendControlPanelInfo(sender, shop);
-    }
+    super(plugin);
+  }
+
+  @Override
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
+
+    shop.setDisableDisplay(!shop.isDisableDisplay());
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
+    MsgUtil.sendControlPanelInfo(sender, shop);
+  }
 
 }
