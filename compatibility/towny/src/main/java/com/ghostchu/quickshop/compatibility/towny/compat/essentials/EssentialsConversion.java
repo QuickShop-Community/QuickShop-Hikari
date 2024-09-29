@@ -9,23 +9,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class EssentialsConversion implements UuidConversion {
+    @Override
+    public UUID convertTownyAccount(Town town) {
+        String vaultAccountName = processAccount(town.getAccount().getName());
+        return UUID.nameUUIDFromBytes(("NPC:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
+    }
 
-  @Override
-  public UUID convertTownyAccount(final Town town) {
+    @Override
+    public UUID convertTownyAccount(Nation nation) {
+        String vaultAccountName = processAccount(nation.getAccount().getName());
+        return UUID.nameUUIDFromBytes(("NPC:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
+    }
 
-    final String vaultAccountName = processAccount(town.getAccount().getName());
-    return UUID.nameUUIDFromBytes(("OfflinePlayer:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
-  }
-
-  @Override
-  public UUID convertTownyAccount(final Nation nation) {
-
-    final String vaultAccountName = processAccount(nation.getAccount().getName());
-    return UUID.nameUUIDFromBytes(("OfflinePlayer:" + vaultAccountName).getBytes(StandardCharsets.UTF_8));
-  }
-
-  private String processAccount(final String accountName) {
-
-    return EssStringUtil.safeString(accountName);
-  }
+    private String processAccount(String accountName) {
+        return EssStringUtil.safeString(accountName);
+    }
 }
