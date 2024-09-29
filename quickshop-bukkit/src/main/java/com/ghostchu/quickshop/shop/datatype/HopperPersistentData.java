@@ -7,10 +7,12 @@ import java.util.UUID;
 
 @Getter
 public class HopperPersistentData {
-    @Expose
-    private final UUID player;
 
-    public HopperPersistentData(UUID player) {
-        this.player = player;
-    }
+  @Expose
+  private final UUID player;
+
+  public HopperPersistentData(final UUID player) {
+
+    this.player = player;
+  }
 }

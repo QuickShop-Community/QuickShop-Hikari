@@ -33,13 +33,16 @@ import java.util.UUID;
 public class QuickShopMenu extends Menu {
 
   /**
-   * Retrieves the legacy string representation of the text associated with a given route and player.
+   * Retrieves the legacy string representation of the text associated with a given route and
+   * player.
    *
    * @param player The UUID of the player.
-   * @param route The route to retrieve the text.
+   * @param route  The route to retrieve the text.
+   *
    * @return The legacy string representation of the text associated with the route and player.
    */
   protected String legacy(final UUID player, final String route) {
+
     return QuickShop.getInstance().text().of(player, route).legacy();
   }
 
@@ -47,10 +50,12 @@ public class QuickShopMenu extends Menu {
    * Retrieves a component for a given route and player.
    *
    * @param player The UUID of the player.
-   * @param route The route to retrieve the component.
+   * @param route  The route to retrieve the component.
+   *
    * @return The component associated with the route and player.
    */
   protected Component get(final UUID player, final String route) {
+
     return QuickShop.getInstance().text().of(player, route).forLocale();
   }
 
@@ -58,10 +63,12 @@ public class QuickShopMenu extends Menu {
    * Retrieves a list of components for a given route and player.
    *
    * @param player The UUID of the player.
-   * @param route The route to retrieve the list of components.
+   * @param route  The route to retrieve the list of components.
+   *
    * @return A list of components associated with the route and player.
    */
   protected List<Component> getList(final UUID player, final String route) {
+
     return QuickShop.getInstance().text().ofList(player, route).forLocale();
   }
 }

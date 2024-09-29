@@ -17,87 +17,97 @@ import java.util.Map;
 import java.util.Objects;
 
 public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem {
-    private final QuickShop plugin;
-    private final Map<String, Integer> limits = new HashMap<>();
-    /**
-     * Whether or not to limit players shop amounts
-     */
-    private boolean limit = false;
-    private int def = 0;
 
-    public SimpleRankLimiter(QuickShop plugin) {
-        this.plugin = plugin;
-        plugin.getReloadManager().register(this);
-        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
-        load();
-    }
+  private final QuickShop plugin;
+  private final Map<String, Integer> limits = new HashMap<>();
+  /**
+   * Whether or not to limit players shop amounts
+   */
+  private boolean limit = false;
+  private int def = 0;
 
-    private void load() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            def = limitCfg.getInt("default");
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        } else {
-            this.limit = false;
-            limits.clear();
-        }
-    }
+  public SimpleRankLimiter(final QuickShop plugin) {
 
-    /**
-     * Get the Player's Shop limit.
-     *
-     * @param p The player you want get limit.
-     * @return int Player's shop limit
-     */
-    @Override
-    public int getShopLimit(@NotNull QUser p) {
-        int count = def;
-        for (Map.Entry<String, Integer> entry : limits.entrySet()) {
-            if ((entry.getValue() > count) && plugin.perm().hasPermission(p, entry.getKey())) {
-                count = entry.getValue();
-            }
-        }
-        return count;
-    }
+    this.plugin = plugin;
+    plugin.getReloadManager().register(this);
+    plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
+    load();
+  }
 
-    @SuppressWarnings("removal")
-    @Override
-    @Deprecated(forRemoval = true)
-    @ApiStatus.Internal
-    @ApiStatus.Obsolete
-    @NotNull
-    public Map<String, Integer> getLimits() {
-        return limits;
-    }
+  private void load() {
 
-    @Override
-    public boolean isLimit() {
-        return limit;
+    final YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
+    ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
+    if(limitCfg != null) {
+      this.limit = limitCfg.getBoolean("use", false);
+      def = limitCfg.getInt("default");
+      limitCfg = limitCfg.getConfigurationSection("ranks");
+      for(final String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+        limits.put(key, limitCfg.getInt(key));
+      }
+    } else {
+      this.limit = false;
+      limits.clear();
     }
+  }
 
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        load();
-        return Reloadable.super.reloadModule();
-    }
+  /**
+   * Get the Player's Shop limit.
+   *
+   * @param p The player you want get limit.
+   *
+   * @return int Player's shop limit
+   */
+  @Override
+  public int getShopLimit(@NotNull final QUser p) {
 
-    @Override
-    public @NotNull String genBody() {
-        HTMLTable table = new HTMLTable(2);
-        table.setTableTitle("Permission", "Amount");
-        for (Map.Entry<String, Integer> entry : limits.entrySet()) {
-            table.insert(entry.getKey(), String.valueOf(entry.getValue()));
-        }
-        return table.render();
+    int count = def;
+    for(final Map.Entry<String, Integer> entry : limits.entrySet()) {
+      if((entry.getValue() > count) && plugin.perm().hasPermission(p, entry.getKey())) {
+        count = entry.getValue();
+      }
     }
+    return count;
+  }
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Rank Limiter";
+  @SuppressWarnings("removal")
+  @Override
+  @Deprecated(forRemoval = true)
+  @ApiStatus.Internal
+  @ApiStatus.Obsolete
+  @NotNull
+  public Map<String, Integer> getLimits() {
+
+    return limits;
+  }
+
+  @Override
+  public boolean isLimit() {
+
+    return limit;
+  }
+
+  @Override
+  public ReloadResult reloadModule() throws Exception {
+
+    load();
+    return Reloadable.super.reloadModule();
+  }
+
+  @Override
+  public @NotNull String genBody() {
+
+    final HTMLTable table = new HTMLTable(2);
+    table.setTableTitle("Permission", "Amount");
+    for(final Map.Entry<String, Integer> entry : limits.entrySet()) {
+      table.insert(entry.getKey(), String.valueOf(entry.getValue()));
     }
+    return table.render();
+  }
+
+  @Override
+  public @NotNull String getTitle() {
+
+    return "Rank Limiter";
+  }
 }

@@ -1,13 +1,14 @@
 package com.ghostchu.quickshop.api.database.bean;
 
 public interface InfoRecord {
-    long getShopId();
 
-    String getWorld();
+  long getShopId();
 
-    int getX();
+  String getWorld();
 
-    int getY();
+  int getX();
 
-    int getZ();
+  int getY();
+
+  int getZ();
 }

@@ -7,18 +7,22 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 public abstract class AbstractQSListener implements Listener, Reloadable {
-    protected final QuickShop plugin;
 
-    protected AbstractQSListener(QuickShop plugin) {
-        this.plugin = plugin;
-        plugin.getReloadManager().register(this);
-    }
+  protected final QuickShop plugin;
 
-    public void register() {
-        Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
-    }
+  protected AbstractQSListener(final QuickShop plugin) {
 
-    public void unregister() {
-        HandlerList.unregisterAll(this);
-    }
+    this.plugin = plugin;
+    plugin.getReloadManager().register(this);
+  }
+
+  public void register() {
+
+    Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
+  }
+
+  public void unregister() {
+
+    HandlerList.unregisterAll(this);
+  }
 }

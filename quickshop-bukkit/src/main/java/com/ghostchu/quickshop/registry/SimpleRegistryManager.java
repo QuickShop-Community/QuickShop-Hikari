@@ -10,39 +10,46 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class SimpleRegistryManager implements RegistryManager {
-    private final Map<String, Registry> REGISTRY_LIST = new ConcurrentSkipListMap<>();
 
-    @Override
-    public Registry getRegistry(BuiltInRegistry registry) {
-        return getRegistry(registry.getName());
-    }
+  private final Map<String, Registry> REGISTRY_LIST = new ConcurrentSkipListMap<>();
 
-    @Override
-    public Registry getRegistry(String registryName) {
-        return REGISTRY_LIST.get(registryName);
-    }
+  @Override
+  public Registry getRegistry(final BuiltInRegistry registry) {
 
-    @Override
-    public Map<String, Registry> getRegistryList() {
-        return ImmutableMap.copyOf(REGISTRY_LIST);
-    }
+    return getRegistry(registry.getName());
+  }
 
-    @Override
-    public void registerRegistry(String namespacedName, Registry registry) {
-        if (REGISTRY_LIST.get(namespacedName) != null) {
-            throw new IllegalArgumentException("Registry " + namespacedName + " already registered in RegistryManager!");
-        }
-        this.REGISTRY_LIST.put(namespacedName, registry);
-    }
+  @Override
+  public Registry getRegistry(final String registryName) {
 
-    @Override
-    public void unregisterRegistry(String namespacedName) {
-        this.REGISTRY_LIST.remove(namespacedName);
-    }
+    return REGISTRY_LIST.get(registryName);
+  }
 
-    @Override
-    @NotNull
-    public Map<String, Registry> getRegistries() {
-        return ImmutableMap.copyOf(REGISTRY_LIST);
+  @Override
+  public Map<String, Registry> getRegistryList() {
+
+    return ImmutableMap.copyOf(REGISTRY_LIST);
+  }
+
+  @Override
+  public void registerRegistry(final String namespacedName, final Registry registry) {
+
+    if(REGISTRY_LIST.get(namespacedName) != null) {
+      throw new IllegalArgumentException("Registry " + namespacedName + " already registered in RegistryManager!");
     }
+    this.REGISTRY_LIST.put(namespacedName, registry);
+  }
+
+  @Override
+  public void unregisterRegistry(final String namespacedName) {
+
+    this.REGISTRY_LIST.remove(namespacedName);
+  }
+
+  @Override
+  @NotNull
+  public Map<String, Registry> getRegistries() {
+
+    return ImmutableMap.copyOf(REGISTRY_LIST);
+  }
 }

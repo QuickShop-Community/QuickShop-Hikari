@@ -34,167 +34,188 @@ import org.dynmap.markers.MarkerSet;
 import org.jetbrains.annotations.NotNull;
 
 public final class Main extends JavaPlugin implements Listener {
-    static Main instance;
-    private QuickShop plugin;
-    private DynmapAPI dynmapAPI;
-    private MarkerAPI markerAPI;
 
-    @Override
-    public void onLoad() {
-        instance = this;
+  static Main instance;
+  private QuickShop plugin;
+  private DynmapAPI dynmapAPI;
+  private MarkerAPI markerAPI;
+
+  @Override
+  public void onLoad() {
+
+    instance = this;
+  }
+
+  @Override
+  public void onDisable() {
+
+    HandlerList.unregisterAll((Plugin)this);
+  }
+
+  @Override
+  public void onEnable() {
+
+    saveDefaultConfig();
+    plugin = QuickShop.getInstance();
+    this.dynmapAPI = (DynmapAPI)Bukkit.getPluginManager().getPlugin("dynmap");
+    this.markerAPI = this.dynmapAPI.getMarkerAPI();
+    Bukkit.getPluginManager().registerEvents(this, this);
+    QuickShop.folia().getImpl().runLater(this::updateAllMarkers, 80);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final WorldLoadEvent event) {
+
+    Util.mainThreadRun(this::updateAllMarkers);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final WorldUnloadEvent event) {
+
+    Util.mainThreadRun(this::updateAllMarkers);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final QSConfigurationReloadEvent event) {
+
+    Util.mainThreadRun(this::updateAllMarkers);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopCreateSuccessEvent event) {
+
+    updateShopMarker(event.getShop());
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopDeleteEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopPriceChangeEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopItemChangeEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopOwnershipTransferEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopSuccessPurchaseEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopTypeChangeEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onEvent(final ShopNamingEvent event) {
+
+    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+  }
+
+  @NotNull
+  public String plain(@NotNull final Component component) {
+
+    return PlainTextComponentSerializer.plainText().serialize(component);
+  }
+
+  @NotNull
+  public TextManager text() {
+
+    return plugin.getTextManager();
+  }
+
+  public MarkerSet getMarkerSet() {
+
+    final String id = PackageUtil.parsePackageProperly("marker-id").asString("quickshop-hikari-shops");
+    MarkerSet markerSet = markerAPI.getMarkerSet(id);
+    if(markerSet == null) {
+      markerSet = markerAPI.createMarkerSet(id, plain(text().of("addon.dynmap.markerset-title").forLocale()), null, false);
     }
+    markerSet.setHideByDefault(getConfig().getBoolean("display-by-default", true));
+    return markerSet;
+  }
 
-    @Override
-    public void onDisable() {
-        HandlerList.unregisterAll((Plugin) this);
+  public MarkerIcon getShopMarkerIcon() {
+
+    return markerAPI.getMarkerIcon(PackageUtil.parsePackageProperly("marker-icon").asString("chest"));
+  }
+
+  public void updateAllMarkers() {
+
+    final MarkerSet markerSet = getMarkerSet();
+    markerSet.getMarkers().forEach(GenericMarker::deleteMarker);
+    for(final Shop shop : plugin.getShopManager().getAllShops()) {
+      updateShopMarker(shop);
     }
+  }
 
-    @Override
-    public void onEnable() {
-        saveDefaultConfig();
-        plugin = QuickShop.getInstance();
-        this.dynmapAPI = (DynmapAPI) Bukkit.getPluginManager().getPlugin("dynmap");
-        this.markerAPI = this.dynmapAPI.getMarkerAPI();
-        Bukkit.getPluginManager().registerEvents(this, this);
-        QuickShop.folia().getImpl().runLater(this::updateAllMarkers, 80);
+  public void updateShopMarker(final Shop shop) {
+
+    final MarkerSet markerSet = getMarkerSet();
+    String shopName = shop.getShopName();
+    final String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
+    if(shopName == null) {
+      shopName = posStr;
     }
+    Marker marker = markerSet.findMarker("quickshop-hikari-shop-" + shop.getShopId());
+    final String type = switch(shop.getShopType()) {
+      case SELLING -> plain(text().of("shop-type.selling").forLocale());
+      case BUYING -> plain(text().of("shop-type.buying").forLocale());
+      case FROZEN -> plain(text().of("shop-type.frozen").forLocale());
+    };
 
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(WorldLoadEvent event) {
-        Util.mainThreadRun(this::updateAllMarkers);
+    final String markerName = plain(text().of("addon.dynmap.marker-name",
+                                              shopName,
+                                              plain(shop.ownerName()),
+                                              plain(Util.getItemStackName(shop.getItem())),
+                                              plugin.getShopManager().format(shop.getPrice(), shop),
+                                              shop.getShopStackingAmount(),
+                                              type,
+                                              shop.isUnlimited(),
+                                              posStr
+                                             ).forLocale());
+    if(marker == null) {
+      marker = markerSet.createMarker("quickshop-hikari-shop-" + shop.getShopId()
+              , markerName
+              , shop.getLocation().getWorld().getName(),
+                                      shop.getLocation().getX(),
+                                      shop.getLocation().getY(),
+                                      shop.getLocation().getZ(),
+                                      getShopMarkerIcon(), false);
+    } else {
+      marker.setLocation(shop.getLocation().getWorld().getName(),
+                         shop.getLocation().getX(),
+                         shop.getLocation().getY(),
+                         shop.getLocation().getZ());
     }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(WorldUnloadEvent event) {
-        Util.mainThreadRun(this::updateAllMarkers);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(QSConfigurationReloadEvent event) {
-        Util.mainThreadRun(this::updateAllMarkers);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopCreateSuccessEvent event) {
-        updateShopMarker(event.getShop());
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopDeleteEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopPriceChangeEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopItemChangeEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopOwnershipTransferEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopSuccessPurchaseEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopTypeChangeEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onEvent(ShopNamingEvent event) {
-        Util.mainThreadRun(() -> updateShopMarker(event.getShop()));
-    }
-
-    @NotNull
-    public String plain(@NotNull Component component) {
-        return PlainTextComponentSerializer.plainText().serialize(component);
-    }
-
-    @NotNull
-    public TextManager text() {
-        return plugin.getTextManager();
-    }
-
-    public MarkerSet getMarkerSet() {
-        String id = PackageUtil.parsePackageProperly("marker-id").asString("quickshop-hikari-shops");
-        MarkerSet markerSet = markerAPI.getMarkerSet(id);
-        if (markerSet == null) {
-            markerSet = markerAPI.createMarkerSet(id, plain(text().of("addon.dynmap.markerset-title").forLocale()), null, false);
-        }
-        markerSet.setHideByDefault(getConfig().getBoolean("display-by-default", true));
-        return markerSet;
-    }
-
-    public MarkerIcon getShopMarkerIcon() {
-        return markerAPI.getMarkerIcon(PackageUtil.parsePackageProperly("marker-icon").asString("chest"));
-    }
-
-    public void updateAllMarkers() {
-        MarkerSet markerSet = getMarkerSet();
-        markerSet.getMarkers().forEach(GenericMarker::deleteMarker);
-        for (Shop shop : plugin.getShopManager().getAllShops()) {
-            updateShopMarker(shop);
-        }
-    }
-
-    public void updateShopMarker(Shop shop) {
-        MarkerSet markerSet = getMarkerSet();
-        String shopName = shop.getShopName();
-        String posStr = String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ());
-        if (shopName == null) {
-            shopName = posStr;
-        }
-        Marker marker = markerSet.findMarker("quickshop-hikari-shop-" + shop.getShopId());
-        final String type = switch(shop.getShopType()) {
-          case SELLING -> plain(text().of("shop-type.selling").forLocale());
-          case BUYING -> plain(text().of("shop-type.buying").forLocale());
-          case FROZEN -> plain(text().of("shop-type.frozen").forLocale());
-        };
-
-        String markerName = plain(text().of("addon.dynmap.marker-name",
-                shopName,
-                plain(shop.ownerName()),
-                plain(Util.getItemStackName(shop.getItem())),
-                plugin.getShopManager().format(shop.getPrice(), shop),
-                shop.getShopStackingAmount(),
-                type,
-                shop.isUnlimited(),
-                posStr
-        ).forLocale());
-        if (marker == null) {
-            marker = markerSet.createMarker("quickshop-hikari-shop-" + shop.getShopId()
-                    , markerName
-                    , shop.getLocation().getWorld().getName(),
-                    shop.getLocation().getX(),
-                    shop.getLocation().getY(),
-                    shop.getLocation().getZ(),
-                    getShopMarkerIcon(), false);
-        } else {
-            marker.setLocation(shop.getLocation().getWorld().getName(),
-                    shop.getLocation().getX(),
-                    shop.getLocation().getY(),
-                    shop.getLocation().getZ());
-        }
-        String desc = plain(text().of("addon.dynmap.marker-description",
-                shopName,
-                plain(shop.ownerName()),
-                plain(Util.getItemStackName(shop.getItem())),
-                plugin.getShopManager().format(shop.getPrice(), shop),
-                shop.getShopStackingAmount(),
-                shop.getShopType() == ShopType.SELLING ? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
-                shop.isUnlimited(),
-                posStr
-        ).forLocale());
-        marker.setDescription(desc.replace("\n", "<br/>"));
-    }
+    final String desc = plain(text().of("addon.dynmap.marker-description",
+                                        shopName,
+                                        plain(shop.ownerName()),
+                                        plain(Util.getItemStackName(shop.getItem())),
+                                        plugin.getShopManager().format(shop.getPrice(), shop),
+                                        shop.getShopStackingAmount(),
+                                  shop.getShopType() == ShopType.SELLING? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
+                                        shop.isUnlimited(),
+                                        posStr
+                                       ).forLocale());
+    marker.setDescription(desc.replace("\n", "<br/>"));
+  }
 
 }

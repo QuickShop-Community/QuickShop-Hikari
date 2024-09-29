@@ -13,43 +13,46 @@ import java.util.List;
 
 public class SubCommand_Refill implements CommandHandler<Player> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Refill(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_Refill(final QuickShop plugin) {
 
-    @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().isEmpty()) {
-            plugin.text().of(sender, "command.no-amount-given").send();
-            return;
-        }
-        int add;
-        final Shop shop = getLookingShop(sender);
-        if (shop == null) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-        if (StringUtils.isNumeric(parser.getArgs().get(0))) {
-            add = Integer.parseInt(parser.getArgs().get(0));
-        } else {
-            if (parser.getArgs().get(0).equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
-                add = shop.getRemainingSpace();
-            } else {
-                plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
-                return;
-            }
-        }
-        shop.add(shop.getItem(), add);
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
-        plugin.text().of(sender, "refill-success").send();
-    }
+    this.plugin = plugin;
+  }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        return parser.getArgs().size() == 1 ? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain()) : Collections.emptyList();
+  @Override
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().isEmpty()) {
+      plugin.text().of(sender, "command.no-amount-given").send();
+      return;
     }
+    final int add;
+    final Shop shop = getLookingShop(sender);
+    if(shop == null) {
+      plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
+    }
+    if(StringUtils.isNumeric(parser.getArgs().get(0))) {
+      add = Integer.parseInt(parser.getArgs().get(0));
+    } else {
+      if(parser.getArgs().get(0).equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
+        add = shop.getRemainingSpace();
+      } else {
+        plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
+        return;
+      }
+    }
+    shop.add(shop.getItem(), add);
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
+    plugin.text().of(sender, "refill-success").send();
+  }
+
+  @NotNull
+  @Override
+  public List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.amount").plain()) : Collections.emptyList();
+  }
 
 }

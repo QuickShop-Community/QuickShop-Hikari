@@ -4,6 +4,8 @@ import com.ghostchu.quickshop.addon.webui.handler.GeneralHandler;
 import io.vertx.ext.web.RoutingContext;
 
 public class UserHistory implements GeneralHandler {
-    public UserHistory(RoutingContext ctx) {
-    }
+
+  public UserHistory(RoutingContext ctx) {
+
+  }
 }

@@ -11,57 +11,64 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ShopCreateEvent extends AbstractQSEvent implements QSCancellable {
 
-    @NotNull
-    private final QUser creator;
+  @NotNull
+  private final QUser creator;
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    private boolean cancelled;
-    private @Nullable Component cancelReason;
+  private boolean cancelled;
+  private @Nullable Component cancelReason;
 
-    /**
-     * Call when have a new shop was creating.
-     *
-     * @param shop    Target shop
-     * @param creator The player creating the shop, the player might offline/not exist if creating by a plugin.
-     */
-    public ShopCreateEvent(@NotNull Shop shop, @NotNull QUser creator) {
-        this.shop = shop;
-        this.creator = creator;
-    }
+  /**
+   * Call when have a new shop was creating.
+   *
+   * @param shop    Target shop
+   * @param creator The player creating the shop, the player might offline/not exist if creating by
+   *                a plugin.
+   */
+  public ShopCreateEvent(@NotNull final Shop shop, @NotNull final QUser creator) {
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+    this.shop = shop;
+    this.creator = creator;
+  }
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+  @Override
+  public @Nullable Component getCancelReason() {
 
-    /**
-     * Gets the creator of this shop
-     *
-     * @return The creator, may be a online/offline/virtual player
-     */
-    public @NotNull QUser getCreator() {
-        return this.creator;
-    }
+    return this.cancelReason;
+  }
 
-    /**
-     * Gets the shop created
-     *
-     * @return The shop that created
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+  @Override
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
 
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
+
+  /**
+   * Gets the creator of this shop
+   *
+   * @return The creator, may be a online/offline/virtual player
+   */
+  public @NotNull QUser getCreator() {
+
+    return this.creator;
+  }
+
+  /**
+   * Gets the shop created
+   *
+   * @return The shop that created
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return cancelled;
+  }
 }

@@ -15,48 +15,51 @@ import java.util.List;
 
 public class SubCommand_Price implements CommandHandler<Player> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Price(QuickShop plugin) {
-        this.plugin = plugin;
+  public SubCommand_Price(final QuickShop plugin) {
+
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().isEmpty()) {
+      plugin.text().of(sender, "no-price-given").send();
+      return;
     }
 
-    @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().isEmpty()) {
-            plugin.text().of(sender, "no-price-given").send();
-            return;
-        }
+    final double price;
 
-        final double price;
-
-        try {
-            price = Double.parseDouble(parser.getArgs().get(0));
-        } catch (NumberFormatException ex) {
-            // No number input
-            Log.debug(ex.getMessage());
-            plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
-            return;
-        }
-        // No number input
-        if (Double.isInfinite(price) || Double.isNaN(price)) {
-            plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
-            return;
-        }
-        final Shop shop = getLookingShop(sender);
-        if (shop == null) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-
-        ShopUtil.setPrice(plugin, QUserImpl.createFullFilled(sender), price, shop);
+    try {
+      price = Double.parseDouble(parser.getArgs().get(0));
+    } catch(NumberFormatException ex) {
+      // No number input
+      Log.debug(ex.getMessage());
+      plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
+      return;
+    }
+    // No number input
+    if(Double.isInfinite(price) || Double.isNaN(price)) {
+      plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
+      return;
+    }
+    final Shop shop = getLookingShop(sender);
+    if(shop == null) {
+      plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        return parser.getArgs().size() == 1 ? Collections.singletonList(plugin.text().of(sender, "tabcomplete.price").plain()) : Collections.emptyList();
-    }
+    ShopUtil.setPrice(plugin, QUserImpl.createFullFilled(sender), price, shop);
+  }
+
+  @NotNull
+  @Override
+  public List<String> onTabComplete(
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    return parser.getArgs().size() == 1? Collections.singletonList(plugin.text().of(sender, "tabcomplete.price").plain()) : Collections.emptyList();
+  }
 
 }

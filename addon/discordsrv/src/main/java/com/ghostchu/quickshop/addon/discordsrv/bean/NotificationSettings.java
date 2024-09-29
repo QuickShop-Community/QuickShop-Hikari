@@ -10,5 +10,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Data
 public class NotificationSettings {
-    private Map<NotificationFeature, Boolean> settings;
+
+  private Map<NotificationFeature, Boolean> settings;
 }

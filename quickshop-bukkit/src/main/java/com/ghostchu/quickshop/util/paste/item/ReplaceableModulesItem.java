@@ -8,43 +8,47 @@ import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.jetbrains.annotations.NotNull;
 
 public class ReplaceableModulesItem implements SubPasteItem {
-    private final String economyCore;
-    private final String itemMatcher;
-    private final String displayItem;
 
-    public ReplaceableModulesItem() {
+  private final String economyCore;
+  private final String itemMatcher;
+  private final String displayItem;
 
-        final QuickShop plugin = QuickShop.getInstance();
-        itemMatcher = plugin.getItemMatcher().getName() + "@" + plugin.getItemMatcher().getPlugin().getName();
-        if (plugin.getEconomy() == null) {
-            economyCore = "undefined@unknown";
-        } else {
-            economyCore = plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName();
-        }
-        final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-        if (provider == null) {
-            displayItem = AbstractDisplayItem.getNowUsing().name() + "@QuickShop-Hikari";
-        } else {
-            displayItem = provider.getClass().getSimpleName() + "@" + provider.getProvider().getName();
-        }
+  public ReplaceableModulesItem() {
+
+    final QuickShop plugin = QuickShop.getInstance();
+    itemMatcher = plugin.getItemMatcher().getName() + "@" + plugin.getItemMatcher().getPlugin().getName();
+    if(plugin.getEconomy() == null) {
+      economyCore = "undefined@unknown";
+    } else {
+      economyCore = plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName();
     }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
+    final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+    if(provider == null) {
+      displayItem = AbstractDisplayItem.getNowUsing().name() + "@QuickShop-Hikari";
+    } else {
+      displayItem = provider.getClass().getSimpleName() + "@" + provider.getProvider().getName();
     }
+  }
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Replaceable Modules";
-    }
+  @Override
+  public @NotNull String genBody() {
 
-    @NotNull
-    private String buildContent() {
-        final HTMLTable table = new HTMLTable(2, true);
-        table.insert("Economy Core", economyCore);
-        table.insert("Item Matcher", itemMatcher);
-        table.insert("DisplayItem", displayItem);
-        return table.render();
-    }
+    return buildContent();
+  }
+
+  @Override
+  public @NotNull String getTitle() {
+
+    return "Replaceable Modules";
+  }
+
+  @NotNull
+  private String buildContent() {
+
+    final HTMLTable table = new HTMLTable(2, true);
+    table.insert("Economy Core", economyCore);
+    table.insert("Item Matcher", itemMatcher);
+    table.insert("DisplayItem", displayItem);
+    return table.render();
+  }
 }

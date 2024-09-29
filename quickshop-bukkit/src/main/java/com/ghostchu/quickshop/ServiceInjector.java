@@ -13,16 +13,18 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ServiceInjector {
 
-    private ServiceInjector() {
-    }
+  private ServiceInjector() {
 
-    public static @Nullable <T> T getInjectedService(@NotNull Class<T> clazz, T def) {
-        @Nullable RegisteredServiceProvider<? extends T> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(clazz);
-        if (registeredServiceProvider == null) {
-            return def;
-        } else {
-            return registeredServiceProvider.getProvider();
-        }
+  }
+
+  public static @Nullable <T> T getInjectedService(@NotNull final Class<T> clazz, final T def) {
+
+    @Nullable final RegisteredServiceProvider<? extends T> registeredServiceProvider =
+            Bukkit.getServicesManager().getRegistration(clazz);
+    if(registeredServiceProvider == null) {
+      return def;
+    } else {
+      return registeredServiceProvider.getProvider();
     }
+  }
 }

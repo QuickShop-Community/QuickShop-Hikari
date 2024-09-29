@@ -17,86 +17,94 @@ import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class DataUtil {
-    public final Main main;
 
-    public DataUtil(@NotNull Main main) {
-        this.main = main;
-    }
+  public final Main main;
 
-    @NotNull
-    public String formatEconomy(@NotNull ShopMetricRecord record) {
-        Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
-        if (shop == null || main.getQuickShop().getEconomy() == null) {
-            DecimalFormat df = new DecimalFormat("#.00");
-            return df.format(record.getTotal());
-        }
-        return main.getQuickShop().getEconomy().format(record.getTotal(), shop.getLocation().getWorld(), shop.getCurrency());
-    }
+  public DataUtil(@NotNull final Main main) {
 
-    @NotNull
-    public String getItemName(@NotNull DataRecord dataRecord) {
-        ItemStack stack;
-        try {
-            stack = Util.deserialize(dataRecord.getItem());
-        } catch (InvalidConfigurationException e) {
-            return "[Failed to deserialize]";
-        }
-        if (stack == null) {
-            return "[Failed to deserialize]";
-        }
-        String name = CommonUtil.prettifyText(stack.getType().name());
-        if (stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
-            name = stack.getItemMeta().getDisplayName();
-        }
-        return HtmlEscapers.htmlEscaper().escape(name);
-    }
+    this.main = main;
+  }
 
-    @NotNull
-    public String getItemName(@NotNull ItemStack stack) {
-        String name = CommonUtil.prettifyText(stack.getType().name());
-        if (stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
-            name = stack.getItemMeta().getDisplayName();
-        }
-        return HtmlEscapers.htmlEscaper().escape(name);
-    }
+  @NotNull
+  public String formatEconomy(@NotNull final ShopMetricRecord record) {
 
-    @NotNull
-    public String getShopName(@NotNull ShopMetricRecord record, @NotNull DataRecord dataRecord) {
-        StringBuilder nameBuilder = new StringBuilder();
-        Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
-        if (shop == null) {
-            nameBuilder.append("[Deleted] ");
-        }
-        String shopName = dataRecord.getName();
-        if (shopName != null) {
-            nameBuilder.append(ChatColor.stripColor(shopName));
-        } else {
-            if (shop != null) {
-                Location location = shop.getLocation();
-                String template = "%s %s,%s,%s";
-                nameBuilder.append(String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
-            } else {
-                nameBuilder.append("N/A");
-            }
-        }
-        return HtmlEscapers.htmlEscaper().escape(nameBuilder.toString());
+    final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
+    if(shop == null || main.getQuickShop().getEconomy() == null) {
+      final DecimalFormat df = new DecimalFormat("#.00");
+      return df.format(record.getTotal());
     }
+    return main.getQuickShop().getEconomy().format(record.getTotal(), shop.getLocation().getWorld(), shop.getCurrency());
+  }
 
-    @NotNull
-    public String loc2String(@NotNull Location location) {
-        String template = "%s %s,%s,%s";
-        return String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
-    }
+  @NotNull
+  public String getItemName(@NotNull final DataRecord dataRecord) {
 
-    @NotNull
-    public String getPlayerName(@NotNull UUID uuid) {
-        if (CommonUtil.getNilUniqueId().equals(uuid)) {
-            return "[Server]";
-        }
-        String name = main.getQuickShop().getPlayerFinder().uuid2Name(uuid);
-        if (name == null || name.isEmpty()) {
-            return uuid.toString();
-        }
-        return HtmlEscapers.htmlEscaper().escape(name);
+    final ItemStack stack;
+    try {
+      stack = Util.deserialize(dataRecord.getItem());
+    } catch(InvalidConfigurationException e) {
+      return "[Failed to deserialize]";
     }
+    if(stack == null) {
+      return "[Failed to deserialize]";
+    }
+    String name = CommonUtil.prettifyText(stack.getType().name());
+    if(stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
+      name = stack.getItemMeta().getDisplayName();
+    }
+    return HtmlEscapers.htmlEscaper().escape(name);
+  }
+
+  @NotNull
+  public String getItemName(@NotNull final ItemStack stack) {
+
+    String name = CommonUtil.prettifyText(stack.getType().name());
+    if(stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
+      name = stack.getItemMeta().getDisplayName();
+    }
+    return HtmlEscapers.htmlEscaper().escape(name);
+  }
+
+  @NotNull
+  public String getShopName(@NotNull final ShopMetricRecord record, @NotNull final DataRecord dataRecord) {
+
+    final StringBuilder nameBuilder = new StringBuilder();
+    final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
+    if(shop == null) {
+      nameBuilder.append("[Deleted] ");
+    }
+    final String shopName = dataRecord.getName();
+    if(shopName != null) {
+      nameBuilder.append(ChatColor.stripColor(shopName));
+    } else {
+      if(shop != null) {
+        final Location location = shop.getLocation();
+        final String template = "%s %s,%s,%s";
+        nameBuilder.append(String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+      } else {
+        nameBuilder.append("N/A");
+      }
+    }
+    return HtmlEscapers.htmlEscaper().escape(nameBuilder.toString());
+  }
+
+  @NotNull
+  public String loc2String(@NotNull final Location location) {
+
+    final String template = "%s %s,%s,%s";
+    return String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+  }
+
+  @NotNull
+  public String getPlayerName(@NotNull final UUID uuid) {
+
+    if(CommonUtil.getNilUniqueId().equals(uuid)) {
+      return "[Server]";
+    }
+    final String name = main.getQuickShop().getPlayerFinder().uuid2Name(uuid);
+    if(name == null || name.isEmpty()) {
+      return uuid.toString();
+    }
+    return HtmlEscapers.htmlEscaper().escape(name);
+  }
 }

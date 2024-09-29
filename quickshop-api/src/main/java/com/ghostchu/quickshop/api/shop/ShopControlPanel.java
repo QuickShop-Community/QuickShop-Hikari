@@ -11,38 +11,42 @@ import java.util.List;
  * The shop control panel impl.
  */
 public interface ShopControlPanel {
-    /**
-     * Generate components for the shop control panel.
-     *
-     * @param player The player
-     * @param shop   The shop
-     * @return The components, or empty list if nothing to show. Every component will be shown in a new line.
-     */
-    @NotNull List<Component> generate(@NotNull Player player, @NotNull Shop shop);
 
-    /**
-     * Usually you don't need touch this :)
-     *
-     * @return The internal usage priority.
-     */
-    default int getInternalPriority() {
-        return getPriority().getPriority();
-    }
+  /**
+   * Generate components for the shop control panel.
+   *
+   * @param player The player
+   * @param shop   The shop
+   *
+   * @return The components, or empty list if nothing to show. Every component will be shown in a
+   * new line.
+   */
+  @NotNull
+  List<Component> generate(@NotNull Player player, @NotNull Shop shop);
 
-    /**
-     * The shop control panel's priority.
-     * HIGH = Earlier shown
-     * LOW = Later shown
-     *
-     * @return The priority.
-     */
-    @NotNull
-    ShopControlPanelPriority getPriority();
+  /**
+   * Usually you don't need touch this :)
+   *
+   * @return The internal usage priority.
+   */
+  default int getInternalPriority() {
 
-    /**
-     * The shop control panel impl's plugin instance.
-     *
-     * @return Your plugin instance;
-     */
-    @NotNull Plugin getPlugin();
+    return getPriority().getPriority();
+  }
+
+  /**
+   * The shop control panel's priority. HIGH = Earlier shown LOW = Later shown
+   *
+   * @return The priority.
+   */
+  @NotNull
+  ShopControlPanelPriority getPriority();
+
+  /**
+   * The shop control panel impl's plugin instance.
+   *
+   * @return Your plugin instance;
+   */
+  @NotNull
+  Plugin getPlugin();
 }

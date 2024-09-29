@@ -18,106 +18,117 @@ import org.jetbrains.annotations.Nullable;
 @EqualsAndHashCode
 @ToString
 public class SimpleInfo implements Info {
-    private final Block last;
-    private final Location loc;
-    private final boolean dirty;
-    private final boolean bypass;
-    private ShopAction action;
-    private ItemStack item;
-    private Shop shop;
-    private String shopData;
 
-    public SimpleInfo(
-            @NotNull Location loc,
-            @NotNull ShopAction action,
-            @Nullable ItemStack item,
-            @Nullable Block last,
-            boolean bypass) {
-        this.loc = loc;
-        this.action = action;
-        this.last = last;
-        this.bypass = bypass;
-        if (item != null) {
-            this.item = item.clone();
-        }
-        this.dirty = true;
+  private final Block last;
+  private final Location loc;
+  private final boolean dirty;
+  private final boolean bypass;
+  private ShopAction action;
+  private ItemStack item;
+  private Shop shop;
+  private String shopData;
+
+  public SimpleInfo(
+          @NotNull final Location loc,
+          @NotNull final ShopAction action,
+          @Nullable final ItemStack item,
+          @Nullable final Block last,
+          final boolean bypass) {
+
+    this.loc = loc;
+    this.action = action;
+    this.last = last;
+    this.bypass = bypass;
+    if(item != null) {
+      this.item = item.clone();
     }
+    this.dirty = true;
+  }
 
-    public SimpleInfo(
-            @NotNull Location loc,
-            @NotNull ShopAction action,
-            @Nullable ItemStack item,
-            @Nullable Block last,
-            @Nullable Shop shop,
-            boolean bypass) {
-        this.loc = loc;
-        this.action = action;
-        this.last = last;
-        this.bypass = bypass;
-        if (item != null) {
-            this.item = item.clone();
-        }
-        if (shop != null) {
-            this.shop = shop;
-            this.shopData = JsonUtil.getGson().toJson(shop.saveToInfoStorage());
-            this.dirty = shop.isDirty();
-        } else {
-            this.dirty = true;
-        }
+  public SimpleInfo(
+          @NotNull final Location loc,
+          @NotNull final ShopAction action,
+          @Nullable final ItemStack item,
+          @Nullable final Block last,
+          @Nullable final Shop shop,
+          final boolean bypass) {
+
+    this.loc = loc;
+    this.action = action;
+    this.last = last;
+    this.bypass = bypass;
+    if(item != null) {
+      this.item = item.clone();
     }
-
-    /**
-     * @return ShopAction action, Get shop action.
-     */
-    @Override
-    public @NotNull ShopAction getAction() {
-        return this.action;
+    if(shop != null) {
+      this.shop = shop;
+      this.shopData = JsonUtil.getGson().toJson(shop.saveToInfoStorage());
+      this.dirty = shop.isDirty();
+    } else {
+      this.dirty = true;
     }
+  }
 
-    @Override
-    public void setAction(@NotNull ShopAction action) {
-        this.action = action;
-    }
+  /**
+   * @return ShopAction action, Get shop action.
+   */
+  @Override
+  public @NotNull ShopAction getAction() {
 
-    /**
-     * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
-     */
-    @Override
-    public @NotNull ItemStack getItem() {
-        return this.item;
-    }
+    return this.action;
+  }
+
+  @Override
+  public void setAction(@NotNull final ShopAction action) {
+
+    this.action = action;
+  }
+
+  /**
+   * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
+   */
+  @Override
+  public @NotNull ItemStack getItem() {
+
+    return this.item;
+  }
 
 
-    /**
-     * @return Location loc, Get shop's location,
-     */
-    @Override
-    public @NotNull Location getLocation() {
-        return this.loc;
-    }
+  /**
+   * @return Location loc, Get shop's location,
+   */
+  @Override
+  public @NotNull Location getLocation() {
 
-    /**
-     * @return Block signBlock, Get block of shop's sign, may return the null.
-     */
-    @Override
-    public @Nullable Block getSignBlock() {
-        return this.last;
-    }
+    return this.loc;
+  }
 
-    /**
-     * Get shop is or not has changed.
-     *
-     * @param shop, The need checked with this shop.
-     * @return hasChanged
-     */
-    @Override
-    public boolean hasChanged(@NotNull Shop shop) {
-        return !this.shopData.equals(JsonUtil.getGson().toJson(shop.saveToInfoStorage()));
-    }
+  /**
+   * @return Block signBlock, Get block of shop's sign, may return the null.
+   */
+  @Override
+  public @Nullable Block getSignBlock() {
 
-    @Override
-    public boolean isBypassed() {
-        return bypass;
-    }
+    return this.last;
+  }
+
+  /**
+   * Get shop is or not has changed.
+   *
+   * @param shop, The need checked with this shop.
+   *
+   * @return hasChanged
+   */
+  @Override
+  public boolean hasChanged(@NotNull final Shop shop) {
+
+    return !this.shopData.equals(JsonUtil.getGson().toJson(shop.saveToInfoStorage()));
+  }
+
+  @Override
+  public boolean isBypassed() {
+
+    return bypass;
+  }
 
 }

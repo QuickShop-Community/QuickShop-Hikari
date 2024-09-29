@@ -66,9 +66,10 @@ public class StaffSelectionPage {
   protected final String iconLore;
   protected final IconAction[] actions;
 
-  public StaffSelectionPage(String returnMenu, String menuName,
-                            final int menuPage, final int returnPage, String staffPageID,
-                            final int menuRows, String iconLore, final IconAction... actions) {
+  public StaffSelectionPage(final String returnMenu, final String menuName,
+                            final int menuPage, final int returnPage, final String staffPageID,
+                            final int menuRows, final String iconLore, final IconAction... actions) {
+
     this.returnMenu = returnMenu;
     this.menuName = menuName;
     this.menuPage = menuPage;
@@ -109,29 +110,29 @@ public class StaffSelectionPage {
           if(maxPages > 1) {
 
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                    .display(get(id, "gui.shared.previous-page")))
-                    .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
-                    .withSlot(0)
-                    .build());
+                                                               .display(get(id, "gui.shared.previous-page")))
+                                               .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
+                                               .withSlot(0)
+                                               .build());
 
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
-                    .display(get(id, "gui.shared.next-page")))
-                    .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
-                    .withSlot(8)
-                    .build());
+                                                               .display(get(id, "gui.shared.next-page")))
+                                               .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
+                                               .withSlot(8)
+                                               .build());
           }
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                  .display(get(id, "gui.staff.add-staff")))
-                  .withActions(new SwitchPageAction(menuName, STAFF_ADD))
-                  .withSlot(2)
-                  .build());
+                                                             .display(get(id, "gui.staff.add-staff")))
+                                             .withActions(new SwitchPageAction(menuName, STAFF_ADD))
+                                             .withSlot(2)
+                                             .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("BARRIER", 1)
-                  .display(get(id, "gui.shared.previous-menu")))
-                  .withActions(new SwitchPageAction(returnMenu, returnPage))
-                  .withSlot(4)
-                  .build());
+                                                             .display(get(id, "gui.shared.previous-menu")))
+                                             .withActions(new SwitchPageAction(returnMenu, returnPage))
+                                             .withSlot(4)
+                                             .build());
 
           int i = 0;
           for(final UUID uuid : staffs) {
@@ -155,51 +156,51 @@ public class StaffSelectionPage {
                 profile.setUuid(uuid);
               }
 
-            } catch(Exception ignore) {}
+            } catch(final Exception ignore) { }
 
             final String name = (player.isPresent() && player.get().getName() != null)? player.get().getName() : uuid.toString();
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                    .display(get(id, "gui.staff.head-icon.display", name))
-                    .lore(getList(id, iconLore))
-                    .profile(profile))
-                    .withActions(new ChatAction((message->{
+                                                               .display(get(id, "gui.staff.head-icon.display", name))
+                                                               .lore(getList(id, iconLore))
+                                                               .profile(profile))
+                                               .withActions(new ChatAction((message->{
 
-                      if(!message.getMessage().isEmpty()) {
+                                                 if(!message.getMessage().isEmpty()) {
 
-                        if(message.getMessage().equalsIgnoreCase("confirm")) {
+                                                   if(message.getMessage().equalsIgnoreCase("confirm")) {
 
-                          shop.get().setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
-                          QuickShop.getInstance().text().of(id, "shop-staff-deleted", name).send();
-                          viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
-                          return true;
-                        }
-                        return true;
-                      }
-                      message.getPlayer().message(legacy(id, "gui.staff.confirm-remove", name));
-                      return false;
-                    }), ActionType.LEFT_CLICK), new RunnableAction((run)->run.player().message(legacy(id, "gui.staff.confirm-remove", name)), ActionType.LEFT_CLICK))
-                    .withActions(new ChatAction((message->{
+                                                     shop.get().setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
+                                                     QuickShop.getInstance().text().of(id, "shop-staff-deleted", name).send();
+                                                     viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
+                                                     return true;
+                                                   }
+                                                   return true;
+                                                 }
+                                                 message.getPlayer().message(legacy(id, "gui.staff.confirm-remove", name));
+                                                 return false;
+                                               }), ActionType.LEFT_CLICK), new RunnableAction((run)->run.player().message(legacy(id, "gui.staff.confirm-remove", name)), ActionType.LEFT_CLICK))
+                                               .withActions(new ChatAction((message->{
 
-                      if(!message.getMessage().isEmpty()) {
+                                                 if(!message.getMessage().isEmpty()) {
 
-                        if(message.getMessage().equalsIgnoreCase("confirm")) {
-                          if(shop.get().playerAuthorize(id, BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
+                                                   if(message.getMessage().equalsIgnoreCase("confirm")) {
+                                                     if(shop.get().playerAuthorize(id, BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
 
-                            Util.mainThreadRun(() ->ShopUtil.transferRequest(id, uuid, name, shop.get()));
-                          } else {
+                                                       Util.mainThreadRun(()->ShopUtil.transferRequest(id, uuid, name, shop.get()));
+                                                     } else {
 
-                            QuickShop.getInstance().text().of(id, "no-permission").send();
-                          }
-                          viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
-                          return true;
-                        }
-                        return true;
-                      }
-                      message.getPlayer().message(legacy(id, "gui.staff.confirm-transfer", name));
-                      return false;
-                    }), ActionType.RIGHT_CLICK), new RunnableAction((run)->run.player().message(legacy(id, "gui.staff.confirm-transfer", name)), ActionType.RIGHT_CLICK))
-                    .withSlot(offset + (i - start))
-                    .build());
+                                                       QuickShop.getInstance().text().of(id, "no-permission").send();
+                                                     }
+                                                     viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
+                                                     return true;
+                                                   }
+                                                   return true;
+                                                 }
+                                                 message.getPlayer().message(legacy(id, "gui.staff.confirm-transfer", name));
+                                                 return false;
+                                               }), ActionType.RIGHT_CLICK), new RunnableAction((run)->run.player().message(legacy(id, "gui.staff.confirm-transfer", name)), ActionType.RIGHT_CLICK))
+                                               .withSlot(offset + (i - start))
+                                               .build());
 
             i++;
           }

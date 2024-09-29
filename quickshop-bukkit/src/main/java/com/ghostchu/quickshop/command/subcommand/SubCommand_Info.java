@@ -16,51 +16,52 @@ import java.util.Map;
 
 public class SubCommand_Info implements CommandHandler<CommandSender> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Info(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_Info(final QuickShop plugin) {
 
-    @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        int buying = 0;
-        int selling = 0;
-        int chunks = 0;
-        int worlds = 0;
-        int nostock = 0;
+    this.plugin = plugin;
+  }
 
-        for (Map<ShopChunk, Map<Location, Shop>> inWorld :
-                plugin.getShopManager().getShops().values()) {
-            worlds++;
+  @Override
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-            for (Map<Location, Shop> inChunk : inWorld.values()) {
-                chunks++;
-                for (Shop shop : inChunk.values()) {
-                    if (shop.isBuying()) {
-                        buying++;
-                    } else if (shop.isSelling()) {
-                        selling++;
-                    }
-                    if (shop.isSelling() && shop.isLoaded() && shop.getRemainingStock() == 0) {
-                        nostock++;
-                    }
-                }
-            }
+    int buying = 0;
+    int selling = 0;
+    int chunks = 0;
+    int worlds = 0;
+    int nostock = 0;
+
+    for(final Map<ShopChunk, Map<Location, Shop>> inWorld :
+            plugin.getShopManager().getShops().values()) {
+      worlds++;
+
+      for(final Map<Location, Shop> inChunk : inWorld.values()) {
+        chunks++;
+        for(final Shop shop : inChunk.values()) {
+          if(shop.isBuying()) {
+            buying++;
+          } else if(shop.isSelling()) {
+            selling++;
+          }
+          if(shop.isSelling() && shop.isLoaded() && shop.getRemainingStock() == 0) {
+            nostock++;
+          }
         }
-
-        MsgUtil.sendDirectMessage(sender, Component.text("QuickShop Statistics...").color(NamedTextColor.GOLD));
-        MsgUtil.sendDirectMessage(sender, Component.text("Server UniqueId: " + plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
-        MsgUtil.sendDirectMessage(sender, Component.text((buying + selling)
-                + " shops in "
-                + chunks
-                + " chunks spread over "
-                + worlds
-                + " worlds.").color(NamedTextColor.GREEN));
-        MsgUtil.sendDirectMessage(sender, Component.text(nostock
-                + " out-of-stock loaded shops (excluding doubles) which will be removed by /quickshop clean.").color(NamedTextColor.GREEN));
-        MsgUtil.sendDirectMessage(sender, Component.text("QuickShop " + QuickShop.getInstance().getVersion()).color(NamedTextColor.GREEN));
+      }
     }
 
+    MsgUtil.sendDirectMessage(sender, Component.text("QuickShop Statistics...").color(NamedTextColor.GOLD));
+    MsgUtil.sendDirectMessage(sender, Component.text("Server UniqueId: " + plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
+    MsgUtil.sendDirectMessage(sender, Component.text((buying + selling)
+                                                     + " shops in "
+                                                     + chunks
+                                                     + " chunks spread over "
+                                                     + worlds
+                                                     + " worlds.").color(NamedTextColor.GREEN));
+    MsgUtil.sendDirectMessage(sender, Component.text(nostock
+                                                     + " out-of-stock loaded shops (excluding doubles) which will be removed by /quickshop clean.").color(NamedTextColor.GREEN));
+    MsgUtil.sendDirectMessage(sender, Component.text("QuickShop " + QuickShop.getInstance().getVersion()).color(NamedTextColor.GREEN));
+  }
 
 }

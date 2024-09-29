@@ -31,187 +31,204 @@ import java.util.Optional;
 @ToString
 public class Economy_Treasury extends AbstractEconomy implements Listener {
 
-    private static final String ERROR_MESSAGE =
-            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
-    private final QuickShop plugin;
-    private final BuiltInEconomyFormatter formatter;
-    private boolean allowLoan;
-    @Nullable
-    private final String lastError = null;
-    @Getter
-    private Service<EconomyProvider> service;
+  private static final String ERROR_MESSAGE =
+          "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
+  private final QuickShop plugin;
+  private final BuiltInEconomyFormatter formatter;
+  private boolean allowLoan;
+  @Nullable
+  private final String lastError = null;
+  @Getter
+  private Service<EconomyProvider> service;
 
 
-    public Economy_Treasury(@NotNull QuickShop plugin) {
-        super();
-        this.plugin = plugin;
-        this.formatter = new BuiltInEconomyFormatter(plugin);
-        plugin.getReloadManager().register(this);
-        init();
-        setupEconomy();
+  public Economy_Treasury(@NotNull final QuickShop plugin) {
+
+    super();
+    this.plugin = plugin;
+    this.formatter = new BuiltInEconomyFormatter(plugin);
+    plugin.getReloadManager().register(this);
+    init();
+    setupEconomy();
+  }
+
+  private void init() {
+
+    this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+  }
+
+  private boolean setupEconomy() {
+    // Try to find an economy provider service registration.
+    final Optional<Service<EconomyProvider>> serviceOpt = ServiceRegistry.INSTANCE.serviceFor(EconomyProvider.class);
+
+    // Require an economy provider to be registered as a service before continuing.
+    if(serviceOpt.isEmpty()) {
+      plugin.logger().error("Expected an Economy Provider to be registered through Treasury; found none");
+      return false;
     }
+    this.service = serviceOpt.get();
+    plugin.logger().info("Using economy system: " + this.service.registrarName());
+    Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
+    Log.debug("Economy service listener was registered.");
+    return true;
+  }
 
-    private void init() {
-        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+  @Override
+  public String format(final double balance, @NotNull final World world, @Nullable final String currency) {
+
+    if(!isValid()) {
+      return "Error";
     }
-
-    private boolean setupEconomy() {
-        // Try to find an economy provider service registration.
-        final Optional<Service<EconomyProvider>> serviceOpt = ServiceRegistry.INSTANCE.serviceFor(EconomyProvider.class);
-
-        // Require an economy provider to be registered as a service before continuing.
-        if (serviceOpt.isEmpty()) {
-            plugin.logger().error("Expected an Economy Provider to be registered through Treasury; found none");
-            return false;
-        }
-        this.service = serviceOpt.get();
-        plugin.logger().info("Using economy system: " + this.service.registrarName());
-        Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
-        Log.debug("Economy service listener was registered.");
-        return true;
+    final Currency cur = getCurrency(world, currency);
+    if(cur == null) {
+      return formatInternal(balance);
     }
-
-    @Override
-    public String format(double balance, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return "Error";
-        }
-        Currency cur = getCurrency(world, currency);
-        if (cur == null) {
-            return formatInternal(balance);
-        }
-        try {
-            return cur.format(BigDecimal.valueOf(balance), Locale.ROOT);
-        } catch (Exception e) {
-            return formatInternal(balance);
-        }
+    try {
+      return cur.format(BigDecimal.valueOf(balance), Locale.ROOT);
+    } catch(Exception e) {
+      return formatInternal(balance);
     }
+  }
 
-    @Nullable
-    private Currency getCurrency(@NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return null;
-        }
-        if (currency == null) {
-            return service.get().getPrimaryCurrency();
-        }
-        return service.get().findCurrency(currency).orElse(null);
+  @Nullable
+  private Currency getCurrency(@NotNull final World world, @Nullable final String currency) {
+
+    if(!isValid()) {
+      return null;
     }
-
-
-    private String formatInternal(double balance) {
-        if (!isValid()) {
-            return "Error";
-        }
-        return this.formatter.getInternalFormat(balance, null);
+    if(currency == null) {
+      return service.get().getPrimaryCurrency();
     }
+    return service.get().findCurrency(currency).orElse(null);
+  }
 
 
-    @Override
-    public @Nullable String getLastError() {
-        return this.lastError;
+  private String formatInternal(final double balance) {
+
+    if(!isValid()) {
+      return "Error";
     }
+    return this.formatter.getInternalFormat(balance, null);
+  }
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin.getJavaPlugin();
+
+  @Override
+  public @Nullable String getLastError() {
+
+    return this.lastError;
+  }
+
+  @Override
+  public @NotNull Plugin getPlugin() {
+
+    return plugin.getJavaPlugin();
+  }
+
+  /**
+   * Gets the currency does exists
+   *
+   * @param currency Currency name
+   *
+   * @return exists
+   */
+  @Override
+  public boolean hasCurrency(@NotNull final World world, @NotNull final String currency) {
+
+    return getCurrency(world, currency) != null;
+  }
+
+  @Override
+  public boolean isValid() {
+
+    return this.service != null;
+  }
+
+  /**
+   * Gets currency supports status
+   *
+   * @return true if supports
+   */
+  @Override
+  public boolean supportCurrency() {
+
+    return true;
+  }
+
+
+  @Override
+  public @NotNull String getName() {
+
+    return "BuiltIn-Treasury (experimental)";
+  }
+
+  @Override
+  public boolean withdraw(@NotNull final QUser obj, final double amount, @NotNull final World world, @Nullable final String currency) {
+
+    final Account account;
+    if(obj.isRealPlayer()) {
+      account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
+    } else {
+      account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
     }
-
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @return exists
-     */
-    @Override
-    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        return getCurrency(world, currency) != null;
+    final Currency cur = getCurrency(world, currency);
+    if(cur == null) {
+      return false;
     }
+    account.withdrawBalance(BigDecimal.valueOf(amount), Cause.plugin(NamespacedKey.of(plugin.getJavaPlugin().getName(), "economy-withdraw")), cur);
+    return false;
+  }
 
-    @Override
-    public boolean isValid() {
-        return this.service != null;
+  @Override
+  public boolean deposit(@NotNull final QUser obj, final double amount, @NotNull final World world, @Nullable final String currency) {
+
+    final Account account;
+    if(obj.isRealPlayer()) {
+      account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
+    } else {
+      account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
     }
-
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    @Override
-    public boolean supportCurrency() {
-        return true;
+    final Currency cur = getCurrency(world, currency);
+    if(cur == null) {
+      return false;
     }
+    account.depositBalance(BigDecimal.valueOf(amount), Cause.plugin(NamespacedKey.of(plugin.getJavaPlugin().getName(), "economy-withdraw")), cur);
+    return false;
+  }
 
+  @Override
+  public double getBalance(@NotNull final QUser obj, @NotNull final World world, @Nullable final String currency) {
 
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Treasury (experimental)";
+    final Account account;
+    if(obj.isRealPlayer()) {
+      account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
+    } else {
+      account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
     }
-
-    @Override
-    public boolean withdraw(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency) {
-        Account account;
-        if (obj.isRealPlayer()) {
-            account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
-        } else {
-            account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
-        }
-        Currency cur = getCurrency(world, currency);
-        if (cur == null) {
-            return false;
-        }
-        account.withdrawBalance(BigDecimal.valueOf(amount), Cause.plugin(NamespacedKey.of(plugin.getJavaPlugin().getName(), "economy-withdraw")), cur);
-        return false;
+    final Currency cur = getCurrency(world, currency);
+    if(cur == null) {
+      return 0.0;
     }
+    return account.retrieveBalance(cur).join().doubleValue();
+  }
 
-    @Override
-    public boolean deposit(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency) {
-        Account account;
-        if (obj.isRealPlayer()) {
-            account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
-        } else {
-            account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
-        }
-        Currency cur = getCurrency(world, currency);
-        if (cur == null) {
-            return false;
-        }
-        account.depositBalance(BigDecimal.valueOf(amount), Cause.plugin(NamespacedKey.of(plugin.getJavaPlugin().getName(), "economy-withdraw")), cur);
-        return false;
-    }
+  @Override
+  public String getProviderName() {
 
-    @Override
-    public double getBalance(@NotNull QUser obj, @NotNull World world, @Nullable String currency) {
-        Account account;
-        if (obj.isRealPlayer()) {
-            account = service.get().accountAccessor().player().withUniqueId(obj.getUniqueId()).get().join();
-        } else {
-            account = service.get().accountAccessor().nonPlayer().withName(obj.getUsername()).get().join();
-        }
-        Currency cur = getCurrency(world, currency);
-        if (cur == null) {
-            return 0.0;
-        }
-        return account.retrieveBalance(cur).join().doubleValue();
+    if(this.service == null) {
+      return "Provider not found.";
     }
+    return this.service.registrarName();
+  }
 
-    @Override
-    public String getProviderName() {
-        if (this.service == null) {
-            return "Provider not found.";
-        }
-        return this.service.registrarName();
-    }
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
+    init();
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
 }

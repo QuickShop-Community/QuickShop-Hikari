@@ -12,44 +12,50 @@ import java.util.List;
 import java.util.Map;
 
 public class PasteManager {
-    private final Map<Plugin, List<WeakReference<SubPasteItem>>> registry = new LinkedHashMap<>();
 
-    public void register(@NotNull Plugin plugin, @NotNull List<SubPasteItem> collectors) {
-        List<WeakReference<SubPasteItem>> collectorsWeakCopy = collectors.stream().map(WeakReference::new).toList();
-        List<WeakReference<SubPasteItem>> registered = registry.getOrDefault(plugin, new ArrayList<>());
-        registered.addAll(collectorsWeakCopy);
-        registry.put(plugin, registered);
-    }
+  private final Map<Plugin, List<WeakReference<SubPasteItem>>> registry = new LinkedHashMap<>();
 
-    public void register(@NotNull Plugin plugin, @NotNull SubPasteItem collector) {
-        List<WeakReference<SubPasteItem>> registered = registry.getOrDefault(plugin, new ArrayList<>());
-        registered.add(new WeakReference<>(collector));
-        registry.put(plugin, registered);
-    }
+  public void register(@NotNull final Plugin plugin, @NotNull final List<SubPasteItem> collectors) {
 
-    public void unregister(@NotNull Plugin plugin, @NotNull SubPasteItem collector) {
-        List<WeakReference<SubPasteItem>> registered = registry.getOrDefault(plugin, Collections.emptyList());
-        registered.removeIf(cWeak -> {
-            SubPasteItem c = cWeak.get();
-            return c == null || c.equals(collector);
-        });
-    }
+    final List<WeakReference<SubPasteItem>> collectorsWeakCopy = collectors.stream().map(WeakReference::new).toList();
+    final List<WeakReference<SubPasteItem>> registered = registry.getOrDefault(plugin, new ArrayList<>());
+    registered.addAll(collectorsWeakCopy);
+    registry.put(plugin, registered);
+  }
 
-    public void unregister(@NotNull Plugin plugin) {
-        registry.remove(plugin);
-    }
+  public void register(@NotNull final Plugin plugin, @NotNull final SubPasteItem collector) {
 
-    @NotNull
-    public List<SubPasteItem> getAllRegistered() {
-        List<SubPasteItem> collectors = new ArrayList<>();
-        for (List<WeakReference<SubPasteItem>> collectorList : registry.values()) {
-            for (WeakReference<SubPasteItem> weakReference : collectorList) {
-                SubPasteItem collector = weakReference.get();
-                if (collector != null) {
-                    collectors.add(collector);
-                }
-            }
+    final List<WeakReference<SubPasteItem>> registered = registry.getOrDefault(plugin, new ArrayList<>());
+    registered.add(new WeakReference<>(collector));
+    registry.put(plugin, registered);
+  }
+
+  public void unregister(@NotNull final Plugin plugin, @NotNull final SubPasteItem collector) {
+
+    final List<WeakReference<SubPasteItem>> registered = registry.getOrDefault(plugin, Collections.emptyList());
+    registered.removeIf(cWeak->{
+      final SubPasteItem c = cWeak.get();
+      return c == null || c.equals(collector);
+    });
+  }
+
+  public void unregister(@NotNull final Plugin plugin) {
+
+    registry.remove(plugin);
+  }
+
+  @NotNull
+  public List<SubPasteItem> getAllRegistered() {
+
+    final List<SubPasteItem> collectors = new ArrayList<>();
+    for(final List<WeakReference<SubPasteItem>> collectorList : registry.values()) {
+      for(final WeakReference<SubPasteItem> weakReference : collectorList) {
+        final SubPasteItem collector = weakReference.get();
+        if(collector != null) {
+          collectors.add(collector);
         }
-        return collectors;
+      }
     }
+    return collectors;
+  }
 }

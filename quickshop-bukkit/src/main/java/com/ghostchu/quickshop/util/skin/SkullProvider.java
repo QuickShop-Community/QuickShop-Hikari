@@ -6,6 +6,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface SkullProvider {
-    CompletableFuture<ItemStack> provide(UUID owner);
-    CompletableFuture<ItemStack> provide(String owner);
+
+  CompletableFuture<ItemStack> provide(UUID owner);
+
+  CompletableFuture<ItemStack> provide(String owner);
 }

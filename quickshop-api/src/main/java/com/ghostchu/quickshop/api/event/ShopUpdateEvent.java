@@ -10,44 +10,49 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ShopUpdateEvent extends AbstractQSEvent implements QSCancellable {
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    private boolean cancelled;
-    private @Nullable Component cancelReason;
+  private boolean cancelled;
+  private @Nullable Component cancelReason;
 
-    /**
-     * Call when shop is trying updated to database
-     *
-     * @param shop The shop bought from
-     */
-    public ShopUpdateEvent(@NotNull Shop shop) {
-        super();
-        this.shop = shop;
-    }
+  /**
+   * Call when shop is trying updated to database
+   *
+   * @param shop The shop bought from
+   */
+  public ShopUpdateEvent(@NotNull final Shop shop) {
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+    super();
+    this.shop = shop;
+  }
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+  @Override
+  public @Nullable Component getCancelReason() {
 
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+    return this.cancelReason;
+  }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
+  @Override
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
+
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
+
+  /**
+   * Gets the shop
+   *
+   * @return the shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return this.cancelled;
+  }
 }
