@@ -14,69 +14,76 @@ import java.util.UUID;
  */
 public class ShopInfoPanelEvent extends AbstractQSEvent implements QSCancellable {
 
-    @NotNull
-    private final Shop shop;
+  @NotNull
+  private final Shop shop;
 
-    @NotNull
-    private final UUID purchaser;
-    @Nullable
-    private final Player player;
+  @NotNull
+  private final UUID purchaser;
+  @Nullable
+  private final Player player;
 
-    private boolean cancelled;
-    private Component cancelReason;
+  private boolean cancelled;
+  private Component cancelReason;
 
-    /**
-     * Builds a new shop info panel event
-     *
-     * @param shop      The shop bought from
-     * @param purchaser The player purchasing, may offline if purchase by plugin
-     */
-    public ShopInfoPanelEvent(@NotNull Shop shop, @NotNull UUID purchaser) {
-        this.shop = shop;
-        this.purchaser = purchaser;
-        this.player = Bukkit.getPlayer(purchaser);
-    }
+  /**
+   * Builds a new shop info panel event
+   *
+   * @param shop      The shop bought from
+   * @param purchaser The player purchasing, may offline if purchase by plugin
+   */
+  public ShopInfoPanelEvent(@NotNull final Shop shop, @NotNull final UUID purchaser) {
 
-    /**
-     * Gets the purchaser
-     *
-     * @return Player or null if purchaser is offline/virtual player.
-     */
-    public @Nullable Player getPlayer() {
-        return this.player;
-    }
+    this.shop = shop;
+    this.purchaser = purchaser;
+    this.player = Bukkit.getPlayer(purchaser);
+  }
 
-    /**
-     * Gets the purchaser, that maybe is an online/offline/virtual player.
-     *
-     * @return The purchaser uuid
-     */
-    public @NotNull UUID getPurchaser() {
-        return this.purchaser;
-    }
+  /**
+   * Gets the purchaser
+   *
+   * @return Player or null if purchaser is offline/virtual player.
+   */
+  public @Nullable Player getPlayer() {
 
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+    return this.player;
+  }
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+  /**
+   * Gets the purchaser, that maybe is an online/offline/virtual player.
+   *
+   * @return The purchaser uuid
+   */
+  public @NotNull UUID getPurchaser() {
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+    return this.purchaser;
+  }
 
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
+  /**
+   * Gets the shop
+   *
+   * @return the shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public @Nullable Component getCancelReason() {
+
+    return this.cancelReason;
+  }
+
+  @Override
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
+
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return cancelled;
+  }
 }

@@ -8,31 +8,37 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface QUser {
-    @Nullable String getUsername();
 
-    @NotNull Optional<String> getUsernameOptional();
+  @Nullable
+  String getUsername();
 
-    @NotNull String getDisplay();
+  @NotNull
+  Optional<String> getUsernameOptional();
 
-    @Nullable UUID getUniqueId();
+  @NotNull
+  String getDisplay();
 
-    @NotNull Optional<UUID> getUniqueIdOptional();
+  @Nullable
+  UUID getUniqueId();
 
-    boolean isRealPlayer();
+  @NotNull
+  Optional<UUID> getUniqueIdOptional();
 
-    boolean isFull();
+  boolean isRealPlayer();
 
-    Optional<UUID> getUniqueIdIfRealPlayer();
+  boolean isFull();
 
-    Optional<String> getUsernameIfRealPlayer();
+  Optional<UUID> getUniqueIdIfRealPlayer();
 
-    void setUsername(String username);
+  Optional<String> getUsernameIfRealPlayer();
 
-    void setUniqueId(UUID uuid);
+  void setUsername(String username);
 
-    void setRealPlayer(boolean isRealPlayer);
+  void setUniqueId(UUID uuid);
 
-    String serialize();
+  void setRealPlayer(boolean isRealPlayer);
 
-    Optional<Player> getBukkitPlayer();
+  String serialize();
+
+  Optional<Player> getBukkitPlayer();
 }

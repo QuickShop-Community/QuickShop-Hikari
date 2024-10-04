@@ -8,17 +8,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_Purge implements CommandHandler<CommandSender> {
 
-    private final QuickShop plugin;
+  private final QuickShop plugin;
 
-    public SubCommand_Purge(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_Purge(final QuickShop plugin) {
 
-    @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        plugin.getShopPurger().purge();
-        plugin.text().of(sender, "shop-purged-start").send();
-    }
+    this.plugin = plugin;
+  }
 
+  @Override
+  public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    plugin.getShopPurger().purge();
+    plugin.text().of(sender, "shop-purged-start").send();
+  }
 
 }

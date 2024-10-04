@@ -10,52 +10,59 @@ import org.jetbrains.annotations.Nullable;
  * Calling when shop price was changed
  */
 public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCancellable {
-    @Nullable
-    private final QUser newTaxAccount;
-    @NotNull
-    private final Shop shop;
 
-    private boolean cancelled;
-    private @Nullable Component cancelReason;
+  @Nullable
+  private final QUser newTaxAccount;
+  @NotNull
+  private final Shop shop;
 
-    /**
-     * Will call when shop price was changed.
-     *
-     * @param shop          Target shop
-     * @param newTaxAccount The new shop tax account
-     */
-    public ShopTaxAccountChangeEvent(@NotNull Shop shop, @Nullable QUser newTaxAccount) {
-        this.shop = shop;
-        this.newTaxAccount = newTaxAccount;
-    }
+  private boolean cancelled;
+  private @Nullable Component cancelReason;
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
+  /**
+   * Will call when shop price was changed.
+   *
+   * @param shop          Target shop
+   * @param newTaxAccount The new shop tax account
+   */
+  public ShopTaxAccountChangeEvent(@NotNull final Shop shop, @Nullable final QUser newTaxAccount) {
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
+    this.shop = shop;
+    this.newTaxAccount = newTaxAccount;
+  }
 
-    @Nullable
-    public QUser getNewTaxAccount() {
-        return newTaxAccount;
-    }
+  @Override
+  public @Nullable Component getCancelReason() {
 
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
+    return this.cancelReason;
+  }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
+  @Override
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) {
+
+    this.cancelled = cancel;
+    this.cancelReason = reason;
+  }
+
+  @Nullable
+  public QUser getNewTaxAccount() {
+
+    return newTaxAccount;
+  }
+
+  /**
+   * Gets the shop
+   *
+   * @return the shop
+   */
+  public @NotNull Shop getShop() {
+
+    return this.shop;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return this.cancelled;
+  }
 }

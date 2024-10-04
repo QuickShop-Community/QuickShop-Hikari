@@ -37,145 +37,154 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Ghost_chu and sandtechnology
  */
 public class PermissionChecker implements Reloadable {
-    private final QuickShop plugin;
 
-    private boolean usePermissionChecker;
+  private final QuickShop plugin;
 
-    private QuickEventManager eventManager;
+  private boolean usePermissionChecker;
+
+  private QuickEventManager eventManager;
 
 
-    public PermissionChecker(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-        plugin.getReloadManager().register(this);
-        init();
+  public PermissionChecker(@NotNull final QuickShop plugin) {
+
+    this.plugin = plugin;
+    plugin.getReloadManager().register(this);
+    init();
+  }
+
+  private void init() {
+
+    usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
+    final List<String> listenerBlacklist = plugin.getConfig().getStringList("shop.protection-checking-blacklist");
+    listenerBlacklist.removeIf("ignored_listener"::equalsIgnoreCase); // Remove default demo rule
+    if(listenerBlacklist.isEmpty()) {
+      this.eventManager = new BukkitEventManager();
+    } else {
+      this.eventManager = new QSEventManager(plugin);
+      plugin.logger().info("Loaded {} rules for listener blacklist.", listenerBlacklist.size());
     }
+    plugin.logger().info("EventManager selected: {}", this.eventManager.getClass().getSimpleName());
+  }
 
-    private void init() {
-        usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
-        List<String> listenerBlacklist = plugin.getConfig().getStringList("shop.protection-checking-blacklist");
-        listenerBlacklist.removeIf("ignored_listener"::equalsIgnoreCase); // Remove default demo rule
-        if (listenerBlacklist.isEmpty()) {
-            this.eventManager = new BukkitEventManager();
-        } else {
-            this.eventManager = new QSEventManager(plugin);
-            plugin.logger().info("Loaded {} rules for listener blacklist.", listenerBlacklist.size());
-        }
-        plugin.logger().info("EventManager selected: {}", this.eventManager.getClass().getSimpleName());
-    }
+  /**
+   * Check player can build in target location
+   *
+   * @param player   Target player
+   * @param location Target location
+   *
+   * @return Result represent if you can build there
+   */
+  @NotNull
+  public Result canBuild(@NotNull final Player player, @NotNull final Location location) {
 
-    /**
-     * Check player can build in target location
-     *
-     * @param player   Target player
-     * @param location Target location
-     * @return Result represent if you can build there
-     */
-    @NotNull
-    public Result canBuild(@NotNull Player player, @NotNull Location location) {
-        return canBuild(player, location.getBlock());
-    }
+    return canBuild(player, location.getBlock());
+  }
 
-    /**
-     * Check player can build in target block
-     *
-     * @param player Target player
-     * @param block  Target block
-     * @return Result represent if you can build there
-     */
-    @NotNull
-    public Result canBuild(@NotNull Player player, @NotNull Block block) {
-        try (PerfMonitor ignored = new PerfMonitor("Build Permission Check", Duration.of(1, ChronoUnit.SECONDS))) {
-            QUser qUser = QUserImpl.createFullFilled(player);
-            if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
-                Log.debug("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
-                return Result.SUCCESS;
+  /**
+   * Check player can build in target block
+   *
+   * @param player Target player
+   * @param block  Target block
+   *
+   * @return Result represent if you can build there
+   */
+  @NotNull
+  public Result canBuild(@NotNull final Player player, @NotNull final Block block) {
+
+    try(PerfMonitor ignored = new PerfMonitor("Build Permission Check", Duration.of(1, ChronoUnit.SECONDS))) {
+      final QUser qUser = QUserImpl.createFullFilled(player);
+      if(plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
+        Log.debug("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
+        return Result.SUCCESS;
+      }
+
+      if(!usePermissionChecker) {
+        return Result.SUCCESS;
+      }
+
+      final AtomicBoolean qsCancelling = new AtomicBoolean(false);
+
+      final Result isCanBuild = new Result();
+
+      final BlockBreakEvent beMainHand;
+
+      beMainHand = new BlockBreakEvent(block, player) {
+
+        @Override
+        public void setCancelled(final boolean cancel) {
+          //tracking cancel plugin
+          if(cancel && !isCancelled()) {
+            if(qsCancelling.get()) {
+              return;
             }
-
-            if (!usePermissionChecker) {
-                return Result.SUCCESS;
+            Log.debug("An plugin blocked the protection checking event! See this stacktrace:");
+            for(final StackTraceElement element : Thread.currentThread().getStackTrace()) {
+              Log.debug(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
             }
+            isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
+            out:
+            for(final StackTraceElement element : Thread.currentThread().getStackTrace()) {
 
-            AtomicBoolean qsCancelling = new AtomicBoolean(false);
-
-            final Result isCanBuild = new Result();
-
-            BlockBreakEvent beMainHand;
-
-            beMainHand = new BlockBreakEvent(block, player) {
-
-                @Override
-                public void setCancelled(boolean cancel) {
-                    //tracking cancel plugin
-                    if (cancel && !isCancelled()) {
-                        if (qsCancelling.get()) {
-                            return;
-                        }
-                        Log.debug("An plugin blocked the protection checking event! See this stacktrace:");
-                        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                            Log.debug(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
-                        }
-                        isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
-                        out:
-                        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-
-                            for (RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
-                                if (listener.getListener().getClass().getName().equals(element.getClassName())) {
-                                    isCanBuild.setResult(false);
-                                    isCanBuild.setMessage(listener.getPlugin().getName());
-                                    isCanBuild.setListener(listener.getListener().getClass().getName());
-                                    break out;
-                                }
-                            }
-                        }
-                    }
-                    super.setCancelled(cancel);
+              for(final RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
+                if(listener.getListener().getClass().getName().equals(element.getClassName())) {
+                  isCanBuild.setResult(false);
+                  isCanBuild.setMessage(listener.getPlugin().getName());
+                  isCanBuild.setListener(listener.getListener().getClass().getName());
+                  break out;
                 }
-            };
-            // Call for event for protection check start
-            this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), qUser, ProtectionCheckStatus.BEGIN, beMainHand), null);
-            beMainHand.setDropItems(false);
-            beMainHand.setExpToDrop(0);
-
-            //register a listener to cancel test event
-            Bukkit.getPluginManager().registerEvents(new Listener() {
-                @EventHandler(priority = EventPriority.HIGHEST)
-                public void onTestEvent(BlockBreakEvent event) {
-                    if (event.equals(beMainHand)) {
-                        // Call for event for protection check end
-                        eventManager.callEvent(
-                                new ShopProtectionCheckEvent(
-                                        block.getLocation(), qUser, ProtectionCheckStatus.END, beMainHand), null);
-                        if (!event.isCancelled()) {
-                            //Ensure this test will no be logged by some plugin
-                            beMainHand.setCancelled(true);
-                            isCanBuild.setResult(true);
-                        }
-                        HandlerList.unregisterAll(this);
-                    }
-                }
-            }, plugin.getJavaPlugin());
-            this.eventManager.callEvent(beMainHand, (event) -> {
-                if (plugin.getConfig().getBoolean("shop.cancel-protection-fake-event-before-reach-monitor-listeners")) {
-                    if (event instanceof BlockBreakEvent blockBreakEvent) {
-                        qsCancelling.set(true);
-                        blockBreakEvent.setCancelled(true);
-                        blockBreakEvent.setDropItems(false);
-                        qsCancelling.set(false);
-                    }
-                }
-            });
-            return isCanBuild;
+              }
+            }
+          }
+          super.setCancelled(cancel);
         }
-    }
+      };
+      // Call for event for protection check start
+      this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), qUser, ProtectionCheckStatus.BEGIN, beMainHand), null);
+      beMainHand.setDropItems(false);
+      beMainHand.setExpToDrop(0);
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+      //register a listener to cancel test event
+      Bukkit.getPluginManager().registerEvents(new Listener() {
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onTestEvent(final BlockBreakEvent event) {
+
+          if(event.equals(beMainHand)) {
+            // Call for event for protection check end
+            eventManager.callEvent(
+                    new ShopProtectionCheckEvent(
+                            block.getLocation(), qUser, ProtectionCheckStatus.END, beMainHand), null);
+            if(!event.isCancelled()) {
+              //Ensure this test will no be logged by some plugin
+              beMainHand.setCancelled(true);
+              isCanBuild.setResult(true);
+            }
+            HandlerList.unregisterAll(this);
+          }
+        }
+      }, plugin.getJavaPlugin());
+      this.eventManager.callEvent(beMainHand, (event)->{
+        if(plugin.getConfig().getBoolean("shop.cancel-protection-fake-event-before-reach-monitor-listeners")) {
+          if(event instanceof BlockBreakEvent blockBreakEvent) {
+            qsCancelling.set(true);
+            blockBreakEvent.setCancelled(true);
+            blockBreakEvent.setDropItems(false);
+            qsCancelling.set(false);
+          }
+        }
+      });
+      return isCanBuild;
     }
+  }
+
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
+
+    init();
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
 }

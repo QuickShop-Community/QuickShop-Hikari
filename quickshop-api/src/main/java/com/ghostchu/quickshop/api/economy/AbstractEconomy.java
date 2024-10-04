@@ -13,52 +13,57 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class AbstractEconomy implements EconomyCore, Reloadable {
 
-    protected AbstractEconomy() {
+  protected AbstractEconomy() {
+
+  }
+
+  @Override
+  public @NotNull String getName() {
+
+    return "BuiltIn-Economy Processor";
+  }
+
+  @Override
+  public abstract boolean withdraw(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency);
+
+  @Override
+  public abstract boolean deposit(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency);
+
+  @Override
+  public abstract double getBalance(@NotNull QUser obj, @NotNull World world, @Nullable String currency);
+
+  @Override
+  public boolean transfer(@NotNull final QUser from, @NotNull final QUser to, final double amount, @NotNull final World world, @Nullable final String currency) {
+
+    if(!isValid()) {
+      return false;
     }
-
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Economy Processor";
-    }
-
-    @Override
-    public abstract boolean withdraw(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency);
-
-    @Override
-    public abstract boolean deposit(@NotNull QUser obj, double amount, @NotNull World world, @Nullable String currency);
-
-    @Override
-    public abstract double getBalance(@NotNull QUser obj, @NotNull World world, @Nullable String currency);
-    @Override
-    public boolean transfer(@NotNull QUser from, @NotNull QUser to, double amount, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
+    if(this.getBalance(from, world, currency) >= amount) {
+      if(this.withdraw(from, amount, world, currency)) {
+        if(this.deposit(to, amount, world, currency)) {
+          this.deposit(from, amount, world, currency);
+          return false;
         }
-        if (this.getBalance(from, world, currency) >= amount) {
-            if (this.withdraw(from, amount, world, currency)) {
-                if (this.deposit(to, amount, world, currency)) {
-                    this.deposit(from, amount, world, currency);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
+        return true;
+      }
+      return false;
     }
+    return false;
+  }
 
-    public abstract String getProviderName();
+  public abstract String getProviderName();
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
 
-    @Override
-    public abstract String toString();
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
+
+  @Override
+  public abstract String toString();
 }

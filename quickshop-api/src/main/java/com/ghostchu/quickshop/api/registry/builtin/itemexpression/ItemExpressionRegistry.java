@@ -8,16 +8,18 @@ import org.bukkit.plugin.Plugin;
 import java.util.Set;
 
 public interface ItemExpressionRegistry extends Registry {
-    Set<ItemExpressionHandler> getHandlers();
 
-    boolean match(ItemStack stack, String expression);
+  Set<ItemExpressionHandler> getHandlers();
 
-    void registerHandler(ItemExpressionHandler handler) throws PrefixAlreadyRegisteredException;
-    boolean registerHandlerSafely(ItemExpressionHandler handler);
+  boolean match(ItemStack stack, String expression);
 
-    void unregisterHandler(ItemExpressionHandler handler);
+  void registerHandler(ItemExpressionHandler handler) throws PrefixAlreadyRegisteredException;
 
-    void unregisterHandler(String prefix);
+  boolean registerHandlerSafely(ItemExpressionHandler handler);
 
-    void unregisterHandlers(Plugin plugin);
+  void unregisterHandler(ItemExpressionHandler handler);
+
+  void unregisterHandler(String prefix);
+
+  void unregisterHandlers(Plugin plugin);
 }

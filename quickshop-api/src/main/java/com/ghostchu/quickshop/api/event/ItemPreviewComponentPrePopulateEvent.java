@@ -7,24 +7,28 @@ import org.jetbrains.annotations.Nullable;
 
 public class ItemPreviewComponentPrePopulateEvent extends AbstractQSEvent {
 
-    private final Player player;
-    private ItemStack itemStack;
+  private final Player player;
+  private ItemStack itemStack;
 
-    public ItemPreviewComponentPrePopulateEvent(@NotNull ItemStack itemStack, @Nullable Player player) {
-        this.itemStack = itemStack;
-        this.player = player;
-    }
+  public ItemPreviewComponentPrePopulateEvent(@NotNull final ItemStack itemStack, @Nullable final Player player) {
 
-    public ItemStack getItemStack() {
-        return itemStack;
-    }
+    this.itemStack = itemStack;
+    this.player = player;
+  }
 
-    public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
+  public ItemStack getItemStack() {
 
-    @Nullable
-    public Player getPlayer() {
-        return player;
-    }
+    return itemStack;
+  }
+
+  public void setItemStack(final ItemStack itemStack) {
+
+    this.itemStack = itemStack;
+  }
+
+  @Nullable
+  public Player getPlayer() {
+
+    return player;
+  }
 }

@@ -7,44 +7,45 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 
 public interface DataRecord {
-    @NotNull
-    Date getCreateTime();
 
-    @Nullable
-    String getCurrency();
+  @NotNull
+  Date getCreateTime();
 
-    @NotNull
-    String getExtra();
+  @Nullable
+  String getCurrency();
 
-    @Nullable
-    String getInventorySymbolLink();
+  @NotNull
+  String getExtra();
 
-    @Nullable
-    String getInventoryWrapper();
+  @Nullable
+  String getInventorySymbolLink();
 
-    @NotNull
-    String getItem();
+  @Nullable
+  String getInventoryWrapper();
 
-    @Nullable
-    String getName();
+  @NotNull
+  String getItem();
 
-    @NotNull
-    QUser getOwner();
+  @Nullable
+  String getName();
 
-    @NotNull
-    String getPermissions();
+  @NotNull
+  QUser getOwner();
 
-    double getPrice();
+  @NotNull
+  String getPermissions();
 
-    @Nullable
-    QUser getTaxAccount();
+  double getPrice();
 
-    int getType();
+  @Nullable
+  QUser getTaxAccount();
 
-    boolean isHologram();
+  int getType();
 
-    boolean isUnlimited();
+  boolean isHologram();
 
-    @NotNull
-    String getBenefit();
+  boolean isUnlimited();
+
+  @NotNull
+  String getBenefit();
 }

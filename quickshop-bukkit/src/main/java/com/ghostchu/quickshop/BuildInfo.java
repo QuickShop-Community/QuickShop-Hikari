@@ -17,247 +17,275 @@ import java.util.Properties;
  */
 @Data
 public class BuildInfo {
-    private final GitInfo gitInfo;
-    private final JenkinsInfo ciInfo;
 
-    @SneakyThrows
-    public BuildInfo(@Nullable InputStream inputStream) {
-        // Read InputStream to String as UTF-8 encoding with Reader
-        if (inputStream == null) {
-            gitInfo = new GitInfo(new Properties());
-            ciInfo = new JenkinsInfo(new Properties());
-            return;
-        }
-        Properties properties = new Properties();
-        properties.load(inputStream);
-        this.gitInfo = new GitInfo(properties);
-        this.ciInfo = new JenkinsInfo(properties);
+  private final GitInfo gitInfo;
+  private final JenkinsInfo ciInfo;
+
+  @SneakyThrows
+  public BuildInfo(@Nullable final InputStream inputStream) {
+    // Read InputStream to String as UTF-8 encoding with Reader
+    if(inputStream == null) {
+      gitInfo = new GitInfo(new Properties());
+      ciInfo = new JenkinsInfo(new Properties());
+      return;
+    }
+    final Properties properties = new Properties();
+    properties.load(inputStream);
+    this.gitInfo = new GitInfo(properties);
+    this.ciInfo = new JenkinsInfo(properties);
+  }
+
+  public static class GitInfo {
+
+    private static final String DEFAULT_VALUE = "undefined";
+    @Nullable
+    private final String branch;
+    private final boolean dirty;
+    @Nullable
+    private final String remoteOriginUrl;
+    @Nullable
+    private final String id;
+    @Nullable
+    private final String abbrev;
+    @Nullable
+    private final String describe;
+    @Nullable
+    private final String describeShort;
+    @Nullable
+    private final String commitUsername;
+    @Nullable
+    private final String commitEmail;
+    @Nullable
+    private final String commitMessage;
+    @Nullable
+    private final String commitDate;
+    @Nullable
+    private final String buildTime;
+    @Nullable
+    private final String buildVersion;
+    @Nullable
+    private final String buildNumber;
+    @Nullable
+    private final String tags;
+
+    public GitInfo(@NotNull final Properties properties) {
+
+      this.tags = properties.getProperty("git.tags");
+      this.branch = properties.getProperty("git.branch");
+      this.dirty = "true".equalsIgnoreCase(properties.getProperty("git.dirty"));
+      this.remoteOriginUrl = properties.getProperty("git.remote.origin.url");
+      this.id = properties.getProperty("git.commit.id");
+      this.abbrev = properties.getProperty("git.commit.id.abbrev");
+      this.describe = properties.getProperty("git.commit.id.describe");
+      this.describeShort = properties.getProperty("git.commit.id.describe-short");
+      this.commitUsername = properties.getProperty("git.commit.user.name");
+      this.commitEmail = properties.getProperty("git.commit.user.email");
+      this.commitMessage = properties.getProperty("git.commit.message.short");
+      this.commitDate = properties.getProperty("git.commit.time");
+      this.buildTime = properties.getProperty("git.build.time");
+      this.buildVersion = properties.getProperty("git.build.version");
+      this.buildNumber = properties.getProperty("git.build.number");
     }
 
-    public static class GitInfo {
-        private static final String DEFAULT_VALUE = "undefined";
-        @Nullable
-        private final String branch;
-        private final boolean dirty;
-        @Nullable
-        private final String remoteOriginUrl;
-        @Nullable
-        private final String id;
-        @Nullable
-        private final String abbrev;
-        @Nullable
-        private final String describe;
-        @Nullable
-        private final String describeShort;
-        @Nullable
-        private final String commitUsername;
-        @Nullable
-        private final String commitEmail;
-        @Nullable
-        private final String commitMessage;
-        @Nullable
-        private final String commitDate;
-        @Nullable
-        private final String buildTime;
-        @Nullable
-        private final String buildVersion;
-        @Nullable
-        private final String buildNumber;
-        @Nullable
-        private final String tags;
+    @NotNull
+    public String getAbbrev() {
 
-        public GitInfo(@NotNull Properties properties) {
-            this.tags = properties.getProperty("git.tags");
-            this.branch = properties.getProperty("git.branch");
-            this.dirty = "true".equalsIgnoreCase(properties.getProperty("git.dirty"));
-            this.remoteOriginUrl = properties.getProperty("git.remote.origin.url");
-            this.id = properties.getProperty("git.commit.id");
-            this.abbrev = properties.getProperty("git.commit.id.abbrev");
-            this.describe = properties.getProperty("git.commit.id.describe");
-            this.describeShort = properties.getProperty("git.commit.id.describe-short");
-            this.commitUsername = properties.getProperty("git.commit.user.name");
-            this.commitEmail = properties.getProperty("git.commit.user.email");
-            this.commitMessage = properties.getProperty("git.commit.message.short");
-            this.commitDate = properties.getProperty("git.commit.time");
-            this.buildTime = properties.getProperty("git.build.time");
-            this.buildVersion = properties.getProperty("git.build.version");
-            this.buildNumber = properties.getProperty("git.build.number");
-        }
-
-        @NotNull
-        public String getAbbrev() {
-            if (abbrev == null) {
-                return DEFAULT_VALUE;
-            }
-            return abbrev;
-        }
-
-        @NotNull
-        public String getBranch() {
-            if (branch == null) {
-                return DEFAULT_VALUE;
-            }
-            return branch;
-        }
-
-        @NotNull
-        public String getBuildNumber() {
-            return Objects.requireNonNullElse(buildNumber, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getBuildTime() {
-            return Objects.requireNonNullElse(buildTime, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getBuildVersion() {
-            return Objects.requireNonNullElse(buildVersion, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getCommitDate() {
-            return Objects.requireNonNullElse(commitDate, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getCommitEmail() {
-            return Objects.requireNonNullElse(commitEmail, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getCommitMessage() {
-            return Objects.requireNonNullElse(commitMessage, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getCommitUsername() {
-            return Objects.requireNonNullElse(commitUsername, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getDescribe() {
-            return Objects.requireNonNullElse(describe, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getDescribeShort() {
-            return Objects.requireNonNullElse(describeShort, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getId() {
-            if (id == null) {
-                return DEFAULT_VALUE;
-            }
-            return id;
-        }
-
-        @NotNull
-        public String getRemoteOriginUrl() {
-            return Objects.requireNonNullElse(remoteOriginUrl, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getTags() {
-            if (tags == null) {
-                return DEFAULT_VALUE;
-            }
-            return tags;
-        }
-
-        public boolean isDirty() {
-            return dirty;
-        }
+      if(abbrev == null) {
+        return DEFAULT_VALUE;
+      }
+      return abbrev;
     }
 
-    public static class JenkinsInfo {
-        private static final String DEFAULT_VALUE = "undefined";
-        private final boolean ci;
-        private final int id;
-        @Nullable
-        private final String idName;
-        @Nullable
-        private final String tag;
-        @Nullable
-        private final String url;
-        @Nullable
-        private final String projectName;
-        @Nullable
-        private final String projectUrl;
-        @Nullable
-        private final String projectBaseName;
+    @NotNull
+    public String getBranch() {
 
-
-        public JenkinsInfo(@NotNull Properties properties) {
-            this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
-            String idStr = properties.getProperty("ci.build.id");
-            if (idStr != null) {
-                int fid = -1;
-                try {
-                    fid = Integer.parseInt(properties.getProperty("ci.build.id"));
-                } catch (NumberFormatException ex) {
-                    Log.debug("Failed to parse fid: " + ex.getMessage());
-                } finally {
-                    this.id = fid;
-                }
-            } else {
-                this.id = -1;
-            }
-            this.idName = properties.getProperty("ci.build.name");
-            this.tag = properties.getProperty("ci.build.tag");
-            this.url = properties.getProperty("ci.build.url");
-            this.projectName = properties.getProperty("ci.job.name");
-            this.projectUrl = properties.getProperty("ci.job.url");
-            this.projectBaseName = properties.getProperty("ci.job.base_name");
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        @NotNull
-        public String getIdName() {
-            if (idName == null) {
-                return DEFAULT_VALUE;
-            }
-            return idName;
-        }
-
-        @NotNull
-        public String getProjectBaseName() {
-            return Objects.requireNonNullElse(projectBaseName, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getProjectName() {
-            return Objects.requireNonNullElse(projectName, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getProjectUrl() {
-            return Objects.requireNonNullElse(projectUrl, DEFAULT_VALUE);
-        }
-
-        @NotNull
-        public String getTag() {
-            if (tag == null) {
-                return DEFAULT_VALUE;
-            }
-            return tag;
-        }
-
-        @NotNull
-        public String getUrl() {
-            if (url == null) {
-                return DEFAULT_VALUE;
-            }
-            return url;
-        }
-
-        public boolean isCi() {
-            return ci;
-        }
+      if(branch == null) {
+        return DEFAULT_VALUE;
+      }
+      return branch;
     }
+
+    @NotNull
+    public String getBuildNumber() {
+
+      return Objects.requireNonNullElse(buildNumber, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getBuildTime() {
+
+      return Objects.requireNonNullElse(buildTime, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getBuildVersion() {
+
+      return Objects.requireNonNullElse(buildVersion, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getCommitDate() {
+
+      return Objects.requireNonNullElse(commitDate, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getCommitEmail() {
+
+      return Objects.requireNonNullElse(commitEmail, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getCommitMessage() {
+
+      return Objects.requireNonNullElse(commitMessage, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getCommitUsername() {
+
+      return Objects.requireNonNullElse(commitUsername, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getDescribe() {
+
+      return Objects.requireNonNullElse(describe, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getDescribeShort() {
+
+      return Objects.requireNonNullElse(describeShort, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getId() {
+
+      if(id == null) {
+        return DEFAULT_VALUE;
+      }
+      return id;
+    }
+
+    @NotNull
+    public String getRemoteOriginUrl() {
+
+      return Objects.requireNonNullElse(remoteOriginUrl, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getTags() {
+
+      if(tags == null) {
+        return DEFAULT_VALUE;
+      }
+      return tags;
+    }
+
+    public boolean isDirty() {
+
+      return dirty;
+    }
+  }
+
+  public static class JenkinsInfo {
+
+    private static final String DEFAULT_VALUE = "undefined";
+    private final boolean ci;
+    private final int id;
+    @Nullable
+    private final String idName;
+    @Nullable
+    private final String tag;
+    @Nullable
+    private final String url;
+    @Nullable
+    private final String projectName;
+    @Nullable
+    private final String projectUrl;
+    @Nullable
+    private final String projectBaseName;
+
+
+    public JenkinsInfo(@NotNull final Properties properties) {
+
+      this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
+      final String idStr = properties.getProperty("ci.build.id");
+      if(idStr != null) {
+        int fid = -1;
+        try {
+          fid = Integer.parseInt(properties.getProperty("ci.build.id"));
+        } catch(NumberFormatException ex) {
+          Log.debug("Failed to parse fid: " + ex.getMessage());
+        } finally {
+          this.id = fid;
+        }
+      } else {
+        this.id = -1;
+      }
+      this.idName = properties.getProperty("ci.build.name");
+      this.tag = properties.getProperty("ci.build.tag");
+      this.url = properties.getProperty("ci.build.url");
+      this.projectName = properties.getProperty("ci.job.name");
+      this.projectUrl = properties.getProperty("ci.job.url");
+      this.projectBaseName = properties.getProperty("ci.job.base_name");
+    }
+
+    public int getId() {
+
+      return id;
+    }
+
+    @NotNull
+    public String getIdName() {
+
+      if(idName == null) {
+        return DEFAULT_VALUE;
+      }
+      return idName;
+    }
+
+    @NotNull
+    public String getProjectBaseName() {
+
+      return Objects.requireNonNullElse(projectBaseName, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getProjectName() {
+
+      return Objects.requireNonNullElse(projectName, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getProjectUrl() {
+
+      return Objects.requireNonNullElse(projectUrl, DEFAULT_VALUE);
+    }
+
+    @NotNull
+    public String getTag() {
+
+      if(tag == null) {
+        return DEFAULT_VALUE;
+      }
+      return tag;
+    }
+
+    @NotNull
+    public String getUrl() {
+
+      if(url == null) {
+        return DEFAULT_VALUE;
+      }
+      return url;
+    }
+
+    public boolean isCi() {
+
+      return ci;
+    }
+  }
 
 }

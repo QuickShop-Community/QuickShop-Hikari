@@ -3,23 +3,24 @@ package com.ghostchu.quickshop.api.database;
 import java.util.UUID;
 
 public interface MetricRecord {
-    int getAmount();
 
-    UUID getPlayer();
+  int getAmount();
 
-    double getTax();
+  UUID getPlayer();
 
-    long getTimestamp();
+  double getTax();
 
-    double getTotal();
+  long getTimestamp();
 
-    ShopOperationEnum getType();
+  double getTotal();
 
-    String getWorld();
+  ShopOperationEnum getType();
 
-    int getX();
+  String getWorld();
 
-    int getY();
+  int getX();
 
-    int getZ();
+  int getY();
+
+  int getZ();
 }

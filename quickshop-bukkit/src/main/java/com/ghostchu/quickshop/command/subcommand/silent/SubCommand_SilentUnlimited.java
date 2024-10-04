@@ -11,29 +11,31 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
 
-    public SubCommand_SilentUnlimited(QuickShop plugin) {
-        super(plugin);
-    }
+  public SubCommand_SilentUnlimited(final QuickShop plugin) {
 
-    @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
-        shop.setUnlimited(!shop.isUnlimited());
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
-        MsgUtil.sendControlPanelInfo(sender, shop);
+    super(plugin);
+  }
 
-        if (shop.isUnlimited()) {
-            plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
-            if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-                QUser uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
-                plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                plugin.text().of(sender, "unlimited-shop-owner-changed", uuid).send();
-            }
-            return;
-        }
-        plugin.text().of(sender, "command.toggle-unlimited.limited").send();
-        if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
-            plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
-        }
+  @Override
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
+
+    shop.setUnlimited(!shop.isUnlimited());
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
+    MsgUtil.sendControlPanelInfo(sender, shop);
+
+    if(shop.isUnlimited()) {
+      plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
+      if(plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+        final QUser uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheUnlimitedShopAccount();
+        plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
+        plugin.text().of(sender, "unlimited-shop-owner-changed", uuid).send();
+      }
+      return;
     }
+    plugin.text().of(sender, "command.toggle-unlimited.limited").send();
+    if(plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+      plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
+    }
+  }
 
 }

@@ -6,24 +6,29 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemPreviewComponentPopulateEvent extends AbstractQSEvent {
-    private final Player player;
-    private Component component;
 
-    public ItemPreviewComponentPopulateEvent(@NotNull Component component, @Nullable Player p) {
-        this.component = component;
-        this.player = p;
-    }
+  private final Player player;
+  private Component component;
 
-    public Component getComponent() {
-        return component;
-    }
+  public ItemPreviewComponentPopulateEvent(@NotNull final Component component, @Nullable final Player p) {
 
-    public void setComponent(Component component) {
-        this.component = component;
-    }
+    this.component = component;
+    this.player = p;
+  }
 
-    @Nullable
-    public Player getPlayer() {
-        return player;
-    }
+  public Component getComponent() {
+
+    return component;
+  }
+
+  public void setComponent(final Component component) {
+
+    this.component = component;
+  }
+
+  @Nullable
+  public Player getPlayer() {
+
+    return player;
+  }
 }

@@ -10,22 +10,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 public final class Main extends CompatibilityModule implements Listener {
-    private ReforgesDisplay display;
 
-    @Override
-    public void init() {
-        // There no init stuffs need to do
-        this.display = new ReforgesDisplay(ReforgesPlugin.getInstance());
-    }
+  private ReforgesDisplay display;
 
-    @EventHandler(ignoreCancelled = true)
-    public void onItemPreviewPreparing(ItemPreviewComponentPrePopulateEvent event) {
-        if (event.getPlayer() == null) {
-            return;
-        }
-        ItemStack stack = event.getItemStack().clone();
-        display.display(stack, event.getPlayer(), display.generateVarArgs(stack));
-        display.display(stack, event.getPlayer(), new DisplayProperties(false, false, stack), display.generateVarArgs(stack));
-        event.setItemStack(stack);
+  @Override
+  public void init() {
+    // There no init stuffs need to do
+    this.display = new ReforgesDisplay(ReforgesPlugin.getInstance());
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onItemPreviewPreparing(final ItemPreviewComponentPrePopulateEvent event) {
+
+    if(event.getPlayer() == null) {
+      return;
     }
+    final ItemStack stack = event.getItemStack().clone();
+    display.display(stack, event.getPlayer(), display.generateVarArgs(stack));
+    display.display(stack, event.getPlayer(), new DisplayProperties(false, false, stack), display.generateVarArgs(stack));
+    event.setItemStack(stack);
+  }
 }

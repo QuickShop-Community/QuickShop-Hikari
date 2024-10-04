@@ -17,7 +17,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface UpdateScript {
-    @Nullable String description() default "";
 
-    int version();
+  @Nullable String description() default "";
+
+  int version();
 }

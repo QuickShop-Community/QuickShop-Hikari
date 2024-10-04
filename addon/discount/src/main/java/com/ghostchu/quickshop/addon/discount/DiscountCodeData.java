@@ -14,15 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiscountCodeData {
-    private UUID owner;
-    private String code;
-    private CodeType codeType;
-    private RateType rateType;
-    private String rate;
-    private long expire;
-    private double threshold;
-    private int maxUsage;
-    private Map<UUID, Integer> usages;
-    private Set<Long> shopScope;
+
+  private UUID owner;
+  private String code;
+  private CodeType codeType;
+  private RateType rateType;
+  private String rate;
+  private long expire;
+  private double threshold;
+  private int maxUsage;
+  private Map<UUID, Integer> usages;
+  private Set<Long> shopScope;
 
 }

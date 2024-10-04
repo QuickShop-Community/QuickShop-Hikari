@@ -5,28 +5,34 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import java.util.UUID;
 
 public class DisplayApplicableCheckEvent extends AbstractQSEvent {
-    private final Shop shop;
-    private final UUID player;
-    private boolean applicable;
 
-    public DisplayApplicableCheckEvent(Shop shop, UUID player) {
-        this.shop = shop;
-        this.player = player;
-    }
+  private final Shop shop;
+  private final UUID player;
+  private boolean applicable;
 
-    public Shop getShop() {
-        return shop;
-    }
+  public DisplayApplicableCheckEvent(final Shop shop, final UUID player) {
 
-    public UUID getPlayer() {
-        return player;
-    }
+    this.shop = shop;
+    this.player = player;
+  }
 
-    public boolean isApplicable() {
-        return applicable;
-    }
+  public Shop getShop() {
 
-    public void setApplicable(boolean applicable) {
-        this.applicable = applicable;
-    }
+    return shop;
+  }
+
+  public UUID getPlayer() {
+
+    return player;
+  }
+
+  public boolean isApplicable() {
+
+    return applicable;
+  }
+
+  public void setApplicable(final boolean applicable) {
+
+    this.applicable = applicable;
+  }
 }

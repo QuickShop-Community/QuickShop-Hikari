@@ -19,130 +19,145 @@ import java.util.logging.Logger;
 
 public class MockPlugin implements Plugin {
 
-    private final String pluginName;
+  private final String pluginName;
 
-    public MockPlugin(String pluginName) {
-        this.pluginName = pluginName;
-    }
+  public MockPlugin(final String pluginName) {
 
-    @NotNull
-    @Override
-    public File getDataFolder() {
-        return null;
-    }
+    this.pluginName = pluginName;
+  }
 
-    @NotNull
-    @Override
-    public PluginDescriptionFile getDescription() {
-        return new PluginDescriptionFile(pluginName, "0.0.0", "N/A");
-    }
+  @NotNull
+  @Override
+  public File getDataFolder() {
 
-    @NotNull
-    @Override
-    public FileConfiguration getConfig() {
-        return null;
-    }
+    return null;
+  }
 
-    @Nullable
-    @Override
-    public InputStream getResource(@NotNull String s) {
-        return null;
-    }
+  @NotNull
+  @Override
+  public PluginDescriptionFile getDescription() {
 
-    @Override
-    public void saveConfig() {
+    return new PluginDescriptionFile(pluginName, "0.0.0", "N/A");
+  }
 
-    }
+  @NotNull
+  @Override
+  public FileConfiguration getConfig() {
 
-    @Override
-    public void saveDefaultConfig() {
+    return null;
+  }
 
-    }
+  @Nullable
+  @Override
+  public InputStream getResource(@NotNull final String s) {
 
-    @Override
-    public void saveResource(@NotNull String s, boolean b) {
+    return null;
+  }
 
-    }
+  @Override
+  public void saveConfig() {
 
-    @Override
-    public void reloadConfig() {
+  }
 
-    }
+  @Override
+  public void saveDefaultConfig() {
 
-    @NotNull
-    @Override
-    public PluginLoader getPluginLoader() {
-        return null;
-    }
+  }
 
-    @NotNull
-    @Override
-    public Server getServer() {
-        return null;
-    }
+  @Override
+  public void saveResource(@NotNull final String s, final boolean b) {
 
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+  }
 
-    @Override
-    public void onDisable() {
+  @Override
+  public void reloadConfig() {
 
-    }
+  }
 
-    @Override
-    public void onLoad() {
+  @NotNull
+  @Override
+  public PluginLoader getPluginLoader() {
 
-    }
+    return null;
+  }
 
-    @Override
-    public void onEnable() {
+  @NotNull
+  @Override
+  public Server getServer() {
 
-    }
+    return null;
+  }
 
-    @Override
-    public boolean isNaggable() {
-        return false;
-    }
+  @Override
+  public boolean isEnabled() {
 
-    @Override
-    public void setNaggable(boolean b) {
+    return false;
+  }
 
-    }
+  @Override
+  public void onDisable() {
 
-    @Nullable
-    @Override
-    public ChunkGenerator getDefaultWorldGenerator(@NotNull String s, @Nullable String s1) {
-        return null;
-    }
+  }
 
-    @Nullable
-    @Override
-    public BiomeProvider getDefaultBiomeProvider(@NotNull String s, @Nullable String s1) {
-        return null;
-    }
+  @Override
+  public void onLoad() {
 
-    @NotNull
-    @Override
-    public Logger getLogger() {
-        return null;
-    }
+  }
 
-    @NotNull
-    @Override
-    public String getName() {
-        return pluginName;
-    }
+  @Override
+  public void onEnable() {
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return false;
-    }
+  }
 
-    @Nullable
-    @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return null;
-    }
+  @Override
+  public boolean isNaggable() {
+
+    return false;
+  }
+
+  @Override
+  public void setNaggable(final boolean b) {
+
+  }
+
+  @Nullable
+  @Override
+  public ChunkGenerator getDefaultWorldGenerator(@NotNull final String s, @Nullable final String s1) {
+
+    return null;
+  }
+
+  @Nullable
+  @Override
+  public BiomeProvider getDefaultBiomeProvider(@NotNull final String s, @Nullable final String s1) {
+
+    return null;
+  }
+
+  @NotNull
+  @Override
+  public Logger getLogger() {
+
+    return null;
+  }
+
+  @NotNull
+  @Override
+  public String getName() {
+
+    return pluginName;
+  }
+
+  @Override
+  public boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String s, @NotNull final String[] strings) {
+
+    return false;
+  }
+
+  @Nullable
+  @Override
+  public List<String> onTabComplete(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String s, @NotNull final String[] strings) {
+
+    return null;
+  }
 }

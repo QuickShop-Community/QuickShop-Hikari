@@ -8,17 +8,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Function;
+
 @Deprecated(forRemoval = true)
 public class ItemExpression {
-    private final String item;
+
+  private final String item;
 //    public static final String ITEM_REFERENCE_MARKER = "@";
 //    public static final String ENCHANTMENT_MARKER = "%";
 //    private final QuickShop plugin;
 //    @Nullable
 //    private final Function<ItemStack, Boolean> function;
 
-    public ItemExpression(@NotNull QuickShop plugin, @NotNull String item) {
-        this.item = item;
+  public ItemExpression(@NotNull final QuickShop plugin, @NotNull final String item) {
+
+    this.item = item;
 //        this.plugin = plugin;
 //        if (item.startsWith(ITEM_REFERENCE_MARKER)) {
 //            this.function = handleItemReference(item);
@@ -27,7 +30,7 @@ public class ItemExpression {
 //        } else {
 //            this.function = handleItemMaterial(item);
 //        }
-    }
+  }
 //
 //
 //    private @NotNull Function<ItemStack, Boolean> handleItemReference(@NotNull String item) {
@@ -100,8 +103,9 @@ public class ItemExpression {
 //        return itemStack -> itemStack.getType() == mat;
 //    }
 
-    @NotNull
-    public Optional<Function<ItemStack, Boolean>> getFunction() {
-        return Optional.of(itemStack->((ItemExpressionRegistry)QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION)).match(itemStack,item));
-    }
+  @NotNull
+  public Optional<Function<ItemStack, Boolean>> getFunction() {
+
+    return Optional.of(itemStack->((ItemExpressionRegistry)QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION)).match(itemStack, item));
+  }
 }

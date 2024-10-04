@@ -11,47 +11,53 @@ import org.jetbrains.annotations.Nullable;
  * Operation for withdraw money from economy.
  */
 public class WithdrawEconomyOperation implements Operation {
-    private final QUser account;
-    private final double amount;
-    private final EconomyCore economyCore;
-    private final World world;
-    private final String currency;
-    private boolean committed = false;
-    private boolean rollback = false;
 
-    public WithdrawEconomyOperation(@NotNull QUser account, double amount, @NotNull World world, @Nullable String currency, @NotNull EconomyCore economyCore) {
-        this.account = account;
-        this.amount = amount;
-        this.world = world;
-        this.currency = currency;
-        this.economyCore = economyCore;
-    }
+  private final QUser account;
+  private final double amount;
+  private final EconomyCore economyCore;
+  private final World world;
+  private final String currency;
+  private boolean committed = false;
+  private boolean rollback = false;
 
-    @Override
-    public boolean commit() {
-        boolean result = economyCore.withdraw(account, amount, world, currency);
-        if (result) {
-            committed = true;
-        }
-        return result;
-    }
+  public WithdrawEconomyOperation(@NotNull final QUser account, final double amount, @NotNull final World world, @Nullable final String currency, @NotNull final EconomyCore economyCore) {
 
-    @Override
-    public boolean isCommitted() {
-        return this.committed;
-    }
+    this.account = account;
+    this.amount = amount;
+    this.world = world;
+    this.currency = currency;
+    this.economyCore = economyCore;
+  }
 
-    @Override
-    public boolean isRollback() {
-        return this.rollback;
-    }
+  @Override
+  public boolean commit() {
 
-    @Override
-    public boolean rollback() {
-        boolean result = economyCore.deposit(account, amount, world, currency);
-        if (result) {
-            rollback = true;
-        }
-        return result;
+    final boolean result = economyCore.withdraw(account, amount, world, currency);
+    if(result) {
+      committed = true;
     }
+    return result;
+  }
+
+  @Override
+  public boolean isCommitted() {
+
+    return this.committed;
+  }
+
+  @Override
+  public boolean isRollback() {
+
+    return this.rollback;
+  }
+
+  @Override
+  public boolean rollback() {
+
+    final boolean result = economyCore.deposit(account, amount, world, currency);
+    if(result) {
+      rollback = true;
+    }
+    return result;
+  }
 }

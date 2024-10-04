@@ -21,43 +21,46 @@ import org.bukkit.Location;
  * Proxy class to handle WorldEdit actions
  */
 public class WorldEditBlockListener extends AbstractDelegateExtent {
-    private final Actor actor;
-    private final World world;
-    private final Extent extent;
-    private final QuickShopAPI api;
 
-    // Same Package access
-    WorldEditBlockListener(Actor actor, World world, Extent originalExtent, QuickShopAPI api) {
-        super(originalExtent);
-        this.actor = actor;
-        this.world = world;
-        this.extent = originalExtent;
-        this.api = api;
+  private final Actor actor;
+  private final World world;
+  private final Extent extent;
+  private final QuickShopAPI api;
+
+  // Same Package access
+  WorldEditBlockListener(final Actor actor, final World world, final Extent originalExtent, final QuickShopAPI api) {
+
+    super(originalExtent);
+    this.actor = actor;
+    this.world = world;
+    this.extent = originalExtent;
+    this.api = api;
+  }
+
+  @Override
+  public <T extends BlockStateHolder<T>> boolean setBlock(final BlockVector3 position, final T block) throws WorldEditException {
+
+    if(!(this.world instanceof BukkitWorld)) {
+      return super.setBlock(position, block);
     }
+    final org.bukkit.World bukkitWorld = ((BukkitWorld)this.world).getWorld();
+    final BlockState oldBlock = extent.getBlock(position);
+    final BlockState newBlock = block.toImmutableState();
 
-    @Override
-    public <T extends BlockStateHolder<T>> boolean setBlock(final BlockVector3 position, final T block) throws WorldEditException {
-        if (!(this.world instanceof BukkitWorld)) {
-            return super.setBlock(position, block);
+    final Location location = new Location(bukkitWorld, position.getBlockX(), position.getBlockY(), position.getBlockZ());
+
+    if(extent.setBlock(position, block)) {
+      // Block Changed
+      if(oldBlock.getBlockType().getMaterial().hasContainer() && !newBlock.getBlockType().getMaterial().hasContainer()) {
+        final Shop shop = api.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
+        if(shop != null) {
+          Util.mainThreadRun(()->{
+            api.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "WorldEdit", false), "WorldEdit", shop.saveToInfoStorage()));
+            api.getShopManager().deleteShop(shop);
+          });
         }
-        org.bukkit.World bukkitWorld = ((BukkitWorld) this.world).getWorld();
-        BlockState oldBlock = extent.getBlock(position);
-        BlockState newBlock = block.toImmutableState();
-
-        Location location = new Location(bukkitWorld, position.getBlockX(), position.getBlockY(), position.getBlockZ());
-
-        if (extent.setBlock(position, block)) {
-            // Block Changed
-            if (oldBlock.getBlockType().getMaterial().hasContainer() && !newBlock.getBlockType().getMaterial().hasContainer()) {
-                Shop shop = api.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
-                if (shop != null) {
-                    Util.mainThreadRun(() -> {
-                        api.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "WorldEdit", false), "WorldEdit", shop.saveToInfoStorage()));
-                        api.getShopManager().deleteShop(shop);
-                    });
-                }
-            }
-        }
-        return super.setBlock(position, block);
+      }
     }
+    return super.setBlock(position, block);
+  }
 }

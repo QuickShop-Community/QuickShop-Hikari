@@ -7,32 +7,37 @@ import org.jetbrains.annotations.NotNull;
  * InventoryWrapper for countable Inventory
  */
 public interface CountableInventoryWrapper extends InventoryWrapper {
-    /**
-     * Counting the items
-     *
-     * @param predicate {@link ItemPredicate}
-     * @return the items
-     */
-    int countItem(@NotNull ItemPredicate predicate);
+
+  /**
+   * Counting the items
+   *
+   * @param predicate {@link ItemPredicate}
+   *
+   * @return the items
+   */
+  int countItem(@NotNull ItemPredicate predicate);
+
+  /**
+   * Counting the spaces
+   *
+   * @param predicate {@link ItemPredicate}
+   *
+   * @return the space
+   */
+  int countSpace(@NotNull ItemPredicate predicate);
+
+  /**
+   * The item predicate for calculating
+   */
+  interface ItemPredicate {
 
     /**
-     * Counting the spaces
+     * Check if the item match the predicate
      *
-     * @param predicate {@link ItemPredicate}
-     * @return the space
+     * @param input the item want to check
+     *
+     * @return if the item match the predicate
      */
-    int countSpace(@NotNull ItemPredicate predicate);
-
-    /**
-     * The item predicate for calculating
-     */
-    interface ItemPredicate {
-        /**
-         * Check if the item match the predicate
-         *
-         * @param input the item want to check
-         * @return if the item match the predicate
-         */
-        boolean isMatch(@NotNull ItemStack input);
-    }
+    boolean isMatch(@NotNull ItemStack input);
+  }
 }
