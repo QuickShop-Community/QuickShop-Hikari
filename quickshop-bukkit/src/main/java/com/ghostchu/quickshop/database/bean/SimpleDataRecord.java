@@ -39,6 +39,7 @@ public class SimpleDataRecord implements DataRecord {
 
     this.owner = owner;
     this.item = item;
+    //this.newItem = newItem;
     this.name = name;
     this.type = type;
     this.currency = currency;
@@ -58,6 +59,7 @@ public class SimpleDataRecord implements DataRecord {
 
     this.owner = QUserImpl.deserialize(finder, set.getString("owner"), QuickExecutor.getSecondaryProfileIoExecutor());
     this.item = set.getString("item");
+    //this.newItem = set.getString("new_item");
     this.name = set.getString("name");
     this.type = set.getInt("type");
     this.currency = set.getString("currency");
@@ -88,6 +90,7 @@ public class SimpleDataRecord implements DataRecord {
     final Map<String, Object> map = new LinkedHashMap<>();
     map.put("owner", owner.serialize());
     map.put("item", item);
+    //map.put("new_item", newItem);
     map.put("name", name);
     map.put("type", type);
     map.put("currency", currency);
