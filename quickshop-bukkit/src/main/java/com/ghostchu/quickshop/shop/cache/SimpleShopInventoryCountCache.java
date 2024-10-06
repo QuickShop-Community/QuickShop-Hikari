@@ -51,7 +51,7 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
   @Override
   public boolean initialized() {
 
-    return false;
+    return initialized;
   }
 
   public void setSpace(final int space) {
