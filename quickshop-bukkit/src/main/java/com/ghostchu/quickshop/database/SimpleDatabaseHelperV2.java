@@ -784,7 +784,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(final long shopId) {
 
     return CompletableFuture.supplyAsync(()->{
-      ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2);
+      ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2, false);
       try(final SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
               .selectColumns("stock", "space")
               .addCondition("shop", shopId)
@@ -792,7 +792,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
               .build().execute()) {
         final ResultSet set = query.getResultSet();
         if(set.next()) {
-          cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"));
+          cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"), true);
         }
       } catch(final SQLException exception) {
         plugin.logger().warn("Cannot handle the inventory cache lookup for shop {}", shopId, exception);
