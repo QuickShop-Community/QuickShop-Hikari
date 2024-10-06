@@ -3,7 +3,7 @@ version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.bungeecord.geyser.Main
 api-version: 1.18
 depend:
-  - ClearLag
+  - Geyser-BungeeCord
   - QuickShop-Hikari
 authors: [ Ghost_chu ]
-description: Compatibility module for BungeeCord
+description: Compatibility module for Geyser

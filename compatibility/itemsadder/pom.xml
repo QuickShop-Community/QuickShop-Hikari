@@ -14,9 +14,9 @@
     <artifactId>itemsadder</artifactId>
     <packaging>takari-jar</packaging>
 
-    <name>Compat-ItemAdder</name>
+    <name>Compat-ItemsAdder</name>
 
-    <description>Compatibility module for ItemAdder</description>
+    <description>Compatibility module for ItemsAdder</description>
 
     <build>
         <plugins>

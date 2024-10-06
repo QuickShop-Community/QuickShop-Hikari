@@ -16,7 +16,7 @@
 
     <name>Addon-BlueMap</name>
 
-    <description>Displaying the quickshops on your BlueMap instance</description>
+    <description>Displaying the shop on your BlueMap instance</description>
 
     <repositories>
         <repository>
