@@ -6,3 +6,4 @@ depend:
   - AdvancedRegionMarket
   - QuickShop-Hikari
 authors: [ Ghost_chu ]
+description: Compatibility module for AdvancedRegionMarket
