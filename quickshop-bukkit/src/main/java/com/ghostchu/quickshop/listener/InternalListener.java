@@ -1,12 +1,12 @@
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
-import com.ghostchu.quickshop.api.event.ShopInventoryCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
+import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;

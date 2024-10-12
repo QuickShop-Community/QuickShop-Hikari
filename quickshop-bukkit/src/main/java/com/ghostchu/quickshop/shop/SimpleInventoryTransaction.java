@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.InventoryTransactionEvent;
+import com.ghostchu.quickshop.api.event.inventory.InventoryTransactionEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.api.shop.InventoryTransaction;

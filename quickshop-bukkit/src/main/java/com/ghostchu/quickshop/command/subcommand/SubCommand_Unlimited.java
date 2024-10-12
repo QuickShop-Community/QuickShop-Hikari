@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopUnlimitedStatusEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
