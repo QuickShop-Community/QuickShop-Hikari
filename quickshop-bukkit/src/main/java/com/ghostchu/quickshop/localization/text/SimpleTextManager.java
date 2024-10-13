@@ -416,6 +416,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   public ProxiedLocale findRelativeLanguages(@Nullable final String langCode) {
     //langCode may null when some plugins providing fake player
     if(langCode == null || langCode.isEmpty()) {
+
       return new ProxiedLocale(langCode, DEFAULT_LOCALE, getCompactNumberInstance(Locale.US), Locale.ROOT);
     }
     String result = languagesCache.getIfPresent(langCode);
@@ -459,6 +460,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   private NumberFormat getCompactNumberInstance(@NotNull final Locale locale) {
+
         return numberFormatCache.computeIfAbsent(locale, l->NumberFormat.getCompactNumberInstance(l, NumberFormat.Style.SHORT));
   }
 
