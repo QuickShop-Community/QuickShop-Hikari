@@ -56,6 +56,7 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
@@ -186,7 +187,7 @@ public class Util {
       return 0;
     }
     final ItemMatcher matcher = plugin.getItemMatcher();
-    if(inv instanceof CountableInventoryWrapper ciw) {
+    if(inv instanceof final CountableInventoryWrapper ciw) {
 
       return ciw.countItem(input->matcher.matches(item, input));
     } else {
@@ -217,7 +218,7 @@ public class Util {
     if(inv == null) {
       return 0;
     }
-    if(inv instanceof CountableInventoryWrapper ciw) {
+    if(inv instanceof final CountableInventoryWrapper ciw) {
       return ciw.countItem(shop::matches);
     } else {
       int items = 0;
@@ -247,7 +248,7 @@ public class Util {
     if(inv == null) {
       return 0;
     }
-    if(inv instanceof CountableInventoryWrapper ciw) {
+    if(inv instanceof final CountableInventoryWrapper ciw) {
       return ciw.countSpace(shop::matches);
     } else {
       final ItemStack item = shop.getItem();
@@ -291,7 +292,7 @@ public class Util {
       return 0;
     }
     final ItemMatcher matcher = plugin.getItemMatcher();
-    if(inv instanceof CountableInventoryWrapper ciw) {
+    if(inv instanceof final CountableInventoryWrapper ciw) {
       return ciw.countSpace(input->matcher.matches(item, input));
     } else {
       int space = 0;
@@ -371,7 +372,7 @@ public class Util {
       }
       yamlConfiguration.loadFromString(config);
       return yamlConfiguration.getItemStack("item");
-    } catch(Exception e) {
+    } catch(final Exception e) {
       throw new InvalidConfigurationException("Exception in deserialize item: " + config, e);
     }
   }
@@ -492,7 +493,7 @@ public class Util {
     if(isEmptyComponent(result)) {
       try {
         result = plugin.getPlatform().getTranslation(itemStack);
-      } catch(Throwable th) {
+      } catch(final Throwable th) {
         result = MsgUtil.setHandleFailedHover(null, Component.text(itemStack.getType().getKey().toString()));
         plugin.logger().warn("Failed to handle translation for ItemStack {}", Util.serialize(itemStack), th);
       }
@@ -505,7 +506,7 @@ public class Util {
 
     if(useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
       final ItemMeta meta = itemStack.getItemMeta();
-      if(meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+      if(meta instanceof final EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
         return getFirstEnchantmentName(enchantmentStorageMeta);
       }
     }
@@ -593,7 +594,7 @@ public class Util {
     }
 
     final ItemMeta meta = itemStack.getItemMeta();
-    if(meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+    if(meta instanceof final EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
       for(final Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
         final Component name = enchantmentDataToComponent(entry.getKey(), entry.getValue());
         enchants.add(name);
@@ -621,7 +622,7 @@ public class Util {
     Component name;
     try {
       name = plugin.getPlatform().getTranslation(enchantment);
-    } catch(Throwable throwable) {
+    } catch(final Throwable throwable) {
       name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
       plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
     }
@@ -713,7 +714,7 @@ public class Util {
   public static Block getSecondHalf(@NotNull final Block block) {
 
     final BlockData blockData = block.getBlockData();
-    if(!(blockData instanceof org.bukkit.block.data.type.Chest chest)) {
+    if(!(blockData instanceof final org.bukkit.block.data.type.Chest chest)) {
       return null;
     }
     if(!isDoubleChest(chest)) {
@@ -726,7 +727,7 @@ public class Util {
 
   public static boolean isDoubleChest(@Nullable final BlockData blockData) {
 
-    if(!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
+    if(!(blockData instanceof final org.bukkit.block.data.type.Chest chestBlockData)) {
       return false;
     }
     return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
@@ -761,7 +762,7 @@ public class Util {
   @NotNull
   public static UUID getSenderUniqueId(@Nullable final CommandSender sender) {
 
-    if(sender instanceof OfflinePlayer offlinePlayer) {
+    if(sender instanceof final OfflinePlayer offlinePlayer) {
       return offlinePlayer.getUniqueId();
     }
     return CommonUtil.getNilUniqueId();
@@ -832,7 +833,7 @@ public class Util {
     try {
       plugin.getReloadManager().unregister(Util.class.getDeclaredMethod("initialize"));
       plugin.getReloadManager().register(Util.class.getDeclaredMethod("initialize"));
-    } catch(NoSuchMethodException e) {
+    } catch(final NoSuchMethodException e) {
       plugin.logger().error("Failed to register Util initialize method to reload manager.", e);
     }
     SHOPABLES.clear();
@@ -869,7 +870,7 @@ public class Util {
     }
     try {
       dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
-    } catch(Exception ignored) {
+    } catch(final Exception ignored) {
     }
   }
 
@@ -905,7 +906,7 @@ public class Util {
           MsgUtil.sendGlobalAlert(plugin.text().of("inventory-check-global-alert", location, inv.getHolder().getClass().getName(), Util.getItemStackName(itemStack)).forLocale(MsgUtil.getDefaultGameLanguageCode()));
         }
       }
-    } catch(Exception ignored) {
+    } catch(final Exception ignored) {
     }
   }
 
@@ -1025,11 +1026,11 @@ public class Util {
       final Class<?> clazz = Class.forName(className);
       try {
         clazz.getDeclaredMethod(method, args);
-      } catch(NoSuchMethodException e) {
+      } catch(final NoSuchMethodException e) {
         clazz.getMethod(method, args);
       }
       return true;
-    } catch(Exception e) {
+    } catch(final Exception e) {
       return false;
     }
   }

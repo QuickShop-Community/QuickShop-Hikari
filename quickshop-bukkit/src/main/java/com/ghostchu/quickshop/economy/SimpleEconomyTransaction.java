@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.api.economy.EconomyCore;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.economy.operation.DepositEconomyOperation;
 import com.ghostchu.quickshop.api.economy.operation.WithdrawEconomyOperation;
-import com.ghostchu.quickshop.api.event.EconomyTransactionEvent;
+import com.ghostchu.quickshop.api.event.economy.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.common.util.CalculateUtil;

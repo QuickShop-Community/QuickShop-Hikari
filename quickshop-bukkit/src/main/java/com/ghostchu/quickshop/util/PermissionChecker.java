@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
-import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
+import com.ghostchu.quickshop.api.event.general.ProtectionCheckStatus;
+import com.ghostchu.quickshop.api.event.general.ShopProtectionCheckEvent;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.eventmanager.BukkitEventManager;

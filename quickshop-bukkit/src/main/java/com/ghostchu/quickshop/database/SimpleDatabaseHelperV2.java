@@ -99,7 +99,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public void checkColumns() {
 
     plugin.logger().info("Checking and updating database columns, it may take a while...");
-    try(PerfMonitor ignored = new PerfMonitor("Perform database schema upgrade")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Perform database schema upgrade")) {
       new DatabaseUpgrade(this).upgrade();
       if(getDatabaseVersion() != LATEST_DATABASE_VERSION) {
         plugin.logger().warn("Database not upgrade to latest schema, or the developer forget update the version number, please report this to developer.");
@@ -110,7 +110,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   public int getDatabaseVersion() {
 
-    try(SQLQuery query = DataTables.METADATA
+    try(final SQLQuery query = DataTables.METADATA
             .createQuery()
             .addCondition("key", "database_version")
             .selectColumns("value")
@@ -121,7 +121,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return -1; // Default latest version
       }
       return Integer.parseInt(result.getString("value"));
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       Log.debug("Failed to getting database version! Err: " + e.getMessage());
       return -1;
     }
@@ -150,7 +150,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       shopIsolatedFinal.forEach(isolatedShopId->{
         try {
           DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
-        } catch(SQLException e) {
+        } catch(final SQLException e) {
           Log.debug("Failed to delete: " + e.getMessage());
         }
       });
@@ -161,7 +161,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       dataIsolatedFinal.forEach(isolatedDataId->{
         try {
           DataTables.DATA.createDelete().addCondition("id", isolatedDataId).build().execute();
-        } catch(SQLException e) {
+        } catch(final SQLException e) {
           Log.debug("Failed to delete: " + e.getMessage());
         }
       });
@@ -174,13 +174,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     final List<Long> isolatedIds = new ArrayList<>();
     final String SQL = "SELECT " + aId + " FROM " + aTable.getName() + " WHERE " + aId + " NOT IN (SELECT " + bId + " FROM " + bTable.getName() + ")";
-    try(SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
+    try(final SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
       final ResultSet rs = query.getResultSet();
       while(rs.next()) {
         final long id = rs.getLong(aId);
         isolatedIds.add(id);
       }
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       plugin.logger().warn("Failed to list all " + aTable.getName() + " not exists in " + bTable.getName() + "!", e);
     }
     return isolatedIds;
@@ -191,7 +191,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     try {
       final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil(this);
       databaseIOUtil.performBackup("database-upgrade");
-    } catch(Throwable throwable) {
+    } catch(final Throwable throwable) {
       plugin.logger().warn("Failed to backup the database.", throwable);
     }
   }
@@ -203,7 +203,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       getManager().alterTable(DataTables.DATA.getName())
               .addColumn("benefit", "MEDIUMTEXT")
               .execute();
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       Log.debug("Failed to add benefit column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
     }
   }
@@ -211,6 +211,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public @NotNull SQLManager getManager() {
 
     return manager;
+  }
+
+  private void addNewItemColumn() {
+    fastBackup();
+    try {
+      getManager().alterTable(DataTables.DATA.getName())
+              .addColumn("new_item", "TEXT NOT NULL")
+              .execute();
+    } catch(final SQLException e) {
+      Log.debug("Failed to add new_item " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+    }
   }
 
   private void upgradePlayers() {
@@ -223,7 +234,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       getManager().alterTable(DataTables.PLAYERS.getName())
               .addColumn("cachedName", "VARCHAR(255)")
               .execute();
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       Log.debug("Failed to add cachedName or modify locale column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
     }
   }
@@ -484,7 +495,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                        + " ON " + DataTables.DATA.getName() + ".id = " + DataTables.SHOPS.getName() + ".data"
                        + " INNER JOIN " + DataTables.SHOP_MAP.getName()
                        + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id";
-    try(SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
+    try(final SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
       final ResultSet rs = query.getResultSet();
       while(rs.next()) {
         final String world = rs.getString("world");
@@ -499,7 +510,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         final InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
         shopRecords.add(new ShopRecord(dataRecord, infoRecord));
       }
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       plugin.logger().error("Failed to list shops", e);
     }
     return shopRecords;
@@ -509,13 +520,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public @NotNull List<Long> listShopsTaggedBy(@NotNull final UUID tagger, @NotNull final String tag) {
 
     final List<Long> shopIds = new ArrayList<>();
-    try(SQLQuery query = DataTables.TAGS.createQuery()
+    try(final SQLQuery query = DataTables.TAGS.createQuery()
             .addCondition("tagger", tagger.toString())
             .addCondition("tag", tag)
             .build().execute()) {
       final ResultSet set = query.getResultSet();
       shopIds.add(set.getLong("shop"));
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       plugin.logger().error("Failed to list shops tagged by " + tagger + " with tag " + tag, e);
     }
     return shopIds;
@@ -525,12 +536,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public @NotNull List<String> listTags(@NotNull final UUID tagger) {
 
     final List<String> tags = new ArrayList<>();
-    try(SQLQuery query = DataTables.TAGS.createQuery()
+    try(final SQLQuery query = DataTables.TAGS.createQuery()
             .addCondition("tagger", tagger.toString())
             .build().execute()) {
       final ResultSet set = query.getResultSet();
       tags.add(set.getString("tag"));
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       plugin.logger().error("Failed to list tags by " + tagger, e);
     }
     return tags;
@@ -662,7 +673,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .build()
             .executeFuture(dat->{
               final List<String> msgs = new ArrayList<>();
-              try(ResultSet set = dat.getResultSet()) {
+              try(final ResultSet set = dat.getResultSet()) {
                 while(set.next()) {
                   msgs.add(set.getString("content"));
                 }
@@ -773,17 +784,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(final long shopId) {
 
     return CompletableFuture.supplyAsync(()->{
-      ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2);
-      try(SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
+      ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2, false);
+      try(final SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
               .selectColumns("stock", "space")
               .addCondition("shop", shopId)
               .setLimit(1)
               .build().execute()) {
         final ResultSet set = query.getResultSet();
         if(set.next()) {
-          cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"));
+          cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"), true);
         }
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Cannot handle the inventory cache lookup for shop {}", shopId, exception);
       }
       return cache;
@@ -831,7 +842,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .addTimeCondition("time", null, endDate)
                 .build().execute();
         return linesAffected;
-      } catch(SQLException e) {
+      } catch(final SQLException e) {
         plugin.logger().warn("Failed to purge logs records", e);
         return -1;
       }
@@ -855,7 +866,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
     final String query = "SELECT * FROM " + table + " LIMIT 1";
     boolean match = false;
-    try(Connection connection = manager.getConnection(); PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+    try(final Connection connection = manager.getConnection(); final PreparedStatement ps = connection.prepareStatement(query); final ResultSet rs = ps.executeQuery()) {
       final ResultSetMetaData metaData = rs.getMetaData();
       for(int i = 1; i <= metaData.getColumnCount(); i++) {
         if(metaData.getColumnLabel(i).equals(column)) {
@@ -863,7 +874,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
           break;
         }
       }
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       return match;
     }
     return match; // Uh, wtf.
@@ -883,7 +894,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     final Connection connection = manager.getConnection();
     boolean match = false;
-    try(ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
+    try(final ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
       while(rs.next()) {
         if(table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
           match = true;
@@ -901,7 +912,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     final File backupFile = new File(new File(plugin.getDataFolder(), "backup"), System.currentTimeMillis() + "-I-told-you-backup-database-before-1.20.5-upgrade.zip");
     try {
       new DatabaseIOUtil(this).exportTables(backupFile);
-    } catch(SQLException | IOException e) {
+    } catch(final SQLException | IOException e) {
       plugin.logger().warn("Failed to backup database", e);
     }
   }
@@ -979,6 +990,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         parent.makeBackup();
         currentDatabaseVersion = 16;
       }
+      /*if(currentDatabaseVersion == 16) {
+        logger.info("Data upgrading: Creating a new column... new_item for enhanced item storage.");
+        parent.addNewItemColumn();
+        currentDatabaseVersion = 17;
+      }*/
       parent.setDatabaseVersion(currentDatabaseVersion).join();
     }
 
@@ -993,7 +1009,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
           }
           manager.executeSQL("DROP TABLE " + originTableName);
         }
-      } catch(SQLException e) {
+      } catch(final SQLException e) {
         return false;
       }
       return true;
@@ -1012,7 +1028,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       getManager().alterTable(DataTables.LOG_PURCHASE.getName())
               .addIndex(IndexType.INDEX, "idx_log_purchase_buyer", "buyer")
               .execute();
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       plugin.logger().warn("Cannot setup the table index", e);
     }
   }

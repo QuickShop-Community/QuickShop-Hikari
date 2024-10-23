@@ -2,15 +2,15 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.ItemPreviewComponentPopulateEvent;
-import com.ghostchu.quickshop.api.event.ItemPreviewComponentPrePopulateEvent;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPopulateEvent;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
-import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.general.ShopInfoPanelEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopTaxEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -248,7 +248,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     try {
       shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
-    } catch(Exception shopError) {
+    } catch(final Exception shopError) {
       plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
       transaction.rollback(true);
       plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
@@ -334,18 +334,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           return;
         }
       }
-    } catch(NumberFormatException ex) {
+    } catch(final NumberFormatException ex) {
       Log.debug(ex.getMessage());
       plugin.text().of(p, "not-a-number", message).send();
       return;
     }
 
     final BlockState state = info.getLocation().getBlock().getState();
-    if(state instanceof InventoryHolder holder) {
+    if(state instanceof final InventoryHolder holder) {
       // Create the basic shop
       final String symbolLink;
       final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
-      if(manager instanceof BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
+      if(manager instanceof final BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
         symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
       } else {
         symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
@@ -448,7 +448,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     try {
       shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
-    } catch(Exception shopError) {
+    } catch(final Exception shopError) {
       plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
       transaction.rollback(true);
       plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
@@ -478,9 +478,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       } else {
         saveTask.get(30, TimeUnit.SECONDS);
       }
-    } catch(ExecutionException | TimeoutException e) {
+    } catch(final ExecutionException | TimeoutException e) {
       plugin.logger().warn("Shops saving interrupted, some unsaved data may lost.", e);
-    } catch(InterruptedException e) {
+    } catch(final InterruptedException e) {
       Thread.currentThread().interrupt();
     }
     this.interactiveManager.reset();
@@ -627,10 +627,10 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         if(signBlock != null && autoSign) {
           if(signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
             final BlockState signState = this.makeShopSign(shop.getLocation().getBlock(), signBlock, null);
-            if(signState instanceof Sign puttedSign) {
+            if(signState instanceof final Sign puttedSign) {
               try {
                 shop.claimShopSign(puttedSign);
-              } catch(Throwable ignored) {
+              } catch(final Throwable ignored) {
               }
             }
           }
@@ -846,7 +846,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
         previewComponentPrePopulateEvent.callEvent();
         previewItemStack = previewComponentPrePopulateEvent.getItemStack();
-        Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/quickshop silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())));
+        Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
         previewComponent = plugin.getPlatform().setItemStackHoverEvent(previewComponent, shop.getItem());
         final ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
         itemPreviewComponentPopulateEvent.callEvent();
@@ -898,7 +898,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           ItemFlag hidePotionEffect;
           try {
             hidePotionEffect = ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP");
-          } catch(Exception e) {
+          } catch(final Exception e) {
             hidePotionEffect = ItemFlag.valueOf("HIDE_POTION_EFFECTS"); // Remove this when we dropped 1.20.x support
           }
           shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(hidePotionEffect);
@@ -910,7 +910,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       if(shouldDisplayPotionEffects) {
         if(plugin.getGameVersion().isNewPotionAPI()) {
-          if(items.hasItemMeta() && (items.getItemMeta() instanceof PotionMeta potionMeta)) {
+          if(items.hasItemMeta() && (items.getItemMeta() instanceof final PotionMeta potionMeta)) {
             final List<PotionEffect> effects = new ArrayList<>();
             if(potionMeta.getBasePotionType() != null) {
               effects.addAll(potionMeta.getBasePotionType().getPotionEffects());
@@ -923,7 +923,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
               Component translation;
               try {
                 translation = plugin.getPlatform().getTranslation(potionEffect.getType());
-              } catch(Throwable th) {
+              } catch(final Throwable th) {
                 translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
                 plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
               }
@@ -931,14 +931,14 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             }
           }
         } else {
-          if(items.getItemMeta() instanceof PotionMeta potionMeta) {
+          if(items.getItemMeta() instanceof final PotionMeta potionMeta) {
             final PotionData potionData = potionMeta.getBasePotionData();
             final PotionEffectType potionEffectType = potionData.getType().getEffectType();
             if(potionEffectType != null) {
               Component translation;
               try {
                 translation = plugin.getPlatform().getTranslation(potionEffectType);
-              } catch(Throwable th) {
+              } catch(final Throwable th) {
                 translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
                 plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
               }
@@ -952,7 +952,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                 Component translation;
                 try {
                   translation = plugin.getPlatform().getTranslation(potionEffect.getType());
-                } catch(Throwable th) {
+                } catch(final Throwable th) {
                   translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
                   plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
                 }
@@ -963,7 +963,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
       }
       chatSheetPrinter.printFooter();
-    } catch(Exception e) {
+    } catch(final Exception e) {
       plugin.text().of(p, "shop-information-not-shown-due-an-internal-error").send();
       plugin.logger().warn("Unable to show shop information panel to player {}", p.getName(), e);
     }
@@ -1013,10 +1013,10 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     signBlock.setType(signMaterial == null? Util.getSignMaterial() : signMaterial);
     final BlockState signBlockState = signBlock.getState();
     final BlockData signBlockData = signBlockState.getBlockData();
-    if(signIsWatered && (signBlockData instanceof Waterlogged waterable)) {
+    if(signIsWatered && (signBlockData instanceof final Waterlogged waterable)) {
       waterable.setWaterlogged(true); // Looks like sign directly put in water
     }
-    if(signBlockData instanceof WallSign wallSignBlockData) {
+    if(signBlockData instanceof final WallSign wallSignBlockData) {
       final BlockFace bf = container.getFace(signBlock);
       if(bf != null) {
         wallSignBlockData.setFacing(bf);

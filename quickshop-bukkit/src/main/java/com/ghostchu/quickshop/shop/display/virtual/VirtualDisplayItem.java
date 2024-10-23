@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
 import com.comphenix.protocol.events.PacketContainer;
-import com.ghostchu.quickshop.api.event.DisplayApplicableCheckEvent;
-import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
+import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
+import com.ghostchu.quickshop.api.event.display.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;

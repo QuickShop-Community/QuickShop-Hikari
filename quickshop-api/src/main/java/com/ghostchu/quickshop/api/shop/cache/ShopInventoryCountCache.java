@@ -18,4 +18,11 @@ public interface ShopInventoryCountCache {
    */
   int getSpace();
 
+  /**
+   * Check if the cache has been initialized.
+   *
+   * @return true if the cache has been initialized, false otherwise
+   */
+  boolean initialized();
+
 }

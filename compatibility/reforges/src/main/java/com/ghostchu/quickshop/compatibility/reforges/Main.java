@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.compatibility.reforges;
 
-import com.ghostchu.quickshop.api.event.ItemPreviewComponentPrePopulateEvent;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.willfp.eco.core.display.DisplayProperties;
 import com.willfp.reforges.ReforgesPlugin;
