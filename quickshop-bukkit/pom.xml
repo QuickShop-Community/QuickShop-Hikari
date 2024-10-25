@@ -169,6 +169,13 @@
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_21_R3</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-paper</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
