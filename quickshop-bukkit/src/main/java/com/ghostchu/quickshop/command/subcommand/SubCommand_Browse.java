@@ -36,7 +36,7 @@ public class SubCommand_Browse implements CommandHandler<Player> {
     final MenuViewer viewer = new MenuViewer(sender.getUniqueId());
     MenuManager.instance().addViewer(viewer);
 
-    final MenuPlayer menuPlayer = new BukkitPlayer(sender, QuickShop.getInstance().getJavaPlugin());
+    final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(sender);
 
     final boolean world = (!parser.getArgs().isEmpty() && parser.getArgs().get(0).equalsIgnoreCase("world"));
 
