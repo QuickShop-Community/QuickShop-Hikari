@@ -1,10 +1,10 @@
 package com.ghostchu.quickshop.compatibility.griefprevention;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -82,7 +82,7 @@ public final class Main extends CompatibilityModule implements Listener {
           }
         }
       }, this);
-    } catch(Throwable e) {
+    } catch(final Throwable e) {
       getLogger().info("Unable to register resize event handler, other listeners will sill working.");
     }
   }
@@ -265,6 +265,9 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   private boolean checkPermission(@NotNull final Player player, @NotNull final Location location, final List<Flag> limits) {
+    if (player.hasPermission("griefprevention.ignoreclaims")) {
+      return true;
+    }
 
     if(!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
       return true;
@@ -323,6 +326,11 @@ public final class Main extends CompatibilityModule implements Listener {
   public void onTrading(final ShopPurchaseEvent event) {
 
     event.getPurchaser().getBukkitPlayer().ifPresent(p->{
+
+      if(tradeLimits.isEmpty()) {
+        return;
+      }
+
       if(checkPermission(p, event.getShop().getLocation(), tradeLimits)) {
         return;
       }
@@ -336,7 +344,8 @@ public final class Main extends CompatibilityModule implements Listener {
     Log.debug("GP-Compat: Starting override permission...");
     final Location shopLoc = event.getShop().getLocation();
     if(!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
-      Log.debug("GP-Compat: World " + shopLoc.getWorld().getName() + " not enabled for claims");
+      final String worldName = shopLoc.getWorld() == null ? "Null World" : shopLoc.getWorld().getName();
+      Log.debug("GP-Compat: World " + worldName + " not enabled for claims");
       return;
     }
     final Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, null);

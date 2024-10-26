@@ -96,7 +96,7 @@ public class MainPage extends QuickShopPage {
                                              Util.mainThreadRun(()->ShopUtil.setPrice(QuickShop.getInstance(), QUserImpl.createFullFilled(player), price.doubleValue(), shop.get()));
                                              return true;
 
-                                           } catch(NumberFormatException ignore) { }
+                                           } catch(final NumberFormatException ignore) { }
                                          }
                                          message.getPlayer().message(legacy(id, "gui.keeper.change-icon.enter"));
                                          return false;
@@ -180,7 +180,7 @@ public class MainPage extends QuickShopPage {
 
                                                QuickShop.getInstance().text().of(player, "no-permission").send();
                                              }
-                                             viewer.get().close(new BukkitPlayer(player, QuickShop.getInstance().getJavaPlugin()));
+                                             viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                              return true;
                                            }
                                            return true;

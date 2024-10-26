@@ -1,10 +1,10 @@
 package com.ghostchu.quickshop.compatibility.worldguard;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
@@ -56,11 +56,11 @@ public final class Main extends CompatibilityModule implements Listener {
       registry.register(tradeFlag);
       this.createFlag = createFlag;
       this.tradeFlag = tradeFlag;
-    } catch(FlagConflictException e) {
+    } catch(final FlagConflictException e) {
       // some other plugin registered a flag by the same name already.
       // you can use the existing flag, but this may cause conflicts - be sure to check type
       Flag<?> existing = registry.get("quickshophikari-create");
-      if(existing instanceof StateFlag createFlag) {
+      if(existing instanceof final StateFlag createFlag) {
         this.createFlag = createFlag;
       } else {
         getLogger().log(Level.WARNING, "Could not register flags! CONFLICT!", e);
@@ -68,7 +68,7 @@ public final class Main extends CompatibilityModule implements Listener {
         return;
       }
       existing = registry.get("quickshophikari-trade");
-      if(existing instanceof StateFlag tradeFlag) {
+      if(existing instanceof final StateFlag tradeFlag) {
         this.tradeFlag = tradeFlag;
       } else {
         getLogger().log(Level.WARNING, "Could not register flags! CONFLICT!", e);
@@ -91,7 +91,13 @@ public final class Main extends CompatibilityModule implements Listener {
 
     final Location shopLoc = event.getShop().getLocation();
     final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    final RegionManager manager = container.get(BukkitAdapter.adapt(shopLoc.getWorld()));
+
+    final World world = shopLoc.getWorld();
+    if (world == null) {
+      return;
+    }
+
+    final RegionManager manager = container.get(BukkitAdapter.adapt(world));
     if(manager == null) {
       return;
     }
@@ -147,8 +153,8 @@ public final class Main extends CompatibilityModule implements Listener {
     final BlockVector3 maxPoint = region.getMaximumPoint();
     final Set<Chunk> chuckLocations = new HashSet<>();
 
-    for(int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
-      for(int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
+    for(int x = minPoint.x(); x <= maxPoint.x() + 16; x += 16) {
+      for(int z = minPoint.z(); z <= maxPoint.z() + 16; z += 16) {
         chuckLocations.add(world.getChunkAt(x >> 4, z >> 4));
       }
     }

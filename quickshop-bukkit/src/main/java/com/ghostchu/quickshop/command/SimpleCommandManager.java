@@ -70,6 +70,7 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
+import lombok.Getter;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -85,6 +86,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
@@ -493,7 +495,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return true;
       }
     }
-    if(sender instanceof Player player && playSoundOnCommand) {
+    if(sender instanceof final Player player && playSoundOnCommand) {
       player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
     }
     if(cmdArg.length == 0) {
@@ -526,7 +528,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
           return true;
         }
         Log.debug("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-        try(PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
+        try(final PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
           container.getExecutor().onCommand_Internal(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
@@ -605,7 +607,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     if(plugin.getBootError() != null) {
       return Collections.emptyList();
     }
-    if(sender instanceof Player player && playSoundOnTabComplete) {
+    if(sender instanceof final Player player && playSoundOnTabComplete) {
       player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
     }
     if(cmdArg.length <= 1) {
@@ -656,6 +658,14 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     container.bakeExecutorType();
     cmds.removeIf(commandContainer->commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
     cmds.removeIf(container::equals);
+
+    final String oldPrefix = container.getPrefix();
+    final String newPrefix = plugin.getCommandPrefix(oldPrefix);
+    if (newPrefix != null && !newPrefix.isEmpty()) {
+
+      container.setPrefix(newPrefix);
+      container.setDescription((locale) -> plugin.text().of("command.description." + oldPrefix).forLocale());
+    }
     cmds.add(container);
     cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
     Log.debug(Level.INFO, "Registered subcommand: " + container.getPrefix() + " - " + container.getExecutor().getClass().getName(), Log.Caller.create());
@@ -697,6 +707,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     return "Command Manager";
   }
 
+  @Getter
   private enum Action {
     EXECUTE("execute"),
     TAB_COMPLETE("tab-complete");

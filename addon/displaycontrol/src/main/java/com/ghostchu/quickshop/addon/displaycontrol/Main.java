@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.addon.displaycontrol.bean.DisplayOption;
 import com.ghostchu.quickshop.addon.displaycontrol.command.SubCommand_DisplayControl;
 import com.ghostchu.quickshop.addon.displaycontrol.database.DisplayControlDatabaseHelper;
 import com.ghostchu.quickshop.api.command.CommandContainer;
-import com.ghostchu.quickshop.api.event.DisplayApplicableCheckEvent;
+import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;

@@ -20,7 +20,7 @@ import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1202Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_3.Spigot1203Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_4.Spigot1205Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1210Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1211Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_21_3.Spigot1231Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
@@ -73,7 +73,7 @@ public class QuickShopBukkit extends JavaPlugin {
       initQuickShop();
       // SLF4J now should available
       bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Complete (" + (System.currentTimeMillis() - startLoadAt) + "ms). Waiting for enable...");
-    } catch(Throwable e) {
+    } catch(final Throwable e) {
       bootstrapLogger.log(Level.SEVERE, "Failed to startup the QuickShop-Hikari due unexpected exception!", e);
       Bukkit.getPluginManager().disablePlugin(this);
       abortLoading = e;
@@ -155,14 +155,14 @@ public class QuickShopBukkit extends JavaPlugin {
     });
     try {
       loadLibraries(this.bukkitLibraryManager);
-    } catch(IllegalStateException e) {
+    } catch(final IllegalStateException e) {
       bootstrapLogger.log(Level.SEVERE, e.getMessage() + " The startup cannot continue.", e);
     }
   }
 
   private void loadLibraries(final LibraryManager manager) {
 
-    try(InputStream stream = getResource("libraries.maven")) {
+    try(final InputStream stream = getResource("libraries.maven")) {
       if(stream == null) {
         throw new IllegalStateException("Jar file doesn't include a valid libraries.maven file");
       }
@@ -219,7 +219,7 @@ public class QuickShopBukkit extends JavaPlugin {
         }
         manager.loadLibrary(load);
       }
-    } catch(IOException e) {
+    } catch(final IOException e) {
       throw new IllegalStateException("Cannot download the libraries, the first time install/upgrade need the Internet connection.", e);
     }
   }
@@ -262,7 +262,8 @@ public class QuickShopBukkit extends JavaPlugin {
             case "v1_20_R3" -> new Spigot1203Platform(this);
             case "v1_20_R4" -> new Spigot1205Platform(this);
             case "v1_21_R1" -> new Spigot1210Platform(this);
-            case "v1_21_R2" -> new Spigot1211Platform(this);
+            //case "v1_21_R2" -> new Spigot1211Platform(this);
+            case "v1_21_R2" -> new Spigot1231Platform(this);
             default -> {
               bootstrapLogger.warning("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
               Bukkit.getPluginManager().disablePlugin(this);
@@ -278,12 +279,12 @@ public class QuickShopBukkit extends JavaPlugin {
       }
       try {
         this.logger = this.platform.getSlf4jLogger(this);
-      } catch(Throwable th) {
+      } catch(final Throwable th) {
         this.logger = LoggerFactory.getLogger(getDescription().getName());
       }
       logger.info("Slf4jLogger initialized");
       bootstrapLogger.info("Platform initialized: " + this.platform.getClass().getName());
-    } catch(Throwable e) {
+    } catch(final Throwable e) {
       throw new Exception("Failed to initialize the platform", e);
     }
   }
@@ -329,7 +330,7 @@ public class QuickShopBukkit extends JavaPlugin {
 
     try {
       return new Semver(getDescription().getVersion());
-    } catch(Exception e) {
+    } catch(final Exception e) {
       return new Semver("0.0.0.0");
     }
   }

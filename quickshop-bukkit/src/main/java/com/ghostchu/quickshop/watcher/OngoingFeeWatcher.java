@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;
+import com.ghostchu.quickshop.api.event.general.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;

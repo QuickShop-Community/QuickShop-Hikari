@@ -18,8 +18,8 @@ package com.ghostchu.quickshop.util;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
-import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;

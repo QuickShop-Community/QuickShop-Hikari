@@ -115,3 +115,6 @@ run/
 /.vscode/settings.json
 /.run
 .run
+/${rootDir}/build-artifacts/quickshop-hikari-6.2.0.7-shaded.pom
+/${rootDir}/build-artifacts/quickshop-hikari-6.2.0.7-shaded-sources.pom
+/${rootDir}/build-artifacts/quickshop-hikari-6.2.0.7-shaded-test-sources.pom

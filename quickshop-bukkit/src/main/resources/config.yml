@@ -597,6 +597,10 @@ custom-commands:
   - chestshop
   - cshop
 
+#Set the command alias for qs sub command
+custom-subcommands:
+  help: help
+
 #Let this stay false, DO NOT TOUCH IT!
 config-damaged: false
 

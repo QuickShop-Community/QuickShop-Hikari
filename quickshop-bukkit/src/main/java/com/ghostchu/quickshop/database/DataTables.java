@@ -304,7 +304,7 @@ public enum DataTables {
     }
     boolean match = false;
     try {
-      try(Connection connection = manager.getConnection(); ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
+      try(final Connection connection = manager.getConnection(); final ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
         while(rs.next()) {
           if(getName().equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
             match = true;
@@ -312,7 +312,7 @@ public enum DataTables {
           }
         }
       }
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       if(Util.isDevMode()) {
         e.printStackTrace();
       }
@@ -333,7 +333,7 @@ public enum DataTables {
               .addCondition("1=1")
               .build().execute();
       return true;
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       Log.debug("Failed to purge table " + this.getName() + e);
       return false;
     }
