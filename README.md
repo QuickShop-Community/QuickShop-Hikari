@@ -32,6 +32,8 @@
 
 [openinv]: https://dev.bukkit.org/projects/openinv
 
+[modrinth]: https://modrinth.com/plugin/quickshop-hikari  
+
 [worldedit]: https://dev.bukkit.org/projects/worldedit
 
 [optional_modules]: https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/
@@ -138,7 +140,7 @@ the latest versions of Minecraft.
 
 ## Downloads
 
-Obtain the latest version from [ci.codemc.io][codemc]
+Obtain the latest version from [Modrinth][modrinth]
 
 ## Compatibility Modules
 
