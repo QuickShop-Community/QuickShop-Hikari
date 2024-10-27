@@ -408,6 +408,7 @@
         <module>platform/quickshop-platform-spigot-v1_20_R4</module>
         <module>platform/quickshop-platform-spigot-v1_21_R1</module>
         <module>platform/quickshop-platform-spigot-v1_21_R2</module>
+        <module>platform/quickshop-platform-spigot-v1_21_R3</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

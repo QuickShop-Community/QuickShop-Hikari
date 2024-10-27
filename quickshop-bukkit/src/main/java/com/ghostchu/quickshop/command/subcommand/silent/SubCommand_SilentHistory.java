@@ -40,7 +40,7 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
     final MenuViewer viewer = new MenuViewer(sender.getUniqueId());
     MenuManager.instance().addViewer(viewer);
 
-    final MenuPlayer menuPlayer = new BukkitPlayer(sender, QuickShop.getInstance().getJavaPlugin());
+    final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(sender);
 
     final List<Shop> shops = new ArrayList<>();
     shops.add(shop);
@@ -63,7 +63,7 @@ public class SubCommand_SilentHistory extends SubCommand_SilentBase {
           MenuManager.instance().open("qs:history", 1, menuPlayer);
         });
 
-      } catch(Exception e) {
+      } catch(final Exception e) {
         MenuManager.instance().removeViewer(sender.getUniqueId());
         plugin.text().of(sender.getUniqueId(), "internal-error", sender.getUniqueId()).send();
         QuickShop.getInstance().logger().error("Couldn't query the shop history for shops {}.", shopHistory.shops(), e);

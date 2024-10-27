@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Info;
@@ -163,7 +163,7 @@ public class PlayerListener extends AbstractQSListener {
           viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shopSearched.getKey().getShopId());
           MenuManager.instance().addViewer(viewer);
 
-          final MenuPlayer menuPlayer = new BukkitPlayer(e.getPlayer(), QuickShop.getInstance().getJavaPlugin());
+          final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(e.getPlayer());
           MenuManager.instance().open("qs:keeper", 1, menuPlayer);
         }
       }
@@ -179,7 +179,7 @@ public class PlayerListener extends AbstractQSListener {
           viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shopSearched.getKey().getShopId());
           MenuManager.instance().addViewer(viewer);
 
-          final MenuPlayer menuPlayer = new BukkitPlayer(e.getPlayer(), QuickShop.getInstance().getJavaPlugin());
+          final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(e.getPlayer());
           MenuManager.instance().open("qs:trade", 1, menuPlayer);
         }
       }
@@ -688,7 +688,7 @@ public class PlayerListener extends AbstractQSListener {
       return;
     }
     final BlockState state = e.getBlock().getState();
-    if(state instanceof Sign sign) {
+    if(state instanceof final Sign sign) {
       if(sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
         e.setCancelled(true);
         Log.debug("Disallow " + e.getPlayer().getName() + " editing the shop sign.");
@@ -719,7 +719,7 @@ public class PlayerListener extends AbstractQSListener {
       if(shop != null) {
         shop.setSignText(plugin.text().findRelativeLanguages(e.getPlayer()));
       }
-    } catch(NullPointerException ignored) {
+    } catch(final NullPointerException ignored) {
     }
 
     QuickShop.inShop.remove(id);

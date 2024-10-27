@@ -171,7 +171,7 @@ public class StaffSelectionPage {
 
                                                      shop.get().setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
                                                      QuickShop.getInstance().text().of(id, "shop-staff-deleted", name).send();
-                                                     viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
+                                                     viewer.get().close(QuickShop.getInstance().createMenuPlayer(viewerPlayer));
                                                      return true;
                                                    }
                                                    return true;
@@ -191,7 +191,7 @@ public class StaffSelectionPage {
 
                                                        QuickShop.getInstance().text().of(id, "no-permission").send();
                                                      }
-                                                     viewer.get().close(new BukkitPlayer(viewerPlayer, QuickShop.getInstance().getJavaPlugin()));
+                                                     viewer.get().close(QuickShop.getInstance().createMenuPlayer(viewerPlayer));
                                                      return true;
                                                    }
                                                    return true;

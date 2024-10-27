@@ -127,14 +127,19 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.HelperMethods;
 import net.tnemc.menu.bukkit.BukkitMenuHandler;
+import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.MenuHandler;
+import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.folia.FoliaMenuHandler;
+import net.tnemc.menu.folia.FoliaPlayer;
 import net.tnemc.menu.paper.PaperMenuHandler;
+import net.tnemc.menu.paper.PaperPlayer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -1239,6 +1244,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return this.textManager;
   }
 
+  public MenuPlayer createMenuPlayer(final OfflinePlayer player) {
+    if(this.folia.isFolia()) {
+      return new FoliaPlayer(player, this.javaPlugin);
+    } else if(this.folia.isPaper()) {
+      return new PaperPlayer(player, this.javaPlugin);
+    } else {
+      return new BukkitPlayer(player, this.javaPlugin);
+    }
+  }
+
   /**
    * Return the QuickShop fork name.
    *
@@ -1269,6 +1284,23 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public enum DatabaseDriverType {
     MYSQL,
     H2
+  }
+
+  public String getMainCommand() {
+
+    final List<String> customCommands = getConfig().getStringList("custom-commands");
+    return customCommands.isEmpty() ? "quickshop" : customCommands.getFirst();
+  }
+
+  public String getCommandPrefix(final String commandLabel) {
+
+    final ConfigurationSection section = getConfig().getConfigurationSection("custom-subcommands");
+
+    if (section == null) return commandLabel;
+    final String prefix = section.getString(commandLabel);
+
+    if (prefix == null || prefix.isEmpty()) return commandLabel;
+    return prefix;
   }
 
   public static class EconomyLoader {

@@ -1,160 +1,160 @@
-break-shop-use-supertool: <yellow>Galite sulaužyti parduotuvę naudodami super įrankį.
-fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
-not-allowed-to-create: <red>Tu negali čia sukurti parduotuvės.
-disabled-in-this-world: <red>Parduotuvės yra išjungtos šiame pasaulyje
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
-client-language-changed: <green>QuickShop detected that your client language has been changed, we now use the {0} locale for you.
-shops-backingup: Sukuriamas parduotuvių atkurimo failas iš duomenų bazės...
-_comment: Hi translator! If you're editing this on GitHub or through source code should you go to https://crowdin.com/project/quickshop-hikari instead.
-unlimited-shop-owner-changed: <yellow>Parduotuvės savininkas buvo pakeistas į {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Negalimas skaičius
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
-not-a-number: <red>Galite įvesti tik skaičių, jūsų įvestis buvo {0}.
-not-looking-at-valid-shop-block: <red>Could not create a shop. Please look a supported block-type and try again.
-shop-removed-cause-ongoing-fee: <red> Jūsų parduotuvė esanti {0} buvo ištrinta nes jūs neturite pakankamai pinigų!
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+not-allowed-to-create: <red>You may not create a shop here.
+disabled-in-this-world: <red>QuickShop is disabled in this world
+how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+client-language-changed: <green>QuickShop detected that your client language has been changed. We now use the {0} locale for you.
+shops-backingup: Creating Shop-backup from database...
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to {0}.
+bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
+thats-not-a-number: <red>Invalid number
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is not allowed. Pick another one!
+console-only-danger: <red>This is a dangerous command, so only the Console can execute it.
+not-a-number: <red>You can only input a number, your input was {0}.
+not-looking-at-valid-shop-block: <red>Could not create a shop. Please look at a supported block type and try again.
+shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
 tabcomplete:
-  amount: '[Kiekis]'
-  item: 'Daiktas'
-  price: '[Kaina]'
-  name: '[Pavadinimas]'
-  range: '[atstumas]'
-  currency: '[Valiutos pavadinimas]'
-  percentage: '[Procentai%]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
-blacklisted-item: <red>You cannot sell this item because it is on the blacklist
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}.
-server-crash-warning: 'If you want custom the language file, use language override system'
-you-cant-afford-to-change-price: <red>Tai kainuoja {0} kad pakeisti kaina jūsų parduotuvėje.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
-forbidden-vanilla-behavior: <red>This operation is forbidden due to it not being consistent with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Jūsų parduotuvė{0} yra pilna!
+  amount: '[amount]'
+  item: '[item]'
+  price: '[price]'
+  name: '[name]'
+  range: '[range]'
+  currency: '[currency name]'
+  percentage: '[percentage%]'
+taxaccount-unset: <green>This shop's tax account is now following the global server setting.
+blacklisted-item: <red>This item cannot be sold as it is on the blacklist
+command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
+safe-mode: <red>QuickShop is in safe mode. You cannot open this shop container, please contact the Server Administrator to fix this issue.
+forbidden-vanilla-behavior: <red>This operation is not allowed due to it not being consistent with vanilla behaviours
+shop-out-of-space-name: <dark_purple>Your shop {0} is full!
 paste-disabled: |-
   <red>Paste function has been disabled! You cannot request technical support.
   Reason: {0}
 quick-fill:
-  entry-own: ' <yellow><red>[Greitas užpildymas]<aqua>{0}<light_purple>{1}'
+  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Vardas:<aqua>{0}'
-    - '<yellow>Savininkas:<aqua>{0}'
-    - '<yellow>Tipas:<aqua>{0}'
-    - '<yellow>Kaina:<aqua>{0}'
-    - '<yellow>Daiktas:<aqua>{0}'
-    - '<yellow>Vieta:<aqua>{0}'
+    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Owner: <aqua>{0}'
+    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Vardas:<aqua>{name}'
-    - '<yellow>Savininkas:<aqua>{owner}'
-    - '<yellow>Tipas:<aqua>{type}'
-    - '<yellow>Kaina:<aqua>{price}'
-    - '<yellow>Daiktas:<aqua>{item}'
-    - '<yellow>Vieta:<aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
-  entry-normal: ' <yellow><aqua>{0}<light_purple>{1}'
-  entry-cooperation: ' <yellow><red>[co]<aqua>{0}<light_purple>{1}'
+    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Location: <aqua>{location}'
+  header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
+  entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
+  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
-average-price-nearby: '<green>Netoli esančios vidutinės kainos:<yellow>{0}'
+average-price-nearby: '<green>Nearby average prices: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
-digits-reach-the-limit: <red>Jūs pasiekėte limita rašant skaičius po kablelio.
-currency-unset: <green>Parduotuvės valiuta buvo pašalinta sėkmingai. Nuo šiol naudojami numatyti/standartiniai nustatymai.
-you-cant-create-shop-in-there: <red>You don't have permissions to create a shop at this location.
-no-pending-action: <red>Jūs neturite jokių eilėje esančių veiksmų
-refill-success: <green>Papildymas sėkmingai baigtas
-failed-to-paste: <red>Failed to upload the data to pastebin. Check your internet connection and try again. (See console for details)
-shop-out-of-stock-name: <dark_purple>Jūsų parduotuvė{0} ištuštinta ir joje trūksta{1}!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>Vertė pasiekė didžiausia galima verte Java programoje.
-unlimited-shop-owner-keeped: '<yellow>Attention: The Shop Owner is still an unlimited Shop Owner, and you have to re-set the new Shop Owner by yourself.'
-no-enough-money-to-keep-shops: <red>You didn't had enough money to keep your shops! All your shops have been removed...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission set up in there?
-not-a-integer: <red>Jūs galite įvesti tik sveikus skaičius, jūsų skaičius buvo{0}.
-translation-country: 'Kalbų zona: Anglų (en_US)'
-buying-more-than-selling: '<red>ĮSPĖJIMAS: Jūs perkate daiktus kurių vertė didesne, nei jūs pardavinėjate!'
-purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>Jūs negalite įdėti šios prekės į savo parduotuvę!
-shop-has-changed: <red>Parduotuvė, kuria bandėte pasinaudoti, pasikeitė nuo paskutinio karto!
-flush-finished: <green>Sėkmingai išvalėte naujausias žinutes.
-no-price-given: <red>Prašome nurodyti leistiną/galiojančia pardavimo kainą.
-shop-already-owned: <red>Ši parduotuvė jau yra užpatentuota/yra naudojama.
-backup-success: <green>Backup successfull.
-not-looking-at-shop: <red>Couldn't find a QuickShop. Make sure you look at one.
-you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
-success-created-shop: <green>Shop created.
-shop-creation-cancelled: <red>Shop creation cancelled.
-shop-owner-self-trade: <yellow>You trade with your own shop. You may not gain any money.
-purchase-out-of-space: <red>This shop has run out of space. Contact the shop owner or staff to get it emptied.
+digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
+currency-unset: <green>Shop currency removed successfully. Using default settings now.
+you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
+no-pending-action: <red>You don't have any pending actions
+refill-success: <green>Refill successful
+failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
+shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+exceeded-maximum: <red>The value exceeded the maximum value in Java.
+unlimited-shop-owner-keeped: '<yellow>Attention: The Shop owner is still owning an unlimited shop and you have to re-set the new Shop owner by yourself.'
+no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
+3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+not-a-integer: <red>You must input an integer, your input was {0}.
+translation-country: 'Language Zone: English (en_US)'
+buying-more-than-selling: '<red>WARNING: You are buying items for more than what you are selling them for!'
+purchase-failed: '<red>Purchase failed: Internal Error. Please report this to the Server Administrator.'
+denied-put-in-item: <red>You cannot put this item into your shop!
+shop-has-changed: <red>The shop you tried to use has changed since you last clicked it!
+flush-finished: <green>Successfully cleared recent messages.
+no-price-given: <red>Please provide a valid price.
+shop-already-owned: <red>This is already a shop.
+backup-success: <green>Backup successful.
+not-looking-at-shop: <red>Couldn't find a shop! <yellow>Make sure you look at one.
+you-cant-afford-a-new-shop: <red>You cannot afford this, it costs <green>{0}<red> to create a new shop.
+success-created-shop: <green>Shop successfully created.
+shop-creation-cancelled: <red>The shop creation was cancelled.
+shop-owner-self-trade: <yellow>You're trading with your own shop. <gray>You may not gain any money.
+purchase-out-of-space: <red>This shop has run out of space! Contact the shop owner or staff to get it emptied.
 reloading-status:
-  success: <green>Reload completed without any errors.
-  scheduled: <green>Reload complete. <gray>(Some changes take a while to become active)
-  require-restart: <green>Reload complete. <yellow>(Some changes require a server restart to take effect)
-  failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} Kažkas nusipirko{1}{2} iš jūsų parduotuvės ir jūs gavote{3}({4} atskaičius mokesčius).
-not-enough-space: <red>You only have room left for {0} more!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
-shop-staff-added: <green>Successfully added {0} as a staff member to your shop.
+  success: <green>Plugin successfully reloaded without any errors.
+  scheduled: <green>Reload complete! <gray>(<yellow>Some changes take a while to become active<gray>)
+  require-restart: <green>Reload complete. <gray>(<yellow>Some changes require a server restart to take effect<gray>)
+  failed: <red>Reload failed, check the server console for errors
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+not-enough-space: <red>You only have room for <yellow>{0}<red> more!
+shop-name-success: <green>Shop name successfully renamed to <yellow>{0}<green>.
+shop-staff-added: <green>Successfully added <yellow>{0}<green> as a staff member to your shop.
 shop-staff-empty: <yellow>This shop have no staff members.
-shops-recovering: Atkuriama parduotuvė iš atsarginių failų...
+shops-recovering: Recovering shops from backup...
 virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
 menu:
-  sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Savininkas:{0}'
-  preview: <aqua>[Item Preview]
-  enchants: <dark_purple>Enchantai
-  sell-tax-self: <green>You didn't had to pay taxes because you own this shop.
-  shop-information: '<green>Parduotuvės informacija:'
-  item: '<green>Daiktas:<yellow>{0}'
-  price-per: <green>Kaina už <yellow>{0}<green><yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
+  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  owner: '<green>Owner: {0}'
+  preview: <gray>[<aqua>Item Preview<gray>]
+  enchants: <dark_purple>Enchantments
+  sell-tax-self: <green>You didn't have to pay taxes because you own this shop.
+  shop-information: '<green>Shop Information:'
+  item: '<green>Item: <yellow>{0}'
+  price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
+  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
   item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)
-  successful-purchase: '<green>Sėkmingai nusipirkote:'
-  price-per-stack: <green>kaina už <yellow>{2}x{0}-{1}
-  stored-enchants: <dark_purple>Saugomi enchantai
+  successful-purchase: '<green>Successfully purchased:'
+  price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
+  stored-enchants: <dark_purple>Stored Enchantments
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING<green> items.
-  shop-stack: '<green>Kaina už stacka:<yellow>{0}'
-  space: '<green>Vieta:<yellow>{0}'
-  effects: <green>efektai
-  damage-percent-remaining: <yellow>{0}% <green>Liko.
-  item-holochat-data-too-large: <red>[Error] Daiktų kiekis per didelis, kad būtų atvaizduotas
-  stock: '<green>Atsargos: <yellow>{0}'
-  this-shop-is-buying: <green>Ši parduotuvė <light_purple>SUPERKA<green> daiktus.
-  successfully-sold: '<green>Sėkmingai parduota:'
-  total-value-of-chest: '<green>Galutinė chesto vertė:<yellow>{0}'
-currency-not-exists: <red>Nepavyksta rasti valiutos, kurią norite nustatyti. Galbūt rašyba neteisinga arba šios valiutos nėra.
-no-nearby-shop: <red>Nėra netoliese esančių parduotuvių {0}.
+  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  shop-stack: '<green>Amount of bulk: <yellow>{0}'
+  space: '<green>Space: <yellow>{0}'
+  effects: <green>Effects
+  damage-percent-remaining: <yellow>{0}% <green>remaining.
+  item-holochat-data-too-large: <red>[Error] Item NBT is too large to display
+  stock: '<green>Stock: <yellow>{0}'
+  this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
+  successfully-sold: '<green>Successfully sold:'
+  total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
+currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
+no-nearby-shop: <red>No nearby shops matching {0}.
 translation-author: 'Ghost_chu, Andre_601'
-integrations-check-failed-trade: <red>Integracija {0} paneigė Parduotuvės siūloma trade
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
-success-change-owner-to-server: <green> Sėkmingai nustatėte parduotuvės savininką.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
-shop-name-too-long: <red>Parduotuvės pavadinimas per ilgas (Maksimalus ilgis {0}), prašome susikurti kitoki!
+integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
+shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Please contact the server administrators if this error persists.
+success-change-owner-to-server: <green>Successfully set the shop owner to Server.
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> does not exist.
+shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
-  header-player: '<yellow>{0} eurų. {1} {2} Pervedimo operacijos:'
+  header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Išviso{0}, įskaitant{1} atskaičius mokesčius.
-  unknown: <gray>(nežinomas)
+  price-hover: <yellow>Total {0}, including {1} taxes.
+  unknown: <gray>(unknown)
   undefined: <gray>(noname)
-  no-results: <red>Jokių mokesčių nėra.
+  no-results: <red>No transactions found.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Žaidėjas nusipirko daiktų iš supirkimo parduotuvės.
-    CREATE: <yellow>Žaidėjas sukurė parduotuvę.
-    PURCHASE_SELLING_SHOP: <yellow>Žaidėjas nusipirko daiktų iš parduodamos parduotuvės
-    PURCHASE: <yellow>Įsigyta prekė parduotuvėje
-  query-argument: 'Užklausos argumentas: {0}'
+    DELETE: <yellow>Player deleted a shop. Refunded the shop creation fee to the owner if possible.
+    ONGOING_FEE: <yellow>Player paid the ongoing fee because of the payment period.
+    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
+    CREATE: <yellow>Player created a shop.
+    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
+    PURCHASE: <yellow>Purchased item with a shop
+  query-argument: 'Query Argument: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>Parduotuvės {0} eurų. {1} {2} Pervedimo operacijos:'
+  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
-  looking-up: <yellow>Atliekama metrikos paiešką, palaukite...
-  tax-hover: <yellow>{0} Mokesčiai
-  header-global: '<yellow>Serverio {0} {1} Pervedimo operacijos:'
+  looking-up: <yellow>Performing metric lookup, Please wait...
+  tax-hover: <yellow>{0} taxes
+  header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} Išviso
+  transaction-count: <yellow>{0} total
   shop-hover: |-
     <yellow>{0}
     <gold>Pos: <gray>{1} {2} {3}, World: {4}
@@ -162,43 +162,44 @@ metric:
     <gold>Shop Type: <gray>{6}
     <gold>Item: <gray>{7}
     <gold>Price: <gray>{8}
-  time-hover: '<yellow>Laikas: {0}'
-  amount-stack-hover: <yellow>{0}x Stackas
-permission-denied-3rd-party: <red>Leidimas neleidžiamas naudojant 3rd-party pluginą {0}.
-you-dont-have-that-many-items: <red>Jūs turite tik {0} {1}.
-complete: <green>Užbaigta!
-translate-not-completed-yet-url: 'Kalbos vertimas {0} dar pilnai nebaigtas {1}. Ar norite padėti mums tobulinti vertimą? Nuoroda: {2}'
-success-removed-shop: <green>Parduotuvė pašalinta.
-currency-set: <green>Parduotuvės valiuta sėkmingai nustatyta į {0}.
-shop-purged-start: <green>Prasidėjo parduotuvės valymas, patikrinkite konsolę, kad gautumėte išsamesne informacija.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
-nothing-to-flush: <green>Jūs neturite naujų pranešimų iš parduotuvės.
-no-price-change: <red>Tai nekeičia kainos!
-edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
+  time-hover: '<yellow>Time: {0}'
+  amount-stack-hover: <yellow>{0}x stack
+permission-denied-3rd-party: <red>Permission denied by 3rd-party Plugin {0}.
+you-dont-have-that-many-items: <red>You only have {0} {1}.
+complete: <green>Complete!
+translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
+success-removed-shop: <green>Shop removed.
+currency-set: <green>Shop currency successfully set to {0}.
+shop-purged-start: <green>Shop purge started, check the console for details.
+economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economic changes have been rolled back. Please contact the server administrators if this error persists.
+nothing-to-flush: <green>You have no new shop messages.
+no-price-change: <red>This wouldn't result in a price change!
+edition-confilct: QuickShop-Hikari with QuickShop-Reremake installed may cause conflicts between each other. Uninstall one of them.
 inventory-unavailable: |-
   <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
   Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
-file-test: This is a test textfile. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)
-unknown-player: <red>Parašyto žaidėjo šiuo momentu nėra. Patikrinkite įvestą nickname.
-player-offline: <red>The target player currently is offline.
+file-test: This is a test text file. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)
+unknown-player: <red>The target player doesn't exist. Please check the username you typed.
+player-offline: <red>The targeted player is currently offline.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
-  selling: PARDUODAMA
-  buying: SUPERKAMA
+  selling: SELLING
+  buying: BUYING
+  frozen: FROZEN
 language:
-  qa-issues: '<yellow>Kokybės užtikrinimo problemos: <aqua>{0}%'
-  code: '<yellow>Kodas: <gold>{0}'
-  approval-progress: '<yellow>Patvirtintas progresas: <aqua>{0}%'
-  translate-progress: '<yellow>Vertimo užkrovimo progresas: <aqua>{0}%'
-  name: '<yellow>Pavadinimas:<gold>{0}'
-  help-us: <green>[Padėkite mums pagerinti vertimo kokybę]
+  qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
+  code: '<yellow>Code: <gold>{0}'
+  approval-progress: '<yellow>Approval Progress: <aqua>{0}%'
+  translate-progress: '<yellow>Translation Progress: <aqua>{0}%'
+  name: '<yellow>Name: <gold>{0}'
+  help-us: <green>[Help us improve the translation quality]
 warn-to-paste: |-
   <yellow>Collecting data and uploading to Pastebin. This may take a while...
   <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
-  buttontitle: 'Atnaujinti dabar'
-  onekeybuttontitle: '[OneKey atnaujinimas]'
+  buttontitle: '[Update Now]'
+  onekeybuttontitle: '[OneKey Update]'
   label:
     github: '[GitHub]'
     ore: '[Ore]'
@@ -216,331 +217,333 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} Buvo išleistas. Jūs vis dar naudojate {1}!'
-    - Boom! Naujas atnaujinimas {0} atkeliauja. Atnaujinti!
-    - Siurprizas! {0} išėjo. Šiuo momentu naudojate {1}
-    - Panašu, kad jums reikia atsinaujinti. {0} buvo išleistas!
-    - Ooops! {0} dabar buvo išleistas. Jūs dabar naudojate {1}!
-    - QS buvo atnaujintas į {0}. Kodėl dar neatsinaujinai?
-    - Sutvarkymas ir... Atsiprašau, bet {0} buvo išleistas!
-    - Klaidos! Ne. Tai nėra klaida. {0} buvo išleistas!
-    - OMG! {0} išėjo! Kodėl vis dar naudojate {1}?
-    - 'Šiandienos naujienos: "Parduotuvių pluginas" atnaujintas į {0}!'
-    - Pluginas k.i.a. Turėtumėte atnaujinti į {0}!
-    - Atnaujinimas {0} isižiebė/atsirado. Išsaugoti atnaujinimą!
-    - Naujas atnaujinimas jau yra Komendante. {0} ką tik buvo išleistas!
-    - Pažiūrėk į mano stilių---{0} Atnaujinta. Jūs vis dar naudojate {1}
-    - Ahhhhhhh! Naujas atnaujinimas {0}! Atnaujinti!
-    - Ką manai? {0} buvo išleistas! Atnaujinti!
-    - Daktare, "Parduotuvių pluginas" turi naują atnaujinimą {0}! Turėtumėte atnaujinti ~
-    - Ko~ko~da~yo~ "Parduotuvių pluginas" turi naują atnaujinimą {0} ~
-    - Paimon nori pasakyti, kad "Parduotuvių pluginas" turi naują atnaujinimą {0}!
-  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
-purchase-out-of-stock: <red>Šioje parduotuvėje baigėsi atsargos. Susisiekite su parduotuvės savininku arba darbuotojais, kad atsargos būtų papildytos.
+    - '{0} was released. You are still using {1}!'
+    - Boom! New update {0} incoming. Update!
+    - Surprise! {0} came out. You are on {1}
+    - Looks like you need to update. {0} was released!
+    - Ooops! {0} was now released. You are on {1}!
+    - I swear, QS has been updated to {0}. Why have you not updated yet?
+    - Fixing and re... Sorry, but {0} was released!
+    - Err! Nope. This is not an error. {0} has been released!
+    - OMG! {0} came out! Why are you still using {1}?
+    - 'Todays News: QuickShop has been updated to {0}!'
+    - Plugin k.i.a. You should update to {0}!
+    - Update {0} ignited. Save update!
+    - There is an update available Commander. {0} has just came out!
+    - Look my style---{0} updated. You're still using {1}
+    - Ahhhhhhh! New update {0}! Update!
+    - What do you think? {0} has been released! Update!
+    - Doctor, QuickShop has a new update {0}! You should update~
+    - Ko~ko~da~yo~ QuickShop has a new update {0} ~
+    - Paimon want told you the QuickShop have new update {0}!
+  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problems. Get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
+purchase-out-of-stock: <red>This shop has run out of stock. Contact the shop owner or staff to get it refilled.
 nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
-chest-title: '"Parduotuvės plugino" parduotuvė'
-console-only: <red>This command can only be executed by Console.
-failed-to-put-sign: <red>Nepakanka vietos aplink, kad būtų galima pastatyti informacine lentele.
-shop-name-unset: <red>This shop's name now removed
-shop-nolonger-freezed: <green>Jūs atidarėte parduotuve vėl. Dabar ji veikia standartiškai!
-no-permission-build: <red>Jūs čia negalite statyti parduotuvės.
+chest-title: QuickShop Store
+console-only: <red>This command can only be executed in the Console.
+failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
+shop-name-unset: <red>Removed name of this shop
+shop-nolonger-freezed: <green>You unfroze the shop. It's back to normal now!
+no-permission-build: <red>You cannot build a shop here.
 tableformat:
   left_half_line: <dark_purple>+--------------------
   right_half_line: <dark_purple>--------------------+
   full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
-quickshop-gui-preview: '"Parduotuvės plugino" GUI elementų apžiūra'
-translate-not-completed-yet-click: Kalbos vertimas iš {0} dar nebaigtas {1}. Ar norite padėti mums tobulinti vertimą? Spauskite čia!
-taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
-player-bought-from-your-store: <green>{0} Kažkas nusipirko{1}{2} iš jūsų parduotuvės ir jūs gavote{3}.
-reached-maximum-can-create: <red>Jūs jau sukūrėte maksimumalų kiekį {0}/{1} parduotuvių!
-reached-maximum-create-limit: <red>Pasiekėte parduotuvių sukūrimo limitą
-translation-version: 'Palaikymo versija: Hikari'
-no-double-chests: <red>Jūs negalite sukurti double chest parduotuvės.
-price-too-cheap: <red>Kaina turi būti didesnė nei <yellow>${0}
-shop-not-exist: <red>Čia parduotuvės nėra.
-bad-command-usage: <red>Blogi komandų/os argumentai!
+quickshop-gui-preview: QuickShop GUI Item Preview
+translate-not-completed-yet-click: The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!
+taxaccount-invalid: <red>Target account invalid. Please enter a valid player name or UUID (With dashes).
+player-bought-from-your-store: <green>{0} purchased {1} {2} from your shop, and you earned {3}.
+reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+translation-version: 'Support Version: Hikari'
+no-double-chests: <red>You cannot create a double chest shop.
+price-too-cheap: <red>Price must be greater than <yellow>${0}
+shop-not-exist: <red>There is no shop.
+bad-command-usage: <red>Bad command arguments!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Pradedama tikrinti, ar nėra vaiduoklių parduotuvių. Visos neegzistuojančios parduotuvės bus pašalintos...
-cleanghost-deleting: <yellow>Radome sugadintą parduotuvę <aqua>{0}</aqua> nes {1}, pažymėkite jį, kad ištrintumėte...
-cleanghost-deleted: <green>Bendrai <yellow>{0}</yellow> parduotuvės buvo ištrintos.
-shop-purchase-cancelled: <red>Pirkimas buvo atšauktas.
-bypassing-lock: <red>Apeinama "Parduotuvės plugino" užraktą!
-bungee-cross-server-msg: '<yellow>"Parduotuvės plugino" CSM: <green>{0}'
-saved-to-path: Atsarginė kopija buvo išsaugota {0}.
-shop-now-freezed: <green>Jūs uždarėte laikinai parduotuvę. Niekas negali prekiauti su šia parduotuve dabar!
-price-is-now: <green>Nauja parduotuvės kaina – <yellow>{0}
-shops-arent-locked: <red>Atminkite, kad parduotuvės NĖRA apsaugotos nuo vagysčių! Jei norite sustabdyti vagis, užrakinkite jį naudojant LWC, Lockette ar panašiai!
-that-is-locked: <red>Ši parduotuvė užrakinta.
-shop-has-no-space: <red>Parduotuvėje turi vietos tik {0} Daugiau {1}.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+shop-purchase-cancelled: <red>Shop purchase cancelled.
+bypassing-lock: <red>Bypassing a QuickShop lock!
+bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
+saved-to-path: The Backup was saved to {0}.
+shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
+price-is-now: <green>The new price of the shop is <yellow>{0}
+shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, or similar!
+that-is-locked: <red>This shop is locked.
+shop-has-no-space: <red>The shop only has room for {0} more {1}.
 safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
-shop-stock-too-low: <red>Parduotuvėje turi tik {0} {1} likutį!
-world-not-exists: <red>The world <yellow>{0}<red> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
-shop-freezed-at-location: <yellow>Jūsų parduotuvė {0} prie {1} buvo uždaryta!
-translation-contributors: 'Autoriai: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken ir Andre_601'
-empty-success: <green>Emptying shop successful
-taxaccount-set: <green>Šios parduotuvės mokesčių sąskaita nustatyta į <yellow>{0}
+shop-stock-too-low: <red>The shop only has {0} {1} left!
+world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+shop-freezed-at-location: <yellow>Your shop {0} at {1} got frozen!
+translation-contributors: 'Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
+empty-success: <green>Successfully emptied shop
+taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
 support-disable-reason:
-  hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
-  outdated: <yellow>This version of QuickShop is already outdated. Update before requesting support!
+  hot-reload: <yellow>Unsupported hot-reload. Restart the server and check again.
+  outdated: <yellow>This version of QuickShop is outdated. Update before requesting support!
   bad-hosts: |-
     <yellow>The server's HOSTS have been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.
     Windows: C:\\windows\\system32\\drivers\\etc\\hosts
     Linux: /etc/hosts
-  privacy: <yellow>This server is running in Cracked (Offline) mode. If you're running the server under a proxy and online-mode is set to true in the proxy, configure the proxy-related settings correctly.
-  modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
-  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
-  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
-  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
-supertool-is-disabled: <red>Supertool is disabled. Cannot break any shops.
-unknown-owner: Nežinomas/a
-restricted-prices: '<red>Ribota kaina nuo {0}: Min {1}. max {2}'
-nearby-shop-this-way: <green>Parduotuvė yra {0} blokais toliau nuo jūsų.
-owner-bypass-check: <yellow>Praėjote visus patikrtinimus. Mainai sėkmingai pavyko! (Nuo šiol jūs esate šios parduotuvės savininkas)
+  privacy: <yellow>This server is running in Cracked (Offline) mode. If you're running the server under a proxy and online mode is set to true in the proxy, configure the proxy-related settings correctly.
+  modified: <yellow>File-integrity-check failed. This QuickShop build has been modified by others.
+  consolespamfix-installed: <yellow>ConsoleSpamFix is installed. It will hide Exception-details. Disable it temporarily during support requests.
+  authlib-injector-detected: <yellow>This server runs with a 3rd-party Auth-library provided such as AuthLib-Injector.
+  unsupported-server-software: <yellow>Unsupported Server software. Any modded Hybrid-Server software is not supported, including MCPC, Cauldron, CatServer, Mohis, Magma, Fukkit, Cardboard, etc.
+supertool-is-disabled: <red>Super tool is disabled. Cannot break any shops.
+unknown-owner: Unknown
+restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
+nearby-shop-this-way: <green>Shop is {0} block(s) away from you.
+owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
 signs:
   item-right: ''
-  out-of-space: Nepakanka vietos
-  unlimited: Nesibaigiantis
-  stack-selling: Parduodama {0}
-  stack-price: '{0} už {1}x {2}'
+  out-of-space: Out of Space
+  unlimited: Unlimited
+  stack-selling: Selling {0}
+  stack-price: '{0} per {1}x {2}'
   status-unavailable: <red>
-  out-of-stock: Išparduota
-  stack-buying: Superkama {0}
-  freeze: Trading disabled
-  price: '{0} vienas'
-  buying: Pirkti{0}
+  out-of-stock: Out of Stock
+  stack-buying: Buying {0}
+  freeze: Out of Service
+  price: '{0} each'
+  buying: Buying {0}
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Parduodama{0}
+  selling: Selling {0}
   status-available: <green>
   item-left: ''
-negative-amount: <red>Negalimi pardavinėti neigiamomis sumomis
-display-turn-on: <green>Successfully turn on the shop display.
-shop-staff-deleted: <green>Sėkmingai pašalintas {0} kaip prižiūrėtojas iš jūsų parduotuvės.
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}<green>:'
-backup-failed: Nepavyksta sukurti atsarginės duomenų bazės kopijos. Išsamesnės informacijos ieškokite konsolėje.
-shop-staff-cleared: <green>Sėkmingai pašalinote visus prižiūrėtojus iš jūsų parduotuvės.
-price-too-high: <red>Parduotuvės kaina yra per didelė! Negalite sukurti parduotuvės, kurios kaina yra didesnė nei {0}.
-plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} Gauta {1} {2} į jūsų parduotuvę.
-shop-out-of-stock: <dark_purple>Jūsų parduotuvė {0}, {1}, {2} ištuštinta ir joje trūksta {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+negative-amount: <red>You can't trade negative amounts
+display-turn-on: <green>Successfully enabled shop-display.
+shop-staff-deleted: <green>Successfully removed {0} as a staff member from your shop.
+nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+backup-failed: Cannot backup the database. Check the console for details.
+shop-staff-cleared: <green>Successfully removed all staff members from your shop.
+price-too-high: <red>The shop price is too high! You cannot create a shop with a price higher than {0}.
+plugin-cancelled: '<red>Operation cancelled. Reason: {0}'
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
+shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
 language-info-panel:
-  help: 'Padėkite mums: '
-  code: 'Kodas: '
-  name: 'Kalba: '
-  progress: 'Progresas: '
-  translate-on-crowdin: '[Verstimas "Crowdin" platformoje]'
-item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
-shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
-no-creative-break: <red>You cannot break the shops of other players while in creative mode. Switch to survival mode or try to use the supertool {0} instead.
+  help: 'Help us: '
+  code: 'Code: '
+  name: 'Language: '
+  progress: 'Progress: '
+  translate-on-crowdin: '[Translate on Crowdin]'
+item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+shop-creation-failed: <red>Shop creation failed, please contact the server administrator.
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}</green> more items added to it. Try emptying your inventory!
+no-creative-break: <red>You cannot break the shops of other players while in creative mode. Switch to survival mode or try to use the super tool {0} instead.
 booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  price-hover: <yellow>Spustelėkite, kad nustatytumėte naują prekės kainą.
+  price-hover: <yellow>Click to set a new price for the item.
   remove: <bold><red>[Remove Shop]
-  mode-buying-hover: <yellow>Spustelėkite, kad pakeistumėte parduotuvės nuostatas į pardavimo režimą.
+  mode-buying-hover: <yellow>Click to change the shop to SELL mode.
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
-  stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
-  alwayscounting-hover: <yellow>Paspausk, jei norite, kad parduotuvė skaičiuotu prekių kieki esanti jūsų parduotuvėje.
+  stack-hover: <yellow>Click to set the amount of items per bulk. Set to 1 for normal behaviour.
+  alwayscounting-hover: <yellow>Click to toggle if the shop should always count the container's content.
   alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  currency-hover: <yellow>Spustelėkite, kad nustatytumėte arba pašalintumėte šios parduotuvės naudojamą valiutą
+  currency-hover: <yellow>Click to set or remove the currency that this shop is using
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
-  setowner-hover: <yellow>Spustelėkite, kad pakeistumėte savininką.
+  setowner-hover: <yellow>Click to switch owner.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  unlimited-hover: <yellow>Spustelėkite, jei jūsų parduotuvė neturi jokių limitų.
-  refill-hover: <yellow>Spustelėkite norėdami papildyti parduotuvę.
-  remove-hover: <yellow>Spustelėkite, kad pašalintumėte šią parduotuvę.
-  toggledisplay-hover: <yellow>Toggle the shop's displayitem status
+  unlimited-hover: <yellow>Click to toggle if the shop is unlimited.
+  refill-hover: <yellow>Click to refill the shop.
+  remove-hover: <yellow>Click to remove this shop.
+  toggledisplay-hover: <yellow>Toggle the shop's display-item status
   refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
-  freeze-hover: <yellow>Perjunkti parduotuve į "laikinai uždarytą" statusą.
-  lock-hover: <yellow>Įjunkite / išjunkite parduotuvės užraktą.
-  item-hover: <yellow>Click to change shop Item
-  infomation: '<green> Pardotuvės kontrolės lentelė:'
-  mode-selling-hover: <yellow>Spustelėkite, kad pakeistumėte parduotuvės nuostatas į supirkimo režimą.
-  empty-hover: <yellow>Spustelėkite, kad išvalytumėte parduotuvėje esančius daiktus.
+  freeze-hover: <yellow>Toggle the shop's freeze status.
+  lock-hover: <yellow>Enable/Disable the shop's lock protection.
+  item-hover: <yellow>Click to change the shop Item
+  infomation: '<green>Shop Control panel:'
+  mode-selling-hover: <yellow>Click to change the shop to BUY mode.
+  empty-hover: <yellow>Click to clear the inventory of the shop.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
   history-hover: <yellow>Click to view shop history logs
 timeunit:
-  behind: už
+  behind: behind
   week: "{0} week"
   weeks: "{0} weeks"
   year: "{0} year"
-  before: prieš
-  scheduled: suplanuota
+  before: before
+  scheduled: scheduled
   years: "{0} years"
-  scheduled-in: suplanuota po {0}
+  scheduled-in: scheduled in {0}
   second: "{0} second"
-  std-past-format: '{5}{4}{3}{2}{1}{0} prieš'
-  std-time-format: Valandos:Minutes:Sekundes
+  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  std-time-format: HH:mm:ss
   seconds: "{0} seconds"
   hour: "{0} hour"
-  scheduled-at: numatyta {0}
-  after: po
+  scheduled-at: scheduled at {0}
+  after: after
   day: "{0} day"
-  recent: neseniai
-  between: tarp
+  recent: recent
+  between: between
   hours: "{0} hours"
   months: "{0} months"
-  longtimeago: prieš daug laiko
-  between-format: tarp {0} ir {1}
+  longtimeago: long time ago
+  between-format: between {0} and {1}
   minutes: "{0} minutes"
-  justnow: tikką
+  justnow: just now
   minute: "{0} minute"
-  std-format: Mėnesiai/dienos/metai Valandos:minutės:sekundės
-  future-plain-text: ateitis
+  std-format: MM/dd/yyyy HH:mm:ss
+  future-plain-text: future
   month: "{0} month"
-  future: po {0}
+  future: in {0}
   days: "{0} days"
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: <green>Configuration reloaded. <yellow>Some changes may require reboot to affect.
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
-    about: <yellow>Rodyti "Parduotuvės Pluginas" informacija
-    language: <yellow>Pakeisti šiuo metu naudojama kalbą
-    purge: <yellow>Start the shop purge task in background
-    paste: <yellow>Įkelia serverio duomenis į Pastebin
-    title: <green>"Pplugino pagalba
-    remove: <yellow>Pašalinti parduotuvę, į kurią žiūrite
-    ban: <yellow>Uždrauskite žaidėjui pirkti iš šios parduotuvės
-    empty: <yellow>Pašalinti visas prekes iš parduotuvės
-    alwayscounting: <yellow>Set if shop always counting container even is unlimited
-    setowner: <yellow>Pakeisti parduotuvės savininką.
-    reload: <yellow>Iš naujo įkeliama "Parduotuvės plugino" config.yml
-    freeze: <yellow>Išjungti arba Įjungti parduotuve
-    price: <yellow>Keičia parduotuvės pirkimo/pardavimo kainą
-    find: <yellow>Randa artimiausią konkretaus tipo parduotuvę.
-    create: <yellow>Sukuria naują parduotuvę nuo nutaikytos parduotuvės
-    lock: <yellow>Parduotuvės užrakto statuso pakeitimas
-    currency: <yellow>Parduotuvės valiutos nustatymas arba pašalinimas
-    removeworld: <yellow>Pašalinkite VISAS parduotuves nurodytame pasaulyje
-    info: <yellow>Rodyti "Parduotuvių plugino" statistiką
-    owner: <yellow>Pakeisti parduotuvės savininką.
-    amount: <yellow>To set item amount (Useful when having chat issues)
-    item: <yellow>Pakeisti parduotuvės parduodama daiktą
-    debug: <yellow>Įjungti kūrėjo režimą
-    unlimited: <yellow>Suteikia parduotuvei neribotas atsargas.
-    sell: <yellow>Changes a shop to <aqua>SELL<yellow> mode
-    fetchmessage: <yellow>Rodyti neskaitytas su parduotuve susijusias žinutes
-    staff: <yellow>Valdyti savo parduotuvės administratorius
-    clean: <yellow>Pašalina visas (esamas) parduotuves kurios neturi jokių atsargų
-    refill: <yellow>Prideda nurodytą daiktų skaičių parduotuvėje
-    help: <yellow>Shows QuickShop help
-    removeall: <yellow>Pašalinkite VISAS parduotuves nurodytame specifiniame pasaulyje
-    unban: <yellow>Atbockuoti (unbaninti) žaidėją iš parduotuvės
-    transfer: <yellow>Transfer someone's ALL shops to other
-    transferall: <yellow>Transfer someone's ALL shops to other
+    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    about: <yellow>Shows QuickShop info
+    language: <yellow>Change the currently used language
+    purge: <yellow>Start the shop purge task in the background
+    paste: <yellow>Uploads server data to Pastebin
+    title: <green>QuickShop help
+    remove: <yellow>Removes the shop you're looking at
+    ban: <yellow>Ban a player from the shop
+    empty: <yellow>Removes all items from a shop
+    alwayscounting: <yellow>Set if the shop should always count the content of its container even while unlimited
+    setowner: <yellow>Changes the ownership of a shop.
+    reload: <yellow>Reloads the config.yml of QuickShop
+    freeze: <yellow>Disable or Enable shop trading
+    price: <yellow>Changes the buy/sell price of a shop
+    find: <yellow>Locates the nearest shop of a specific type.
+    create: <yellow>Creates a new shop from the targeted chest
+    lock: <yellow>Switch the shop's lock status
+    currency: <yellow>Set or remove the currency setting of the shop
+    removeworld: <yellow>Remove ALL shops in a specified world
+    info: <yellow>Show QuickShop statistics
+    owner: <yellow>Changes the ownership of a shop.
+    amount: <yellow>To set the amount of items (Useful when having chat issues)
+    item: <yellow>Change shop item of a shop
+    debug: <yellow>Enables Developer mode
+    unlimited: <yellow>Gives a shop unlimited stock.
+    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    fetchmessage: <yellow>Show unread shop messages
+    staff: <yellow>Manage your shop staff
+    staffall: <yellow>Manage your shop staff of all shops you own.
+    clean: <yellow>Removes all (loaded) shops without any stock
+    refill: <yellow>Adds a given number of items to a shop
+    help: <yellow>Shows the QuickShop help
+    removeall: <yellow>Remove ALL shops of a specified player
+    unban: <yellow>Unban a player from the shop
+    transfer: <yellow>Transfer ALL shops of a player to someone else
+    transferall: <yellow>Transfer ALL shops of a player to someone else
     transferownership: <yellow>Transfer the shop you're looking at to someone else
-    size: <yellow>Change per bulk amount of a shop
-    supercreate: <yellow>Sukurkite parduotuvę apeidami visus apsaugos patikrinimus
-    taxaccount: <yellow>Set the tax account that shop using
-    name: <yellow>Naming a shop to specific name
-    toggledisplay: <yellow>Toggle the shop display item status
-    permission: <yellow>Parduotuvės leidimų valdymas
-    lookup: <yellow>Peržiūrėti matomų daiktų lentele
-    database: <yellow>View and maintain QuickShop database
+    size: <yellow>Change per-bulk amount of a shop
+    supercreate: <yellow>Create a shop while bypassing all protection checks
+    taxaccount: <yellow>Set the tax account that the shop using
+    name: <yellow>Changes the name of a specific shop
+    toggledisplay: <yellow>Toggle the shop's display-item status
+    permission: <yellow>Shop permission management
+    lookup: <yellow>Manage lookup-able items table
+    database: <yellow>View and maintain the QuickShop Database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
+    browse: <yellow>Browse shops that exist in this server.
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
     history: <yellow>View the history transactions of a shop
     sign: <yellow>Change the sign material of a shop
   bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
   no-type-given: '<red>Usage: /quickshop find \<item>'
-  feature-not-enabled: Ši funkcija neįjungta config faile.
-  now-debuging: <green>Sėkmingai įjungtas kūrėjo režimas. "ParduotuviųPluginas" įkeliamas iš naujo...
+  feature-not-enabled: This feature is not enabled in the config file.
+  now-debuging: <green>Successfully enabled developer mode. Reloading QuickShop...
   no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
-  no-owner-given: <red>Savininkas nėra nustatytas
-  disabled: '<red>Ši komanda yra išjungta:<yellow>{0}'
+  no-owner-given: <red>No owner provided
+  disabled: '<red>This command is disabled: <yellow>{0}'
   bulk-size-now: <green>Now trading <yellow>{0}x {1}
   toggle-always-counting:
-    counting: <green>Parduotuvė dabar visada skaičiuoja parduotuvės turinį, net jei parduotuvė nustatyta kaip neribota
-    not-counting: <green>Shop is now respect if shop is unlimited
-  cleaning: <green>Pašalinamos parduotuves neturinčios jokių atsargų...
-  now-nolonger-debuging: <green>Sėkmingai išjungtas kūrėjo režimas. "ParduotuviųPluginas" įkeliamas iš naujo...
+    counting: <green>Shop is now always counting the container's content, even when set to unlimited
+    not-counting: <green>Shop is no longer counting the container's content
+  cleaning: <green>Removing shops without any stock...
+  now-nolonger-debuging: <green>Successfully disabled Developer mode. Reloading QuickShop...
   toggle-unlimited:
-    limited: <green>Parduotuvė dabar turi limitavimo režimą
-    unlimited: <green>Parduotuve dabar neturi atsargų limito
-  transfer-success-other: <green>Transferred <yellow>{0} {1}<green>'s shop(s) to <yellow>{2}
-  no-trade-item: <green>Please hold a trade item to change in main hand
+    limited: <green>Shop is now limited
+    unlimited: <green>Shop is now unlimited
+  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  no-trade-item: <green>Please hold a trade item to change in the main hand
   wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
-  some-shops-removed: <yellow>{0} <green>parduotuvė (-ės) pašalinta (-os)
-  new-owner: '<green>Naujas savininkas: <yellow>{0}'
+  some-shops-removed: <yellow>{0} <green>shop(s) removed
+  new-owner: '<green>New owner: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0} <green>shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING <yellow>{0}
-  now-selling: <green>Now <aqua>SELLING <yellow>{0}
-  cleaned: <green>Removed <yellow>{0}<green> shops.
+  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
+  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
+  now-selling: <green>Now <aqua>SELLING</aqua> {0}
+  cleaned: <green>Removed <yellow>{0}</yellow> shops.
   trade-item-now: <green>Now trading <yellow>{0}x {1}
-  no-world-given: <red>Nurodykite pasaulio varda
+  no-world-given: <red>Please specify a world name
   format-disabled: <red>/{0} {1} <gray>- {2}
-  invalid-bulk-amount: <red>The given value {0} is larger than max stack size or lower than one
-currency-not-support: <red>Ekonomikos pluginas nepalaiko multi-ekonomikos funkcijos.
-trading-in-creative-mode-is-disabled: <red>Negalite mainytis su šia parduotuve esant kūrybiniam režimui.
-the-owner-cant-afford-to-buy-from-you: <red>Šio daikto vertė yra {0}, tačiau parduotuvės savininkas turi tik {1}
-you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
+  invalid-bulk-amount: <red>The given value {0} is larger than the max stack size or below one
+currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
+trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while in creative mode.
+the-owner-cant-afford-to-buy-from-you: <red>This item is worth {0}, but the shop-owner only has {1}
+you-cant-afford-shop-naming: <red>You cannot afford a shop naming, it costs {0} to name the shop.
 inventory-error: |-
   <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
   Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
-integrations-check-failed-create: <red>Integracija {0} atmetė parduotuvės kūrimo procesą
-shop-out-of-space: <dark_purple>Jūsų parduotuvė esanti {0}, {1}, {2} yra pilna!
-admin-shop: SavininkoParduotuve
-no-anythings-in-your-hand: <red>Sistema jūsų rankoje nieko nerado.
-no-permission: <red>Jūs neturite leidimo daryti šiuos veiksmus.
-chest-was-removed: <red> Chestas buvo pašalintas.
-you-cant-afford-to-buy: <red>Tai kainuoja {0}, bet jūs turite tik {1}
-shops-removed-in-world: <yellow>A total of <aqua>{0}<yellow> shops have been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
-client-language-unsupported: <yellow>QuickShop doesn't support your client language, falling back to {0} locale...
+integrations-check-failed-create: <red>Integration {0} denied the shop-creation
+shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is full!
+admin-shop: AdminShop
+no-anythings-in-your-hand: <red>There is nothing in your hand.
+no-permission: <red>You do not have permission to do that.
+chest-was-removed: <red>The chest was removed.
+you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
+shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+display-turn-off: <green>Successfully turned off shop display.
+client-language-unsupported: <yellow>QuickShop doesn't support your client language. Falling back to locale {0}...
 language-version: '63'
-not-managed-shop: <red>You are not the owner nor moderator of this Shop
-shop-cannot-trade-when-freezing: <red>Jūs negalite mainytis su šia parduotuve, nes ji yra laikinai uždaryta.
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+not-managed-shop: <red>You are not the owner nor a moderator of this Shop
+shop-cannot-trade-when-freezing: <red>You cannot trade with this shop because it is frozen.
+invalid-container: <red>Invalid container, You can only create the shop with blocks that have an inventory.
 permission:
-  header: <green>Parduotuvės suteiktų leidimų detalės
+  header: <green>Shop Permission Details
   header-player: <green>Shop Permission Details for {0}
-  header-group: <green>Parduotuvės suteiktų leidimų informacija priskirtai grupei {0}
+  header-group: <green>Shop Permission Details for group {0}
   table: <gold><bold>{0}</bold>:</gold> <gray>{1}
   item:
-    purchase: <yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)
-    show-information: <yellow>Leidimas leisti naudotojams, kuriem duotas leidimas, matyti parduotuvės informaciją. (atidaryti parduotuvės control panel)
-    preview-shop: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, galės peržiūrėti parduotuvės vidų. (Leist matyti parduodamus daiktus cheste bei jų kiekį)
-    search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
-    delete: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, galės pašalinti jūsų parduotuvę.
-    receive-alert: <yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade).
-    access-inventory: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, turės prieigą prie jūsų parduotuvės inventoriaus.
-    ownership-transfer: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, turės prieigą/galimybę perduoti parduotuve kitam asmeniui.
-    management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
-    toggle-display: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, perjungti parduotuvės rodomą animacini daiktą.
-    set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
-    set-price: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, galės pakeisti/nustatyti parduotuvės kaina.
-    set-item: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, galės pakeisti/nustatyti kokį daiktą pardavinės jūsų parduotuvė.
+    purchase: <yellow>Permission to allow users who have this to purchase from the shop. (including buying and selling)
+    show-information: <yellow>Permission to allow users who have this to see the shop information. (open shop info panel)
+    preview-shop: <yellow>Permission to allow users who have this to preview the shop. (preview item)
+    search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from the search results)
+    delete: <yellow>Permission to allow users who have this to delete the shop.
+    receive-alert: <yellow>Permission to allow users who have this to receive alert messages (e.g out-of-stock or new trade).
+    access-inventory: <yellow>Permission to allow users who have this to access the shop inventory.
+    ownership-transfer: <yellow>Permission to allow users who have this to transfer the shop ownership.
+    management-permission: <yellow>Permission to allow users who have this to manage the group's permissions and edit the user's group.
+    toggle-display: <yellow>Permission to allow users who have this to toggle the shop display item.
+    set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch to buying or selling).
+    set-price: <yellow>Permission to allow users who have this to set the shop price.
+    set-item: <yellow>Permission to allow users who have this to set the shop item.
     set-stack-amount: <yellow>Permission to allow users who have this to set the shop stack amount.
-    set-currency: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, galės pakeisti/nustatyti parduotuvės valiutą.
-    set-name: <yellow>Leidimas žaidėjams, kurie turi šį leidimą, galės pakeisti/nustatyti parduotuvės pavadinimą.
+    set-currency: <yellow>Permission to allow users who have this to set the shop currency.
+    set-name: <yellow>Permission to allow users who have this to set the shop name.
     set-sign-type: <yellow>Change the sign material that attached on the shop.
     view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
-    everyone: <yellow>Default group for all users excepted shop owner.
-    staff: <yellow>System group for shop staffs.
-    administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
-invalid-group: <red>Neteisingas/nežinomas grupės pavadinimas.
-invalid-permission: <red>Negaliojantis leidimas.
-invalid-operation: <red>Negalimas veiksmas, šis veiksmas yra leidžiamas tik {0} šiems asmenims.
-player-no-group: <yellow>Žaidėjas {0} nėra nei vienoje iš grupių šioje parduotuvėje.
+    everyone: <yellow>Default group for all users except shop owner.
+    staff: <yellow>System group for shop staff.
+    administrator: <red>System group for administrators, the users in this group will have permissions almost the same as the shop owner.
+invalid-group: <red>Invalid group name.
+invalid-permission: <red>Invalid permission.
+invalid-operation: <red>Invalid operation, only {0} are allowed.
+player-no-group: <yellow>Player {0} not in any group in this shop.
 player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
 permission-required: <red>You don't have permission {0} in this shop to do this.
 no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
@@ -554,20 +557,20 @@ paste-created-local-failed: <red>Failed to save paste to your local disk, please
 paste-451: |-
   <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
   If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
-paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
-paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
+paste-upload-failed: <red>Failed to upload paste to {0}, trying different pastebin provider...
+paste-upload-failed-local: <red>Failed to upload paste, now trying to generate local paste...
 command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
 successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
-successfully-unset-player-group: <green>Successfully remove player group in this shop.
+successfully-unset-player-group: <green>Successfully removed the player group from this shop.
 successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
-lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now.
+lookup-item-created: <green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer to this item in configurations now.
 lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
-lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
-lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
+lookup-item-not-found: <red>An item named <yellow>{0}</yellow> does not exist.
+lookup-item-name-illegal: <red>Not supported Item name. Only alphanumeric characters and underscores are allowed.
 lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
-lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
-lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
-lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
+lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand is not registered in the lookup table.'
+lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as <aqua>{0}</aqua> in the lookup table.'
+lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from the lookup table.
 internal-error: <red>An internal error occurred, please contact the server administrator.
 argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
@@ -582,21 +585,21 @@ not-a-valid-time: |-
   - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
 invalid-past-time: <red>You can't specify a time in the past.
 debug:
-  arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
-  sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
-  operation-missing: <red>You must specific an operation.
-  operation-invalid: <red>You must specific an valid operation.
-  invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
+  arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> are invalid.
+  sign-located: '<green>Valid Sign: <yellow>{0}</yellow>.'
+  operation-missing: <red>You must specify an operation.
+  operation-invalid: <red>You must specify a valid operation.
+  invalid-base64-encoded-sql: <red>The provided SQL operation must be Base64-encoded.
   warning-sql: |-
     <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
     <red>Don't confirm this if you don't trust who send you this.
   warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
-  warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
-  sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
+  warning-sql-confirm-hover: <yellow>Click to confirm this dangerous action.
+  sql-confirm-not-found: <yellow>Cannot find the action that you provided. It may be invalid or has expired.
   sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
-  sql-completed: <green>Completed, {0} rows affected.
-  sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
-  sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
+  sql-completed: <green>Action complete! {0} rows affected.
+  sql-exception: <red>An error occurred while executing the SQL query. Check the Console for details!
+  sql-disabled: '<red>For security reasons, SQL queries are disabled in this server. If you really need this feature, you can add the following flag to your startup arguments: <aqua>{0}</aqua> with the value `true` to enable it.'
   force-shop-reload: <yellow>Forcing reload all loaded shops...
   force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
   force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
@@ -637,13 +640,13 @@ debug:
   marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
   display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
 database:
-  scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
-  scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
-  already-scanning: <red>An scan task has been started, please wait until it finished.
+  scanning: <green>Scanning the isolated data in the QuickShop Database. The database load may increase the scanning progress. This may take a while...
+  scanning-async: <yellow>Scanning the isolated data in the QuickShop Database on an async Task-Thread. The database load may increase the scanning progress. This may take a while. If it fails, try again later.
+  already-scanning: <red>A scan task has been started. Please wait until it finishes.
   trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
   status: '<yellow>Status: {0}'
   status-good: <green>Good
-  status-bad: <yellow>Maintenance Required
+  status-bad: <yellow>Maintenance required
   isolated: '<yellow>Isolated Data:'
   isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
   isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
@@ -651,14 +654,14 @@ database:
   isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
   last-purge-time: <yellow>Last time of trim at {0}
   report-time: <yellow>Last time of scan at {0}
-  auto-scan-alert: <yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming.
-  auto-trim: <green>Auto trim has been enabled on this server, no manually trim required.
-  trim-complete: <green>Database trim completed, <yellow>{0}</yellow> isolated trimmed.
-  auto-trim-started: <green>Auto trim has been started, please wait...
-  trim-start: <green>Database trim started, please wait...
-  trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
+  auto-scan-alert: <yellow>The QuickShop Database on this server requires maintenance. Found <gold>{0}</gold> isolated data waiting for trimming.
+  auto-trim: <green>Auto-trimming has been enabled on this server. No manual trimming required.
+  trim-complete: <green>Database trimming complete. <yellow>{0}</yellow> isolated data trimmed.
+  auto-trim-started: <green>Auto-trimming started, please wait...
+  trim-start: <green>Database trimming started, please wait...
+  trim-exception: <red>Database trimming failed. An Exception was raised during the operation. Check the server console.
   generated-at: '<yellow>Generated at: <gold>{0}'
-  purge-date: <red>Turite nurodyti datą.
+  purge-date: <red>You must given a date.
   purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop database purgelogs \<before-days> confirm`
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
@@ -670,19 +673,19 @@ database:
   purge-players-error: <red>Failed to purge players caches, please check the server console.
   suggestion:
     trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
-always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
+always-counting-removal-early-warning: <red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future.
 exporting-database: <green>Exporting database, please wait...
 exporting-failed: <red>Failed to export database, please check the server console.
 exported-database: <green>Database exported to <yellow>{0}</yellow>.
-importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
+importing-not-found: <red>File <yellow>{0}</yellow> not found. Make sure the File path is valid.
 importing-early-warning: |-
   <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
   <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
 importing-database: <green>Importing database from backup, please wait...
 importing-failed: <red>Failed to import database, please check the server console.
 imported-database: <green>Database imported from <yellow>{0}</yellow>.
-transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
-transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
+transfer-sent: <green>Shop Transfer-request sent to <yellow>{0}</yellow>.
+transfer-request: <yellow>Player <aqua>{0}</aqua> would like to transfer their Shops to you. Do you want to accept the request?
 transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
 transfer-ask: |-
   <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
@@ -693,11 +696,11 @@ transferall-ask: |-
 transfer-single-ask: |-
   <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
-transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
-transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
-transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
-transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
-transfer-no-pending-operation: <red>You don't have pending transfer request yet.
+transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your Shop Transfer-request.
+transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s Transfer-Request.
+transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your Shop Transfer-request.
+transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s Shop Transfer-request.
+transfer-no-pending-operation: <red>You don't have any pending Transfer-requests.
 transfer-no-self: <red>You can't transfer your shops to yourself.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
@@ -1302,10 +1305,10 @@ addon:
             }
         }
     field:
-      player: Žaidėjas
-      item: Daiktas
-      amount: Kiekis
-      balance: Balansas
+      player: Player
+      item: Item
+      amount: Amount
+      balance: Balance
       balance-after-tax: Balance (after tax)
       account: Your account balance
       taxes: Taxes
@@ -1406,7 +1409,7 @@ addon:
     table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
     entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
-    message: <red>Negalite įdėti draudžiamų prekių į parduotuve, visos ne parduotuvei skirtos prekės bus išmestos jūsų esamoje vietoje.
+    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
   limited:
     commands:
       limit: <yellow>Set a limit that restrict the purchase that player can make in period
@@ -1517,24 +1520,100 @@ suite:
     command-description: <yellow>List all shops owned by yourself or another player.
     table-prefix: <yellow>You owned total <aqua>{0}</aqua> shops on this server.
     entry-syntax: <aqua>- <yellow>{0}
-    entry-syntax-fallback-name: '<yellow>Prekė:{0} X:{1}, Y:{2}, Z:{3} Pasaulis: {4}'
+    entry-syntax-fallback-name: '<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
     hover-text: |-
       <yellow>{0}
       <gray>{1} {2}, {3}, {4}
       <aqua>{5} - <yellow>{6}
       {7} items each stack.
   shopitemonly:
-    message: <red>Negalite įdėti draudžiamų prekių į parduotuve, visos ne parduotuvei skirtos prekės bus išmestos jūsų esamoje vietoje.
+    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
 compatibility:
   elitemobs:
-    soulbound-disallowed: Negalite prekiauti prekėmis, kurios dropinamos su "EliteMobs plugino" enchantais.
+    soulbound-disallowed: You can't trade item which have EliteMobs Soulbound enchantment.
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
 delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
+gui:
+  shared:
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    previous-menu: "<white>Previous Menu</white>"
+  player:
+    select:
+      - "<yellow>Click to select this player.</yellow>"
+  staff:
+    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
+    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
+    add-staff: "<green>Add Staff Member</green>"
+    head-icon:
+      display: "<aqua>{0}</aqua>"
+      lore:
+        - "<yellow>Left click to remove staff member.</yellow>"
+        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>to this staff member.</yellow>"
+  trade:
+    title: "Shop Browser"
+    custom:
+      display: "<bold><blue>Custom Order</blue></bold>"
+      lore-buy:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to buy.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+        - "<white>Stock: <bold><red>{1}</red></bold>"
+      lore-sell:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to sell.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+    quantity:
+      display-buy: "<bold><green>Buy {0}</green></bold>"
+      display-sell: "<bold><green>Sell {0}</green></bold>"
+      lore:
+        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
+        - "<white>Total: </white><bold><green>{2}</green></bold>"
+  browse:
+    title: "Shop Browser"
+    info:
+      - "<green>Owner: </green><yellow>{0}</yellow>"
+      - "<green>Location: </green><yellow>{1}</yellow>"
+      - "<green>Type: </green><yellow>{2}</yellow>"
+      - "<green>Price: </green><yellow>{3}</yellow>"
+  keeper:
+    title: "Shop Keeper"
+    change-icon:
+      display: "<bold><green>Change Price</green></bold>"
+      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      lore:
+        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+    mode-icon:
+      display: "<bold><green>Change Mode</green></bold>"
+      lore:
+        - "<white>Click to toggle between buying/selling mode.</white>"
+        - "<white>Current Mode: </white><red>{0}</red>"
+        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+    staff-icon:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      lore:
+        - "<white>Click to manage your shop's staff.</white>"
+    remove-icon:
+      display: "<bold><red>Delete Shop</red></bold>"
+      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      lore:
+        - "<white>Click to delete your shop.</white>"
+        - "<grey>You can also break the sign/chest.</grey>"
 history:
   shop:
     gui-title: "View purchase history"
@@ -1577,11 +1656,11 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
-    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<gold>Powered by community</gold> <red>Made with ❤</red>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
+browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
 shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
