@@ -54,7 +54,7 @@ public class BlockListener extends AbstractProtectionListener {
   /*
    * Removes chests when they're destroyed.
    */
-  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBreak(final BlockBreakEvent e) {
 
     final Block b = e.getBlock();
