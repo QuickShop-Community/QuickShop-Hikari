@@ -351,7 +351,7 @@ controlpanel:
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
   alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<bold><light_purple>更改</light_purple>]'
   setowner: '<green>所有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  freeze: '<yellow>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  freeze: '<green>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
   price: '<green>价格: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
   lock: '<yellow>商店锁: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
