@@ -41,6 +41,7 @@ import com.ghostchu.quickshop.economy.impl.Economy_GemsEconomy;
 import com.ghostchu.quickshop.economy.impl.Economy_TNE;
 import com.ghostchu.quickshop.economy.impl.Economy_Treasury;
 import com.ghostchu.quickshop.economy.impl.Economy_Vault;
+import com.ghostchu.quickshop.economy.impl.Economy_VaultUnlocked;
 import com.ghostchu.quickshop.listener.BlockListener;
 import com.ghostchu.quickshop.listener.BungeeListener;
 import com.ghostchu.quickshop.listener.ChatListener;
@@ -121,6 +122,7 @@ import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
+import net.milkbowl.vault.economy.Economy;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitHelper;
 import net.tnemc.item.bukkit.BukkitItemStack;
@@ -145,6 +147,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
@@ -1340,7 +1343,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private boolean setupEconomy() throws Exception {
 
       AbstractEconomy abstractEconomy = switch(EconomyType.fromID(parent.getConfig().getInt("economy-type"))) {
-        case VAULT -> loadVault();
+        case VAULT -> loadVaultAbstract();
         case GEMS_ECONOMY -> loadGemsEconomy();
         case TNE -> loadTNE();
         case COINS_ENGINE -> loadCoinsEngine();
@@ -1359,6 +1362,43 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
       parent.economy = abstractEconomy;
       return true;
+    }
+
+    /**
+     * Used to load Vault or VaultUnlocked depending on which is loaded.
+     */
+    @Nullable
+    private AbstractEconomy loadVaultAbstract() throws Exception {
+
+      if(vaultUnlockedPresent()) {
+
+        final RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> economyProvider;
+        try {
+
+          economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault2.economy.Economy.class);
+
+          if(economyProvider == null) {
+
+            return loadVault();
+          }
+
+        } catch(final Exception ignore) {
+
+          return loadVault();
+        }
+
+        return loadVaultUnlocked();
+
+      } else {
+
+        return loadVault();
+      }
+    }
+
+    @Nullable
+    private AbstractEconomy loadVaultUnlocked() {
+
+      return new Economy_VaultUnlocked(parent);
     }
 
     private AbstractEconomy loadTreasury() {
@@ -1418,6 +1458,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private AbstractEconomy loadTNE() {
 
       return new Economy_TNE(parent);
+    }
+
+    private boolean vaultUnlockedPresent() {
+      final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
+      return vault != null && !vault.getDescription().getVersion().startsWith("1");
+    }
+
+    private boolean vaultPresent() {
+      final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
+      return vault != null && !vault.getDescription().getVersion().startsWith("2");
     }
   }
 }

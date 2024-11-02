@@ -62,7 +62,8 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE))) {
 
       final String path = shop.isFrozen()? "controlpanel.unfreeze" : "controlpanel.freeze";
-      final Component text = plugin.text().of(sender, path).forLocale();
+      final Component text = plugin.text().of(sender, path, MsgUtil.bool2String(shop.isFrozen())).forLocale();
+
       final Component hoverText = plugin.text().of(sender, "controlpanel.freeze-hover").forLocale();
       final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentfreeze"), shop.getRuntimeRandomUniqueId().toString());
       components.add(text
