@@ -170,12 +170,14 @@ public class ShopLoader implements SubPasteItem {
     final Shop shop;
     final DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(dataRecord);
     final Location location = new Location(Bukkit.getWorld(infoRecord.getWorld()), x, y, z);
+
+    final ItemStack stack = (rawInfo.getNewItem() == null)? rawInfo.getItem() : rawInfo.getNewItem();
     try {
       shop = new ContainerShop(plugin,
                                infoRecord.getShopId(),
                                location,
                                rawInfo.getPrice(),
-                               rawInfo.getItem(),
+                               stack,
                                rawInfo.getOwner(),
                                rawInfo.isUnlimited(),
                                rawInfo.getType(),
