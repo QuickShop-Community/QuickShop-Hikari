@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Poți distruge magazinul folosind SuperUnealta.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>Ai achitat{0}<green> pentru a schimba pretul.
 not-allowed-to-create: <red>Nu poti crea un magazin aici.
 disabled-in-this-world: <red>QuickShop este dezactivat in aceasta lume
@@ -1637,6 +1637,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"
