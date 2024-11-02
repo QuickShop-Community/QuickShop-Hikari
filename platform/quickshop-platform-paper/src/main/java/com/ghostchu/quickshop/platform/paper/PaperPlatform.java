@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,18 @@ public class PaperPlatform implements Platform {
   @Override
   public void shutdown() {
 
+  }
+
+  @Override
+  public @NotNull String encodeStack(@NotNull final ItemStack stack) {
+
+    return Base64.getEncoder().encodeToString(stack.serializeAsBytes());
+  }
+
+  @Override
+  public ItemStack decodeStack(@NotNull final String serialized) {
+
+    return ItemStack.deserializeBytes(Base64.getDecoder().decode(serialized));
   }
 
   @Override
@@ -130,7 +143,7 @@ public class PaperPlatform implements Platform {
     String key;
     try {
       key = material.translationKey();
-    } catch(Throwable error) {
+    } catch(final Throwable error) {
       key = material.getTranslationKey();
     }
     return postProcessingTranslationKey(key);
@@ -142,7 +155,7 @@ public class PaperPlatform implements Platform {
     String key;
     try {
       key = type.translationKey();
-    } catch(Throwable error) {
+    } catch(final Throwable error) {
       key = type.getTranslationKey();
     }
     return postProcessingTranslationKey(key);
@@ -168,7 +181,7 @@ public class PaperPlatform implements Platform {
     String key;
     try {
       key = stack.getTranslationKey();
-    } catch(Throwable error) {
+    } catch(final Throwable error) {
       key = stack.translationKey();
     }
     return postProcessingTranslationKey(key);
@@ -243,7 +256,7 @@ public class PaperPlatform implements Platform {
 
     try {
       return parent.getSLF4JLogger();
-    } catch(Throwable th) {
+    } catch(final Throwable th) {
       return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
     }
   }
