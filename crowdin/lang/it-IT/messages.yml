@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Puoi rompere il negozio usando il SuperTool.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>Hai pagato <red>{0}<green> per cambiare il prezzo.
 not-allowed-to-create: <red>Non puoi creare un negozio qui.
 disabled-in-this-world: <red>QuickShop è disabilitato in questo mondo
@@ -1621,6 +1621,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"
