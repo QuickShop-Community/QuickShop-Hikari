@@ -245,7 +245,8 @@ public class MainPage {
                                                userName,
                                                itemName, record.amount(),
                                                record.money(),
-                                               record.tax());
+                                               record.tax(),
+                                               record.money() - record.tax());
 
           final String timeFormat = QuickShop.getInstance().text().of(player, "timeunit.std-format").plain();
           final SimpleDateFormat format = new SimpleDateFormat(timeFormat);
