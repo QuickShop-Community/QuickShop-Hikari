@@ -31,8 +31,7 @@ safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container,
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
 shop-out-of-space-name: <dark_purple>Your shop {0} is full!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>Paste function has been disabled! You cannot request technical support.<newline>Reason: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -52,7 +51,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
 digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
@@ -124,7 +123,7 @@ menu:
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
 no-nearby-shop: <red>No nearby shop matching {0}.
-translation-author: 'Ghost_chu, Andre_601'
+translation-author: 'Translator: Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Successfully set the shop owner to Server.
@@ -148,20 +147,14 @@ metric:
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: |-
-    <yellow>{0}
-    <gold>UUID: <gray>{1}
+    <yellow>{0}<newline><gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
   tax-hover: <yellow>{0} taxes
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
   shop-hover: |-
-    <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
+    <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
   time-hover: '<yellow>Time: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
@@ -176,8 +169,7 @@ nothing-to-flush: <green>You have no new shop messages.
 no-price-change: <red>This wouldn't result in a price change!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
 inventory-unavailable: |-
-  <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
-  Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
+  <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?<newline>Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
 file-test: This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)
 unknown-player: <red>Target player doesn't exist, please check the username you typed.
 player-offline: <red>The target player currently is offline.
@@ -185,6 +177,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: SELLING
   buying: BUYING
+  frozen: FROZEN
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -193,8 +186,7 @@ language:
   name: '<yellow>Name: <gold>{0}'
   help-us: <green>[Help us improve the translation quality]
 warn-to-paste: |-
-  <yellow>Collecting data and uploading to Pastebin. This may take a while...
-  <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
+  <yellow>Collecting data and uploading to Pastebin, this may take a while. <red><bold>Warning: <red>The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
 how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
@@ -237,7 +229,7 @@ updatenotify:
     - Paimon want told you the QuickShop have new update {0}!
   remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
-nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
+nearby-shop-entry: '<green>- Info: {0} <green>Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
 chest-title: QuickShop Store
 console-only: <red>This command can only be executed by Console.
 failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
@@ -273,7 +265,7 @@ price-is-now: <green>The new price of the shop is <yellow>{0}
 shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
 that-is-locked: <red>This shop is locked.
 shop-has-no-space: <red>The shop only has room for {0} more {1}.
-safe-mode-admin: <red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won't work. Please use the <yellow>/quickshop</yellow> command to check for any errors.
+safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/quickshop </yellow> command to check any errors.'
 shop-stock-too-low: <red>The shop only has {0} {1} left!
 world-not-exists: <red>The world <yellow>{0}<red> doesn't exist
 how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
@@ -285,9 +277,7 @@ support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
   outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
   bad-hosts: |-
-    <yellow>The server's HOSTS have been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.
-    Windows: C:\\windows\\system32\\drivers\\etc\\hosts
-    Linux: /etc/hosts
+    <yellow>The server's HOSTS has been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.<newline>Windows: C:\windows\system32\drivers\etc\hosts<newline>Linux: /etc/hosts
   privacy: <yellow>This server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.
   modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
   consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
@@ -342,70 +332,70 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Click to set a new price for the item.
-  remove: <bold><red>[Remove Shop]
+  remove: <red><bold>[Remove Shop]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
-  empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<light_purple><bold>Change<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Click to switch owner.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Click to toggle if the shop is unlimited.
   refill-hover: <yellow>Click to refill the shop.
   remove-hover: <yellow>Click to remove this shop.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Refill: Refill the items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Toggle the shop's freeze status.
   lock-hover: <yellow>Enable/Disable the shop's lock protection.
   item-hover: <yellow>Click to change shop Item
   infomation: '<green>Shop Control panel:'
   mode-selling-hover: <yellow>Click to change the shop to BUY mode.
   empty-hover: <yellow>Click to clear the inventory of the shop.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
   history-hover: <yellow>Click to view shop history logs
 timeunit:
   behind: behind
-  week: "{0} week"
-  weeks: "{0} weeks"
-  year: "{0} year"
+  week: "<red>{0} week"
+  weeks: "<red>{0} weeks"
+  year: "<red>{0} year"
   before: before
   scheduled: scheduled
-  years: "{0} years"
+  years: "<red>{0} years"
   scheduled-in: scheduled in {0}
-  second: "{0} second"
+  second: "<red>{0} second"
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
   std-time-format: HH:mm:ss
-  seconds: "{0} seconds"
-  hour: "{0} hour"
+  seconds: "<red>{0} seconds"
+  hour: "<red>{0} hour"
   scheduled-at: scheduled at {0}
   after: after
-  day: "{0} day"
+  day: "<red>{0} day"
   recent: recent
   between: between
-  hours: "{0} hours"
-  months: "{0} months"
+  hours: "<red>{0} hours"
+  months: "<red>{0} months"
   longtimeago: long time ago
   between-format: between {0} and {1}
-  minutes: "{0} minutes"
+  minutes: "<red>{0} minutes"
   justnow: just now
-  minute: "{0} minute"
+  minute: "<red>{0} minute"
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: future
-  month: "{0} month"
+  month: "<red>{0} month"
   future: in {0}
-  days: "{0} days"
+  days: "<red>{0} days"
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
@@ -437,6 +427,7 @@ command:
     sell: <yellow>Changes a shop to <aqua>SELL<yellow> mode
     fetchmessage: <yellow>Show unread shop messages
     staff: <yellow>Manage your shop staff
+    staffall: <yellow>Manage your shop staff of all shops you own.
     clean: <yellow>Removes all (loaded) shops without any stock
     refill: <yellow>Adds a given number of items to a shop
     help: <yellow>Shows QuickShop help
@@ -454,15 +445,16 @@ command:
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
+    browse: <yellow>Browse shops that exist in this server.
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
     history: <yellow>View the history transactions of a shop
     sign: <yellow>Change the sign material of a shop
-  bulk-size-not-set: '<red>Usage: /quickshop size \<amount>'
-  no-type-given: '<red>Usage: /quickshop find \<item>'
+  bulk-size-not-set: '<red>Usage: /quickshop size <amount>'
+  no-type-given: '<red>Usage: /quickshop find <item>'
   feature-not-enabled: This feature is not enabled in the config file.
   now-debuging: <green>Successfully enabled developer mode. Reloading QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
+  no-amount-given: <red>No amount provided. Use <green>/quickshop refill <amount></green>
   no-owner-given: <red>No owner provided
   disabled: '<red>This command is disabled: <yellow>{0}'
   bulk-size-now: <green>Now trading <yellow>{0}x {1}
@@ -476,7 +468,7 @@ command:
     unlimited: <green>Shop is now unlimited
   transfer-success-other: <green>Transferred <yellow>{0} {1}<green>'s shop(s) to <yellow>{2}
   no-trade-item: <green>Please hold a trade item to change in main hand
-  wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
+  wrong-args: <red>Invalid argument. Use <bold>/quickshop help <red>to see a list of commands.
   some-shops-removed: <yellow>{0} <green>shop(s) removed
   new-owner: '<green>New owner: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -493,8 +485,7 @@ trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while
 the-owner-cant-afford-to-buy-from-you: <red>This costs {0}, but the shop-owner only has {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
 inventory-error: |-
-  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
-  Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
+  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?<newline>Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
 integrations-check-failed-create: <red>Integration {0} denied the shop-creation
 shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is now full.
 admin-shop: AdminShop
@@ -513,7 +504,7 @@ permission:
   header: <green>Shop Permission Details
   header-player: <green>Shop Permission Details for {0}
   header-group: <green>Shop Permission Details for group {0}
-  table: <gold><bold>{0}</bold>:</gold> <gray>{1}
+  table: <gold><b>{0}</b>:</gold> <gray>{1}</gray>
   item:
     purchase: <yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)
     show-information: <yellow>Permission to allow users who have this to see the shop information. (open shop info panel)
@@ -546,14 +537,12 @@ permission-required: <red>You don't have permission {0} in this shop to do this.
 no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
 paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
 paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
-paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
+paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
-  <green>Paste created and saved to your local disk at {0}
-  <red>Warning: <gray>Never send pastes to people you don't trust.
+  <green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust.
 paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
+  <gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/quickshop paste --file</dark_gray>
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
 command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
@@ -588,12 +577,12 @@ debug:
   operation-invalid: <red>You must specific an valid operation.
   invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
   warning-sql: |-
-    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
-    <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
+    <red><bold>Warning:</bold></red><yellow>You're executing a SQL statement, this may corrupt your database or destroy any data in database even it belongs to other plugins.
+    <red>Don't confirm if you don't trust who send you this command.
+  warning-sql-confirm: <yellow>To confirm this dangerous operation, please type <aqua>/quickshop debug database sql confirm {0}</aqua> in 60 seconds.
   warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
   sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
-  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
+  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}</aqua>'
   sql-completed: <green>Completed, {0} rows affected.
   sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
@@ -640,15 +629,15 @@ database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
-  trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
+  trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.'
   status: '<yellow>Status: {0}'
   status-good: <green>Good
   status-bad: <yellow>Maintenance Required
   isolated: '<yellow>Isolated Data:'
-  isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
-  isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
-  isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}'
-  isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
+  isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
+  isolated-shop-ids: '<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>'
+  isolated-logs: '<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>'
+  isolated-external-caches: '<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>'
   last-purge-time: <yellow>Last time of trim at {0}
   report-time: <yellow>Last time of scan at {0}
   auto-scan-alert: <yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming.
@@ -669,15 +658,14 @@ database:
     <aqua>Note: You server performance may impact by this operation.
   purge-players-error: <red>Failed to purge players caches, please check the server console.
   suggestion:
-    trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
+    trim: <yellow>This database require a isolated data trim, execute command <aqua>/quickshop database trim</aqua> to trim the database.
 always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
 exporting-database: <green>Exporting database, please wait...
 exporting-failed: <red>Failed to export database, please check the server console.
 exported-database: <green>Database exported to <yellow>{0}</yellow>.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
-  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
+  <yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/quickshop recovery confirm</aqua> to continue.
 importing-database: <green>Importing database from backup, please wait...
 importing-failed: <red>Failed to import database, please check the server console.
 imported-database: <green>Database imported from <yellow>{0}</yellow>.
@@ -685,8 +673,7 @@ transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
 transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
 transfer-ask: |-
-  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Type <red>/quickshop transfer accept</red> to accept.</gold><newline><gold>Type <red>/quickshop transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transferall-ask: |-
   <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
   The request will expire after <red>{0}</red> seconds.
@@ -1534,7 +1521,84 @@ sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material
 delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
+gui:
+  shared:
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    previous-menu: "<white>Previous Menu</white>"
+  player:
+    select:
+      - "<yellow>Click to select this player.</yellow>"
+  staff:
+    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
+    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
+    add-staff: "<green>Add Staff Member</green>"
+    head-icon:
+      display: "<aqua>{0}</aqua>"
+      lore:
+        - "<yellow>Left click to remove staff member.</yellow>"
+        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>to this staff member.</yellow>"
+  trade:
+    title: "Shop Browser"
+    custom:
+      display: "<bold><blue>Custom Order</blue></bold>"
+      lore-buy:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to buy.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+        - "<white>Stock: <bold><red>{1}</red></bold>"
+      lore-sell:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to sell.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+    quantity:
+      display-buy: "<bold><green>Buy {0}</green></bold>"
+      display-sell: "<bold><green>Sell {0}</green></bold>"
+      lore:
+        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
+        - "<white>Total: </white><bold><green>{2}</green></bold>"
+  browse:
+    title: "Shop Browser"
+    info:
+      - "<green>Owner: </green><yellow>{0}</yellow>"
+      - "<green>Location: </green><yellow>{1}</yellow>"
+      - "<green>Type: </green><yellow>{2}</yellow>"
+      - "<green>Price: </green><yellow>{3}</yellow>"
+      - "<green>Stock: </green><yellow>{4}</yellow>"
+  keeper:
+    title: "Shop Keeper"
+    change-icon:
+      display: "<bold><green>Change Price</green></bold>"
+      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      lore:
+        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+    mode-icon:
+      display: "<bold><green>Change Mode</green></bold>"
+      lore:
+        - "<white>Click to toggle between buying/selling mode.</white>"
+        - "<white>Current Mode: </white><red>{0}</red>"
+        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+    staff-icon:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      lore:
+        - "<white>Click to manage your shop's staff.</white>"
+    remove-icon:
+      display: "<bold><red>Delete Shop</red></bold>"
+      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      lore:
+        - "<white>Click to delete your shop.</white>"
+        - "<grey>You can also break the sign/chest.</grey>"
 history:
   shop:
     gui-title: "View purchase history"
@@ -1579,9 +1643,9 @@ about:
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
-    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
+browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
 shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."

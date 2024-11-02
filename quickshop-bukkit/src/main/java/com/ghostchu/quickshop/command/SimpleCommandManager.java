@@ -77,12 +77,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -634,8 +636,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         if(Util.isDevMode()) {
           Log.debug("Tab-complete container: " + container.getPrefix());
         }
-        return container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
 
+        List<String> generatedCompletions = container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
+        if (generatedCompletions != null) {
+          return StringUtil.copyPartialMatches(cmdArg[cmdArg.length - 1], generatedCompletions, new ArrayList<>());
+        }
+
+        return null;
       }
       return Collections.emptyList();
     }
