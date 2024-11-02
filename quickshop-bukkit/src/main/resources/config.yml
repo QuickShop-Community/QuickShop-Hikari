@@ -12,7 +12,7 @@ game-language: default
 #Any client connect to server that using disabled language, will fallback to game-language option there
 #Set to - '*' to enable all available languages
 #The language files will automatically update thorough Crowdin OTA system, you can translate it there:
-#https://crowdin.com/project/quickshop-hikari
+#https://crowdin.com/project/qs-hikari
 #If you want custom the language file, use language override system:
 #https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/localization
 enabled-languages:
@@ -596,6 +596,10 @@ custom-commands:
   - shop
   - chestshop
   - cshop
+
+#Set the command alias for qs sub command
+custom-subcommands:
+  help: help
 
 #Let this stay false, DO NOT TOUCH IT!
 config-damaged: false

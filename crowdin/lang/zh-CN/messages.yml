@@ -52,7 +52,7 @@ quick-fill:
   header: '<yellow>您有多个名称为“<green>{0}</green>”的商店，选择其中一个继续：'
   entry-normal: ' <yellow>- <red>{0} <aqua>{1} <light_purple>'
   entry-cooperation: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果这不是预期结果，请尝试添加 <light_purple>{1} <gray> 到监听器黑名单中。配置指南：https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker#resolve-the-plugin-conflicting'
 average-price-nearby: '<green>附近的平均价格： <yellow>{0}'
 inventory-check-global-alert: "<red>[背包检查] <gray>警告！找到QuickShop悬浮物 <gold>{2}</gold> 在背包中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，这不应该发生，这通常意味着有人恶意利用漏洞来复制悬浮物。"
 digits-reach-the-limit: <red>您的价格中的小数点后位数超过上限。
@@ -184,6 +184,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: 出售
   buying: 收购
+  frozen: 已冻结
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -350,7 +351,7 @@ controlpanel:
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
   alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<bold><light_purple>更改</light_purple>]'
   setowner: '<green>所有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  freeze: '<yellow>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  freeze: '<green>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
   price: '<green>价格: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
   lock: '<yellow>商店锁: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
@@ -436,6 +437,7 @@ command:
     sell: <yellow>切换到 <aqua>出售 <yellow>模式
     fetchmessage: <yellow>获取未读的商店交易日志
     staff: <yellow>管理商店助手
+    staffall: <yellow>管理您所有商店的助手
     clean: <yellow>移除所有已加载的脱销的商店
     refill: <yellow>添加一定数量的物品到商店
     help: <yellow>显示QuickShop帮助
@@ -453,6 +455,7 @@ command:
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
+    browse: <yellow>浏览此服务器上存在的商店
     tag: <yellow>添加、 删除或查询商店标签
     suggestprice: <yellow>根据其他商店的情况, 为商店提出建议价格
     history: <yellow>查看商店的历史交易记录
@@ -1526,7 +1529,84 @@ sign-type-invalid: "<red><yellow>{0}</yellow>不是有效的牌子类型。"
 delete-controlpanel-button-confirm: "<red>您真的想要删除这家商店吗？再次点击 <bold>[删除商店]</bold> 按钮并在 {0} 秒内确认。"
 cannot-suggest-price: "<red>对不起，暂时没有更多的玩家与您交易相同的物品，没有足够的数据来生成建议的价格。"
 price-suggest: "<green>基于来自 <aqua>{0}</aqua> 商店的数据 最高价格的商店价格为 <light_purple>{1}</light_purple>价格最低的商店价格为 <light_purple>{2}</light_purple>平均价格为 <light_purple>{3}</light_purple>，中位价格为 <light_purple>{4}</light_purple> <newline><yellow>建议您将价格设置在 <gold>{5}</gold>。</yellow>"
+price-suggest-multi: "<green>建议使用 {0} </green>{1}"
 suggest-wait: "<green>请稍候... 计算推荐价格。"
+gui:
+  shared:
+    previous-page: "<white><< 上一页</white>"
+    next-page: "<white>下一页 >></white>"
+    previous-menu: "<white>上一个菜单</white>"
+  player:
+    select:
+      - "<yellow>点击选中该玩家</yellow>"
+  staff:
+    confirm-remove: "<red>输入 'confirm' 以确认移除 '{0}' 的商店助手</red>"
+    confirm-transfer: "<red>输入 'confirm' 以确认将该商店转让到 {0}.</red>"
+    add-staff: "<green>添加商店助手</green>"
+    head-icon:
+      display: "<aqua>{0}</aqua>"
+      lore:
+        - "<yellow>左键点击以移除商店助手.</yellow>"
+        - "<yellow>右键点击以转让商店的所有者</yellow>"
+        - "<yellow>到该商店助手</yellow>"
+  trade:
+    title: "商店浏览"
+    custom:
+      display: "<bold><blue>自定义交易</blue></bold>"
+      lore-buy:
+        - "<white>选择数量</white>"
+        - "<white>想要购买</white>"
+        - "<yellow>输入你想要交易的数量</yellow>"
+        - "<yellow>必须是 <bold><red>{0}</red></bold></yellow>"
+        - "<white>库存： <bold><red>{1}</red></bold>"
+      lore-sell:
+        - "<white>选择数量</white>"
+        - "<white>想要出售</white>"
+        - "<yellow>输入你想要交易的数量</yellow>"
+        - "<yellow>必须是 <bold><red>{0}</red></bold></yellow>"
+      enter-buy: "<yellow>输入您要购买的数量，必须是 {0} 的倍数。输入 0 可以退出</yellow>"
+      enter-sell: "<yellow>输入您要出售的数量，必须是 {0} 的倍数。输入 0 可以退出</yellow>"
+      multiple: "<yellow>输入的数量无效！必须是 {0} 的倍数。输入 0 可以退出</yellow>"
+      stock: "<yellow>输入的数量无效！商店中没有足够的库存。输入 0 可以退出</yellow>"
+    quantity:
+      display-buy: "<bold><green>收购 {0}</green></bold>"
+      display-sell: "<bold><green>出售 {0}</green></bold>"
+      lore:
+        - "<bold><yellow>{0}</yellow></bold><white> </white><bold><green>{1}</green></bold>"
+        - "<white>总计： </white><bold><green>{2}</green></bold>"
+  browse:
+    title: "商店浏览"
+    info:
+      - "<green>所有者: </green>{0}<yellow></yellow>"
+      - "<green>位置： </green>{1}<yellow></yellow>"
+      - "<green>类型： </green>{2}<yellow></yellow>"
+      - "<green>价格:</green><yellow>{3}</yellow>"
+      - "<green>库存： </green><yellow>{4}</yellow>"
+  keeper:
+    title: "商店控制面板"
+    change-icon:
+      display: "<bold><green>更改价格</green></bold>"
+      enter: "<yellow>在聊天中输入新价格</yellow>"
+      lore:
+        - "<white>点击可更改商店中每件物品的价格</white>"
+        - "<white>当前价格：</white> <yellow>{0}</yellow>"
+    mode-icon:
+      display: "<bold><green>更改模式</green></bold>"
+      lore:
+        - "<white>点击可在收购/出售模式之间切换</white>"
+        - "<white>当前模式： </white><red>{0}</red>"
+        - "<yellow>点击切换到 </yellow><red>{1}</red>"
+    staff-icon:
+      display: "<bold><aqua>商店助手</aqua></bold>"
+      no-permission: "<bold><red>未被允许管理商店助手</red></bold>"
+      lore:
+        - "<white>点击管理您的商店助手</white>"
+    remove-icon:
+      display: "<bold><red>删除商店</red></bold>"
+      confirm: "<yellow>在聊天中输入'confirm'以确认商店删除。或者输入任何其它内容以取消删除</yellow>"
+      lore:
+        - "<white>点击删除您的商店</white>"
+        - "<grey>您也可以破坏牌子/商店容器方块</grey>"
 history:
   shop:
     gui-title: "查看交易记录"
@@ -1567,13 +1647,13 @@ about:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
     - "<aqua>版本 <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>构建 <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>开发者 <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>点击查看贡献者'><click:open_url:'https://github.com/Quickshop-Community/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看贡献者]</click></hover></color></aqua>"
     - "<aqua>本地化成员 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>点击打开 Crowdin 翻译页面'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上帮助翻译]</click></hover></color></yellow>"
     - "<aqua>捐赠密钥 <yellow>>></yellow> <green>{6}</green></aqua>"
-    - "<gold>由社区提供支持</gold> <red>用 ❤</red>"
   valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>无效的捐赠密钥</gray>"
   kofi-thanks: "<gold>特别感谢那些在 Ko-Fi 上支持 QuickShop 的人 :)</gold>"
 history-command-leave-blank: "参数为空时查询所指向的商店"
+browse-command-leave-blank: "参数为空时查询所指向的商店"
 shop-information-not-shown-due-an-internal-error: "<red>发生内部错误。商店信息面板可能显示不完整，请与服务器管理员联系。"

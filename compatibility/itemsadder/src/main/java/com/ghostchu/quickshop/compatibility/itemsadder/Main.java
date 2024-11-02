@@ -19,7 +19,7 @@ public final class Main extends CompatibilityModule implements ItemExpressionHan
     final Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
     if(registry instanceof ItemExpressionRegistry itemExpressionRegistry) {
       if(itemExpressionRegistry.registerHandlerSafely(this)) {
-        getLogger().info("Register ItemAdder ItemExpressionHandler successfully!");
+        getLogger().info("Register ItemsAdder ItemExpressionHandler successfully!");
       }
     }
   }
@@ -34,7 +34,7 @@ public final class Main extends CompatibilityModule implements ItemExpressionHan
   @Override
   public String getPrefix() {
 
-    return "itemadder";
+    return "itemsadder";
   }
 
   @Override

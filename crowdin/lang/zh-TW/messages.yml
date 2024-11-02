@@ -185,6 +185,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: 出售中
   buying: 收購中
+  frozen: FROZEN
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -437,6 +438,7 @@ command:
     sell: <yellow>變更成 <light_purple>出售 <yellow>模式
     fetchmessage: <yellow>顯示未讀商店日誌
     staff: <yellow>管理你的商店員工
+    staffall: <yellow>Manage your shop staff of all shops you own.
     clean: <yellow>移除所有（已載入）沒有商品的商店
     refill: <yellow>將一定數量的商品加到商店
     help: <yellow>顯示 QuickShop 說明
@@ -454,6 +456,7 @@ command:
     lookup: <yellow>管理物品索引表
     database: <yellow>查看和維護 QuickShop 資料庫
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
+    browse: <yellow>Browse shops that exist in this server.
     tag: <yellow>新增、刪除或查詢商店標籤
     suggestprice: <yellow>基於其它商店的情況，為商店提出建議價格
     history: <yellow>查看商店的歷史交易記錄
@@ -1534,7 +1537,84 @@ sign-type-invalid: "<red>告示牌 <yellow>{0}</yellow> 是無效的材質。"
 delete-controlpanel-button-confirm: "<red>你真的想刪除這家商店嗎？在 {0} 秒內按兩下 <bold>[刪除商店]</bold> 按鈕來再次確認。"
 cannot-suggest-price: "<red>對不起，目前沒有更多的人和你交易相同的物品，也沒有足夠的資料來生成建議的價格。"
 price-suggest: "<green>基於來自 <aqua>{0}</aqua> 商店的資料，價格最高的商店價格為 <light_purple>{1}</light_purple> 元，價格最低的商店價格為 <light_purple>{2}</light_purple> 元，平均價格為 <light_purple>{3}</light_purple> 元，中位數價格為 <light_purple>{4}</light_purple> 元。<newline><yellow>建議你將價格設定在 <gold>{5}</gold> 元。</yellow>"
+price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>請稍候……正在計算建議價格。"
+gui:
+  shared:
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    previous-menu: "<white>Previous Menu</white>"
+  player:
+    select:
+      - "<yellow>Click to select this player.</yellow>"
+  staff:
+    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
+    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
+    add-staff: "<green>Add Staff Member</green>"
+    head-icon:
+      display: "<aqua>{0}</aqua>"
+      lore:
+        - "<yellow>Left click to remove staff member.</yellow>"
+        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>to this staff member.</yellow>"
+  trade:
+    title: "Shop Browser"
+    custom:
+      display: "<bold><blue>Custom Order</blue></bold>"
+      lore-buy:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to buy.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+        - "<white>Stock: <bold><red>{1}</red></bold>"
+      lore-sell:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to sell.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+    quantity:
+      display-buy: "<bold><green>Buy {0}</green></bold>"
+      display-sell: "<bold><green>Sell {0}</green></bold>"
+      lore:
+        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
+        - "<white>Total: </white><bold><green>{2}</green></bold>"
+  browse:
+    title: "Shop Browser"
+    info:
+      - "<green>Owner: </green><yellow>{0}</yellow>"
+      - "<green>Location: </green><yellow>{1}</yellow>"
+      - "<green>Type: </green><yellow>{2}</yellow>"
+      - "<green>Price: </green><yellow>{3}</yellow>"
+      - "<green>Stock: </green><yellow>{4}</yellow>"
+  keeper:
+    title: "Shop Keeper"
+    change-icon:
+      display: "<bold><green>Change Price</green></bold>"
+      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      lore:
+        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+    mode-icon:
+      display: "<bold><green>Change Mode</green></bold>"
+      lore:
+        - "<white>Click to toggle between buying/selling mode.</white>"
+        - "<white>Current Mode: </white><red>{0}</red>"
+        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+    staff-icon:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      lore:
+        - "<white>Click to manage your shop's staff.</white>"
+    remove-icon:
+      display: "<bold><red>Delete Shop</red></bold>"
+      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      lore:
+        - "<white>Click to delete your shop.</white>"
+        - "<grey>You can also break the sign/chest.</grey>"
 history:
   shop:
     gui-title: "查看購買歷史記錄"
@@ -1579,9 +1659,9 @@ about:
     - "<aqua>本地化成員 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>點擊開啟 Crowdin 翻譯頁面><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上協助翻譯]</click></hover></color></yellow>"
     - "<aqua>贊助密鑰 <yellow>>></yellow> <green>{6}</green></aqua>"
-    - "<gold>由社區支援</gold> <red>用 ❤ 發電</red>"
   valid-donation-key: "<color:#00AFF1>綁定到 <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>無效的贊助密鑰</gray>"
   kofi-thanks: "<gold>特別感謝那些在 Ko-fi 上支持 QuickShop 的人 :)</gold>"
 history-command-leave-blank: "<參數為空時查詢面前的商店>"
+browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
 shop-information-not-shown-due-an-internal-error: "<red>發生內部錯誤。商店資訊面板可能顯示不完整，請聯絡伺服器管理員。"

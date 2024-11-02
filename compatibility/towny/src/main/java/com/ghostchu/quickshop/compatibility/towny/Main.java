@@ -3,17 +3,17 @@ package com.ghostchu.quickshop.compatibility.towny;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
-import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopOwnerNameGettingEvent;
-import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxAccountChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxAccountGettingEvent;
-import com.ghostchu.quickshop.api.event.ShopTypeChangeEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.details.ShopOwnerNameGettingEvent;
+import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountChangeEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountGettingEvent;
+import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -30,14 +30,17 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
+import com.palmergames.bukkit.towny.event.executors.TownyActionEventExecutor;
 import com.palmergames.bukkit.towny.event.town.TownKickEvent;
 import com.palmergames.bukkit.towny.event.town.TownLeaveEvent;
 import com.palmergames.bukkit.towny.event.town.TownRuinedEvent;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -47,6 +50,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -104,12 +108,12 @@ public final class Main extends CompatibilityModule implements Listener {
     for(final TownyFlags flag : flags) {
       switch(flag) {
         case OWN:
-          if(!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+          if(!doesPlayerOwnShopPlot(player, location)) {
             return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.own").forLocale());
           }
           break;
         case MODIFY:
-          if(!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+          if(!TownyActionEventExecutor.canBuild(player, location, Material.DIRT)) {
             return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.modify").forLocale());
           }
           break;
@@ -369,7 +373,7 @@ public final class Main extends CompatibilityModule implements Listener {
           }
         }
       }
-    } catch(NotRegisteredException ignored) {
+    } catch(final NotRegisteredException ignored) {
 
     }
   }
@@ -442,5 +446,21 @@ public final class Main extends CompatibilityModule implements Listener {
       event.setTaxAccount(taxUUID);
       Log.debug("Tax account override: " + uuid + " = " + town.getAccount().getName());
     }
+  }
+
+  private boolean doesPlayerOwnShopPlot(final Player player, final Location location) {
+    final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(location);
+
+    if(townBlock != null && townBlock.hasResident()) {
+      final Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+      if(resident != null) {
+
+        final Resident owner = townBlock.getResidentOrNull();
+
+        return owner != null && townBlock.getResidentOrNull().equals(resident);
+      }
+    }
+
+    return false;
   }
 }

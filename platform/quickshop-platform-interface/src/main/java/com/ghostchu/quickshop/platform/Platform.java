@@ -30,6 +30,15 @@ public interface Platform {
   void shutdown();
 
   @NotNull
+  default String encodeStack(@NotNull final ItemStack stack) {
+    return "";
+  }
+
+  default ItemStack decodeStack(@NotNull final String serialized) {
+    return null;
+  }
+
+  @NotNull
   Component getDisplayName(@NotNull ItemStack stack);
 
   @Nullable

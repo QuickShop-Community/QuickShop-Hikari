@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopInventoryPreviewEvent;
+import com.ghostchu.quickshop.api.event.inventory.ShopInventoryPreviewEvent;
 import com.ghostchu.quickshop.shop.datatype.PreviewGuiPersistentDataType;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;

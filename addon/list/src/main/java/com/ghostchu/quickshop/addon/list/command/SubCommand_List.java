@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -122,7 +123,7 @@ public class SubCommand_List implements CommandHandler<Player> {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
       }
       Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-      component = component.clickEvent(ClickEvent.runCommand("/quickshop silentpreview " + shop.getRuntimeRandomUniqueId()));
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
       printer.printLine(component);
       loopCounter++;
       if(loopCounter >= pageSize) {

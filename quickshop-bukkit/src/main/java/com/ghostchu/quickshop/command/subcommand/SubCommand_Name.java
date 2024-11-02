@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.event.ShopNamingEvent;
+import com.ghostchu.quickshop.api.event.details.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
@@ -40,6 +40,15 @@ public class SubCommand_Name implements CommandHandler<Player> {
     }
 
     if(parser.getArgs().isEmpty()) {
+
+      final ShopNamingEvent namingEvent = new ShopNamingEvent(shop, "PlaceHolder");
+      namingEvent.setName(null);
+
+      if(Util.fireCancellableEvent(namingEvent)) {
+        Log.debug("Other plugin cancelled shop naming.");
+        return;
+      }
+
       shop.setShopName(null);
       plugin.text().of(sender, "shop-name-unset").send();
       return;
@@ -77,6 +86,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
         }
       }
     }
+
     final ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
     if(Util.fireCancellableEvent(namingEvent)) {
       Log.debug("Other plugin cancelled shop naming.");

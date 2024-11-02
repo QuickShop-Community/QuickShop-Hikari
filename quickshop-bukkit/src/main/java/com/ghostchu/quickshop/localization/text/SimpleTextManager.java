@@ -81,6 +81,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   // <File <Locale, Section>>
   private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
   private final Set<String> availableLanguages = new LinkedHashSet<>();
+  private final Map<Locale, NumberFormat> numberFormatCache = new HashMap<>();
   private final Cache<String, String> languagesCache =
           CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).recordStats().build();
   private final String crowdinHost;
@@ -415,7 +416,8 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   public ProxiedLocale findRelativeLanguages(@Nullable final String langCode) {
     //langCode may null when some plugins providing fake player
     if(langCode == null || langCode.isEmpty()) {
-      return new ProxiedLocale(langCode, DEFAULT_LOCALE, NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT), Locale.ROOT);
+
+      return new ProxiedLocale(langCode, DEFAULT_LOCALE, getCompactNumberInstance(Locale.US), Locale.ROOT);
     }
     String result = languagesCache.getIfPresent(langCode);
     if(result == null) {
@@ -454,7 +456,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       Log.debug(Level.WARNING, "Failed to solve the player locale: " + locale + ": " + e.getMessage());
     }
 
-    return new ProxiedLocale(langCode, result, NumberFormat.getCompactNumberInstance(locale, NumberFormat.Style.SHORT), locale);
+    return new ProxiedLocale(langCode, result, getCompactNumberInstance(locale), locale);
+  }
+
+  private NumberFormat getCompactNumberInstance(@NotNull final Locale locale) {
+
+        return numberFormatCache.computeIfAbsent(locale, l->NumberFormat.getCompactNumberInstance(l, NumberFormat.Style.SHORT));
   }
 
   /**

@@ -6,4 +6,4 @@ depend:
   - ItemsAdder
   - QuickShop-Hikari
 authors: [ Ghost_chu ]
-description: Compatibility module for Slimefun
+description: Compatibility module for ItemsAdder

@@ -26,6 +26,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.player.PlayerSignOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,7 +54,7 @@ public class BlockListener extends AbstractProtectionListener {
   /*
    * Removes chests when they're destroyed.
    */
-  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onBreak(final BlockBreakEvent e) {
 
     final Block b = e.getBlock();
@@ -153,7 +154,7 @@ public class BlockListener extends AbstractProtectionListener {
       return;
     }
 
-    if(event.getInitiator().getHolder() instanceof Player player) {
+    if(event.getInitiator().getHolder() instanceof final Player player) {
       if(!QuickShop.inShop.contains(player.getUniqueId())) {
         return;
       }
@@ -266,6 +267,21 @@ public class BlockListener extends AbstractProtectionListener {
       plugin.text().of(player, "not-managed-shop").send();
       event.setCancelled(true);
     }
+  }
+
+  /*
+   * Listens for sign update to prevent other plugin or Purpur to edit the sign
+   */
+  @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+  public void onPlayerSignOpen(final PlayerSignOpenEvent event) {
+
+    final Block posShopBlock = Util.getAttached(event.getSign().getBlock());
+    if (posShopBlock == null) return;
+
+    final Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+    if (shop == null) return;
+
+    event.setCancelled(true);
   }
 
   /**
