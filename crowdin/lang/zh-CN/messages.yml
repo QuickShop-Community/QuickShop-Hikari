@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>您可以使用超级工具来破坏商店。
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>您已支付 <red>{0}<green> 来更改了价格。
 not-allowed-to-create: <red>您不能在这里创建商店
 disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
@@ -1629,6 +1629,7 @@ history:
       - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>余额： <yellow>{4}</yellow></white>"
       - "<white>税： <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
     previous-page: "<white><< 前一页</white>"
     next-page: "<white>下一页 >></white>"
