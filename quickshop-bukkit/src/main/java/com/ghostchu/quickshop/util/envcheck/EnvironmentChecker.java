@@ -357,10 +357,10 @@ public final class EnvironmentChecker {
   public ResultContainer virtualDisplaySupportTest() {
 
     if(!plugin.isDisplayEnabled()) {
-      return new ResultContainer(CheckResult.PASSED, "The display are disabled.");
+      return new ResultContainer(CheckResult.PASSED, "The setting shop.display-items is disabled.");
     }
     if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-      return new ResultContainer(CheckResult.PASSED, "The display type is not virtual item.");
+      return new ResultContainer(CheckResult.PASSED, "The setting shop.display-type is not virtual item.");
     }
     if(!plugin.getGameVersion().isVirtualDisplaySupports()) {
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
@@ -378,10 +378,10 @@ public final class EnvironmentChecker {
   public ResultContainer virtualDisplayWorkingTest() {
 
     if(!plugin.isDisplayEnabled()) {
-      return new ResultContainer(CheckResult.PASSED, "The display are disabled.");
+      return new ResultContainer(CheckResult.PASSED, "The setting shop.display-items is disabled.");
     }
     if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-      return new ResultContainer(CheckResult.PASSED, "The display type is not virtual item.");
+      return new ResultContainer(CheckResult.PASSED, "The setting shop.display-type is not virtual item.");
     }
     if(plugin.getVirtualDisplayItemManager() == null) {
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
