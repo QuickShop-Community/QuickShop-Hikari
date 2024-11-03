@@ -377,6 +377,12 @@ public final class EnvironmentChecker {
   @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
   public ResultContainer virtualDisplayWorkingTest() {
 
+    if(!plugin.isDisplayEnabled()) {
+      return new ResultContainer(CheckResult.PASSED, "The display are disabled.");
+    }
+    if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+      return new ResultContainer(CheckResult.PASSED, "The display type is not virtual item.");
+    }
     if(plugin.getVirtualDisplayItemManager() == null) {
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
       return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");
