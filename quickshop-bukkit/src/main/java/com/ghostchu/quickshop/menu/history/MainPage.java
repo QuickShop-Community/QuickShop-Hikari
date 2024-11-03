@@ -26,7 +26,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
@@ -45,7 +44,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
@@ -120,15 +124,16 @@ public class MainPage {
         //header icon
         final Shop shop = shops.get(0);
         final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
-        final Component shopName;
 
-        if (shop.getShopName() != null) {
+        final Component shopName;
+        if(shop.getShopName() != null) {
+
           shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shop.getShopName()).forLocale();
         } else {
           shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale();
         }
 
-        Component shopType = QuickShop.getInstance().text().of("shop-type." + shop.getShopType().name().toLowerCase(Locale.ROOT)).forLocale();
+        final Component shopType = QuickShop.getInstance().text().of("shop-type." + shop.getShopType().name().toLowerCase(Locale.ROOT)).forLocale();
 
         if(shops.size() == 1) {
 
