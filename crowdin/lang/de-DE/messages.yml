@@ -488,7 +488,7 @@ inventory-error: |-
   <red>Fehler beim Verarbeiten des Inventar-Wrappers. Verwendest du ein Add-on welches das Shop-Inventar neu verbindet? Informationen: Fehler={0}, Inventar-Wrapper={1}, Wrapper-Typ={2}, Wrapper-Bereitstellung={3}, Symbol-Link={4}. Bitte kontaktiere die Server-Administratoren.
 integrations-check-failed-create: <red>Integrierung {0} hat die Shop-Erstellung verweigert
 shop-out-of-space: <dark_purple>Dein Shop bei {0}, {1}, {2} ist jetzt voll.
-admin-shop: AdminShop
+admin-shop: Admin-Shop
 no-anythings-in-your-hand: <red>Es befindet sich nichts in deiner Hand.
 no-permission: <red>Du hast keine Berechtigung um das zu tun.
 chest-was-removed: <red>Die Truhe wurde entfernt.
@@ -1288,7 +1288,7 @@ addon:
         }
     field:
       player: Spieler
-      item: Item
+      item: Gegenstand
       amount: Menge
       balance: Guthaben
       balance-after-tax: Guthaben (Nach Steuern)
@@ -1581,28 +1581,28 @@ gui:
         - "<white>Click to change the price of each item in your shop.</white>"
         - "<white>Current Price:</white> <yellow>{0}</yellow>"
     mode-icon:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Modus ändern</green></bold>"
       lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+        - "<white>Klicke, um zwischen Kauf- und Verkaufsmodus zu wechseln.</white>"
+        - "<white>Aktueller Modus: </white><red>{0}</red>"
+        - "<yellow>Klicke, um zu </yellow><red>{1}</red> <yellow>umzuschalten.</yellow>"
     staff-icon:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      display: "<bold><aqua>Shop-Staff</aqua></bold>"
+      no-permission: "<bold><red>Dir ist nicht erlaubt Staff zu Verwalten.</red></bold>"
       lore:
-        - "<white>Click to manage your shop's staff.</white>"
+        - "<white>Klicke, um Shop-Staff zu verwalten.</white>"
     remove-icon:
-      display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      display: "<bold><red>Shop löschen</red></bold>"
+      confirm: "<yellow>Schreibe 'confirm' in Chat, um die Löschung zu bestätigen. Oder schreiben Sie etwas anderes hinein, um die Löschung abzubrechen.</yellow>"
       lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
+        - "<white>Klicke, um dein Shop zu löschen.</white>"
+        - "<grey>Du kannst das Schild/die Truhe zerstören.</grey>"
 history:
   shop:
     gui-title: "Zeige Kaufprotokolle"
     header-icon-multiple-shop: "<white>Das Abfrageergebnis in {0} shops</white>"
     header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in Welt ''{0}'' bei x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Typ: <yellow>{0}</yellow></white>"
       - "<white>Besitzer: <yellow>{1}</yellow></white>"
