@@ -46,12 +46,12 @@ quick-fill:
     - '<yellow>Besitzer: <aqua>{owner}'
     - '<yellow>Typ: <aqua>{type}'
     - '<yellow>Preis: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Gegenstand: <aqua>{item}'
     - '<yellow>Ort: <aqua>{location}'
   header: '<yellow>Du hast mehrere Shops mit dem Namem "<green>{0}</green>", wähle einen um fortzufahren:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Nur für Admins) <light_purple>{0}<dark_gray> lehnte die Berechtigung-Checks ab. Falls dies nicht erwartet wird, versuche <light_purple>{1} <gray>in die Listener-Blacklist hinzuzufügen. Konfigurationen Guide: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Durchschnittspreis in der Umgebung: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventar Prüfung] <gray>Warnung! Ein QuickShop Anzeigeitem <gold>{2}</gold> wurde in einem Inventar bei <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray> gefunden, was nicht passieren sollte. Dies bedeutet oftmals, dass jemand einen Exploit böswillig ausnutzt um das Anzeigeitem zu duplizieren."
 digits-reach-the-limit: <red>Du hast das Dezimalstellenlimit für den Preis erreicht.
@@ -152,7 +152,7 @@ metric:
   tax-hover: <yellow>{0} Steuern
   header-global: '<yellow>Transaktionen des Server für {0} {1}:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} insgesamt
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Welt: {4}<newline><gold>Besitzer: <gray>{5}<newline><gold>Shop-Art: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Preis: <gray>{8}
   time-hover: '<yellow>Zeit: {0}'
@@ -177,7 +177,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VERKAUFEN
   buying: KAUFEN
-  frozen: FROZEN
+  frozen: EINGEFROREN
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -427,7 +427,7 @@ command:
     sell: <yellow>Ändert einen Shop zu <aqua>VERKAUFEN</aqua>-Modus
     fetchmessage: <yellow>Zeigt ungelesene Shopnachrichten
     staff: <yellow>Verwalte deine Shopmitarbeiter
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>Verwalte dein Shop-Staff für alle Shops, die du besitzt.
     clean: <yellow>Entferne alle (geladenen) Shops ohne Lagerbestand
     refill: <yellow>Fügt eine gegebene Anzahl an Gegenständen dem Shop hinzu.
     help: <yellow>Zeigt die QuickShop-Hilfe
@@ -445,7 +445,7 @@ command:
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>Durchsuche Shops, die auf diesem Server existieren.
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
     suggestprice: <yellow>Empfiehlt einen Preis für den angesehenen Shop, basierend auf anderen Shops
     history: <yellow>Zeige den Transaktionsverlauf eines Shops
