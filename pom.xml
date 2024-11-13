@@ -415,7 +415,6 @@
         <module>compatibility/bungeecord</module>
         <module>compatibility/velocity</module>
         <module>compatibility/clearlag</module>
-        <!--        <module>compatibility/nocheatplus</module>-->
         <module>compatibility/worldguard</module>
         <module>compatibility/worldedit</module>
         <module>compatibility/openinv</module>
@@ -446,7 +445,6 @@
         <module>addon/bluemap</module>
         <module>addon/displaycontrol</module>
         <module>addon/reremake-migrator</module>
-        <!--        <module>addon/webui</module>-->
 
     </modules>
 
