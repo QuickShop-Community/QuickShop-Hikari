@@ -390,6 +390,12 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-abstract</artifactId>
+            <version>6.2.0.7</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <modules>
@@ -409,6 +415,7 @@
         <module>platform/quickshop-platform-spigot-v1_21_R1</module>
         <module>platform/quickshop-platform-spigot-v1_21_R2</module>
         <module>platform/quickshop-platform-spigot-v1_21_R3</module>
+        <module>platform/quickshop-platform-spigot-v1_21_R4</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
