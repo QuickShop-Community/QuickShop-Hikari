@@ -114,6 +114,7 @@
             <version>1.21.3-R0.1-SNAPSHOT</version>
             <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
