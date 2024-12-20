@@ -33,7 +33,7 @@ shop-out-of-space-name: <dark_purple>Dein Shop {0} ist voll!
 paste-disabled: |-
   <red>Paste Funktion wurde deaktiviert! Du kannst keinen technischen Support anfordern.<newline>Grund: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[eigener] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[Eigener] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Name: <aqua>{0}'
     - '<yellow>Besitzer: <aqua>{0}'
