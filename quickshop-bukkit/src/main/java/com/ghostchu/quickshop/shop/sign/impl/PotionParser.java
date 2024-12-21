@@ -1,5 +1,4 @@
-package com.ghostchu.quickshop.shop.sign;
-
+package com.ghostchu.quickshop.shop.sign.impl;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
@@ -18,36 +17,57 @@ package com.ghostchu.quickshop.shop.sign;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.shop.sign.SignParser;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 
 /**
- * SignParser
+ * PotionParser
  *
  * @author creatorfromhell
  * @since 6.2.0.8
  */
-public interface SignParser {
+public class PotionParser implements SignParser {
 
   /**
    * This method returns the identifier associated with a given SignParser implementation.
    *
    * @return The identifier of the SignParser.
    */
-  String identifier();
+  @Override
+  public String identifier() {
+
+    return "potion";
+  }
 
   /**
    * Checks if the given ItemStack item meets certain criteria for this parser to be applicable.
    *
    * @param item The ItemStack item to be checked.
+   *
    * @return true if the criteria is met, false otherwise.
    */
-  boolean applies(final ItemStack item);
+  @Override
+  public boolean applies(final ItemStack item) {
+
+    return item.hasItemMeta() && item.getItemMeta() instanceof PotionMeta;
+  }
 
   /**
    * Parses a given ItemStack item into a Component for display on a shop sign.
    *
    * @param item The ItemStack item to be parsed into a Component.
+   *
    * @return The parsed String representing the given ItemStack item.
    */
-  String parse(final ItemStack item);
+  @Override
+  public String parse(final ItemStack item) {
+
+    if(item.getItemMeta() instanceof final PotionMeta potion && potion.hasBasePotionType()) {
+
+      return potion.getBasePotionType().name();
+    }
+
+    return "Potion";
+  }
 }
