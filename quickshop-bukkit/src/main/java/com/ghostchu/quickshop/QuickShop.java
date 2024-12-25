@@ -36,10 +36,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.impl.Economy_CoinsEngine;
-import com.ghostchu.quickshop.economy.impl.Economy_GemsEconomy;
-import com.ghostchu.quickshop.economy.impl.Economy_TNE;
-import com.ghostchu.quickshop.economy.impl.Economy_Treasury;
 import com.ghostchu.quickshop.economy.impl.Economy_Vault;
 import com.ghostchu.quickshop.economy.impl.Economy_VaultUnlocked;
 import com.ghostchu.quickshop.listener.BlockListener;
@@ -1342,10 +1338,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
       AbstractEconomy abstractEconomy = switch(EconomyType.fromID(parent.getConfig().getInt("economy-type"))) {
         case VAULT -> loadVaultAbstract();
-        case GEMS_ECONOMY -> loadGemsEconomy();
-        case TNE -> loadTNE();
-        case COINS_ENGINE -> loadCoinsEngine();
-        case TREASURY -> loadTreasury();
         default -> null;
       };
       abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
@@ -1399,16 +1391,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       return new Economy_VaultUnlocked(parent);
     }
 
-    private AbstractEconomy loadTreasury() {
-
-      return new Economy_Treasury(parent);
-    }
-
-    private AbstractEconomy loadCoinsEngine() {
-
-      return new Economy_CoinsEngine(parent);
-    }
-
     // Vault may create exception, we need catch it.
     @SuppressWarnings("RedundantThrows")
     @Nullable
@@ -1447,25 +1429,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       return vault;
     }
 
-    private @NotNull AbstractEconomy loadGemsEconomy() {
-
-      return new Economy_GemsEconomy(parent);
-    }
-
-    @NotNull
-    private AbstractEconomy loadTNE() {
-
-      return new Economy_TNE(parent);
-    }
-
     private boolean vaultUnlockedPresent() {
       final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
-      return vault != null && !vault.getDescription().getVersion().startsWith("1");
+      return vault != null && vault.getDescription().getVersion().startsWith("2");
     }
 
     private boolean vaultPresent() {
       final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
-      return vault != null && !vault.getDescription().getVersion().startsWith("2");
+      return vault != null && vault.getDescription().getVersion().startsWith("1");
     }
   }
 }
