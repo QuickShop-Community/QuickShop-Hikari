@@ -88,7 +88,9 @@ public class Economy_VaultUnlocked extends NonSeparateAbstractEconomy implements
     final RegisteredServiceProvider<Economy> economyProvider;
     try {
       economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault2.economy.Economy.class);
-    } catch(final Exception e) {
+
+    } catch(final Exception ignore) {
+
       return false;
     }
 
@@ -299,7 +301,7 @@ public class Economy_VaultUnlocked extends NonSeparateAbstractEconomy implements
    * @param world    The transaction world
    * @param currency The currency name
    *
-   * @return The balance in human readable text.
+   * @return The balance in human-readable text.
    */
   @Override
   public String format(final double balance, @NotNull final World world, @Nullable final String currency) {
