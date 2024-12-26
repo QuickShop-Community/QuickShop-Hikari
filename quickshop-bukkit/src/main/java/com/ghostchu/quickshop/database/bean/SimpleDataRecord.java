@@ -20,6 +20,7 @@ public class SimpleDataRecord implements DataRecord {
 
   private final QUser owner;
   private final String item;
+  private final String encoded;
   private final String name;
   private final int type;
   private final String currency;
@@ -35,11 +36,15 @@ public class SimpleDataRecord implements DataRecord {
 
   private final String benefit;
 
-  public SimpleDataRecord(final QUser owner, final String item, final String name, final int type, final String currency, final double price, final boolean unlimited, final boolean hologram, final QUser taxAccount, final String permissions, final String extra, final String inventoryWrapper, final String inventorySymbolLink, final Date createTime, final String benefit) {
+  public SimpleDataRecord(final QUser owner, final String item, final String encoded, final String name,
+                          final int type, final String currency, final double price, final boolean unlimited,
+                          final boolean hologram, final QUser taxAccount, final String permissions,
+                          final String extra, final String inventoryWrapper, final String inventorySymbolLink,
+                          final Date createTime, final String benefit) {
 
     this.owner = owner;
     this.item = item;
-    //this.newItem = newItem;
+    this.encoded = encoded;
     this.name = name;
     this.type = type;
     this.currency = currency;
@@ -59,7 +64,7 @@ public class SimpleDataRecord implements DataRecord {
 
     this.owner = QUserImpl.deserialize(finder, set.getString("owner"), QuickExecutor.getSecondaryProfileIoExecutor());
     this.item = set.getString("item");
-    //this.newItem = set.getString("new_item");
+    this.encoded = set.getString("encoded");
     this.name = set.getString("name");
     this.type = set.getInt("type");
     this.currency = set.getString("currency");
@@ -90,7 +95,7 @@ public class SimpleDataRecord implements DataRecord {
     final Map<String, Object> map = new LinkedHashMap<>();
     map.put("owner", owner.serialize());
     map.put("item", item);
-    //map.put("new_item", newItem);
+    map.put("encoded", encoded);
     map.put("name", name);
     map.put("type", type);
     map.put("currency", currency);
@@ -145,6 +150,12 @@ public class SimpleDataRecord implements DataRecord {
   public @NotNull String getItem() {
 
     return item;
+  }
+
+  @Override
+  public @NotNull String getEncoded() {
+
+    return encoded;
   }
 
   @Override

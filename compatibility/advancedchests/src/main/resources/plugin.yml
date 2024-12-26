@@ -1,9 +1,0 @@
-name: qscompat-${project.artifactId}
-version: '${project.version}'
-main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
-api-version: 1.18
-depend: [ AdvancedChests, QuickShop-Hikari ]
-permissions:
-  quickshop.create.advancedchests:
-    description: Allows the player to create a shop on an AdvancedChests chest.
-    default: op

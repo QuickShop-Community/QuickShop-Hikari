@@ -4,7 +4,7 @@ com.google.code.gson:gson:2.10.1@com.google.gson.Gson
 com.google.guava:guava:33.1.0-jre
 com.rollbar:rollbar-java:1.9.0@com.rollbar.notifier.Rollbar
 cc.carm.lib:easysql-hikaricp:0.4.7@cc.carm.lib.easysql.hikari.HikariDataSource
-com.h2database:h2:2.1.214@org.h2.Driver
+com.h2database:h2:2.2.224@org.h2.Driver
 com.konghq:unirest-java:3.14.5@kong.unirest.Unirest
 net.sourceforge.csvjdbc:csvjdbc:1.0.42@org.relique.jdbc.csv.CsvDriver
 org.dom4j:dom4j:2.1.4@org.dom4j.io.SAXReader

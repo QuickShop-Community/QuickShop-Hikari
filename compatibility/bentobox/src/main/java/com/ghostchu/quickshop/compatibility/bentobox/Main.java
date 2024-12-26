@@ -53,6 +53,7 @@ public final class Main extends CompatibilityModule implements Listener {
     if(!deleteShopOnLeave) {
       return;
     }
+
     getShops(event.getIsland()).forEach(shop->{
       if(event.getPlayerUUID().equals(shop.getOwner().getUniqueId())) {
         recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "BentoBox", false), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");

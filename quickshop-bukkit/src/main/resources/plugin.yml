@@ -30,7 +30,7 @@ api-version: 1.18
 #  - com.rollbar:rollbar-java:1.9.0
 #  - commons-codec:commons-codec:1.15
 #  - cc.carm.lib:easysql-hikaricp:0.4.7
-#  - com.h2database:h2:2.1.214
+#  - com.h2database:h2:2.2.224
 #  - com.ghostchu:simplereloadlib:1.1.2
 #  - com.konghq:unirest-java:3.14.5
 #  - com.github.juliomarcopineda:jdbc-stream:0.1.1

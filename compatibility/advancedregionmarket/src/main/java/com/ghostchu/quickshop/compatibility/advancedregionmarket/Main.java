@@ -1,7 +1,10 @@
 package com.ghostchu.quickshop.compatibility.advancedregionmarket;
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
 import net.alex9849.arm.regions.Region;
@@ -15,6 +18,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,33 +37,13 @@ public final class Main extends CompatibilityModule implements Listener {
 
   private void handleDeletion(final Region region) {
 
-    final Vector minPoint = region.getRegion().getMinPoint();
-    final Vector maxPoint = region.getRegion().getMaxPoint();
-    final World world = region.getRegionworld();
-    final Set<Chunk> chuckLocations = new HashSet<>();
+    final List<Shop> shops = getApi().getShopManager().getAllShops();
+    for(final Shop shop : shops) {
 
-    for(int x = minPoint.getBlockX(); x <= maxPoint.getBlockX() + 16; x += 16) {
-      for(int z = minPoint.getBlockZ(); z <= maxPoint.getBlockZ() + 16; z += 16) {
-        chuckLocations.add(world.getChunkAt(x >> 4, z >> 4));
-      }
-    }
-
-
-    final HashMap<Location, Shop> shopMap = new HashMap<>();
-
-    for(final Chunk chunk : chuckLocations) {
-      final Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
-      if(shopsInChunk != null) {
-        shopMap.putAll(shopsInChunk);
-      }
-    }
-    for(final Map.Entry<Location, Shop> shopEntry : shopMap.entrySet()) {
-      final Location shopLocation = shopEntry.getKey();
+      final Location shopLocation = shop.getLocation();
       if(region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
-        final Shop shop = shopEntry.getValue();
-        if(shop != null) {
-          getApi().getShopManager().deleteShop(shop);
-        }
+
+        getApi().getShopManager().deleteShop(shop);
       }
     }
   }
