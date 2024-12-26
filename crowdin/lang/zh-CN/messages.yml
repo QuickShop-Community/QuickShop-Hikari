@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>您可以使用超级工具来破坏商店。
 fee-charged-for-price-change: <green>您已支付 <red>{0}<green> 来更改了价格。
 not-allowed-to-create: <red>您不能在这里创建商店
 disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
@@ -1611,8 +1611,8 @@ history:
   shop:
     gui-title: "查看交易记录"
     header-icon-multiple-shop: "<white>查询结果 {0} 商店</white>"
-    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-name: '<yellow>商店 {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>商店在世界 ''{0}'' at x: {1},: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>类型： <yellow>{0}</yellow></white>"
       - "<white>所有者: <yellow>{1}</yellow></white>"
@@ -1631,7 +1631,7 @@ history:
       - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>余额： <yellow>{4}</yellow></white>"
       - "<white>税： <yellow>{5}</yellow></white>"
-      - "<white>Final earning: <yellow>{6}</yellow></white>"
+      - "<white>最终收入： <yellow>{6}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
     previous-page: "<white><< 前一页</white>"
     next-page: "<white>下一页 >></white>"

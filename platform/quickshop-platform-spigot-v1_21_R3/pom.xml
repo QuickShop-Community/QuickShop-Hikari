@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.7</version>
+        <version>6.2.0.8-SNAPSHOT-1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -114,6 +114,7 @@
             <version>1.21.3-R0.1-SNAPSHOT</version>
             <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>

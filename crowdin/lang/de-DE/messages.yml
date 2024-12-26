@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Du kannst den Shop mithilfe deines Super-Tool abbauen.
 fee-charged-for-price-change: <green>Du hast <red>{0}<green> bezahlt, um den Preis zu ändern.
 not-allowed-to-create: <red>Du kannst hier keinen Shop erstellen.
 disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
@@ -33,25 +33,25 @@ shop-out-of-space-name: <dark_purple>Dein Shop {0} ist voll!
 paste-disabled: |-
   <red>Paste Funktion wurde deaktiviert! Du kannst keinen technischen Support anfordern.<newline>Grund: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[eigener] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[Eigener] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Name: <aqua>{0}'
     - '<yellow>Besitzer: <aqua>{0}'
     - '<yellow>Typ: <aqua>{0}'
     - '<yellow>Preis: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Gegenstand: <aqua>{0}'
     - '<yellow>Ort: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Name: <aqua>{name}'
     - '<yellow>Besitzer: <aqua>{owner}'
     - '<yellow>Typ: <aqua>{type}'
     - '<yellow>Preis: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Gegenstand: <aqua>{item}'
     - '<yellow>Ort: <aqua>{location}'
   header: '<yellow>Du hast mehrere Shops mit dem Namem "<green>{0}</green>", wähle einen um fortzufahren:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Nur für Admins) <light_purple>{0}<dark_gray> lehnte die Berechtigung-Checks ab. Falls dies nicht erwartet wird, versuche <light_purple>{1} <gray>in die Listener-Blacklist hinzuzufügen. Konfigurationen Guide: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Durchschnittspreis in der Umgebung: <yellow>{0}'
 inventory-check-global-alert: "<red>[Inventar Prüfung] <gray>Warnung! Ein QuickShop Anzeigeitem <gold>{2}</gold> wurde in einem Inventar bei <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray> gefunden, was nicht passieren sollte. Dies bedeutet oftmals, dass jemand einen Exploit böswillig ausnutzt um das Anzeigeitem zu duplizieren."
 digits-reach-the-limit: <red>Du hast das Dezimalstellenlimit für den Preis erreicht.
@@ -152,7 +152,7 @@ metric:
   tax-hover: <yellow>{0} Steuern
   header-global: '<yellow>Transaktionen des Server für {0} {1}:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} insgesamt
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Welt: {4}<newline><gold>Besitzer: <gray>{5}<newline><gold>Shop-Art: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Preis: <gray>{8}
   time-hover: '<yellow>Zeit: {0}'
@@ -177,7 +177,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VERKAUFEN
   buying: KAUFEN
-  frozen: FROZEN
+  frozen: EINGEFROREN
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -427,7 +427,7 @@ command:
     sell: <yellow>Ändert einen Shop zu <aqua>VERKAUFEN</aqua>-Modus
     fetchmessage: <yellow>Zeigt ungelesene Shopnachrichten
     staff: <yellow>Verwalte deine Shopmitarbeiter
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>Verwalte dein Shop-Staff für alle Shops, die du besitzt.
     clean: <yellow>Entferne alle (geladenen) Shops ohne Lagerbestand
     refill: <yellow>Fügt eine gegebene Anzahl an Gegenständen dem Shop hinzu.
     help: <yellow>Zeigt die QuickShop-Hilfe
@@ -445,7 +445,7 @@ command:
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>Durchsuche Shops, die auf diesem Server existieren.
     tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
     suggestprice: <yellow>Empfiehlt einen Preis für den angesehenen Shop, basierend auf anderen Shops
     history: <yellow>Zeige den Transaktionsverlauf eines Shops
@@ -488,7 +488,7 @@ inventory-error: |-
   <red>Fehler beim Verarbeiten des Inventar-Wrappers. Verwendest du ein Add-on welches das Shop-Inventar neu verbindet? Informationen: Fehler={0}, Inventar-Wrapper={1}, Wrapper-Typ={2}, Wrapper-Bereitstellung={3}, Symbol-Link={4}. Bitte kontaktiere die Server-Administratoren.
 integrations-check-failed-create: <red>Integrierung {0} hat die Shop-Erstellung verweigert
 shop-out-of-space: <dark_purple>Dein Shop bei {0}, {1}, {2} ist jetzt voll.
-admin-shop: AdminShop
+admin-shop: Admin-Shop
 no-anythings-in-your-hand: <red>Es befindet sich nichts in deiner Hand.
 no-permission: <red>Du hast keine Berechtigung um das zu tun.
 chest-was-removed: <red>Die Truhe wurde entfernt.
@@ -1288,7 +1288,7 @@ addon:
         }
     field:
       player: Spieler
-      item: Item
+      item: Gegenstand
       amount: Menge
       balance: Guthaben
       balance-after-tax: Guthaben (Nach Steuern)
@@ -1519,90 +1519,90 @@ sign-type-invalid: "<red>Der Typ <yellow>{0}</yellow> ist kein gültiges Schildm
 delete-controlpanel-button-confirm: "<red>Möchtest du wirklich diesen Shop entfernen? Klicke den <bold>[Shop entfernen]</bold> Knopf innerhalb von {0} Sekunden erneut zum bestätigen."
 cannot-suggest-price: "<red>Sorry, aktuell gibt es nicht genug Spieler welche das selbe Item handeln um daraus einen empfohlenen Preis zu generieren."
 price-suggest: "<green>Basierend auf den Daten von <aqua>{0}</aqua> Shops ist der höchste Preis, für welchen ein Shop das Item verkauft <light_purple>{1}</light_purple>, der niedrigste Preis <light_purple>{2}</light_purple>, der durchschnittliche Preis <light_purple>{3}</light_purple> und der Median Preis<light_purple>{4}</light_purple>.<newline><yellow>Es wird empfohlen, dass du den Preis auf um die <gold>{5}</gold> setzt.</yellow>"
-price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
+price-suggest-multi: "<green>Vorschlag für {0} Typ.</green>{1}"
 suggest-wait: "<green>Bitte warten... Berechne empfohlenen Preis."
 gui:
   shared:
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    previous-menu: "<white>Previous Menu</white>"
+    previous-page: "<white><< Vorherige Seite</white>"
+    next-page: "<white>Nächste Seite >></white>"
+    previous-menu: "<white>Vorheriges Menü</white>"
   player:
     select:
-      - "<yellow>Click to select this player.</yellow>"
+      - "<yellow>Klicke, um diesen Spieler auszuwählen.</yellow>"
   staff:
-    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
-    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
-    add-staff: "<green>Add Staff Member</green>"
+    confirm-remove: "<red>Schreibe 'confirm', um '{0}' als Staff-Mitglied zu entfernen.</red>"
+    confirm-transfer: "<red>Schreibe 'confirm' um den Shop-Transfer zu {0} zu bestätigen.</red>"
+    add-staff: "<green>Staff-Mitglied hinzufügen</green>"
     head-icon:
       display: "<aqua>{0}</aqua>"
       lore:
-        - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>Right click to transfer ownership</yellow>"
-        - "<yellow>to this staff member.</yellow>"
+        - "<yellow>Linksklick um Staff-Mitglied zu entfernen.</yellow>"
+        - "<yellow>Rechtsklick um Eigentum zu transferieren.</yellow>"
+        - "<yellow>zu diesem Staff-Mitglied.</yellow>"
   trade:
     title: "Shop Browser"
     custom:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>Custom Bestellung</blue></bold>"
       lore-buy:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to buy.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
+        - "<white>Wähle die Menge</white>"
+        - "<white>, den du kaufen möchtest.</white>"
+        - "<yellow>Klicke, um wählbare Menge auszuwählen.</yellow>"
+        - "<yellow>Muss ein Vielfaches von <bold><red>{0}</red></bold> sein </yellow>"
+        - "<white>Lager: <bold><red>{1}</red></bold>"
       lore-sell:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to sell.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+        - "<white>Wähle die Menge</white>"
+        - "<white>, den du verkaufen möchtest.</white>"
+        - "<yellow>Klicke, um wählbare Menge auszuwählen.</yellow>"
+        - "<yellow>Muss ein Vielfaches von <bold><red>{0}</red></bold> sein </yellow>"
+      enter-buy: "<yellow>Gebe eine Menge an, die du kaufen möchtest. Muss ein Vielfaches von {0} sein. Schreibe 0, um abzubrechen</yellow>"
+      enter-sell: "<yellow>Gebe eine Menge an, die du verkaufen möchtest. Muss ein Vielfaches von {0} sein. Schreibe 0, um abzubrechen.</yellow>"
+      multiple: "<yellow>Ungültige Menge eingegeben! Muss ein Vielfaches von {0} sein. Schreibe 0, um abzubrechen.</yellow>"
+      stock: "<yellow>Ungültige Menge eingeben! Nicht genug Lagerbestand im Shop. Schreibe 0, um abzubrechen.</yellow>"
     quantity:
-      display-buy: "<bold><green>Buy {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
+      display-buy: "<bold><green>Kaufe {0}</green></bold>"
+      display-sell: "<bold><green>Verkaufe {0}</green></bold>"
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
-        - "<white>Total: </white><bold><green>{2}</green></bold>"
+        - "<bold><yellow>{0}</yellow></bold><white> jeweils </white><bold><green>{1}</green></bold>"
+        - "<white>Insgesamt: </white><bold><green>{2}</green></bold>"
   browse:
     title: "Shop Browser"
     info:
-      - "<green>Owner: </green><yellow>{0}</yellow>"
-      - "<green>Location: </green><yellow>{1}</yellow>"
-      - "<green>Type: </green><yellow>{2}</yellow>"
-      - "<green>Price: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
+      - "<green>Inhaber: </green><yellow>{0}</yellow>"
+      - "<green>Standort: </green><yellow>{1}</yellow>"
+      - "<green>Typ: </green><yellow>{2}</yellow>"
+      - "<green>Preis: </green><yellow>{3}</yellow>"
+      - "<green>Lagerbestand: </green><yellow>{4}</yellow>"
   keeper:
     title: "Shop Keeper"
     change-icon:
-      display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      display: "<bold><green>Preis ändern</green></bold>"
+      enter: "<yellow>Gebe ein neuen Preis in Chat ein.</yellow>"
       lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
-        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+        - "<white>Klicke, um den Preis für jeden Gegenstand im Shop zu ändern.</white>"
+        - "<white>Aktueller Preis:</white> <yellow>{0}</yellow>"
     mode-icon:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Modus ändern</green></bold>"
       lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+        - "<white>Klicke, um zwischen Kauf- und Verkaufsmodus zu wechseln.</white>"
+        - "<white>Aktueller Modus: </white><red>{0}</red>"
+        - "<yellow>Klicke, um zu </yellow><red>{1}</red> <yellow>umzuschalten.</yellow>"
     staff-icon:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      display: "<bold><aqua>Shop-Staff</aqua></bold>"
+      no-permission: "<bold><red>Dir ist nicht erlaubt Staff zu Verwalten.</red></bold>"
       lore:
-        - "<white>Click to manage your shop's staff.</white>"
+        - "<white>Klicke, um Shop-Staff zu verwalten.</white>"
     remove-icon:
-      display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      display: "<bold><red>Shop löschen</red></bold>"
+      confirm: "<yellow>Schreibe 'confirm' in Chat, um die Löschung zu bestätigen. Oder schreiben Sie etwas anderes hinein, um die Löschung abzubrechen.</yellow>"
       lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
+        - "<white>Klicke, um dein Shop zu löschen.</white>"
+        - "<grey>Du kannst das Schild/die Truhe zerstören.</grey>"
 history:
   shop:
     gui-title: "Zeige Kaufprotokolle"
     header-icon-multiple-shop: "<white>Das Abfrageergebnis in {0} shops</white>"
     header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in Welt ''{0}'' bei x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Typ: <yellow>{0}</yellow></white>"
       - "<white>Besitzer: <yellow>{1}</yellow></white>"
@@ -1621,7 +1621,7 @@ history:
       - "<white>Gegenstand: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Guthaben: <yellow>{4}</yellow></white>"
       - "<white>Steuern: <yellow>{5}</yellow></white>"
-      - "<white>Final earning: <yellow>{6}</yellow></white>"
+      - "<white>Endverdienst: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Bitte warten, abfrage...</gray>"
     previous-page: "<white><< Vorherige Seite</white>"
     next-page: "<white>Nächste Seite >></white>"
@@ -1640,7 +1640,7 @@ about:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
     - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>Release <yellow>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
+    - "<aqua>Entwickler <yellow>>></yellow><color:#218bff><hover:show_text:'<yellow><hover:show_text:'<yellow>Klicke, um Mitwirkende zu sehen.'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[Siehe Mitwirkende auf GitHub]</click></hover></color></aqua>"
     - "<aqua>Lokalisierte Mitglieder <gold>({4})</gold>: <yellow>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klicke um Crowdin Übersetzungs-Seite zu öffnen'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Hilf beim Übesetzen auf Crowdin]</click></hover></color></yellow>"
     - "<aqua>Spendenschlüssel <yellow>>></yellow> <green>{6}</green></aqua>"
