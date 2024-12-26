@@ -337,6 +337,7 @@ public class ShopLoader implements SubPasteItem {
       this.invWrapper = dataRecord.getInventoryWrapper();
       this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
       final String permissionJson = dataRecord.getPermissions();
+
       if(!StringUtils.isEmpty(permissionJson) && CommonUtil.isJson(permissionJson)) {
         final Type typeToken = new TypeToken<Map<UUID, String>>() {
         }.getType();
@@ -344,6 +345,7 @@ public class ShopLoader implements SubPasteItem {
       } else {
         this.permissions = new HashMap<>();
       }
+
       this.item = deserializeItem(dataRecord.getItem());
 
       if(!dataRecord.getEncoded().isEmpty()) {

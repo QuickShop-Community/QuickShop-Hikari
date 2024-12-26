@@ -936,7 +936,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
       int currentDatabaseVersion = parent.getDatabaseVersion();
       if(currentDatabaseVersion == -1) {
-        currentDatabaseVersion = 11;
+        currentDatabaseVersion = 17;
       }
       if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
         throw new IllegalStateException("The database version is newer than this build supported.");
