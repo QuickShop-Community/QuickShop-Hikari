@@ -170,21 +170,21 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
   @Override
-  public void actionBuying(@NotNull final Player buyer, @NotNull final InventoryWrapper buyerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
+  public boolean actionBuying(@NotNull final Player buyer, @NotNull final InventoryWrapper buyerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
 
     final QUser buyerQUser = QUserImpl.createFullFilled(buyer);
     if(!plugin.perm().hasPermission(buyer, "quickshop.other.use") && !shop.playerAuthorize(buyer.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
       plugin.text().of("no-permission").send();
-      return;
+      return false;
     }
 
     if(shop.isFrozen()) {
       plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
-      return;
+      return false;
     }
 
     if(shopIsNotValid(buyerQUser, info, shop)) {
-      return;
+      return false;
     }
     int space = shop.getRemainingSpace();
     if(space == -1) {
@@ -192,18 +192,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     if(space < amount) {
       plugin.text().of(buyer, "shop-has-no-space", Component.text(space), Util.getItemStackName(shop.getItem())).send();
-      return;
+      return false;
     }
     final int count = Util.countItems(buyerInventory, shop);
     // Not enough items
     if(amount > count) {
       plugin.text().of(buyer, "you-dont-have-that-many-items", Component.text(count), Util.getItemStackName(shop.getItem())).send();
-      return;
+      return false;
     }
     if(amount < 1) {
       // & Dumber
       plugin.text().of(buyer, "negative-amount").send();
-      return;
+      return false;
     }
 
     // Money handling
@@ -213,7 +213,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final ShopPurchaseEvent e = new ShopPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total);
     if(Util.fireCancellableEvent(e)) {
       plugin.text().of(buyer, "plugin-cancelled", e.getCancelReason()).send();
-      return; // Cancelled
+      return false; // Cancelled
     } else {
       total = e.getTotal(); // Allow addon to set it
     }
@@ -237,13 +237,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     if(!transaction.checkBalance()) {
       plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
-      return;
+      return false;
     }
     if(!transaction.failSafeCommit()) {
       plugin.text().of(buyer, "economy-transaction-failed", transaction.getLastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
       plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
-      return;
+      return false;
     }
 
     try {
@@ -252,12 +252,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
       transaction.rollback(true);
       plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
-      return;
+      return false;
     }
     sendSellSuccess(buyerQUser, shop, amount, total, transaction.getTax());
     new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.getTax()).callEvent();
     shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
     notifySold(buyerQUser, shop, amount, space);
+    return true;
   }
 
   private void notifySold(@NotNull final QUser buyerQUser, @NotNull final Shop shop, final int amount, final int space) {
@@ -363,22 +364,22 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
   @Override
-  public void actionSelling(@NotNull final Player seller, @NotNull final InventoryWrapper sellerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
+  public boolean actionSelling(@NotNull final Player seller, @NotNull final InventoryWrapper sellerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
 
     Util.ensureThread(false);
     final QUser sellerQUser = QUserImpl.createFullFilled(seller);
 
     if(!plugin.perm().hasPermission(seller, "quickshop.other.use") && !shop.playerAuthorize(seller.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
       plugin.text().of("no-permission").send();
-      return;
+      return false;
     }
     if(shopIsNotValid(sellerQUser, info, shop)) {
-      return;
+      return false;
     }
 
     if(shop.isFrozen()) {
       plugin.text().of(seller, "shop-cannot-trade-when-freezing").send();
-      return;
+      return false;
     }
 
     int stock = shop.getRemainingStock();
@@ -387,22 +388,22 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     if(stock < amount) {
       plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
-      return;
+      return false;
     }
     final int playerSpace = Util.countSpace(sellerInventory, shop);
     if(playerSpace < amount) {
       plugin.text().of(seller, "inventory-space-full", amount, playerSpace).send();
-      return;
+      return false;
     }
     if(amount < 1) {
       // & Dumber
       plugin.text().of(seller, "negative-amount").send();
-      return;
+      return false;
     }
     final int pSpace = Util.countSpace(sellerInventory, shop);
     if(amount > pSpace) {
       plugin.text().of(seller, "not-enough-space", Component.text(pSpace)).send();
-      return;
+      return false;
     }
 
     final double taxModifier = getTax(shop, sellerQUser);
@@ -411,7 +412,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final ShopPurchaseEvent e = new ShopPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total);
     if(Util.fireCancellableEvent(e)) {
       plugin.text().of(seller, "plugin-cancelled", e.getCancelReason()).send();
-      return; // Cancelled
+      return false; // Cancelled
     } else {
       total = e.getTotal(); // Allow addon to set it
     }
@@ -438,12 +439,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     if(!transaction.checkBalance()) {
       plugin.text().of(seller, "you-cant-afford-to-buy", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(sellerQUser, shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
-      return;
+      return false;
     }
     if(!transaction.failSafeCommit()) {
       plugin.text().of(seller, "economy-transaction-failed", transaction.getLastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
-      return;
+      return false;
     }
 
     try {
@@ -452,11 +453,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
       transaction.rollback(true);
       plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
-      return;
+      return false;
     }
     sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.getTax());
     new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.getTax()).callEvent();
     notifyBought(sellerQUser, shop, amount, stock, transaction.getTax(), total);
+    return true;
   }
 
 
