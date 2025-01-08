@@ -125,18 +125,17 @@ public final class Main {
   @Subscribe
   public void on(final PluginMessageEvent event) {
 
-    if(!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
+    if (!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
       return;
     }
     event.setResult(PluginMessageEvent.ForwardResult.handled());
+    // the source is a server when the proxy talks to a server
+    if (!(event.getSource() instanceof ServerConnection)) return;
     final ByteArrayDataInput in = event.dataAsDataStream();
     final String subChannel = in.readUTF();
-    if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
-      // the receiver is a server when the proxy talks to a server
-      if(event.getSource() instanceof ServerConnection) {
-        final String command = in.readUTF();
-        processCommand(command, in);
-      }
+    if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
+      final String command = in.readUTF();
+      processCommand(command, in);
     }
   }
 

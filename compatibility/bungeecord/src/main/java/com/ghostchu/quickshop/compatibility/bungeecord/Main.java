@@ -47,20 +47,17 @@ public final class Main extends Plugin implements Listener {
   @EventHandler
   public void on(final PluginMessageEvent event) {
 
-    if(!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
+    if (!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
       return;
     }
-
     event.setCancelled(true);
-
+    // the sender is a server when the proxy talks to a server
+    if (!(event.getSender() instanceof Server)) return;
     final ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
     final String subChannel = in.readUTF();
-    if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
-      // the receiver is a server when the proxy talks to a server
-      if(event.getSender() instanceof Server) {
-        final String command = in.readUTF();
-        processCommand(command, in);
-      }
+    if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
+      final String command = in.readUTF();
+      processCommand(command, in);
     }
   }
 
