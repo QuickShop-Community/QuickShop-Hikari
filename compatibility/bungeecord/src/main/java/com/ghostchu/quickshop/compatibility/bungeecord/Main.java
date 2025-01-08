@@ -55,7 +55,7 @@ public final class Main extends Plugin implements Listener {
     final String subChannel = in.readUTF();
     if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
       // the receiver is a server when the proxy talks to a server
-      if(event.getReceiver() instanceof Server) {
+      if(event.getSender() instanceof Server) {
         final String command = in.readUTF();
         processCommand(command, in);
       }
