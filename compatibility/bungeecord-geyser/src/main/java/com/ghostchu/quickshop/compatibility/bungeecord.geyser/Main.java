@@ -47,6 +47,8 @@ public final class Main extends Plugin implements Listener {
       return;
     }
     // Let's not be a snitch
+    // we don't want the client to send any message to the server
+    // nor do we want the proxy to send any message to the player
     event.setCancelled(true);
   }
 

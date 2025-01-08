@@ -51,10 +51,14 @@ public final class Main extends Plugin implements Listener {
       return;
     }
     // Let's not be a snitch
+    // we don't want the client to send any message to the server
+    // nor do we want the proxy to send any message to the player
     event.setCancelled(true);
     // Is the source correct?
+    // we can only trust the server not the player
     if (!(event.getSender() instanceof Server)) return; // Somebody is being nasty
     // We can trust the source
+    // server sent us the message
     final ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
     final String subChannel = in.readUTF();
     if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {

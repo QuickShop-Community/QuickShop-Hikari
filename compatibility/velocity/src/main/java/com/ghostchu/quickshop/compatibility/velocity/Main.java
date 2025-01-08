@@ -129,10 +129,14 @@ public final class Main {
       return;
     }
     // Let's not be a snitch
+    // we don't want the client to send any message to the server
+    // nor do we want the proxy to send any message to the player
     event.setResult(PluginMessageEvent.ForwardResult.handled());
     // Is the source correct?
+    // we can only trust the server not the player
     if (!(event.getSource() instanceof ServerConnection)) return;
     // We can trust the source
+    // server sent us the message
     final ByteArrayDataInput in = event.dataAsDataStream();
     final String subChannel = in.readUTF();
     if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
