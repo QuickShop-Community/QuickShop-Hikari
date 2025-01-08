@@ -124,13 +124,15 @@ public final class Main {
 
   @Subscribe
   public void on(final PluginMessageEvent event) {
-
+    // Is this our business?
     if (!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
       return;
     }
+    // Let's not be a snitch
     event.setResult(PluginMessageEvent.ForwardResult.handled());
-    // the source is a server when the proxy talks to a server
+    // Is the source correct?
     if (!(event.getSource() instanceof ServerConnection)) return;
+    // We can trust the source
     final ByteArrayDataInput in = event.dataAsDataStream();
     final String subChannel = in.readUTF();
     if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
