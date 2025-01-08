@@ -128,6 +128,7 @@ public final class Main {
     if(!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
       return;
     }
+    event.setResult(PluginMessageEvent.ForwardResult.handled());
     final ByteArrayDataInput in = event.dataAsDataStream();
     final String subChannel = in.readUTF();
     if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {

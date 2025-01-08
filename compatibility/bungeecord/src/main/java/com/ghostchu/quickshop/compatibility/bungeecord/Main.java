@@ -51,6 +51,8 @@ public final class Main extends Plugin implements Listener {
       return;
     }
 
+    event.setCancelled(true);
+
     final ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
     final String subChannel = in.readUTF();
     if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
