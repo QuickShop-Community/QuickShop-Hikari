@@ -125,7 +125,7 @@ public final class Main {
   @Subscribe
   public void on(final PluginMessageEvent event) {
     // Is this our business?
-    if (!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
+    if(!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
       return;
     }
     // Let's not be a snitch
@@ -134,12 +134,12 @@ public final class Main {
     event.setResult(PluginMessageEvent.ForwardResult.handled());
     // Is the source correct?
     // we can only trust the server not the player
-    if (!(event.getSource() instanceof ServerConnection)) return;
+    if(!(event.getSource() instanceof ServerConnection)) return;
     // We can trust the source
     // server sent us the message
     final ByteArrayDataInput in = event.dataAsDataStream();
     final String subChannel = in.readUTF();
-    if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
+    if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
       final String command = in.readUTF();
       processCommand(command, in);
     }

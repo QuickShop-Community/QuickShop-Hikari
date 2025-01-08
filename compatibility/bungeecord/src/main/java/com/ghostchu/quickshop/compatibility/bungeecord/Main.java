@@ -47,7 +47,7 @@ public final class Main extends Plugin implements Listener {
   @EventHandler
   public void on(final PluginMessageEvent event) {
     // Is this our business?
-    if (!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
+    if(!QUICKSHOP_BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
       return;
     }
     // Let's not be a snitch
@@ -56,12 +56,12 @@ public final class Main extends Plugin implements Listener {
     event.setCancelled(true);
     // Is the source correct?
     // we can only trust the server not the player
-    if (!(event.getSender() instanceof Server)) return; // Somebody is being nasty
+    if(!(event.getSender() instanceof Server)) return; // Somebody is being nasty
     // We can trust the source
     // server sent us the message
     final ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
     final String subChannel = in.readUTF();
-    if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
+    if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
       final String command = in.readUTF();
       processCommand(command, in);
     }
