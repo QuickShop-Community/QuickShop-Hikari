@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.compatibility.bungeecord.geyser;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -37,6 +38,16 @@ public final class Main extends Plugin implements Listener {
     this.pendingForward.clear();
     getProxy().getPluginManager().unregisterListener(this);
     getProxy().unregisterChannel(BUNGEE_CHANNEL);
+  }
+
+  @EventHandler
+  public void on(final PluginMessageEvent event) {
+    // Is this our business?
+    if(!BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
+      return;
+    }
+    // Let's not be a snitch
+    event.setCancelled(true);
   }
 
   @EventHandler
