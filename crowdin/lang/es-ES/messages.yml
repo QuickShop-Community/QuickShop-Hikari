@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Puedes romper la tienda usando la SuperTool.
 fee-charged-for-price-change: <green>Has pagado <red>{0}<green> para cambiar de precio.
 not-allowed-to-create: <red>No puedes crear una tienda aquí.
 disabled-in-this-world: <red>QuickShop está deshabilitado en este mundo.
@@ -445,7 +445,7 @@ command:
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Configuración de dividir los beneficios entre el dueño de la tienda y otros jugadores
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>Explorar tiendas que existen en este servidor.
     tag: <yellow>Añadir, eliminar o consultar etiquetas de una tienda
     suggestprice: <yellow>Sugerir un precio recomendado para mostrar en la tienda, basado en otras tiendas
     history: <yellow>Ver el historial de transacciones de una tienda
@@ -535,7 +535,7 @@ player-no-group: <yellow>El jugador {0} no está en ningún grupo en esta tienda
 player-in-group: <green>El jugador {0} está en grupo <aqua>{1}</aqua> en esta tienda.
 permission-required: <red>No tienes el permiso {0} en esta tienda para hacer eso.
 no-permission-detailed: <red>No tienes permiso <yellow>{0}</yellow> para hacer esto.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
+paste-notice: "<yellow>Nota: Si está creando un Pegado para solucionar problemas, asegúrese de reproducir el error antes de crear el Pegado lo más rápido posible; Necesitamos que los registros se conserven brevemente en el búfer para solucionar problemas. Si crea un Pegado demasiado lento o sin reproducir primero el error o reiniciar el servidor, el Pegado no registrará nada e inútil."
 paste-uploading: <aqua>Por favor, espere... Subiendo la copia a Pastebin......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
@@ -558,9 +558,9 @@ lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not regis
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
 internal-error: <red>Se ha producido un error interno, póngase en contacto con el administrador del servidor.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+argument-cannot-be: <red>El argumento <aqua>{0}</aqua> no puede ser <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Porcentaje no válido, debe añadir '%' después del número de porcentaje.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
@@ -587,7 +587,7 @@ debug:
   sql-completed: <green>Completed, {0} rows affected.
   sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
-  force-shop-reload: <yellow>Forcing reload all loaded shops...
+  force-shop-reload: <yellow>Forzando recargar todas las tiendas cargadas...
   force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
   force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
   force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
@@ -684,7 +684,7 @@ transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer reques
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-self:
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
 benefit-removed: <red>Target player has been removed from shop benefits.
