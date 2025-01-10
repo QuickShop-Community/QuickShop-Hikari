@@ -448,8 +448,8 @@ command:
     browse: <yellow>Browse shops that exist in this server.
     tag: <yellow>Add, remove or query tags of a shop
     suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
-    history: <yellow>View the history transactions of a shop
-    sign: <yellow>Change the sign material of a shop
+    history: <yellow>Zobacz historię transakcji sklepu
+    sign: <yellow>Zmień materiał znaku sklepu
   bulk-size-not-set: '<red>Użycie: /qs size <amount>'
   no-type-given: '<red>Użycie: /qs find <item>'
   feature-not-enabled: Ta funkcja nie jest włączona w pliku konfiguracyjnym.
@@ -634,7 +634,7 @@ database:
   status: '<yellow>Status: {0}'
   status-good: <green>Good
   status-bad: <yellow>Maintenance Required
-  isolated: '<yellow>Isolated Data:'
+  isolated: '<yellow>Odizolowane Dane:'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
   isolated-shop-ids: '<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>'
   isolated-logs: '<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>'
@@ -701,7 +701,7 @@ tag-cleared: <green>Successfully cleared all tags from this shop!
 tag-shops-cleared: '<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!'
 tag-query: '<green>This shop have <yellow>{0}</yellow> tags:'
 tag-query-listing: '<yellow> - <aqua>#{0}</aqua>'
-tag-query-no-tag: <red>This shop have no tags.
+tag-query-no-tag: <red>Ten sklep nie ma tagów.
 tag-query-shops: '<green>This tag contains <yellow>{0}</yellow> shops:'
 tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green>Successfully batch processed <yellow>{0}</yellow> shops.
@@ -1332,7 +1332,7 @@ addon:
             Przykład UNIX: 1671273097
     discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
     invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}</yellow>'
-    invalid-discount-code: <red>This discount code are invalid.
+    invalid-discount-code: <red>Ten kod rabatowy jest nieprawidłowy.
     discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>
     discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>
     invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
@@ -1408,27 +1408,27 @@ addon:
     remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>'
     remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>'
   dynmap:
-    markerset-title: QuickShop-Hikari Shops
-    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
+    markerset-title: Sklepy QuickShop-Hikari
+    marker-name: '{0} @ {2} @ {3} dla x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Nazwa: {0}
+      Właściciel: {1}
+      Przedmiot: {2}
+      Cena: {3} za x{4} przedmiotu(ów)
+      Typ: {5}
+      Nielimitowany: {6}
+      Lokalizacja: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
-    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
+    markerset-title: Sklepy QuickShop-Hikari
+    marker-name: '{0} @ {2} @ {3} dla x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Nazwa: {0}
+      Właściciel: {1}
+      Przedmiot: {2}
+      Cena: {3} za x{4} przedmiotu(ów)
+      Typ: {5}
+      Nielimitowany: {6}
+      Lokalizacja: {7}
   chestprotect:
     protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
     shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
@@ -1525,12 +1525,12 @@ price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
 gui:
   shared:
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    previous-menu: "<white>Previous Menu</white>"
+    previous-page: "<white><< Poprzednia Strona</white>"
+    next-page: "<white>Następna strona >></white>"
+    previous-menu: "<white>Poprzednie Menu</white>"
   player:
     select:
-      - "<yellow>Click to select this player.</yellow>"
+      - "<yellow>Kliknij, aby wybrać tego gracza.</yellow>"
   staff:
     confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
     confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
@@ -1567,9 +1567,9 @@ gui:
         - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
         - "<white>Total: </white><bold><green>{2}</green></bold>"
   browse:
-    title: "Shop Browser"
+    title: "Przeglądarka sklepów"
     info:
-      - "<green>Owner: </green><yellow>{0}</yellow>"
+      - "<green>Właściciel: </green><yellow>{0}</yellow>"
       - "<green>Location: </green><yellow>{1}</yellow>"
       - "<green>Type: </green><yellow>{2}</yellow>"
       - "<green>Price: </green><yellow>{3}</yellow>"
@@ -1581,30 +1581,30 @@ gui:
       enter: "<yellow>Enter a new price in the chat.</yellow>"
       lore:
         - "<white>Click to change the price of each item in your shop.</white>"
-        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+        - "<white>Aktualna cena:</white> <yellow>{0}</yellow>"
     mode-icon:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Zmień Tryb</green></bold>"
       lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+        - "<white>Kliknij, aby przełączać między trybami zakupu/sprzedaży.</white>"
+        - "<white>Aktualny Tryb: </white><red>{0}</red>"
+        - "<yellow>Kliknij, aby przełączyć na </yellow><red>{1}</red>"
     staff-icon:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
       no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
       lore:
         - "<white>Click to manage your shop's staff.</white>"
     remove-icon:
-      display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      display: "<bold><red>Usuń Sklep</red></bold>"
+      confirm: "<yellow>Napisz 'confirm' na czacie, aby potwierdzić usunięcie. Lub wpisz cokolwiek innego, aby anulować</yellow>"
       lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
+        - "<white>Kliknij, aby usunąć swój sklep.</white>"
+        - "<grey>Możesz też zniszczyć znak/skrzynię.</grey>"
 history:
   shop:
-    gui-title: "View purchase history"
+    gui-title: "Wyświetl historię zakupów"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
-    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-name: '<yellow>Sklep {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Sklep w świecie ''{0}'' na x: {1}, y: {2}, z:{3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
