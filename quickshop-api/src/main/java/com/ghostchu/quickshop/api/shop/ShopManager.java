@@ -37,8 +37,9 @@ public interface ShopManager {
    * @param info           The info of the shop
    * @param shop           The shop
    * @param amount         The amount of the item/stack
+   * @return               If the transaction was successfull
    */
-  void actionBuying(
+  boolean actionBuying(
           @NotNull Player buyer,
           @NotNull InventoryWrapper buyerInventory,
           @NotNull AbstractEconomy eco,
@@ -64,8 +65,9 @@ public interface ShopManager {
    * @param info            The info of the shop
    * @param shop            The shop
    * @param amount          The amount of the item/stack
+   * @return                If the transaction was successfull
    */
-  void actionSelling(
+  boolean actionSelling(
           @NotNull Player seller,
           @NotNull InventoryWrapper sellerInventory,
           @NotNull AbstractEconomy eco,
