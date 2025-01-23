@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
  * TNEItemMatcherImpl
  *
  * @author creatorfromhell
- * @since 6.2.0.7
+ * @since 6.2.0.8
  */
 public class TNEItemMatcherImpl implements ItemMatcher {
 
@@ -41,9 +41,11 @@ public class TNEItemMatcherImpl implements ItemMatcher {
 
   private final QuickShop plugin;
 
-  public TNEItemMatcherImpl(QuickShop plugin) {
+  public TNEItemMatcherImpl(final QuickShop plugin) {
+
     this.plugin = plugin;
   }
+
   /**
    * Gets the ItemMatcher provider name
    *
@@ -51,6 +53,7 @@ public class TNEItemMatcherImpl implements ItemMatcher {
    */
   @Override
   public @NotNull String getName() {
+
     return "TNE";
   }
 
@@ -61,6 +64,7 @@ public class TNEItemMatcherImpl implements ItemMatcher {
    */
   @Override
   public @NotNull Plugin getPlugin() {
+
     return this.plugin.getJavaPlugin();
   }
 
@@ -73,7 +77,7 @@ public class TNEItemMatcherImpl implements ItemMatcher {
    * @return The result of tests
    */
   @Override
-  public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
+  public boolean matches(@Nullable final ItemStack original, @Nullable final ItemStack tester) {
 
     if(original == null || tester == null) {
       return false;
@@ -89,7 +93,8 @@ public class TNEItemMatcherImpl implements ItemMatcher {
   }
 
   //TODO: Move this inside TNIL using the new updated code that will support PDC.
-  public Integer fishData(ItemStack stack) {
+  public Integer fishData(final ItemStack stack) {
+
     if(stack.getItemMeta() != null) {
       return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER, -1);
     }

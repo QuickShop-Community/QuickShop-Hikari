@@ -177,6 +177,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VENTA
   buying: COMPRA
+  frozen: FROZEN
 language:
   qa-issues: '<yellow>Problemas de garantía de calidad: <aqua>{0}%'
   code: '<yellow>Código: <gold>{0}'
@@ -426,6 +427,7 @@ command:
     sell: <yellow>Cambia la tienda a modo <aqua>VENTA<yellow>
     fetchmessage: <yellow>Mostrar mensajes de tienda sin leer
     staff: <yellow>Gestionar personal de tu tienda
+    staffall: <yellow>Manage your shop staff of all shops you own.
     clean: <yellow>Suprime todas las tiendas (cargadas) fuera de existencias
     refill: <yellow>Agrega un número dado de artículos a la tienda
     help: <yellow>Muestra la ayuda de QuickShop
@@ -443,6 +445,7 @@ command:
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Configuración de dividir los beneficios entre el dueño de la tienda y otros jugadores
+    browse: <yellow>Explorar tiendas que existen en este servidor.
     tag: <yellow>Añadir, eliminar o consultar etiquetas de una tienda
     suggestprice: <yellow>Sugerir un precio recomendado para mostrar en la tienda, basado en otras tiendas
     history: <yellow>Ver el historial de transacciones de una tienda
@@ -532,7 +535,7 @@ player-no-group: <yellow>El jugador {0} no está en ningún grupo en esta tienda
 player-in-group: <green>El jugador {0} está en grupo <aqua>{1}</aqua> en esta tienda.
 permission-required: <red>No tienes el permiso {0} en esta tienda para hacer eso.
 no-permission-detailed: <red>No tienes permiso <yellow>{0}</yellow> para hacer esto.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
+paste-notice: "<yellow>Nota: Si está creando un Pegado para solucionar problemas, asegúrese de reproducir el error antes de crear el Pegado lo más rápido posible; Necesitamos que los registros se conserven brevemente en el búfer para solucionar problemas. Si crea un Pegado demasiado lento o sin reproducir primero el error o reiniciar el servidor, el Pegado no registrará nada e inútil."
 paste-uploading: <aqua>Por favor, espere... Subiendo la copia a Pastebin......
 paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don''t trust.'
 paste-created-local: |-
@@ -555,9 +558,9 @@ lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not regis
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
 internal-error: <red>Se ha producido un error interno, póngase en contacto con el administrador del servidor.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+argument-cannot-be: <red>El argumento <aqua>{0}</aqua> no puede ser <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Porcentaje no válido, debe añadir '%' después del número de porcentaje.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
@@ -584,7 +587,7 @@ debug:
   sql-completed: <green>Completed, {0} rows affected.
   sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
-  force-shop-reload: <yellow>Forcing reload all loaded shops...
+  force-shop-reload: <yellow>Forzando recargar todas las tiendas cargadas...
   force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
   force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
   force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
@@ -681,7 +684,7 @@ transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer reques
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-self:
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
 benefit-removed: <red>Target player has been removed from shop benefits.
@@ -1517,11 +1520,90 @@ sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material
 delete-controlpanel-button-confirm: "<red>¿De verdad quieres eliminar esta tienda? Haga clic en el botón <bold>[Eliminar tienda]</bold> botón de nuevo en {0} segundos para confirmar."
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
+price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
+gui:
+  shared:
+    previous-page: "<white><< Previous Page</white>"
+    next-page: "<white>Next Page >></white>"
+    previous-menu: "<white>Previous Menu</white>"
+  player:
+    select:
+      - "<yellow>Click to select this player.</yellow>"
+  staff:
+    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
+    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
+    add-staff: "<green>Add Staff Member</green>"
+    head-icon:
+      display: "<aqua>{0}</aqua>"
+      lore:
+        - "<yellow>Left click to remove staff member.</yellow>"
+        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>to this staff member.</yellow>"
+  trade:
+    title: "Shop Browser"
+    custom:
+      display: "<bold><blue>Custom Order</blue></bold>"
+      lore-buy:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to buy.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+        - "<white>Stock: <bold><red>{1}</red></bold>"
+      lore-sell:
+        - "<white>Choose the quantity</white>"
+        - "<white>you would like to sell.</white>"
+        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
+      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
+      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+    quantity:
+      display-buy: "<bold><green>Buy {0}</green></bold>"
+      display-sell: "<bold><green>Sell {0}</green></bold>"
+      lore:
+        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
+        - "<white>Total: </white><bold><green>{2}</green></bold>"
+  browse:
+    title: "Shop Browser"
+    info:
+      - "<green>Owner: </green><yellow>{0}</yellow>"
+      - "<green>Location: </green><yellow>{1}</yellow>"
+      - "<green>Type: </green><yellow>{2}</yellow>"
+      - "<green>Price: </green><yellow>{3}</yellow>"
+      - "<green>Stock: </green><yellow>{4}</yellow>"
+  keeper:
+    title: "Shop Keeper"
+    change-icon:
+      display: "<bold><green>Change Price</green></bold>"
+      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      lore:
+        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+    mode-icon:
+      display: "<bold><green>Change Mode</green></bold>"
+      lore:
+        - "<white>Click to toggle between buying/selling mode.</white>"
+        - "<white>Current Mode: </white><red>{0}</red>"
+        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+    staff-icon:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      lore:
+        - "<white>Click to manage your shop's staff.</white>"
+    remove-icon:
+      display: "<bold><red>Delete Shop</red></bold>"
+      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      lore:
+        - "<white>Click to delete your shop.</white>"
+        - "<grey>You can also break the sign/chest.</grey>"
 history:
   shop:
     gui-title: "View purchase history"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1540,6 +1622,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"
@@ -1562,9 +1645,9 @@ about:
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
-    - "<gold>Powered by community</gold> <red>Made with ❤</red>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
+browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
 shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."

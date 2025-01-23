@@ -20,6 +20,9 @@ taxes-to-town: true
 #Should we delete player's shops in town when they leaved the that town
 delete-shop-on-resident-leave: false
 
+#Should we delete shops when a town is ruined
+delete-shop-on-town-ruin: false
+
 #Should we remove the shops in plot when plot cleared
 delete-shop-on-plot-clear: true
 

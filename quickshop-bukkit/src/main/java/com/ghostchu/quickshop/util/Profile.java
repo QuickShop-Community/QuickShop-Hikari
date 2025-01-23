@@ -8,6 +8,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 public class Profile {
-    private final UUID uniqueId;
-    private final String name;
+
+  private final UUID uniqueId;
+  private final String name;
 }

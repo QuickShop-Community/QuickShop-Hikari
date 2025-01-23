@@ -19,127 +19,182 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-import static com.velocitypowered.api.network.ProtocolVersion.*;
+import static com.velocitypowered.api.network.ProtocolVersion.LEGACY;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_10;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_11;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_11_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_12;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_12_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_12_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_13;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_13_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_13_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_14;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_14_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_14_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_14_3;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_14_4;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_15;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_15_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_15_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16_3;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_16_4;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_17;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_17_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_18;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_18_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_19;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_7_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_7_6;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_8;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_9;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_9_1;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_9_2;
+import static com.velocitypowered.api.network.ProtocolVersion.MINECRAFT_1_9_4;
 
 public final class Main {
-    private static final MinecraftChannelIdentifier QUICKSHOP_BUNGEE_CHANNEL = MinecraftChannelIdentifier.create("quickshop", "bungee");
-    private static final String SUB_CHANNEL_FORWARD = "forward";
-    private static final String SUB_CHANNEL_COMMAND = "command";
-    private static final String CHAT_COMMAND_REQUEST = "request";
-    private static final String CHAT_COMMAND_CANCEL = "cancel";
-    private static final List<ProtocolVersion> NO_SIGN_VERSIONS = List.of(
-            LEGACY,
-            MINECRAFT_1_7_2,
-            MINECRAFT_1_7_6,
-            MINECRAFT_1_8,
-            MINECRAFT_1_9,
-            MINECRAFT_1_9_1,
-            MINECRAFT_1_9_2,
-            MINECRAFT_1_9_4,
-            MINECRAFT_1_10,
-            MINECRAFT_1_11,
-            MINECRAFT_1_11_1,
-            MINECRAFT_1_12,
-            MINECRAFT_1_12_1,
-            MINECRAFT_1_12_2,
-            MINECRAFT_1_13,
-            MINECRAFT_1_13_1,
-            MINECRAFT_1_13_2,
-            MINECRAFT_1_14,
-            MINECRAFT_1_14_1,
-            MINECRAFT_1_14_2,
-            MINECRAFT_1_14_3,
-            MINECRAFT_1_14_4,
-            MINECRAFT_1_15,
-            MINECRAFT_1_15_1,
-            MINECRAFT_1_15_2,
-            MINECRAFT_1_16,
-            MINECRAFT_1_16_1,
-            MINECRAFT_1_16_2,
-            MINECRAFT_1_16_3,
-            MINECRAFT_1_16_4,
-            MINECRAFT_1_17,
-            MINECRAFT_1_17_1,
-            MINECRAFT_1_18,
-            MINECRAFT_1_18_2,
-            MINECRAFT_1_19
-    );
-    private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
-    @Inject
-    private ProxyServer proxy;
 
-    @Subscribe
-    public void onProxyInitialization(ProxyInitializeEvent event) {
-        proxy.getChannelRegistrar().register(QUICKSHOP_BUNGEE_CHANNEL);
-    }
+  private static final MinecraftChannelIdentifier QUICKSHOP_BUNGEE_CHANNEL = MinecraftChannelIdentifier.create("quickshop", "bungee");
+  private static final String SUB_CHANNEL_FORWARD = "forward";
+  private static final String SUB_CHANNEL_COMMAND = "command";
+  private static final String CHAT_COMMAND_REQUEST = "request";
+  private static final String CHAT_COMMAND_CANCEL = "cancel";
+  private static final List<ProtocolVersion> NO_SIGN_VERSIONS = List.of(
+          LEGACY,
+          MINECRAFT_1_7_2,
+          MINECRAFT_1_7_6,
+          MINECRAFT_1_8,
+          MINECRAFT_1_9,
+          MINECRAFT_1_9_1,
+          MINECRAFT_1_9_2,
+          MINECRAFT_1_9_4,
+          MINECRAFT_1_10,
+          MINECRAFT_1_11,
+          MINECRAFT_1_11_1,
+          MINECRAFT_1_12,
+          MINECRAFT_1_12_1,
+          MINECRAFT_1_12_2,
+          MINECRAFT_1_13,
+          MINECRAFT_1_13_1,
+          MINECRAFT_1_13_2,
+          MINECRAFT_1_14,
+          MINECRAFT_1_14_1,
+          MINECRAFT_1_14_2,
+          MINECRAFT_1_14_3,
+          MINECRAFT_1_14_4,
+          MINECRAFT_1_15,
+          MINECRAFT_1_15_1,
+          MINECRAFT_1_15_2,
+          MINECRAFT_1_16,
+          MINECRAFT_1_16_1,
+          MINECRAFT_1_16_2,
+          MINECRAFT_1_16_3,
+          MINECRAFT_1_16_4,
+          MINECRAFT_1_17,
+          MINECRAFT_1_17_1,
+          MINECRAFT_1_18,
+          MINECRAFT_1_18_2,
+          MINECRAFT_1_19
+                                                                       );
+  private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
+  @Inject
+  private ProxyServer proxy;
 
-    @Subscribe
-    public void onProxyShutdown(ProxyShutdownEvent event) {
-        this.pendingForward.clear();
-        proxy.getChannelRegistrar().unregister(QUICKSHOP_BUNGEE_CHANNEL);
-    }
+  @Subscribe
+  public void onProxyInitialization(final ProxyInitializeEvent event) {
 
-    @Subscribe
-    public void on(PluginMessageEvent event) {
-        if (!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
-            return;
-        }
-        ByteArrayDataInput in = event.dataAsDataStream();
-        String subChannel = in.readUTF();
-        if (SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
-            // the receiver is a server when the proxy talks to a server
-            if (event.getSource() instanceof ServerConnection) {
-                String command = in.readUTF();
-                processCommand(command, in);
-            }
-        }
-    }
+    proxy.getChannelRegistrar().register(QUICKSHOP_BUNGEE_CHANNEL);
+  }
 
-    private void processCommand(String command, ByteArrayDataInput in) {
-        UUID uuid = UUID.fromString(in.readUTF());
-        switch (command) {
-            case CHAT_COMMAND_REQUEST -> this.pendingForward.add(uuid);
-            case CHAT_COMMAND_CANCEL -> this.pendingForward.remove(uuid);
-        }
-    }
+  @Subscribe
+  public void onProxyShutdown(final ProxyShutdownEvent event) {
 
-    @Subscribe(order = PostOrder.FIRST)
-    public void onChat(PlayerChatEvent event) {
-        Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
-        if (pendingForward.contains(uuid)) {
-            forwardMessage(player, event.getMessage());
-            // Workaround against kicking of players with valid signed key and client 1.19.1 or higher by velocity
-            ProtocolVersion protocol = player.getProtocolVersion();
-            if (player.getIdentifiedKey() == null || NO_SIGN_VERSIONS.contains(protocol)) {
-                event.setResult(PlayerChatEvent.ChatResult.denied());
-            }
-        }
-    }
+    this.pendingForward.clear();
+    proxy.getChannelRegistrar().unregister(QUICKSHOP_BUNGEE_CHANNEL);
+  }
 
-    private void forwardMessage(Player player, String message) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(SUB_CHANNEL_FORWARD);
-        out.writeUTF(message);
-        player.getCurrentServer().ifPresent(server ->
-                server.sendPluginMessage(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes())
-        );
+  @Subscribe
+  public void on(final PluginMessageEvent event) {
+    // Is this our business?
+    if(!QUICKSHOP_BUNGEE_CHANNEL.equals(event.getIdentifier())) {
+      return;
     }
+    // Let's not be a snitch
+    // we don't want the client to send any message to the server
+    // nor do we want the proxy to send any message to the player
+    event.setResult(PluginMessageEvent.ForwardResult.handled());
+    // Is the source correct?
+    // we can only trust the server not the player
+    if(!(event.getSource() instanceof ServerConnection)) return;
+    // We can trust the source
+    // server sent us the message
+    final ByteArrayDataInput in = event.dataAsDataStream();
+    final String subChannel = in.readUTF();
+    if(SUB_CHANNEL_COMMAND.equalsIgnoreCase(subChannel)) {
+      final String command = in.readUTF();
+      processCommand(command, in);
+    }
+  }
 
-    @Subscribe(order = PostOrder.FIRST)
-    public void onDisconnect(DisconnectEvent event) {
-        pendingForward.remove(event.getPlayer().getUniqueId());
-    }
+  private void processCommand(final String command, final ByteArrayDataInput in) {
 
-    @Subscribe(order = PostOrder.FIRST)
-    public void onServerSwitch(ServerPreConnectEvent event) {
-        pendingForward.remove(event.getPlayer().getUniqueId());
+    final UUID uuid = UUID.fromString(in.readUTF());
+    switch(command) {
+      case CHAT_COMMAND_REQUEST -> this.pendingForward.add(uuid);
+      case CHAT_COMMAND_CANCEL -> this.pendingForward.remove(uuid);
     }
+  }
 
-    @Subscribe(order = PostOrder.FIRST)
-    public void onServerKick(ServerPostConnectEvent event) {
-        pendingForward.remove(event.getPlayer().getUniqueId());
+  @Subscribe(order = PostOrder.FIRST)
+  public void onChat(final PlayerChatEvent event) {
+
+    final Player player = event.getPlayer();
+    final UUID uuid = player.getUniqueId();
+    if(pendingForward.contains(uuid)) {
+      forwardMessage(player, event.getMessage());
+
+      // Workaround against kicking of players with valid signed key and client 1.19.1 or higher by velocity
+      final ProtocolVersion protocol = player.getProtocolVersion();
+      if(player.getIdentifiedKey() == null || NO_SIGN_VERSIONS.contains(protocol)) {
+        event.setResult(PlayerChatEvent.ChatResult.denied());
+      }
     }
+  }
+
+  private void forwardMessage(final Player player, final String message) {
+
+    final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    out.writeUTF(SUB_CHANNEL_FORWARD);
+    out.writeUTF(message);
+    player.getCurrentServer().ifPresent(server->
+                                                server.sendPluginMessage(QUICKSHOP_BUNGEE_CHANNEL, out.toByteArray())
+                                       );
+  }
+
+  @Subscribe(order = PostOrder.FIRST)
+  public void onDisconnect(final DisconnectEvent event) {
+
+    pendingForward.remove(event.getPlayer().getUniqueId());
+  }
+
+  @Subscribe(order = PostOrder.FIRST)
+  public void onServerSwitch(final ServerPreConnectEvent event) {
+
+    pendingForward.remove(event.getPlayer().getUniqueId());
+  }
+
+  @Subscribe(order = PostOrder.FIRST)
+  public void onServerKick(final ServerPostConnectEvent event) {
+
+    pendingForward.remove(event.getPlayer().getUniqueId());
+  }
 }

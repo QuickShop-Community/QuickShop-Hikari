@@ -13,27 +13,29 @@ import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
 
-    public SubCommand_SilentEmpty(QuickShop plugin) {
-        super(plugin);
+  public SubCommand_SilentEmpty(final QuickShop plugin) {
+
+    super(plugin);
+  }
+
+  @Override
+  protected void doSilentCommand(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
+
+    if(!(shop instanceof final ContainerShop cs)) {
+      plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
     }
 
-    @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
-        if (!(shop instanceof final ContainerShop cs)) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
+    final InventoryWrapper inventory = cs.getInventory();
 
-        final InventoryWrapper inventory = cs.getInventory();
-
-        if (inventory == null) {
-            Log.debug("Inventory is empty! " + cs);
-            return;
-        }
-
-        inventory.clear();
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
-        MsgUtil.sendControlPanelInfo(sender, shop);
-        plugin.text().of(sender, "empty-success").send();
+    if(inventory == null) {
+      Log.debug("Inventory is empty! " + cs);
+      return;
     }
+
+    inventory.clear();
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
+    MsgUtil.sendControlPanelInfo(sender, shop);
+    plugin.text().of(sender, "empty-success").send();
+  }
 }

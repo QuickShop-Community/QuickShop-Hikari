@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.compatibility.voidchest;
 
 import com.georgev22.voidchest.api.VoidChestAPI;
 import com.georgev22.voidchest.api.event.annotations.EventHandler;
-import com.georgev22.voidchest.api.event.events.item.InstantItemSpawnEvent;
 import com.georgev22.voidchest.api.event.events.item.ItemSpawnEvent;
 import com.georgev22.voidchest.api.event.events.sell.VoidSellChunkItemEvent;
 import com.georgev22.voidchest.api.event.interfaces.EventListener;
@@ -14,35 +13,35 @@ import org.jetbrains.annotations.Nullable;
 
 public final class Main extends CompatibilityModule implements EventListener {
 
-    @Override
-    public void init() {
-        VoidChestAPI.getInstance().eventManager().register(this);
+  @Override
+  public void init() {
+
+    VoidChestAPI.getInstance().eventManager().register(VoidSellChunkItemEvent.class, this);
+    VoidChestAPI.getInstance().eventManager().register(ItemSpawnEvent.class, this);
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onVoidSellChunkItem(final VoidSellChunkItemEvent event) {
+
+    event.setCancelled(cancelEvent(event.getDroppedItem(), null));
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onItemSpawnEvent(final ItemSpawnEvent event) {
+
+    event.setCancelled(cancelEvent(event.getItem(), event.getItemStack().getItemStack()));
+  }
+
+  private boolean cancelEvent(@Nullable final Item item, @Nullable final ItemStack itemStack) {
+
+    if(item != null) {
+      return AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onVoidSellChunkItem(VoidSellChunkItemEvent event) {
-        event.setCancelled(cancelEvent(event.getDroppedItem(), null));
+    if(itemStack != null) {
+      return AbstractDisplayItem.checkIsGuardItemStack(itemStack);
     }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onInstantItemSpawnEvent(InstantItemSpawnEvent event) {
-        event.setCancelled(cancelEvent(event.getItem(), event.getItemStack().getItemStack()));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onItemSpawnEvent(ItemSpawnEvent event) {
-        event.setCancelled(cancelEvent(event.getItem(), event.getItemStack().getItemStack()));
-    }
-
-    private boolean cancelEvent(@Nullable Item item, @Nullable ItemStack itemStack) {
-        if (item != null) {
-            return AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
-        }
-
-        if (itemStack != null) {
-            return AbstractDisplayItem.checkIsGuardItemStack(itemStack);
-        }
-        return false;
-    }
+    return false;
+  }
 
 }

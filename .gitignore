@@ -1,6 +1,8 @@
 # User-specific stuff
 .idea/
 
+.paper-nms
+
 *.iml
 *.ipr
 *.iws
@@ -115,3 +117,6 @@ run/
 /.vscode/settings.json
 /.run
 .run
+/${rootDir}/
+.${rootDir}/
+.paper-nms/

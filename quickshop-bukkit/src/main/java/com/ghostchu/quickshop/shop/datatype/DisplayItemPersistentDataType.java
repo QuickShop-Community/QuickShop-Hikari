@@ -10,40 +10,45 @@ import org.jetbrains.annotations.NotNull;
 
 public class DisplayItemPersistentDataType
         implements PersistentDataType<String, ShopProtectionFlag> {
-    static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
 
-    @Override
-    public @NotNull Class<String> getPrimitiveType() {
-        return String.class;
-    }
+  static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
 
-    @Override
-    public @NotNull Class<ShopProtectionFlag> getComplexType() {
-        return ShopProtectionFlag.class;
-    }
+  @Override
+  public @NotNull Class<String> getPrimitiveType() {
 
-    @NotNull
-    @Override
-    public String toPrimitive(
-            @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
-        try {
-            return JsonUtil.getGson().toJson(complex);
-        } catch (Exception th) {
-            new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
-            return "";
-        }
-    }
+    return String.class;
+  }
 
-    @NotNull
-    @Override
-    public ShopProtectionFlag fromPrimitive(
-            @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
-        try {
-            return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);
-        } catch (Exception th) {
-            new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
-            return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
-        }
+  @Override
+  public @NotNull Class<ShopProtectionFlag> getComplexType() {
+
+    return ShopProtectionFlag.class;
+  }
+
+  @NotNull
+  @Override
+  public String toPrimitive(
+          @NotNull final ShopProtectionFlag complex, @NotNull final PersistentDataAdapterContext context) {
+
+    try {
+      return JsonUtil.getGson().toJson(complex);
+    } catch(Exception th) {
+      new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
+      return "";
     }
+  }
+
+  @NotNull
+  @Override
+  public ShopProtectionFlag fromPrimitive(
+          @NotNull final String primitive, @NotNull final PersistentDataAdapterContext context) {
+
+    try {
+      return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);
+    } catch(Exception th) {
+      new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
+      return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
+    }
+  }
 
 }

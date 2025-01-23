@@ -1,9 +1,9 @@
 package com.ghostchu.quickshop.compatibility.elitemobs;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.magmaguy.elitemobs.api.utils.EliteItemManager;
@@ -14,43 +14,49 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 public final class Main extends CompatibilityModule implements Listener {
-    @Override
-    public void init() {
-        // There no init stuffs need to do
-    }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onShopCreation(ShopCreateEvent event) {
-        if (isSoulBoundItem(event.getShop().getItem())) {
-            event.setCancelled(true, getDisallowedMessage(event.getCreator()));
-        }
-    }
+  @Override
+  public void init() {
+    // There no init stuffs need to do
+  }
 
-    private boolean isSoulBoundItem(ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-        if (stack.getItemMeta() == null) {
-            return false;
-        }
-        return EliteItemManager.getSoulboundPlayer(stack.getItemMeta()) != null;
-    }
+  @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+  public void onShopCreation(final ShopCreateEvent event) {
 
-    private Component getDisallowedMessage(QUser sender) {
-        return QuickShop.getInstance().text().of(sender, "compatibility.elitemobs.soulbound-disallowed").forLocale();
+    if(isSoulBoundItem(event.getShop().getItem())) {
+      event.setCancelled(true, getDisallowedMessage(event.getCreator()));
     }
+  }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onShopItemChanging(ShopItemChangeEvent event) {
-        if (isSoulBoundItem(event.getShop().getItem())) {
-            event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
-        }
-    }
+  private boolean isSoulBoundItem(final ItemStack stack) {
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onShopPurchase(ShopPurchaseEvent event) {
-        if (isSoulBoundItem(event.getShop().getItem())) {
-            event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
-        }
+    if(stack == null) {
+      return false;
     }
+    if(stack.getItemMeta() == null) {
+      return false;
+    }
+    return EliteItemManager.getSoulboundPlayer(stack.getItemMeta()) != null;
+  }
+
+  private Component getDisallowedMessage(final QUser sender) {
+
+    return QuickShop.getInstance().text().of(sender, "compatibility.elitemobs.soulbound-disallowed").forLocale();
+  }
+
+  @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+  public void onShopItemChanging(final ShopItemChangeEvent event) {
+
+    if(isSoulBoundItem(event.getShop().getItem())) {
+      event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+  public void onShopPurchase(final ShopPurchaseEvent event) {
+
+    if(isSoulBoundItem(event.getShop().getItem())) {
+      event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
+    }
+  }
 }

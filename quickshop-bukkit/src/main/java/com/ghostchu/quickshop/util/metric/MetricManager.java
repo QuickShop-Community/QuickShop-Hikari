@@ -11,46 +11,51 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 public class MetricManager {
-    private final QuickShop plugin;
-    private final Metrics metrics;
 
-    public MetricManager(QuickShop plugin) {
-        this.plugin = plugin;
-        this.metrics = new Metrics(plugin.getJavaPlugin(), 14281);
-        initCollects();
+  private final QuickShop plugin;
+  private final Metrics metrics;
+
+  public MetricManager(final QuickShop plugin) {
+
+    this.plugin = plugin;
+    this.metrics = new Metrics(plugin.getJavaPlugin(), 14281);
+    initCollects();
+  }
+
+  public void registerChart(final MetricDataType dataType, final String moduleName, final String reason, final CustomChart chart) {
+
+    if(chart == null) {
+      return; // ignore
     }
+    plugin.getPrivacyController().privacyReview(dataType, moduleName.replace(" ", "_").replace("-", "_").toUpperCase(Locale.ROOT), reason, ()->this.metrics.addCustomChart(chart), ()->Log.debug("Blocked chart register: failed privacy reviewing."));
+  }
 
-    public void registerChart(MetricDataType dataType, String moduleName, String reason, CustomChart chart) {
-        if (chart == null) {
-            return; // ignore
+  public void initCollects() {
+
+    registerMetricCollector(new BuiltInCollects(plugin));
+  }
+
+  public void registerMetricCollector(@NotNull final Object object) {
+
+    for(final Method method : object.getClass().getDeclaredMethods()) {
+      final MetricCollectEntry collectEntry = method.getAnnotation(MetricCollectEntry.class);
+      if(collectEntry == null) {
+        continue;
+      }
+      if(method.getReturnType() != CustomChart.class) {
+        plugin.logger().warn("Failed loading MetricCollectEntry [{}]: Illegal test returns", method.getName());
+        continue;
+      }
+      try {
+        final Object result = method.invoke(object, (Object[])null);
+        if(result != null) {
+          registerChart(collectEntry.dataType(), collectEntry.moduleName(), collectEntry.description(),
+                        (CustomChart)result);
+          Log.debug("Registered metrics collector: " + collectEntry.moduleName());
         }
-        plugin.getPrivacyController().privacyReview(dataType, moduleName.replace(" ", "_").replace("-", "_").toUpperCase(Locale.ROOT), reason, () -> this.metrics.addCustomChart(chart), () -> Log.debug("Blocked chart register: failed privacy reviewing."));
+      } catch(Throwable th) {
+        plugin.logger().warn("Failed to register metrics chart", th);
+      }
     }
-
-    public void initCollects() {
-        registerMetricCollector(new BuiltInCollects(plugin));
-    }
-
-    public void registerMetricCollector(@NotNull Object object) {
-        for (Method method : object.getClass().getDeclaredMethods()) {
-            MetricCollectEntry collectEntry = method.getAnnotation(MetricCollectEntry.class);
-            if (collectEntry == null) {
-                continue;
-            }
-            if (method.getReturnType() != CustomChart.class) {
-                plugin.logger().warn("Failed loading MetricCollectEntry [{}]: Illegal test returns", method.getName());
-                continue;
-            }
-            try {
-                Object result = method.invoke(object, (Object[]) null);
-                if (result != null) {
-                    registerChart(collectEntry.dataType(), collectEntry.moduleName(), collectEntry.description(),
-                            (CustomChart) result);
-                    Log.debug("Registered metrics collector: " + collectEntry.moduleName());
-                }
-            } catch (Throwable th) {
-                plugin.logger().warn("Failed to register metrics chart", th);
-            }
-        }
-    }
+  }
 }

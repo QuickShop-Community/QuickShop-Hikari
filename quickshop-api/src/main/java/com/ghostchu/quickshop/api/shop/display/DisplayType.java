@@ -7,42 +7,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum DisplayType {
-    /*
-     * REALITEM = USE REAL DROPPED ITEM
-     * ARMORSTAND = USE ARMORSTAND DISPLAY
-     * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
-     * */
-    REALITEM(0),
-    //  ARMORSTAND(1),
-    VIRTUALITEM(2),
-    ENTITY_DISPLAY(3),
-    CUSTOM(900);
+  /*
+   * REALITEM = USE REAL DROPPED ITEM
+   * ARMORSTAND = USE ARMORSTAND DISPLAY
+   * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
+   * */
+  //REALITEM(0),
+  //  ARMORSTAND(1),
+  VIRTUALITEM(2),
+  //ENTITY_DISPLAY(3),
+  CUSTOM(900);
 
-    private static final Map<Integer, DisplayType> TYPE_MAP;
+  private static final Map<Integer, DisplayType> TYPE_MAP;
 
-    static {
-        Map<Integer, DisplayType> map = new HashMap<>(values().length);
-        for (DisplayType type : values()) {
-            map.put(type.id, type);
-        }
-        TYPE_MAP = Collections.unmodifiableMap(map);
+  static {
+    final Map<Integer, DisplayType> map = new HashMap<>(values().length);
+    for(final DisplayType type : values()) {
+      map.put(type.id, type);
     }
+    TYPE_MAP = Collections.unmodifiableMap(map);
+  }
 
-    private final int id;
+  private final int id;
 
-    DisplayType(int id) {
-        this.id = id;
-    }
+  DisplayType(final int id) {
 
-    public static @NotNull DisplayType fromID(int id) {
-        return TYPE_MAP.getOrDefault(id, CUSTOM);
-    }
+    this.id = id;
+  }
 
-    public static int toID(@NotNull DisplayType displayType) {
-        return displayType.id;
-    }
+  public static @NotNull DisplayType fromID(final int id) {
 
-    public int toID() {
-        return id;
-    }
+    return TYPE_MAP.getOrDefault(id, CUSTOM);
+  }
+
+  public static int toID(@NotNull final DisplayType displayType) {
+
+    return displayType.id;
+  }
+
+  public int toID() {
+
+    return id;
+  }
 }

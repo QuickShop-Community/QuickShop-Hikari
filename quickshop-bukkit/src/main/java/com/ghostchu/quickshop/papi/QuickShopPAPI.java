@@ -7,45 +7,54 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
-    private final PAPIManager manager;
 
-    public QuickShopPAPI(@NotNull QuickShop plugin) {
-        manager = new PAPIManager(plugin);
-    }
+  private final PAPIManager manager;
 
-    @Override
-    public @NotNull String getIdentifier() {
-        return "qs";
-    }
+  public QuickShopPAPI(@NotNull final QuickShop plugin) {
 
-    @Override
-    public @NotNull String getAuthor() {
-        return "QuickShopBundled";
-    }
+    manager = new PAPIManager(plugin);
+  }
 
-    @Override
-    public @NotNull String getVersion() {
-        return QuickShop.getInstance().getVersion();
-    }
+  @Override
+  public @NotNull String getIdentifier() {
 
-    // Prevent the expansion being unregistered on /papi reload
-    @Override
-    public boolean persist() {
-        return true;
-    }
+    return "qs";
+  }
 
-    @Override
-    public boolean canRegister() {
-        return true;
-    }
+  @Override
+  public @NotNull String getAuthor() {
 
-    @NotNull
-    public PAPIManager getManager() {
-        return manager;
-    }
+    return "QuickShopBundled";
+  }
 
-    @Override
-    public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
-        return manager.handle(player, params);
-    }
+  @Override
+  public @NotNull String getVersion() {
+
+    return QuickShop.getInstance().getVersion();
+  }
+
+  // Prevent the expansion being unregistered on /papi reload
+  @Override
+  public boolean persist() {
+
+    return true;
+  }
+
+  @Override
+  public boolean canRegister() {
+
+    return true;
+  }
+
+  @NotNull
+  public PAPIManager getManager() {
+
+    return manager;
+  }
+
+  @Override
+  public @Nullable String onRequest(@NotNull final OfflinePlayer player, @NotNull final String params) {
+
+    return manager.handle(player, params);
+  }
 }

@@ -10,8 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 @EqualsAndHashCode
 public class FillerProcessor implements PostProcessor {
-    @Override
-    public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
-        return MsgUtil.fillArgs(text, args);
-    }
+
+  @Override
+  public @NotNull Component process(@NotNull final Component text, @Nullable final CommandSender sender, final Component... args) {
+
+    return MsgUtil.fillArgs(text, args);
+  }
 }

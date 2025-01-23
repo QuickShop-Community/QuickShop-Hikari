@@ -8,28 +8,35 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class SimpleMaterialExpressionHandler implements ItemExpressionHandler {
-    private final QuickShop plugin;
 
-    public SimpleMaterialExpressionHandler(QuickShop plugin){
-        this.plugin = plugin;
-    }
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return QuickShop.getInstance().getJavaPlugin();
-    }
+  private final QuickShop plugin;
 
-    @Override
-    public String getPrefix() {
-        return "";
-    }
+  public SimpleMaterialExpressionHandler(final QuickShop plugin) {
 
-    @Override
-    public String getInternalPrefix0() {
-        return getPrefix();
-    }
+    this.plugin = plugin;
+  }
 
-    @Override
-    public boolean match(ItemStack stack, String expression) {
-        return stack.getType().equals(Material.matchMaterial(expression));
-    }
+  @Override
+  public @NotNull Plugin getPlugin() {
+
+    return QuickShop.getInstance().getJavaPlugin();
+  }
+
+  @Override
+  public String getPrefix() {
+
+    return "";
+  }
+
+  @Override
+  public String getInternalPrefix0() {
+
+    return getPrefix();
+  }
+
+  @Override
+  public boolean match(final ItemStack stack, final String expression) {
+
+    return stack.getType().equals(Material.matchMaterial(expression));
+  }
 }

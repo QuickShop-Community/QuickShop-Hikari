@@ -8,11 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ShopCache {
 
-    @Nullable Shop get(@NotNull ShopCacheNamespacedKey namespacedKey, @NotNull Location location, boolean allowLoading);
+  @Nullable
+  Shop get(@NotNull ShopCacheNamespacedKey namespacedKey, @NotNull Location location, boolean allowLoading);
 
-    void invalidateAll(@Nullable ShopCacheNamespacedKey namespacedKey);
+  void invalidateAll(@Nullable ShopCacheNamespacedKey namespacedKey);
 
-    void invalidate(@Nullable ShopCacheNamespacedKey namespacedKey, @NotNull Location location);
+  void invalidate(@Nullable ShopCacheNamespacedKey namespacedKey, @NotNull Location location);
 
-    @NotNull CacheStats getCacheStats(@NotNull ShopCacheNamespacedKey namespacedKey);
+  @NotNull
+  CacheStats getCacheStats(@NotNull ShopCacheNamespacedKey namespacedKey);
 }

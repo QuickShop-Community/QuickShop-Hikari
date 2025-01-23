@@ -10,33 +10,37 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin implements Listener {
-    static Main instance;
-    private QuickShop plugin;
 
-    @Override
-    public void onLoad() {
-        instance = this;
-    }
+  static Main instance;
+  private QuickShop plugin;
 
-    @Override
-    public void onDisable() {
-        HandlerList.unregisterAll((Plugin) this);
-    }
+  @Override
+  public void onLoad() {
 
-    @Override
-    public void onEnable() {
-        saveDefaultConfig();
-        plugin = QuickShop.getInstance();
-        getLogger().info("Registering the per shop permissions...");
-        Bukkit.getPluginManager().registerEvents(this, this);
-        plugin.getCommandManager().registerCmd(
-                CommandContainer
-                        .builder()
-                        .prefix("list")
-                        .description((locale) -> plugin.text().of("addon.list.commands.list").forLocale(locale))
-                        .selectivePermission("quickshopaddon.list.self")
-                        .selectivePermission("quickshopaddon.list.other")
-                        .executor(new SubCommand_List(plugin))
-                        .build());
-    }
+    instance = this;
+  }
+
+  @Override
+  public void onDisable() {
+
+    HandlerList.unregisterAll((Plugin)this);
+  }
+
+  @Override
+  public void onEnable() {
+
+    saveDefaultConfig();
+    plugin = QuickShop.getInstance();
+    getLogger().info("Registering the per shop permissions...");
+    Bukkit.getPluginManager().registerEvents(this, this);
+    plugin.getCommandManager().registerCmd(
+            CommandContainer
+                    .builder()
+                    .prefix("list")
+                    .description((locale)->plugin.text().of("addon.list.commands.list").forLocale(locale))
+                    .selectivePermission("quickshopaddon.list.self")
+                    .selectivePermission("quickshopaddon.list.other")
+                    .executor(new SubCommand_List(plugin))
+                    .build());
+  }
 }

@@ -34,113 +34,119 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShopMigrate extends AbstractMigrateComponent {
-    private final boolean override;
 
-    public ShopMigrate(Main main, QuickShop hikari, org.maxgamer.quickshop.QuickShop reremake, CommandSender sender, boolean overrideExists) {
-        super(main, hikari, reremake, sender);
-        this.override = overrideExists;
-    }
+  private final boolean override;
 
-    @Override
-    public boolean migrate() {
-        final AtomicBoolean success = new AtomicBoolean(true);
-        final AtomicInteger c = new AtomicInteger(0);
-        List<Shop> allShops = getReremake().getShopManager().getAllShops();
-        List<ContainerShop> preparedShops = new ArrayList<>();
-        text("modules.shop.start-migrate", allShops.size()).send();
-        BatchBukkitExecutor<Shop> batchBukkitExecutor = new BatchBukkitExecutor<>();
-        batchBukkitExecutor.addTasks(allShops);
-        batchBukkitExecutor.startHandle(getHikari().getJavaPlugin(), reremakeShop -> {
-            text("modules.shop.migrate-entry", reremakeShop.toString(), c.incrementAndGet(), allShops.size()).send();
-            try {
-                Location shopLoc = reremakeShop.getLocation();
-                com.ghostchu.quickshop.api.shop.Shop hikariShop = getHikari().getShopManager().getShop(shopLoc, true);
-                if (hikariShop != null) {
-                    if (!override) {
-                        text("modules.shop.conflict", "SKIPPING").send();
-                        return;
-                    } else {
-                        text("modules.shop.conflict", "OVERWRITING").send();
-                        getHikari().getShopManager().deleteShop(hikariShop);
-                    }
-                }
-                BlockState block = shopLoc.getBlock().getState();
-                if (!(block instanceof InventoryHolder container)) {
-                    getHikari().logger().warn("Shop Invalid: Shop block not a valid Container, failed to create InventoryHolder.");
-                    return;
-                }
-                ContainerShop hikariRawShop = new ContainerShop(
-                        getHikari(),
-                        -1,
-                        shopLoc,
-                        Math.min(reremakeShop.getPrice(), 999999999999999999999999999999.99), // DECIMAL (32,2) MAX
-                        reremakeShop.getItem().clone(),
-                        QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getOwner()),
-                        reremakeShop.isUnlimited(),
-                        ShopType.fromID(reremakeShop.getShopType().toID()),
-                        getReremakeShopExtra(reremakeShop),
-                        reremakeShop.getCurrency(),
-                        reremakeShop.isDisableDisplay(),
-                        reremakeShop.getTaxAccountActual() == null ? null : QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getTaxAccountActual()),
-                        getHikari().getJavaPlugin().getName(),
-                        ((BukkitInventoryWrapperManager)getHikari().getInventoryWrapperManager()).mklink(reremakeShop.getLocation()),
-                        null,
-                        Collections.emptyMap(),
-                        new SimpleBenefit()
-                );
-                migrateReremakeBanAddonData(reremakeShop, hikariRawShop);
-                hikariRawShop.setDirty();
-                preparedShops.add(hikariRawShop);
-            } catch (Exception e) {
-                getHikari().logger().warn("Failed to migrate shop " + reremakeShop, e);
-            }
-        }).thenAcceptAsync(a -> {
-            unloadAndMoveAwayReremake();
-            registerHikariShops(preparedShops);
-            saveHikariShops();
-        }, QuickExecutor.getCommonExecutor()).exceptionally((error) -> {
-            getHikari().logger().warn("Error while migrating shops", error);
-            success.set(false);
-            return null;
-        }).join();
-        return success.get();
-    }
+  public ShopMigrate(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake, final CommandSender sender, final boolean overrideExists) {
 
-    private void migrateReremakeBanAddonData(Shop reremakeShop, ContainerShop hikariRawShop) {
-        try {
-            ConfigurationSection reremakeBanExtra = reremakeShop.getExtra(new MockPlugin("QuickShopBan"));
-            for (String bannedPlayer : reremakeBanExtra.getStringList("bannedplayers")) {
-                if (!CommonUtil.isUUID(bannedPlayer)) continue;
-                getHikari().logger().info("Migrating shop ban record {} at {} to new Hikari container shop.", bannedPlayer, reremakeShop);
-                UUID uuid = UUID.fromString(bannedPlayer);
-                hikariRawShop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.BLOCKED);
-            }
-        } catch (Throwable th) {
-            getHikari().logger().warn("Failed to migrate the shop ban record", th);
+    super(main, hikari, reremake, sender);
+    this.override = overrideExists;
+  }
+
+  @Override
+  public boolean migrate() {
+
+    final AtomicBoolean success = new AtomicBoolean(true);
+    final AtomicInteger c = new AtomicInteger(0);
+    final List<Shop> allShops = getReremake().getShopManager().getAllShops();
+    final List<ContainerShop> preparedShops = new ArrayList<>();
+    text("modules.shop.start-migrate", allShops.size()).send();
+    final BatchBukkitExecutor<Shop> batchBukkitExecutor = new BatchBukkitExecutor<>();
+    batchBukkitExecutor.addTasks(allShops);
+    batchBukkitExecutor.startHandle(getHikari().getJavaPlugin(), reremakeShop->{
+      text("modules.shop.migrate-entry", reremakeShop.toString(), c.incrementAndGet(), allShops.size()).send();
+      try {
+        final Location shopLoc = reremakeShop.getLocation();
+        final com.ghostchu.quickshop.api.shop.Shop hikariShop = getHikari().getShopManager().getShop(shopLoc, true);
+        if(hikariShop != null) {
+          if(!override) {
+            text("modules.shop.conflict", "SKIPPING").send();
+            return;
+          } else {
+            text("modules.shop.conflict", "OVERWRITING").send();
+            getHikari().getShopManager().deleteShop(hikariShop);
+          }
         }
-    }
-
-    private YamlConfiguration getReremakeShopExtra(Shop reremakeShop) {
-        YamlConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.loadFromString(reremakeShop.saveExtraToYaml());
-        } catch (InvalidConfigurationException ignored) {
+        final BlockState block = shopLoc.getBlock().getState();
+        if(!(block instanceof InventoryHolder container)) {
+          getHikari().logger().warn("Shop Invalid: Shop block not a valid Container, failed to create InventoryHolder.");
+          return;
         }
-        return configuration;
-    }
+        final ContainerShop hikariRawShop = new ContainerShop(
+                getHikari(),
+                -1,
+                shopLoc,
+                Math.min(reremakeShop.getPrice(), 999999999999999999999999999999.99), // DECIMAL (32,2) MAX
+                reremakeShop.getItem().clone(),
+                QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getOwner()),
+                reremakeShop.isUnlimited(),
+                ShopType.fromID(reremakeShop.getShopType().toID()),
+                getReremakeShopExtra(reremakeShop),
+                reremakeShop.getCurrency(),
+                reremakeShop.isDisableDisplay(),
+                reremakeShop.getTaxAccountActual() == null? null : QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getTaxAccountActual()),
+                getHikari().getJavaPlugin().getName(),
+                ((BukkitInventoryWrapperManager)getHikari().getInventoryWrapperManager()).mklink(reremakeShop.getLocation()),
+                null,
+                Collections.emptyMap(),
+                new SimpleBenefit()
+        );
+        migrateReremakeBanAddonData(reremakeShop, hikariRawShop);
+        hikariRawShop.setDirty();
+        preparedShops.add(hikariRawShop);
+      } catch(Exception e) {
+        getHikari().logger().warn("Failed to migrate shop " + reremakeShop, e);
+      }
+    }).thenAcceptAsync(a->{
+      unloadAndMoveAwayReremake();
+      registerHikariShops(preparedShops);
+      saveHikariShops();
+    }, QuickExecutor.getCommonExecutor()).exceptionally((error)->{
+      getHikari().logger().warn("Error while migrating shops", error);
+      success.set(false);
+      return null;
+    }).join();
+    return success.get();
+  }
 
-    private void saveHikariShops() {
-        CompletableFuture<?>[] shopsToSaveFuture = getHikari().getShopManager().getAllShops().stream().filter(com.ghostchu.quickshop.api.shop.Shop::isDirty)
-                .map(com.ghostchu.quickshop.api.shop.Shop::update)
-                .toArray(CompletableFuture[]::new);
-        text("modules.shop.saving-shops", shopsToSaveFuture.length).send();
-        for (CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple -> text("modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
-            try {
-                completableFuture.join();
-            } catch (Exception e) {
-                getHikari().logger().warn("Error while saving shops, skipping", e);
-            }
-        }
+  private void migrateReremakeBanAddonData(final Shop reremakeShop, final ContainerShop hikariRawShop) {
+
+    try {
+      final ConfigurationSection reremakeBanExtra = reremakeShop.getExtra(new MockPlugin("QuickShopBan"));
+      for(final String bannedPlayer : reremakeBanExtra.getStringList("bannedplayers")) {
+        if(!CommonUtil.isUUID(bannedPlayer)) continue;
+        getHikari().logger().info("Migrating shop ban record {} at {} to new Hikari container shop.", bannedPlayer, reremakeShop);
+        final UUID uuid = UUID.fromString(bannedPlayer);
+        hikariRawShop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.BLOCKED);
+      }
+    } catch(Throwable th) {
+      getHikari().logger().warn("Failed to migrate the shop ban record", th);
+    }
+  }
+
+  private YamlConfiguration getReremakeShopExtra(final Shop reremakeShop) {
+
+    final YamlConfiguration configuration = new YamlConfiguration();
+    try {
+      configuration.loadFromString(reremakeShop.saveExtraToYaml());
+    } catch(InvalidConfigurationException ignored) {
+    }
+    return configuration;
+  }
+
+  private void saveHikariShops() {
+
+    final CompletableFuture<?>[] shopsToSaveFuture = getHikari().getShopManager().getAllShops().stream().filter(com.ghostchu.quickshop.api.shop.Shop::isDirty)
+            .map(com.ghostchu.quickshop.api.shop.Shop::update)
+            .toArray(CompletableFuture[]::new);
+    text("modules.shop.saving-shops", shopsToSaveFuture.length).send();
+    for(final CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple->text("modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
+      try {
+        completableFuture.join();
+      } catch(Exception e) {
+        getHikari().logger().warn("Error while saving shops, skipping", e);
+      }
+    }
 //        CompletableFuture.allOf(shopsToSaveFuture)
 //                .thenAcceptAsync((v) -> {
 //                    if (shopsToSaveFuture.length != 0) {
@@ -151,23 +157,25 @@ public class ShopMigrate extends AbstractMigrateComponent {
 //                    getHikari().logger().warn("Error while saving shops", e);
 //                    return null;
 //                }).join();
-    }
+  }
 
-    private void registerHikariShops(List<ContainerShop> preparedShops) {
-        for (com.ghostchu.quickshop.api.shop.Shop shop : new ProgressMonitor<>(preparedShops, triple -> text("modules.shop.register-entry", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
-            getHikari().getShopManager().registerShop(shop, true).join();
-            shop.setDirty();
-        }
-    }
+  private void registerHikariShops(final List<ContainerShop> preparedShops) {
 
-    private void unloadAndMoveAwayReremake() {
-        text("modules.shop.unloading-reremake").send();
-        Bukkit.getPluginManager().disablePlugin(getReremake());
-        File reremakeDataDirectory = new File(getHikari().getDataFolder(), "QuickShop");
-        try {
-            Files.move(reremakeDataDirectory, new File(getHikari().getDataFolder(), "QuickShop.migrated"));
-        } catch (IOException e) {
-            getHikari().logger().warn("Failed to move QuickShop-Reremake data directory, it may cause issues. You should manually move it to another location.");
-        }
+    for(final com.ghostchu.quickshop.api.shop.Shop shop : new ProgressMonitor<>(preparedShops, triple->text("modules.shop.register-entry", triple.getRight(), triple.getLeft(), triple.getMiddle()).send())) {
+      getHikari().getShopManager().registerShop(shop, true).join();
+      shop.setDirty();
     }
+  }
+
+  private void unloadAndMoveAwayReremake() {
+
+    text("modules.shop.unloading-reremake").send();
+    Bukkit.getPluginManager().disablePlugin(getReremake());
+    final File reremakeDataDirectory = new File(getHikari().getDataFolder(), "QuickShop");
+    try {
+      Files.move(reremakeDataDirectory, new File(getHikari().getDataFolder(), "QuickShop.migrated"));
+    } catch(IOException e) {
+      getHikari().logger().warn("Failed to move QuickShop-Reremake data directory, it may cause issues. You should manually move it to another location.");
+    }
+  }
 }

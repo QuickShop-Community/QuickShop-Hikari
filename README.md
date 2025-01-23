@@ -32,6 +32,8 @@
 
 [openinv]: https://dev.bukkit.org/projects/openinv
 
+[modrinth]: https://modrinth.com/plugin/quickshop-hikari  
+
 [worldedit]: https://dev.bukkit.org/projects/worldedit
 
 [optional_modules]: https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/
@@ -138,7 +140,7 @@ the latest versions of Minecraft.
 
 ## Downloads
 
-Obtain the latest version from [ci.codemc.io][codemc]
+Obtain the latest version from [Modrinth][modrinth]
 
 ## Compatibility Modules
 
@@ -164,11 +166,19 @@ You can download optional modules [here][optional_modules] for compatibility wit
 
 - Flag-based shop control.
 
-## Contribute
+## Contributing
 
-If you're a developer, you can contribute to the QuickShop source code! Just make a fork, install the Lombok plugin (if
-not done automatically), make your changes and create a pull request when you're done!  
-Please try to follow [Google's Java Code Style][googlejava] and do not increase the Plugin version. Thank you!
+Contributions to QuickShop-Hikari are welcome and encouraged! Whether you're fixing a bug, adding a new feature, or improving documentation, we would love your help.
+
+However, to ensure the project stays consistent and manageable, we ask that you follow our [contributing guidelines](.contributing/contributing.md) before submitting a pull request.
+
+Please make sure to:
+
+- Sign the Contributor License Agreement (CLA) if this is your first contribution when it appears in the Pull Request.
+- Follow the coding standards and branch naming conventions outlined in the guidelines.
+- Use the required IntelliJ plugins like **Final Obsession**, and **Lombok** for code quality and consistency.
+
+Thank you for your contributions!
 
 ### Distributing forks
 

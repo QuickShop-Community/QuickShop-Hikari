@@ -22,7 +22,7 @@ jobs:
           cache: 'maven'
       - name: Build with Maven
         run: mvn package --batch-mode --update-snapshots -T 1.5C -f pom.xml -P github
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: quickshop-snapshots
           path: |

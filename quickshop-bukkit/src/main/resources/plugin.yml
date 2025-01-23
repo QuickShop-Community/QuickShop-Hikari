@@ -1,5 +1,7 @@
 name: QuickShop-Hikari
 main: com.ghostchu.quickshop.QuickShopBukkit
+#Has to be included for folia support
+folia-supported: true
 softdepend:
   - Vault
   - Reserve
@@ -124,12 +126,14 @@ permissions:
       quickshop.find: true
       quickshop.fetchmessage: true
       quickshop.staff: true
+      quickshop.staffall: true
       quickshop.preview: true
       quickshop.currency: true
       quickshop.toggledisplay: true
       quickshop.shopnaming: true
       quickshop.permission: true
       quickshop.benefit: true
+      quickshop.browse: true
       quickshop.sign: true
       #quickshop.history: true
       #quickshop.history.owned: true
@@ -224,6 +228,9 @@ permissions:
     default: op
   quickshop.staff:
     description: Allows a shop owner to manage their shop staff.
+    default: op
+  quickshop.staffall:
+    description: Allows a shop owner to manage their shop staff for all shops.
     default: op
   quickshop.other.staff:
     description: Allows a other player force editing the shop staffs.
@@ -341,6 +348,9 @@ permissions:
     default: op
   quickshop.other.benefit:
     description: Permission to bypass the benefit permission check
+    default: op
+  quickshop.browse:
+    description: Permission to use /quickshop browse
     default: op
   quickshop.transferall:
     description: Permission to transfer all shops of a player to someone

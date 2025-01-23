@@ -11,38 +11,43 @@ import org.bukkit.event.inventory.InventoryInteractEvent;
 
 public class CustomInventoryListener extends AbstractQSListener {
 
-    public CustomInventoryListener(QuickShop plugin) {
-        super(plugin);
-    }
+  public CustomInventoryListener(final QuickShop plugin) {
 
-    @EventHandler(ignoreCancelled = true)
-    public void invEvent(InventoryInteractEvent e) {
-        if (e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
-            e.setCancelled(true);
-        }
-    }
+    super(plugin);
+  }
 
-    @EventHandler(ignoreCancelled = true)
-    public void invEvent(InventoryClickEvent e) {
-        if (e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
-            e.setCancelled(true);
-        }
-    }
+  @EventHandler(ignoreCancelled = true)
+  public void invEvent(final InventoryInteractEvent e) {
 
-    @EventHandler(ignoreCancelled = true)
-    public void invEvent(InventoryDragEvent e) {
-        if (e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
-            e.setCancelled(true);
-        }
+    if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
+      e.setCancelled(true);
     }
+  }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  @EventHandler(ignoreCancelled = true)
+  public void invEvent(final InventoryClickEvent e) {
+
+    if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
+      e.setCancelled(true);
     }
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void invEvent(final InventoryDragEvent e) {
+
+    if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
+      e.setCancelled(true);
+    }
+  }
+
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   */
+  @Override
+  public ReloadResult reloadModule() {
+
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+  }
 }

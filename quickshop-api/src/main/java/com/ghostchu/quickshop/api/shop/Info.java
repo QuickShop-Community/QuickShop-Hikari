@@ -10,41 +10,47 @@ import org.jetbrains.annotations.Nullable;
  * Shop simple info, used for shop processing and shop creation.
  */
 public interface Info {
-    /**
-     * @return ShopAction action, Get shop action.
-     */
-    @NotNull ShopAction getAction();
 
-    void setAction(@NotNull ShopAction action);
+  /**
+   * @return ShopAction action, Get shop action.
+   */
+  @NotNull
+  ShopAction getAction();
 
-    /**
-     * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
-     */
-    @NotNull ItemStack getItem();
+  void setAction(@NotNull ShopAction action);
 
-    /**
-     * @return Location loc, Get shop's location,
-     */
-    @NotNull Location getLocation();
+  /**
+   * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
+   */
+  @NotNull
+  ItemStack getItem();
 
-    /**
-     * @return Block signBlock, Get block of shop's sign, may return the null.
-     */
-    @Nullable Block getSignBlock();
+  /**
+   * @return Location loc, Get shop's location,
+   */
+  @NotNull
+  Location getLocation();
 
-    /**
-     * Get shop is or not has changed.
-     *
-     * @param shop, The need checked with this shop.
-     * @return hasChanged
-     */
-    boolean hasChanged(@NotNull Shop shop);
+  /**
+   * @return Block signBlock, Get block of shop's sign, may return the null.
+   */
+  @Nullable
+  Block getSignBlock();
 
-    /**
-     * Check if this Info marked as skip protection checks
-     *
-     * @return Bypassed Protection Checks
-     */
-    boolean isBypassed();
+  /**
+   * Get shop is or not has changed.
+   *
+   * @param shop, The need checked with this shop.
+   *
+   * @return hasChanged
+   */
+  boolean hasChanged(@NotNull Shop shop);
+
+  /**
+   * Check if this Info marked as skip protection checks
+   *
+   * @return Bypassed Protection Checks
+   */
+  boolean isBypassed();
 
 }

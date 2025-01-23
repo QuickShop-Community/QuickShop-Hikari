@@ -18,44 +18,50 @@ import java.util.Map;
 
 public final class Main extends CompatibilityModule implements SlimefunAddon, ItemExpressionHandler {
 
-    @Override
-    public void init() {
-        Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
-        if(registry instanceof ItemExpressionRegistry itemExpressionRegistry){
-            if(itemExpressionRegistry.registerHandlerSafely(this)){
-                getLogger().info("Register Slimefun ItemExpressionHandler successfully!");
-            }
-        }
-    }
+  @Override
+  public void init() {
 
-    @NotNull
-    @Override
-    public JavaPlugin getJavaPlugin() {
-        return this;
+    final Registry registry = QuickShop.getInstance().getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    if(registry instanceof ItemExpressionRegistry itemExpressionRegistry) {
+      if(itemExpressionRegistry.registerHandlerSafely(this)) {
+        getLogger().info("Register Slimefun ItemExpressionHandler successfully!");
+      }
     }
+  }
 
-    @Override
-    public String getBugTrackerURL() {
-        return "https://github.com/Quickshop-Community/QuickShop-Hikari/issues";
-    }
+  @NotNull
+  @Override
+  public JavaPlugin getJavaPlugin() {
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return this;
-    }
+    return this;
+  }
 
-    @Override
-    public String getPrefix() {
-        return "slimefun";
-    }
+  @Override
+  public String getBugTrackerURL() {
 
-    @Override
-    public boolean match(ItemStack stack, String expression) {
-        Map<String, SlimefunItem> slimefunItemMap = Slimefun.getRegistry().getSlimefunItemIds();
-        SlimefunItem slimefunItem = slimefunItemMap.get(expression);
-        if (slimefunItem == null) {
-            return false;
-        }
-        return slimefunItem.isItem(stack);
+    return "https://github.com/Quickshop-Community/QuickShop-Hikari/issues";
+  }
+
+  @Override
+  public @NotNull Plugin getPlugin() {
+
+    return this;
+  }
+
+  @Override
+  public String getPrefix() {
+
+    return "slimefun";
+  }
+
+  @Override
+  public boolean match(final ItemStack stack, final String expression) {
+
+    final Map<String, SlimefunItem> slimefunItemMap = Slimefun.getRegistry().getSlimefunItemIds();
+    final SlimefunItem slimefunItem = slimefunItemMap.get(expression);
+    if(slimefunItem == null) {
+      return false;
     }
+    return slimefunItem.isItem(stack);
+  }
 }

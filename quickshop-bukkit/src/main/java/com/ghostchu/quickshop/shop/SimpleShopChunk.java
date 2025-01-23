@@ -10,46 +10,54 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode
 @ToString
 public class SimpleShopChunk implements ShopChunk {
-    @NotNull
-    private final String world;
 
-    private final int x;
+  @NotNull
+  private final String world;
 
-    private final int z;
+  private final int x;
 
-    public SimpleShopChunk(@NotNull String world, int x, int z) {
-        this.world = world;
-        this.x = x;
-        this.z = z;
-    }
+  private final int z;
 
-    @Override
-    public @NotNull String getWorld() {
-        return world;
-    }
+  public SimpleShopChunk(@NotNull final String world, final int x, final int z) {
 
-    @Override
-    public int getX() {
-        return x;
-    }
+    this.world = world;
+    this.x = x;
+    this.z = z;
+  }
 
-    @Override
-    public int getZ() {
-        return z;
-    }
+  @Override
+  public @NotNull String getWorld() {
 
-    @Override
-    public boolean isSame(@NotNull String world, int x, int z) {
-        return this.x == x && this.z == z && this.world.equals(world);
-    }
+    return world;
+  }
 
-    @Override
-    public boolean isSame(@NotNull World world, int x, int z) {
-        return isSame(world.getName(), x, z);
-    }
+  @Override
+  public int getX() {
 
-    @NotNull
-    public static ShopChunk fromLocation(@NotNull Location location) {
-        return new SimpleShopChunk(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
-    }
+    return x;
+  }
+
+  @Override
+  public int getZ() {
+
+    return z;
+  }
+
+  @Override
+  public boolean isSame(@NotNull final String world, final int x, final int z) {
+
+    return this.x == x && this.z == z && this.world.equals(world);
+  }
+
+  @Override
+  public boolean isSame(@NotNull final World world, final int x, final int z) {
+
+    return isSame(world.getName(), x, z);
+  }
+
+  @NotNull
+  public static ShopChunk fromLocation(@NotNull final Location location) {
+
+    return new SimpleShopChunk(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
+  }
 }

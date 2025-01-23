@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.compatibility.chestprotect;
 
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import me.angeschossen.chestprotect.api.ChestProtectAPI;
@@ -17,46 +17,48 @@ import java.util.Optional;
 
 public final class Main extends CompatibilityModule implements Listener {
 
-    @Override
-    public void init() {
-        // There no init stuffs need to do
-    }
+  @Override
+  public void init() {
+    // There no init stuffs need to do
+  }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopPreCreateEvent event) {
-        Location loc = event.getLocation();
-        ProtectionWorld world = ChestProtectAPI.getInstance().getProtectionWorld(loc.getWorld());
-        if (world != null) {
-            BlockProtection protection = world.getBlockProtection(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-            QUser qUser = event.getCreator();
-            Optional<Player> playerOptional = qUser.getBukkitPlayer();
-            if (playerOptional.isPresent()) {
-                if (protection != null) {
-                    Player player = playerOptional.get();
-                    if (!player.getUniqueId().equals(protection.getOwner())) {
-                        event.setCancelled(true, (Component) null);
-                    }
-                }
-            }
-        }
-    }
+  @EventHandler(ignoreCancelled = true)
+  public void onPreCreation(final ShopPreCreateEvent event) {
 
-    @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopCreateEvent event) {
-        Location loc = event.getShop().getLocation();
-        ProtectionWorld world = ChestProtectAPI.getInstance().getProtectionWorld(loc.getWorld());
-        if (world != null) {
-            BlockProtection protection = world.getBlockProtection(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-            QUser qUser = event.getCreator();
-            Optional<Player> playerOptional = qUser.getBukkitPlayer();
-            if (playerOptional.isPresent()) {
-                if (protection != null) {
-                    Player player = playerOptional.get();
-                    if (!player.getUniqueId().equals(protection.getOwner())) {
-                        event.setCancelled(true, "You can't create a shop on a exists ChestProtect protection");
-                    }
-                }
-            }
+    final Location loc = event.getLocation();
+    final ProtectionWorld world = ChestProtectAPI.getInstance().getProtectionWorld(loc.getWorld());
+    if(world != null) {
+      final BlockProtection protection = world.getBlockProtection(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+      final QUser qUser = event.getCreator();
+      final Optional<Player> playerOptional = qUser.getBukkitPlayer();
+      if(playerOptional.isPresent()) {
+        if(protection != null) {
+          final Player player = playerOptional.get();
+          if(!player.getUniqueId().equals(protection.getOwner())) {
+            event.setCancelled(true, (Component)null);
+          }
         }
+      }
     }
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onPreCreation(final ShopCreateEvent event) {
+
+    final Location loc = event.getShop().getLocation();
+    final ProtectionWorld world = ChestProtectAPI.getInstance().getProtectionWorld(loc.getWorld());
+    if(world != null) {
+      final BlockProtection protection = world.getBlockProtection(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+      final QUser qUser = event.getCreator();
+      final Optional<Player> playerOptional = qUser.getBukkitPlayer();
+      if(playerOptional.isPresent()) {
+        if(protection != null) {
+          final Player player = playerOptional.get();
+          if(!player.getUniqueId().equals(protection.getOwner())) {
+            event.setCancelled(true, "You can't create a shop on a exists ChestProtect protection");
+          }
+        }
+      }
+    }
+  }
 }
