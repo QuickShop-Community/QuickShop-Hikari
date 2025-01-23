@@ -5,7 +5,7 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>6.2.0.8-SNAPSHOT-1</version>
+        <version>6.2.0.8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.16.0</version>
+            <version>${depend.commons.lang3}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -70,109 +70,109 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-api}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-key</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-key}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-nbt}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-logger-slf4j</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-logger-slf4j}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-minimessage}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-ansi</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-serializer-ansi}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-serializer-gson-legacy-impl}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-serializer-json}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json-legacy-impl</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-serializer-json-legacy-impl}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-legacy</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-serializer-legacy}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-plain</artifactId>
             <scope>compile</scope>
-            <version>4.17.0</version>
+            <version>${depend.adventure-text-serializer-plain}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-api</artifactId>
             <scope>compile</scope>
-            <version>4.3.3</version>
+            <version>${depend.adventure-platform-api}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <scope>compile</scope>
-            <version>4.3.3</version>
+            <version>${depend.adventure-platform-bukkit}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-facet</artifactId>
             <scope>compile</scope>
-            <version>4.3.3</version>
+            <version>${depend.adventure-platform-facet}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-viaversion</artifactId>
             <scope>compile</scope>
-            <version>4.3.3</version>
+            <version>${depend.adventure-platform-viaversion}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-bungeecord</artifactId>
             <scope>compile</scope>
-            <version>4.3.3</version>
+            <version>${depend.adventure-text-serializer-bungeecord}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>examination-api</artifactId>
             <scope>compile</scope>
-            <version>1.3.1-SNAPSHOT</version>
+            <version>${depend.examination-api}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>examination-string</artifactId>
             <scope>compile</scope>
-            <version>1.3.1-SNAPSHOT</version>
+            <version>${depend.examination-string}</version>
         </dependency>
         <dependency>
             <groupId>com.vdurmont</groupId>

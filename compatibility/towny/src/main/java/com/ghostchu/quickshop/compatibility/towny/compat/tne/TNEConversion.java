@@ -32,7 +32,7 @@ import java.util.UUID;
  * TNEConversion
  *
  * @author creatorfromhell
- * @since 6.2.0.8-SNAPSHOT-1
+ * @since 6.2.0.8
  */
 public class TNEConversion implements UuidConversion {
 
@@ -40,13 +40,13 @@ public class TNEConversion implements UuidConversion {
   public UUID convertTownyAccount(final Town town) {
 
     final Optional<Account> account = TNECore.api().getAccount(town.getAccount().getName());
-    return account.map(value->UUID.fromString(value.getIdentifier())).orElseGet(()->QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName()));
+    return account.map(Account::getIdentifier).orElseGet(()->QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName()));
   }
 
   @Override
   public UUID convertTownyAccount(final Nation nation) {
 
     final Optional<Account> account = TNECore.api().getAccount(nation.getAccount().getName());
-    return account.map(value->UUID.fromString(value.getIdentifier())).orElseGet(()->QuickShop.getInstance().getPlayerFinder().name2Uuid(nation.getAccount().getName()));
+    return account.map(Account::getIdentifier).orElseGet(()->QuickShop.getInstance().getPlayerFinder().name2Uuid(nation.getAccount().getName()));
   }
 }

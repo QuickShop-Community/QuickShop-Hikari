@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.8-SNAPSHOT-1</version>
+        <version>6.2.0.8</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -52,14 +52,14 @@
         <dependency>
             <groupId>zrips.residence</groupId>
             <artifactId>Residence</artifactId>
-            <version>5.0.1.7</version>
+            <version>${compat.residence}</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Residence5.0.1.7.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>zrips.cmilib</groupId>
             <artifactId>CMILib</artifactId>
-            <version>1.2.2.0</version>
+            <version>${compat.cmilib}</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/CMILib1.2.2.0.jar</systemPath>
         </dependency>
