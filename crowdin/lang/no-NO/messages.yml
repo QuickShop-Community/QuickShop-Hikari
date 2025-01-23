@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Du kan ødelegge butikken ved å bruke superverktøyet.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>Du betalte <red>{0}</red>for å endre prisen.
 not-allowed-to-create: <red>Du kan ikke opprette en butikk her.
 disabled-in-this-world: <red>QuickShop er deaktivert i denne verdenen
@@ -1619,6 +1619,8 @@ history:
   shop:
     gui-title: "Se kjøpshistorikk"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Eier: <yellow>{1}</yellow></white>"
@@ -1637,6 +1639,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Vennligst vent, henter informasjon...</gray>"
     previous-page: "<white><< Forrige side</white>"
     next-page: "<white>Neste side >></white>"

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.signhooker;
+package com.ghostchu.quickshop.shop.sign;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -107,7 +107,7 @@ public class SignHooker {
     }
     final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
     for(final Entity nearbyPlayer : nearbyPlayers) {
-      if(nearbyPlayer instanceof Player player) {
+      if(nearbyPlayer instanceof final Player player) {
         updatePerPlayerShopSign(player, location, shop);
       }
     }

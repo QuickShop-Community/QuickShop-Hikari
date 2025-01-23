@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.compatibility.bungeecord.geyser;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -40,12 +41,25 @@ public final class Main extends Plugin implements Listener {
   }
 
   @EventHandler
+  public void on(final PluginMessageEvent event) {
+    // Is this our business?
+    if(!BUNGEE_CHANNEL.equalsIgnoreCase(event.getTag())) {
+      return;
+    }
+    // Let's not be a snitch
+    // we don't want the client to send any message to the server
+    // nor do we want the proxy to send any message to the player
+    event.setCancelled(true);
+  }
+
+  @EventHandler
   public void switchServer(final ServerConnectedEvent event) {
 
     final UUID uuid = event.getPlayer().getUniqueId();
     boolean isGeyserPlayer = false;
     boolean isFloodgatePlayer = false;
     if(isGeyserInstalled) {
+
       isGeyserPlayer = GeyserApi.api().isBedrockPlayer(uuid);
     }
     if(isFloodgateInstalled) {

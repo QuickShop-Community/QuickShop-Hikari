@@ -36,10 +36,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.impl.Economy_CoinsEngine;
-import com.ghostchu.quickshop.economy.impl.Economy_GemsEconomy;
-import com.ghostchu.quickshop.economy.impl.Economy_TNE;
-import com.ghostchu.quickshop.economy.impl.Economy_Treasury;
 import com.ghostchu.quickshop.economy.impl.Economy_Vault;
 import com.ghostchu.quickshop.economy.impl.Economy_VaultUnlocked;
 import com.ghostchu.quickshop.listener.BlockListener;
@@ -79,7 +75,7 @@ import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
-import com.ghostchu.quickshop.shop.signhooker.SignHooker;
+import com.ghostchu.quickshop.shop.sign.SignHooker;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -122,7 +118,6 @@ import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
-import net.milkbowl.vault.economy.Economy;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitHelper;
 import net.tnemc.item.bukkit.BukkitItemStack;
@@ -141,7 +136,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -1344,10 +1338,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
       AbstractEconomy abstractEconomy = switch(EconomyType.fromID(parent.getConfig().getInt("economy-type"))) {
         case VAULT -> loadVaultAbstract();
-        case GEMS_ECONOMY -> loadGemsEconomy();
-        case TNE -> loadTNE();
-        case COINS_ENGINE -> loadCoinsEngine();
-        case TREASURY -> loadTreasury();
         default -> null;
       };
       abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
@@ -1401,16 +1391,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       return new Economy_VaultUnlocked(parent);
     }
 
-    private AbstractEconomy loadTreasury() {
-
-      return new Economy_Treasury(parent);
-    }
-
-    private AbstractEconomy loadCoinsEngine() {
-
-      return new Economy_CoinsEngine(parent);
-    }
-
     // Vault may create exception, we need catch it.
     @SuppressWarnings("RedundantThrows")
     @Nullable
@@ -1449,25 +1429,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       return vault;
     }
 
-    private @NotNull AbstractEconomy loadGemsEconomy() {
-
-      return new Economy_GemsEconomy(parent);
-    }
-
-    @NotNull
-    private AbstractEconomy loadTNE() {
-
-      return new Economy_TNE(parent);
-    }
-
     private boolean vaultUnlockedPresent() {
       final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
-      return vault != null && !vault.getDescription().getVersion().startsWith("1");
+      return vault != null && vault.getDescription().getVersion().startsWith("2");
     }
 
     private boolean vaultPresent() {
       final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
-      return vault != null && !vault.getDescription().getVersion().startsWith("2");
+      return vault != null && vault.getDescription().getVersion().startsWith("1");
     }
   }
 }
