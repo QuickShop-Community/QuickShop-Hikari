@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.8-SNAPSHOT-1</version>
+        <version>6.2.0.8</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.addon</groupId>
@@ -62,9 +62,8 @@
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.27.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/DiscordSRV-Build-1.27.0.jar</systemPath>
+            <version>${addon.discordsrv}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

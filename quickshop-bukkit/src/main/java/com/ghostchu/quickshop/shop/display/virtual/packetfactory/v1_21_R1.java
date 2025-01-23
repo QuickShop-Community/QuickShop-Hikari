@@ -55,7 +55,7 @@ import java.util.UUID;
  * v1_21_R1
  *
  * @author creatorfromhell
- * @since 6.2.0.8-SNAPSHOT-1
+ * @since 6.2.0.8
  */
 public class v1_21_R1 implements VirtualDisplayPacketFactory {
 
