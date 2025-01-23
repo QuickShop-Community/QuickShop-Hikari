@@ -514,7 +514,6 @@
         <module>compatibility/voidchest</module>
         <module>compatibility/worldedit</module>
         <module>compatibility/worldguard</module>
-        <!--       <module>addon/webui</module>-->
 
     </modules>
 

@@ -107,7 +107,7 @@ public class ShopLoader implements SubPasteItem {
     Util.mainThreadRun(()->shopsLoadInNextTick.forEach(shop->{
       try {
         plugin.getShopManager().loadShop(shop);
-      } catch(Throwable e) {
+      } catch(final Throwable e) {
         plugin.logger().error("Failed to load shop {}.", shop.getShopId(), e);
       }
     }));
@@ -170,12 +170,14 @@ public class ShopLoader implements SubPasteItem {
     final Shop shop;
     final DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(dataRecord);
     final Location location = new Location(Bukkit.getWorld(infoRecord.getWorld()), x, y, z);
+
+    final ItemStack stack = (rawInfo.getNewItem() == null)? rawInfo.getItem() : rawInfo.getNewItem();
     try {
       shop = new ContainerShop(plugin,
                                infoRecord.getShopId(),
                                location,
                                rawInfo.getPrice(),
-                               rawInfo.getItem(),
+                               stack,
                                rawInfo.getOwner(),
                                rawInfo.isUnlimited(),
                                rawInfo.getType(),
@@ -188,7 +190,7 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.getName(),
                                rawInfo.getPermissions(),
                                rawInfo.getBenefits());
-    } catch(Exception e) {
+    } catch(final Exception e) {
       if(e instanceof IllegalStateException) {
         plugin.logger().warn("Failed to load the shop, skipping...", e);
       }
@@ -310,6 +312,7 @@ public class ShopLoader implements SubPasteItem {
     private String invSymbolLink;
     private long createTime;
     private ItemStack item;
+    private ItemStack newItem;
     private boolean needUpdate = false;
 
     private Benefit benefits;
@@ -334,6 +337,7 @@ public class ShopLoader implements SubPasteItem {
       this.invWrapper = dataRecord.getInventoryWrapper();
       this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
       final String permissionJson = dataRecord.getPermissions();
+
       if(!StringUtils.isEmpty(permissionJson) && CommonUtil.isJson(permissionJson)) {
         final Type typeToken = new TypeToken<Map<UUID, String>>() {
         }.getType();
@@ -341,7 +345,12 @@ public class ShopLoader implements SubPasteItem {
       } else {
         this.permissions = new HashMap<>();
       }
+
       this.item = deserializeItem(dataRecord.getItem());
+
+      if(!dataRecord.getEncoded().isEmpty()) {
+        this.newItem = QuickShop.getInstance().getPlatform().decodeStack(dataRecord.getEncoded());
+      }
       this.extra = deserializeExtra(extraStr);
     }
 
@@ -349,7 +358,7 @@ public class ShopLoader implements SubPasteItem {
 
       try {
         return Util.deserialize(itemConfig);
-      } catch(Exception e) {
+      } catch(final Exception e) {
         QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
         Log.debug("Failed to load data to the ItemStack: " + itemConfig);
         return null;
@@ -364,7 +373,7 @@ public class ShopLoader implements SubPasteItem {
       YamlConfiguration yamlConfiguration = new YamlConfiguration();
       try {
         yamlConfiguration.loadFromString(extraString);
-      } catch(InvalidConfigurationException e) {
+      } catch(final InvalidConfigurationException e) {
         yamlConfiguration = new YamlConfiguration();
         needUpdate = true;
       }
@@ -391,7 +400,7 @@ public class ShopLoader implements SubPasteItem {
       try {
         this.shopId = origin.getInt("id");
         this.dataId = origin.getInt("data");
-      } catch(Exception ex) {
+      } catch(final Exception ex) {
         ex.printStackTrace();
       }
     }
@@ -415,7 +424,7 @@ public class ShopLoader implements SubPasteItem {
         this.y = origin.getInt("y");
         this.z = origin.getInt("z");
         this.world = origin.getString("world");
-      } catch(Exception ex) {
+      } catch(final Exception ex) {
         ex.printStackTrace();
       }
     }
