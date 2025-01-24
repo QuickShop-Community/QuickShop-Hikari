@@ -51,7 +51,7 @@
         <compat.bungee>1.20-R0.2</compat.bungee>
         <compat.geyser>2.1.0-SNAPSHOT</compat.geyser>
         <compat.geyser.floodgate>2.0-SNAPSHOT</compat.geyser.floodgate>
-        <compat.chestprotect>5.19.12</compat.chestprotect>
+        <compat.chestprotect>5.19.16</compat.chestprotect>
         <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
         <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
         <compat.eco>6.74.5</compat.eco>
