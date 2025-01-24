@@ -381,7 +381,7 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>1.10.0</version>
+            <version>1.10.3</version>
             <artifactId>rollbar-java</artifactId>
             <scope>provided</scope>
             <exclusions>
