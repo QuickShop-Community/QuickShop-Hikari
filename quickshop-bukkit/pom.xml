@@ -12,7 +12,7 @@
     </parent>
 
     <properties>
-        <tnml.version>1.5.0.1-SNAPSHOT-20</tnml.version>
+        <tnml.version>1.6.0.0-SNAPSHOT-3</tnml.version>
         <tnil.version>0.1.7.6-LEGACY-13</tnil.version>
     </properties>
 
