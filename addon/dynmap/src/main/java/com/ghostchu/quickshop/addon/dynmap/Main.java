@@ -25,7 +25,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.dynmap.DynmapAPI;
+import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.GenericMarker;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
@@ -37,7 +37,7 @@ public final class Main extends JavaPlugin implements Listener {
 
   static Main instance;
   private QuickShop plugin;
-  private DynmapAPI dynmapAPI;
+  private DynmapCommonAPI dynmapAPI;
   private MarkerAPI markerAPI;
 
   @Override
@@ -57,8 +57,17 @@ public final class Main extends JavaPlugin implements Listener {
 
     saveDefaultConfig();
     plugin = QuickShop.getInstance();
-    this.dynmapAPI = (DynmapAPI)Bukkit.getPluginManager().getPlugin("dynmap");
+    this.dynmapAPI = (DynmapCommonAPI)Bukkit.getPluginManager().getPlugin("dynmap");
+
+    if(dynmapAPI == null) {
+      return;
+    }
+
     this.markerAPI = this.dynmapAPI.getMarkerAPI();
+    if(markerAPI == null) {
+      return;
+    }
+
     Bukkit.getPluginManager().registerEvents(this, this);
     QuickShop.folia().getImpl().runLater(this::updateAllMarkers, 80);
   }

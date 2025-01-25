@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.8-SNAPSHOT-1</version>
+        <version>6.2.0.8</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -36,12 +36,9 @@
 
     <repositories>
         <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>sonatype-snapshot</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>magmaguy-repo-releases</id>
+            <name>MagmaGuy's Repository</name>
+            <url>https://repo.magmaguy.com/releases</url>
         </repository>
     </repositories>
 
@@ -65,7 +62,7 @@
         <dependency>
             <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
-            <version>8.2.0-SNAPSHOT</version>
+            <version>${compat.elitemobs}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

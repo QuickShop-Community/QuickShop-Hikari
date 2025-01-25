@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.compatibility.voidchest;
 
 import com.georgev22.voidchest.api.VoidChestAPI;
 import com.georgev22.voidchest.api.event.annotations.EventHandler;
-import com.georgev22.voidchest.api.event.events.item.InstantItemSpawnEvent;
 import com.georgev22.voidchest.api.event.events.item.ItemSpawnEvent;
 import com.georgev22.voidchest.api.event.events.sell.VoidSellChunkItemEvent;
 import com.georgev22.voidchest.api.event.interfaces.EventListener;
@@ -17,19 +16,14 @@ public final class Main extends CompatibilityModule implements EventListener {
   @Override
   public void init() {
 
-    VoidChestAPI.getInstance().eventManager().register(this);
+    VoidChestAPI.getInstance().eventManager().register(VoidSellChunkItemEvent.class, this);
+    VoidChestAPI.getInstance().eventManager().register(ItemSpawnEvent.class, this);
   }
 
   @EventHandler(ignoreCancelled = true)
   public void onVoidSellChunkItem(final VoidSellChunkItemEvent event) {
 
     event.setCancelled(cancelEvent(event.getDroppedItem(), null));
-  }
-
-  @EventHandler(ignoreCancelled = true)
-  public void onInstantItemSpawnEvent(final InstantItemSpawnEvent event) {
-
-    event.setCancelled(cancelEvent(event.getItem(), event.getItemStack().getItemStack()));
   }
 
   @EventHandler(ignoreCancelled = true)

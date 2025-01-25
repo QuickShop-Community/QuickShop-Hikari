@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.8-SNAPSHOT-1</version>
+    <version>6.2.0.8</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -17,6 +17,61 @@
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
+        <!-- common lib versions -->
+        <depend.commons.lang3>3.17.0</depend.commons.lang3>
+        <depend.adventure-api>4.18.0</depend.adventure-api>
+        <depend.adventure-key>4.18.0</depend.adventure-key>
+        <depend.adventure-nbt>4.18.0</depend.adventure-nbt>
+        <depend.adventure-text-logger-slf4j>4.18.0</depend.adventure-text-logger-slf4j>
+        <depend.adventure-text-minimessage>4.18.0</depend.adventure-text-minimessage>
+        <depend.adventure-text-serializer-ansi>4.18.0</depend.adventure-text-serializer-ansi>
+        <depend.adventure-text-serializer-gson-legacy-impl>4.18.0</depend.adventure-text-serializer-gson-legacy-impl>
+        <depend.adventure-text-serializer-json>4.18.0</depend.adventure-text-serializer-json>
+        <depend.adventure-text-serializer-json-legacy-impl>4.18.0</depend.adventure-text-serializer-json-legacy-impl>
+        <depend.adventure-text-serializer-legacy>4.18.0</depend.adventure-text-serializer-legacy>
+        <depend.adventure-text-serializer-plain>4.18.0</depend.adventure-text-serializer-plain>
+        <depend.adventure-platform-api>4.3.4</depend.adventure-platform-api>
+        <depend.adventure-platform-bukkit>4.3.4</depend.adventure-platform-bukkit>
+        <depend.adventure-platform-facet>4.3.4</depend.adventure-platform-facet>
+        <depend.adventure-platform-viaversion>4.3.4</depend.adventure-platform-viaversion>
+        <depend.adventure-text-serializer-bungeecord>4.3.4</depend.adventure-text-serializer-bungeecord>
+        <depend.examination-api>1.3.0</depend.examination-api>
+        <depend.examination-string>1.3.0</depend.examination-string>
+
+        <!-- addon versions -->
+        <addon.bluemap>2.7.2</addon.bluemap>
+        <addon.discordsrv>1.29.0</addon.discordsrv>
+        <addon.dynmap>2.0</addon.dynmap>
+        <addon.plan>5.6.2959</addon.plan>
+
+        <!-- compat versions -->
+        <compat.arm>3.5.3</compat.arm>
+        <compat.angelchest>13.6.1</compat.angelchest>
+        <compat.bentobox>2.7.0</compat.bentobox>
+        <compat.bungee>1.20-R0.2</compat.bungee>
+        <compat.geyser>2.1.0-SNAPSHOT</compat.geyser>
+        <compat.geyser.floodgate>2.0-SNAPSHOT</compat.geyser.floodgate>
+        <compat.chestprotect>5.19.16</compat.chestprotect>
+        <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
+        <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
+        <compat.eco>6.74.5</compat.eco>
+        <compat.ecoenchants>12.19.3</compat.ecoenchants>
+        <compat.elitemobs>9.2.3</compat.elitemobs>
+        <compat.griefprevention>17.0.0</compat.griefprevention>
+        <compat.itemsadder>4.0.2-beta-release-11</compat.itemsadder>
+        <compat.lands>7.11.10</compat.lands>
+        <compat.openinv>5.1.6</compat.openinv>
+        <compat.plotsquared>7.4.1</compat.plotsquared>
+        <compat.reforges>6.71.2</compat.reforges>
+        <compat.residence>5.0.1.7</compat.residence>
+        <compat.slimefun>RC-37</compat.slimefun>
+        <compat.superiorskyblock>1.11.1</compat.superiorskyblock>
+        <compat.tne>0.1.3.5-Pre-2</compat.tne>
+        <compat.towny>0.101.1.0</compat.towny>
+        <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
+        <compat.voidchest>3.0.0</compat.voidchest>
+        <compat.worldedit>7.3.9</compat.worldedit>
+        <compat.worldguard>7.0.12</compat.worldguard>
     </properties>
 
     <licenses>
@@ -39,6 +94,18 @@
             <email>2908803755@qq.com</email>
             <url>https://www.ghostchu.com</url>
             <timezone>Asia/Shanghai</timezone>
+        </developer>
+        <developer>
+            <id>creatorfromhell</id>
+            <name>Daniel "creatorfromhell" Vidmar</name>
+            <email>daniel.viddy@gmail.com</email>
+            <url>https://cfh.dev</url>
+            <organization>The New Economy</organization>
+            <organizationUrl>https://tnemc.net</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>America/New_York</timezone>
         </developer>
     </developers>
 
@@ -104,7 +171,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${project.name}-${project.version}</finalName>
-                                <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
+                                <!--<outputDirectory>C:\Users\danie\Desktop\Github\TNE\QuickShop-Hikari\build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
                                 <createSourcesJar>true</createSourcesJar>
@@ -214,7 +281,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.11.2</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
@@ -362,13 +429,13 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.34</version>
+                <version>1.18.36</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
-                <version>24.1.0</version>
+                <version>26.0.2</version>
                 <scope>provided</scope>
             </dependency>
             <!-- SLF4J is a real dickhead. -->
@@ -413,41 +480,40 @@
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
-        <module>compatibility/bungeecord</module>
-        <module>compatibility/velocity</module>
-        <module>compatibility/clearlag</module>
-        <!--        <module>compatibility/nocheatplus</module>-->
-        <module>compatibility/worldguard</module>
-        <module>compatibility/worldedit</module>
-        <module>compatibility/openinv</module>
-        <module>compatibility/advancedregionmarket</module>
-        <module>compatibility/bentobox</module>
-        <module>compatibility/superiorskyblock</module>
-        <module>compatibility/griefprevention</module>
-        <module>compatibility/towny</module>
-        <module>compatibility/plotsquared</module>
-        <module>compatibility/lands</module>
-        <module>compatibility/residence</module>
-        <module>compatibility/elitemobs</module>
-        <module>compatibility/bungeecord-geyser</module>
-        <module>compatibility/ecoenchants</module>
-        <module>compatibility/reforges</module>
-        <module>compatibility/chestprotect</module>
-        <module>compatibility/angelchest</module>
-        <module>compatibility/slimefun</module>
-        <module>compatibility/itemsadder</module>
-        <module>compatibility/voidchest</module>
-        <module>addon/discordsrv</module>
-        <module>addon/plan</module>
-        <module>addon/discount</module>
-        <module>addon/list</module>
-        <module>addon/shopitemonly</module>
-        <module>addon/limited</module>
-        <module>addon/dynmap</module>
+
         <module>addon/bluemap</module>
+        <module>addon/discordsrv</module>
         <module>addon/displaycontrol</module>
+        <module>addon/discount</module>
+        <module>addon/dynmap</module>
+        <module>addon/limited</module>
+        <module>addon/list</module>
+        <module>addon/plan</module>
         <module>addon/reremake-migrator</module>
-        <!--        <module>addon/webui</module>-->
+        <module>addon/shopitemonly</module>
+        <module>compatibility/advancedregionmarket</module>
+        <module>compatibility/angelchest</module>
+        <module>compatibility/bentobox</module>
+        <module>compatibility/bungeecord</module>
+        <module>compatibility/bungeecord-geyser</module>
+        <module>compatibility/chestprotect</module>
+        <module>compatibility/clearlag</module>
+        <module>compatibility/ecoenchants</module>
+        <module>compatibility/elitemobs</module>
+        <module>compatibility/griefprevention</module>
+        <module>compatibility/itemsadder</module>
+        <module>compatibility/lands</module>
+        <module>compatibility/openinv</module>
+        <module>compatibility/plotsquared</module>
+        <module>compatibility/reforges</module>
+        <module>compatibility/residence</module>
+        <module>compatibility/slimefun</module>
+        <module>compatibility/superiorskyblock</module>
+        <module>compatibility/towny</module>
+        <module>compatibility/velocity</module>
+        <module>compatibility/voidchest</module>
+        <module>compatibility/worldedit</module>
+        <module>compatibility/worldguard</module>
 
     </modules>
 

@@ -59,7 +59,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   private final String prefix;
 
-  private final int LATEST_DATABASE_VERSION = 16;
+  private final int LATEST_DATABASE_VERSION = 17;
 
   public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
@@ -213,14 +213,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     return manager;
   }
 
-  private void addNewItemColumn() {
+  private void addEncodedColumn() {
     fastBackup();
     try {
       getManager().alterTable(DataTables.DATA.getName())
-              .addColumn("new_item", "TEXT NOT NULL")
+              .addColumn("encoded", "TEXT NOT NULL")
               .execute();
     } catch(final SQLException e) {
-      Log.debug("Failed to add new_item " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+      Log.debug("Failed to add encoded " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
     }
   }
 
@@ -936,7 +936,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
       int currentDatabaseVersion = parent.getDatabaseVersion();
       if(currentDatabaseVersion == -1) {
-        currentDatabaseVersion = 11;
+        currentDatabaseVersion = 17;
       }
       if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
         throw new IllegalStateException("The database version is newer than this build supported.");
@@ -990,11 +990,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         parent.makeBackup();
         currentDatabaseVersion = 16;
       }
-      /*if(currentDatabaseVersion == 16) {
+
+      if(currentDatabaseVersion == 16) {
         logger.info("Data upgrading: Creating a new column... new_item for enhanced item storage.");
-        parent.addNewItemColumn();
+        parent.addEncodedColumn();
         currentDatabaseVersion = 17;
-      }*/
+      }
       parent.setDatabaseVersion(currentDatabaseVersion).join();
     }
 

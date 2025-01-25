@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.8-SNAPSHOT-1</version>
+        <version>6.2.0.8</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>17.0.0</version>
+            <version>${compat.griefprevention}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
