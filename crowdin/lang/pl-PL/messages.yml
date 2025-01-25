@@ -675,17 +675,17 @@ transfer-single-request: <yellow>Gracz <aqua>{0}</aqua> chce przenieść sklep d
 transfer-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Wpisz <red>/quickshop transferall accept</red> aby zaakceptować lub <red>/quickshop transferall deny</red> aby odrzucić prośbę.
+  Prośba wygaśnie za <red>{0}</red> sekund.
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Wpisz <red>/quickshop transferownership accept</red> aby zaakceptować lub <red>/quickshop transferownership deny</red> aby odrzucić prośbę.
+  Prośba wygaśnie za <red>{0}</red> sekund.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-self: <red>Nie możesz przenieść swoich sklepów do siebie.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
 benefit-removed: <red>Target player has been removed from shop benefits.
