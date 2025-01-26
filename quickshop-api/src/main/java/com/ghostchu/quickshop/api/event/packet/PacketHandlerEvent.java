@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.display.virtual.packet;
+package com.ghostchu.quickshop.api.event.packet;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
@@ -17,18 +17,26 @@ package com.ghostchu.quickshop.shop.display.virtual.packet;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.event.AbstractQSEvent;
+import com.ghostchu.quickshop.api.shop.display.PacketHandler;
+
 /**
- * PacketHandler
+ * PacketHandlersAdded
  *
  * @author creatorfromhell
  * @since 6.2.0.8
  */
-public interface PacketHandler {
+public abstract class PacketHandlerEvent extends AbstractQSEvent {
 
-  /**
-   * Retrieves the identifier for the PacketHandler.
-   *
-   * @return The identifier for the PacketHandler.
-   */
-  String identifier();
+  protected PacketHandler<?> packetHandler;
+
+  public PacketHandlerEvent(final PacketHandler<?> packetHandler) {
+
+    this.packetHandler = packetHandler;
+  }
+
+  public PacketHandler<?> packetHandler() {
+
+    return packetHandler;
+  }
 }

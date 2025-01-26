@@ -31,7 +31,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   protected final ItemStack originalItemStack;
   protected final Shop shop;
   @Nullable
-  protected ItemStack guardedIstack;
+  protected ItemStack guardedStack;
   private boolean pendingRemoval;
   private static boolean virtualDisplayDoesntWork = false;
   private static final NamespacedKey DISPLAY_MARK_NAMESPACE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "display_protection");
