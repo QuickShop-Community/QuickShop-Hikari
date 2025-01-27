@@ -12,6 +12,7 @@ softdepend:
   - Essentials
   - CMI
   - ProtocolLib
+  - packetevents
   - NBTAPI
   - NBT-API
   - ItemNBTAPI
@@ -19,7 +20,6 @@ softdepend:
   - EcoEnchants # Add ecoenchants to allow us to detect if ee is installed for compatibility warning
   - CoinsEngine
   - Treasury
-  - BetterEconomy # Depends on Treasury
   - TheNewEconomy
 api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
@@ -135,9 +135,9 @@ permissions:
       quickshop.benefit: true
       quickshop.browse: true
       quickshop.sign: true
-      #quickshop.history: true
-      #quickshop.history.owned: true
-      #quickshop.history.accessible: true
+      quickshop.history: true
+      quickshop.history.owned: true
+      quickshop.history.accessible: true
       quickshop.suggestprice: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions

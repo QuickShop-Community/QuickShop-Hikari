@@ -1,14 +1,13 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
-import com.comphenix.protocol.events.PacketContainer;
 import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.display.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.Reloadable;

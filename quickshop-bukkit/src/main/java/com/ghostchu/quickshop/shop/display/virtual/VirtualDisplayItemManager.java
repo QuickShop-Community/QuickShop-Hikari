@@ -27,6 +27,11 @@ public class VirtualDisplayItemManager {
 
   protected final Map<String, PacketHandler<?>> packetHandlers = new LinkedHashMap<>();
 
+  public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
+
+  @Getter
+  private final Map<ShopChunk, List<VirtualDisplayItem<?>>> chunksMapping = new ConcurrentHashMap<>();
+
   private final QuickShop plugin;
   private final AtomicInteger entityIdCounter;
 
@@ -34,14 +39,13 @@ public class VirtualDisplayItemManager {
 
   private PacketFactory<?> packetFactory;
 
-  @Getter
-  private final Map<ShopChunk, List<VirtualDisplayItem<?>>> chunksMapping = new ConcurrentHashMap<>();
+  private static VirtualDisplayItemManager instance;
 
   private boolean testPassed = true;
 
-  public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
-
   public VirtualDisplayItemManager(final QuickShop plugin) {
+
+    instance = this;
 
     //We handle our default packet handlers
     addHandler(new PacketEventsHandler());
@@ -88,25 +92,24 @@ public class VirtualDisplayItemManager {
     if(factoryOptional.isEmpty()) {
 
       throw new IllegalStateException("No PacketFactory found for platform version " + plugin.getPlatform().getMinecraftVersion());
-      return;
     }
 
     this.packetFactory = factoryOptional.get();
+    Log.debug("Attempting to register chunk packet listeners...");
 
-    Log.debug("Attempting to load chunk packet adapters.");
+    if(packetFactory != null) {
 
-    this.chunkSendingPacketAdapter = packetFactory.getChunkSendPacketAdapter();
-    this.chunkUnloadingPacketAdapter = packetFactory.getChunkUnloadPacketAdapter();
-
-    Log.debug("Registering the packet listener...");
-    protocolManager.addPacketListener(chunkSendingPacketAdapter);
-    protocolManager.addPacketListener(chunkUnloadingPacketAdapter);
+      packetFactory.registerSendChunk();
+      packetFactory.registerUnloadChunk();
+    }
   }
 
-  public void put(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem value) {
+  public void put(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem<?> value) {
+
     //Thread-safe was ensured by ONLY USE Map method to do something
-    final List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
+    final List<VirtualDisplayItem<?>> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
     chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal)->{
+
       mapOldVal.addAll(mapNewVal);
       return mapOldVal;
     });
@@ -123,7 +126,11 @@ public class VirtualDisplayItemManager {
   public void unload() {
 
     Log.debug("Unregistering the packet listener...");
-    protocolManager.removePacketListener(chunkSendingPacketAdapter);
+    if(packetFactory != null) {
+
+      packetFactory.unregisterSendChunk();
+      packetFactory.unregisterUnloadChunk();
+    }
   }
 
   public int generateEntityId() {
@@ -163,5 +170,9 @@ public class VirtualDisplayItemManager {
   public Map<String, PacketHandler<?>> packetHandlers() {
 
     return packetHandlers;
+  }
+
+  public static VirtualDisplayItemManager instance() {
+    return instance;
   }
 }

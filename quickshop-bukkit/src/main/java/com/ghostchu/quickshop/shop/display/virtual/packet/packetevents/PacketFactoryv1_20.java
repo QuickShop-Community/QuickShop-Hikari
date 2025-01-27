@@ -59,7 +59,7 @@ import java.util.UUID;
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
+public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
 
   @Getter
   private PacketListenerCommon chunkSendingPacketAdapter;
@@ -78,7 +78,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
   @Override
   public PacketWrapper<?> createSpawnPacket(final int id, @NotNull final Location displayLocation) {
 
-    final EntityType type = EntityType.valueOf("DROPPED_ITEM");
+    final EntityType type = EntityType.ITEM;
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
 
     return new WrapperPlayServerSpawnEntity(id, identifier, SpigotConversionUtil.fromBukkitEntityType(type),

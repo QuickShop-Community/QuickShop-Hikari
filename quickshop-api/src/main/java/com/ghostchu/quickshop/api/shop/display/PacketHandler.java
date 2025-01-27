@@ -17,12 +17,6 @@ package com.ghostchu.quickshop.api.shop.display;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -77,21 +71,5 @@ public interface PacketHandler<T> {
     return Optional.ofNullable(factories().get(version));
   }
 
-  /**
-   * Creates a display with the specified ID at the given location using the provided item stack.
-   *
-   * @param id The identifier of the display to create.
-   * @param location The location where the display should be created. Must not be null.
-   * @param stack The ItemStack that represents the display. Must not be null.
-   * @param players The list of players to display the item to.
-   * @return true if the display was successfully created, otherwise false.
-   */
-  boolean createDisplay(int id, final @NotNull Location location, final @NotNull ItemStack stack, final List<Player> players);
-
-  /**
-   * Retrieves the instance to the packet library's internal API for creating/sending packets.
-   *
-   * @return The instance to the packet library's internal API for creating/sending packets.
-   */
   T internal();
 }

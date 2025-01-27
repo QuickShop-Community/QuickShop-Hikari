@@ -19,15 +19,12 @@ package com.ghostchu.quickshop.shop.display.virtual.packet;
 
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
+import com.ghostchu.quickshop.shop.display.virtual.packet.packetevents.PacketFactoryv1_20;
+import com.ghostchu.quickshop.shop.display.virtual.packet.packetevents.PacketFactoryv1_21;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,22 +86,21 @@ public class PacketEventsHandler implements PacketHandler<PacketEventsAPI<?>> {
   public void initialize() {
 
     eventsAPI = PacketEvents.getAPI();
-  }
 
-  /**
-   * Creates a display with the specified ID at the given location using the provided item stack.
-   *
-   * @param id       The identifier of the display to create.
-   * @param location The location where the display should be created. Must not be null.
-   * @param stack    The ItemStack that represents the display. Must not be null.
-   * @param players  The list of players to display the item to.
-   *
-   * @return true if the display was successfully created, otherwise false.
-   */
-  @Override
-  public boolean createDisplay(final int id, final @NotNull Location location, final @NotNull ItemStack stack, final List<Player> players) {
+    final PacketFactoryv1_20 oneTwenty = new PacketFactoryv1_20();
+    factories.put("1.20.1", oneTwenty);
+    factories.put("1.20.2", oneTwenty);
+    factories.put("1.20.3", oneTwenty);
+    factories.put("1.20.4", oneTwenty);
+    factories.put("1.20.5", oneTwenty);
 
-    return false;
+    final PacketFactoryv1_21 oneTwentyOne = new PacketFactoryv1_21();
+    factories.put("1.20.6", oneTwentyOne);
+    factories.put("1.21", oneTwentyOne);
+    factories.put("1.21.1", oneTwentyOne);
+    factories.put("1.21.2", oneTwentyOne);
+    factories.put("1.21.3", oneTwentyOne);
+    factories.put("1.21.4", oneTwentyOne);
   }
 
   public static PacketEventsHandler instance() {

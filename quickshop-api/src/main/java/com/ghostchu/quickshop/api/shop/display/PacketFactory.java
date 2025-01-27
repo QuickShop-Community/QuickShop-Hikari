@@ -74,4 +74,24 @@ public interface PacketFactory<T> {
    * @return true if the packet was successfully sent, false otherwise
    */
   boolean sendPacket(@NotNull Player player, @NotNull T packet);
+
+  /**
+   * Registers the method to listen to the packet sending chunk data.
+   */
+  void registerSendChunk();
+
+  /**
+   * Unregisters the method to listen to the packet sending chunk data.
+   */
+  void unregisterSendChunk();
+
+  /**
+   * Registers the method to listen to the packet sending the unloading of a chunk.
+   */
+  void registerUnloadChunk();
+
+  /**
+   * Unregisters the method to listen to the packet sending the unloading of a chunk.
+   */
+  void unregisterUnloadChunk();
 }

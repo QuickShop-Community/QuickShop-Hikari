@@ -18,16 +18,24 @@ package com.ghostchu.quickshop.shop.display.virtual.packet.protocollib;
  */
 
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
+import com.ghostchu.quickshop.shop.SimpleShopChunk;
+import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.Util;
+import lombok.Getter;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -51,14 +59,13 @@ import java.util.UUID;
 public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
 
   private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
-  private final QuickShop plugin;
-  private final VirtualDisplayItemManager manager;
 
-  public PacketFactoryv1_21(final QuickShop plugin, final VirtualDisplayItemManager manager) {
+  @Getter
+  private PacketAdapter chunkSendingPacketAdapter;
 
-    this.plugin = plugin;
-    this.manager = manager;
-  }
+  @Getter
+  private PacketAdapter chunkUnloadingPacketAdapter;
+
 
   /**
    * Creates a spawn packet for the specified ID and display location.
@@ -113,7 +120,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
     final List<WrappedDataValue> values = new ArrayList<>();
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -184,5 +191,113 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
 
     ProtocolLibHandler.instance().internal().sendServerPacket(player, packet);
     return true;
+  }
+
+  /**
+   * Registers the method to listen to the packet sending chunk data.
+   */
+  @Override
+  public void registerSendChunk() {
+
+    this.chunkSendingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+
+      @Override
+      public void onPacketSending(@NotNull final PacketEvent event) {
+
+        final Player player = event.getPlayer();
+        if(player == null || !player.isOnline()) {
+          return;
+        }
+        if(player.getClass().getName().contains("TemporaryPlayer")) {
+          return;
+        }
+        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
+        //chunk x
+        final int x = integerStructureModifier.read(0);
+        //chunk z
+        final int z = integerStructureModifier.read(1);
+
+        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList) {
+            if(!target.isSpawned()) {
+              continue;
+            }
+            if(target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
+              target.getPacketSenders().add(player.getUniqueId());
+              target.sendDestroyItem(player);
+              target.sendFakeItem(player);
+            }
+          }
+          return targetList;
+        });
+      }
+    };
+
+    ProtocolLibHandler.instance().internal().addPacketListener(chunkSendingPacketAdapter);
+  }
+
+  /**
+   * Unregisters the method to listen to the packet sending chunk data.
+   */
+  @Override
+  public void unregisterSendChunk() {
+
+    if(chunkSendingPacketAdapter != null) {
+
+      ProtocolLibHandler.instance().internal().removePacketListener(chunkSendingPacketAdapter);
+    }
+  }
+
+  /**
+   * Registers the method to listen to the packet sending the unloading of a chunk.
+   */
+  @Override
+  public void registerUnloadChunk() {
+
+    this.chunkUnloadingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
+      @Override
+      public void onPacketSending(@NotNull final PacketEvent event) {
+
+        final Player player = event.getPlayer();
+        if(player == null || !player.isOnline()) {
+          return;
+        }
+        if(player.getClass().getName().contains("TemporaryPlayer")) {
+          return;
+        }
+        final StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
+        final ChunkCoordIntPair pair = intPairStructureModifier.read(0);
+        //chunk x
+        final int x = pair.getChunkX();
+        //chunk z
+        final int z = pair.getChunkZ();
+        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList) {
+
+            if(!target.isSpawned()) {
+
+              continue;
+            }
+            target.sendDestroyItem(player);
+            target.getPacketSenders().remove(player.getUniqueId());
+          }
+          return targetList;
+        });
+      }
+    };
+
+    ProtocolLibHandler.instance().internal().addPacketListener(chunkUnloadingPacketAdapter);
+  }
+
+  /**
+   * Unregisters the method to listen to the packet sending the unloading of a chunk.
+   */
+  @Override
+  public void unregisterUnloadChunk() {
+
+    if(chunkUnloadingPacketAdapter != null) {
+
+      ProtocolLibHandler.instance().internal().removePacketListener(chunkUnloadingPacketAdapter);
+    }
   }
 }

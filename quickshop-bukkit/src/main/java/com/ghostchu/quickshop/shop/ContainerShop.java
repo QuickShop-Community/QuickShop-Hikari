@@ -4,18 +4,18 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
-import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
-import com.ghostchu.quickshop.api.event.inventory.ShopInventoryChangedEvent;
 import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.details.ShopOwnerNameGettingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
-import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
+import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountGettingEvent;
-import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
+import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
+import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
+import com.ghostchu.quickshop.api.event.inventory.ShopInventoryChangedEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
@@ -379,7 +379,7 @@ public class ContainerShop implements Shop, Reloadable {
           return;
         }
       } catch(final Throwable anyError) {
-        plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
+        plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Do you have ProtocolLib or packetevents installed?", this, anyError);
         return;
       }
     }

@@ -1,7 +1,6 @@
-package com.ghostchu.quickshop.shop.display.virtual.packetfactory;
-
+package com.ghostchu.quickshop.shop.display.virtual.packet.protocollib;
 /*
- * QuickShop - Hikari
+ * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,19 +29,19 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
+import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.Util;
+import lombok.Getter;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -52,54 +51,46 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * v1_21_R1
+ * PacketFactoryv1_21
  *
  * @author creatorfromhell
- * @since 6.2.0.8-SNAPSHOT-1
+ * @since 6.2.0.9
  */
-public class v1_21_R1 implements VirtualDisplayPacketFactory {
+public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
 
   private static final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false);
-  private final QuickShop plugin;
-  private final VirtualDisplayItemManager manager;
 
-  public v1_21_R1(final QuickShop plugin, final VirtualDisplayItemManager manager) {
+  @Getter
+  private PacketAdapter chunkSendingPacketAdapter;
 
-    this.plugin = plugin;
-    this.manager = manager;
-  }
+  @Getter
+  private PacketAdapter chunkUnloadingPacketAdapter;
 
+  /**
+   * Creates a spawn packet for the specified ID and display location.
+   *
+   * @param id              the ID of the packet to be created
+   * @param displayLocation the display location where the packet will be spawned
+   *
+   * @return the spawn packet of type T
+   */
   @Override
-  public @Nullable Throwable testFakeItem() {
+  public PacketContainer createSpawnPacket(final int id, @NotNull final Location displayLocation) {
 
-    try {
-      createFakeItemSpawnPacket(0, new Location(Bukkit.getServer().getWorlds().get(0), 0, 0, 0));
-      createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
-      createFakeItemVelocityPacket(0);
-      createFakeItemDestroyPacket(0);
-      return null;
-    } catch(Exception throwable) {
-      return throwable;
-    }
-  }
-
-  @Override
-  public @NotNull PacketContainer createFakeItemSpawnPacket(final int entityID, @NotNull final Location location) {
-
-    final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + entityID).getBytes(StandardCharsets.UTF_8));
+    final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
 
     //First, create a new packet to spawn item
-    final PacketContainer fakeItemPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
+    final PacketContainer fakeItemPacket = ProtocolLibHandler.instance().internal().createPacket(PacketType.Play.Server.SPAWN_ENTITY);
 
     //id and velocity
     fakeItemPacket.getIntegers()
-            .write(0, entityID)
+            .write(0, id)
             .write(1, 0)
             .write(2, 0)
             .write(3, 0);
 
     //Entity Type
-    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
+    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.valueOf("DROPPED_ITEM"));
 
     //UUID
     fakeItemPacket.getUUIDs().write(0, identifier);
@@ -107,21 +98,28 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
     //Location
     fakeItemPacket.getDoubles()
             //X
-            .write(0, location.getX())
+            .write(0, displayLocation.getX())
             //Y
-            .write(1, location.getY())
+            .write(1, displayLocation.getY())
             //Z
-            .write(2, location.getZ());
+            .write(2, displayLocation.getZ());
     return fakeItemPacket;
   }
 
+  /**
+   * Creates a metadata packet with the specified ID and ItemStack.
+   *
+   * @param id        the ID of the metadata packet to be created
+   * @param itemStack the ItemStack to include in the metadata packet
+   *
+   * @return the metadata packet of type T
+   */
   @Override
-  public @NotNull PacketContainer createFakeItemMetaPacket(final int entityID, @NotNull final ItemStack itemStack) {
-
+  public PacketContainer createMetaDataPacket(final int id, @NotNull final ItemStack itemStack) {
     final List<WrappedDataValue> values = new ArrayList<>();
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -130,9 +128,9 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
     }
 
     //Next, create a new packet to update item data (default is empty)
-    final PacketContainer fakeItemMetaPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
+    final PacketContainer fakeItemMetaPacket = ProtocolLibHandler.instance().internal().createPacket(PacketType.Play.Server.ENTITY_METADATA);
     //Entity ID
-    fakeItemMetaPacket.getIntegers().write(0, entityID);
+    fakeItemMetaPacket.getIntegers().write(0, id);
     fakeItemMetaPacket.getDataValueCollectionModifier().write(0, values);
 
     //Add it
@@ -140,35 +138,68 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
     //Check for new version protocolLib
     try {
       Class.forName("com.comphenix.protocol.wrappers.WrappedDataValue");
-    } catch(ClassNotFoundException e) {
+    } catch(final ClassNotFoundException e) {
       throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
     }
     return fakeItemMetaPacket;
   }
 
+  /**
+   * Creates a velocity packet with the specified ID.
+   *
+   * @param id the ID of the velocity packet to be created
+   *
+   * @return the velocity packet of type T
+   */
   @Override
-  public PacketContainer createFakeItemVelocityPacket(final int entityID) {
+  public PacketContainer createVelocityPacket(final int id) {
 
     return null;
   }
 
+  /**
+   * Creates a destroy packet for the given ID.
+   *
+   * @param id the ID of the packet to be destroyed
+   *
+   * @return the destroy packet of type T
+   */
   @Override
-  public @NotNull PacketContainer createFakeItemDestroyPacket(final int entityID) {
+  public PacketContainer createDestroyPacket(final int id) {
     //Also make a DestroyPacket to remove it
-    final PacketContainer fakeItemDestroyPacket = manager.getProtocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+    final PacketContainer fakeItemDestroyPacket = ProtocolLibHandler.instance().internal().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
 
     try {
-      fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
-    } catch(NoSuchMethodError e) {
+      fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(id));
+    } catch(final NoSuchMethodError e) {
       throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
     }
     return fakeItemDestroyPacket;
   }
 
+  /**
+   * Sends the specified packet to the given player.
+   *
+   * @param player the player to receive the packet, cannot be null
+   * @param packet the packet of type T to be sent, cannot be null
+   *
+   * @return true if the packet was successfully sent, false otherwise
+   */
   @Override
-  public @NotNull PacketAdapter getChunkSendPacketAdapter() {
+  public boolean sendPacket(@NotNull final Player player, @NotNull final PacketContainer packet) {
 
-    return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+    ProtocolLibHandler.instance().internal().sendServerPacket(player, packet);
+    return true;
+  }
+
+  /**
+   * Registers the method to listen to the packet sending chunk data.
+   */
+  @Override
+  public void registerSendChunk() {
+
+    this.chunkSendingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+
       @Override
       public void onPacketSending(@NotNull final PacketEvent event) {
 
@@ -185,8 +216,8 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
         //chunk z
         final int z = integerStructureModifier.read(1);
 
-        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(final VirtualDisplayItem target : targetList) {
+        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList) {
             if(!target.isSpawned()) {
               continue;
             }
@@ -200,12 +231,29 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
         });
       }
     };
+
+    ProtocolLibHandler.instance().internal().addPacketListener(chunkSendingPacketAdapter);
   }
 
+  /**
+   * Unregisters the method to listen to the packet sending chunk data.
+   */
   @Override
-  public @NotNull PacketAdapter getChunkUnloadPacketAdapter() {
+  public void unregisterSendChunk() {
 
-    return new PacketAdapter(plugin.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
+    if(chunkSendingPacketAdapter != null) {
+
+      ProtocolLibHandler.instance().internal().removePacketListener(chunkSendingPacketAdapter);
+    }
+  }
+
+  /**
+   * Registers the method to listen to the packet sending the unloading of a chunk.
+   */
+  @Override
+  public void registerUnloadChunk() {
+
+    this.chunkUnloadingPacketAdapter = new PacketAdapter(QuickShop.getInstance().getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.UNLOAD_CHUNK) {
       @Override
       public void onPacketSending(@NotNull final PacketEvent event) {
 
@@ -222,9 +270,11 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
         final int x = pair.getChunkX();
         //chunk z
         final int z = pair.getChunkZ();
-        manager.getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(final VirtualDisplayItem target : targetList) {
+        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList) {
+
             if(!target.isSpawned()) {
+
               continue;
             }
             target.sendDestroyItem(player);
@@ -234,5 +284,19 @@ public class v1_21_R1 implements VirtualDisplayPacketFactory {
         });
       }
     };
+
+    ProtocolLibHandler.instance().internal().addPacketListener(chunkUnloadingPacketAdapter);
+  }
+
+  /**
+   * Unregisters the method to listen to the packet sending the unloading of a chunk.
+   */
+  @Override
+  public void unregisterUnloadChunk() {
+
+    if(chunkUnloadingPacketAdapter != null) {
+
+      ProtocolLibHandler.instance().internal().removePacketListener(chunkUnloadingPacketAdapter);
+    }
   }
 }

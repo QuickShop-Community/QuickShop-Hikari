@@ -88,7 +88,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
@@ -637,7 +636,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
           Log.debug("Tab-complete container: " + container.getPrefix());
         }
 
-        List<String> generatedCompletions = container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
+        final List<String> generatedCompletions = container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
         if (generatedCompletions != null) {
           return StringUtil.copyPartialMatches(cmdArg[cmdArg.length - 1], generatedCompletions, new ArrayList<>());
         }
