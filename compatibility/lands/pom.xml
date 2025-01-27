@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>7.8.5</version>
+            <version>7.11.10</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
