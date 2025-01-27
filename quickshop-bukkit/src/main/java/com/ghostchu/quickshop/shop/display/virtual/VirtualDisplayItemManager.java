@@ -1,87 +1,115 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketAdapter;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.packet.PacketHandlerAddedEvent;
+import com.ghostchu.quickshop.api.event.packet.PacketHandlerInitEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.VirtualDisplayPacketFactory;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_18;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_19_R1;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_19_R2_TO_v1_20_R1;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_20_R2_TO_v1_20_R3;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.v1_21_R1;
+import com.ghostchu.quickshop.api.shop.display.PacketFactory;
+import com.ghostchu.quickshop.api.shop.display.PacketHandler;
+import com.ghostchu.quickshop.shop.display.virtual.packet.PacketEventsHandler;
+import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItemManager {
 
-  private final QuickShop plugin;
-  private final AtomicInteger entityIdCounter;
-  private final ProtocolManager protocolManager;
-  @Getter
-  private final Map<ShopChunk, List<VirtualDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
-  @Getter
-  private VirtualDisplayPacketFactory packetFactory;
-  @Getter
-  private PacketAdapter chunkSendingPacketAdapter;
-  @Getter
-  private PacketAdapter chunkUnloadingPacketAdapter;
-  private boolean testPassed = true;
+  protected final Map<String, PacketHandler<?>> packetHandlers = new LinkedHashMap<>();
 
   public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
 
+  @Getter
+  private final Map<ShopChunk, List<VirtualDisplayItem<?>>> chunksMapping = new ConcurrentHashMap<>();
+
+  private final QuickShop plugin;
+  private final AtomicInteger entityIdCounter;
+
+  private PacketHandler<?> packetHandler;
+
+  private PacketFactory<?> packetFactory;
+
+  private static VirtualDisplayItemManager instance;
+
+  private boolean testPassed = true;
+
   public VirtualDisplayItemManager(final QuickShop plugin) {
 
-    try {
+    instance = this;
+
+    //We handle our default packet handlers
+    addHandler(new PacketEventsHandler());
+    addHandler(new ProtocolLibHandler());
+
+    setHandler();
+
+    if(this.packetHandler != null) {
       this.plugin = plugin;
-      this.protocolManager = ProtocolLibrary.getProtocolManager();
+
+      final PacketHandlerInitEvent initEvent = new PacketHandlerInitEvent(this.packetHandler);
+      if(initEvent.callCancellableEvent()) {
+
+        Log.debug("Canceled the initialization of PacketHandler: " + this.packetHandler.identifier());
+        throw new IllegalStateException("No suitable packet handler found for virtual display item management. Please make sure either PacketEvents or ProtocolLib is installed.");
+      } else {
+
+        this.packetHandler.initialize();
+      }
       this.entityIdCounter = new AtomicInteger(Integer.MAX_VALUE);
+
       load();
-    } catch(NoClassDefFoundError noClassDefFoundError) {
-      plugin.logger().error("DisplayType already set to VIRTUAL_DISPLAY_ITEM, but ProtocolLib not installed on your server, please download ProtocolLib and install it from https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/ or change the display type to REAL_DISPLAY_ITEM (0) or disable display system.");
-      throw new IllegalStateException("ProtocolLib not installed on this server");
+    } else {
+
+      throw new IllegalStateException("No suitable packet handler found for virtual display item management. Please make sure either PacketEvents or ProtocolLib is installed.");
+    }
+  }
+
+  public void setHandler() {
+
+    for(final PacketHandler<?> packetHandler : packetHandlers.values()) {
+
+      if(Bukkit.getPluginManager().getPlugin(packetHandler.pluginName()) != null) {
+
+        this.packetHandler = packetHandler;
+      }
     }
   }
 
   public void load() {
+    Log.debug("Attempting to load packet factory...");
 
-    final String stringClassLoader = protocolManager.getClass().getClassLoader().toString();
-    if(stringClassLoader.contains("pluginEnabled=true") && !stringClassLoader.contains("plugin=ProtocolLib")) {
-      plugin.logger().warn("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
-                           "QuickShop can't ensure the ProtocolLib is working correctly! Info: {}", stringClassLoader);
+    final Optional<PacketFactory<?>> factoryOptional  = packetHandler.factory(plugin.getPlatform().getMinecraftVersion());
+    if(factoryOptional.isEmpty()) {
+
+      throw new IllegalStateException("No PacketFactory found for platform version " + plugin.getPlatform().getMinecraftVersion());
     }
-    Log.debug("Loading VirtualDisplayItem chunks mapping manager...");
-    Log.debug("Load: PacketFactory...");
 
-    this.packetFactory = switch(plugin.getGameVersion()) {
-      case v1_18_R1, v1_18_R2 -> new v1_18(plugin, this);
-      case v1_19_R1 -> new v1_19_R1(plugin, this);
-      case v1_19_R2, v1_19_R3, v1_20_R1 -> new v1_19_R2_TO_v1_20_R1(plugin, this);
-      case v1_20_R2, v1_20_R3 -> new v1_20_R2_TO_v1_20_R3(plugin, this);
-      case v1_20_R4, v1_21_R1 -> new v1_21_R1(plugin, this);
-      default -> new v1_21_R1(plugin, this);
-    };
-    this.chunkSendingPacketAdapter = packetFactory.getChunkSendPacketAdapter();
-    this.chunkUnloadingPacketAdapter = packetFactory.getChunkUnloadPacketAdapter();
-    Log.debug("Registering the packet listener...");
-    protocolManager.addPacketListener(chunkSendingPacketAdapter);
-    protocolManager.addPacketListener(chunkUnloadingPacketAdapter);
+    this.packetFactory = factoryOptional.get();
+    Log.debug("Attempting to register chunk packet listeners...");
+
+    if(packetFactory != null) {
+
+      packetFactory.registerSendChunk();
+      packetFactory.registerUnloadChunk();
+    }
   }
 
-  public void put(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem value) {
+  public void put(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem<?> value) {
+
     //Thread-safe was ensured by ONLY USE Map method to do something
-    final List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
+    final List<VirtualDisplayItem<?>> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
     chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal)->{
+
       mapOldVal.addAll(mapNewVal);
       return mapOldVal;
     });
@@ -98,7 +126,11 @@ public class VirtualDisplayItemManager {
   public void unload() {
 
     Log.debug("Unregistering the packet listener...");
-    protocolManager.removePacketListener(chunkSendingPacketAdapter);
+    if(packetFactory != null) {
+
+      packetFactory.unregisterSendChunk();
+      packetFactory.unregisterUnloadChunk();
+    }
   }
 
   public int generateEntityId() {
@@ -106,15 +138,10 @@ public class VirtualDisplayItemManager {
     return entityIdCounter.getAndDecrement();
   }
 
-  public ProtocolManager getProtocolManager() {
-
-    return protocolManager;
-  }
-
   @NotNull
-  public VirtualDisplayItem createVirtualDisplayItem(@NotNull final Shop shop) {
+  public VirtualDisplayItem<?> createVirtualDisplayItem(@NotNull final Shop shop) {
 
-    return new VirtualDisplayItem(this, packetFactory, shop);
+    return new VirtualDisplayItem<>(this, packetFactory, shop);
   }
 
   public void setTestPassed(final boolean testPassed) {
@@ -125,5 +152,27 @@ public class VirtualDisplayItemManager {
   public boolean isTestPassed() {
 
     return testPassed;
+  }
+
+  public void addHandler(final PacketHandler<?> packetHandler) {
+
+    final PacketHandlerAddedEvent addedEvent = new PacketHandlerAddedEvent(packetHandler);
+    if(addedEvent.callCancellableEvent()) {
+
+      Log.debug("Canceled the addition of PacketHandler: " + packetHandler.identifier());
+
+    } else {
+
+      packetHandlers.put(packetHandler.identifier(), packetHandler);
+    }
+  }
+
+  public Map<String, PacketHandler<?>> packetHandlers() {
+
+    return packetHandlers;
+  }
+
+  public static VirtualDisplayItemManager instance() {
+    return instance;
   }
 }

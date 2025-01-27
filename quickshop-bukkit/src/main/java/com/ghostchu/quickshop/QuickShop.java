@@ -5,7 +5,6 @@ import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
 import cc.carm.lib.easysql.hikari.HikariDataSource;
 import cc.carm.lib.easysql.manager.SQLManagerImpl;
-import com.comphenix.protocol.ProtocolLibrary;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.QuickShopProvider;
@@ -831,27 +830,29 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     if(this.display) {
       //VirtualItem support
       if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-        logger.info("Using Virtual Item display, loading ProtocolLib support...");
-        final Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-        if(protocolLibPlugin != null) {
-          try {
-            logger.info("Successfully loaded ProtocolLib support!");
-            virtualDisplayItemManager = new VirtualDisplayItemManager(this);
-            if(getConfig().getBoolean("shop.per-player-shop-sign")) {
-              signHooker = new SignHooker(this);
-              logger.info("Successfully registered per-player shop sign!");
-            } else {
-              signHooker = null;
-            }
-          } catch(final Exception e) {
-            logger.warn("Failed to initialize the virtual display item, try update your ProtocolLib to latest dev build and make sure QuickShop-Hikari up-to-date.", e);
-            throw e;
+        logger.info("Using Virtual Displays. Attempting to initialize packet factory...");
+        try {
+
+          virtualDisplayItemManager = new VirtualDisplayItemManager(this);
+          if(getConfig().getBoolean("shop.per-player-shop-sign")) {
+
+            //TODO: Revamp sign system.
+            signHooker = new SignHooker(this);
+            logger.info("Successfully registered per-player shop sign!");
+          } else {
+
+            signHooker = null;
           }
-        } else {
-          logger.warn("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
+        } catch(final Exception e) {
+
+          //disable displays since we don't have packet support
           signHooker = null;
-          getConfig().set("shop.display-type", 3);
+          this.display = false;
+          getConfig().set("shop.display-items", false);
           javaPlugin.saveConfig();
+
+          logger.warn("Failed to initialize Virtual Display packet factory. Please validate that you have an up-to-date ProtocolLib or PacketEvents installation.", e);
+          throw e;
         }
       }
     }
@@ -954,16 +955,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             shop.checkDisplay();
           }
         }, 1L, getDisplayItemCheckTicks());
-                /*Bukkit.getScheduler().runTaskTimer(javaPlugin, () -> {
-                    for (Shop shop : getShopManager().getLoadedShops()) {
-                        //Shop may be deleted or unloaded when iterating
-                        if (!shop.isLoaded()) {
-                            continue;
-                        }
-                        shop.checkDisplay();
-                    }
-                }, 1L, getDisplayItemCheckTicks());*/
       } else if(getDisplayItemCheckTicks() == 0) {
+
         logger.info("shop.display-items-check-ticks was set to 0. Display Check has been disabled");
       } else {
         logger.error("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
@@ -1192,17 +1185,19 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void unload3rdParty() {
 
     if(this.placeHolderAPI != null && placeHolderAPI.isEnabled() && this.quickShopPAPI != null) {
+
       this.quickShopPAPI.unregister();
       logger.info("Unload PlaceHolderAPI module successfully!");
     }
     if(this.signHooker != null) {
+
       this.signHooker.unload();
       logger.info("Unload SignHooker module successfully!");
     }
-    final Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-    if(protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
-      ProtocolLibrary.getProtocolManager().removePacketListeners(javaPlugin);
-      logger.info("Unload packet listeners successfully!");
+
+    if(this.virtualDisplayItemManager != null) {
+
+      this.virtualDisplayItemManager.unload();
     }
   }
 

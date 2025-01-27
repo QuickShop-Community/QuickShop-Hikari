@@ -56,7 +56,6 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;

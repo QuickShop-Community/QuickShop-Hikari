@@ -32,7 +32,7 @@ import java.util.UUID;
  * TNEConversion
  *
  * @author creatorfromhell
- * @since 6.2.0.8
+ * @since 6.2.0.8-SNAPSHOT-1
  */
 public class TNEConversion implements UuidConversion {
 

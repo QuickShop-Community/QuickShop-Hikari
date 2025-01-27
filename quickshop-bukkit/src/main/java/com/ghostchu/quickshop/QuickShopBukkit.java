@@ -10,11 +10,6 @@ import com.ghostchu.quickshop.common.util.GeoUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_3.Spigot1194Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_1.Spigot1201Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1202Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_3.Spigot1203Platform;
@@ -253,11 +248,6 @@ public class QuickShopBukkit extends JavaPlugin {
           //noinspection deprecation
           final String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
           this.platform = switch(internalNMSVersion) {
-            case "v1_18_R1" -> new Spigot1181Platform(this);
-            case "v1_18_R2" -> new Spigot1182Platform(this);
-            case "v1_19_R1" -> new Spigot1191Platform(this);
-            case "v1_19_R2" -> new Spigot1193Platform(this);
-            case "v1_19_R3" -> new Spigot1194Platform(this);
             case "v1_20_R1" -> new Spigot1201Platform(this);
             case "v1_20_R2" -> new Spigot1202Platform(this);
             case "v1_20_R3" -> new Spigot1203Platform(this);
