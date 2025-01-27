@@ -67,7 +67,7 @@
         <dependency>
             <groupId>world.bentobox</groupId>
             <artifactId>bentobox</artifactId>
-            <version>1.24.1</version>
+            <version>${compat.bentobox}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

@@ -61,13 +61,13 @@
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>EcoEnchants</artifactId>
-            <version>12.18.4</version>
+            <version>${compat.ecoenchants}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.willfp</groupId>
             <artifactId>eco</artifactId>
-            <version>6.71.6</version>
+            <version>${compat.eco}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

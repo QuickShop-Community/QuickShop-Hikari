@@ -38,6 +38,10 @@
             <id>jitpack</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>alex9849</id>
+            <url>https://nexus.alex9849.net/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
 
@@ -59,9 +63,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.alex9849</groupId>
-            <artifactId>advanced-region-market</artifactId>
-            <version>3.5.4</version>
+            <groupId>net.alex9849.advancedregionmarket</groupId>
+            <artifactId>advancedregionmarket</artifactId>
+            <version>${compat.arm}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

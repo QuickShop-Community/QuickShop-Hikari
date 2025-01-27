@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.georgev22.voidchest-shade</groupId>
             <artifactId>voidchestapi-shade</artifactId>
-            <version>2.13.0</version>
+            <version>${compat.voidchest}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

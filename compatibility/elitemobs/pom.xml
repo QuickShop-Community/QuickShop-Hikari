@@ -43,6 +43,11 @@
             <id>sonatype-snapshot</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>magmaguy-repo-releases</id>
+            <name>MagmaGuy's Repository</name>
+            <url>https://repo.magmaguy.com/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -65,7 +70,7 @@
         <dependency>
             <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
-            <version>8.2.0-SNAPSHOT</version>
+            <version>${compat.elitemobs}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

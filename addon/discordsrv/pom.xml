@@ -62,9 +62,8 @@
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.27.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/DiscordSRV-Build-1.27.0.jar</systemPath>
+            <version>${addon.discordsrv}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
