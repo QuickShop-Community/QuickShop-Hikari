@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.event.packet;
+package com.ghostchu.quickshop.api.event.packet.handler;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
@@ -18,22 +18,23 @@ package com.ghostchu.quickshop.api.event.packet;
  */
 
 import com.ghostchu.quickshop.api.event.QSCancellable;
+import com.ghostchu.quickshop.api.event.packet.PacketHandlerEvent;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * PacketHandlerLoadEvent
+ * PacketHandlerInitEvent
  *
  * @author creatorfromhell
  * @since 6.2.0.8
  */
-public class PacketHandlerAddedEvent extends PacketHandlerEvent implements QSCancellable {
+public class PacketHandlerInitEvent extends PacketHandlerEvent implements QSCancellable {
 
   private boolean cancelled;
   private @Nullable Component cancelReason;
 
-  public PacketHandlerAddedEvent(final PacketHandler<?> packetHandler) {
+  public PacketHandlerInitEvent(final PacketHandler<?> packetHandler) {
 
     super(packetHandler);
   }

@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.packet.PacketHandlerAddedEvent;
-import com.ghostchu.quickshop.api.event.packet.PacketHandlerInitEvent;
+import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerAddedEvent;
+import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerInitEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
@@ -170,6 +170,11 @@ public class VirtualDisplayItemManager {
   public Map<String, PacketHandler<?>> packetHandlers() {
 
     return packetHandlers;
+  }
+
+  public PacketHandler<?> packetHandler() {
+
+    return packetHandler;
   }
 
   public static VirtualDisplayItemManager instance() {

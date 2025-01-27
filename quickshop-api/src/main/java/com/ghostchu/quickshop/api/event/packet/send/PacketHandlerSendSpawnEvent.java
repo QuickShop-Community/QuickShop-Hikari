@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.event.packet;
+package com.ghostchu.quickshop.api.event.packet.send;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
@@ -18,24 +18,34 @@ package com.ghostchu.quickshop.api.event.packet;
  */
 
 import com.ghostchu.quickshop.api.event.QSCancellable;
+import com.ghostchu.quickshop.api.event.packet.PacketHandlerEvent;
+import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * PacketHandlerInitEvent
+ * PacketHandlerSendSpawnEvent
  *
  * @author creatorfromhell
  * @since 6.2.0.8
  */
-public class PacketHandlerInitEvent extends PacketHandlerEvent implements QSCancellable {
+public class PacketHandlerSendSpawnEvent<T> extends PacketHandlerEvent implements QSCancellable {
+
+  protected PacketFactory<T> packetFactory;
+  protected T spawnPacket;
 
   private boolean cancelled;
   private @Nullable Component cancelReason;
 
-  public PacketHandlerInitEvent(final PacketHandler<?> packetHandler) {
+  public PacketHandlerSendSpawnEvent(final PacketHandler<?> packetHandler,
+                                     final PacketFactory<T> packetFactory,
+                                     final T spawnPacket) {
 
     super(packetHandler);
+
+    this.packetFactory = packetFactory;
+    this.spawnPacket = spawnPacket;
   }
 
   @Override
@@ -55,5 +65,25 @@ public class PacketHandlerInitEvent extends PacketHandlerEvent implements QSCanc
   public boolean isCancelled() {
 
     return this.cancelled;
+  }
+
+  public PacketFactory<T> packetFactory() {
+
+    return packetFactory;
+  }
+
+  public void packetFactory(final PacketFactory<T> packetFactory) {
+
+    this.packetFactory = packetFactory;
+  }
+
+  public T spawnPacket() {
+
+    return spawnPacket;
+  }
+
+  public void spawnPacket(final T spawnPacket) {
+
+    this.spawnPacket = spawnPacket;
   }
 }
