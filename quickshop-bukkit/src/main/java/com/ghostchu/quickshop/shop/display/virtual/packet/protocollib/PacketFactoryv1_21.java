@@ -224,7 +224,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
             }
             if(target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
               target.getPacketSenders().add(player.getUniqueId());
-              target.sendDestroyItem(player);
+              target.sendDestroyPacket(player);
               target.sendFakeItem(player);
             }
           }
@@ -278,7 +278,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
 
               continue;
             }
-            target.sendDestroyItem(player);
+            target.sendDestroyPacket(player);
             target.getPacketSenders().remove(player.getUniqueId());
           }
           return targetList;
