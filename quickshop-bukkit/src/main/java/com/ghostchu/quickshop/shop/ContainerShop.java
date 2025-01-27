@@ -379,7 +379,7 @@ public class ContainerShop implements Shop, Reloadable {
           return;
         }
       } catch(final Throwable anyError) {
-        plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
+        plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Do you have ProtocolLib or packetevents installed?", this, anyError);
         return;
       }
     }

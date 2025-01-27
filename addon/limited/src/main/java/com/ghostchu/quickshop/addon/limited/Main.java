@@ -4,9 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.limited.command.SubCommand_Limit;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
 import com.ghostchu.quickshop.api.localization.text.Text;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
@@ -133,7 +133,7 @@ public final class Main extends JavaPlugin implements Listener {
           shop.setExtra(this, manager);
           Log.debug("Limit data has been reset. Shop -> " + shop);
         }
-      } catch(IllegalArgumentException ignored) {
+      } catch(final IllegalArgumentException ignored) {
         Log.debug("Limit data failed to reset. Shop -> " + shop + " type " + manager.getString("period") + " not exists.");
         manager.set("period", null);
         shop.setExtra(this, manager);
