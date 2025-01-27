@@ -43,7 +43,7 @@
         <addon.bluemap>2.7.2</addon.bluemap>
         <addon.discordsrv>1.29.0</addon.discordsrv>
         <addon.dynmap>2.0</addon.dynmap>
-        <addon.plan>5.6.2959</addon.plan>
+        <addon.plan>5.6.2961</addon.plan>
 
         <!-- compat versions -->
         <compat.arm>3.5.3</compat.arm>
