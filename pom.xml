@@ -71,7 +71,7 @@
         <compat.towny>0.101.1.0</compat.towny>
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
-        <compat.worldedit>7.3.9</compat.worldedit>
+        <compat.worldedit>7.3.10</compat.worldedit>
         <compat.worldguard>7.0.12</compat.worldguard>
     </properties>
 
