@@ -59,6 +59,7 @@ public final class Main extends Plugin implements Listener {
     boolean isGeyserPlayer = false;
     boolean isFloodgatePlayer = false;
     if(isGeyserInstalled) {
+
       isGeyserPlayer = GeyserApi.api().isBedrockPlayer(uuid);
     }
     if(isFloodgateInstalled) {

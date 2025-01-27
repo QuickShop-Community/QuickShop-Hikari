@@ -1629,6 +1629,7 @@ public class ContainerShop implements Shop, Reloadable {
     return new SimpleDataRecord(
             getOwner(),
             Util.serialize(getItem()),
+            plugin.getPlatform().encodeStack(getItem()),
             getShopName(),
             getShopType().toID(),
             getCurrency(),
