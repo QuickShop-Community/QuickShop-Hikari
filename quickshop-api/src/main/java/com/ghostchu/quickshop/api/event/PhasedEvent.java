@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.event;
 /*
  * QuickShop-Hikari
- * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,15 +17,23 @@ package com.ghostchu.quickshop.api.event;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Nullable;
+
 /**
- * PhasedEvent
+ * PhasedEvent represents an event that has different phases, and is called during different lifecycles.
  *
  * @author creatorfromhell
  * @since 6.2.0.9
+ * @see Phase
  */
-public abstract class PhasedEvent extends AbstractQSEvent {
+public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellable {
 
   protected final Phase phase;
+
+  //Cancellable variables.
+  protected Component cancelReason = null;
+  protected boolean cancelled = false;
 
   public PhasedEvent() {
 
@@ -54,5 +62,28 @@ public abstract class PhasedEvent extends AbstractQSEvent {
   public Phase phase() {
 
     return phase;
+  }
+
+  @Override
+  public @Nullable Component getCancelReason() {
+
+    return cancelReason;
+  }
+
+  @Override
+  public void setCancelled(final boolean cancel, @Nullable final Component reason) throws IllegalStateException {
+
+    if(!phase().cancellable()) {
+
+      throw new IllegalStateException("Attempted to cancel a PhasedEvent that has a Phase, which isn't cancellable. " + phase.name());
+    }
+
+    this.cancelled = cancel;
+  }
+
+  @Override
+  public boolean isCancelled() {
+
+    return this.cancelled && phase.cancellable();
   }
 }

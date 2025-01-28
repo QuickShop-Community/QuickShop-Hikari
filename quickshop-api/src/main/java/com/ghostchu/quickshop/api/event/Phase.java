@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.api.event;
 
 /*
  * QuickShop-Hikari
- * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,15 +19,33 @@ package com.ghostchu.quickshop.api.event;
  */
 
 /**
- * EventLifeCycle
+ * Phase represents different phases for an {@link PhasedEvent phased event} lifecycle.
  *
  * @author creatorfromhell
  * @since 6.2.0.9
  */
 public enum Phase {
+
+  /**
+   * Represents the Pre phase, which happens before an action occurs on object/value.
+   */
   PRE(false),
+
+  /**
+   * Represents the main phase, which is when the action is occurring.
+   */
   MAIN(true),
-  POST(false);
+
+  /**
+   * Represents the post phase, which happens after the action occurs.
+   */
+  POST(false),
+
+  /**
+   * Represents the retrieval phase, which happens when calls are made to get an object/value
+   */
+  RETRIEVE(false);
+
 
   private final boolean cancellable;
 
@@ -36,6 +54,11 @@ public enum Phase {
     this.cancellable = cancellable;
   }
 
+  /**
+   * Retrieves the cancellable status of the current phase.
+   *
+   * @return true if the phase is cancellable, false otherwise
+   */
   public boolean cancellable() {
 
     return cancellable;

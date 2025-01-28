@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.event.packet;
+package com.ghostchu.quickshop.api.event.settings.type;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -17,26 +17,29 @@ package com.ghostchu.quickshop.api.event.packet;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.event.AbstractQSEvent;
-import com.ghostchu.quickshop.api.shop.display.PacketHandler;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopType;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * PacketHandlersAdded
+ * ShopTypeChangeEvent
  *
  * @author creatorfromhell
- * @since 6.2.0.8
+ * @since 6.2.0.9
  */
-public abstract class PacketHandlerEvent extends AbstractQSEvent {
+public class ShopTypeChangeEvent extends ShopSettingEvent<ShopType> {
 
-  protected PacketHandler<?> packetHandler;
+  public ShopTypeChangeEvent(final @NotNull Phase phase, final @NotNull Shop shop,
+                             final @NotNull ShopType old) {
 
-  public PacketHandlerEvent(final PacketHandler<?> packetHandler) {
-
-    this.packetHandler = packetHandler;
+    super(phase, shop, old);
   }
 
-  public PacketHandler<?> packetHandler() {
+  public ShopTypeChangeEvent(final @NotNull Phase phase, final @NotNull Shop shop,
+                             final @NotNull ShopType old, final @NotNull ShopType updated) {
 
-    return packetHandler;
+    super(phase, shop, old, updated);
   }
 }
