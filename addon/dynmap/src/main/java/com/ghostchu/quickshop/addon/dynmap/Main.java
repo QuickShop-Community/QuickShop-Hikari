@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.addon.dynmap;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
 import com.ghostchu.quickshop.api.event.details.ShopNamingEvent;
@@ -10,6 +11,7 @@ import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
@@ -109,9 +111,13 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopItemChangeEvent event) {
+  public void onEvent(final ShopItemEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(event.phase() != Phase.POST) {
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @EventHandler(ignoreCancelled = true)
