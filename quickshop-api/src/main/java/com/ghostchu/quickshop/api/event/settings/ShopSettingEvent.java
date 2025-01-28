@@ -21,10 +21,13 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * ShopSettingEvent - Represents an event that is tied to a shop setting.
+ * <p>
+ * This is a phased event, which has a lifecycle. The Pre, Main, and Post phases of the lifecycle
+ * relate to a change happening in the setting. The retrieve phase indicates that it's simple a call
+ * to retrieve the setting.
  *
  * @param <T> Represents the type of the setting that this event is for.
  *

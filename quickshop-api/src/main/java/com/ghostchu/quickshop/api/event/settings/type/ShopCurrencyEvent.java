@@ -20,25 +20,25 @@ package com.ghostchu.quickshop.api.event.settings.type;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ShopTypeChangeEvent
+ * ShopCurrencyEvent represents an event that is tied to actions/retrieval of the Shop currency setting for
+ * a shop.
  *
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class ShopTypeChangeEvent extends ShopSettingEvent<ShopType> {
+public class ShopCurrencyEvent extends ShopSettingEvent<String> {
 
-  public ShopTypeChangeEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                             final @NotNull ShopType old) {
+  public ShopCurrencyEvent(final @NotNull Phase phase, final @NotNull Shop shop,
+                           final @NotNull String old) {
 
     super(phase, shop, old);
   }
 
-  public ShopTypeChangeEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                             final @NotNull ShopType old, final @NotNull ShopType updated) {
+  public ShopCurrencyEvent(final @NotNull Phase phase, final @NotNull Shop shop,
+                           final @NotNull String old, final @NotNull String updated) {
 
     super(phase, shop, old, updated);
   }
