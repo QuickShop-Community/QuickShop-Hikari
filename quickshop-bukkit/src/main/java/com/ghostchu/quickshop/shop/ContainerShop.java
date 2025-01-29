@@ -6,8 +6,6 @@ import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
-import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountChangeEvent;
-import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountGettingEvent;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryChangedEvent;
@@ -18,6 +16,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
@@ -924,9 +923,10 @@ public class ContainerShop implements Shop, Reloadable {
         uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheTaxAccount();
       }
     }
-    final ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
+    final ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.RETRIEVE,this, uuid);
     event.callEvent();
-    return event.getTaxAccount();
+
+    return event.updated();
 
   }
 
@@ -936,11 +936,22 @@ public class ContainerShop implements Shop, Reloadable {
     if(Objects.equals(taxAccount, this.taxAccount)) {
       return;
     }
-    final ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
-    if(Util.fireCancellableEvent(event)) {
+
+    ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.PRE, this, this.taxAccount, taxAccount);
+    event.callEvent();
+
+    event = (ShopTaxAccountEvent)event.clone(Phase.MAIN);
+    if(event.callCancellableEvent()) {
+
       return;
     }
-    this.taxAccount = taxAccount;
+
+
+    this.taxAccount = event.updated();
+
+    event = (ShopTaxAccountEvent)event.clone(Phase.POST);
+    event.callEvent();
+
     setDirty();
   }
 

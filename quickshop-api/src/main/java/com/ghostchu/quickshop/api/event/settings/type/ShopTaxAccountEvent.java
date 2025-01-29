@@ -34,13 +34,13 @@ import org.jetbrains.annotations.NotNull;
 public class ShopTaxAccountEvent extends ShopSettingEvent<QUser> {
 
   public ShopTaxAccountEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                             final @NotNull QUser old) {
+                             final QUser old) {
 
     super(phase, shop, old);
   }
 
   public ShopTaxAccountEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                             final @NotNull QUser old, final @NotNull QUser updated) {
+                             final QUser old, final QUser updated) {
 
     super(phase, shop, old, updated);
   }
