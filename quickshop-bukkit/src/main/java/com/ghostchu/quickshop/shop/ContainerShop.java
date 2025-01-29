@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.details.ShopOwnerNameGettingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
 import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountChangeEvent;
@@ -19,6 +18,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -1229,17 +1229,6 @@ public class ContainerShop implements Shop, Reloadable {
       name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
     } else {
       final String playerName = this.getOwner().getUsername();
-//            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
-//                CompletableFuture<String> future = CompletableFuture
-//                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
-//                try {
-//                    playerName = future.get(20, TimeUnit.MILLISECONDS);
-//                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-//                    playerName = "N/A";
-//                }
-//            } else {
-//                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
-//            }
       if(playerName == null) {
         name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
       } else {
@@ -1256,9 +1245,11 @@ public class ContainerShop implements Shop, Reloadable {
                             );
 
     }
-    final ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
+
+    final ShopOwnerNameEvent event = new ShopOwnerNameEvent(Phase.RETRIEVE, this, name);
     event.callEvent();
-    name = event.getName();
+
+    name = event.updated();
     return name;
   }
 

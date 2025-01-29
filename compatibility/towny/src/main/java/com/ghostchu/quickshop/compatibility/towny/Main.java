@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.details.ShopOwnerNameGettingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
 import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
@@ -15,6 +14,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent
 import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -327,22 +327,28 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void ownerDisplayOverride(final ShopOwnerNameGettingEvent event) {
+  public void ownerDisplayOverride(final ShopOwnerNameEvent event) {
+
+    if(event.phase() != Phase.RETRIEVE) {
+
+      return;
+    }
 
     if(!getConfig().getBoolean("allow-owner-name-override", true)) {
       return;
     }
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop();
+
     // Town name override check
     final Town town = TownyShopUtil.getShopTown(shop);
     if(town != null) {
-      event.setName(LegacyComponentSerializer.legacySection().deserialize(town.getName()));
+      event.updated(LegacyComponentSerializer.legacySection().deserialize(town.getName()));
       return;
     }
     // Nation name override check
     final Nation nation = TownyShopUtil.getShopNation(shop);
     if(nation != null) {
-      event.setName(LegacyComponentSerializer.legacySection().deserialize(nation.getName()));
+      event.updated(LegacyComponentSerializer.legacySection().deserialize(nation.getName()));
     }
   }
 

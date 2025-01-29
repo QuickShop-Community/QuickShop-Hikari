@@ -44,7 +44,7 @@ public enum Phase {
   /**
    * Represents the retrieval phase, which happens when calls are made to get an object/value
    */
-  RETRIEVE(false, false);
+  RETRIEVE(true, false);
 
 
   private final boolean allowUpdate;
