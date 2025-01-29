@@ -72,6 +72,19 @@ public class ShopSettingEvent<T> extends PhasedEvent {
     return new ShopSettingEvent<>(newPhase, shop, old, updated);
   }
 
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old The old value for the cloned ShopSettingEvent
+   * @param updated The updated value for the cloned ShopSettingEvent
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  public ShopSettingEvent<T> clone(final Phase newPhase, final @NotNull T old, final @NotNull T updated) {
+
+    return new ShopSettingEvent<>(newPhase, shop, old, updated);
+  }
+
   public Shop shop() {
 
     return shop;
