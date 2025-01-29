@@ -129,4 +129,54 @@ public class ShopSettingEvent<T> extends PhasedEvent {
 
     this.updated = updated;
   }
+
+
+
+  public static <T> ShopSettingEvent<T> PRE(final @NotNull Shop shop,
+                                            final T old) {
+
+    return new ShopSettingEvent<T>(Phase.PRE, shop, old);
+  }
+
+  public static <T> ShopSettingEvent<T> PRE(final @NotNull Shop shop,
+                                            final T old, final T updated) {
+
+    return new ShopSettingEvent<T>(Phase.PRE, shop, old, updated);
+  }
+
+  public static <T> ShopSettingEvent<T> MAIN(final @NotNull Shop shop,
+                                             final T old) {
+
+    return new ShopSettingEvent<T>(Phase.MAIN, shop, old);
+  }
+
+  public static <T> ShopSettingEvent<T> MAIN(final @NotNull Shop shop,
+                                             final T old, final T updated) {
+
+    return new ShopSettingEvent<T>(Phase.MAIN, shop, old, updated);
+  }
+
+  public static <T> ShopSettingEvent<T> POST(final @NotNull Shop shop,
+                                             final T old) {
+
+    return new ShopSettingEvent<T>(Phase.POST, shop, old);
+  }
+
+  public static <T> ShopSettingEvent<T> POST(final @NotNull Shop shop,
+                                             final T old, final T updated) {
+
+    return new ShopSettingEvent<T>(Phase.POST, shop, old, updated);
+  }
+
+  public static <T> ShopSettingEvent<T> RETRIEVE(final @NotNull Shop shop,
+                                                 final T old) {
+
+    return new ShopSettingEvent<T>(Phase.RETRIEVE, shop, old);
+  }
+
+  public static <T> ShopSettingEvent<T> RETRIEVE(final @NotNull Shop shop,
+                                                 final T old, final T updated) {
+
+    return new ShopSettingEvent<T>(Phase.RETRIEVE, shop, old, updated);
+  }
 }
