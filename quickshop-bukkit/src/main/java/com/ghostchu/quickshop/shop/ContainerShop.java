@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
-import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountGettingEvent;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
@@ -19,6 +18,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -764,7 +764,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull ShopType getShopType() {
 
-    return this.shopType;
+    final ShopTypeEvent event = new ShopTypeEvent(Phase.RETRIEVE, this, this.shopType);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -777,14 +780,26 @@ public class ContainerShop implements Shop, Reloadable {
 
     Util.ensureThread(false);
     if(this.shopType == newShopType) {
+
       return; //Ignore if there actually no changes
     }
-    if(Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
+
+    ShopTypeEvent event = new ShopTypeEvent(Phase.PRE, this, this.shopType, newShopType);
+    event.callEvent();
+
+    event = (ShopTypeEvent)event.clone(Phase.MAIN);
+
+    if(event.callCancellableEvent()) {
       Log.debug(
               "Some addon cancelled shop type changes, target shop: " + this);
       return;
     }
-    this.shopType = newShopType;
+
+    this.shopType = event.updated();
+
+    event = (ShopTypeEvent)event.clone(Phase.POST);
+    event.callEvent();
+
     this.setSignText();
     setDirty();
   }

@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
-import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountGettingEvent;
@@ -15,6 +14,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -329,7 +329,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void ownerDisplayOverride(final ShopOwnerNameEvent event) {
 
-    if(event.phase() != Phase.RETRIEVE) {
+    if(!event.isPhase(Phase.RETRIEVE)) {
 
       return;
     }
@@ -388,7 +388,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void shopItemChanged(final ShopItemEvent event) {
 
-    if(event.phase() != Phase.MAIN) {
+    if(!event.isPhase(Phase.MAIN)) {
 
       return;
     }
@@ -428,9 +428,14 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void shopTypeChanged(final ShopTypeChangeEvent event) {
+  public void shopTypeChanged(final ShopTypeEvent event) {
 
-    final Shop shop = event.getShop();
+    if(!event.isPhase(Phase.MAIN)) {
+
+      return;
+    }
+
+    final Shop shop = event.shop();
     if(TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
       event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
     }

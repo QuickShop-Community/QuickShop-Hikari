@@ -72,6 +72,17 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
     return phase;
   }
 
+  /**
+   * Checks if the given phase is equal to the current phase of this PhasedEvent.
+   *
+   * @param phase The phase to compare with the current phase
+   * @return true if the given phase is equal to the current phase, false otherwise
+   */
+  public boolean isPhase(final Phase phase) {
+
+    return this.phase == phase;
+  }
+
   @Override
   public @Nullable Component getCancelReason() {
 
