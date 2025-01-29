@@ -29,27 +29,30 @@ public enum Phase {
   /**
    * Represents the Pre phase, which happens before an action occurs on object/value.
    */
-  PRE(false),
+  PRE(false, false),
 
   /**
    * Represents the main phase, which is when the action is occurring.
    */
-  MAIN(true),
+  MAIN(true, true),
 
   /**
    * Represents the post phase, which happens after the action occurs.
    */
-  POST(false),
+  POST(false, false),
 
   /**
    * Represents the retrieval phase, which happens when calls are made to get an object/value
    */
-  RETRIEVE(false);
+  RETRIEVE(false, false);
 
 
+  private final boolean allowUpdate;
   private final boolean cancellable;
 
-  Phase(final boolean cancellable) {
+  Phase(final boolean allowUpdate, final boolean cancellable) {
+
+    this.allowUpdate = allowUpdate;
 
     this.cancellable = cancellable;
   }
@@ -62,5 +65,10 @@ public enum Phase {
   public boolean cancellable() {
 
     return cancellable;
+  }
+
+  public boolean allowUpdate() {
+
+    return allowUpdate;
   }
 }

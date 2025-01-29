@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.addon.dynmap;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
-import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
 import com.ghostchu.quickshop.api.event.details.ShopNamingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;

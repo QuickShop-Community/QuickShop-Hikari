@@ -56,7 +56,14 @@ public class ShopSettingEvent<T> extends PhasedEvent {
     super(phase);
     this.shop = shop;
     this.old = old;
-    this.updated = updated;
+
+    if(!phase().allowUpdate()) {
+
+      this.updated = old;
+    } else {
+
+      this.updated = updated;
+    }
   }
 
   /**
@@ -107,7 +114,7 @@ public class ShopSettingEvent<T> extends PhasedEvent {
    */
   public T updated() {
 
-    if(phase == Phase.RETRIEVE) {
+    if(!phase.allowUpdate()) {
 
       return old;
     }
@@ -121,6 +128,11 @@ public class ShopSettingEvent<T> extends PhasedEvent {
    * @param updated the new updated value to be set
    */
   public void updated(final @NotNull T updated) {
+
+    if(!phase.allowUpdate()) {
+
+      return;
+    }
 
     this.updated = updated;
   }

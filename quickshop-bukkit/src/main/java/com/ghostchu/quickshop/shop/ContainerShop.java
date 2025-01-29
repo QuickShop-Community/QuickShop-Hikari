@@ -4,7 +4,7 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
-import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopOwnerNameGettingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
 import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
@@ -18,6 +18,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -510,21 +511,37 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull ItemStack getItem() {
 
-    return item;
+    final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item);
+
+    return event.updated();
   }
 
   @Override
   public void setItem(@NotNull final ItemStack item) {
 
     Util.ensureThread(false);
-    final ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
-    if(Util.fireCancellableEvent(event)) {
+
+    //Create our shop event with Pre Phase and call
+    ShopItemEvent event = new ShopItemEvent(Phase.PRE,this, this.item, item);
+    event.callEvent();
+
+    //Call our Main Phase
+    event = (ShopItemEvent)event.clone(Phase.MAIN);
+    if(event.callCancellableEvent()) {
+
       Log.debug("A plugin cancelled the item change event.");
       return;
     }
-    this.item = item;
+
+
+    this.item = event.updated();
     this.originalItem = item;
+
+    //call our Post Phase
+    event.clone(Phase.POST).callEvent();
+
     if(this.displayItem != null) {
+
       this.displayItem.remove(false);
     }
     this.displayItem = null;

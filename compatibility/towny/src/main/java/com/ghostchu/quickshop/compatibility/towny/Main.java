@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.compatibility.towny;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
-import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopOwnerNameGettingEvent;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
@@ -14,6 +14,7 @@ import com.ghostchu.quickshop.api.event.economy.ShopTaxAccountGettingEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -379,10 +380,16 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void shopItemChanged(final ShopItemChangeEvent event) {
+  public void shopItemChanged(final ShopItemEvent event) {
 
-    final Shop shop = event.getShop();
+    if(event.phase() != Phase.MAIN) {
+
+      return;
+    }
+
+    final Shop shop = event.shop();
     if(TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+
       event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
     }
   }
