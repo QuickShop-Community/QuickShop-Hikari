@@ -59,6 +59,14 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
     this.phase = phase;
   }
 
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  public abstract PhasedEvent clone(final Phase newPhase);
+
   public Phase phase() {
 
     return phase;
@@ -86,4 +94,6 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
 
     return this.cancelled && phase.cancellable();
   }
+
+
 }

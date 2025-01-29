@@ -185,6 +185,9 @@ public class ShopUtil {
     public void commit(final boolean sendMessage) {
 
       for(final Shop shop : shops) {
+
+
+
         final ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), to);
         if(event.callCancellableEvent()) {
           continue;
