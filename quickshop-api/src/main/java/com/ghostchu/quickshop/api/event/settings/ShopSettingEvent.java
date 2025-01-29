@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class ShopSettingEvent<T> extends PhasedEvent {
+public abstract class ShopSettingEvent<T> extends PhasedEvent {
 
   protected final Shop shop;
 
