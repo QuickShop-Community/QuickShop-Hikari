@@ -42,7 +42,7 @@ public class ShopSettingEvent<T> extends PhasedEvent {
   protected T updated;
 
   public ShopSettingEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                          final @NotNull T old) {
+                          final T old) {
 
     super(phase);
     this.shop = shop;
@@ -51,19 +51,12 @@ public class ShopSettingEvent<T> extends PhasedEvent {
   }
 
   public ShopSettingEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                          final @NotNull T old, final @NotNull T updated) {
+                          final T old, final T updated) {
 
     super(phase);
     this.shop = shop;
     this.old = old;
-
-    if(!phase().allowUpdate()) {
-
-      this.updated = old;
-    } else {
-
-      this.updated = updated;
-    }
+    this.updated = updated;
   }
 
   /**
@@ -87,7 +80,7 @@ public class ShopSettingEvent<T> extends PhasedEvent {
    * @param updated The updated value for the cloned ShopSettingEvent
    * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
    */
-  public ShopSettingEvent<T> clone(final Phase newPhase, final @NotNull T old, final @NotNull T updated) {
+  public ShopSettingEvent<T> clone(final Phase newPhase, final T old, final T updated) {
 
     return new ShopSettingEvent<>(newPhase, shop, old, updated);
   }
@@ -127,7 +120,7 @@ public class ShopSettingEvent<T> extends PhasedEvent {
    *
    * @param updated the new updated value to be set
    */
-  public void updated(final @NotNull T updated) {
+  public void updated(final T updated) {
 
     if(!phase.allowUpdate()) {
 

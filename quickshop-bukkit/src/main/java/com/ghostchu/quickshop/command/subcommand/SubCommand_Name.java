@@ -3,12 +3,12 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.event.details.ShopNamingEvent;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,15 +41,19 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
     if(parser.getArgs().isEmpty()) {
 
-      final ShopNamingEvent namingEvent = new ShopNamingEvent(shop, "PlaceHolder");
-      namingEvent.setName(null);
+      ShopNameEvent event = new ShopNameEvent(Phase.PRE, shop, shop.getShopName(), null);
 
-      if(Util.fireCancellableEvent(namingEvent)) {
+      event = (ShopNameEvent)event.clone(Phase.MAIN);
+
+      if(event.callCancellableEvent()) {
         Log.debug("Other plugin cancelled shop naming.");
         return;
       }
 
-      shop.setShopName(null);
+      shop.setShopName(event.updated());
+
+      event.clone(Phase.POST).callEvent();
+
       plugin.text().of(sender, "shop-name-unset").send();
       return;
     }
@@ -87,20 +91,28 @@ public class SubCommand_Name implements CommandHandler<Player> {
       }
     }
 
-    final ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
-    if(Util.fireCancellableEvent(namingEvent)) {
+    ShopNameEvent event = new ShopNameEvent(Phase.PRE, shop, shop.getShopName(), shopName);
+
+    event = (ShopNameEvent)event.clone(Phase.MAIN, shop.getShopName(), shopName);
+
+    if(event.callCancellableEvent()) {
       Log.debug("Other plugin cancelled shop naming.");
       return;
     }
-    shopName = namingEvent.getName();
+
+    shopName = event.updated();
 
     if(transaction != null && !transaction.failSafeCommit()) {
+
       plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
       return;
     }
 
     shop.setShopName(shopName);
+
+    event.clone(Phase.POST).callEvent();
+
     plugin.text().of(sender, "shop-name-success", shopName).send();
   }
 

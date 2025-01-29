@@ -31,14 +31,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ShopNameEvent extends ShopSettingEvent<String> {
 
-  public ShopNameEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final @NotNull String old) {
+  public ShopNameEvent(final @NotNull Phase phase, final Shop shop,
+                           final String old) {
 
     super(phase, shop, old);
   }
 
   public ShopNameEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final @NotNull String old, final @NotNull String updated) {
+                           final String old, final String updated) {
 
     super(phase, shop, old, updated);
   }
