@@ -16,6 +16,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
@@ -872,7 +873,10 @@ public class ContainerShop implements Shop, Reloadable {
     }
     lines.add(line4);
 
-    return lines;
+    final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.RETRIEVE, this, lines);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -1578,7 +1582,12 @@ public class ContainerShop implements Shop, Reloadable {
     Util.ensureThread(false);
     Log.debug("Globally sign text setting...");
     final List<Sign> signs = this.getSigns();
+
+    final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.POST, this, lines);
+    event.callEvent();
+
     for(final Sign sign : signs) {
+
       final DyeColor dyeColor = Util.getDyeColor();
       if(dyeColor != null) {
         sign.setColor(dyeColor);
@@ -1587,8 +1596,7 @@ public class ContainerShop implements Shop, Reloadable {
       sign.setGlowingText(isGlowing);
       sign.setWaxed(true);
       sign.update(true);
-      //plugin.getPlatform().setLine(sign, i, lines.get(i));
-      plugin.getPlatform().setLines(sign, lines);
+      plugin.getPlatform().setLines(sign, event.updated());
       new ShopSignUpdateEvent(this, sign).callEvent();
     }
     if(plugin.getSignHooker() != null) {
