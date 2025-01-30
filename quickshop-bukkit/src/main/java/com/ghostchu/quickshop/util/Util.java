@@ -418,6 +418,7 @@ public class Util {
   public static boolean fireCancellableEvent(@NotNull final Cancellable event) {
 
     if(!(event instanceof Event)) {
+
       throw new IllegalArgumentException("Cancellable must is event implement");
     }
     Bukkit.getPluginManager().callEvent((Event)event);

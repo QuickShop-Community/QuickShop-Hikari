@@ -138,14 +138,6 @@
         <url>https://github.com/${developer}/${project.artifactId}/actions/workflows/maven.yml</url>
     </ciManagement>
 
-    <pluginRepositories>
-        <!--        <pluginRepository>-->
-        <!--            <id>apache.snapshots</id>-->
-        <!--            <url>https://repository.apache.org/snapshots/</url>-->
-        <!--        </pluginRepository>-->
-    </pluginRepositories>
-
-
     <build>
         <pluginManagement>
             <plugins>
@@ -192,9 +184,6 @@
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
                                         <include>net.kyori:*</include>
-                                        <!--                                        <include>org.apache.commons:commons-lang3:*</include>-->
-                                        <!--                                        <include>org.apache.commons:commons-text:*</include>-->
-                                        <!--                                        <include>org.apache.commons:commons-compress:*</include>-->
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
                                         <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
@@ -241,10 +230,6 @@
                                             ${qs.relocation}.com.ghostchu.lib.unofficial.com.alessiodp.libby.
                                         </shadedPattern>
                                     </relocation>
-                                    <!--                                    <relocation>-->
-                                    <!--                                        <pattern>org.eclipse.aether.</pattern>-->
-                                    <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.org.eclipse.aether.</shadedPattern>-->
-                                    <!--                                    </relocation>-->
                                     <relocation>
                                         <pattern>com.mohistmc.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.mohistmc.</shadedPattern>
@@ -377,31 +362,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-resources-plugin</artifactId>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>copy-resources</id>-->
-            <!--                        <phase>initialize</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>copy-resources</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <outputDirectory>${project.basedir}/target/extra-resources</outputDirectory>-->
-            <!--                            <resources>-->
-            <!--                                <resource>-->
-            <!--                                    <directory>src/main/resources</directory>-->
-            <!--                                    <filtering>true</filtering>-->
-            <!--                                    <includes>-->
-            <!--                                        <include>*</include>-->
-            <!--                                    </includes>-->
-            <!--                                </resource>-->
-            <!--                            </resources>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

@@ -5,11 +5,12 @@ import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.database.DiscordDatabaseHelper;
 import com.ghostchu.quickshop.addon.discordsrv.wrapper.JDAWrapper;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
-import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
-import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.obj.QUserImpl;
@@ -147,18 +148,22 @@ public class QuickShopEventListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopTransfer(final ShopOwnershipTransferEvent event) {
+  public void onShopTransfer(final ShopOwnerEvent event) {
+
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
 
     notifyShopTransfer(event);
     notifyModShopTransfer(event);
   }
 
-  private void notifyShopTransfer(final ShopOwnershipTransferEvent event) {
+  private void notifyShopTransfer(final ShopOwnerEvent event) {
 
-    Util.asyncThreadRun(()->sendMessageIfEnabled(event.getNewOwner(), plugin.getFactory().shopTransferToYou(event), NotificationFeature.USER_SHOP_TRANSFER));
+    Util.asyncThreadRun(()->sendMessageIfEnabled(event.updated(), plugin.getFactory().shopTransferToYou(event), NotificationFeature.USER_SHOP_TRANSFER));
   }
 
-  private void notifyModShopTransfer(final ShopOwnershipTransferEvent event) {
+  private void notifyModShopTransfer(final ShopOwnerEvent event) {
 
     Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modShopTransfer(event), NotificationFeature.MOD_SHOP_TRANSFER));
   }
@@ -175,22 +180,27 @@ public class QuickShopEventListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopPriceChanged(final ShopPriceChangeEvent event) {
+  public void onShopPriceChanged(final ShopPriceEvent event) {
+
+    if(event.phase() != Phase.POST) {
+
+      return;
+    }
 
     notifyShopPriceChanged(event);
     notifyModShopPriceChanged(event);
   }
 
-  private void notifyShopPriceChanged(final ShopPriceChangeEvent event) {
+  private void notifyShopPriceChanged(final ShopPriceEvent event) {
 
     Util.asyncThreadRun(()->{
       final MessageEmbed embed = plugin.getFactory().priceChanged(event);
       //sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED);
       // Send to permission users
-      for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-        if(event.getShop().playerAuthorize(uuid, plugin, "discordalert")) {
+      for(final UUID uuid : event.shop().getPermissionAudiences().keySet()) {
+        if(event.shop().playerAuthorize(uuid, plugin, "discordalert")) {
           QUserImpl.createAsync(QuickShop.getInstance().getPlayerFinder(), uuid)
-                  .thenAccept(qUser->sendMessageIfEnabled(qUser, event.getShop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
+                  .thenAccept(qUser->sendMessageIfEnabled(qUser, event.shop(), embed, NotificationFeature.USER_SHOP_PRICE_CHANGED))
                   .exceptionally(e->{
                     plugin.getLogger().log(Level.WARNING, "Failed to find the player", e);
                     return null;
@@ -201,25 +211,30 @@ public class QuickShopEventListener implements Listener {
 
   }
 
-  private void notifyModShopPriceChanged(final ShopPriceChangeEvent event) {
+  private void notifyModShopPriceChanged(final ShopPriceEvent event) {
 
     Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modPriceChanged(event), NotificationFeature.MOD_SHOP_PRICE_CHANGED));
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopPermissionChanged(final ShopPlayerGroupSetEvent event) {
+  public void onShopPermissionChanged(final ShopPlayerGroupEvent event) {
+
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
 
     notifyShopPermissionChanged(event);
   }
 
-  private void notifyShopPermissionChanged(final ShopPlayerGroupSetEvent event) {
+  private void notifyShopPermissionChanged(final ShopPlayerGroupEvent event) {
 
     Util.asyncThreadRun(()->{
       final MessageEmbed embed = plugin.getFactory().shopPermissionChanged(event);
-      sendMessageIfEnabled(event.getShop().getOwner(), event.getShop(), embed, NotificationFeature.USER_SHOP_PERMISSION_CHANGED);
+      sendMessageIfEnabled(event.shop().getOwner(), event.shop(), embed, NotificationFeature.USER_SHOP_PERMISSION_CHANGED);
       // Send to permission users
-      for(final UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-        sendMessageIfEnabled(event.getPlayer(), event.getShop(), embed, NotificationFeature.USER_SHOP_PERMISSION_CHANGED);
+      for(final UUID uuid : event.shop().getPermissionAudiences().keySet()) {
+
+        sendMessageIfEnabled(uuid, event.shop(), embed, NotificationFeature.USER_SHOP_PERMISSION_CHANGED);
       }
     });
   }
