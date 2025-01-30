@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryChangedEvent;
@@ -18,6 +17,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopDisplayEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
@@ -619,9 +619,14 @@ public class ContainerShop implements Shop, Reloadable {
     if(player.equals(getOwner().getUniqueId())) {
       return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
     }
+
     final String group = getPermissionAudiences().getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
     if(plugin.getShopPermissionManager().hasGroup(group)) {
-      return group;
+
+      final ShopPlayerGroupEvent event = new ShopPlayerGroupEvent(Phase.RETRIEVE, this, player, group);
+      event.callEvent();
+
+      return event.updated();
     }
     return BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
   }
@@ -1543,12 +1548,20 @@ public class ContainerShop implements Shop, Reloadable {
     if(group == null) {
       group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
     }
-    new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group).callEvent();
+
+    ShopPlayerGroupEvent event = new ShopPlayerGroupEvent(Phase.PRE, this, player, getPlayerGroup(player), group);
+    event.callEvent();
+
     if(group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
+
       this.playerGroup.remove(player);
     } else {
+
       this.playerGroup.put(player, group);
     }
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
     setDirty();
   }
 
@@ -1558,12 +1571,19 @@ public class ContainerShop implements Shop, Reloadable {
     if(group == null) {
       group = BuiltInShopPermissionGroup.EVERYONE;
     }
-    new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
+
+    ShopPlayerGroupEvent event = new ShopPlayerGroupEvent(Phase.PRE, this, player, getPlayerGroup(player), group.getNamespacedNode());
+    event.callEvent();
     if(group == BuiltInShopPermissionGroup.EVERYONE) {
+
       this.playerGroup.remove(player);
     } else {
+
       setPlayerGroup(player, group.getNamespacedNode());
     }
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
     setDirty();
   }
 

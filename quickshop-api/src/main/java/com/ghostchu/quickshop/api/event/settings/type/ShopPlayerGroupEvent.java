@@ -22,6 +22,8 @@ import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 /**
  * ShopPlayerGroupEvent represents an event that is tied to actions/retrieval of the Shop player group
  * setting for a shop.
@@ -31,15 +33,56 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ShopPlayerGroupEvent extends ShopSettingEvent<String> {
 
+  protected final UUID player;
+
   public ShopPlayerGroupEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final @NotNull String old) {
+                              final @NotNull UUID player, final @NotNull String old) {
 
     super(phase, shop, old);
+
+    this.player = player;
   }
 
   public ShopPlayerGroupEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final @NotNull String old, final @NotNull String updated) {
+                              final @NotNull UUID player, final @NotNull String old,
+                              final @NotNull String updated) {
 
     super(phase, shop, old, updated);
+
+    this.player = player;
+  }
+
+  public UUID player() {
+
+    return player;
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopPlayerGroupEvent clone(final Phase newPhase, final String old, final String updated) {
+
+    return new ShopPlayerGroupEvent(newPhase, this.shop, this.player, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopPlayerGroupEvent clone(final Phase newPhase) {
+
+    return new ShopPlayerGroupEvent(newPhase, this.shop, this.player, this.old, this.updated);
   }
 }

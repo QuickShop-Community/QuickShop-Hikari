@@ -1,12 +1,11 @@
 package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
-import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -219,15 +218,15 @@ public class MessageFactory {
   }
 
   @NotNull
-  public MessageEmbed shopPermissionChanged(@NotNull final ShopPlayerGroupSetEvent event) {
+  public MessageEmbed shopPermissionChanged(@NotNull final ShopPlayerGroupEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-    placeHolders.put("change-permission.player", getPlayerName(QUserImpl.createSync(plugin.getPlayerFinder(), event.getPlayer())));
-    placeHolders.put("change-permission.from-group", event.getOldGroup());
-    placeHolders.put("change-permission.to-group", event.getNewGroup());
-    final List<String> oldPermissions = plugin.getShopPermissionManager().getGroupPermissions(event.getOldGroup());
-    final List<String> newPermissions = new ArrayList<>(plugin.getShopPermissionManager().getGroupPermissions(event.getNewGroup()));
+    placeHolders.put("change-permission.player", getPlayerName(QUserImpl.createSync(plugin.getPlayerFinder(), event.player())));
+    placeHolders.put("change-permission.from-group", event.old());
+    placeHolders.put("change-permission.to-group", event.updated());
+    final List<String> oldPermissions = plugin.getShopPermissionManager().getGroupPermissions(event.old());
+    final List<String> newPermissions = new ArrayList<>(plugin.getShopPermissionManager().getGroupPermissions(event.updated()));
     newPermissions.removeAll(oldPermissions);
     final StringJoiner builder = new StringJoiner("\n");
     if(newPermissions.isEmpty()) {
