@@ -20,7 +20,6 @@ package com.ghostchu.quickshop.shop.display.virtual;
 
 import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.display.ShopDisplayItemSpawnEvent;
-import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerInitEvent;
 import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendDestroyEvent;
 import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendMetaEvent;
 import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendSpawnEvent;
