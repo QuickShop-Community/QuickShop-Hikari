@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.event.settings.type;
+package com.ghostchu.quickshop.api.event.settings.type.benefit;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -24,7 +24,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ShopBenefitEvent represents an event that is tied to actions/retrieval of the Shop benefit setting for
+ * ShopBenefitEvent represents an event that is tied to retrieval of the Shop benefit setting for
  * a shop.
  *
  * @author creatorfromhell

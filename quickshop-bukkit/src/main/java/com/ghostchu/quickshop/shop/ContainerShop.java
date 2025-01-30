@@ -19,6 +19,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -1656,7 +1657,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull Benefit getShopBenefit() {
 
-    return this.benefit;
+    final ShopBenefitEvent event = (ShopBenefitEvent)ShopBenefitEvent.RETRIEVE(this, this.benefit);
+    event.callEvent();
+
+    return event.updated();
   }
 
   @Override
