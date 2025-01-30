@@ -19,7 +19,7 @@ package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
@@ -196,17 +196,23 @@ public class ShopUtil {
 
       for(final Shop shop : shops) {
 
+        ShopOwnerEvent event = (ShopOwnerEvent)ShopOwnerEvent.PRE(shop, shop.getOwner(), to);
+        event.callEvent();
 
-
-        final ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), to);
+        event = (ShopOwnerEvent)event.clone(Phase.MAIN);
         if(event.callCancellableEvent()) {
           continue;
         }
-        shop.setOwner(to);
-      }
-      if(sendMessage) {
-        QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", to).send();
-        QuickShop.getInstance().text().of(to, "transfer-accepted-toside", from).send();
+        shop.setOwner(event.updated());
+
+        event = (ShopOwnerEvent)event.clone(Phase.POST);
+        event.callEvent();
+
+
+        if(sendMessage) {
+          QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", event.updated()).send();
+          QuickShop.getInstance().text().of(event.updated(), "transfer-accepted-toside", from).send();
+        }
       }
     }
   }

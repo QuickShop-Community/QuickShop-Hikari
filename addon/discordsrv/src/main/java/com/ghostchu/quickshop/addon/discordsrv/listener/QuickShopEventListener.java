@@ -6,9 +6,9 @@ import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.database.DiscordDatabaseHelper;
 import com.ghostchu.quickshop.addon.discordsrv.wrapper.JDAWrapper;
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
@@ -148,18 +148,22 @@ public class QuickShopEventListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onShopTransfer(final ShopOwnershipTransferEvent event) {
+  public void onShopTransfer(final ShopOwnerEvent event) {
+
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
 
     notifyShopTransfer(event);
     notifyModShopTransfer(event);
   }
 
-  private void notifyShopTransfer(final ShopOwnershipTransferEvent event) {
+  private void notifyShopTransfer(final ShopOwnerEvent event) {
 
-    Util.asyncThreadRun(()->sendMessageIfEnabled(event.getNewOwner(), plugin.getFactory().shopTransferToYou(event), NotificationFeature.USER_SHOP_TRANSFER));
+    Util.asyncThreadRun(()->sendMessageIfEnabled(event.updated(), plugin.getFactory().shopTransferToYou(event), NotificationFeature.USER_SHOP_TRANSFER));
   }
 
-  private void notifyModShopTransfer(final ShopOwnershipTransferEvent event) {
+  private void notifyModShopTransfer(final ShopOwnerEvent event) {
 
     Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modShopTransfer(event), NotificationFeature.MOD_SHOP_TRANSFER));
   }

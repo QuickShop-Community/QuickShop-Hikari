@@ -3,12 +3,12 @@ package com.ghostchu.quickshop.addon.dynmap;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
@@ -124,9 +124,13 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopOwnershipTransferEvent event) {
+  public void onEvent(final ShopOwnerEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @EventHandler(ignoreCancelled = true)

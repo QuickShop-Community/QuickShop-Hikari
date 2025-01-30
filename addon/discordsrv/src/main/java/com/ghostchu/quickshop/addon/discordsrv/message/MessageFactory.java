@@ -1,10 +1,10 @@
 package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
@@ -178,22 +178,22 @@ public class MessageFactory {
   }
 
   @NotNull
-  public MessageEmbed shopTransferToYou(@NotNull final ShopOwnershipTransferEvent event) {
+  public MessageEmbed shopTransferToYou(@NotNull final ShopOwnerEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-    placeHolders.put("transfer.from", getPlayerName(event.getOldOwner()));
-    placeHolders.put("transfer.to", getPlayerName(event.getNewOwner()));
+    placeHolders.put("transfer.from", getPlayerName(event.old()));
+    placeHolders.put("transfer.to", getPlayerName(event.updated()));
     return messageManager.getEmbedMessage("shop-transfer-to-you", shop.getOwner(), placeHolders);
   }
 
   @NotNull
-  public MessageEmbed modShopTransfer(@NotNull final ShopOwnershipTransferEvent event) {
+  public MessageEmbed modShopTransfer(@NotNull final ShopOwnerEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-    placeHolders.put("transfer.from", getPlayerName(event.getOldOwner()));
-    placeHolders.put("transfer.to", getPlayerName(event.getNewOwner()));
+    placeHolders.put("transfer.from", getPlayerName(event.old()));
+    placeHolders.put("transfer.to", getPlayerName(event.updated()));
     return messageManager.getEmbedMessage("mod-shop-transfer", shop.getOwner(), placeHolders);
   }
 
