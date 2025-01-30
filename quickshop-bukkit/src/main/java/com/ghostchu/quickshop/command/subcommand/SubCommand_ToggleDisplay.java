@@ -3,6 +3,9 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopDisplayEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import org.bukkit.entity.Player;
@@ -27,13 +30,29 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
     if(shop != null) {
       if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY)
          || plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")) {
-        if(shop.isDisableDisplay()) {
+
+        ShopDisplayEvent event = (ShopDisplayEvent)ShopDisplayEvent.PRE(shop, shop.isDisableDisplay(), !shop.isDisableDisplay());
+        event.callEvent();
+
+        event = (ShopDisplayEvent)event.clone(Phase.MAIN);
+        if(event.callCancellableEvent()) {
+
+          plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
+          return;
+        }
+
+        if(event.updated()) {
           shop.setDisableDisplay(false);
+
           plugin.text().of(sender, "display-turn-on").send();
         } else {
           shop.setDisableDisplay(true);
+
           plugin.text().of(sender, "display-turn-off").send();
         }
+
+        event = (ShopDisplayEvent)event.clone(Phase.POST);
+        event.callEvent();
       } else {
         plugin.text().of(sender, "not-managed-shop").send();
       }

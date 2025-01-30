@@ -18,8 +18,9 @@ package com.ghostchu.quickshop.util;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
-import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
@@ -126,11 +127,16 @@ public class ShopUtil {
       }
     }
 
-    final ShopPriceChangeEvent event = new ShopPriceChangeEvent(shop, shop.getPrice(), price);
-    if(Util.fireCancellableEvent(event)) {
+    ShopPriceEvent event = (ShopPriceEvent)ShopPriceEvent.PRE(shop, shop.getPrice(), price);
+    event.callEvent();
+
+    event = (ShopPriceEvent)event.clone(Phase.MAIN);
+
+    if(event.callCancellableEvent()) {
       Log.debug("A plugin cancelled the price change event.");
       return;
     }
+
     if(fee > 0) {
       final SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
               .core(plugin.getEconomy())
@@ -153,11 +159,15 @@ public class ShopUtil {
       plugin.text().of(user,
                        "fee-charged-for-price-change", plugin.getShopManager().format(fee, shop)).send();
     }
+
     // Update the shop
-    shop.setPrice(price);
+    shop.setPrice(event.updated());
     shop.setSignText(plugin.text().findRelativeLanguages(user, false));
     plugin.text().of(user,
-                     "price-is-now", plugin.getShopManager().format(shop.getPrice(), shop)).send();
+                     "price-is-now", plugin.getShopManager().format(event.updated(), shop)).send();
+
+    event = (ShopPriceEvent)event.clone(Phase.POST);
+    event.callEvent();
   }
 
   @Data

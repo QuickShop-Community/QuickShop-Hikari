@@ -14,6 +14,8 @@ import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopDisplayEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
@@ -422,7 +424,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @Nullable String getCurrency() {
 
-    return this.currency;
+    final ShopCurrencyEvent event = (ShopCurrencyEvent)ShopCurrencyEvent.RETRIEVE(this, this.currency);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -1021,7 +1026,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public boolean isDisableDisplay() {
 
-    return disableDisplay;
+    final ShopDisplayEvent event = (ShopDisplayEvent)ShopDisplayEvent.RETRIEVE(this, this.disableDisplay);
+    event.callEvent();
+
+    return event.updated();
   }
 
   @Override

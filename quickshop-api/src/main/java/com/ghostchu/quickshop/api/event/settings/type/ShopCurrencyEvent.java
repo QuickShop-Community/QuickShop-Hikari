@@ -32,13 +32,13 @@ import org.jetbrains.annotations.NotNull;
 public class ShopCurrencyEvent extends ShopSettingEvent<String> {
 
   public ShopCurrencyEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final @NotNull String old) {
+                           final String old) {
 
     super(phase, shop, old);
   }
 
   public ShopCurrencyEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final @NotNull String old, final @NotNull String updated) {
+                           final String old, final String updated) {
 
     super(phase, shop, old, updated);
   }

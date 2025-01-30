@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * ShopDisplayEvent represents an event that is tied to actions/retrieval of the Shop display setting for
- * a shop.
+ * a shop. The setting is to disableDisplays, so true means it's disabled, while false means it's enabled.
  *
  * @author creatorfromhell
  * @since 6.2.0.9

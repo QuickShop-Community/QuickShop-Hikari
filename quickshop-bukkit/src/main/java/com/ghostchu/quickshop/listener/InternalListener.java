@@ -1,12 +1,13 @@
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -130,10 +131,14 @@ public class InternalListener extends AbstractQSListener {
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopPriceChanges(final ShopPriceChangeEvent event) {
+  public void shopPriceChanges(final ShopPriceEvent event) {
+
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
 
     if(loggingAction) {
-      plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getNewPrice()));
+      plugin.logEvent(new ShopPriceChangedLog(event.shop().saveToInfoStorage(), event.old(), event.updated()));
     }
   }
 

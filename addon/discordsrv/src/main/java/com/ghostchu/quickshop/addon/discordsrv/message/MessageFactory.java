@@ -1,12 +1,13 @@
 package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.event.details.ShopPlayerGroupSetEvent;
-import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -198,22 +199,22 @@ public class MessageFactory {
   }
 
   @NotNull
-  public MessageEmbed priceChanged(@NotNull final ShopPriceChangeEvent event) {
+  public MessageEmbed priceChanged(@NotNull final ShopPriceEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-    placeHolders.put("change-price.from", String.valueOf(event.getOldPrice()));
-    placeHolders.put("change-price.to", String.valueOf(event.getNewPrice()));
+    placeHolders.put("change-price.from", String.valueOf(event.old()));
+    placeHolders.put("change-price.to", String.valueOf(event.updated()));
     return messageManager.getEmbedMessage("shop-price-changed", shop.getOwner(), placeHolders);
   }
 
   @NotNull
-  public MessageEmbed modPriceChanged(@NotNull final ShopPriceChangeEvent event) {
+  public MessageEmbed modPriceChanged(@NotNull final ShopPriceEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-    placeHolders.put("change-price.from", String.valueOf(event.getOldPrice()));
-    placeHolders.put("change-price.to", String.valueOf(event.getNewPrice()));
+    placeHolders.put("change-price.from", String.valueOf(event.old()));
+    placeHolders.put("change-price.to", String.valueOf(event.updated()));
     return messageManager.getEmbedMessage("mod-shop-price-changed", shop.getOwner(), placeHolders);
   }
 
