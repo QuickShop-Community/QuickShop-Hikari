@@ -24,6 +24,8 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   private final Lock LOCK = new ReentrantLock();
   private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
 
+  private final Map<String, ControlComponent> controlPanelComponents = new LinkedHashMap<>();
+
   public SimpleShopControlPanelManager(final QuickShop plugin) {
 
     this.plugin = plugin;
@@ -39,10 +41,10 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
     for(final ShopControlPanel entry : registry.keySet()) {
       try {
         total.addAll(entry.generate(player, shop));
-      } catch(Exception e) {
+      } catch(final Exception e) {
         try {
           plugin.logger().warn("Failed to generate control panel for {}. Contact the developer of the plugin {}.", entry.getPlugin().getName(), entry.getClass().getName());
-        } catch(Exception e2) {
+        } catch(final Exception e2) {
           plugin.logger().warn("Failed to generate control panel for {}. Contact the developer of that plugin", entry.getClass().getName());
         }
       }
