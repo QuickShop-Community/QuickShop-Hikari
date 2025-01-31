@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.shop.display;
 /*
  * QuickShop-Hikari
- * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,16 +21,12 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * PacketHandler
- *
- * @author creatorfromhell
- * @since 6.2.0.9
- */
-
-/**
  * An interface representing a PacketHandler that processes packets.
  *
  * @param <T> Is the instance to the packet library's internal API for creating/sending packets.
+ *
+ * @author creatorfromhell
+ * @since 6.2.0.9
  */
 public interface PacketHandler<T> {
 

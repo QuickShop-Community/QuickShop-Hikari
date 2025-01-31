@@ -277,7 +277,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @Override
   public @NotNull List<Shop> getAllShops() {
 
-    try(PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
       final List<Shop> shopsCollected = new ArrayList<>();
       for(final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
         for(final Map<Location, Shop> shopData : shopMapData.values()) {
@@ -515,6 +515,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
     if(inWorld == null) {
+
       return null;
     }
     return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));

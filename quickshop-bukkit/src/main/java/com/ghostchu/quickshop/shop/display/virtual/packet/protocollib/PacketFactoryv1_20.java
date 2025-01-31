@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop.display.virtual.packet.protocollib;
 /*
  * QuickShop-Hikari
- * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -223,7 +223,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
             }
             if(target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
               target.getPacketSenders().add(player.getUniqueId());
-              target.sendDestroyItem(player);
+              target.sendDestroyPacket(player);
               target.sendFakeItem(player);
             }
           }
@@ -277,7 +277,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
 
               continue;
             }
-            target.sendDestroyItem(player);
+            target.sendDestroyPacket(player);
             target.getPacketSenders().remove(player.getUniqueId());
           }
           return targetList;

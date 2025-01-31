@@ -1,7 +1,7 @@
-package com.ghostchu.quickshop.api.event.packet;
+package com.ghostchu.quickshop.api.event.packet.handler;
 /*
  * QuickShop-Hikari
- * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.packet;
  */
 
 import com.ghostchu.quickshop.api.event.QSCancellable;
+import com.ghostchu.quickshop.api.event.packet.PacketHandlerEvent;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;

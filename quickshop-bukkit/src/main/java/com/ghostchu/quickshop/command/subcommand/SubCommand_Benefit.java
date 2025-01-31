@@ -4,6 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitAddEvent;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitRemoveEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -85,24 +88,45 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       final String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
       Util.mainThreadRun(()->{
         try {
-          final double percent = Double.parseDouble(percentageStr);
+          double percent = Double.parseDouble(percentageStr);
           if(Double.isInfinite(percent) || Double.isNaN(percent)) {
             plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
             return;
           }
+
+          ShopBenefitAddEvent event = (ShopBenefitAddEvent)ShopBenefitAddEvent.PRE(shop, 0.0d, percent);
+          event.callEvent();
+
+          event = (ShopBenefitAddEvent)event.clone(Phase.MAIN);
+          if(event.callCancellableEvent()) {
+
+            plugin.logger().info("Plugin cancelled ShopBenefitAddEvent");
+            plugin.text().of(sender, "internal-error").send();
+            return;
+          }
+
+          percent = event.updated();
+
           if(percent <= 0 || percent >= 100) {
             plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
             return;
           }
+
           final Benefit benefit = shop.getShopBenefit();
+
+
           benefit.addBenefit(qUser, percent / 100d);
           shop.setShopBenefit(benefit);
+
+          event = (ShopBenefitAddEvent)event.clone(Phase.POST);
+          event.callEvent();
+
           plugin.text().of(sender, "benefit-added", qUser.getDisplay()).send();
-        } catch(NumberFormatException e) {
+        } catch(final NumberFormatException e) {
           plugin.text().of(sender, "not-a-number", percentageStr).send();
-        } catch(Benefit.BenefitOverflowException e) {
+        } catch(final Benefit.BenefitOverflowException e) {
           plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
-        } catch(Benefit.BenefitExistsException e) {
+        } catch(final Benefit.BenefitExistsException e) {
           plugin.text().of(sender, "benefit-exists").send();
         }
       });
@@ -110,12 +134,6 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       plugin.logger().warn("Failed to get uuid of player " + player, e);
       plugin.text().of(sender, "internal-error").send();
       return null;
-    });
-
-
-    plugin.getPlayerFinder().name2UuidFuture(player).whenComplete((uuid, throwable)->{
-
-
     });
 
   }
@@ -133,9 +151,28 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 plugin.text().of(sender, "unknown-player", player).send();
                 return;
               }
+
               final Benefit benefit = shop.getShopBenefit();
+
+              final Double percent = benefit.getRegistry().getOrDefault(qUser, 0.0d);
+
+              ShopBenefitRemoveEvent event = (ShopBenefitRemoveEvent)ShopBenefitRemoveEvent.PRE(shop, percent, 0.0d);
+              event.callEvent();
+
+              event = (ShopBenefitRemoveEvent)event.clone(Phase.MAIN);
+              if(event.callCancellableEvent()) {
+
+                plugin.logger().info("Plugin cancelled ShopBenefitRemoveEvent");
+                plugin.text().of(sender, "internal-error").send();
+                return;
+              }
+
               benefit.removeBenefit(qUser);
               shop.setShopBenefit(benefit);
+
+              event = (ShopBenefitRemoveEvent)event.clone(Phase.POST);
+              event.callEvent();
+
               plugin.text().of(sender, "benefit-removed", qUser.getDisplay()).send();
             })
             .exceptionally(e->{
@@ -150,7 +187,9 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
     plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
     Util.asyncThreadRun(()->{
+
       for(final Map.Entry<QUser, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
+
         final String v = MsgUtil.decimalFormat(entry.getValue() * 100);
         plugin.text().of(sender, "benefit-query-list", entry.getKey().getDisplay(), v + "%").send();
       }

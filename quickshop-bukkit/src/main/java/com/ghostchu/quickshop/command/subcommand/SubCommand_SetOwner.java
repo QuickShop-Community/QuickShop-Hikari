@@ -3,7 +3,8 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.obj.QUserImpl;
@@ -50,14 +51,24 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
                 plugin.text().of(sender, "unknown-player").send();
                 return;
               }
-              final ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
-              if(event.callCancellableEvent()) {
+
+              ShopOwnerEvent event = new ShopOwnerEvent(Phase.PRE, shop, shop.getOwner(), newShopOwner);
+              event.callEvent();
+
+              final ShopOwnerEvent main = (ShopOwnerEvent)event.clone(Phase.MAIN);
+              if(main.callCancellableEvent()) {
                 return;
               }
+
               Util.mainThreadRun(()->{
-                shop.setOwner(newShopOwner);
-                plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
+                shop.setOwner(main.updated());
+
+                plugin.text().of(sender, "command.new-owner", main.updated().getDisplay()).send();
               });
+
+              event = (ShopOwnerEvent)main.clone(Phase.POST);
+              event.callEvent();
+
             })
             .exceptionally(throwable->{
               plugin.text().of(sender, "internal-error", throwable.getMessage()).send();

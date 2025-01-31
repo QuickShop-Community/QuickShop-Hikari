@@ -1,15 +1,16 @@
 package com.ghostchu.quickshop.addon.dynmap;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
-import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
-import com.ghostchu.quickshop.api.event.details.ShopNamingEvent;
-import com.ghostchu.quickshop.api.event.details.ShopOwnershipTransferEvent;
-import com.ghostchu.quickshop.api.event.details.ShopPriceChangeEvent;
-import com.ghostchu.quickshop.api.event.details.ShopTypeChangeEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
@@ -103,21 +104,33 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopPriceChangeEvent event) {
+  public void onEvent(final ShopPriceEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopItemChangeEvent event) {
+  public void onEvent(final ShopItemEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(event.phase() != Phase.POST) {
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopOwnershipTransferEvent event) {
+  public void onEvent(final ShopOwnerEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(!event.isPhase(Phase.POST)) {
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @EventHandler(ignoreCancelled = true)
@@ -127,15 +140,25 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopTypeChangeEvent event) {
+  public void onEvent(final ShopTypeEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(event.phase() != Phase.POST) {
+
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopNamingEvent event) {
+  public void onEvent(final ShopNameEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(event.phase() != Phase.POST) {
+
+      return;
+    }
+
+    Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
   @NotNull
