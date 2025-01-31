@@ -55,7 +55,7 @@
         <compat.chestprotect>5.19.16</compat.chestprotect>
         <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
         <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
-        <compat.eco>6.74.5</compat.eco>
+        <compat.eco>6.75.1</compat.eco>
         <compat.ecoenchants>12.19.3</compat.ecoenchants>
         <compat.elitemobs>9.2.3</compat.elitemobs>
         <compat.griefprevention>17.0.0</compat.griefprevention>
