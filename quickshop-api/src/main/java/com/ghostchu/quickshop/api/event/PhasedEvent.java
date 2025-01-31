@@ -34,6 +34,7 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
   //Cancellable variables.
   protected Component cancelReason = null;
   protected boolean cancelled = false;
+  protected boolean canCancel = true;
 
   public PhasedEvent() {
 
@@ -103,7 +104,7 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
   @Override
   public boolean isCancelled() {
 
-    return this.cancelled && phase.cancellable();
+    return this.cancelled && phase.cancellable() && canCancel;
   }
 
 
