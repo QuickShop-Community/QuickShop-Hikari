@@ -18,9 +18,10 @@ package com.ghostchu.quickshop.shop.controlpanel.component;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.shop.ControlComponent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.controlpanel.ControlComponent;
 import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -56,11 +57,11 @@ public class DisplayComponent implements ControlComponent {
    * @return True if the Player can interact with the Shop, false otherwise.
    */
   @Override
-  public boolean applies(final @NotNull QuickShop plugin, final @NotNull Player sender, final @NotNull Shop shop) {
+  public boolean applies(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    return (plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")
+    return (((QuickShop)plugin).perm().hasPermission(sender, "quickshop.other.toggledisplay")
             || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY))
-           && plugin.isDisplayEnabled();
+           && ((QuickShop)plugin).isDisplayEnabled();
   }
 
   /**
@@ -72,10 +73,10 @@ public class DisplayComponent implements ControlComponent {
    * @return A Component object based on the provided player and shop.
    */
   @Override
-  public Component generate(final @NotNull QuickShop plugin, final @NotNull Player sender, final @NotNull Shop shop) {
-    final Component text = plugin.text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
-    final Component hoverText = plugin.text().of(sender, "controlpanel.toggledisplay-hover").forLocale();
-    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silenttoggledisplay"), shop.getRuntimeRandomUniqueId().toString());
+  public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
+    final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
+    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.toggledisplay-hover").forLocale();
+    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silenttoggledisplay"), shop.getRuntimeRandomUniqueId().toString());
     return text.hoverEvent(HoverEvent.showText(hoverText))
             .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
   }

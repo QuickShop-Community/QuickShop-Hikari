@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * The shop control panel impl.
@@ -22,7 +22,7 @@ public interface ShopControlPanel {
    * new line.
    */
   @NotNull
-  List<Component> generate(@NotNull Player player, @NotNull Shop shop);
+  LinkedList<Component> generate(@NotNull Player player, @NotNull Shop shop);
 
   /**
    * Usually you don't need touch this :)

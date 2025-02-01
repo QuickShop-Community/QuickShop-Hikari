@@ -30,12 +30,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * FreezeComponent
+ * ShopModeComponent
  *
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class FreezeComponent implements ControlComponent {
+public class ShopModeComponent implements ControlComponent {
 
   /**
    * Retrieves an identifier.
@@ -45,7 +45,7 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public String identifier() {
 
-    return "freeze";
+    return "shop_mode";
   }
 
   /**
@@ -59,9 +59,10 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public boolean applies(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    return QuickShop.getInstance().perm().hasPermission(sender, "quickshop.other.freeze")
-           || (QuickShop.getInstance().perm().hasPermission(sender, "quickshop.togglefreeze")
-               && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE));
+    return ((QuickShop)plugin).perm().hasPermission(sender, "quickshop.create.buy")
+           && ((QuickShop)plugin).perm().hasPermission(sender, "quickshop.create.sell")
+           && (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE) ||
+               ((QuickShop)plugin).perm().hasPermission(sender, "quickshop.create.admin"));
   }
 
   /**
@@ -75,12 +76,24 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    final String path = shop.isFrozen()? "controlpanel.unfreeze" : "controlpanel.freeze";
-    final Component text = ((QuickShop)plugin).text().of(sender, path, MsgUtil.bool2String(shop.isFrozen())).forLocale();
+    if (shop.isSelling()) {
 
-    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.freeze-hover").forLocale();
-    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentfreeze"), shop.getRuntimeRandomUniqueId().toString());
-    return text.hoverEvent(HoverEvent.showText(hoverText))
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+      final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-selling").forLocale();
+      final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-selling-hover").forLocale();
+      final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentbuy"), shop.getRuntimeRandomUniqueId().toString());
+
+      return text.hoverEvent(HoverEvent.showText(hoverText))
+              .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+    } else if (shop.isBuying()) {
+
+      final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-buying").forLocale();
+      final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-buying-hover").forLocale();
+      final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentsell"), shop.getRuntimeRandomUniqueId().toString());
+
+      return text.hoverEvent(HoverEvent.showText(hoverText))
+              .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+    }
+
+    return null;
   }
 }

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.controlpanel;
+package com.ghostchu.quickshop.api.shop;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -17,13 +17,10 @@ package com.ghostchu.quickshop.shop.controlpanel;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.QuickShopAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.LinkedList;
 
 /**
  * ControlComponent
@@ -47,7 +44,7 @@ public interface ControlComponent {
    * @param shop The Shop object to check interaction with.
    * @return True if the Player can interact with the Shop, false otherwise.
    */
-  boolean applies(final @NotNull QuickShop plugin, @NotNull final Player sender, @NotNull final Shop shop);
+  boolean applies(final @NotNull QuickShopAPI plugin, @NotNull final Player sender, @NotNull final Shop shop);
 
   /**
    * Generates a Component based on the player and shop provided.
@@ -56,5 +53,5 @@ public interface ControlComponent {
    * @param shop The Shop object representing the shop for which components are being generated.
    * @return A Component object based on the provided player and shop.
    */
-  Component generate(final @NotNull QuickShop plugin, @NotNull final Player sender, @NotNull final Shop shop);
+  Component generate(final @NotNull QuickShopAPI plugin, @NotNull final Player sender, @NotNull final Shop shop);
 }

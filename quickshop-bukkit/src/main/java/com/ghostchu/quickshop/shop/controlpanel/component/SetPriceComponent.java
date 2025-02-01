@@ -26,16 +26,17 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * FreezeComponent
+ * SetPriceComponent
  *
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class FreezeComponent implements ControlComponent {
+public class SetPriceComponent implements ControlComponent {
 
   /**
    * Retrieves an identifier.
@@ -45,7 +46,7 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public String identifier() {
 
-    return "freeze";
+    return "set_price";
   }
 
   /**
@@ -59,9 +60,9 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public boolean applies(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    return QuickShop.getInstance().perm().hasPermission(sender, "quickshop.other.freeze")
-           || (QuickShop.getInstance().perm().hasPermission(sender, "quickshop.togglefreeze")
-               && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE));
+    return ((QuickShop)plugin).perm().hasPermission(sender, "quickshop.other.price")
+           || (((QuickShop)plugin).perm().hasPermission(sender, "quickshop.create.changeprice")
+               && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE));
   }
 
   /**
@@ -75,12 +76,16 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    final String path = shop.isFrozen()? "controlpanel.unfreeze" : "controlpanel.freeze";
-    final Component text = ((QuickShop)plugin).text().of(sender, path, MsgUtil.bool2String(shop.isFrozen())).forLocale();
+    final Component text = MsgUtil.fillArgs(
+            ((QuickShop)plugin).text().of(sender, "controlpanel.price").forLocale(),
+            LegacyComponentSerializer.legacySection().deserialize(
+                    (((QuickShop)plugin).getConfig().getBoolean("use-decimal-format"))
+                    ? MsgUtil.decimalFormat(shop.getPrice())
+                    : Double.toString(shop.getPrice())));
+    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.price-hover").forLocale();
+    final String clickCommand = MsgUtil.fillArgs("/{0} {1} ", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("price"));
 
-    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.freeze-hover").forLocale();
-    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentfreeze"), shop.getRuntimeRandomUniqueId().toString());
     return text.hoverEvent(HoverEvent.showText(hoverText))
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
   }
 }

@@ -21,7 +21,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.ControlComponent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -30,12 +29,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * FreezeComponent
+ * RefillComponent
  *
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class FreezeComponent implements ControlComponent {
+public class RefillComponent implements ControlComponent {
 
   /**
    * Retrieves an identifier.
@@ -45,7 +44,7 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public String identifier() {
 
-    return "freeze";
+    return "refill";
   }
 
   /**
@@ -59,9 +58,7 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public boolean applies(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    return QuickShop.getInstance().perm().hasPermission(sender, "quickshop.other.freeze")
-           || (QuickShop.getInstance().perm().hasPermission(sender, "quickshop.togglefreeze")
-               && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE));
+    return !shop.isUnlimited() && ((QuickShop)plugin).perm().hasPermission(sender, "quickshop.refill");
   }
 
   /**
@@ -75,12 +72,11 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    final String path = shop.isFrozen()? "controlpanel.unfreeze" : "controlpanel.freeze";
-    final Component text = ((QuickShop)plugin).text().of(sender, path, MsgUtil.bool2String(shop.isFrozen())).forLocale();
+    final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.refill", shop.getPrice()).forLocale();
+    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.refill-hover").forLocale();
+    final String clickCommand = MsgUtil.fillArgs("/{0} {1} ", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("refill"));
 
-    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.freeze-hover").forLocale();
-    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentfreeze"), shop.getRuntimeRandomUniqueId().toString());
     return text.hoverEvent(HoverEvent.showText(hoverText))
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
   }
 }

@@ -18,8 +18,9 @@ package com.ghostchu.quickshop.shop.controlpanel.component;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.shop.ControlComponent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.controlpanel.ControlComponent;
 import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -55,7 +56,7 @@ public class UnlimitedComponent implements ControlComponent {
    * @return True if the Player can interact with the Shop, false otherwise.
    */
   @Override
-  public boolean applies(final @NotNull QuickShop plugin, final @NotNull Player sender, final @NotNull Shop shop) {
+  public boolean applies(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
     return sender.hasPermission("quickshop.unlimited");
   }
@@ -69,11 +70,11 @@ public class UnlimitedComponent implements ControlComponent {
    * @return A Component object based on the provided player and shop.
    */
   @Override
-  public Component generate(final @NotNull QuickShop plugin, final @NotNull Player sender, final @NotNull Shop shop) {
+  public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    final Component text = plugin.text().of(sender, "controlpanel.unlimited", MsgUtil.bool2String(shop.isUnlimited())).forLocale();
-    final Component hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
-    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentunlimited"), shop.getRuntimeRandomUniqueId().toString());
+    final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.unlimited", MsgUtil.bool2String(shop.isUnlimited())).forLocale();
+    final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.unlimited-hover").forLocale();
+    final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentunlimited"), shop.getRuntimeRandomUniqueId().toString());
     return text.hoverEvent(HoverEvent.showText(hoverText))
             .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
   }
