@@ -101,7 +101,7 @@ menu:
   owner: '<green>Właściciel: {0}'
   preview: <aqua>[Podgląd przedmiotu]
   enchants: <dark_purple>Enchanty
-  sell-tax-self: <green>Nie płaciłeś podatków, ponieważ posiadasz ten sklep.
+  sell-tax-self: <green>Nie zapłaciłeś podatku, ponieważ posiadasz ten sklep.
   shop-information: '<green>Info:'
   item: '<green>Przedmiot: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}

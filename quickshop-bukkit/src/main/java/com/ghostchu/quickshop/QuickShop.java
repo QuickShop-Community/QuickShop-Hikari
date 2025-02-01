@@ -767,6 +767,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     // Register events
     // Listeners (These don't)
     registerListeners();
+    this.shopControlPanelManager.initialize();
     this.shopControlPanelManager.register(new SimpleShopControlPanel());
     this.registerDisplayItem();
     this.registerShopLock();
@@ -1234,6 +1235,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public @NotNull TextManager text() {
 
     return this.textManager;
+  }
+
+  public ShopControlPanelManager controlPanelManager() {
+
+    return shopControlPanelManager;
   }
 
   public MenuPlayer createMenuPlayer(final OfflinePlayer player) {
