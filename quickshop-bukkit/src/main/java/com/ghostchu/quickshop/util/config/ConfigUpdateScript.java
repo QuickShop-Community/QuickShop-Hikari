@@ -23,6 +23,15 @@ public class ConfigUpdateScript {
     this.plugin = plugin;
   }
 
+  @UpdateScript(version = 1031)
+  public void configControlPanel() {
+
+    getConfig().set("shop.control-panel", List.of("owner", "unlimited", "freeze", "shop_mode",
+                                                  "set_price", "set_amount", "refill", "empty",
+                                                  "display", "history", "remove"));
+    getConfig().set("shop.sign-wax", false);
+  }
+
   @UpdateScript(version = 1029)
   public void configWorldLoadingBlacklist() {
 

@@ -1622,10 +1622,13 @@ public class ContainerShop implements Shop, Reloadable {
         sign.setColor(dyeColor);
       }
       final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax");
+
       sign.setGlowingText(isGlowing);
-      sign.setWaxed(true);
+      sign.setWaxed(isWaxed);
       sign.update(true);
       plugin.getPlatform().setLines(sign, event.updated());
+
       new ShopSignUpdateEvent(this, sign).callEvent();
     }
     if(plugin.getSignHooker() != null) {

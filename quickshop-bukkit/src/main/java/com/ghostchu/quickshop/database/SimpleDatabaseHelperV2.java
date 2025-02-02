@@ -59,7 +59,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   private final String prefix;
 
-  private final int LATEST_DATABASE_VERSION = 17;
+  private final int LATEST_DATABASE_VERSION = 18;
 
   public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
@@ -217,9 +217,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     fastBackup();
     try {
       getManager().alterTable(DataTables.DATA.getName())
-              .addColumn("encoded", "TEXT NOT NULL")
+              .addColumn("encoded", "TEXT")
               .execute();
+
     } catch(final SQLException e) {
+
       Log.debug("Failed to add encoded " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
     }
   }
@@ -936,11 +938,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
       int currentDatabaseVersion = parent.getDatabaseVersion();
       if(currentDatabaseVersion == -1) {
-        currentDatabaseVersion = 17;
+
+        currentDatabaseVersion = parent.LATEST_DATABASE_VERSION;
       }
+
       if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
         throw new IllegalStateException("The database version is newer than this build supported.");
       }
+
       if(currentDatabaseVersion == parent.LATEST_DATABASE_VERSION) {
         return;
       }
@@ -992,9 +997,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       }
 
       if(currentDatabaseVersion == 16) {
-        logger.info("Data upgrading: Creating a new column... new_item for enhanced item storage.");
+        logger.info("Data upgrading: Creating a new column... encoded for enhanced item storage.");
         parent.addEncodedColumn();
         currentDatabaseVersion = 17;
+      }
+
+      //duplicate to correct issues if some folks upgraded to an early build with the error
+      if(currentDatabaseVersion == 17) {
+        logger.info("Data upgrading: Creating a new column... encoded for enhanced item storage.");
+        parent.addEncodedColumn();
+        currentDatabaseVersion = 18;
       }
       parent.setDatabaseVersion(currentDatabaseVersion).join();
     }

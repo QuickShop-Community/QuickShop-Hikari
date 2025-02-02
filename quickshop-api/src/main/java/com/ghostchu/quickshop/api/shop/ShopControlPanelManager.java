@@ -5,6 +5,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 /**
  * Shop Control Manager and registry
@@ -26,6 +27,13 @@ public interface ShopControlPanelManager {
    * @return A map containing control components where the key is a string identifier and the value is a ControlComponent object.
    */
   LinkedHashMap<String, ControlComponent> controlComponents();
+
+  /**
+   * Retrieves a list of enabled components.
+   *
+   * @return A LinkedList containing string identifiers of the enabled components.
+   */
+  LinkedList<String> enabledComponents();
 
   /**
    * Adds the provided ControlComponent to the controlComponents map associated with the Shop Control Panel Manager.
