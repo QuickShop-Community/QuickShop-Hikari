@@ -9,8 +9,8 @@ import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryChangedEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopClickEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopLoadEvent;
+import com.ghostchu.quickshop.api.event.management.ShopClickEvent;
+import com.ghostchu.quickshop.api.event.management.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.event.modification.ShopUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
@@ -1186,7 +1186,7 @@ public class ContainerShop implements Shop, Reloadable {
   public void onClick(@NotNull final Player clicker) {
 
     Util.ensureThread(false);
-    final ShopClickEvent event = new ShopClickEvent(this, clicker);
+    final ShopClickEvent event = new ShopClickEvent(this, QUserImpl.createFullFilled(clicker));
     if(Util.fireCancellableEvent(event)) {
       Log.debug("Ignore shop click, because some plugin cancel it.");
       return;
