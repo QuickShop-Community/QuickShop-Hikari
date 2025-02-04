@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: يمكنك تدمير المتجر باستخدام <yellow>الأداة الفائقة.
 fee-charged-for-price-change: <green>لقد دفعت <red>{0}<green> لتغيير السعر.
 not-allowed-to-create: <red>لا يمكنك إنشاء متجرك هنا.
 disabled-in-this-world: Quickshop معطل في هذا العالم
@@ -13,10 +13,10 @@ shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick an
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>يمكنك فقط إدخال رقم، ما ادخلت هو {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>تم إزالة متجرك في {0} لأنك لم يكن لديك ما يكفي من المال للحفاظ عليه!
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
+  amount: '[المبلغ]'
+  item: '[العنصر]'
   price: '[price]'
   name: '[name]'
   range: '[range]'
