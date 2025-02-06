@@ -989,6 +989,9 @@ public class ContainerShop implements Shop, Reloadable {
     if(isBuying()) {
       return getRemainingSpace() > 0;
     }
+    if(isFrozen()) {
+      return getRemainingSpace() > 0;
+    }
     return true;
   }
 
