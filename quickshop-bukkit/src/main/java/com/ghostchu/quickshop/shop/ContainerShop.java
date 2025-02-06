@@ -842,7 +842,7 @@ public class ContainerShop implements Shop, Reloadable {
       case FROZEN -> {
         shopRemaining = 0;
         tradingStringKey = "signs.freeze";
-        noRemainingStringKey = "signs.out-of-stock";
+        noRemainingStringKey = "signs.freeze";
       }
       default -> {
         shopRemaining = 0;
@@ -990,7 +990,7 @@ public class ContainerShop implements Shop, Reloadable {
       return getRemainingSpace() > 0;
     }
     if(isFrozen()) {
-      return getRemainingSpace() > 0;
+      return false;
     }
     return true;
   }
