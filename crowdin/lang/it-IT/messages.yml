@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Fai clic per attivare/disattivare se il negozio conta sempre il contenitore.
   alwayscounting: '<green>Conta sempre: {0}<yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Proprietario: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
-  freeze: '<yellow>Modalità congelato: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Prezzo: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   currency-hover: <yellow>Clicca per impostare o rimuovere la valuta che questo negozio sta usando
   lock: '<yellow>Negozio chiuso: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
