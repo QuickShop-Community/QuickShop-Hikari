@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klicke um zu ändern, ob der Shop immer Zählen soll.
   alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
-  freeze: '<yellow>Eingefroren: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   currency-hover: <yellow>Klicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet
   lock: '<yellow>Shop sperren: <aqua>{0}</aqua> [<light_purple><bold>Ändern</bold></light_purple>]'
