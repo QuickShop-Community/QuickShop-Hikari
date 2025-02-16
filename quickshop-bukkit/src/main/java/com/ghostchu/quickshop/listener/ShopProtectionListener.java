@@ -19,6 +19,8 @@ import org.bukkit.block.Hopper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -26,6 +28,8 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
@@ -140,7 +144,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
       return;
     }
     if(this.hopperOwnerExclude) {
-      if(event.getDestination().getHolder() instanceof Hopper hopper) {
+      if(event.getDestination().getHolder() instanceof final Hopper hopper) {
         final HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
         if(hopperPersistentData != null) {
           if(shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
@@ -155,7 +159,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onPlaceHopper(final BlockPlaceEvent e) {
 
-    if(e.getBlockPlaced().getState() instanceof Hopper hopper) {
+    if(e.getBlockPlaced().getState() instanceof final Hopper hopper) {
       hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
       hopper.update();
     }
@@ -167,6 +171,30 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     for(final BlockState block : e.getBlocks()) {
       if(getShopNature(block.getLocation(), true) != null) {
         e.setCancelled(true);
+      }
+    }
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onPistonExtend(final BlockPistonExtendEvent event) {
+    final List<Block> affectedBlocks = event.getBlocks();
+    for(final Block block : affectedBlocks) {
+
+      if(getShopNature(block.getLocation(), true) != null) {
+        event.setCancelled(true);
+        return;
+      }
+    }
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onPistonRetract(final BlockPistonRetractEvent event) {
+    final List<Block> affectedBlocks = event.getBlocks();
+
+    for(final Block block : affectedBlocks) {
+      if(getShopNature(block.getLocation(), true) != null) {
+        event.setCancelled(true);
+        return;
       }
     }
   }
