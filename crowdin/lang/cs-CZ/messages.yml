@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Vždy počítat {0} <yellow>[<light_purple><bold>Změnit<yellow>]'
   setowner: '<green>Vlastník: <aqua>{0} <yellow>[<light_purple><bold>Změna<yellow>]'
-  freeze: '<yellow>Režim zmražení: <aqua>{0} <yellow>[<light_purple><bold>Přepnout<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Cena: <aqua>{0} <yellow>[<light_purple><bold>Změna<yellow>]'
   currency-hover: <aqua>Klikněte pro nastavení nebo odebrání měny, kterou tento obchod používá
   lock: '<yellow>Zámek obchodu: <aqua>{0} <yellow>[<light_purple><bold>Přepnout<yellow>]'
