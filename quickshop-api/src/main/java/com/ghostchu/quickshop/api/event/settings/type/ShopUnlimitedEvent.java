@@ -42,4 +42,81 @@ public class ShopUnlimitedEvent extends ShopSettingEvent<Boolean> {
 
     super(phase, shop, old, updated);
   }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopUnlimitedEvent clone(final Phase newPhase) {
+
+    return new ShopUnlimitedEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopUnlimitedEvent clone(final Phase newPhase, final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent PRE(final @NotNull Shop shop,
+                                  final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopUnlimitedEvent PRE(final @NotNull Shop shop,
+                                  final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent MAIN(final @NotNull Shop shop,
+                                   final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopUnlimitedEvent MAIN(final @NotNull Shop shop,
+                                   final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent POST(final @NotNull Shop shop,
+                                   final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopUnlimitedEvent POST(final @NotNull Shop shop,
+                                   final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopUnlimitedEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.RETRIEVE, shop, old, updated);
+  }
 }
