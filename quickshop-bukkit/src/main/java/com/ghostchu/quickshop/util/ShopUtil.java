@@ -32,7 +32,11 @@ import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -48,6 +52,29 @@ import static com.ghostchu.quickshop.QuickShop.taskCache;
  * @since 6.2.0.8
  */
 public class ShopUtil {
+
+  public static boolean allowed(final Shop shop, final ItemStack itemStack) {
+
+    if(shop.getLocation().getWorld() != null) {
+
+      final Block block = shop.getLocation().getBlock();
+      return allowed(block, itemStack);
+    }
+
+    return true;
+  }
+
+  public static boolean allowed(final Block shopBlock, final ItemStack itemStack) {
+
+    if(shopBlock.getState() instanceof ShulkerBox
+       && itemStack.getItemMeta() instanceof final BlockStateMeta blockMeta
+       && blockMeta.getBlockState() instanceof ShulkerBox) {
+
+      return false;
+    }
+
+    return true;
+  }
 
   public static void transferRequest(@NotNull final UUID sender, @NotNull final UUID uuid, @NotNull final String name, @NotNull final Shop shop) {
 
