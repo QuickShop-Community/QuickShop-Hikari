@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
   alwayscounting: '<green>Her zaman sayıyor: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   setowner: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   currency-hover: <yellow>Bu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
