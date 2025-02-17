@@ -72,7 +72,7 @@
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
         <compat.worldedit>7.3.9</compat.worldedit>
-        <compat.worldguard>7.0.12</compat.worldguard>
+        <compat.worldguard>7.0.13</compat.worldguard>
     </properties>
 
     <licenses>
