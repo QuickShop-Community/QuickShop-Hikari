@@ -92,11 +92,7 @@ auto-report-errors: true
 include-offlineplayer-list: false
 
 #What economy provider should QuickShop use?
-#0=Vault
-#3=GemsEconomy with Multi-Currency on
-#4=TNE with Multi-Currency on
-#5=CoinsEngine with Multi-Currency on (experimental)
-#6=Treasury with Multi-Currency on (experimental)
+#0=Vault/VaultUnlocked - VaultUnlocked supports multi-currency if you economy plugin supports it.
 #DO NOT TOUCH THIS IF YOU DON'T KNOW WHAT IT DOES. ASK FOR SUPPORT BEFORE TOUCHING THIS!
 economy-type: 0
 

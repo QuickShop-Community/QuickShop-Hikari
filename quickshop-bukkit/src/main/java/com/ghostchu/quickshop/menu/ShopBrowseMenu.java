@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.menu.browse.MainPage;
 import net.tnemc.menu.core.Menu;
 import net.tnemc.menu.core.Page;
+import net.tnemc.menu.core.PlayerInstancePage;
 
 /**
  * ShopBrowseMenu
@@ -40,7 +41,7 @@ public class ShopBrowseMenu extends Menu {
 
     setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "gui.browse.title").legacy()));
 
-    final Page main = new Page(1);
+    final Page main = new PlayerInstancePage(1);
     final MainPage mainPageOpen = new MainPage(this.name, this.name, 1, 1, SHOPS_PAGE, this.rows, "gui.browse.info");
     main.setOpen(mainPageOpen::handle);
     addPage(main);
