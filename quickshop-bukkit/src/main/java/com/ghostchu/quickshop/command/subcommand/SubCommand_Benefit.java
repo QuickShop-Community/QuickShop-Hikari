@@ -94,10 +94,10 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             return;
           }
 
-          ShopBenefitAddEvent event = (ShopBenefitAddEvent)ShopBenefitAddEvent.PRE(shop, 0.0d, percent);
+          ShopBenefitAddEvent event = ShopBenefitAddEvent.PRE(shop, qUser, 0.0d, percent);
           event.callEvent();
 
-          event = (ShopBenefitAddEvent)event.clone(Phase.MAIN);
+          event = event.clone(Phase.MAIN);
           if(event.callCancellableEvent()) {
 
             plugin.logger().info("Plugin cancelled ShopBenefitAddEvent");

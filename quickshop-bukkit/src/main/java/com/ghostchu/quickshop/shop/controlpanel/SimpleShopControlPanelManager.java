@@ -24,7 +24,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -37,6 +39,8 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
 
   private final LinkedHashMap<String, ControlComponent> controlPanelComponents = new LinkedHashMap<>();
+
+  private final LinkedList<String> enabledComponents = new LinkedList<>();
 
   public SimpleShopControlPanelManager(final QuickShop plugin) {
 
@@ -85,6 +89,17 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   }
 
   /**
+   * Retrieves a list of enabled components.
+   *
+   * @return A LinkedList containing string identifiers of the enabled components.
+   */
+  @Override
+  public LinkedList<String> enabledComponents() {
+
+    return enabledComponents;
+  }
+
+  /**
    * Adds the provided ControlComponent to the controlComponents map associated with the Shop
    * Control Panel Manager.
    *
@@ -113,6 +128,15 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
     addComponent(new DisplayComponent());
     addComponent(new HistoryComponent());
     addComponent(new RemoveComponent());
+
+
+    for(final Object component : plugin.getConfig().getList("shop.control-panel", new LinkedList<>(controlPanelComponents.keySet()))) {
+
+      if(component instanceof final String str) {
+
+        enabledComponents.add(str);
+      }
+    }
   }
 
   @Override

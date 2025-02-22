@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.SimpleInfo;
+import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Material;
@@ -56,7 +57,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
             amount = 1;
           }
           item = new ItemStack(material, amount);
-        } catch(NumberFormatException e) {
+        } catch(final NumberFormatException e) {
           item = new ItemStack(material, 1);
         }
       } else {
@@ -69,7 +70,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
     while(bIt.hasNext()) {
       final Block b = bIt.next();
-      if(!Util.canBeShop(b)) {
+      if(!Util.canBeShop(b) || !ShopUtil.allowed(b, item)) {
         continue;
       }
       // Send creation menu.

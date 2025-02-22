@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klikk for å endre om butikken alltid skal telle innholdet i beholderen.
   alwayscounting: '<green>Alltid telle: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   setowner: '<green>Eier: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
-  freeze: '<yellow>Frysmodus: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Pris: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   currency-hover: <yellow>Klikk for å sette eller fjerne valutaen på butikken
   lock: '<yellow>Butikklås: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'

@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Sempre contando: {0} <yellow>[<light_purple><bold>Altere<yellow>]'
   setowner: '<green>Proprietário: <aqua>{0} <yellow>[<light_purple><bold>Mudar<yellow>]'
-  freeze: '<yellow>Modo de bloqueio: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Preço: <aqua>{0} <yellow>[<light_purple><bold>Mudar<yellow>]'
   currency-hover: <yellow>Clique para definir ou remover a moeda que esta loja está usando
   lock: '<yellow>Bloqueio de Loja: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

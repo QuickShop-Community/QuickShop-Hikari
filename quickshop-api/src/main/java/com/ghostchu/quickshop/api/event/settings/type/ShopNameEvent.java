@@ -42,4 +42,81 @@ public class ShopNameEvent extends ShopSettingEvent<String> {
 
     super(phase, shop, old, updated);
   }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopNameEvent clone(final Phase newPhase, final String old, final String updated) {
+
+    return new ShopNameEvent(newPhase, this.shop, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopNameEvent clone(final Phase newPhase) {
+
+    return new ShopNameEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  public static ShopNameEvent PRE(final @NotNull Shop shop,
+                                       final String old) {
+
+    return new ShopNameEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopNameEvent PRE(final @NotNull Shop shop,
+                                      final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopNameEvent MAIN(final @NotNull Shop shop,
+                                       final String old) {
+
+    return new ShopNameEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopNameEvent MAIN(final @NotNull Shop shop,
+                                       final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopNameEvent POST(final @NotNull Shop shop,
+                                       final String old) {
+
+    return new ShopNameEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopNameEvent POST(final @NotNull Shop shop,
+                                       final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopNameEvent RETRIEVE(final @NotNull Shop shop,
+                                           final String old) {
+
+    return new ShopNameEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopNameEvent RETRIEVE(final @NotNull Shop shop,
+                                           final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.RETRIEVE, shop, old, updated);
+  }
 }

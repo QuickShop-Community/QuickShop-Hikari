@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Нажмите, чтобы магазин всегда считал содержимое контейнера.
   alwayscounting: '<green>Всегда считать: {0} <yellow>[<light_purple><bold>Изменить<yellow>]'
   setowner: '<green>Владелец: <aqua>{0} <yellow>[<light_purple><bold>Изменить<yellow>]'
-  freeze: '<yellow>Заморожен: <aqua>{0} <yellow>[<light_purple><bold>Изменить<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Цена: <aqua>{0} <yellow>[<light_purple><bold>Изменить<yellow>]'
   currency-hover: <yellow>Нажмите, чтобы установить или удалить валюту, которую этот магазин использует
   lock: '<yellow>Заблокирован: <aqua>{0} <yellow>[<light_purple><bold>Переключить<yellow>]'
