@@ -92,10 +92,10 @@ player-bought-from-your-store-tax: <green>{0} Kupił {1} {2} z Twojego sklepu i 
 not-enough-space: <red>Masz tylko miejsce na {0} więcej!
 shop-name-success: <green>Pomyślnie ustawiono nazwę sklepu na <yellow>{0}<green>.
 shop-staff-added: <green>Pomyślnie dodano {0} jako członka personelu twojego sklepu.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Ten sklep nie ma członków personelu.
 shops-recovering: Odzyskiwanie sklepów z kopii zapasowej...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>To jest wirtualny gracz.\n<gray>Odnosi się do konta systemowego o tej samej nazwie.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nazwa użytkownika: <yellow>{1}</yellow></green>\n<green>Wyświetl jako: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>To jest prawdziwy gracz.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nazwa użytkownika: <yellow>{1}</yellow></green>\n<green>Wyświetl jako: <yellow>{2}</yellow></green>\n<gray>Jeśli chcesz użyć wirtualnego konta systemowego z taką samą nazwą dodaj <dark_gray>\"[]\"</dark_gray> do obu stron nazwy użytkownika: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Zapłaciłeś <yellow>{0} </yellow>podatku.
   owner: '<green>Właściciel: {0}'
@@ -177,7 +177,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: Sprzedaż
   buying: Zakup
-  frozen: FROZEN
+  frozen: ZAMROŻONE
 language:
   qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
   code: '<yellow>Kod: <gold>{0}'

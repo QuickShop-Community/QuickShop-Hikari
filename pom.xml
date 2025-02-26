@@ -43,7 +43,7 @@
         <addon.bluemap>2.7.2</addon.bluemap>
         <addon.discordsrv>1.29.0</addon.discordsrv>
         <addon.dynmap>2.0</addon.dynmap>
-        <addon.plan>5.6.2959</addon.plan>
+        <addon.plan>5.6.2965</addon.plan>
 
         <!-- compat versions -->
         <compat.arm>3.5.3</compat.arm>
@@ -55,20 +55,20 @@
         <compat.chestprotect>5.19.16</compat.chestprotect>
         <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
         <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
-        <compat.eco>6.75.1</compat.eco>
+        <compat.eco>6.75.2</compat.eco>
         <compat.ecoenchants>12.19.3</compat.ecoenchants>
         <compat.elitemobs>9.2.3</compat.elitemobs>
         <compat.griefprevention>17.0.0</compat.griefprevention>
         <compat.itemsadder>4.0.8</compat.itemsadder>
         <compat.lands>7.11.10</compat.lands>
         <compat.openinv>5.1.6</compat.openinv>
-        <compat.plotsquared>7.4.1</compat.plotsquared>
+        <compat.plotsquared>7.4.2</compat.plotsquared>
         <compat.reforges>6.71.2</compat.reforges>
         <compat.residence>5.0.1.7</compat.residence>
         <compat.slimefun>RC-37</compat.slimefun>
         <compat.superiorskyblock>1.11.1</compat.superiorskyblock>
         <compat.tne>0.1.3.5-Pre-2</compat.tne>
-        <compat.towny>0.101.1.0</compat.towny>
+        <compat.towny>0.101.1.2</compat.towny>
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
         <compat.worldedit>7.3.9</compat.worldedit>
@@ -164,7 +164,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${project.name}-${project.version}</finalName>
-                                <!--<outputDirectory>C:\Users\danie\Desktop\Github\TNE\QuickShop-Hikari\build-artifacts</outputDirectory>-->
+                                <outputDirectory>C:\Users\danie\Desktop\Github\TNE\QuickShop-Hikari\build-artifacts</outputDirectory>
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
                                 <createSourcesJar>true</createSourcesJar>

@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>持續計算數量：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
-  freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>商店上：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'

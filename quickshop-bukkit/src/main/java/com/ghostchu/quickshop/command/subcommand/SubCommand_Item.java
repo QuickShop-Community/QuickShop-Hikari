@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -35,7 +36,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
         return;
       }
       final ItemStack itemStack = sender.getInventory().getItemInMainHand().clone();
-      if(itemStack.getType() == Material.AIR) {
+      if(itemStack.getType() == Material.AIR || !ShopUtil.allowed(shop, itemStack)) {
         plugin.text().of(sender, "command.no-trade-item").send();
         return;
       }
@@ -60,5 +61,4 @@ public class SubCommand_Item implements CommandHandler<Player> {
     }
     plugin.text().of(sender, "not-looking-at-shop").send();
   }
-
 }

@@ -349,9 +349,11 @@ public class ShopLoader implements SubPasteItem {
 
 
       if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
+        
         this.item = QuickShop.getInstance().getPlatform().decodeStack(dataRecord.getEncoded());
         this.newItem = item;
       } else {
+        
         this.item = deserializeItem(dataRecord.getItem());
       }
       this.extra = deserializeExtra(extraStr);
