@@ -246,7 +246,6 @@ translate-not-completed-yet-click: Bản dịch ngôn ngữ {0} chưa được h
 taxaccount-invalid: <red>Tài khoản không hợp lệ, vui lòng nhập tên người chơi hợp lệ hoặc uuid (có dấu gạch ngang).
 player-bought-from-your-store: <red>{0} đã mua {1} {2} từ shop của bạn, bạn nhận được {3}.
 reached-maximum-can-create: <red>Bạn đã tạo tối đa {0}/{1} cửa hàng!
-reached-maximum-create-limit: <red>Bạn đã đạt đến số lượng tối đa tạo cửa hàng
 translation-version: 'Phiên bản hỗ trợ: Hikari'
 no-double-chests: <red>Bạn không thể tạo ra Shop gương đôi.
 price-too-cheap: <red>Giá tiền phải lớn hơn <yellow>${0}
