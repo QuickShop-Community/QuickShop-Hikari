@@ -246,7 +246,6 @@ translate-not-completed-yet-click: A tradução do idioma {0} ainda não foi con
 taxaccount-invalid: <red>A conta não é inválida, por favor insira um nome de jogador ou uuid(com traços).
 player-bought-from-your-store: <red>{0} comprou {1} {2} da sua loja e você pagou {3} em impostos.
 reached-maximum-can-create: <red>Você já criou o máximo de lojas! ({0}/{1})
-reached-maximum-create-limit: <red>Você atingiu o número máximo de lojas que você pode criar
 translation-version: 'Versão de suporte: Hikari'
 no-double-chests: <red>Você não pode criar a loja com baú duplo.
 price-too-cheap: <red>O preço precisa ser maior do que <yellow>${0}
