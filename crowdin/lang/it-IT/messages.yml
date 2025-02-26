@@ -620,20 +620,20 @@ debug:
   restart-database-manager-reconnect: "<yellow>Riavvio di SQLManager tramite sequenza iniziale (tramite esecutore asincrono)"
   restart-database-manager-done: "<green>Fatto!"
   property-incorrect: "<yellow>Devi inserire una (e una sola) chiave di proprietà=valore impostato. Es. aaa=bbb"
-  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
-  property-removed: "<green>Removed property key <white>{0}</white>"
-  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
-  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
-  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
+  property-security-block: "<red>Richiesta rifiutata. Per motivi di sicurezza, puoi cambiare solo la proprietà che inizia con <aqua>com.ghostchu.quickshop</aqua> o <aqua>quickshop</aqua>."
+  property-removed: "<green>Chiave di proprietà rimossa <white>{0}</white>"
+  property-changed: "<green>La chiave di proprietà <white>{0}</white> è stata cambiata da <white>{1}</white> a <white>{2}</white>"
+  marked-as-dirty: "<green>Contrassegnati tutti i negozi come status sporco, saranno forzati a salvare nella prossima attività di salvataggio automatico. (Riavviare il server per forzare l'esecuzione dell'attività di salvataggio negozio)"
+  display-removed: "<green>Rimossa con successo la visualizzazione degli oggetti/entità del QuickShop <yellow>{0}</yellow> dai mondi."
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
   status: '<yellow>Status: {0}'
-  status-good: <green>Good
+  status-good: <green>Bene
   status-bad: <yellow>Maintenance Required
-  isolated: '<yellow>Isolated Data:'
+  isolated: '<yellow>Dati Isolati:'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
   isolated-shop-ids: '<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>'
   isolated-logs: '<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>'
