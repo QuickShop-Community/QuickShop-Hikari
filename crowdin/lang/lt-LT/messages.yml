@@ -255,7 +255,6 @@ translate-not-completed-yet-click: Kalbos vertimas iš {0} dar nebaigtas {1}. Ar
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <green>{0} Kažkas nusipirko{1}{2} iš jūsų parduotuvės ir jūs gavote{3}.
 reached-maximum-can-create: <red>Jūs jau sukūrėte maksimumalų kiekį {0}/{1} parduotuvių!
-reached-maximum-create-limit: <red>Pasiekėte parduotuvių sukūrimo limitą
 translation-version: 'Palaikymo versija: Hikari'
 no-double-chests: <red>Jūs negalite sukurti double chest parduotuvės.
 price-too-cheap: <red>Kaina turi būti didesnė nei <yellow>${0}
