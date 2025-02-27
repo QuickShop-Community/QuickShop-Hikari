@@ -19,6 +19,7 @@ import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimTransferEvent;
 import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -174,6 +175,32 @@ public final class Main extends CompatibilityModule implements Listener {
     }
     for(final Claim claim : event.getClaims()) {
       handleClaimTrustChanged(Objects.requireNonNullElse(claim.parent, claim), event);
+    }
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onTransfer(final ClaimTransferEvent event) {
+
+    if(!deleteOnClaimTrustChanged) {
+      return;
+    }
+
+    if(event.getNewOwner() == null || event.getClaim().getOwnerID().equals(event.getNewOwner())) {
+      return;
+    }
+
+    final List<Shop> shops = getApi().getShopManager().getAllShops();
+    for(final Shop shop : shops) {
+
+      if(event.getNewOwner().equals(shop.getOwner().getUniqueId())) {
+        continue;
+      }
+
+      if(event.getClaim().getOwnerID().equals(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()))) {
+
+        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "GriefPrevention", false), String.format("[%s Integration]Shop %s deleted caused by TransferClaim Event", this.getName(), shop), shop.saveToInfoStorage()));
+        getApi().getShopManager().deleteShop(shop);
+      }
     }
   }
 
