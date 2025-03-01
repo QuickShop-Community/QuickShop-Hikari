@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Você pode quebrar a loja usando a SuperTool.
 fee-charged-for-price-change: <green>Você pagou <red>{0}<green> para mudar o valor.
 not-allowed-to-create: <red>Você não pode criar uma loja aqui.
 disabled-in-this-world: <red>O QuickShop está desativado neste mundo
@@ -31,8 +31,8 @@ safe-mode: <red>QuickShop agora está em modo seguro, você não pode abrir esta
 forbidden-vanilla-behavior: <red>A operação é proibida porque não é compatível com o comportamento de baunilha
 shop-out-of-space-name: <dark_purple>Sua loja {0} está cheia!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>A função de colar foi desativada! Você não pode solicitar suporte técnico.
+  Motivo: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
