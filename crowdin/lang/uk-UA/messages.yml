@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Цей магазин є <light_purple>ПОКУПКИ<green> Елементи.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Успішно продано:'
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
 currency-not-exists: <red>Не вдається знайти валюту, яку потрібно встановити. Можливо, написання неправильне або ця валюта недоступна в цьому світі.
