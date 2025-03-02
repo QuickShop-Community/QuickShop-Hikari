@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Voorraad <yellow>{0}'
   this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<yellow>en items.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
