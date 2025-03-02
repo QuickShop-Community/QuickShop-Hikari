@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1031
+config-version: 1032
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -259,6 +259,10 @@ shop:
   #0=Normal Dropped Item
   #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
+
+  #The preferred protocol to use for virtual item displays.
+  #The options are: protocollib and packetevents
+  display-protocol: 'protocollib'
 
   #Allow QuickShop to automatically despawn displays when no players are in range of the shop.
   display-auto-despawn: false
