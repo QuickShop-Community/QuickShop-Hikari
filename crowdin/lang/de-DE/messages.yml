@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT ist zu gross zum Anzeigen
   stock: '<green>Lagerbestand: <yellow>{0}'
   this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Erfolgreich verkauft:'
   total-value-of-chest: '<green>Gesamtwert der Truhe: <yellow>{0}'
 currency-not-exists: <red>Kann die Währung, welche du setzen willst, nicht finden. Vielleicht ist die Schreibweise falsch oder diese Währung ist in dieser Welt nicht verfügbar.
