@@ -1,7 +1,7 @@
 name: qsaddon-reremakemigrator
 version: '${project.version}'
 main: com.ghostchu.quickshop.addon.reremakemigrator.Main
-api-version: 1.18
+api-version: '1.20'
 depend:
   - QuickShop-Hikari
   - QuickShop

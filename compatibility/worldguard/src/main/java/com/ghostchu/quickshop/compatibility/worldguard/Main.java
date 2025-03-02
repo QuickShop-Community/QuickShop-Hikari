@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.LocalPlayer;
@@ -23,7 +24,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -31,7 +31,6 @@ import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -138,6 +137,7 @@ public final class Main extends CompatibilityModule implements Listener {
       }
       final Set<ProtectedRegion> regions = container.createQuery().getApplicableRegions(BukkitAdapter.adapt(event.getShop().getLocation())).getRegions();
       final List<Shop> shops = new ArrayList<>();
+
       regions.forEach(r->shops.addAll(getRegionShops(r, event.getShop().getLocation().getWorld()).values()));
       if(limitPerRegion > 0) {
         if(shops.size() + 1 > limitPerRegion) {
@@ -149,22 +149,27 @@ public final class Main extends CompatibilityModule implements Listener {
 
   private Map<Location, Shop> getRegionShops(final ProtectedRegion region, final World world) {
 
+    final Map<Location, Shop> shopMap = new HashMap<>();
+
+    if(world == null) {
+
+      return shopMap;
+    }
+
     final BlockVector3 minPoint = region.getMinimumPoint();
     final BlockVector3 maxPoint = region.getMaximumPoint();
-    final Set<Chunk> chuckLocations = new HashSet<>();
+
 
     for(int x = minPoint.x(); x <= maxPoint.x() + 16; x += 16) {
       for(int z = minPoint.z(); z <= maxPoint.z() + 16; z += 16) {
-        chuckLocations.add(world.getChunkAt(x >> 4, z >> 4));
-      }
-    }
 
-    final Map<Location, Shop> shopMap = new HashMap<>();
+        final Location location = new Location(world, x, 0, z);
 
-    for(final Chunk chunk : chuckLocations) {
-      final Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
-      if(shopsInChunk != null) {
-        shopMap.putAll(shopsInChunk);
+        final Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(SimpleShopChunk.fromLocation(location));
+        if(shopsInChunk != null) {
+
+          shopMap.putAll(shopsInChunk);
+        }
       }
     }
     return shopMap;
