@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Objektets NBT är för stort för att visa
   stock: '<green>Lagersaldo <yellow>{0}'
   this-shop-is-buying: <green>Denna butik <light_purple>KÖPER& föremål.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Framgångsrikt sålt:'
   total-value-of-chest: '<green>Totalt värde av butik: <yellow>{0}'
 currency-not-exists: <red>Kan inte hitta den valuta som du vill ställa in. Stavningen är kanske fel eller att valutan inte är tillgänglig i denna värld.
