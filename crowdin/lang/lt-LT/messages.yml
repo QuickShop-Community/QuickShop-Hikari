@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Daiktų kiekis per didelis, kad būtų atvaizduotas
   stock: '<green>Atsargos: <yellow>{0}'
   this-shop-is-buying: <green>Ši parduotuvė <light_purple>SUPERKA<green> daiktus.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Sėkmingai parduota:'
   total-value-of-chest: '<green>Galutinė chesto vertė:<yellow>{0}'
 currency-not-exists: <red>Nepavyksta rasti valiutos, kurią norite nustatyti. Galbūt rašyba neteisinga arba šios valiutos nėra.
