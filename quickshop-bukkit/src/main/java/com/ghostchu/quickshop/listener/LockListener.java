@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 public class LockListener extends AbstractProtectionListener {
 
-  private static final Object EMPTY_OBJECT = new Object();
-  private final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
+  public static final Object EMPTY_OBJECT = new Object();
+  public static final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
           .expireAfterAccess(1, TimeUnit.SECONDS)
           .build();
 
@@ -77,7 +77,7 @@ public class LockListener extends AbstractProtectionListener {
     }
   }
 
-  @EventHandler(ignoreCancelled = true)
+  /*@EventHandler(ignoreCancelled = true)
   public void onClick(final PlayerInteractEvent e) {
 
     final Block b = e.getClickedBlock();
@@ -115,7 +115,7 @@ public class LockListener extends AbstractProtectionListener {
     }
 
     QuickShop.inShop.add(p.getUniqueId());
-  }
+  }*/
 
   /*
    * Handles hopper placement
