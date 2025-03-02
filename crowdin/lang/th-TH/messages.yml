@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>ร้านนี้กำลัง<light_purple>ซื้อ<green>ของ
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>ขายสำเร็จ:'
   total-value-of-chest: '<green>มูลค่ารวมของกล่อง: <yellow>{0}'
 currency-not-exists: <red>ไม่สามารถหาสกุลเงินที่คุณจะกำหนดได้ ลองดูว่าเขียนถูกไหม ไม่ก็สกุลเงินนั้นไม่มีในโลกนี้
