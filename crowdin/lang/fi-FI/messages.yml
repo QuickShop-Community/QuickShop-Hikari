@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Varastossa: <yellow>{0}'
   this-shop-is-buying: <green>Tämä kauppa <green><bold>OSTAA <green>tuotteita.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Onnistuneesti myyty:'
   total-value-of-chest: '<green>Arkun kokonaisarvo: <yellow>{0}'
 currency-not-exists: <red>Valuutan jonka kirjoitit ei löytynyt. Ehkä kirjoitit sen väärin tai valuutta ei ole käytössä tässä maailmassa.
