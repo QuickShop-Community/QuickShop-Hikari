@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Položka NBT je příliš velká k zobrazení
   stock: '<green>Zásoby: <yellow>{0}'
   this-shop-is-buying: <green>Tento obchod je <light_purple>KUPUJTE<green> položek.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Úspěšně prodáno:'
   total-value-of-chest: '<green>Celková hodnota truhly: <yellow>{0}'
 currency-not-exists: <red>Nelze najít měnu, kterou chcete nastavit. Možná je pravopis špatný nebo není měna v tomto světě k dispozici.
