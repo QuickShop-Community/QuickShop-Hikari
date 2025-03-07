@@ -28,16 +28,18 @@ public class SubCommand_SilentFreeze extends SubCommand_SilentBase {
     }
 
 
+    MsgUtil.sendControlPanelInfo(sender, shop);
+
+
     if(shop.getShopType().equals(ShopType.FROZEN)) {
       shop.setShopType(ShopType.BUYING);
       plugin.text().of(sender, "shop-nolonger-freezed", Util.getItemStackName(shop.getItem())).send();
       plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
     } else {
       shop.setShopType(ShopType.FROZEN);
-      shop.setSignText(plugin.text().findRelativeLanguages(sender));
-      MsgUtil.sendControlPanelInfo(sender, shop);
       plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
     }
 
+    shop.setSignText(plugin.text().findRelativeLanguages(sender));
   }
 }
