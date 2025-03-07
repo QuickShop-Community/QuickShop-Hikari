@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Cửa hàng này đang <light_purple>MUA <green>các vật phẩm.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Bán thành công:'
   total-value-of-chest: '<green>Tổng giá trị của rương: <yellow>{0}'
 currency-not-exists: <red>Không thể tìm thấy đơn vị tiền tệ mà bạn muốn đặt. Có thể lỗi chính tả hoặc đơn vị tiền tệ đó không có sẵn trên thế giới này.

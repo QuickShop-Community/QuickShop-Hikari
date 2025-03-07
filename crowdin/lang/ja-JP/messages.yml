@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>在庫: <yellow>{0}'
   this-shop-is-buying: <green>このショップは <light_purple>買取<green> です
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>売却成功:'
   total-value-of-chest: '<green>チェストの合計額: <yellow>{0}'
 currency-not-exists: <red>設定したい通貨が見当たりません。スペルが間違っているか、その通貨がこの世界では利用できないかもしれません。

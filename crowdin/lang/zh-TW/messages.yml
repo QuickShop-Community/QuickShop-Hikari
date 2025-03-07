@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
   this-shop-is-buying: <green>此商店正在<light_purple>收購<green>物品。
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>成功地出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此世界無法使用貨幣。

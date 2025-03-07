@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Estoc: <yellow>{0}'
   this-shop-is-buying: <green>Aquesta botiga està <light_purple>COMPRANT<green> ítems.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Venut amb èxit:'
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No s'ha trobat la moneda que vols fer servir. Potser ho has escrit malament o la moneda no està disponible en aquest món.

@@ -23,6 +23,11 @@ public class ConfigUpdateScript {
     this.plugin = plugin;
   }
 
+  @UpdateScript(version = 1032)
+  public void configProtocol() {
+    getConfig().set("shop.display-protocol", "protocollib");
+  }
+
   @UpdateScript(version = 1031)
   public void configControlPanel() {
 

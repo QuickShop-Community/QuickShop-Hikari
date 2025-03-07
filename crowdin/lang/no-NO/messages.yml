@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] NBT informasjonen på gjenstanden er for stor til å vise
   stock: '<green>Lagerbeholdning: <yellow>{0}'
   this-shop-is-buying: <green>Denne butikken <light_purple>KJØPER<green> varer.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vellykket solgt:'
   total-value-of-chest: '<green>Total verdi for kisten: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finne valutaen du vil sette. Kanskje stavemåten er feil, eller at valuta ikke er tilgjengelig i denne verdenen.

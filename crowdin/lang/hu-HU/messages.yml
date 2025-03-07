@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Eltárolt <yellow>{0}'
   this-shop-is-buying: <green>Ez a bolt <light_purple>TÁRGYAKAT<green> vesz.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Sikeres eladás:'
   total-value-of-chest: '<green>Teljes érték a ládában: <yellow>{0}'
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.

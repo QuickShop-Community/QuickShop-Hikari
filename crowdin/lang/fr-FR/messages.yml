@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock restant<yellow>{0}'
   this-shop-is-buying: <green>Cette boutique <light_purple>ACHETE<green> des objets.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vente réussie :'
   total-value-of-chest: '<green>Valeur totale du coffre: <yellow>{0}'
 currency-not-exists: <red>Impossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.
