@@ -35,12 +35,16 @@
 
     <repositories>
         <repository>
-            <id>jitpack</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>alex9849</id>
             <url>https://nexus.alex9849.net/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>alex9849-snapshots</id>
+            <url>https://nexus.alex9849.net/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
