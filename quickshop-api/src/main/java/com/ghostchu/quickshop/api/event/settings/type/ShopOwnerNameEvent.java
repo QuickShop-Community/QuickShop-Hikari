@@ -43,4 +43,81 @@ public class ShopOwnerNameEvent extends ShopSettingEvent<Component> {
 
     super(phase, shop, old, updated);
   }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopOwnerNameEvent clone(final Phase newPhase) {
+
+    return new ShopOwnerNameEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopOwnerNameEvent clone(final Phase newPhase, final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent PRE(final @NotNull Shop shop,
+                                  final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopOwnerNameEvent PRE(final @NotNull Shop shop,
+                                  final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent MAIN(final @NotNull Shop shop,
+                                   final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopOwnerNameEvent MAIN(final @NotNull Shop shop,
+                                   final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent POST(final @NotNull Shop shop,
+                                   final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopOwnerNameEvent POST(final @NotNull Shop shop,
+                                   final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopOwnerNameEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.RETRIEVE, shop, old, updated);
+  }
 }

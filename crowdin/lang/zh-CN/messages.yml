@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[错误] 物品NBT太长，无法显示
   stock: '<green>库存:<yellow>{0}'
   this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>出售成功：'
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
@@ -254,7 +255,6 @@ translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助
 taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。
 player-bought-from-your-store: <red>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}
 reached-maximum-can-create: <red>你创建的商店数量达到上限：{0}/{1}
-reached-maximum-create-limit: <red>您已达到可以创建商店的最大数量
 translation-version: '支持版本: Hikari'
 no-double-chests: <red>你没有权限创建大箱子商店。
 price-too-cheap: <red>价格必须大于<yellow>${0}
@@ -351,7 +351,7 @@ controlpanel:
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
   alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<bold><light_purple>更改</light_purple>]'
   setowner: '<green>所有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  freeze: '<green>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  freeze: '<green>冻结模式： <aqua>{0} <green>[<bold><light_purple>切换</light_purple></bold>]'
   price: '<green>价格: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
   lock: '<yellow>商店锁: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'

@@ -59,7 +59,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   private final String prefix;
 
-  private final int LATEST_DATABASE_VERSION = 18;
+  private final int LATEST_DATABASE_VERSION = 19;
 
   public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
@@ -939,11 +939,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       int currentDatabaseVersion = parent.getDatabaseVersion();
       if(currentDatabaseVersion == -1) {
 
-        currentDatabaseVersion = parent.LATEST_DATABASE_VERSION;
+        currentDatabaseVersion = 19;
       }
 
+      logger.info("Database upgrade script running... Current Database Version: " + currentDatabaseVersion);
+
       if(currentDatabaseVersion > parent.LATEST_DATABASE_VERSION) {
-        throw new IllegalStateException("The database version is newer than this build supported.");
+        throw new IllegalStateException("The database version is newer than this build supported. Current: " + currentDatabaseVersion + " Latest: " + parent.LATEST_DATABASE_VERSION);
       }
 
       if(currentDatabaseVersion == parent.LATEST_DATABASE_VERSION) {
@@ -996,18 +998,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         currentDatabaseVersion = 16;
       }
 
-      if(currentDatabaseVersion == 16) {
+      if(currentDatabaseVersion == 16 || currentDatabaseVersion == 17 || currentDatabaseVersion == 18) {
         logger.info("Data upgrading: Creating a new column... encoded for enhanced item storage.");
         parent.addEncodedColumn();
-        currentDatabaseVersion = 17;
+        currentDatabaseVersion = 19;
       }
 
-      //duplicate to correct issues if some folks upgraded to an early build with the error
-      if(currentDatabaseVersion == 17) {
-        logger.info("Data upgrading: Creating a new column... encoded for enhanced item storage.");
-        parent.addEncodedColumn();
-        currentDatabaseVersion = 18;
-      }
       parent.setDatabaseVersion(currentDatabaseVersion).join();
     }
 

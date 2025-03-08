@@ -130,8 +130,6 @@ public class ShopSettingEvent<T> extends PhasedEvent {
     this.updated = updated;
   }
 
-
-
   public static <T> ShopSettingEvent<T> PRE(final @NotNull Shop shop,
                                             final T old) {
 
@@ -177,6 +175,6 @@ public class ShopSettingEvent<T> extends PhasedEvent {
   public static <T> ShopSettingEvent<T> RETRIEVE(final @NotNull Shop shop,
                                                  final T old, final T updated) {
 
-    return new ShopSettingEvent<T>(Phase.RETRIEVE, shop, old, updated);
+    return new ShopSettingEvent<>(Phase.RETRIEVE, shop, old, updated);
   }
 }

@@ -75,8 +75,7 @@ public class FreezeComponent implements ControlComponent {
   @Override
   public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    final String path = shop.isFrozen()? "controlpanel.unfreeze" : "controlpanel.freeze";
-    final Component text = ((QuickShop)plugin).text().of(sender, path, MsgUtil.bool2String(shop.isFrozen())).forLocale();
+    final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.freeze", MsgUtil.bool2String(shop.isFrozen())).forLocale();
 
     final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.freeze-hover").forLocale();
     final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentfreeze"), shop.getRuntimeRandomUniqueId().toString());

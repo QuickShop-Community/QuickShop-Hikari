@@ -42,4 +42,81 @@ public class ShopItemEvent extends ShopSettingEvent<ItemStack> {
 
     super(phase, shop, old, updated);
   }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopItemEvent clone(final Phase newPhase) {
+
+    return new ShopItemEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopItemEvent clone(final Phase newPhase, final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopItemEvent PRE(final @NotNull Shop shop,
+                                     final ItemStack old) {
+
+    return new ShopItemEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopItemEvent PRE(final @NotNull Shop shop,
+                                     final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopItemEvent MAIN(final @NotNull Shop shop,
+                                      final ItemStack old) {
+
+    return new ShopItemEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopItemEvent MAIN(final @NotNull Shop shop,
+                                      final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopItemEvent POST(final @NotNull Shop shop,
+                                      final ItemStack old) {
+
+    return new ShopItemEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopItemEvent POST(final @NotNull Shop shop,
+                                      final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopItemEvent RETRIEVE(final @NotNull Shop shop,
+                                          final ItemStack old) {
+
+    return new ShopItemEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopItemEvent RETRIEVE(final @NotNull Shop shop,
+                                          final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.RETRIEVE, shop, old, updated);
+  }
 }

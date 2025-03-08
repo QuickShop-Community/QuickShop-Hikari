@@ -175,6 +175,9 @@ permissions:
   quickshop.create.buy:
     description: Allows a player to buy from a shop.
     default: op
+  quickshop.togglefreeze:
+      description: Allows a player switch shop type to frozen mode.
+      default: op
   quickshop.create.double:
     description: Allows a player to create a double shop.
     default: op
@@ -381,6 +384,15 @@ permissions:
     default: op
   quickshop.other.history:
     description: Permission to view the other's shop history
+    default: op
+  quickshop.other.sell:
+    description: Allows a other player force switch the shop type to sell mode
+    default: op
+  quickshop.other.buy:
+    description: Allows a other player force switch the shop type to buy mode
+    default: op
+  quickshop.other.freeze:
+    description: Allows a other player force switch the shop type to frozen mode
     default: op
   quickshop.suggestprice:
     description: Suggest the shop recommend price

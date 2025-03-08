@@ -42,4 +42,81 @@ public class ShopOwnerEvent extends ShopSettingEvent<QUser> {
 
     super(phase, shop, old, updated);
   }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopOwnerEvent clone(final Phase newPhase) {
+
+    return new ShopOwnerEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopOwnerEvent clone(final Phase newPhase, final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopOwnerEvent PRE(final @NotNull Shop shop,
+                                  final QUser old) {
+
+    return new ShopOwnerEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopOwnerEvent PRE(final @NotNull Shop shop,
+                                  final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopOwnerEvent MAIN(final @NotNull Shop shop,
+                                   final QUser old) {
+
+    return new ShopOwnerEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopOwnerEvent MAIN(final @NotNull Shop shop,
+                                   final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopOwnerEvent POST(final @NotNull Shop shop,
+                                   final QUser old) {
+
+    return new ShopOwnerEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopOwnerEvent POST(final @NotNull Shop shop,
+                                   final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopOwnerEvent RETRIEVE(final @NotNull Shop shop,
+                                       final QUser old) {
+
+    return new ShopOwnerEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopOwnerEvent RETRIEVE(final @NotNull Shop shop,
+                                       final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.RETRIEVE, shop, old, updated);
+  }
 }

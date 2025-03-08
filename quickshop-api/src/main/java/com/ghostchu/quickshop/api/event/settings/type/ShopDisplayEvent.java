@@ -42,4 +42,81 @@ public class ShopDisplayEvent extends ShopSettingEvent<Boolean> {
 
     super(phase, shop, old, updated);
   }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopDisplayEvent clone(final Phase newPhase, final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(newPhase, this.shop, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopDisplayEvent clone(final Phase newPhase) {
+
+    return new ShopDisplayEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
+                                      final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
+                                      final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
+                                       final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
+                                       final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent POST(final @NotNull Shop shop,
+                                       final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopDisplayEvent POST(final @NotNull Shop shop,
+                                       final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
+                                           final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
+                                           final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old, updated);
+  }
 }

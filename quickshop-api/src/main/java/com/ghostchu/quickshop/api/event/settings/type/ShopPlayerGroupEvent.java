@@ -85,4 +85,52 @@ public class ShopPlayerGroupEvent extends ShopSettingEvent<String> {
 
     return new ShopPlayerGroupEvent(newPhase, this.shop, this.player, this.old, this.updated);
   }
+
+  public static ShopPlayerGroupEvent PRE(final @NotNull Shop shop, final UUID player,
+                                      final String old) {
+
+    return new ShopPlayerGroupEvent(Phase.PRE, shop, player, old);
+  }
+
+  public static ShopPlayerGroupEvent PRE(final @NotNull Shop shop, final UUID player,
+                                      final String old, final String updated) {
+
+    return new ShopPlayerGroupEvent(Phase.PRE, shop, player, old, updated);
+  }
+
+  public static ShopPlayerGroupEvent MAIN(final @NotNull Shop shop, final UUID player,
+                                       final String old) {
+
+    return new ShopPlayerGroupEvent(Phase.MAIN, shop, player, old);
+  }
+
+  public static ShopPlayerGroupEvent MAIN(final @NotNull Shop shop, final UUID player,
+                                       final String old, final String updated) {
+
+    return new ShopPlayerGroupEvent(Phase.MAIN, shop, player, old, updated);
+  }
+
+  public static ShopPlayerGroupEvent POST(final @NotNull Shop shop, final UUID player,
+                                       final String old) {
+
+    return new ShopPlayerGroupEvent(Phase.POST, shop, player, old);
+  }
+
+  public static ShopPlayerGroupEvent POST(final @NotNull Shop shop, final UUID player,
+                                       final String old, final String updated) {
+
+    return new ShopPlayerGroupEvent(Phase.POST, shop, player, old, updated);
+  }
+
+  public static ShopPlayerGroupEvent RETRIEVE(final @NotNull Shop shop, final UUID player,
+                                           final String old) {
+
+    return new ShopPlayerGroupEvent(Phase.RETRIEVE, shop, player, old);
+  }
+
+  public static ShopPlayerGroupEvent RETRIEVE(final @NotNull Shop shop, final UUID player,
+                                           final String old, final String updated) {
+
+    return new ShopPlayerGroupEvent(Phase.RETRIEVE, shop, player, old, updated);
+  }
 }

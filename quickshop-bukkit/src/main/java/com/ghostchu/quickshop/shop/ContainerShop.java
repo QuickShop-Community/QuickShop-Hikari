@@ -424,7 +424,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @Nullable String getCurrency() {
 
-    final ShopCurrencyEvent event = (ShopCurrencyEvent)ShopCurrencyEvent.RETRIEVE(this, this.currency);
+    final ShopCurrencyEvent event = ShopCurrencyEvent.RETRIEVE(this, this.currency);
     event.callEvent();
 
     return event.updated();
@@ -842,7 +842,7 @@ public class ContainerShop implements Shop, Reloadable {
       case FROZEN -> {
         shopRemaining = 0;
         tradingStringKey = "signs.freeze";
-        noRemainingStringKey = "signs.out-of-stock";
+        noRemainingStringKey = "signs.freeze";
       }
       default -> {
         shopRemaining = 0;
@@ -988,6 +988,9 @@ public class ContainerShop implements Shop, Reloadable {
     }
     if(isBuying()) {
       return getRemainingSpace() > 0;
+    }
+    if(isFrozen()) {
+      return false;
     }
     return true;
   }
@@ -1621,8 +1624,8 @@ public class ContainerShop implements Shop, Reloadable {
       if(dyeColor != null) {
         sign.setColor(dyeColor);
       }
-      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
-      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax");
+      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
+      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
 
       sign.setGlowingText(isGlowing);
       sign.setWaxed(isWaxed);

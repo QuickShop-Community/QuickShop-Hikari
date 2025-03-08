@@ -34,12 +34,90 @@ public class ShopBenefitAddEvent extends ShopSettingEvent<Double> {
 
   private final QUser user;
 
-  public ShopBenefitAddEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, final double benefit) {
+  public ShopBenefitAddEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user,
+                             final double benefit) {
     super(phase, shop, benefit);
     this.user = user;
   }
 
   public QUser user() {
     return user;
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopBenefitAddEvent clone(final Phase newPhase) {
+
+    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, this.updated);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopBenefitAddEvent clone(final Phase newPhase, final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, updated);
+  }
+
+  public static ShopBenefitAddEvent PRE(final @NotNull Shop shop, final @NotNull QUser user,
+                                  final Double old) {
+
+    return new ShopBenefitAddEvent(Phase.PRE, shop, user, old);
+  }
+
+  public static ShopBenefitAddEvent PRE(final @NotNull Shop shop, final @NotNull QUser user,
+                                  final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(Phase.PRE, shop, user, updated);
+  }
+
+  public static ShopBenefitAddEvent MAIN(final @NotNull Shop shop, final @NotNull QUser user,
+                                   final Double old) {
+
+    return new ShopBenefitAddEvent(Phase.MAIN, shop, user, old);
+  }
+
+  public static ShopBenefitAddEvent MAIN(final @NotNull Shop shop, final @NotNull QUser user,
+                                   final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(Phase.MAIN, shop, user, updated);
+  }
+
+  public static ShopBenefitAddEvent POST(final @NotNull Shop shop, final @NotNull QUser user,
+                                   final Double old) {
+
+    return new ShopBenefitAddEvent(Phase.POST, shop, user, old);
+  }
+
+  public static ShopBenefitAddEvent POST(final @NotNull Shop shop, final @NotNull QUser user,
+                                   final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(Phase.POST, shop, user, updated);
+  }
+
+  public static ShopBenefitAddEvent RETRIEVE(final @NotNull Shop shop, final @NotNull QUser user,
+                                       final Double old) {
+
+    return new ShopBenefitAddEvent(Phase.RETRIEVE, shop, user, old);
+  }
+
+  public static ShopBenefitAddEvent RETRIEVE(final @NotNull Shop shop, final @NotNull QUser user,
+                                       final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(Phase.RETRIEVE, shop, user, updated);
   }
 }

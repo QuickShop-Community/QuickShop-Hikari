@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] NBT informasjonen på gjenstanden er for stor til å vise
   stock: '<green>Lagerbeholdning: <yellow>{0}'
   this-shop-is-buying: <green>Denne butikken <light_purple>KJØPER<green> varer.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vellykket solgt:'
   total-value-of-chest: '<green>Total verdi for kisten: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finne valutaen du vil sette. Kanskje stavemåten er feil, eller at valuta ikke er tilgjengelig i denne verdenen.
@@ -255,7 +256,6 @@ translate-not-completed-yet-click: Oversettelsen av språket {0} er ennå ikke f
 taxaccount-invalid: <red>Konto ugyldig. Vennligst skriv inn et gyldig spillernavn eller UUID (med bindestreker).
 player-bought-from-your-store: <green>{0} kjøpte {1} {2} fra butikken din, og du tjente {3}.
 reached-maximum-can-create: <red>Du har allerede opprettet maksimum {0}/{1} butikker!
-reached-maximum-create-limit: <red>Du har nådd maksimalt antall butikker du kan opprette
 translation-version: 'Støttet versjon: Hikari'
 no-double-chests: <red>Du kan ikke opprette en butikk med dobbelkiste.
 price-too-cheap: <red>Prisen må være høyere enn <yellow>${0}
@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klikk for å endre om butikken alltid skal telle innholdet i beholderen.
   alwayscounting: '<green>Alltid telle: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   setowner: '<green>Eier: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
-  freeze: '<yellow>Frysmodus: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Pris: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   currency-hover: <yellow>Klikk for å sette eller fjerne valutaen på butikken
   lock: '<yellow>Butikklås: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'

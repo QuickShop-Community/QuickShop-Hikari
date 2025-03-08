@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Öğe NBT'si gösterilemeyecek kadar büyük
   stock: '<green>Stok <yellow>{0}'
   this-shop-is-buying: <green>Bu market öğe <light_purple>SATIN ALIYOR<green>.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Başarıyla satıldı:'
   total-value-of-chest: '<green>Sandığın toplam değeri: <yellow>{0}'
 currency-not-exists: <red>Ayarlamak istediğiniz para birimi bulunamadı. Belki imlâ hatası yaptığınız ya da o para birimi dünyada mevcut değil.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: '{0} dilinin çevirisi {1} tamamlanmadı. Çe
 taxaccount-invalid: <red>Target hesabı geçersiz değil, lütfen geçerli bir oyuncu adı veya uuid(çizgili) girin.
 player-bought-from-your-store: <red>{0} marketinden {1} tane {2} aldı ve {3} kazandın.
 reached-maximum-can-create: <red>Zaten maksimum {0}/{1} market oluşturdun!
-reached-maximum-create-limit: <red>Oluşturabileceğiniz maksimum mağaza sayısına ulaştınız
 translation-version: 'Destek Sürümü: Hikari'
 no-double-chests: <red>Çifte sandık ile market oluşturamazsınız.
 price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
   alwayscounting: '<green>Her zaman sayıyor: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   setowner: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   currency-hover: <yellow>Bu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

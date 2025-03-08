@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT ist zu gross zum Anzeigen
   stock: '<green>Lagerbestand: <yellow>{0}'
   this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Erfolgreich verkauft:'
   total-value-of-chest: '<green>Gesamtwert der Truhe: <yellow>{0}'
 currency-not-exists: <red>Kann die Währung, welche du setzen willst, nicht finden. Vielleicht ist die Schreibweise falsch oder diese Währung ist in dieser Welt nicht verfügbar.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: Die Übersetzung von der Sprache {0} wurde no
 taxaccount-invalid: <red>Zielkonto ist ungültig. Bitte verwende einen gültigen Spielernamen oder UUID (Mit Bindestrichen).
 player-bought-from-your-store: <red>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} verdient.
 reached-maximum-can-create: <red>Du hast bereits das Maximum von {0}/{1} Shops erstellt!
-reached-maximum-create-limit: <red>Du hast die maximale Anzahl an Shops erreicht, welche du erstellen kannst
 translation-version: 'Unterstützte Version: Hikari'
 no-double-chests: <red>Du kannst keinen Doppeltruhen-Shop erstellen.
 price-too-cheap: <red>Preis muss höher als <yellow>${0}<red> sein
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klicke um zu ändern, ob der Shop immer Zählen soll.
   alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
-  freeze: '<yellow>Eingefroren: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   currency-hover: <yellow>Klicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet
   lock: '<yellow>Shop sperren: <aqua>{0}</aqua> [<light_purple><bold>Ändern</bold></light_purple>]'

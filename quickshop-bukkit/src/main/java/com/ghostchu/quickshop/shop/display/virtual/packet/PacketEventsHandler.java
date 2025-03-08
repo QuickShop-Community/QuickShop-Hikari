@@ -92,9 +92,9 @@ public class PacketEventsHandler implements PacketHandler<PacketEventsAPI<?>> {
     factories.put("1.20.2", oneTwenty);
     factories.put("1.20.3", oneTwenty);
     factories.put("1.20.4", oneTwenty);
-    factories.put("1.20.5", oneTwenty);
 
     final PacketFactoryv1_21 oneTwentyOne = new PacketFactoryv1_21();
+    factories.put("1.20.5", oneTwentyOne);
     factories.put("1.20.6", oneTwentyOne);
     factories.put("1.21", oneTwentyOne);
     factories.put("1.21.1", oneTwentyOne);

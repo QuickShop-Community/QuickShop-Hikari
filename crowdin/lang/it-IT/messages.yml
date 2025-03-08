@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Puoi rompere lo shop utilizzando il super strumento.
 fee-charged-for-price-change: <green>Hai pagato <red>{0}<green> per cambiare il prezzo.
 not-allowed-to-create: <red>Non puoi creare un negozio qui.
 disabled-in-this-world: <red>QuickShop è disabilitato in questo mondo
@@ -18,7 +18,7 @@ tabcomplete:
   amount: '[quantità]'
   item: '[oggetto]'
   price: '[prezzo]'
-  name: '[name]'
+  name: '[nome]'
   range: '[raggio]'
   currency: '[nome della valuta]'
   percentage: 'percentuale'
@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> ha negato il controllo dei permessi. Se questo non era previsto, prova ad aggiungere <light_purple>{1} <gray>alla blacklist degli ascoltatori. Guida alla configurazione: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Prezzo medio nelle vicinanze: <yellow>{0}'
 inventory-check-global-alert: "<red>[Controllo Inventario] <gray>Attenzione! Trovato un elemento di visualizzazione QuickShop <gold>{2}</gold> nell'inventario di <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, che non dovrebbe accadere, Questo di solito significa che qualcuno sta sfruttando maliziosamente l'exploit per duplicare il display-item."
 digits-reach-the-limit: <red>Hai raggiunto i limiti dei decimali nel prezzo.
@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Errore] L'elemento NBT è troppo grande per essere mostrato
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Questo negozio sta <light_purple>ACQUISTANDO oggetti.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Venduto con successo:'
   total-value-of-chest: '<green>Valore totale della cassa: <yellow>{0}'
 currency-not-exists: <red>Impossibile trovare la valuta che si desidera impostare. Forse l'ortografia è sbagliata o quella valuta non è disponibile in questo mondo.
@@ -151,7 +152,7 @@ metric:
   looking-up: <yellow>Esecuzione della ricerca metrica in corso, per favore attendere...
   tax-hover: <yellow>{0} tasse
   header-global: '<yellow>Le transazioni {0} {1} del server:'
-  na: <gray>N/A
+  na: <gray>N/D
   transaction-count: <yellow>{0} totale
   shop-hover: |-
     <yellow>{0}<newline><gold>Posizione: <gray>{1} {2} {3}, Mondo: {4}<newline><gold>Proprietario: <gray>{5}<newline><gold>Tipo di Negozio: <gray>{6}<newline><gold>Oggetto: <gray>{7}<newline><gold>Prezzo: <gray>{8}
@@ -177,7 +178,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VENDITA
   buying: ACQUISTA
-  frozen: FROZEN
+  frozen: CONGELATO
 language:
   qa-issues: '<yellow>Problemi di garanzia della qualità: <aqua>{0}%'
   code: '<yellow>Codice: <gold>{0}'
@@ -190,23 +191,23 @@ warn-to-paste: |-
 how-many-sell-stack: <green>Inserisci nella chat, quante quantità desideri <light_purple>VENDERE. Ci sono <yellow>{0}<green> articoli per sfuso e puoi vendere <yellow>{1}<green> all'ingrosso. Inserisci <aqua>{2}<green> nella chat per vendere tutto.
 updatenotify:
   buttontitle: '[Aggiorna ora]'
-  onekeybuttontitle: '[OneKey Update]'
+  onekeybuttontitle: '[Aggiornamento OneKey]'
   label:
     github: '[GitHub]'
-    ore: '[Ore]'
+    ore: '[Minerale]'
     lts: '[LTS]'
     nbtapi: '[+NBTAPI]'
-    qualityverifyed: '[Quality]'
+    qualityverifyed: '[Qualità]'
     master: '[Master]'
-    unstable: '[Unstable]'
-    paper: '[+Paper Optimized]'
-    stable: '[Stable]'
+    unstable: '[Instabile]'
+    paper: '[+Ottimizzato per Paper]'
+    stable: '[Stabile]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
     modrinth: 'Modrinth'
-    basic: '[Basic]'
+    basic: '[Di base]'
   list:
     - '{0} è stato rilasciato. Stai ancora usando {1}!'
     - Boom! Nuovo aggiornamento {0} in arrivo. Aggiorna!
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: La traduzione della lingua {0} non è stata a
 taxaccount-invalid: <red>Account target non valido, inserisci un nome giocatore valido o uuid (con trattini).
 player-bought-from-your-store: <red>{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3}.
 reached-maximum-can-create: <red>Hai già creato un massimo di {0}/{1} negozi!
-reached-maximum-create-limit: <red>Hai raggiunto il numero massimo di negozi che puoi creare
 translation-version: 'Versione di Supporto: Hikari'
 no-double-chests: <red>Non puoi creare un negozio con doppia cassa.
 price-too-cheap: <red>Il prezzo deve essere superiore di <yellow> ${0}
@@ -298,7 +298,7 @@ signs:
   status-unavailable: <red>
   out-of-stock: Esaurito
   stack-buying: Acquisto {0}
-  freeze: Scambio disabilitato
+  freeze: Fuori servizio
   price: '{0} ciascuno'
   buying: Acquisto {0}
   header: '{1}{0}'
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Fai clic per attivare/disattivare se il negozio conta sempre il contenitore.
   alwayscounting: '<green>Conta sempre: {0}<yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Proprietario: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
-  freeze: '<yellow>Modalità congelato: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<yellow>Modalità congelamento: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
   price: '<green>Prezzo: <aqua>{0} <yellow>[<bold><light_purple>Cambia</light_purple></bold>]'
   currency-hover: <yellow>Clicca per impostare o rimuovere la valuta che questo negozio sta usando
   lock: '<yellow>Negozio chiuso: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -356,7 +356,7 @@ controlpanel:
   remove-hover: <yellow>Clicca per rimuovere questo negozio.
   toggledisplay-hover: <yellow>Attiva/disattiva lo stato dell'oggetto visualizzato nel negozio
   refill: '<green>Riempi: ricarica gli oggetti <yellow>[<light_purple><bold>OK<yellow>]'
-  freeze-hover: <yellow>Attiva lo stato di blocco del negozio.
+  freeze-hover: <yellow>Attiva/Disattiva il congelamento del negozio.
   lock-hover: <yellow>Abilita/Disabilita la protezione del blocco del negozio.
   item-hover: <yellow>Click per cambiare l'elemento del negozio
   infomation: '<green>Pannello di Controllo Negozio:'
@@ -427,7 +427,7 @@ command:
     sell: <yellow>Cambia un negozio in modalità di <aqua>VENDITA<yellow>
     fetchmessage: <yellow>Mostra messaggi negozio non letti
     staff: <yellow>Gestisci il personale del negozio
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>Gestisci lo staff del tuo negozio di tutti i negozi che possiedi.
     clean: <yellow>Rimuove tutti i negozi (caricati) senza scorte
     refill: <yellow>Aggiunge un determinato numero di articoli a un negozio
     help: <yellow>Mostra aiuto QuickShop
@@ -445,7 +445,7 @@ command:
     lookup: <yellow>Gestisce la tabella degli elementi ricercati
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Impostazioni per dividere i benefici tra il proprietario del negozio e gli altri giocatori
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>Sfoglia i negozi che esistono in questo server.
     tag: <yellow>Aggiungi, rimuovi o interroga i tag di un negozio
     suggestprice: <yellow>Suggerisci un prezzo consigliato per cercare negozio, basato su altri negozi
     history: <yellow>Visualizza la cronologia delle transazioni di un negozio
@@ -592,13 +592,13 @@ debug:
   force-shop-loader-reload: <yellow>Forzando il reload...
   force-shop-loader-reload-unloading-shops: <yellow>Sto scaricando <aqua>{0}</aqua> negozi caricati...
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>Rimozione di <aqua>{0}</aqua> negozi dalla memoria...
-  force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
-  force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
+  force-shop-loader-reload-reloading-shop-loader: <yellow>Richiamando lo shop-loader per ricaricare tutti gli shop dal database...
+  force-shop-loader-reload-complete: <green>Lo Shop-loader ha ricaricato tutti gli shop!
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
-  handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
+  handler-list-not-valid-bukkit-event-class: <red>La classe <yellow>{0}</yellow> è una classe degli eventi Bukkit non valida.
   update-player-shops-signs-no-username-given: <red>Devi fornire un nome utente valido.
-  update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
+  update-player-shops-signs-create-async-task: <yellow>Creazione di attività asincrone per forzare l'aggiornamento dei cartelli...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
   update-player-shops-player-shops: <yellow>In totale <gold>{0}</gold> negozi in attesa di aggiornamenti.
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}</gold>'
@@ -607,34 +607,34 @@ debug:
   item-info-store-as-string: "<green>Il negozio che stai cercando: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-info-hand-as-string: "<green>L'oggetto che hai in mano: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
-  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize e MinimumIdle impostati su <white>{0}</white>"
   hikari-cp-testing: "<green>Per favore attendi, sto testando la connessione di HikariCP..."
   hikari-cp-working: "<green>Andata! HikariCP funziona alla grande!"
   hikari-cp-not-working: "<red>Test fallito! La connessione rientrata da HikariCP è morta! (Non ha passato il test in 1 secondo)"
   hikari-cp-timeout: "<red>HikariCP è scaduto mentre provava a prendere una connessione valida, per favore ripulisci tutte le query attive per liberare risorse di connessione."
   queries-stopped: "<green>Interrotte <white>{0}</white> le query attive."
   queries-dumping: "<yellow>Sto scaricando le query attive..."
-  restart-database-manager: "<yellow>Restarting SQLManager..."
+  restart-database-manager: "<yellow>Riavvio di SQLManager..."
   restart-database-manager-clear-executors: "<yellow>Sto ripulendo gli esecutori..."
   restart-database-manager-unfinished-task: "<yellow>Operazione non finita: <white>{0}</white>"
-  restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
-  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
-  restart-database-manager-done: "<green>Done!"
-  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
-  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
-  property-removed: "<green>Removed property key <white>{0}</white>"
-  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
-  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
-  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
+  restart-database-manager-unfinished-task-history-query: "<yellow>Attività incompiuta (Storico): <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>Riavvio di SQLManager tramite sequenza iniziale (tramite esecutore asincrono)"
+  restart-database-manager-done: "<green>Fatto!"
+  property-incorrect: "<yellow>Devi inserire una (e una sola) chiave di proprietà=valore impostato. Es. aaa=bbb"
+  property-security-block: "<red>Richiesta rifiutata. Per motivi di sicurezza, puoi cambiare solo la proprietà che inizia con <aqua>com.ghostchu.quickshop</aqua> o <aqua>quickshop</aqua>."
+  property-removed: "<green>Chiave di proprietà rimossa <white>{0}</white>"
+  property-changed: "<green>La chiave di proprietà <white>{0}</white> è stata cambiata da <white>{1}</white> a <white>{2}</white>"
+  marked-as-dirty: "<green>Contrassegnati tutti i negozi come status sporco, saranno forzati a salvare nella prossima attività di salvataggio automatico. (Riavviare il server per forzare l'esecuzione dell'attività di salvataggio negozio)"
+  display-removed: "<green>Rimossa con successo la visualizzazione degli oggetti/entità del QuickShop <yellow>{0}</yellow> dai mondi."
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
   status: '<yellow>Status: {0}'
-  status-good: <green>Good
+  status-good: <green>Bene
   status-bad: <yellow>Maintenance Required
-  isolated: '<yellow>Isolated Data:'
+  isolated: '<yellow>Dati Isolati:'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
   isolated-shop-ids: '<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>'
   isolated-logs: '<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>'
