@@ -385,6 +385,15 @@ permissions:
   quickshop.other.history:
     description: Permission to view the other's shop history
     default: op
+  quickshop.other.sell:
+    description: Allows a other player force switch the shop type to sell mode
+    default: op
+  quickshop.other.buy:
+    description: Allows a other player force switch the shop type to buy mode
+    default: op
+  quickshop.other.freeze:
+    description: Allows a other player force switch the shop type to frozen mode
+    default: op
   quickshop.suggestprice:
     description: Suggest the shop recommend price
     default: op
