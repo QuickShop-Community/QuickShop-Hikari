@@ -46,7 +46,7 @@
         <addon.plan>5.6.2965</addon.plan>
 
         <!-- compat versions -->
-        <compat.arm>3.5.5</compat.arm>
+        <compat.arm>3.5.3</compat.arm>
         <compat.angelchest>13.6.1</compat.angelchest>
         <compat.bentobox>2.7.0</compat.bentobox>
         <compat.bungee>1.20-R0.2</compat.bungee>
