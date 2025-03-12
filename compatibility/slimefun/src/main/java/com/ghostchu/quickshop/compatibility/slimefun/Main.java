@@ -6,12 +6,16 @@ import com.ghostchu.quickshop.api.registry.Registry;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionHandler;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.api.shop.Shop;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.api.events.ExplosiveToolBreakBlocksEvent;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -52,6 +56,17 @@ public final class Main extends CompatibilityModule implements SlimefunAddon, It
   public String getPrefix() {
 
     return "slimefun";
+  }
+
+  @EventHandler
+  public void onExplosionPickaxeEvent(final ExplosiveToolBreakBlocksEvent event) {
+    for (Block block : event.getAdditionalBlocks()) {
+      Shop shop = QuickShop.getInstance().getShopManager().getShop(block.getLocation());
+
+      if (shop != null) {
+        event.setCancelled(true);
+      }
+    }
   }
 
   @Override
