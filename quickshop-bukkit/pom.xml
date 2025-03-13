@@ -74,10 +74,6 @@
             <id>sonatype-oss-snapshots1</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>devmart-other</id>
-            <url>https://nexuslite.gcnt.net/repos/other/</url>
-        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -377,9 +373,9 @@
             <version>1.26.2</version>
         </dependency>
         <dependency>
-            <groupId>com.tcoded</groupId>
+            <groupId>com.github.technicallycoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.3.4</version>
+            <version>main-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
