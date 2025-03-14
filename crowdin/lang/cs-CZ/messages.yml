@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>Celková hodnota truhly: <yellow>{0}'
 currency-not-exists: <red>Nelze najít měnu, kterou chcete nastavit. Možná je pravopis špatný nebo není měna v tomto světě k dispozici.
 no-nearby-shop: <red>Žádné blízké obchody odpovídající {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integrace {0} zamítla obchod
 shop-transaction-failed: <red>Omlouváme se, ale při zpracování nákupu došlo k vnitřní chybě. Nákup byl zrušen a všechny ostatní operace byly vráceny zpět. Pokud tato chyba přetrvává, kontaktujte správce serveru.
 success-change-owner-to-server: <green>Úspěšně nastaven vlastník obchodu na Server.
