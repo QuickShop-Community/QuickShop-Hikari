@@ -19,7 +19,10 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
 
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,5 +46,45 @@ public class ShopBenefitEvent extends ShopSettingEvent<Benefit> {
                           final @NotNull Benefit old, final @NotNull Benefit updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopBenefitEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopBenefitEvent(newPhase, this.shop, this.old, this.updated);
+    }
+
+    return new ShopBenefitEvent(newPhase, this.shop, this.old);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopBenefitEvent clone(final Phase newPhase, final Benefit old, final Benefit updated) {
+
+    return new ShopBenefitEvent(newPhase, this.shop, this.old, this.updated);
+  }
+
+  public static ShopBenefitEvent RETRIEVE(final @NotNull Shop shop,
+                                          final Benefit old) {
+
+    return new ShopBenefitEvent(Phase.RETRIEVE, shop, old);
   }
 }

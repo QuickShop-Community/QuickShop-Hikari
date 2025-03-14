@@ -424,7 +424,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @Nullable String getCurrency() {
 
-    final ShopCurrencyEvent event = (ShopCurrencyEvent)ShopCurrencyEvent.RETRIEVE(this, this.currency);
+    final ShopCurrencyEvent event = ShopCurrencyEvent.RETRIEVE(this, this.currency);
     event.callEvent();
 
     return event.updated();
@@ -532,7 +532,7 @@ public class ContainerShop implements Shop, Reloadable {
     event.callEvent();
 
     //Call our Main Phase
-    event = (ShopItemEvent)event.clone(Phase.MAIN);
+    event = event.clone(Phase.MAIN);
     if(event.callCancellableEvent()) {
 
       Log.debug("A plugin cancelled the item change event.");
@@ -798,7 +798,7 @@ public class ContainerShop implements Shop, Reloadable {
     ShopTypeEvent event = new ShopTypeEvent(Phase.PRE, this, this.shopType, newShopType);
     event.callEvent();
 
-    event = (ShopTypeEvent)event.clone(Phase.MAIN);
+    event = event.clone(Phase.MAIN);
 
     if(event.callCancellableEvent()) {
       Log.debug(
@@ -808,7 +808,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     this.shopType = event.updated();
 
-    event = (ShopTypeEvent)event.clone(Phase.POST);
+    event = event.clone(Phase.POST);
     event.callEvent();
 
     this.setSignText();
@@ -955,7 +955,7 @@ public class ContainerShop implements Shop, Reloadable {
     ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.PRE, this, this.taxAccount, taxAccount);
     event.callEvent();
 
-    event = (ShopTaxAccountEvent)event.clone(Phase.MAIN);
+    event = event.clone(Phase.MAIN);
     if(event.callCancellableEvent()) {
 
       return;
@@ -964,7 +964,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     this.taxAccount = event.updated();
 
-    event = (ShopTaxAccountEvent)event.clone(Phase.POST);
+    event = event.clone(Phase.POST);
     event.callEvent();
 
     setDirty();
@@ -1031,7 +1031,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public boolean isDisableDisplay() {
 
-    final ShopDisplayEvent event = (ShopDisplayEvent)ShopDisplayEvent.RETRIEVE(this, this.disableDisplay);
+    final ShopDisplayEvent event = ShopDisplayEvent.RETRIEVE(this, this.disableDisplay);
     event.callEvent();
 
     return event.updated();
@@ -1685,7 +1685,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull Benefit getShopBenefit() {
 
-    final ShopBenefitEvent event = (ShopBenefitEvent)ShopBenefitEvent.RETRIEVE(this, this.benefit);
+    final ShopBenefitEvent event = ShopBenefitEvent.RETRIEVE(this, this.benefit);
     event.callEvent();
 
     return event.updated();

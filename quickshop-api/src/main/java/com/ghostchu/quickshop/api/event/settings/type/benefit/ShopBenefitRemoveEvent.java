@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -40,7 +41,54 @@ public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
     this.user = user;
   }
 
+  public ShopBenefitRemoveEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, @NotNull final Double benefit, @NotNull final Double updated) {
+    super(phase, shop, benefit, updated);
+
+    this.user = user;
+  }
+
   public QUser getUser() {
     return user;
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopBenefitRemoveEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, this.old, this.updated);
+    }
+
+    return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, this.old);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopBenefitRemoveEvent clone(final Phase newPhase, final Double old, final Double updated) {
+
+    return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, this.old);
+  }
+
+  public static ShopBenefitRemoveEvent PRE(final @NotNull Shop shop,
+                                           @NotNull final QUser user,
+                                            final Double old, final Double updated) {
+
+    return new ShopBenefitRemoveEvent(Phase.PRE, shop, user, old, updated);
   }
 }

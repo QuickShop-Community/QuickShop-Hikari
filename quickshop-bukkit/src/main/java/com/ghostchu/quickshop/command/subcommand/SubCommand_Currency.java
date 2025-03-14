@@ -37,10 +37,10 @@ public class SubCommand_Currency implements CommandHandler<Player> {
          || plugin.perm().hasPermission(sender, "quickshop.other.currency")) {
         if(parser.getArgs().isEmpty()) {
 
-          ShopCurrencyEvent event = (ShopCurrencyEvent)ShopCurrencyEvent.PRE(shop, shop.getCurrency(), null);
+          ShopCurrencyEvent event = new ShopCurrencyEvent(Phase.PRE, shop, shop.getCurrency(), null);
           event.callEvent();
 
-          event = (ShopCurrencyEvent)event.clone(Phase.MAIN);
+          event = event.clone(Phase.MAIN);
           if(event.callCancellableEvent()) {
 
             plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
@@ -57,7 +57,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
             plugin.text().of(sender, "currency-unset").send();
           }
 
-          event = (ShopCurrencyEvent)event.clone(Phase.POST);
+          event = event.clone(Phase.POST);
           event.callEvent();
           return;
         }
@@ -73,10 +73,10 @@ public class SubCommand_Currency implements CommandHandler<Player> {
         final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
 
 
-        ShopCurrencyEvent event = (ShopCurrencyEvent)ShopCurrencyEvent.PRE(shop, shop.getCurrency(), parser.getArgs().get(0));
+        ShopCurrencyEvent event = new ShopCurrencyEvent(Phase.PRE, shop, shop.getCurrency(), parser.getArgs().get(0));
         event.callEvent();
 
-        event = (ShopCurrencyEvent)event.clone(Phase.MAIN);
+        event = event.clone(Phase.MAIN);
         if(event.callCancellableEvent()) {
 
           plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
@@ -94,7 +94,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
         shop.setCurrency(event.updated());
         plugin.text().of(sender, "currency-set", event.updated()).send();
 
-        event = (ShopCurrencyEvent)event.clone(Phase.POST);
+        event = event.clone(Phase.POST);
         event.callEvent();
         return;
 

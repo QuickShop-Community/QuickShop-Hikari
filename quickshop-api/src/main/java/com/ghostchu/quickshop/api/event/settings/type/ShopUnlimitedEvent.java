@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
@@ -41,5 +42,39 @@ public class ShopUnlimitedEvent extends ShopSettingEvent<Boolean> {
                           final @NotNull Boolean old, final @NotNull Boolean updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopUnlimitedEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopUnlimitedEvent(newPhase, this.shop, this.old, this.updated);
+    }
+
+    return new ShopUnlimitedEvent(newPhase, this.shop, this.old);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopUnlimitedEvent clone(final Phase newPhase, final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(newPhase, this.shop, this.old, this.updated);
   }
 }

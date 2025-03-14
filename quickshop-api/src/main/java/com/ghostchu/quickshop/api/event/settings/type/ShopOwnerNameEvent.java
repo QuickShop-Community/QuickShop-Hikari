@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
@@ -42,5 +43,39 @@ public class ShopOwnerNameEvent extends ShopSettingEvent<Component> {
                        final Component old, final Component updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopOwnerNameEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopOwnerNameEvent(newPhase, this.shop, this.old, this.updated);
+    }
+
+    return new ShopOwnerNameEvent(newPhase, this.shop, this.old);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopOwnerNameEvent clone(final Phase newPhase, final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(newPhase, this.shop, this.old, this.updated);
   }
 }

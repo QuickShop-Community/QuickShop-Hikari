@@ -35,13 +35,13 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
     ShopUnlimitedEvent event = new ShopUnlimitedEvent(Phase.PRE, shop, shop.isUnlimited(), newStatus);
     event.callEvent();
 
-    event = (ShopUnlimitedEvent)event.clone(Phase.MAIN);
+    event = event.clone(Phase.MAIN);
     if(event.callCancellableEvent()) {
       Log.debug("Other plugin cancelled shop naming.");
       return;
     }
 
-    event = (ShopUnlimitedEvent)event.clone(Phase.POST);
+    event = event.clone(Phase.POST);
     event.callEvent();
 
     shop.setUnlimited(event.updated());

@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -39,7 +40,53 @@ public class ShopBenefitAddEvent extends ShopSettingEvent<Double> {
     this.user = user;
   }
 
+  public ShopBenefitAddEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, final double benefit, final double updated) {
+    super(phase, shop, benefit, updated);
+    this.user = user;
+  }
+
   public QUser user() {
     return user;
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopBenefitAddEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopBenefitAddEvent(newPhase, this.shop, this.user, this.old, this.updated);
+    }
+
+    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, this.old);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopBenefitAddEvent clone(final Phase newPhase, final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, old, updated);
+  }
+
+  public static ShopBenefitAddEvent PRE(final @NotNull Shop shop,
+                                           @NotNull final QUser user,
+                                           final Double old, final Double updated) {
+
+    return new ShopBenefitAddEvent(Phase.PRE, shop, user, old, updated);
   }
 }
