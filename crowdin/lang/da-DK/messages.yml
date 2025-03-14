@@ -125,7 +125,6 @@ menu:
   total-value-of-chest: '<green>Samlet værdi af kiste: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finde den valuta, du vil angive. Måske staves forkert, eller at valuta ikke er tilgængelig i denne verden.
 no-nearby-shop: <red>No nearby shop matching {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red> Integration {0} nægtede oprettelsen af ​​butikken
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Indstillet butiksejeren til Server.
