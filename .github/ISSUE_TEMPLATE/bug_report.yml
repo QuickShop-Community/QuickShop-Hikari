@@ -86,7 +86,7 @@ body:
           required: false
         - label: "I confirm that I'm using QuickShop-Hikari, not QuickShop-Reremake, and I'm well aware that they're maintained by different people, and that Reremake issues shouldn't be reported here."
           required: false
-        - label: "I confirm that I am running a server that is not a Hybird Server, (e.g. Mohist, Magma, CatServer, Banner, etc.), and I am aware that QuickShop-Hikari may not function properly on a Forge/Fabric hybrid server, and I am running at my own risk on such a server program, and I am aware that the I run such server-side programs at my own risk and know that I will not receive any support or help for this behavior."
+        - label: "I confirm that I am running a server that is not a Hybrid Server, (e.g. Mohist, Magma, CatServer, Banner, etc.), and I am aware that QuickShop-Hikari may not function properly on a NeoForge/Forge/Fabric hybrid server, and I am running at my own risk on such a server program, and I am aware that the I run such server-side programs at my own risk and know that I will not receive any support or help for this behavior."
           required: false
         - label: "I am well aware that if the Issue Ticket is not filled out correctly and completely, it will simply be closed without any response or reason."
           required: false
