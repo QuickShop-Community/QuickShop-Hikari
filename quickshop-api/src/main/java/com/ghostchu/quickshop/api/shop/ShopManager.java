@@ -350,10 +350,11 @@ public interface ShopManager {
    * Checks if player reached the limit of shops
    *
    * @param p The player to check
+   * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're reached the limit.
    */
-  boolean isReachedLimit(@NotNull QUser p);
+  boolean isReachedLimit(@NotNull QUser p, boolean message);
 
   /**
    * Load shop method for loading shop into mapping, so getShops method will can find it. It also

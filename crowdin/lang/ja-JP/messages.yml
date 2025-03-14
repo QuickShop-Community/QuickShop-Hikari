@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>在庫: <yellow>{0}'
   this-shop-is-buying: <green>このショップは <light_purple>買取<green> です
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>売却成功:'
   total-value-of-chest: '<green>チェストの合計額: <yellow>{0}'
 currency-not-exists: <red>設定したい通貨が見当たりません。スペルが間違っているか、その通貨がこの世界では利用できないかもしれません。
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: '{1} では言語 {0} の翻訳が完了し�
 taxaccount-invalid: <red>対象アカウントが無効です。有効なプレイヤー名またはuuid(ダッシュ付き)を入力してください。
 player-bought-from-your-store: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。
 reached-maximum-can-create: <red>あなたはすでに最大値を超えて {0} / {1} のショップを作成しています！
-reached-maximum-create-limit: <red>作成可能なショップ数の上限に達しました
 translation-version: 'サポートバージョン: Hikari'
 no-double-chests: <red>ラージチェストのショップを作成することはできません。
 price-too-cheap: <red>価格は<yellow>${0}<red>以上である必要があります。
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>店主: <aqua>{0} <yellow>[<light_purple><bold>変更<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>このショップが使用している通貨を設定または削除する場合はクリックしてください
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

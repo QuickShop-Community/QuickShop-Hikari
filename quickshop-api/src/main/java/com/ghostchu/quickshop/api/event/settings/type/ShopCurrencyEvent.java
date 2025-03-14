@@ -78,9 +78,51 @@ public class ShopCurrencyEvent extends ShopSettingEvent<String> {
     return new ShopCurrencyEvent(newPhase, this.shop, old, updated);
   }
 
+  public static ShopCurrencyEvent PRE(final @NotNull Shop shop,
+                                            final String old) {
+
+    return new ShopCurrencyEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopCurrencyEvent PRE(final @NotNull Shop shop,
+                                            final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopCurrencyEvent MAIN(final @NotNull Shop shop,
+                                             final String old) {
+
+    return new ShopCurrencyEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopCurrencyEvent MAIN(final @NotNull Shop shop,
+                                             final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopCurrencyEvent POST(final @NotNull Shop shop,
+                                             final String old) {
+
+    return new ShopCurrencyEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopCurrencyEvent POST(final @NotNull Shop shop,
+                                             final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.POST, shop, old, updated);
+  }
+
   public static ShopCurrencyEvent RETRIEVE(final @NotNull Shop shop,
-                                          final String old) {
+                                                 final String old) {
 
     return new ShopCurrencyEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopCurrencyEvent RETRIEVE(final @NotNull Shop shop,
+                                                 final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

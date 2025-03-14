@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] El elemento NBT es demasiado grande para mostrarlo
   stock: '<green>Existencias <yellow>{0}'
   this-shop-is-buying: <green>Esta tienda está <light_purple>COMPRANDO<green> artículos.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vendido con éxito:'
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No se puede encontrar la divisa que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: La traducción del lenguaje {0} aún no fue c
 taxaccount-invalid: <red>La cuenta de destino no es válida, por favor ingrese un nombre de jugador válido o uuid(con guiones).
 player-bought-from-your-store: <red>{0} ha comprado {1} {2} por un valor de {3} en tu tienda.
 reached-maximum-can-create: <red>¡Ya has creado un máximo de {0}/{1} tiendas!
-reached-maximum-create-limit: <red>Has alcanzado el número de tiendas máximas
 translation-version: 'Versión de soporte: Hikari'
 no-double-chests: <red>No puedes crear tiendas de cofres dobles.
 price-too-cheap: <red>El precio debe ser mayor a <yellow>${0}
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click para establecer o remover la divisa que utiliza la tienda
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

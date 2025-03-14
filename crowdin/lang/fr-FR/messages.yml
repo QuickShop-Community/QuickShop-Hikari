@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock restant<yellow>{0}'
   this-shop-is-buying: <green>Cette boutique <light_purple>ACHETE<green> des objets.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vente réussie :'
   total-value-of-chest: '<green>Valeur totale du coffre: <yellow>{0}'
 currency-not-exists: <red>Impossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: La traduction de la langue {0} a terminé {1}
 taxaccount-invalid: <red>Le compte que vous avez défini est invalide, veuillez entrer un nom de joueur ou un uuid (avec les tirets) valide.
 player-bought-from-your-store: <red>{0} a acheté {1} {2} dans ta boutique, et tu as reçu ou payé {3} ( de taxes.
 reached-maximum-can-create: '<red>Tu as atteint ton nombre de coffre de boutiques maximal : {0}/{1}!'
-reached-maximum-create-limit: <red>Vous avez atteint le nombre maximum de boutiques que vous pouvez créer
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Vous ne pouvez pas créer de boutique avec un double coffre.
 price-too-cheap: <red>Le prix doit être supérieur à <yellow>${0}
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Cliquez pour définir ou supprimer le mode utilisée par cette boutique
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

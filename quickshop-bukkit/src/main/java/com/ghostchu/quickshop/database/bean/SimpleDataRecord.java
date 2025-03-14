@@ -64,7 +64,14 @@ public class SimpleDataRecord implements DataRecord {
 
     this.owner = QUserImpl.deserialize(finder, set.getString("owner"), QuickExecutor.getSecondaryProfileIoExecutor());
     this.item = set.getString("item");
-    this.encoded = set.getString("encoded");
+
+    final String encodedRead = set.getString("encoded");
+    if(encodedRead == null) {
+      this.encoded = "";
+    } else {
+      this.encoded = encodedRead;
+    }
+
     this.name = set.getString("name");
     this.type = set.getInt("type");
     this.currency = set.getString("currency");

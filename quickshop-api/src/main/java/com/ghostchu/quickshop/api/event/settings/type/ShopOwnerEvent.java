@@ -53,7 +53,6 @@ public class ShopOwnerEvent extends ShopSettingEvent<QUser> {
    */
   @Override
   public ShopOwnerEvent clone(final Phase newPhase) {
-
     if(this.updated != null) {
 
       return new ShopOwnerEvent(newPhase, this.shop, this.old, this.updated);
@@ -75,6 +74,54 @@ public class ShopOwnerEvent extends ShopSettingEvent<QUser> {
   @Override
   public ShopOwnerEvent clone(final Phase newPhase, final QUser old, final QUser updated) {
 
-    return new ShopOwnerEvent(newPhase, this.shop, this.old, this.updated);
+    return new ShopOwnerEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopOwnerEvent PRE(final @NotNull Shop shop,
+                                  final QUser old) {
+
+    return new ShopOwnerEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopOwnerEvent PRE(final @NotNull Shop shop,
+                                  final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopOwnerEvent MAIN(final @NotNull Shop shop,
+                                   final QUser old) {
+
+    return new ShopOwnerEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopOwnerEvent MAIN(final @NotNull Shop shop,
+                                   final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopOwnerEvent POST(final @NotNull Shop shop,
+                                   final QUser old) {
+
+    return new ShopOwnerEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopOwnerEvent POST(final @NotNull Shop shop,
+                                   final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopOwnerEvent RETRIEVE(final @NotNull Shop shop,
+                                       final QUser old) {
+
+    return new ShopOwnerEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopOwnerEvent RETRIEVE(final @NotNull Shop shop,
+                                       final QUser old, final QUser updated) {
+
+    return new ShopOwnerEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

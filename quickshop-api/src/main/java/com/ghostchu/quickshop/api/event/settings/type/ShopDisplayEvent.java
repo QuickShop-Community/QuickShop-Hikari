@@ -80,9 +80,51 @@ public class ShopDisplayEvent extends ShopSettingEvent<Boolean> {
     return new ShopDisplayEvent(newPhase, this.shop, old, updated);
   }
 
+  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
+                                      final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
+                                      final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
+                                       final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
+                                       final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent POST(final @NotNull Shop shop,
+                                       final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopDisplayEvent POST(final @NotNull Shop shop,
+                                       final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.POST, shop, old, updated);
+  }
+
   public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
-                                          final Boolean old) {
+                                           final Boolean old) {
 
     return new ShopDisplayEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
+                                           final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

@@ -53,7 +53,6 @@ public class ShopPriceEvent extends ShopSettingEvent<Double> {
    */
   @Override
   public ShopPriceEvent clone(final Phase newPhase) {
-
     if(this.updated != null) {
 
       return new ShopPriceEvent(newPhase, this.shop, this.old, this.updated);
@@ -74,6 +73,54 @@ public class ShopPriceEvent extends ShopSettingEvent<Double> {
   @Override
   public ShopPriceEvent clone(final Phase newPhase, final Double old, final Double updated) {
 
-    return new ShopPriceEvent(newPhase, this.shop, this.old, this.updated);
+    return new ShopPriceEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopPriceEvent PRE(final @NotNull Shop shop,
+                                  final Double old) {
+
+    return new ShopPriceEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopPriceEvent PRE(final @NotNull Shop shop,
+                                  final Double old, final Double updated) {
+
+    return new ShopPriceEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopPriceEvent MAIN(final @NotNull Shop shop,
+                                   final Double old) {
+
+    return new ShopPriceEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopPriceEvent MAIN(final @NotNull Shop shop,
+                                   final Double old, final Double updated) {
+
+    return new ShopPriceEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopPriceEvent POST(final @NotNull Shop shop,
+                                   final Double old) {
+
+    return new ShopPriceEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopPriceEvent POST(final @NotNull Shop shop,
+                                   final Double old, final Double updated) {
+
+    return new ShopPriceEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopPriceEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Double old) {
+
+    return new ShopPriceEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopPriceEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Double old, final Double updated) {
+
+    return new ShopPriceEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

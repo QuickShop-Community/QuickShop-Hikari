@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Estoc: <yellow>{0}'
   this-shop-is-buying: <green>Aquesta botiga està <light_purple>COMPRANT<green> ítems.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Venut amb èxit:'
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No s'ha trobat la moneda que vols fer servir. Potser ho has escrit malament o la moneda no està disponible en aquest món.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: La traducció de la llengua {0} encara no est
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} ha comprat {1} {2} de la teva botiga i has guanyat {3}.
 reached-maximum-can-create: <red>Ja has creat un màxim de {0}/{1} botigues!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>No pots crear una botiga de cofre doble.
 price-too-cheap: <red>El preu ha de ser superior a <yellow>${0}
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Fes clic per determinar o eliminar la moneda que fa servir la botiga.
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

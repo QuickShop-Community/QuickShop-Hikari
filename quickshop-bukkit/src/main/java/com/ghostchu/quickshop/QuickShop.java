@@ -46,6 +46,7 @@ import com.ghostchu.quickshop.listener.DisplayProtectionListener;
 import com.ghostchu.quickshop.listener.InternalListener;
 import com.ghostchu.quickshop.listener.LockListener;
 import com.ghostchu.quickshop.listener.PlayerListener;
+import com.ghostchu.quickshop.listener.PlayerLockClickListener;
 import com.ghostchu.quickshop.listener.ShopProtectionListener;
 import com.ghostchu.quickshop.listener.WorldListener;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
@@ -767,6 +768,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     // Register events
     // Listeners (These don't)
     registerListeners();
+    this.shopControlPanelManager.initialize();
     this.shopControlPanelManager.register(new SimpleShopControlPanel());
     this.registerDisplayItem();
     this.registerShopLock();
@@ -930,6 +932,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     new ChunkListener(this).register();
     new CustomInventoryListener(this).register();
     new ShopProtectionListener(this).register();
+    new PlayerLockClickListener(this).register();
     new MetricListener(this).register();
     new InternalListener(this).register();
     if(Util.checkIfBungee()) {
@@ -1234,6 +1237,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public @NotNull TextManager text() {
 
     return this.textManager;
+  }
+
+  public ShopControlPanelManager controlPanelManager() {
+
+    return shopControlPanelManager;
   }
 
   public MenuPlayer createMenuPlayer(final OfflinePlayer player) {

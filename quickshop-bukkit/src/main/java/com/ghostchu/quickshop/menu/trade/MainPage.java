@@ -152,7 +152,7 @@ public class MainPage extends QuickShopPage {
                                                                                                                  shop.get().getLocation().getWorld(),
                                                                                                                  shop.get().getCurrency()),
                                                                        amount,
-                                                                       eco.format((adjustedAmount * shop.get().getPrice()),
+                                                                       eco.format((quantity * shop.get().getPrice()),
                                                                                   shop.get().getLocation().getWorld(),
                                                                                   shop.get().getCurrency()))))
                                          .withActions(new RunnableAction((click->{

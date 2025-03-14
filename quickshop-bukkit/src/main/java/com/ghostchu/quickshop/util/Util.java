@@ -372,7 +372,10 @@ public class Util {
       yamlConfiguration.loadFromString(config);
       return yamlConfiguration.getItemStack("item");
     } catch(final Exception e) {
-      throw new InvalidConfigurationException("Exception in deserialize item: " + config, e);
+
+      QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
+      Log.debug("Failed to load data to the ItemStack: " + config);
+      return null;
     }
   }
 

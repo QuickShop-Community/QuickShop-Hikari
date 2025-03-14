@@ -55,7 +55,6 @@ public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
    */
   @Override
   public ShopTypeEvent clone(final Phase newPhase) {
-
     if(this.updated != null) {
 
       return new ShopTypeEvent(newPhase, this.shop, this.old, this.updated);
@@ -76,6 +75,54 @@ public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
   @Override
   public ShopTypeEvent clone(final Phase newPhase, final ShopType old, final ShopType updated) {
 
-    return new ShopTypeEvent(newPhase, this.shop, this.old, this.updated);
+    return new ShopTypeEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopTypeEvent PRE(final @NotNull Shop shop,
+                                  final ShopType old) {
+
+    return new ShopTypeEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopTypeEvent PRE(final @NotNull Shop shop,
+                                  final ShopType old, final ShopType updated) {
+
+    return new ShopTypeEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopTypeEvent MAIN(final @NotNull Shop shop,
+                                   final ShopType old) {
+
+    return new ShopTypeEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopTypeEvent MAIN(final @NotNull Shop shop,
+                                   final ShopType old, final ShopType updated) {
+
+    return new ShopTypeEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopTypeEvent POST(final @NotNull Shop shop,
+                                   final ShopType old) {
+
+    return new ShopTypeEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopTypeEvent POST(final @NotNull Shop shop,
+                                   final ShopType old, final ShopType updated) {
+
+    return new ShopTypeEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopTypeEvent RETRIEVE(final @NotNull Shop shop,
+                                       final ShopType old) {
+
+    return new ShopTypeEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopTypeEvent RETRIEVE(final @NotNull Shop shop,
+                                       final ShopType old, final ShopType updated) {
+
+    return new ShopTypeEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.shop.display.virtual;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.QuickShopBukkit;
 import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerAddedEvent;
 import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerInitEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -93,6 +95,16 @@ public class VirtualDisplayItemManager {
   }
 
   public void setHandler() {
+
+    final String preferred = QuickShop.getInstance().getConfig().getString("shop.display-protocol", "protocollib").toLowerCase(Locale.ROOT);
+
+    //attempt to use the preferred packet handler.
+    final PacketHandler<?> handler = packetHandlers.get(preferred);
+    if(handler != null && Bukkit.getPluginManager().getPlugin(handler.pluginName()) != null) {
+
+      this.packetHandler = handler;
+      return;
+    }
 
     for(final PacketHandler<?> packetHandler : packetHandlers.values()) {
 
@@ -181,7 +193,7 @@ public class VirtualDisplayItemManager {
 
     } else {
 
-      packetHandlers.put(packetHandler.identifier(), packetHandler);
+      packetHandlers.put(packetHandler.identifier().toLowerCase(Locale.ROOT), packetHandler);
     }
   }
 

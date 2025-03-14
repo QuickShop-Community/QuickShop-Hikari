@@ -79,6 +79,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -516,8 +517,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     // Check if player has reached the max shop limit
-    if(isReachedLimit(shop.getOwner())) {
-      plugin.text().of(p, "reached-maximum-create-limit").send();
+    if(isReachedLimit(shop.getOwner(), true)) {
       return;
     }
     // Check if target block is allowed shop-block
@@ -649,11 +649,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
    * Checks other plugins to make sure they can use the chest they're making a shop.
    *
    * @param p The player to check
+   * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're allowed to place a shop there.
    */
   @Override
-  public boolean isReachedLimit(@NotNull final QUser p) {
+  public boolean isReachedLimit(@NotNull final QUser p, final boolean message) {
 
     Util.ensureThread(false);
     if(plugin.getRankLimiter().isLimit()) {
@@ -668,8 +669,19 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
       }
       final int max = plugin.getRankLimiter().getShopLimit(p);
+      final boolean limitReached = owned >= max;
       Log.debug("CanBuildShop check for " + p.getDisplay() + " owned: " + owned + "; max: " + max);
-      return owned + 1 > max;
+
+      if(limitReached && message) {
+
+        final Optional<Player> playerOptional = p.getBukkitPlayer();
+        if(playerOptional.isPresent()) {
+
+          plugin.text().of(p, "reached-maximum-can-create", owned, max).send();
+        }
+      }
+
+      return limitReached;
     }
     return false;
   }

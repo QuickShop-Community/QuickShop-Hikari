@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Estoque <yellow>{0}'
   this-shop-is-buying: <green>Esta loja está <light_purple>COMPRANDO<green> itens.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vendido com sucesso:'
   total-value-of-chest: '<green>Valor total do baú: <yellow>{0}'
 currency-not-exists: <red>Não foi possível encontrar a moeda que deseja definir. Talvez a ortografia esteja errada ou a moeda não esteja disponível neste mundo.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: A tradução do idioma {0} ainda não foi con
 taxaccount-invalid: <red>A conta não é inválida, por favor insira um nome de jogador ou uuid(com traços).
 player-bought-from-your-store: <red>{0} comprou {1} {2} da sua loja e você pagou {3} em impostos.
 reached-maximum-can-create: <red>Você já criou o máximo de lojas! ({0}/{1})
-reached-maximum-create-limit: <red>Você atingiu o número máximo de lojas que você pode criar
 translation-version: 'Versão de suporte: Hikari'
 no-double-chests: <red>Você não pode criar a loja com baú duplo.
 price-too-cheap: <red>O preço precisa ser maior do que <yellow>${0}
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Sempre contando: {0} <yellow>[<light_purple><bold>Altere<yellow>]'
   setowner: '<green>Proprietário: <aqua>{0} <yellow>[<light_purple><bold>Mudar<yellow>]'
-  freeze: '<yellow>Modo de bloqueio: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Preço: <aqua>{0} <yellow>[<light_purple><bold>Mudar<yellow>]'
   currency-hover: <yellow>Clique para definir ou remover a moeda que esta loja está usando
   lock: '<yellow>Bloqueio de Loja: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

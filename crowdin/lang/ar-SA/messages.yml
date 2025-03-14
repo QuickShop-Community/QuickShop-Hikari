@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: يمكنك تدمير المتجر باستخدام <yellow>الأداة الفائقة.
 fee-charged-for-price-change: <green>لقد دفعت <red>{0}<green> لتغيير السعر.
 not-allowed-to-create: <red>لا يمكنك إنشاء متجرك هنا.
 disabled-in-this-world: Quickshop معطل في هذا العالم
@@ -13,10 +13,10 @@ shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick an
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>يمكنك فقط إدخال رقم، ما ادخلت هو {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>تم إزالة متجرك في {0} لأنك لم يكن لديك ما يكفي من المال للحفاظ عليه!
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
+  amount: '[المبلغ]'
+  item: '[العنصر]'
   price: '[price]'
   name: '[name]'
   range: '[range]'
@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Successfully sold:'
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
@@ -255,7 +256,6 @@ translate-not-completed-yet-click: The translation of the language {0} was not c
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} اشترى {1} {2} من متجرك، وكسبت {3}.
 reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>لا يمكنك إنشاء متجر بصندوق مزدوج.
 price-too-cheap: <red> يجب أن يكون السعر أكبر من <yellow>${0}

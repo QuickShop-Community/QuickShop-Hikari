@@ -53,7 +53,6 @@ public class ShopUnlimitedEvent extends ShopSettingEvent<Boolean> {
    */
   @Override
   public ShopUnlimitedEvent clone(final Phase newPhase) {
-
     if(this.updated != null) {
 
       return new ShopUnlimitedEvent(newPhase, this.shop, this.old, this.updated);
@@ -75,6 +74,54 @@ public class ShopUnlimitedEvent extends ShopSettingEvent<Boolean> {
   @Override
   public ShopUnlimitedEvent clone(final Phase newPhase, final Boolean old, final Boolean updated) {
 
-    return new ShopUnlimitedEvent(newPhase, this.shop, this.old, this.updated);
+    return new ShopUnlimitedEvent(newPhase, this.shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent PRE(final @NotNull Shop shop,
+                                  final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopUnlimitedEvent PRE(final @NotNull Shop shop,
+                                  final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent MAIN(final @NotNull Shop shop,
+                                   final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopUnlimitedEvent MAIN(final @NotNull Shop shop,
+                                   final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent POST(final @NotNull Shop shop,
+                                   final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopUnlimitedEvent POST(final @NotNull Shop shop,
+                                   final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopUnlimitedEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Boolean old) {
+
+    return new ShopUnlimitedEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopUnlimitedEvent RETRIEVE(final @NotNull Shop shop,
+                                       final Boolean old, final Boolean updated) {
+
+    return new ShopUnlimitedEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

@@ -119,8 +119,10 @@ public class SubCommand_List implements CommandHandler<Player> {
       final Component shopTypeComponent;
       if(shop.isBuying()) {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-buying").forLocale();
-      } else {
+      } else if(shop.isSelling()) {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
+      } else {
+        shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-frozen").forLocale();
       }
       Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
       component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
