@@ -125,7 +125,6 @@ menu:
   total-value-of-chest: '<green>มูลค่ารวมของกล่อง: <yellow>{0}'
 currency-not-exists: <red>ไม่สามารถหาสกุลเงินที่คุณจะกำหนดได้ ลองดูว่าเขียนถูกไหม ไม่ก็สกุลเงินนั้นไม่มีในโลกนี้
 no-nearby-shop: <red>No nearby shop matching {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>การดำเนินการ {0} ยกเลิกการสร้างร้านค้า
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>เปลี่ยนเจ้าของร้านเป็นของเซิร์ฟเวอร์สำเร็จ
