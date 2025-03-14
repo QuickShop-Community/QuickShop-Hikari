@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>Tổng giá trị của rương: <yellow>{0}'
 currency-not-exists: <red>Không thể tìm thấy đơn vị tiền tệ mà bạn muốn đặt. Có thể lỗi chính tả hoặc đơn vị tiền tệ đó không có sẵn trên thế giới này.
 no-nearby-shop: <red>Không có shop {0} nào gần đây.
-translation-author: 'Ghost_chu, Andre_601 (dịch bởi maiminhdung)'
 integrations-check-failed-trade: <red>Tích hợp {0} đã từ chối Shop trao đổi
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Đã đặt thành công chủ cửa hàng thành Máy chủ.
