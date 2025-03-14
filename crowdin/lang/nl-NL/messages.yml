@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
 no-nearby-shop: <red>Geen winkel in de buurt die overeenkomt met {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Succesvol de winkeleigenaar ingesteld op Server.
