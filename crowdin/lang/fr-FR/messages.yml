@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>Valeur totale du coffre: <yellow>{0}'
 currency-not-exists: <red>Impossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.
 no-nearby-shop: <red>Aucune boutique à proximité ne correspond à {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Intégration {0} à refusé la création de la boutique
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Le propriétaire de la boutique à été définit au Serveur avec succès.
