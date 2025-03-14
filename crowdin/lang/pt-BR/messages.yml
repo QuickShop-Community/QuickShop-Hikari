@@ -125,7 +125,6 @@ menu:
   total-value-of-chest: '<green>Valor total do baú: <yellow>{0}'
 currency-not-exists: <red>Não foi possível encontrar a moeda que deseja definir. Talvez a ortografia esteja errada ou a moeda não esteja disponível neste mundo.
 no-nearby-shop: <red>Nenhuma loja próxima com {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integração {0} negou a negociação da loja
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: Proprietário da loja definido como Server.
