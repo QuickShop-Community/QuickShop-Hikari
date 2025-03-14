@@ -125,7 +125,6 @@ menu:
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
 no-nearby-shop: <red>附近没有匹配 {0} 的商店。
-translation-author: 'Ghost_chu, sandtechnology, Pemdow, YuanYuanOwO, RMSCA, 李馨雨'
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
 shop-transaction-failed: <red>抱歉，在处理您的购买时发生内部错误。购买已取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
