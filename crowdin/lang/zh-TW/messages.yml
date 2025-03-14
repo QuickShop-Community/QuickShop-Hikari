@@ -125,7 +125,6 @@ menu:
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此世界無法使用貨幣。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
-translation-author: 'Ghost_chu、Andre_601、flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功地將商店擁有者轉交給伺服器。
