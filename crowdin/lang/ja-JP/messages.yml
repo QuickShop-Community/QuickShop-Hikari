@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>チェストの合計額: <yellow>{0}'
 currency-not-exists: <red>設定したい通貨が見当たりません。スペルが間違っているか、その通貨がこの世界では利用できないかもしれません。
 no-nearby-shop: <red> {0} に一致するショップは近所にありません。
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>{0} 統合がショップの取引を拒否しました
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>ショップの店主をサーバーに設定しました。
