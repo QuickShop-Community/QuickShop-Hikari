@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No s'ha trobat la moneda que vols fer servir. Potser ho has escrit malament o la moneda no està disponible en aquest món.
 no-nearby-shop: <red>Cap botiga propera que coincideix amb {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>La integració {0} ha denegat l'ús de la botiga
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>S'ha establert el servidor com a propietari de la botiga.
