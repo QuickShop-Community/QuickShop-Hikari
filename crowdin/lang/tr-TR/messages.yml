@@ -124,7 +124,6 @@ menu:
   total-value-of-chest: '<green>Sandığın toplam değeri: <yellow>{0}'
 currency-not-exists: <red>Ayarlamak istediğiniz para birimi bulunamadı. Belki imlâ hatası yaptığınız ya da o para birimi dünyada mevcut değil.
 no-nearby-shop: <red>Yakınlarda {0} ile uyuşan market yok.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>{0} entegrasyonu market ticaretini reddetti
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Market sahibi başarıyla Sunucu yapıldı.
