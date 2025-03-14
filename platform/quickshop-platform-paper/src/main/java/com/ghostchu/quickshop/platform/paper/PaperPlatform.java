@@ -65,10 +65,14 @@ public class PaperPlatform implements Platform {
   public @NotNull Component getDisplayName(@NotNull final ItemMeta meta) {
 
     final Component displayName = meta.displayName();
-    if(displayName == null) {
-      return Component.empty();
+    if(displayName != null) {
+      return displayName;
     }
-    return displayName;
+
+    if(meta.hasItemName()) {
+      return meta.itemName();
+    }
+    return Component.empty();
   }
 
 

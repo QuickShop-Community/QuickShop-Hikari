@@ -154,10 +154,10 @@ public class ShopUtil {
       }
     }
 
-    ShopPriceEvent event = (ShopPriceEvent)ShopPriceEvent.PRE(shop, shop.getPrice(), price);
+    ShopPriceEvent event = new ShopPriceEvent(Phase.PRE, shop, shop.getPrice(), price);
     event.callEvent();
 
-    event = (ShopPriceEvent)event.clone(Phase.MAIN);
+    event = event.clone(Phase.MAIN);
 
     if(event.callCancellableEvent()) {
       Log.debug("A plugin cancelled the price change event.");
@@ -193,7 +193,7 @@ public class ShopUtil {
     plugin.text().of(user,
                      "price-is-now", plugin.getShopManager().format(event.updated(), shop)).send();
 
-    event = (ShopPriceEvent)event.clone(Phase.POST);
+    event = event.clone(Phase.POST);
     event.callEvent();
   }
 
@@ -223,16 +223,16 @@ public class ShopUtil {
 
       for(final Shop shop : shops) {
 
-        ShopOwnerEvent event = (ShopOwnerEvent)ShopOwnerEvent.PRE(shop, shop.getOwner(), to);
+        ShopOwnerEvent event = new ShopOwnerEvent(Phase.PRE, shop, shop.getOwner(), to);
         event.callEvent();
 
-        event = (ShopOwnerEvent)event.clone(Phase.MAIN);
+        event = event.clone(Phase.MAIN);
         if(event.callCancellableEvent()) {
           continue;
         }
         shop.setOwner(event.updated());
 
-        event = (ShopOwnerEvent)event.clone(Phase.POST);
+        event = event.clone(Phase.POST);
         event.callEvent();
 
 

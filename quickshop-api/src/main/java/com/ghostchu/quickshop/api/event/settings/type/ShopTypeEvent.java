@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
@@ -54,8 +55,11 @@ public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
    */
   @Override
   public ShopTypeEvent clone(final Phase newPhase) {
+    if(this.updated != null) {
 
-    return new ShopTypeEvent(newPhase, this.shop, this.old, this.updated);
+      return new ShopTypeEvent(newPhase, this.shop, this.old, this.updated);
+    }
+    return new ShopTypeEvent(newPhase, this.shop, this.old);
   }
 
   /**

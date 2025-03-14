@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.inventory.ItemStack;
@@ -52,8 +53,11 @@ public class ShopItemEvent extends ShopSettingEvent<ItemStack> {
    */
   @Override
   public ShopItemEvent clone(final Phase newPhase) {
+    if(this.updated != null) {
 
-    return new ShopItemEvent(newPhase, this.shop, this.old, this.updated);
+      return new ShopItemEvent(newPhase, this.shop, this.old, this.updated);
+    }
+    return new ShopItemEvent(newPhase, this.shop, this.old);
   }
 
   /**

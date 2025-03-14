@@ -55,7 +55,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
               ShopOwnerEvent event = new ShopOwnerEvent(Phase.PRE, shop, shop.getOwner(), newShopOwner);
               event.callEvent();
 
-              final ShopOwnerEvent main = (ShopOwnerEvent)event.clone(Phase.MAIN);
+              final ShopOwnerEvent main = event.clone(Phase.MAIN);
               if(main.callCancellableEvent()) {
                 return;
               }
@@ -66,7 +66,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
                 plugin.text().of(sender, "command.new-owner", main.updated().getDisplay()).send();
               });
 
-              event = (ShopOwnerEvent)main.clone(Phase.POST);
+              event = main.clone(Phase.POST);
               event.callEvent();
 
             })

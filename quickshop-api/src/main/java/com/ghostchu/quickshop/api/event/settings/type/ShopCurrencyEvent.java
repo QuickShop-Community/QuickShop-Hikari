@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,24 @@ public class ShopCurrencyEvent extends ShopSettingEvent<String> {
   }
 
   /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopCurrencyEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopCurrencyEvent(newPhase, this.shop, this.old, this.updated);
+    }
+
+    return new ShopCurrencyEvent(newPhase, this.shop, this.old);
+  }
+
+  /**
    * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
    * value.
    *
@@ -57,19 +76,6 @@ public class ShopCurrencyEvent extends ShopSettingEvent<String> {
   public ShopCurrencyEvent clone(final Phase newPhase, final String old, final String updated) {
 
     return new ShopCurrencyEvent(newPhase, this.shop, old, updated);
-  }
-
-  /**
-   * Creates a new instance of PhasedEvent with the specified newPhase.
-   *
-   * @param newPhase The new Phase for the cloned PhasedEvent
-   *
-   * @return A new instance of PhasedEvent with the specified newPhase
-   */
-  @Override
-  public ShopCurrencyEvent clone(final Phase newPhase) {
-
-    return new ShopCurrencyEvent(newPhase, this.shop, this.old, this.updated);
   }
 
   public static ShopCurrencyEvent PRE(final @NotNull Shop shop,

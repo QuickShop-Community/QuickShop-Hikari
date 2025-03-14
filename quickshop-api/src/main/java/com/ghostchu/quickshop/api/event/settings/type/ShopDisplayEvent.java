@@ -17,8 +17,11 @@ package com.ghostchu.quickshop.api.event.settings.type;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +47,24 @@ public class ShopDisplayEvent extends ShopSettingEvent<Boolean> {
   }
 
   /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopDisplayEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopDisplayEvent(newPhase, this.shop, this.old, this.updated);
+    }
+
+    return new ShopDisplayEvent(newPhase, this.shop, this.old);
+  }
+
+  /**
    * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
    * value.
    *
@@ -57,19 +78,6 @@ public class ShopDisplayEvent extends ShopSettingEvent<Boolean> {
   public ShopDisplayEvent clone(final Phase newPhase, final Boolean old, final Boolean updated) {
 
     return new ShopDisplayEvent(newPhase, this.shop, old, updated);
-  }
-
-  /**
-   * Creates a new instance of PhasedEvent with the specified newPhase.
-   *
-   * @param newPhase The new Phase for the cloned PhasedEvent
-   *
-   * @return A new instance of PhasedEvent with the specified newPhase
-   */
-  @Override
-  public ShopDisplayEvent clone(final Phase newPhase) {
-
-    return new ShopDisplayEvent(newPhase, this.shop, this.old, this.updated);
   }
 
   public static ShopDisplayEvent PRE(final @NotNull Shop shop,

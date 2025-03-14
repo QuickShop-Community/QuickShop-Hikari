@@ -83,7 +83,12 @@ public class ShopPlayerGroupEvent extends ShopSettingEvent<String> {
   @Override
   public ShopPlayerGroupEvent clone(final Phase newPhase) {
 
-    return new ShopPlayerGroupEvent(newPhase, this.shop, this.player, this.old, this.updated);
+    if(this.updated != null) {
+
+      return new ShopPlayerGroupEvent(newPhase, this.shop, this.player, this.old, this.updated);
+    }
+
+    return new ShopPlayerGroupEvent(newPhase, this.shop, this.player, this.old);
   }
 
   public static ShopPlayerGroupEvent PRE(final @NotNull Shop shop, final UUID player,

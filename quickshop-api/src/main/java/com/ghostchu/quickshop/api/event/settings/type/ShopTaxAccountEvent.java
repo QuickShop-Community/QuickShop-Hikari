@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -54,8 +55,12 @@ public class ShopTaxAccountEvent extends ShopSettingEvent<QUser> {
    */
   @Override
   public ShopTaxAccountEvent clone(final Phase newPhase) {
+    if(this.updated != null) {
 
-    return new ShopTaxAccountEvent(newPhase, this.shop, this.old, this.updated);
+      return new ShopTaxAccountEvent(newPhase, this.shop, this.old, this.updated);
+    }
+
+    return new ShopTaxAccountEvent(newPhase, this.shop, this.old);
   }
 
   /**

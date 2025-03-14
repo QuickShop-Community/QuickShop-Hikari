@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -40,6 +41,11 @@ public class ShopBenefitAddEvent extends ShopSettingEvent<Double> {
     this.user = user;
   }
 
+  public ShopBenefitAddEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, final double benefit, final double updated) {
+    super(phase, shop, benefit, updated);
+    this.user = user;
+  }
+
   public QUser user() {
     return user;
   }
@@ -53,8 +59,12 @@ public class ShopBenefitAddEvent extends ShopSettingEvent<Double> {
    */
   @Override
   public ShopBenefitAddEvent clone(final Phase newPhase) {
+    if(this.updated != null) {
 
-    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, this.updated);
+      return new ShopBenefitAddEvent(newPhase, this.shop, this.user, this.old, this.updated);
+    }
+
+    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, this.old);
   }
 
   /**
@@ -70,7 +80,7 @@ public class ShopBenefitAddEvent extends ShopSettingEvent<Double> {
   @Override
   public ShopBenefitAddEvent clone(final Phase newPhase, final Double old, final Double updated) {
 
-    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, updated);
+    return new ShopBenefitAddEvent(newPhase, this.shop, this.user, old, updated);
   }
 
   public static ShopBenefitAddEvent PRE(final @NotNull Shop shop, final @NotNull QUser user,

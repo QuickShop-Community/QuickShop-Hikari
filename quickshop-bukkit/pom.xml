@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.9-SNAPSHOT-3</version>
+        <version>6.2.0.9-SNAPSHOT-4</version>
     </parent>
 
     <properties>
@@ -73,10 +73,6 @@
         <repository>
             <id>sonatype-oss-snapshots1</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>devmart-other</id>
-            <url>https://nexuslite.gcnt.net/repos/other/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -156,7 +152,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>5.1.0</version>
+            <version>5.3.0</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -377,9 +373,9 @@
             <version>1.26.2</version>
         </dependency>
         <dependency>
-            <groupId>com.tcoded</groupId>
+            <groupId>com.github.technicallycoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.3.4</version>
+            <version>main-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

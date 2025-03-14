@@ -30,10 +30,10 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
       if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY)
          || plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")) {
 
-        ShopDisplayEvent event = (ShopDisplayEvent)ShopDisplayEvent.PRE(shop, shop.isDisableDisplay(), !shop.isDisableDisplay());
+        ShopDisplayEvent event = new ShopDisplayEvent(Phase.PRE, shop, shop.isDisableDisplay(), !shop.isDisableDisplay());
         event.callEvent();
 
-        event = (ShopDisplayEvent)event.clone(Phase.MAIN);
+        event = event.clone(Phase.MAIN);
         if(event.callCancellableEvent()) {
 
           plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
@@ -50,7 +50,7 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
           plugin.text().of(sender, "display-turn-off").send();
         }
 
-        event = (ShopDisplayEvent)event.clone(Phase.POST);
+        event = event.clone(Phase.POST);
         event.callEvent();
       } else {
         plugin.text().of(sender, "not-managed-shop").send();

@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -40,6 +41,12 @@ public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
     this.user = user;
   }
 
+  public ShopBenefitRemoveEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, @NotNull final Double benefit, @NotNull final Double updated) {
+    super(phase, shop, benefit, updated);
+
+    this.user = user;
+  }
+
   public QUser getUser() {
     return user;
   }
@@ -53,8 +60,12 @@ public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
    */
   @Override
   public ShopBenefitRemoveEvent clone(final Phase newPhase) {
+    if(this.updated != null) {
 
-    return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, this.updated);
+      return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, this.old, this.updated);
+    }
+
+    return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, this.old);
   }
 
   /**
@@ -70,7 +81,7 @@ public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
   @Override
   public ShopBenefitRemoveEvent clone(final Phase newPhase, final Double old, final Double updated) {
 
-    return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, updated);
+    return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, old);
   }
 
   public static ShopBenefitRemoveEvent PRE(final @NotNull Shop shop, final @NotNull QUser user,

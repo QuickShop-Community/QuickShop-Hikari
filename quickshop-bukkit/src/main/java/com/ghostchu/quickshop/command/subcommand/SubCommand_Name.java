@@ -43,7 +43,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
       ShopNameEvent event = new ShopNameEvent(Phase.PRE, shop, shop.getShopName(), null);
 
-      event = (ShopNameEvent)event.clone(Phase.MAIN);
+      event = event.clone(Phase.MAIN);
 
       if(event.callCancellableEvent()) {
         Log.debug("Other plugin cancelled shop naming.");
@@ -93,7 +93,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
     ShopNameEvent event = new ShopNameEvent(Phase.PRE, shop, shop.getShopName(), shopName);
 
-    event = (ShopNameEvent)event.clone(Phase.MAIN, shop.getShopName(), shopName);
+    event = event.clone(Phase.MAIN, shop.getShopName(), shopName);
 
     if(event.callCancellableEvent()) {
       Log.debug("Other plugin cancelled shop naming.");

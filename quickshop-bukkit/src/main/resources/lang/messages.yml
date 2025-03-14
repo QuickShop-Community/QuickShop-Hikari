@@ -162,7 +162,6 @@ menu:
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the
   spelling is wrong or that currency isn't available in this world.
 no-nearby-shop: <red>No nearby shops matching {0}.
-translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing
   your purchase. The purchase has been cancelled and any other operations have been

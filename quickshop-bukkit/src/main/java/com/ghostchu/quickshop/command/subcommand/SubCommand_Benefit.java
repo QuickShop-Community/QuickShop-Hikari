@@ -118,7 +118,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
           benefit.addBenefit(qUser, percent / 100d);
           shop.setShopBenefit(benefit);
 
-          event = (ShopBenefitAddEvent)event.clone(Phase.POST);
+          event = event.clone(Phase.POST);
           event.callEvent();
 
           plugin.text().of(sender, "benefit-added", qUser.getDisplay()).send();
@@ -156,10 +156,10 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
               final Double percent = benefit.getRegistry().getOrDefault(qUser, 0.0d);
 
-              ShopBenefitRemoveEvent event = (ShopBenefitRemoveEvent)ShopBenefitRemoveEvent.PRE(shop, percent, 0.0d);
+              ShopBenefitRemoveEvent event = ShopBenefitRemoveEvent.PRE(shop, qUser, percent, 0.0d);
               event.callEvent();
 
-              event = (ShopBenefitRemoveEvent)event.clone(Phase.MAIN);
+              event = event.clone(Phase.MAIN);
               if(event.callCancellableEvent()) {
 
                 plugin.logger().info("Plugin cancelled ShopBenefitRemoveEvent");
@@ -170,7 +170,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
               benefit.removeBenefit(qUser);
               shop.setShopBenefit(benefit);
 
-              event = (ShopBenefitRemoveEvent)event.clone(Phase.POST);
+              event = event.clone(Phase.POST);
               event.callEvent();
 
               plugin.text().of(sender, "benefit-removed", qUser.getDisplay()).send();
