@@ -124,6 +124,7 @@ menu:
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No se puede encontrar la divisa que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.
 no-nearby-shop: <red>No hay ninguna tienda en la zona que coincida con {0}.
+translation-author: 'alexbm0'
 integrations-check-failed-trade: La integración {0} impide la creación de la tienda
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Establecido exitosamente el dueño de la tienda al Servidor.
