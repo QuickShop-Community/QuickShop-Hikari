@@ -18,49 +18,25 @@ package com.ghostchu.quickshop.api.event.management;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents an event when a new shop is created.
- * This event is triggered when a new shop is created with associated user information.
+ * ShopUnloadEvent
  *
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class ShopCreateEvent extends ShopEvent {
+public class ShopUnloadEvent extends ShopEvent {
 
-
-  protected final QUser user;
-  protected final Location location;
-
-  public ShopCreateEvent(final @Nullable Shop shop, final @NotNull QUser user, final @NotNull Location location) {
+  public ShopUnloadEvent(final @NotNull Shop shop) {
 
     super(shop);
-
-    this.user = user;
-    this.location = location;
   }
 
-  public ShopCreateEvent(final Phase phase, final @Nullable Shop shop, final @NotNull QUser user, final @NotNull Location location) {
+  public ShopUnloadEvent(final Phase phase, final @NotNull Shop shop) {
 
     super(phase, shop);
-
-    this.user = user;
-    this.location = location;
-  }
-
-  public QUser user() {
-
-    return user;
-  }
-
-  public Location location() {
-
-    return location;
   }
 
   /**
@@ -71,8 +47,8 @@ public class ShopCreateEvent extends ShopEvent {
    * @return A new instance of PhasedEvent with the specified newPhase
    */
   @Override
-  public ShopCreateEvent clone(final Phase newPhase) {
+  public ShopUnloadEvent clone(final Phase newPhase) {
 
-    return new ShopCreateEvent(newPhase, this.shop, this.user, this.location);
+    return new ShopUnloadEvent(newPhase, this.shop);
   }
 }

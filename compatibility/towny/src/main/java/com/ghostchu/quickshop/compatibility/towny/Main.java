@@ -5,9 +5,8 @@ import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
@@ -76,18 +75,6 @@ public final class Main extends CompatibilityModule implements Listener {
   private TownyMaterialPriceLimiter priceLimiter;
   @Getter
   private UuidConversion uuidConversion;
-
-  @EventHandler(ignoreCancelled = true)
-  public void onCreation(final ShopCreateEvent event) {
-
-    if(isWorldIgnored(event.getShop().getLocation().getWorld())) {
-      return;
-    }
-    event.getCreator().getBukkitPlayer().ifPresent(player->{
-      final Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.createFlags);
-      component.ifPresent(value->event.setCancelled(true, value));
-    });
-  }
 
   private boolean isWorldIgnored(final World world) {
 
@@ -302,13 +289,17 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(final ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopCreateEvent event) {
 
-    if(isWorldIgnored(event.getLocation().getWorld())) {
+    if(!event.phase().cancellable()) {
       return;
     }
-    event.getCreator().getBukkitPlayer().ifPresent(player->{
-      final Optional<Component> component = checkFlags(player, event.getLocation(), this.createFlags);
+
+    if(isWorldIgnored(event.location().getWorld())) {
+      return;
+    }
+    event.user().getBukkitPlayer().ifPresent(player->{
+      final Optional<Component> component = checkFlags(player, event.location(), this.createFlags);
       component.ifPresent(value->event.setCancelled(true, value));
     });
   }
@@ -352,9 +343,13 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    if(event.shop().isEmpty()) {
+      return;
+    }
+
+    final Location shopLoc = event.shop().get().getLocation();
     if(isWorldIgnored(shopLoc.getWorld())) {
       return;
     }
@@ -362,20 +357,20 @@ public final class Main extends CompatibilityModule implements Listener {
     if(town == null) {
       return;
     }
-    if(town.getMayor().getUUID().equals(event.getAuthorizer())) {
+    if(town.getMayor().getUUID().equals(event.playerUUID())) {
       if(getConfig().getBoolean("allow-mayor-permission-override", true)) {
-        if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-          event.setResult(true);
+        if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+          event.hasPermission(true);
           return;
         }
       }
     }
     try {
       final Nation nation = town.getNation();
-      if(nation.getKing().getUUID().equals(event.getAuthorizer())) {
+      if(nation.getKing().getUUID().equals(event.playerUUID())) {
         if(getConfig().getBoolean("allow-king-permission-override", true)) {
-          if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-            event.setResult(true);
+          if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            event.hasPermission(true);
           }
         }
       }

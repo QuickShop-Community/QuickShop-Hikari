@@ -17,6 +17,7 @@ package com.ghostchu.quickshop.api.event.management;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +36,25 @@ public class ShopDeleteEvent extends ShopEvent {
     super(shop);
 
     this.memory = memory;
+  }
+
+  public ShopDeleteEvent(final Phase phase, final @NotNull Shop shop, final boolean memory) {
+
+    super(phase, shop);
+    this.memory = memory;
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopDeleteEvent clone(final Phase newPhase) {
+
+    return new ShopDeleteEvent(newPhase, this.shop, this.memory);
   }
 
   public boolean memory() {

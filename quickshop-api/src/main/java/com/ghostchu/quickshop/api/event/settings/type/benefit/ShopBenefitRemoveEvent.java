@@ -18,7 +18,6 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
  */
 
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;

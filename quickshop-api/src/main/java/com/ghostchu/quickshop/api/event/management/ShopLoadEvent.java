@@ -38,4 +38,17 @@ public class ShopLoadEvent extends ShopEvent {
 
     super(phase, shop);
   }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopLoadEvent clone(final Phase newPhase) {
+
+    return new ShopLoadEvent(newPhase, this.shop);
+  }
 }

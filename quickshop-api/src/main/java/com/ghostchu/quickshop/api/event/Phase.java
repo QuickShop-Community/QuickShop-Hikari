@@ -32,6 +32,11 @@ public enum Phase {
   PRE(false, false),
 
   /**
+   * Represents the Pre phase, which happens before an action occurs on object/value.
+   */
+  PRE_CANCELLABLE(false, true),
+
+  /**
    * Represents the main phase, which is when the action is occurring.
    */
   MAIN(true, true),

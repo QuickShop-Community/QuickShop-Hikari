@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPopulateEvent;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
@@ -592,10 +593,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
       case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
       case PASS -> {
+
         // Calling ShopCreateEvent
-        final ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, shop.getOwner());
-        if(Util.fireCancellableEvent(shopCreateEvent)) {
-          plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
+        ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, shop, shop.getOwner(), shop.getLocation());
+
+        if(event.callCancellableEvent()) {
+
+          plugin.text().of(p, "plugin-cancelled", event.getCancelReason()).send();
           return;
         }
         // Handle create cost
@@ -641,6 +645,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         registerShop(shop, true);
         loadShop(shop);
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
+
+        event = event.clone(Phase.POST);
+        event.callEvent();
       }
     }
   }

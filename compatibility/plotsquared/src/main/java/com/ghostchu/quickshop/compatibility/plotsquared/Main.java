@@ -2,9 +2,8 @@ package com.ghostchu.quickshop.compatibility.plotsquared;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -44,9 +43,17 @@ public final class Main extends CompatibilityModule implements Listener {
   private QuickshopTradeFlag tradeFlag;
 
   @EventHandler(ignoreCancelled = true)
-  public void canCreateShopHere(final ShopPreCreateEvent event) {
+  public void canCreateShopHere(final ShopCreateEvent event) {
 
-    final Location location = event.getLocation();
+    if(!event.phase().cancellable()) {
+      return;
+    }
+
+    final Location location = event.location();
+    if(location.getWorld() == null) {
+      return;
+    }
+
     final com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
             location.getWorld().getName(),
             location.getBlockX(),
@@ -55,12 +62,12 @@ public final class Main extends CompatibilityModule implements Listener {
     final Plot plot = pLocation.getPlot();
     if(plot == null) {
       if(!whiteList) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+        event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
       }
       return;
     }
     if(!plot.getFlag(tradeFlag)) {
-      event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsqured.trade-denied").forLocale());
+      event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.plotsqured.trade-denied").forLocale());
     }
   }
 
@@ -142,7 +149,7 @@ public final class Main extends CompatibilityModule implements Listener {
       if(worldName == null) {
         getLogger().warning("Failed to handle CuboidRegion " + region + " in plot " + plot.getId() + " because world is null, does the world exist? Skipping...");
       } else {
-        shopsList.addAll(getShops(worldName, region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+        shopsList.addAll(getShops(worldName, region.getMinimumPoint().x(), region.getMinimumPoint().z(), region.getMaximumPoint().x(), region.getMaximumPoint().z()));
       }
     }
     return shopsList;
@@ -161,27 +168,6 @@ public final class Main extends CompatibilityModule implements Listener {
       recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "PlotSquared", false), shop, "Untrusted -> " + event.getPlayer());
       getApi().getShopManager().deleteShop(shop);
     });
-  }
-
-  @EventHandler(ignoreCancelled = true)
-  public void onShopCreation(final ShopCreateEvent event) {
-
-    final Location location = event.getShop().getLocation();
-    final com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
-            location.getWorld().getName(),
-            location.getBlockX(),
-            location.getBlockY(),
-            location.getBlockZ());
-    final Plot plot = pLocation.getPlot();
-    if(plot == null) {
-      if(!whiteList) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
-      }
-      return;
-    }
-    if(!plot.getFlag(createFlag)) {
-      event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.plotsquared.create-denied").forLocale());
-    }
   }
 
   @EventHandler(ignoreCancelled = true)
@@ -206,17 +192,25 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    if(event.shop().isEmpty()) {
+      return;
+    }
+
+    final Location shopLoc = event.shop().get().getLocation();
+    if(shopLoc.getWorld() == null) {
+      return;
+    }
+
     final com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
     final Plot plot = pLocation.getPlot();
     if(plot == null) {
       return;
     }
-    if(plot.getOwners().contains(event.getAuthorizer())) {
-      if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-        event.setResult(true);
+    if(plot.getOwners().contains(event.playerUUID())) {
+      if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+        event.hasPermission(true);
       }
     }
   }

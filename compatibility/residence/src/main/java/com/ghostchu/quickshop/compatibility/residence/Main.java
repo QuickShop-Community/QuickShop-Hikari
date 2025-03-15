@@ -6,9 +6,8 @@ import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,20 +41,24 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onCreation(final ShopCreateEvent event) {
+  public void onPreCreation(final ShopCreateEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    if(!event.phase().cancellable()) {
+      return;
+    }
+
+    final Location shopLoc = event.location();
     final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       if(whitelist) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+        event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
       }
       return;
     }
-    event.getCreator().getBukkitPlayer().ifPresent(player->{
+    event.user().getBukkitPlayer().ifPresent(player->{
       if(!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
         if(!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
-          event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
+          event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.residence.creation-flag-denied").forLocale());
         }
       }
     });
@@ -78,26 +81,6 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(final ShopPreCreateEvent event) {
-
-    final Location shopLoc = event.getLocation();
-    final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
-    if(residence == null) {
-      if(whitelist) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
-      }
-      return;
-    }
-    event.getCreator().getBukkitPlayer().ifPresent(player->{
-      if(!playerHas(residence.getPermissions(), player, CREATE_FLAG, false)) {
-        if(!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), player, CREATE_FLAG, false)) {
-          event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.residence.creation-flag-denied").forLocale());
-        }
-      }
-    });
-  }
-
-  @EventHandler(ignoreCancelled = true)
   public void onPurchase(final ShopPurchaseEvent event) {
 
     final Location shopLoc = event.getShop().getLocation();
@@ -115,18 +98,20 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    if(!getConfig().getBoolean("allow-permission-override")) {
+    if(!getConfig().getBoolean("allow-permission-override") || event.shop().isEmpty()) {
       return;
     }
-    final Location shopLoc = event.getShop().getLocation();
+    final Location shopLoc = event.shop().get().getLocation();
+    
+
     final ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       return;
     }
-    if(residence.getOwnerUUID().equals(event.getAuthorizer())) {
-      event.setResult(true);
+    if(residence.getOwnerUUID().equals(event.playerUUID())) {
+      event.hasPermission(true);
     }
   }
 

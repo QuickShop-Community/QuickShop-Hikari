@@ -1,7 +1,8 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
@@ -478,7 +479,8 @@ public abstract class AbstractShopManager implements ShopManager {
               plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
               Log.debug("DEBUG: Creating shop successfully");
               shop.setDirty();
-              new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
+
+              new ShopCreateEvent(Phase.POST, shop, shop.getOwner(), shop.getLocation()).callEvent();
             })
             .exceptionally(err->{
               processCreationFail(shop, shop.getOwner(), err);
