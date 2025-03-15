@@ -125,6 +125,7 @@ menu:
   total-value-of-chest: '<green>Galutinė chesto vertė:<yellow>{0}'
 currency-not-exists: <red>Nepavyksta rasti valiutos, kurią norite nustatyti. Galbūt rašyba neteisinga arba šios valiutos nėra.
 no-nearby-shop: <red>Nėra netoliese esančių parduotuvių {0}.
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integracija {0} paneigė Parduotuvės siūloma trade
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green> Sėkmingai nustatėte parduotuvės savininką.
