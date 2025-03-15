@@ -125,6 +125,7 @@ menu:
   total-value-of-chest: '<green>Total verdi for kisten: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finne valutaen du vil sette. Kanskje stavemåten er feil, eller at valuta ikke er tilgjengelig i denne verdenen.
 no-nearby-shop: <red>Ingen nærliggende butikker samsvarer med {0}.
+translation-author: 'Baktus_79'
 integrations-check-failed-trade: <red>Integrasjon {0} nektet handel i butikken
 shop-transaction-failed: <red>Beklager, men det oppstod en intern feil under behandlingen av kjøpet ditt. Kjøpet har blitt kansellert og alle andre operasjoner er blitt tilbakestilt. Vennligst kontakt serveradministratorene hvis denne feilen vedvarer.
 success-change-owner-to-server: <green>Butikkeieren ble satt til Server.
