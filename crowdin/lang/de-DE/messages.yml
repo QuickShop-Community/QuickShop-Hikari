@@ -124,6 +124,7 @@ menu:
   total-value-of-chest: '<green>Gesamtwert der Truhe: <yellow>{0}'
 currency-not-exists: <red>Kann die Währung, welche du setzen willst, nicht finden. Vielleicht ist die Schreibweise falsch oder diese Währung ist in dieser Welt nicht verfügbar.
 no-nearby-shop: <red>Keine nahegelegenen Shops welche {0} entsprechen.
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integrierung {0} hat das Shop-handeln verweigert
 shop-transaction-failed: <red>Sorry, aber ein interner Fehler ist während dem verarbeiten deines Kaufes aufgetreten. Der Kauf wurde abgebrochen und jegliche wirtschaftliche aktion wurde zurückgesetzt. Bitte kontaktiere einen Server-Administrator sollte dies weiterhin auftreten.
 success-change-owner-to-server: <green>Der Shop wurde erfolgreich dem Server überschrieben.
