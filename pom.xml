@@ -200,7 +200,7 @@
                                         <shadedPattern>${qs.relocation}.tne</shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>com.github.technicallycoded</pattern>
+                                        <pattern>com.tcoded.folialib</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
                                     </relocation>
                                     <relocation>
