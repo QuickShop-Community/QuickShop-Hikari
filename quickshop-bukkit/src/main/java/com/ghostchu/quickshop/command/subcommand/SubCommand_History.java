@@ -48,7 +48,7 @@ public class SubCommand_History implements CommandHandler<Player> {
         return;
       }
       if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.VIEW_PURCHASE_LOGS) && !plugin.perm().hasPermission(sender, "quickshop.other.history")) {
-        plugin.text().of(sender, "no-permission");
+        plugin.text().of(sender, "no-permission").send();
         return;
       }
       shops.add(shop);
