@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denego las comprobaciones de permisos. Si esto no se espera, prueba añadiendo <light_purple>{1} <gray> a la lista negra de escucha. Guia de Configuración:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Precio medio en esta zona: <yellow>{0}'
 inventory-check-global-alert: "<red>[[Inventory Check] ¡Aviso! Encontró un elemento de QuickShop <gold>{2}</gold> en inventario en <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, que no debería ocurrir, Esto generalmente significa que alguien está explotando malintencionadamente el exploit para duplicar el elemento de visualización."
 digits-reach-the-limit: <red>Has alcanzado el límite de decimales en el precio.
@@ -119,7 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] El elemento NBT es demasiado grande para mostrarlo
   stock: '<green>Existencias <yellow>{0}'
   this-shop-is-buying: <green>Esta tienda está <light_purple>COMPRANDO<green> artículos.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green>La tienda esta actualmente <red>congelada<green>.
   successfully-sold: '<green>Vendido con éxito:'
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No se puede encontrar la divisa que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.
@@ -153,7 +153,7 @@ metric:
   tax-hover: <yellow>{0} impuestos
   header-global: '<yellow>El servidor {0} {1} transacciones:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} en total
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Mundo: {4}<newline><gold>Dueño: <gray>{5}<newline><gold>Tipo de tienda: <gray>{6}<newline><gold>Objeto: <gray>{7}<newline><gold>Precio: <gray>{8}
   time-hover: '<yellow>Tiempo: {0}'
@@ -178,7 +178,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VENTA
   buying: COMPRA
-  frozen: FROZEN
+  frozen: CONGELADO
 language:
   qa-issues: '<yellow>Problemas de garantía de calidad: <aqua>{0}%'
   code: '<yellow>Código: <gold>{0}'
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>Modo de congelación: <aqua>{0} <yellow>[<bold><light_purple>Alternar</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click para establecer o remover la divisa que utiliza la tienda
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -391,7 +391,7 @@ timeunit:
   minutes: "{0} minutos"
   justnow: justo ahora
   minute: "{0} minuto"
-  std-format: MM/dd/yyyy HH:mm:ss
+  std-format: Dd/MM/yyyy HH:mm:ss
   future-plain-text: futuro
   month: "{0} mes"
   future: en {0}
@@ -427,7 +427,7 @@ command:
     sell: <yellow>Cambia la tienda a modo <aqua>VENTA<yellow>
     fetchmessage: <yellow>Mostrar mensajes de tienda sin leer
     staff: <yellow>Gestionar personal de tu tienda
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>Controla el staff de todas las tiendas que controlas.
     clean: <yellow>Suprime todas las tiendas (cargadas) fuera de existencias
     refill: <yellow>Agrega un número dado de artículos a la tienda
     help: <yellow>Muestra la ayuda de QuickShop
