@@ -19,7 +19,7 @@
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
         <!-- common lib versions -->
         <depend.commons.lang3>3.17.0</depend.commons.lang3>
-        <depend.adventure-api>4.18.0</depend.adventure-api>
+        <depend.adventure-api>4.19.0</depend.adventure-api>
         <depend.adventure-key>4.18.0</depend.adventure-key>
         <depend.adventure-nbt>4.18.0</depend.adventure-nbt>
         <depend.adventure-text-logger-slf4j>4.18.0</depend.adventure-text-logger-slf4j>
