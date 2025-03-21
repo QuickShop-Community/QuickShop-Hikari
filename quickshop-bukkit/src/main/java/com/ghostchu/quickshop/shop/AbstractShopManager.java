@@ -201,6 +201,7 @@ public abstract class AbstractShopManager implements ShopManager {
     }
     inChunk.remove(loc);
     shopCache.invalidate(null, shop.getLocation());
+    shopRuntimeUUIDCaching.invalidate(shop.getRuntimeRandomUniqueId());
   }
 
 
