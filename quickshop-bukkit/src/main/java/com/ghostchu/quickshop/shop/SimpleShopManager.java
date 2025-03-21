@@ -646,7 +646,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         loadShop(shop);
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
 
-        event = event.clone(Phase.POST);
+        event = event.clone(Phase.MAIN);
         event.callEvent();
       }
     }
