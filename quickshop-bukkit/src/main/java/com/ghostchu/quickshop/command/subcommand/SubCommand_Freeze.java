@@ -40,7 +40,6 @@ public class SubCommand_Freeze implements CommandHandler<Player> {
           shop.setShopType(ShopType.FROZEN);
           plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
         }
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
       } else {
         plugin.text().of(sender, "not-managed-shop").send();
       }
