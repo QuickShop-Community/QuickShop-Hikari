@@ -1166,7 +1166,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   @Override
   public void deleteShop(@NotNull final Shop shop) {
 
-    final ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
+    ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
     if(shopDeleteEvent.callCancellableEvent()) {
       Log.debug("Shop delete was cancelled by 3rd-party plugin");
       return;
@@ -1177,6 +1177,8 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     refundShop(shop);
     unloadShop(shop);
     unregisterShop(shop, true);
+    shopDeleteEvent = shopDeleteEvent.clone(Phase.POST);
+    shopDeleteEvent.callEvent();
   }
 
 
