@@ -106,7 +106,7 @@ public class MsgUtil {
       try {
         final String format = PLUGIN.getConfig().getString("decimal-format");
         decimalFormat = format == null? new DecimalFormat() : new DecimalFormat(format);
-      } catch(Exception e) {
+      } catch(final Exception e) {
         QuickShop.getInstance().logger().warn("Error when processing decimal format, using system default!", e);
         decimalFormat = new DecimalFormat();
       }
@@ -270,7 +270,7 @@ public class MsgUtil {
       Component component;
       try {
         component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
-      } catch(Throwable error) {
+      } catch(final Throwable error) {
         component = MsgUtil.setHandleFailedHover(null, Component.text(entries.getKey().getKey().toString()));
         QuickShop.getInstance().logger().warn("Failed to handle translation for Enchantment {}", entries.getKey().getKey(), error);
       }
@@ -333,9 +333,11 @@ public class MsgUtil {
     if(isUnlimited && PLUGIN.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
       return; // Ignore unlimited shops messages.
     }
+
     if(uuid == null) {
       return;
     }
+
     final String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
     Log.debug(serialized);
     final OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
@@ -355,7 +357,7 @@ public class MsgUtil {
             }
           });
         }
-      } catch(Exception e) {
+      } catch(final Exception e) {
         Log.debug("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
       }
     } else {

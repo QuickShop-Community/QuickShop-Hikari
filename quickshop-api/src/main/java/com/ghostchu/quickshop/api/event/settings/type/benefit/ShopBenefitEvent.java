@@ -19,10 +19,7 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
 
 import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
-import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
-import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 

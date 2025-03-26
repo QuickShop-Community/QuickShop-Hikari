@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.limited.command.SubCommand_Limit;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.management.ShopClickEvent;
@@ -76,16 +77,19 @@ public final class Main extends JavaPlugin implements Listener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopClick(final ShopClickEvent event) {
 
-    final Shop shop = event.shop();
-    final ConfigurationSection storage = shop.getExtra(this);
-    if(storage.getInt("limit") < 1) {
-      Log.debug("Shop limit is not enabled on this shop.");
-      return;
+    if(event.isPhase(Phase.POST)) {
+
+      final Shop shop = event.shop().get();
+      final ConfigurationSection storage = shop.getExtra(this);
+      if(storage.getInt("limit") < 1) {
+        Log.debug("Shop limit is not enabled on this shop.");
+        return;
+      }
+      final int limit = storage.getInt("limit");
+      final int playerUsedLimit = storage.getInt("data." + event.user().getUniqueId(), 0);
+      plugin.text().of(event.user(), "addon.limited.remains-limits", limit - playerUsedLimit).send();
+      Log.debug("Shop limit is enabled on this shop. Limit: " + limit + " Used: " + playerUsedLimit);
     }
-    final int limit = storage.getInt("limit");
-    final int playerUsedLimit = storage.getInt("data." + event.user().getUniqueId(), 0);
-    plugin.text().of(event.user(), "addon.limited.remains-limits", limit - playerUsedLimit).send();
-    Log.debug("Shop limit is enabled on this shop. Limit: " + limit + " Used: " + playerUsedLimit);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)

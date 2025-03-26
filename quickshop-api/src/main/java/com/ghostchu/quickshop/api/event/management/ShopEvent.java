@@ -20,7 +20,9 @@ package com.ghostchu.quickshop.api.event.management;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.PhasedEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * ShopEvent
@@ -30,15 +32,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ShopEvent extends PhasedEvent {
 
-  protected final @NotNull Shop shop;
+  protected final Shop shop;
 
-  public ShopEvent(final @NotNull Shop shop) {
+  public ShopEvent(final @Nullable Shop shop) {
 
     super(Phase.PRE);
     this.shop = shop;
   }
 
-  public ShopEvent(final Phase phase, final @NotNull Shop shop) {
+  public ShopEvent(final Phase phase, final @Nullable Shop shop) {
 
     super(phase);
     this.shop = shop;
@@ -57,8 +59,8 @@ public class ShopEvent extends PhasedEvent {
     return new ShopEvent(newPhase, this.shop);
   }
 
-  public @NotNull Shop shop() {
+  public Optional<Shop> shop() {
 
-    return shop;
+    return Optional.ofNullable(shop);
   }
 }

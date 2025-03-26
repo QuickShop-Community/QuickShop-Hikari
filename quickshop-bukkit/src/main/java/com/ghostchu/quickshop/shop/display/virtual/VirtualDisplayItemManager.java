@@ -19,7 +19,6 @@ package com.ghostchu.quickshop.shop.display.virtual;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.QuickShopBukkit;
 import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerAddedEvent;
 import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerInitEvent;
 import com.ghostchu.quickshop.api.shop.Shop;

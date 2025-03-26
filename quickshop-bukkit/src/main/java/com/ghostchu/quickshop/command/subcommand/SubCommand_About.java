@@ -32,7 +32,8 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
     }
     final String developers = CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors());
     final String languageCode = plugin.text().findRelativeLanguages(sender).getLocale();
-    plugin.text().ofList(sender, "about.text", forkName, version, releaseType, developers, languageCode, "Ghost_chu, Andre_601").send();
+    final Component localizedStaffs = plugin.text().of(sender, "translation-author").forLocale();
+    plugin.text().ofList(sender, "about.text", forkName, version, releaseType, developers, languageCode, localizedStaffs).send();
 
   }
 }

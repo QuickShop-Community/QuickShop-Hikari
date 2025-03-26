@@ -101,12 +101,12 @@ public class MainPage extends QuickShopPage {
 
                                              if(!shop.get().isUnlimited() && quantity > stock && stock > -1) {
                                                message.getPlayer().message(legacy(id, "gui.trade.custom.stock"));
-                                               return false;
+                                               return true;
                                              }
 
                                              if((quantity % amount) > 0) {
                                                message.getPlayer().message(legacy(id, "gui.trade.custom.multiple", amount));
-                                               return false;
+                                               return true;
                                              }
                                              if(shop.get().isBuying()) {
 
@@ -125,7 +125,7 @@ public class MainPage extends QuickShopPage {
                                          }
                                          message.getPlayer().message(legacy(id, enter, amount));
 
-                                         return false;
+                                         return true;
                                        }), new RunnableAction(click->click.player().message(legacy(id, enter, amount))))
                                        .withSlot(35).build());
 

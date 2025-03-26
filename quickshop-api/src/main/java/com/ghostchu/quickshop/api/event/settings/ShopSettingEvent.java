@@ -101,17 +101,11 @@ public class ShopSettingEvent<T> extends PhasedEvent {
   }
 
   /**
-   * Retrieves the updated value based on the phase of the event.
+   * Retrieves the updated value of the shop setting event.
    *
    * @return the updated value if the phase is not RETRIEVE, otherwise returns the old value
    */
   public T updated() {
-
-    if(!phase.allowUpdate()) {
-
-      return old;
-    }
-
     return updated;
   }
 

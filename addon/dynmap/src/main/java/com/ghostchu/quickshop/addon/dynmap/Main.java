@@ -4,8 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
@@ -92,15 +92,21 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopCreateSuccessEvent event) {
+  public void onEvent(final ShopCreateEvent event) {
 
-    updateShopMarker(event.getShop());
+    if(event.isPhase(Phase.POST)) {
+
+      updateShopMarker(event.shop().get());
+    }
   }
 
   @EventHandler(ignoreCancelled = true)
   public void onEvent(final ShopDeleteEvent event) {
 
-    Util.mainThreadRun(()->updateShopMarker(event.getShop()));
+    if(event.isPhase(Phase.POST)) {
+
+      Util.mainThreadRun(()->updateShopMarker(event.shop().get()));
+    }
   }
 
   @EventHandler(ignoreCancelled = true)

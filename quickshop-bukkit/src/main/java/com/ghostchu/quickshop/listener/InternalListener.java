@@ -5,8 +5,8 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -74,12 +74,18 @@ public class InternalListener extends AbstractQSListener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopCreate(final ShopCreateEvent event) {
 
-    if(isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
-      event.setCancelled(true, plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").forLocale());
+    if(!event.phase().cancellable() || event.shop().isEmpty()) {
+
       return;
     }
+
+    if(isForbidden(event.shop().get().getLocation().getBlock().getType(), event.shop().get().getItem().getType())) {
+      event.setCancelled(true, plugin.text().of(event.user(), "forbidden-vanilla-behavior").forLocale());
+      return;
+    }
+
     if(loggingAction) {
-      plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), new BlockPos(event.getShop().getLocation())));
+      plugin.logEvent(new ShopCreationLog(event.user(), event.shop().get().saveToInfoStorage(), new BlockPos(event.shop().get().getLocation())));
     }
   }
 
@@ -94,8 +100,13 @@ public class InternalListener extends AbstractQSListener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopDelete(final ShopDeleteEvent event) {
 
+    if(!event.isPhase(Phase.POST) || event.shop().isEmpty()) {
+
+      return;
+    }
+
     if(loggingAction) {
-      plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "Shop removed", event.getShop().saveToInfoStorage()));
+      plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "Shop removed", event.shop().get().saveToInfoStorage()));
     }
   }
 

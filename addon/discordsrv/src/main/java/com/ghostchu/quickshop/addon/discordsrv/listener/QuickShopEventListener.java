@@ -7,7 +7,8 @@ import com.ghostchu.quickshop.addon.discordsrv.database.DiscordDatabaseHelper;
 import com.ghostchu.quickshop.addon.discordsrv.wrapper.JDAWrapper;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
@@ -169,9 +170,26 @@ public class QuickShopEventListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+  public void onShopCreate(final ShopCreateEvent event) {
+
+    if(event.isPhase(Phase.POST)) {
+
+      notifyModShopCreate(event);
+    }
+  }
+
+  private void notifyModShopCreate(final ShopCreateEvent event) {
+
+    Util.asyncThreadRun(()->sendModeratorChannelMessageIfEnabled(plugin.getFactory().modShopCreated(event), NotificationFeature.MOD_SHOP_CREATED));
+  }
+
+  @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onShopDelete(final ShopDeleteEvent event) {
 
-    notifyModShopRemoved(event);
+    if(event.isPhase(Phase.POST)) {
+
+      notifyModShopRemoved(event);
+    }
   }
 
   private void notifyModShopRemoved(final ShopDeleteEvent event) {

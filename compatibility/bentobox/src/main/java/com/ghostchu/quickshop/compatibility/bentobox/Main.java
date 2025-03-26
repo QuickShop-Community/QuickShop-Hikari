@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.compatibility.bentobox;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -94,13 +94,13 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    final Location shopLoc = event.shop().get().getLocation();
     BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island->{
-      if(event.getAuthorizer().equals(island.getOwner())) {
-        if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-          event.setResult(true);
+      if(event.playerUUID().equals(island.getOwner())) {
+        if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+          event.hasPermission(true);
         }
       }
     });

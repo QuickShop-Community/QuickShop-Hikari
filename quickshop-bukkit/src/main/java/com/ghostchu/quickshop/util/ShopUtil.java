@@ -189,7 +189,6 @@ public class ShopUtil {
 
     // Update the shop
     shop.setPrice(event.updated());
-    shop.setSignText(plugin.text().findRelativeLanguages(user, false));
     plugin.text().of(user,
                      "price-is-now", plugin.getShopManager().format(event.updated(), shop)).send();
 

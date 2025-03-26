@@ -3,10 +3,11 @@ package com.ghostchu.quickshop.metric;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.general.ShopOngoingFeeEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.listener.AbstractQSListener;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -22,13 +23,18 @@ public class MetricListener extends AbstractQSListener implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-  public void onCreate(final ShopCreateSuccessEvent event) {
+  public void onCreate(final ShopCreateEvent event) {
+
+    if(!event.isPhase(Phase.POST) || event.shop().isEmpty()) {
+
+      return;
+    }
 
     plugin.getDatabaseHelper().insertMetricRecord(
                     ShopMetricRecord.builder()
                             .time(System.currentTimeMillis())
-                            .shopId(event.getShop().getShopId())
-                            .player(event.getCreator())
+                            .shopId(event.shop().get().getShopId())
+                            .player(event.user())
                             .tax(0.0d)
                             .total(plugin.getConfig().getDouble("shop.cost"))
                             .type(ShopOperationEnum.CREATE)
@@ -43,11 +49,16 @@ public class MetricListener extends AbstractQSListener implements Listener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onDelete(final ShopDeleteEvent event) {
 
+    if(!event.isPhase(Phase.POST) || event.shop().isEmpty()) {
+
+      return;
+    }
+
     plugin.getDatabaseHelper().insertMetricRecord(
                     ShopMetricRecord.builder()
                             .time(System.currentTimeMillis())
-                            .shopId(event.getShop().getShopId())
-                            .player(event.getShop().getOwner())
+                            .shopId(event.shop().get().getShopId())
+                            .player(event.shop().get().getOwner())
                             .tax(0.0d)
                             .total(plugin.getConfig().getBoolean("shop.refund")? plugin.getConfig().getDouble("shop.cost", 0.0d) : 0.0d)
                             .type(ShopOperationEnum.DELETE)

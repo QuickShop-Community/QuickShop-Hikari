@@ -17,12 +17,16 @@ package com.ghostchu.quickshop.api.event.management;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * ShopClickEvent class represents an event where a user clicks on a shop.
+ *
+ * Current Phases used:
+ * - MAIN
  *
  * @author creatorfromhell
  * @since 6.2.0.9
@@ -38,8 +42,27 @@ public class ShopClickEvent extends ShopEvent {
     this.user = user;
   }
 
+  public ShopClickEvent(final Phase phase, final @NotNull Shop shop, final QUser user) {
+
+    super(phase, shop);
+    this.user = user;
+  }
+
   public QUser user() {
 
     return user;
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopClickEvent clone(final Phase newPhase) {
+
+    return new ShopClickEvent(newPhase, this.shop, this.user);
   }
 }

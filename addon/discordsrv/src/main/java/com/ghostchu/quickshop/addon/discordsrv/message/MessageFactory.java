@@ -2,8 +2,8 @@ package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
@@ -41,7 +41,7 @@ public class MessageFactory {
   @NotNull
   public MessageEmbed modShopCreated(@NotNull final ShopCreateEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop().get();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
     return messageManager.getEmbedMessage("mod-shop-created", shop.getOwner(), placeHolders);
   }
@@ -100,7 +100,7 @@ public class MessageFactory {
   @NotNull
   public MessageEmbed modShopRemoved(@NotNull final ShopDeleteEvent event) {
 
-    final Shop shop = event.getShop();
+    final Shop shop = event.shop().get();
     final Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
     placeHolders.put("delete.reason", "N/A unsupported yet");
     return messageManager.getEmbedMessage("mod-remove-shop", shop.getOwner(), placeHolders);
