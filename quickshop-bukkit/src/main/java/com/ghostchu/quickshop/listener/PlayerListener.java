@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.menu.ShopKeeperMenu;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InteractionController;
@@ -159,12 +160,38 @@ public class PlayerListener extends AbstractQSListener {
       }
       case CONTROL_PANEL_UI -> {
         if(shopSearched.getKey() != null) {
+
           final MenuViewer viewer = new MenuViewer(e.getPlayer().getUniqueId());
           viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shopSearched.getKey().getShopId());
+
+          final String group = shopSearched.getKey().getPlayerGroup(e.getPlayer().getUniqueId());
+          if(group.equalsIgnoreCase(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())
+             || group.equalsIgnoreCase(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode())) {
+
+            MenuManager.instance().addViewer(viewer);
+
+            final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(e.getPlayer());
+            MenuManager.instance().open("qs:keeper", 1, menuPlayer);
+
+            e.setCancelled(true);
+            e.setUseInteractedBlock(Event.Result.DENY);
+            e.setUseItemInHand(Event.Result.DENY);
+            return;
+          }
+
+          if(shopSearched.getKey().isFrozen()) {
+            plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
+            return;
+          }
+
+
           MenuManager.instance().addViewer(viewer);
 
           final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(e.getPlayer());
-          MenuManager.instance().open("qs:keeper", 1, menuPlayer);
+          MenuManager.instance().open("qs:trade", 1, menuPlayer);
+          e.setCancelled(true);
+          e.setUseInteractedBlock(Event.Result.DENY);
+          e.setUseItemInHand(Event.Result.DENY);
         }
       }
       case TRADE_UI -> {
@@ -181,6 +208,9 @@ public class PlayerListener extends AbstractQSListener {
 
           final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(e.getPlayer());
           MenuManager.instance().open("qs:trade", 1, menuPlayer);
+          e.setCancelled(true);
+          e.setUseInteractedBlock(Event.Result.DENY);
+          e.setUseItemInHand(Event.Result.DENY);
         }
       }
       case TRADE_INTERACTION -> {

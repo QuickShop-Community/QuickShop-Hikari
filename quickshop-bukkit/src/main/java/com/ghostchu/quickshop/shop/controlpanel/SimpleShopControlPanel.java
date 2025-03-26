@@ -30,7 +30,12 @@ public class SimpleShopControlPanel implements ShopControlPanel {
   public @NotNull LinkedList<Component> generate(@NotNull final Player sender, @NotNull final Shop shop) {
     final LinkedList<Component> components = new LinkedList<>();
 
-    for(final ControlComponent controlComponent : QuickShop.getInstance().controlPanelManager().controlComponents().values()) {
+    for(final String component : QuickShop.getInstance().controlPanelManager().enabledComponents()) {
+
+      final ControlComponent controlComponent = QuickShop.getInstance().controlPanelManager().controlComponents().get(component);
+      if(controlComponent == null) {
+        continue;
+      }
 
       ControlComponentGenerateEvent event = new ControlComponentGenerateEvent(Phase.PRE, shop, QUserImpl.createFullFilled(sender), controlComponent);
       event.callEvent();
