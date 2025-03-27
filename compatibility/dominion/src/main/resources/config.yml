@@ -1,0 +1,8 @@
+#Should we prevent the creation of a shop or trade with a shop outside Dominion's area?
+whitelist-mode: false
+
+#Should we delete the shop in a dominion when the shop owner loses the permission for this dominion?
+delete-on-lose-permission: false
+
+#Delete all shops in the dominion when that dominion was deleted
+delete-shops-in-dominion-when-dominion-deleted: false
