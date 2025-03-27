@@ -43,8 +43,6 @@ public final class Main extends CompatibilityModule {
     deleteWhenLandDeleted = getConfig().getBoolean("delete-shops-in-land-when-land-deleted");
   }
 
-
-
   @EventHandler(ignoreCancelled = true)
   public void onPreCreation(final ShopCreateEvent event) {
 
