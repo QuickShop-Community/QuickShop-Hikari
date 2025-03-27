@@ -17,6 +17,7 @@ import com.ghostchu.quickshop.platform.spigot.v1_20_4.Spigot1205Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1210Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_3.Spigot1231Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_4.Spigot1214Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_21_5.Spigot1215Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
@@ -256,6 +257,7 @@ public class QuickShopBukkit extends JavaPlugin {
             //case "v1_21_R2" -> new Spigot1211Platform(this);
             case "v1_21_R2" -> new Spigot1231Platform(this);
             case "v1_21_R3" -> new Spigot1214Platform(this);
+            case "v1_21_R4" -> new Spigot1215Platform(this);
             default -> {
               bootstrapLogger.warning("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
               Bukkit.getPluginManager().disablePlugin(this);

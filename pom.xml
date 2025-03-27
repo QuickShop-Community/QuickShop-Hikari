@@ -19,17 +19,17 @@
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
         <!-- common lib versions -->
         <depend.commons.lang3>3.17.0</depend.commons.lang3>
-        <depend.adventure-api>4.18.0</depend.adventure-api>
-        <depend.adventure-key>4.18.0</depend.adventure-key>
-        <depend.adventure-nbt>4.18.0</depend.adventure-nbt>
-        <depend.adventure-text-logger-slf4j>4.18.0</depend.adventure-text-logger-slf4j>
-        <depend.adventure-text-minimessage>4.18.0</depend.adventure-text-minimessage>
-        <depend.adventure-text-serializer-ansi>4.18.0</depend.adventure-text-serializer-ansi>
-        <depend.adventure-text-serializer-gson-legacy-impl>4.18.0</depend.adventure-text-serializer-gson-legacy-impl>
-        <depend.adventure-text-serializer-json>4.18.0</depend.adventure-text-serializer-json>
-        <depend.adventure-text-serializer-json-legacy-impl>4.18.0</depend.adventure-text-serializer-json-legacy-impl>
-        <depend.adventure-text-serializer-legacy>4.18.0</depend.adventure-text-serializer-legacy>
-        <depend.adventure-text-serializer-plain>4.18.0</depend.adventure-text-serializer-plain>
+        <depend.adventure-api>4.16.0</depend.adventure-api>
+        <depend.adventure-key>4.16.0</depend.adventure-key>
+        <depend.adventure-nbt>4.16.0</depend.adventure-nbt>
+        <depend.adventure-text-logger-slf4j>4.16.0</depend.adventure-text-logger-slf4j>
+        <depend.adventure-text-minimessage>4.16.0</depend.adventure-text-minimessage>
+        <depend.adventure-text-serializer-ansi>4.16.0</depend.adventure-text-serializer-ansi>
+        <depend.adventure-text-serializer-gson-legacy-impl>4.16.0</depend.adventure-text-serializer-gson-legacy-impl>
+        <depend.adventure-text-serializer-json>4.16.0</depend.adventure-text-serializer-json>
+        <depend.adventure-text-serializer-json-legacy-impl>4.16.0</depend.adventure-text-serializer-json-legacy-impl>
+        <depend.adventure-text-serializer-legacy>4.16.0</depend.adventure-text-serializer-legacy>
+        <depend.adventure-text-serializer-plain>4.16.0</depend.adventure-text-serializer-plain>
         <depend.adventure-platform-api>4.3.4</depend.adventure-platform-api>
         <depend.adventure-platform-bukkit>4.3.4</depend.adventure-platform-bukkit>
         <depend.adventure-platform-facet>4.3.4</depend.adventure-platform-facet>

@@ -388,5 +388,11 @@
             <artifactId>libby-bukkit</artifactId> <!-- Replace bukkit if you're using another platform -->
             <version>2.0.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_21_R5</artifactId>
+            <version>6.2.0.9-SNAPSHOT-4</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
