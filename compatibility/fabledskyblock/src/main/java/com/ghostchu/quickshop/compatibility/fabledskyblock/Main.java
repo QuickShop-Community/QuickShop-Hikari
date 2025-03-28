@@ -4,6 +4,7 @@ package com.ghostchu.quickshop.compatibility.fabledskyblock;
 import com.craftaro.skyblock.SkyBlock;
 import com.craftaro.skyblock.api.SkyBlockAPI;
 import com.craftaro.skyblock.api.event.island.IslandBanEvent;
+import com.craftaro.skyblock.api.event.island.IslandDeleteEvent;
 import com.craftaro.skyblock.api.event.island.IslandKickEvent;
 import com.craftaro.skyblock.api.event.island.IslandOwnershipTransferEvent;
 import com.craftaro.skyblock.api.event.player.PlayerIslandLeaveEvent;
@@ -67,6 +68,12 @@ public final class Main extends CompatibilityModule {
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getBanned().getUniqueId(), event.getIsland().getOwnerUUID(), "IslandBanEvent");
     }
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onDelete(final IslandDeleteEvent event) {
+
+    deleteShops(event.getIsland(), event.getIsland().getOwnerUUID(), event.getIsland().getOwnerUUID(), "IslandDeleteEvent");
   }
 
   @EventHandler(ignoreCancelled = true)
