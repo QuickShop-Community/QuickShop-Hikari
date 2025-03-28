@@ -92,7 +92,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(final IslandBanEvent event) {
+  public void onBan(final IslandBanEvent event) {
 
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
@@ -100,13 +100,13 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(final IslandUncoopPlayerEvent event) {
+  public void onUncoop(final IslandUncoopPlayerEvent event) {
 
     deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandUncoopPlayerEvent");
   }
 
   @EventHandler
-  public void deleteShopsOnChunkReset(final IslandChunkResetEvent event) {
+  public void onReset(final IslandChunkResetEvent event) {
 
     deleteShops(event.getWorld(), event.getChunkX(), event.getChunkZ(), null, CommonUtil.getNilUniqueId(), "IslandChunkResetEvent");
   }
@@ -127,19 +127,20 @@ public final class Main extends CompatibilityModule implements Listener {
 
     final Island island = SuperiorSkyblockAPI.getIslandAt(event.location());
     event.user().getBukkitPlayer().ifPresent(player->{
-      final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
       if(island == null) {
         return;
       }
+      final UUID uuid = player.getUniqueId();
       if(onlyOwnerCanCreateShop) {
-        if(!island.getOwner().equals(superiorPlayer)) {
+        if(!island.getOwner().getUniqueId().equals(uuid)) {
+
           event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-create-only").forLocale());
         }
       } else {
-        if(!island.getOwner().equals(superiorPlayer)) {
-          if(!island.isMember(superiorPlayer)) {
+        final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+        if(!island.getOwner().getUniqueId().equals(uuid) && !island.isMember(superiorPlayer)) {
+
             event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-member-create-only").forLocale());
-          }
         }
       }
     });

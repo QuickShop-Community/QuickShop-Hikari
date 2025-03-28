@@ -1,0 +1,3 @@
+owner-create-only: false
+delete-shop-on-member-leave: false
+delete-shop-on-owner-transfer: false

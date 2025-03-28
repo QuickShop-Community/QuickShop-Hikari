@@ -11,10 +11,12 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
-    <artifactId>dominion</artifactId>
+    <artifactId>fabledskyblock</artifactId>
     <packaging>takari-jar</packaging>
 
-    <name>Compat-Dominion</name>
+    <name>Compat-FabledSkyBlock</name>
+
+    <description>Compatibility module for FabledSkyBlock</description>
 
     <build>
         <plugins>
@@ -22,7 +24,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
             </plugin>
-
         </plugins>
         <resources>
             <resource>
@@ -34,15 +35,10 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
+            <id>songoda-minecraft-plugins</id>
+            <url>https://repo.songoda.com/repository/minecraft-plugins/</url>
         </repository>
     </repositories>
-
 
     <dependencies>
         <dependency>
@@ -51,10 +47,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>cn.lunadeer</groupId>
-            <artifactId>DominionAPI</artifactId>
-            <version>${compat.dominion}</version>
-            <scope>provided</scope>
+            <groupId>com.ghostchu.quickshop.compatibility</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
@@ -63,10 +59,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu.quickshop.compatibility</groupId>
-            <artifactId>common</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
+            <groupId>com.craftaro</groupId>
+            <artifactId>FabledSkyBlock</artifactId>
+            <version>${compat.fabledskyblock}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
