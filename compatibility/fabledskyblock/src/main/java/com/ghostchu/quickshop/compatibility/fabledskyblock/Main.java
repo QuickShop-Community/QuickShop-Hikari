@@ -129,7 +129,6 @@ public final class Main extends CompatibilityModule {
 
 
   private void deleteShops(@NotNull final Island island, @Nullable final UUID shopOwnerToDelete, @NotNull final UUID deleteOperator, @NotNull final String deleteReason) {
-
     //TODO: Shop lookup through API?
   }
 }
