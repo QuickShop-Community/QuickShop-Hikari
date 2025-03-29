@@ -26,38 +26,35 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
   public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     final Shop shop = getLookingShop(sender);
-    if(shop != null) {
-      if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY)
-         || plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")) {
-
-        ShopDisplayEvent event = new ShopDisplayEvent(Phase.PRE, shop, shop.isDisableDisplay(), !shop.isDisableDisplay());
-        event.callEvent();
-
-        event = event.clone(Phase.MAIN);
-        if(event.callCancellableEvent()) {
-
-          plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
-          return;
-        }
-
-        if(event.updated()) {
-          shop.setDisableDisplay(false);
-
-          plugin.text().of(sender, "display-turn-on").send();
-        } else {
-          shop.setDisableDisplay(true);
-
-          plugin.text().of(sender, "display-turn-off").send();
-        }
-
-        event = event.clone(Phase.POST);
-        event.callEvent();
-      } else {
-        plugin.text().of(sender, "not-managed-shop").send();
-      }
-    } else {
+    if(shop == null) {
       plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
     }
+
+    if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY)
+       && !plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")) {
+      plugin.text().of(sender, "not-managed-shop").send();
+
+      return;
+    }
+
+    ShopDisplayEvent event = new ShopDisplayEvent(Phase.PRE, shop, shop.isDisableDisplay(), !shop.isDisableDisplay());
+    event.callEvent();
+
+    event = event.clone(Phase.MAIN);
+    if(event.callCancellableEvent()) {
+
+      plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
+      return;
+    }
+
+    shop.setDisableDisplay(event.updated());
+
+    final String message = (event.updated())? "display-turn-off" : "display-turn-on";
+    plugin.text().of(sender, message).send();
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
   }
 
   @NotNull
