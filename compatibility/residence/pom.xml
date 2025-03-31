@@ -54,7 +54,7 @@
             <artifactId>Residence</artifactId>
             <version>${compat.residence}</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Residence5.0.1.7.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Residence5.1.7.3.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>zrips.cmilib</groupId>
