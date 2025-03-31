@@ -8,11 +8,11 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.9-SNAPSHOT-4</version>
+        <version>6.2.0.9-RELEASE-1</version>
     </parent>
 
     <properties>
-        <tnml.version>1.6.0.0-SNAPSHOT-6</tnml.version>
+        <tnml.version>1.6.0.0-SNAPSHOT-15</tnml.version>
         <tnil.version>0.1.7.6-LEGACY-13</tnil.version>
     </properties>
 
@@ -391,7 +391,7 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_21_R5</artifactId>
-            <version>6.2.0.9-SNAPSHOT-4</version>
+            <version>6.2.0.9-RELEASE-1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

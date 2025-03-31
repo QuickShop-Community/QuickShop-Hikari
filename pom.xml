@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.9-SNAPSHOT-4</version>
+    <version>6.2.0.9-RELEASE-1</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -14,7 +14,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <developer>Ghost-chu</developer>
+        <developer>QuickShop-Community</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
         <!-- common lib versions -->
@@ -166,7 +166,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${project.name}-${project.version}</finalName>
-                               <!--   <outputDirectory>C:\Users\danie\Desktop\Github\TNE\QuickShop-Hikari\build-artifacts</outputDirectory> !-->
+                                <!--<outputDirectory>\QuickShop-Hikari\build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
                                 <createSourcesJar>true</createSourcesJar>
@@ -177,6 +177,7 @@
                                     <includes>
                                         <include>net.tnemc:*</include>
                                         <include>com.github.technicallycoded:*</include>
+                                        <include>com.tcoded.folialib:*</include>
                                         <include>com.github.technicallycoded.folialib:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
@@ -202,7 +203,7 @@
                                         <shadedPattern>${qs.relocation}.tne</shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>com.github.technicallycoded</pattern>
+                                        <pattern>com.tcoded.folialib</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
                                     </relocation>
                                     <relocation>
@@ -274,6 +275,7 @@
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
                         <release>${java.version}</release>
+                        <!--<outputDirectory>\QuickShop-Hikari\build-artifacts\javadocs</outputDirectory>-->
                     </configuration>
                     <executions>
                         <execution>
