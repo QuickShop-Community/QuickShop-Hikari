@@ -158,6 +158,19 @@ public class BuiltInCollects {//Statistic
     });
   }
 
+  @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Research - PacketEvents Version", description = "We collect this so we can know the which one PacketEvents is popular. PacketEvents sometimes releases destructive updates, so we collect this metric to know the distribution of PacketEvents versions among users and remove unused PacketEvents workaround code to improve code maintainability and program performance.")
+  public CustomChart researchPacketEventsVersion() {
+
+    return new SimplePie("research_packetevents_version", ()->{
+      final Plugin packetevents = Bukkit.getPluginManager().getPlugin("packetevents");
+      if(packetevents == null) {
+
+        return "Not Installed";
+      }
+      return packetevents.getDescription().getVersion();
+    });
+  }
+
   @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Server Software Build Version", description = "Spigot and Paper always release updates during their version support cycles. Counting the server-side software versions used by users lets us know which builds are popular. And it allows us to be more aggressive with newly added APIs, This can improve code maintainability, stability and program performance.")
   public CustomChart statisticServerSoftwareBuildVersion() {
 

@@ -119,4 +119,4 @@ run/
 .run
 /${rootDir}/
 .${rootDir}/
-.paper-nms/
+/.paper-nms/

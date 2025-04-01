@@ -13,10 +13,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -24,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 public class LockListener extends AbstractProtectionListener {
 
-  private static final Object EMPTY_OBJECT = new Object();
-  private final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
+  public static final Object EMPTY_OBJECT = new Object();
+  public static final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
           .expireAfterAccess(1, TimeUnit.SECONDS)
           .build();
 
@@ -77,7 +75,7 @@ public class LockListener extends AbstractProtectionListener {
     }
   }
 
-  @EventHandler(ignoreCancelled = true)
+  /*@EventHandler(ignoreCancelled = true)
   public void onClick(final PlayerInteractEvent e) {
 
     final Block b = e.getClickedBlock();
@@ -115,7 +113,7 @@ public class LockListener extends AbstractProtectionListener {
     }
 
     QuickShop.inShop.add(p.getUniqueId());
-  }
+  }*/
 
   /*
    * Handles hopper placement

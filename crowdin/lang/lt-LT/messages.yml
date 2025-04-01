@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Daiktų kiekis per didelis, kad būtų atvaizduotas
   stock: '<green>Atsargos: <yellow>{0}'
   this-shop-is-buying: <green>Ši parduotuvė <light_purple>SUPERKA<green> daiktus.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Sėkmingai parduota:'
   total-value-of-chest: '<green>Galutinė chesto vertė:<yellow>{0}'
 currency-not-exists: <red>Nepavyksta rasti valiutos, kurią norite nustatyti. Galbūt rašyba neteisinga arba šios valiutos nėra.
@@ -255,7 +256,6 @@ translate-not-completed-yet-click: Kalbos vertimas iš {0} dar nebaigtas {1}. Ar
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <green>{0} Kažkas nusipirko{1}{2} iš jūsų parduotuvės ir jūs gavote{3}.
 reached-maximum-can-create: <red>Jūs jau sukūrėte maksimumalų kiekį {0}/{1} parduotuvių!
-reached-maximum-create-limit: <red>Pasiekėte parduotuvių sukūrimo limitą
 translation-version: 'Palaikymo versija: Hikari'
 no-double-chests: <red>Jūs negalite sukurti double chest parduotuvės.
 price-too-cheap: <red>Kaina turi būti didesnė nei <yellow>${0}
@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Paspausk, jei norite, kad parduotuvė skaičiuotu prekių kieki esanti jūsų parduotuvėje.
   alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>Spustelėkite, kad nustatytumėte arba pašalintumėte šios parduotuvės naudojamą valiutą
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'

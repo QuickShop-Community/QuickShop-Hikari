@@ -9,9 +9,8 @@ import com.bgsoftware.superiorskyblock.api.events.IslandUncoopPlayerEvent;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -93,7 +92,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(final IslandBanEvent event) {
+  public void onBan(final IslandBanEvent event) {
 
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
@@ -101,39 +100,15 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(final IslandUncoopPlayerEvent event) {
+  public void onUncoop(final IslandUncoopPlayerEvent event) {
 
     deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandUncoopPlayerEvent");
   }
 
   @EventHandler
-  public void deleteShopsOnChunkReset(final IslandChunkResetEvent event) {
+  public void onReset(final IslandChunkResetEvent event) {
 
     deleteShops(event.getWorld(), event.getChunkX(), event.getChunkZ(), null, CommonUtil.getNilUniqueId(), "IslandChunkResetEvent");
-  }
-
-  @EventHandler(ignoreCancelled = true)
-  public void onCreation(final ShopCreateEvent event) {
-
-    final Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
-    event.getCreator().getBukkitPlayer().ifPresent(player->{
-      final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
-      if(island == null) {
-        return;
-      }
-      if(onlyOwnerCanCreateShop) {
-        if(!island.getOwner().equals(superiorPlayer)) {
-          event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
-        }
-      } else {
-        if(!island.getOwner().equals(superiorPlayer)) {
-          if(!island.isMember(superiorPlayer)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
-          }
-        }
-      }
-    });
-
   }
 
   @Override
@@ -144,39 +119,48 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(final ShopPreCreateEvent event) {
+  public void onPreCreation(final ShopCreateEvent event) {
 
-    final Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
-    event.getCreator().getBukkitPlayer().ifPresent(player->{
-      final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+    if(!event.phase().cancellable()) {
+      return;
+    }
+
+    final Island island = SuperiorSkyblockAPI.getIslandAt(event.location());
+    event.user().getBukkitPlayer().ifPresent(player->{
       if(island == null) {
         return;
       }
+      final UUID uuid = player.getUniqueId();
       if(onlyOwnerCanCreateShop) {
-        if(!island.getOwner().equals(superiorPlayer)) {
-          event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+        if(!island.getOwner().getUniqueId().equals(uuid)) {
+
+          event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-create-only").forLocale());
         }
       } else {
-        if(!island.getOwner().equals(superiorPlayer)) {
-          if(!island.isMember(superiorPlayer)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
-          }
+        final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+        if(!island.getOwner().getUniqueId().equals(uuid) && !island.isMember(superiorPlayer)) {
+
+            event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-member-create-only").forLocale());
         }
       }
     });
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    if(event.shop().isEmpty()) {
+      return;
+    }
+
+    final Location shopLoc = event.shop().get().getLocation();
     final Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
     if(island == null) {
       return;
     }
-    if(island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
-      if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-        event.setResult(true);
+    if(island.getOwner().getUniqueId().equals(event.playerUUID())) {
+      if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+        event.hasPermission(true);
       }
     }
   }
@@ -188,7 +172,7 @@ public final class Main extends CompatibilityModule implements Listener {
       try {
         chunkFutures.addAll(island.getAllChunksAsync(environment, false, chunk->{
         }));
-      } catch(NullPointerException ignored) {
+      } catch(final NullPointerException ignored) {
       }
     }
     return chunkFutures;

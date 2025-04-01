@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Denne butik <light_purple>KØBER<green> genstande.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Solgt:'
   total-value-of-chest: '<green>Samlet værdi af kiste: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finde den valuta, du vil angive. Måske staves forkert, eller at valuta ikke er tilgængelig i denne verden.
@@ -255,7 +256,6 @@ translate-not-completed-yet-click: Oversættelsen af sproget {0} blev endnu ikke
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} purchased {1} {2} from your shop, and you earned {3}.
 reached-maximum-can-create: <red>Du har allerede oprettet et maksimum på {0}/{1} butikker!
-reached-maximum-create-limit: <red>Du har nået det maksimale antal butikker, du kan oprette
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>You cannot create the double chest shop.
 price-too-cheap: <red>Prisen skal være større end <yellow>${0}
@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'

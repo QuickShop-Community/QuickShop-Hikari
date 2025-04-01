@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Objektets NBT är för stort för att visa
   stock: '<green>Lagersaldo <yellow>{0}'
   this-shop-is-buying: <green>Denna butik <light_purple>KÖPER& föremål.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Framgångsrikt sålt:'
   total-value-of-chest: '<green>Totalt värde av butik: <yellow>{0}'
 currency-not-exists: <red>Kan inte hitta den valuta som du vill ställa in. Stavningen är kanske fel eller att valutan inte är tillgänglig i denna värld.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: Översättningen av språket {0} slutfördes 
 taxaccount-invalid: <red>Angivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).
 player-bought-from-your-store: <red>{0} köpte {1} {2} från din butik, och du tjänade {3}.
 reached-maximum-can-create: <red>Du har redan skapat {0}/{1} butiker vilket är max!
-reached-maximum-create-limit: <red>Du har nått det maximala antalet butiker du kan skapa
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Du kan inte skapa den dubbla kistbutiken.
 price-too-cheap: <red>Priset måste vara högre än <yellow>${0}
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klicka för att växla om butiken alltid räknar behållarens utrymme.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klicka för att ändra eller ta bort den valuta som denna butik använder
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'

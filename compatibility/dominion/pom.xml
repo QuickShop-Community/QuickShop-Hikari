@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ghostchu</groupId>
+        <artifactId>quickshop-hikari</artifactId>
+        <version>6.2.0.9-RELEASE-1</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <groupId>com.ghostchu.quickshop.compatibility</groupId>
+    <artifactId>dominion</artifactId>
+    <packaging>takari-jar</packaging>
+
+    <name>Compat-Dominion</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.lunadeer</groupId>
+            <artifactId>DominionAPI</artifactId>
+            <version>${compat.dominion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-bukkit</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu.quickshop.compatibility</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

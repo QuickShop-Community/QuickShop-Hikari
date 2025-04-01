@@ -63,6 +63,7 @@ public class SignHooker {
 
         final Map<Location, Shop> shops = PLUGIN.getShopManager().getShops(player.getWorld().getName(), x, z);
         if(shops == null) {
+
           return;
         }
         QuickShop.folia().getImpl().runLater(()->shops.forEach((loc, shop)->updatePerPlayerShopSign(player, loc, shop)), 2);
@@ -85,6 +86,7 @@ public class SignHooker {
     Log.debug("Updating per-player packet sign: Player=" + player.getName() + ", Location=" + location + ", Shop=" + shop.getShopId());
     final List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
     for(final Sign sign : shop.getSigns()) {
+
       PLUGIN.getPlatform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
     }
   }
@@ -107,6 +109,7 @@ public class SignHooker {
     }
     final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
     for(final Entity nearbyPlayer : nearbyPlayers) {
+
       if(nearbyPlayer instanceof final Player player) {
         updatePerPlayerShopSign(player, location, shop);
       }

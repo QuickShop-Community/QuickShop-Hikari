@@ -92,16 +92,16 @@ player-bought-from-your-store-tax: <green>{0} Kupił {1} {2} z Twojego sklepu i 
 not-enough-space: <red>Masz tylko miejsce na {0} więcej!
 shop-name-success: <green>Pomyślnie ustawiono nazwę sklepu na <yellow>{0}<green>.
 shop-staff-added: <green>Pomyślnie dodano {0} jako członka personelu twojego sklepu.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Ten sklep nie ma członków personelu.
 shops-recovering: Odzyskiwanie sklepów z kopii zapasowej...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>To jest wirtualny gracz.\n<gray>Odnosi się do konta systemowego o tej samej nazwie.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nazwa użytkownika: <yellow>{1}</yellow></green>\n<green>Wyświetl jako: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>To jest prawdziwy gracz.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Nazwa użytkownika: <yellow>{1}</yellow></green>\n<green>Wyświetl jako: <yellow>{2}</yellow></green>\n<gray>Jeśli chcesz użyć wirtualnego konta systemowego z taką samą nazwą dodaj <dark_gray>\"[]\"</dark_gray> do obu stron nazwy użytkownika: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Zapłaciłeś <yellow>{0} </yellow>podatku.
   owner: '<green>Właściciel: {0}'
   preview: <aqua>[Podgląd przedmiotu]
   enchants: <dark_purple>Enchanty
-  sell-tax-self: <green>Nie płaciłeś podatków, ponieważ posiadasz ten sklep.
+  sell-tax-self: <green>Nie zapłaciłeś podatku, ponieważ posiadasz ten sklep.
   shop-information: '<green>Info:'
   item: '<green>Przedmiot: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
@@ -119,6 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Element NBT jest zbyt duży, aby go pokazać
   stock: '<green>Ilość <yellow>{0}'
   this-shop-is-buying: <green>Ten sklep <light_purple>SKUPUJE<green> itemy.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Sprzedano:'
   total-value-of-chest: '<green>Ilość w skrzyni: <yellow>{0}'
 currency-not-exists: <red>Nie można znaleźć waluty, którą chcesz ustawić. Może pisownia jest błędna lub ta waluta nie jest dostępna w tym świecie.
@@ -177,7 +178,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: Sprzedaż
   buying: Zakup
-  frozen: FROZEN
+  frozen: ZAMROŻONE
 language:
   qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
   code: '<yellow>Kod: <gold>{0}'
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: Tłumaczenie języka {0} nie zostało jeszcze
 taxaccount-invalid: <red>Konto docelowe jest nieprawidłowe, wprowadź prawidłową nazwę gracza lub identyfikator uuid (z myślnikami).
 player-bought-from-your-store: <red>{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3}.
 reached-maximum-can-create: <red>Już utworzyłeś maksimum {0}/{1} sklepów!
-reached-maximum-create-limit: <red>Osiągnąłeś maksymalną liczbę sklepów, które możesz utworzyć
 translation-version: 'Wersja wsparcia: Hikari'
 no-double-chests: <red>Nie możesz stworzyć sklepu z podwójną skrzynią.
 price-too-cheap: <red>Cena musi być większa niż <yellow>${0}
@@ -614,12 +614,12 @@ debug:
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
   queries-stopped: "<green>Stopped <white>{0}</white> active queries."
   queries-dumping: "<yellow>Dumping active queries..."
-  restart-database-manager: "<yellow>Restarting SQLManager..."
-  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
-  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
-  restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
-  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
-  restart-database-manager-done: "<green>Done!"
+  restart-database-manager: "<yellow>Restartowanie SQLManager..."
+  restart-database-manager-clear-executors: "<yellow>Czyszczenie egzekutorów..."
+  restart-database-manager-unfinished-task: "<yellow>Niedokończone zadanie: <white>{0}</white>"
+  restart-database-manager-unfinished-task-history-query: "<yellow>Niedokończone zadanie (Zapytanie historyczne): <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>Ponowne uruchamianie SQLManager poprzez sekwencję początkową (poprzez async executor)"
+  restart-database-manager-done: "<green>Gotowe!"
   property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
@@ -632,7 +632,7 @@ database:
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: '<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue.'
   status: '<yellow>Status: {0}'
-  status-good: <green>Good
+  status-good: <green>Dobrze
   status-bad: <yellow>Maintenance Required
   isolated: '<yellow>Odizolowane Dane:'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
@@ -671,21 +671,21 @@ importing-failed: <red>Nie udało się wyeksportować bazy danych, sprawdź kons
 imported-database: <green>Baza danych wyeksportowana do <yellow>{0}</yellow>.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+transfer-single-request: <yellow>Gracz <aqua>{0}</aqua> chce przenieść sklep do ciebie. Czy chcesz zaakceptować tę prośbę?
 transfer-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Wpisz <red>/quickshop transferall accept</red> aby zaakceptować lub <red>/quickshop transferall deny</red> aby odrzucić prośbę.
+  Prośba wygaśnie za <red>{0}</red> sekund.
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Wpisz <red>/quickshop transferownership accept</red> aby zaakceptować lub <red>/quickshop transferownership deny</red> aby odrzucić prośbę.
+  Prośba wygaśnie za <red>{0}</red> sekund.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-self: <red>Nie możesz przenieść swoich sklepów do siebie.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
 benefit-removed: <red>Target player has been removed from shop benefits.

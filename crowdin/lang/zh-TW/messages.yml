@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>你可以透過超級工具來破壞商店
 fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 變更商店定價。
 not-allowed-to-create: <red>你無法在此建立商店。
 disabled-in-this-world: <red>已停用此世界的 QuickShop
@@ -120,11 +120,12 @@ menu:
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
   this-shop-is-buying: <green>此商店正在<light_purple>收購<green>物品。
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>成功地出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此世界無法使用貨幣。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
-translation-author: 'Ghost_chu、Andre_601、flandretw'
+translation-author: 'flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功地將商店擁有者轉交給伺服器。
@@ -255,7 +256,6 @@ translate-not-completed-yet-click: '{0} 的翻譯完成度為 {1}，你想幫助
 taxaccount-invalid: <red>無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。
 player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} 個 {2}，總共讓你進賺了 {3}。
 reached-maximum-can-create: <red>你建立的商店數量已達到上限（你已建立 {0} 個，最多 {1} 個！）
-reached-maximum-create-limit: <red>你創造的商店數量已達上限
 translation-version: '支援版本：Hikari'
 no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
 price-too-cheap: <red>價格必須大於 <yellow>${0}
@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>持續計算數量：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
-  freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>商店上：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'

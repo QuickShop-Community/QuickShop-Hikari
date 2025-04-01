@@ -1,9 +1,21 @@
 package com.ghostchu.quickshop.shop.controlpanel;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.ControlComponent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanel;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
+import com.ghostchu.quickshop.shop.controlpanel.component.DisplayComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.EmptyComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.FreezeComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.HistoryComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.OwnerComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.RefillComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.RemoveComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.SetAmountComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.SetPriceComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.ShopModeComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.UnlimitedComponent;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import net.kyori.adventure.text.Component;
@@ -13,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -24,6 +37,10 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   private final Lock LOCK = new ReentrantLock();
   private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
 
+  private final LinkedHashMap<String, ControlComponent> controlPanelComponents = new LinkedHashMap<>();
+
+  private final LinkedList<String> enabledComponents = new LinkedList<>();
+
   public SimpleShopControlPanelManager(final QuickShop plugin) {
 
     this.plugin = plugin;
@@ -32,23 +49,93 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
   @Override
   public void openControlPanel(@NotNull final Player player, @NotNull final Shop shop) {
 
+    final List<Component> total = new ArrayList<>();
+
     final ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(player);
     chatSheetPrinter.printHeader();
     chatSheetPrinter.printLine(plugin.text().of(player, "controlpanel.infomation").forLocale());
-    final List<Component> total = new ArrayList<>();
+
     for(final ShopControlPanel entry : registry.keySet()) {
       try {
+
         total.addAll(entry.generate(player, shop));
-      } catch(Exception e) {
+      } catch(final Exception e) {
+
         try {
+
           plugin.logger().warn("Failed to generate control panel for {}. Contact the developer of the plugin {}.", entry.getPlugin().getName(), entry.getClass().getName());
-        } catch(Exception e2) {
+        } catch(final Exception e2) {
+
           plugin.logger().warn("Failed to generate control panel for {}. Contact the developer of that plugin", entry.getClass().getName());
         }
       }
     }
+
     total.forEach(chatSheetPrinter::printLine);
     chatSheetPrinter.printFooter();
+  }
+
+  /**
+   * Retrieves a map of control components associated with the shop control panel manager.
+   *
+   * @return A map containing control components where the key is a string identifier and the value
+   * is a ControlComponent object.
+   */
+  @Override
+  public LinkedHashMap<String, ControlComponent> controlComponents() {
+
+    return controlPanelComponents;
+  }
+
+  /**
+   * Retrieves a list of enabled components.
+   *
+   * @return A LinkedList containing string identifiers of the enabled components.
+   */
+  @Override
+  public LinkedList<String> enabledComponents() {
+
+    return enabledComponents;
+  }
+
+  /**
+   * Adds the provided ControlComponent to the controlComponents map associated with the Shop
+   * Control Panel Manager.
+   *
+   * @param component The ControlComponent to add. Must not be null.
+   */
+  @Override
+  public void addComponent(@NotNull final ControlComponent component) {
+
+    controlPanelComponents.put(component.identifier(), component);
+  }
+
+  /**
+   * Initializes the Shop Control Panel Manager and registers necessary components.
+   */
+  @Override
+  public void initialize() {
+
+    addComponent(new OwnerComponent());
+    addComponent(new UnlimitedComponent());
+    addComponent(new FreezeComponent());
+    addComponent(new ShopModeComponent());
+    addComponent(new SetPriceComponent());
+    addComponent(new SetAmountComponent());
+    addComponent(new RefillComponent());
+    addComponent(new EmptyComponent());
+    addComponent(new DisplayComponent());
+    addComponent(new HistoryComponent());
+    addComponent(new RemoveComponent());
+
+
+    for(final Object component : plugin.getConfig().getList("shop.control-panel", new LinkedList<>(controlPanelComponents.keySet()))) {
+
+      if(component instanceof final String str) {
+
+        enabledComponents.add(str);
+      }
+    }
   }
 
   @Override

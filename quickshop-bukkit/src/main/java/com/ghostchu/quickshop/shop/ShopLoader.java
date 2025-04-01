@@ -87,6 +87,7 @@ public class ShopLoader implements SubPasteItem {
       }
     }
     final boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
+
     plugin.logger().info("Loading shops from database...");
     final Timer dbFetchTimer = new Timer(true);
     final List<ShopRecord> records = plugin.getDatabaseHelper().listShops(worldName, deleteCorruptShops);
@@ -346,10 +347,14 @@ public class ShopLoader implements SubPasteItem {
         this.permissions = new HashMap<>();
       }
 
-      this.item = deserializeItem(dataRecord.getItem());
 
-      if(!dataRecord.getEncoded().isEmpty()) {
-        this.newItem = QuickShop.getInstance().getPlatform().decodeStack(dataRecord.getEncoded());
+      if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
+        
+        this.item = QuickShop.getInstance().getPlatform().decodeStack(dataRecord.getEncoded());
+        this.newItem = item;
+      } else {
+        
+        this.item = deserializeItem(dataRecord.getItem());
       }
       this.extra = deserializeExtra(extraStr);
     }

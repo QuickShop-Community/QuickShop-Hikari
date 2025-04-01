@@ -120,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large to display
   stock: '<green>Stock: <yellow>{0}'
   this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Successfully sold:'
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
@@ -255,7 +256,6 @@ translate-not-completed-yet-click: The translation of the language {0} was not c
 taxaccount-invalid: <red>Target account invalid. Please enter a valid player name or UUID (With dashes).
 player-bought-from-your-store: <green>{0} purchased {1} {2} from your shop, and you earned {3}.
 reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>You cannot create a double chest shop.
 price-too-cheap: <red>Price must be greater than <yellow>${0}
@@ -352,7 +352,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop should always count the container's content.
   alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'

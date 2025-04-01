@@ -25,6 +25,7 @@ import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
+import net.tnemc.menu.core.PlayerInstancePage;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
 import net.tnemc.menu.core.icon.action.IconAction;
@@ -80,14 +81,14 @@ public class MainPage {
   public void handle(final PageOpenCallback callback) {
 
     final Optional<MenuViewer> viewer = callback.getPlayer().viewer();
-    if(viewer.isPresent()) {
+    if(viewer.isPresent() && callback.getPage() instanceof final PlayerInstancePage playerPage) {
 
       final Optional<Object> shopsData = viewer.get().findData(SHOPS_DATA);
-      final Player player = Bukkit.getPlayer(viewer.get().uuid());
+      final UUID id = viewer.get().uuid();
+      final Player player = Bukkit.getPlayer(id);
       if(shopsData.isPresent() && player != null) {
 
-        callback.getPage().getIcons().clear();
-        final UUID id = viewer.get().uuid();
+        playerPage.getIcons(id).clear();
 
         final int offset = 9;
         final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
@@ -101,19 +102,19 @@ public class MainPage {
         final int prev = (page <= 1)? maxPages : page - 1;
         final int next = (page >= maxPages)? 1 : page + 1;
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of("WHITE_STAINED_GLASS_PANE", 1));
-        callback.getPage().setRow(1, borderBuilder);
-        callback.getPage().setRow(menuRows, borderBuilder);
+        playerPage.setRow(id, 1, borderBuilder);
+        playerPage.setRow(id, menuRows, borderBuilder);
 
         if(maxPages > 1) {
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
+          playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
                                                              .display(get(id, "gui.shared.previous-page"))
                                                              .lore(List.of(get(id, "history.shop.current-page", page))))
                                              .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(3)
                                              .build());
 
-          callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
+          playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
                                                              .display(get(id, "gui.shared.next-page"))
                                                              .lore(List.of(get(id, "history.shop.current-page", page))))
                                              .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
@@ -121,7 +122,7 @@ public class MainPage {
                                              .build());
         }
 
-        callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("BOOK", 1)
+        playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of("BOOK", 1)
                                                            .display(get(id, "history.shop.current-page", page)))
                                            .withSlot(4)
                                            .build());
@@ -157,7 +158,7 @@ public class MainPage {
                                 eco.format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()),
                                 shop.getRemainingStock()));
 
-          callback.getPage().addIcon(new IconBuilder(stack).withSlot(offset + (i - start)).build());
+          playerPage.addIcon(id, new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
           i++;
         }

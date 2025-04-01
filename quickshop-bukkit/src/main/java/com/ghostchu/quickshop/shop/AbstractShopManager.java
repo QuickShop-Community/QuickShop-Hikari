@@ -1,7 +1,8 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateSuccessEvent;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
@@ -200,6 +201,7 @@ public abstract class AbstractShopManager implements ShopManager {
     }
     inChunk.remove(loc);
     shopCache.invalidate(null, shop.getLocation());
+    shopRuntimeUUIDCaching.invalidate(shop.getRuntimeRandomUniqueId());
   }
 
 
@@ -208,6 +210,7 @@ public abstract class AbstractShopManager implements ShopManager {
     plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
     plugin.text().of(owner, "shop-creation-failed").send();
     Util.mainThreadRun(()->{
+      deleteShop(shop);
       unloadShop(shop);
       unregisterShop(shop, true);
       removeShopFromLookupTable(shop);
@@ -277,7 +280,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @Override
   public @NotNull List<Shop> getAllShops() {
 
-    try(PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
       final List<Shop> shopsCollected = new ArrayList<>();
       for(final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
         for(final Map<Location, Shop> shopData : shopMapData.values()) {
@@ -477,7 +480,8 @@ public abstract class AbstractShopManager implements ShopManager {
               plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
               Log.debug("DEBUG: Creating shop successfully");
               shop.setDirty();
-              new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
+
+              new ShopCreateEvent(Phase.POST, shop, shop.getOwner(), shop.getLocation()).callEvent();
             })
             .exceptionally(err->{
               processCreationFail(shop, shop.getOwner(), err);
@@ -515,6 +519,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
     if(inWorld == null) {
+
       return null;
     }
     return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));

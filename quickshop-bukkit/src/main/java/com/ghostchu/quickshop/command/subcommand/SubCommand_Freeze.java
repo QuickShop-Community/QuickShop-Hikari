@@ -10,6 +10,9 @@ import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
+
 public class SubCommand_Freeze implements CommandHandler<Player> {
 
   private final QuickShop plugin;
@@ -25,7 +28,7 @@ public class SubCommand_Freeze implements CommandHandler<Player> {
     final Shop shop = getLookingShop(sender);
     if(shop != null) {
       if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
-         || plugin.perm().hasPermission(sender, "quickshop.other.buy")) {
+              || plugin.perm().hasPermission(sender, "quickshop.other.freeze")) {
 
         if(shop.getShopType().equals(ShopType.FROZEN)) {
 
@@ -37,12 +40,19 @@ public class SubCommand_Freeze implements CommandHandler<Player> {
           shop.setShopType(ShopType.FROZEN);
           plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
         }
-        shop.setSignText(plugin.text().findRelativeLanguages(sender));
       } else {
         plugin.text().of(sender, "not-managed-shop").send();
       }
       return;
     }
     plugin.text().of(sender, "not-looking-at-shop").send();
+  }
+
+  @NotNull
+  @Override
+  public List<String> onTabComplete(
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    return Collections.emptyList();
   }
 }

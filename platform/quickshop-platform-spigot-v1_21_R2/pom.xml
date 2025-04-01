@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.8</version>
+        <version>6.2.0.9-RELEASE-1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -23,7 +23,7 @@
             <plugin>
                 <groupId>net.md-5</groupId>
                 <artifactId>specialsource-maven-plugin</artifactId>
-                <version>2.0.3</version>
+                <version>2.0.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
                 <configuration>
                     <skip>true</skip>
                     <skipMain>true</skipMain>

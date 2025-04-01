@@ -119,11 +119,12 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Cửa hàng này đang <light_purple>MUA <green>các vật phẩm.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Bán thành công:'
   total-value-of-chest: '<green>Tổng giá trị của rương: <yellow>{0}'
 currency-not-exists: <red>Không thể tìm thấy đơn vị tiền tệ mà bạn muốn đặt. Có thể lỗi chính tả hoặc đơn vị tiền tệ đó không có sẵn trên thế giới này.
 no-nearby-shop: <red>Không có shop {0} nào gần đây.
-translation-author: 'Ghost_chu, Andre_601 (dịch bởi maiminhdung)'
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Tích hợp {0} đã từ chối Shop trao đổi
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Đã đặt thành công chủ cửa hàng thành Máy chủ.
@@ -246,7 +247,6 @@ translate-not-completed-yet-click: Bản dịch ngôn ngữ {0} chưa được h
 taxaccount-invalid: <red>Tài khoản không hợp lệ, vui lòng nhập tên người chơi hợp lệ hoặc uuid (có dấu gạch ngang).
 player-bought-from-your-store: <red>{0} đã mua {1} {2} từ shop của bạn, bạn nhận được {3}.
 reached-maximum-can-create: <red>Bạn đã tạo tối đa {0}/{1} cửa hàng!
-reached-maximum-create-limit: <red>Bạn đã đạt đến số lượng tối đa tạo cửa hàng
 translation-version: 'Phiên bản hỗ trợ: Hikari'
 no-double-chests: <red>Bạn không thể tạo ra Shop gương đôi.
 price-too-cheap: <red>Giá tiền phải lớn hơn <yellow>${0}
@@ -341,7 +341,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Nhấp để đặt hoặc xóa đơn vị tiền tệ mà cửa hàng này đang sử dụng
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
