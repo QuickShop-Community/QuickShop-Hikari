@@ -755,6 +755,9 @@ addon:
   lands:
     world-not-enabled: <red>你不能在此世界中建立或購買商店。
     creation-denied: <red>你沒有在此領土建立商店的權限。
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>你無法在畫布外建立商店。
     no-plot-whitelist-trade: <red>你無法在畫布外購買商店。
@@ -766,6 +769,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>只有島嶼擁有者能夠在那裡建立商店。
     owner-member-create-only: <red>只有島嶼擁有者或成員能夠在那裡建立商店。
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>你沒有在此 WorldGuard 保護區建立商店的權限。
     trade-flag-test-failed: <red>你沒有在此 WorldGuard 保護區與商店交易的權限。
