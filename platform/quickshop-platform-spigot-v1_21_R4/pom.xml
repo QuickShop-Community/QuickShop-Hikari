@@ -8,11 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-<<<<<<<< HEAD:platform/quickshop-platform-spigot-v1_18_R2/pom.xml
-        <version>6.2.0.8</version>
-========
         <version>6.2.0.9-RELEASE-1</version>
->>>>>>>> hikari:platform/quickshop-platform-spigot-v1_21_R4/pom.xml
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
