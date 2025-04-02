@@ -755,6 +755,9 @@ addon:
   lands:
     world-not-enabled: <red>Você não está permitido a criar ou comprar nesse mundo.
     creation-denied: <red>Você não tem permissão para criar lojas nesse terreno.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>Você não pode criar lojas fora do plot.
     no-plot-whitelist-trade: <red>Você não pode comprar de lojas fora do plot.
@@ -766,6 +769,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Apenas o dono da ilha pode criar lojas aqui.
     owner-member-create-only: <red>Apenas o dono da ilha ou membro pode criar placas de loja aqui.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>Você não tem permissão para criar lojas nessa região do WorldGuard.
     trade-flag-test-failed: <red>Você não tem permissão para realizar trocas de loja nessa área do WorldGuard.
