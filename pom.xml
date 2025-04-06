@@ -272,24 +272,19 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.11.2</version>
                     <configuration>
-                        <encoding>UTF-8</encoding>
+                        <show>public</show>
+                        <windowtitle>Quickshop - Hikari</windowtitle>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
-                        <release>${java.version}</release>
-                        <!--<outputDirectory>\QuickShop-Hikari\build-artifacts\javadocs</outputDirectory>-->
+                        <additionalJOption>-Xdoclint:none</additionalJOption>
+                        <failOnWarnings>false</failOnWarnings>
+                        <failOnError>false</failOnError>
+                        <verbose>false</verbose>
+                        <author>true</author>
+                        <version>true</version>
+                        <linksource>true</linksource>
+                        <notimestamp>true</notimestamp>
+                        <bottom><![CDATA[<b>QuickShopCommunity, 2025</b>]]></bottom>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                            <configuration>
-                                <failOnError>false</failOnError>
-                                <additionalJOption>-Xdoclint:none</additionalJOption>
-                                <!-- <detectOfflineLinks>false</detectOfflineLinks> -->
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
