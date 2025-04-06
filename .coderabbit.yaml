@@ -1,5 +1,0 @@
-reviews:
-  auto_review:
-    base_branches:
-      - hikari
-      - release

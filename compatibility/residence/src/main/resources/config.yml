@@ -1,6 +1,0 @@
-#Should we prevent the creation of a shop or trade with a shop outside Residence's area?
-whitelist-mode: false
-#Allow residence owner grant all shops full-control permission in their claim.
-allow-permission-override: true
-#Whether to apply the trade flag by default.
-trade-default: false
