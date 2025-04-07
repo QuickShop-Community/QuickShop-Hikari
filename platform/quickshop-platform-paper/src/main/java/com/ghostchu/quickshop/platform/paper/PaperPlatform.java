@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -70,8 +71,12 @@ public class PaperPlatform implements Platform {
       return displayName;
     }
 
-    if(meta.hasItemName()) {
-      return meta.itemName();
+    try {
+      if(meta.hasItemName()) {
+        return meta.itemName();
+      }
+    } catch(final Exception ignore) {
+      //old version
     }
     return Component.empty();
   }

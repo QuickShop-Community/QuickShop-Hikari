@@ -539,7 +539,16 @@ public class Util {
       return null;
     }
 
-    if(Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() || Objects.requireNonNull(itemStack.getItemMeta()).hasItemName()) {
+    boolean itemName = false;
+
+    try {
+      itemName = Objects.requireNonNull(itemStack.getItemMeta()).hasItemName();
+    } catch(final Exception ignore) {
+      //outdated
+    }
+
+    if(Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() || itemName) {
+
       return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
     }
     return null;
