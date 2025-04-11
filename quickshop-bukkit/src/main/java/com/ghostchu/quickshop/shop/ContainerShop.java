@@ -1609,10 +1609,13 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText() {
 
+    //Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
+      this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    });
   }
 
   /**
@@ -1665,7 +1668,10 @@ public class ContainerShop implements Shop, Reloadable {
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    this.setSignText(getSignText(locale));
+
+    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
+      this.setSignText(getSignText(locale));
+    });
   }
 
   /**
