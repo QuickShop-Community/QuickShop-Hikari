@@ -1609,7 +1609,6 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText() {
 
-    Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }
@@ -1649,7 +1648,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      QuickShop.folia().getImpl().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+      QuickShop.folia().getScheduler().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
       Log.debug("Sign broadcast completed.");
     }
   }
@@ -1662,7 +1661,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText(@NotNull final ProxiedLocale locale) {
 
-    Util.ensureThread(false);
+    //Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }

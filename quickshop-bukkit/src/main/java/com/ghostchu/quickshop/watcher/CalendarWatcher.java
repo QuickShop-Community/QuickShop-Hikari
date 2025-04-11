@@ -32,7 +32,7 @@ public class CalendarWatcher implements Runnable {
     if(!calendarFile.exists()) {
       try {
         calendarFile.createNewFile();
-      } catch(IOException ioException) {
+      } catch(final IOException ioException) {
         plugin.logger().warn("Cannot create calendar cache file at {}, scheduled tasks may cannot or execute wrongly!", calendarFile.getAbsolutePath(), ioException);
       }
     }
@@ -112,14 +112,14 @@ public class CalendarWatcher implements Runnable {
 
     try {
       configuration.save(calendarFile);
-    } catch(IOException ioException) {
+    } catch(final IOException ioException) {
       plugin.logger().warn("Cannot save calendar cache file at {}, scheduled tasks may cannot or execute wrongly!", calendarFile.getAbsolutePath(), ioException);
     }
   }
 
   public void start() {
 
-    task = QuickShop.folia().getImpl().runTimerAsync(this, 20, 20);
+    task = QuickShop.folia().getScheduler().runTimerAsync(this, 20, 20);
   }
 
   public void stop() {
@@ -129,7 +129,7 @@ public class CalendarWatcher implements Runnable {
       if(task != null && !task.isCancelled()) {
         task.cancel();
       }
-    } catch(IllegalStateException ex) {
+    } catch(final IllegalStateException ex) {
       Log.debug("Task already cancelled " + ex.getMessage());
     }
   }

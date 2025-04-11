@@ -86,7 +86,7 @@ public class QuickShopBukkit extends JavaPlugin {
     this.quickShop.onDisable();
     bootstrapLogger.info("Cleaning up resources...");
     HandlerList.unregisterAll(this);
-    QuickShop.folia().getImpl().cancelAllTasks();
+    QuickShop.folia().getScheduler().cancelAllTasks();
     Bukkit.getServicesManager().unregisterAll(this);
     Unirest.shutDown(true);
     Bukkit.getMessenger().unregisterIncomingPluginChannel(this);

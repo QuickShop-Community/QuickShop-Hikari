@@ -70,7 +70,7 @@ public final class Main extends JavaPlugin implements Listener {
     }
 
     Bukkit.getPluginManager().registerEvents(this, this);
-    QuickShop.folia().getImpl().runLater(this::updateAllMarkers, 80);
+    QuickShop.folia().getScheduler().runLater(this::updateAllMarkers, 80);
   }
 
   @EventHandler(ignoreCancelled = true)

@@ -124,7 +124,7 @@ public class Util {
       return;
     }
 
-    QuickShop.folia().getImpl().runLaterAsync(runnable, 0);
+    QuickShop.folia().getScheduler().runLaterAsync(runnable, 0);
   }
 
   /**
@@ -1147,8 +1147,8 @@ public class Util {
    * @param runnable The runnable
    */
   public static void regionThread(final Location location, @NotNull final Runnable runnable) {
-    //QuickShop.folia().getImpl().runLater(runnable, 1);
-    QuickShop.folia().getImpl().runAtLocationLater(location, runnable, 1);
+    //QuickShop.folia().getScheduler().runLater(runnable, 1);
+    QuickShop.folia().getScheduler().runAtLocationLater(location, runnable, 1);
   }
 
   /**
@@ -1159,7 +1159,7 @@ public class Util {
    */
   public static void mainThreadRun(@NotNull final Runnable runnable) {
 
-    QuickShop.folia().getImpl().runLater(runnable, 1);
+    QuickShop.folia().getScheduler().runLater(runnable, 1);
   }
 
   /**
@@ -1170,7 +1170,7 @@ public class Util {
    */
   public static void mainThreadRun(@NotNull final Runnable runnable, final long delay) {
 
-    QuickShop.folia().getImpl().runLater(runnable, delay);
+    QuickShop.folia().getScheduler().runLater(runnable, delay);
   }
 
   /**
