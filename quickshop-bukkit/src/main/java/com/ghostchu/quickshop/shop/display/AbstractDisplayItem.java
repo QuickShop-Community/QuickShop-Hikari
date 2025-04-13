@@ -216,7 +216,11 @@ public abstract class AbstractDisplayItem implements Reloadable {
    */
   public @Nullable Location getDisplayLocation() {
 
-    return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    final double x = PLUGIN.getConfig().getDouble("shop.display-coords.x", 0.5);
+    final double y = PLUGIN.getConfig().getDouble("shop.display-coords.y", 0.8);
+    final double z = PLUGIN.getConfig().getDouble("shop.display-coords.z", 0.5);
+
+    return this.shop.getLocation().clone().add(x, y, z);
   }
 
   /**
