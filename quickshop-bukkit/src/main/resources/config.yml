@@ -283,7 +283,7 @@ shop:
   display-coords:
 
     x: 0.5
-    y: 0.5
+    y: 0.8
     z: 0.5
 
   #[BETA] Enable beta per-player shop sign feature for i18n.
