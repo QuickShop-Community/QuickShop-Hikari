@@ -37,7 +37,7 @@
         <depend.adventure-text-serializer-bungeecord>4.3.4</depend.adventure-text-serializer-bungeecord>
         <depend.examination-api>1.3.0</depend.examination-api>
         <depend.examination-string>1.3.0</depend.examination-string>
-        <depend.nbtapi>2.14.1</depend.nbtapi>
+        <depend.nbtapi>2.15.0</depend.nbtapi>
 
         <!-- addon versions -->
         <addon.bluemap>2.7.2</addon.bluemap>
