@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Vous pouvez casser la boutique en utilisant le super outil.
+break-shop-use-supertool: <yellow>Vous pouvez casser le magasin avec l'outil super outil.
 fee-charged-for-price-change: <green>Vous payez <red>{0}<green> pour changer le prix.
 not-allowed-to-create: <red>Vous ne pouvez pas créer un shop ici.
 disabled-in-this-world: <red>QuickShop est désactivé dans ce monde
@@ -9,7 +9,7 @@ _comment: Bonjour, traducteur ! Si vous éditez ceci sur Github ou depuis le cod
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
 thats-not-a-number: <red>Nombre invalide.
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} <red>est interdit. Choisissez un autre !
 console-only-danger: <red>Cette commande est dangereuse pour que seule la console puisse l'exécuter.
 not-a-number: <red>Vous ne pouvez saisir qu'un nombre, votre entrée était {0}.
 not-looking-at-valid-shop-block: <red>Impossible de créer un magasin. Veuillez regarder un type de bloc pris en charge et réessayer
@@ -31,7 +31,7 @@ safe-mode: <red>QuickShop est à présent en mode sans échec, vous ne pouvez pa
 forbidden-vanilla-behavior: <red>L'opération est indisponible car elle n'est pas compatible avec la version vanilla
 shop-out-of-space-name: <dark_purple>Votre boutique {0} est pleine !
 paste-disabled: |-
-  <red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}
+  <red>La fonctionnalité de coller a été désactivée ! Vous ne pouvez pas demander un support technique. <newline>Raison : {0}
 quick-fill:
   entry-own: '<light_purple>'
   hover:
@@ -61,7 +61,7 @@ no-pending-action: <red>Tu n'as aucune action en attente
 refill-success: <green>Remplissage de la boutique effectué avec succès
 failed-to-paste: <red>Erreur lors de l'upload des données vers PasteBin, verifier la connection internet et rééssayez. (Voir la console)
 shop-out-of-stock-name: <dark_purple>Votre boutique {0} est à court de {1} !
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
+shop-name-invalid: <red>Le nom de la boutique <yellow>{0} <red>n'est pas valide. Choisissez un autre !
 how-many-buy-stack: <yellow>Entrez dans le chat, combien d'items vous souhaitez <aqua>Acheter<green>. Il y a <yellow>{0}<green>item que vous pouvez acheter <yellow>{1}<green>. Entrer<aqua>{2}<green> dans chat pour acheter tout.
 exceeded-maximum: <red>La valeur maximale à ne pas dépasser en Java.
 unlimited-shop-owner-keeped: '<yellow>Attention : Le propriétaire de la boutique est toujours propriétaire de la boutique illimitée, vous devez re-définir nouveau propriétaire de la boutique par vous-même.'
