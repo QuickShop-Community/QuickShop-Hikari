@@ -166,7 +166,7 @@
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultUnlockedAPI</artifactId>
-            <version>2.9</version>
+            <version>2.10</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -311,7 +311,7 @@
         <dependency>
             <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.20.1</version>
+            <version>2.21.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

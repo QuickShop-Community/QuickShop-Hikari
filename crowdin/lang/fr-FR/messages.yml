@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Vous pouvez casser le magasin avec l'outil super outil.
 fee-charged-for-price-change: <green>Vous payez <red>{0}<green> pour changer le prix.
 not-allowed-to-create: <red>Vous ne pouvez pas créer un shop ici.
 disabled-in-this-world: <red>QuickShop est désactivé dans ce monde
@@ -9,10 +9,10 @@ _comment: Bonjour, traducteur ! Si vous éditez ceci sur Github ou depuis le cod
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
 thats-not-a-number: <red>Nombre invalide.
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} <red>est interdit. Choisissez un autre !
 console-only-danger: <red>Cette commande est dangereuse pour que seule la console puisse l'exécuter.
 not-a-number: <red>Vous ne pouvez saisir qu'un nombre, votre entrée était {0}.
-not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
+not-looking-at-valid-shop-block: <red>Impossible de créer un magasin. Veuillez regarder un type de bloc pris en charge et réessayer
 shop-removed-cause-ongoing-fee: <red>Ta boutique aux coordonnées {0} a été supprimé car tu n'avais plus assez d'argent pour la garder!
 tabcomplete:
   amount: '[quantité]'
@@ -31,9 +31,9 @@ safe-mode: <red>QuickShop est à présent en mode sans échec, vous ne pouvez pa
 forbidden-vanilla-behavior: <red>L'opération est indisponible car elle n'est pas compatible avec la version vanilla
 shop-out-of-space-name: <dark_purple>Votre boutique {0} est pleine !
 paste-disabled: |-
-  <red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}
+  <red>La fonctionnalité de coller a été désactivée ! Vous ne pouvez pas demander un support technique. <newline>Raison : {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: '<light_purple>'
   hover:
     - '<yellow>Nom : <aqua>{0}'
     - '<yellow>Propriétaire : <aqua>{0}'
@@ -61,9 +61,9 @@ no-pending-action: <red>Tu n'as aucune action en attente
 refill-success: <green>Remplissage de la boutique effectué avec succès
 failed-to-paste: <red>Erreur lors de l'upload des données vers PasteBin, verifier la connection internet et rééssayez. (Voir la console)
 shop-out-of-stock-name: <dark_purple>Votre boutique {0} est à court de {1} !
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>La valeur maximal à ne pas dépasser en Java.
+shop-name-invalid: <red>Le nom de la boutique <yellow>{0} <red>n'est pas valide. Choisissez un autre !
+how-many-buy-stack: <yellow>Entrez dans le chat, combien d'items vous souhaitez <aqua>Acheter<green>. Il y a <yellow>{0}<green>item que vous pouvez acheter <yellow>{1}<green>. Entrer<aqua>{2}<green> dans chat pour acheter tout.
+exceeded-maximum: <red>La valeur maximale à ne pas dépasser en Java.
 unlimited-shop-owner-keeped: '<yellow>Attention : Le propriétaire de la boutique est toujours propriétaire de la boutique illimitée, vous devez re-définir nouveau propriétaire de la boutique par vous-même.'
 no-enough-money-to-keep-shops: <red>Tu n'as plus assez d'argent pour garder tes boutiques! Tous tes coffres ont été supprimés...
 3rd-plugin-build-check-failed: Un plugin tiers <bold>{0}<reset><red> a refusé les vérifications de permission, avez-vous les droits pour paramétrer ici ?
@@ -88,11 +88,11 @@ reloading-status:
   scheduled: <green>Rechargement terminé. <gray>(Certaines modifications nécessitent un certain temps)
   require-restart: <green>Rechargement terminé. <yellow>(Certaines modifications nécessitent un redémarrage du serveur pour prendre effet)
   failed: <red>Rechargement échoué, vérifiez la console du serveur
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} a acheté {1} {2} de ta boutique et tu as gagné {3} ({4} in taxes).
 not-enough-space: <red>Il ne vous reste que {0} place(s) restante(s) pour ceci!
 shop-name-success: <green>Le nom de votre boutique a bien été défini à <yellow>{0}<green>.
 shop-staff-added: <green> {0} a été ajouté avec succès comme membre du personnel pour votre boutique.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Cette boutique n'a pas de Staff.
 shops-recovering: Récupération des boutiques à partir de la sauvegarde...
 virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
@@ -116,10 +116,10 @@ menu:
   space: '<green>Espace restant: <yellow>{0}'
   effects: <green>Effets
   damage-percent-remaining: <yellow>{0}% <green>restant.
-  item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
+  item-holochat-data-too-large: <red>[Error] L'article NBT est trop grand pour montrer
   stock: '<green>Stock restant<yellow>{0}'
   this-shop-is-buying: <green>Cette boutique <light_purple>ACHETE<green> des objets.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green> La boutique est désormais en tant que <red> mode de gel<green>.
   successfully-sold: '<green>Vente réussie :'
   total-value-of-chest: '<green>Valeur totale du coffre: <yellow>{0}'
 currency-not-exists: <red>Impossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.
