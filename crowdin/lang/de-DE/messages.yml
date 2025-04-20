@@ -739,7 +739,7 @@ addon:
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen.
   dominion:
     creation-denied:
-    trade-denied: <red>The shop must be within a Dominion to trade with it.
+    trade-denied: <red>Der Shop muss innerhalb eines Dominion sein, um mit ihm zu handeln.
   plotsquared:
     no-plot-whitelist-creation: <red>Du kannst keinen Shop ausserhalb des Plots erstellen.
     no-plot-whitelist-trade: <red>Du kannst keine Shops ausserhalb des Plots kaufen.
@@ -752,8 +752,8 @@ addon:
     owner-create-only: <red>Nur der Inselbesitzer kann einen Shop hier erstellen.
     owner-member-create-only: <red>Nur der Inselbesitzer oder ein Mitglied können einen Shop hier erstellen.
   fabledskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-create-only: <red>Nur der Inselbesitzer kann Shops hier erstellen.
+    owner-member-create-only: <red>Nur der Inselbesitzer oder die Mitglieder können hier ein Shop erstellen.
   worldguard:
     creation-flag-test-failed: <red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen.
     trade-flag-test-failed: <red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln.
