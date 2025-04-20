@@ -738,7 +738,7 @@ addon:
     world-not-enabled: <red>Du kannst keine Shops in dieser Welt kaufen oder erstellen.
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen.
   dominion:
-    creation-denied:
+    creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Dominion-Area zu erstellen.
     trade-denied: <red>Der Shop muss innerhalb eines Dominion sein, um mit ihm zu handeln.
   plotsquared:
     no-plot-whitelist-creation: <red>Du kannst keinen Shop ausserhalb des Plots erstellen.
