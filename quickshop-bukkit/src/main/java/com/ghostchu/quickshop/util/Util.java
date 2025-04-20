@@ -543,7 +543,7 @@ public class Util {
 
     try {
       itemName = Objects.requireNonNull(itemStack.getItemMeta()).hasItemName();
-    } catch(final Exception ignore) {
+    } catch(final NoSuchMethodError ignore) {
       //outdated
     }
 

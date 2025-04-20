@@ -84,7 +84,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
       if(meta.hasItemName()) {
         return LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
       }
-    } catch(final Exception ignore) {
+    } catch(final NoSuchMethodError ignore) {
       //old version
     }
 

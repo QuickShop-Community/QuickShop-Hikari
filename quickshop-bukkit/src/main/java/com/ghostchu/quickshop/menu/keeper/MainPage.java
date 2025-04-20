@@ -80,7 +80,7 @@ public class MainPage extends QuickShopPage {
 
         //change icon - done(needs tested)
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_PRICE)
-           && QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.price")) {
+           || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.price")) {
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PAPER", 1)
                                                          .display(get(id, "gui.keeper.change-icon.display"))
                                                          .lore(getList(id, "gui.keeper.change-icon.lore", priceObj)))

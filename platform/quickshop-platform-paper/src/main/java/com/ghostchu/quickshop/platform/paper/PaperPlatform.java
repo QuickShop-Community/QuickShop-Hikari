@@ -75,7 +75,7 @@ public class PaperPlatform implements Platform {
       if(meta.hasItemName()) {
         return meta.itemName();
       }
-    } catch(final Exception ignore) {
+    } catch(final NoSuchMethodError ignore) {
       //old version
     }
     return Component.empty();
