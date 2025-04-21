@@ -351,7 +351,7 @@ controlpanel:
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
   alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<bold><light_purple>更改</light_purple>]'
   setowner: '<green>所有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  freeze: '<green>冻结模式 <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  freeze: '<green>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
   price: '<green>价格: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
   lock: '<yellow>商店锁: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
@@ -748,7 +748,7 @@ addon:
     world-not-enabled: <red>你不能在这个世界中交易或创建
     creation-denied: <red>您没有在该Land区域创建商店的权限
   dominion:
-    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    creation-denied: <red>你没有权限在这个支配区创建商店。
     trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>你不能在地皮外创建商店
