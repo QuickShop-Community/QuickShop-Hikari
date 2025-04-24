@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>SuperTool aletini kullanarak marketleri kırabilirsin.
 fee-charged-for-price-change: <green>Fiyatı değiştirmek için <red>{0}<green> ödediniz.
 not-allowed-to-create: <red>Burada bir market oluşturamazsın.
 disabled-in-this-world: <red>Bu komut bu dünyada devre dışı
@@ -16,7 +16,7 @@ not-looking-at-valid-shop-block: <red>Hiç Mağza bulunamadı. Birine bakman laz
 shop-removed-cause-ongoing-fee: <red>{0}'deki marketiniz açık tutmaya yetecek kadar paranız olmadığı için kaldırıldı!
 tabcomplete:
   amount: '[miktar]'
-  item: '[item]'
+  item: '[eşya]'
   price: '[fiyat]'
   name: '[name]'
   range: '[menzil]'
