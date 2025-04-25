@@ -465,6 +465,7 @@
         <module>compatibility/griefprevention</module>
         <module>compatibility/itemsadder</module>
         <module>compatibility/lands</module>
+        <module>compatibility/matcherplus</module>
         <module>compatibility/openinv</module>
         <module>compatibility/plotsquared</module>
         <module>compatibility/reforges</module>

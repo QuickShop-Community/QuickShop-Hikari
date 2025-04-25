@@ -1,0 +1,10 @@
+name: qscompat-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
+#Has to be included for folia support
+folia-supported: true
+api-version: '1.20'
+depend:
+  - QuickShop-Hikari
+authors: [ creatorfromhell ]
+description: Compatibility module for various special item plugins
