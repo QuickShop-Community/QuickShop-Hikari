@@ -103,7 +103,7 @@ menu:
   enchants: <dark_purple>Betoveringen
   sell-tax-self: <green>Je hebt geen belastingen betaald omdat je eigenaar bent van deze winkel.
   shop-information: '<green>Shop Informatie:'
-  item: '<green>Item: <yellow>{0}'
+  item: ''
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
   item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>
