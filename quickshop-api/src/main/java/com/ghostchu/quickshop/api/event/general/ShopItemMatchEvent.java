@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.event.general;
 /*
- * The New Economy
+ * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * ShopItemMatchEvent
  *
  * @author creatorfromhell
- * @since 1.0.0.0
+ * @since 6.2.0.10
  */
 public class ShopItemMatchEvent extends AbstractQSEvent {
 
