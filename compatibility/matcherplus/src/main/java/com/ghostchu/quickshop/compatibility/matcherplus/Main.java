@@ -34,6 +34,21 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
+    final int originalValhalla = valhallaItem(event.original());
+    final int compareValhalla = valhallaItem(event.comparison());
+    if(originalValhalla > -1 || compareValhalla > -1) {
+
+      event.matches(originalValhalla == compareValhalla);
+      return;
+    }
+  }
+
+  public Integer valhallaItem(final ItemStack stack) {
+
+    if(stack.getItemMeta() != null) {
+      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("valhallammo", "id"), PersistentDataType.INTEGER, -1);
+    }
+    return -1;
   }
 
   public Integer fishData(final ItemStack stack) {
