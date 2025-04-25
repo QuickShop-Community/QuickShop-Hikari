@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.general.ShopItemMatchEvent;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -57,12 +58,23 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
   public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
 
     if(original == null && tester == null) {
+
       return true;
     }
+
     final boolean originalNull = original == null;
     final boolean testerNull = tester == null;
     if(originalNull || testerNull) {
+
       return false;
+    }
+
+    final ShopItemMatchEvent shopItemMatchEvent = new ShopItemMatchEvent(original.clone(), tester.clone()); //clone so the originals don't get messed up by implementations.
+    shopItemMatchEvent.callEvent();
+
+    if(shopItemMatchEvent.matches()) {
+
+      return true;
     }
 
     original = original.clone();
@@ -72,8 +84,10 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
 
     final String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
     if(shopIdOrigin != null) {
+
       final String shopIdTester = plugin.getPlatform().getItemShopId(tester);
       if(shopIdOrigin.equals(shopIdTester)) {
+
         return true;
       }
     }
