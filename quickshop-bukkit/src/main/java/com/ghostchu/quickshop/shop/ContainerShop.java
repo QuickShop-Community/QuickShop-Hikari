@@ -1344,8 +1344,8 @@ public class ContainerShop implements Shop, Reloadable {
     event.callEvent();
 
     Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.hasPermission());
-    return event.hasPermission();
 
+    return event.hasPermission();
   }
 
   /**

@@ -17,9 +17,11 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
@@ -130,6 +132,12 @@ public final class Main extends CompatibilityModule implements Listener {
       if(island == null) {
         return;
       }
+      if(player.hasPermission("quickshop.superior.override")) {
+       event.setCancelled(false, "admin override using quickshop.superior.override");
+       return;
+      }
+
+
       final UUID uuid = player.getUniqueId();
       if(onlyOwnerCanCreateShop) {
         if(!island.getOwner().getUniqueId().equals(uuid)) {
@@ -158,7 +166,14 @@ public final class Main extends CompatibilityModule implements Listener {
     if(island == null) {
       return;
     }
+
+    final Player player = Bukkit.getPlayer(event.playerUUID());
+    if(player != null && player.hasPermission("quickshop.superior.override")) {
+      event.hasPermission(true);
+    }
+
     if(island.getOwner().getUniqueId().equals(event.playerUUID())) {
+
       if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
         event.hasPermission(true);
       }
