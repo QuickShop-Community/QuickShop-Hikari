@@ -17,9 +17,11 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
@@ -92,7 +94,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(final IslandBanEvent event) {
+  public void onBan(final IslandBanEvent event) {
 
     if(deleteShopOnMemberLeave) {
       deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandKickEvent");
@@ -100,13 +102,13 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler
-  public void deleteShops(final IslandUncoopPlayerEvent event) {
+  public void onUncoop(final IslandUncoopPlayerEvent event) {
 
     deleteShops(event.getIsland(), event.getTarget().getUniqueId(), event.getIsland().getOwner().getUniqueId(), "IslandUncoopPlayerEvent");
   }
 
   @EventHandler
-  public void deleteShopsOnChunkReset(final IslandChunkResetEvent event) {
+  public void onReset(final IslandChunkResetEvent event) {
 
     deleteShops(event.getWorld(), event.getChunkX(), event.getChunkZ(), null, CommonUtil.getNilUniqueId(), "IslandChunkResetEvent");
   }
@@ -127,19 +129,26 @@ public final class Main extends CompatibilityModule implements Listener {
 
     final Island island = SuperiorSkyblockAPI.getIslandAt(event.location());
     event.user().getBukkitPlayer().ifPresent(player->{
-      final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
       if(island == null) {
         return;
       }
+      if(player.hasPermission("quickshop.superior.override")) {
+       event.setCancelled(false, "admin override using quickshop.superior.override");
+       return;
+      }
+
+
+      final UUID uuid = player.getUniqueId();
       if(onlyOwnerCanCreateShop) {
-        if(!island.getOwner().equals(superiorPlayer)) {
+        if(!island.getOwner().getUniqueId().equals(uuid)) {
+
           event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-create-only").forLocale());
         }
       } else {
-        if(!island.getOwner().equals(superiorPlayer)) {
-          if(!island.isMember(superiorPlayer)) {
+        final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
+        if(!island.getOwner().getUniqueId().equals(uuid) && !island.isMember(superiorPlayer)) {
+
             event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-member-create-only").forLocale());
-          }
         }
       }
     });
@@ -157,7 +166,14 @@ public final class Main extends CompatibilityModule implements Listener {
     if(island == null) {
       return;
     }
+
+    final Player player = Bukkit.getPlayer(event.playerUUID());
+    if(player != null && player.hasPermission("quickshop.superior.override")) {
+      event.hasPermission(true);
+    }
+
     if(island.getOwner().getUniqueId().equals(event.playerUUID())) {
+
       if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
         event.hasPermission(true);
       }

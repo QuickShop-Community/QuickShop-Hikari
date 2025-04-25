@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1032
+config-version: 1033
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -277,6 +277,14 @@ shop:
   #Allow displays to show stack effects when stack creation is turned on.
   #It doesn't work under Virtual DisplayItem.
   display-allow-stacks: false
+
+  #The coordinates of the display for shop displays.
+  #These are added to the shop's container location
+  display-coords:
+
+    x: 0.5
+    y: 0.8
+    z: 0.5
 
   #[BETA] Enable beta per-player shop sign feature for i18n.
   #Hikari will send an extra sign content packet to override original shop info sign text to the text that use player's locale

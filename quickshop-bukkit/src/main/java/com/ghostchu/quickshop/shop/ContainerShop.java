@@ -1344,8 +1344,8 @@ public class ContainerShop implements Shop, Reloadable {
     event.callEvent();
 
     Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.hasPermission());
-    return event.hasPermission();
 
+    return event.hasPermission();
   }
 
   /**
@@ -1609,11 +1609,13 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText() {
 
-    Util.ensureThread(false);
+    //Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
+      this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    });
   }
 
   /**
@@ -1649,7 +1651,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      QuickShop.folia().getImpl().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+      QuickShop.folia().getScheduler().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
       Log.debug("Sign broadcast completed.");
     }
   }
@@ -1662,11 +1664,14 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText(@NotNull final ProxiedLocale locale) {
 
-    Util.ensureThread(false);
+    //Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    this.setSignText(getSignText(locale));
+
+    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
+      this.setSignText(getSignText(locale));
+    });
   }
 
   /**

@@ -195,7 +195,13 @@ public class PlayerListener extends AbstractQSListener {
         }
       }
       case TRADE_UI -> {
-        if(shopSearched.getKey() != null) {
+        if(shopSearched.getKey() == null) {
+          if(e.getItem() != null && createShop(e.getPlayer(), e.getClickedBlock(), e.getBlockFace(), e.getHand(), e.getItem())) {
+            e.setCancelled(true);
+            e.setUseInteractedBlock(Event.Result.DENY);
+            e.setUseItemInHand(Event.Result.DENY);
+          }
+        } else {
 
           if(shopSearched.getKey().isFrozen()) {
             plugin.text().of(e.getPlayer(), "shop-cannot-trade-when-freezing").send();
@@ -337,25 +343,34 @@ public class PlayerListener extends AbstractQSListener {
 
   public boolean createShop(@NotNull final Player player, @Nullable final Block block, @NotNull final BlockFace blockFace, @NotNull final EquipmentSlot hand, @NotNull final ItemStack item) {
 
+    Log.debug("==== Entering Shop Creation ====");
+
     final QUser qUser = QUserImpl.createFullFilled(player);
     if(block == null) {
+      Log.debug("Block is null");
       return false; // This shouldn't happen because we have checked action type.
     }
     if(player.getGameMode() != GameMode.SURVIVAL) {
+      Log.debug("Not in survival mode");
       return false; // Only survival :)
     }
 
     final ItemStack stack = item.clone();
     if(stack.getType().isAir()) {
+      Log.debug("Invalid trade item: air");
       return false; // Air cannot be used for trade
     }
     if(!Util.canBeShop(block)) {
+      Log.debug("Invalid shop block");
       return false;
     }
+
     if(plugin.getConfig().getBoolean("disable-quick-create")) {
+      Log.debug("quick create disabled");
       return false;
     }
     if(plugin.getConfig().getBoolean("shop.disable-quick-create")) {
+      Log.debug("quick create disabled");
       return false;
     }
 
@@ -366,6 +381,7 @@ public class PlayerListener extends AbstractQSListener {
       action = ShopAction.CREATE_BUY;
     }
     if(action == null) {
+      Log.debug("No permission");
       // No permission
       return false;
     }
@@ -380,22 +396,27 @@ public class PlayerListener extends AbstractQSListener {
        && !plugin.perm()
             .hasPermission(player, "quickshop.bypass." + stack.getType().name())) {
       plugin.text().of(player, "blacklisted-item").send();
+      Log.debug("Invalid item - blacklisted");
       return false;
     }
     // Check if had enderchest shop creation permission
     if(block.getType() == Material.ENDER_CHEST
        && !plugin.perm().hasPermission(player, "quickshop.create.enderchest")) {
+      Log.debug("Invalid permission for enderchest");
       return false;
     }
     // Check if block is a wall sign
     if(Util.isWallSign(block.getType())) {
+      Log.debug("Block is wallsign");
       return false;
     }
     // Finds out where the sign should be placed for the shop
     final Block last;
     if(Util.getVerticalFacing().contains(blockFace)) {
+
       last = block.getRelative(blockFace);
     } else {
+
       final Location playerLocation = player.getLocation();
       final double x = playerLocation.getX() - block.getX();
       final double z = playerLocation.getZ() - block.getZ();
@@ -430,6 +451,7 @@ public class PlayerListener extends AbstractQSListener {
                      plugin.isAllowStack() &&
                      plugin.perm().hasPermission(player, "quickshop.create.stacks")
                      ? stack.getAmount() : 1).send();
+    Log.debug("==== Ending Shop Creation ====");
     return false;
   }
 
@@ -778,7 +800,7 @@ public class PlayerListener extends AbstractQSListener {
     // Notify the player any messages they were sent
     if(plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
       final long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
-      QuickShop.folia().getImpl().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
+      QuickShop.folia().getScheduler().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
     }
   }
 
@@ -789,7 +811,7 @@ public class PlayerListener extends AbstractQSListener {
       final Date date = new Date();
       final LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       if((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || PackageUtil.parsePackageProperly("april-rickandroll").asBoolean()) {
-        QuickShop.folia().getImpl().runLater((()->plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
+        QuickShop.folia().getScheduler().runLater((()->plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
       }
     }
   }

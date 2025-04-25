@@ -635,6 +635,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             final BlockState signState = this.makeShopSign(shop.getLocation().getBlock(), signBlock, null);
             if(signState instanceof final Sign puttedSign) {
               try {
+
                 shop.claimShopSign(puttedSign);
               } catch(final Throwable ignored) {
               }
@@ -1034,10 +1035,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     signBlock.setType(signMaterial == null? Util.getSignMaterial() : signMaterial);
     final BlockState signBlockState = signBlock.getState();
     final BlockData signBlockData = signBlockState.getBlockData();
+
     if(signIsWatered && (signBlockData instanceof final Waterlogged waterable)) {
       waterable.setWaterlogged(true); // Looks like sign directly put in water
     }
     if(signBlockData instanceof final WallSign wallSignBlockData) {
+
       final BlockFace bf = container.getFace(signBlock);
       if(bf != null) {
         wallSignBlockData.setFacing(bf);
@@ -1046,6 +1049,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     } else {
       plugin.logger().warn("Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
     }
+
     signBlockState.update(true);
     return signBlockState;
   }
