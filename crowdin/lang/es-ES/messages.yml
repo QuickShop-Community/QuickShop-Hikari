@@ -666,17 +666,16 @@ exported-database: <green>Database exported to <yellow>{0}</yellow>.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
   <yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue.
-importing-database: <green>Importing database from backup, please wait...
-importing-failed: <red>Failed to import database, please check the server console.
+importing-database: <green>Importando base de datos desde la copia de seguridad, por favor espere...
+importing-failed: <red>Error al importar la base de datos, por favor comprueba la consola del servidor.
 imported-database: <green>Base de datos importada de <yellow>{0}</yellow>.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+transfer-single-request: <yellow>El Jugador <aqua>{0}</aqua> desea transferirte una tienda. ¿Quieres aceptar la solicitud?
 transfer-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Escribe <red>/quickshop transferasatacceso
 transfer-single-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
@@ -685,10 +684,10 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self:
-benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
-benefit-exists: <red>Target player already in benefits list on this shop.
-benefit-removed: <red>Target player has been removed from shop benefits.
-benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
+benefit-overflow: <red>La suma de todos los beneficios no puede ser mayor o igual al 100%.
+benefit-exists: <red>El jugador objetivo ya está en la lista de beneficios de esta.
+benefit-removed: <red>El jugador objetivo ha sido eliminado de los beneficios de la tienda.
+benefit-added: '¡<green>El jugador <aqua>{0}</aqua> se ha agregado a los beneficios de la tienda!'
 benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
 benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>
