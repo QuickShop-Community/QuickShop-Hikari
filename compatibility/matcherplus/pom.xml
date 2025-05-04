@@ -204,5 +204,12 @@
             <version>0.18</version>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>
+            <groupId>de.corneliusmay.silkspawners</groupId>
+            <artifactId>silkspawners</artifactId>
+            <version>2.3.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/SilkSpawners_v2.jar</systemPath>
+        </dependency>-->
     </dependencies>
 </project>

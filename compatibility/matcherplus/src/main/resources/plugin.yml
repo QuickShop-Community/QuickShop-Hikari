@@ -6,5 +6,7 @@ folia-supported: true
 api-version: '1.20'
 depend:
   - QuickShop-Hikari
+softdepend:
+  - SilkSpawners_v2
 authors: [ creatorfromhell ]
 description: Compatibility module for various special item plugins

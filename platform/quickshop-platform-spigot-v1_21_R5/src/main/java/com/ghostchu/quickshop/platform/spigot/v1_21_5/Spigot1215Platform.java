@@ -2,14 +2,24 @@ package com.ghostchu.quickshop.platform.spigot.v1_21_5;
 
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
+import com.google.gson.JsonElement;
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.component.ItemLore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_21_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_21_R4.inventory.CraftItemStack;
@@ -139,5 +149,16 @@ public class Spigot1215Platform extends AbstractSpigotPlatform implements Platfo
   public @NotNull String getTranslationKey(@NotNull final ItemStack stack) {
 
     return postProcessingTranslationKey(stack.getTranslationKey());
+  }
+
+  @Override
+  public void setLines(final @NotNull Sign sign, final @NotNull List<Component> component) {
+
+    final SignSide front = sign.getSide(Side.FRONT);
+
+    for (int i = 0; i < Math.min(4, component.size()); i++) {
+      front.setLine(i, LegacyComponentSerializer.builder().build().serialize(component.get(i)));
+    }
+    sign.update();
   }
 }
