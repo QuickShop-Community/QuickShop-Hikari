@@ -299,18 +299,18 @@ unknown-owner: Nežinomas/a
 restricted-prices: '<red>Ribota kaina nuo {0}: Min {1}. max {2}'
 nearby-shop-this-way: <green>Parduotuvė yra {0} blokais toliau nuo jūsų.
 owner-bypass-check: <yellow>Praėjote visus patikrtinimus. Mainai sėkmingai pavyko! (Nuo šiol jūs esate šios parduotuvės savininkas)
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Paspauskite, kad atidarytumėte naršyklėje ir gautumėte laikinus apdovanojimus!'>click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'<green>Paspauskite čia, kad gautumėte laikinus apdovanojimus, kuriuos suteikia QuickShop-Hikari kūrėjas!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Nepakanka vietos
   unlimited: Nesibaigiantis
   stack-selling: Parduodama {0}
-  stack-price: '{0} už {1}x {2}'
+  stack-price: '{0} už {1} x {2}'
   status-unavailable: <red>
   out-of-stock: Išparduota
   stack-buying: Superkama {0}
   freeze: Trading disabled
-  price: '{0} vienas'
+  price: '{0} vnt'
   buying: Pirkti{0}
   header: '{1}{0}'
   header-available: <green>{0}
@@ -334,7 +334,7 @@ language-info-panel:
   code: 'Kodas: '
   name: 'Kalba: '
   progress: 'Progresas: '
-  translate-on-crowdin: '[Verstimas "Crowdin" platformoje]'
+  translate-on-crowdin: '[Vertimas "Crowdin" platformoje]'
 item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
 inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
