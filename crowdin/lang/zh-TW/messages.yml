@@ -52,7 +52,7 @@ quick-fill:
   header: '<yellow>你有多個名為「<green>{0}<yellow>」的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(限管理員)<light_purple>{0}<dark_gray>拒絕權限檢查。如果這不是預期的話，請再式一次<light_purple>{1} <gray>新增至監聽器黑名單。指引：https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>附近的平均價格：<yellow>{0}'
 inventory-check-global-alert: "<red>[庫存檢查] <gray>警告！找到商店全息顯示<gold>{2}</gold> 在庫存中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，這不應該發生，這通常意味著有人惡意利用該漏洞來複製顯示專案。"
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
@@ -120,7 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
   this-shop-is-buying: <green>此商店正在<light_purple>收購<green>物品。
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen:
   successfully-sold: '<green>成功地出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此世界無法使用貨幣。
