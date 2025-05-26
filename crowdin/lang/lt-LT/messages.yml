@@ -628,7 +628,7 @@ debug:
   queries-dumping: "<yellow>Dumping active queries..."
   restart-database-manager: "<yellow>Restarting SQLManager..."
   restart-database-manager-clear-executors: "<yellow>Clearing executors..."
-  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
+  restart-database-manager-unfinished-task: "<yellow>Neužbaigta užduotis: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
   restart-database-manager-done: "<green>Done!"
