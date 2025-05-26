@@ -632,7 +632,7 @@ debug:
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
   restart-database-manager-done: "<green>Done!"
-  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
+  property-incorrect: "<yellow>Turite įvesti vieną (ir tik vieną) savybės raktas=verte rinkinį. Pvz., aaa=bbb\n"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
