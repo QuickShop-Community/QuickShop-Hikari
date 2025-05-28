@@ -438,7 +438,7 @@ command:
     sell: <yellow>變更成 <light_purple>出售 <yellow>模式
     fetchmessage: <yellow>顯示未讀商店日誌
     staff: <yellow>管理你的商店員工
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>管理您所有商店的店員。
     clean: <yellow>移除所有（已載入）沒有商品的商店
     refill: <yellow>將一定數量的商品加到商店
     help: <yellow>顯示 QuickShop 說明
@@ -456,7 +456,7 @@ command:
     lookup: <yellow>管理物品索引表
     database: <yellow>查看和維護 QuickShop 資料庫
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>瀏覽此伺服器中存在的商店。
     tag: <yellow>新增、刪除或查詢商店標籤
     suggestprice: <yellow>基於其它商店的情況，為商店提出建議價格
     history: <yellow>查看商店的歷史交易記錄
@@ -756,7 +756,7 @@ addon:
     world-not-enabled: <red>你不能在此世界中建立或購買商店。
     creation-denied: <red>你沒有在此領土建立商店的權限。
   dominion:
-    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    creation-denied: <red>您無權在此區域建立商店。
     trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>你無法在畫布外建立商店。
@@ -1547,9 +1547,9 @@ price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>請稍候……正在計算建議價格。"
 gui:
   shared:
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    previous-menu: "<white>Previous Menu</white>"
+    previous-page: "<white><<上一頁</white>"
+    next-page: "<white>下一頁 >></white>"
+    previous-menu: "<white>上一個選單</white>"
   player:
     select:
       - "<yellow>Click to select this player.</yellow>"
@@ -1561,22 +1561,22 @@ gui:
       display: "<aqua>{0}</aqua>"
       lore:
         - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>右鍵單擊以轉移所有權</yellow>"
         - "<yellow>to this staff member.</yellow>"
   trade:
-    title: "Shop Browser"
+    title: "瀏覽商店"
     custom:
       display: "<bold><blue>Custom Order</blue></bold>"
       lore-buy:
-        - "<white>Choose the quantity</white>"
+        - "<white>選擇數量</white>"
         - "<white>you would like to buy.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>點擊輸入自訂數量</yellow>"
         - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
+        - "<white>庫存: <bold><red>{1}</red></bold>"
       lore-sell:
         - "<white>Choose the quantity</white>"
         - "<white>you would like to sell.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>點擊輸入自訂數量</yellow>"
         - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
       enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
       enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
