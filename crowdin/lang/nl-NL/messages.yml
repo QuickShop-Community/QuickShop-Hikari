@@ -119,7 +119,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Voorraad <yellow>{0}'
   this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<yellow>en items.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green>De winkel is nu in <red>vriesmodus<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
@@ -150,7 +150,7 @@ metric:
   player-hover: |-
     <yellow>{0}<newline><gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
+  tax-hover: <yellow>{0} belasting
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
@@ -330,12 +330,12 @@ inventory-space-full: <red>Your inventory space remains can only put <green>{1}x
 no-creative-break: <red>Je kan de shops van andere spelers niet kapot maken in creative mode, switch naar survival mode of probeer de supertool {0}
 booleanformat:
   success: <green>✔
-  failed: <red>Augurk
+  failed: <red>Uitgeschakeld
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Klik om een nieuwe prijs voor het artikel in te stellen.
   remove: <red><bold>[Verwijder winkel]
-  mode-buying-hover: <yellow>Klik om de winkel in SELL modus te wijzigen.
+  mode-buying-hover: <yellow>Klik om de winkel in VERKOOP modus te wijzigen.
   empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Klik om de hoeveelheid item per bulk in te stellen. Stel in op 1 voor normaal gedrag.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
@@ -345,7 +345,7 @@ controlpanel:
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klik om de valuta die deze winkel gebruikt in te stellen of te verwijderen
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Shop modus: <aqua>verkopen <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-selling: '<green>Shop mode: <aqua>Inkopen<yellow>[<light_purple><bold>Wijzigen<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Klik om van eigenaar te wisselen.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
@@ -399,7 +399,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
-    buy: Verandert een winkel naar <light_purple>BUY<yellow> modus
+    buy: Verandert een winkel naar <light_purple>KOOP<yellow> modus
     about: <yellow>Show QuickShop informatie
     language: <yellow>Wijzig de momenteel gebruikte taal
     purge: <yellow>Start the shop purge task in background
@@ -424,7 +424,7 @@ command:
     item: <yellow>Verander winkel item van een winkel
     debug: <yellow>Activeert Ontwikkelaarsmodus
     unlimited: <yellow>Geeft een winkel onbeperkt voorraad.
-    sell: Verandert een winkel naar <aqua>SELL<yellow> modus
+    sell: Verandert een winkel naar <aqua>VERKOOP<yellow> modus
     fetchmessage: <yellow>Toon ongelezen winkelberichten
     staff: <yellow>Beheer uw winkelpersoneel
     staffall: <yellow>Manage your shop staff of all shops you own.
