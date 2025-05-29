@@ -10,27 +10,34 @@ import net.alex9849.arm.AdvancedRegionMarket;
 import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
 import net.alex9849.arm.regions.Region;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.List;
+import java.util.Optional;
 
 public final class Main extends CompatibilityModule implements Listener {
 
   boolean ownerCreate = true;
+  boolean memberCreate = true;
+  boolean adminOverride = true;
 
   @Override
   public void init() {
     // There no init stuffs need to do
     this.ownerCreate = getConfig().getBoolean("owner-create", true);
+    this.memberCreate = getConfig().getBoolean("member-create", true);
+    this.adminOverride = getConfig().getBoolean("admin-override", true);
   }
 
   @EventHandler(ignoreCancelled = true)
   public void canCreateShopHere(final ShopCreateEvent event) {
 
-    if(!ownerCreate) {
+    if(!ownerCreate && !memberCreate && !adminOverride) {
       return;
     }
 
@@ -45,6 +52,19 @@ public final class Main extends CompatibilityModule implements Listener {
 
     final List<Region> regions = AdvancedRegionMarket.getInstance().getRegionManager().getRegionsByLocation(shopLoc);
     for(final Region region : regions) {
+
+      final Optional<Player> player = event.user().getBukkitPlayer();
+      if(adminOverride && player.isPresent() && player.get().hasPermission("quickshop.arm.admin")) {
+
+        event.setCancelled(false, "admin-override is enabled and player has admin permission");
+        return;
+      }
+
+      if(memberCreate && region.getRegion().hasMember(event.user().getUniqueId())) {
+
+        event.setCancelled(false, "member-create is enabled and player is a region member");
+        return;
+      }
 
       if(region.getOwner() == null) {
         continue;
@@ -78,6 +98,13 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     if(!event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+      return;
+    }
+
+    final Player player = Bukkit.getPlayer(event.playerUUID());
+    if(adminOverride && player != null && player.hasPermission("quickshop.arm.admin")) {
+
+      event.hasPermission(true);
       return;
     }
 
