@@ -94,9 +94,11 @@ public abstract class AbstractDisplayItem implements Reloadable {
     if(!PLUGIN.isDisplayEnabled()) {
       return false;
     }
+
     if(getNowUsing() == DisplayType.VIRTUALITEM) {
       return false;
     }
+
     Util.ensureThread(false);
     if(itemStack == null) {
       return false;

@@ -61,7 +61,7 @@ public class DisplayComponent implements ControlComponent {
 
     return (((QuickShop)plugin).perm().hasPermission(sender, "quickshop.other.toggledisplay")
             || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY))
-           && ((QuickShop)plugin).isDisplayEnabled();
+           && ((QuickShop)plugin).isValidDisplayProvider();
   }
 
   /**
