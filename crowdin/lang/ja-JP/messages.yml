@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>新しいショップを作成するには {0} 
 success-created-shop: <red>ショップが作成されました。
 shop-creation-cancelled: <red>ショップの作成がキャンセルされました。
 shop-owner-self-trade: <yellow>自分のショップと取引することで、残高を獲得できない可能性があります。
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>このショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。
 reloading-status:
   success: <green>エラーなしでリロードが完了しました。
