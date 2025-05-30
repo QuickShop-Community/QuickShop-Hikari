@@ -113,6 +113,7 @@ success-created-shop: <green>Shop successfully created.
 shop-creation-cancelled: <red>The shop creation was cancelled.
 shop-owner-self-trade: <yellow>You're trading with your own shop. <gray>You may not
   gain any money.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop has run out of space! Contact the shop owner
   or staff to get it emptied.
 reloading-status:

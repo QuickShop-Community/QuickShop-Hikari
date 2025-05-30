@@ -180,6 +180,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
+    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
+      plugin.text().of(buyer, "shop-owner-self-trade-denied").send();
+      return false;
+    }
+
     if(shop.isFrozen()) {
       plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
       return false;
@@ -375,6 +380,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.text().of("no-permission").send();
       return false;
     }
+
+    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
+      plugin.text().of(seller, "shop-owner-self-trade-denied").send();
+      return false;
+    }
+
     if(shopIsNotValid(sellerQUser, info, shop)) {
       return false;
     }
