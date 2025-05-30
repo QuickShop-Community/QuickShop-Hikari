@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: '<red>Yeni bir market oluşturma maliyeti: ${0}'
 success-created-shop: <red>Market oluşturuldu.
 shop-creation-cancelled: <red>Market oluşumu iptal edildi.
 shop-owner-self-trade: <yellow>Kendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Bu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.
 reloading-status:
   success: <green>Yeniden yükleme hata olmadan tamamlandı.
