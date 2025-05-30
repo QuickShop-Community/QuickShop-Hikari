@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Musisz mieć {0} aby zrobić nowy sklep.
 success-created-shop: <red>Sklep utworzony.
 shop-creation-cancelled: <red>Tworzenie sklepu anulowane.
 shop-owner-self-trade: <yellow>Handlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>W tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.
 reloading-status:
   success: <green>Przeładowanie zakończone bez żadnych błędów.
