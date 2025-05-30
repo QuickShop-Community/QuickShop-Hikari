@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Il prezzo per creare un nuovo negozio è di {0}
 success-created-shop: <red>Negozio creato.
 shop-creation-cancelled: <red>Creazione del negozio annullata.
 shop-owner-self-trade: <yellow>Scambi con te stesso, quindi potresti non guadagnare alcun saldo.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Questo negozio ha esaurito lo spazio, contatta il proprietario del negozio o il personale per svuotare il negozio.
 reloading-status:
   success: <green>Ricarica completata senza errori.
