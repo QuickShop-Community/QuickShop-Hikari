@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Создание магазина стоит {0
 success-created-shop: <red>Магазин создан.
 shop-creation-cancelled: <red>Создание магазина отменено.
 shop-owner-self-trade: <yellow>Вы торгуете с собственным магазином и не получите никакой прибыли.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>В этом магазине закончилось место, свяжитесь с владельцем магазина или сотрудниками, чтобы забрать из него предметы.
 reloading-status:
   success: <green>Перезагрузка завершена без ошибок.
