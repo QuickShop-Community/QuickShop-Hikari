@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>你需要 {0} 才能创建一个商店。
 success-created-shop: <green>已成功地创建商店。
 shop-creation-cancelled: <red>商店创建已取消。
 shop-owner-self-trade: <yellow>你正在和自己的商店进行交易，所以你的金钱可能并不会变化。
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>这个商店空间已不足，请联系商店所有者或助手清空商店
 reloading-status:
   success: <green>重载完成，没有任何错误。
