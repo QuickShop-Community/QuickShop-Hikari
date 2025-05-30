@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>Custa {0} para criar uma nova loja.
 success-created-shop: <red>Shop criado.
 shop-creation-cancelled: <red>Criação de loja cancelada.
 shop-owner-self-trade: <yellow>Você pode fazer trading consigo mesmo para não ganhar nenhum saldo.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Essa loja está cheia, Chame o dono ou alguém da equipe caso for loja de admin para limpar.
 reloading-status:
   success: <green>Recarregar concluído sem quaisquer erros.
