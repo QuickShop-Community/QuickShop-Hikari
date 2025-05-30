@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Het maken van een nieuwe winkel kost {0}.
 success-created-shop: <red>Shop aangemaakt.
 shop-creation-cancelled: <red>Shop aanmaken geannuleerd.
 shop-owner-self-trade: Je handelt met jezelf. Je zal dan ook geen geld krijgen
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
