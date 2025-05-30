@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>La création d'une boutique coûte {0}.
 success-created-shop: <red>Boutique crée avec succès.
 shop-creation-cancelled: <red>Création de la boutique annulée.
 shop-owner-self-trade: <yellow>Vous négociez avec vous en magasin, vous ne pourrez donc pas gagner de solde.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Cette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique.
 reloading-status:
   success: <green>Rechargement effectué sans erreurs.
