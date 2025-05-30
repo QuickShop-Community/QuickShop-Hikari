@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Costa {0} crear una botiga nova.
 success-created-shop: <red>S'ha creat la botiga.
 shop-creation-cancelled: <red>S'ha cancel·lat la creació de la botiga.
 shop-owner-self-trade: <yellow>Estàs intercanviant amb la teva pròpia botiga, així que pot ser que no hi guanyis res.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
