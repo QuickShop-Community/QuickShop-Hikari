@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Cena založení nového obchodu je {0}.
 success-created-shop: <green>Obchod vytvořen.
 shop-creation-cancelled: <red>Vytvoření obchodu bylo zrušeno.
 shop-owner-self-trade: <yellow>Obchodujete s vlastním obchodem. Nemusíte získat žádné peníze.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Tomuto obchodu došlo místo, Kontaktuj jeho majitele aby ho vyprázdnil.
 reloading-status:
   success: <green>Obnovení konfigurace proběhlo bez problému.
