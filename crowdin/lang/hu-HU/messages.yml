@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: '<red>Nem tudsz új boltot csinálni, mert túl kev�
 success-created-shop: <green>Sikeresen elkészítettél egy boltot!
 shop-creation-cancelled: <red>Boltkészítés visszavonva.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Nincs több item készleten, Egyeztess a bolt tulajdonosával.
 reloading-status:
   success: <green>Reload completed without any errors.
