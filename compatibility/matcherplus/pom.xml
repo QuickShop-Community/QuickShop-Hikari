@@ -55,6 +55,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>jsinco-repo</id>
+            <url>https://repo.jsinco.dev/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -73,6 +77,11 @@
             <artifactId>quickshop-bukkit</artifactId>
             <version>${project.parent.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dre.brewery</groupId>
+            <artifactId>BreweryX</artifactId>
+            <version>3.4.3</version>
         </dependency>
         <dependency>
             <groupId>com.nexomc</groupId>

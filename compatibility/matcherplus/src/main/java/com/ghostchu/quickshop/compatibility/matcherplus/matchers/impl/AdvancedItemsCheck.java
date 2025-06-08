@@ -24,12 +24,12 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * PyroFishingCheck
+ * AdvancedItemsCheck
  *
  * @author creatorfromhell
- * @since 6.2.0.10
+ * @since 0.0.1.0
  */
-public class PyroFishingCheck implements ItemCheck {
+public class AdvancedItemsCheck implements ItemCheck {
 
   /**
    * Check if this check applies to the specified ItemStack
@@ -45,7 +45,7 @@ public class PyroFishingCheck implements ItemCheck {
 
       return false;
     }
-    return stack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER);
+    return stack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey("advanceditems", "advanceditem"), PersistentDataType.STRING);
   }
 
   /**
@@ -59,17 +59,17 @@ public class PyroFishingCheck implements ItemCheck {
   @Override
   public boolean matches(final @Nullable ItemStack stack, final @Nullable ItemStack compare) {
 
-    final int originalFish = fishData(stack);
-    final int testerFish = fishData(compare);
+    final String originalItem = itemData(stack);
+    final String testerItem = itemData(compare);
 
-    return originalFish == testerFish;
+    return originalItem == testerItem;
   }
 
-  public Integer fishData(final ItemStack stack) {
+  public String itemData(final ItemStack stack) {
 
     if(stack.getItemMeta() != null) {
-      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER, -1);
+      return stack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey("advanceditems", "advanceditem"), PersistentDataType.STRING);
     }
-    return -1;
+    return null;
   }
 }

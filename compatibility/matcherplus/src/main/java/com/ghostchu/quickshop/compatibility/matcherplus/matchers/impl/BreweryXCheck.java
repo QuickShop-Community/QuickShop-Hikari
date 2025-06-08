@@ -17,6 +17,8 @@ package com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.dre.brewery.Brew;
+import com.dre.brewery.api.BreweryApi;
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.ItemCheck;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -24,12 +26,12 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * PyroFishingCheck
+ * BreweryXCheck
  *
  * @author creatorfromhell
- * @since 6.2.0.10
+ * @since 0.0.1.0
  */
-public class PyroFishingCheck implements ItemCheck {
+public class BreweryXCheck implements ItemCheck {
 
   /**
    * Check if this check applies to the specified ItemStack
@@ -45,7 +47,7 @@ public class PyroFishingCheck implements ItemCheck {
 
       return false;
     }
-    return stack.getItemMeta().getPersistentDataContainer().has(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER);
+    return BreweryApi.isBrew(stack);
   }
 
   /**
@@ -59,17 +61,18 @@ public class PyroFishingCheck implements ItemCheck {
   @Override
   public boolean matches(final @Nullable ItemStack stack, final @Nullable ItemStack compare) {
 
-    final int originalFish = fishData(stack);
-    final int testerFish = fishData(compare);
 
-    return originalFish == testerFish;
-  }
+    final Brew originalBrew = BreweryApi.getBrew(stack);
+    final Brew testerBrew = BreweryApi.getBrew(compare);
 
-  public Integer fishData(final ItemStack stack) {
-
-    if(stack.getItemMeta() != null) {
-      return stack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey("pyrofishingpro", "fishnumber"), PersistentDataType.INTEGER, -1);
+    if(originalBrew == null && testerBrew == null) {
+      return false;
     }
-    return -1;
+
+    if(originalBrew == null || testerBrew == null) {
+      return false;
+    }
+
+    return originalBrew.toString().equalsIgnoreCase(testerBrew.toString());
   }
 }

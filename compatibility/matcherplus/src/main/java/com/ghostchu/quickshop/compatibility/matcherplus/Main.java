@@ -3,6 +3,10 @@ package com.ghostchu.quickshop.compatibility.matcherplus;
 import com.ghostchu.quickshop.api.event.general.ShopItemMatchEvent;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.ItemCheck;
+import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.AdvancedItemsCheck;
+import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.BreweryXCheck;
+import com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl.PyroFishingCheck;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -16,6 +20,13 @@ public final class Main extends CompatibilityModule implements Listener {
 
   @Override
   public void init() {
+
+    checks.put("pyrofishing", new PyroFishingCheck());
+    checks.put("advanceditems", new AdvancedItemsCheck());
+
+    if(Bukkit.getPluginManager().isPluginEnabled("BreweryX")) {
+      checks.put("breweryx", new BreweryXCheck());
+    }
   }
 
   @EventHandler
