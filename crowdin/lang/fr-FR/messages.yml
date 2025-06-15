@@ -21,7 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[distance]'
   currency: '[Type de monnaie]'
-  percentage: '[percentage%]'
+  percentage: ''
 taxaccount-unset: <green>Le compte de taxe de cette boutique suit maintenant le paramètre global du serveur.
 blacklisted-item: <red>Vous ne pouvez pas vendre cet objet car il se trouve sur la liste noire
 command-type-mismatch: <red>Cette commande ne peut être exécutée que par <aqua>{0}.
