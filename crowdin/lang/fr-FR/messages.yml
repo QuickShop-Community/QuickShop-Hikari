@@ -396,7 +396,7 @@ timeunit:
   future-plain-text: future
   month: "{0} month"
   future: in {0}
-  days: "{0} days"
+  days: "{0} jours"
 command:
   reloading: '<green>Configuration rechargée. <yellow>Certains changements peuvent nécessiter un redémarrage pour être appliqués.<newline><gray>(Note : Le comportement du rechargement a été modifié après la 4.0.9.10, nous rechargeons désormais uniquement la configuration plutôt que l''ensemble du plugin, afin de garantir que le serveur ne plante pas.)'
   description:
@@ -428,7 +428,7 @@ command:
     sell: <yellow>Transforme la boutique en mode <aqua>VENTE
     fetchmessage: <yellow>Récupère les messages non lus de la boutique
     staff: <yellow>Gérer les gérants de ta boutique
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: .
     clean: <yellow>Supprime tous les coffres (chargés) ayant 0 de stock
     refill: <yellow>Ajoute un nombre donné d'objets à un shop.
     help: <yellow>Afficher l'aide QuickShop
