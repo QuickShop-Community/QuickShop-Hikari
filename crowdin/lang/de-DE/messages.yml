@@ -82,7 +82,7 @@ you-cant-afford-a-new-shop: <red>Du kannst dir dies nicht leisten. Es kosted <gr
 success-created-shop: <green>Shop erfolgreich erstellt.
 shop-creation-cancelled: <red>Die Shoperstellung wurde abgebrochen.
 shop-owner-self-trade: <yellow>Du handelst mit deinem eigenen Shop. <gray>Du wirst kein Geld davon verdienen.
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied:
 purchase-out-of-space: <red>Dieser Shop hat keinen platz mehr! Kontaktiere den Shopbesitzer oder einen Shopmitarbeiter damit er geleert wird.
 reloading-status:
   success: <green>Plugin erfolgreich ohen Fehler neu geladen.
