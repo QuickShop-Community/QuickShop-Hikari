@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.shop.display.virtual.packet.packetevents;
 /*
- * QuickShop-Hikari
+ * IslandSurvival
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,6 +32,7 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChunkData;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
@@ -54,12 +55,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * PacketFactoryv1_21
+ * PacketFactoryv1_21_6
  *
  * @author creatorfromhell
- * @since 6.2.0.9
+ * @since 0.0.1.0
  */
-public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
+public class PacketFactoryv1_21_6 implements PacketFactory<PacketWrapper<?>> {
 
   @Getter
   private PacketListenerCommon chunkSendingPacketAdapter;
@@ -78,12 +79,12 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
   @Override
   public PacketWrapper<?> createSpawnPacket(final int id, @NotNull final Location displayLocation) {
 
-    final EntityType type = EntityType.valueOf("DROPPED_ITEM");
+    final EntityType type = EntityType.ITEM;
     final UUID identifier = UUID.nameUUIDFromBytes(("SHOP:" + id).getBytes(StandardCharsets.UTF_8));
 
     return new WrapperPlayServerSpawnEntity(id, identifier, SpigotConversionUtil.fromBukkitEntityType(type),
                                             SpigotConversionUtil.fromBukkitLocation(displayLocation),
-                                            0F, 0, null);
+                                            0F, 0, Vector3d.zero());
   }
 
   /**
@@ -104,7 +105,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
-      data.add(new EntityData<>(2, EntityDataTypes.OPTIONAL_COMPONENT, Optional.of(itemName)));
+      data.add(new EntityData<>(2, EntityDataTypes.OPTIONAL_ADV_COMPONENT, Optional.of(Util.getItemStackName(itemStack))));
       data.add(new EntityData<>(3, EntityDataTypes.BOOLEAN, true));
     }
 

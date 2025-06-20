@@ -518,7 +518,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     this.display = this.getConfig().getBoolean("shop.display-items");
     final int type = getConfig().getInt("shop.display-type");
     if(type != 2 && type != 900) {
-      this.invalidProvider = false;
+      this.invalidProvider = true;
     }
 
     this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
