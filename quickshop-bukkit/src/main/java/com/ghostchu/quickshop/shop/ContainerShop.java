@@ -517,7 +517,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull ItemStack getItem() {
 
-    final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item);
+    final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item.clone());
 
     return event.updated();
   }
