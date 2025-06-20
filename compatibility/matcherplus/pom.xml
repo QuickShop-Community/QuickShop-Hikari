@@ -35,10 +35,6 @@
 
     <repositories>
         <repository>
-            <id>itemsadder-api</id>
-            <url>https://maven.devs.beer/</url>
-        </repository>
-        <repository>
             <id>nexo-api</id>
             <url>https://repo.nexomc.com/releases</url>
         </repository>
@@ -197,12 +193,6 @@
         </dependency>
         <!-- ItemProvider Dependencies -->
         <dependency>
-            <groupId>dev.lone</groupId>
-            <artifactId>api-itemsadder</artifactId>
-            <version>4.0.9</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
             <version>RC-37</version>
@@ -213,12 +203,5 @@
             <version>0.18</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>de.corneliusmay.silkspawners</groupId>
-            <artifactId>silkspawners</artifactId>
-            <version>2.3.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/SilkSpawners_v2.jar</systemPath>
-        </dependency>-->
     </dependencies>
 </project>
