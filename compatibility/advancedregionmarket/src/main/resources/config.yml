@@ -1,2 +1,4 @@
 #Should we allow owners permission to create shops?
 owner-create: true
+member-create: true
+admin-override: true

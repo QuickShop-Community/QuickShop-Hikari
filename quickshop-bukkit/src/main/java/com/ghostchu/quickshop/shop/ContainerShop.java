@@ -350,7 +350,7 @@ public class ContainerShop implements Shop, Reloadable {
   public void checkDisplay() {
 
     Util.ensureThread(false);
-    final boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
+    final boolean displayStatus = plugin.isValidDisplayProvider() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
 
     if(!displayStatus) {
       if(this.displayItem != null) {
@@ -517,7 +517,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull ItemStack getItem() {
 
-    final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item);
+    final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item.clone());
 
     return event.updated();
   }

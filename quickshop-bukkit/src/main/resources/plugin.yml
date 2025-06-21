@@ -397,3 +397,6 @@ permissions:
   quickshop.suggestprice:
     description: Suggest the shop recommend price
     default: op
+  quickshop.self-trade:
+    description: Allows a player to trade with their own shops
+    default: true

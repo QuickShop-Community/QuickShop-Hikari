@@ -247,6 +247,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    * Whether we should use display items or not
    */
   private boolean display = true;
+  private boolean invalidProvider = false;
   @Getter
   private int displayItemCheckTicks;
   /**
@@ -517,7 +518,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     this.display = this.getConfig().getBoolean("shop.display-items");
     final int type = getConfig().getInt("shop.display-type");
     if(type != 2 && type != 900) {
-      this.display = false;
+      this.invalidProvider = true;
     }
 
     this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
@@ -625,6 +626,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public boolean isDisplayEnabled() {
 
     return this.display;
+  }
+
+  public boolean isValidDisplayProvider() {
+
+    return !invalidProvider;
   }
 
   @SuppressWarnings("removal")
@@ -850,7 +856,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void loadVirtualDisplayItem() {
 
-    if(this.display) {
+    if(!invalidProvider) {
       //VirtualItem support
       if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
         logger.info("Using Virtual Displays. Attempting to initialize packet factory...");
