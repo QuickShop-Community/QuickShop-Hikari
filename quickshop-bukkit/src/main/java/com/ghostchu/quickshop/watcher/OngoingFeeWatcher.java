@@ -122,14 +122,15 @@ public class OngoingFeeWatcher implements Runnable {
    */
   public void removeShop(@NotNull final Shop shop) {
 
-    Util.mainThreadRun(()->plugin.getShopManager().deleteShop(shop));
+    final Location location = shop.getLocation();
+    Util.regionThread(location, ()->plugin.getShopManager().deleteShop(shop));
     MsgUtil.send(shop, shop.getOwner(), plugin.text().of("shop-removed-cause-ongoing-fee", LegacyComponentSerializer.legacySection().deserialize("World:"
-                                                                                                                                                 + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
+                                                                                                                                                 + Objects.requireNonNull(location.getWorld()).getName()
                                                                                                                                                  + " X:"
-                                                                                                                                                 + shop.getLocation().getBlockX()
+                                                                                                                                                 + location.getBlockX()
                                                                                                                                                  + " Y:"
-                                                                                                                                                 + shop.getLocation().getBlockY()
+                                                                                                                                                 + location.getBlockY()
                                                                                                                                                  + " Z:"
-                                                                                                                                                 + shop.getLocation().getBlockZ())).forLocale());
+                                                                                                                                                 + location.getBlockZ())).forLocale());
   }
 }
