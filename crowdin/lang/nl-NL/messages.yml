@@ -1,7 +1,7 @@
 break-shop-use-supertool: <yellow>U kunt de winkel breken door gebruik te maken van SuperTool.
 fee-charged-for-price-change: <green>U betaald <red>{0}<green> om de prijs te wijzigen.
 not-allowed-to-create: <red>U kunt hier geen winkel aanmaken.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop is uitgeschakeld in deze wereld
 how-much-to-trade-for: <green>Enter in de chat, voor hoeveel u wilt handelen <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Shop-back-up aanmaken vanuit database...
@@ -29,7 +29,7 @@ server-crash-warning: '<red>Server may crash after execute /qs reload command if
 you-cant-afford-to-change-price: <red>Het kost {0} om de prijs in uw winkel te wijzigen.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>De bewerking is niet toegestaan omdat deze niet in overeenstemming is met het gedrag van vanilla
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Uw winkel op {0}, is nu vol!
 paste-disabled: |-
   <red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}
 quick-fill:
