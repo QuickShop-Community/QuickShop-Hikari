@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.10-SNAPSHOT-5</version>
+    <version>6.2.0.10-SNAPSHOT-6</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -178,6 +178,7 @@
                                         <include>net.tnemc:*</include>
                                         <include>com.github.technicallycoded:*</include>
                                         <include>com.tcoded.folialib:*</include>
+                                        <include>com.tcoded:*</include>
                                         <include>com.github.technicallycoded.folialib:*</include>
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
@@ -204,6 +205,10 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>com.tcoded.folialib</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.tcoded</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.tcoded</shadedPattern>
                                     </relocation>
                                     <relocation>
