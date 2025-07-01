@@ -902,12 +902,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     if(this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
       this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-      //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
-      this.displayAutoDespawnWatcher.runTaskTimer(javaPlugin, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+      this.displayAutoDespawnWatcher.start(20, getConfig().getInt("shop.display-check-time"));
       logger.warn("Unrecommended use of display-auto-despawn. This feature may have a heavy impact on the server's performance!");
     } else {
       if(this.displayAutoDespawnWatcher != null) {
-        this.displayAutoDespawnWatcher.cancel();
+        this.displayAutoDespawnWatcher.stop();
         this.displayAutoDespawnWatcher = null;
       }
     }
