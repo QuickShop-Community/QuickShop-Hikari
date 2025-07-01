@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.10-SNAPSHOT-5</version>
+        <version>6.2.0.10-SNAPSHOT-6</version>
     </parent>
 
     <properties>
@@ -61,6 +61,10 @@
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>tcoded-releases</id>
+            <url>https://repo.tcoded.com/releases</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -375,9 +379,9 @@
             <version>1.26.2</version>
         </dependency>
         <dependency>
-            <groupId>com.github.technicallycoded</groupId>
+            <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>main-SNAPSHOT</version>
+            <version>0.5.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -393,7 +397,7 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-v1_21_R5</artifactId>
-            <version>6.2.0.10-SNAPSHOT-5</version>
+            <version>6.2.0.10-SNAPSHOT-6</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
