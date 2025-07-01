@@ -103,6 +103,7 @@ public class ProtocolLibHandler implements PacketHandler<ProtocolManager> {
     factories.put("1.21.4", oneTwentyOne);
     factories.put("1.21.5", oneTwentyOne);
     factories.put("1.21.6", oneTwentyOne);
+    factories.put("1.21.7", oneTwentyOne);
   }
 
   public static ProtocolLibHandler instance() {
