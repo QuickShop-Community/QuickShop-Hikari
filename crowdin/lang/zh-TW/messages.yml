@@ -187,7 +187,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: 出售中
   buying: 收購中
-  frozen: FROZEN
+  frozen: 冷凍
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -772,7 +772,7 @@ addon:
     owner-member-create-only: <red>只有島嶼擁有者或成員能夠在那裡建立商店。
   fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-member-create-only: <red>只有島主或會員可以在那裡建立商店
   worldguard:
     creation-flag-test-failed: <red>你沒有在此 WorldGuard 保護區建立商店的權限。
     trade-flag-test-failed: <red>你沒有在此 WorldGuard 保護區與商店交易的權限。
