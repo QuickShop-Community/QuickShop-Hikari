@@ -152,7 +152,7 @@ metric:
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
-  looking-up: <yellow>Performing metric lookup, Please wait...
+  looking-up: <yellow>Виконується пошук метрик, зачекайте...
   tax-hover: <yellow>{0} податків
   header-global: '<yellow>{0} {1} транзакцій сервера:'
   na: <gray>Н/Д
@@ -297,34 +297,34 @@ support-disable-reason:
   unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
 supertool-is-disabled: <red>Supertool is disabled. Cannot break any shops.
 unknown-owner: Невідомо
-restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
+restricted-prices: '<red>Обмежена ціна для {0}: Мін. {1}, макс. {2}'
 nearby-shop-this-way: <green>Shop is {0} blocks away from you.
-owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+owner-bypass-check: <yellow>Усі перевірки пройдено. Торгівля успішна! (Тепер ви власник магазину!)
+april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'>Натисніть, щоб відкрити в браузері та отримати тимчасові нагороди!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Натисніть тут, щоб отримати тимчасові нагороди від розробника QuickShop-Hikari!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Немає місця
-  unlimited: Unlimited
+  unlimited: Безлімітно
   stack-selling: Продаж {0}
   stack-price: '{0} за {1}x {2}'
   status-unavailable: <red>
   out-of-stock: Немає в наявності
-  stack-buying: Buying {0}
+  stack-buying: Купівля {0}
   freeze: Trading disabled
-  price: '{0} each'
-  buying: Buying {0}
+  price: '{0} за шт'
+  buying: Купівля {0}
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Selling {0}
+  selling: Продаж {0}
   status-available: <green>
   item-left: ''
-negative-amount: <red>You can't trade negative amounts
+negative-amount: <red>Ви не можете торгувати від'ємною кількістю
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
-backup-failed: Cannot backup the database. Check the console for details.
-shop-staff-cleared: <green>Successfully removed all staff members from your shop.
+backup-failed: Не вдалося створити резервну копію бази даних. Перевірте консоль для деталей.
+shop-staff-cleared: <green>Успішно видалено весь персонал з вашого магазину.
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
@@ -382,7 +382,7 @@ timeunit:
   week: "{0} week"
   weeks: "{0} weeks"
   year: "{0} year"
-  before: before
+  before: до
   scheduled: scheduled
   years: "{0} years"
   scheduled-in: scheduled in {0}
