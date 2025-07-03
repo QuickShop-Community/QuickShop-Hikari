@@ -15,13 +15,13 @@ not-a-number: <red>Ви можете ввести тільки число, ва�
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
 shop-removed-cause-ongoing-fee: <red>Ваш магазин за адресою {0} був видалений, тому що у вас не було достатньо грошей, щоб його утримати!
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
-  price: '[price]'
-  name: '[name]'
-  range: '[range]'
-  currency: '[currency name]'
-  percentage: '[percentage%]'
+  amount: '[кількість]'
+  item: '[товар]'
+  price: '[ціна]'
+  name: '[назва]'
+  range: '[діапазон]'
+  currency: '[назва валюти]'
+  percentage: '[відсоток%]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
@@ -34,7 +34,7 @@ paste-disabled: |-
   <red>Функція вставки відключена! Ви не можете подати запит на технічну підтримку.
   Причина: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[власний] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Назва: <aqua>{0}'
     - '<yellow>Власник: <aqua>{0}'
@@ -51,8 +51,8 @@ quick-fill:
     - '<yellow>Розташування: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+  entry-cooperation: ' <yellow>- <red>[спільний] <aqua>{0} <light_purple>{1}'
+3rd-plugin-build-check-failed-admin: '<gray>(Лише для адмінів) <light_purple>{0}<dark_gray> відхилив перевірку дозволів. Якщо це несподівано, спробуйте додати <light_purple>{1} <gray>до чорного списку слухача. Посібник з налаштування: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 inventory-check-global-alert: "<red>[Тест інвентарю] <gray>Увага! Знайдено елемент відображення у QuickShop <gold>{2}</gold> в інвентарі <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, що не повинно було статися, це зазвичай означає, що хтось зловмисно використовує його для дублювання елемента відображення."
 digits-reach-the-limit: <red>Ви досягли межі десяткових знаків у ціні.
@@ -61,7 +61,7 @@ you-cant-create-shop-in-there: <red>У вас немає дозволу на с�
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Поповнення успішне
 failed-to-paste: <red>Не вдалося завантажити дані в Pastebin. Перевірте підключення до Інтернету та повторіть спробу. (Детальніше див. консоль)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>У вашому магазині {0} закінчився {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>Значення перевищило максимальне значення в Java.
@@ -123,7 +123,7 @@ menu:
   this-shop-is-buying: <green>Цей магазин є <light_purple>ПОКУПКИ<green> Елементи.
   this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Успішно продано:'
-  total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
+  total-value-of-chest: '<green>Загальна вартість скрині: <yellow>{0}'
 currency-not-exists: <red>Не вдається знайти валюту, яку потрібно встановити. Можливо, написання неправильне або ця валюта недоступна в цьому світі.
 no-nearby-shop: <red>No nearby shop matching {0}.
 translation-author: 'Ghost_chu, Andre_601'
@@ -144,64 +144,64 @@ metric:
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
     PURCHASE_BUYING_SHOP: <yellow>Гравець продавав деякі предмети магазину, що купує.
     CREATE: <yellow>Гравець створив магазин.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
+    PURCHASE_SELLING_SHOP: <yellow>Гравець купив предмети в магазині, що продає
     PURCHASE: <yellow>Придбаний товар у магазині
-  query-argument: 'Query Argument: {0}'
+  query-argument: 'Аргумент запиту: {0}'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
-  na: <gray>N/A
+  tax-hover: <yellow>{0} податків
+  header-global: '<yellow>{0} {1} транзакцій сервера:'
+  na: <gray>Н/Д
   transaction-count: <yellow>{0} всього
   shop-hover: |-
     <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
-    <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
+    <gold>Поз: <gray>{1} {2} {3}, Світ: {4}
+    <gold>Власник: <gray>{5}
+    <gold>Тип магазину: <gray>{6}
+    <gold>Предмет: <gray>{7}
+    <gold>Ціна: <gray>{8}
   time-hover: '<yellow>Час: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  amount-stack-hover: <yellow>{0}x стак
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
 you-dont-have-that-many-items: <red>У вас є тільки {0} {1}.
 complete: <green>Завершено!
-translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
+translate-not-completed-yet-url: 'Переклад мови {0} ще не завершений {1}. Хочете допомогти нам покращити переклад? Перейдіть: {2}'
 success-removed-shop: <green>Магазин видалений.
-currency-set: <green>Shop currency successfully set to {0}.
-shop-purged-start: <green>Shop purge started, check the console for details.
+currency-set: <green>Валюту магазину успішно встановлено на {0}.
+shop-purged-start: <green>Очищення магазинів розпочато, перевірте консоль для деталей.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
 nothing-to-flush: <green>У вас немає нових повідомлень у магазині.
 no-price-change: <red>Це не призведе до зміни ціни!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
 inventory-unavailable: |-
-  <red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?
-  Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.
+  <red>Неіснуючий або недійсний InventoryWrapper. Ви використовуєте аддон для переприв'язки інвентарю магазину?
+  Інформація: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Будь ласка, зверніться до адміністраторів сервера.
 file-test: This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)
 unknown-player: <red>Target player doesn't exist, please check the username you typed.
 player-offline: <red>The target player currently is offline.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
-  selling: SELLING
-  buying: BUYING
-  frozen: FROZEN
+  selling: ПРОДАЖ
+  buying: КУПІВЛЯ
+  frozen: ЗАМОРОЖЕНО
 language:
-  qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
+  qa-issues: '<yellow>Проблеми з якістю: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
-  approval-progress: '<yellow>Approval Progress: <aqua>{0}%'
-  translate-progress: '<yellow>Translation Progress: <aqua>{0}%'
+  approval-progress: '<yellow>Прогрес затвердження: <aqua>{0}%'
+  translate-progress: '<yellow>Прогрес перекладу: <aqua>{0}%'
   name: '<yellow>Назва: <gold>{0}'
-  help-us: <green>[Help us improve the translation quality]
+  help-us: <green>[Допоможіть нам покращити якість перекладу]
 warn-to-paste: |-
-  <yellow>Collecting data and uploading to Pastebin. This may take a while...
-  <red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.
+  <yellow>Збір даних та завантаження на Pastebin. Це може зайняти деякий час...
+  <red><bold>Увага:</bold> Дані будуть публічними протягом одного тижня! Це може призвести до витоку конфігурації вашого сервера та іншої конфіденційної інформації. Переконайтеся, що ви надсилаєте це лише <bold>довіреним співробітникам/розробникам.
 how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
-  buttontitle: '[Update Now]'
-  onekeybuttontitle: '[OneKey Update]'
+  buttontitle: '[Оновити зараз]'
+  onekeybuttontitle: '[Оновити в один клік]'
   label:
     github: '[GitHub]'
     ore: '[Ore]'
@@ -211,7 +211,7 @@ updatenotify:
     master: '[Master]'
     unstable: '[Unstable]'
     paper: '[+Paper Optimized]'
-    stable: '[Stable]'
+    stable: '[Стабільна]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
@@ -219,29 +219,29 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} was released. You are still using {1}!'
-    - Boom! New update {0} incoming. Update!
-    - Surprise! {0} came out. You are on {1}
-    - Looks like you need to update. {0} was released!
-    - Ooops! {0} was now released. You are on {1}!
-    - I swear, QS has been updated to {0}. Why have you not updated yet?
-    - Fixing and re... Sorry, but {0} was released!
-    - Err! Nope. This is not an error. {0} has been released!
-    - OMG! {0} came out! Why are you still using {1}?
-    - 'Todays News: QuickShop has been updated to {0}!'
-    - Plugin k.i.a. You should update to {0}!
-    - Update {0} ignited. Save update!
-    - There is an update available Commander. {0} has just came out!
-    - Look my style---{0} updated. You're still using {1}
-    - Ahhhhhhh! New update {0}! Update!
-    - What do you think? {0} has been released! Update!
-    - Doctor, QuickShop has a new update {0}! You should update~
-    - Ko~ko~da~yo~ QuickShop has a new update {0} ~
-    - Paimon want told you the QuickShop have new update {0}!
+    - 'Вийшла версія {0}. Ви все ще використовуєте {1}!'
+    - Бум! Нове оновлення {0} вже тут. Оновлюйтесь!
+    - Сюрприз! Вийшла версія {0}. У вас {1}
+    - Схоже, вам потрібно оновитися. Вийшла версія {0}!
+    - Уупс! Вийшла версія {0}. А у вас {1}!
+    - Клянуся, QS оновлено до {0}. Чому ви ще не оновилися?
+    - Виправлення та пе... Вибачте, але вийшла версія {0}!
+    - Поми... Ні. Це не помилка. Вийшла версія {0}!
+    - ОМГ! Вийшла версія {0}! Чому ви все ще на {1}?
+    - 'Сьогоднішні новини: QuickShop оновлено до версії {0}!'
+    - Плагін загинув. Вам слід оновитися до {0}!
+    - Оновлення {0} запущено. Збережіть оновлення!
+    - Командире, є оновлення. Щойно вийшла версія {0}!
+    - Зацініть мій стиль --- {0} оновлено. А ви все ще на {1}
+    - Ааааааа! Нове оновлення {0}! Оновіться!
+    - Що думаєте? Вийшла версія {0}! Оновіться!
+    - Докторе, у QuickShop нове оновлення {0}! Вам варто оновитись~
+    - Ко~ко~да~йо~ У QuickShop нове оновлення {0}~
+    - Паймон хоче сказати вам, що у QuickShop нове оновлення {0}!
   remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
-nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
-chest-title: QuickShop Store
+nearby-shop-entry: '<green>- Інфо: {0} Ціна: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Відстань: <aqua>{5} <green>блок(ів)'
+chest-title: Магазин QuickShop
 console-only: <red>This command can only be executed by Console.
 failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
 shop-name-unset: <red>This shop's name now removed
@@ -259,14 +259,14 @@ player-bought-from-your-store: <red>{0} purchased {1} {2} from your shop, and yo
 reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>You cannot create the double chest shop.
-price-too-cheap: <red>Price must be greater than <yellow>${0}
-shop-not-exist: <red>There is no shop.
-bad-command-usage: <red>Bad command arguments!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <bold><red>EXISTS IN A UNLOADED WORLD</red></bold>. Make sure to create a full backup of your shop data first and use <aqua>/quickshop cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+price-too-cheap: <red>Ціна повинна бути більшою за <yellow>${0}
+shop-not-exist: <red>Магазину не існує.
+bad-command-usage: <red>Неправильні аргументи команди!
+cleanghost-warning: <yellow>Ця команда видалить <red>усі</red> магазини, якщо магазин пошкоджено, створено у недозволеному світі, продає/купує заборонені предмети або <bold><red>ІСНУЄ У НЕЗАВАНТАЖЕНОМУ СВІТІ</red></bold>. Спершу створіть повну резервну копію даних магазинів і використайте <aqua>/quickshop cleanghost confirm</aqua> для продовження.
+cleanghost-starting: <green>Починається перевірка на наявність фантомних магазинів (відсутні блоки-контейнери). Усі неіснуючі магазини будуть видалені...
+cleanghost-deleting: <yellow>Знайдено пошкоджений магазин <aqua>{0}</aqua> через {1}, позначаю на видалення...
 cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
-shop-purchase-cancelled: <red>Shop purchase cancelled.
+shop-purchase-cancelled: <red>Покупку в магазині скасовано.
 bypassing-lock: <red>Bypassing a QuickShop lock!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
 saved-to-path: The Backup was saved to {0}.
