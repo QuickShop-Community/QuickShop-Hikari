@@ -64,7 +64,7 @@
             <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-api</artifactId>
             <scope>compile</scope>
-            <version>0.4.7</version>
+            <version>${depend.easy}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
