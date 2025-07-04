@@ -405,8 +405,8 @@ timeunit:
   minute: "{0} minute"
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: future
-  month: "{0} month"
-  future: in {0}
+  month: "{0} місяць"
+  future: через {0}
   days: "{0} days"
 command:
   reloading: '<green>Конфігурація перезавантажена. <yellow>Для впливу деяких змін може знадобитися перезавантаження. <newline><gray>(Примітка: Поведінка перезавантаження була змінена після 4.0.9.10, тепер ми перезавантажуємо лише конфігурацію, але не весь плагін, щоб гарантувати, що сервер не вийде з ладу.).'
