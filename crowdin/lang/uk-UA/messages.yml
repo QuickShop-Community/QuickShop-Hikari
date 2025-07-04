@@ -401,72 +401,72 @@ timeunit:
   longtimeago: давно
   between-format: між {0} та {1}
   minutes: "{0} хвилин"
-  justnow: just now
-  minute: "{0} minute"
-  std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
+  justnow: щойно
+  minute: "{0} хвилина"
+  std-format: dd/MM/yyyy HH:mm:ss
+  future-plain-text: майбутнє
   month: "{0} місяць"
   future: через {0}
-  days: "{0} days"
+  days: "{0} днів"
 command:
   reloading: '<green>Конфігурація перезавантажена. <yellow>Для впливу деяких змін може знадобитися перезавантаження. <newline><gray>(Примітка: Поведінка перезавантаження була змінена після 4.0.9.10, тепер ми перезавантажуємо лише конфігурацію, але не весь плагін, щоб гарантувати, що сервер не вийде з ладу.).'
   description:
     buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
-    about: <yellow>Shows QuickShop info
-    language: <yellow>Change the currently used language
+    about: <yellow>Показує інформацію про QuickShop
+    language: <yellow>Змінює поточну мову
     purge: <yellow>Start the shop purge task in background
-    paste: <yellow>Uploads server data to Pastebin
-    title: <green>QuickShop help
-    remove: <yellow>Removes the shop you're looking at
+    paste: <yellow>Завантажує дані сервера на Pastebin
+    title: <green>Довідка QuickShop
+    remove: <yellow>Видаляє магазин, на який ви дивитесь
     ban: <yellow>Bans a player from the shop
-    empty: <yellow>Removes all items from a shop
+    empty: <yellow>Видаляє всі предмети з магазину
     alwayscounting: <yellow>Set if shop always counting container even is unlimited
-    setowner: <yellow>Changes the ownership of a shop.
-    reload: <yellow>Reloads the config.yml of QuickShop
-    freeze: <yellow>Disable or Enable shop trading
-    price: <yellow>Changes the buy/sell price of a shop
-    find: <yellow>Locates the nearest shop of a specific type.
-    create: <yellow>Creates a new shop from the targeted chest
-    lock: <yellow>Switch the shop's lock status
-    currency: <yellow>Set or remove the currency setting of the shop
-    removeworld: <yellow>Remove ALL shops in a specified world
-    info: <yellow>Show QuickShop statistics
-    owner: <yellow>Changes the ownership of a shop.
+    setowner: <yellow>Змінює власника магазину.
+    reload: <yellow>Перезавантажує файл config.yml для QuickShop
+    freeze: <yellow>Вмикає або вимикає торгівлю в магазині
+    price: <yellow>Змінює ціну купівлі/продажу в магазині
+    find: <yellow>Знаходить найближчий магазин певного типу.
+    create: <yellow>Створює новий магазин із скрині, на яку ви дивитесь
+    lock: <yellow>Перемикає статус блокування магазину
+    currency: <yellow>Встановлює або видаляє налаштування валюти магазину
+    removeworld: <yellow>Видаляє УСІ магазини у вказаному світі
+    info: <yellow>Показує статистику QuickShop
+    owner: <yellow>Змінює власника магазину.
     amount: <yellow>To set item amount (Useful when having chat issues)
-    item: <yellow>Change shop item of a shop
-    debug: <yellow>Enables Developer mode
-    unlimited: <yellow>Gives a shop unlimited stock.
+    item: <yellow>Змінює предмет в магазині
+    debug: <yellow>Вмикає режим розробника
+    unlimited: <yellow>Надає магазину безлімітний запас.
     sell: <yellow>Changes a shop to <aqua>SELL<yellow> mode
-    fetchmessage: <yellow>Show unread shop messages
-    staff: <yellow>Manage your shop staff
-    staffall: <yellow>Manage your shop staff of all shops you own.
-    clean: <yellow>Removes all (loaded) shops without any stock
-    refill: <yellow>Adds a given number of items to a shop
+    fetchmessage: <yellow>Показує непрочитані повідомлення магазина
+    staff: <yellow>Керуйте персоналом вашого магазину
+    staffall: <yellow>Керуйте персоналом усіх ваших магазинів.
+    clean: <yellow>Видаляє всі (завантажені) магазини без товарів
+    refill: <yellow>Додає вказану кількість предметів до магазину
     help: <yellow>Shows QuickShop help
-    removeall: <yellow>Remove ALL shops of a specified player
+    removeall: <yellow>Видаляє УСІ магазини вказаного гравця
     unban: <yellow>Unbans a player from the shop
     transfer: <yellow>Transfer someone's ALL shops to other
     transferall: <yellow>Transfer someone's ALL shops to other
-    transferownership: <yellow>Transfer the shop you're looking at to someone else
+    transferownership: <yellow>Передає магазин, на який ви дивитеся, комусь іншому
     size: <yellow>Change per bulk amount of a shop
-    supercreate: <yellow>Create a shop while bypassing all protection checks
+    supercreate: <yellow>Створює магазин, обходячи всі перевірки захисту
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>Керування дозволами магазину
+    lookup: <yellow>Керування таблицею предметів для пошуку
     database: <yellow>View and maintain QuickShop database
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
-    browse: <yellow>Browse shops that exist in this server.
-    tag: <yellow>Add, remove or query tags of a shop
-    suggestprice: <yellow>Suggest a recommend price for looking shop, based on other shops
+    benefit: <yellow>Налаштування розподілу прибутку між власником магазина та іншими гравцями
+    browse: <yellow>Перегляд магазинів, що існують на цьому сервері.
+    tag: <yellow>Додає, видаляє або запитує теги магазину
+    suggestprice: <yellow>Пропонує рекомендовану ціну для магазину, на який ви дивитесь, на основі інших магазинів
     history: <yellow>Перегляд історії транзакцій магазину
     sign: <yellow>Змінює матеріал таблички магазину
   bulk-size-not-set: '<red>Використання: /quickshop size \<amount>'
-  no-type-given: '<red>Usage: /quickshop find \<item>'
+  no-type-given: '<red>Використання: /quickshop find \<item>'
   feature-not-enabled: Цю функцію не увімкнено в файлі конфігурації.
   now-debuging: <green>Успішно увімкнено режим розробника. Перезавантаження QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/quickshop refill \<amount>
+  no-amount-given: <red>Кількість не вказана. Використовуйте <green>/quickshop refill \<amount>
   no-owner-given: <red>Власник не вказаний
   disabled: '<red>Цю команду вимкнено: <yellow>{0}'
   bulk-size-now: <green>Тепер торгується <yellow>{0}x {1}
@@ -488,7 +488,7 @@ command:
   now-buying: <green>Now <light_purple>BUYING <yellow>{0}
   now-selling: <green>Now <aqua>SELLING <yellow>{0}
   cleaned: <green>Removed <yellow>{0}<green> shops.
-  trade-item-now: <green>Now trading <yellow>{0}x {1}
+  trade-item-now: <green>Тепер торгується <yellow>{0}x {1}
   no-world-given: <red>Будь ласка, вкажіть назву світу
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>The given value {0} is larger than max stack size or lower than one
@@ -545,41 +545,41 @@ invalid-group: <red>Неприпустима назва групи.
 invalid-permission: <red>Недійсний дозвіл.
 invalid-operation: <red>Недійсна операція, дозволено лише {0}.
 player-no-group: <yellow>Гравець {0} не входить до жодної групи в цьому магазині.
-player-in-group: <green>Player {0} is in group <aqua>{1}</aqua> in this shop.
-permission-required: <red>You don't have permission {0} in this shop to do this.
-no-permission-detailed: <red>You don't have permission <yellow>{0}</yellow> to do this.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
-paste-uploading: <aqua>Please wait... Uploading the paste to pastebin......
-paste-created: '<green>Paste created, click to open in browser: <yellow>{0}</yellow><br><red>Warning: <gray>Never send pastea to people you don''t trust.'
+player-in-group: <green>Гравець {0} знаходиться в групі <aqua>{1}</aqua> в цьому магазині.
+permission-required: <red>У вас немає дозволу {0} в цьому магазині, щоб зробити це.
+no-permission-detailed: <red>У вас немає дозволу <yellow>{0}</yellow> на це.
+paste-notice: "<yellow>Примітка: Якщо ви створюєте звіт для усунення несправностей, обов'язково відтворіть помилку якомога швидше перед створенням звіту; нам потрібні логи, що зберігаються в буфері недовго, для діагностики. Якщо ви створите звіт занадто повільно, без попереднього відтворення помилки або після перезапуску сервера, звіт нічого не зафіксує і буде марним."
+paste-uploading: <aqua>Будь ласка, зачекайте... Завантаження звіту на pastebin......
+paste-created: '<green>Звіт створено, натисніть, щоб відкрити у браузері: <yellow>{0}</yellow><br><red>Увага: <gray>Ніколи не надсилайте звіти людям, яким ви не довіряєте.'
 paste-created-local: |-
-  <green>Paste created and saved to your local disk at {0}
-  <red>Warning: <gray>Never send pastes to people you don't trust.
-paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
+  <green>Звіт створено та збережено на вашому локальному диску за адресою {0}
+  <red>Увага: <gray>Ніколи не надсилайте звіти людям, яким ви не довіряєте.
+paste-created-local-failed: <red>Не вдалося зберегти звіт на ваш локальний диск, будь ласка, перевірте ваш диск.
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
+  <gray><bold>ПОРАДА:</bold> Ваша поточна країна або регіон, здається, заблокували сервіс CloudFlare Workers, і звіт QuickShop Paste може не завантажуватися належним чином.
+  Якщо наступна операція не вдасться, спробуйте додати аргумент --file для створення локального звіту: <dark_gray>/quickshop paste --file
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
-command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
-successfully-set-player-group: <green>Successfully set player {0} group to <aqua>{1}</aqua>.
+command-incorrect: '<red>Неправильне використання команди, введіть /quickshop help для довідки. Використання: {0}.'
+successfully-set-player-group: <green>Успішно встановлено групу <aqua>{1}</aqua> для гравця {0}.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
-successfully-set-player-permission: <green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>.
+successfully-set-player-permission: <green>Успішно встановлено дозвіл гравця {0} <aqua>{1}</aqua> в магазині <aqua>{2}</aqua>.
 lookup-item-created: <green>У таблиці підстановки створено елемент з іменем <aqua>{0}</aqua>. Тепер ви можете посилатися на цей елемент у конфігураціях.
-lookup-item-exists: <red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name.
+lookup-item-exists: <red>Предмет з назвою <yellow>{0}</yellow> вже існує в таблиці пошуку, видаліть його або виберіть іншу назву.
 lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
 lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
-lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
+lookup-item-name-regex: '<red>Назва повинна відповідати цьому регулярному виразу: <aqua>{0}</aqua>.'
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
-argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+internal-error: <red>Виникла внутрішня помилка, будь ласка, зверніться до адміністратора сервера.
+argument-cannot-be: <red>Аргумент <aqua>{0}</aqua> не може бути <yellow>{1}</yellow>.
+argument-must-between: <red>Значення аргументу <aqua>{0}</aqua> повинно бути між <yellow>{1}</yellow> та <yellow>{2}
+invalid-percentage: <red>Неправильний відсоток, ви повинні додати '%' після числа відсотка.
 display-fallback: |-
-  <red>Due to an internal failure, a fallback message is being displayed.
-  The value of this item may not be localized or processed correctly.
-  Please contact the server administrator.
+  <red>Через внутрішній збій відображається резервне повідомлення.
+  Значення цього елемента може бути не локалізовано або оброблено неправильно.
+  Будь ласка, зв'яжіться з адміністратором сервера.
 not-a-valid-time: |-
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
