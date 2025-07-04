@@ -66,6 +66,7 @@
         <compat.elitemobs>9.2.3</compat.elitemobs>
         <compat.fabledskyblock>3.5.2-SNAPSHOT</compat.fabledskyblock>
         <compat.griefprevention>17.0.0</compat.griefprevention>
+        <compat.husktowns>3.1.4</compat.husktowns>
         <compat.iridiumskyblock>4.1.0</compat.iridiumskyblock>
         <compat.itemsadder>4.0.10</compat.itemsadder>
         <compat.lands>7.15.20</compat.lands>
@@ -474,6 +475,7 @@
         <module>compatibility/elitemobs</module>
         <module>compatibility/fabledskyblock</module>
         <module>compatibility/griefprevention</module>
+        <module>compatibility/husktowns</module>
         <module>compatibility/iridiumskyblock</module>
         <module>compatibility/itemsadder</module>
         <module>compatibility/lands</module>
