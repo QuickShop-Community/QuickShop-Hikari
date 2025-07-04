@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>새 상점 생성에 {0} 원이 소모됩니다
 success-created-shop: <red>상점이 생성되었습니다.
 shop-creation-cancelled: <red>상점 생성이 취소되었습니다.
 shop-owner-self-trade: <yellow>당신은 당신의 상점과 거래중이며 얼마의 돈도 얻지 못합니다.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요.
 reloading-status:
   success: <green>아무 오류도없이 리로드를 완료했습니다.

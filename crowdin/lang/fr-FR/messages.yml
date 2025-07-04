@@ -21,7 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[distance]'
   currency: '[Type de monnaie]'
-  percentage: '[percentage%]'
+  percentage: ''
 taxaccount-unset: <green>Le compte de taxe de cette boutique suit maintenant le paramètre global du serveur.
 blacklisted-item: <red>Vous ne pouvez pas vendre cet objet car il se trouve sur la liste noire
 command-type-mismatch: <red>Cette commande ne peut être exécutée que par <aqua>{0}.
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>La création d'une boutique coûte {0}.
 success-created-shop: <red>Boutique crée avec succès.
 shop-creation-cancelled: <red>Création de la boutique annulée.
 shop-owner-self-trade: <yellow>Vous négociez avec vous en magasin, vous ne pourrez donc pas gagner de solde.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Cette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique.
 reloading-status:
   success: <green>Rechargement effectué sans erreurs.
@@ -395,7 +396,7 @@ timeunit:
   future-plain-text: future
   month: "{0} month"
   future: in {0}
-  days: "{0} days"
+  days: "{0} jours"
 command:
   reloading: '<green>Configuration rechargée. <yellow>Certains changements peuvent nécessiter un redémarrage pour être appliqués.<newline><gray>(Note : Le comportement du rechargement a été modifié après la 4.0.9.10, nous rechargeons désormais uniquement la configuration plutôt que l''ensemble du plugin, afin de garantir que le serveur ne plante pas.)'
   description:
@@ -427,7 +428,7 @@ command:
     sell: <yellow>Transforme la boutique en mode <aqua>VENTE
     fetchmessage: <yellow>Récupère les messages non lus de la boutique
     staff: <yellow>Gérer les gérants de ta boutique
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: .
     clean: <yellow>Supprime tous les coffres (chargés) ayant 0 de stock
     refill: <yellow>Ajoute un nombre donné d'objets à un shop.
     help: <yellow>Afficher l'aide QuickShop

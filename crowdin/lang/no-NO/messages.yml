@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>Du har ikke råd til dette, det koster <green>{
 success-created-shop: <green>Butikken ble opprettet.
 shop-creation-cancelled: <red>Opprettelse av butikk ble kansellert.
 shop-owner-self-trade: <yellow>Du handler i din egen butikk. <gray>Du kan ikke tjene penger på dette.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.
 reloading-status:
   success: <green>Utvidelsen ble lastet på nytt uten feil.

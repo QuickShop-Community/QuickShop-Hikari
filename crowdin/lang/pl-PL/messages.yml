@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Musisz mieć {0} aby zrobić nowy sklep.
 success-created-shop: <red>Sklep utworzony.
 shop-creation-cancelled: <red>Tworzenie sklepu anulowane.
 shop-owner-self-trade: <yellow>Handlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>W tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.
 reloading-status:
   success: <green>Przeładowanie zakończone bez żadnych błędów.
@@ -340,9 +341,9 @@ controlpanel:
   stack-hover: <yellow>Kliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.
   alwayscounting-hover: <yellow>Kliknij, aby przełączyć, jeśli sklep zawsze liczy pojemnik.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Właściciel: <aqua>{0} <yellow>[<bold><light_purple>Zmień</light_purple></bold>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  price: '<green>Cena: <aqua>{0} <yellow>[<bold><light_purple>Zmień</light_purple></bold>]'
   currency-hover: <yellow>Kliknij, aby ustawić lub usunąć walutę, której używa ten sklep
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Tryb sklepu: <aqua>Sprzedaż <yellow>[<light_purple><bold>Zmień<yellow>]'
@@ -1488,13 +1489,13 @@ suite:
   dynmap:
     title: '{0} - {1} - {2}'
     description: |-
-      Item: {0}
-      Owner: {1}
-      Type: {2} {3}
-      Price: {4}
-      Location: {5} {6}, {7}, {8}
-      Space: {9}
-      Stock: {10}
+      Przedmiot: {0}
+      Właściciel: {1}
+      Typ: {2} {3}
+      Cena: {4}
+      Lokalizacja: {5} {6}, {7}, {8}
+      Przestrzeń: {9}
+      Zapasy: {10}
   limited:
     command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
     reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
@@ -1583,10 +1584,10 @@ gui:
   keeper:
     title: "Shop Keeper"
     change-icon:
-      display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      display: "<bold><green>Zmień Cenę</green></bold>"
+      enter: "<yellow>Wpisz nową cenę na chat.</yellow>"
       lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Kliknij aby zmienić cenę przedmiotów w twoim sklepie.</white>"
         - "<white>Aktualna cena:</white> <yellow>{0}</yellow>"
     mode-icon:
       display: "<bold><green>Zmień Tryb</green></bold>"

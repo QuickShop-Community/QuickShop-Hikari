@@ -52,7 +52,7 @@ quick-fill:
   header: '<yellow>你有多個名為「<green>{0}<yellow>」的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(限管理員)<light_purple>{0}<dark_gray>拒絕權限檢查。如果這不是預期的話，請再式一次<light_purple>{1} <gray>新增至監聽器黑名單。指引：https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>附近的平均價格：<yellow>{0}'
 inventory-check-global-alert: "<red>[庫存檢查] <gray>警告！找到商店全息顯示<gold>{2}</gold> 在庫存中 <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>，這不應該發生，這通常意味著有人惡意利用該漏洞來複製顯示專案。"
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>需要花費 <green>{0}<red> 才能建立商店
 success-created-shop: <green>已成功地建立商店。
 shop-creation-cancelled: <red>已取消建立商店。
 shop-owner-self-trade: <yellow>你正在跟自己開的商店進行交易。<gray>所以你的餘額不會改變。
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>此商店空間不足！請聯絡商店擁有者或商店員工清空商店。
 reloading-status:
   success: <green>插件成功地重新載入且沒有發生任何錯誤。
@@ -120,7 +121,7 @@ menu:
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
   this-shop-is-buying: <green>此商店正在<light_purple>收購<green>物品。
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen:
   successfully-sold: '<green>成功地出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0}'
 currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或此世界無法使用貨幣。
@@ -186,7 +187,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: 出售中
   buying: 收購中
-  frozen: FROZEN
+  frozen: 冷凍
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -352,7 +353,7 @@ controlpanel:
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>持續計算數量：{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   setowner: '<green>擁有者：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>凍結模式： <aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
   price: '<green>價格：<aqua>{0} <yellow>[<bold><light_purple>變更</light_purple></bold>]'
   currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>商店上：<aqua>{0} <yellow>[<bold><light_purple>切換</light_purple></bold>]'
@@ -438,7 +439,7 @@ command:
     sell: <yellow>變更成 <light_purple>出售 <yellow>模式
     fetchmessage: <yellow>顯示未讀商店日誌
     staff: <yellow>管理你的商店員工
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>管理您所有商店的店員。
     clean: <yellow>移除所有（已載入）沒有商品的商店
     refill: <yellow>將一定數量的商品加到商店
     help: <yellow>顯示 QuickShop 說明
@@ -456,7 +457,7 @@ command:
     lookup: <yellow>管理物品索引表
     database: <yellow>查看和維護 QuickShop 資料庫
     benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>瀏覽此伺服器中存在的商店。
     tag: <yellow>新增、刪除或查詢商店標籤
     suggestprice: <yellow>基於其它商店的情況，為商店提出建議價格
     history: <yellow>查看商店的歷史交易記錄
@@ -756,7 +757,7 @@ addon:
     world-not-enabled: <red>你不能在此世界中建立或購買商店。
     creation-denied: <red>你沒有在此領土建立商店的權限。
   dominion:
-    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    creation-denied: <red>您無權在此區域建立商店。
     trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>你無法在畫布外建立商店。
@@ -771,7 +772,7 @@ addon:
     owner-member-create-only: <red>只有島嶼擁有者或成員能夠在那裡建立商店。
   fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-member-create-only: <red>只有島主或會員可以在那裡建立商店
   worldguard:
     creation-flag-test-failed: <red>你沒有在此 WorldGuard 保護區建立商店的權限。
     trade-flag-test-failed: <red>你沒有在此 WorldGuard 保護區與商店交易的權限。
@@ -1543,13 +1544,13 @@ sign-type-invalid: "<red>告示牌 <yellow>{0}</yellow> 是無效的材質。"
 delete-controlpanel-button-confirm: "<red>你真的想刪除這家商店嗎？在 {0} 秒內按兩下 <bold>[刪除商店]</bold> 按鈕來再次確認。"
 cannot-suggest-price: "<red>對不起，目前沒有更多的人和你交易相同的物品，也沒有足夠的資料來生成建議的價格。"
 price-suggest: "<green>基於來自 <aqua>{0}</aqua> 商店的資料，價格最高的商店價格為 <light_purple>{1}</light_purple> 元，價格最低的商店價格為 <light_purple>{2}</light_purple> 元，平均價格為 <light_purple>{3}</light_purple> 元，中位數價格為 <light_purple>{4}</light_purple> 元。<newline><yellow>建議你將價格設定在 <gold>{5}</gold> 元。</yellow>"
-price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
+price-suggest-multi: ""
 suggest-wait: "<green>請稍候……正在計算建議價格。"
 gui:
   shared:
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    previous-menu: "<white>Previous Menu</white>"
+    previous-page: "<white><<上一頁</white>"
+    next-page: "<white>下一頁 >></white>"
+    previous-menu: "<white>上一個選單</white>"
   player:
     select:
       - "<yellow>Click to select this player.</yellow>"
@@ -1561,22 +1562,22 @@ gui:
       display: "<aqua>{0}</aqua>"
       lore:
         - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>Right click to transfer ownership</yellow>"
+        - "<yellow>右鍵單擊以轉移所有權</yellow>"
         - "<yellow>to this staff member.</yellow>"
   trade:
-    title: "Shop Browser"
+    title: "瀏覽商店"
     custom:
       display: "<bold><blue>Custom Order</blue></bold>"
       lore-buy:
-        - "<white>Choose the quantity</white>"
+        - "<white>選擇數量</white>"
         - "<white>you would like to buy.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>點擊輸入自訂數量</yellow>"
         - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
+        - "<white>庫存: <bold><red>{1}</red></bold>"
       lore-sell:
         - "<white>Choose the quantity</white>"
         - "<white>you would like to sell.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
+        - "<yellow>點擊輸入自訂數量</yellow>"
         - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
       enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
       enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"

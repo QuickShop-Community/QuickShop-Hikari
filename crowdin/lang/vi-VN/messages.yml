@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Tiêu tốn {0} để tạo ra 1 shop mới.
 success-created-shop: <red>Shop đã được tạo.
 shop-creation-cancelled: <red>Khởi tạo shop đã bị huỷ.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Tải lại hoàn tất và không có bất kỳ lỗi nào.

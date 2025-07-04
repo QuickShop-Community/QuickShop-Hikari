@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>يكلف إنشاء متجر جديد {0}.
 success-created-shop: تم إنشاء المتجر.
 shop-creation-cancelled: <red>تم إلغاء إنشاء المتجر.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.

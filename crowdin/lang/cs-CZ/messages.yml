@@ -15,10 +15,10 @@ not-a-number: <red>Můžete zadat pouze číslo, váš vstup byl {0}.
 not-looking-at-valid-shop-block: <red>Nelze najít blok pro vytvoření obchodu. Musíte se na něj dívat.
 shop-removed-cause-ongoing-fee: <red>Váš obchod v {0} byl odstraněn, protože nemáte dostatek peněz na jeho udržení!
 tabcomplete:
-  amount: '[amount]'
+  amount: '[množství]'
   item: '[item]'
-  price: '[price]'
-  name: '[name]'
+  price: '[cena]'
+  name: '[název]'
   range: '[range]'
   currency: '[currency name]'
   percentage: '[percentage%]'
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Cena založení nového obchodu je {0}.
 success-created-shop: <green>Obchod vytvořen.
 shop-creation-cancelled: <red>Vytvoření obchodu bylo zrušeno.
 shop-owner-self-trade: <yellow>Obchodujete s vlastním obchodem. Nemusíte získat žádné peníze.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Tomuto obchodu došlo místo, Kontaktuj jeho majitele aby ho vyprázdnil.
 reloading-status:
   success: <green>Obnovení konfigurace proběhlo bez problému.
@@ -597,7 +598,7 @@ debug:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
+  update-player-shops-signs-no-username-given: <red>Musíte zadat platné uživatelské jméno hráče.
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
   update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.

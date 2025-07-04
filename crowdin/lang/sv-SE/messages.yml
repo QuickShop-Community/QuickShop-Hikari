@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Det kostar {0} att skapa en ny butik.
 success-created-shop: <red>Butik skapad.
 shop-creation-cancelled: <red>Butik-skapelsen avbröts!
 shop-owner-self-trade: <yellow>You handlar med din egen butik, så du kanske inte kommer att få något saldo.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.
 reloading-status:
   success: <green>Omladdning slutförd utan några fel.

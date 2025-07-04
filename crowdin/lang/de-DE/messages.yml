@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Du kannst den Shop mithilfe deines Super-Tool abbauen.
+break-shop-use-supertool: <yellow>Du kannst den Shop mithilfe des Super-Tools abbauen.
 fee-charged-for-price-change: <green>Du hast <red>{0}<green> bezahlt, um den Preis zu ändern.
 not-allowed-to-create: <red>Du kannst hier keinen Shop erstellen.
 disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Du kannst dir dies nicht leisten. Es kosted <gr
 success-created-shop: <green>Shop erfolgreich erstellt.
 shop-creation-cancelled: <red>Die Shoperstellung wurde abgebrochen.
 shop-owner-self-trade: <yellow>Du handelst mit deinem eigenen Shop. <gray>Du wirst kein Geld davon verdienen.
+shop-owner-self-trade-denied:
 purchase-out-of-space: <red>Dieser Shop hat keinen platz mehr! Kontaktiere den Shopbesitzer oder einen Shopmitarbeiter damit er geleert wird.
 reloading-status:
   success: <green>Plugin erfolgreich ohen Fehler neu geladen.

@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>SuperTool aletini kullanarak marketleri kırabilirsin.
 fee-charged-for-price-change: <green>Fiyatı değiştirmek için <red>{0}<green> ödediniz.
 not-allowed-to-create: <red>Burada bir market oluşturamazsın.
 disabled-in-this-world: <red>Bu komut bu dünyada devre dışı
@@ -16,7 +16,7 @@ not-looking-at-valid-shop-block: <red>Hiç Mağza bulunamadı. Birine bakman laz
 shop-removed-cause-ongoing-fee: <red>{0}'deki marketiniz açık tutmaya yetecek kadar paranız olmadığı için kaldırıldı!
 tabcomplete:
   amount: '[miktar]'
-  item: '[item]'
+  item: '[eşya]'
   price: '[fiyat]'
   name: '[name]'
   range: '[menzil]'
@@ -49,8 +49,8 @@ quick-fill:
     - '<yellow>Öğe: <aqua>{item}'
     - '<yellow>Konum: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
-  entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+  entry-normal: ''
+  entry-cooperation: ''
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Yakınlardaki ortalama fiyat: <yellow>{0}'
 inventory-check-global-alert: "<red>[Envanter Kontrolü] <gray>Uyarı! QuickShop görüntülü öğe bulundu <gold>{2}</gold> Envanterde <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, ki bu olmamalı, Bu genellikle birisinin görüntüleme öğesini çoğaltmak için istismardan kötü niyetli olarak yararlandığı anlamına gelir."
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: '<red>Yeni bir market oluşturma maliyeti: ${0}'
 success-created-shop: <red>Market oluşturuldu.
 shop-creation-cancelled: <red>Market oluşumu iptal edildi.
 shop-owner-self-trade: <yellow>Kendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Bu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.
 reloading-status:
   success: <green>Yeniden yükleme hata olmadan tamamlandı.

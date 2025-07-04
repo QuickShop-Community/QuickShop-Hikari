@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Kaupan luominen maksaa {0}.
 success-created-shop: <red>Kauppa luotu.
 shop-creation-cancelled: <red>Kaupan luonti peruttu.
 shop-owner-self-trade: <yellow>Käyt kauppaa omassa kaupassa, joten et saa lisää rahaa.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
