@@ -597,46 +597,46 @@ debug:
   warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
   warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
   sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
-  sql-executing: '<yellow>Executing SQL statement: <aqua>{0}'
+  sql-executing: '<yellow>Виконання SQL-запиту: <aqua>{0}'
   sql-completed: <green>Completed, {0} rows affected.
   sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
-  force-shop-reload: <yellow>Forcing reload all loaded shops...
-  force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
-  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
-  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
-  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
-  force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
-  force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
-  toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}
-  shop-internal-data: '<yellow>The internal data of this shop: </yellow>{0}'
-  handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
-  update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
-  update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}'
-  update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
-  update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}'
-  update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
-  update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
-  item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
-  item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
+  force-shop-reload: <yellow>Примусове перезавантаження всіх завантажених магазинів...
+  force-shop-reload-complete: <green>Примусово перезавантажено <aqua>{0}</aqua> магазинів.
+  force-shop-loader-reload: <yellow>Примусове перезавантаження завантажувача магазинів...
+  force-shop-loader-reload-unloading-shops: <yellow>Вивантаження <aqua>{0}</aqua> завантажених магазинів...
+  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Видалення <aqua>{0}</aqua> магазинів з пам'яті...
+  force-shop-loader-reload-reloading-shop-loader: <yellow>Повторний виклик завантажувача магазинів для перезавантаження всіх магазинів з бази даних...
+  force-shop-loader-reload-complete: <green>Завантажувач магазинів перезавантажив усі магазини!
+  toggle-shop-loaded-status: <aqua>Перемкнути статус завантаження цього магазину на <gold>{0}
+  shop-internal-data: '<yellow>Внутрішні дані цього магазину: </yellow>{0}'
+  handler-list-not-valid-bukkit-event-class: <red>Наданий клас <yellow>{0}</yellow> не є дійсним класом події Bukkit.
+  update-player-shops-signs-no-username-given: <red>Ви повинні вказати дійсне ім'я гравця.
+  update-player-shops-signs-create-async-task: <yellow>Створення асинхронних завдань для примусового оновлення табличок...
+  update-player-shops-player-selected: '<yellow>Вибраний гравець: <gold>{0}'
+  update-player-shops-player-shops: <yellow>Загалом <gold>{0}</gold> магазинів чекають на оновлення.
+  update-player-shops-per-tick-threshold: '<yellow>Максимальна кількість магазинів, які можна оновити за тік: <gold>{0}'
+  update-player-shops-complete: <green>Завдання виконано, на оновлення витрачено <yellow>{0}мс</yellow>.
+  update-player-shops-task-started: <gold>Завдання розпочато, будь ласка, дочекайтеся його завершення.
+  item-info-store-as-string: "<green>Магазин, на який ви дивитеся: <gold>{0}</gold> Хеш: <white>{1}</white>"
+  item-info-hand-as-string: "<green>Предмет у вашій руці: <gold>{0}</gold> Хеш: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
-  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
-  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
-  hikari-cp-working: "<green>Pass! HikariCP working well!"
-  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
-  hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
-  queries-stopped: "<green>Stopped <white>{0}</white> active queries."
-  queries-dumping: "<yellow>Dumping active queries..."
-  restart-database-manager: "<yellow>Restarting SQLManager..."
-  restart-database-manager-clear-executors: "<yellow>Clearing executors..."
-  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
-  restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
-  restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
-  restart-database-manager-done: "<green>Done!"
-  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
-  property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
-  property-removed: "<green>Removed property key <white>{0}</white>"
+  hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize та MinimumIdle встановлено на <white>{0}</white>"
+  hikari-cp-testing: "<green>Будь ласка, зачекайте, тестування з'єднання HikariCP..."
+  hikari-cp-working: "<green>Пройдено! HikariCP працює добре!"
+  hikari-cp-not-working: "<red>Не вдалося! З'єднання, повернуте HikariCP, неактивне! (Не пройшло тест за 1 секунду)"
+  hikari-cp-timeout: "<red>Час очікування HikariCP вичерпано під час отримання дійсного з'єднання, будь ласка, очистіть всі активні запити, щоб звільнити ресурси з'єднання."
+  queries-stopped: "<green>Зупинено <white>{0}</white> активних запитів."
+  queries-dumping: "<yellow>Вивантаження активних запитів..."
+  restart-database-manager: "<yellow>Перезапуск SQLManager..."
+  restart-database-manager-clear-executors: "<yellow>Очищення виконавців..."
+  restart-database-manager-unfinished-task: "<yellow>Незавершене завдання: <white>{0}</white>"
+  restart-database-manager-unfinished-task-history-query: "<yellow>Незавершене завдання (Запит історії): <white>{0}</white>"
+  restart-database-manager-reconnect: "<yellow>Повторний запуск SQLManager через початкову послідовність (через асинхронний виконавець)"
+  restart-database-manager-done: "<green>Готово!"
+  property-incorrect: "<yellow>Ви повинні ввести один (і тільки один) набір властивостей ключ=значення. Наприклад, aaa=bbb"
+  property-security-block: "<red>Запит відхилено, з міркувань безпеки ви можете змінювати лише властивості, що починаються з <aqua>com.ghostchu.quickshop</aqua> або <aqua>quickshop</aqua>."
+  property-removed: "<green>Видалено ключ властивості <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
   marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
   display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
@@ -710,30 +710,30 @@ benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
 benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
 benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%
-tag-added: '<green>Successfully added <aqua>#{0}</aqua> to this shop!'
-tag-add-duplicate: '<red>The tag <aqua>#{0}</aqua> already exists at this shop!'
-tag-removed: '<green>Successfully removed <aqua>#{0}</aqua> from this shop!'
-tag-remove-not-exists: 'The tag <aqua>#{0}</aqua> not exists at this shop!'
-tag-cleared: <green>Successfully cleared all tags from this shop!
-tag-shops-cleared: '<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!'
-tag-query: '<green>This shop have <yellow>{0}</yellow> tags:'
+tag-added: '<green>Успішно додано <aqua>#{0}</aqua> до цього магазина!'
+tag-add-duplicate: '<red>Тег <aqua>#{0}</aqua> вже існує в цьому магазині!'
+tag-removed: '<green>Успішно видалено <aqua>#{0}</aqua> з цього магазина!'
+tag-remove-not-exists: 'Тег <aqua>#{0}</aqua> не існує в цьому магазині!'
+tag-cleared: <green>Успішно очищено всі теги з цього магазину!
+tag-shops-cleared: '<green>Успішно очищено <aqua>#{0}</aqua> з усіх ваших магазинів з тегами!'
+tag-query: '<green>У цьому магазині <yellow>{0}</yellow> тегів:'
 tag-query-listing: '<yellow> - <aqua>#{0}'
-tag-query-no-tag: <red>This shop have no tags.
-tag-query-shops: '<green>This tag contains <yellow>{0}</yellow> shops:'
+tag-query-no-tag: <red>У цього магазину немає тегів.
+tag-query-shops: '<green>Цей тег містить <yellow>{0}</yellow> магазинів:'
 tag-query-shops-listing: <yellow> - <aqua>{0}
-batch-operations-based-on-tags-no-failure: <green>Successfully batch processed <yellow>{0}</yellow> shops.
-batch-operations-based-on-tags-have-failure: <yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed.
-batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Total {0} shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}'
-batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>The error messages will send to you above this message in the chat.
+batch-operations-based-on-tags-no-failure: <green>Успішно оброблено <yellow>{0}</yellow> магазинів.
+batch-operations-based-on-tags-have-failure: <yellow>Загалом {0} магазинів у пакетній обробці успішно завершено, але <red>{1}</red> запитів не виконано.
+batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Загалом {0} магазинів у пакетній обробці успішно завершено, але <red>{1}</red> запитів не виконано. Причина: <gold>{2}'
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>Повідомлення про помилки будуть надіслані вам вище цього повідомлення в чаті.
 addon:
   towny:
     commands:
-      town: <yellow>Set or unset a shop to a Town shop
-      nation: <yellow>Set or unset a shop to a Nation shop
-    make-shop-owned-by-town: <green>You have made the shop owned by town <yellow>{0}</yellow>.
-    make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
-    make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
+      town: <yellow>Встановити або скасувати магазин як магазин міста
+      nation: <yellow>Встановити або скасувати магазин як магазин нації
+    make-shop-owned-by-town: <green>Ви зробили магазин власністю міста <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-town: <green>Ви скинули власність магазину, тепер вона повертається до початкового власника.
+    make-shop-owned-by-nation: <green>Ви зробили магазин власністю нації <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-nation: <green>Ви скинули власність магазину, тепер вона повертається до початкового власника.
     shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop permission
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
