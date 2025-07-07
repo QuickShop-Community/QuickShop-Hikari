@@ -584,7 +584,7 @@ not-a-valid-time: |-
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
   - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
-invalid-past-time: <red>You can't specify a time in the past.
+invalid-past-time: <red>Ви не можете вказати час у минулому.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
   sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
@@ -592,9 +592,9 @@ debug:
   operation-invalid: <red>You must specific an valid operation.
   invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
   warning-sql: |-
-    <bold><red>Warning:</red></bold> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.
-    <red>Don't confirm this if you don't trust who send you this.
-  warning-sql-confirm: <yellow>To confirm this dangerous action, type <aqua>/quickshop debug database sql confirm {0}</aqua> in the next 60 seconds.
+    <bold><red>Увага:</red></bold> <yellow>Ви виконуєте SQL-запит. Це може пошкодити вашу базу даних або знищити будь-які дані в базі даних, навіть якщо вони належать іншому плагіну.
+    <red>Не підтверджуйте це, якщо ви не довіряєте тому, хто надіслав вам це.
+  warning-sql-confirm: <yellow>Щоб підтвердити цю небезпечну дію, введіть <aqua>/quickshop debug database sql confirm {0}</aqua> протягом наступних 60 секунд.
   warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
   sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
   sql-executing: '<yellow>Виконання SQL-запиту: <aqua>{0}'
@@ -637,79 +637,79 @@ debug:
   property-incorrect: "<yellow>Ви повинні ввести один (і тільки один) набір властивостей ключ=значення. Наприклад, aaa=bbb"
   property-security-block: "<red>Запит відхилено, з міркувань безпеки ви можете змінювати лише властивості, що починаються з <aqua>com.ghostchu.quickshop</aqua> або <aqua>quickshop</aqua>."
   property-removed: "<green>Видалено ключ властивості <white>{0}</white>"
-  property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
-  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
-  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
+  property-changed: "<green>Ключ властивості <white>{0}</white> змінено з <white>{1}</white> на <white>{2}</white>"
+  marked-as-dirty: "<green>Позначено всі магазини як 'брудні', вони будуть примусово збережені під час наступного автозбереження. (Перезапустіть сервер, щоб примусово виконати збереження магазинів)"
+  display-removed: "<green>Успішно видалено <yellow>{0}</yellow> відображуваних предметів/сутностей QuickShop зі світів."
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
   trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
-  status: '<yellow>Status: {0}'
-  status-good: <green>Good
+  status: '<yellow>Статус: {0}'
+  status-good: <green>Добре
   status-bad: <yellow>Maintenance Required
-  isolated: '<yellow>Isolated Data:'
-  isolated-data-ids: '<aqua>└<yellow> Data Records: <gold>{0}'
+  isolated: '<yellow>Ізольовані дані:'
+  isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
   isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
   isolated-logs: '<aqua>└<yellow> Logs: <gold>{0}'
   isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
-  last-purge-time: <yellow>Last time of trim at {0}
-  report-time: <yellow>Last time of scan at {0}
+  last-purge-time: <yellow>Останнє очищення було {0}
+  report-time: <yellow>Останнє сканування було {0}
   auto-scan-alert: <yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming.
   auto-trim: <green>Auto trim has been enabled on this server, no manually trim required.
   trim-complete: <green>Database trim completed, <yellow>{0}</yellow> isolated trimmed.
   auto-trim-started: <green>Auto trim has been started, please wait...
   trim-start: <green>Database trim started, please wait...
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
-  generated-at: '<yellow>Generated at: <gold>{0}'
+  generated-at: '<yellow>Згенеровано: <gold>{0}'
   purge-date: <red>Ви повинні вказати дату.
-  purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/quickshop database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>Ця операція очистить історію, що зберігається у вашій базі даних, включаючи створення/зміни/видалення магазинів, покупки, транзакції та системні логи. Видалення цих даних може звільнити місце на диску, але вся історична метрика буде втрачена, а інші плагіни, що залежать від метрик, перестануть працювати. Щоб продовжити виконання цієї операції, виконайте `/quickshop database purgelogs \<before-days> confirm`
   purge-task-created: <green>Завдання створено! База даних безшумно очищає записи історії у фоновому режимі.
   purge-done-with-line: <green>Завдання очищення виконано, всього <gold>{0}</gold> рядків очищено з бази даних.
   purge-done-with-error: <red>Завдання очищення завершилось з помилкою, перевірте консоль сервера для деталей.
-  purge-players-cache: <yellow>Please wait, purging players caches...
+  purge-players-cache: <yellow>Будь ласка, зачекайте, очищення кешу гравців...
   purge-players-completed: |-
-    <green>Successfully purged {0} players caches from both memory and database.
-    <aqua>Note: You server performance may impact by this operation.
-  purge-players-error: <red>Failed to purge players caches, please check the server console.
+    <green>Успішно очищено {0} кешів гравців з пам'яті та бази даних.
+    <aqua>Примітка: Ця операція може вплинути на продуктивність вашого сервера.
+  purge-players-error: <red>Не вдалося очистити кеш гравців, будь ласка, перевірте консоль сервера.
   suggestion:
-    trim: <yellow>This database requires a trimming of isolated data. Execute <aqua>/quickshop database trim</aqua> to trim the database.
+    trim: <yellow>Ця база даних потребує очищення ізольованих даних. Виконайте <aqua>/quickshop database trim</aqua>, щоб очистити базу даних.
 always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
-exporting-database: <green>Exporting database, please wait...
-exporting-failed: <red>Failed to export database, please check the server console.
-exported-database: <green>Database exported to <yellow>{0}</yellow>.
+exporting-database: <green>Експорт бази даних, будь ласка, зачекайте...
+exporting-failed: <red>Не вдалося експортувати базу даних, будь ласка, перевірте консоль сервера.
+exported-database: <green>Базу даних експортовано до <yellow>{0}</yellow>.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
-  <red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.
-  <red>Are you sure to continue the import-procedure?</red> Type <aqua>/quickshop recovery confirm</aqua> to continue.
-importing-database: <green>Importing database from backup, please wait...
-importing-failed: <red>Failed to import database, please check the server console.
-imported-database: <green>Database imported from <yellow>{0}</yellow>.
+  <red><bold>Увага:</bold> <yellow>Резервна копія буде імпортована в поточну базу даних. Будь-які існуючі дані будуть очищені та втрачені назавжди, якщо у вас немає резервної копії.
+  <red>Ви впевнені, що хочете продовжити процедуру імпорту?</red> Введіть <aqua>/quickshop recovery confirm</aqua> для продовження.
+importing-database: <green>Імпорт бази даних з резервної копії, будь ласка, зачекайте...
+importing-failed: <red>Не вдалося імпортувати базу даних, будь ласка, перевірте консоль сервера.
+imported-database: <green>Базу даних імпортовано з <yellow>{0}</yellow>.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+transfer-single-request: <yellow>Гравець <aqua>{0}</aqua> хоче передати вам магазин. Ви хочете прийняти запит?
 transfer-ask: |-
-  <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Введіть <red>/quickshop transfer accept</red>, щоб прийняти, або <red>/quickshop transfer deny</red>, щоб відхилити.
+  Запит закінчиться через <red>{0}</red> секунд.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Введіть <red>/quickshop transferall accept</red>, щоб прийняти, або <red>/quickshop transferall deny</red>, щоб відхилити.
+  Запит закінчиться через <red>{0}</red> секунд.
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Введіть <red>/quickshop transferownership accept</red>, щоб прийняти, або <red>/quickshop transferownership deny</red>, щоб відхилити.
+  Запит закінчиться через <red>{0}</red> секунд.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
-benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
-benefit-exists: <red>Target player already in benefits list on this shop.
-benefit-removed: <red>Target player has been removed from shop benefits.
-benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
-benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
-benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
-benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%
+transfer-no-self: <red>Ви не можете передати свої магазини самому собі.
+benefit-overflow: <red>Сума всіх прибутків не може бути більшою або дорівнювати 100%.
+benefit-exists: <red>Цільовий гравець вже є у списку прибутків цього магазина.
+benefit-removed: <red>Цільового гравця видалено з прибутків магазина.
+benefit-added: <green>Гравця <aqua>{0}</aqua> додано до прибутків магазина!
+benefit-updated: <green>Прибутки гравця <aqua>{0}</aqua> оновлено!
+benefit-query: <green>У списку розподілу прибутку цього магазину <yellow>{0}</yellow> гравців!
+benefit-query-list: <yellow> - </yellow><white>Гравець <gold>{0}</gold>, Прибуток <gold>{1}%
 tag-added: '<green>Успішно додано <aqua>#{0}</aqua> до цього магазина!'
 tag-add-duplicate: '<red>Тег <aqua>#{0}</aqua> вже існує в цьому магазині!'
 tag-removed: '<green>Успішно видалено <aqua>#{0}</aqua> з цього магазина!'
@@ -734,34 +734,34 @@ addon:
     make-shop-no-longer-owned-by-town: <green>Ви скинули власність магазину, тепер вона повертається до початкового власника.
     make-shop-owned-by-nation: <green>Ви зробили магазин власністю нації <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-nation: <green>Ви скинули власність магазину, тепер вона повертається до початкового власника.
-    shop-owning-changing-notice: <gray>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /quickshop permission
-    target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
-    target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
-    target-shop-not-in-town-region: <red>The target shop is not in the town.
-    target-shop-not-in-nation-region: <red>The target shop is not in the nation.
-    item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
-    operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
-    plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
+    shop-owning-changing-notice: <gray>Цей магазин тепер належить місту/нації, початковий власник магазина був автоматично доданий до списку адміністраторів, змінюйте або додавайте будь-якого нового власника / персонал за допомогою команди /quickshop permission
+    target-shop-already-is-town-shop: <red>Цільовий магазин вже є власністю міста.
+    target-shop-already-is-nation-shop: <red>Цільовий магазин вже є власністю нації.
+    target-shop-not-in-town-region: <red>Цільовий магазин не знаходиться в місті.
+    target-shop-not-in-nation-region: <red>Цільовий магазин не знаходиться в регіоні нації.
+    item-not-allowed: <red>Предмет цього магазину не дозволений для використання в міському/національному магазині, виберіть інший!
+    operation-disabled-due-shop-status: <red>Ця операція з магазином вимкнена, оскільки він вже є міським/національним магазином.
+    plot-type-disallowed: <red>Ви не можете створити міський/національний магазин на цьому типі ділянки.
     flags:
-      own: <red>You can only create shops at your owned shop type towny plot.
-      modify: <red>You didn't have build permission on this towny plot.
-      shop-type: <red>You must create shop on a shop type towny plot.
+      own: <red>Ви можете створювати магазини лише на ділянках міста типу "магазин", якими ви володієте.
+      modify: <red>У вас немає дозволу на будівництво на цій ділянці міста.
+      shop-type: <red>Ви повинні створювати магазин на ділянці міста типу "магазин".
   residence:
-    creation-flag-denied: <red>You don't have permission to create shops in this residence.
-    trade-flag-denied: <red>You don't have permission to purchase in this residence.
-    you-cannot-create-shop-in-wildness: <red>You can't create shop in wildness.
+    creation-flag-denied: <red>У вас немає дозволу на створення магазинів у цій резиденції.
+    trade-flag-denied: <red>У вас немає дозволу на торгівлю в цій резиденції.
+    you-cannot-create-shop-in-wildness: <red>Ви не можете створювати магазин на дикій території.
   griefprevention:
-    creation-denied: <red>You don't have permission to create shops in this claim.
-    trade-denied: <red>You don't have permission to purchase shops in this claim.
+    creation-denied: <red>У вас немає дозволу створювати магазини в цьому приваті.
+    trade-denied: <red>У вас немає дозволу на торгівлю в магазинах у цьому приваті.
   lands:
-    world-not-enabled: <red>You are not allowed to create or purchase in this world.
-    creation-denied: <red>You don't have permission to create shops in this Land area.
+    world-not-enabled: <red>Вам не дозволено створювати або торгувати в цьому світі.
+    creation-denied: <red>У вас немає дозволу на створення магазинів на цій землі.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
-    no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
-    no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
+    no-plot-whitelist-creation: <red>Ви не можете створювати магазин за межами ділянки.
+    no-plot-whitelist-trade: <red>Ви не можете торгувати в магазині за межами ділянки.
     creation-denied: <red>You don't have permission to create shops in this Plot.
     trade-denied: <red>You don't have permission to purchase shops in this Plot.
     flag:
@@ -1316,10 +1316,10 @@ addon:
       item: Item
       amount: Amount
       balance: Balance
-      balance-after-tax: Balance (after tax)
-      account: Your account balance
-      taxes: Taxes
-      cost: Cost
+      balance-after-tax: Баланс (після податків)
+      account: Баланс вашого рахунку
+      taxes: Податки
+      cost: Вартість
   discount:
     commands:
       discount:
@@ -1353,12 +1353,12 @@ addon:
             Accept both Zulu time and UNIX timestamp in seconds.
             Zulu Example: 2022-12-17T10:31:37Z
             UNIX Example: 1671273097
-    discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
-    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
-    invalid-discount-code: <red>This discount code are invalid.
-    discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}
-    invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
+    discount-code-already-exists: <red>Вибачте, назва вашого коду знижки вже використовується.
+    invalid-discount-code-regex: '<red>Код знижки повинен відповідати регулярному виразу: <yellow>{0}'
+    invalid-discount-code: <red>Цей код знижки недійсний.
+    discount-code-added: <green>Ваш код знижки <yellow>{0}</yellow> додано до магазину <aqua>{1}
+    discount-code-removed: <green>Ваш код знижки <yellow>{0}</yellow> видалено з магазину <aqua>{1}
+    invalid-code-type: <red>Тип коду <yellow>{0}</yellow> недійсний.
     invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
     invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
     invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
