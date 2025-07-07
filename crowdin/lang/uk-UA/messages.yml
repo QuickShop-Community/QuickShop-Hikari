@@ -9,14 +9,14 @@ _comment: Hi translator! If you editing this from Github or from code sources, y
 unlimited-shop-owner-changed: <yellow>Власника безлімітного магазину було змінено на {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Неправильне число
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>Назва магазину <yellow>{0}</yellow> недозволена. Оберіть іншу!
 console-only-danger: <red>Це небезпечна команда, тому виконати її може тільки Консоль.
 not-a-number: <red>Ви можете ввести тільки число, ваше введення було {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
 shop-removed-cause-ongoing-fee: <red>Ваш магазин за адресою {0} був видалений, тому що у вас не було достатньо грошей, щоб його утримати!
 tabcomplete:
   amount: '[кількість]'
-  item: '[товар]'
+  item: '[предмет]'
   price: '[ціна]'
   name: '[назва]'
   range: '[діапазон]'
@@ -62,7 +62,7 @@ no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Поповнення успішне
 failed-to-paste: <red>Не вдалося завантажити дані в Pastebin. Перевірте підключення до Інтернету та повторіть спробу. (Детальніше див. консоль)
 shop-out-of-stock-name: <dark_purple>У вашому магазині {0} закінчився {1}!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
+shop-name-invalid: <red>Назва магазину <yellow>{0}</yellow> недійсна. Оберіть іншу!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>Значення перевищило максимальне значення в Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
@@ -78,13 +78,13 @@ flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
 shop-already-owned: <red>Це вже магазин.
 backup-success: <green>Резервне копіювання виконано успішно.
-not-looking-at-shop: <red>Could not find a QuickShop. You need to look at one.
+not-looking-at-shop: <red>Не вдалося знайти магазин! <yellow>Переконайтеся, що ви дивитеся на нього.
 you-cant-afford-a-new-shop: <red>Ви не можете собі це дозволити. Створення магазину коштує <green>{0}<red>.
 success-created-shop: <green>Магазин успішно створено.
 shop-creation-cancelled: <red>Shop creation cancelled.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
 shop-owner-self-trade-denied: <red>Ви не можете торгувати з власним магазином.
-purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
+purchase-out-of-space: <red>У цьому магазині закінчилося місце! Зверніться до власника або персоналу, щоб його спорожнили.
 reloading-status:
   success: <green>Reload completed without any errors.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
@@ -130,7 +130,7 @@ translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Інтеграція {0} відмовлено в торгівлі магазину
 shop-transaction-failed: <red>На жаль, під час обробки вашої покупки сталася внутрішня помилка. Покупку скасовано, а всі інші операції відкочено. Будь ласка, зверніться до адміністраторів сервера, якщо ця помилка повториться.
 success-change-owner-to-server: <green>Успішно встановлено власника магазину.
-shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
+shop-name-not-found: <red>Магазин з назвою <yellow>{0}</yellow> не існує.
 shop-name-too-long: <red>Назва цього магазину задовга (максимальна довжина {0}), будь ласка, виберіть інший!
 metric:
   header-player: '<yellow>{0}''s {1} {2} Угоди:'
@@ -336,7 +336,7 @@ language-info-panel:
   name: 'Мова: '
   progress: 'Прогрес: '
   translate-on-crowdin: '[Перекласти на Crowdin]'
-item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
+item-not-exist: <red>Предмет <yellow>{0}</yellow> не існує. Будь ласка, перевірте правильність написання.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
 inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>You cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.
