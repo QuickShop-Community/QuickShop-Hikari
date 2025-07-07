@@ -161,6 +161,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
     if(e.getBlockPlaced().getState() instanceof final Hopper hopper) {
       hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+      hopper.setBlockData(e.getBlockPlaced().getBlockData());
       hopper.update();
     }
   }
