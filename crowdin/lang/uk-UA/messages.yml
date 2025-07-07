@@ -1,12 +1,12 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Ви можете зламати магазин за допомогою супер-інструменту.
 fee-charged-for-price-change: <green>Ви заплатили <red>{0}</red> щоб змінити ціну.
 not-allowed-to-create: <red>Ви не можете створити магазин тут.
 disabled-in-this-world: <red>Quickshop відключений у цьому світі
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
+how-much-to-trade-for: <green>Введіть у чат ціну, за якою бажаєте продавати <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Створення резервної копії магазину з бази даних...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-hikari
-unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
+unlimited-shop-owner-changed: <yellow>Власника безлімітного магазину було змінено на {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Неправильне число
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
@@ -41,15 +41,15 @@ quick-fill:
     - '<yellow>Тип: <aqua>{0}'
     - '<yellow>Ціна: <aqua>{0}'
     - '<yellow>Предмет: <aqua>{0}'
-    - '<yellow>Розташування: <aqua>{0}'
+    - '<yellow>Локація: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Назва: <aqua>{name}'
     - '<yellow>Власник: <aqua>{owner}'
     - '<yellow>Тип: <aqua>{type}'
     - '<yellow>Ціна: <aqua>{price}'
     - '<yellow>Предмет: <aqua>{item}'
-    - '<yellow>Розташування: <aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
+    - '<yellow>Локація: <aqua>{location}'
+  header: '<yellow>У вас є декілька магазинів з назвою "<green>{0}</green>", оберіть один для продовження:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[спільний] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Лише для адмінів) <light_purple>{0}<dark_gray> відхилив перевірку дозволів. Якщо це несподівано, спробуйте додати <light_purple>{1} <gray>до чорного списку слухача. Посібник з налаштування: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
@@ -70,7 +70,7 @@ no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your sh
 3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission setup in there?
 not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: 'Мова: Українська(uk_UA)'
-buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
+buying-more-than-selling: '<red>УВАГА: Ви купуєте предмети дорожче, ніж продаєте!'
 purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
 denied-put-in-item: <red>Ви не можете покласти цей товар у свій магазин!
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
@@ -79,22 +79,22 @@ no-price-given: <red>Please give a valid price.
 shop-already-owned: <red>Це вже магазин.
 backup-success: <green>Резервне копіювання виконано успішно.
 not-looking-at-shop: <red>Could not find a QuickShop. You need to look at one.
-you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
-success-created-shop: <red>Shop created.
+you-cant-afford-a-new-shop: <red>Ви не можете собі це дозволити. Створення магазину коштує <green>{0}<red>.
+success-created-shop: <green>Магазин успішно створено.
 shop-creation-cancelled: <red>Shop creation cancelled.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: <red>Ви не можете торгувати з власним магазином.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} Придбати {1} {2} з вашого магазину, і ви заробили {3} ({4} в податках).
+player-bought-from-your-store-tax: '<green>{0} придбав(-ла) {1} {2} з вашого магазину, і ви заробили {3} (податок: {4}).'
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>У цьому магазині немає персоналу.
 shops-recovering: Відновлення магазинів із резервної копії...
 virtual-player-component-hover: "<gray>Це віртуальний плеєр.\n<gray>Відноситься до системного облікового запису з таким ім'ям з таким же ім'ям.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Це реально існуючий гравець.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ім'я користувача: <yellow>{1}</yellow></green>\n<green>Відображати як: <yellow>{2}</yellow></green>\n<gray>Якщо ви хочете використовувати обліковий запис віртуальної системи з таким же ім'ям, додайте <dark_gray>\"[]\"</dark_gray> з обох боків імені користувача: <dark_gray>[{1}]</dark_gray>."
@@ -121,14 +121,14 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Цей магазин є <light_purple>ПОКУПКИ<green> Елементи.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green>Магазин зараз у <red>режимі заморозки<green>.
   successfully-sold: '<green>Успішно продано:'
   total-value-of-chest: '<green>Загальна вартість скрині: <yellow>{0}'
 currency-not-exists: <red>Не вдається знайти валюту, яку потрібно встановити. Можливо, написання неправильне або ця валюта недоступна в цьому світі.
 no-nearby-shop: <red>No nearby shop matching {0}.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Інтеграція {0} відмовлено в торгівлі магазину
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
+shop-transaction-failed: <red>На жаль, під час обробки вашої покупки сталася внутрішня помилка. Покупку скасовано, а всі інші операції відкочено. Будь ласка, зверніться до адміністраторів сервера, якщо ця помилка повториться.
 success-change-owner-to-server: <green>Успішно встановлено власника магазину.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>Назва цього магазину задовга (максимальна довжина {0}), будь ласка, виберіть інший!
@@ -148,7 +148,7 @@ metric:
     PURCHASE: <yellow>Придбаний товар у магазині
   query-argument: 'Аргумент запиту: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Транзакції магазину {0} ({1} {2}):'
   player-hover: |-
     <yellow>{0}
     <gold>UUID: <gray>{1}
@@ -255,7 +255,7 @@ tableformat:
 quickshop-gui-preview: 'QuickShop GUI: Перегляд предмета'
 translate-not-completed-yet-click: Переклад мови {0} ще не завершений {1}. Хочете допомогти нам покращити переклад? Натисніть тут!
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
-player-bought-from-your-store: <red>{0} purchased {1} {2} from your shop, and you earned {3}.
+player-bought-from-your-store: <green>{0} придбав(-ла) {1} {2} з вашого магазину, і ви заробили {3}.
 reached-maximum-can-create: '<red>Ви вже створили максимальну кількість магазинів: {0}/{1}!'
 translation-version: 'Версія підтримки: Hikari'
 no-double-chests: <red>You cannot create the double chest shop.
@@ -272,7 +272,7 @@ bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
 saved-to-path: Резервну копію збережено в {0}.
 shop-now-freezed: <green>Ви заморозили магазин. Тепер ніхто не може торгувати з цим магазином!
 price-is-now: '<green>Нова ціна магазина: <yellow>{0}'
-shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!
+shops-arent-locked: <red>Пам'ятайте, магазини НЕ захищені від крадіжки! Якщо ви хочете зупинити злодіїв, захистіть їх за допомогою LWC, Lockette або подібних плагінів!
 that-is-locked: <red>Цей магазин заблоковано.
 shop-has-no-space: <red>У магазині є місце лише для {0} ще {1}.
 safe-mode-admin: <red><bold>УВАГА:</bold> Версія QuickShop на цьому сервері працює в безпечному режимі. Функції не працюватимуть. Будь ласка, використовуйте команду <yellow>/quickshop</yellow>, щоб перевірити наявність помилок.
@@ -310,7 +310,7 @@ signs:
   status-unavailable: <red>
   out-of-stock: Немає в наявності
   stack-buying: Купівля {0}
-  freeze: Trading disabled
+  freeze: Не працює
   price: '{0} за шт'
   buying: Купівля {0}
   header: '{1}{0}'
@@ -327,8 +327,8 @@ backup-failed: Не вдалося створити резервну копію 
 shop-staff-cleared: <green>Успішно видалено весь персонал з вашого магазину.
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
-shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
+player-sold-to-your-store: <green>{0} продав(-ла) {1} {2} у ваш магазин.
+shop-out-of-stock: <dark_purple>У вашому магазині за координатами {0}, {1}, {2} закінчився {3}!
 how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Допоможіть нам: '
@@ -353,10 +353,10 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Завжди рахувати: {0} <yellow>[<bold><light_purple>Змінити</light_purple></bold>]'
   setowner: '<green>Власник: <aqua>{0} <yellow>[<bold><light_purple>Змінити</light_purple></bold>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>Режим заморозки: <aqua>{0} <yellow>[<bold><light_purple>Перемкнути</light_purple></bold>]'
   price: '<green>Ціна: <aqua>{0} <yellow>[<bold><light_purple>Змінити</light_purple></bold>]'
   currency-hover: <yellow>Натисніть, щоб встановити або видалити валюту, яку використовує цей магазин
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  lock: '<yellow>Блокування магазина: <aqua>{0} <yellow>[<bold><light_purple>Перемкнути</light_purple></bold>]'
   mode-selling: '<green>Режим магазину: <aqua>Продаж <yellow>[<bold><light_purple>Змінити</light_purple></bold>]'
   currency: '<green>Валюта: <aqua>{0} <yellow>[<bold><light_purple>Встановити</light_purple></bold>]'
   setowner-hover: <yellow>Натисніть, щоб змінити власника.
@@ -442,7 +442,7 @@ command:
     staffall: <yellow>Керуйте персоналом усіх ваших магазинів.
     clean: <yellow>Видаляє всі (завантажені) магазини без товарів
     refill: <yellow>Додає вказану кількість предметів до магазину
-    help: <yellow>Shows QuickShop help
+    help: <yellow>Показує довідку QuickShop
     removeall: <yellow>Видаляє УСІ магазини вказаного гравця
     unban: <yellow>Unbans a player from the shop
     transfer: <yellow>Transfer someone's ALL shops to other
@@ -644,7 +644,7 @@ database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
   already-scanning: <red>An scan task has been started, please wait until it finished.
-  trim-warning: <red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/quickshop database trim confirm</aqua> to continue.
+  trim-warning: <red><bold>Увага:</bold> <yellow>Зробіть резервну копію вашої бази даних перед продовженням очищення, щоб уникнути втрати даних. Коли будете готові, виконайте <aqua>/quickshop database trim confirm</aqua> для продовження.
   status: '<yellow>Статус: {0}'
   status-good: <green>Добре
   status-bad: <yellow>Maintenance Required
@@ -663,7 +663,7 @@ database:
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
   generated-at: '<yellow>Згенеровано: <gold>{0}'
   purge-date: <red>Ви повинні вказати дату.
-  purge-warning: <yellow>Ця операція очистить історію, що зберігається у вашій базі даних, включаючи створення/зміни/видалення магазинів, покупки, транзакції та системні логи. Видалення цих даних може звільнити місце на диску, але вся історична метрика буде втрачена, а інші плагіни, що залежать від метрик, перестануть працювати. Щоб продовжити виконання цієї операції, виконайте `/quickshop database purgelogs \<before-days> confirm`
+  purge-warning: <yellow>Ця операція очистить історію, що зберігається у вашій базі даних, включаючи створення/зміни/видалення магазинів, покупки, транзакції та системні логи. Видалення цих даних може звільнити місце на диску, але вся історична метрика буде втрачена, а інші плагіни, що залежать від метрик, перестануть працювати. Щоб продовжити виконання цієї операції, виконайте /quickshop database purgelogs \<before-days> confirm
   purge-task-created: <green>Завдання створено! База даних безшумно очищає записи історії у фоновому режимі.
   purge-done-with-line: <green>Завдання очищення виконано, всього <gold>{0}</gold> рядків очищено з бази даних.
   purge-done-with-error: <red>Завдання очищення завершилось з помилкою, перевірте консоль сервера для деталей.
@@ -757,48 +757,48 @@ addon:
     world-not-enabled: <red>Вам не дозволено створювати або торгувати в цьому світі.
     creation-denied: <red>У вас немає дозволу на створення магазинів на цій землі.
   dominion:
-    creation-denied: <red>You don't have permission to create shops in this Dominion area.
-    trade-denied: <red>The shop must be within a Dominion to trade with it.
+    creation-denied: <red>У вас немає дозволу на створення магазинів у цій зоні Dominion.
+    trade-denied: <red>Магазин повинен знаходитися в межах Dominion, щоб з ним можна було торгувати.
   plotsquared:
     no-plot-whitelist-creation: <red>Ви не можете створювати магазин за межами ділянки.
     no-plot-whitelist-trade: <red>Ви не можете торгувати в магазині за межами ділянки.
-    creation-denied: <red>You don't have permission to create shops in this Plot.
-    trade-denied: <red>You don't have permission to purchase shops in this Plot.
+    creation-denied: <red>У вас немає дозволу на створення магазинів на цій ділянці.
+    trade-denied: <red>У вас немає дозволу на торгівлю в магазинах на цій ділянці.
     flag:
-      create: Create QuickShop-Hikari shops
-      trade: Purchase QuickShop-Hikari shops
+      create: Створення магазинів QuickShop-Hikari
+      trade: Торгувати в магазинах QuickShop-Hikari
   superiorskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-create-only: <red>Тільки власник острова може створювати тут магазин.
+    owner-member-create-only: <red>Тільки власник або учасник острова може створювати тут магазин.
   fabledskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-create-only: <red>Тільки власник острова може створювати тут магазин.
+    owner-member-create-only: <red>Тільки власник або член острова може створювати тут магазин.
   worldguard:
-    creation-flag-test-failed: <red>You don't have permission create shop in this WorldGuard area.
-    trade-flag-test-failed: <red>You don't have permission trade shop in this WorldGuard area.
-    reached-per-region-amount-limit: "<red>You have reached the maximum amount of shops in this region."
+    creation-flag-test-failed: <red>У вас немає дозволу створювати магазин у цій зоні WorldGuard.
+    trade-flag-test-failed: <red>У вас немає дозволу торгувати в магазині у цій зоні WorldGuard.
+    reached-per-region-amount-limit: "<red>Ви досягли максимальної кількості магазинів у цьому регіоні."
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
-    __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
-    __to_message_designer: 'Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!'
-    discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
-    discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
-    discord-not-integrated: <red>You hadn't link your Discord yet! Please link your Discord account first!
-    feature-enabled-for-user: <aqua>You have <green>enabled</green> <gold>{0}</gold> notification.
-    feature-disabled-for-user: <aqua>You have <red>disabled</red> <gold>{0}</gold> notification.
-    link-help: <yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account.
-    save-notifaction-exception: <red>An error occurred while saving your Discord notifaction settings, please contact the server administrator.
-    feature-status-changed: <green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}
+    __to_users: Як і система тексту QuickShop, аддон Discord також автоматично визначатиме мову користувача та використовуватиме її для надсилання повідомлень Discord, дотримуючись налаштувань мовної системи QuickShop-Hikari.
+    __to_message_designer: 'Створіть своє повідомлення Discord за допомогою GUI: https://glitchii.github.io/embedbuilder/, потім скопіюйте JSON-код і вставте його в переклад, і все готово!'
+    discord-enabled: <aqua>Успішно <green>увімкнено</green> ваші сповіщення QuickShop у Discord, тепер ви можете отримувати повідомлення магазину з Discord.
+    discord-disabled: <aqua>Успішно <red>вимкнено</red> ваші сповіщення QuickShop у Discord, тепер ви більше не будете отримувати повідомлення магазину з Discord.
+    discord-not-integrated: <red>Ви ще не прив'язали свій Discord! Будь ласка, спочатку прив'яжіть свій обліковий запис Discord!
+    feature-enabled-for-user: <aqua>Ви <green>увімкнули</green> сповіщення <gold>{0}</gold>.
+    feature-disabled-for-user: <aqua>Ви <red>вимкнули</red> сповіщення <gold>{0}</gold>.
+    link-help: <yellow>Цей сервер використовує <gold>{0}</gold> для драйвера Discord, будь ласка, використовуйте <green>{0}</green> для прив'язки вашого акаунту Discord.
+    save-notifaction-exception: <red>Сталася помилка під час збереження ваших налаштувань сповіщень Discord, будь ласка, зв'яжіться з адміністратором сервера.
+    feature-status-changed: <green>Успішно встановлено статус сповіщення <aqua>{0}</aqua> на <gold>{1}
     commands:
       discord:
-        description: <yellow>Managing your QuickShop Discord settings
+        description: <yellow>Керування вашими налаштуваннями Discord для QuickShop
     discord-messages:
       sold-to-your-shop: |
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: Хтось продав предмети у ваш магазин",
+             "description": "Гравець %%purchase.name%% продав x%%purchase.amount%% %%shop.item.name%% у ваш магазин.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -811,37 +811,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "Сповіщення QuickShop-Hikari Discord",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "Магазин",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "Покупець",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "Предмет",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Amount",
+                 "name": "Кількість",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "Ви заплатили",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "Податки",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -852,8 +852,8 @@ addon:
         {
            "embed":
              {
-               "title": ":outbox_tray: Somebody bought items from shop",
-               "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
+               "title": ":outbox_tray: Хтось купив предмети з вашого магазину",
+               "description": "Гравець %%purchase.name%% купив x%%purchase.amount%% %%shop.item.name%% з вашого магазину.",
                "color": 52084,
                "author": {
                    "name": "QuickShop-Hikari",
@@ -866,37 +866,37 @@ addon:
                    "url": ""
                },
                "footer": {
-                   "text": "QuickShop-Hikari Discord Notification",
+                   "text": "Сповіщення QuickShop-Hikari Discord",
                    "icon_url": ""
                },
                "fields": [
                    {
-                       "name": "Shop",
+                       "name": "Магазин",
                        "value": "%%shop.display-name%%",
                        "inline": false
                    },
                    {
-                       "name": "Purchaser",
+                       "name": "Покупець",
                        "value": "%%purchase.name%%",
                        "inline": true
                    },
                    {
-                       "name": "Item",
+                       "name": "Предмет",
                        "value": "%%shop.item.name%%",
                        "inline": true
                    },
                    {
-                       "name": "Amount",
+                       "name": "Кількість",
                        "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
                        "inline": true
                    },
                    {
-                       "name": "Your earn",
+                       "name": "Ваш заробіток",
                        "value": "%%purchase.balance-formatted%%",
                        "inline": true
                    },
                    {
-                       "name": "Taxes",
+                       "name": "Податки",
                        "value": "%%purchase.taxes-formatted%%",
                        "inline": true
                    }
@@ -907,8 +907,8 @@ addon:
         {
         "embed":
           {
-              "title": ":dollar: Somebody purchased in a shop",
-              "description": "The player %%purchase.name%% purchase x%%purchase.amount%% %%shop.item.name%% from the shop.",
+              "title": ":dollar: Хтось здійснив покупку в магазині",
+              "description": "Гравець %%purchase.name%% придбав x%%purchase.amount%% %%shop.item.name%% з магазину.",
               "color": 6061450,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -921,37 +921,37 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "Сповіщення QuickShop-Hikari Discord",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "Магазин",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   },
                   {
-                      "name": "Purchaser",
+                      "name": "Покупець",
                       "value": "%%purchase.name%%",
                       "inline": true
                   },
                   {
-                      "name": "Item",
+                      "name": "Предмет",
                       "value": "%%shop.item.name%%",
                       "inline": true
                   },
                   {
-                      "name": "Amount",
+                      "name": "Кількість",
                       "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                       "inline": true
                   },
                   {
-                      "name": "Balance",
+                      "name": "Баланс",
                       "value": "%%purchase.balance-formatted%%",
                       "inline": true
                   },
                   {
-                      "name": "Taxes",
+                      "name": "Податки",
                       "value": "%%purchase.taxes-formatted%%",
                       "inline": true
                   }
@@ -962,8 +962,8 @@ addon:
         {
         "embed":
           {
-              "title": ":mailbox_with_mail: Your shop has run out of space",
-              "description": "Your shop inventory is full of items!\\nYou need empty your shop container to free the space then you can continue to accept new items.",
+              "title": ":mailbox_with_mail: У вашому магазині закінчилося місце",
+              "description": "Інвентар вашого магазину переповнений!\\nВам потрібно очистити контейнер магазину, щоб звільнити місце і продовжити приймати нові предмети.",
               "color": 16065893,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -976,12 +976,12 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "Сповіщення QuickShop-Hikari Discord",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "Магазин",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   }
@@ -992,8 +992,8 @@ addon:
         {
             "embed":
                 {
-                    "title": ":mailbox_with_no_mail: Your shop has run out of stock",
-                    "description": "Your shop inventory is empty now!\\nYou need to refill the shop container with items to continue selling items!",
+                    "title": ":mailbox_with_no_mail: У вашому магазині закінчився товар",
+                    "description": "Інвентар вашого магазину тепер порожній!\\nВам потрібно поповнити контейнер магазину предметами, щоб продовжити продаж!",
                     "color": 16065893,
                     "author": {
                         "name": "QuickShop-Hikari",
@@ -1006,12 +1006,12 @@ addon:
                         "url": ""
                     },
                     "footer": {
-                        "text": "QuickShop-Hikari Discord Notification",
+                        "text": "Сповіщення QuickShop-Hikari Discord",
                         "icon_url": ""
                     },
                     "fields": [
                         {
-                            "name": "Shop",
+                            "name": "Магазин",
                             "value": "%%shop.display-name%%",
                             "inline": false
                         }
@@ -1021,8 +1021,8 @@ addon:
       mod-shop-created: |
         {
           "embed": {
-            "title": ":classical_building: A new shop has been created",
-            "description": "Player created a new shop on your server!",
+            "title": ":classical_building: Створено новий магазин",
+            "description": "Гравець створив новий магазин на вашому сервері!",
             "color": 6061450,
             "author": {
               "name": "QuickShop-Hikari",
@@ -1035,32 +1035,32 @@ addon:
               "url": ""
             },
             "footer": {
-              "text": "QuickShop-Hikari Discord Notification",
+              "text": "Сповіщення QuickShop-Hikari Discord",
               "icon_url": ""
             },
             "fields": [
               {
-                "name": "Shop",
+                "name": "Магазин",
                 "value": "%%shop.display-name%%",
                 "inline": false
               },
               {
-                "name": "Owner",
+                "name": "Власник",
                 "value": "%%shop.owner.name%%",
                 "inline": true
               },
               {
-                "name": "Item",
+                "name": "Предмет",
                 "value": "%%shop.item.name%%",
                 "inline": true
               },
               {
-                "name": "Amount",
+                "name": "Кількість",
                 "value": "%%shop.stacking-amount%%",
                 "inline": true
               },
               {
-                "name": "Type",
+                "name": "Тип",
                 "value": "%%shop.type%%",
                 "inline": true
               }
@@ -1070,8 +1070,8 @@ addon:
       mod-remove-shop: |
         {
             "embed": {
-                "title": ":recycle: A shop was removed from this server",
-                "description": "A shop was removed from this server.",
+                "title": ":recycle: Магазин було видалено з цього сервера",
+                "description": "Магазин було видалено з цього сервера.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1084,17 +1084,17 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Сповіщення QuickShop-Hikari Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Магазин",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "Reason",
+                        "name": "Причина",
                         "value": "%%delete.reason%%",
                         "inline": false
                     }
@@ -1104,8 +1104,8 @@ addon:
       shop-transfer-to-you: |
         {
             "embed": {
-                "title": ":placard: A shop was transfer to you",
-                "description": "A shop transfer to you from another player.",
+                "title": ":placard: Вам передали магазин",
+                "description": "Магазин передано вам від іншого гравця.",
                 "color": 16172079,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1118,17 +1118,17 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Сповіщення QuickShop-Hikari Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Магазин",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
+                        "name": "Від",
                         "value": "%%transfer.from%%",
                         "inline": false
                     }
@@ -1138,8 +1138,8 @@ addon:
       mod-shop-transfer: |
         {
             "embed": {
-                "title": ":placard: A shop was transferred",
-                "description": "A shop transfer to a player from another player.",
+                "title": ":placard: Магазин було передано",
+                "description": "Магазин передано гравцю від іншого гравця.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1152,22 +1152,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Сповіщення QuickShop-Hikari Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Магазин",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
+                        "name": "Від",
                         "value": "%%transfer.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
+                        "name": "Кому",
                         "value": "%%transfer.to%%",
                         "inline": true
                     }
@@ -1177,8 +1177,8 @@ addon:
       shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: Your shop price was changed",
-                "description": "You or your shop staff changed your shop price.",
+                "title": ":money_with_wings: Ціну вашого магазину було змінено",
+                "description": "Ви або персонал вашого магазину змінили ціну.",
                 "color": 16172079,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1191,22 +1191,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Сповіщення QuickShop-Hikari Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Магазин",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "From",
+                        "name": "З",
                         "value": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
+                        "name": "На",
                         "value": "%%change-price.to%%",
                         "inline": true
                     }
@@ -1216,8 +1216,8 @@ addon:
       mod-shop-price-changed: |
         {
             "embed": {
-                "title": ":money_with_wings: A shop price has been changed",
-                "description": "A shop changed its price settings.",
+                "title": ":money_with_wings: Ціну магазину було змінено",
+                "description": "Магазин змінив налаштування ціни.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1230,17 +1230,17 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Сповіщення QuickShop-Hikari Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Магазин",
                         "value": "%%shop.display-name%%",
                         "inline": true
                     },
                     {
-                        "name": "Owner",
+                        "name": "Власник",
                         "value": "%%shop.owner.name%%",
                         "inline": true
                     },
@@ -1250,12 +1250,12 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "From",
+                        "name": "З",
                         "value": "%%change-price.from%%",
                         "inline": true
                     },
                     {
-                        "name": "To",
+                        "name": "На",
                         "value": "%%change-price.to%%",
                         "inline": true
                     }
@@ -1265,8 +1265,8 @@ addon:
       shop-permission-changed: |
         {
             "embed": {
-                "title": ":closed_lock_with_key: Your shop permission settings has been changed",
-                "description": "One of your shop's permission setting has been changed.",
+                "title": ":closed_lock_with_key: Налаштування дозволів вашого магазину було змінено",
+                "description": "Одне з налаштувань дозволів вашого магазину було змінено.",
                 "color": 15879747,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -1279,22 +1279,22 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "Сповіщення QuickShop-Hikari Discord",
                     "icon_url": ""
                 },
                 "fields": [
                     {
-                        "name": "Shop",
+                        "name": "Магазин",
                         "value": "%%shop.display-name%%",
                         "inline": false
                     },
                     {
-                        "name": "Player",
+                        "name": "Гравець",
                         "value": "%%change-permission.player%%",
                         "inline": true
                     },
                     {
-                        "name": "Assign to group",
+                        "name": "Призначено групу",
                         "value": "%%change-permission.to-group%%",
                         "inline": true
                     },
@@ -1304,7 +1304,7 @@ addon:
                         "inline": true
                     },
                     {
-                        "name": "Permission granted (Inherit from group)",
+                        "name": "Надані дозволи (успадковано від групи)",
                         "value": "```\\n%%change-permission.perms-list%%\\n```",
                         "inline": false
                     }
@@ -1312,10 +1312,10 @@ addon:
             }
         }
     field:
-      player: Player
-      item: Item
-      amount: Amount
-      balance: Balance
+      player: Гравець
+      item: Предмет
+      amount: Кількість
+      balance: Баланс
       balance-after-tax: Баланс (після податків)
       account: Баланс вашого рахунку
       taxes: Податки
@@ -1323,355 +1323,355 @@ addon:
   discount:
     commands:
       discount:
-        description: <yellow>Apply a discount code or manage your discount codes.
+        description: <yellow>Застосувати код знижки або керувати вашими кодами знижок.
     tab-complete:
       discount:
         general:
           code: \<code>
         create:
           rate: |
-            Command Hint:
-            Argument: \<rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            Підказка команди:
+            Аргумент: \<ставка>
+            Опис: Фактичний відсоток або гроші, які ви заробите
+            Введіть `30%` = ціна * 0.3
+            Введіть `50` = ціна - 50
           max-usage: |
-            Command Hint:
-            Argument: [max-usage]
-            Description: The times that code can be used
-            `-1` for unlimited.
+            Підказка команди:
+            Аргумент: [max-usage]
+            Опис: Кількість разів, яку можна використати код
+            `-1` для безлімітного.
           threshold: |
-            Command Hint:
-            Argument: [threshold]
-            Description: The minimum price that code can be applied
-            `-1` for unlimited
+            Підказка команди:
+            Аргумент: [threshold]
+            Опис: Мінімальна ціна, до якої можна застосувати код
+            `-1` для безлімітного
           expired: |
-            Command Hint
-            Argument: [expired]
-            Description: The code expired time.
-            `-1` for unlimited duration.
-            Accept both Zulu time and UNIX timestamp in seconds.
-            Zulu Example: 2022-12-17T10:31:37Z
-            UNIX Example: 1671273097
+            Підказка команди
+            Аргумент: [expired]
+            Опис: Час закінчення дії коду.
+            `-1` для безлімітного терміну.
+            Приймає як час Zulu, так і час епохи UNIX у секундах.
+            Приклад Zulu: 2022-12-17T10:31:37Z
+            Приклад UNIX: 1671273097
     discount-code-already-exists: <red>Вибачте, назва вашого коду знижки вже використовується.
     invalid-discount-code-regex: '<red>Код знижки повинен відповідати регулярному виразу: <yellow>{0}'
     invalid-discount-code: <red>Цей код знижки недійсний.
     discount-code-added: <green>Ваш код знижки <yellow>{0}</yellow> додано до магазину <aqua>{1}
     discount-code-removed: <green>Ваш код знижки <yellow>{0}</yellow> видалено з магазину <aqua>{1}
     invalid-code-type: <red>Тип коду <yellow>{0}</yellow> недійсний.
-    invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
-    invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
-    invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
-    invalid-expire-time: <red>You can't specify a time in the past.
-    invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
-    discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
-    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
-    discount-code-uninstalled: <green>You have uninstalled your discount code.
-    discount-code-query-nothing: <red>You hadn't install a discount code yet!
-    discount-code-query: '<green>You are using discount code: <yellow>{0}</yellow>.'
-    discount-code-applicable: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop!'
-    discount-code-applicable-with-threshold: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>not applicable</bold> in this shop!
-    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <bold><yellow>{0}</yellow></bold>, discount are not applied.
-    discount-code-no-permission: <red>You didn't have permission to use any discount code in this shop!
-    discount-code-has-been-expired: <red>Your discount has been expired!
-    discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
-    discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
-    discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
-    discount-code-config-shop-remove-failure: <red>This shop not exists in your discount code allow list.
-    discount-code-config-expire: <green>Successfully changed your code expire time.
-    discount-code-config-applied: <green>Config the discount code successfully!
+    invalid-usage-restriction: <red>Обмеження на використання <yellow>{0}</yellow> є недійсним.
+    invalid-threshold-restriction: <red>Обмеження порогу <yellow>{0}</yellow> є недійсним.
+    invalid-effect-scope: <red>Область застосування <yellow>{0}</yellow> є недійсною.
+    invalid-expire-time: <red>Ви не можете вказати час у минулому.
+    invalid-discount-rate: <red>Ставка знижки <yellow>{0}</yellow> недійсна, вона може бути фіксованим числом або відсотком.
+    discount-code-expired: <red>Ой! Термін дії вашого коду знижки <yellow>{0}</yellow> закінчився!
+    discount-code-installed: <green>Ви встановили код знижки <gold>{0}</gold>, код знижки буде автоматично застосований до доступних покупок у всіх наступних покупках протягом цієї сесії. Щоб видалити код знижки, виконайте <aqua>/quickshop discount uninstall {0}</aqua>.
+    discount-code-uninstalled: <green>Ви видалили свій код знижки.
+    discount-code-query-nothing: <red>Ви ще не встановили код знижки!
+    discount-code-query: '<green>Ви використовуєте код знижки: <yellow>{0}</yellow>.'
+    discount-code-applicable: '<#bcef26>Ваш код знижки <bold><yellow>{0}</yellow></bold> <bold>дійсний</bold> для цього магазину!'
+    discount-code-applicable-with-threshold: '<#bcef26>Ваш код знижки <bold><yellow>{0}</yellow></bold> <bold>дійсний</bold> для цього магазину, але тільки якщо вартість вашої покупки перевищить <yellow>{1}</yellow> за одну транзакцію.'
+    discount-code-not-applicable: <red>Ваш код знижки <bold><yellow>{0}</yellow></bold> <bold>не дійсний</bold> для цього магазину!
+    discount-code-reach-the-limit: <red>Ви досягли ліміту використання коду знижки <bold><yellow>{0}</yellow></bold>, знижка не застосовується.
+    discount-code-no-permission: <red>У вас немає дозволу на використання будь-якого коду знижки в цьому магазині!
+    discount-code-has-been-expired: <red>Термін дії вашої знижки закінчився!
+    discount-code-config-shop-added: <green>Успішно додано цей магазин до списку дозволених для вашого коду знижки.
+    discount-code-config-shop-add-failure: <red>Цей магазин вже є у списку дозволених для вашого коду знижки.
+    discount-code-config-shop-removed: <green>Успішно видалено цей магазин зі списку дозволених для вашого коду знижки.
+    discount-code-config-shop-remove-failure: <red>Цей магазин не існує у списку дозволених для вашого коду знижки.
+    discount-code-config-expire: <green>Успішно змінено час дії вашого коду.
+    discount-code-config-applied: <green>Код знижки успішно налаштовано!
     discount-code-created-successfully: |
-      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
-      <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/quickshop discount config {0}</aqua> to edit your discount code anytime.
-    discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
+      <green>Ваш код знижки <yellow>{0}</yellow> успішно створено!
+      <gold>Сфера дії: <aqua>{1}</aqua></gold>.
+      <gold>Поділитися з іншими: <#bcef26>{2}</#bcef26></gold>.
+      <yellow>Лише для сфери <gray>Конкретні магазини</gray>: Щоб додати магазини до списку дозволених для вашого коду знижки, будь ласка, подивіться на магазин і виконайте команду <aqua>{3}</aqua>.
+      Ви можете використовувати <aqua>/quickshop discount config {0}</aqua> для редагування вашого коду знижки в будь-який час.
+    discount-code-under-threshold: <red>Знижка не застосована до вашої покупки, оскільки загальна вартість нижча за поріг коду знижки <yellow>{0}</yellow>.
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
-    discount-code-list: '<gold>Listing your discount codes:'
-    discount-code-applied-in-purchase: '<#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    discount-code-list: '<gold>Список ваших кодів знижок:'
+    discount-code-applied-in-purchase: '<#bcef26>Ваш код знижки <yellow>{0}</yellow> було застосовано до цієї покупки, і ви заощадили <gold>{1}</gold>!'
     scope:
       this-shop: '{0}'
-      your-shops-owned: all your shops (owned)
-      your-shops-managed: all your shops (managed)
-      server: whole server
+      your-shops-owned: всі ваші магазини (власні)
+      your-shops-managed: всі ваші магазини (керовані)
+      server: весь сервер
     code-type:
-      SERVER_ALL_SHOPS: All shops on this server
-      PLAYER_ALL_SHOPS: All shops that created by code owner
-      SPECIFIC_SHOPS: Specific shops
+      SERVER_ALL_SHOPS: Усі магазини на цьому сервері
+      PLAYER_ALL_SHOPS: Усі магазини, створені власником коду
+      SPECIFIC_SHOPS: Конкретні магазини
     discount-code-details: |-
-      <gold>Code: <yellow>{0}</yellow>
-      Creator: <yellow>{1}</yellow>
-      Applied to: <yellow>{2}</yellow>
-      Remaining usage: <yellow>{3}</yellow>
-      Expired on: <yellow>{4}</yellow>
-      Threshold: <yellow>{5}</yellow>
-      Discount: <yellow>{6}</yellow><br>
+      <gold>Код: <yellow>{0}</yellow>
+      Творець: <yellow>{1}</yellow>
+      Застосовується до: <yellow>{2}</yellow>
+      Залишилося використань: <yellow>{3}</yellow>
+      Термін дії до: <yellow>{4}</yellow>
+      Поріг: <yellow>{5}</yellow>
+      Знижка: <yellow>{6}</yellow><br>
   list:
     commands:
-      list: <yellow>Listing all shops owned by your or specific player
+      list: <yellow>Перелік усіх магазинів, що належать вам або конкретному гравцеві
     table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Ціна <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
-    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
+    message: <red>Ви не можете класти в контейнер магазину предмети, що не є предметом магазину, всі такі предмети випадуть на вашому місці.
   limited:
     commands:
-      limit: <yellow>Set a limit that restrict the purchase that player can make in period
+      limit: <yellow>Встановити ліміт, який обмежує покупки, які гравець може зробити за певний період
     titles:
-      title: <green>Purchase Success
-      subtitle: <aqua>You can also purchase <gold>{0}</gold> more in this shop
-    reach-the-limit: <red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items.
-    success-reset: <green>Reset the restriction of this shop successfully
-    success-remove: <green>Successfully remove the all restriction of this shop
-    success-setup: <green>Restriction settings for this shop were saved successfully
-    trade-limit-reached-cancel-reason: <red>Reached the restriction of this shop
-    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
-    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}'
+      title: <green>Покупка успішна
+      subtitle: <aqua>Ви можете придбати ще <gold>{0}</gold> у цьому магазині
+    reach-the-limit: <red>Ви досягли ліміту в цьому магазині. Ви можете придбати ще <green>{0}</green> предметів, але ви намагаєтеся придбати <yellow>{1}</yellow>.
+    success-reset: <green>Обмеження для цього магазину успішно скинуто
+    success-remove: <green>Успішно видалено всі обмеження для цього магазину
+    success-setup: <green>Налаштування обмежень для цього магазину успішно збережено
+    trade-limit-reached-cancel-reason: <red>Досягнуто обмеження цього магазину
+    remains-limits: '<gold>Ваша квота на покупки в цьому магазині: <yellow>{0}'
+    remains-limits-before-reset-period-note: '<gold>Цей магазин скидає квоту на покупки кожні: <yellow>{0}'
   dynmap:
-    markerset-title: QuickShop-Hikari Shops
-    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
+    markerset-title: Магазини QuickShop-Hikari
+    marker-name: '{0} @ {2} @ {3} за x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Назва: {0}
+      Власник: {1}
+      Предмет: {2}
+      Ціна: {3} за x{4} предмет(ів)
+      Тип: {5}
+      Безлімітно: {6}
+      Локація: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
-    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
+    markerset-title: Магазини QuickShop-Hikari
+    marker-name: '{0} @ {2} @ {3} за x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Назва: {0}
+      Власник: {1}
+      Предмет: {2}
+      Ціна: {3} за x{4} предмет(ів)
+      Тип: {5}
+      Безлімітно: {6}
+      Локація: {7}
   chestprotect:
-    protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
-    shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
+    protection-exists: <red>Цей регіон вже захищено ChestProtect, і у вас немає дозволу створювати тут магазини.
+    shops-exsts: <red>Регіон, який ви хочете захистити, містить магазини інших гравців, і у вас немає дозволу на доступ до них.
   displaycontrol:
     toggle: |-
-      <green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.
-      <yellow>You may need re-join to take effect.
-    toggle-exception: <red>Failed to toggle your display showcase settings due an internal error, please contact server administrator.
+      <green>Успішно перемкнено відображення вашого QuickShop на <aqua>{0}</aqua>.
+      <yellow>Можливо, вам доведеться перезайти, щоб зміни набули чинності.
+    toggle-exception: <red>Не вдалося перемкнути налаштування відображення через внутрішню помилку, будь ласка, зверніться до адміністратора сервера.
     command:
-      displaycontrol: <yellow>Toggle your QuickShop display showcasing
+      displaycontrol: <yellow>Перемкнути відображення вашого QuickShop
   reremake-migrator:
     commands:
-      migratefromreremake: Migrate QuickShop-Reremake's data to QuickShop-Hikari
-    server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
-    starting-convert-progress: "<gold>Starting the convert progress, <red>DO NOT SHUTDOWN YOUR SERVER!</red>"
-    executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-    completed: "<green>Done! Migrate completed, please restart your server and remove QuickShop-Reremake from plugins directory."
-    join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
-    join_blocking_finished: "<red>[QuickShop-Hikari Migrator] This server has just completed a data conversion and is waiting for a reboot to apply the changes, try again later!"
-    failed: "<red>Migration progress exited with error, please check the server console."
+      migratefromreremake: Перенести дані з QuickShop-Reremake до QuickShop-Hikari
+    server-not-empty: "<red>Під час процесу конвертації на сервері не повинно бути гравців онлайн, будь ласка, увімкніть білий список сервера або режим обслуговування."
+    starting-convert-progress: "<gold>Початок процесу конвертації, <red>НЕ ВИМИКАЙТЕ ВАШ СЕРВЕР!</red>"
+    executing: "<gold>Виконання компонента міграції <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+    completed: "<green>Готово! Міграція завершена, будь ласка, перезапустіть сервер і видаліть QuickShop-Reremake з папки плагінів."
+    join_blocking_converting: "<red>[Мігратор QuickShop-Hikari] На цьому сервері виконується конвертація даних, і ви не можете приєднатися до сервера в цей час, спробуйте пізніше!"
+    join_blocking_finished: "<red>[Мігратор QuickShop-Hikari] Цей сервер щойно завершив конвертацію даних і очікує перезавантаження для застосування змін, спробуйте пізніше!"
+    failed: "<red>Процес міграції завершився з помилкою, будь ласка, перевірте консоль сервера."
     modules:
       config:
-        copy-values: "<yellow>Copying values (total {0} entries)..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
-        migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copy-values: "<yellow>Копіювання значень (всього {0} записів)..."
+        copying-value: "<gray> - Копіювання <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-price-restriction: "<yellow>Міграція налаштувань, пов'язаних з обмеженням цін..."
+        migrate-price-restriction-entry: "<gray> - Міграція <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
-        start-migrate: "<yellow>Migrating shops (total {0} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
-        register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
-        conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
+        start-migrate: "<yellow>Міграція магазинів (всього {0} записів)..."
+        migrate-entry: "<gray> - Міграція <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        unloading-reremake: "<gold>Вивантаження Reremake, щоб уникнути перезапису даних..."
+        register-entry: "<gray> - Реєстрація <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Збереження <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        saving-shops: "<yellow>Збереження <gold>{0}</gold> магазинів, це може зайняти деякий час™ (час залежить від кількості магазинів)..."
+        conflict: "<gray> - КОНФЛІКТ > Виявлено конфлікт між магазином Reremake та існуючим розташуванням магазину Hikari, виконується заздалегідь визначена дія: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
-        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Міграція файлів перекладу...</yellow>"
+        copy-values: "<yellow>Копіювання значень у локалі <gold>{0}</gold> (всього {1} записів)..."
+        migrate-entry: "<gray> - Міграція <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copying-value: "<gray> - Копіювання <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
-        filtered-history-files: "<gray>Filtered {0} lines out of queue."
-        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Міграція логів магазину (деталі в консолі), будь ласка, зачекайте...</yellow>"
+        extract-history-files: "<gray>Будь ласка, зачекайте, поки ми розпакуємо та додамо історичні логи..."
+        filter-history-files: "<gray>Будь ласка, зачекайте, поки ми відфільтруємо історичний лог..."
+        filtered-history-files: "<gray>Відфільтровано {0} рядків з черги."
+        import-entry: "<gray> - Міграція <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
-    created: <green>You're successfully created a shop on AdvancedChests container!
-    permission-denied: <red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!
+    created: <green>Ви успішно створили магазин у контейнері AdvancedChests!
+    permission-denied: <red>Вибачте! У вас немає дозволу на створення магазину в контейнері AdvancedChests!
 suite:
   dynmap:
     title: '{0} - {1} - {2}'
     description: |-
-      Item: {0}
-      Owner: {1}
-      Type: {2} {3}
-      Price: {4}
-      Location: {5} {6}, {7}, {8}
-      Space: {9}
-      Stock: {10}
+      Предмет: {0}
+      Власник: {1}
+      Тип: {2} {3}
+      Ціна: {4}
+      Локація: {5} {6}, {7}, {8}
+      Місце: {9}
+      Запас: {10}
   limited:
-    command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
-    reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
-    quota-reset-countdown: <yellow>The quota in this shop will reset in {0}.
-    quota-reset-player-successfully: <green>The quota for player {0} in this shop has been reset successfully.
-    quota-reset-everybody-successfully: <green>The quota for everyone in this shop has been reset successfully.
-    quota-setup: <green>The purchase restriction now apply to this shop!
-    quota-remove: <green>The purchase restriction now removed from this shop!
+    command-description: <yellow>Встановити ліміт, який обмежує покупки, які гравець може зробити за певний період.
+    reach-the-quota-limit: <red>Ви досягли ліміту покупок у цьому магазині ({0}/{1}).
+    quota-reset-countdown: <yellow>Квота в цьому магазині буде скинута через {0}.
+    quota-reset-player-successfully: <green>Квота для гравця {0} в цьому магазині успішно скинута.
+    quota-reset-everybody-successfully: <green>Квота для всіх у цьому магазині успішно скинута.
+    quota-setup: <green>Обмеження на покупки тепер застосовано до цього магазину!
+    quota-remove: <green>Обмеження на покупки тепер знято з цього магазину!
     subtitles:
-      title: <green>Purchase Success
-      subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
+      title: <green>Покупка успішна
+      subtitle: <aqua>Ви можете придбати ще <yellow>{0}</yellow> у цьому магазині
   list:
-    command-description: <yellow>List all shops owned by yourself or another player.
-    table-prefix: <yellow>You owned total <aqua>{0}</aqua> shops on this server.
+    command-description: <yellow>Список усіх магазинів, що належать вам або іншому гравцеві.
+    table-prefix: <yellow>Ви володієте загалом <aqua>{0}</aqua> магазинами на цьому сервері.
     entry-syntax: <aqua>- <yellow>{0}
-    entry-syntax-fallback-name: '<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
+    entry-syntax-fallback-name: '<yellow>Предмет:{0} X:{1}, Y:{2}, Z:{3}, Світ: {4}'
     hover-text: |-
       <yellow>{0}
       <gray>{1} {2}, {3}, {4}
       <aqua>{5} - <yellow>{6}
-      {7} items each stack.
+      {7} предметів у кожному стаку.
   shopitemonly:
-    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
+    message: <red>Ви не можете класти в контейнер магазину предмети, що не є предметом магазину, всі такі предмети випадуть на вашому місці.
 compatibility:
   elitemobs:
-    soulbound-disallowed: You can't trade item which have EliteMobs Soulbound enchantment.
-internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
-no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
-sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
-delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
-cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
-price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
-price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
-suggest-wait: "<green>Please wait... Calculating recommend price."
+    soulbound-disallowed: Ви не можете торгувати предметом, який має зачарування EliteMobs Soulbound.
+internet-paste-forbidden-privacy-reason: "<red>Не вдалося! Згідно з вашими налаштуваннями конфіденційності, QuickShop-Hikari не може завантажувати ваш звіт в Інтернет. Увімкніть дозвіл DIAGNOSTIC у налаштуваннях конфіденційності в config.yml або використайте <aqua>/quickshop paste --file</aqua> натомість."
+no-sign-type-given: "<red>Вам потрібно вказати матеріал таблички, доступні на цьому сервері матеріали табличок: {0}"
+sign-type-invalid: "<red>Тип <yellow>{0}</yellow> не є дійсним матеріалом для таблички."
+delete-controlpanel-button-confirm: "<red>Ви дійсно хочете видалити цей магазин? Натисніть кнопку <bold>[Видалити магазин]</bold> ще раз протягом {0} секунд для підтвердження."
+cannot-suggest-price: "<red>Вибачте, наразі більше ніхто не торгує таким же предметом, як ви, і недостатньо даних для створення рекомендованої ціни."
+price-suggest: "<green>На основі даних з <aqua>{0}</aqua> магазинів, найвища ціна становить <light_purple>{1}</light_purple>, найнижча — <light_purple>{2}</light_purple>, середня ціна — <light_purple>{3}</light_purple>, а медіанна ціна — <light_purple>{4}</light_purple>. <newline><yellow>Рекомендується встановити ціну близько <gold>{5}</gold>.</yellow>"
+price-suggest-multi: "<green>Пропозиція для типу {0}.</green>{1}"
+suggest-wait: "<green>Будь ласка, зачекайте... Розрахунок рекомендованої ціни."
 gui:
   shared:
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    previous-menu: "<white>Previous Menu</white>"
+    previous-page: "<white><< Попередня сторінка</white>"
+    next-page: "<white>Наступна сторінка >></white>"
+    previous-menu: "<white>Попереднє меню</white>"
   player:
     select:
-      - "<yellow>Click to select this player.</yellow>"
+      - "<yellow>Натисніть, щоб вибрати цього гравця.</yellow>"
   staff:
-    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
-    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
-    add-staff: "<green>Add Staff Member</green>"
+    confirm-remove: "<red>Введіть 'confirm' для підтвердження видалення '{0}' як співробітника.</red>"
+    confirm-transfer: "<red>Введіть 'confirm' для підтвердження передачі цього магазину гравцю {0}.</red>"
+    add-staff: "<green>Додати співробітника</green>"
     head-icon:
       display: "<aqua>{0}</aqua>"
       lore:
-        - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>Right click to transfer ownership</yellow>"
-        - "<yellow>to this staff member.</yellow>"
+        - "<yellow>Лівий клік, щоб видалити співробітника.</yellow>"
+        - "<yellow>Правий клік, щоб передати власність</yellow>"
+        - "<yellow>цьому співробітнику.</yellow>"
   trade:
-    title: "Shop Browser"
+    title: "Оглядач магазинів"
     custom:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>Власне замовлення</blue></bold>"
       lore-buy:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to buy.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
+        - "<white>Оберіть кількість,</white>"
+        - "<white>яку хочете купити.</white>"
+        - "<yellow>Натисніть, щоб ввести свою кількість.</yellow>"
+        - "<yellow>Має бути кратно <bold><red>{0}</red></bold></yellow>"
+        - "<white>Запас: <bold><red>{1}</red></bold>"
       lore-sell:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to sell.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
+        - "<white>Оберіть кількість,</white>"
+        - "<white>яку хочете продати.</white>"
+        - "<yellow>Натисніть, щоб ввести свою кількість.</yellow>"
+        - "<yellow>Має бути кратно <bold><red>{0}</red></bold></yellow>"
+      enter-buy: "<yellow>Введіть кількість, яку хочете купити, має бути кратно {0}. Введіть 0 для виходу.</yellow>"
+      enter-sell: "<yellow>Введіть кількість, яку хочете продати, має бути кратно {0}. Введіть 0 для виходу.</yellow>"
+      multiple: "<yellow>Введено недійсну кількість! Має бути кратно {0}. Введіть 0 для виходу.</yellow>"
+      stock: "<yellow>Введено недійсну кількість! Недостатньо товару в магазині. Введіть 0 для виходу.</yellow>"
     quantity:
-      display-buy: "<bold><green>Buy {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
+      display-buy: "<bold><green>Купити {0}</green></bold>"
+      display-sell: "<bold><green>Продати {0}</green></bold>"
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
-        - "<white>Total: </white><bold><green>{2}</green></bold>"
+        - "<bold><yellow>{0}</yellow></bold><white> за </white><bold><green>{1}</green></bold>"
+        - "<white>Разом: </white><bold><green>{2}</green></bold>"
   browse:
-    title: "Shop Browser"
+    title: "Оглядач магазинів"
     info:
-      - "<green>Owner: </green><yellow>{0}</yellow>"
-      - "<green>Location: </green><yellow>{1}</yellow>"
-      - "<green>Type: </green><yellow>{2}</yellow>"
-      - "<green>Price: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
+      - "<green>Власник: </green><yellow>{0}</yellow>"
+      - "<green>Локація: </green><yellow>{1}</yellow>"
+      - "<green>Тип: </green><yellow>{2}</yellow>"
+      - "<green>Ціна: </green><yellow>{3}</yellow>"
+      - "<green>Запас: </green><yellow>{4}</yellow>"
   keeper:
-    title: "Shop Keeper"
+    title: "Керування магазином"
     change-icon:
-      display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      display: "<bold><green>Змінити ціну</green></bold>"
+      enter: "<yellow>Введіть нову ціну в чаті.</yellow>"
       lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
-        - "<white>Current Price:</white> <yellow>{0}</yellow>"
+        - "<white>Натисніть, щоб змінити ціну кожного предмета у вашому магазині.</white>"
+        - "<white>Поточна ціна:</white> <yellow>{0}</yellow>"
     mode-icon:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Змінити режим</green></bold>"
       lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
+        - "<white>Натисніть, щоб перемкнутися між режимами купівлі/продажу.</white>"
+        - "<white>Поточний режим: </white><red>{0}</red>"
+        - "<yellow>Натисніть, щоб перемкнути на </yellow><red>{1}</red>"
     staff-icon:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
+      display: "<bold><aqua>Персонал магазину</aqua></bold>"
+      no-permission: "<bold><red>Немає дозволу керувати персоналом</red></bold>"
       lore:
-        - "<white>Click to manage your shop's staff.</white>"
+        - "<white>Натисніть, щоб керувати персоналом вашого магазину.</white>"
     remove-icon:
-      display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
+      display: "<bold><red>Видалити магазин</red></bold>"
+      confirm: "<yellow>Введіть 'confirm' в чаті для підтвердження видалення. Або введіть будь-що інше, щоб скасувати.</yellow>"
       lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
+        - "<white>Натисніть, щоб видалити ваш магазин.</white>"
+        - "<grey>Ви також можете зламати табличку/скриню.</grey>"
 history:
   shop:
-    gui-title: "View purchase history"
-    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
-    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    gui-title: "Переглянути історію покупок"
+    header-icon-multiple-shop: "<white>Результат запиту по {0} магазинах</white>"
+    header-icon-shop-name: '<yellow>Магазин {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Магазин у світі ''{0}'' за координатами x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
-      - "<white>Type: <yellow>{0}</yellow></white>"
-      - "<white>Owner: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2}</yellow></white>"
-      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
-      - "<white>Location: <yellow>{5}</yellow></white>"
-    log-icon-title: "<reset><green>Time: {0}</green>"
+      - "<white>Тип: <yellow>{0}</yellow></white>"
+      - "<white>Власник: <yellow>{1}</yellow></white>"
+      - "<white>Предмет: <yellow>{2}</yellow></white>"
+      - "<white>Ціна: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>Локація: <yellow>{5}</yellow></white>"
+    log-icon-title: "<reset><green>Час: {0}</green>"
     log-icon-description:
-      - "<white>Purchaser: <yellow>{0}</yellow></white>"
-      - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{3}</yellow></white>"
-      - "<white>Tax: <yellow>{4}</yellow></white>"
+      - "<white>Покупець: <yellow>{0}</yellow></white>"
+      - "<white>Предмет: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
+      - "<white>Баланс: <yellow>{3}</yellow></white>"
+      - "<white>Податок: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
-      - "<white>Store: <yellow>{0}</yellow></white>"
-      - "<white>Purchaser: <yellow>{1}</yellow></white>"
-      - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{4}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
-      - "<white>Final earning: <yellow>{6}</yellow></white>"
-    query-icon: "<gray>Please wait, querying...</gray>"
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    current-page: "<white>Page {0}</white>"
-    summary-icon-title: "<green>Shop Summary"
-    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
-    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
-    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
-    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
-    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
+      - "<white>Магазин: <yellow>{0}</yellow></white>"
+      - "<white>Покупець: <yellow>{1}</yellow></white>"
+      - "<white>Предмет: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
+      - "<white>Баланс: <yellow>{4}</yellow></white>"
+      - "<white>Податок: <yellow>{5}</yellow></white>"
+      - "<white>Кінцевий заробіток: <yellow>{6}</yellow></white>"
+    query-icon: "<gray>Будь ласка, зачекайте, йде запит...</gray>"
+    previous-page: "<white><< Попередня сторінка</white>"
+    next-page: "<white>Наступна сторінка >></white>"
+    current-page: "<white>Сторінка {0}</white>"
+    summary-icon-title: "<green>Підсумок магазину"
+    recent-purchases: "<white>Недавні <aqua>{0}</aqua> покупки: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Недавній <aqua>{0}</aqua> оборот: <yellow>{1}</yellow></white>"
+    total-purchases: "<white>Всього покупок: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Загальний оборот: <yellow>{0}</yellow></white>"
+    total-unique-purchasers: "<white>Всього унікальних покупців: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-title: "<gold>Топ {0} найцінніших клієнтів</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
-    no-result: "<white>No result</white>"
+    no-result: "<white>Немає результатів</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
-    - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
-    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "<aqua>Версія <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Реліз <yellow>>></yellow> <green>{2}</green></aqua>"
+    - "<aqua>Розробники <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Натисніть, щоб переглянути учасників'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[Переглянути учасників на GitHub]</click></hover></color></aqua>"
+    - "<aqua>Учасники локалізації <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
-  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gra>"
-  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
+  valid-donation-key: "<color:#00AFF1>Прив'язано до <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>Недійсний ключ пожертвування</gra>"
+  kofi-thanks: "<gold>Особлива подяка тим, хто підтримує QuickShop на Ko-fi :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
 browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
-shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
+shop-information-not-shown-due-an-internal-error: "<red>Сталася внутрішня помилка. Панель інформації про магазин може відображатися не повністю, будь ласка, зверніться до адміністратора сервера."
