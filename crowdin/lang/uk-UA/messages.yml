@@ -529,7 +529,7 @@ permission:
     ownership-transfer: <yellow>Дозвіл, що дозволяє користувачам, які його мають, передавати право власності на магазин.
     management-permission: <yellow>Дозвіл, що дозволяє користувачам, які його мають, керувати дозволами групи та редагувати групу користувача.
     toggle-display: <yellow>Дозвіл, що дозволяє користувачам, які його мають, перемикати відображення предмета в магазині.
-    set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
+    set-shoptype: <yellow>Дозвіл, що дозволяє користувачам встановлювати тип магазину (перемикання між купівлею та продажем).
     set-price: <yellow>Дозвіл, що дозволяє користувачам, які його мають, встановлювати ціну магазину.
     set-item: <yellow>Дозвіл, що дозволяє користувачам, які його мають, встановлювати предмет магазину.
     set-stack-amount: <yellow>Дозвіл, що дозволяє користувачам, які його мають, встановлювати кількість предметів у стаку для магазину.
@@ -538,9 +538,9 @@ permission:
     set-sign-type: <yellow>Змінює матеріал таблички, прикріпленої до магазину.
     view-purchase-logs: <yellow>Дозвіл на перегляд логів покупок магазину.
   group:
-    everyone: <yellow>Default group for all users excepted shop owner.
-    staff: <yellow>System group for shop staffs.
-    administrator: <red>System group for administrators, the users in this group will have permissions almost same with shop owner.
+    everyone: <yellow>Група за замовчуванням для всіх користувачів, крім власника магазину.
+    staff: <yellow>Системна група для персоналу магазину.
+    administrator: <red>Системна група для адміністраторів, користувачі в цій групі матимуть майже ті ж дозволи, що й власник магазину.
 invalid-group: <red>Неприпустима назва групи.
 invalid-permission: <red>Недійсний дозвіл.
 invalid-operation: <red>Недійсна операція, дозволено лише {0}.
@@ -558,20 +558,20 @@ paste-created-local-failed: <red>Не вдалося зберегти звіт �
 paste-451: |-
   <gray><bold>ПОРАДА:</bold> Ваша поточна країна або регіон, здається, заблокували сервіс CloudFlare Workers, і звіт QuickShop Paste може не завантажуватися належним чином.
   Якщо наступна операція не вдасться, спробуйте додати аргумент --file для створення локального звіту: <dark_gray>/quickshop paste --file
-paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
-paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
+paste-upload-failed: <red>Не вдалося завантажити звіт на {0}, спроба іншого сервісу...
+paste-upload-failed-local: <red>Не вдалося завантажити звіт, спроба створити локальний файл...
 command-incorrect: '<red>Неправильне використання команди, введіть /quickshop help для довідки. Використання: {0}.'
 successfully-set-player-group: <green>Успішно встановлено групу <aqua>{1}</aqua> для гравця {0}.
-successfully-unset-player-group: <green>Successfully remove player group in this shop.
+successfully-unset-player-group: <green>Групу гравця успішно видалено з цього магазину.
 successfully-set-player-permission: <green>Успішно встановлено дозвіл гравця {0} <aqua>{1}</aqua> в магазині <aqua>{2}</aqua>.
 lookup-item-created: <green>У таблиці підстановки створено елемент з іменем <aqua>{0}</aqua>. Тепер ви можете посилатися на цей елемент у конфігураціях.
 lookup-item-exists: <red>Предмет з назвою <yellow>{0}</yellow> вже існує в таблиці пошуку, видаліть його або виберіть іншу назву.
-lookup-item-not-found: <red>An item named <yellow>{0}</yellow> not exists.
-lookup-item-name-illegal: <red>Item name illegal. Only alphanumeric characters and underscores are allowed.
+lookup-item-not-found: <red>Предмет з назвою <yellow>{0}</yellow> не існує.
+lookup-item-name-illegal: <red>Непідтримувана назва предмета. Дозволені лише літерно-цифрові символи та підкреслення.
 lookup-item-name-regex: '<red>Назва повинна відповідати цьому регулярному виразу: <aqua>{0}</aqua>.'
-lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
-lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
-lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
+lookup-item-test-not-found: '<gold>Тест: <yellow>Предмет у вашій руці не зареєстрований у таблиці пошуку.'
+lookup-item-test-found: '<gold>Тест: <green>Предмет у вашій руці був зареєстрований як <aqua>{0}</aqua> у таблиці пошуку.'
+lookup-item-removed: <green>Вказаний предмет <aqua>{0}</aqua> було успішно видалено з таблиці пошуку.
 internal-error: <red>Виникла внутрішня помилка, будь ласка, зверніться до адміністратора сервера.
 argument-cannot-be: <red>Аргумент <aqua>{0}</aqua> не може бути <yellow>{1}</yellow>.
 argument-must-between: <red>Значення аргументу <aqua>{0}</aqua> повинно бути між <yellow>{1}</yellow> та <yellow>{2}
@@ -586,21 +586,21 @@ not-a-valid-time: |-
   - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
 invalid-past-time: <red>Ви не можете вказати час у минулому.
 debug:
-  arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
-  sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
-  operation-missing: <red>You must specific an operation.
-  operation-invalid: <red>You must specific an valid operation.
-  invalid-base64-encoded-sql: <red>The SQL provided must be base64 encoded.
+  arguments-invalid: <red>Надані аргументи <yellow>{0}</yellow> недійсні.
+  sign-located: '<green>Дійсна табличка: <yellow>{0}</yellow>.'
+  operation-missing: <red>Ви повинні вказати операцію.
+  operation-invalid: <red>Ви повинні вказати дійсну операцію.
+  invalid-base64-encoded-sql: <red>Надана SQL-операція повинна бути закодована в Base64.
   warning-sql: |-
     <bold><red>Увага:</red></bold> <yellow>Ви виконуєте SQL-запит. Це може пошкодити вашу базу даних або знищити будь-які дані в базі даних, навіть якщо вони належать іншому плагіну.
     <red>Не підтверджуйте це, якщо ви не довіряєте тому, хто надіслав вам це.
   warning-sql-confirm: <yellow>Щоб підтвердити цю небезпечну дію, введіть <aqua>/quickshop debug database sql confirm {0}</aqua> протягом наступних 60 секунд.
-  warning-sql-confirm-hover: <yellow>Click to confirm this dangerous operation.
-  sql-confirm-not-found: <yellow>Didn't found the operation that you given, it may invalid or expired.
+  warning-sql-confirm-hover: <yellow>Натисніть, щоб підтвердити цю небезпечну дію.
+  sql-confirm-not-found: <yellow>Не вдалося знайти надану вами дію. Вона може бути недійсною або застарілою.
   sql-executing: '<yellow>Виконання SQL-запиту: <aqua>{0}'
-  sql-completed: <green>Completed, {0} rows affected.
-  sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
-  sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
+  sql-completed: <green>Дію виконано! Зачеплено {0} рядків.
+  sql-exception: <red>Сталася помилка під час виконання SQL-запиту. Перевірте консоль для деталей!
+  sql-disabled: '<red>З міркувань безпеки SQL-запити вимкнені на цьому сервері. Якщо вам дійсно потрібна ця функція, ви можете додати прапорець <aqua>{0}</aqua> зі значенням `true` до аргументів запуску, щоб увімкнути її.'
   force-shop-reload: <yellow>Примусове перезавантаження всіх завантажених магазинів...
   force-shop-reload-complete: <green>Примусово перезавантажено <aqua>{0}</aqua> магазинів.
   force-shop-loader-reload: <yellow>Примусове перезавантаження завантажувача магазинів...
@@ -641,13 +641,13 @@ debug:
   marked-as-dirty: "<green>Позначено всі магазини як 'брудні', вони будуть примусово збережені під час наступного автозбереження. (Перезапустіть сервер, щоб примусово виконати збереження магазинів)"
   display-removed: "<green>Успішно видалено <yellow>{0}</yellow> відображуваних предметів/сутностей QuickShop зі світів."
 database:
-  scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
-  scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
-  already-scanning: <red>An scan task has been started, please wait until it finished.
+  scanning: <green>Сканування ізольованих даних у базі даних QuickShop. Навантаження на базу даних може збільшити час сканування. Це може зайняти деякий час...
+  scanning-async: <yellow>Сканування ізольованих даних у базі даних QuickShop в асинхронному потоці. Навантаження на базу даних може збільшити час сканування. Це може зайняти деякий час. Якщо не вдасться, спробуйте пізніше.
+  already-scanning: <red>Завдання сканування вже запущено. Будь ласка, дочекайтеся його завершення.
   trim-warning: <red><bold>Увага:</bold> <yellow>Зробіть резервну копію вашої бази даних перед продовженням очищення, щоб уникнути втрати даних. Коли будете готові, виконайте <aqua>/quickshop database trim confirm</aqua> для продовження.
   status: '<yellow>Статус: {0}'
   status-good: <green>Добре
-  status-bad: <yellow>Maintenance Required
+  status-bad: <yellow>Потрібне обслуговування
   isolated: '<yellow>Ізольовані дані:'
   isolated-data-ids: '<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>'
   isolated-shop-ids: '<aqua>└<yellow> Shop Indexes: <gold>{0}'
@@ -655,12 +655,12 @@ database:
   isolated-external-caches: '<aqua>└<yellow> External Caches: <gold>{0}'
   last-purge-time: <yellow>Останнє очищення було {0}
   report-time: <yellow>Останнє сканування було {0}
-  auto-scan-alert: <yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming.
-  auto-trim: <green>Auto trim has been enabled on this server, no manually trim required.
-  trim-complete: <green>Database trim completed, <yellow>{0}</yellow> isolated trimmed.
-  auto-trim-started: <green>Auto trim has been started, please wait...
-  trim-start: <green>Database trim started, please wait...
-  trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
+  auto-scan-alert: <yellow>База даних QuickShop на цьому сервері потребує обслуговування. Знайдено <gold>{0}</gold> ізольованих даних, що очікують на очищення.
+  auto-trim: <green>На цьому сервері увімкнено автоматичне очищення. Ручне очищення не потрібне.
+  trim-complete: <green>Очищення бази даних завершено. Очищено <yellow>{0}</yellow> ізольованих даних.
+  auto-trim-started: <green>Автоматичне очищення розпочато, будь ласка, зачекайте...
+  trim-start: <green>Очищення бази даних розпочато, будь ласка, зачекайте...
+  trim-exception: <red>Очищення бази даних не вдалося. Під час операції виник виняток. Перевірте консоль сервера.
   generated-at: '<yellow>Згенеровано: <gold>{0}'
   purge-date: <red>Ви повинні вказати дату.
   purge-warning: <yellow>Ця операція очистить історію, що зберігається у вашій базі даних, включаючи створення/зміни/видалення магазинів, покупки, транзакції та системні логи. Видалення цих даних може звільнити місце на диску, але вся історична метрика буде втрачена, а інші плагіни, що залежать від метрик, перестануть працювати. Щоб продовжити виконання цієї операції, виконайте /quickshop database purgelogs \<before-days> confirm
@@ -674,19 +674,19 @@ database:
   purge-players-error: <red>Не вдалося очистити кеш гравців, будь ласка, перевірте консоль сервера.
   suggestion:
     trim: <yellow>Ця база даних потребує очищення ізольованих даних. Виконайте <aqua>/quickshop database trim</aqua>, щоб очистити базу даних.
-always-counting-removal-early-warning: <red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future.
+always-counting-removal-early-warning: <red>Функцію 'Завжди рахувати' заплановано до видалення, вам більше не слід її використовувати, оскільки вона перестане працювати в майбутньому.
 exporting-database: <green>Експорт бази даних, будь ласка, зачекайте...
 exporting-failed: <red>Не вдалося експортувати базу даних, будь ласка, перевірте консоль сервера.
 exported-database: <green>Базу даних експортовано до <yellow>{0}</yellow>.
-importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
+importing-not-found: <red>Файл <yellow>{0}</yellow> не знайдено. Переконайтеся, що шлях до файлу правильний.
 importing-early-warning: |-
   <red><bold>Увага:</bold> <yellow>Резервна копія буде імпортована в поточну базу даних. Будь-які існуючі дані будуть очищені та втрачені назавжди, якщо у вас немає резервної копії.
   <red>Ви впевнені, що хочете продовжити процедуру імпорту?</red> Введіть <aqua>/quickshop recovery confirm</aqua> для продовження.
 importing-database: <green>Імпорт бази даних з резервної копії, будь ласка, зачекайте...
 importing-failed: <red>Не вдалося імпортувати базу даних, будь ласка, перевірте консоль сервера.
 imported-database: <green>Базу даних імпортовано з <yellow>{0}</yellow>.
-transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
-transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
+transfer-sent: <green>Запит на передачу магазину надіслано <yellow>{0}</yellow>.
+transfer-request: <yellow>Гравець <aqua>{0}</aqua> хоче передати вам свої магазини. Ви хочете прийняти запит?
 transfer-single-request: <yellow>Гравець <aqua>{0}</aqua> хоче передати вам магазин. Ви хочете прийняти запит?
 transfer-ask: |-
   <gold>Введіть <red>/quickshop transfer accept</red>, щоб прийняти, або <red>/quickshop transfer deny</red>, щоб відхилити.
@@ -697,11 +697,11 @@ transferall-ask: |-
 transfer-single-ask: |-
   <gold>Введіть <red>/quickshop transferownership accept</red>, щоб прийняти, або <red>/quickshop transferownership deny</red>, щоб відхилити.
   Запит закінчиться через <red>{0}</red> секунд.
-transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
-transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
-transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
-transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
-transfer-no-pending-operation: <red>You don't have pending transfer request yet.
+transfer-accepted-fromside: <green>Гравець <aqua>{0}</aqua> прийняв ваш запит на передачу магазину.
+transfer-accepted-toside: <green>Ви прийняли запит на передачу від <aqua>{0}</aqua>.
+transfer-rejected-fromside: <red>Гравець <aqua>{0}</aqua> відхилив ваш запит на передачу магазину.
+transfer-rejected-toside: <red>Ви відхилили запит на передачу магазину від <aqua>{0}</aqua>.
+transfer-no-pending-operation: <red>У вас немає очікуючих запитів на передачу.
 transfer-no-self: <red>Ви не можете передати свої магазини самому собі.
 benefit-overflow: <red>Сума всіх прибутків не може бути більшою або дорівнювати 100%.
 benefit-exists: <red>Цільовий гравець вже є у списку прибутків цього магазина.
@@ -1667,8 +1667,8 @@ about:
     - "<aqua>Реліз <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Розробники <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Натисніть, щоб переглянути учасників'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[Переглянути учасників на GitHub]</click></hover></color></aqua>"
     - "<aqua>Учасники локалізації <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
-    - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Натисніть, щоб відкрити сторінку перекладу Crowdin'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Допоможіть з перекладом на Crowdin</click></hover></color></yellow>"
+    - "<gold>Створено спільнотою</gold> <red>Зроблено з ❤</red>"
   valid-donation-key: "<color:#00AFF1>Прив'язано до <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Недійсний ключ пожертвування</gra>"
   kofi-thanks: "<gold>Особлива подяка тим, хто підтримує QuickShop на Ko-fi :)</gold>"
