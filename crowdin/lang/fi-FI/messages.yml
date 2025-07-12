@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Kaupan luominen maksaa {0}.
 success-created-shop: <red>Kauppa luotu.
 shop-creation-cancelled: <red>Kaupan luonti peruttu.
 shop-owner-self-trade: <yellow>Käyt kauppaa omassa kaupassa, joten et saa lisää rahaa.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
@@ -119,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Varastossa: <yellow>{0}'
   this-shop-is-buying: <green>Tämä kauppa <green><bold>OSTAA <green>tuotteita.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Onnistuneesti myyty:'
   total-value-of-chest: '<green>Arkun kokonaisarvo: <yellow>{0}'
 currency-not-exists: <red>Valuutan jonka kirjoitit ei löytynyt. Ehkä kirjoitit sen väärin tai valuutta ei ole käytössä tässä maailmassa.
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: Kielen {0} käännös ei ole vielä valmis {1
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} osti {1} {2} kaupastasi ja sait siitä {3}.
 reached-maximum-can-create: <red>Olet jo luonut jo {0}/{1}, eli maksimi määrän kauppoja!
-reached-maximum-create-limit: <red>Olet saavuttanut maksimimäärän kauppoja, joita voit luoda
 translation-version: 'Tukiversio: Hikari'
 no-double-chests: <red>Et voi luoda tupla-arkkukauppaa.
 price-too-cheap: <red>Hinnan pitää olla korkeampi kuin <yellow>${0}
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klikkaa muuttaaksesi valuuttaa jota tämä kauppa käyttää
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +752,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:

@@ -25,7 +25,6 @@ import com.ghostchu.quickshop.menu.shared.QuickShopPage;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.tnemc.item.providers.SkullProfile;
-import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
 import net.tnemc.menu.core.icon.action.ActionType;

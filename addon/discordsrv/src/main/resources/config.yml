@@ -1,4 +1,4 @@
-config-version: 2
+config-version: 3
 
 moderator-channel: "000000000000000000"
 
@@ -12,4 +12,5 @@ features:
   mod-notify-shop-purchase: true
   mod-notify-shop-price-changed: true
   mod-notify-shop-removed: true
+  mod-notify-shop-created: true
   mod-notify-shop-transfer: false

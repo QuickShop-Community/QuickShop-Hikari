@@ -1,5 +1,23 @@
 package com.ghostchu.quickshop.shop.display;
 
+/*
+ * QuickShop-Hikari
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
@@ -31,7 +49,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   protected final ItemStack originalItemStack;
   protected final Shop shop;
   @Nullable
-  protected ItemStack guardedIstack;
+  protected ItemStack guardedStack;
   private boolean pendingRemoval;
   private static boolean virtualDisplayDoesntWork = false;
   private static final NamespacedKey DISPLAY_MARK_NAMESPACE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "display_protection");
@@ -76,9 +94,11 @@ public abstract class AbstractDisplayItem implements Reloadable {
     if(!PLUGIN.isDisplayEnabled()) {
       return false;
     }
+
     if(getNowUsing() == DisplayType.VIRTUALITEM) {
       return false;
     }
+
     Util.ensureThread(false);
     if(itemStack == null) {
       return false;
@@ -198,7 +218,11 @@ public abstract class AbstractDisplayItem implements Reloadable {
    */
   public @Nullable Location getDisplayLocation() {
 
-    return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    final double x = PLUGIN.getConfig().getDouble("shop.display-coords.x", 0.5);
+    final double y = PLUGIN.getConfig().getDouble("shop.display-coords.y", 0.8);
+    final double z = PLUGIN.getConfig().getDouble("shop.display-coords.z", 0.5);
+
+    return this.shop.getLocation().clone().add(x, y, z);
   }
 
   /**

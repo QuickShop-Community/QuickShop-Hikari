@@ -27,7 +27,7 @@ public class UpdateWatcher implements Listener {
 
   public void init() {
 
-    cronTask = QuickShop.folia().getImpl().runTimerAsync(()->{
+    cronTask = QuickShop.folia().getScheduler().runTimerAsync(()->{
       if(!plugin.getNexusManager().isLatest()) {
         plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.getNexusManager().getLatestVersion());
         plugin.logger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");

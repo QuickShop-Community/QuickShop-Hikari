@@ -20,7 +20,6 @@ package com.ghostchu.quickshop.shop.sign.impl;
 import com.ghostchu.quickshop.shop.sign.SignParser;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 
 /**
  * TrimParser

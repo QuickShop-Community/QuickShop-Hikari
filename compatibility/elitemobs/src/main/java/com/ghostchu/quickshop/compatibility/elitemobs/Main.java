@@ -1,9 +1,10 @@
 package com.ghostchu.quickshop.compatibility.elitemobs;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.details.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.magmaguy.elitemobs.api.utils.EliteItemManager;
@@ -23,8 +24,13 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
   public void onShopCreation(final ShopCreateEvent event) {
 
-    if(isSoulBoundItem(event.getShop().getItem())) {
-      event.setCancelled(true, getDisallowedMessage(event.getCreator()));
+    if(!event.phase().cancellable() || event.shop().isEmpty()) {
+
+      return;
+    }
+
+    if(isSoulBoundItem(event.shop().get().getItem())) {
+      event.setCancelled(true, getDisallowedMessage(event.user()));
     }
   }
 
@@ -45,10 +51,16 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-  public void onShopItemChanging(final ShopItemChangeEvent event) {
+  public void onShopItemChanging(final ShopItemEvent event) {
 
-    if(isSoulBoundItem(event.getShop().getItem())) {
-      event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
+    if(event.phase() != Phase.MAIN) {
+
+      return;
+    }
+
+    if(isSoulBoundItem(event.old())) {
+
+      event.setCancelled(true, getDisallowedMessage(event.shop().getOwner()));
     }
   }
 

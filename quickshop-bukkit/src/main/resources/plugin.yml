@@ -12,6 +12,7 @@ softdepend:
   - Essentials
   - CMI
   - ProtocolLib
+  - packetevents
   - NBTAPI
   - NBT-API
   - ItemNBTAPI
@@ -19,9 +20,8 @@ softdepend:
   - EcoEnchants # Add ecoenchants to allow us to detect if ee is installed for compatibility warning
   - CoinsEngine
   - Treasury
-  - BetterEconomy # Depends on Treasury
   - TheNewEconomy
-api-version: 1.18
+api-version: '1.20'
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 #libraries:
 #  - org.apache.commons:commons-compress:1.25.0
@@ -135,9 +135,9 @@ permissions:
       quickshop.benefit: true
       quickshop.browse: true
       quickshop.sign: true
-      #quickshop.history: true
-      #quickshop.history.owned: true
-      #quickshop.history.accessible: true
+      quickshop.history: true
+      quickshop.history.owned: true
+      quickshop.history.accessible: true
       quickshop.suggestprice: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
@@ -175,6 +175,9 @@ permissions:
   quickshop.create.buy:
     description: Allows a player to buy from a shop.
     default: op
+  quickshop.togglefreeze:
+      description: Allows a player switch shop type to frozen mode.
+      default: op
   quickshop.create.double:
     description: Allows a player to create a double shop.
     default: op
@@ -382,6 +385,18 @@ permissions:
   quickshop.other.history:
     description: Permission to view the other's shop history
     default: op
+  quickshop.other.sell:
+    description: Allows a other player force switch the shop type to sell mode
+    default: op
+  quickshop.other.buy:
+    description: Allows a other player force switch the shop type to buy mode
+    default: op
+  quickshop.other.freeze:
+    description: Allows a other player force switch the shop type to frozen mode
+    default: op
   quickshop.suggestprice:
     description: Suggest the shop recommend price
     default: op
+  quickshop.self-trade:
+    description: Allows a player to trade with their own shops
+    default: true

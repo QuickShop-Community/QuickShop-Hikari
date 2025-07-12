@@ -65,6 +65,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -81,7 +82,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   // <File <Locale, Section>>
   private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
   private final Set<String> availableLanguages = new LinkedHashSet<>();
-  private final Map<Locale, NumberFormat> numberFormatCache = new HashMap<>();
+  private final ConcurrentHashMap<Locale, NumberFormat> numberFormatCache = new ConcurrentHashMap<>();
   private final Cache<String, String> languagesCache =
           CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).recordStats().build();
   private final String crowdinHost;
@@ -99,7 +100,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       try {
         plugin.logger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
         this.crowdinOTA = new CrowdinOTA(crowdinHost, new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
-      } catch(Exception e) {
+      } catch(final Exception e) {
         plugin.logger().warn("Cannot initialize the CrowdinOTA instance!", e);
       }
     } else {
@@ -137,7 +138,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             try {
               configuration.loadFromString(content);
               languageFilesManager.deploy(mcCode, configuration);
-            } catch(InvalidConfigurationException e) {
+            } catch(final InvalidConfigurationException e) {
               plugin.logger().warn("Failed to load translation for {}.", mcCode, e);
             }
           }
@@ -145,7 +146,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       } else {
         plugin.logger().info("CrowdinOTA not initialized, skipping for over-the-air translation updates.");
       }
-    } catch(Exception e) {
+    } catch(final Exception e) {
       plugin.logger().warn("Unable to load Crowdin OTA translations", e);
     }
     // and don't forget fix missing
@@ -160,7 +161,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         try {
           configuration.loadFromString(Files.readString(file.toPath(), StandardCharsets.UTF_8));
           languageFilesManager.deploy(locale, configuration);
-        } catch(InvalidConfigurationException | IOException e) {
+        } catch(final InvalidConfigurationException | IOException e) {
           plugin.logger().warn("Failed to override translation for {}.", locale, e);
         }
 
@@ -208,7 +209,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     if(!configFile.exists()) {
       try {
         Files.copy(plugin.getJavaPlugin().getResource("color-scheme.yml"), configFile.toPath());
-      } catch(IOException e) {
+      } catch(final IOException e) {
         plugin.logger().warn("Failed to copy color-scheme.yml to plugin folder!", e);
       }
     }
@@ -252,7 +253,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   private FileConfiguration loadBuiltInFallback() {
 
     final YamlConfiguration configuration = new YamlConfiguration();
-    try(InputStream inputStream = QuickShop.getInstance().getJavaPlugin().getResource("lang/messages.yml")) {
+    try(final InputStream inputStream = QuickShop.getInstance().getJavaPlugin().getResource("lang/messages.yml")) {
       if(inputStream == null) {
         plugin.logger().warn("Failed to load built-in fallback translation, fallback file not exists in jar.");
         return configuration;
@@ -261,7 +262,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       final String content = new String(bytes, StandardCharsets.UTF_8);
       configuration.loadFromString(content);
       return configuration;
-    } catch(IOException | InvalidConfigurationException e) {
+    } catch(final IOException | InvalidConfigurationException e) {
       plugin.logger().warn("Failed to load built-in fallback translation.", e);
       return configuration;
     }
@@ -278,11 +279,11 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     final File jarFile;
     try {
       jarFile = Util.getPluginJarFile(plugin.getJavaPlugin());
-    } catch(FileNotFoundException e) {
+    } catch(final FileNotFoundException e) {
       plugin.logger().warn("Failed to load bundled translation", e);
       return new HashMap<>();
     }
-    try(ZipFile zipFile = new ZipFile(jarFile, "UTF-8")) {
+    try(final ZipFile zipFile = new ZipFile(jarFile, "UTF-8")) {
       // jar/lang/<region_code>/
       final Map<String, FileConfiguration> availableLang = new HashMap<>();
       zipFile.getEntries().asIterator().forEachRemaining(entry->{
@@ -302,13 +303,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             final YamlConfiguration configuration = new YamlConfiguration();
             configuration.loadFromString(new String(zipFile.getInputStream(entry).readAllBytes(), StandardCharsets.UTF_8));
             availableLang.put(locale.toLowerCase(Locale.ROOT).replace("-", "_"), configuration);
-          } catch(IOException | InvalidConfigurationException e) {
+          } catch(final IOException | InvalidConfigurationException e) {
             plugin.logger().warn("Failed to load bundled translation.", e);
           }
         }
       });
       return availableLang;
-    } catch(IOException e) {
+    } catch(final IOException e) {
       plugin.logger().warn("Failed to load bundled translation, jar invalid", e);
       return new HashMap<>();
     }
@@ -452,7 +453,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       } else {
         locale = LocaleUtils.toLocale(result);
       }
-    } catch(IllegalArgumentException e) {
+    } catch(final IllegalArgumentException e) {
       Log.debug(Level.WARNING, "Failed to solve the player locale: " + locale + ": " + e.getMessage());
     }
 
@@ -480,7 +481,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         if(Pattern.matches(CommonUtil.createRegexFromGlob(languagesRegex), locale)) {
           return true;
         }
-      } catch(PatternSyntaxException exception) {
+      } catch(final PatternSyntaxException exception) {
         Log.debug("Pattern " + languagesRegex + " invalid, skipping...");
       }
     }
@@ -500,7 +501,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   @Override
   public @NotNull ProxiedLocale findRelativeLanguages(@Nullable final CommandSender sender) {
 
-    if(sender instanceof Player player) {
+    if(sender instanceof final Player player) {
       return findRelativeLanguages(player.getLocale());
     }
     return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
@@ -541,7 +542,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     }
     try {
       return findRelativeLanguages(plugin.getDatabaseHelper().getPlayerLocale(sender).get());
-    } catch(InterruptedException | ExecutionException e) {
+    } catch(final InterruptedException | ExecutionException e) {
       Log.debug("Failed to get player locale from database, fallback to default locale: " + e.getMessage());
       return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
     }
@@ -621,15 +622,15 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         continue;
       }
       final Class<?> clazz = obj.getClass();
-      if(obj instanceof Component component) {
+      if(obj instanceof final Component component) {
         components[i] = component;
         continue;
       }
-      if(obj instanceof ComponentLike componentLike) {
+      if(obj instanceof final ComponentLike componentLike) {
         components[i] = componentLike.asComponent();
         continue;
       }
-      if(obj instanceof QUser qUser) {
+      if(obj instanceof final QUser qUser) {
         components[i] = LegacyComponentSerializer.legacySection().deserialize(qUser.getDisplay());
       }
       // Check
@@ -684,7 +685,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           components[i] = ((Text)obj).forLocale();
         }
         components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
-      } catch(Exception exception) {
+      } catch(final Exception exception) {
         Log.debug("Failed to process the object: " + obj);
         if(plugin.getSentryErrorReporter() != null) {
           plugin.getSentryErrorReporter().sendError(exception, "Failed to process the object: " + obj);
@@ -846,7 +847,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     @NotNull
     public List<Component> forLocale() {
 
-      if(sender instanceof Player player) {
+      if(sender instanceof final Player player) {
         return forLocale(player.getLocale());
       } else {
         return forLocale(MsgUtil.getDefaultGameLanguageCode());
@@ -862,7 +863,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     public boolean isPresent() {
 
       final String locale;
-      if(sender instanceof Player player) {
+      if(sender instanceof final Player player) {
         locale = player.getLocale();
       } else {
         locale = MsgUtil.getDefaultGameLanguageCode();
@@ -903,7 +904,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       for(final PostProcessor postProcessor : this.manager.postProcessors) {
         try {
           component = postProcessor.process(component, sender, args);
-        } catch(Throwable th) {
+        } catch(final Throwable th) {
           Log.debug("Failed to post processing text: " + component + " caused by " + th.getMessage() + " handler: " + postProcessor.getClass().getName());
         }
       }
@@ -1007,7 +1008,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     @NotNull
     public Component forLocale() {
 
-      if(sender instanceof Player player) {
+      if(sender instanceof final Player player) {
         return forLocale(player.getLocale());
       } else {
         return forLocale(MsgUtil.getDefaultGameLanguageCode());
@@ -1047,7 +1048,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     public boolean isPresent() {
 
       final String locale;
-      if(sender instanceof Player player) {
+      if(sender instanceof final Player player) {
         locale = player.getLocale();
       } else {
         locale = MsgUtil.getDefaultGameLanguageCode();
@@ -1082,7 +1083,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       for(final PostProcessor postProcessor : this.manager.postProcessors) {
         try {
           text = postProcessor.process(text, sender, args);
-        } catch(Exception e) {
+        } catch(final Exception e) {
           Log.debug("Error occurred while processing text: " + PlainTextComponentSerializer.plainText().serialize(text) + " caused by" + e.getMessage() + ", handler: " + postProcessor.getClass().getName());
         }
       }

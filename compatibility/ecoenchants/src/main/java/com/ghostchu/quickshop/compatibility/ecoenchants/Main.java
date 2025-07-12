@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.compatibility.ecoenchants;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.willfp.eco.core.display.DisplayProperties;
@@ -34,7 +34,7 @@ public final class Main extends CompatibilityModule implements Listener {
     if("EcoEnchants".equalsIgnoreCase(event.getPlugin().getName())
        || "libreforge".equalsIgnoreCase(event.getPlugin().getName())
        || "eco".equalsIgnoreCase(event.getPlugin().getName())) {
-      QuickShop.folia().getImpl().runLater(this::initEcoEnchantEnchantmentTranslationKeys, 1);
+      QuickShop.folia().getScheduler().runLater(this::initEcoEnchantEnchantmentTranslationKeys, 1);
     }
   }
 

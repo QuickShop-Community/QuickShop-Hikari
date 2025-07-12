@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>你需要 {0} 才能创建一个商店。
 success-created-shop: <green>已成功地创建商店。
 shop-creation-cancelled: <red>商店创建已取消。
 shop-owner-self-trade: <yellow>你正在和自己的商店进行交易，所以你的金钱可能并不会变化。
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>这个商店空间已不足，请联系商店所有者或助手清空商店
 reloading-status:
   success: <green>重载完成，没有任何错误。
@@ -120,6 +121,7 @@ menu:
   item-holochat-data-too-large: <red>[错误] 物品NBT太长，无法显示
   stock: '<green>库存:<yellow>{0}'
   this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
+  this-shop-is-frozen: <green>这个商店现在处于 <red>冻结模式<green>。
   successfully-sold: '<green>出售成功：'
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
@@ -168,7 +170,7 @@ permission-denied-3rd-party: <red>没有权限：第三方插件 [{0}]。
 you-dont-have-that-many-items: <red>你只有 {0} 个 {1}。
 complete: <green>完成！
 translate-not-completed-yet-url: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： {2}'
-success-removed-shop: <green>商店已删除！
+success-removed-shop: <green>商店删除成功。
 currency-set: <green>商店货币已被成功设置为 {0}。
 shop-purged-start: <green>商店清理已开始，请检查控制台获取详细信息。
 economy-transaction-failed: <red>抱歉，在处理您的交易时发生了内部错误。 交易已被取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
@@ -254,7 +256,6 @@ translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助
 taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。
 player-bought-from-your-store: <red>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}
 reached-maximum-can-create: <red>你创建的商店数量达到上限：{0}/{1}
-reached-maximum-create-limit: <red>您已达到可以创建商店的最大数量
 translation-version: '支持版本: Hikari'
 no-double-chests: <red>你没有权限创建大箱子商店。
 price-too-cheap: <red>价格必须大于<yellow>${0}
@@ -298,7 +299,7 @@ unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
-april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>限时活动 -- QuickShop-Hikari</bold></rainbow>\n<yellow>获取你的 <gold>高级</gold> 粒子效果并在所有安装 QuickShop 的服务器上使用!</yellow>\n<aqua>点击下面的链接观看领取教程视频!</aqua>\n<hover:show_text:'<gold>点击以在浏览器中打开.</gold><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'>https://www.bilibili.com/video/BV1GJ411x7h7</click></hover>\n<green>---------------------------------------------------</green>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'在浏览器中点击打开获取限时奖励!'><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'><green>点击此处可以获取由 QuickShop 开发者提供的限时奖励!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: 空间不足
@@ -747,6 +748,9 @@ addon:
   lands:
     world-not-enabled: <red>你不能在这个世界中交易或创建
     creation-denied: <red>您没有在该Land区域创建商店的权限
+  dominion:
+    creation-denied: <red>你没有权限在这个支配区创建商店。
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>你不能在地皮外创建商店
     no-plot-whitelist-trade: <red>你不能在地皮之外与商店交易
@@ -758,6 +762,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>只有岛屿所有者才能在这里创建商店
     owner-member-create-only: <red>只有岛屿所有者或岛屿成员才能在这里创建商店
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>只有岛屿主人或成员才能在这里创建商店。
   worldguard:
     creation-flag-test-failed: <red>您没有在该WorldGuard区域创建商店的权限
     trade-flag-test-failed: <red>您没有在该WorldGuard区域与商店交易的权限。

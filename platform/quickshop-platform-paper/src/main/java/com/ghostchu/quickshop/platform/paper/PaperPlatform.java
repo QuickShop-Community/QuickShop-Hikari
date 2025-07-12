@@ -4,6 +4,8 @@ import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -65,10 +67,18 @@ public class PaperPlatform implements Platform {
   public @NotNull Component getDisplayName(@NotNull final ItemMeta meta) {
 
     final Component displayName = meta.displayName();
-    if(displayName == null) {
-      return Component.empty();
+    if(displayName != null) {
+      return displayName;
     }
-    return displayName;
+
+    try {
+      if(meta.hasItemName()) {
+        return meta.itemName();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
+    }
+    return Component.empty();
   }
 
 
@@ -203,6 +213,11 @@ public class PaperPlatform implements Platform {
 
   @Override
   public void sendMessage(@NotNull final CommandSender sender, @NotNull final Component component) {
+
+    final String serialized = GsonComponentSerializer.gson().serialize(component);
+    if(serialized.toLowerCase().contains("quickshopdontsend")) {
+      return;
+    }
 
     sender.sendMessage(component);
   }

@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>새 상점 생성에 {0} 원이 소모됩니다
 success-created-shop: <red>상점이 생성되었습니다.
 shop-creation-cancelled: <red>상점 생성이 취소되었습니다.
 shop-owner-self-trade: <yellow>당신은 당신의 상점과 거래중이며 얼마의 돈도 얻지 못합니다.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요.
 reloading-status:
   success: <green>아무 오류도없이 리로드를 완료했습니다.
@@ -119,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] 아이템 NBT가 너무 커 표시할수 없습니다!
   stock: '<green>재고품 <yellow>{0}'
   this-shop-is-buying: <green>이 상점은 아이템을 <light_purple>구매<green>중인 상점입니다.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>성공적으로 판매했습니다:'
   total-value-of-chest: '<green>상자의 총 가격: <yellow>{0}원'
 currency-not-exists: <red>설정할 통화를 찾을 수 없습니다. 아마 철자가 틀렸거나 그 화폐는 이 세상에서 구할 수 없을 거예요.
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: '{0} 언어의 번역이 {1} 완료되었습�
 taxaccount-invalid: <red>대상 계정이 올바르지 않습니다. 올바른 플레이어 이름 또는 UUID(대시 포함)를 입력하십시오.
 player-bought-from-your-store: <red>{0} 님이 당신의 상점 에서 {1} {2} 을(를) 구입했으며 당신은 {3} 원 을(를) 얻으셨습니다!
 reached-maximum-can-create: <red>당신은 이미 최대 {0}/{1} 개의 상점을 생성했습니다!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: '지원 버전: Hikari'
 no-double-chests: <red>당신은 큰상자(일반 상자를 두개붙인)를 이용한 상점을 만들 수 없습니다. (권한 부족입니다.)
 price-too-cheap: <red>가격은 반드시 <yellow>${0} 원 <red>보다 높아야만 합니다.
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>상시 카운트 할건지 설정합니다
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다.
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +752,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:

@@ -47,9 +47,9 @@ public final class Main extends JavaPlugin implements Listener {
       getLogger().info("Found BlueMap loaded! Hooking!");
       this.blueMapAPI = blueMapAPI;
       createMarkerSet();
-      QuickShop.folia().getImpl().runTimerAsync(this::updateAllMarkers, 1, getConfig().getInt("refresh-per-seconds") * 20L);
+      QuickShop.folia().getScheduler().runTimerAsync(this::updateAllMarkers, 1, getConfig().getInt("refresh-per-seconds") * 20L);
     });
-    BlueMapAPI.onDisable(api->QuickShop.folia().getImpl().cancelAllTasks());
+    BlueMapAPI.onDisable(api->QuickShop.folia().getScheduler().cancelAllTasks());
   }
 
   @NotNull

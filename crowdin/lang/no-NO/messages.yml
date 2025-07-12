@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>Du har ikke råd til dette, det koster <green>{
 success-created-shop: <green>Butikken ble opprettet.
 shop-creation-cancelled: <red>Opprettelse av butikk ble kansellert.
 shop-owner-self-trade: <yellow>Du handler i din egen butikk. <gray>Du kan ikke tjene penger på dette.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.
 reloading-status:
   success: <green>Utvidelsen ble lastet på nytt uten feil.
@@ -120,6 +121,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] NBT informasjonen på gjenstanden er for stor til å vise
   stock: '<green>Lagerbeholdning: <yellow>{0}'
   this-shop-is-buying: <green>Denne butikken <light_purple>KJØPER<green> varer.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Vellykket solgt:'
   total-value-of-chest: '<green>Total verdi for kisten: <yellow>{0}'
 currency-not-exists: <red>Kan ikke finne valutaen du vil sette. Kanskje stavemåten er feil, eller at valuta ikke er tilgjengelig i denne verdenen.
@@ -255,7 +257,6 @@ translate-not-completed-yet-click: Oversettelsen av språket {0} er ennå ikke f
 taxaccount-invalid: <red>Konto ugyldig. Vennligst skriv inn et gyldig spillernavn eller UUID (med bindestreker).
 player-bought-from-your-store: <green>{0} kjøpte {1} {2} fra butikken din, og du tjente {3}.
 reached-maximum-can-create: <red>Du har allerede opprettet maksimum {0}/{1} butikker!
-reached-maximum-create-limit: <red>Du har nådd maksimalt antall butikker du kan opprette
 translation-version: 'Støttet versjon: Hikari'
 no-double-chests: <red>Du kan ikke opprette en butikk med dobbelkiste.
 price-too-cheap: <red>Prisen må være høyere enn <yellow>${0}
@@ -352,7 +353,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klikk for å endre om butikken alltid skal telle innholdet i beholderen.
   alwayscounting: '<green>Alltid telle: {0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   setowner: '<green>Eier: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
-  freeze: '<yellow>Frysmodus: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Pris: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
   currency-hover: <yellow>Klikk for å sette eller fjerne valutaen på butikken
   lock: '<yellow>Butikklås: <aqua>{0} <yellow>[<bold><light_purple>Endre</light_purple></bold>]'
@@ -755,6 +756,9 @@ addon:
   lands:
     world-not-enabled: <red>Du har ikke lov til å opprette eller kjøpe butikker i denne verden.
     creation-denied: <red>Du har ikke tillatelse til å opprette en butikk på dette Land område.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>Du kan ikke opprette en butikk utenfor tomten.
     no-plot-whitelist-trade: <red>Du kan ikke kjøpe en butikk utenfor tomten.
@@ -766,6 +770,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Bare øyeier kan opprette butikk der.
     owner-member-create-only: <red>Bare øyeier eller et medlem kan opprette butikk der.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>Du har ikke tillatelse til å opprette en butikk i denne WorldGuard regionen.
     trade-flag-test-failed: <red>Du har ikke tillatelse til å handle i denne WorldGuard regionen.

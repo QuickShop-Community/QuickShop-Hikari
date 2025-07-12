@@ -61,7 +61,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
             plugin.text().of(sender, "transfer-no-pending-operation").send();
             return;
           }
-          task.commit(true);
+          Util.mainThreadRun(()->task.commit(true));
         }
         case "reject", "deny", "no" -> {
           final ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());

@@ -10,11 +10,6 @@ import com.ghostchu.quickshop.common.util.GeoUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_3.Spigot1194Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_1.Spigot1201Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1202Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_20_3.Spigot1203Platform;
@@ -22,6 +17,7 @@ import com.ghostchu.quickshop.platform.spigot.v1_20_4.Spigot1205Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1210Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_3.Spigot1231Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_21_4.Spigot1214Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_21_5.Spigot1215Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
@@ -90,7 +86,7 @@ public class QuickShopBukkit extends JavaPlugin {
     this.quickShop.onDisable();
     bootstrapLogger.info("Cleaning up resources...");
     HandlerList.unregisterAll(this);
-    QuickShop.folia().getImpl().cancelAllTasks();
+    QuickShop.folia().getScheduler().cancelAllTasks();
     Bukkit.getServicesManager().unregisterAll(this);
     Unirest.shutDown(true);
     Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
@@ -253,11 +249,6 @@ public class QuickShopBukkit extends JavaPlugin {
           //noinspection deprecation
           final String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
           this.platform = switch(internalNMSVersion) {
-            case "v1_18_R1" -> new Spigot1181Platform(this);
-            case "v1_18_R2" -> new Spigot1182Platform(this);
-            case "v1_19_R1" -> new Spigot1191Platform(this);
-            case "v1_19_R2" -> new Spigot1193Platform(this);
-            case "v1_19_R3" -> new Spigot1194Platform(this);
             case "v1_20_R1" -> new Spigot1201Platform(this);
             case "v1_20_R2" -> new Spigot1202Platform(this);
             case "v1_20_R3" -> new Spigot1203Platform(this);
@@ -266,6 +257,7 @@ public class QuickShopBukkit extends JavaPlugin {
             //case "v1_21_R2" -> new Spigot1211Platform(this);
             case "v1_21_R2" -> new Spigot1231Platform(this);
             case "v1_21_R3" -> new Spigot1214Platform(this);
+            case "v1_21_R4" -> new Spigot1215Platform(this);
             default -> {
               bootstrapLogger.warning("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
               Bukkit.getPluginManager().disablePlugin(this);

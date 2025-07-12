@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denego las comprobaciones de permisos. Si esto no se espera, prueba añadiendo <light_purple>{1} <gray> a la lista negra de escucha. Guia de Configuración:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Precio medio en esta zona: <yellow>{0}'
 inventory-check-global-alert: "<red>[[Inventory Check] ¡Aviso! Encontró un elemento de QuickShop <gold>{2}</gold> en inventario en <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, que no debería ocurrir, Esto generalmente significa que alguien está explotando malintencionadamente el exploit para duplicar el elemento de visualización."
 digits-reach-the-limit: <red>Has alcanzado el límite de decimales en el precio.
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Cuesta {0} crear una tienda.
 success-created-shop: <red>Tienda creada.
 shop-creation-cancelled: <red>Creación de tienda cancelada.
 shop-owner-self-trade: <yellow>Estás operando con tu propia tienda, por lo que no ganarás nada de saldo.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Esta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda.
 reloading-status:
   success: <green>Recarga completada sin errores.
@@ -119,11 +120,12 @@ menu:
   item-holochat-data-too-large: <red>[Error] El elemento NBT es demasiado grande para mostrarlo
   stock: '<green>Existencias <yellow>{0}'
   this-shop-is-buying: <green>Esta tienda está <light_purple>COMPRANDO<green> artículos.
+  this-shop-is-frozen: <green>La tienda esta actualmente <red>congelada<green>.
   successfully-sold: '<green>Vendido con éxito:'
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No se puede encontrar la divisa que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.
 no-nearby-shop: <red>No hay ninguna tienda en la zona que coincida con {0}.
-translation-author: 'Ghost_chu, Andre_601, alexbm0'
+translation-author: 'alexbm0'
 integrations-check-failed-trade: La integración {0} impide la creación de la tienda
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Establecido exitosamente el dueño de la tienda al Servidor.
@@ -152,7 +154,7 @@ metric:
   tax-hover: <yellow>{0} impuestos
   header-global: '<yellow>El servidor {0} {1} transacciones:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} en total
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Mundo: {4}<newline><gold>Dueño: <gray>{5}<newline><gold>Tipo de tienda: <gray>{6}<newline><gold>Objeto: <gray>{7}<newline><gold>Precio: <gray>{8}
   time-hover: '<yellow>Tiempo: {0}'
@@ -177,7 +179,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: VENTA
   buying: COMPRA
-  frozen: FROZEN
+  frozen: CONGELADO
 language:
   qa-issues: '<yellow>Problemas de garantía de calidad: <aqua>{0}%'
   code: '<yellow>Código: <gold>{0}'
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: La traducción del lenguaje {0} aún no fue c
 taxaccount-invalid: <red>La cuenta de destino no es válida, por favor ingrese un nombre de jugador válido o uuid(con guiones).
 player-bought-from-your-store: <red>{0} ha comprado {1} {2} por un valor de {3} en tu tienda.
 reached-maximum-can-create: <red>¡Ya has creado un máximo de {0}/{1} tiendas!
-reached-maximum-create-limit: <red>Has alcanzado el número de tiendas máximas
 translation-version: 'Versión de soporte: Hikari'
 no-double-chests: <red>No puedes crear tiendas de cofres dobles.
 price-too-cheap: <red>El precio debe ser mayor a <yellow>${0}
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Modo de congelación: <aqua>{0} <yellow>[<bold><light_purple>Alternar</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click para establecer o remover la divisa que utiliza la tienda
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -391,7 +392,7 @@ timeunit:
   minutes: "{0} minutos"
   justnow: justo ahora
   minute: "{0} minuto"
-  std-format: MM/dd/yyyy HH:mm:ss
+  std-format: Dd/MM/yyyy HH:mm:ss
   future-plain-text: futuro
   month: "{0} mes"
   future: en {0}
@@ -427,7 +428,7 @@ command:
     sell: <yellow>Cambia la tienda a modo <aqua>VENTA<yellow>
     fetchmessage: <yellow>Mostrar mensajes de tienda sin leer
     staff: <yellow>Gestionar personal de tu tienda
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>Controla el staff de todas las tiendas que controlas.
     clean: <yellow>Suprime todas las tiendas (cargadas) fuera de existencias
     refill: <yellow>Agrega un número dado de artículos a la tienda
     help: <yellow>Muestra la ayuda de QuickShop
@@ -666,17 +667,16 @@ exported-database: <green>Database exported to <yellow>{0}</yellow>.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
   <yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue.
-importing-database: <green>Importing database from backup, please wait...
-importing-failed: <red>Failed to import database, please check the server console.
+importing-database: <green>Importando base de datos desde la copia de seguridad, por favor espere...
+importing-failed: <red>Error al importar la base de datos, por favor comprueba la consola del servidor.
 imported-database: <green>Base de datos importada de <yellow>{0}</yellow>.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+transfer-single-request: <yellow>El Jugador <aqua>{0}</aqua> desea transferirte una tienda. ¿Quieres aceptar la solicitud?
 transfer-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Escribe <red>/quickshop transferasatacceso
 transfer-single-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
@@ -685,10 +685,10 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self:
-benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
-benefit-exists: <red>Target player already in benefits list on this shop.
-benefit-removed: <red>Target player has been removed from shop benefits.
-benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
+benefit-overflow: <red>La suma de todos los beneficios no puede ser mayor o igual al 100%.
+benefit-exists: <red>El jugador objetivo ya está en la lista de beneficios de esta.
+benefit-removed: <red>El jugador objetivo ha sido eliminado de los beneficios de la tienda.
+benefit-added: '¡<green>El jugador <aqua>{0}</aqua> se ha agregado a los beneficios de la tienda!'
 benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
 benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>
@@ -738,6 +738,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -747,6 +750,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:

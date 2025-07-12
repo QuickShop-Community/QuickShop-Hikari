@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>SuperTool aletini kullanarak marketleri kırabilirsin.
 fee-charged-for-price-change: <green>Fiyatı değiştirmek için <red>{0}<green> ödediniz.
 not-allowed-to-create: <red>Burada bir market oluşturamazsın.
 disabled-in-this-world: <red>Bu komut bu dünyada devre dışı
@@ -16,7 +16,7 @@ not-looking-at-valid-shop-block: <red>Hiç Mağza bulunamadı. Birine bakman laz
 shop-removed-cause-ongoing-fee: <red>{0}'deki marketiniz açık tutmaya yetecek kadar paranız olmadığı için kaldırıldı!
 tabcomplete:
   amount: '[miktar]'
-  item: '[item]'
+  item: '[eşya]'
   price: '[fiyat]'
   name: '[name]'
   range: '[menzil]'
@@ -49,8 +49,8 @@ quick-fill:
     - '<yellow>Öğe: <aqua>{item}'
     - '<yellow>Konum: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
-  entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+  entry-normal: ''
+  entry-cooperation: ''
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Yakınlardaki ortalama fiyat: <yellow>{0}'
 inventory-check-global-alert: "<red>[Envanter Kontrolü] <gray>Uyarı! QuickShop görüntülü öğe bulundu <gold>{2}</gold> Envanterde <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, ki bu olmamalı, Bu genellikle birisinin görüntüleme öğesini çoğaltmak için istismardan kötü niyetli olarak yararlandığı anlamına gelir."
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: '<red>Yeni bir market oluşturma maliyeti: ${0}'
 success-created-shop: <red>Market oluşturuldu.
 shop-creation-cancelled: <red>Market oluşumu iptal edildi.
 shop-owner-self-trade: <yellow>Kendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Bu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.
 reloading-status:
   success: <green>Yeniden yükleme hata olmadan tamamlandı.
@@ -119,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Öğe NBT'si gösterilemeyecek kadar büyük
   stock: '<green>Stok <yellow>{0}'
   this-shop-is-buying: <green>Bu market öğe <light_purple>SATIN ALIYOR<green>.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Başarıyla satıldı:'
   total-value-of-chest: '<green>Sandığın toplam değeri: <yellow>{0}'
 currency-not-exists: <red>Ayarlamak istediğiniz para birimi bulunamadı. Belki imlâ hatası yaptığınız ya da o para birimi dünyada mevcut değil.
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: '{0} dilinin çevirisi {1} tamamlanmadı. Çe
 taxaccount-invalid: <red>Target hesabı geçersiz değil, lütfen geçerli bir oyuncu adı veya uuid(çizgili) girin.
 player-bought-from-your-store: <red>{0} marketinden {1} tane {2} aldı ve {3} kazandın.
 reached-maximum-can-create: <red>Zaten maksimum {0}/{1} market oluşturdun!
-reached-maximum-create-limit: <red>Oluşturabileceğiniz maksimum mağaza sayısına ulaştınız
 translation-version: 'Destek Sürümü: Hikari'
 no-double-chests: <red>Çifte sandık ile market oluşturamazsınız.
 price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
   alwayscounting: '<green>Her zaman sayıyor: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   setowner: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   currency-hover: <yellow>Bu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -738,6 +739,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -749,6 +753,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Sadece ada sahibi orada dükkan açabilir.
     owner-member-create-only: <red>Sadece ada sahibi veya üyesi orada dükkan oluşturabilir.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>Bu WorldGuard bölgesinde market oluşturma izniniz yok.
     trade-flag-test-failed: <red>Bu WorldGuard bölgesinde takas izniniz yok.

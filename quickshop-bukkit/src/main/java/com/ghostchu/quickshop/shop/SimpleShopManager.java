@@ -2,15 +2,16 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPopulateEvent;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
-import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopDeleteEvent;
-import com.ghostchu.quickshop.api.event.general.ShopInfoPanelEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopTaxEvent;
+import com.ghostchu.quickshop.api.event.general.ShopInfoPanelEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -79,6 +80,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -175,6 +177,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final QUser buyerQUser = QUserImpl.createFullFilled(buyer);
     if(!plugin.perm().hasPermission(buyer, "quickshop.other.use") && !shop.playerAuthorize(buyer.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
       plugin.text().of("no-permission").send();
+      return false;
+    }
+
+    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
+      plugin.text().of(buyer, "shop-owner-self-trade-denied").send();
       return false;
     }
 
@@ -353,7 +360,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
                                                    price, info.getItem(), createQUser, false,
-                                                   ShopType.SELLING, new YamlConfiguration(), null, false,
+                                                   ShopType.SELLING, new YamlConfiguration(), null, !plugin.isDisplayEnabled(),
                                                    null, plugin.getJavaPlugin().getName(),
                                                    symbolLink,
                                                    null, Collections.emptyMap(), new SimpleBenefit());
@@ -373,6 +380,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.text().of("no-permission").send();
       return false;
     }
+
+    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
+      plugin.text().of(seller, "shop-owner-self-trade-denied").send();
+      return false;
+    }
+
     if(shopIsNotValid(sellerQUser, info, shop)) {
       return false;
     }
@@ -516,8 +529,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     // Check if player has reached the max shop limit
-    if(isReachedLimit(shop.getOwner())) {
-      plugin.text().of(p, "reached-maximum-create-limit").send();
+    if(isReachedLimit(shop.getOwner(), true)) {
       return;
     }
     // Check if target block is allowed shop-block
@@ -592,10 +604,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
       case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
       case PASS -> {
+
         // Calling ShopCreateEvent
-        final ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, shop.getOwner());
-        if(Util.fireCancellableEvent(shopCreateEvent)) {
-          plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
+        ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, shop, shop.getOwner(), shop.getLocation());
+
+        if(event.callCancellableEvent()) {
+
+          plugin.text().of(p, "plugin-cancelled", event.getCancelReason()).send();
           return;
         }
         // Handle create cost
@@ -631,6 +646,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             final BlockState signState = this.makeShopSign(shop.getLocation().getBlock(), signBlock, null);
             if(signState instanceof final Sign puttedSign) {
               try {
+
                 shop.claimShopSign(puttedSign);
               } catch(final Throwable ignored) {
               }
@@ -641,6 +657,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         registerShop(shop, true);
         loadShop(shop);
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
+
+        event = event.clone(Phase.MAIN);
+        event.callEvent();
       }
     }
   }
@@ -649,11 +668,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
    * Checks other plugins to make sure they can use the chest they're making a shop.
    *
    * @param p The player to check
+   * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're allowed to place a shop there.
    */
   @Override
-  public boolean isReachedLimit(@NotNull final QUser p) {
+  public boolean isReachedLimit(@NotNull final QUser p, final boolean message) {
 
     Util.ensureThread(false);
     if(plugin.getRankLimiter().isLimit()) {
@@ -668,8 +688,19 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
       }
       final int max = plugin.getRankLimiter().getShopLimit(p);
+      final boolean limitReached = owned >= max;
       Log.debug("CanBuildShop check for " + p.getDisplay() + " owned: " + owned + "; max: " + max);
-      return owned + 1 > max;
+
+      if(limitReached && message) {
+
+        final Optional<Player> playerOptional = p.getBukkitPlayer();
+        if(playerOptional.isPresent()) {
+
+          plugin.text().of(p, "reached-maximum-can-create", owned, max).send();
+        }
+      }
+
+      return limitReached;
     }
     return false;
   }
@@ -1015,10 +1046,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     signBlock.setType(signMaterial == null? Util.getSignMaterial() : signMaterial);
     final BlockState signBlockState = signBlock.getState();
     final BlockData signBlockData = signBlockState.getBlockData();
+
     if(signIsWatered && (signBlockData instanceof final Waterlogged waterable)) {
       waterable.setWaterlogged(true); // Looks like sign directly put in water
     }
     if(signBlockData instanceof final WallSign wallSignBlockData) {
+
       final BlockFace bf = container.getFace(signBlock);
       if(bf != null) {
         wallSignBlockData.setFacing(bf);
@@ -1027,6 +1060,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     } else {
       plugin.logger().warn("Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
     }
+
     signBlockState.update(true);
     return signBlockState;
   }
@@ -1147,7 +1181,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   @Override
   public void deleteShop(@NotNull final Shop shop) {
 
-    final ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
+    ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
     if(shopDeleteEvent.callCancellableEvent()) {
       Log.debug("Shop delete was cancelled by 3rd-party plugin");
       return;
@@ -1158,6 +1192,8 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     refundShop(shop);
     unloadShop(shop);
     unregisterShop(shop, true);
+    shopDeleteEvent = shopDeleteEvent.clone(Phase.POST);
+    shopDeleteEvent.callEvent();
   }
 
 
