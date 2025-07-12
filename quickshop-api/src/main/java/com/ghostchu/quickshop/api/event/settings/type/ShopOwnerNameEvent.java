@@ -24,8 +24,8 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ShopOwnerNameEvent represents an event that is tied to actions/retrieval of the Shop owner's name setting for
- * a shop.
+ * ShopOwnerNameEvent represents an event that is tied to actions/retrieval of the Shop owner's name
+ * setting for a shop.
  *
  * @author creatorfromhell
  * @since 6.2.0.9
@@ -33,15 +33,63 @@ import org.jetbrains.annotations.NotNull;
 public class ShopOwnerNameEvent extends ShopSettingEvent<Component> {
 
   public ShopOwnerNameEvent(final @NotNull Phase phase, final Shop shop,
-                       final Component old) {
+                            final Component old) {
 
     super(phase, shop, old);
   }
 
   public ShopOwnerNameEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                       final Component old, final Component updated) {
+                            final Component old, final Component updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent PRE(final @NotNull Shop shop,
+                                       final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopOwnerNameEvent PRE(final @NotNull Shop shop,
+                                       final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent MAIN(final @NotNull Shop shop,
+                                        final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopOwnerNameEvent MAIN(final @NotNull Shop shop,
+                                        final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent POST(final @NotNull Shop shop,
+                                        final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopOwnerNameEvent POST(final @NotNull Shop shop,
+                                        final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopOwnerNameEvent RETRIEVE(final @NotNull Shop shop,
+                                            final Component old) {
+
+    return new ShopOwnerNameEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopOwnerNameEvent RETRIEVE(final @NotNull Shop shop,
+                                            final Component old, final Component updated) {
+
+    return new ShopOwnerNameEvent(Phase.RETRIEVE, shop, old, updated);
   }
 
   /**
@@ -53,6 +101,7 @@ public class ShopOwnerNameEvent extends ShopSettingEvent<Component> {
    */
   @Override
   public ShopOwnerNameEvent clone(final Phase newPhase) {
+
     if(this.updated != null) {
 
       return new ShopOwnerNameEvent(newPhase, this.shop, this.old, this.updated);
@@ -75,53 +124,5 @@ public class ShopOwnerNameEvent extends ShopSettingEvent<Component> {
   public ShopOwnerNameEvent clone(final Phase newPhase, final Component old, final Component updated) {
 
     return new ShopOwnerNameEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopOwnerNameEvent PRE(final @NotNull Shop shop,
-                                  final Component old) {
-
-    return new ShopOwnerNameEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopOwnerNameEvent PRE(final @NotNull Shop shop,
-                                  final Component old, final Component updated) {
-
-    return new ShopOwnerNameEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopOwnerNameEvent MAIN(final @NotNull Shop shop,
-                                   final Component old) {
-
-    return new ShopOwnerNameEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopOwnerNameEvent MAIN(final @NotNull Shop shop,
-                                   final Component old, final Component updated) {
-
-    return new ShopOwnerNameEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopOwnerNameEvent POST(final @NotNull Shop shop,
-                                   final Component old) {
-
-    return new ShopOwnerNameEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopOwnerNameEvent POST(final @NotNull Shop shop,
-                                   final Component old, final Component updated) {
-
-    return new ShopOwnerNameEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopOwnerNameEvent RETRIEVE(final @NotNull Shop shop,
-                                       final Component old) {
-
-    return new ShopOwnerNameEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopOwnerNameEvent RETRIEVE(final @NotNull Shop shop,
-                                       final Component old, final Component updated) {
-
-    return new ShopOwnerNameEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

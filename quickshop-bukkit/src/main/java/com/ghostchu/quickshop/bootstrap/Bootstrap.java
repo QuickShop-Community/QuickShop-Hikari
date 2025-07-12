@@ -37,7 +37,8 @@ public class Bootstrap {
 
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch(final ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException |
+    } catch(final ClassNotFoundException | UnsupportedLookAndFeelException |
+                  IllegalAccessException |
                   InstantiationException e) {
       e.printStackTrace();
     }

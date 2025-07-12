@@ -139,10 +139,10 @@ public class Economy_VaultUnlocked extends NonSeparateAbstractEconomy implements
   /**
    * Deposits a given amount of money from thin air to the given username.
    *
-   * @param identifier     The exact (case insensitive) username to give money to
-   * @param amount   The amount to give them
-   * @param world    The transaction world
-   * @param currency The currency name
+   * @param identifier The exact (case insensitive) username to give money to
+   * @param amount     The amount to give them
+   * @param world      The transaction world
+   * @param currency   The currency name
    *
    * @return True if success (Should be almost always)
    */
@@ -195,9 +195,9 @@ public class Economy_VaultUnlocked extends NonSeparateAbstractEconomy implements
   /**
    * Fetches the balance of the given account name
    *
-   * @param identifier     The uuid of the account
-   * @param world    The transaction world
-   * @param currency The currency name
+   * @param identifier The uuid of the account
+   * @param world      The transaction world
+   * @param currency   The currency name
    *
    * @return Their current balance.
    */
@@ -250,10 +250,10 @@ public class Economy_VaultUnlocked extends NonSeparateAbstractEconomy implements
   /**
    * Withdraws a given amount of money from the given username and turns it to thin air.
    *
-   * @param identifier     The exact (case insensitive) username to take money from
-   * @param amount   The amount to take from them
-   * @param world    The transaction world
-   * @param currency The currency name
+   * @param identifier The exact (case insensitive) username to take money from
+   * @param amount     The amount to take from them
+   * @param world      The transaction world
+   * @param currency   The currency name
    *
    * @return True if success, false if they didn't have enough cash
    */

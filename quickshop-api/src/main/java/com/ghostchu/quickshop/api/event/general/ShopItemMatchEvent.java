@@ -29,10 +29,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ShopItemMatchEvent extends AbstractQSEvent {
 
-  protected boolean matches = false;
-
   protected final ItemStack original;
   protected final ItemStack comparison;
+  protected boolean matches = false;
 
   public ShopItemMatchEvent(@Nullable final ItemStack original, @Nullable final ItemStack comparison) {
 

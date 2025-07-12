@@ -38,12 +38,10 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.github.quickshopcommunity.dominion.util.ChunkBounds;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.Map;
 import java.util.UUID;
@@ -70,7 +68,6 @@ public class Main extends CompatibilityModule {
 
     try {
       this.api = DominionAPI.getInstance();
-
 
     } catch(final Exception ignore) {
 

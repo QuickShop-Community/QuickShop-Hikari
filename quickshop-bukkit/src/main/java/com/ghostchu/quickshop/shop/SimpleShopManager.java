@@ -180,7 +180,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
+    if(shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
       plugin.text().of(buyer, "shop-owner-self-trade-denied").send();
       return false;
     }
@@ -381,7 +381,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
+    if(shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
       plugin.text().of(seller, "shop-owner-self-trade-denied").send();
       return false;
     }
@@ -667,7 +667,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   /**
    * Checks other plugins to make sure they can use the chest they're making a shop.
    *
-   * @param p The player to check
+   * @param p       The player to check
    * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're allowed to place a shop there.

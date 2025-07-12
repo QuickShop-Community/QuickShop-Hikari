@@ -25,6 +25,7 @@ public class ConfigUpdateScript {
 
   @UpdateScript(version = 1033)
   public void configDisplayCoords() {
+
     getConfig().set("shop.display-coords.x", "0.5");
     getConfig().set("shop.display-coords.y", "0.5");
     getConfig().set("shop.display-coords.z", "0.5");
@@ -32,6 +33,7 @@ public class ConfigUpdateScript {
 
   @UpdateScript(version = 1032)
   public void configProtocol() {
+
     getConfig().set("shop.display-protocol", "protocollib");
   }
 

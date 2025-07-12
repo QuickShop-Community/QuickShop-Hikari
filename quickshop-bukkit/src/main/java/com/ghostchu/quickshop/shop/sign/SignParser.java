@@ -39,6 +39,7 @@ public interface SignParser {
    * Checks if the given ItemStack item meets certain criteria for this parser to be applicable.
    *
    * @param item The ItemStack item to be checked.
+   *
    * @return true if the criteria is met, false otherwise.
    */
   boolean applies(final ItemStack item);
@@ -47,6 +48,7 @@ public interface SignParser {
    * Parses a given ItemStack item into a Component for display on a shop sign.
    *
    * @param item The ItemStack item to be parsed into a Component.
+   *
    * @return The parsed String representing the given ItemStack item.
    */
   String parse(final ItemStack item);

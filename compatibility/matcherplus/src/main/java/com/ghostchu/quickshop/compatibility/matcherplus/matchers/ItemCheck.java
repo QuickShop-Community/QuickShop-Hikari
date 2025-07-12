@@ -32,6 +32,7 @@ public interface ItemCheck {
    * Check if this check applies to the specified ItemStack
    *
    * @param stack the ItemStack to check
+   *
    * @return true if the check applies to the ItemStack, otherwise false
    */
   boolean applies(final @Nullable ItemStack stack);
@@ -39,8 +40,9 @@ public interface ItemCheck {
   /**
    * Checks if two ItemStack objects match each other.
    *
-   * @param stack the first ItemStack to compare
+   * @param stack   the first ItemStack to compare
    * @param compare the second ItemStack to compare
+   *
    * @return true if the two ItemStack objects match, false otherwise
    */
   boolean matches(final @Nullable ItemStack stack, final @Nullable ItemStack compare);

@@ -30,8 +30,8 @@ import java.util.List;
  * setting for a shop.
  *
  * @author creatorfromhell
- * @since 6.2.0.9
  * @see Component
+ * @since 6.2.0.9
  */
 public class ShopSignLinesEvent extends ShopSettingEvent<List<Component>> {
 
@@ -47,6 +47,54 @@ public class ShopSignLinesEvent extends ShopSettingEvent<List<Component>> {
     super(phase, shop, old, updated);
   }
 
+  public static ShopSignLinesEvent PRE(final @NotNull Shop shop,
+                                       final List<Component> old) {
+
+    return new ShopSignLinesEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopSignLinesEvent PRE(final @NotNull Shop shop,
+                                       final List<Component> old, final List<Component> updated) {
+
+    return new ShopSignLinesEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopSignLinesEvent MAIN(final @NotNull Shop shop,
+                                        final List<Component> old) {
+
+    return new ShopSignLinesEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopSignLinesEvent MAIN(final @NotNull Shop shop,
+                                        final List<Component> old, final List<Component> updated) {
+
+    return new ShopSignLinesEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopSignLinesEvent POST(final @NotNull Shop shop,
+                                        final List<Component> old) {
+
+    return new ShopSignLinesEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopSignLinesEvent POST(final @NotNull Shop shop,
+                                        final List<Component> old, final List<Component> updated) {
+
+    return new ShopSignLinesEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopSignLinesEvent RETRIEVE(final @NotNull Shop shop,
+                                            final List<Component> old) {
+
+    return new ShopSignLinesEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopSignLinesEvent RETRIEVE(final @NotNull Shop shop,
+                                            final List<Component> old, final List<Component> updated) {
+
+    return new ShopSignLinesEvent(Phase.RETRIEVE, shop, old, updated);
+  }
+
   /**
    * Creates a new instance of PhasedEvent with the specified newPhase.
    *
@@ -56,6 +104,7 @@ public class ShopSignLinesEvent extends ShopSettingEvent<List<Component>> {
    */
   @Override
   public ShopSignLinesEvent clone(final Phase newPhase) {
+
     if(this.updated != null) {
 
       return new ShopSignLinesEvent(newPhase, this.shop, this.old, this.updated);
@@ -77,53 +126,5 @@ public class ShopSignLinesEvent extends ShopSettingEvent<List<Component>> {
   public ShopSignLinesEvent clone(final Phase newPhase, final List<Component> old, final List<Component> updated) {
 
     return new ShopSignLinesEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopSignLinesEvent PRE(final @NotNull Shop shop,
-                                  final List<Component> old) {
-
-    return new ShopSignLinesEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopSignLinesEvent PRE(final @NotNull Shop shop,
-                                  final List<Component> old, final List<Component> updated) {
-
-    return new ShopSignLinesEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopSignLinesEvent MAIN(final @NotNull Shop shop,
-                                   final List<Component> old) {
-
-    return new ShopSignLinesEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopSignLinesEvent MAIN(final @NotNull Shop shop,
-                                   final List<Component> old, final List<Component> updated) {
-
-    return new ShopSignLinesEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopSignLinesEvent POST(final @NotNull Shop shop,
-                                   final List<Component> old) {
-
-    return new ShopSignLinesEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopSignLinesEvent POST(final @NotNull Shop shop,
-                                   final List<Component> old, final List<Component> updated) {
-
-    return new ShopSignLinesEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopSignLinesEvent RETRIEVE(final @NotNull Shop shop,
-                                       final List<Component> old) {
-
-    return new ShopSignLinesEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopSignLinesEvent RETRIEVE(final @NotNull Shop shop,
-                                       final List<Component> old, final List<Component> updated) {
-
-    return new ShopSignLinesEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

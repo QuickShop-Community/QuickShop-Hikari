@@ -41,7 +41,8 @@ public interface ControlComponent {
    * Checks if the provided Player can interact with the given Shop.
    *
    * @param sender The Player object requesting interaction.
-   * @param shop The Shop object to check interaction with.
+   * @param shop   The Shop object to check interaction with.
+   *
    * @return True if the Player can interact with the Shop, false otherwise.
    */
   boolean applies(final @NotNull QuickShopAPI plugin, @NotNull final Player sender, @NotNull final Shop shop);
@@ -50,7 +51,8 @@ public interface ControlComponent {
    * Generates a Component based on the player and shop provided.
    *
    * @param sender The Player object representing who triggered the generation.
-   * @param shop The Shop object representing the shop for which components are being generated.
+   * @param shop   The Shop object representing the shop for which components are being generated.
+   *
    * @return A Component object based on the provided player and shop.
    */
   Component generate(final @NotNull QuickShopAPI plugin, @NotNull final Player sender, @NotNull final Shop shop);
