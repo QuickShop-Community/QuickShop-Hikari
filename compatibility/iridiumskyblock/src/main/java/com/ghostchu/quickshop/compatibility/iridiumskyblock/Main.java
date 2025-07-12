@@ -44,7 +44,10 @@ public final class Main extends CompatibilityModule implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onDelete(final IslandDeleteEvent event) {
-    if(event.getIsland().getHome() == null || event.getIsland().getHome().getWorld() == null) return;
+
+    if(event.getIsland().getHome() == null || event.getIsland().getHome().getWorld() == null) {
+      return;
+    }
 
     deleteShops(event.getIsland().getHome().getWorld(), "IslandDeleteEvent");
   }
@@ -70,8 +73,8 @@ public final class Main extends CompatibilityModule implements Listener {
       }
 
       if(player.hasPermission("quickshop.iridium.override")) {
-       event.setCancelled(false, "admin override using quickshop.iridium.override");
-       return;
+        event.setCancelled(false, "admin override using quickshop.iridium.override");
+        return;
       }
 
 
@@ -85,7 +88,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
         if(!isMember(island.get(), uuid)) {
 
-            event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.iridiumskyblock.owner-member-create-only").forLocale());
+          event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.iridiumskyblock.owner-member-create-only").forLocale());
         }
       }
     });

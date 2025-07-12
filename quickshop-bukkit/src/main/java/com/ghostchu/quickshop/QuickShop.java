@@ -159,6 +159,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1415,9 +1416,51 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     @Nullable
-    private AbstractEconomy loadVaultUnlocked() {
+    private AbstractEconomy loadVaultUnlocked() throws Exception {
 
-      return new Economy_VaultUnlocked(parent);
+      final Economy_VaultUnlocked vault = new Economy_VaultUnlocked(parent);
+      final boolean taxEnabled = parent.getConfig().getDouble("tax", 0.0d) > 0;
+      final String taxAccount = parent.getConfig().getString("tax-account", "tax");
+      if(!vault.isValid()) {
+        return null;
+      }
+      if(!taxEnabled) {
+        return vault;
+      }
+
+      if(StringUtils.isEmpty(taxAccount)) {
+        return vault;
+      }
+
+      UUID taxID;
+
+      try {
+        taxID = UUID.fromString(taxAccount);
+
+      } catch(final Exception ignore) {
+        taxID = UUID.nameUUIDFromBytes(taxAccount.getBytes(StandardCharsets.UTF_8));
+      }
+
+      if(!Objects.requireNonNull(vault.getVault()).hasAccount(taxID)) {
+
+        Log.debug("Tax account doesn't exists: " + taxAccount);
+
+        parent.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
+
+        if(vault.getVault().createAccount(taxID, taxAccount, false)) {
+
+          parent.logger().info("Tax account created.");
+        } else {
+
+          parent.logger().warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
+        }
+
+        if(!vault.getVault().hasAccount(taxID)) {
+
+          parent.logger().warn("Player for the Tax-account has never played on this server before and we couldn't create an account. This may cause server lag or economy errors, therefore changing the name is recommended. You may ignore this warning if it doesn't cause any issues.");
+        }
+      }
+      return vault;
     }
 
     // Vault may create exception, we need catch it.
