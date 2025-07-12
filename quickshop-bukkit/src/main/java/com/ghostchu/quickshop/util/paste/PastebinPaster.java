@@ -1,4 +1,4 @@
-///*
+/// *
 // *  This file is a part of project QuickShop, the name is PastebinPaster.java
 // *  Copyright (C) Ghost_chu and contributors
 // *

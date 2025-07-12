@@ -14,6 +14,7 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
     this.space = space;
     this.initialized = initialized;
   }
+
   /**
    * Gets the stock
    *
@@ -43,6 +44,11 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
     return space;
   }
 
+  public void setSpace(final int space) {
+
+    this.space = space;
+  }
+
   /**
    * Check if the cache has been initialized.
    *
@@ -52,10 +58,5 @@ public class SimpleShopInventoryCountCache implements ShopInventoryCountCache {
   public boolean initialized() {
 
     return initialized;
-  }
-
-  public void setSpace(final int space) {
-
-    this.space = space;
   }
 }

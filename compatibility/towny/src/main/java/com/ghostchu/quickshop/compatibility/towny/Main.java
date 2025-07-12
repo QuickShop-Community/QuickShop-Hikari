@@ -449,6 +449,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   private boolean doesPlayerOwnShopPlot(final Player player, final Location location) {
+
     final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(location);
 
     if(townBlock != null && townBlock.hasResident()) {

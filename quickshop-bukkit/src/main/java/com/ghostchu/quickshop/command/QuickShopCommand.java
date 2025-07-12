@@ -28,6 +28,7 @@ public class QuickShopCommand extends BukkitCommand {
   @NotNull
   @Override
   public List<String> tabComplete(@NotNull final CommandSender sender, @NotNull final String alias, @NotNull final String[] args) throws IllegalArgumentException {
+
     List<String> items = this.manager.onTabComplete(sender, this, alias, args);
     if(items == null) {
       return super.tabComplete(sender, alias, args);

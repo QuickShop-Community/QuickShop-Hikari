@@ -8,7 +8,7 @@
 //import java.util.LinkedList;
 //import java.util.Queue;
 //
-///**
+/// **
 // * Check the shops after server booted up, make sure shop can correct self-deleted when container
 // * lost.
 // */

@@ -35,9 +35,9 @@ public class Economy_Treasury extends AbstractEconomy implements Listener {
           "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
   private final QuickShop plugin;
   private final BuiltInEconomyFormatter formatter;
-  private boolean allowLoan;
   @Nullable
   private final String lastError = null;
+  private boolean allowLoan;
   @Getter
   private Service<EconomyProvider> service;
 

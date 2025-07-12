@@ -23,32 +23,175 @@ import java.util.UUID;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
+parseInt(parser.getArgs() else{
+page =Integer.
+
+get(0).
+
+lookupSelf(sender, page););
+
+emptyList();
+    }
+            }
+
+lookup(sender, sender.getUniqueId(),page
+
+@Override
+public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+  if(parser.getArgs().size() == 1) {
+    if(plugin.perm().hasPermission(sender, "quickshopaddon.list.other")) {
+      return getPlayerList();
+    }
+  }
+  if(parser.getArgs().size() == 2) {
+    return List.of("[<page>]");
+  }
+  return Collections.emptyList();
+}
+    return Collections.
+
+private void lookupSelf(final Player sender, final int page) {
+
+  if(!plugin.perm().hasPermission(sender, "quickshopaddon.list.self")) {
+    plugin.text().of(sender, "no-permission").send();
+    return;
+  }
+  lookup(sender, sender.getUniqueId(), page);
+}
+  }
+
+private void lookupOther(@NotNull final Player sender, @NotNull final String userName, final int page) {
+
+  if(!plugin.perm().hasPermission(sender, "quickshopaddon.list.other")) {
+    plugin.text().of(sender, "no-permission").send();
+    return;
+  }
+  final UUID targetUser = plugin.getPlayerFinder().name2Uuid(userName);
+  lookup(sender, targetUser, page);
+}
+
+private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
+
+  String name = plugin.getPlayerFinder().uuid2Name(lookupUser);
+  if(StringUtils.isEmpty(name)) {
+    name = "Unknown";
+  }
+  final List<Shop> shops = plugin.getShopManager().getAllShops(lookupUser);
+  final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+
+  final int startPos = (page - 1) * pageSize;
+  int counter = 0;
+  int loopCounter = 0;
+  printer.printHeader();
+  printer.printLine(plugin.text().of(sender, "addon.list.table-prefix-pageable", name, page, (int)Math.ceil((double)shops.size() / pageSize)).forLocale());
+  for(final Shop shop : shops) {
+    counter++;
+    if(counter < startPos) {
+      continue;
+    }
+    String shopName = shop.getShopName();
+    final Location location = shop.getLocation();
+    final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+    if(StringUtils.isEmpty(shopName)) {
+      shopName = combineLocation;
+    }
+    final Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
+    final Component shopTypeComponent;
+    if(shop.isBuying()) {
+      shopTypeComponent = plugin.text().of(sender, "menu.this-shop-is-buying").forLocale();
+    } else {
+      shopTypeComponent = plugin.text().of(sender, "menu.this-shop-is-selling").forLocale();
+    }
+    Component component = plugin.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), plugin.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+    component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
+    printer.printLine(component);
+    loopCounter++;
+    if(loopCounter >= pageSize) {
+      break;
+    }
+  }
+  printer.printFooter();
+
+  if(!quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
+    quickshop.text().of(sender, "no-permission").send();
+    return;
+  }
+  final UUID targetUser = quickshop.getPlayerFinder().name2Uuid(userName);
+  lookup(sender, targetUser, page);
+});
+        }
+
+private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
+
+  String name = quickshop.getPlayerFinder().uuid2Name(lookupUser);
+  if(StringUtils.isEmpty(name)) {
+    name = "Unknown";
+  }
+  final List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
+  final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+
+  final int startPos = (page - 1) * pageSize;
+  int counter = 0;
+  int loopCounter = 0;
+  printer.printHeader();
+  printer.printLine(quickshop.text().of(sender, "addon.list.table-prefix-pageable", name, page, (int)Math.ceil((double)shops.size() / pageSize)).forLocale());
+  for(final Shop shop : shops) {
+    counter++;
+    if(counter < startPos) {
+      continue;
+    }
+    String shopName = shop.getShopName();
+    final Location location = shop.getLocation();
+    final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+    if(StringUtils.isEmpty(shopName)) {
+      shopName = combineLocation;
+    }
+    final Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
+    final Component shopTypeComponent;
+    if(shop.isBuying()) {
+      shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-buying").forLocale();
+    } else {
+      shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
+    }
+    Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+    component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
+    printer.printLine(component);
+    loopCounter++;
+    if(loopCounter >= pageSize) {
+      break;
+    }
+  }
+  printer.printFooter();
+
+}
+
 public class SubCommand_List implements CommandHandler<Player> {
+
   private final QuickShop plugin;
 
-    public SubCommand_List(final QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public SubCommand_List(final QuickShop plugin) {
+
+    this.plugin = plugin;
+  }
+
+lookupOther(sender, parser.getArgs()
+
+  get(0),page.
 
     @Override
-    public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
-        int page = 1;
-        if (parser.getArgs().isEmpty()) {
-            lookupSelf(sender, page);
-            return;
-        }
-        if (!StringUtils.isNumeric(parser.getArgs().get(0))) {
-            if (parser.getArgs().size() >= 2) {
-                if (!StringUtils.isNumeric(parser.getArgs().get(1))) {
-                    plugin.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
-                    return;
-                }
-                page = Integer.parseInt(parser.getArgs().get(2));
-            }
-            lookupOther(sender, parser.getArgs().get(0), page);
-        } else {
-            page = Integer.parseInt(parser.getArgs().get(0));
-            lookupSelf(sender, page);
+  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    int page = 1;
+    if(parser.getArgs().isEmpty()) {
+      lookupSelf(sender, page);
+      return;
+    }
+    if(!StringUtils.isNumeric(parser.getArgs().get(0))) {
+      if(parser.getArgs().size() >= 2) {
+        if(!StringUtils.isNumeric(parser.getArgs().get(1))) {
+          plugin.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
+          return;
         }
         page = Integer.parseInt(parser.getArgs().get(2));
       }
@@ -57,132 +200,7 @@ public class SubCommand_List implements CommandHandler<Player> {
       page = Integer.parseInt(parser.getArgs().get(0));
       lookupSelf(sender, page);
     }
-  }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
-        if (parser.getArgs().size() == 1) {
-            if (plugin.perm().hasPermission(sender, "quickshopaddon.list.other")) {
-                return getPlayerList();
-            }
-        }
-        if (parser.getArgs().size() == 2) {
-            return List.of("[<page>]");
-        }
-        return Collections.emptyList();
-    }
-
-    private void lookupSelf(final Player sender, final int page) {
-        if (!plugin.perm().hasPermission(sender, "quickshopaddon.list.self")) {
-            plugin.text().of(sender, "no-permission").send();
-            return;
-        }
-        lookup(sender, sender.getUniqueId(), page);
-    }
-    return Collections.emptyList();
-  }
-
-    private void lookupOther(@NotNull final Player sender, @NotNull final String userName, final int page) {
-        if (!plugin.perm().hasPermission(sender, "quickshopaddon.list.other")) {
-            plugin.text().of(sender, "no-permission").send();
-            return;
-        }
-        final UUID targetUser = plugin.getPlayerFinder().name2Uuid(userName);
-        lookup(sender, targetUser, page);
-    }
-    lookup(sender, sender.getUniqueId(), page);
-  }
-
-    private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
-        String name = plugin.getPlayerFinder().uuid2Name(lookupUser);
-        if (StringUtils.isEmpty(name)) {
-            name = "Unknown";
-        }
-        final List<Shop> shops = plugin.getShopManager().getAllShops(lookupUser);
-        final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
-
-        final int startPos = (page - 1) * pageSize;
-        int counter = 0;
-        int loopCounter = 0;
-        printer.printHeader();
-        printer.printLine(plugin.text().of(sender, "addon.list.table-prefix-pageable", name, page, (int)Math.ceil((double)shops.size()/pageSize)).forLocale());
-        for (final Shop shop : shops) {
-            counter++;
-            if(counter < startPos) {
-                continue;
-            }
-            String shopName = shop.getShopName();
-            final Location location = shop.getLocation();
-            final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
-            if (StringUtils.isEmpty(shopName)) {
-                shopName = combineLocation;
-            }
-            final Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
-            final Component shopTypeComponent;
-            if (shop.isBuying()) {
-                shopTypeComponent = plugin.text().of(sender, "menu.this-shop-is-buying").forLocale();
-            } else {
-                shopTypeComponent = plugin.text().of(sender, "menu.this-shop-is-selling").forLocale();
-            }
-            Component component = plugin.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), plugin.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-            component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
-            printer.printLine(component);
-            loopCounter ++;
-            if(loopCounter >= pageSize){
-                break;
-            }
-        }
-        printer.printFooter();
-
-    if(!quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
-      quickshop.text().of(sender, "no-permission").send();
-      return;
-    }
-    final UUID targetUser = quickshop.getPlayerFinder().name2Uuid(userName);
-    lookup(sender, targetUser, page);
-  }
-
-  private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
-
-    String name = quickshop.getPlayerFinder().uuid2Name(lookupUser);
-    if(StringUtils.isEmpty(name)) {
-      name = "Unknown";
-    }
-    final List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
-    final ChatSheetPrinter printer = new ChatSheetPrinter(sender);
-
-    final int startPos = (page - 1) * pageSize;
-    int counter = 0;
-    int loopCounter = 0;
-    printer.printHeader();
-    printer.printLine(quickshop.text().of(sender, "addon.list.table-prefix-pageable", name, page, (int)Math.ceil((double)shops.size() / pageSize)).forLocale());
-    for(final Shop shop : shops) {
-      counter++;
-      if(counter < startPos) {
-        continue;
-      }
-      String shopName = shop.getShopName();
-      final Location location = shop.getLocation();
-      final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
-      if(StringUtils.isEmpty(shopName)) {
-        shopName = combineLocation;
-      }
-      final Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
-      final Component shopTypeComponent;
-      if(shop.isBuying()) {
-        shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-buying").forLocale();
-      } else {
-        shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
-      }
-      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
-      printer.printLine(component);
-      loopCounter++;
-      if(loopCounter >= pageSize) {
-        break;
-      }
-    }
-    printer.printFooter();
-
-  }
+    page = Integer.parseInt(parser.getArgs().get(2));
+  });
+}
 }

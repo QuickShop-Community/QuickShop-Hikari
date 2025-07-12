@@ -11,9 +11,8 @@ import java.util.concurrent.CompletableFuture;
 public class ShopDataSaveWatcher implements Runnable {
 
   private final QuickShop plugin;
-  private CompletableFuture<Void> saveTask;
-
   WrappedTask task = null;
+  private CompletableFuture<Void> saveTask;
 
   public ShopDataSaveWatcher(final QuickShop plugin) {
 

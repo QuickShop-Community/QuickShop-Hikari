@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItemManager {
 
+  public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
   private final QuickShop plugin;
   private final AtomicInteger entityIdCounter;
   private final ProtocolManager protocolManager;
@@ -37,8 +38,6 @@ public class VirtualDisplayItemManager {
   @Getter
   private PacketAdapter chunkUnloadingPacketAdapter;
   private boolean testPassed = true;
-
-  public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
 
   public VirtualDisplayItemManager(final QuickShop plugin) {
 
@@ -117,13 +116,13 @@ public class VirtualDisplayItemManager {
     return new VirtualDisplayItem(this, packetFactory, shop);
   }
 
-  public void setTestPassed(final boolean testPassed) {
-
-    this.testPassed = testPassed;
-  }
-
   public boolean isTestPassed() {
 
     return testPassed;
+  }
+
+  public void setTestPassed(final boolean testPassed) {
+
+    this.testPassed = testPassed;
   }
 }

@@ -58,17 +58,17 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     init();
   }
 
-  private void init() {
-
-    itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
-    workType = plugin.getConfig().getInt("matcher.work-type");
-  }
-
   public QuickShopItemMatcherImpl(final QuickShop plugin, final ItemMetaMatcher itemMetaMatcher, final int workType) {
 
     this.plugin = plugin;
     this.itemMetaMatcher = itemMetaMatcher;
     this.workType = workType;
+  }
+
+  private void init() {
+
+    itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
+    workType = plugin.getConfig().getInt("matcher.work-type");
   }
 
   /**

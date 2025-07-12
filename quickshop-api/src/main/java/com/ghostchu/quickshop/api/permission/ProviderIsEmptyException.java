@@ -7,9 +7,11 @@ import lombok.Getter;
  */
 @Getter
 public class ProviderIsEmptyException extends RuntimeException {
-    private final String providerName;
 
-    public ProviderIsEmptyException(final String providerName) {
-        this.providerName = providerName;
-    }
+  private final String providerName;
+
+  public ProviderIsEmptyException(final String providerName) {
+
+    this.providerName = providerName;
+  }
 }

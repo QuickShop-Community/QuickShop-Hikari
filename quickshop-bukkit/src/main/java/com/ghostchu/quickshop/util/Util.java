@@ -572,7 +572,7 @@ public class Util {
   public static boolean findStringInList(@NotNull final List<Component> components, @NotNull final String find) {
 
     for(final Component name : components) {
-        if(findStringInComponent(name, find)) { return true; }
+      if(findStringInComponent(name, find)) { return true; }
     }
 
     return false;
