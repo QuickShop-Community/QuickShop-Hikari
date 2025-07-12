@@ -1,22 +1,27 @@
 package com.ghostchu.quickshop.shop;
 
+
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.Benefit;
-import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopClickEvent;
-import com.ghostchu.quickshop.api.event.ShopInventoryCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopInventoryChangedEvent;
-import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopLoadEvent;
-import com.ghostchu.quickshop.api.event.ShopOwnerNameGettingEvent;
-import com.ghostchu.quickshop.api.event.ShopPlayerGroupSetEvent;
-import com.ghostchu.quickshop.api.event.ShopSignUpdateEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxAccountChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxAccountGettingEvent;
-import com.ghostchu.quickshop.api.event.ShopTypeChangeEvent;
-import com.ghostchu.quickshop.api.event.ShopUnloadEvent;
-import com.ghostchu.quickshop.api.event.ShopUpdateEvent;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
+import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
+import com.ghostchu.quickshop.api.event.inventory.ShopInventoryChangedEvent;
+import com.ghostchu.quickshop.api.event.management.ShopClickEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDatabaseEvent;
+import com.ghostchu.quickshop.api.event.management.ShopLoadEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
+import com.ghostchu.quickshop.api.event.management.ShopUnloadEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopDisplayEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -345,7 +350,7 @@ public class ContainerShop implements Shop, Reloadable {
   public void checkDisplay() {
 
     Util.ensureThread(false);
-    final boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
+    final boolean displayStatus = plugin.isValidDisplayProvider() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
 
     if(!displayStatus) {
       if(this.displayItem != null) {
@@ -378,7 +383,7 @@ public class ContainerShop implements Shop, Reloadable {
           return;
         }
       } catch(final Throwable anyError) {
-        plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Did you have ProtocolLib installed?", this, anyError);
+        plugin.logger().warn("Failed to init the displayItem for shop {}, the display now disabled for this shop. Do you have ProtocolLib or packetevents installed?", this, anyError);
         return;
       }
     }
@@ -419,7 +424,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @Nullable String getCurrency() {
 
-    return this.currency;
+    final ShopCurrencyEvent event = ShopCurrencyEvent.RETRIEVE(this, this.currency);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -509,25 +517,42 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull ItemStack getItem() {
 
-    return item;
+    final ShopItemEvent event = new ShopItemEvent(Phase.RETRIEVE, this, this.item.clone());
+
+    return event.updated();
   }
 
   @Override
   public void setItem(@NotNull final ItemStack item) {
 
     Util.ensureThread(false);
-    final ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
-    if(Util.fireCancellableEvent(event)) {
+
+    //Create our shop event with Pre Phase and call
+    ShopItemEvent event = new ShopItemEvent(Phase.PRE, this, this.item, item);
+    event.callEvent();
+
+    //Call our Main Phase
+    event = event.clone(Phase.MAIN);
+    if(event.callCancellableEvent()) {
+
       Log.debug("A plugin cancelled the item change event.");
       return;
     }
-    this.item = item;
+
+
+    this.item = event.updated();
     this.originalItem = item;
+
+    //call our Post Phase
+    event.clone(Phase.POST).callEvent();
+
     if(this.displayItem != null) {
+
       this.displayItem.remove(false);
     }
     this.displayItem = null;
     checkDisplay();
+    setSignText();
     setDirty();
   }
 
@@ -595,9 +620,14 @@ public class ContainerShop implements Shop, Reloadable {
     if(player.equals(getOwner().getUniqueId())) {
       return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
     }
+
     final String group = getPermissionAudiences().getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
     if(plugin.getShopPermissionManager().hasGroup(group)) {
-      return group;
+
+      final ShopPlayerGroupEvent event = new ShopPlayerGroupEvent(Phase.RETRIEVE, this, player, group);
+      event.callEvent();
+
+      return event.updated();
     }
     return BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
   }
@@ -646,6 +676,7 @@ public class ContainerShop implements Shop, Reloadable {
       Log.debug("Space count is: " + space);
       return space;
     } else {
+
       return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
     }
   }
@@ -745,7 +776,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull ShopType getShopType() {
 
-    return this.shopType;
+    final ShopTypeEvent event = new ShopTypeEvent(Phase.RETRIEVE, this, this.shopType);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -758,14 +792,26 @@ public class ContainerShop implements Shop, Reloadable {
 
     Util.ensureThread(false);
     if(this.shopType == newShopType) {
+
       return; //Ignore if there actually no changes
     }
-    if(Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
+
+    ShopTypeEvent event = new ShopTypeEvent(Phase.PRE, this, this.shopType, newShopType);
+    event.callEvent();
+
+    event = event.clone(Phase.MAIN);
+
+    if(event.callCancellableEvent()) {
       Log.debug(
               "Some addon cancelled shop type changes, target shop: " + this);
       return;
     }
-    this.shopType = newShopType;
+
+    this.shopType = event.updated();
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
     this.setSignText();
     setDirty();
   }
@@ -797,7 +843,7 @@ public class ContainerShop implements Shop, Reloadable {
       case FROZEN -> {
         shopRemaining = 0;
         tradingStringKey = "signs.freeze";
-        noRemainingStringKey = "signs.out-of-stock";
+        noRemainingStringKey = "signs.freeze";
       }
       default -> {
         shopRemaining = 0;
@@ -839,7 +885,10 @@ public class ContainerShop implements Shop, Reloadable {
     }
     lines.add(line4);
 
-    return lines;
+    final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.RETRIEVE, this, lines);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -890,9 +939,10 @@ public class ContainerShop implements Shop, Reloadable {
         uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheTaxAccount();
       }
     }
-    final ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
+    final ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.RETRIEVE, this, uuid);
     event.callEvent();
-    return event.getTaxAccount();
+
+    return event.updated();
 
   }
 
@@ -902,11 +952,22 @@ public class ContainerShop implements Shop, Reloadable {
     if(Objects.equals(taxAccount, this.taxAccount)) {
       return;
     }
-    final ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
-    if(Util.fireCancellableEvent(event)) {
+
+    ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.PRE, this, this.taxAccount, taxAccount);
+    event.callEvent();
+
+    event = event.clone(Phase.MAIN);
+    if(event.callCancellableEvent()) {
+
       return;
     }
-    this.taxAccount = taxAccount;
+
+
+    this.taxAccount = event.updated();
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
     setDirty();
   }
 
@@ -928,6 +989,9 @@ public class ContainerShop implements Shop, Reloadable {
     }
     if(isBuying()) {
       return getRemainingSpace() > 0;
+    }
+    if(isFrozen()) {
+      return false;
     }
     return true;
   }
@@ -971,7 +1035,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public boolean isDisableDisplay() {
 
-    return disableDisplay;
+    final ShopDisplayEvent event = ShopDisplayEvent.RETRIEVE(this, this.disableDisplay);
+    event.callEvent();
+
+    return event.updated();
   }
 
   @Override
@@ -1123,12 +1190,19 @@ public class ContainerShop implements Shop, Reloadable {
   public void onClick(@NotNull final Player clicker) {
 
     Util.ensureThread(false);
-    final ShopClickEvent event = new ShopClickEvent(this, clicker);
-    if(Util.fireCancellableEvent(event)) {
-      Log.debug("Ignore shop click, because some plugin cancel it.");
+    ShopClickEvent event = new ShopClickEvent(this, QUserImpl.createFullFilled(clicker));
+    event.callEvent();
+
+    event = event.clone(Phase.MAIN);
+    if(event.callCancellableEvent()) {
+
+      Log.debug("Ignore shop click, because some plugin cancelled it.");
       return;
     }
     setSignText(plugin.getTextManager().findRelativeLanguages(clicker));
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
   }
 
   /**
@@ -1189,7 +1263,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
     this.isLoaded = false;
     plugin.getShopManager().getLoadedShops().remove(this);
-    new ShopUnloadEvent(this).callEvent();
+    new ShopUnloadEvent(Phase.POST, this).callEvent();
   }
 
   @Override
@@ -1210,17 +1284,6 @@ public class ContainerShop implements Shop, Reloadable {
       name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
     } else {
       final String playerName = this.getOwner().getUsername();
-//            if (plugin.getConfig().getBoolean("shop.async-owner-name-fetch", false)) {
-//                CompletableFuture<String> future = CompletableFuture
-//                        .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
-//                try {
-//                    playerName = future.get(20, TimeUnit.MILLISECONDS);
-//                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-//                    playerName = "N/A";
-//                }
-//            } else {
-//                playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
-//            }
       if(playerName == null) {
         name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
       } else {
@@ -1237,9 +1300,11 @@ public class ContainerShop implements Shop, Reloadable {
                             );
 
     }
-    final ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
+
+    final ShopOwnerNameEvent event = new ShopOwnerNameEvent(Phase.RETRIEVE, this, name);
     event.callEvent();
-    name = event.getName();
+
+    name = event.updated();
     return name;
   }
 
@@ -1271,13 +1336,16 @@ public class ContainerShop implements Shop, Reloadable {
       Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
       return true;
     }
-    final String group = getPlayerGroup(player);
-    final boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-    final ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
-    event.callEvent();
-    Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.getResult());
-    return event.getResult();
 
+    final String group = getPlayerGroup(player);
+    final boolean hasPermission = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+
+    final ShopPermissionCheckEvent event = new ShopPermissionCheckEvent(Phase.MAIN, this, player, namespace.getName(), permission, hasPermission);
+    event.callEvent();
+
+    Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.hasPermission());
+
+    return event.hasPermission();
   }
 
   /**
@@ -1311,12 +1379,14 @@ public class ContainerShop implements Shop, Reloadable {
 
     final List<UUID> result = new ArrayList<>();
     for(final Map.Entry<UUID, String> uuidStringEntry : this.getPermissionAudiences().entrySet()) {
+
       final String group = uuidStringEntry.getValue();
-      boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-      final ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, uuidStringEntry.getKey(), namespace, permission, r);
+      final boolean hasPermission = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+
+      final ShopPermissionCheckEvent event = new ShopPermissionCheckEvent(Phase.MAIN, this, uuidStringEntry.getKey(), namespace.getName(), permission, hasPermission);
       event.callEvent();
-      r = event.getResult();
-      if(r) {
+
+      if(event.hasPermission()) {
         result.add(uuidStringEntry.getKey());
       }
     }
@@ -1494,12 +1564,20 @@ public class ContainerShop implements Shop, Reloadable {
     if(group == null) {
       group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
     }
-    new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group).callEvent();
+
+    ShopPlayerGroupEvent event = new ShopPlayerGroupEvent(Phase.PRE, this, player, getPlayerGroup(player), group);
+    event.callEvent();
+
     if(group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
+
       this.playerGroup.remove(player);
     } else {
+
       this.playerGroup.put(player, group);
     }
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
     setDirty();
   }
 
@@ -1509,12 +1587,19 @@ public class ContainerShop implements Shop, Reloadable {
     if(group == null) {
       group = BuiltInShopPermissionGroup.EVERYONE;
     }
-    new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
+
+    ShopPlayerGroupEvent event = new ShopPlayerGroupEvent(Phase.PRE, this, player, getPlayerGroup(player), group.getNamespacedNode());
+    event.callEvent();
     if(group == BuiltInShopPermissionGroup.EVERYONE) {
+
       this.playerGroup.remove(player);
     } else {
+
       setPlayerGroup(player, group.getNamespacedNode());
     }
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
     setDirty();
   }
 
@@ -1524,11 +1609,13 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText() {
 
-    Util.ensureThread(false);
+    //Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
+      this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    });
   }
 
   /**
@@ -1542,22 +1629,29 @@ public class ContainerShop implements Shop, Reloadable {
     Util.ensureThread(false);
     Log.debug("Globally sign text setting...");
     final List<Sign> signs = this.getSigns();
+
+    final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.POST, this, lines);
+    event.callEvent();
+
     for(final Sign sign : signs) {
+
       final DyeColor dyeColor = Util.getDyeColor();
       if(dyeColor != null) {
         sign.setColor(dyeColor);
       }
-      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
+      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
+      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
+
       sign.setGlowingText(isGlowing);
-      sign.setWaxed(true);
+      sign.setWaxed(isWaxed);
       sign.update(true);
-      //plugin.getPlatform().setLine(sign, i, lines.get(i));
-      plugin.getPlatform().setLines(sign, lines);
+      plugin.getPlatform().setLines(sign, event.updated());
+
       new ShopSignUpdateEvent(this, sign).callEvent();
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      QuickShop.folia().getImpl().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+      QuickShop.folia().getScheduler().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
       Log.debug("Sign broadcast completed.");
     }
   }
@@ -1570,11 +1664,14 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setSignText(@NotNull final ProxiedLocale locale) {
 
-    Util.ensureThread(false);
+    //Util.ensureThread(false);
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    this.setSignText(getSignText(locale));
+
+    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
+      this.setSignText(getSignText(locale));
+    });
   }
 
   /**
@@ -1591,11 +1688,18 @@ public class ContainerShop implements Shop, Reloadable {
       Log.debug("Skip shop database update because it not fully setup!");
       return CompletableFuture.completedFuture(null);
     }
-    final ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
-    if(Util.fireCancellableEvent(shopUpdateEvent)) {
+
+    ShopDatabaseEvent event = new ShopDatabaseEvent(Phase.PRE_CANCELLABLE, this);
+
+    if(event.callCancellableEvent()) {
+
       Log.debug("The Shop update action was canceled by a plugin.");
       return CompletableFuture.completedFuture(null);
     }
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
     updating = true;
     return plugin.getDatabaseHelper().updateShop(this)
             .whenComplete((result, throwable)->{
@@ -1612,7 +1716,10 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public @NotNull Benefit getShopBenefit() {
 
-    return this.benefit;
+    final ShopBenefitEvent event = ShopBenefitEvent.RETRIEVE(this, this.benefit);
+    event.callEvent();
+
+    return event.updated();
   }
 
   @Override
@@ -1627,6 +1734,7 @@ public class ContainerShop implements Shop, Reloadable {
     return new SimpleDataRecord(
             getOwner(),
             Util.serialize(getItem()),
+            plugin.getPlatform().encodeStack(getItem()),
             getShopName(),
             getShopType().toID(),
             getCurrency(),

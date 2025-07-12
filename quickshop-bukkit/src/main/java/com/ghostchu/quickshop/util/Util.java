@@ -56,7 +56,6 @@ import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
@@ -125,7 +124,7 @@ public class Util {
       return;
     }
 
-    QuickShop.folia().getImpl().runLaterAsync(runnable, 0);
+    QuickShop.folia().getScheduler().runLaterAsync(runnable, 0);
   }
 
   /**
@@ -373,7 +372,10 @@ public class Util {
       yamlConfiguration.loadFromString(config);
       return yamlConfiguration.getItemStack("item");
     } catch(final Exception e) {
-      throw new InvalidConfigurationException("Exception in deserialize item: " + config, e);
+
+      QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
+      Log.debug("Failed to load data to the ItemStack: " + config);
+      return null;
     }
   }
 
@@ -419,6 +421,7 @@ public class Util {
   public static boolean fireCancellableEvent(@NotNull final Cancellable event) {
 
     if(!(event instanceof Event)) {
+
       throw new IllegalArgumentException("Cancellable must is event implement");
     }
     Bukkit.getPluginManager().callEvent((Event)event);
@@ -531,7 +534,21 @@ public class Util {
       }
     }
 
-    if(itemStack.hasItemMeta() && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
+    if(!itemStack.hasItemMeta() || QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
+
+      return null;
+    }
+
+    boolean itemName = false;
+
+    try {
+      itemName = Objects.requireNonNull(itemStack.getItemMeta()).hasItemName();
+    } catch(final NoSuchMethodError ignore) {
+      //outdated
+    }
+
+    if(Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() || itemName) {
+
       return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
     }
     return null;
@@ -1130,8 +1147,8 @@ public class Util {
    * @param runnable The runnable
    */
   public static void regionThread(final Location location, @NotNull final Runnable runnable) {
-    //QuickShop.folia().getImpl().runLater(runnable, 1);
-    QuickShop.folia().getImpl().runAtLocationLater(location, runnable, 1);
+    //QuickShop.folia().getScheduler().runLater(runnable, 1);
+    QuickShop.folia().getScheduler().runAtLocationLater(location, runnable, 1);
   }
 
   /**
@@ -1142,7 +1159,7 @@ public class Util {
    */
   public static void mainThreadRun(@NotNull final Runnable runnable) {
 
-    QuickShop.folia().getImpl().runLater(runnable, 1);
+    QuickShop.folia().getScheduler().runLater(runnable, 1);
   }
 
   /**
@@ -1153,7 +1170,7 @@ public class Util {
    */
   public static void mainThreadRun(@NotNull final Runnable runnable, final long delay) {
 
-    QuickShop.folia().getImpl().runLater(runnable, delay);
+    QuickShop.folia().getScheduler().runLater(runnable, delay);
   }
 
   /**

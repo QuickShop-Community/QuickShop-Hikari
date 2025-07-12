@@ -64,9 +64,9 @@
 
 [fossaStatusImageLarge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=large
 
-[JavaVersion]: https://img.shields.io/badge/Java-Versions_17_+_18-orange.svg
+[JavaVersion]: https://img.shields.io/badge/Java-Versions_21+_-orange.svg
 
-[MinecraftVersion]: https://img.shields.io/badge/Minecraft-Java%20Edition%201.18%2B-blueviolet
+[MinecraftVersion]: https://img.shields.io/badge/Minecraft-Java%20Edition%201.20%2B-blueviolet
 
 [bStatsImage]: https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg
 
@@ -93,7 +93,7 @@
 
 ## Introduction
 
-QuickShop Hikari is a Shop plugin that allows players to create Chest Shops to easily sell and buy items, without the
+QuickShop-Hikari is a Shop plugin that allows players to create Chest Shops to easily sell and buy items, without the
 need for any commands.  
 In fact, all commands in QuickShop are not even needed for normal gameplay.
 
@@ -144,7 +144,7 @@ Obtain the latest version from [Modrinth][modrinth]
 
 ## Compatibility Modules
 
-You can download optional modules [here][optional_modules] for compatibility with other plugins.
+You can download optional modules [here][modrinth] for compatibility with other plugins.
 
 ### [ClearLagg][clearlagg]
 
@@ -158,11 +158,11 @@ You can download optional modules [here][optional_modules] for compatibility wit
 
 - Allow the usage of a Player's Ender Chest as Shop inventory by using `/quickshop echest`.
 
-### [Worldedit][worldedit]
+### [WorldEdit][worldedit]
 
 - Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
 
-### [Worldguard][worldguard]
+### [WorldGuard][worldguard]
 
 - Flag-based shop control.
 
@@ -189,20 +189,20 @@ Though it would be nice if you could pull-request your changes into this reposit
 
 To compile and debug QuickShop, please do the following steps:
 
-1. Make sure you're using Java 17 or 18. You can get the latest Java versions from the [Adoptium project][adoptium].
+1. Make sure you're using Java 21. You can get the latest Java versions from the [Adoptium project][adoptium].
 2. Compile the main project without a signature by using `mvn install -Pgithub` with the GitHub Profile selected.
 3. Put the compiled jar into your Test-server's `plugins` folder, start the server and begin debugging!
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-1. Make sure you're using Java17+ JDK in your PATH.
+1. Make sure you're using Java21+ JDK in your PATH.
 2. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
 3. Start your server and go on.
 
 ## bStats
 
 QuickShop-Hikari collects certain statistic through [bStats][bstats-site].  
-You may opt-out by setting `disabled-metrics` to `true` in the config.yml.
+You may opt-out by setting `privacy.type.STATISTIC` and `privacy.type.RESEARCH` to `true` in the config.yml.
 
 [![bStatsImage]][bStats-plugin]
 
@@ -265,7 +265,3 @@ public class MyPlugin extends JavaPlugin {
 
 }
 ```
-
-## Repository Activity
-
-![analytics](https://repobeats.axiom.co/api/embed/68f324fa6d712dac64864744345936175d35ece1.svg "Repobeats analytics image")

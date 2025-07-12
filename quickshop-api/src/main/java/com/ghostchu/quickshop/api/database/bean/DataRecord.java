@@ -26,6 +26,9 @@ public interface DataRecord {
   @NotNull
   String getItem();
 
+  @NotNull
+  String getEncoded();
+
   @Nullable
   String getName();
 

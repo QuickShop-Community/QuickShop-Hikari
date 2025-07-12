@@ -1,10 +1,9 @@
 package com.ghostchu.quickshop.compatibility.lands;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.modification.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.modification.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -12,10 +11,10 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
+import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.events.LandDeleteEvent;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
-import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Land;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -37,7 +36,7 @@ public final class Main extends CompatibilityModule {
   @Override
   public void init() {
 
-    landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(this);
+    landsIntegration = LandsIntegration.of(this);
     ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
     whitelist = getConfig().getBoolean("whitelist-mode");
     deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
@@ -45,29 +44,32 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onCreation(final ShopCreateEvent event) {
+  public void onPreCreation(final ShopCreateEvent event) {
 
-    if(landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
-      if(!ignoreDisabledWorlds) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.world-not-enabled").forLocale());
-        return;
-      }
-    }
-    final UUID playerUUID = event.getCreator().getUniqueIdIfRealPlayer().orElse(null);
-    if(playerUUID == null) {
+    final Location loc = event.location();
+    if(!event.phase().cancellable() || loc.getWorld() == null) {
+
       return;
     }
-    final Location loc = event.getShop().getLocation();
-    final Chunk locChunk = loc.getChunk();
-    final Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
-    if(land != null) {
-      if(land.getOwnerUID().equals(playerUUID) || land.isTrusted(playerUUID)) {
+
+    if(landsIntegration.getWorld(loc.getWorld()) == null) {
+      if(!ignoreDisabledWorlds) {
+        event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.lands.world-not-enabled").forLocale());
         return;
       }
-      event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
+    }
+
+    final Chunk locChunk = loc.getChunk();
+    final Land land = landsIntegration.getLandByChunk(loc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final UUID id = event.user().getUniqueId();
+    if(land != null && id != null) {
+      if(land.getOwnerUID().equals(event.user().getUniqueId()) || land.isTrusted(id)) {
+        return;
+      }
+      event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.lands.creation-denied").forLocale());
     } else {
       if(whitelist) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
+        event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.lands.creation-denied").forLocale());
       }
     }
   }
@@ -75,19 +77,19 @@ public final class Main extends CompatibilityModule {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onLandsMember(final PlayerLeaveLandEvent event) {
 
-    if(!deleteWhenLosePermission) {
+    if(!deleteWhenLosePermission || event.getLandPlayer() == null) {
       return;
     }
-    deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
+    deleteShopInLand(event.getLand(), event.getLandPlayer().getUUID());
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onLandsDeleted(final LandDeleteEvent event) {
 
-    if(!deleteWhenLandDeleted) {
+    if(!deleteWhenLandDeleted || event.getLandPlayer() == null) {
       return;
     }
-    deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
+    deleteShopInLand(event.getLand(), event.getLandPlayer().getUUID());
   }
 
   private void deleteShopInLand(final Land land, final UUID target) {
@@ -124,37 +126,14 @@ public final class Main extends CompatibilityModule {
     if(!deleteWhenLosePermission) {
       return;
     }
-    deleteShopInLand(event.getLand(), event.getTargetUID());
-  }
-
-  @EventHandler(ignoreCancelled = true)
-  public void onPreCreation(final ShopPreCreateEvent event) {
-
-    if(landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
-      if(!ignoreDisabledWorlds) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.world-not-enabled").forLocale());
-        return;
-      }
-    }
-    final Location loc = event.getLocation();
-    final Chunk locChunk = loc.getChunk();
-    final Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
-    if(land != null) {
-      if(land.getOwnerUID().equals(event.getCreator().getUniqueId()) || land.isTrusted(event.getCreator().getUniqueId())) {
-        return;
-      }
-      event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
-    } else {
-      if(whitelist) {
-        event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.lands.creation-denied").forLocale());
-      }
-    }
+    deleteShopInLand(event.getLand(), event.getTargetUUID());
   }
 
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
+    if(event.getShop().getLocation().getWorld() == null
+       || landsIntegration.getWorld(event.getShop().getLocation().getWorld()) == null) {
       if(ignoreDisabledWorlds) {
         return;
       }
@@ -163,17 +142,26 @@ public final class Main extends CompatibilityModule {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void permissionOverride(final ShopAuthorizeCalculateEvent event) {
+  public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    if(event.shop().isEmpty()) {
+      return;
+    }
+
+    final Location shopLoc = event.shop().get().getLocation();
+    if(shopLoc.getWorld() == null) {
+      return;
+    }
+
     final Chunk locChunk = shopLoc.getChunk();
-    final Land land = landsIntegration.getLand(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final Land land = landsIntegration.getLandByChunk(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
     if(land == null) {
       return;
     }
-    if(land.getOwnerUID().equals(event.getAuthorizer())) {
-      if(event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-        event.setResult(true);
+
+    if(land.getOwnerUID().equals(event.playerUUID())) {
+      if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+        event.hasPermission(true);
       }
     }
   }

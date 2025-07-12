@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
-import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
@@ -16,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ghostchu.quickshop.menu.ShopBrowseMenu.SHOPS_DATA;
 

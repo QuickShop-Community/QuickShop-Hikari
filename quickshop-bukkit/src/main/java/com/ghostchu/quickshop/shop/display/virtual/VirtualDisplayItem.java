@@ -1,14 +1,34 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
-import com.comphenix.protocol.events.PacketContainer;
+/*
+ * QuickShop-Hikari
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.display.ShopDisplayItemSpawnEvent;
+import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendDestroyEvent;
+import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendMetaEvent;
+import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.shop.display.virtual.packetfactory.VirtualDisplayPacketFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -25,35 +45,50 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadable {
+public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reloadable {
 
   private final int entityID;
   //The List which store packet sender
   private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
-  private final VirtualDisplayPacketFactory virtualDisplayPacketFactory;
+  private final PacketFactory<T> packetFactory;
+
   private final VirtualDisplayItemManager manager;
-  private final PacketContainer fakeItemSpawnPacket;
-  private final PacketContainer fakeItemMetaPacket;
-  private final PacketContainer fakeItemVelocityPacket;
-  private final PacketContainer fakeItemDestroyPacket;
+
+  private final T spawnPacket;
+  private final T metaPacket;
+  private final T velocityPacket;
+  private final T destroyPacket;
+
   //cache chunk x and z
   private ShopChunk chunkLocation;
+
   //If packet initialized
   private boolean isSpawned = false;
   //packets
 
-  VirtualDisplayItem(final VirtualDisplayItemManager manager, final VirtualDisplayPacketFactory packetFactory, final Shop shop) {
+  VirtualDisplayItem(final VirtualDisplayItemManager manager, final PacketFactory<T> packetFactory, final Shop shop) {
 
     super(shop);
 
     this.entityID = manager.generateEntityId();
     this.manager = manager;
     this.manager.shopEntities.put(shop.getShopId(), entityID);
-    this.virtualDisplayPacketFactory = packetFactory;
-    this.fakeItemSpawnPacket = virtualDisplayPacketFactory.createFakeItemSpawnPacket(entityID, getDisplayLocation());
-    this.fakeItemMetaPacket = virtualDisplayPacketFactory.createFakeItemMetaPacket(entityID, getOriginalItemStack().clone());
-    this.fakeItemVelocityPacket = virtualDisplayPacketFactory.createFakeItemVelocityPacket(entityID);
-    this.fakeItemDestroyPacket = virtualDisplayPacketFactory.createFakeItemDestroyPacket(entityID);
+    this.packetFactory = packetFactory;
+
+    if(getDisplayLocation() != null) {
+
+      this.spawnPacket = packetFactory.createSpawnPacket(entityID, getDisplayLocation());
+      this.metaPacket = packetFactory.createMetaDataPacket(entityID, getOriginalItemStack().clone());
+      this.velocityPacket = packetFactory.createVelocityPacket(entityID);
+      this.destroyPacket = packetFactory.createDestroyPacket(entityID);
+
+    } else {
+      this.spawnPacket = null;
+      this.metaPacket = null;
+      this.velocityPacket = null;
+      this.destroyPacket = null;
+    }
+
     load();
   }
 
@@ -101,16 +136,31 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
   public boolean isApplicableForPlayer(final Player player) {
 
     final DisplayApplicableCheckEvent event = new DisplayApplicableCheckEvent(shop, player.getUniqueId());
+
     event.setApplicable(true);
     event.callEvent();
+
     return event.isApplicable();
   }
 
   @Override
   public void remove(final boolean dontTouchWorld) {
 
-    sendPacketToAll(fakeItemDestroyPacket);
+    final Iterator<UUID> iterator = packetSenders.iterator();
+    while(iterator.hasNext()) {
+
+      final Player nextPlayer = Bukkit.getPlayer(iterator.next());
+      if(nextPlayer == null) {
+
+        iterator.remove();
+      } else {
+
+        sendDestroyPacket(nextPlayer);
+      }
+    }
+
     if(isSpawned()) {
+
       unload();
       isSpawned = false;
     }
@@ -172,56 +222,86 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     //Let nearby player can saw fake item
     final List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
     onlinePlayers.removeIf(p->!p.getWorld().equals(shop.getLocation().getWorld()));
+
     for(final Player onlinePlayer : onlinePlayers) {
+
       final double distance = onlinePlayer.getLocation().distance(shop.getLocation());
       if(Math.abs(distance) > Bukkit.getViewDistance() * 16) {
+
         continue;
       }
       if(isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
+
         packetSenders.add(onlinePlayer.getUniqueId());
       }
     }
   }
 
-  public void sendFakeItem(@NotNull final Player player) {
+  public void sendSpawnPacket(@NotNull final Player player) {
 
-    sendPacket(player, fakeItemDestroyPacket);
-    sendPacket(player, fakeItemSpawnPacket);
-    sendPacket(player, fakeItemMetaPacket);
-    if(fakeItemVelocityPacket != null) {
-      sendPacket(player, fakeItemVelocityPacket);
+    final PacketHandlerSendSpawnEvent<T> event = new PacketHandlerSendSpawnEvent<>(manager.packetHandler(),
+                                                                                   this.packetFactory,
+                                                                                   spawnPacket);
+    if(event.callCancellableEvent()) {
+
+      Log.debug("Canceled the sending of the spawn packet: " + shop.getShopId());
+    } else {
+
+      this.packetFactory.sendPacket(player, event.spawnPacket());
     }
   }
 
-  public void sendDestroyItem(@NotNull final Player player) {
+  public void sendMetaPacket(@NotNull final Player player) {
 
-    sendPacket(player, fakeItemDestroyPacket);
+    final PacketHandlerSendMetaEvent<T> event = new PacketHandlerSendMetaEvent<>(manager.packetHandler(),
+                                                                                 this.packetFactory,
+                                                                                 metaPacket);
+    if(event.callCancellableEvent()) {
+
+      Log.debug("Canceled the sending of the meta packet: " + shop.getShopId());
+    } else {
+
+      this.packetFactory.sendPacket(player, event.metaPacket());
+    }
   }
 
-  private void sendPacket(@NotNull final Player player, @NotNull final PacketContainer packet) {
+  public void sendDestroyPacket(@NotNull final Player player) {
 
-    manager.getProtocolManager().sendServerPacket(player, packet);
+    final PacketHandlerSendDestroyEvent<T> event = new PacketHandlerSendDestroyEvent<>(manager.packetHandler(),
+                                                                                       this.packetFactory,
+                                                                                       destroyPacket);
+    if(event.callCancellableEvent()) {
+
+      Log.debug("Canceled the sending of the destroy packet: " + shop.getShopId());
+    } else {
+
+      this.packetFactory.sendPacket(player, event.destroyPacket());
+    }
+  }
+
+  public void sendFakeItem(@NotNull final Player player) {
+
+    this.sendDestroyPacket(player);
+    this.sendSpawnPacket(player);
+    this.sendMetaPacket(player);
+    if(velocityPacket != null) {
+
+      this.packetFactory.sendPacket(player, velocityPacket);
+    }
   }
 
   public void sendFakeItemToAll() {
 
-    sendPacketToAll(fakeItemDestroyPacket);
-    sendPacketToAll(fakeItemSpawnPacket);
-    sendPacketToAll(fakeItemMetaPacket);
-    if(fakeItemVelocityPacket != null) {
-      sendPacketToAll(fakeItemVelocityPacket);
-    }
-  }
-
-  private void sendPacketToAll(@NotNull final PacketContainer packet) {
-
     final Iterator<UUID> iterator = packetSenders.iterator();
     while(iterator.hasNext()) {
+
       final Player nextPlayer = Bukkit.getPlayer(iterator.next());
       if(nextPlayer == null) {
+
         iterator.remove();
       } else {
-        sendPacket(nextPlayer, packet);
+
+        sendFakeItem(nextPlayer);
       }
     }
   }

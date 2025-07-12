@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Вы можете сломать магазин с помощью супер-инструмента.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>Вы заплатили <red>{0}<green> за изменение цены.
 not-allowed-to-create: <red>Вы не можете создать магазин здесь.
 disabled-in-this-world: <red>QuickShop отключен в этом мире
@@ -51,7 +51,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[совместный] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Средняя цена: <yellow>{0}'
 inventory-check-global-alert: "<red>[Проверка Инвентаря] <gray> Внимание! Найден отображаемый предмет БыстрогоМагазина <gold>{2}</gold> в инвентаре в <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, что не должно было произойти, обычно это значит, что кто-то эксплуатирует уязвимость для дублирования отображаемого предмета."
 digits-reach-the-limit: <red>Вы достигли пределов десятичных знаков в цене.
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Создание магазина стоит {0
 success-created-shop: <red>Магазин создан.
 shop-creation-cancelled: <red>Создание магазина отменено.
 shop-owner-self-trade: <yellow>Вы торгуете с собственным магазином и не получите никакой прибыли.
+shop-owner-self-trade-denied: <red>Вы не можете торговать со своим магазином.
 purchase-out-of-space: <red>В этом магазине закончилось место, свяжитесь с владельцем магазина или сотрудниками, чтобы забрать из него предметы.
 reloading-status:
   success: <green>Перезагрузка завершена без ошибок.
@@ -92,10 +93,10 @@ player-bought-from-your-store-tax: <green>{0} купил {1} {2} в вашем �
 not-enough-space: <red>В вашем инвентаре осталось место только для {0} предметов!
 shop-name-success: <green>Название магазина успешно изменено на <yellow>{0}<green>.
 shop-staff-added: <green>{0} успешно добавлен в качестве сотрудника вашего магазина.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>В этом магазине нет хозяина.
 shops-recovering: Восстановление магазинов из резервной копии...
 virtual-player-component-hover: "<gray> Является виртуальным игроком. \n<gray> Обращается к системному аккаунту этого имени с таким же именем. </gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Имя Пользователя: <yellow>{1}</yellow></green>\n<green> Показывать как: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+real-player-component-hover: "<gray>Это реальный игрок.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Ник: <yellow>{1}</yellow></green>\n<green>Display: <yellow>{2}</yellow></green>\n<gray>Если вы хотите использовать виртуальный аккаунт системы с тем же именем, добавьте <dark_gray>\"[]\"</dark_gray> с обеих сторон ника: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Вы заплатили <yellow>{0} <green>налогов.
   owner: '<green>Владелец: {0}'
@@ -119,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Элемент NBT слишком большой для отображения
   stock: '<green>Доступно: <yellow>{0}'
   this-shop-is-buying: <green>Этот магазин <light_purple>ПОКУПАЕТ<green> предметы.
+  this-shop-is-frozen: <green>Магазин в режиме заморозки <red>в режиме заморозки<green>
   successfully-sold: '<green>Успешно продано:'
   total-value-of-chest: '<green>Общая цена сундука: <yellow>{0}'
 currency-not-exists: <red>Не удается найти валюту, которую вы хотите установить. Возможно, вы ошиблись, или эта валюта недоступна в данном мире.
@@ -177,7 +179,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: ПРОДАЖА
   buying: ПОКУПКА
-  frozen: FROZEN
+  frozen: ЗАМОРОЖЕНО
 language:
   qa-issues: '<yellow>Вопросы обеспечения качества: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
@@ -246,16 +248,15 @@ translate-not-completed-yet-click: Перевод языка {0} ещё не з�
 taxaccount-invalid: <red>Текущий аккаунт налогового счета неизвестен, пожалуйста, введите правильное имя игрока или uuid(с тире).
 player-bought-from-your-store: <green>{0} купил {1} {2} из вашего магазины, вы заработали {3}.
 reached-maximum-can-create: <red>Вы уже создали максимум {0}/{1} магазинов!
-reached-maximum-create-limit: <red>Вы достигли максимального количества созданных магазинов
 translation-version: 'Поддерживаемая версия: Hikari'
 no-double-chests: <red>Вы не можете создать магазин из двойных сундуков.
 price-too-cheap: <red>Цена должна быть больше <yellow>${0}
 shop-not-exist: <red>Такого магазина нет.
 bad-command-usage: <red>Некорректные аргументы команды!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-starting: <green>Начало проверки на наличие нерабочих магазинов (без блока с предметами). Все нерабочие магазины будут удалены...
+cleanghost-deleting: <yellow>Найден нерабочий магазин <aqua>{0}</aqua> потому что {1}, помечен на удаление...
+cleanghost-deleted: <green>Всего <yellow>{0}</yellow> магазинов были удалены.
 shop-purchase-cancelled: <red>Покупка в магазине отменена.
 bypassing-lock: <red>Обход блокировки магазина!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Нажмите, чтобы магазин всегда считал содержимое контейнера.
   alwayscounting: '<green>Всегда считать: {0} <yellow>[<light_purple><bold>Изменить<yellow>]'
   setowner: '<green>Владелец: <aqua>{0} <yellow>[<light_purple><bold>Изменить<yellow>]'
-  freeze: '<yellow>Заморожен: <aqua>{0} <yellow>[<light_purple><bold>Изменить<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Цена: <aqua>{0} <yellow>[<light_purple><bold>Изменить<yellow>]'
   currency-hover: <yellow>Нажмите, чтобы установить или удалить валюту, которую этот магазин использует
   lock: '<yellow>Заблокирован: <aqua>{0} <yellow>[<light_purple><bold>Переключить<yellow>]'
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>Вы не можете создавать магазины или покупать товары в этом мире.
     creation-denied: <red>У вас нет прав на создание магазинов на этой территории Land.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>Вы не можете создать магазин вне участка.
     no-plot-whitelist-trade: <red>Вы не можете приобрести магазин за вне участка.
@@ -750,6 +754,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Только владелец острова может создать магазин здесь.
     owner-member-create-only: <red>Только владелец или участник острова может создать магазин здесь.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>У вас нет прав на создание магазинов на этой территории WorldGuard.
     trade-flag-test-failed: <red>У вас нет прав на торговлю на этой территории WorldGuard.
@@ -1603,6 +1610,8 @@ history:
   shop:
     gui-title: "View purchase history"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1621,6 +1630,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"

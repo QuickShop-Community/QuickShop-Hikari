@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Tu as cassé la boutique en utilisant le super outil.
+break-shop-use-supertool: <yellow>Vous pouvez casser le magasin avec l'outil super outil.
 fee-charged-for-price-change: <green>Vous payez <red>{0}<green> pour changer le prix.
 not-allowed-to-create: <red>Vous ne pouvez pas créer un shop ici.
 disabled-in-this-world: <red>QuickShop est désactivé dans ce monde
@@ -9,10 +9,10 @@ _comment: Bonjour, traducteur ! Si vous éditez ceci sur Github ou depuis le cod
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
 thats-not-a-number: <red>Nombre invalide.
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>Le nom de la boutique <yellow>{0} <red>est interdit. Choisissez un autre !
 console-only-danger: <red>Cette commande est dangereuse pour que seule la console puisse l'exécuter.
 not-a-number: <red>Vous ne pouvez saisir qu'un nombre, votre entrée était {0}.
-not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
+not-looking-at-valid-shop-block: <red>Impossible de créer un magasin. Veuillez regarder un type de bloc pris en charge et réessayer
 shop-removed-cause-ongoing-fee: <red>Ta boutique aux coordonnées {0} a été supprimé car tu n'avais plus assez d'argent pour la garder!
 tabcomplete:
   amount: '[quantité]'
@@ -21,7 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[distance]'
   currency: '[Type de monnaie]'
-  percentage: '[percentage%]'
+  percentage: ''
 taxaccount-unset: <green>Le compte de taxe de cette boutique suit maintenant le paramètre global du serveur.
 blacklisted-item: <red>Vous ne pouvez pas vendre cet objet car il se trouve sur la liste noire
 command-type-mismatch: <red>Cette commande ne peut être exécutée que par <aqua>{0}.
@@ -31,9 +31,9 @@ safe-mode: <red>QuickShop est à présent en mode sans échec, vous ne pouvez pa
 forbidden-vanilla-behavior: <red>L'opération est indisponible car elle n'est pas compatible avec la version vanilla
 shop-out-of-space-name: <dark_purple>Votre boutique {0} est pleine !
 paste-disabled: |-
-  <red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}
+  <red>La fonctionnalité de coller a été désactivée ! Vous ne pouvez pas demander un support technique. <newline>Raison : {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: '<light_purple>'
   hover:
     - '<yellow>Nom : <aqua>{0}'
     - '<yellow>Propriétaire : <aqua>{0}'
@@ -61,9 +61,9 @@ no-pending-action: <red>Tu n'as aucune action en attente
 refill-success: <green>Remplissage de la boutique effectué avec succès
 failed-to-paste: <red>Erreur lors de l'upload des données vers PasteBin, verifier la connection internet et rééssayez. (Voir la console)
 shop-out-of-stock-name: <dark_purple>Votre boutique {0} est à court de {1} !
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>La valeur maximal à ne pas dépasser en Java.
+shop-name-invalid: <red>Le nom de la boutique <yellow>{0} <red>n'est pas valide. Choisissez un autre !
+how-many-buy-stack: <yellow>Entrez dans le chat, combien d'items vous souhaitez <aqua>Acheter<green>. Il y a <yellow>{0}<green>item que vous pouvez acheter <yellow>{1}<green>. Entrer<aqua>{2}<green> dans chat pour acheter tout.
+exceeded-maximum: <red>La valeur maximale à ne pas dépasser en Java.
 unlimited-shop-owner-keeped: '<yellow>Attention : Le propriétaire de la boutique est toujours propriétaire de la boutique illimitée, vous devez re-définir nouveau propriétaire de la boutique par vous-même.'
 no-enough-money-to-keep-shops: <red>Tu n'as plus assez d'argent pour garder tes boutiques! Tous tes coffres ont été supprimés...
 3rd-plugin-build-check-failed: Un plugin tiers <bold>{0}<reset><red> a refusé les vérifications de permission, avez-vous les droits pour paramétrer ici ?
@@ -82,17 +82,18 @@ you-cant-afford-a-new-shop: <red>La création d'une boutique coûte {0}.
 success-created-shop: <red>Boutique crée avec succès.
 shop-creation-cancelled: <red>Création de la boutique annulée.
 shop-owner-self-trade: <yellow>Vous négociez avec vous en magasin, vous ne pourrez donc pas gagner de solde.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Cette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique.
 reloading-status:
   success: <green>Rechargement effectué sans erreurs.
   scheduled: <green>Rechargement terminé. <gray>(Certaines modifications nécessitent un certain temps)
   require-restart: <green>Rechargement terminé. <yellow>(Certaines modifications nécessitent un redémarrage du serveur pour prendre effet)
   failed: <red>Rechargement échoué, vérifiez la console du serveur
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} a acheté {1} {2} de ta boutique et tu as gagné {3} ({4} in taxes).
 not-enough-space: <red>Il ne vous reste que {0} place(s) restante(s) pour ceci!
 shop-name-success: <green>Le nom de votre boutique a bien été défini à <yellow>{0}<green>.
 shop-staff-added: <green> {0} a été ajouté avec succès comme membre du personnel pour votre boutique.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Cette boutique n'a pas de Staff.
 shops-recovering: Récupération des boutiques à partir de la sauvegarde...
 virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
@@ -116,9 +117,10 @@ menu:
   space: '<green>Espace restant: <yellow>{0}'
   effects: <green>Effets
   damage-percent-remaining: <yellow>{0}% <green>restant.
-  item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
+  item-holochat-data-too-large: <red>[Error] L'article NBT est trop grand pour montrer
   stock: '<green>Stock restant<yellow>{0}'
   this-shop-is-buying: <green>Cette boutique <light_purple>ACHETE<green> des objets.
+  this-shop-is-frozen: <green> La boutique est désormais en tant que <red> mode de gel<green>.
   successfully-sold: '<green>Vente réussie :'
   total-value-of-chest: '<green>Valeur totale du coffre: <yellow>{0}'
 currency-not-exists: <red>Impossible de trouver le mode actuel que vous voulez définir, cela est peut-être dû à une mauvaise orthographe ou ce mode n'est pas disponible dans ce monde.
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: La traduction de la langue {0} a terminé {1}
 taxaccount-invalid: <red>Le compte que vous avez défini est invalide, veuillez entrer un nom de joueur ou un uuid (avec les tirets) valide.
 player-bought-from-your-store: <red>{0} a acheté {1} {2} dans ta boutique, et tu as reçu ou payé {3} ( de taxes.
 reached-maximum-can-create: '<red>Tu as atteint ton nombre de coffre de boutiques maximal : {0}/{1}!'
-reached-maximum-create-limit: <red>Vous avez atteint le nombre maximum de boutiques que vous pouvez créer
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Vous ne pouvez pas créer de boutique avec un double coffre.
 price-too-cheap: <red>Le prix doit être supérieur à <yellow>${0}
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Cliquez pour définir ou supprimer le mode utilisée par cette boutique
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -395,7 +396,7 @@ timeunit:
   future-plain-text: future
   month: "{0} month"
   future: in {0}
-  days: "{0} days"
+  days: "{0} jours"
 command:
   reloading: '<green>Configuration rechargée. <yellow>Certains changements peuvent nécessiter un redémarrage pour être appliqués.<newline><gray>(Note : Le comportement du rechargement a été modifié après la 4.0.9.10, nous rechargeons désormais uniquement la configuration plutôt que l''ensemble du plugin, afin de garantir que le serveur ne plante pas.)'
   description:
@@ -427,7 +428,7 @@ command:
     sell: <yellow>Transforme la boutique en mode <aqua>VENTE
     fetchmessage: <yellow>Récupère les messages non lus de la boutique
     staff: <yellow>Gérer les gérants de ta boutique
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: .
     clean: <yellow>Supprime tous les coffres (chargés) ayant 0 de stock
     refill: <yellow>Ajoute un nombre donné d'objets à un shop.
     help: <yellow>Afficher l'aide QuickShop
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +752,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1603,6 +1610,8 @@ history:
   shop:
     gui-title: "View purchase history"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1621,6 +1630,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"

@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +45,18 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
+  public @NotNull String encodeStack(@NotNull final ItemStack stack) {
+
+    return Base64.getEncoder().encodeToString(stack.serializeAsBytes());
+  }
+
+  @Override
+  public ItemStack decodeStack(@NotNull final String serialized) {
+
+    return ItemStack.deserializeBytes(Base64.getDecoder().decode(serialized));
+  }
+
+  @Override
   public @NotNull Component getDisplayName(@NotNull final ItemStack stack) {
 
     return stack.displayName();
@@ -52,10 +66,18 @@ public class PaperPlatform implements Platform {
   public @NotNull Component getDisplayName(@NotNull final ItemMeta meta) {
 
     final Component displayName = meta.displayName();
-    if(displayName == null) {
-      return Component.empty();
+    if(displayName != null) {
+      return displayName;
     }
-    return displayName;
+
+    try {
+      if(meta.hasItemName()) {
+        return meta.itemName();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
+    }
+    return Component.empty();
   }
 
 
@@ -130,7 +152,7 @@ public class PaperPlatform implements Platform {
     String key;
     try {
       key = material.translationKey();
-    } catch(Throwable error) {
+    } catch(final Throwable error) {
       key = material.getTranslationKey();
     }
     return postProcessingTranslationKey(key);
@@ -142,7 +164,7 @@ public class PaperPlatform implements Platform {
     String key;
     try {
       key = type.translationKey();
-    } catch(Throwable error) {
+    } catch(final Throwable error) {
       key = type.getTranslationKey();
     }
     return postProcessingTranslationKey(key);
@@ -168,7 +190,7 @@ public class PaperPlatform implements Platform {
     String key;
     try {
       key = stack.getTranslationKey();
-    } catch(Throwable error) {
+    } catch(final Throwable error) {
       key = stack.translationKey();
     }
     return postProcessingTranslationKey(key);
@@ -190,6 +212,11 @@ public class PaperPlatform implements Platform {
 
   @Override
   public void sendMessage(@NotNull final CommandSender sender, @NotNull final Component component) {
+
+    final String serialized = GsonComponentSerializer.gson().serialize(component);
+    if(serialized.toLowerCase().contains("quickshopdontsend")) {
+      return;
+    }
 
     sender.sendMessage(component);
   }
@@ -243,7 +270,7 @@ public class PaperPlatform implements Platform {
 
     try {
       return parent.getSLF4JLogger();
-    } catch(Throwable th) {
+    } catch(final Throwable th) {
       return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
     }
   }

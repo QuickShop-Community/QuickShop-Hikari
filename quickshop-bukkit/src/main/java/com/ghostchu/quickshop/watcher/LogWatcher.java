@@ -57,7 +57,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
           Files.createFile(targetPath);
           final GzipParameters gzipParameters = new GzipParameters();
           gzipParameters.setFilename(log.getName());
-          try(GzipCompressorOutputStream archiveOutputStream = new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())), gzipParameters)) {
+          try(final GzipCompressorOutputStream archiveOutputStream = new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())), gzipParameters)) {
             Files.copy(log.toPath(), archiveOutputStream);
             archiveOutputStream.finish();
             if(log.delete()) {
@@ -78,16 +78,16 @@ public class LogWatcher implements AutoCloseable, Runnable {
         logFileWriter = new FileWriter(log, true);
       }
       printWriter = new PrintWriter(logFileWriter);
-    } catch(FileNotFoundException e) {
+    } catch(final FileNotFoundException e) {
       plugin.logger().error("Log file was not found!", e);
-    } catch(IOException e) {
+    } catch(final IOException e) {
       plugin.logger().error("Could not create the log file!", e);
     }
   }
 
   public void start(final int i, final int i2) {
 
-    task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
+    task = QuickShop.folia().getScheduler().runTimerAsync(this, i, i2);
   }
 
   public void stop() {
@@ -96,7 +96,7 @@ public class LogWatcher implements AutoCloseable, Runnable {
       if(task != null && !task.isCancelled()) {
         task.cancel();
       }
-    } catch(IllegalStateException ex) {
+    } catch(final IllegalStateException ex) {
       Log.debug("Task already cancelled " + ex.getMessage());
     }
   }

@@ -1,7 +1,7 @@
 break-shop-use-supertool: <yellow>U kunt de winkel breken door gebruik te maken van SuperTool.
 fee-charged-for-price-change: <green>U betaald <red>{0}<green> om de prijs te wijzigen.
 not-allowed-to-create: <red>U kunt hier geen winkel aanmaken.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop is uitgeschakeld in deze wereld
 how-much-to-trade-for: <green>Enter in de chat, voor hoeveel u wilt handelen <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Shop-back-up aanmaken vanuit database...
@@ -29,7 +29,7 @@ server-crash-warning: '<red>Server may crash after execute /qs reload command if
 you-cant-afford-to-change-price: <red>Het kost {0} om de prijs in uw winkel te wijzigen.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>De bewerking is niet toegestaan omdat deze niet in overeenstemming is met het gedrag van vanilla
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Uw winkel op {0}, is nu vol!
 paste-disabled: |-
   <red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}
 quick-fill:
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Het maken van een nieuwe winkel kost {0}.
 success-created-shop: <red>Shop aangemaakt.
 shop-creation-cancelled: <red>Shop aanmaken geannuleerd.
 shop-owner-self-trade: Je handelt met jezelf. Je zal dan ook geen geld krijgen
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
@@ -103,7 +104,7 @@ menu:
   enchants: <dark_purple>Betoveringen
   sell-tax-self: <green>Je hebt geen belastingen betaald omdat je eigenaar bent van deze winkel.
   shop-information: '<green>Shop Informatie:'
-  item: '<green>Item: <yellow>{0}'
+  item: ''
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
   item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>
@@ -119,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Voorraad <yellow>{0}'
   this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<yellow>en items.
+  this-shop-is-frozen: <green>De winkel is nu in <red>vriesmodus<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
@@ -149,7 +151,7 @@ metric:
   player-hover: |-
     <yellow>{0}<newline><gold>UUID: <gray>{1}
   looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
+  tax-hover: <yellow>{0} belasting
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: De vertaling van de taal {0} is nog niet volt
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} heeft {1} {2} gekocht van uw winkel, en u heeft {3} verdiend.
 reached-maximum-can-create: <red>Je hebt al een maximum van {0}/{1} winkels gemaakt!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Je kunt de dubbele kist winkel niet maken.
 price-too-cheap: <red>Price moet groter zijn dan <yellow>${0}
@@ -330,22 +331,22 @@ inventory-space-full: <red>Your inventory space remains can only put <green>{1}x
 no-creative-break: <red>Je kan de shops van andere spelers niet kapot maken in creative mode, switch naar survival mode of probeer de supertool {0}
 booleanformat:
   success: <green>✔
-  failed: <red>Augurk
+  failed: <red>Uitgeschakeld
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Klik om een nieuwe prijs voor het artikel in te stellen.
   remove: <red><bold>[Verwijder winkel]
-  mode-buying-hover: <yellow>Klik om de winkel in SELL modus te wijzigen.
+  mode-buying-hover: <yellow>Klik om de winkel in VERKOOP modus te wijzigen.
   empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Klik om de hoeveelheid item per bulk in te stellen. Stel in op 1 voor normaal gedrag.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klik om de valuta die deze winkel gebruikt in te stellen of te verwijderen
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Shop modus: <aqua>verkopen <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-selling: '<green>Shop mode: <aqua>Inkopen<yellow>[<light_purple><bold>Wijzigen<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Klik om van eigenaar te wisselen.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
@@ -399,7 +400,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
-    buy: Verandert een winkel naar <light_purple>BUY<yellow> modus
+    buy: Verandert een winkel naar <light_purple>KOOP<yellow> modus
     about: <yellow>Show QuickShop informatie
     language: <yellow>Wijzig de momenteel gebruikte taal
     purge: <yellow>Start the shop purge task in background
@@ -424,7 +425,7 @@ command:
     item: <yellow>Verander winkel item van een winkel
     debug: <yellow>Activeert Ontwikkelaarsmodus
     unlimited: <yellow>Geeft een winkel onbeperkt voorraad.
-    sell: Verandert een winkel naar <aqua>SELL<yellow> modus
+    sell: Verandert een winkel naar <aqua>VERKOOP<yellow> modus
     fetchmessage: <yellow>Toon ongelezen winkelberichten
     staff: <yellow>Beheer uw winkelpersoneel
     staffall: <yellow>Manage your shop staff of all shops you own.
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +752,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1603,6 +1610,8 @@ history:
   shop:
     gui-title: "View purchase history"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1621,6 +1630,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"

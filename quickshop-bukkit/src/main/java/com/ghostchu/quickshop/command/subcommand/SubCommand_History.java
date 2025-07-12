@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
@@ -49,7 +48,7 @@ public class SubCommand_History implements CommandHandler<Player> {
         return;
       }
       if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.VIEW_PURCHASE_LOGS) && !plugin.perm().hasPermission(sender, "quickshop.other.history")) {
-        plugin.text().of(sender, "no-permission");
+        plugin.text().of(sender, "no-permission").send();
         return;
       }
       shops.add(shop);

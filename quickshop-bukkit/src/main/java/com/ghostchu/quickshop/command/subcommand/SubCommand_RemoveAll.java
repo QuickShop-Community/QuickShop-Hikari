@@ -58,14 +58,11 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                 }
                 pendingRemoval.add(shop);
               }
-              Util.mainThreadRun(()->{
-                pendingRemoval.forEach(shop->{
-                  plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /quickshop removeall command.", shop.saveToInfoStorage()));
-                  plugin.getShopManager().deleteShop(shop);
-                });
-                plugin.text().of(sender, "command.some-shops-removed", pendingRemoval.size()).send();
+              pendingRemoval.forEach(shop->{
+                plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /quickshop removeall command.", shop.saveToInfoStorage()));
+                Util.mainThreadRun(()->plugin.getShopManager().deleteShop(shop));
               });
-
+              plugin.text().of(sender, "command.some-shops-removed", pendingRemoval.size()).send();
             })
             .exceptionally(err->{
               plugin.text().of(sender, "internal-error", err.getMessage()).send();

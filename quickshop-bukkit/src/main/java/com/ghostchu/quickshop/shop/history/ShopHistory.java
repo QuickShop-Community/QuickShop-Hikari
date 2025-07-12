@@ -348,7 +348,7 @@ public class ShopHistory {
                             long uniquePurchasers, LinkedHashMap<UUID, Long> valuableCustomers) {
 
     @Override
-    public String toString() {
+    public String toString () {
 
       return "ShopSummary{" +
              "recentPurchases24h=" + recentPurchases24h +
@@ -368,6 +368,7 @@ public class ShopHistory {
 
   public record ShopHistoryRecord(Timestamp date, long shopId, long dataId, UUID buyer,
                                   ShopOperationEnum shopType, int amount, double money, double tax
-  ) {
+                                 ) {
+
   }
 }

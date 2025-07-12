@@ -23,6 +23,29 @@ public class ConfigUpdateScript {
     this.plugin = plugin;
   }
 
+  @UpdateScript(version = 1033)
+  public void configDisplayCoords() {
+
+    getConfig().set("shop.display-coords.x", "0.5");
+    getConfig().set("shop.display-coords.y", "0.5");
+    getConfig().set("shop.display-coords.z", "0.5");
+  }
+
+  @UpdateScript(version = 1032)
+  public void configProtocol() {
+
+    getConfig().set("shop.display-protocol", "protocollib");
+  }
+
+  @UpdateScript(version = 1031)
+  public void configControlPanel() {
+
+    getConfig().set("shop.control-panel", List.of("owner", "unlimited", "freeze", "shop_mode",
+                                                  "set_price", "set_amount", "refill", "empty",
+                                                  "display", "history", "remove"));
+    getConfig().set("shop.sign-wax", false);
+  }
+
   @UpdateScript(version = 1029)
   public void configWorldLoadingBlacklist() {
 

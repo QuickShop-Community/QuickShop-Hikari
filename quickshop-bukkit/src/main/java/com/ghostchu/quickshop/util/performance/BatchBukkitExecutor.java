@@ -106,7 +106,7 @@ public class BatchBukkitExecutor<T> {
 
     public void start() {
 
-      task = QuickShop.folia().getImpl().runTimer(this, 1, 1);
+      task = QuickShop.folia().getScheduler().runTimer(this, 1, 1);
     }
 
     public void stop() {
@@ -116,7 +116,7 @@ public class BatchBukkitExecutor<T> {
           task.cancel();
           callback.complete(null);
         }
-      } catch(IllegalStateException ex) {
+      } catch(final IllegalStateException ex) {
         Log.debug("Task already cancelled " + ex.getMessage());
       }
     }

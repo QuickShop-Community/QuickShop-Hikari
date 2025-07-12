@@ -28,7 +28,6 @@ import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.Util;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.menu.bukkit.BukkitPlayer;
 import net.tnemc.menu.core.builder.IconBuilder;
 import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
 import net.tnemc.menu.core.icon.action.impl.ChatAction;
@@ -102,12 +101,12 @@ public class MainPage extends QuickShopPage {
 
                                              if(!shop.get().isUnlimited() && quantity > stock && stock > -1) {
                                                message.getPlayer().message(legacy(id, "gui.trade.custom.stock"));
-                                               return false;
+                                               return true;
                                              }
 
                                              if((quantity % amount) > 0) {
                                                message.getPlayer().message(legacy(id, "gui.trade.custom.multiple", amount));
-                                               return false;
+                                               return true;
                                              }
                                              if(shop.get().isBuying()) {
 
@@ -126,7 +125,7 @@ public class MainPage extends QuickShopPage {
                                          }
                                          message.getPlayer().message(legacy(id, enter, amount));
 
-                                         return false;
+                                         return true;
                                        }), new RunnableAction(click->click.player().message(legacy(id, enter, amount))))
                                        .withSlot(35).build());
 
@@ -153,7 +152,7 @@ public class MainPage extends QuickShopPage {
                                                                                                                  shop.get().getLocation().getWorld(),
                                                                                                                  shop.get().getCurrency()),
                                                                        amount,
-                                                                       eco.format((adjustedAmount * shop.get().getPrice()),
+                                                                       eco.format((quantity * shop.get().getPrice()),
                                                                                   shop.get().getLocation().getWorld(),
                                                                                   shop.get().getCurrency()))))
                                          .withActions(new RunnableAction((click->{

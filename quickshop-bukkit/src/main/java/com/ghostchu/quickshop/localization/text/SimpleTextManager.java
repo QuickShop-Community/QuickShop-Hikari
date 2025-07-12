@@ -29,7 +29,6 @@ import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -63,10 +62,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -83,6 +82,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   // <File <Locale, Section>>
   private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
   private final Set<String> availableLanguages = new LinkedHashSet<>();
+  private final ConcurrentHashMap<Locale, NumberFormat> numberFormatCache = new ConcurrentHashMap<>();
   private final Cache<String, String> languagesCache =
           CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).recordStats().build();
   private final String crowdinHost;
@@ -208,38 +208,33 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     final File configFile = new File(plugin.getDataFolder(), "color-scheme.yml");
     if(!configFile.exists()) {
       try {
-        Files.copy(Objects.requireNonNull(plugin.getJavaPlugin().getResource("color-scheme.yml")), configFile.toPath());
+        Files.copy(plugin.getJavaPlugin().getResource("color-scheme.yml"), configFile.toPath());
       } catch(final IOException e) {
         plugin.logger().warn("Failed to copy color-scheme.yml to plugin folder!", e);
       }
     }
-
     final FileConfiguration colorSchemeYaml = YamlConfiguration.loadConfiguration(configFile);
     final ConfigurationSection colorSchemeSection = colorSchemeYaml.getConfigurationSection("color-scheme");
-
+    if(colorSchemeSection == null) {
+      tagResolvers = new TagResolver[0];
+      return;
+    }
     final List<TagResolver> resolvers = new ArrayList<>();
     resolvers.add(TagResolver.standard());
-
-    if(colorSchemeSection != null) {
-      resolvers.add(TagResolver.resolver("color_scheme", (argumentQueue, context)->{
-        if(!argumentQueue.hasNext()) {
-          return null;
-        }
-        final Tag.Argument argument = argumentQueue.pop();
-        final String code = argument.value();
-        final String hex = colorSchemeSection.getString(code, "#ffffff");
-        final TextColor textColor = TextColor.fromHexString(hex);
-        if(textColor == null) {
-          return null;
-        }
-        Log.debug("Registered color scheme " + code + " with hex " + hex);
-        return Tag.styling(textColor);
-      }));
-    }
-
-    final String prefix = colorSchemeYaml.getString("prefix", "<dark_gray>[<lime>[Loja]</dark_gray><reset>");
-    resolvers.add(TagResolver.resolver("prefix", (argumentQueue, context)->Tag.inserting(MiniMessage.miniMessage().deserialize(prefix))));
-
+    resolvers.add(TagResolver.resolver("color_scheme", (argumentQueue, context)->{
+      if(!argumentQueue.hasNext()) {
+        return null;
+      }
+      final Tag.Argument argument = argumentQueue.pop();
+      final String code = argument.value();
+      final String hex = colorSchemeSection.getString(code, "#ffffff");
+      final TextColor textColor = TextColor.fromHexString(hex);
+      if(textColor == null) {
+        return null;
+      }
+      Log.debug("Registered color scheme " + code + " with hex " + hex);
+      return Tag.styling(textColor);
+    }));
     this.tagResolvers = resolvers.toArray(new TagResolver[0]);
   }
 
@@ -422,7 +417,8 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   public ProxiedLocale findRelativeLanguages(@Nullable final String langCode) {
     //langCode may null when some plugins providing fake player
     if(langCode == null || langCode.isEmpty()) {
-      return new ProxiedLocale(langCode, DEFAULT_LOCALE, NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT), Locale.ROOT);
+
+      return new ProxiedLocale(langCode, DEFAULT_LOCALE, getCompactNumberInstance(Locale.US), Locale.ROOT);
     }
     String result = languagesCache.getIfPresent(langCode);
     if(result == null) {
@@ -461,7 +457,12 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
       Log.debug(Level.WARNING, "Failed to solve the player locale: " + locale + ": " + e.getMessage());
     }
 
-    return new ProxiedLocale(langCode, result, NumberFormat.getCompactNumberInstance(locale, NumberFormat.Style.SHORT), locale);
+    return new ProxiedLocale(langCode, result, getCompactNumberInstance(locale), locale);
+  }
+
+  private NumberFormat getCompactNumberInstance(@NotNull final Locale locale) {
+
+    return numberFormatCache.computeIfAbsent(locale, l->NumberFormat.getCompactNumberInstance(l, NumberFormat.Style.SHORT));
   }
 
   /**

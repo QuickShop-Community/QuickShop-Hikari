@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Bạn có thể phá vỡ cửa hàng bằng cách sử dụng SuperTool.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>You đã trả <red>{0}<green> để được thay đổi giá.
 not-allowed-to-create: <red>Bạn không thể tạo cửa hàng ở đây.
 disabled-in-this-world: <red>QuickShop bị vô hiệu hóa trong thế giới này
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Tiêu tốn {0} để tạo ra 1 shop mới.
 success-created-shop: <red>Shop đã được tạo.
 shop-creation-cancelled: <red>Khởi tạo shop đã bị huỷ.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Tải lại hoàn tất và không có bất kỳ lỗi nào.
@@ -119,11 +120,12 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>Cửa hàng này đang <light_purple>MUA <green>các vật phẩm.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Bán thành công:'
   total-value-of-chest: '<green>Tổng giá trị của rương: <yellow>{0}'
 currency-not-exists: <red>Không thể tìm thấy đơn vị tiền tệ mà bạn muốn đặt. Có thể lỗi chính tả hoặc đơn vị tiền tệ đó không có sẵn trên thế giới này.
 no-nearby-shop: <red>Không có shop {0} nào gần đây.
-translation-author: 'Ghost_chu, Andre_601 (dịch bởi maiminhdung)'
+translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Tích hợp {0} đã từ chối Shop trao đổi
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Đã đặt thành công chủ cửa hàng thành Máy chủ.
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: Bản dịch ngôn ngữ {0} chưa được h
 taxaccount-invalid: <red>Tài khoản không hợp lệ, vui lòng nhập tên người chơi hợp lệ hoặc uuid (có dấu gạch ngang).
 player-bought-from-your-store: <red>{0} đã mua {1} {2} từ shop của bạn, bạn nhận được {3}.
 reached-maximum-can-create: <red>Bạn đã tạo tối đa {0}/{1} cửa hàng!
-reached-maximum-create-limit: <red>Bạn đã đạt đến số lượng tối đa tạo cửa hàng
 translation-version: 'Phiên bản hỗ trợ: Hikari'
 no-double-chests: <red>Bạn không thể tạo ra Shop gương đôi.
 price-too-cheap: <red>Giá tiền phải lớn hơn <yellow>${0}
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Nhấp để đặt hoặc xóa đơn vị tiền tệ mà cửa hàng này đang sử dụng
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +752,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1603,6 +1610,8 @@ history:
   shop:
     gui-title: "View purchase history"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1621,6 +1630,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"

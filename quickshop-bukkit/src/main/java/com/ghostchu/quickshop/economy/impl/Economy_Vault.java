@@ -105,7 +105,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       return false;
     }
     try {
-      final EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(name, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(name, world.getName(), amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -139,7 +139,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       return false;
     }
     try {
-      final EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(trader, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(trader, world.getName(), amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -185,7 +185,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       return 0.0;
     }
     try {
-      return Objects.requireNonNull(this.vault).getBalance(name);
+      return Objects.requireNonNull(this.vault).getBalance(name, world.getName());
     } catch(Exception t) {
       if(plugin.getSentryErrorReporter() != null) {
         plugin.getSentryErrorReporter().ignoreThrow();
@@ -221,7 +221,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       return 0.0;
     }
     try {
-      return Objects.requireNonNull(this.vault).getBalance(player);
+      return Objects.requireNonNull(this.vault).getBalance(player, world.getName());
     } catch(Exception t) {
       if(plugin.getSentryErrorReporter() != null) {
         plugin.getSentryErrorReporter().ignoreThrow();
@@ -284,7 +284,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       if((!allowLoan) && (getBalance(name, world, currency) < amount)) {
         return false;
       }
-      final EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(name, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(name, world.getName(), amount);
       if(response.transactionSuccess()) {
         return true;
       }
@@ -320,7 +320,7 @@ public class Economy_Vault extends NonSeparateAbstractEconomy implements Listene
       if((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
         return false;
       }
-      final EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount);
+      final EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(trader, world.getName(), amount);
       if(response.transactionSuccess()) {
         return true;
       }

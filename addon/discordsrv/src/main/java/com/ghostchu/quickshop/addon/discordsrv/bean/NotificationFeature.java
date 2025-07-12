@@ -11,6 +11,7 @@ public enum NotificationFeature {
   USER_SHOP_PURCHASE("notify-shop-purchase", "user.shop.purchase", true),
   MOD_SHOP_PURCHASE("mod-notify-shop-purchase", "mod.shop.purchase", false),
   MOD_SHOP_PRICE_CHANGED("mod-notify-shop-price-changed", "mod.shop.price_changed", false),
+  MOD_SHOP_CREATED("mod-notify-shop-created", "mod.shop.created", false),
   MOD_SHOP_REMOVED("mod-notify-shop-removed", "mod.shop.removed", false),
   MOD_SHOP_TRANSFER("mod-notify-shop-transfer", "mod.shop.trasfer", false);
   private final String databaseNode;

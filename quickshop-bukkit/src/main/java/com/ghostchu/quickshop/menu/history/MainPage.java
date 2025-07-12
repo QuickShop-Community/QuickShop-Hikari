@@ -26,7 +26,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
@@ -47,6 +46,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -124,7 +124,17 @@ public class MainPage {
         //header icon
         final Shop shop = shops.get(0);
         final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
-        final String shopName = shop.getShopName() == null? world + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ() : shop.getShopName();
+
+        final Component shopName;
+        if(shop.getShopName() != null) {
+
+          shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shop.getShopName()).forLocale();
+        } else {
+          shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale();
+        }
+
+        final Component shopType = QuickShop.getInstance().text().of("shop-type." + shop.getShopType().name().toLowerCase(Locale.ROOT)).forLocale();
+
         if(shops.size() == 1) {
 
           final QUser owner = shop.getOwner();
@@ -136,9 +146,9 @@ public class MainPage {
           }
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
-                                                             .display(LegacyComponentSerializer.legacySection().deserialize(shopName))
+                                                             .display(shopName)
                                                              .lore(getList(id, "history.shop.header-icon-description",
-                                                                           shop.getShopType().name(),
+                                                                           shopType,
                                                                            shop.getOwner().getDisplay(),
                                                                            Util.getItemStackName(shop.getItem()),
                                                                            shop.getPrice(), shop.getShopStackingAmount(),
@@ -245,7 +255,8 @@ public class MainPage {
                                                userName,
                                                itemName, record.amount(),
                                                record.money(),
-                                               record.tax());
+                                               record.tax(),
+                                               record.money() - record.tax());
 
           final String timeFormat = QuickShop.getInstance().text().of(player, "timeunit.std-format").plain();
           final SimpleDateFormat format = new SimpleDateFormat(timeFormat);

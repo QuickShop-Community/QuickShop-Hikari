@@ -2,15 +2,16 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.ItemPreviewComponentPopulateEvent;
-import com.ghostchu.quickshop.api.event.ItemPreviewComponentPrePopulateEvent;
+import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
-import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxEvent;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPopulateEvent;
+import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPrePopulateEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.economy.ShopTaxEvent;
+import com.ghostchu.quickshop.api.event.general.ShopInfoPanelEvent;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -79,6 +80,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -170,21 +172,26 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
   @Override
-  public void actionBuying(@NotNull final Player buyer, @NotNull final InventoryWrapper buyerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
+  public boolean actionBuying(@NotNull final Player buyer, @NotNull final InventoryWrapper buyerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
 
     final QUser buyerQUser = QUserImpl.createFullFilled(buyer);
     if(!plugin.perm().hasPermission(buyer, "quickshop.other.use") && !shop.playerAuthorize(buyer.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
       plugin.text().of("no-permission").send();
-      return;
+      return false;
+    }
+
+    if(shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
+      plugin.text().of(buyer, "shop-owner-self-trade-denied").send();
+      return false;
     }
 
     if(shop.isFrozen()) {
       plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
-      return;
+      return false;
     }
 
     if(shopIsNotValid(buyerQUser, info, shop)) {
-      return;
+      return false;
     }
     int space = shop.getRemainingSpace();
     if(space == -1) {
@@ -192,18 +199,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     if(space < amount) {
       plugin.text().of(buyer, "shop-has-no-space", Component.text(space), Util.getItemStackName(shop.getItem())).send();
-      return;
+      return false;
     }
     final int count = Util.countItems(buyerInventory, shop);
     // Not enough items
     if(amount > count) {
       plugin.text().of(buyer, "you-dont-have-that-many-items", Component.text(count), Util.getItemStackName(shop.getItem())).send();
-      return;
+      return false;
     }
     if(amount < 1) {
       // & Dumber
       plugin.text().of(buyer, "negative-amount").send();
-      return;
+      return false;
     }
 
     // Money handling
@@ -213,7 +220,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final ShopPurchaseEvent e = new ShopPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total);
     if(Util.fireCancellableEvent(e)) {
       plugin.text().of(buyer, "plugin-cancelled", e.getCancelReason()).send();
-      return; // Cancelled
+      return false; // Cancelled
     } else {
       total = e.getTotal(); // Allow addon to set it
     }
@@ -237,13 +244,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     if(!transaction.checkBalance()) {
       plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
-      return;
+      return false;
     }
     if(!transaction.failSafeCommit()) {
       plugin.text().of(buyer, "economy-transaction-failed", transaction.getLastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
       plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
-      return;
+      return false;
     }
 
     try {
@@ -252,12 +259,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
       transaction.rollback(true);
       plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
-      return;
+      return false;
     }
     sendSellSuccess(buyerQUser, shop, amount, total, transaction.getTax());
     new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.getTax()).callEvent();
     shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
     notifySold(buyerQUser, shop, amount, space);
+    return true;
   }
 
   private void notifySold(@NotNull final QUser buyerQUser, @NotNull final Shop shop, final int amount, final int space) {
@@ -352,7 +360,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
                                                    price, info.getItem(), createQUser, false,
-                                                   ShopType.SELLING, new YamlConfiguration(), null, false,
+                                                   ShopType.SELLING, new YamlConfiguration(), null, !plugin.isDisplayEnabled(),
                                                    null, plugin.getJavaPlugin().getName(),
                                                    symbolLink,
                                                    null, Collections.emptyMap(), new SimpleBenefit());
@@ -363,22 +371,28 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
   @Override
-  public void actionSelling(@NotNull final Player seller, @NotNull final InventoryWrapper sellerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
+  public boolean actionSelling(@NotNull final Player seller, @NotNull final InventoryWrapper sellerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
 
     Util.ensureThread(false);
     final QUser sellerQUser = QUserImpl.createFullFilled(seller);
 
     if(!plugin.perm().hasPermission(seller, "quickshop.other.use") && !shop.playerAuthorize(seller.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
       plugin.text().of("no-permission").send();
-      return;
+      return false;
     }
+
+    if(shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
+      plugin.text().of(seller, "shop-owner-self-trade-denied").send();
+      return false;
+    }
+
     if(shopIsNotValid(sellerQUser, info, shop)) {
-      return;
+      return false;
     }
 
     if(shop.isFrozen()) {
       plugin.text().of(seller, "shop-cannot-trade-when-freezing").send();
-      return;
+      return false;
     }
 
     int stock = shop.getRemainingStock();
@@ -387,22 +401,22 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     if(stock < amount) {
       plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
-      return;
+      return false;
     }
     final int playerSpace = Util.countSpace(sellerInventory, shop);
     if(playerSpace < amount) {
       plugin.text().of(seller, "inventory-space-full", amount, playerSpace).send();
-      return;
+      return false;
     }
     if(amount < 1) {
       // & Dumber
       plugin.text().of(seller, "negative-amount").send();
-      return;
+      return false;
     }
     final int pSpace = Util.countSpace(sellerInventory, shop);
     if(amount > pSpace) {
       plugin.text().of(seller, "not-enough-space", Component.text(pSpace)).send();
-      return;
+      return false;
     }
 
     final double taxModifier = getTax(shop, sellerQUser);
@@ -411,7 +425,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final ShopPurchaseEvent e = new ShopPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total);
     if(Util.fireCancellableEvent(e)) {
       plugin.text().of(seller, "plugin-cancelled", e.getCancelReason()).send();
-      return; // Cancelled
+      return false; // Cancelled
     } else {
       total = e.getTotal(); // Allow addon to set it
     }
@@ -438,12 +452,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     if(!transaction.checkBalance()) {
       plugin.text().of(seller, "you-cant-afford-to-buy", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(sellerQUser, shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
-      return;
+      return false;
     }
     if(!transaction.failSafeCommit()) {
       plugin.text().of(seller, "economy-transaction-failed", transaction.getLastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
-      return;
+      return false;
     }
 
     try {
@@ -452,11 +466,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
       transaction.rollback(true);
       plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
-      return;
+      return false;
     }
     sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.getTax());
     new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.getTax()).callEvent();
     notifyBought(sellerQUser, shop, amount, stock, transaction.getTax(), total);
+    return true;
   }
 
 
@@ -514,8 +529,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     // Check if player has reached the max shop limit
-    if(isReachedLimit(shop.getOwner())) {
-      plugin.text().of(p, "reached-maximum-create-limit").send();
+    if(isReachedLimit(shop.getOwner(), true)) {
       return;
     }
     // Check if target block is allowed shop-block
@@ -590,10 +604,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
       case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
       case PASS -> {
+
         // Calling ShopCreateEvent
-        final ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, shop.getOwner());
-        if(Util.fireCancellableEvent(shopCreateEvent)) {
-          plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
+        ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, shop, shop.getOwner(), shop.getLocation());
+
+        if(event.callCancellableEvent()) {
+
+          plugin.text().of(p, "plugin-cancelled", event.getCancelReason()).send();
           return;
         }
         // Handle create cost
@@ -629,6 +646,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             final BlockState signState = this.makeShopSign(shop.getLocation().getBlock(), signBlock, null);
             if(signState instanceof final Sign puttedSign) {
               try {
+
                 shop.claimShopSign(puttedSign);
               } catch(final Throwable ignored) {
               }
@@ -639,6 +657,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         registerShop(shop, true);
         loadShop(shop);
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
+
+        event = event.clone(Phase.MAIN);
+        event.callEvent();
       }
     }
   }
@@ -646,12 +667,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   /**
    * Checks other plugins to make sure they can use the chest they're making a shop.
    *
-   * @param p The player to check
+   * @param p       The player to check
+   * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're allowed to place a shop there.
    */
   @Override
-  public boolean isReachedLimit(@NotNull final QUser p) {
+  public boolean isReachedLimit(@NotNull final QUser p, final boolean message) {
 
     Util.ensureThread(false);
     if(plugin.getRankLimiter().isLimit()) {
@@ -666,8 +688,19 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
       }
       final int max = plugin.getRankLimiter().getShopLimit(p);
+      final boolean limitReached = owned >= max;
       Log.debug("CanBuildShop check for " + p.getDisplay() + " owned: " + owned + "; max: " + max);
-      return owned + 1 > max;
+
+      if(limitReached && message) {
+
+        final Optional<Player> playerOptional = p.getBukkitPlayer();
+        if(playerOptional.isPresent()) {
+
+          plugin.text().of(p, "reached-maximum-can-create", owned, max).send();
+        }
+      }
+
+      return limitReached;
     }
     return false;
   }
@@ -1013,10 +1046,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     signBlock.setType(signMaterial == null? Util.getSignMaterial() : signMaterial);
     final BlockState signBlockState = signBlock.getState();
     final BlockData signBlockData = signBlockState.getBlockData();
+
     if(signIsWatered && (signBlockData instanceof final Waterlogged waterable)) {
       waterable.setWaterlogged(true); // Looks like sign directly put in water
     }
     if(signBlockData instanceof final WallSign wallSignBlockData) {
+
       final BlockFace bf = container.getFace(signBlock);
       if(bf != null) {
         wallSignBlockData.setFacing(bf);
@@ -1025,6 +1060,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     } else {
       plugin.logger().warn("Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
     }
+
     signBlockState.update(true);
     return signBlockState;
   }
@@ -1145,7 +1181,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   @Override
   public void deleteShop(@NotNull final Shop shop) {
 
-    final ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
+    ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
     if(shopDeleteEvent.callCancellableEvent()) {
       Log.debug("Shop delete was cancelled by 3rd-party plugin");
       return;
@@ -1156,6 +1192,8 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     refundShop(shop);
     unloadShop(shop);
     unregisterShop(shop, true);
+    shopDeleteEvent = shopDeleteEvent.clone(Phase.POST);
+    shopDeleteEvent.callEvent();
   }
 
 

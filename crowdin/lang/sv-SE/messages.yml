@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Du kan förstöra butiken med SuperVerktyget.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>Du betalade <red>{0}<green> för att ändra priset.
 not-allowed-to-create: <red>Du får inte skapa en butik här.
 disabled-in-this-world: <red>QuickShop är inaktiverat i denna värld
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Det kostar {0} att skapa en ny butik.
 success-created-shop: <red>Butik skapad.
 shop-creation-cancelled: <red>Butik-skapelsen avbröts!
 shop-owner-self-trade: <yellow>You handlar med din egen butik, så du kanske inte kommer att få något saldo.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.
 reloading-status:
   success: <green>Omladdning slutförd utan några fel.
@@ -119,6 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Objektets NBT är för stort för att visa
   stock: '<green>Lagersaldo <yellow>{0}'
   this-shop-is-buying: <green>Denna butik <light_purple>KÖPER& föremål.
+  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
   successfully-sold: '<green>Framgångsrikt sålt:'
   total-value-of-chest: '<green>Totalt värde av butik: <yellow>{0}'
 currency-not-exists: <red>Kan inte hitta den valuta som du vill ställa in. Stavningen är kanske fel eller att valutan inte är tillgänglig i denna värld.
@@ -246,7 +248,6 @@ translate-not-completed-yet-click: Översättningen av språket {0} slutfördes 
 taxaccount-invalid: <red>Angivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).
 player-bought-from-your-store: <red>{0} köpte {1} {2} från din butik, och du tjänade {3}.
 reached-maximum-can-create: <red>Du har redan skapat {0}/{1} butiker vilket är max!
-reached-maximum-create-limit: <red>Du har nått det maximala antalet butiker du kan skapa
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Du kan inte skapa den dubbla kistbutiken.
 price-too-cheap: <red>Priset måste vara högre än <yellow>${0}
@@ -341,7 +342,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klicka för att växla om butiken alltid räknar behållarens utrymme.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klicka för att ändra eller ta bort den valuta som denna butik använder
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -739,6 +740,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +752,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1603,6 +1610,8 @@ history:
   shop:
     gui-title: "View purchase history"
     header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
+    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
       - "<white>Owner: <yellow>{1}</yellow></white>"
@@ -1621,6 +1630,7 @@ history:
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Final earning: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
     previous-page: "<white><< Previous Page</white>"
     next-page: "<white>Next Page >></white>"

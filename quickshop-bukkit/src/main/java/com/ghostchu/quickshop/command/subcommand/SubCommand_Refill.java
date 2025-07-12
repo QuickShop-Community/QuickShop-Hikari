@@ -44,7 +44,6 @@ public class SubCommand_Refill implements CommandHandler<Player> {
       }
     }
     shop.add(shop.getItem(), add);
-    shop.setSignText(plugin.text().findRelativeLanguages(sender));
     plugin.text().of(sender, "refill-success").send();
   }
 

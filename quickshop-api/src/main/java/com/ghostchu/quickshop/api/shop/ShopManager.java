@@ -37,8 +37,10 @@ public interface ShopManager {
    * @param info           The info of the shop
    * @param shop           The shop
    * @param amount         The amount of the item/stack
+   *
+   * @return If the transaction was successfull
    */
-  void actionBuying(
+  boolean actionBuying(
           @NotNull Player buyer,
           @NotNull InventoryWrapper buyerInventory,
           @NotNull AbstractEconomy eco,
@@ -64,8 +66,10 @@ public interface ShopManager {
    * @param info            The info of the shop
    * @param shop            The shop
    * @param amount          The amount of the item/stack
+   *
+   * @return If the transaction was successfull
    */
-  void actionSelling(
+  boolean actionSelling(
           @NotNull Player seller,
           @NotNull InventoryWrapper sellerInventory,
           @NotNull AbstractEconomy eco,
@@ -347,11 +351,12 @@ public interface ShopManager {
   /**
    * Checks if player reached the limit of shops
    *
-   * @param p The player to check
+   * @param p       The player to check
+   * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're reached the limit.
    */
-  boolean isReachedLimit(@NotNull QUser p);
+  boolean isReachedLimit(@NotNull QUser p, boolean message);
 
   /**
    * Load shop method for loading shop into mapping, so getShops method will can find it. It also

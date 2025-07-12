@@ -70,6 +70,7 @@ public class SimpleBenefit implements Benefit {
 
     final double overflow = getOverflow(benefit);
     if(overflow != 0) {
+
       throw new BenefitOverflowException(overflow);
     }
     if(benefits.containsKey(player)) {

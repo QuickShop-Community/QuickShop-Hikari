@@ -1,7 +1,9 @@
 name: qscompat-${project.artifactId}
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
-api-version: 1.18
+#Has to be included for folia support
+folia-supported: true
+api-version: '1.20'
 depend:
   - EliteMobs
   - QuickShop-Hikari

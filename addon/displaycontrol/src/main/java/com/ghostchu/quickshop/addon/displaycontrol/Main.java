@@ -60,13 +60,13 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
     plugin = QuickShop.getInstance();
     try {
       databaseHelper = new DisplayControlDatabaseHelper(instance, plugin.getSqlManager(), plugin.getDbPrefix());
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       getLogger().log(Level.WARNING, "Failed to init database helper", e);
       Bukkit.getPluginManager().disablePlugin(this);
       return;
     }
     Bukkit.getPluginManager().registerEvents(this, this);
-    QuickShop.folia().getImpl().runTimerAsync(()->this.playerClientMapping.entrySet().removeIf(e->Bukkit.getPlayer(e.getKey()) == null), 60 * 20 * 60, 60 * 20 * 60);
+    QuickShop.folia().getScheduler().runTimerAsync(()->this.playerClientMapping.entrySet().removeIf(e->Bukkit.getPlayer(e.getKey()) == null), 60 * 20 * 60, 60 * 20 * 60);
     plugin.getCommandManager().registerCmd(CommandContainer.builder()
                                                    .prefix("displaycontrol")
                                                    .permission("quickshopaddon.displaycontrol.use")
@@ -88,7 +88,7 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
     try {
       final DisplayOption displayOption = databaseHelper.getDisplayOption(uuid);
       this.playerDisplayStatus.put(uuid, displayOption);
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       getLogger().log(Level.WARNING, "Failed to getting the player display status from database", e);
     }
   }

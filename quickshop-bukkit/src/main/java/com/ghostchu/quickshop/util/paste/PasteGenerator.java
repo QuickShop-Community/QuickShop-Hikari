@@ -75,7 +75,7 @@ public class PasteGenerator {
                                              html {
                                                font-size: 62.5%;
                                                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
-                                             
+
                                              body {
                                                font-size: 1.8rem;
                                                line-height: 1.618;
@@ -84,15 +84,15 @@ public class PasteGenerator {
                                                color: #4a4a4a;
                                                background-color: #f9f9f9;
                                                padding: 13px; }
-                                             
+
                                              @media (max-width: 684px) {
                                                body {
                                                  font-size: 1.53rem; } }
-                                             
+
                                              @media (max-width: 382px) {
                                                body {
                                                  font-size: 1.35rem; } }
-                                             
+
                                              h1, h2, h3, h4, h5, h6 {
                                                line-height: 1.1;
                                                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -107,50 +107,50 @@ public class PasteGenerator {
                                                -moz-hyphens: auto;
                                                -webkit-hyphens: auto;
                                                hyphens: auto; }
-                                             
+
                                              h1 {
                                                font-size: 2.35em; }
-                                             
+
                                              h2 {
                                                font-size: 2.00em; }
-                                             
+
                                              h3 {
                                                font-size: 1.75em; }
-                                             
+
                                              h4 {
                                                font-size: 1.5em; }
-                                             
+
                                              h5 {
                                                font-size: 1.25em; }
-                                             
+
                                              h6 {
                                                font-size: 1em; }
-                                             
+
                                              p {
                                                margin-top: 0px;
                                                margin-bottom: 2.5rem; }
-                                             
+
                                              small, sub, sup {
                                                font-size: 75%; }
-                                             
+
                                              hr {
                                                border-color: #2c8898; }
-                                             
+
                                              a {
                                                text-decoration: none;
                                                color: #2c8898; }
                                                a:hover {
                                                  color: #982c61;
                                                  border-bottom: 2px solid #4a4a4a; }
-                                             
+
                                              ul {
                                                padding-left: 1.4em;
                                                margin-top: 0px;
                                                margin-bottom: 2.5rem; }
-                                             
+
                                              li {
                                                margin-bottom: 0.4em; }
-                                             
+
                                              blockquote {
                                                margin-left: 0px;
                                                margin-right: 0px;
@@ -161,16 +161,16 @@ public class PasteGenerator {
                                                border-left: 5px solid #2c8898;
                                                margin-bottom: 2.5rem;
                                                background-color: #f1f1f1; }
-                                             
+
                                              blockquote p {
                                                margin-bottom: 0; }
-                                             
+
                                              img {
                                                height: auto;
                                                max-width: 100%;
                                                margin-top: 0px;
                                                margin-bottom: 2.5rem; }
-                                             
+
                                              /* Pre and Code */
                                              pre {
                                                background-color: #f1f1f1;
@@ -179,18 +179,18 @@ public class PasteGenerator {
                                                overflow-x: auto;
                                                margin-top: 0px;
                                                margin-bottom: 2.5rem; }
-                                             
+
                                              code {
                                                font-size: 0.9em;
                                                padding: 0 0.5em;
                                                background-color: #f1f1f1;
                                                white-space: pre-wrap; }
-                                             
+
                                              pre > code {
                                                padding: 0;
                                                background-color: transparent;
                                                white-space: pre; }
-                                             
+
                                              /* Tables */
                                              table {
                                                text-align: justify;
@@ -198,22 +198,22 @@ public class PasteGenerator {
                                                border-collapse: collapse;
                                                word-wrap:break-word;
                                                word-break:break-all;}
-                                             
+
                                              td, th {
                                                padding: 0.5em;
                                                border-bottom: 1px solid #f1f1f1;
                                                word-wrap:break-word;
                                                word-break:break-all;}
-                                             
+
                                              /* Buttons, forms and input */
                                              input, textarea {
                                                border: 1px solid #4a4a4a; }
                                                input:focus, textarea:focus {
                                                  border: 1px solid #2c8898; }
-                                             
+
                                              textarea {
                                                width: 100%; }
-                                             
+
                                              .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
                                                display: inline-block;
                                                padding: 5px 10px;
@@ -234,7 +234,7 @@ public class PasteGenerator {
                                                  border-color: #982c61;
                                                  color: #f9f9f9;
                                                  outline: 0; }
-                                             
+
                                              textarea, select, input[type] {
                                                color: #4a4a4a;
                                                padding: 6px 10px;
@@ -248,10 +248,10 @@ public class PasteGenerator {
                                                textarea:focus, select:focus, input[type]:focus {
                                                  border: 1px solid #2c8898;
                                                  outline: 0; }
-                                             
+
                                              input[type="checkbox"]:focus {
                                                outline: 1px dotted #2c8898; }
-                                             
+
                                              label, legend, fieldset {
                                                display: block;
                                                margin-bottom: .5rem;
