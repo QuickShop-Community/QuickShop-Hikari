@@ -178,6 +178,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
   @EventHandler(ignoreCancelled = true)
   public void onPistonExtend(final BlockPistonExtendEvent event) {
+
     final List<Block> affectedBlocks = event.getBlocks();
     for(final Block block : affectedBlocks) {
 
@@ -190,6 +191,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
   @EventHandler(ignoreCancelled = true)
   public void onPistonRetract(final BlockPistonRetractEvent event) {
+
     final List<Block> affectedBlocks = event.getBlocks();
 
     for(final Block block : affectedBlocks) {

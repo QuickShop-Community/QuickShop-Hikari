@@ -116,6 +116,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
    */
   @Override
   public PacketContainer createMetaDataPacket(final int id, @NotNull final ItemStack itemStack) {
+
     final List<WrappedDataValue> values = new ArrayList<>();
     //gravity disabled
     values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get(Boolean.class), true));

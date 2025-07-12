@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.compatibility.fabledskyblock;
 
 
-import com.craftaro.skyblock.SkyBlock;
 import com.craftaro.skyblock.api.SkyBlockAPI;
 import com.craftaro.skyblock.api.event.island.IslandBanEvent;
 import com.craftaro.skyblock.api.event.island.IslandDeleteEvent;
@@ -107,7 +106,7 @@ public final class Main extends CompatibilityModule {
       } else {
         if(!island.getOwnerUUID().equals(uuid) && !island.isCoopPlayer(uuid)) {
 
-            event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.fabledskyblock.owner-member-create-only").forLocale());
+          event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.fabledskyblock.owner-member-create-only").forLocale());
         }
       }
     });
@@ -135,7 +134,6 @@ public final class Main extends CompatibilityModule {
       }
     }
   }
-
 
 
   private void deleteShops(@NotNull final Island island, @Nullable final UUID shopOwnerToDelete, @NotNull final UUID deleteOperator, @NotNull final String deleteReason) {
@@ -168,7 +166,8 @@ public final class Main extends CompatibilityModule {
           recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "FabledSkyblock", false), shop, deleteReason);
           getApi().getShopManager().deleteShop(shop);
         }
-      });;
+      });
+      ;
     }
   }
 

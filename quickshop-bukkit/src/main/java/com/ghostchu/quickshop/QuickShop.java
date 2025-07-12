@@ -214,11 +214,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   @Getter
   private final PasteManager pasteManager = new PasteManager();
-
-  private FoliaLib folia;
   protected MenuHandler menuHandler;
   protected HelperMethods helperMethods;
-
+  private FoliaLib folia;
   /* Public QuickShop API End */
   private GameVersion gameVersion;
   private volatile SimpleDatabaseHelperV2 databaseHelper;
@@ -375,6 +373,15 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return permissionManager;
   }
 
+  public static FoliaLib folia() {
+
+    return instance.folia;
+  }
+
+  public static MenuHandler menu() {
+
+    return instance.menuHandler;
+  }
 
   /**
    * Early than onEnable, make sure instance was loaded in first time.
@@ -826,7 +833,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     itemExpressionRegistry.registerHandlerSafely(new SimpleItemReferenceExpressionHandler(this));
   }
 
-
   private void loadErrorReporter() {
 
     try {
@@ -1230,11 +1236,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
   }
 
-  public static FoliaLib folia() {
-
-    return instance.folia;
-  }
-
   @NotNull
   public File getDataFolder() {
 
@@ -1271,6 +1272,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   public MenuPlayer createMenuPlayer(final OfflinePlayer player) {
+
     if(this.folia.isFolia()) {
       return new FoliaPlayer(player, this.javaPlugin);
     } else if(this.folia.isPaper()) {
@@ -1291,11 +1293,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return javaPlugin.getFork();
   }
 
-  public static MenuHandler menu() {
-
-    return instance.menuHandler;
-  }
-
   /**
    * Return the QuickShop fork name.
    *
@@ -1307,26 +1304,26 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return javaPlugin.getVersion();
   }
 
-  public enum DatabaseDriverType {
-    MYSQL,
-    H2
-  }
-
   public String getMainCommand() {
 
     final List<String> customCommands = getConfig().getStringList("custom-commands");
-    return customCommands.isEmpty() ? "quickshop" : customCommands.getFirst();
+    return customCommands.isEmpty()? "quickshop" : customCommands.getFirst();
   }
 
   public String getCommandPrefix(final String commandLabel) {
 
     final ConfigurationSection section = getConfig().getConfigurationSection("custom-subcommands");
 
-    if (section == null) return commandLabel;
+    if(section == null) return commandLabel;
     final String prefix = section.getString(commandLabel);
 
-    if (prefix == null || prefix.isEmpty()) return commandLabel;
+    if(prefix == null || prefix.isEmpty()) return commandLabel;
     return prefix;
+  }
+
+  public enum DatabaseDriverType {
+    MYSQL,
+    H2
   }
 
   public static class EconomyLoader {
@@ -1459,11 +1456,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     private boolean vaultUnlockedPresent() {
+
       final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
       return vault != null && vault.getDescription().getVersion().startsWith("2");
     }
 
     private boolean vaultPresent() {
+
       final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
       return vault != null && vault.getDescription().getVersion().startsWith("1");
     }

@@ -66,7 +66,8 @@ public class OwnerComponent implements ControlComponent {
    * Generates a Component based on the player and shop provided.
    *
    * @param sender The Player object representing who triggered the generation.
-   * @param shop The Shop object representing the shop for which components are being generated.
+   * @param shop   The Shop object representing the shop for which components are being generated.
+   *
    * @return A Component object based on the provided player and shop.
    */
   @Override
@@ -74,13 +75,13 @@ public class OwnerComponent implements ControlComponent {
 
     final ProxiedLocale locale = ((QuickShop)plugin).text().findRelativeLanguages(sender.getLocale());
 
-    if (!((QuickShop)plugin).perm().hasPermission(sender, "quickshop.setowner")) {
+    if(!((QuickShop)plugin).perm().hasPermission(sender, "quickshop.setowner")) {
 
       return ((QuickShop)plugin).text().of(sender, "menu.owner", shop.ownerName(locale)).forLocale();
     } else {
 
       final Component text;
-      if (((QuickShop)plugin).getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") && shop.isUnlimited()) {
+      if(((QuickShop)plugin).getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") && shop.isUnlimited()) {
         text = ((QuickShop)plugin).text().of(sender, "controlpanel.setowner-uuid", shop.ownerName(locale), shop.getOwner().toString()).forLocale();
       } else {
         text = ((QuickShop)plugin).text().of(sender, "controlpanel.setowner", shop.ownerName(locale)).forLocale();

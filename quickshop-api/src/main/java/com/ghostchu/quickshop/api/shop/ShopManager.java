@@ -37,7 +37,8 @@ public interface ShopManager {
    * @param info           The info of the shop
    * @param shop           The shop
    * @param amount         The amount of the item/stack
-   * @return               If the transaction was successfull
+   *
+   * @return If the transaction was successfull
    */
   boolean actionBuying(
           @NotNull Player buyer,
@@ -65,7 +66,8 @@ public interface ShopManager {
    * @param info            The info of the shop
    * @param shop            The shop
    * @param amount          The amount of the item/stack
-   * @return                If the transaction was successfull
+   *
+   * @return If the transaction was successfull
    */
   boolean actionSelling(
           @NotNull Player seller,
@@ -349,7 +351,7 @@ public interface ShopManager {
   /**
    * Checks if player reached the limit of shops
    *
-   * @param p The player to check
+   * @param p       The player to check
    * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're reached the limit.

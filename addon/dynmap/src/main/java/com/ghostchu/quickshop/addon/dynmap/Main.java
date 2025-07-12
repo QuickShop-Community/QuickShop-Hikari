@@ -249,7 +249,7 @@ public final class Main extends JavaPlugin implements Listener {
                                         plain(Util.getItemStackName(shop.getItem())),
                                         plugin.getShopManager().format(shop.getPrice(), shop),
                                         shop.getShopStackingAmount(),
-                                  shop.getShopType() == ShopType.SELLING? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
+                                        shop.getShopType() == ShopType.SELLING? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
                                         shop.isUnlimited(),
                                         posStr
                                        ).forLocale());

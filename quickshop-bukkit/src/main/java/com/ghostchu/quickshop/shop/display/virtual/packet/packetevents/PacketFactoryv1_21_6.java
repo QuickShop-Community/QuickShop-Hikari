@@ -97,6 +97,7 @@ public class PacketFactoryv1_21_6 implements PacketFactory<PacketWrapper<?>> {
    */
   @Override
   public PacketWrapper<?> createMetaDataPacket(final int id, @NotNull final ItemStack itemStack) {
+
     final List<EntityData<?>> data = new ArrayList<>();
     data.add(new EntityData<>(5, EntityDataTypes.BOOLEAN, true));
     data.add(new EntityData<>(8, EntityDataTypes.ITEMSTACK, SpigotConversionUtil.fromBukkitItemStack(itemStack)));

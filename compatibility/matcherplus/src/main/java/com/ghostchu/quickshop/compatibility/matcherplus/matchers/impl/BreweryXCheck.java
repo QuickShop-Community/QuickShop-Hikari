@@ -20,9 +20,7 @@ package com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl;
 import com.dre.brewery.Brew;
 import com.dre.brewery.api.BreweryApi;
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.ItemCheck;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 /**

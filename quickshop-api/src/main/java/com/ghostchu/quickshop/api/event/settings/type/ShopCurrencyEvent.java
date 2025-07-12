@@ -23,8 +23,8 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ShopCurrencyEvent represents an event that is tied to actions/retrieval of the Shop currency setting for
- * a shop.
+ * ShopCurrencyEvent represents an event that is tied to actions/retrieval of the Shop currency
+ * setting for a shop.
  *
  * @author creatorfromhell
  * @since 6.2.0.9
@@ -41,6 +41,54 @@ public class ShopCurrencyEvent extends ShopSettingEvent<String> {
                            final String old, final String updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  public static ShopCurrencyEvent PRE(final @NotNull Shop shop,
+                                      final String old) {
+
+    return new ShopCurrencyEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopCurrencyEvent PRE(final @NotNull Shop shop,
+                                      final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopCurrencyEvent MAIN(final @NotNull Shop shop,
+                                       final String old) {
+
+    return new ShopCurrencyEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopCurrencyEvent MAIN(final @NotNull Shop shop,
+                                       final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopCurrencyEvent POST(final @NotNull Shop shop,
+                                       final String old) {
+
+    return new ShopCurrencyEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopCurrencyEvent POST(final @NotNull Shop shop,
+                                       final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopCurrencyEvent RETRIEVE(final @NotNull Shop shop,
+                                           final String old) {
+
+    return new ShopCurrencyEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopCurrencyEvent RETRIEVE(final @NotNull Shop shop,
+                                           final String old, final String updated) {
+
+    return new ShopCurrencyEvent(Phase.RETRIEVE, shop, old, updated);
   }
 
   /**
@@ -75,53 +123,5 @@ public class ShopCurrencyEvent extends ShopSettingEvent<String> {
   public ShopCurrencyEvent clone(final Phase newPhase, final String old, final String updated) {
 
     return new ShopCurrencyEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopCurrencyEvent PRE(final @NotNull Shop shop,
-                                            final String old) {
-
-    return new ShopCurrencyEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopCurrencyEvent PRE(final @NotNull Shop shop,
-                                            final String old, final String updated) {
-
-    return new ShopCurrencyEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopCurrencyEvent MAIN(final @NotNull Shop shop,
-                                             final String old) {
-
-    return new ShopCurrencyEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopCurrencyEvent MAIN(final @NotNull Shop shop,
-                                             final String old, final String updated) {
-
-    return new ShopCurrencyEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopCurrencyEvent POST(final @NotNull Shop shop,
-                                             final String old) {
-
-    return new ShopCurrencyEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopCurrencyEvent POST(final @NotNull Shop shop,
-                                             final String old, final String updated) {
-
-    return new ShopCurrencyEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopCurrencyEvent RETRIEVE(final @NotNull Shop shop,
-                                                 final String old) {
-
-    return new ShopCurrencyEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopCurrencyEvent RETRIEVE(final @NotNull Shop shop,
-                                                 final String old, final String updated) {
-
-    return new ShopCurrencyEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

@@ -44,8 +44,8 @@ import java.util.zip.GZIPInputStream;
 
 public class ShopLogsMigrate extends AbstractMigrateComponent {
 
-  private final String template = "[2023-11-11 19:35:43.502] ";
   final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
+  private final String template = "[2023-11-11 19:35:43.502] ";
 
   public ShopLogsMigrate(final Main main, final QuickShop hikari, final org.maxgamer.quickshop.QuickShop reremake, final CommandSender sender) {
 
@@ -205,14 +205,6 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     }
   }
 
-  @Data
-  @AllArgsConstructor
-  static class DatedLogEntry {
-
-    private Date date;
-    private String content;
-  }
-
   @Nullable
   private DatedLogEntry _formatLine(final String line) throws DateTimeParseException {
 
@@ -282,5 +274,13 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     } else {
       throw new IllegalStateException("Main qs.log log file not exists");
     }
+  }
+
+  @Data
+  @AllArgsConstructor
+  static class DatedLogEntry {
+
+    private Date date;
+    private String content;
   }
 }

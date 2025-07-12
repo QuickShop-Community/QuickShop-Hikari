@@ -56,8 +56,6 @@ import java.util.function.Function;
 @ApiStatus.Experimental
 public abstract class AbstractShopManager implements ShopManager {
 
-  @Getter
-  protected ShopCache shopCache;
   protected static final DecimalFormat STANDARD_FORMATTER = new DecimalFormat("#.#########");
   // the performance impact on busy server
   protected final Cache<UUID, Shop> shopRuntimeUUIDCaching =
@@ -68,10 +66,11 @@ public abstract class AbstractShopManager implements ShopManager {
                   .initialCapacity(50)
                   .build();
   protected final QuickShop plugin;
-
   protected final EconomyFormatter formatter;
   protected final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
   protected final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
+  @Getter
+  protected ShopCache shopCache;
 
 
   public AbstractShopManager(@NotNull final QuickShop plugin) {

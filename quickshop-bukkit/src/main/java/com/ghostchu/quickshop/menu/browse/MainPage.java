@@ -108,24 +108,24 @@ public class MainPage {
         if(maxPages > 1) {
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of("RED_WOOL", 1)
-                                                             .display(get(id, "gui.shared.previous-page"))
-                                                             .lore(List.of(get(id, "history.shop.current-page", page))))
-                                             .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
-                                             .withSlot(3)
-                                             .build());
+                                                         .display(get(id, "gui.shared.previous-page"))
+                                                         .lore(List.of(get(id, "history.shop.current-page", page))))
+                  .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
+                  .withSlot(3)
+                  .build());
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
-                                                             .display(get(id, "gui.shared.next-page"))
-                                                             .lore(List.of(get(id, "history.shop.current-page", page))))
-                                             .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
-                                             .withSlot(5)
-                                             .build());
+                                                         .display(get(id, "gui.shared.next-page"))
+                                                         .lore(List.of(get(id, "history.shop.current-page", page))))
+                  .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
+                  .withSlot(5)
+                  .build());
         }
 
         playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of("BOOK", 1)
-                                                           .display(get(id, "history.shop.current-page", page)))
-                                           .withSlot(4)
-                                           .build());
+                                                       .display(get(id, "history.shop.current-page", page)))
+                .withSlot(4)
+                .build());
 
         int i = 0;
         for(final Shop shop : shops) {

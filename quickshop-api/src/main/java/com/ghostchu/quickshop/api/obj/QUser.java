@@ -12,6 +12,8 @@ public interface QUser {
   @Nullable
   String getUsername();
 
+  void setUsername(String username);
+
   @NotNull
   Optional<String> getUsernameOptional();
 
@@ -21,22 +23,20 @@ public interface QUser {
   @Nullable
   UUID getUniqueId();
 
+  void setUniqueId(UUID uuid);
+
   @NotNull
   Optional<UUID> getUniqueIdOptional();
 
   boolean isRealPlayer();
+
+  void setRealPlayer(boolean isRealPlayer);
 
   boolean isFull();
 
   Optional<UUID> getUniqueIdIfRealPlayer();
 
   Optional<String> getUsernameIfRealPlayer();
-
-  void setUsername(String username);
-
-  void setUniqueId(UUID uuid);
-
-  void setRealPlayer(boolean isRealPlayer);
 
   String serialize();
 

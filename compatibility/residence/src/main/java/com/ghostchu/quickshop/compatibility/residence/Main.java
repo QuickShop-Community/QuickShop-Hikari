@@ -104,7 +104,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
     final Location shopLoc = event.shop().get().getLocation();
-    
+
 
     final ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {

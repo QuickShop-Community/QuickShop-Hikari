@@ -636,7 +636,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         }
 
         final List<String> generatedCompletions = container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
-        if (generatedCompletions != null) {
+        if(generatedCompletions != null) {
           return StringUtil.copyPartialMatches(cmdArg[cmdArg.length - 1], generatedCompletions, new ArrayList<>());
         }
 
@@ -666,10 +666,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
 
     final String oldPrefix = container.getPrefix();
     final String newPrefix = plugin.getCommandPrefix(oldPrefix);
-    if (newPrefix != null && !newPrefix.isEmpty()) {
+    if(newPrefix != null && !newPrefix.isEmpty()) {
 
       container.setPrefix(newPrefix);
-      container.setDescription((locale) -> plugin.text().of("command.description." + oldPrefix).forLocale());
+      container.setDescription((locale)->plugin.text().of("command.description." + oldPrefix).forLocale());
     }
     cmds.add(container);
     cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
@@ -712,6 +712,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     return "Command Manager";
   }
 
+  @Override
+  public ReloadResult reloadModule() throws Exception {
+
+    init();
+    return Reloadable.super.reloadModule();
+  }
+
   @Getter
   private enum Action {
     EXECUTE("execute"),
@@ -732,12 +739,5 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   private enum PermissionType {
     REQUIRE,
     SELECTIVE
-  }
-
-  @Override
-  public ReloadResult reloadModule() throws Exception {
-
-    init();
-    return Reloadable.super.reloadModule();
   }
 }

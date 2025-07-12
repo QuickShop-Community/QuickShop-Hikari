@@ -56,209 +56,9 @@ public final class QUserImpl implements QUser {
     this.executorService = QuickExecutor.getPrimaryProfileIoExecutor();
   }
 
-  private void parseString(final String string) {
-
-    if(CommonUtil.isUUID(string)) {
-      parseFromUUID(string);
-    } else {
-      parseFromUsername(string);
-    }
-    endCheck();
-  }
-
-  private void parseFromUsername(final String string) {
-
-    if(isBracketedString(string)) {
-      parseFromUsernameFromVirtualPlayer(string);
-    } else {
-      parseFromUsernameFromRealPlayer(string);
-    }
-
-  }
-
-  private void parseFromUsernameFromRealPlayer(final String string) {
-
-    this.realPlayer = true;
-    this.username = string;
-    this.uniqueId = this.finder.name2Uuid(username, true, executorService);
-    if(this.uniqueId == null) {
-      throw new IllegalArgumentException("Cannot find uuid from username:" + username);
-    }
-  }
-
-  private void parseFromUsernameFromVirtualPlayer(final String string) {
-
-    final String unbracketedString = removeBrackets(string);
-    this.realPlayer = false;
-    this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
-    this.username = unbracketedString;
-  }
-
-  private void parseFromUUID(final String string) {
-
-    this.realPlayer = true;
-    this.uniqueId = UUID.fromString(string);
-    this.finder.uuid2NameFuture(this.uniqueId, true, executorService)
-            .thenAccept(result->{
-              this.username = result;
-              endCheck();
-            })
-            .exceptionally(throwable->{
-              Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
-              return null;
-            });
-  }
-
-  private void endCheck() {
-
-    if(this.username != null && CommonUtil.isUUID(this.username)) {
-      QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
-    }
-  }
-
-  private boolean isBracketedString(final String input) {
-
-    return input.startsWith("[") && input.endsWith("]");
-  }
-
-  private String removeBrackets(final String input) {
-
-    if(isBracketedString(input)) {
-      return input.substring(1, input.length() - 1);
-    }
-    return input;
-  }
-
-  @Override
-  public @Nullable String getUsername() {
-
-    return this.username;
-  }
-
-  @Override
-  public @NotNull Optional<String> getUsernameOptional() {
-
-    return Optional.ofNullable(this.username);
-  }
-
-  @Override
-  public @NotNull String getDisplay() {
-
-    if(this.username != null) {
-      if(isRealPlayer()) {
-        return this.username;
-      } else {
-        return "[" + this.username + "]";
-      }
-    }
-    return this.uniqueId.toString();
-  }
-
-  @Override
-  public boolean isFull() {
-
-    if(isRealPlayer()) {
-      return this.username != null && this.uniqueId != null;
-    }
-    return this.username != null;
-  }
-
-  @Override
-  public @Nullable UUID getUniqueId() {
-
-    return this.uniqueId;
-  }
-
-  @Override
-  public @NotNull Optional<UUID> getUniqueIdOptional() {
-
-    return Optional.ofNullable(this.uniqueId);
-  }
-
-  @Override
-  public boolean isRealPlayer() {
-
-    return this.realPlayer && this.uniqueId != null;
-  }
-
-  @Override
-  public Optional<UUID> getUniqueIdIfRealPlayer() {
-
-    if(isRealPlayer()) {
-      return Optional.of(this.uniqueId);
-    }
-    return Optional.empty();
-  }
-
-  @Override
-  @NotNull
-  public Optional<String> getUsernameIfRealPlayer() {
-
-    if(isRealPlayer()) {
-      return Optional.of(this.username);
-    }
-    return Optional.empty();
-  }
-
-  @Override
-  public void setUsername(final String username) {
-
-    this.username = username;
-  }
-
-  @Override
-  public void setUniqueId(final UUID uuid) {
-
-    this.uniqueId = uuid;
-  }
-
-  @Override
-  public void setRealPlayer(final boolean isRealPlayer) {
-
-    if(this.uniqueId == null) {
-      throw new IllegalStateException("Before set a QUser to realplayer, the uniqueId must be filled");
-    }
-    this.realPlayer = isRealPlayer;
-  }
-
-  @Override
-  public String serialize() {
-
-    final String serialized;
-    if(this.realPlayer) {
-      if(this.uniqueId != null) {
-        serialized = this.uniqueId.toString();
-      } else {
-        serialized = this.username;
-      }
-    } else {
-      serialized = "[" + this.username + "]";
-    }
-    return serialized;
-  }
-
   public static QUserImpl deserialize(final PlayerFinder finder, final String serialized, final ExecutorService executorService) {
 
     return new QUserImpl(finder, serialized, executorService);
-  }
-
-  public void set(final String string) {
-
-    parseString(string);
-  }
-
-  @Override
-  public Optional<Player> getBukkitPlayer() {
-
-    if(isRealPlayer()) {
-      if(this.uniqueId != null) {
-        return Optional.ofNullable(Bukkit.getPlayer(this.uniqueId));
-      }
-      if(this.username != null) {
-        return Optional.ofNullable(Bukkit.getPlayer(this.username));
-      }
-    }
-    return Optional.empty();
   }
 
   public static CompletableFuture<QUser> createAsync(@NotNull final PlayerFinder finder, @NotNull final String string) {
@@ -341,7 +141,6 @@ public final class QUserImpl implements QUser {
     return createFullFilled(CommonUtil.getNilUniqueId(), sender.getName(), false);
   }
 
-
   public static CompletableFuture<QUser> createAsync(@NotNull final PlayerFinder finder, @NotNull final CommandSender sender) {
 
     return createAsync(finder, sender, QuickExecutor.getPrimaryProfileIoExecutor());
@@ -350,6 +149,206 @@ public final class QUserImpl implements QUser {
   public static QUser createSync(@NotNull final PlayerFinder finder, @NotNull final CommandSender sender) {
 
     return createSync(finder, sender, QuickExecutor.getPrimaryProfileIoExecutor());
+  }
+
+  private void parseString(final String string) {
+
+    if(CommonUtil.isUUID(string)) {
+      parseFromUUID(string);
+    } else {
+      parseFromUsername(string);
+    }
+    endCheck();
+  }
+
+  private void parseFromUsername(final String string) {
+
+    if(isBracketedString(string)) {
+      parseFromUsernameFromVirtualPlayer(string);
+    } else {
+      parseFromUsernameFromRealPlayer(string);
+    }
+
+  }
+
+  private void parseFromUsernameFromRealPlayer(final String string) {
+
+    this.realPlayer = true;
+    this.username = string;
+    this.uniqueId = this.finder.name2Uuid(username, true, executorService);
+    if(this.uniqueId == null) {
+      throw new IllegalArgumentException("Cannot find uuid from username:" + username);
+    }
+  }
+
+  private void parseFromUsernameFromVirtualPlayer(final String string) {
+
+    final String unbracketedString = removeBrackets(string);
+    this.realPlayer = false;
+    this.uniqueId = UUID.nameUUIDFromBytes(("OfflinePlayer:" + unbracketedString).getBytes(StandardCharsets.UTF_8));
+    this.username = unbracketedString;
+  }
+
+  private void parseFromUUID(final String string) {
+
+    this.realPlayer = true;
+    this.uniqueId = UUID.fromString(string);
+    this.finder.uuid2NameFuture(this.uniqueId, true, executorService)
+            .thenAccept(result->{
+              this.username = result;
+              endCheck();
+            })
+            .exceptionally(throwable->{
+              Log.debug(Level.WARNING, "Failed to get username from uuid:" + throwable.getMessage());
+              return null;
+            });
+  }
+
+  private void endCheck() {
+
+    if(this.username != null && CommonUtil.isUUID(this.username)) {
+      QuickShop.getInstance().logger().warn("Warning! The username of QUser is a uuid! This may cause some problems!", new IllegalStateException("The username of QUser is a uuid!"));
+    }
+  }
+
+  private boolean isBracketedString(final String input) {
+
+    return input.startsWith("[") && input.endsWith("]");
+  }
+
+  private String removeBrackets(final String input) {
+
+    if(isBracketedString(input)) {
+      return input.substring(1, input.length() - 1);
+    }
+    return input;
+  }
+
+  @Override
+  public @Nullable String getUsername() {
+
+    return this.username;
+  }
+
+  @Override
+  public void setUsername(final String username) {
+
+    this.username = username;
+  }
+
+  @Override
+  public @NotNull Optional<String> getUsernameOptional() {
+
+    return Optional.ofNullable(this.username);
+  }
+
+  @Override
+  public @NotNull String getDisplay() {
+
+    if(this.username != null) {
+      if(isRealPlayer()) {
+        return this.username;
+      } else {
+        return "[" + this.username + "]";
+      }
+    }
+    return this.uniqueId.toString();
+  }
+
+  @Override
+  public boolean isFull() {
+
+    if(isRealPlayer()) {
+      return this.username != null && this.uniqueId != null;
+    }
+    return this.username != null;
+  }
+
+  @Override
+  public @Nullable UUID getUniqueId() {
+
+    return this.uniqueId;
+  }
+
+  @Override
+  public void setUniqueId(final UUID uuid) {
+
+    this.uniqueId = uuid;
+  }
+
+  @Override
+  public @NotNull Optional<UUID> getUniqueIdOptional() {
+
+    return Optional.ofNullable(this.uniqueId);
+  }
+
+  @Override
+  public boolean isRealPlayer() {
+
+    return this.realPlayer && this.uniqueId != null;
+  }
+
+  @Override
+  public void setRealPlayer(final boolean isRealPlayer) {
+
+    if(this.uniqueId == null) {
+      throw new IllegalStateException("Before set a QUser to realplayer, the uniqueId must be filled");
+    }
+    this.realPlayer = isRealPlayer;
+  }
+
+  @Override
+  public Optional<UUID> getUniqueIdIfRealPlayer() {
+
+    if(isRealPlayer()) {
+      return Optional.of(this.uniqueId);
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  @NotNull
+  public Optional<String> getUsernameIfRealPlayer() {
+
+    if(isRealPlayer()) {
+      return Optional.of(this.username);
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public String serialize() {
+
+    final String serialized;
+    if(this.realPlayer) {
+      if(this.uniqueId != null) {
+        serialized = this.uniqueId.toString();
+      } else {
+        serialized = this.username;
+      }
+    } else {
+      serialized = "[" + this.username + "]";
+    }
+    return serialized;
+  }
+
+  public void set(final String string) {
+
+    parseString(string);
+  }
+
+  @Override
+  public Optional<Player> getBukkitPlayer() {
+
+    if(isRealPlayer()) {
+      if(this.uniqueId != null) {
+        return Optional.ofNullable(Bukkit.getPlayer(this.uniqueId));
+      }
+      if(this.username != null) {
+        return Optional.ofNullable(Bukkit.getPlayer(this.username));
+      }
+    }
+    return Optional.empty();
   }
 
   @Override
