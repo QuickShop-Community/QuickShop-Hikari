@@ -528,7 +528,7 @@ public class ContainerShop implements Shop, Reloadable {
     Util.ensureThread(false);
 
     //Create our shop event with Pre Phase and call
-    ShopItemEvent event = new ShopItemEvent(Phase.PRE,this, this.item, item);
+    ShopItemEvent event = new ShopItemEvent(Phase.PRE, this, this.item, item);
     event.callEvent();
 
     //Call our Main Phase
@@ -939,7 +939,7 @@ public class ContainerShop implements Shop, Reloadable {
         uuid = ((SimpleShopManager)plugin.getShopManager()).getCacheTaxAccount();
       }
     }
-    final ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.RETRIEVE,this, uuid);
+    final ShopTaxAccountEvent event = new ShopTaxAccountEvent(Phase.RETRIEVE, this, uuid);
     event.callEvent();
 
     return event.updated();

@@ -19,8 +19,8 @@ public class ServerInfoItem implements SubPasteItem {
   private final String bukkitVersion;
   private final String mcVersion;
   private final String worldContainer;
-  private String moddedServerType;
   private final String platform;
+  private String moddedServerType;
 
   public ServerInfoItem() {
 

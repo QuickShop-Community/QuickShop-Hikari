@@ -41,7 +41,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSp
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUnloadChunk;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import lombok.Getter;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -97,6 +96,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
    */
   @Override
   public PacketWrapper<?> createMetaDataPacket(final int id, @NotNull final ItemStack itemStack) {
+
     final List<EntityData<?>> data = new ArrayList<>();
     data.add(new EntityData<>(5, EntityDataTypes.BOOLEAN, true));
     data.add(new EntityData<>(8, EntityDataTypes.ITEMSTACK, SpigotConversionUtil.fromBukkitItemStack(itemStack)));

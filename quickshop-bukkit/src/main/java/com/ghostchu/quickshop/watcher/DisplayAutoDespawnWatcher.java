@@ -31,15 +31,15 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
     init();
   }
 
-  private void init() {
-
-    this.range = plugin.getConfig().getInt("shop.display-despawn-range");
-  }
-
   public DisplayAutoDespawnWatcher(final QuickShop plugin, final int range) {
 
     this.plugin = plugin;
     this.range = range;
+  }
+
+  private void init() {
+
+    this.range = plugin.getConfig().getInt("shop.display-despawn-range");
   }
 
   @Override
@@ -50,6 +50,7 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   }
 
   public void start(final int delay, final int period) {
+
     task = QuickShop.folia().getScheduler().runTimer(this, delay, period);
   }
 

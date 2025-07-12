@@ -25,6 +25,12 @@ public class SimpleShopChunk implements ShopChunk {
     this.z = z;
   }
 
+  @NotNull
+  public static ShopChunk fromLocation(@NotNull final Location location) {
+
+    return new SimpleShopChunk(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
+  }
+
   @Override
   public @NotNull String getWorld() {
 
@@ -53,11 +59,5 @@ public class SimpleShopChunk implements ShopChunk {
   public boolean isSame(@NotNull final World world, final int x, final int z) {
 
     return isSame(world.getName(), x, z);
-  }
-
-  @NotNull
-  public static ShopChunk fromLocation(@NotNull final Location location) {
-
-    return new SimpleShopChunk(location.getWorld().getName(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
   }
 }

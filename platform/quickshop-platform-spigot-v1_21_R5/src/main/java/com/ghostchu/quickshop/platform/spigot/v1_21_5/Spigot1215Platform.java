@@ -2,18 +2,12 @@ package com.ghostchu.quickshop.platform.spigot.v1_21_5;
 
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import com.google.gson.JsonElement;
-import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
-import de.tr7zw.nbtapi.iface.ReadWriteNBTList;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.component.ItemLore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -156,7 +150,7 @@ public class Spigot1215Platform extends AbstractSpigotPlatform implements Platfo
 
     final SignSide front = sign.getSide(Side.FRONT);
 
-    for (int i = 0; i < Math.min(4, component.size()); i++) {
+    for(int i = 0; i < Math.min(4, component.size()); i++) {
       front.setLine(i, LegacyComponentSerializer.builder().build().serialize(component.get(i)));
     }
     sign.update();

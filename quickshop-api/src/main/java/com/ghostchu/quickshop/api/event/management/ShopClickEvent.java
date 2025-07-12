@@ -25,8 +25,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * ShopClickEvent class represents an event where a user clicks on a shop.
  *
- * Current Phases used:
- * - MAIN
+ * Current Phases used: - MAIN
  *
  * @author creatorfromhell
  * @since 6.2.0.9

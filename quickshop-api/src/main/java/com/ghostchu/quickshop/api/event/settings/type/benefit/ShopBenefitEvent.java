@@ -24,12 +24,12 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ShopBenefitEvent represents an event that is tied to retrieval of the Shop benefit setting for
- * a shop.
+ * ShopBenefitEvent represents an event that is tied to retrieval of the Shop benefit setting for a
+ * shop.
  *
  * @author creatorfromhell
- * @since 6.2.0.9
  * @see Benefit
+ * @since 6.2.0.9
  */
 public class ShopBenefitEvent extends ShopSettingEvent<Benefit> {
 
@@ -45,6 +45,54 @@ public class ShopBenefitEvent extends ShopSettingEvent<Benefit> {
     super(phase, shop, old, updated);
   }
 
+  public static ShopBenefitEvent PRE(final @NotNull Shop shop,
+                                     final Benefit old) {
+
+    return new ShopBenefitEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopBenefitEvent PRE(final @NotNull Shop shop,
+                                     final Benefit old, final Benefit updated) {
+
+    return new ShopBenefitEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopBenefitEvent MAIN(final @NotNull Shop shop,
+                                      final Benefit old) {
+
+    return new ShopBenefitEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopBenefitEvent MAIN(final @NotNull Shop shop,
+                                      final Benefit old, final Benefit updated) {
+
+    return new ShopBenefitEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopBenefitEvent POST(final @NotNull Shop shop,
+                                      final Benefit old) {
+
+    return new ShopBenefitEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopBenefitEvent POST(final @NotNull Shop shop,
+                                      final Benefit old, final Benefit updated) {
+
+    return new ShopBenefitEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopBenefitEvent RETRIEVE(final @NotNull Shop shop,
+                                          final Benefit old) {
+
+    return new ShopBenefitEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopBenefitEvent RETRIEVE(final @NotNull Shop shop,
+                                          final Benefit old, final Benefit updated) {
+
+    return new ShopBenefitEvent(Phase.RETRIEVE, shop, old, updated);
+  }
+
   /**
    * Creates a new instance of PhasedEvent with the specified newPhase.
    *
@@ -54,6 +102,7 @@ public class ShopBenefitEvent extends ShopSettingEvent<Benefit> {
    */
   @Override
   public ShopBenefitEvent clone(final Phase newPhase) {
+
     if(this.updated != null) {
 
       return new ShopBenefitEvent(newPhase, this.shop, this.old, this.updated);
@@ -76,53 +125,5 @@ public class ShopBenefitEvent extends ShopSettingEvent<Benefit> {
   public ShopBenefitEvent clone(final Phase newPhase, final Benefit old, final Benefit updated) {
 
     return new ShopBenefitEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopBenefitEvent PRE(final @NotNull Shop shop,
-                                  final Benefit old) {
-
-    return new ShopBenefitEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopBenefitEvent PRE(final @NotNull Shop shop,
-                                  final Benefit old, final Benefit updated) {
-
-    return new ShopBenefitEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopBenefitEvent MAIN(final @NotNull Shop shop,
-                                   final Benefit old) {
-
-    return new ShopBenefitEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopBenefitEvent MAIN(final @NotNull Shop shop,
-                                   final Benefit old, final Benefit updated) {
-
-    return new ShopBenefitEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopBenefitEvent POST(final @NotNull Shop shop,
-                                   final Benefit old) {
-
-    return new ShopBenefitEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopBenefitEvent POST(final @NotNull Shop shop,
-                                   final Benefit old, final Benefit updated) {
-
-    return new ShopBenefitEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopBenefitEvent RETRIEVE(final @NotNull Shop shop,
-                                       final Benefit old) {
-
-    return new ShopBenefitEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopBenefitEvent RETRIEVE(final @NotNull Shop shop,
-                                       final Benefit old, final Benefit updated) {
-
-    return new ShopBenefitEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

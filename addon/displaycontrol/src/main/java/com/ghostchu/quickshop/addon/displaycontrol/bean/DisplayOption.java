@@ -11,14 +11,6 @@ public enum DisplayOption {
     this.id = id;
   }
 
-  public boolean isDisplayAvailable(final boolean bedrock) {
-
-    if(this == AUTO) {
-      return !bedrock;
-    }
-    return this == ENABLED;
-  }
-
   public static DisplayOption fromId(final int id) {
 
     for(final DisplayOption value : values()) {
@@ -27,6 +19,14 @@ public enum DisplayOption {
       }
     }
     return AUTO;
+  }
+
+  public boolean isDisplayAvailable(final boolean bedrock) {
+
+    if(this == AUTO) {
+      return !bedrock;
+    }
+    return this == ENABLED;
   }
 
   public int getId() {

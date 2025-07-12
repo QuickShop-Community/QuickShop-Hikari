@@ -95,7 +95,7 @@ public final class Main extends CompatibilityModule implements Listener {
     final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 
     final World world = shopLoc.getWorld();
-    if (world == null) {
+    if(world == null) {
       return;
     }
 

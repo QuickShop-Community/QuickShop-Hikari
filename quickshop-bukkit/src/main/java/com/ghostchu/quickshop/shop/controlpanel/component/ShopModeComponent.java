@@ -76,7 +76,7 @@ public class ShopModeComponent implements ControlComponent {
   @Override
   public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
 
-    if (shop.isSelling()) {
+    if(shop.isSelling()) {
 
       final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-selling").forLocale();
       final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-selling-hover").forLocale();
@@ -84,7 +84,7 @@ public class ShopModeComponent implements ControlComponent {
 
       return text.hoverEvent(HoverEvent.showText(hoverText))
               .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
-    } else if (shop.isBuying()) {
+    } else if(shop.isBuying()) {
 
       final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-buying").forLocale();
       final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-buying-hover").forLocale();

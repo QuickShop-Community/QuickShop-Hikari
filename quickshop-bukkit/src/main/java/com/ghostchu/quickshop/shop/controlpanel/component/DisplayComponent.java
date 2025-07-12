@@ -74,6 +74,7 @@ public class DisplayComponent implements ControlComponent {
    */
   @Override
   public Component generate(final @NotNull QuickShopAPI plugin, final @NotNull Player sender, final @NotNull Shop shop) {
+
     final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
     final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.toggledisplay-hover").forLocale();
     final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silenttoggledisplay"), shop.getRuntimeRandomUniqueId().toString());

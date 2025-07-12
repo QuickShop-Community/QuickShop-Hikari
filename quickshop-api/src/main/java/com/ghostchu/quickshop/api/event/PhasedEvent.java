@@ -21,11 +21,12 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * PhasedEvent represents an event that has different phases, and is called during different lifecycles.
+ * PhasedEvent represents an event that has different phases, and is called during different
+ * lifecycles.
  *
  * @author creatorfromhell
- * @since 6.2.0.9
  * @see Phase
+ * @since 6.2.0.9
  */
 public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellable {
 
@@ -64,6 +65,7 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
    * Creates a new instance of PhasedEvent with the specified newPhase.
    *
    * @param newPhase The new Phase for the cloned PhasedEvent
+   *
    * @return A new instance of PhasedEvent with the specified newPhase
    */
   public abstract PhasedEvent clone(final Phase newPhase);
@@ -77,6 +79,7 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
    * Checks if the given phase is equal to the current phase of this PhasedEvent.
    *
    * @param phase The phase to compare with the current phase
+   *
    * @return true if the given phase is equal to the current phase, false otherwise
    */
   public boolean isPhase(final Phase phase) {
@@ -106,6 +109,5 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
 
     return this.cancelled && phase.cancellable() && canCancel;
   }
-
 
 }

@@ -38,15 +38,6 @@ public class Timer {
   }
 
   /**
-   * Start the timer. Time Unit: ms
-   */
-  public void start() {
-
-    this.startTime = System.currentTimeMillis();
-    isPaused = false;
-  }
-
-  /**
    * Create a empty time, use the param to init the startTime.
    *
    * @param startTime New startTime
@@ -54,6 +45,15 @@ public class Timer {
   public Timer(final long startTime) {
 
     this.startTime = startTime;
+  }
+
+  /**
+   * Start the timer. Time Unit: ms
+   */
+  public void start() {
+
+    this.startTime = System.currentTimeMillis();
+    isPaused = false;
   }
 
   /**
