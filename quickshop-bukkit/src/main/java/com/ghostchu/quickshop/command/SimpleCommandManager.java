@@ -47,6 +47,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_SuggestPrice;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_SuperCreate;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_TaxAccount;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_ToggleDisplay;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_ToggleDisplayAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_TransferOwnership;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Unlimited;
@@ -398,6 +399,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .prefix("toggledisplay")
                         .permission("quickshop.toggledisplay")
                         .executor(new SubCommand_ToggleDisplay(plugin))
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("toggledisplayall")
+                        .permission("quickshop.toggledisplayall")
+                        .executor(new SubCommand_ToggleDisplayAll(plugin))
                         .build());
     registerCmd(CommandContainer.builder()
                         .prefix("purge")

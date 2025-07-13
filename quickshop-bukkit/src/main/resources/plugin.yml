@@ -161,6 +161,7 @@ permissions:
       quickshop.purge: true
       quickshop.other.setowner: true
       quickshop.taxaccount: true
+      quickshop.toggledisplayall.admin: true
       quickshop.other.shopnaming: true
       quickshop.bypass.namefee: true
       quickshop.other.search: true
