@@ -79,7 +79,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
         event = event.clone(Phase.MAIN);
         if(event.callCancellableEvent()) {
 
-          plugin.text().of(sender, "plugin-cancelled", event.getCancelReason());
+          plugin.text().of(sender, "plugin-cancelled", event.getCancelReason()).send();
           return;
         }
 
