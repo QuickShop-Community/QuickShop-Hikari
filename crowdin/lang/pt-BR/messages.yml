@@ -34,7 +34,7 @@ paste-disabled: |-
   <red>A função de colar foi desativada! Você não pode solicitar suporte técnico.
   Motivo: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nome: <aqua>{0}'
     - '<yellow>Proprietário: <aqua>{0}'
