@@ -6,10 +6,12 @@ import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.ShopUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,18 +32,22 @@ public class SubCommand_Price implements CommandHandler<Player> {
       return;
     }
 
-    final double price;
-
+    BigDecimal price = null;
     try {
-      price = Double.parseDouble(parser.getArgs().get(0));
-    } catch(NumberFormatException ex) {
+      price = Util.parse(parser.getArgs().get(0));
+    } catch(final Exception ignore) {
+    }
+
+    if(price == null) {
       // No number input
-      Log.debug(ex.getMessage());
+      Log.debug("Price sub command had issue with price parameter.");
       plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
       return;
     }
+
+    final double priceDouble = price.doubleValue();
     // No number input
-    if(Double.isInfinite(price) || Double.isNaN(price)) {
+    if(Double.isInfinite(priceDouble) || Double.isNaN(priceDouble)) {
       plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
       return;
     }
@@ -51,7 +57,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
       return;
     }
 
-    ShopUtil.setPrice(plugin, QUserImpl.createFullFilled(sender), price, shop);
+    ShopUtil.setPrice(plugin, QUserImpl.createFullFilled(sender), priceDouble, shop);
   }
 
   @NotNull
