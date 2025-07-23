@@ -82,7 +82,7 @@ you-cant-afford-a-new-shop: <red>Cuesta {0} crear una tienda.
 success-created-shop: <red>Tienda creada.
 shop-creation-cancelled: <red>Creación de tienda cancelada.
 shop-owner-self-trade: <yellow>Estás operando con tu propia tienda, por lo que no ganarás nada de saldo.
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: spanish.
 purchase-out-of-space: <red>Esta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda.
 reloading-status:
   success: <green>Recarga completada sin errores.
@@ -563,9 +563,7 @@ argument-cannot-be: <red>El argumento <aqua>{0}</aqua> no puede ser <yellow>{1}<
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
 invalid-percentage: <red>Porcentaje no válido, debe añadir '%' después del número de porcentaje.
 display-fallback: |-
-  <red>Due to an internal failure, a fallback message is being displayed.
-  The value of this item may not be localized or processed correctly.
-  Please contact the server administrator.
+
 not-a-valid-time: |-
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
