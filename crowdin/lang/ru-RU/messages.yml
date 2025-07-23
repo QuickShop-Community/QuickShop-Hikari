@@ -310,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Вы не можете обменивать отрицательное число предметов
 display-turn-on: <green>Отображение товара успешно включено.
+display-turn-off: <green>Отображение товара успешно выключено.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Сотрудник {0} успешно удален из вашего магазина.
 nearby-shop-header: '<green>Ближайший магазин, соответствующий <aqua>{0}</aqua>:'
 backup-failed: Не удается сделать резервную копию базы данных. Проверьте консоль для деталей.
@@ -442,6 +447,7 @@ command:
     taxaccount: <yellow>Устанавливает налоговый счет, который магазин использует
     name: <yellow>Назначение имени магазину
     toggledisplay: <yellow>Переключает отображение товара в магазине (над сундука)
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Управление разрешениями магазина
     lookup: <yellow>Управление справочной таблицей предметов
     database: <yellow>Просмотр и обслуживание базы данных QuickShop
@@ -495,7 +501,6 @@ no-permission: <red>У вас нет прав на это действие.
 chest-was-removed: <red>Сундук удален.
 you-cant-afford-to-buy: <red>Это стоит {0}, но у вас осталось лишь {1}
 shops-removed-in-world: <yellow><aqua>{0}</aqua> магазинов было удалено в мире <aqua>{1}</aqua>.
-display-turn-off: <green>Отображение товара успешно выключено.
 client-language-unsupported: <yellow>QuickShop не поддерживает язык вашего клиента. Возвращаем {0}...
 language-version: '63'
 not-managed-shop: <red>Вы не владелец или сотрудник этого магазина
