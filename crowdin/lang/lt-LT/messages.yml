@@ -321,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Negalimi pardavinėti neigiamomis sumomis
 display-turn-on: <green>Successfully turn on the shop display.
+display-turn-off: <green>Successfully turn off the shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Sėkmingai pašalintas {0} kaip prižiūrėtojas iš jūsų parduotuvės.
 nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}<green>:'
 backup-failed: Nepavyksta sukurti atsarginės duomenų bazės kopijos. Išsamesnės informacijos ieškokite konsolėje.
@@ -453,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Parduotuvės leidimų valdymas
     lookup: <yellow>Peržiūrėti matomų daiktų lentele
     database: <yellow>View and maintain QuickShop database
@@ -507,7 +513,6 @@ no-permission: <red>Jūs neturite leidimo daryti šiuos veiksmus.
 chest-was-removed: <red> Chestas buvo pašalintas.
 you-cant-afford-to-buy: <red>Tai kainuoja {0}, bet jūs turite tik {1}
 shops-removed-in-world: <yellow>A total of <aqua>{0}<yellow> shops have been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, falling back to {0} locale...
 language-version: '63'
 not-managed-shop: <red>You are not the owner nor moderator of this Shop
