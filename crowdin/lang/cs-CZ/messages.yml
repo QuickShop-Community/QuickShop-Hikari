@@ -310,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Derp, nemůžeš obchodovat se zápornými částkami
 display-turn-on: <green>Úspěšně zapnuto zobrazení obchodu.
+display-turn-off: <green>Úspěšně vypnuto zobrazení obchodu.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byl odebrán {0} jako člen z tvého obchodu.
 nearby-shop-header: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Nejbližší obchod odpovídající <aqua>{0}<gray>:'
 backup-failed: Nelze zálohovat databázi. Podrobnosti naleznete v konzole.
@@ -442,6 +447,7 @@ command:
     taxaccount: <white>Nastaví daně, které obchod zaplatí
     name: <yellow>Pojmenování obchodu na konkrétní název
     toggledisplay: <white>Přepne obchodu status ukazovaného předmětu
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Správa oprávnění obchodu
     lookup: <yellow>Spravovat tabulku položek pro vyhledávání
     database: <yellow>View and maintain QuickShop database
@@ -495,7 +501,6 @@ no-permission: <red>Na tuto akci nemáš práva.
 chest-was-removed: <red>Truhla byla odstraněna.
 you-cant-afford-to-buy: <red>Toto stojí {0}, ale ty máš jen {1}
 shops-removed-in-world: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Celkem <aqua>{0}<gray> obchodů bylo smazáno ve světě <aqua>{1}<gray>.
-display-turn-off: <green>Úspěšně vypnuto zobrazení obchodu.
 client-language-unsupported: <yellow>QuickShop nepodporuje váš klientský jazyk, nastavili jsme vám tedy záložní na {0} locales.
 language-version: '63'
 not-managed-shop: <red>Nejsi vlastník nebo moderátor obchodu
