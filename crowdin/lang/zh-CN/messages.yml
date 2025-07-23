@@ -320,6 +320,11 @@ signs:
   item-left: ''
 negative-amount: <red>你输入的数字是负数。
 display-turn-on: <green>成功开启商店悬浮物显示
+display-turn-off: <green>成功关闭商店悬浮物显示
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>成功移除 {0} 的商店助手权限
 nearby-shop-header: '<green>匹配附近<aqua>{0}<green>的商店：'
 backup-failed: 无法备份数据库，请查看控制台以获取详细信息。
@@ -452,6 +457,7 @@ command:
     taxaccount: <yellow>设置商店使用的税务账户
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>商店权限管理
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
@@ -505,7 +511,6 @@ no-permission: <red>你没有权限这样去操作。
 chest-was-removed: <red>当前箱子已被移除。
 you-cant-afford-to-buy: <red>余额不足！购买该商店物品需要 {0}，但是你只有 {1}。
 shops-removed-in-world: <yellow>已删除世界 <aqua>{1}<yellow> 中的 <aqua>{0}<yellow> 个商店。
-display-turn-off: <green>成功关闭商店悬浮物显示
 client-language-unsupported: <yellow>QuickShop不支持您的客户端语言，我们现在退回到 {0} 语言。
 language-version: '63'
 not-managed-shop: <red>你不是该商店的所有者或助手
