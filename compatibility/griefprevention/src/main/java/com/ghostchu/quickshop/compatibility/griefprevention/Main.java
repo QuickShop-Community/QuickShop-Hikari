@@ -191,6 +191,10 @@ public final class Main extends CompatibilityModule implements Listener {
     final List<Shop> shops = getApi().getShopManager().getAllShops();
     for(final Shop shop : shops) {
 
+      if(event.getClaim().contains(shop.getLocation(), false, false)) {
+        continue;
+      }
+
       if(event.getNewOwner().equals(shop.getOwner().getUniqueId())) {
         continue;
       }
