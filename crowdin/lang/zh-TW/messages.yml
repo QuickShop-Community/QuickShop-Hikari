@@ -321,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>我的天啊，沒想到居然有人想要交易負數的數量。
 display-turn-on: <green>成功地啟用商店懸浮物顯示。
+display-turn-off: <green>成功地關閉商店懸浮物顯示。
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>成功地將員工 {0} 從你的商店移除。
 nearby-shop-header: '<green>附近匹配商店 <aqua>{0}</aqua>：'
 backup-failed: 無法備份商店資料庫，請查看控制台以獲得詳細資訊。
@@ -453,6 +458,7 @@ command:
     taxaccount: <yellow>設定商店使用的稅金帳戶
     name: <yellow>命名商店一個專有名稱
     toggledisplay: <yellow>切換商店顯示物品狀態
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>商店權限管理
     lookup: <yellow>管理物品索引表
     database: <yellow>查看和維護 QuickShop 資料庫
@@ -507,7 +513,6 @@ no-permission: <dark_red>你沒有使用此指令的權限。
 chest-was-removed: <red>儲物箱已被移除。
 you-cant-afford-to-buy: <red>商品價格是 {0} ，但是你只有 {1}。
 shops-removed-in-world: <yellow>世界 <aqua>{1} <yellow>總共有 <aqua>{0} <yellow>個商店被刪除。
-display-turn-off: <green>成功地關閉商店懸浮物顯示。
 client-language-unsupported: <yellow>QuickShop 不支援你的用戶端語言，我們現在將它還原為 {0}。
 language-version: '63'
 not-managed-shop: <red>你沒有管理此商店的權限

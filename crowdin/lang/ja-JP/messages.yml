@@ -310,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>マイナス量を取引できません
 display-turn-on: <green>ショップの表示をオンにしました。
+display-turn-off: <green>ショップの表示をオフにしました。
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>あなたのショップスタッフの {0} を削除しました。
 nearby-shop-header: '<aqua>{0}<green> に一致する近くのショップ:'
 backup-failed: データベースをバックアップできません。詳細についてはコンソールを確認してください。
@@ -442,6 +447,7 @@ command:
     taxaccount: <yellow>ショップで使用する税のアカウントを設定する
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>ショップのアイテムの状態を切り替える
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -495,7 +501,6 @@ no-permission: <red>あなたは権限を持っていないため実行できま
 chest-was-removed: <red>チェストが削除されました。
 you-cant-afford-to-buy: <red>価格は {0} ですが {1} しか所持していません。
 shops-removed-in-world: <yellow>ワールド <aqua>{1}<yellow> で合計 <aqua>{0} つ<yellow> のショップを削除しました。
-display-turn-off: <green>ショップの表示をオフにしました。
 client-language-unsupported: <yellow>QuickShopはクライアント言語をサポートしていません。 {0} ロケールにフォールバックします。
 language-version: '63'
 not-managed-shop: あなたはショップの店主でもモデレーターでもありません。

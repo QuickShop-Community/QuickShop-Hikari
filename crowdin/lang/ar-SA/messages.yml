@@ -321,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>لا يمكنك المتاجرة بمبالغ سلبية
 display-turn-on: <green>Successfully turn on the shop display.
+display-turn-off: <green>Successfully turn off the shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Cannot backup the database. Check the console for details.
@@ -453,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -507,7 +513,6 @@ no-permission: لا تملك الصلاحيّات للقيام بذلك.
 chest-was-removed: <red>تمت إزالة الصندوق.
 you-cant-afford-to-buy: <red>ذلك يكلف {0}، ولكن لديك {1} فقط
 shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
 not-managed-shop: <red>أنت لست المالك أو المشرف على هذا المتجر

@@ -310,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Vous ne pouvez pas échanger une quantité négative
 display-turn-on: <green>Activation réussie de l'affichage de la boutique.
+display-turn-off: Désactivation réussie de l'affichage de la boutique.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green> {0} a été ajouté avec succès comme membre du personnel pour votre boutique.
 nearby-shop-header: '<green>À proximité de la boutique correspondante <aqua>{0}<green>:'
 backup-failed: Impossible de sauvegarder la base de données, vérifiez la console pour plus de détails.
@@ -442,6 +447,7 @@ command:
     taxaccount: <yellow>Définir le compte de taxe que la boutique utilise
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Activer/désactiver l'affichage de l'item de la boutique
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -495,7 +501,6 @@ no-permission: <red>Vous n'avez pas la permission de faire ceci.
 chest-was-removed: <red>Le coffre a été supprimé.
 you-cant-afford-to-buy: <red>Cette transaction coûte {0}, mais vous ne disposez que de {1}
 shops-removed-in-world: <yellow>La totalité <aqua>{0}<yellow> des boutiques a été supprimée dans le monde <aqua>{1}<yellow>.
-display-turn-off: Désactivation réussie de l'affichage de la boutique.
 client-language-unsupported: <yellow>QuickShop ne prend pas en charge la langue de votre client, nous sommes maintenant passés à la locale {0}.
 language-version: '63'
 not-managed-shop: <red>Vous n'êtes pas le propriétaire ou le modérateur de cette boutique

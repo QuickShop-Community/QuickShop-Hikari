@@ -321,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Nem tudsz negatív mennyiséget megadni.
 display-turn-on: <green>Successfully turn on the shop display.
+display-turn-off: <green>Successfully turn off the shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Sikeresen eltávolítottad a {0}t a boltodból!
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Nem lehet lementeni a bázist! Nézze meg a konzolt további információkért.
@@ -453,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -507,7 +513,6 @@ no-permission: <red>Nincs jogod ehhez!
 chest-was-removed: <red>Ez a láda kitörlődött.
 you-cant-afford-to-buy: <red>Ez <gray>{0} <red>-ba kerül, de neked csak <gray>{1} <red>-od van.
 shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
 not-managed-shop: <red>Nem te vagy a tulajdonosa vagy a moderátora ennek a boltnak.

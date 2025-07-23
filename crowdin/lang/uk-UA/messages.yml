@@ -321,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Ви не можете торгувати від'ємною кількістю
 display-turn-on: <green>Успішно увімкнено відображення магазину.
+display-turn-off: <green>Успішно вимкнено відображення магазину.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Успішно видалено {0} як співробітника з вашого магазину.
 nearby-shop-header: '<green>Магазини поблизу, що відповідають <aqua>{0}</aqua>:'
 backup-failed: Не вдалося створити резервну копію бази даних. Перевірте консоль для деталей.
@@ -453,6 +458,7 @@ command:
     taxaccount: <yellow>Встановлює податковий рахунок, який використовується магазином
     name: <yellow>Змінює назву конкретного магазину
     toggledisplay: <yellow>Перемикає статус відображуваного предмета в магазині
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Керування дозволами магазину
     lookup: <yellow>Керування таблицею предметів для пошуку
     database: <yellow>Дозволяє переглядати та обслуговувати базу даних QuickShop
@@ -507,7 +513,6 @@ no-permission: <red>У вас немає дозволу на це.
 chest-was-removed: <red>Скриню було видалено.
 you-cant-afford-to-buy: <red>Це коштує {0}, але у вас є лише {1}
 shops-removed-in-world: <yellow>Загалом видалено <aqua>{0}</aqua> магазин(-ів) у світі <aqua>{1}</aqua>.
-display-turn-off: <green>Успішно вимкнено відображення магазину.
 client-language-unsupported: <yellow>QuickShop не підтримує мову вашого клієнта. Повертаємося до {0}...
 language-version: '63'
 not-managed-shop: <red>Ви не є власником або модератором цього Магазину
