@@ -16,3 +16,5 @@ jobs:
         with:
           message: "Automatically reformatted using the IntelliJ Style File, please check the contributing guidelines and utilize it in the future."
           settings: ".contributing/QuickShop_Style.xml"
+          verify: true
+          mask: "*.java"
