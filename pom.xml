@@ -42,7 +42,7 @@
         <depend.packetevents>2.9.0-SNAPSHOT</depend.packetevents>
         <depend.protocollib>5.3.0</depend.protocollib>
         <depend.vault>1.7.1</depend.vault>
-        <depend.vaultunlocked>2.13</depend.vaultunlocked>
+        <depend.vaultunlocked>2.14</depend.vaultunlocked>
 
         <!-- addon versions -->
         <addon.bluemap>2.7.2</addon.bluemap>
