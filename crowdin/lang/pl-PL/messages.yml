@@ -310,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Nie możesz handlować ujemnymi kwotami
 display-turn-on: <green>Pomyślnie włączono wyświetlacz sklepu.
+display-turn-off: <green>Pomyślnie wyłączono wyświetlacz sklepu.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Pomyślnie usunięto {0} jako członka personelu twojego sklepu.
 nearby-shop-header: '<green>Odpowiadające sklepy w pobliżu <aqua>{0}<green>:'
 backup-failed: Nie można wykonać kopii zapasowej bazy danych. Sprawdź konsolę, aby uzyskać szczegóły.
@@ -442,6 +447,7 @@ command:
     taxaccount: <yellow>Ustaw konto podatkowe, które sklep ma używać
     name: <yellow>Nadaje sklepowi konkretną nazwę
     toggledisplay: <yellow>Przełącz stan wyświetlania przedmiotu w sklepie
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Zarządzanie uprawnieniami sklepu
     lookup: <yellow>Zarządzaj tabelą elementów do wyszukiwania
     database: <yellow>View and maintain QuickShop database
@@ -495,7 +501,6 @@ no-permission: <red>Nie masz uprawnień, aby to zrobić.
 chest-was-removed: <red>Sklep został usunięty.
 you-cant-afford-to-buy: <red>To kosztuje {0}, ale masz tylko {1}
 shops-removed-in-world: <yellow>Wszystkie <aqua>{0}<yellow> sklepy zostały usunięte ze świata <aqua>{1}<yellow>.
-display-turn-off: <green>Pomyślnie wyłączono wyświetlacz sklepu.
 client-language-unsupported: <yellow>QuickShop nie obsługuje Twojego języka klienta, powrócono do wersji językowej {0}.
 language-version: '63'
 not-managed-shop: <red>Nie jesteś właścicielem ani moderatorem tego sklepu
