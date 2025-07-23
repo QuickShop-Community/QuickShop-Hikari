@@ -310,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Negatif miktarlarda işlem yapamazsın
 display-turn-on: <green>Mağaza ekranını başarıyla açın.
+display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>{0} başarıyla market personellerinizden kaldırıldı.
 nearby-shop-header: '<green>En yakın Dükkan eşleşmesi <aqua>{0}<green>:'
 backup-failed: Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.
@@ -442,6 +447,7 @@ command:
     taxaccount: <yellow>Alışveriş yapılırken verginin aktarılacağı hesabı ayarlar
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Mağazadaki öğe durumunu değiştir
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Mağaza izin yönetimi
     lookup: <yellow>Aranabilir öğeler tablosunu yönetme
     database: <yellow>View and maintain QuickShop database
@@ -495,7 +501,6 @@ no-permission: <red>Bunu yapmaya iznin yok.
 chest-was-removed: <red>Sandık kaldırıldı.
 you-cant-afford-to-buy: <red>Bu {0} ediyor, ama sende sadece {1} var
 shops-removed-in-world: <aqua>{1}<yellow> dünyasından toplam <aqua>{0}<yellow> market silindi.
-display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
 client-language-unsupported: <yellow>QuickShop, istemci dilinizi desteklemiyor, artık {0} yerel ayarına geri döndük.
 language-version: '63'
 not-managed-shop: <red>Bu marketin sahibi veya moderatörü değilsin
