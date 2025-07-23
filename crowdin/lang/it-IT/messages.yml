@@ -318,6 +318,11 @@ signs:
   item-left: ''
 negative-amount: <red>Non puoi scambiare importi negativi
 display-turn-on: <green>Accensione riuscita del display del negozio.
+display-turn-off: <green>Spegnimento con successo il display del negozio.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Rimosso {0} come membro dello staff per il tuo negozio.
 nearby-shop-header: '<green>Abbinamento negozio nelle vicinanze <aqua>{0}<green>:'
 backup-failed: Impossibile eseguire il backup del database. Controlla la console per i dettagli.
@@ -450,6 +455,7 @@ command:
     taxaccount: <yellow>Imposta la tassa utilizzata dal negozio
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Attiva/disattiva lo stato dell'articolo di visualizzazione del negozio
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Gestione autorizzazioni negozio
     lookup: <yellow>Gestisce la tabella degli elementi ricercati
     database: <yellow>View and maintain QuickShop database
@@ -503,7 +509,6 @@ no-permission: <red>Non hai il permesso per farlo.
 chest-was-removed: <red>La cassa è stata rimossa.
 you-cant-afford-to-buy: <red>Questo costa {0}, ma tu hai solo {1}
 shops-removed-in-world: <aqua>{0}<yellow> negozi sono stati eliminati nel mondo <aqua>{1}<yellow>.
-display-turn-off: <green>Spegnimento con successo il display del negozio.
 client-language-unsupported: <yellow>QuickShop non supporta la lingua del tuo client, ora siamo utilizzando {0} locale.
 language-version: '63'
 not-managed-shop: <red>Non sei il proprietario o moderatore di questo negozio
