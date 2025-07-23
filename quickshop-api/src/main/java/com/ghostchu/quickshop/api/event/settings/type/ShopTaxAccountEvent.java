@@ -28,8 +28,8 @@ import org.jetbrains.annotations.NotNull;
  * setting for a shop.
  *
  * @author creatorfromhell
- * @since 6.2.0.9
  * @see QUser
+ * @since 6.2.0.9
  */
 public class ShopTaxAccountEvent extends ShopSettingEvent<QUser> {
 
@@ -45,6 +45,54 @@ public class ShopTaxAccountEvent extends ShopSettingEvent<QUser> {
     super(phase, shop, old, updated);
   }
 
+  public static ShopTaxAccountEvent PRE(final @NotNull Shop shop,
+                                        final QUser old) {
+
+    return new ShopTaxAccountEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopTaxAccountEvent PRE(final @NotNull Shop shop,
+                                        final QUser old, final QUser updated) {
+
+    return new ShopTaxAccountEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopTaxAccountEvent MAIN(final @NotNull Shop shop,
+                                         final QUser old) {
+
+    return new ShopTaxAccountEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopTaxAccountEvent MAIN(final @NotNull Shop shop,
+                                         final QUser old, final QUser updated) {
+
+    return new ShopTaxAccountEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopTaxAccountEvent POST(final @NotNull Shop shop,
+                                         final QUser old) {
+
+    return new ShopTaxAccountEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopTaxAccountEvent POST(final @NotNull Shop shop,
+                                         final QUser old, final QUser updated) {
+
+    return new ShopTaxAccountEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopTaxAccountEvent RETRIEVE(final @NotNull Shop shop,
+                                             final QUser old) {
+
+    return new ShopTaxAccountEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopTaxAccountEvent RETRIEVE(final @NotNull Shop shop,
+                                             final QUser old, final QUser updated) {
+
+    return new ShopTaxAccountEvent(Phase.RETRIEVE, shop, old, updated);
+  }
+
   /**
    * Creates a new instance of PhasedEvent with the specified newPhase.
    *
@@ -54,6 +102,7 @@ public class ShopTaxAccountEvent extends ShopSettingEvent<QUser> {
    */
   @Override
   public ShopTaxAccountEvent clone(final Phase newPhase) {
+
     if(this.updated != null) {
 
       return new ShopTaxAccountEvent(newPhase, this.shop, this.old, this.updated);
@@ -76,53 +125,5 @@ public class ShopTaxAccountEvent extends ShopSettingEvent<QUser> {
   public ShopTaxAccountEvent clone(final Phase newPhase, final QUser old, final QUser updated) {
 
     return new ShopTaxAccountEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopTaxAccountEvent PRE(final @NotNull Shop shop,
-                                  final QUser old) {
-
-    return new ShopTaxAccountEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopTaxAccountEvent PRE(final @NotNull Shop shop,
-                                  final QUser old, final QUser updated) {
-
-    return new ShopTaxAccountEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopTaxAccountEvent MAIN(final @NotNull Shop shop,
-                                   final QUser old) {
-
-    return new ShopTaxAccountEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopTaxAccountEvent MAIN(final @NotNull Shop shop,
-                                   final QUser old, final QUser updated) {
-
-    return new ShopTaxAccountEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopTaxAccountEvent POST(final @NotNull Shop shop,
-                                   final QUser old) {
-
-    return new ShopTaxAccountEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopTaxAccountEvent POST(final @NotNull Shop shop,
-                                   final QUser old, final QUser updated) {
-
-    return new ShopTaxAccountEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopTaxAccountEvent RETRIEVE(final @NotNull Shop shop,
-                                       final QUser old) {
-
-    return new ShopTaxAccountEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopTaxAccountEvent RETRIEVE(final @NotNull Shop shop,
-                                       final QUser old, final QUser updated) {
-
-    return new ShopTaxAccountEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

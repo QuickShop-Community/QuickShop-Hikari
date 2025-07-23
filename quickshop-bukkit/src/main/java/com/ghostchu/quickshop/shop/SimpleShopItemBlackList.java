@@ -17,63 +17,68 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, SubPasteItem {
+
   private final QuickShop plugin;
   private final List<String> BLACKLIST_LORES = new ArrayList<>();
   private List<String> configBlacklist;
 
   public SimpleShopItemBlackList(@NotNull final QuickShop plugin) {
+
     this.plugin = plugin;
     init();
     plugin.getReloadManager().register(this);
   }
 
   private void init() {
+
     BLACKLIST_LORES.clear();
     this.configBlacklist = plugin.getConfig().getStringList("blacklist");
     final List<String> configLoresBlackList = plugin.getConfig().getStringList("shop.blacklist-lores");
-    configLoresBlackList.forEach(s -> BLACKLIST_LORES.add(ChatColor.stripColor(s)));
+    configLoresBlackList.forEach(s->BLACKLIST_LORES.add(ChatColor.stripColor(s)));
   }
 
   /**
    * Check if an Item has been blacklisted for puchase.
    *
    * @param itemStack The ItemStack to check
+   *
    * @return true if blacklisted, false if not
    */
   @Override
   public boolean isBlacklisted(@NotNull final ItemStack itemStack) {
-    final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry) plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
-    for (final ItemStack is : ItemContainerUtil.flattenContents(itemStack, true, true)) {
-      for (final String s : this.configBlacklist) {
-        if (itemExpressionRegistry.match(is, s)) {
+
+    final ItemExpressionRegistry itemExpressionRegistry = (ItemExpressionRegistry)plugin.getRegistry().getRegistry(BuiltInRegistry.ITEM_EXPRESSION);
+    for(final ItemStack is : ItemContainerUtil.flattenContents(itemStack, true, true)) {
+      for(final String s : this.configBlacklist) {
+        if(itemExpressionRegistry.match(is, s)) {
           return true;
         }
       }
 
-      if (BLACKLIST_LORES.isEmpty()) {
+      if(BLACKLIST_LORES.isEmpty()) {
         return false; // Fast return if empty
       }
-      if (!is.hasItemMeta()) {
+      if(!is.hasItemMeta()) {
         return false;
       }
       final ItemMeta meta = is.getItemMeta();
-      if (meta == null) {
+      if(meta == null) {
         return false;
       }
-      if (!meta.hasLore()) {
+      if(!meta.hasLore()) {
         return false;
       }
       final List<String> originalLores = meta.getLore();
-      if (originalLores == null) {
+      if(originalLores == null) {
         return false;
       }
       final List<String> strippedLores = new ArrayList<>(originalLores.size());
-      for (final String originalLore : originalLores) {
+      for(final String originalLore : originalLores) {
         strippedLores.add(ChatColor.stripColor(originalLore));
       }
-      for (final String loreLine : strippedLores) {
-        for (final String blacklistLore : BLACKLIST_LORES) {
-          if (loreLine.contains(blacklistLore)) {
+      for(final String loreLine : strippedLores) {
+        for(final String blacklistLore : BLACKLIST_LORES) {
+          if(loreLine.contains(blacklistLore)) {
             return true;
           }
         }
@@ -85,17 +90,20 @@ public class SimpleShopItemBlackList implements Reloadable, ShopItemBlackList, S
 
   @Override
   public ReloadResult reloadModule() throws Exception {
+
     init();
     return Reloadable.super.reloadModule();
   }
 
   @Override
   public @NotNull String genBody() {
+
     return "<p>Blacklist Rules: " + configBlacklist.size() + "</p>";
   }
 
   @Override
   public @NotNull String getTitle() {
+
     return "Shop Item Blacklist";
   }
 }

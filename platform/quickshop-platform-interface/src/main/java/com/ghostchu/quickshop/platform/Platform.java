@@ -31,10 +31,12 @@ public interface Platform {
 
   @NotNull
   default String encodeStack(@NotNull final ItemStack stack) {
+
     return "";
   }
 
   default ItemStack decodeStack(@NotNull final String serialized) {
+
     return null;
   }
 

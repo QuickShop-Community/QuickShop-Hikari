@@ -72,12 +72,15 @@ public class ControlComponentGenerateEvent extends PhasedEvent {
   }
 
   /**
-   * Creates a clone of the ControlComponentGenerateEvent with the provided newPhase, old value, and updated value.
+   * Creates a clone of the ControlComponentGenerateEvent with the provided newPhase, old value, and
+   * updated value.
    *
    * @param newPhase The new phase for the cloned ControlComponentGenerateEvent
-   * @param old The old value for the cloned ControlComponentGenerateEvent
-   * @param updated The updated value for the cloned ControlComponentGenerateEvent
-   * @return A new instance of ControlComponentGenerateEvent with the specified newPhase, old, and updated values
+   * @param old      The old value for the cloned ControlComponentGenerateEvent
+   * @param updated  The updated value for the cloned ControlComponentGenerateEvent
+   *
+   * @return A new instance of ControlComponentGenerateEvent with the specified newPhase, old, and
+   * updated values
    */
   public ControlComponentGenerateEvent clone(final Phase newPhase, final ControlComponent old, final ControlComponent updated) {
 
@@ -107,7 +110,8 @@ public class ControlComponentGenerateEvent extends PhasedEvent {
   /**
    * Checks if the ControlComponent can be updated based on the current phase.
    *
-   * @return the updated ControlComponent if the phase allows updates, otherwise returns the old ControlComponent
+   * @return the updated ControlComponent if the phase allows updates, otherwise returns the old
+   * ControlComponent
    */
   public ControlComponent updated() {
 

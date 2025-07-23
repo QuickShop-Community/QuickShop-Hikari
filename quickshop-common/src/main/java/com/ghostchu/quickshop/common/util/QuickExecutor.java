@@ -40,14 +40,29 @@ public class QuickExecutor {
     return COMMON_EXECUTOR;
   }
 
+  public static void setCommonExecutor(final ExecutorService commonExecutor) {
+
+    COMMON_EXECUTOR = commonExecutor;
+  }
+
   public static ExecutorService getHikaricpExecutor() {
 
     return HIKARICP_EXECUTOR;
   }
 
+  public static void setHikaricpExecutor(final ExecutorService hikaricpExecutor) {
+
+    HIKARICP_EXECUTOR = hikaricpExecutor;
+  }
+
   public static ExecutorService getShopSaveExecutor() {
 
     return SHOP_SAVE_EXECUTOR;
+  }
+
+  public static void setShopSaveExecutor(final ExecutorService shopSaveExecutor) {
+
+    SHOP_SAVE_EXECUTOR = shopSaveExecutor;
   }
 
   public static ExecutorService getPrimaryProfileIoExecutor() {
@@ -75,23 +90,8 @@ public class QuickExecutor {
     return SHOP_HISTORY_QUERY_EXECUTOR;
   }
 
-  public static void setHikaricpExecutor(final ExecutorService hikaricpExecutor) {
-
-    HIKARICP_EXECUTOR = hikaricpExecutor;
-  }
-
-  public static void setShopSaveExecutor(final ExecutorService shopSaveExecutor) {
-
-    SHOP_SAVE_EXECUTOR = shopSaveExecutor;
-  }
-
   public static void setShopHistoryQueryExecutor(final ExecutorService shopHistoryQueryExecutor) {
 
     SHOP_HISTORY_QUERY_EXECUTOR = shopHistoryQueryExecutor;
-  }
-
-  public static void setCommonExecutor(final ExecutorService commonExecutor) {
-
-    COMMON_EXECUTOR = commonExecutor;
   }
 }

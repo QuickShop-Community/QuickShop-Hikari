@@ -25,8 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents an event when a new shop is created.
- * This event is triggered when a new shop is created with associated user information.
+ * Represents an event when a new shop is created. This event is triggered when a new shop is
+ * created with associated user information.
  *
  * @author creatorfromhell
  * @since 6.2.0.9

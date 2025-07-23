@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Det kostar {0} att skapa en ny butik.
 success-created-shop: <red>Butik skapad.
 shop-creation-cancelled: <red>Butik-skapelsen avbröts!
 shop-owner-self-trade: <yellow>You handlar med din egen butik, så du kanske inte kommer att få något saldo.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.
 reloading-status:
   success: <green>Omladdning slutförd utan några fel.
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>You kan inte handla med negativa belopp
 display-turn-on: <green>Lyckades aktivera butiksdisplayen.
+display-turn-off: <green>Lyckades aktivera butiksdisplayen.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Framgångsrikt tagit bort {0} som personal för din butik.
 nearby-shop-header: '<green>Närliggande butik som matchar <aqua>{0}<green>:'
 backup-failed: Kan inte säkerhetskopiera databasen. Kontrollera konsolen för detaljer.
@@ -441,6 +447,7 @@ command:
     taxaccount: <yellow>Ange skattekontot som butiken använder
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Växla butikens status för visningsobjekt
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -494,7 +501,6 @@ no-permission: <red>Du har inte tillåtelse till att göra detta.
 chest-was-removed: <red>Kistan har tagits bort.
 you-cant-afford-to-buy: <red>Det kostar {0} men du har bara {1}
 shops-removed-in-world: <yellow>Totalt <aqua>{0}<yellow> butiker har tagits bort i världen <aqua>{1}<yellow>.
-display-turn-off: <green>Lyckades aktivera butiksdisplayen.
 client-language-unsupported: <yellow>QuickShop stöder inte ditt klientspråk, vi återgår till {0} språk nu.
 language-version: '63'
 not-managed-shop: <red>Du är inte ägare eller moderator av denna butik

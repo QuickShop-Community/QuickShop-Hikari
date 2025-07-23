@@ -398,6 +398,11 @@ signs:
   item-left: ''
 negative-amount: <red>You can't trade negative amounts
 display-turn-on: <green>Successfully enabled shop-display.
+display-turn-off: <green>Successfully turned off shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member from your shop.
 nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
 backup-failed: Cannot backup the database. Check the console for details.
@@ -539,6 +544,7 @@ command:
     taxaccount: <yellow>Set the tax account that the shop using
     name: <yellow>Changes the name of a specific shop
     toggledisplay: <yellow>Toggle the shop's display-item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain the QuickShop Database
@@ -600,7 +606,6 @@ chest-was-removed: <red>The chest was removed.
 you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
 shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted
   in world <aqua>{1}</aqua>.
-display-turn-off: <green>Successfully turned off shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language.
   Falling back to locale {0}...
 language-version: '63'

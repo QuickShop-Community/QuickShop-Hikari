@@ -73,6 +73,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -180,7 +181,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
+    if(shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(buyer.getUniqueId()) && !plugin.perm().hasPermission(buyer, "quickshop.self-trade")) {
       plugin.text().of(buyer, "shop-owner-self-trade-denied").send();
       return false;
     }
@@ -326,15 +327,28 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
 
-    // Price per item
-    final double price;
+    BigDecimal price = null;
     try {
-      price = Double.parseDouble(message);
-      if(Double.isInfinite(price)) {
+      price = Util.parse(message);
+    } catch(final Exception ignore) {
+    }
+
+    if(price == null) {
+      // No number input
+      Log.debug("actionCreate had issue with price parameter.");
+      plugin.text().of(p, "not-a-number", message).send();
+      return;
+    }
+
+    // Price per item
+    final double priceDouble = price.doubleValue();
+
+    try {
+      if(Double.isInfinite(priceDouble)) {
         plugin.text().of(p, "exceeded-maximum", message).send();
         return;
       }
-      final String strFormat = STANDARD_FORMATTER.format(Math.abs(price)).replace(",", ".");
+      final String strFormat = STANDARD_FORMATTER.format(Math.abs(priceDouble)).replace(",", ".");
       final String[] processedDouble = strFormat.split("\\.");
       if(processedDouble.length > 1) {
         if(processedDouble[1].length() > maximumDigitsLimit && maximumDigitsLimit != -1) {
@@ -359,7 +373,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
       }
       final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
-                                                   price, info.getItem(), createQUser, false,
+                                                   priceDouble, info.getItem(), createQUser, false,
                                                    ShopType.SELLING, new YamlConfiguration(), null, !plugin.isDisplayEnabled(),
                                                    null, plugin.getJavaPlugin().getName(),
                                                    symbolLink,
@@ -381,7 +395,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    if (shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
+    if(shop.getOwner().getUniqueId() != null && shop.getOwner().getUniqueId().equals(seller.getUniqueId()) && !plugin.perm().hasPermission(seller, "quickshop.self-trade")) {
       plugin.text().of(seller, "shop-owner-self-trade-denied").send();
       return false;
     }
@@ -667,7 +681,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   /**
    * Checks other plugins to make sure they can use the chest they're making a shop.
    *
-   * @param p The player to check
+   * @param p       The player to check
    * @param message Should a message be sent to the player if the limit is reached
    *
    * @return True if they're allowed to place a shop there.

@@ -276,10 +276,10 @@ public class BlockListener extends AbstractProtectionListener {
   public void onPlayerSignOpen(final PlayerSignOpenEvent event) {
 
     final Block posShopBlock = Util.getAttached(event.getSign().getBlock());
-    if (posShopBlock == null) return;
+    if(posShopBlock == null) return;
 
     final Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
-    if (shop == null) return;
+    if(shop == null) return;
 
     event.setCancelled(true);
   }

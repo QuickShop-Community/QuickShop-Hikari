@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>SuperTool aletini kullanarak marketleri kırabilirsin.
 fee-charged-for-price-change: <green>Fiyatı değiştirmek için <red>{0}<green> ödediniz.
 not-allowed-to-create: <red>Burada bir market oluşturamazsın.
 disabled-in-this-world: <red>Bu komut bu dünyada devre dışı
@@ -16,7 +16,7 @@ not-looking-at-valid-shop-block: <red>Hiç Mağza bulunamadı. Birine bakman laz
 shop-removed-cause-ongoing-fee: <red>{0}'deki marketiniz açık tutmaya yetecek kadar paranız olmadığı için kaldırıldı!
 tabcomplete:
   amount: '[miktar]'
-  item: '[item]'
+  item: '[eşya]'
   price: '[fiyat]'
   name: '[name]'
   range: '[menzil]'
@@ -49,8 +49,8 @@ quick-fill:
     - '<yellow>Öğe: <aqua>{item}'
     - '<yellow>Konum: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
-  entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+  entry-normal: ''
+  entry-cooperation: ''
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Yakınlardaki ortalama fiyat: <yellow>{0}'
 inventory-check-global-alert: "<red>[Envanter Kontrolü] <gray>Uyarı! QuickShop görüntülü öğe bulundu <gold>{2}</gold> Envanterde <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, ki bu olmamalı, Bu genellikle birisinin görüntüleme öğesini çoğaltmak için istismardan kötü niyetli olarak yararlandığı anlamına gelir."
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: '<red>Yeni bir market oluşturma maliyeti: ${0}'
 success-created-shop: <red>Market oluşturuldu.
 shop-creation-cancelled: <red>Market oluşumu iptal edildi.
 shop-owner-self-trade: <yellow>Kendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.
+shop-owner-self-trade-denied: <red>Kendi marketinle ticaret yapamazsın.
 purchase-out-of-space: <red>Bu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.
 reloading-status:
   success: <green>Yeniden yükleme hata olmadan tamamlandı.
@@ -92,7 +93,7 @@ player-bought-from-your-store-tax: <red>{0} marketinden {1} tane {2} aldı ve {3
 not-enough-space: <red>Sadece {0} için daha fazla yerin var!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>{0} başarıyla market personellerinize eklendi.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Bu market bir yetkiliye sahip değil.
 shops-recovering: Marketler yedekten kurtarılıyor...
 virtual-player-component-hover: "<gray>Bu sanal bir oynatıcıdır.\n<gray>Aynı ada sahip bu ada sahip bir sistem hesabını ifade eder.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Bu gerçek bir oyuncu.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Kullanıcı adı: <yellow>{1}</yellow></green>\n<green>Olarak görüntüle: <yellow>{2}</yellow></green>\n<gray>Aynı ada sahip bir sanal sistem hesabı kullanmak istiyorsanız, <dark_gray>\"[]\"</dark_gray> Kullanıcı adının her iki tarafına: <dark_gray>[{1}]</dark_gray>."
@@ -119,12 +120,12 @@ menu:
   item-holochat-data-too-large: <red>[Error] Öğe NBT'si gösterilemeyecek kadar büyük
   stock: '<green>Stok <yellow>{0}'
   this-shop-is-buying: <green>Bu market öğe <light_purple>SATIN ALIYOR<green>.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green>Market alım-satım işlemleri <red>duraklatıldı<green>.
   successfully-sold: '<green>Başarıyla satıldı:'
   total-value-of-chest: '<green>Sandığın toplam değeri: <yellow>{0}'
 currency-not-exists: <red>Ayarlamak istediğiniz para birimi bulunamadı. Belki imlâ hatası yaptığınız ya da o para birimi dünyada mevcut değil.
 no-nearby-shop: <red>Yakınlarda {0} ile uyuşan market yok.
-translation-author: 'Ghost_chu, Andre_601'
+translation-author: 'Ghost_chu, Andre_601, catzalli'
 integrations-check-failed-trade: <red>{0} entegrasyonu market ticaretini reddetti
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Market sahibi başarıyla Sunucu yapıldı.
@@ -152,7 +153,7 @@ metric:
   looking-up: <yellow>Metrik araması gerçekleştiriliyor, Lütfen bekleyin...
   tax-hover: <yellow>{0} vergiler
   header-global: '<yellow>Sunucu işlemleri {0} {1} :'
-  na: <gray>N/A
+  na: <gray>Yok
   transaction-count: <yellow>{0} toplam
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Dünya: {4}<newline><gold>Sahibi: <gray>{5}<newline><gold>Mağaza Türü: <gray>{6}<newline><gold>Ürün: <gray>{7}<newline><gold>Fiyat: <gray>{8}
@@ -178,7 +179,7 @@ player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
   selling: Satış
   buying: Satın alım
-  frozen: FROZEN
+  frozen: Duraklatılmış
 language:
   qa-issues: '<yellow>Kalite güven sorunları: <aqua>{0}%'
   code: '<yellow>Kod: <gold>{0}'
@@ -194,7 +195,7 @@ updatenotify:
   onekeybuttontitle: '[OneKey Update]'
   label:
     github: '[GitHub]'
-    ore: '[Ore]'
+    ore: '[Maden]'
     lts: '[LTS]'
     nbtapi: '[+NBTAPI]'
     qualityverifyed: '[Kalite]'
@@ -207,7 +208,7 @@ updatenotify:
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
     modrinth: '[Modrinth]'
-    basic: '[Basic]'
+    basic: '[Basit]'
   list:
     - '{0} yayınlandı. Sen hala {1} kullanıyorsun!'
     - Boom! Yeni güncelleme {0} geliyor. Güncelle!
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Negatif miktarlarda işlem yapamazsın
 display-turn-on: <green>Mağaza ekranını başarıyla açın.
+display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>{0} başarıyla market personellerinizden kaldırıldı.
 nearby-shop-header: '<green>En yakın Dükkan eşleşmesi <aqua>{0}<green>:'
 backup-failed: Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.
@@ -341,7 +347,7 @@ controlpanel:
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
   alwayscounting: '<green>Her zaman sayıyor: {0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   setowner: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>İşlem durumu: <aqua>{0} <yellow>[<bold><light_purple>Duraklat</light_purple></bold>]'
   price: '<green>Fiyat: <aqua>{0} <yellow>[<bold><light_purple>Değiştir</light_purple>]'
   currency-hover: <yellow>Bu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
@@ -427,7 +433,7 @@ command:
     sell: <yellow>Bir marketi <light_purple>SATMA<yellow> moduna geçirir
     fetchmessage: <yellow>Okunmamış market mesajlarını göster
     staff: <yellow>Market personellerini yönet
-    staffall: <yellow>Manage your shop staff of all shops you own.
+    staffall: <yellow>Sahip olduğun marketler için yetkili oyuncuları düzenle.
     clean: <yellow>Stoksuz bütün (yüklü) marketleri kaldırır
     refill: <yellow>Bir mağazaya belirli sayıda öğe ekler
     help: <yellow>QuickShop yardımını gösterir
@@ -441,11 +447,12 @@ command:
     taxaccount: <yellow>Alışveriş yapılırken verginin aktarılacağı hesabı ayarlar
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Mağazadaki öğe durumunu değiştir
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Mağaza izin yönetimi
     lookup: <yellow>Aranabilir öğeler tablosunu yönetme
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Avantajları mağaza sahibi ve diğer oyuncular arasında bölme ayarları
-    browse: <yellow>Browse shops that exist in this server.
+    browse: <yellow>Sunucudaki aktif marketlere göz at.
     tag: <yellow>Bir mağazanın etiketlerini ekleme, kaldırma veya sorgulama
     suggestprice: <yellow>Diğer mağazalara göre dükkan aramak için tavsiye edilen bir fiyat önerin
     history: <yellow>View the history transactions of a shop
@@ -494,7 +501,6 @@ no-permission: <red>Bunu yapmaya iznin yok.
 chest-was-removed: <red>Sandık kaldırıldı.
 you-cant-afford-to-buy: <red>Bu {0} ediyor, ama sende sadece {1} var
 shops-removed-in-world: <aqua>{1}<yellow> dünyasından toplam <aqua>{0}<yellow> market silindi.
-display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
 client-language-unsupported: <yellow>QuickShop, istemci dilinizi desteklemiyor, artık {0} yerel ayarına geri döndük.
 language-version: '63'
 not-managed-shop: <red>Bu marketin sahibi veya moderatörü değilsin

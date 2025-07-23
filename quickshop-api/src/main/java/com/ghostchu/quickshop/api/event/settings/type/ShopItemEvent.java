@@ -28,8 +28,8 @@ import org.jetbrains.annotations.NotNull;
  * shop.
  *
  * @author creatorfromhell
- * @since 6.2.0.9
  * @see ItemStack
+ * @since 6.2.0.9
  */
 public class ShopItemEvent extends ShopSettingEvent<ItemStack> {
 
@@ -43,6 +43,54 @@ public class ShopItemEvent extends ShopSettingEvent<ItemStack> {
     super(phase, shop, old, updated);
   }
 
+  public static ShopItemEvent PRE(final @NotNull Shop shop,
+                                  final ItemStack old) {
+
+    return new ShopItemEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopItemEvent PRE(final @NotNull Shop shop,
+                                  final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopItemEvent MAIN(final @NotNull Shop shop,
+                                   final ItemStack old) {
+
+    return new ShopItemEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopItemEvent MAIN(final @NotNull Shop shop,
+                                   final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopItemEvent POST(final @NotNull Shop shop,
+                                   final ItemStack old) {
+
+    return new ShopItemEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopItemEvent POST(final @NotNull Shop shop,
+                                   final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopItemEvent RETRIEVE(final @NotNull Shop shop,
+                                       final ItemStack old) {
+
+    return new ShopItemEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopItemEvent RETRIEVE(final @NotNull Shop shop,
+                                       final ItemStack old, final ItemStack updated) {
+
+    return new ShopItemEvent(Phase.RETRIEVE, shop, old, updated);
+  }
+
   /**
    * Creates a new instance of PhasedEvent with the specified newPhase.
    *
@@ -52,6 +100,7 @@ public class ShopItemEvent extends ShopSettingEvent<ItemStack> {
    */
   @Override
   public ShopItemEvent clone(final Phase newPhase) {
+
     if(this.updated != null) {
 
       return new ShopItemEvent(newPhase, this.shop, this.old, this.updated);
@@ -73,53 +122,5 @@ public class ShopItemEvent extends ShopSettingEvent<ItemStack> {
   public ShopItemEvent clone(final Phase newPhase, final ItemStack old, final ItemStack updated) {
 
     return new ShopItemEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopItemEvent PRE(final @NotNull Shop shop,
-                                     final ItemStack old) {
-
-    return new ShopItemEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopItemEvent PRE(final @NotNull Shop shop,
-                                     final ItemStack old, final ItemStack updated) {
-
-    return new ShopItemEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopItemEvent MAIN(final @NotNull Shop shop,
-                                      final ItemStack old) {
-
-    return new ShopItemEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopItemEvent MAIN(final @NotNull Shop shop,
-                                      final ItemStack old, final ItemStack updated) {
-
-    return new ShopItemEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopItemEvent POST(final @NotNull Shop shop,
-                                      final ItemStack old) {
-
-    return new ShopItemEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopItemEvent POST(final @NotNull Shop shop,
-                                      final ItemStack old, final ItemStack updated) {
-
-    return new ShopItemEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopItemEvent RETRIEVE(final @NotNull Shop shop,
-                                          final ItemStack old) {
-
-    return new ShopItemEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopItemEvent RETRIEVE(final @NotNull Shop shop,
-                                          final ItemStack old, final ItemStack updated) {
-
-    return new ShopItemEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

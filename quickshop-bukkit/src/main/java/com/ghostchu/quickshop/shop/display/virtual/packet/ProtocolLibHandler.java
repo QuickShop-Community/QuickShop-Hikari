@@ -35,15 +35,18 @@ import java.util.Map;
  */
 public class ProtocolLibHandler implements PacketHandler<ProtocolManager> {
 
-  protected final Map<String, PacketFactory<?>> factories = new HashMap<>();
-
   protected static ProtocolLibHandler instance;
-
+  protected final Map<String, PacketFactory<?>> factories = new HashMap<>();
   protected ProtocolManager protocolManager;
 
   public ProtocolLibHandler() {
 
     instance = this;
+  }
+
+  public static ProtocolLibHandler instance() {
+
+    return instance;
   }
 
   /**
@@ -104,11 +107,7 @@ public class ProtocolLibHandler implements PacketHandler<ProtocolManager> {
     factories.put("1.21.5", oneTwentyOne);
     factories.put("1.21.6", oneTwentyOne);
     factories.put("1.21.7", oneTwentyOne);
-  }
-
-  public static ProtocolLibHandler instance() {
-
-    return instance;
+    factories.put("1.21.8", oneTwentyOne);
   }
 
   @Override

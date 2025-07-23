@@ -24,7 +24,8 @@ public interface ShopControlPanelManager {
   /**
    * Retrieves a map of control components associated with the shop control panel manager.
    *
-   * @return A map containing control components where the key is a string identifier and the value is a ControlComponent object.
+   * @return A map containing control components where the key is a string identifier and the value
+   * is a ControlComponent object.
    */
   LinkedHashMap<String, ControlComponent> controlComponents();
 
@@ -36,7 +37,8 @@ public interface ShopControlPanelManager {
   LinkedList<String> enabledComponents();
 
   /**
-   * Adds the provided ControlComponent to the controlComponents map associated with the Shop Control Panel Manager.
+   * Adds the provided ControlComponent to the controlComponents map associated with the Shop
+   * Control Panel Manager.
    *
    * @param component The ControlComponent to add. Must not be null.
    */

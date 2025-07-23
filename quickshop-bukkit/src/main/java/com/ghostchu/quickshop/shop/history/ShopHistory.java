@@ -330,6 +330,16 @@ public class ShopHistory {
     return historyRecords;
   }
 
+  public List<Shop> shops() {
+
+    return shops;
+  }
+
+  public Map<Long, Shop> shopsMapping() {
+
+    return shopsMapping;
+  }
+
   public record ShopSummary(long recentPurchases24h, long recentPurchases3d, long recentPurchases7d,
                             long recentPurchases30d, long totalPurchases,
                             double recentPurchasesBalance24h, double recentPurchasesBalance3d,
@@ -359,15 +369,5 @@ public class ShopHistory {
   public record ShopHistoryRecord(Timestamp date, long shopId, long dataId, UUID buyer,
                                   ShopOperationEnum shopType, int amount, double money, double tax
   ) {
-  }
-
-  public List<Shop> shops() {
-
-    return shops;
-  }
-
-  public Map<Long, Shop> shopsMapping() {
-
-    return shopsMapping;
   }
 }

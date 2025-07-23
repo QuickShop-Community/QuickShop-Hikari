@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Cuesta {0} crear una tienda.
 success-created-shop: <red>Tienda creada.
 shop-creation-cancelled: <red>Creación de tienda cancelada.
 shop-owner-self-trade: <yellow>Estás operando con tu propia tienda, por lo que no ganarás nada de saldo.
+shop-owner-self-trade-denied: spanish.
 purchase-out-of-space: <red>Esta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda.
 reloading-status:
   success: <green>Recarga completada sin errores.
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>No puedes comerciar con valores negativos
 display-turn-on: <green>Se encendió con éxito la visualización de la tienda.
+display-turn-off: <green>Se apagó con éxito la visualización de la tienda.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Eliminado a {0} como personal de tu tienda con éxito.
 nearby-shop-header: '<green>Tienda cercana que coincida con <aqua>{0}<green>:'
 backup-failed: No se puede hacer una copia de seguridad de la base de datos. Revisa la consola para más detalles.
@@ -441,6 +447,7 @@ command:
     taxaccount: <yellow>Configure la cuenta de impuestos que compra usando
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Alterna el estado de visualización del artículo de la tienda
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Gestión de permisos de la tienda
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>View and maintain QuickShop database
@@ -494,7 +501,6 @@ no-permission: <red>No tienes permiso para hacer eso.
 chest-was-removed: <red>El cofre ha sido eliminado.
 you-cant-afford-to-buy: <red>Cuesta {0} pero sólo tienes {1}
 shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> tiendas han sido eliminadas en el mundo <aqua>{1}<yellow>.
-display-turn-off: <green>Se apagó con éxito la visualización de la tienda.
 client-language-unsupported: <yellow>QuickShop no soporta el idioma de tu cliente, ahora volvemos a {0}.
 language-version: '63'
 not-managed-shop: <red>No eres el dueño o el moderador de esta tienda
@@ -562,9 +568,7 @@ argument-cannot-be: <red>El argumento <aqua>{0}</aqua> no puede ser <yellow>{1}<
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
 invalid-percentage: <red>Porcentaje no válido, debe añadir '%' después del número de porcentaje.
 display-fallback: |-
-  <red>Due to an internal failure, a fallback message is being displayed.
-  The value of this item may not be localized or processed correctly.
-  Please contact the server administrator.
+
 not-a-valid-time: |-
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
@@ -666,17 +670,16 @@ exported-database: <green>Database exported to <yellow>{0}</yellow>.
 importing-not-found: <red>The <yellow>{0}</yellow> file not found, please check the file path.
 importing-early-warning: |-
   <yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue.
-importing-database: <green>Importing database from backup, please wait...
-importing-failed: <red>Failed to import database, please check the server console.
+importing-database: <green>Importando base de datos desde la copia de seguridad, por favor espere...
+importing-failed: <red>Error al importar la base de datos, por favor comprueba la consola del servidor.
 imported-database: <green>Base de datos importada de <yellow>{0}</yellow>.
 transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
-transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop to you. Do you want to accept the request?
+transfer-single-request: <yellow>El Jugador <aqua>{0}</aqua> desea transferirte una tienda. ¿Quieres aceptar la solicitud?
 transfer-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Escribe <red>/quickshop transferasatacceso
 transfer-single-ask: |-
   <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
@@ -685,10 +688,10 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self:
-benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
-benefit-exists: <red>Target player already in benefits list on this shop.
-benefit-removed: <red>Target player has been removed from shop benefits.
-benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
+benefit-overflow: <red>La suma de todos los beneficios no puede ser mayor o igual al 100%.
+benefit-exists: <red>El jugador objetivo ya está en la lista de beneficios de esta.
+benefit-removed: <red>El jugador objetivo ha sido eliminado de los beneficios de la tienda.
+benefit-added: '¡<green>El jugador <aqua>{0}</aqua> se ha agregado a los beneficios de la tienda!'
 benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
 benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>

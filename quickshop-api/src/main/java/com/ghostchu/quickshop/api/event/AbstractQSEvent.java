@@ -42,6 +42,11 @@ public abstract class AbstractQSEvent extends Event {
     super(async);
   }
 
+  public static HandlerList getHandlerList() {
+
+    return HANDLERS;
+  }
+
   /**
    * Call event on Bukkit event bus and check if cancelled
    *
@@ -70,11 +75,6 @@ public abstract class AbstractQSEvent extends Event {
   public HandlerList getHandlers() {
 
     return getHandlerList();
-  }
-
-  public static HandlerList getHandlerList() {
-
-    return HANDLERS;
   }
 
 }

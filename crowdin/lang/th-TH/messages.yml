@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool:
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
 not-allowed-to-create: <red>ไม่สามารถสร้างร้านตรงนี้ได้
 disabled-in-this-world: <red>QuickShop  ถูกปิดในโลกนี้
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
 success-created-shop: <green>Shop created.
 shop-creation-cancelled: <red>Shop creation cancelled.
 shop-owner-self-trade: <yellow>You trade with your own shop. You may not gain any money.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop has run out of space. Contact the shop owner or staff to get it emptied.
 reloading-status:
   success: <green>Reload completed without any errors.
@@ -320,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>You can't trade negative amounts
 display-turn-on: <green>Successfully turn on the shop display.
+display-turn-off: <green>Successfully turn off the shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Cannot backup the database. Check the console for details.
@@ -452,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -506,7 +513,6 @@ no-permission: <red>คุณไม่ได้รับการอนุญา
 chest-was-removed: <red>The chest was removed.
 you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
 shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
 not-managed-shop: <red>You are not the owner or moderator of this Shop

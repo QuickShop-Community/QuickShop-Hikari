@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>새 상점 생성에 {0} 원이 소모됩니다
 success-created-shop: <red>상점이 생성되었습니다.
 shop-creation-cancelled: <red>상점 생성이 취소되었습니다.
 shop-owner-self-trade: <yellow>당신은 당신의 상점과 거래중이며 얼마의 돈도 얻지 못합니다.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요.
 reloading-status:
   success: <green>아무 오류도없이 리로드를 완료했습니다.
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>갯수는 음수(-)일수 없습니다. 양수로 입력해주세요. (숫자만 입력해주세요.)
 display-turn-on: <green>상점 디스플레이를 성공적으로 켰습니다.
+display-turn-off: <green>상점 디스플레이를 성공적으로 껏습니다.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>{0} 님을(를) 상점 관리자에서 삭제했습니다.
 nearby-shop-header: '<green>근방의 {0}에 일치하는 상점:'
 backup-failed: 데이터베이스에 백업할 수 없습니다, 자세한 내용은 콘솔을 확인해주세요.
@@ -441,6 +447,7 @@ command:
     taxaccount: <yellow>쇼핑에서 사용하는 세금 계정 설정
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>상점 표시 항목 상태 전환
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -494,7 +501,6 @@ no-permission: <red>당신에게는 이것을 사용할 권한이 없습니다.
 chest-was-removed: <red>상자는 제거되었습니다.
 you-cant-afford-to-buy: <red>가격은 {0} 원 이지만, 당신은 {1} 원 만 가지고 있습니다. (잔액이 모자랍니다.)
 shops-removed-in-world: <yellow>총 <aqua>{0}<yellow>개의 상점이 <aqua>{1}<yellow>월드에서 삭제되었습니다.
-display-turn-off: <green>상점 디스플레이를 성공적으로 껏습니다.
 client-language-unsupported: <yellow>퀵 샵이 당신의 언어를 지원하지 않습니다, {0} 언어로 돌아갑니다.
 language-version: '63'
 not-managed-shop: <red>당신은 상점의 주인이나 관리자가 아닙니다

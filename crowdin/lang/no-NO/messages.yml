@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>Du har ikke råd til dette, det koster <green>{
 success-created-shop: <green>Butikken ble opprettet.
 shop-creation-cancelled: <red>Opprettelse av butikk ble kansellert.
 shop-owner-self-trade: <yellow>Du handler i din egen butikk. <gray>Du kan ikke tjene penger på dette.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.
 reloading-status:
   success: <green>Utvidelsen ble lastet på nytt uten feil.
@@ -320,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Du kan ikke handle med negativt beløp
 display-turn-on: <green>Butikkvisning aktivert.
+display-turn-off: <green>Utstillingsvaren er slått av.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Spiller {0} ble fjernet som ansatt i din butikk.
 nearby-shop-header: '<green>Nærliggende butikker som matcher <aqua>{0}</aqua>:'
 backup-failed: Kan ikke sikkerhetskopiere databasen. Kontroller konsollen for detaljer.
@@ -452,6 +458,7 @@ command:
     taxaccount: <yellow>Angi skattekontoen som butikken bruker
     name: <yellow>Endrer navnet på en bestemt butikk
     toggledisplay: <yellow>Slå av/på butikkens utstillingsvare
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Butikk tillatelsesadministrasjon
     lookup: <yellow>Administrer oppslagsverket for gjenstander
     database: <yellow>Vis og vedlikehold QuickShop-databasen
@@ -506,7 +513,6 @@ no-permission: <red>Du har ikke tillatelse til å gjøre det.
 chest-was-removed: <red>Kisten ble fjernet.
 you-cant-afford-to-buy: <red>Det koster {0}, men du har bare {1}
 shops-removed-in-world: <yellow>Totalt <aqua>{0}</aqua> butikker har blitt slettet i verden <aqua>{1}</aqua>.
-display-turn-off: <green>Utstillingsvaren er slått av.
 client-language-unsupported: <yellow>QuickShop støtter ikke ditt klient språk. Faller tilbake til språkinnstillingen {0}...
 language-version: '63'
 not-managed-shop: <red>Du er ikke eier eller moderator for denne butikken

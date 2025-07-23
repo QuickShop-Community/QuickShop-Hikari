@@ -133,8 +133,8 @@ public final class Main extends CompatibilityModule implements Listener {
         return;
       }
       if(player.hasPermission("quickshop.superior.override")) {
-       event.setCancelled(false, "admin override using quickshop.superior.override");
-       return;
+        event.setCancelled(false, "admin override using quickshop.superior.override");
+        return;
       }
 
 
@@ -148,7 +148,7 @@ public final class Main extends CompatibilityModule implements Listener {
         final SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
         if(!island.getOwner().getUniqueId().equals(uuid) && !island.isMember(superiorPlayer)) {
 
-            event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+          event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.superiorskyblock.owner-member-create-only").forLocale());
         }
       }
     });

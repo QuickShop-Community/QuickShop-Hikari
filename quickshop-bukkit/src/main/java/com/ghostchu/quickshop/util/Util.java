@@ -53,6 +53,8 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.management.ManagementFactory;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +67,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Util {
@@ -319,6 +323,36 @@ public class Util {
     for(final String log : logs) {
       Log.debug(Level.INFO, log, caller);
     }
+  }
+
+  public static BigDecimal parse(final String input) {
+
+    try {
+
+      return new BigDecimal(input);
+    } catch(final Exception ignore) {
+
+      final String shortcuts = "kMGTPEZYXWVUN₮";
+      final Matcher matcher = Pattern.compile("([0-9]+(?:\\.[0-9]*)?)[" + shortcuts + "]$").matcher(input);
+      if(matcher.find()) {
+
+        final BigDecimal baseValue = new BigDecimal(matcher.group(1));
+        final char suffix = input.charAt(input.length() - 1);
+        final int exponent = (shortcuts.indexOf(suffix) + 1) * 3; // Exponent based on position in the string
+
+        if(exponent > 0) {
+
+          final int digits = QuickShop.getInstance().getConfig().getInt("maximum-digits-in-price", -1);
+          final BigDecimal value = baseValue.multiply(BigDecimal.TEN.pow(exponent));
+          if(digits == -1) {
+            return value;
+          }
+
+          return value.setScale(digits, RoundingMode.HALF_UP);
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -589,7 +623,7 @@ public class Util {
   public static boolean findStringInList(@NotNull final List<Component> components, @NotNull final String find) {
 
     for(final Component name : components) {
-        if(findStringInComponent(name, find)) { return true; }
+      if(findStringInComponent(name, find)) { return true; }
     }
 
     return false;

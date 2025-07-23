@@ -240,8 +240,8 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
   public void sendSpawnPacket(@NotNull final Player player) {
 
     final PacketHandlerSendSpawnEvent<T> event = new PacketHandlerSendSpawnEvent<>(manager.packetHandler(),
-                                                                                       this.packetFactory,
-                                                                                       spawnPacket);
+                                                                                   this.packetFactory,
+                                                                                   spawnPacket);
     if(event.callCancellableEvent()) {
 
       Log.debug("Canceled the sending of the spawn packet: " + shop.getShopId());
@@ -254,8 +254,8 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
   public void sendMetaPacket(@NotNull final Player player) {
 
     final PacketHandlerSendMetaEvent<T> event = new PacketHandlerSendMetaEvent<>(manager.packetHandler(),
-                                                                                    this.packetFactory,
-                                                                                    metaPacket);
+                                                                                 this.packetFactory,
+                                                                                 metaPacket);
     if(event.callCancellableEvent()) {
 
       Log.debug("Canceled the sending of the meta packet: " + shop.getShopId());
@@ -268,8 +268,8 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
   public void sendDestroyPacket(@NotNull final Player player) {
 
     final PacketHandlerSendDestroyEvent<T> event = new PacketHandlerSendDestroyEvent<>(manager.packetHandler(),
-                                                                                     this.packetFactory,
-                                                                                     destroyPacket);
+                                                                                       this.packetFactory,
+                                                                                       destroyPacket);
     if(event.callCancellableEvent()) {
 
       Log.debug("Canceled the sending of the destroy packet: " + shop.getShopId());

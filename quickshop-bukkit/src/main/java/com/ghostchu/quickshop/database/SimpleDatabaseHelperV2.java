@@ -214,6 +214,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   private void addEncodedColumn() {
+
     fastBackup();
     try {
       getManager().alterTable(DataTables.DATA.getName())
@@ -731,8 +732,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     final var action = new PreparedSQLBatchUpdateActionImpl<>((SQLManagerImpl)getManager(), Integer.class,
-                                                        "INSERT INTO " + DataTables.PLAYERS.getName() + "(uuid, locale, cachedName) VALUES (?, ?, ?) " +
-                                                        "ON DUPLICATE KEY UPDATE cachedName = ?"
+                                                              "INSERT INTO " + DataTables.PLAYERS.getName() + "(uuid, locale, cachedName) VALUES (?, ?, ?) " +
+                                                              "ON DUPLICATE KEY UPDATE cachedName = ?"
     );
     for(final Triple<UUID, String, String> data : unspecificLocale) {
       action.addParamsBatch(data.getLeft().toString(), "en_us", data.getRight(), data.getRight());
@@ -919,6 +920,23 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
   }
 
+  private void performLogPurchasesIndex() {
+
+    try {
+      getManager().alterTable(DataTables.LOG_PURCHASE.getName())
+              .addIndex(IndexType.INDEX, "idx_log_purchase_shop", "shop")
+              .execute();
+      getManager().alterTable(DataTables.LOG_PURCHASE.getName())
+              .addIndex(IndexType.INDEX, "idx_log_purchase_time", "time")
+              .execute();
+      getManager().alterTable(DataTables.LOG_PURCHASE.getName())
+              .addIndex(IndexType.INDEX, "idx_log_purchase_buyer", "buyer")
+              .execute();
+    } catch(final SQLException e) {
+      plugin.logger().warn("Cannot setup the table index", e);
+    }
+  }
+
   static class DatabaseUpgrade {
 
     private final SimpleDatabaseHelperV2 parent;
@@ -1024,24 +1042,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       return true;
     }
   }
-
-  private void performLogPurchasesIndex() {
-
-    try {
-      getManager().alterTable(DataTables.LOG_PURCHASE.getName())
-              .addIndex(IndexType.INDEX, "idx_log_purchase_shop", "shop")
-              .execute();
-      getManager().alterTable(DataTables.LOG_PURCHASE.getName())
-              .addIndex(IndexType.INDEX, "idx_log_purchase_time", "time")
-              .execute();
-      getManager().alterTable(DataTables.LOG_PURCHASE.getName())
-              .addIndex(IndexType.INDEX, "idx_log_purchase_buyer", "buyer")
-              .execute();
-    } catch(final SQLException e) {
-      plugin.logger().warn("Cannot setup the table index", e);
-    }
-  }
-
 
   private record ShopInfo(long shopID, String world, int x, int y, int z) implements InfoRecord {
 
