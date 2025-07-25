@@ -322,10 +322,10 @@ signs:
 negative-amount: <red>Ви не можете торгувати від'ємною кількістю
 display-turn-on: <green>Успішно увімкнено відображення магазину.
 display-turn-off: <green>Успішно вимкнено відображення магазину.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-owned: <green>Успішно ввімкнено вітрини для всіх власних магазинів.
+display-turn-off-owned: <green>Успішно вимкнено вітрини для всіх власних магазинів.
+display-turn-on-all: <green>Успішно ввімкнено вітрини для всіх магазинів сервера.
+display-turn-off-all: <green>Успішно вимкнено вітрини для всіх магазинів сервера.
 shop-staff-deleted: <green>Успішно видалено {0} як співробітника з вашого магазину.
 nearby-shop-header: '<green>Магазини поблизу, що відповідають <aqua>{0}</aqua>:'
 backup-failed: Не вдалося створити резервну копію бази даних. Перевірте консоль для деталей.
