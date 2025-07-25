@@ -61,7 +61,7 @@ no-pending-action: <red>No tienes ninguna acción pendiente
 refill-success: <green>Reabastecido con éxito
 failed-to-paste: <red>Fallo al subir datos a Pastebin. Comprueba tu conexión a internet e intenta de nuevo. (Revisa la consola para más detalles)
 shop-out-of-stock-name: <dark_purple>¡Tu tienda {0} se ha quedado sin {1}!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
+shop-name-invalid: <red>El nombre de la tienda <yellow>{0}</yellow> no es válido. ¡Elige otro!
 how-many-buy-stack: <yellow>Ingrese en el chat, cuantos bultos desea <aqua>COMPRAR<green>. Hay elementos <yellow>{0}<green> en cada lote y puede comprar <yellow>{1}<green> lote. Ingresa <aqua>{2}<green> en el chat para comprar todo.
 exceeded-maximum: <red>El valor excedió el valor máximo en Java.
 unlimited-shop-owner-keeped: '<yellow>Atención: El dueño de la tienda todavía es un dueño ilimitado de la tienda, necesitas reconfigurar tu nuevo dueño de la tienda.'
@@ -311,10 +311,10 @@ signs:
 negative-amount: <red>No puedes comerciar con valores negativos
 display-turn-on: <green>Se encendió con éxito la visualización de la tienda.
 display-turn-off: <green>Se apagó con éxito la visualización de la tienda.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-owned: <green>Se ha activado correctamente la pantalla de la tienda para todas las tiendas propias.
+display-turn-off-owned: <green>Se ha desactivado correctamente la pantalla de la tienda para todas las tiendas propias.
+display-turn-on-all: <green>Se ha activado correctamente la pantalla de la tienda para todas las tiendas propias.
+display-turn-off-all: <green>Se ha desactivado correctamente la pantalla de la tienda para todas las tiendas propias.
 shop-staff-deleted: <green>Eliminado a {0} como personal de tu tienda con éxito.
 nearby-shop-header: '<green>Tienda cercana que coincida con <aqua>{0}<green>:'
 backup-failed: No se puede hacer una copia de seguridad de la base de datos. Revisa la consola para más detalles.
@@ -447,7 +447,7 @@ command:
     taxaccount: <yellow>Configure la cuenta de impuestos que compra usando
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Alterna el estado de visualización del artículo de la tienda
-    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
+    toggledisplayall: <yellow>Alternar todos los elementos de la tienda que posees, o para el servidor.
     permission: <yellow>Gestión de permisos de la tienda
     lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>View and maintain QuickShop database
@@ -574,7 +574,7 @@ not-a-valid-time: |-
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
   <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: <red>You can't specify a time in the past.
+invalid-past-time: <red>No se puede especificar una hora en el pasado.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
   sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
@@ -592,11 +592,11 @@ debug:
   sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
   force-shop-reload: <yellow>Forzando recargar todas las tiendas cargadas...
-  force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
-  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
-  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
-  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
-  force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
+  force-shop-reload-complete: <green>Forzó recargar <aqua>{0}</aqua> tiendas.
+  force-shop-loader-reload: <yellow>Forzando recarga del cargador de tienda...
+  force-shop-loader-reload-unloading-shops: <yellow>Descargando <aqua>{0}</aqua> tiendas cargadas...
+  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Eliminando <aqua>{0}</aqua> tiendas de la memoria...
+  force-shop-loader-reload-reloading-shop-loader: <yellow>Volviendo a llamar al cargador de tiendas para recargar todas las tiendas desde la base de datos...
   force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
@@ -1630,14 +1630,14 @@ history:
       - "<white>Purchaser: <yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
       - "<white>Balance: <yellow>{4}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
-      - "<white>Final earning: <yellow>{6}</yellow></white>"
-    query-icon: "<gray>Please wait, querying...</gray>"
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    current-page: "<white>Page {0}</white>"
-    summary-icon-title: "<green>Shop Summary"
-    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
+      - "<white>Impuesto: <yellow>{5}</yellow></white>"
+      - "<white>Final: <yellow>{6}</yellow></white>"
+    query-icon: "<gray>Por favor espere, consultando...</gray>"
+    previous-page: "<white><< Página Anterior</white>"
+    next-page: "<white>Página siguiente >></white>"
+    current-page: "<white>Página {0}</white>"
+    summary-icon-title: "<green>Resumen de la tienda"
+    recent-purchases: "<white><aqua>{0}</aqua> compras recientes: <yellow>{1}</yellow></white>"
     recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
     total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
     total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
