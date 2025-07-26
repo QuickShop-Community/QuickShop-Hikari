@@ -166,7 +166,7 @@ translate-not-completed-yet-url: 'La traducción del lenguaje {0} aún no fue co
 success-removed-shop: <green>La tienda ha sido eliminada.
 currency-set: <green>Divisa de la tienda ha sido establecida correctamente a {0}.
 shop-purged-start: <green>La purga de la tienda ha comenzado, revisa la consola para más detalles.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
+economy-transaction-failed: <red>Lo sentimos, pero se ha producido un error interno al procesar su transacción. La transacción se ha cancelado y se ha revertido cualquier operación económica. Póngase en contacto con los administradores del servidor si el error persiste.
 nothing-to-flush: <green>No tienes mensajes de tienda nuevos.
 no-price-change: <red>¡Esto no cambiaría el precio!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
@@ -294,18 +294,18 @@ signs:
   item-right: ''
   out-of-space: Sin espacio
   unlimited: Ilimitado
-  stack-selling: Vendo {0}
+  stack-selling: Vendemos (hay {0})
   stack-price: '{0} por {1}x {2}'
   status-unavailable: <red>
   out-of-stock: Agotado
   stack-buying: Compro {0}
   freeze: Comercio desactivado
   price: '{0} c/u'
-  buying: Compro {0}
+  buying: Compramos {0}
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Vendo {0}
+  selling: Vendemos (hay {0})
   status-available: <green>
   item-left: ''
 negative-amount: <red>No puedes comerciar con valores negativos
@@ -338,35 +338,35 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: "<green>Cantidad por transacción: <aqua>{0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]\n"
   price-hover: <yellow>Click para establecer un precio nuevo.
   remove: <red><bold>[Eliminar tienda]
-  mode-buying-hover: <yellow>Click para cambiar a modo de VENTA.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  mode-buying-hover: <yellow>Clic para cambiar a modo de VENTA.
+  empty: '<green>Vaciar: Eliminar todos los elementos <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>Click para establecer la cantidad de artículos por stack. Introduce 1 para comportamiento por defecto.
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<green>Modo de congelación: <aqua>{0} <yellow>[<bold><light_purple>Alternar</light_purple></bold>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting: '<green>Siempre contando: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  setowner: '<green>Propietario: <aqua>{0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  freeze: '<green>Congelado: <aqua>{0} <yellow>[<bold><light_purple>Cambiar</light_purple></bold>]'
+  price: '<green>Precio: <aqua>{0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   currency-hover: <yellow>Click para establecer o remover la divisa que utiliza la tienda
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Modo: <aqua>Venta <yellow>[<light_purple><bold>Cambiar<yellow>]'
+  mode-selling: '<green>Modo: <aqua>Vendes <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Click para cambiar el dueño.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited-hover: <yellow>Click para alternar si la tienda es ilimitada.
+  mode-buying: '<green>Modo: <aqua>Compras <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  item: '<green>Artículo: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  unlimited: '<green>Ilimitado: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  unlimited-hover: <yellow>Clic para alternar si la tienda es ilimitada.
   refill-hover: <yellow>Click para reaprovisionar la tienda.
   remove-hover: <yellow>Click para eliminar esta tienda.
-  toggledisplay-hover: <yellow>Alternar el estado del mostrar item de la tienda
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  toggledisplay-hover: <yellow>Alternar el estado del mostrar artículo de la tienda
+  refill: '<green>Rellenar: Recarga los artículos. <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>Cambiar estado de congelación de la tienda.,
   lock-hover: <yellow>Activar/Desactivar protección contra bloqueo de la tienda.
   item-hover: <yellow>Clic para cambiar el artículo de la tienda
   infomation: '<green>Panel de Control de la tienda:'
-  mode-selling-hover: <yellow>Click para cambiar a modo de COMPRA.
+  mode-selling-hover: <yellow>Clic para cambiar a modo de COMPRA.
   empty-hover: <yellow>Click para limpiar el inventario de la tienda.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
   history: '<green>Historial: <yellow>[<bold><light_purple>Ver</light_purple></bold>]</yellow>'
