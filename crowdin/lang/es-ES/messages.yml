@@ -62,7 +62,7 @@ refill-success: <green>Reabastecido con éxito
 failed-to-paste: <red>Fallo al subir datos a Pastebin. Comprueba tu conexión a internet e intenta de nuevo. (Revisa la consola para más detalles)
 shop-out-of-stock-name: <dark_purple>¡Tu tienda de empresa {0} se ha quedado sin {1}!
 shop-name-invalid: <red>El nombre de la tienda <yellow>{0}</yellow> no es válido. ¡Elige otro!
-how-many-buy-stack: <aqua>Ingrese en el chat <yellow>el <aqua>número <yellow>de paquetes que desea <aqua>COMPRAR<green>. Hay <yellow>{0}<green> unidades en cada lote y quedan <yellow>{1}<green> lotes disponibles. Ingresa <aqua>{2}<green> en el chat para comprar todos los disponibles.
+how-many-buy-stack: <aqua>Ingresa en el chat <yellow>el <aqua>número <yellow>de paquetes que desea <aqua>COMPRAR<green>. Hay <yellow>{0}<green> unidades en cada paquete y quedan <yellow>{1}<green> lotes disponibles. Ingresa <aqua>{2}<green> en el chat para comprar todos los disponibles.
 exceeded-maximum: <red>El valor excedió el valor máximo en Java.
 unlimited-shop-owner-keeped: '<yellow>Atención: El dueño de la tienda todavía es un dueño ilimitado de la tienda, necesitas reconfigurar tu nuevo dueño de la tienda.'
 no-enough-money-to-keep-shops: <red>¡No dispones del suficiente dinero para mantener tus tiendas de empresa! Todas tus tiendas de empresa han sido eliminadas...
@@ -158,7 +158,7 @@ metric:
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Mundo: {4}<newline><gold>Dueño: <gray>{5}<newline><gold>Tipo de tienda: <gray>{6}<newline><gold>Objeto: <gray>{7}<newline><gold>Precio: <gray>{8}
   time-hover: '<yellow>Tiempo: {0}'
-  amount-stack-hover: <yellow>pila de{0}
+  amount-stack-hover: <yellow>{0}x paquete
 permission-denied-3rd-party: '<red>Permiso denegado: Plugin de terceros [{0}].'
 you-dont-have-that-many-items: <red>Solo tienes {0} {1}.
 complete: <green>¡Terminado!
@@ -292,14 +292,14 @@ owner-bypass-check: <yellow>Pasado todos los controles. ¡Comercio exitoso! (¡A
 april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>\n<yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>\n<aqua>Claim it by watch the video tutorial below!</aqua>\n<hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
 signs:
   item-right: ''
-  out-of-space: Sin espacio
+  out-of-space: Lleno
   unlimited: Ilimitado
   stack-selling: Vendemos (hay {0})
   stack-price: '{0} por {1}x {2}'
   status-unavailable: <red>
   out-of-stock: Agotado
   stack-buying: Compro {0}
-  freeze: Comercio desactivado
+  freeze: Sin Servicio
   price: '{0} c/u'
   buying: Compramos {0}
   header: '{1}{0}'
@@ -332,8 +332,8 @@ language-info-panel:
   translate-on-crowdin: '[Traduce en Crowdin]'
 item-not-exist: <red>El objeto <yellow>{0} <red>no existe, por favor comprueba tu ortografía.
 shop-creation-failed: <red>Falló la creación de la tienda, por favor contacte con el administrador del servidor.
-inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
-no-creative-break: <red>No puedes romper las tiendas de otros jugadores en modo Creativo. Cambia a modo Supervivencia o intenta usar superherramienta {0} en su lugar.
+inventory-space-full: <red>Tu espacio restante en el inventario solo permite agregar <green>{1}</green> artículos más. ¡Intenta liberar espacio en tu inventario!
+no-creative-break: <red>No puedes romper las tiendas de empresa de otros jugadores en modo Creativo. Cambia a modo Supervivencia o intenta usar super herramienta {0} en su lugar.
 booleanformat:
   success: <green>✔
   failed: <red>✘
@@ -343,7 +343,7 @@ controlpanel:
   remove: <red><bold>[Eliminar tienda]
   mode-buying-hover: <yellow>Clic para cambiar a modo de VENTA.
   empty: '<green>Vaciar: Eliminar todos los elementos <yellow>[<light_purple><bold>OK</bold><yellow>]'
-  stack-hover: <yellow>Click para establecer la cantidad de artículos por stack. Introduce 1 para comportamiento por defecto.
+  stack-hover: <yellow>Clic para establecer la cantidad de artículos por paquete. Introduce 1 para comportamiento por defecto.
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
   alwayscounting: '<green>Siempre contando: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   setowner: '<green>Propietario: <aqua>{0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
@@ -486,14 +486,14 @@ command:
   trade-item-now: <green>Ahora intercambiando <yellow>{0}x {1}
   no-world-given: <red>Por favor especifica un nombre de mundo
   format-disabled: <red>/{0} {1} <gray>- {2}
-  invalid-bulk-amount: <red>El valor dado {0} es mayor que el tamaño máximo de la pila o inferior a uno
+  invalid-bulk-amount: <red>El valor dado {0} es mayor que el tamaño máximo del paquete o inferior a uno
 currency-not-support: <red>El plugin de economía no soporta funciones multidivisas.
 trading-in-creative-mode-is-disabled: <red>No puedes comerciar con esta tienda mientras estás en modo creativo.
 the-owner-cant-afford-to-buy-from-you: <red>Esto cuesta {0} pero el propietario de la tienda sólo dispone de {1}
 you-cant-afford-shop-naming: <red>No puedes pagar el cambio de nombre de la tienda, cuesta {0}.
 inventory-error: |-
   <red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
-integrations-check-failed-create: La integración {0} impide la creación de la tienda
+integrations-check-failed-create: La integración {0} impide la creación de la tienda de empresa
 shop-out-of-space: <dark_purple>Tu tienda en {0}, {1}, {2} ahora está llena.
 admin-shop: Tienda Admin
 no-anythings-in-your-hand: <red>No hay nada en tu mano.
@@ -521,7 +521,7 @@ permission:
     access-inventory: <yellow>Permiso para permitir a los usuarios que tienen esto acceder al inventario de la tienda.
     ownership-transfer: <yellow>Permiso para permitir a los usuarios que tienen esto transferir la propiedad de la tienda.
     management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
-    toggle-display: <yellow>Permiso para permitir a los usuarios que tienen esto alternar el objeto de exhibición de la tienda.
+    toggle-display: <yellow>Permiso para permitir a los usuarios que tienen esto alternar el artículo de exhibición de la tienda de empresa.
     set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
     set-price: <yellow>Permiso para permitir a los usuarios que tienen esto establecer el precio de la tienda.
     set-item: <yellow>Permiso para permitir a los usuarios que tienen esto establecer el artículo de la tienda.
@@ -629,7 +629,7 @@ debug:
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
   marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
-  display-removed: "<green>Successfully removed <yellow>{0}</yellow> QuickShop display items/entities from the worlds."
+  display-removed: ""
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
   scanning-async: <yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later.
@@ -695,7 +695,7 @@ benefit-added: '¡<green>El jugador <aqua>{0}</aqua> se ha agregado a los benefi
 benefit-updated: <green>¡Se han actualizado los beneficios del jugador <aqua>{0}</aqua>!
 benefit-query: <green>¡Esta tienda tiene <yellow>{0}</yellow> jugadores en la lista de beneficios!
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>
-tag-added: '<green>¡Se ha añadido <aqua>#{0}</aqua> a esta tienda!'
+tag-added: '<green>¡Se ha añadido <aqua>#{0}</aqua> a esta tienda de empresa!'
 tag-add-duplicate: '<red>¡La etiqueta <aqua>#{0}</aqua> ya existe en esta tienda!'
 tag-removed: '<green>Eliminado con éxito <aqua>#{0}</aqua> de esta tienda!'
 tag-remove-not-exists: '¡La etiqueta <aqua>#{0}</aqua> no existe en esta tienda!'
@@ -1383,7 +1383,7 @@ addon:
       your-shops-managed: todas tus tiendas (administradas)
       server: todo el servidor
     code-type:
-      SERVER_ALL_SHOPS: Todas las tiendas en esta ciudad
+      SERVER_ALL_SHOPS: Todas las tiendas de empresa en esta ciudad
       PLAYER_ALL_SHOPS: Todas las tiendas creadas por el propietario del código
       SPECIFIC_SHOPS: Tiendas específicas
     discount-code-details: |-
@@ -1527,7 +1527,7 @@ internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy se
 no-sign-type-given: "<red>Necesitas proporcionar material para los carteles. Los materiales disponibles son:{0}"
 sign-type-invalid: "<red>El tipo <yellow>{0}</yellow> no es un material de signo válido."
 delete-controlpanel-button-confirm: "<red>¿De verdad quieres eliminar esta tienda? Haga clic en el botón <bold>[Eliminar tienda]</bold> botón de nuevo en {0} segundos para confirmar."
-cannot-suggest-price: "<red>Lo sentimos, por el momento, no hay más personas que estén comerciando el mismo artículo que usted y no hay datos suficientes para generar un precio sugerido."
+cannot-suggest-price: "<red>Lo sentimos, por el momento, no hay más personas que estén comerciando el mismo artículo que tú y no hay datos suficientes para generar un precio sugerido."
 price-suggest: "<green>Basado en datos de <aqua>{0}</aqua> tiendas que comercian este mismo artículo, el precio más alto es <light_purple>{1}</light_purple>, el precio más bajo es <light_purple>{2}</light_purple>, el precio promedio es <light_purple>{3}</light_purple>y la mediana del precio es <light_purple>{4}</light_purple>. <newline><yellow>Es recomendable que fijes tu precio alrededor de <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Sugerencia para el tipo {0}.</green>{1}"
 suggest-wait: "<green>Por favor espere... Calculando el precio recomendado."
@@ -1586,7 +1586,7 @@ gui:
     title: "Comerciante"
     change-icon:
       display: "<bold><green>Cambiar precio</green></bold>"
-      enter: "<yellow>Ingrese un nuevo precio en el chat.</yellow>"
+      enter: "<yellow>Ingresa un nuevo precio en el chat.</yellow>"
       lore:
         - "<white>Haz clic para cambiar el precio de cada artículo en tu tienda.</white>"
         - "<white>Precio actual:</white> <yellow>{0}</yellow>"
@@ -1603,7 +1603,7 @@ gui:
         - "<white>Haz clic para administrar el personal (staff) de tu tienda.</white>"
     remove-icon:
       display: "<bold><red>Eliminar Tienda</red></bold>"
-      confirm: "<yellow>Escriba 'confirm' (si no funciona, use 'confirmar') en el chat para confirmar la eliminación. O introduzca cualquier otra cosa para detener la eliminación.</yellow>"
+      confirm: "<yellow>Escribe 'confirm' (si no funciona, use 'confirmar') en el chat para confirmar la eliminación. O introduzca cualquier otra cosa para detener la eliminación.</yellow>"
       lore:
         - "<white>Haz clic para eliminar tu tienda.</white>"
         - "<grey>También puedes romper el letrero/cofre"
@@ -1636,7 +1636,7 @@ history:
     previous-page: "<white><< Página Anterior</white>"
     next-page: "<white>Página siguiente >></white>"
     current-page: "<white>Página {0}</white>"
-    summary-icon-title: "<green>Resumen de la tienda"
+    summary-icon-title: "<green>Resumen de la tienda de empresa"
     recent-purchases: "<white><aqua>{0}</aqua> compras recientes: <yellow>{1}</yellow></white>"
     recent-purchase-balance: "<white><aqua>{0}</aqua> facturado reciente: <yellow>{1}</yellow></white>"
     total-purchases: "<white>Compras totales: <yellow>{0}</yellow></white>"
