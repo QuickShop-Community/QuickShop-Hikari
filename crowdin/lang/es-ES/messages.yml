@@ -62,7 +62,7 @@ refill-success: <green>Reabastecido con éxito
 failed-to-paste: <red>Fallo al subir datos a Pastebin. Comprueba tu conexión a internet e intenta de nuevo. (Revisa la consola para más detalles)
 shop-out-of-stock-name: <dark_purple>¡Tu tienda {0} se ha quedado sin {1}!
 shop-name-invalid: <red>El nombre de la tienda <yellow>{0}</yellow> no es válido. ¡Elige otro!
-how-many-buy-stack: <yellow>Ingrese en el chat, cuantos bultos desea <aqua>COMPRAR<green>. Hay elementos <yellow>{0}<green> en cada lote y puede comprar <yellow>{1}<green> lote. Ingresa <aqua>{2}<green> en el chat para comprar todo.
+how-many-buy-stack: <aqua>Ingrese en el chat <yellow>el <aqua>número <yellow>de paquetes que desea <aqua>COMPRAR<green>. Hay <yellow>{0}<green> unidades en cada lote y quedan <yellow>{1}<green> lotes disponibles. Ingresa <aqua>{2}<green> en el chat para comprar todos los disponibles.
 exceeded-maximum: <red>El valor excedió el valor máximo en Java.
 unlimited-shop-owner-keeped: '<yellow>Atención: El dueño de la tienda todavía es un dueño ilimitado de la tienda, necesitas reconfigurar tu nuevo dueño de la tienda.'
 no-enough-money-to-keep-shops: <red>¡No dispones del suficiente dinero para mantener tus tiendas! Todas tus tiendas han sido eliminadas...
