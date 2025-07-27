@@ -55,17 +55,17 @@ quick-fill:
 average-price-nearby: '<green>Precio medio en esta zona: <yellow>{0}'
 inventory-check-global-alert: "<red>[[Inventory Check] ¡Aviso! Encontró un elemento de QuickShop <gold>{2}</gold> en inventario en <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, que no debería ocurrir, Esto generalmente significa que alguien está explotando malintencionadamente el exploit para duplicar el elemento de visualización."
 digits-reach-the-limit: <red>Has alcanzado el límite de decimales en el precio.
-currency-unset: <green>Divisa de la tienda ha sido removida con éxito. Usando la configuración predeterminada ahora.
+currency-unset: <green>Divisa de la tienda de empresa ha sido removida con éxito. Usando la configuración predeterminada ahora.
 you-cant-create-shop-in-there: <red>No tienes permiso para crear una tienda en este lugar.
 no-pending-action: <red>No tienes ninguna acción pendiente
 refill-success: <green>Reabastecido con éxito
 failed-to-paste: <red>Fallo al subir datos a Pastebin. Comprueba tu conexión a internet e intenta de nuevo. (Revisa la consola para más detalles)
-shop-out-of-stock-name: <dark_purple>¡Tu tienda {0} se ha quedado sin {1}!
+shop-out-of-stock-name: <dark_purple>¡Tu tienda de empresa {0} se ha quedado sin {1}!
 shop-name-invalid: <red>El nombre de la tienda <yellow>{0}</yellow> no es válido. ¡Elige otro!
 how-many-buy-stack: <aqua>Ingrese en el chat <yellow>el <aqua>número <yellow>de paquetes que desea <aqua>COMPRAR<green>. Hay <yellow>{0}<green> unidades en cada lote y quedan <yellow>{1}<green> lotes disponibles. Ingresa <aqua>{2}<green> en el chat para comprar todos los disponibles.
 exceeded-maximum: <red>El valor excedió el valor máximo en Java.
 unlimited-shop-owner-keeped: '<yellow>Atención: El dueño de la tienda todavía es un dueño ilimitado de la tienda, necesitas reconfigurar tu nuevo dueño de la tienda.'
-no-enough-money-to-keep-shops: <red>¡No dispones del suficiente dinero para mantener tus tiendas! Todas tus tiendas han sido eliminadas...
+no-enough-money-to-keep-shops: <red>¡No dispones del suficiente dinero para mantener tus tiendas de empresa! Todas tus tiendas de empresa han sido eliminadas...
 3rd-plugin-build-check-failed: '<red>El complemento de terceros: <bold>{0}<reset><red> ha denegado la comprobación de permisos, ¿has ajustado los permisos?'
 not-a-integer: <red>Solo puedes introducir un número, tu entrada era {0}.
 translation-country: '&c&lIdioma: &b&lEspañol (es_ES)'
@@ -83,7 +83,7 @@ success-created-shop: <red>Tienda creada.
 shop-creation-cancelled: <red>Creación de tienda cancelada.
 shop-owner-self-trade: <yellow>Estás operando con tu propia tienda, por lo que no ganarás nada de saldo.
 shop-owner-self-trade-denied: spanish.
-purchase-out-of-space: <red>Esta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda.
+purchase-out-of-space: <red>Esta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda de la empresa para vaciar la tienda.
 reloading-status:
   success: <green>Recarga completada sin errores.
   scheduled: <green>Recarga completada. <gray>(Algunos cambios requieren un tiempo para hacer efecto)
@@ -120,7 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] El elemento NBT es demasiado grande para mostrarlo
   stock: '<green>Existencias <yellow>{0}'
   this-shop-is-buying: <green>Esta tienda está <light_purple>COMPRANDO<green> artículos.
-  this-shop-is-frozen: <green>La tienda esta actualmente <red>congelada<green>.
+  this-shop-is-frozen: <green>La tienda de empresa está actualmente <red>congelada<green>. No opera por el momento.
   successfully-sold: '<green>Vendido con éxito:'
   total-value-of-chest: '<green>Valor total del cofre: <yellow>{0}'
 currency-not-exists: <red>No se puede encontrar la divisa que quieres establecer, tal vez sea mala ortografía o esa moneda no está disponible en este mundo.
@@ -230,7 +230,7 @@ updatenotify:
     - Ko~ko~da~yo~ QuickShop tiene una nueva actualización {0} ~
     - '¡Paimon quiere decirte que QuickShop tiene una nueva actualización {0}!'
   remote-disable-warning: '<red>Esta versión de QuickShop ha sido marcada como deshabilitada por el servidor remoto. Esto significa que esta versión puede tener serios problemas. Más detalles en nuestra página de SpigotMC: {0}. Este aviso aparecerá y te advertirá en tu consola hasta que cambies a una versión aceptada. Sin embargo, esto no tiene por qué afectar al rendimiento de tu servidor.'
-purchase-out-of-stock: <red>Esta tienda se quedó sin stock, Contacte con el propietario o personal de la tienda para rellenar el stock.
+purchase-out-of-stock: <red>Esta tienda de empresa se quedó sin existencias, Contacte con el propietario o personal de la tienda de empresa para rellenar las existencias.
 nearby-shop-entry: '<green>- Info:{0} <green>Precio:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>Distancia: <aqua>{5} <green>Bloque(s)'
 chest-title: Tienda de QuickShop
 console-only: <red>Este comando solo puede ser ejecutado por Consola.
@@ -263,9 +263,9 @@ bungee-cross-server-msg: '<yellow>Tienda Rápida CSM: <green>{0}'
 saved-to-path: Copia de seguridad guardad en {0}.
 shop-now-freezed: <green>Has congelado la tienda. ¡Nadie puede comerciar con ella ahora!
 price-is-now: <green>El nuevo precio de la tienda es <yellow>{0}
-shops-arent-locked: <red>¡Recuerda, las tiendas NO están protegidas contra el robo! ¡Si quieres detener a los ladrones, protege tu cofre con LWC, Lockette, BlockLocker, etc!
+shops-arent-locked: <red>¡Recuerda, las tiendas de empresa NO están protegidas contra el robo! ¡Si quieres detener a los ladrones, protege tu cofre con LWC, Lockette, BlockLocker, etc!
 that-is-locked: <red>Esta tienda está bloqueada.
-shop-has-no-space: <red>La tienda sólo tiene espacio para {0} más {1}.
+shop-has-no-space: <red>La tienda de empresa sólo tiene espacio para {0} más {1}.
 safe-mode-admin: '<red><bold>ADVERTENCIA: <red>El QuickShop en este servidor ahora se ejecuta en modo seguro, no funcionará ninguna característica, escriba el comando <yellow>/qs <red> para verificar cualquier error.'
 shop-stock-too-low: <red>Sólo queda {0} {1} en la tienda!
 world-not-exists: <red>El mundo <yellow>{0}<red> no existe
@@ -370,7 +370,7 @@ controlpanel:
   empty-hover: <yellow>Click para limpiar el inventario de la tienda.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
   history: '<green>Historial: <yellow>[<bold><light_purple>Ver</light_purple></bold>]</yellow>'
-  history-hover: <yellow>Haga clic para ver los registros del historial de la tienda
+  history-hover: <yellow>Haga clic para ver los registros del historial de la tienda de empresa
 timeunit:
   behind: atrás
   week: "{0} semana"
@@ -419,7 +419,7 @@ command:
     reload: <yellow>Recarga el archivo config.yml de QuickShop
     freeze: <yellow>Desactivar o activar el trading en la tienda
     price: <yellow>Cambia el precio de compraventa de la tienda
-    find: <yellow>Localiza la tienda más cercana de un tipo específico
+    find: <yellow>Localiza la tienda de empresa más cercana de un tipo específico
     create: <yellow>Crea una tienda nueva en el cofre seleccionado
     lock: <yellow>Cambiar el estado de bloqueo de la tienda
     currency: <yellow>Establece o remueve la configuración de divisa en la tienda
