@@ -5,7 +5,7 @@ disabled-in-this-world: <red>El sistema de tiendas está deshabilitado en este m
 how-much-to-trade-for: <green>Ingresa en el chat, por cuánto deseas intercambiar <yellow>{1}x {0}<green>.
 client-language-changed: <green>El sistema de tiendas ha detectado que la configuración de idioma del cliente ha sido cambiada, ahora estamos usando la configuración regional de {0} para ti.
 shops-backingup: Creando copia de seguridad de la tienda de empresa desde la base de datos...
-_comment: '¡Hola traductor! Si está editando esto en GitHub o a través del código fuente, debe ir a https://crowdin.com/project/quickshop-hikari.'
+_comment: '¡Hola traductor! Si está editando esto en GitHub o a través del código fuente, debe ir a https://crowdin.com/project/qs-hikari.'
 unlimited-shop-owner-changed: <yellow>El propietario de esta tienda de empresa ilimitada ha cambiado a {0}.
 bad-command-usage-detailed: '<red>¡Argumentos incorrectos del comando! Acepta los siguientes parámetros: <gray>{0}'
 thats-not-a-number: <red>Número inválido.
@@ -351,10 +351,10 @@ controlpanel:
   price: '<green>Precio: <aqua>{0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   currency-hover: <yellow>Clic para establecer o remover la divisa que utiliza la tienda de empresa
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Modo: <aqua>Vendes <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  mode-selling: '<green>Modo: <aqua>Tú vendes <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Click para cambiar el dueño.
-  mode-buying: '<green>Modo: <aqua>Compras <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
+  mode-buying: '<green>Modo: <aqua>Tú compras <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   item: '<green>Artículo: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   unlimited: '<green>Ilimitado: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   unlimited-hover: <yellow>Clic para alternar si la tienda de empresa es ilimitada.
@@ -597,7 +597,7 @@ debug:
   force-shop-loader-reload-unloading-shops: <yellow>Descargando <aqua>{0}</aqua> tiendas de empresa cargadas...
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>Eliminando <aqua>{0}</aqua> tiendas de empresa de la memoria...
   force-shop-loader-reload-reloading-shop-loader: <yellow>Volviendo a llamar al cargador de tiendas de empresa para recargar todas las tiendas desde la base de datos...
-  force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
+  force-shop-loader-reload-complete:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
@@ -1371,7 +1371,7 @@ addon:
       <green>¡Tu código de descuento <yellow>{0}</yellow> se ha creado correctamente!
       <gold>Ámbito: <aqua>{1}</aqua></gold>.
       <gold>Comparte con otros: <color:#bcef26>{2}</color:#bcef26></gold>.
-      <yellow>Solo para el ámbito <gray>Tiendas Específicas</gray>: Para agregar tiendas a la lista permitida de tu código de descuento, haz clic derecho en una tienda y ejecuta el comando <aqua>{3}</aqua> 
+      <yellow>Solo para el ámbito <gray>Tiendas Específicas</gray>: Para agregar tiendas a la lista permitida de tu código de descuento, haz clic derecho en una tienda y ejecuta el comando <aqua>{3}</aqua>
       <yellow>You can use <aqua>/tiendaempresa discount config {0}</aqua> para editar en cualquier momento tu código de descuento.
     discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
     percentage-off: '<bold><color:#bcef26>-{0}%</color:#bcef26></bold>'
@@ -1638,10 +1638,10 @@ history:
     next-page: "<white>Página siguiente >></white>"
     current-page: "<white>Página {0}</white>"
     summary-icon-title: "<green>Resumen de la tienda de empresa"
-    recent-purchases: "<white><aqua>{0}</aqua> compras recientes: <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white><aqua>{0}</aqua> facturado reciente: <yellow>{1}</yellow></white>"
+    recent-purchases: "<white>Compras recientes en <aqua>{0}</aqua>: <yellow>{1}</yellow></white>"
+    recent-purchase-balance: "<white>Ganancias recientes en <aqua>{0}</aqua>: <yellow>${1}</yellow></white>"
     total-purchases: "<white>Compras totales: <yellow>{0}</yellow></white>"
-    total-balances: "<white>Total facturado: <yellow>{0}</yellow></white>"
+    total-balances: "<white>Ganancias totales: <yellow>${0}</yellow></white>"
     total-unique-purchasers: "<white>Total de compradores únicos: <yellow>{0}</yellow></white>"
     top-n-valuable-customers-title: "<gold>Top {0} clientes valiosos</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
@@ -1653,7 +1653,7 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
