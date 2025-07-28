@@ -513,21 +513,21 @@ permission:
   table: <gold><b>{0}</b>:</gold> <gray>{1}</gray>
   item:
     purchase: <yellow>Permission qui autorise les utilisateurs qui l'ont à acheter la boutique. (y compris l'achat et la vente)
-    show-information: <yellow>Permission permettant aux utilisateurs qui la possèdent de voir les informations du shop. (ouvrir le panneau d'information de la boutique)
-    preview-shop: <yellow>Permission permettant aux utilisateurs qui la possèdent de prévisualiser le shop. (aperçu de l'objet)
+    show-information: <yellow>Permet aux utilisateurs ayant cette permission de voir les informations du shop. (ouvrir le panneau d'information de la boutique)
+    preview-shop: <yellow>Permet aux utilisateurs ayant cette permission de prévisualiser le shop. (aperçu de l'objet)
     search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
-    delete: <yellow>Permission permettant aux utilisateurs qui la possèdent de supprimer le shop.
+    delete: <yellow>Permet aux utilisateurs ayant cette permission de supprimer le shop.
     receive-alert: <yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade).
-    access-inventory: <yellow>Permission to allow users who have this to access the shop inventory.
-    ownership-transfer: <yellow>Permission to allow users who have this to transfer the shop ownership.
+    access-inventory: <yellow>Permet aux utilisateurs ayant cette permission de d'accéder à l'inventaire du shop.
+    ownership-transfer: <yellow>Permet aux utilisateurs ayant cette permission de transférer la propriété du shop.
     management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
-    toggle-display: <yellow>Permission to allow users who have this to toggle the shop display item.
+    toggle-display: <yellow>Permet aux utilisateurs ayant cette permission d'afficher ou non l'item du shop.
     set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
-    set-price: <yellow>Permission to allow users who have this to set the shop price.
-    set-item: <yellow>Permission to allow users who have this to set the shop item.
-    set-stack-amount: <yellow>Permission to allow users who have this to set the shop stack amount.
-    set-currency: <yellow>Permission to allow users who have this to set the shop currency.
-    set-name: <yellow>Permission to allow users who have this to set the shop name.
+    set-price: <yellow>Permet aux utilisateurs ayant cette permission de configurer le prix du shop.
+    set-item: <yellow>Permet aux utilisateurs ayant cette permission de configurer l'article du shop.
+    set-stack-amount: <yellow>Permet aux utilisateurs ayant cette permission de configurer la quantité d’objets par stack du shop.
+    set-currency: <yellow>Permet aux utilisateurs ayant cette permission de configurer monnaie du shop.
+    set-name: <yellow>Permet aux utilisateurs ayant cette permission de configurer le nom du shop.
     set-sign-type: <yellow>Change the sign material that attached on the shop.
     view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
@@ -563,10 +563,10 @@ lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+internal-error: <red>Une erreur interne s'est produite, veuillez contacter l'administrateur du serveur.
+argument-cannot-be: <red>L'argument <aqua>{0}</aqua> ne peut pas être <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Pourcentage invalide, vous devez ajouter '%' après le nombre de pourcentages.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
