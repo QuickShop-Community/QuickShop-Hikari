@@ -863,7 +863,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void loadVirtualDisplayItem() {
 
-    if(!invalidProvider) {
+    if(!invalidProvider && this.display) {
       //VirtualItem support
       if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
         logger.info("Using Virtual Displays. Attempting to initialize packet factory...");

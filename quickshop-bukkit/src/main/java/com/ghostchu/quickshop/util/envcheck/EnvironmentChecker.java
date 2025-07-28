@@ -377,7 +377,7 @@ public final class EnvironmentChecker {
   @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
   public ResultContainer virtualDisplayWorkingTest() {
 
-    if(!plugin.isValidDisplayProvider()) {
+    if(!plugin.isDisplayEnabled()) {
       return new ResultContainer(CheckResult.PASSED, "There is no valid display provider.");
     }
     if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
