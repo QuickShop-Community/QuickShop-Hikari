@@ -249,6 +249,9 @@ shop:
   #This may cause duped items, especially for modded servers if you're using Real DisplayItem!
   display-items: true
 
+  #The default status for display items.
+  display-default: true
+
   #QuickShop will check if the display item is in a valid position every specified amount of ticks.
   #Set to 0 to disable it.
   #It doesn't work under Virtual DisplayItem.

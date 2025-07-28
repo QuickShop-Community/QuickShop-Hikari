@@ -374,7 +374,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
                                                    priceDouble, info.getItem(), createQUser, false,
-                                                   ShopType.SELLING, new YamlConfiguration(), null, !plugin.isDisplayEnabled(),
+                                                   ShopType.SELLING, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
                                                    null, plugin.getJavaPlugin().getName(),
                                                    symbolLink,
                                                    null, Collections.emptyMap(), new SimpleBenefit());
