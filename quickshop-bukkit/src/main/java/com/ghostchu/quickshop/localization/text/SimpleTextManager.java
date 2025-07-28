@@ -462,7 +462,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
   private NumberFormat getCompactNumberInstance(@NotNull final Locale locale) {
 
-        return numberFormatCache.computeIfAbsent(locale, l->NumberFormat.getCompactNumberInstance(l, NumberFormat.Style.SHORT));
+    return numberFormatCache.computeIfAbsent(locale, l->NumberFormat.getCompactNumberInstance(l, NumberFormat.Style.SHORT));
   }
 
   /**

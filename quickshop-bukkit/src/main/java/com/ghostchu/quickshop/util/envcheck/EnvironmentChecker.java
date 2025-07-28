@@ -186,7 +186,7 @@ public final class EnvironmentChecker {
   @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
   public ResultContainer plapiConflictTest() {
 
-    if(plugin.isDisplayEnabled() && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
+    if(plugin.isDisplayEnabled() && plugin.isValidDisplayProvider() && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
       return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
     }
     return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
@@ -378,7 +378,7 @@ public final class EnvironmentChecker {
   public ResultContainer virtualDisplayWorkingTest() {
 
     if(!plugin.isDisplayEnabled()) {
-      return new ResultContainer(CheckResult.PASSED, "The setting shop.display-items is disabled.");
+      return new ResultContainer(CheckResult.PASSED, "There is no valid display provider.");
     }
     if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
       return new ResultContainer(CheckResult.PASSED, "The setting shop.display-type is not virtual item.");

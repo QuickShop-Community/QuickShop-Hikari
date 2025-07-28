@@ -1,11 +1,11 @@
-break-shop-use-supertool: <yellow>Du kannst den Shop mithilfe deines Super-Tool abbauen.
+break-shop-use-supertool: <yellow>Du kannst den Shop mithilfe des Super-Tools abbauen.
 fee-charged-for-price-change: <green>Du hast <red>{0}<green> bezahlt, um den Preis zu ändern.
 not-allowed-to-create: <red>Du kannst hier keinen Shop erstellen.
 disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
 how-much-to-trade-for: <green>Gib im Chat ein, für wieviel du {1}x <yellow>{0}<green> handeln willst.
 client-language-changed: <green>QuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.
 shops-backingup: Erstelle Shop-Backup von der Datenbank...
-_comment: Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https://crowdin.com/project/quickshop-hikari wechseln.
+_comment: Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https://crowdin.com/project/qs-hikari wechseln.
 unlimited-shop-owner-changed: <yellow>Der Besitzer des unbegrenzten Shops wurde zu {0} geändert.
 bad-command-usage-detailed: '<red>Falsche Befehlsargumente! Folgende Parameter sind erlaubt: <gray>{0}'
 thats-not-a-number: <red>Ungültige Zahl
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Du kannst dir dies nicht leisten. Es kosted <gr
 success-created-shop: <green>Shop erfolgreich erstellt.
 shop-creation-cancelled: <red>Die Shoperstellung wurde abgebrochen.
 shop-owner-self-trade: <yellow>Du handelst mit deinem eigenen Shop. <gray>Du wirst kein Geld davon verdienen.
+shop-owner-self-trade-denied:
 purchase-out-of-space: <red>Dieser Shop hat keinen platz mehr! Kontaktiere den Shopbesitzer oder einen Shopmitarbeiter damit er geleert wird.
 reloading-status:
   success: <green>Plugin erfolgreich ohen Fehler neu geladen.
@@ -119,7 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT ist zu gross zum Anzeigen
   stock: '<green>Lagerbestand: <yellow>{0}'
   this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green>Dieser Shop ist nun <red>eingefroren<green>.
   successfully-sold: '<green>Erfolgreich verkauft:'
   total-value-of-chest: '<green>Gesamtwert der Truhe: <yellow>{0}'
 currency-not-exists: <red>Kann die Währung, welche du setzen willst, nicht finden. Vielleicht ist die Schreibweise falsch oder diese Währung ist in dieser Welt nicht verfügbar.
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Du kannst keine negative Anzahl handeln
 display-turn-on: <green>Shop-Display erfolgreich aktiviert.
+display-turn-off: <green>Shop-Display erfolgreich deaktiviert.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>{0} erfolgreich von deinem Shop als Shopmitarbeiter entfernt.
 nearby-shop-header: '<green>Shops in der nähe welche <aqua>{0}<green> entsprechen:'
 backup-failed: Kann Datenbank nicht sichern. Überprüfe die Konsole für Details.
@@ -341,7 +347,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Klicke um zu ändern, ob der Shop immer Zählen soll.
   alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: '<green>Eingefroren: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
   price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
   currency-hover: <yellow>Klicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet
   lock: '<yellow>Shop sperren: <aqua>{0}</aqua> [<light_purple><bold>Ändern</bold></light_purple>]'
@@ -441,6 +447,7 @@ command:
     taxaccount: <yellow>Legt das Steuerkonto fest, welches der Shop verwenden soll
     name: <yellow>Ändert den Namen eines bestimmten Shops
     toggledisplay: <yellow>Ändere den Status des Display-Items für den Shop
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop-Berechtigungsverwaltung
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
@@ -494,7 +501,6 @@ no-permission: <red>Du hast keine Berechtigung um das zu tun.
 chest-was-removed: <red>Die Truhe wurde entfernt.
 you-cant-afford-to-buy: <red>Es kostet {0}, aber du hast nur {1}
 shops-removed-in-world: <yellow>Ein total von <aqua>{0}<yellow> Shops wurden in der Welt <aqua>{1}<yellow> gelöscht.
-display-turn-off: <green>Shop-Display erfolgreich deaktiviert.
 client-language-unsupported: <yellow>QuickShop unterstützt deine Client-Sprache nicht. Wir verwenden die Spracheinstellung {0} jetzt.
 language-version: '63'
 not-managed-shop: <red>Du bist nicht der Besitzer oder ein Moderator dieses Shops
@@ -737,6 +743,9 @@ addon:
   lands:
     world-not-enabled: <red>Du kannst keine Shops in dieser Welt kaufen oder erstellen.
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen.
+  dominion:
+    creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Dominion-Area zu erstellen.
+    trade-denied: <red>Der Shop muss innerhalb eines Dominion sein, um mit ihm zu handeln.
   plotsquared:
     no-plot-whitelist-creation: <red>Du kannst keinen Shop ausserhalb des Plots erstellen.
     no-plot-whitelist-trade: <red>Du kannst keine Shops ausserhalb des Plots kaufen.
@@ -748,6 +757,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Nur der Inselbesitzer kann einen Shop hier erstellen.
     owner-member-create-only: <red>Nur der Inselbesitzer oder ein Mitglied können einen Shop hier erstellen.
+  fabledskyblock:
+    owner-create-only: <red>Nur der Inselbesitzer kann Shops hier erstellen.
+    owner-member-create-only: <red>Nur der Inselbesitzer oder die Mitglieder können hier ein Shop erstellen.
   worldguard:
     creation-flag-test-failed: <red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen.
     trade-flag-test-failed: <red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln.
@@ -1642,7 +1654,7 @@ about:
     - "<aqua>Release <yellow>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Entwickler <yellow>>></yellow><color:#218bff><hover:show_text:'<yellow><hover:show_text:'<yellow>Klicke, um Mitwirkende zu sehen.'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[Siehe Mitwirkende auf GitHub]</click></hover></color></aqua>"
     - "<aqua>Lokalisierte Mitglieder <gold>({4})</gold>: <yellow>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klicke um Crowdin Übersetzungs-Seite zu öffnen'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Hilf beim Übesetzen auf Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klicke um Crowdin Übersetzungs-Seite zu öffnen'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Hilf beim Übesetzen auf Crowdin]</click></hover></color></yellow>"
     - "<aqua>Spendenschlüssel <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Gebunden an <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Ungültiger Spendenschlüssel</gray>"

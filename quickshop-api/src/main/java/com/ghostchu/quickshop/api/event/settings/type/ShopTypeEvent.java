@@ -28,8 +28,8 @@ import org.jetbrains.annotations.NotNull;
  * shop.
  *
  * @author creatorfromhell
- * @since 6.2.0.9
  * @see ShopType
+ * @since 6.2.0.9
  */
 public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
 
@@ -43,38 +43,6 @@ public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
                        final @NotNull ShopType old, final @NotNull ShopType updated) {
 
     super(phase, shop, old, updated);
-  }
-
-  /**
-   * Creates a new instance of PhasedEvent with the specified newPhase.
-   *
-   * @param newPhase The new Phase for the cloned PhasedEvent
-   *
-   * @return A new instance of PhasedEvent with the specified newPhase
-   */
-  @Override
-  public ShopTypeEvent clone(final Phase newPhase) {
-    if(this.updated != null) {
-
-      return new ShopTypeEvent(newPhase, this.shop, this.old, this.updated);
-    }
-    return new ShopTypeEvent(newPhase, this.shop, this.old);
-  }
-
-  /**
-   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
-   * value.
-   *
-   * @param newPhase The new phase for the cloned ShopSettingEvent
-   * @param old      The old value for the cloned ShopSettingEvent
-   * @param updated  The updated value for the cloned ShopSettingEvent
-   *
-   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
-   */
-  @Override
-  public ShopTypeEvent clone(final Phase newPhase, final ShopType old, final ShopType updated) {
-
-    return new ShopTypeEvent(newPhase, this.shop, old, updated);
   }
 
   public static ShopTypeEvent PRE(final @NotNull Shop shop,
@@ -123,5 +91,38 @@ public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
                                        final ShopType old, final ShopType updated) {
 
     return new ShopTypeEvent(Phase.RETRIEVE, shop, old, updated);
+  }
+
+  /**
+   * Creates a new instance of PhasedEvent with the specified newPhase.
+   *
+   * @param newPhase The new Phase for the cloned PhasedEvent
+   *
+   * @return A new instance of PhasedEvent with the specified newPhase
+   */
+  @Override
+  public ShopTypeEvent clone(final Phase newPhase) {
+
+    if(this.updated != null) {
+
+      return new ShopTypeEvent(newPhase, this.shop, this.old, this.updated);
+    }
+    return new ShopTypeEvent(newPhase, this.shop, this.old);
+  }
+
+  /**
+   * Creates a clone of the ShopSettingEvent with the provided newPhase, old value, and updated
+   * value.
+   *
+   * @param newPhase The new phase for the cloned ShopSettingEvent
+   * @param old      The old value for the cloned ShopSettingEvent
+   * @param updated  The updated value for the cloned ShopSettingEvent
+   *
+   * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
+   */
+  @Override
+  public ShopTypeEvent clone(final Phase newPhase, final ShopType old, final ShopType updated) {
+
+    return new ShopTypeEvent(newPhase, this.shop, old, updated);
   }
 }

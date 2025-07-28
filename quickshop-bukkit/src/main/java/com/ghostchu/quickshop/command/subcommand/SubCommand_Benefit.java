@@ -43,6 +43,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
     }
+
     // Check permission
     if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_BENEFIT)
        && !plugin.perm().hasPermission(sender, "quickshop.other.benefit")) {

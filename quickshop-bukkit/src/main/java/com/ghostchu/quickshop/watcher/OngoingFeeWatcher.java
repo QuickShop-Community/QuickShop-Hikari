@@ -101,7 +101,7 @@ public class OngoingFeeWatcher implements Runnable {
 
   public void start(final int i, final int i2) {
 
-    task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
+    task = QuickShop.folia().getScheduler().runTimerAsync(this, i, i2);
   }
 
   public void stop() {
@@ -110,7 +110,7 @@ public class OngoingFeeWatcher implements Runnable {
       if(task != null && !task.isCancelled()) {
         task.cancel();
       }
-    } catch(IllegalStateException ex) {
+    } catch(final IllegalStateException ex) {
       Log.debug("Task already cancelled " + ex.getMessage());
     }
   }
@@ -122,14 +122,15 @@ public class OngoingFeeWatcher implements Runnable {
    */
   public void removeShop(@NotNull final Shop shop) {
 
-    Util.mainThreadRun(()->plugin.getShopManager().deleteShop(shop));
+    final Location location = shop.getLocation();
+    Util.regionThread(location, ()->plugin.getShopManager().deleteShop(shop));
     MsgUtil.send(shop, shop.getOwner(), plugin.text().of("shop-removed-cause-ongoing-fee", LegacyComponentSerializer.legacySection().deserialize("World:"
-                                                                                                                                                 + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
+                                                                                                                                                 + Objects.requireNonNull(location.getWorld()).getName()
                                                                                                                                                  + " X:"
-                                                                                                                                                 + shop.getLocation().getBlockX()
+                                                                                                                                                 + location.getBlockX()
                                                                                                                                                  + " Y:"
-                                                                                                                                                 + shop.getLocation().getBlockY()
+                                                                                                                                                 + location.getBlockY()
                                                                                                                                                  + " Z:"
-                                                                                                                                                 + shop.getLocation().getBlockZ())).forLocale());
+                                                                                                                                                 + location.getBlockZ())).forLocale());
   }
 }

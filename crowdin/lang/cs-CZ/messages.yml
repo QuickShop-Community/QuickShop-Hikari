@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Obchod je v tomto světě zakázán
 how-much-to-trade-for: <green>Zadejte v chatu, kolik chcete obchodovat <yellow>{1}krát {0}</yellow>.
 client-language-changed: <green>Plugin zjistil, že nastavení jazyka vašeho klienta bylo změněno, nyní pro Vás používáme {0} jazyků.
 shops-backingup: Vytváření zálohy obchodu z databáze...
-_comment: Ahoj překladatel! Pokud to upravujete na GitHubu nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/quickshop-hikari.
+_comment: Ahoj překladatel! Pokud to upravujete na GitHubu nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/qs-hikari.
 unlimited-shop-owner-changed: <yellow>Majitel tohoto neomezeného obchodu byl změněn na {0}.
 bad-command-usage-detailed: '<red>Špatné parametry příkazů! Povoleny jsou následující parametry: <gray>{0}'
 thats-not-a-number: <red>Neplatné číslo
@@ -15,10 +15,10 @@ not-a-number: <red>Můžete zadat pouze číslo, váš vstup byl {0}.
 not-looking-at-valid-shop-block: <red>Nelze najít blok pro vytvoření obchodu. Musíte se na něj dívat.
 shop-removed-cause-ongoing-fee: <red>Váš obchod v {0} byl odstraněn, protože nemáte dostatek peněz na jeho udržení!
 tabcomplete:
-  amount: '[amount]'
+  amount: '[množství]'
   item: '[item]'
-  price: '[price]'
-  name: '[name]'
+  price: '[cena]'
+  name: '[název]'
   range: '[range]'
   currency: '[currency name]'
   percentage: '[percentage%]'
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Cena založení nového obchodu je {0}.
 success-created-shop: <green>Obchod vytvořen.
 shop-creation-cancelled: <red>Vytvoření obchodu bylo zrušeno.
 shop-owner-self-trade: <yellow>Obchodujete s vlastním obchodem. Nemusíte získat žádné peníze.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Tomuto obchodu došlo místo, Kontaktuj jeho majitele aby ho vyprázdnil.
 reloading-status:
   success: <green>Obnovení konfigurace proběhlo bez problému.
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Derp, nemůžeš obchodovat se zápornými částkami
 display-turn-on: <green>Úspěšně zapnuto zobrazení obchodu.
+display-turn-off: <green>Úspěšně vypnuto zobrazení obchodu.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byl odebrán {0} jako člen z tvého obchodu.
 nearby-shop-header: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Nejbližší obchod odpovídající <aqua>{0}<gray>:'
 backup-failed: Nelze zálohovat databázi. Podrobnosti naleznete v konzole.
@@ -441,6 +447,7 @@ command:
     taxaccount: <white>Nastaví daně, které obchod zaplatí
     name: <yellow>Pojmenování obchodu na konkrétní název
     toggledisplay: <white>Přepne obchodu status ukazovaného předmětu
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Správa oprávnění obchodu
     lookup: <yellow>Spravovat tabulku položek pro vyhledávání
     database: <yellow>View and maintain QuickShop database
@@ -494,7 +501,6 @@ no-permission: <red>Na tuto akci nemáš práva.
 chest-was-removed: <red>Truhla byla odstraněna.
 you-cant-afford-to-buy: <red>Toto stojí {0}, ale ty máš jen {1}
 shops-removed-in-world: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Celkem <aqua>{0}<gray> obchodů bylo smazáno ve světě <aqua>{1}<gray>.
-display-turn-off: <green>Úspěšně vypnuto zobrazení obchodu.
 client-language-unsupported: <yellow>QuickShop nepodporuje váš klientský jazyk, nastavili jsme vám tedy záložní na {0} locales.
 language-version: '63'
 not-managed-shop: <red>Nejsi vlastník nebo moderátor obchodu
@@ -597,7 +603,7 @@ debug:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
   handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
+  update-player-shops-signs-no-username-given: <red>Musíte zadat platné uživatelské jméno hráče.
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
   update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
@@ -738,6 +744,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -747,6 +756,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1643,7 +1655,7 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"

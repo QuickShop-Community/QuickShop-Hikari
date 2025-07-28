@@ -32,15 +32,63 @@ import org.jetbrains.annotations.NotNull;
 public class ShopNameEvent extends ShopSettingEvent<String> {
 
   public ShopNameEvent(final @NotNull Phase phase, final Shop shop,
-                           final String old) {
+                       final String old) {
 
     super(phase, shop, old);
   }
 
   public ShopNameEvent(final @NotNull Phase phase, final @NotNull Shop shop,
-                           final String old, final String updated) {
+                       final String old, final String updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  public static ShopNameEvent PRE(final @NotNull Shop shop,
+                                  final String old) {
+
+    return new ShopNameEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopNameEvent PRE(final @NotNull Shop shop,
+                                  final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopNameEvent MAIN(final @NotNull Shop shop,
+                                   final String old) {
+
+    return new ShopNameEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopNameEvent MAIN(final @NotNull Shop shop,
+                                   final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopNameEvent POST(final @NotNull Shop shop,
+                                   final String old) {
+
+    return new ShopNameEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopNameEvent POST(final @NotNull Shop shop,
+                                   final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopNameEvent RETRIEVE(final @NotNull Shop shop,
+                                       final String old) {
+
+    return new ShopNameEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopNameEvent RETRIEVE(final @NotNull Shop shop,
+                                       final String old, final String updated) {
+
+    return new ShopNameEvent(Phase.RETRIEVE, shop, old, updated);
   }
 
   /**
@@ -74,53 +122,5 @@ public class ShopNameEvent extends ShopSettingEvent<String> {
   public ShopNameEvent clone(final Phase newPhase, final String old, final String updated) {
 
     return new ShopNameEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopNameEvent PRE(final @NotNull Shop shop,
-                                       final String old) {
-
-    return new ShopNameEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopNameEvent PRE(final @NotNull Shop shop,
-                                      final String old, final String updated) {
-
-    return new ShopNameEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopNameEvent MAIN(final @NotNull Shop shop,
-                                       final String old) {
-
-    return new ShopNameEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopNameEvent MAIN(final @NotNull Shop shop,
-                                       final String old, final String updated) {
-
-    return new ShopNameEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopNameEvent POST(final @NotNull Shop shop,
-                                       final String old) {
-
-    return new ShopNameEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopNameEvent POST(final @NotNull Shop shop,
-                                       final String old, final String updated) {
-
-    return new ShopNameEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopNameEvent RETRIEVE(final @NotNull Shop shop,
-                                           final String old) {
-
-    return new ShopNameEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopNameEvent RETRIEVE(final @NotNull Shop shop,
-                                           final String old, final String updated) {
-
-    return new ShopNameEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

@@ -11,10 +11,10 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
+import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.events.LandDeleteEvent;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
-import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Land;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -36,7 +36,7 @@ public final class Main extends CompatibilityModule {
   @Override
   public void init() {
 
-    landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(this);
+    landsIntegration = LandsIntegration.of(this);
     ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
     whitelist = getConfig().getBoolean("whitelist-mode");
     deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
@@ -52,7 +52,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
-    if(landsIntegration.getLandWorld(loc.getWorld()) == null) {
+    if(landsIntegration.getWorld(loc.getWorld()) == null) {
       if(!ignoreDisabledWorlds) {
         event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.lands.world-not-enabled").forLocale());
         return;
@@ -60,9 +60,10 @@ public final class Main extends CompatibilityModule {
     }
 
     final Chunk locChunk = loc.getChunk();
-    final Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
-    if(land != null) {
-      if(land.getOwnerUID().equals(event.user().getUniqueId()) || land.isTrusted(event.user().getUniqueId())) {
+    final Land land = landsIntegration.getLandByChunk(loc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final UUID id = event.user().getUniqueId();
+    if(land != null && id != null) {
+      if(land.getOwnerUID().equals(event.user().getUniqueId()) || land.isTrusted(id)) {
         return;
       }
       event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.lands.creation-denied").forLocale());
@@ -76,19 +77,19 @@ public final class Main extends CompatibilityModule {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onLandsMember(final PlayerLeaveLandEvent event) {
 
-    if(!deleteWhenLosePermission) {
+    if(!deleteWhenLosePermission || event.getLandPlayer() == null) {
       return;
     }
-    deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
+    deleteShopInLand(event.getLand(), event.getLandPlayer().getUUID());
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onLandsDeleted(final LandDeleteEvent event) {
 
-    if(!deleteWhenLandDeleted) {
+    if(!deleteWhenLandDeleted || event.getLandPlayer() == null) {
       return;
     }
-    deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
+    deleteShopInLand(event.getLand(), event.getLandPlayer().getUUID());
   }
 
   private void deleteShopInLand(final Land land, final UUID target) {
@@ -125,13 +126,14 @@ public final class Main extends CompatibilityModule {
     if(!deleteWhenLosePermission) {
       return;
     }
-    deleteShopInLand(event.getLand(), event.getTargetUID());
+    deleteShopInLand(event.getLand(), event.getTargetUUID());
   }
 
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
+    if(event.getShop().getLocation().getWorld() == null
+       || landsIntegration.getWorld(event.getShop().getLocation().getWorld()) == null) {
       if(ignoreDisabledWorlds) {
         return;
       }
@@ -152,7 +154,7 @@ public final class Main extends CompatibilityModule {
     }
 
     final Chunk locChunk = shopLoc.getChunk();
-    final Land land = landsIntegration.getLand(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
+    final Land land = landsIntegration.getLandByChunk(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
     if(land == null) {
       return;
     }

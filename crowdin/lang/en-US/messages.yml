@@ -1,11 +1,11 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool:
 fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
 not-allowed-to-create: <red>You may not create a shop here.
 disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop detected that your client language has been changed. We now use the {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Invalid number
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>You cannot afford this, it costs <green>{0}<red
 success-created-shop: <green>Shop successfully created.
 shop-creation-cancelled: <red>The shop creation was cancelled.
 shop-owner-self-trade: <yellow>You're trading with your own shop. <gray>You may not gain any money.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop has run out of space! Contact the shop owner or staff to get it emptied.
 reloading-status:
   success: <green>Plugin successfully reloaded without any errors.
@@ -320,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>You can't trade negative amounts
 display-turn-on: <green>Successfully enabled shop-display.
+display-turn-off: <green>Successfully turned off shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member from your shop.
 nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
 backup-failed: Cannot backup the database. Check the console for details.
@@ -452,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that the shop using
     name: <yellow>Changes the name of a specific shop
     toggledisplay: <yellow>Toggle the shop's display-item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain the QuickShop Database
@@ -506,7 +513,6 @@ no-permission: <red>You do not have permission to do that.
 chest-was-removed: <red>The chest was removed.
 you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
 shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
-display-turn-off: <green>Successfully turned off shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language. Falling back to locale {0}...
 language-version: '63'
 not-managed-shop: <red>You are not the owner nor a moderator of this Shop
@@ -755,6 +761,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -764,6 +773,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:

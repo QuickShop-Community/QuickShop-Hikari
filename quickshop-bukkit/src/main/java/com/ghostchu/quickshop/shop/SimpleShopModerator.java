@@ -54,6 +54,14 @@ public class SimpleShopModerator implements ShopModerator {
     return gson.fromJson(serilized, SimpleShopModerator.class);
   }
 
+  @NotNull
+  public static String serialize(@NotNull final ShopModerator shopModerator) {
+
+    final Gson gson = JsonUtil.getGson();
+    final SimpleShopModerator gsonWorkaround = (SimpleShopModerator)shopModerator;
+    return gson.toJson(gsonWorkaround); // Use Gson serialize this class
+  }
+
   /**
    * Add moderators staff to staff list
    *
@@ -180,14 +188,6 @@ public class SimpleShopModerator implements ShopModerator {
   public @NotNull String toString() {
 
     return serialize(this);
-  }
-
-  @NotNull
-  public static String serialize(@NotNull final ShopModerator shopModerator) {
-
-    final Gson gson = JsonUtil.getGson();
-    final SimpleShopModerator gsonWorkaround = (SimpleShopModerator)shopModerator;
-    return gson.toJson(gsonWorkaround); // Use Gson serialize this class
   }
 
 }

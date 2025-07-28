@@ -298,6 +298,7 @@ public final class Main extends CompatibilityModule implements Listener {
     if(isWorldIgnored(event.location().getWorld())) {
       return;
     }
+
     event.user().getBukkitPlayer().ifPresent(player->{
       final Optional<Component> component = checkFlags(player, event.location(), this.createFlags);
       component.ifPresent(value->event.setCancelled(true, value));
@@ -479,6 +480,7 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   private boolean doesPlayerOwnShopPlot(final Player player, final Location location) {
+
     final TownBlock townBlock = TownyAPI.getInstance().getTownBlock(location);
 
     if(townBlock != null && townBlock.hasResident()) {

@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Mentés betöltése a databázisból...
-_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-hikari
+_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/qs-hikari
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ismeretlen szám.
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: '<red>Nem tudsz új boltot csinálni, mert túl kev�
 success-created-shop: <green>Sikeresen elkészítettél egy boltot!
 shop-creation-cancelled: <red>Boltkészítés visszavonva.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Nincs több item készleten, Egyeztess a bolt tulajdonosával.
 reloading-status:
   success: <green>Reload completed without any errors.
@@ -320,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Nem tudsz negatív mennyiséget megadni.
 display-turn-on: <green>Successfully turn on the shop display.
+display-turn-off: <green>Successfully turn off the shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Sikeresen eltávolítottad a {0}t a boltodból!
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Nem lehet lementeni a bázist! Nézze meg a konzolt további információkért.
@@ -452,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -506,7 +513,6 @@ no-permission: <red>Nincs jogod ehhez!
 chest-was-removed: <red>Ez a láda kitörlődött.
 you-cant-afford-to-buy: <red>Ez <gray>{0} <red>-ba kerül, de neked csak <gray>{1} <red>-od van.
 shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
 not-managed-shop: <red>Nem te vagy a tulajdonosa vagy a moderátora ennek a boltnak.
@@ -755,6 +761,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -764,6 +773,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1660,7 +1672,7 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"

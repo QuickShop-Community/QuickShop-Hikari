@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop jest wyłączony w tym świecie
 how-much-to-trade-for: <green>Wpisz na czacie cenę za <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop wykrył, że ustawienia języka klienta zostały zmienione, teraz używamy dla Ciebie wersji językowej {0}.
 shops-backingup: Tworzenie kopii zapasowej sklepu z bazy danych...
-_comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-hikari
+_comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/qs-hikari
 unlimited-shop-owner-changed: <yellow>Ten właściciel sklepu nielimitowanego został zmieniony na {0}.
 bad-command-usage-detailed: '<red>Błędne argumenty poleceń! Akceptuje następujące parametry: <gray>{0}'
 thats-not-a-number: <red>Nieprawidłowa liczba
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>Musisz mieć {0} aby zrobić nowy sklep.
 success-created-shop: <red>Sklep utworzony.
 shop-creation-cancelled: <red>Tworzenie sklepu anulowane.
 shop-owner-self-trade: <yellow>Handlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>W tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.
 reloading-status:
   success: <green>Przeładowanie zakończone bez żadnych błędów.
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>Nie możesz handlować ujemnymi kwotami
 display-turn-on: <green>Pomyślnie włączono wyświetlacz sklepu.
+display-turn-off: <green>Pomyślnie wyłączono wyświetlacz sklepu.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Pomyślnie usunięto {0} jako członka personelu twojego sklepu.
 nearby-shop-header: '<green>Odpowiadające sklepy w pobliżu <aqua>{0}<green>:'
 backup-failed: Nie można wykonać kopii zapasowej bazy danych. Sprawdź konsolę, aby uzyskać szczegóły.
@@ -340,9 +346,9 @@ controlpanel:
   stack-hover: <yellow>Kliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.
   alwayscounting-hover: <yellow>Kliknij, aby przełączyć, jeśli sklep zawsze liczy pojemnik.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Właściciel: <aqua>{0} <yellow>[<bold><light_purple>Zmień</light_purple></bold>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  price: '<green>Cena: <aqua>{0} <yellow>[<bold><light_purple>Zmień</light_purple></bold>]'
   currency-hover: <yellow>Kliknij, aby ustawić lub usunąć walutę, której używa ten sklep
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Tryb sklepu: <aqua>Sprzedaż <yellow>[<light_purple><bold>Zmień<yellow>]'
@@ -441,6 +447,7 @@ command:
     taxaccount: <yellow>Ustaw konto podatkowe, które sklep ma używać
     name: <yellow>Nadaje sklepowi konkretną nazwę
     toggledisplay: <yellow>Przełącz stan wyświetlania przedmiotu w sklepie
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Zarządzanie uprawnieniami sklepu
     lookup: <yellow>Zarządzaj tabelą elementów do wyszukiwania
     database: <yellow>View and maintain QuickShop database
@@ -494,7 +501,6 @@ no-permission: <red>Nie masz uprawnień, aby to zrobić.
 chest-was-removed: <red>Sklep został usunięty.
 you-cant-afford-to-buy: <red>To kosztuje {0}, ale masz tylko {1}
 shops-removed-in-world: <yellow>Wszystkie <aqua>{0}<yellow> sklepy zostały usunięte ze świata <aqua>{1}<yellow>.
-display-turn-off: <green>Pomyślnie wyłączono wyświetlacz sklepu.
 client-language-unsupported: <yellow>QuickShop nie obsługuje Twojego języka klienta, powrócono do wersji językowej {0}.
 language-version: '63'
 not-managed-shop: <red>Nie jesteś właścicielem ani moderatorem tego sklepu
@@ -739,6 +745,9 @@ addon:
   lands:
     world-not-enabled: <red>Nie masz pozwolenia, aby tworzyć lub kupować w tym świecie.
     creation-denied: <red>Nie masz uprawnień na tworzenie sklepów w tym miejscu.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>Nie możesz utworzyć sklepu poza działką.
     no-plot-whitelist-trade: <red>Nie możesz robić zakupów poza działka.
@@ -750,6 +759,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Tylko właściciel wyspy może stworzyć tu sklep.
     owner-member-create-only: <red>Tylko właściciel lub członek wyspy może stworzyć tutaj sklep.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>Nie masz uprawnień na stworzenie sklepu w tym miejscu (WorldGuard).
     trade-flag-test-failed: <red>Nie masz uprawnień, aby handlować w tym miejscu (WorldGuard).
@@ -1482,13 +1494,13 @@ suite:
   dynmap:
     title: '{0} - {1} - {2}'
     description: |-
-      Item: {0}
-      Owner: {1}
-      Type: {2} {3}
-      Price: {4}
-      Location: {5} {6}, {7}, {8}
-      Space: {9}
-      Stock: {10}
+      Przedmiot: {0}
+      Właściciel: {1}
+      Typ: {2} {3}
+      Cena: {4}
+      Lokalizacja: {5} {6}, {7}, {8}
+      Przestrzeń: {9}
+      Zapasy: {10}
   limited:
     command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
     reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
@@ -1577,10 +1589,10 @@ gui:
   keeper:
     title: "Shop Keeper"
     change-icon:
-      display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
+      display: "<bold><green>Zmień Cenę</green></bold>"
+      enter: "<yellow>Wpisz nową cenę na chat.</yellow>"
       lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
+        - "<white>Kliknij aby zmienić cenę przedmiotów w twoim sklepie.</white>"
         - "<white>Aktualna cena:</white> <yellow>{0}</yellow>"
     mode-icon:
       display: "<bold><green>Zmień Tryb</green></bold>"
@@ -1644,7 +1656,7 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"

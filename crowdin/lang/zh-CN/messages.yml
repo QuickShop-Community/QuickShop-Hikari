@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
 how-much-to-trade-for: <green>请在聊天中输入交易<yellow>{1}个{0}<green>所需的价格。
 client-language-changed: <green>QuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。
 shops-backingup: 从数据库创建商店备份...
-_comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-hikari
+_comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/qs-hikari
 unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>你需要 {0} 才能创建一个商店。
 success-created-shop: <green>已成功地创建商店。
 shop-creation-cancelled: <red>商店创建已取消。
 shop-owner-self-trade: <yellow>你正在和自己的商店进行交易，所以你的金钱可能并不会变化。
+shop-owner-self-trade-denied: <red>您不能与自己的商店进行交易。
 purchase-out-of-space: <red>这个商店空间已不足，请联系商店所有者或助手清空商店
 reloading-status:
   success: <green>重载完成，没有任何错误。
@@ -169,7 +170,7 @@ permission-denied-3rd-party: <red>没有权限：第三方插件 [{0}]。
 you-dont-have-that-many-items: <red>你只有 {0} 个 {1}。
 complete: <green>完成！
 translate-not-completed-yet-url: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： {2}'
-success-removed-shop: <green>商店已删除！
+success-removed-shop: <green>商店删除成功。
 currency-set: <green>商店货币已被成功设置为 {0}。
 shop-purged-start: <green>商店清理已开始，请检查控制台获取详细信息。
 economy-transaction-failed: <red>抱歉，在处理您的交易时发生了内部错误。 交易已被取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
@@ -319,6 +320,11 @@ signs:
   item-left: ''
 negative-amount: <red>你输入的数字是负数。
 display-turn-on: <green>成功开启商店悬浮物显示
+display-turn-off: <green>成功关闭商店悬浮物显示
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>成功移除 {0} 的商店助手权限
 nearby-shop-header: '<green>匹配附近<aqua>{0}<green>的商店：'
 backup-failed: 无法备份数据库，请查看控制台以获取详细信息。
@@ -351,7 +357,7 @@ controlpanel:
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
   alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<bold><light_purple>更改</light_purple>]'
   setowner: '<green>所有者: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
-  freeze: '<green>冻结模式 <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
+  freeze: '<green>冻结模式： <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
   price: '<green>价格: <aqua>{0} <yellow>[<bold><light_purple>修改</light_purple></bold>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
   lock: '<yellow>商店锁: <aqua>{0} <yellow>[<bold><light_purple>切换</light_purple></bold>]'
@@ -451,6 +457,7 @@ command:
     taxaccount: <yellow>设置商店使用的税务账户
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>商店权限管理
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
@@ -504,7 +511,6 @@ no-permission: <red>你没有权限这样去操作。
 chest-was-removed: <red>当前箱子已被移除。
 you-cant-afford-to-buy: <red>余额不足！购买该商店物品需要 {0}，但是你只有 {1}。
 shops-removed-in-world: <yellow>已删除世界 <aqua>{1}<yellow> 中的 <aqua>{0}<yellow> 个商店。
-display-turn-off: <green>成功关闭商店悬浮物显示
 client-language-unsupported: <yellow>QuickShop不支持您的客户端语言，我们现在退回到 {0} 语言。
 language-version: '63'
 not-managed-shop: <red>你不是该商店的所有者或助手
@@ -747,6 +753,9 @@ addon:
   lands:
     world-not-enabled: <red>你不能在这个世界中交易或创建
     creation-denied: <red>您没有在该Land区域创建商店的权限
+  dominion:
+    creation-denied: <red>你没有权限在这个支配区创建商店。
+    trade-denied: <red>商店必须位于自治领内才能与其进行交易。
   plotsquared:
     no-plot-whitelist-creation: <red>你不能在地皮外创建商店
     no-plot-whitelist-trade: <red>你不能在地皮之外与商店交易
@@ -758,6 +767,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>只有岛屿所有者才能在这里创建商店
     owner-member-create-only: <red>只有岛屿所有者或岛屿成员才能在这里创建商店
+  fabledskyblock:
+    owner-create-only: <red>只有岛主才能在那里开店。
+    owner-member-create-only: <red>只有岛屿主人或成员才能在这里创建商店。
   worldguard:
     creation-flag-test-failed: <red>您没有在该WorldGuard区域创建商店的权限
     trade-flag-test-failed: <red>您没有在该WorldGuard区域与商店交易的权限。
@@ -1652,7 +1664,7 @@ about:
     - "<aqua>构建 <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>开发者 <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>点击查看贡献者'><click:open_url:'https://github.com/Quickshop-Community/QuickShop-Hikari/graphs/contributors'>[在 GitHub 上查看贡献者]</click></hover></color></aqua>"
     - "<aqua>本地化成员 <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>点击打开 Crowdin 翻译页面'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[在 Crowdin 上帮助翻译]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>点击打开 Crowdin 翻译页面'><click:open_url:'https://crowdin.com/project/qs-hikari'>[在 Crowdin 上帮助翻译]</click></hover></color></yellow>"
     - "<aqua>捐赠密钥 <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>绑定到 <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>无效的捐赠密钥</gray>"

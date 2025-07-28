@@ -34,7 +34,7 @@ public class SubCommand_Sign implements CommandHandler<Player> {
       return;
     }
     if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SIGN_TYPE) && !plugin.perm().hasPermission(sender, "quickshop.other.sign")) {
-      plugin.text().of(sender, "no-permission");
+      plugin.text().of(sender, "no-permission").send();
       return;
     }
 

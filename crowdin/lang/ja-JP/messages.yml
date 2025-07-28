@@ -5,7 +5,7 @@ disabled-in-this-world: <red>このワールドではクイックショップが
 how-much-to-trade-for: <green>チャットで<yellow>{1}個の {0}<green>をいくらで取引したいか入力してください。
 client-language-changed: <green>QuickShop はクライアントの言語設定が変更されていることを検出しました。現在 {0} ロケールを使用しています。
 shops-backingup: データベースからショップのバックアップを作成しています...
-_comment: 翻訳者さんこんにちは！Githubから、もしくはソースコードから直接編集している場合は、代わりにhttps://crowdin.com/project/quickshop-hikariにアクセスしてください。
+_comment: 翻訳者さんこんにちは！Githubから、もしくはソースコードから直接編集している場合は、代わりにhttps://crowdin.com/project/qs-hikariにアクセスしてください。
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
 bad-command-usage-detailed: '<red>コマンド引数が不正です! 次のパラメータを受け付けます: <gray>{0}'
 thats-not-a-number: <red>無効な番号です
@@ -82,6 +82,7 @@ you-cant-afford-a-new-shop: <red>新しいショップを作成するには {0} 
 success-created-shop: <red>ショップが作成されました。
 shop-creation-cancelled: <red>ショップの作成がキャンセルされました。
 shop-owner-self-trade: <yellow>自分のショップと取引することで、残高を獲得できない可能性があります。
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>このショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。
 reloading-status:
   success: <green>エラーなしでリロードが完了しました。
@@ -309,6 +310,11 @@ signs:
   item-left: ''
 negative-amount: <red>マイナス量を取引できません
 display-turn-on: <green>ショップの表示をオンにしました。
+display-turn-off: <green>ショップの表示をオフにしました。
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>あなたのショップスタッフの {0} を削除しました。
 nearby-shop-header: '<aqua>{0}<green> に一致する近くのショップ:'
 backup-failed: データベースをバックアップできません。詳細についてはコンソールを確認してください。
@@ -441,6 +447,7 @@ command:
     taxaccount: <yellow>ショップで使用する税のアカウントを設定する
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>ショップのアイテムの状態を切り替える
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
@@ -494,7 +501,6 @@ no-permission: <red>あなたは権限を持っていないため実行できま
 chest-was-removed: <red>チェストが削除されました。
 you-cant-afford-to-buy: <red>価格は {0} ですが {1} しか所持していません。
 shops-removed-in-world: <yellow>ワールド <aqua>{1}<yellow> で合計 <aqua>{0} つ<yellow> のショップを削除しました。
-display-turn-off: <green>ショップの表示をオフにしました。
 client-language-unsupported: <yellow>QuickShopはクライアント言語をサポートしていません。 {0} ロケールにフォールバックします。
 language-version: '63'
 not-managed-shop: あなたはショップの店主でもモデレーターでもありません。
@@ -739,6 +745,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -748,6 +757,9 @@ addon:
       create: Create QuickShop-Hikari shops
       trade: Purchase QuickShop-Hikari shops
   superiorskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
@@ -1644,7 +1656,7 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"

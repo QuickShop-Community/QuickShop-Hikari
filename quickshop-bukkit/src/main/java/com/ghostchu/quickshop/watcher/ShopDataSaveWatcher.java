@@ -11,9 +11,8 @@ import java.util.concurrent.CompletableFuture;
 public class ShopDataSaveWatcher implements Runnable {
 
   private final QuickShop plugin;
-  private CompletableFuture<Void> saveTask;
-
   WrappedTask task = null;
+  private CompletableFuture<Void> saveTask;
 
   public ShopDataSaveWatcher(final QuickShop plugin) {
 
@@ -44,7 +43,7 @@ public class ShopDataSaveWatcher implements Runnable {
 
   public void start(final int i, final long i2) {
 
-    task = QuickShop.folia().getImpl().runTimerAsync(this, i, i2);
+    task = QuickShop.folia().getScheduler().runTimerAsync(this, i, i2);
   }
 
   public void stop() {
@@ -53,7 +52,7 @@ public class ShopDataSaveWatcher implements Runnable {
       if(task != null && !task.isCancelled()) {
         task.cancel();
       }
-    } catch(IllegalStateException ex) {
+    } catch(final IllegalStateException ex) {
       Log.debug("Task already cancelled " + ex.getMessage());
     }
   }

@@ -36,8 +36,8 @@ import java.util.Objects;
 
 public final class Main extends CompatibilityModule implements Listener {
 
-  private GriefPrevention griefPrevention;
   private final List<Flag> tradeLimits = new ArrayList<>(3);
+  private GriefPrevention griefPrevention;
   private boolean whiteList;
   private boolean deleteOnClaimTrustChanged;
   private boolean deleteOnClaimUnclaimed;
@@ -191,6 +191,10 @@ public final class Main extends CompatibilityModule implements Listener {
     final List<Shop> shops = getApi().getShopManager().getAllShops();
     for(final Shop shop : shops) {
 
+      if(event.getClaim().contains(shop.getLocation(), false, false)) {
+        continue;
+      }
+
       if(event.getNewOwner().equals(shop.getOwner().getUniqueId())) {
         continue;
       }
@@ -274,7 +278,8 @@ public final class Main extends CompatibilityModule implements Listener {
   }
 
   private boolean checkPermission(@NotNull final Player player, @NotNull final Location location, final List<Flag> limits) {
-    if (player.hasPermission("griefprevention.ignoreclaims")) {
+
+    if(player.hasPermission("griefprevention.ignoreclaims")) {
       return true;
     }
 
@@ -342,7 +347,7 @@ public final class Main extends CompatibilityModule implements Listener {
     Log.debug("GP-Compat: Starting override permission...");
     final Location shopLoc = event.shop().get().getLocation();
     if(!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
-      final String worldName = shopLoc.getWorld() == null ? "Null World" : shopLoc.getWorld().getName();
+      final String worldName = shopLoc.getWorld() == null? "Null World" : shopLoc.getWorld().getName();
       Log.debug("GP-Compat: World " + worldName + " not enabled for claims");
       return;
     }

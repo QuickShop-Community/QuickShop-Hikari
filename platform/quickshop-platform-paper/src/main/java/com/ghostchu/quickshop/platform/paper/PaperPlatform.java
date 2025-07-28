@@ -70,8 +70,12 @@ public class PaperPlatform implements Platform {
       return displayName;
     }
 
-    if(meta.hasItemName()) {
-      return meta.itemName();
+    try {
+      if(meta.hasItemName()) {
+        return meta.itemName();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
     }
     return Component.empty();
   }

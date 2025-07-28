@@ -38,6 +38,7 @@ import java.util.Map;
 public final class Main extends CompatibilityModule implements Listener {
 
   private boolean whiteList;
+  private boolean ownerCreate;
   private boolean deleteUntrusted;
   private QuickshopCreateFlag createFlag;
   private QuickshopTradeFlag tradeFlag;
@@ -67,7 +68,14 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
     if(!plot.getFlag(tradeFlag)) {
+
       event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.plotsqured.trade-denied").forLocale());
+      return;
+    }
+
+    if(ownerCreate && !plot.getOwners().contains(event.user().getUniqueId())) {
+
+      event.setCancelled(true, "owner-create-only is enabled and player is not a plot owner");
     }
   }
 
@@ -126,6 +134,7 @@ public final class Main extends CompatibilityModule implements Listener {
   public void init() {
 
     this.whiteList = getConfig().getBoolean("whitelist-mode");
+    this.ownerCreate = getConfig().getBoolean("owner-create-only");
     this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
   }
 
@@ -206,10 +215,14 @@ public final class Main extends CompatibilityModule implements Listener {
     final com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
     final Plot plot = pLocation.getPlot();
     if(plot == null) {
+
       return;
     }
+
     if(plot.getOwners().contains(event.playerUUID())) {
+
       if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+
         event.hasPermission(true);
       }
     }

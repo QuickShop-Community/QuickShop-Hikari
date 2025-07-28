@@ -23,8 +23,9 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ShopDisplayEvent represents an event that is tied to actions/retrieval of the Shop display setting for
- * a shop. The setting is to disableDisplays, so true means it's disabled, while false means it's enabled.
+ * ShopDisplayEvent represents an event that is tied to actions/retrieval of the Shop display
+ * setting for a shop. The setting is to disableDisplays, so true means it's disabled, while false
+ * means it's enabled.
  *
  * @author creatorfromhell
  * @since 6.2.0.9
@@ -41,6 +42,54 @@ public class ShopDisplayEvent extends ShopSettingEvent<Boolean> {
                           final @NotNull Boolean old, final @NotNull Boolean updated) {
 
     super(phase, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
+                                     final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.PRE, shop, old);
+  }
+
+  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
+                                     final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.PRE, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
+                                      final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.MAIN, shop, old);
+  }
+
+  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
+                                      final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.MAIN, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent POST(final @NotNull Shop shop,
+                                      final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.POST, shop, old);
+  }
+
+  public static ShopDisplayEvent POST(final @NotNull Shop shop,
+                                      final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.POST, shop, old, updated);
+  }
+
+  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
+                                          final Boolean old) {
+
+    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old);
+  }
+
+  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
+                                          final Boolean old, final Boolean updated) {
+
+    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old, updated);
   }
 
   /**
@@ -75,53 +124,5 @@ public class ShopDisplayEvent extends ShopSettingEvent<Boolean> {
   public ShopDisplayEvent clone(final Phase newPhase, final Boolean old, final Boolean updated) {
 
     return new ShopDisplayEvent(newPhase, this.shop, old, updated);
-  }
-
-  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
-                                      final Boolean old) {
-
-    return new ShopDisplayEvent(Phase.PRE, shop, old);
-  }
-
-  public static ShopDisplayEvent PRE(final @NotNull Shop shop,
-                                      final Boolean old, final Boolean updated) {
-
-    return new ShopDisplayEvent(Phase.PRE, shop, old, updated);
-  }
-
-  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
-                                       final Boolean old) {
-
-    return new ShopDisplayEvent(Phase.MAIN, shop, old);
-  }
-
-  public static ShopDisplayEvent MAIN(final @NotNull Shop shop,
-                                       final Boolean old, final Boolean updated) {
-
-    return new ShopDisplayEvent(Phase.MAIN, shop, old, updated);
-  }
-
-  public static ShopDisplayEvent POST(final @NotNull Shop shop,
-                                       final Boolean old) {
-
-    return new ShopDisplayEvent(Phase.POST, shop, old);
-  }
-
-  public static ShopDisplayEvent POST(final @NotNull Shop shop,
-                                       final Boolean old, final Boolean updated) {
-
-    return new ShopDisplayEvent(Phase.POST, shop, old, updated);
-  }
-
-  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
-                                           final Boolean old) {
-
-    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old);
-  }
-
-  public static ShopDisplayEvent RETRIEVE(final @NotNull Shop shop,
-                                           final Boolean old, final Boolean updated) {
-
-    return new ShopDisplayEvent(Phase.RETRIEVE, shop, old, updated);
   }
 }

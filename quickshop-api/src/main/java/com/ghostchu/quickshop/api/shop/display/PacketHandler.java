@@ -60,6 +60,7 @@ public interface PacketHandler<T> {
    * Retrieves an Optional instance of PacketFactory based on the provided version.
    *
    * @param version The version of the PacketFactory to retrieve.
+   *
    * @return An Optional instance of PacketFactory if available for the given version.
    */
   default Optional<PacketFactory<?>> factory(final String version) {

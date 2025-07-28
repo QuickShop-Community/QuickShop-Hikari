@@ -35,15 +35,18 @@ import java.util.Map;
  */
 public class PacketEventsHandler implements PacketHandler<PacketEventsAPI<?>> {
 
-  protected final Map<String, PacketFactory<?>> factories = new HashMap<>();
-
   protected static PacketEventsHandler instance;
-
+  protected final Map<String, PacketFactory<?>> factories = new HashMap<>();
   protected PacketEventsAPI<?> eventsAPI;
 
   public PacketEventsHandler() {
 
     instance = this;
+  }
+
+  public static PacketEventsHandler instance() {
+
+    return instance;
   }
 
   /**
@@ -102,11 +105,9 @@ public class PacketEventsHandler implements PacketHandler<PacketEventsAPI<?>> {
     factories.put("1.21.3", oneTwentyOne);
     factories.put("1.21.4", oneTwentyOne);
     factories.put("1.21.5", oneTwentyOne);
-  }
-
-  public static PacketEventsHandler instance() {
-
-    return instance;
+    factories.put("1.21.6", oneTwentyOne);
+    factories.put("1.21.7", oneTwentyOne);
+    factories.put("1.21.8", oneTwentyOne);
   }
 
   @Override

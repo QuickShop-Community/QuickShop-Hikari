@@ -44,22 +44,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItemManager {
 
-  protected final Map<String, PacketHandler<?>> packetHandlers = new LinkedHashMap<>();
-
+  private static VirtualDisplayItemManager instance;
   public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
-
+  protected final Map<String, PacketHandler<?>> packetHandlers = new LinkedHashMap<>();
   @Getter
   private final Map<ShopChunk, List<VirtualDisplayItem<?>>> chunksMapping = new ConcurrentHashMap<>();
-
   private final QuickShop plugin;
   private final AtomicInteger entityIdCounter;
-
   private PacketHandler<?> packetHandler;
-
   private PacketFactory<?> packetFactory;
-
-  private static VirtualDisplayItemManager instance;
-
   private boolean testPassed = true;
 
   public VirtualDisplayItemManager(final QuickShop plugin) {
@@ -93,6 +86,11 @@ public class VirtualDisplayItemManager {
     }
   }
 
+  public static VirtualDisplayItemManager instance() {
+
+    return instance;
+  }
+
   public void setHandler() {
 
     final String preferred = QuickShop.getInstance().getConfig().getString("shop.display-protocol", "protocollib").toLowerCase(Locale.ROOT);
@@ -115,9 +113,10 @@ public class VirtualDisplayItemManager {
   }
 
   public void load() {
+
     Log.debug("Attempting to load packet factory...");
 
-    final Optional<PacketFactory<?>> factoryOptional  = packetHandler.factory(plugin.getPlatform().getMinecraftVersion());
+    final Optional<PacketFactory<?>> factoryOptional = packetHandler.factory(plugin.getPlatform().getMinecraftVersion());
     if(factoryOptional.isEmpty()) {
 
       throw new IllegalStateException("No PacketFactory found for platform version " + plugin.getPlatform().getMinecraftVersion());
@@ -173,14 +172,14 @@ public class VirtualDisplayItemManager {
     return new VirtualDisplayItem<>(this, packetFactory, shop);
   }
 
-  public void setTestPassed(final boolean testPassed) {
-
-    this.testPassed = testPassed;
-  }
-
   public boolean isTestPassed() {
 
     return testPassed;
+  }
+
+  public void setTestPassed(final boolean testPassed) {
+
+    this.testPassed = testPassed;
   }
 
   public void addHandler(final PacketHandler<?> packetHandler) {
@@ -204,9 +203,5 @@ public class VirtualDisplayItemManager {
   public PacketHandler<?> packetHandler() {
 
     return packetHandler;
-  }
-
-  public static VirtualDisplayItemManager instance() {
-    return instance;
   }
 }

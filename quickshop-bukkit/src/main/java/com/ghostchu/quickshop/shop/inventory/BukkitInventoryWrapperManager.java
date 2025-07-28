@@ -22,14 +22,14 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
   @Override
   public @NotNull InventoryWrapper locate(@NotNull final String symbolLink) throws IllegalArgumentException {
 
-    try(PerfMonitor ignored = new PerfMonitor("Locate inventory wrapper")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Locate inventory wrapper")) {
       if(CommonUtil.isJson(symbolLink)) {
         Log.debug("Reading the old format symbol link: " + symbolLink);
         return locateOld(symbolLink);
       } else {
         return locateNew(symbolLink);
       }
-    } catch(Exception exception) {
+    } catch(final Exception exception) {
       throw new IllegalArgumentException(exception.getMessage());
     }
   }
@@ -41,11 +41,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     if(world == null) {
       throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
     }
-    final BlockState state = world.getBlockAt(blockPos.getX(), blockPos.getY(), blockPos.getZ()).getState();
-    if(!(state instanceof InventoryHolder holder)) {
-      throw new IllegalArgumentException("Invalid symbol link: Target block not a InventoryHolder (map changed/resetted?)");
-    }
-    return new BukkitInventoryWrapper(holder.getInventory());
+    return new BukkitInventoryWrapper(fromLocation(world, blockPos.getX(), blockPos.getY(), blockPos.getZ()).getInventory());
   }
 
   @Deprecated
@@ -60,20 +56,35 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         if(world == null) {
           throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
         }
-        final BlockState block = world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getState();
-        if(!(block instanceof InventoryHolder holder)) {
-          throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
-        }
-        return new BukkitInventoryWrapper(holder.getInventory());
+        return new BukkitInventoryWrapper(fromLocation(world, blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()).getInventory());
       }
       default -> throw new IllegalArgumentException("Invalid symbol link: Invalid holder type.");
+    }
+  }
+
+  public InventoryHolder fromLocation(final World world, final int x, final int y, final int z) {
+
+    try {
+
+      final BlockState block = world.getBlockAt(x, y, z).getState(false);
+      if(!(block instanceof final InventoryHolder holder)) {
+        throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
+      }
+      return holder;
+    } catch(final NoSuchMethodError ignore) {
+
+      final BlockState block = world.getBlockAt(x, y, z).getState();
+      if(!(block instanceof final InventoryHolder holder)) {
+        throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
+      }
+      return holder;
     }
   }
 
   @Override
   public @NotNull String mklink(@NotNull final InventoryWrapper wrapper) throws IllegalArgumentException {
 
-    try(PerfMonitor ignored = new PerfMonitor("Mklink inventory wrapper")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Mklink inventory wrapper")) {
       if(wrapper.getLocation() != null) {
         final Block block = wrapper.getLocation().getBlock();
         return new BlockPos(block.getLocation()).serialize();
@@ -84,7 +95,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
 
   public @NotNull String mklink(@NotNull final Location location) throws IllegalArgumentException {
 
-    try(PerfMonitor ignored = new PerfMonitor("Mklink inventory wrapper")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Mklink inventory wrapper")) {
       return new BlockPos(location).serialize();
     }
   }

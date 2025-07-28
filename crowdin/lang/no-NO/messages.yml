@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop er deaktivert i denne verdenen
 how-much-to-trade-for: <green>Skriv i chat hvor mye du ønsker å selge <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop oppdaget at språkinnstillingen for klienten din er endret. Vi bruker nå språkoppsettet {0} for deg.
 shops-backingup: Oppretter sikkerhetskopi av butikker fra databasen...
-_comment: Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-hikari i stedet.
+_comment: Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/qs-hikari i stedet.
 unlimited-shop-owner-changed: <yellow>Eieren til denne ubegrensede butikken har blitt endret til {0}.
 bad-command-usage-detailed: '<red>Feil argumenter! Følgende parametere er akseptert: <gray>{0}'
 thats-not-a-number: <red>Ugyldig nummer
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>Du har ikke råd til dette, det koster <green>{
 success-created-shop: <green>Butikken ble opprettet.
 shop-creation-cancelled: <red>Opprettelse av butikk ble kansellert.
 shop-owner-self-trade: <yellow>Du handler i din egen butikk. <gray>Du kan ikke tjene penger på dette.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>Denne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.
 reloading-status:
   success: <green>Utvidelsen ble lastet på nytt uten feil.
@@ -320,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Du kan ikke handle med negativt beløp
 display-turn-on: <green>Butikkvisning aktivert.
+display-turn-off: <green>Utstillingsvaren er slått av.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Spiller {0} ble fjernet som ansatt i din butikk.
 nearby-shop-header: '<green>Nærliggende butikker som matcher <aqua>{0}</aqua>:'
 backup-failed: Kan ikke sikkerhetskopiere databasen. Kontroller konsollen for detaljer.
@@ -452,6 +458,7 @@ command:
     taxaccount: <yellow>Angi skattekontoen som butikken bruker
     name: <yellow>Endrer navnet på en bestemt butikk
     toggledisplay: <yellow>Slå av/på butikkens utstillingsvare
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Butikk tillatelsesadministrasjon
     lookup: <yellow>Administrer oppslagsverket for gjenstander
     database: <yellow>Vis og vedlikehold QuickShop-databasen
@@ -506,7 +513,6 @@ no-permission: <red>Du har ikke tillatelse til å gjøre det.
 chest-was-removed: <red>Kisten ble fjernet.
 you-cant-afford-to-buy: <red>Det koster {0}, men du har bare {1}
 shops-removed-in-world: <yellow>Totalt <aqua>{0}</aqua> butikker har blitt slettet i verden <aqua>{1}</aqua>.
-display-turn-off: <green>Utstillingsvaren er slått av.
 client-language-unsupported: <yellow>QuickShop støtter ikke ditt klient språk. Faller tilbake til språkinnstillingen {0}...
 language-version: '63'
 not-managed-shop: <red>Du er ikke eier eller moderator for denne butikken
@@ -755,6 +761,9 @@ addon:
   lands:
     world-not-enabled: <red>Du har ikke lov til å opprette eller kjøpe butikker i denne verden.
     creation-denied: <red>Du har ikke tillatelse til å opprette en butikk på dette Land område.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>Du kan ikke opprette en butikk utenfor tomten.
     no-plot-whitelist-trade: <red>Du kan ikke kjøpe en butikk utenfor tomten.
@@ -766,6 +775,9 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Bare øyeier kan opprette butikk der.
     owner-member-create-only: <red>Bare øyeier eller et medlem kan opprette butikk der.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>Du har ikke tillatelse til å opprette en butikk i denne WorldGuard regionen.
     trade-flag-test-failed: <red>Du har ikke tillatelse til å handle i denne WorldGuard regionen.
@@ -1660,7 +1672,7 @@ about:
     - "<aqua>Utgivelse <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Lokaliserte medlemmer <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klikk for å åpne Crowdin oversettelsessiden'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Hjelp til å oversette på Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klikk for å åpne Crowdin oversettelsessiden'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Hjelp til å oversette på Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donasjonsnøkkel <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bundet til <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Ugyldig donasjonsnøkkel</gray>"

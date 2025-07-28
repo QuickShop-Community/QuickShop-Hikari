@@ -1,0 +1,20 @@
+name: IntelliJ Reformat Code
+
+on:
+  pull_request:
+    branches: [ hikari, cleanup ]
+
+jobs:
+  reformat:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Style Reformatter
+        uses: joutvhu/intellij-format@v1
+        with:
+          message: "Automatically reformatted using the IntelliJ Style File, please check the contributing guidelines and utilize it in the future."
+          settings: ".contributing/QuickShop_Style.xml"
+          verify: true
+          mask: "*.java"

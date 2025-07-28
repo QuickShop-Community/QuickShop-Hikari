@@ -33,8 +33,8 @@ public class PacketHandlerSendDestroyEvent<T> extends PacketHandlerEvent {
   protected T destroyPacket;
 
   public PacketHandlerSendDestroyEvent(final PacketHandler<?> packetHandler,
-                                    final PacketFactory<T> packetFactory,
-                                    final T destroyPacket) {
+                                       final PacketFactory<T> packetFactory,
+                                       final T destroyPacket) {
 
     super(packetHandler);
 

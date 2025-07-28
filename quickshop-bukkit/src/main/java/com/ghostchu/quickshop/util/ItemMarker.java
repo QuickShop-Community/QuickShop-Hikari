@@ -40,6 +40,12 @@ public class ItemMarker implements Reloadable, SubPasteItem {
     plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
   }
 
+  @NotNull
+  public static String getNameRegExp() {
+
+    return NAME_REG_EXP;
+  }
+
   public void init() {
 
     stacks.clear();
@@ -66,12 +72,6 @@ public class ItemMarker implements Reloadable, SubPasteItem {
       Log.permission(Level.SEVERE, "Failed to create default items configuration file");
       plugin.logger().error("Failed to create default items configuration", e);
     }
-  }
-
-  @NotNull
-  public static String getNameRegExp() {
-
-    return NAME_REG_EXP;
   }
 
   @Nullable

@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Parduotuvės yra išjungtos šiame pasaulyje
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected that your client language has been changed, we now use the {0} locale for you.
 shops-backingup: Sukuriamas parduotuvių atkurimo failas iš duomenų bazės...
-_comment: Hi translator! If you're editing this on GitHub or through source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you're editing this on GitHub or through source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>Parduotuvės savininkas buvo pakeistas į {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Negalimas skaičius
@@ -83,6 +83,7 @@ you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
 success-created-shop: <green>Shop created.
 shop-creation-cancelled: <red>Shop creation cancelled.
 shop-owner-self-trade: <yellow>You trade with your own shop. You may not gain any money.
+shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
 purchase-out-of-space: <red>This shop has run out of space. Contact the shop owner or staff to get it emptied.
 reloading-status:
   success: <green>Reload completed without any errors.
@@ -299,18 +300,18 @@ unknown-owner: Nežinomas/a
 restricted-prices: '<red>Ribota kaina nuo {0}: Min {1}. max {2}'
 nearby-shop-this-way: <green>Parduotuvė yra {0} blokais toliau nuo jūsų.
 owner-bypass-check: <yellow>Praėjote visus patikrtinimus. Mainai sėkmingai pavyko! (Nuo šiol jūs esate šios parduotuvės savininkas)
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:'Paspauskite, kad atidarytumėte naršyklėje ir gautumėte laikinus apdovanojimus!'>click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'<green>Paspauskite čia, kad gautumėte laikinus apdovanojimus, kuriuos suteikia QuickShop-Hikari kūrėjas!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Nepakanka vietos
   unlimited: Nesibaigiantis
   stack-selling: Parduodama {0}
-  stack-price: '{0} už {1}x {2}'
+  stack-price: '{0} už {1} x {2}'
   status-unavailable: <red>
   out-of-stock: Išparduota
   stack-buying: Superkama {0}
   freeze: Trading disabled
-  price: '{0} vienas'
+  price: '{0} vnt'
   buying: Pirkti{0}
   header: '{1}{0}'
   header-available: <green>{0}
@@ -320,6 +321,11 @@ signs:
   item-left: ''
 negative-amount: <red>Negalimi pardavinėti neigiamomis sumomis
 display-turn-on: <green>Successfully turn on the shop display.
+display-turn-off: <green>Successfully turn off the shop display.
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
+display-turn-on-all: <green>Successfully turned on shop display for all server shops.
+display-turn-off-all: <green>Successfully turned off shop display for all server shops.
 shop-staff-deleted: <green>Sėkmingai pašalintas {0} kaip prižiūrėtojas iš jūsų parduotuvės.
 nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}<green>:'
 backup-failed: Nepavyksta sukurti atsarginės duomenų bazės kopijos. Išsamesnės informacijos ieškokite konsolėje.
@@ -334,7 +340,7 @@ language-info-panel:
   code: 'Kodas: '
   name: 'Kalba: '
   progress: 'Progresas: '
-  translate-on-crowdin: '[Verstimas "Crowdin" platformoje]'
+  translate-on-crowdin: '[Vertimas "Crowdin" platformoje]'
 item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
 inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
@@ -452,6 +458,7 @@ command:
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
     permission: <yellow>Parduotuvės leidimų valdymas
     lookup: <yellow>Peržiūrėti matomų daiktų lentele
     database: <yellow>View and maintain QuickShop database
@@ -496,8 +503,8 @@ trading-in-creative-mode-is-disabled: <red>Negalite mainytis su šia parduotuve 
 the-owner-cant-afford-to-buy-from-you: <red>Šio daikto vertė yra {0}, tačiau parduotuvės savininkas turi tik {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
 inventory-error: |-
-  <red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?
-  Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.
+  <red>Nepavyko apdoroti InventoryWrapper. Ar naudojate papildinį, kad susietumėte parduotuvės inventorių?
+  Informacija: Klaida={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Prašome susisiekti su serverio administratoriais.
 integrations-check-failed-create: <red>Integracija {0} atmetė parduotuvės kūrimo procesą
 shop-out-of-space: <dark_purple>Jūsų parduotuvė esanti {0}, {1}, {2} yra pilna!
 admin-shop: SavininkoParduotuve
@@ -506,7 +513,6 @@ no-permission: <red>Jūs neturite leidimo daryti šiuos veiksmus.
 chest-was-removed: <red> Chestas buvo pašalintas.
 you-cant-afford-to-buy: <red>Tai kainuoja {0}, bet jūs turite tik {1}
 shops-removed-in-world: <yellow>A total of <aqua>{0}<yellow> shops have been deleted in world <aqua>{1}<yellow>.
-display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, falling back to {0} locale...
 language-version: '63'
 not-managed-shop: <red>You are not the owner nor moderator of this Shop
@@ -555,8 +561,8 @@ paste-created-local: |-
   <red>Warning: <gray>Never send pastes to people you don't trust.
 paste-created-local-failed: <red>Failed to save paste to your local disk, please check your disk.
 paste-451: |-
-  <gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.
-  If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/quickshop paste --file
+  <gray><bold>PATARIMAI:</bold> Jūsų šalis arba regionas, atrodo, užblokavo CloudFlare Workers paslaugą, todėl QuickShop Paste gali būti netinkamai įkeliamas.
+  Jei tolesnis veiksmas nepavyksta, pabandykite pridėti argumentą --file, kad sukurtumėte vietinį Paste: \<dark\_gray>/quickshop paste --file\</dark\_gray>
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
 command-incorrect: '<red>Command usage incorrect, type /quickshop help to check help. Usage: {0}.'
@@ -580,9 +586,8 @@ display-fallback: |-
   The value of this item may not be localized or processed correctly.
   Please contact the server administrator.
 not-a-valid-time: |-
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu Time)</gray>
-  - <yellow>1671273097</yellow> <gray>(Unix Epoch Time in seconds)</gray><br>
+  <red>Tekstas <yellow>{0}</yellow> nėra galiojantis laiko žymuo, įveskite <aqua>Zulu laiką (ISO 8601)</aqua> arba <aqua>Unix Epoch laiką sekundėmis</aqua>. <gold>Galiojantis laiko žymens pavyzdys: (šeštadienis, 2022-12-17 10:31:37 GMT)</gold><br><aqua>- <yellow>2022-12-17T10:31:37Z</yellow> <gray>(Zulu laikas)</gray>
+  - <yellow>1671273097</yellow> <gray>(Unix Epoch laikas sekundėmis)</gray><br>
 invalid-past-time: <red>You can't specify a time in the past.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
@@ -602,15 +607,15 @@ debug:
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
   force-shop-reload: <yellow>Forcing reload all loaded shops...
   force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
-  force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
-  force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
-  force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
-  force-shop-loader-reload-reloading-shop-loader: <yellow>Re-calling shop-loader for reloading all shops from database...
+  force-shop-loader-reload: <yellow>Verčiama perkrauti parduotuvių įkėlimo sistemą...
+  force-shop-loader-reload-unloading-shops: <yellow>Iškraunama <aqua>{0}</aqua> įkeltų parduotuvių...
+  force-shop-loader-reload-unloading-shops-from-memory: ...
+  force-shop-loader-reload-reloading-shop-loader: <yellow>Perkraunamas parduotuvių įkėlėjas, kraunamos visos parduotuvės iš duomenų bazės...
   force-shop-loader-reload-complete: <green>Shop-loader has been reloaded all shops!
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}
   shop-internal-data: '<yellow>The internal data of this shop: </yellow>{0}'
   handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
-  update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
+  update-player-shops-signs-no-username-given:
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}'
   update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
@@ -621,7 +626,7 @@ debug:
   item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
   hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
-  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
+  hikari-cp-testing: "<green>Palaukite, testuojama HikariCP jungtis..."
   hikari-cp-working: "<green>Pass! HikariCP working well!"
   hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
@@ -629,11 +634,11 @@ debug:
   queries-dumping: "<yellow>Dumping active queries..."
   restart-database-manager: "<yellow>Restarting SQLManager..."
   restart-database-manager-clear-executors: "<yellow>Clearing executors..."
-  restart-database-manager-unfinished-task: "<yellow>Unfinished task: <white>{0}</white>"
+  restart-database-manager-unfinished-task: "<yellow>Neužbaigta užduotis: <white>{0}</white>"
   restart-database-manager-unfinished-task-history-query: "<yellow>Unfinished task (History Query): <white>{0}</white>"
   restart-database-manager-reconnect: "<yellow>Re-launching SQLManager via initial sequence (via async executor)"
   restart-database-manager-done: "<green>Done!"
-  property-incorrect: "<yellow>You must enter a (and only one) property key=value set. E.g   aaa=bbb"
+  property-incorrect: "<yellow>Turite įvesti vieną (ir tik vieną) savybės raktas=verte rinkinį. Pvz., aaa=bbb\n"
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
@@ -755,6 +760,9 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  dominion:
+    creation-denied: <red>You don't have permission to create shops in this Dominion area.
+    trade-denied: <red>The shop must be within a Dominion to trade with it.
   plotsquared:
     no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
     no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
@@ -766,13 +774,16 @@ addon:
   superiorskyblock:
     owner-create-only: <red>Only island owner can create shop there.
     owner-member-create-only: <red>Only island owner or member can create shop there.
+  fabledskyblock:
+    owner-create-only: <red>Only island owner can create shop there.
+    owner-member-create-only: <red>Only island owner or member can create shop there.
   worldguard:
     creation-flag-test-failed: <red>You don't have permission create shop in this WorldGuard area.
     trade-flag-test-failed: <red>You don't have permission trade shop in this WorldGuard area.
-    reached-per-region-amount-limit: "<red>You have reached the maximum amount of shops in this region."
+    reached-per-region-amount-limit: "<red>Pasiekėte maksimalų parduotuvių skaičių šioje regione."
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
-    __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
+    __to_users:
     __to_message_designer: 'Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!'
     discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
     discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
@@ -1660,7 +1671,7 @@ about:
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
     - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
     - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
-    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/quickshop-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
+    - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<aqua>Donation Key <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
   invalid-donation-key: "<gray>Invalid donation key</gra>"
