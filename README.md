@@ -97,12 +97,25 @@ QuickShop-Hikari is a Shop plugin that allows players to create Chest Shops to e
 need for any commands.  
 In fact, all commands in QuickShop are not even needed for normal gameplay.
 
-This version of QuickShop ([Ghost-chu/QuickShop-Hikari][quickshop-hikari]) is a fork
+This version of QuickShop ([QuickShop-Community/QuickShop-Hikari][quickshop-hikari]) is a fork
 from [PotatoCraft-Studio's version][quickshop-potato] which itself is a fork from the [Reremake][quickshop-ghostchu] of
 the [original QuickShop][quickshop-original].
 
-QuickShop Hikari is maintained by Ghost-Chu and has the goal to modernize the core content of QuickShop and adapt it to
-the latest versions of Minecraft.
+<details><summary>Visual example</summary>
+<p>
+
+```
+KaiKikuchi/QuickShop
+└── Ghost-chu/QuickShop-Reremake
+    └── PotatoCraft/QuickShop-Reremake
+        └── QuickShop-Community/QuickShop-Hikari # <-- We are here
+```
+
+</p></details>
+
+QuickShop Hikari was originally maintained by Ghost-Chu but has later been given to creatorfromhell and put under the
+QuickShop-Community Organisation.  
+It has the goal to modernize the core content of QuickShop and adapt it to the latest versions of Minecraft.
 
 ## Community & Support
 
@@ -183,7 +196,9 @@ Thank you for your contributions!
 ### Distributing forks
 
 You're allowed to create your fork to share. No permission is needed.  
-Though it would be nice if you could pull-request your changes into this repository when they are good ones.
+Please be aware of any requirements outlined in the projects's GPLv3 and AGPLv3 licenses.
+
+If you make good changes to the project would we apreciate Pull requests for them to merge.
 
 ### Compile and Debugging
 
