@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.interaction.InteractionManager;
 import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -96,6 +97,13 @@ public interface QuickShopAPI {
    * @return Shop control panel manager
    */
   ShopControlPanelManager getShopControlPanelManager();
+
+  /**
+   * Retrieves the InteractionManager associated with this QuickShopProvider.
+   *
+   * @return The InteractionManager that manages InteractionBehaviors and InteractionTypes.
+   */
+  InteractionManager getInteractionManager();
 
   /**
    * Getting Shop Manager which managing most of shops
