@@ -21,6 +21,7 @@ com.ghostchu.quickshop.api.permission
 com.ghostchu.quickshop.api.shop
 com.ghostchu.quickshop.api.shop.display
 com.ghostchu.quickshop.api.shop.permission
+com.ghostchu.quickshop.api.shop.interaction
 com.ghostchu.quickshop.api.shop.cache
 com.ghostchu.quickshop.api.inventory
 com.ghostchu.quickshop.api.economy.operation
@@ -90,6 +91,9 @@ com.ghostchu.quickshop.shop.operation
 com.ghostchu.quickshop.shop.controlpanel.component
 com.ghostchu.quickshop.shop.controlpanel
 com.ghostchu.quickshop.shop.inventory
+com.ghostchu.quickshop.shop.interaction.interactions
+com.ghostchu.quickshop.shop.interaction.behaviors
+com.ghostchu.quickshop.shop.interaction
 com.ghostchu.quickshop.shop.cache
 com.ghostchu.quickshop.shop.history
 com.ghostchu.quickshop.shop.sign
