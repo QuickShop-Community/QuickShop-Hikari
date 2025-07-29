@@ -441,7 +441,7 @@ command:
     unban: <yellow>Débannir un joueur de la boutique
     transfer: <yellow>Transférer TOUS les shops d'un joueur vers un autre
     transferall: <yellow>Transférer TOUS les shops d'un joueur vers un autre
-    transferownership: <yellow>Transferer the shop que vous regardez à quelqu'un d'autre
+    transferownership: <yellow>Transferer le shop que vous regardez à quelqu'un d'autre
     size: <yellow>Changez par quantité en vrac d'une boutique
     supercreate: <yellow>Créer une boutique en contournant tous les contrôles de protection
     taxaccount: <yellow>Définir le compte de taxe que la boutique utilise
