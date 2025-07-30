@@ -133,8 +133,8 @@
 
     <distributionManagement>
         <repository>
-            <id>ghostchu</id>
-            <url>https://repo.codemc.io/repository/ghostchu/</url>
+            <id>ghost-chu</id>
+            <url>https://repo.codemc.io/repository/ghost-chu/</url>
         </repository>
     </distributionManagement>
 
