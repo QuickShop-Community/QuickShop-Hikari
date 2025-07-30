@@ -127,24 +127,20 @@
     </scm>
 
     <issueManagement>
-        <url>https://github.com/${developer}/${project.name}/issues</url>
+        <url>https://github.com/QuickShop-Community/QuickShop-Hikari/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <distributionManagement>
         <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-releases/</url>
+            <id>ghostchu</id>
+            <url>https://repo.codemc.io/repository/ghostchu/</url>
         </repository>
-        <snapshotRepository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <ciManagement>
         <system>GitHub Actions</system>
-        <url>https://github.com/${developer}/${project.artifactId}/actions/workflows/maven.yml</url>
+        <url>https://github.com/QuickShop-Community/QuickShop-Hikari/actions/workflows/maven.yml</url>
     </ciManagement>
 
     <build>
