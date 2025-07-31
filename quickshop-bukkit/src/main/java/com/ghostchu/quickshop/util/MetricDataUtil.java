@@ -28,7 +28,7 @@ public class MetricDataUtil {
   public String formatEconomy(@NotNull final ShopMetricRecord record) {
 
     final Shop shop = plugin.getShopManager().getShop(record.getShopId());
-    if(shop == null || plugin.getEconomy() == null) {
+    if(shop == null || plugin.getEconomyManager().provider() == null) {
       final DecimalFormat df = new DecimalFormat("#.00");
       return df.format(record.getTotal());
     }
@@ -41,7 +41,7 @@ public class MetricDataUtil {
     final ItemStack stack;
     try {
       stack = Util.deserialize(dataRecord.getItem());
-    } catch(InvalidConfigurationException e) {
+    } catch(final InvalidConfigurationException e) {
       return "[Failed to deserialize]";
     }
     if(stack == null) {

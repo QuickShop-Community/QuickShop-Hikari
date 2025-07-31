@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.shop;
 
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
@@ -43,7 +43,7 @@ public interface ShopManager {
   boolean actionBuying(
           @NotNull Player buyer,
           @NotNull InventoryWrapper buyerInventory,
-          @NotNull AbstractEconomy eco,
+          @NotNull EconomyProvider eco,
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);
@@ -72,7 +72,7 @@ public interface ShopManager {
   boolean actionSelling(
           @NotNull Player seller,
           @NotNull InventoryWrapper sellerInventory,
-          @NotNull AbstractEconomy eco,
+          @NotNull EconomyProvider eco,
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);

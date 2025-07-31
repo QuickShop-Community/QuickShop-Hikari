@@ -136,8 +136,8 @@ public class InternalListener extends AbstractQSListener {
       return;
     }
     if(loggingBalance) {
-      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
-      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomyManager().provider().balance(event.getPurchaser(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomyManager().provider().balance(event.getShop().getOwner(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
     }
   }
 
@@ -167,8 +167,8 @@ public class InternalListener extends AbstractQSListener {
                                           event.getTax()));
     }
     if(loggingBalance) {
-      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getPurchaser(), plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
-      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getPurchaser(), plugin.getEconomyManager().provider().balance(event.getPurchaser(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomyManager().provider().balance(event.getShop().getOwner(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
     }
     if(event.getPurchaser().equals(event.getShop().getOwner())) {
       plugin.text().of(event.getPurchaser(), "shop-owner-self-trade").send();

@@ -61,11 +61,11 @@ public class SubCommand_Currency implements CommandHandler<Player> {
           event.callEvent();
           return;
         }
-        if(!plugin.getEconomy().supportCurrency()) {
+        if(!plugin.getEconomyManager().provider().multiCurrency()) {
           plugin.text().of(sender, "currency-not-support").send();
           return;
         }
-        if(!plugin.getEconomy().hasCurrency(Objects.requireNonNull(shop.getLocation().getWorld()), parser.getArgs().get(0))) {
+        if(!plugin.getEconomyManager().provider().supportsCurrency(Objects.requireNonNull(shop.getLocation().getWorld()).getName(), parser.getArgs().getFirst())) {
           plugin.text().of(sender, "currency-not-exists").send();
           return;
         }
@@ -73,7 +73,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
         final PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
 
 
-        ShopCurrencyEvent event = new ShopCurrencyEvent(Phase.PRE, shop, shop.getCurrency(), parser.getArgs().get(0));
+        ShopCurrencyEvent event = new ShopCurrencyEvent(Phase.PRE, shop, shop.getCurrency(), parser.getArgs().getFirst());
         event.callEvent();
 
         event = event.clone(Phase.MAIN);

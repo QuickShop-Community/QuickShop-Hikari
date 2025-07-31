@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.util;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
@@ -31,7 +31,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.economyrevamp.transaction.QSEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
@@ -48,6 +48,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -174,19 +175,18 @@ public class ShopUtil {
     }
 
     if(fee > 0) {
-      final SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
-              .core(plugin.getEconomy())
+      final QSEconomyTransaction transaction = QSEconomyTransaction.builder()
               .from(QUserImpl.createFullFilled(user.getBukkitPlayer().get()))
-              .amount(fee)
-              .world(Objects.requireNonNull(shop.getLocation().getWorld()))
+              .amount(BigDecimal.valueOf(fee))
+              .world(Objects.requireNonNull(shop.getLocation().getWorld()).getName())
               .currency(plugin.getCurrency())
               .build();
-      if(!transaction.checkBalance()) {
+      if(!transaction.completable()) {
         plugin.text().of(user, "you-cant-afford-to-change-price", plugin.getShopManager().format(fee, shop)).send();
         return;
       }
-      if(!transaction.failSafeCommit()) {
-        plugin.text().of(user, "economy-transaction-failed", transaction.getLastError()).send();
+      if(!transaction.safeCommit()) {
+        plugin.text().of(user, "economy-transaction-failed", transaction.lastError()).send();
         return;
       }
     }
@@ -224,11 +224,11 @@ public class ShopUtil {
       QuickShop.getInstance().text().of(p, "purchase-out-of-space", shop.ownerName()).send();
       return true;
     }
-    final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
     final double price = shop.getPrice();
     final Inventory playerInventory = p.getInventory();
     final String tradeAllWord = QuickShop.getInstance().getConfig().getString("shop.word-for-trade-all-items", "all");
-    final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
+    final double ownerBalance = eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
     final int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
     final ShopManager.InteractiveManager actions = QuickShop.getInstance().getShopManager().getInteractiveManager();
     if(shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
@@ -266,7 +266,7 @@ public class ShopUtil {
       return false;
     }
 
-    final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
     final int arg;
     if(all) {
       arg = sellingShopAllCalc(eco, shop, p);
@@ -299,12 +299,12 @@ public class ShopUtil {
     }
     Util.playClickSound(p);
     shop.onClick(p);
-    final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
     final double price = shop.getPrice();
     final Inventory playerInventory = p.getInventory();
     final String tradeAllWord = QuickShop.getInstance().getConfig().getString("shop.word-for-trade-all-items", "all");
     final ShopManager.InteractiveManager actions = QuickShop.getInstance().getShopManager().getInteractiveManager();
-    final double traderBalance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(), shop.getCurrency());
+    final double traderBalance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
     final int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
     if(shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
        || QuickShop.getInstance().perm().hasPermission(p, "quickshop.other.use")) {
@@ -349,7 +349,7 @@ public class ShopUtil {
     return items;
   }
 
-  private static int buyingShopAllCalc(@NotNull final AbstractEconomy eco, @NotNull final Shop shop, @NotNull final Player p) {
+  private static int buyingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
     final int shopHaveSpaces =
@@ -357,8 +357,8 @@ public class ShopUtil {
     final int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
     // Check if shop owner has enough money
     final double ownerBalance = eco
-            .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                        shop.getCurrency());
+            .balance(shop.getOwner(), shop.getLocation().getWorld().getName(),
+                        shop.getCurrency()).doubleValue();
     final int ownerCanAfford;
     if(shop.getPrice() != 0) {
       ownerCanAfford = (int)(ownerBalance / shop.getPrice());
@@ -419,7 +419,7 @@ public class ShopUtil {
     return itemAmount;
   }
 
-  private static int sellingShopAllCalc(@NotNull final AbstractEconomy eco, @NotNull final Shop shop, @NotNull final Player p) {
+  private static int sellingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
     final int shopHaveItems = shop.getRemainingStock();
@@ -433,8 +433,8 @@ public class ShopUtil {
     }
     // typed 'all', check if player has enough money than price * amount
     final double price = shop.getPrice();
-    final double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(),
-                                          shop.getCurrency());
+    final double balance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(),
+                                          shop.getCurrency()).doubleValue();
     amount = Math.min(amount, (int)Math.floor(balance / price));
     if(amount < 1) { // typed 'all' but the auto set amount is 0
       // when typed 'all' but player can't buy any items

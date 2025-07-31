@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.api;
 
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
+import com.ghostchu.quickshop.api.economyrevamp.EconomyManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
@@ -42,7 +43,6 @@ public interface QuickShopAPI {
     }
     return provider.getPlugin();
   }
-
 
   /**
    * Getting command manager that allow addon direct access QuickShop sub-command system
@@ -90,6 +90,14 @@ public interface QuickShopAPI {
   @ApiStatus.Obsolete
   @Deprecated(forRemoval = true)
   Map<String, Integer> getLimits();
+
+  /**
+   * Retrieves the EconomyManager instance that manages all economies associated with their unique
+   * identifiers.
+   *
+   * @return The EconomyManager instance.
+   */
+  EconomyManager getEconomyManager();
 
   /**
    * Getting the control panel manager

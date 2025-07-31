@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.menu.trade;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
@@ -37,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -68,7 +69,7 @@ public class MainPage extends QuickShopPage {
       final Player player = Bukkit.getPlayer(id);
       if(shop.isPresent() && player != null) {
 
-        final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
+        final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
 
         //Set up our borders
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of("WHITE_STAINED_GLASS_PANE", 1));
@@ -148,12 +149,12 @@ public class MainPage extends QuickShopPage {
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("GREEN_WOOL", adjustedAmount)
                                                          .display(get(id, display, "x" + adjustedAmount))
-                                                         .lore(getList(id, "gui.trade.quantity.lore", eco.format(shop.get().getPrice(),
-                                                                                                                 shop.get().getLocation().getWorld(),
+                                                         .lore(getList(id, "gui.trade.quantity.lore", eco.format(BigDecimal.valueOf(shop.get().getPrice()),
+                                                                                                                 shop.get().getLocation().getWorld().getName(),
                                                                                                                  shop.get().getCurrency()),
                                                                        amount,
-                                                                       eco.format((quantity * shop.get().getPrice()),
-                                                                                  shop.get().getLocation().getWorld(),
+                                                                       eco.format(BigDecimal.valueOf((quantity * shop.get().getPrice())),
+                                                                                  shop.get().getLocation().getWorld().getName(),
                                                                                   shop.get().getCurrency()))))
                                          .withActions(new RunnableAction((click->{
                                            if(shop.get().isBuying()) {

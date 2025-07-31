@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.util.economyformatter;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +23,13 @@ public class EconomyFormatter implements Reloadable {
 
   private static final Map<String, String> CURRENCY_SYMBOL_MAPPING = new HashMap<>();
   private final QuickShop plugin;
-  private final Supplier<AbstractEconomy> economy;
   private boolean disableVaultFormat;
   private boolean useDecimalFormat;
   private boolean currencySymbolOnRight;
 
-  public EconomyFormatter(final QuickShop plugin, final Supplier<AbstractEconomy> economy) {
+  public EconomyFormatter(final QuickShop plugin) {
 
     this.plugin = plugin;
-    this.economy = economy;
     reloadModule();
     plugin.getReloadManager().register(this);
   }
@@ -72,8 +71,11 @@ public class EconomyFormatter implements Reloadable {
     if(internalFormat) {
       return getInternalFormat(n, currency);
     }
+
+    Log.debug("Economy Provider null check: " + (plugin.getEconomyManager().provider() == null));
+
     try {
-      final String formatted = economy.get().format(n, world, currency);
+      final String formatted = plugin.getEconomyManager().provider().format(BigDecimal.valueOf(n), world.getName(), currency);
       if(StringUtils.isEmpty(formatted)) {
         Log.debug(
                 "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
@@ -81,7 +83,7 @@ public class EconomyFormatter implements Reloadable {
       } else {
         return formatted;
       }
-    } catch(NumberFormatException e) {
+    } catch(final NumberFormatException e) {
       Log.debug(e.getMessage());
       Log.debug("Use alternate-currency-symbol to formatting, Cause NumberFormatException");
       return getInternalFormat(n, currency);

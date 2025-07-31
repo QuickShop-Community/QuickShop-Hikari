@@ -4,7 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.general.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.economyrevamp.transaction.QSEconomyTransaction;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -38,7 +39,7 @@ public class OngoingFeeWatcher implements Runnable {
   public void run() {
 
     Log.debug("Run task for ongoing fee...");
-    if(plugin.getEconomy() == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       Log.debug("Economy hadn't get ready.");
       return;
     }
@@ -57,7 +58,7 @@ public class OngoingFeeWatcher implements Runnable {
         double cost = gobalCost;
         final World world = location.getWorld();
         //We must check balance manually to avoid shop missing hell when tax account broken
-        if(allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), plugin.getCurrency()) >= cost) {
+        if(allowLoan || plugin.getEconomyManager().provider().balance(shopOwner, Objects.requireNonNull(world).getName(), plugin.getCurrency()).doubleValue() >= cost) {
           QUser taxAccount = null;
           if(shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
@@ -78,18 +79,16 @@ public class OngoingFeeWatcher implements Runnable {
 
           final QUser finalTaxAccount = taxAccount;
           Util.mainThreadRun(()->{
-            final SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
-                    .allowLoan(allowLoan)
+            final QSEconomyTransaction transaction = QSEconomyTransaction.builder()
                     .currency(plugin.getCurrency())
-                    .core(plugin.getEconomy())
-                    .world(world)
-                    .amount(finalCost)
+                    .world(world.getName())
+                    .amount(BigDecimal.valueOf(finalCost))
                     .to(finalTaxAccount)
                     .from(shopOwner).build();
 
-            final boolean success = transaction.failSafeCommit();
+            final boolean success = transaction.safeCommit();
             if(!success) {
-              warningSender.sendWarn("Unable to deposit ongoing fee to tax account, the last error is " + transaction.getLastError());
+              warningSender.sendWarn("Unable to deposit ongoing fee to tax account, the last error is " + transaction.lastError());
             }
           });
         } else {

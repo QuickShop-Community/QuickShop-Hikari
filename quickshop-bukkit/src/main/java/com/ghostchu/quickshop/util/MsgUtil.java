@@ -31,6 +31,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -100,6 +101,21 @@ public class MsgUtil {
   }
 
   public static String decimalFormat(final double value) {
+
+    if(decimalFormat == null) {
+      //lazy initialize
+      try {
+        final String format = PLUGIN.getConfig().getString("decimal-format");
+        decimalFormat = format == null? new DecimalFormat() : new DecimalFormat(format);
+      } catch(final Exception e) {
+        QuickShop.getInstance().logger().warn("Error when processing decimal format, using system default!", e);
+        decimalFormat = new DecimalFormat();
+      }
+    }
+    return decimalFormat.format(value);
+  }
+
+  public static String decimalFormat(final BigDecimal value) {
 
     if(decimalFormat == null) {
       //lazy initialize

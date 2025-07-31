@@ -23,6 +23,8 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+
 /**
  * ShopBenefitRemoveEvent represents an event triggered when a benefit is removed from a shop.
  * Handlers can use this to react to benefit removal.
@@ -30,18 +32,18 @@ import org.jetbrains.annotations.NotNull;
  * @author creatorfromhell
  * @since 6.2.0.9
  */
-public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
+public class ShopBenefitRemoveEvent extends ShopSettingEvent<BigDecimal> {
 
   private final QUser user;
 
-  public ShopBenefitRemoveEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, @NotNull final Double benefit) {
+  public ShopBenefitRemoveEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, @NotNull final BigDecimal benefit) {
 
     super(phase, shop, benefit);
 
     this.user = user;
   }
 
-  public ShopBenefitRemoveEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, @NotNull final Double benefit, @NotNull final Double updated) {
+  public ShopBenefitRemoveEvent(@NotNull final Phase phase, @NotNull final Shop shop, @NotNull final QUser user, @NotNull final BigDecimal benefit, @NotNull final BigDecimal updated) {
 
     super(phase, shop, benefit, updated);
 
@@ -49,49 +51,49 @@ public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
   }
 
   public static ShopBenefitRemoveEvent PRE(final @NotNull Shop shop, final @NotNull QUser user,
-                                           final Double old) {
+                                           final BigDecimal old) {
 
     return new ShopBenefitRemoveEvent(Phase.PRE, shop, user, old);
   }
 
   public static ShopBenefitRemoveEvent PRE(final @NotNull Shop shop, final @NotNull QUser user,
-                                           final Double old, final Double updated) {
+                                           final BigDecimal old, final BigDecimal updated) {
 
     return new ShopBenefitRemoveEvent(Phase.PRE, shop, user, updated);
   }
 
   public static ShopBenefitRemoveEvent MAIN(final @NotNull Shop shop, final @NotNull QUser user,
-                                            final Double old) {
+                                            final BigDecimal old) {
 
     return new ShopBenefitRemoveEvent(Phase.MAIN, shop, user, old);
   }
 
   public static ShopBenefitRemoveEvent MAIN(final @NotNull Shop shop, final @NotNull QUser user,
-                                            final Double old, final Double updated) {
+                                            final BigDecimal old, final BigDecimal updated) {
 
     return new ShopBenefitRemoveEvent(Phase.MAIN, shop, user, updated);
   }
 
   public static ShopBenefitRemoveEvent POST(final @NotNull Shop shop, final @NotNull QUser user,
-                                            final Double old) {
+                                            final BigDecimal old) {
 
     return new ShopBenefitRemoveEvent(Phase.POST, shop, user, old);
   }
 
   public static ShopBenefitRemoveEvent POST(final @NotNull Shop shop, final @NotNull QUser user,
-                                            final Double old, final Double updated) {
+                                            final BigDecimal old, final BigDecimal updated) {
 
     return new ShopBenefitRemoveEvent(Phase.POST, shop, user, updated);
   }
 
   public static ShopBenefitRemoveEvent RETRIEVE(final @NotNull Shop shop, final @NotNull QUser user,
-                                                final Double old) {
+                                                final BigDecimal old) {
 
     return new ShopBenefitRemoveEvent(Phase.RETRIEVE, shop, user, old);
   }
 
   public static ShopBenefitRemoveEvent RETRIEVE(final @NotNull Shop shop, final @NotNull QUser user,
-                                                final Double old, final Double updated) {
+                                                final BigDecimal old, final BigDecimal updated) {
 
     return new ShopBenefitRemoveEvent(Phase.RETRIEVE, shop, user, updated);
   }
@@ -130,7 +132,7 @@ public class ShopBenefitRemoveEvent extends ShopSettingEvent<Double> {
    * @return A new instance of ShopSettingEvent with the specified newPhase, old, and updated values
    */
   @Override
-  public ShopBenefitRemoveEvent clone(final Phase newPhase, final Double old, final Double updated) {
+  public ShopBenefitRemoveEvent clone(final Phase newPhase, final BigDecimal old, final BigDecimal updated) {
 
     return new ShopBenefitRemoveEvent(newPhase, this.shop, this.user, old);
   }

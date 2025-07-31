@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
-import com.ghostchu.quickshop.economy.SimpleBenefit;
+import com.ghostchu.quickshop.economyrevamp.QSBenefitProvider;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
@@ -68,7 +68,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
           }
         }
         final BlockState block = shopLoc.getBlock().getState();
-        if(!(block instanceof InventoryHolder container)) {
+        if(!(block instanceof final InventoryHolder container)) {
           getHikari().logger().warn("Shop Invalid: Shop block not a valid Container, failed to create InventoryHolder.");
           return;
         }
@@ -89,12 +89,12 @@ public class ShopMigrate extends AbstractMigrateComponent {
                 ((BukkitInventoryWrapperManager)getHikari().getInventoryWrapperManager()).mklink(reremakeShop.getLocation()),
                 null,
                 Collections.emptyMap(),
-                new SimpleBenefit()
+                new QSBenefitProvider()
         );
         migrateReremakeBanAddonData(reremakeShop, hikariRawShop);
         hikariRawShop.setDirty();
         preparedShops.add(hikariRawShop);
-      } catch(Exception e) {
+      } catch(final Exception e) {
         getHikari().logger().warn("Failed to migrate shop " + reremakeShop, e);
       }
     }).thenAcceptAsync(a->{
@@ -119,7 +119,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
         final UUID uuid = UUID.fromString(bannedPlayer);
         hikariRawShop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.BLOCKED);
       }
-    } catch(Throwable th) {
+    } catch(final Throwable th) {
       getHikari().logger().warn("Failed to migrate the shop ban record", th);
     }
   }
@@ -129,7 +129,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
     final YamlConfiguration configuration = new YamlConfiguration();
     try {
       configuration.loadFromString(reremakeShop.saveExtraToYaml());
-    } catch(InvalidConfigurationException ignored) {
+    } catch(final InvalidConfigurationException ignored) {
     }
     return configuration;
   }
@@ -143,7 +143,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
     for(final CompletableFuture<?> completableFuture : new ProgressMonitor<>(shopsToSaveFuture, triple->text("modules.shop.save-entry", triple.getLeft(), triple.getMiddle()).send())) {
       try {
         completableFuture.join();
-      } catch(Exception e) {
+      } catch(final Exception e) {
         getHikari().logger().warn("Error while saving shops, skipping", e);
       }
     }
@@ -174,7 +174,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
     final File reremakeDataDirectory = new File(getHikari().getDataFolder(), "QuickShop");
     try {
       Files.move(reremakeDataDirectory, new File(getHikari().getDataFolder(), "QuickShop.migrated"));
-    } catch(IOException e) {
+    } catch(final IOException e) {
       getHikari().logger().warn("Failed to move QuickShop-Reremake data directory, it may cause issues. You should manually move it to another location.");
     }
   }

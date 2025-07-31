@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -633,11 +633,11 @@ public interface Shop {
    * Gets the benefit in this shop
    */
   @NotNull
-  Benefit getShopBenefit();
+  BenefitProvider getShopBenefit();
 
   /**
    * Sets the benefit in this shop
    */
-  void setShopBenefit(@NotNull Benefit benefit);
+  void setShopBenefit(@NotNull BenefitProvider benefit);
 
 }

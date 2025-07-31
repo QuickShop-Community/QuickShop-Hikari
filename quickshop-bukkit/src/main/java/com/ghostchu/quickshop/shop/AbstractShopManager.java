@@ -77,8 +77,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     Util.ensureThread(false);
     this.plugin = plugin;
-    this.formatter = new EconomyFormatter(plugin, plugin::getEconomy);
-
+    this.formatter = new EconomyFormatter(plugin);
   }
 
   public void init() {
