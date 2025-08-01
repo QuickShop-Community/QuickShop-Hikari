@@ -36,9 +36,9 @@ public class SubCommand_Size implements CommandHandler<Player> {
     }
     final int amount;
     try {
-      amount = Integer.parseInt(parser.getArgs().get(0));
+      amount = Integer.parseInt(parser.getArgs().getFirst());
     } catch(NumberFormatException e) {
-      plugin.text().of(sender, "not-a-integer", parser.getArgs().get(0)).send();
+      plugin.text().of(sender, "not-a-integer", parser.getArgs().getFirst()).send();
       return;
     }
     final Shop shop = getLookingShop(sender);

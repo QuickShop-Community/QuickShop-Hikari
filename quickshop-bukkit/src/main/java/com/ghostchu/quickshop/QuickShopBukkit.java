@@ -209,6 +209,8 @@ public class QuickShopBukkit extends JavaPlugin {
       }
     } catch(final IOException e) {
       throw new IllegalStateException("Cannot download the libraries, the first time install/upgrade need the Internet connection.", e);
+    } catch(final Exception ignore) {
+      //try to get rid of console errors from logger loading.
     }
   }
 

@@ -3,10 +3,10 @@ package com.ghostchu.quickshop.addon.discordsrv.message;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.parser.EmbedMessageParser;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +44,7 @@ public class MessageRepository {
 
     final EmbedBuilder builder = new EmbedBuilder(embed);
     for(final Map.Entry<String, String> entry : placeholders.entrySet()) {
-      if(StringUtils.isEmpty(entry.getValue())) {
+      if(CommonUtil.isEmptyString(entry.getValue())) {
         entry.setValue(ZERO_WIDTH_SPACE);
       }
     }

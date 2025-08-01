@@ -112,11 +112,11 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
     final List<String> subParams = new ArrayList<>(parser.getArgs());
     subParams.remove(0);
-    final String arg = parser.getArgs().get(0);
+    final String arg = parser.getArgs().getFirst();
 
     final BiConsumer<CommandSender, List<String>> executor = subParamMapping.get(arg);
     if(executor == null) {
-      plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+      plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().getFirst()).send();
       return;
     }
 
@@ -148,7 +148,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
   private void handleSetHikariCPCapacity(final CommandSender sender, final List<String> subParams) {
 
-    final int size = Integer.parseInt(subParams.get(0));
+    final int size = Integer.parseInt(subParams.getFirst());
     final HikariDataSource hikariDataSource = (HikariDataSource)plugin.getSqlManager().getDataSource();
     hikariDataSource.setMaximumPoolSize(size);
     hikariDataSource.setMinimumIdle(size);
@@ -261,7 +261,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "debug.property-incorrect").send();
       return;
     }
-    final String[] split = subParams.get(0).split("=");
+    final String[] split = subParams.getFirst().split("=");
     if(split.length < 1) {
       plugin.text().of(sender, "debug.property-incorrect").send();
       return;
@@ -366,7 +366,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
       return;
     }
-    printHandlerList(sender, remove.get(0));
+    printHandlerList(sender, remove.getFirst());
   }
 
   private void handleSigns(@NotNull final CommandSender sender) {
@@ -385,7 +385,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of("debug.operation-missing");
       return;
     }
-    plugin.text().of(sender, "debug.operation-invalid", remove.get(0)).send();
+    plugin.text().of(sender, "debug.operation-invalid", remove.getFirst()).send();
   }
 
   private void handleSignsUpdate(final CommandSender sender, final List<String> remove) {
@@ -395,7 +395,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       return;
     }
     plugin.text().of(sender, "debug.update-player-shops-signs-create-async-task").send();
-    plugin.getPlayerFinder().name2UuidFuture(remove.get(0)).whenComplete((uuid, throwable)->{
+    plugin.getPlayerFinder().name2UuidFuture(remove.getFirst()).whenComplete((uuid, throwable)->{
       if(throwable != null) {
         plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
         return;
@@ -447,7 +447,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
           @NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
-      return List.copyOf(subParamMapping.keySet()).stream().filter(s->s.startsWith(parser.getArgs().get(0))).toList();
+      return List.copyOf(subParamMapping.keySet()).stream().filter(s->s.startsWith(parser.getArgs().getFirst())).toList();
     }
     return Collections.emptyList();
   }

@@ -19,7 +19,6 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -339,7 +338,7 @@ public class ShopLoader implements SubPasteItem {
       this.benefits = QSBenefitProvider.deserialize(dataRecord.getBenefit());
       final String permissionJson = dataRecord.getPermissions();
 
-      if(!StringUtils.isEmpty(permissionJson) && CommonUtil.isJson(permissionJson)) {
+      if(!CommonUtil.isEmptyString(permissionJson) && CommonUtil.isJson(permissionJson)) {
         final Type typeToken = new TypeToken<Map<UUID, String>>() {
         }.getType();
         this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, typeToken));
@@ -372,7 +371,7 @@ public class ShopLoader implements SubPasteItem {
 
     private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
 
-      if(StringUtils.isEmpty(extraString)) {
+      if(CommonUtil.isEmptyString(extraString)) {
         return null;
       }
       YamlConfiguration yamlConfiguration = new YamlConfiguration();

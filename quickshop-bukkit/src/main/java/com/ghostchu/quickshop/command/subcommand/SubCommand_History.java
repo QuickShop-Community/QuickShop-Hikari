@@ -53,7 +53,7 @@ public class SubCommand_History implements CommandHandler<Player> {
       }
       shops.add(shop);
     } else {
-      switch(parser.getArgs().get(0).toLowerCase(Locale.ROOT)) {
+      switch(parser.getArgs().getFirst().toLowerCase(Locale.ROOT)) {
         case "owned" -> {
           if(!plugin.perm().hasPermission(sender, "quickshop.history.owned")) {
             plugin.text().of(sender, "no-permission").send();

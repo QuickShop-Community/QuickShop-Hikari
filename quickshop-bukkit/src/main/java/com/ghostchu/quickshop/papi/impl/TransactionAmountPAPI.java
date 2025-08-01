@@ -5,11 +5,11 @@ import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.MetricQuery;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.papi.PAPISubHandler;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +62,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
     }
     final String type = passThroughArgs[0];
     final String days = passThroughArgs[1];
-    if(!StringUtils.isNumeric(days)) {
+    if(!CommonUtil.isNumeric(days)) {
       return null;
     }
     final ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
@@ -93,7 +93,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
     }
     final String type = passThroughArgs[0];
     final String days = passThroughArgs[1];
-    if(!StringUtils.isNumeric(days)) {
+    if(!CommonUtil.isNumeric(days)) {
       return null;
     }
     final ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));

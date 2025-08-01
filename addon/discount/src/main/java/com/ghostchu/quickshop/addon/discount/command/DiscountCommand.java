@@ -49,7 +49,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     }
     final String[] passThroughArgs = new String[parser.getArgs().size() - 1];
     System.arraycopy(parser.getArgs().toArray(new String[0]), 1, passThroughArgs, 0, passThroughArgs.length);
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "install" -> install(sender, passThroughArgs);
       case "uninstall" -> uninstall(sender, passThroughArgs);
       case "create" -> create(sender, passThroughArgs);

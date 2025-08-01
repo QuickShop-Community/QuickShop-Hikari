@@ -33,7 +33,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
 
     final CompletableFuture<QUser> qUserFuture;
     if(parser.getArgs().size() == 1) {
-      qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0));
+      qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().getFirst());
     } else {
       qUserFuture = QUserImpl.createAsync(plugin.getPlayerFinder(), sender);
     }

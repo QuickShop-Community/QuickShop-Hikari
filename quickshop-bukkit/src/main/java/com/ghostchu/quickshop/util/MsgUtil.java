@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.event.general.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -19,7 +20,6 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 
 public class MsgUtil {
@@ -139,13 +140,21 @@ public class MsgUtil {
   @NotNull
   public static String fillArgs(@Nullable String raw, @Nullable final String... args) {
 
-    if(StringUtils.isEmpty(raw)) {
+    if(CommonUtil.isEmptyString(raw)) {
       return "";
     }
-    if(args != null) {
-      for(int i = 0; i < args.length; i++) {
-        raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null? "" : args[i]);
-      }
+
+    if(args == null || args.length == 0) {
+      return raw;
+    }
+
+    for(int i = 0; i < args.length; i++) {
+
+      final String arg = args[i];
+      final String replacement = (arg == null? "" : arg);
+
+      raw = raw.replaceAll(Pattern.quote("{" + i + "}"), Pattern.quote(replacement));
+      //raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null? "" : args[i]);
     }
     return raw;
   }
@@ -229,8 +238,8 @@ public class MsgUtil {
       final Locale locale = Locale.getDefault();
       final String language = locale.getLanguage();
       final String country = locale.getCountry();
-      final boolean isLanguageEmpty = StringUtils.isEmpty(language);
-      final boolean isCountryEmpty = StringUtils.isEmpty(country);
+      final boolean isLanguageEmpty = CommonUtil.isEmptyString(language);
+      final boolean isCountryEmpty = CommonUtil.isEmptyString(country);
       if(isLanguageEmpty && isCountryEmpty) {
         languageCode = "en_us";
       } else {
@@ -447,7 +456,7 @@ public class MsgUtil {
       return;
     }
     for(final String msg : messages) {
-      if(StringUtils.isEmpty(msg)) {
+      if(CommonUtil.isEmptyString(msg)) {
         return;
       }
       sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));

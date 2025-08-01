@@ -2,11 +2,11 @@ package com.ghostchu.quickshop.eventmanager;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -47,14 +47,14 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
             .getStringList("shop.protection-checking-listener-blacklist")
             .forEach(
                     input->{
-                      if(StringUtils.isEmpty(input)) {
+                      if(CommonUtil.isEmptyString(input)) {
                         return;
                       }
                       try {
                         final Class<?> clazz = Class.forName(input);
                         this.ignoredListener.add(new ListenerContainer(clazz, input));
                         Log.debug("Successfully added blacklist: [BINDING] " + clazz.getName());
-                      } catch(Exception ignored) {
+                      } catch(final Exception ignored) {
                         this.ignoredListener.add(new ListenerContainer(null, input));
                         Log.debug("Successfully added blacklist: [DYNAMIC] " + input);
                       }
@@ -118,7 +118,7 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
           }
         }
         registration.callEvent(event);
-      } catch(AuthorNagException ex) {
+      } catch(final AuthorNagException ex) {
         final Plugin regPlugin = registration.getPlugin();
         if(regPlugin.isNaggable()) {
           regPlugin.setNaggable(false);
@@ -132,7 +132,7 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                                   regPlugin.getDescription().getFullName(),
                                   ex.getMessage()));
         }
-      } catch(Throwable ex) {
+      } catch(final Throwable ex) {
         Bukkit
                 .getLogger()
                 .log(

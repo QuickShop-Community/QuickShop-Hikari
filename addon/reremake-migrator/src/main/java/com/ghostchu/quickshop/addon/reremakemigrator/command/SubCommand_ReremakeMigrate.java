@@ -47,7 +47,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
       hikari.text().of(sender, "addon.reremake-migrator.server-not-empty").send();
       return;
     }
-    final boolean shouldOverrideExistShops = Boolean.parseBoolean(parser.getArgs().get(0));
+    final boolean shouldOverrideExistShops = Boolean.parseBoolean(parser.getArgs().getFirst());
     final boolean shouldMigrateTransactionLogs = Boolean.parseBoolean(parser.getArgs().get(1));
     final List<MigrateComponent> migrateComponentList = new ArrayList<>();
     migrateComponentList.add(new ConfigMigrate(plugin, hikari, reremake, sender));
@@ -68,7 +68,7 @@ public class SubCommand_ReremakeMigrate implements CommandHandler<ConsoleCommand
             running.set(false);
             return;
           }
-        } catch(Exception e) {
+        } catch(final Exception e) {
           hikari.logger().warn("Failed to execute migrate component {}", migrateComponentName, e);
           running.set(false);
           return;

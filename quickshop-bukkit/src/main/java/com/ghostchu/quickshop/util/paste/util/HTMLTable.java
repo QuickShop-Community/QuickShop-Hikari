@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.util.paste.util;
 
-import org.apache.commons.lang3.StringUtils;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,7 +64,7 @@ public class HTMLTable {
       f[i] = obj.toString();
     }
     if(firstColumnBold) {
-      if(!StringUtils.isEmpty(f[0])) {
+      if(!CommonUtil.isEmptyString(f[0])) {
         f[0] = "<b>" + f[0] + "</b>";
       }
     }

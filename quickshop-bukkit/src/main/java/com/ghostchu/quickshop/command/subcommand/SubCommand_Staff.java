@@ -45,7 +45,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
       }
       switch(parser.getArgs().size()) {
         case 1 -> {
-          switch(parser.getArgs().get(0)) {
+          switch(parser.getArgs().getFirst()) {
             case "clear" -> {
               shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff->shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE));
               plugin.text().of(sender, "shop-staff-cleared").send();
@@ -78,7 +78,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
           plugin.getPlayerFinder().name2UuidFuture(parser.getArgs().get(1))
                   .thenAccept(uuid->{
                     BuiltInShopPermissionGroup permissionGroup = null;
-                    switch(parser.getArgs().get(0)) {
+                    switch(parser.getArgs().getFirst()) {
                       case "add" -> {
                         permissionGroup = BuiltInShopPermissionGroup.STAFF;
                         plugin.text().of(sender, "shop-staff-added", name).send();
@@ -118,8 +118,8 @@ public class SubCommand_Staff implements CommandHandler<Player> {
     if(parser.getArgs().size() == 1) {
       return tabCompleteList;
     } else if(parser.getArgs().size() == 2) {
-      final String prefix = parser.getArgs().get(0).toLowerCase();
-      if("add".equals(prefix) || "del".equals(parser.getArgs().get(0))) {
+      final String prefix = parser.getArgs().getFirst().toLowerCase();
+      if("add".equals(prefix) || "del".equals(parser.getArgs().getFirst())) {
         return Util.getPlayerList();
       }
     }

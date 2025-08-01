@@ -122,7 +122,6 @@ public class Util {
     return SHOPABLES;
   }
 
-
   /**
    * Execute the Runnable in async thread. If it already on main-thread, will be move to async
    * thread.

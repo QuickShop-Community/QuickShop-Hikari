@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.logger;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.util.Util;
@@ -8,7 +9,6 @@ import com.google.common.collect.EvictingQueue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -171,7 +171,7 @@ public class Log {
     try {
       final List<Record> records = new ArrayList<>();
       for(final Record recordEntry : LOGGER_BUFFER) {
-        if(ArrayUtils.contains(excludes, recordEntry.getType())) {
+        if(CommonUtil.arrayContains(excludes, recordEntry.getType())) {
           continue;
         }
         records.add(recordEntry);

@@ -12,11 +12,11 @@ import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitRemoveE
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +54,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       return;
     }
 
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "add" -> addBenefit(sender, shop, parser);
       case "remove" -> removeBenefit(sender, shop, parser);
       case "query" -> queryBenefit(sender, shop, parser);
@@ -86,10 +86,10 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       }
       if(!parser.getArgs().get(2).endsWith("%")) {
         // Force player enter '%' to avoid player type something like 0.01 for 1%
-        plugin.text().of(sender, "invalid-percentage", parser.getArgs().get(0)).send();
+        plugin.text().of(sender, "invalid-percentage", parser.getArgs().getFirst()).send();
         return;
       }
-      final String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
+      final String percentageStr = CommonUtil.subBeforeLast(parser.getArgs().get(2), "%");
       Util.mainThreadRun(()->{
         try {
           double percent = Double.parseDouble(percentageStr);

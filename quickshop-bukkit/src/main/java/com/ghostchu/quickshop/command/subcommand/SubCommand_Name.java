@@ -59,7 +59,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
       return;
     }
 
-    String shopName = parser.getArgs().get(0);
+    String shopName = parser.getArgs().getFirst();
     // Translate the all chat colors
     shopName = ChatColor.translateAlternateColorCodes('&', shopName);
     // Then strip all of them, Shop name reference is disallow any color

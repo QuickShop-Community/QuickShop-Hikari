@@ -147,16 +147,6 @@ public class ShopMigrate extends AbstractMigrateComponent {
         getHikari().logger().warn("Error while saving shops, skipping", e);
       }
     }
-//        CompletableFuture.allOf(shopsToSaveFuture)
-//                .thenAcceptAsync((v) -> {
-//                    if (shopsToSaveFuture.length != 0) {
-//                        Log.debug("Saved " + shopsToSaveFuture.length + " shops in background.");
-//                    }
-//                }, QuickExecutor.getShopSaveExecutor())
-//                .exceptionally(e -> {
-//                    getHikari().logger().warn("Error while saving shops", e);
-//                    return null;
-//                }).join();
   }
 
   private void registerHikariShops(final List<ContainerShop> preparedShops) {

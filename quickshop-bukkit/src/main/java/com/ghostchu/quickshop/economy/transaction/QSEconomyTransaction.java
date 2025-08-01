@@ -29,6 +29,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
+import com.ghostchu.quickshop.economy.QSBenefitProvider;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import org.jetbrains.annotations.NotNull;
@@ -89,8 +90,6 @@ public class QSEconomyTransaction implements EconomyTransaction {
       this.amountAfterTax = amount;
     }
 
-    System.out.println("amountAfterTax: " + amountAfterTax.toPlainString());
-    System.out.println("amount: " + amount.toPlainString());
     this.tax = CalculateUtil.subtract(amount, amountAfterTax); //Calc total tax
 
     if(from == null && to == null) {
@@ -99,6 +98,10 @@ public class QSEconomyTransaction implements EconomyTransaction {
     }
 
     this.provider = QuickShop.getInstance().getEconomyManager().provider();
+
+    if(this.benefitProvider == null) {
+      this.benefitProvider = QSBenefitProvider.EMPTY;
+    }
 
     new EconomyTransactionEvent(this).callEvent();
   }

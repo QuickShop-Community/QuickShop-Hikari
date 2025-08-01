@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +29,7 @@ public class DiscordDatabaseHelper {
     this.plugin = plugin;
     try {
       DiscordTables.initializeTables(sqlManager, dbPrefix);
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       plugin.getLogger().log(Level.WARNING, "Cannot initialize tables", e);
       throw e;
     }
@@ -50,11 +49,11 @@ public class DiscordDatabaseHelper {
     } else {
       settings.getSettings().put(feature, status);
     }
-    try(SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery()
+    try(final SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery()
             .setLimit(1)
             .addCondition("player", playerUuid)
             .build().execute();
-        ResultSet set = query.getResultSet()) {
+        final ResultSet set = query.getResultSet()) {
       final Integer integer;
       if(set.next()) {
         integer = DiscordTables.DISCORD_PLAYERS.createUpdate()
@@ -77,12 +76,12 @@ public class DiscordDatabaseHelper {
   public NotificationSettings getPlayerNotifactionSetting(@NotNull final UUID uuid) throws SQLException {
 
     Util.ensureThread(true);
-    try(SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player",
-                                                                                                               uuid).setLimit(1).build().execute(); ResultSet set = query.getResultSet()) {
+    try(final SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player",
+                                                                                                                     uuid).setLimit(1).build().execute(); final ResultSet set = query.getResultSet()) {
       if(set.next()) {
         final String json = set.getString("notifaction");
         Log.debug("Json data: " + json);
-        if(StringUtils.isNotEmpty(json)) {
+        if(!CommonUtil.isEmptyString(json)) {
           if(CommonUtil.isJson(json)) {
             return JsonUtil.getGson().fromJson(json, NotificationSettings.class);
           }
@@ -109,7 +108,7 @@ public class DiscordDatabaseHelper {
       final NotificationSettings settings = getPlayerNotifactionSetting(uuid);
       Log.debug("Notifaction Settings: " + settings);
       return settings.getSettings().getOrDefault(feature, defValue);
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       return defValue;
     }
   }

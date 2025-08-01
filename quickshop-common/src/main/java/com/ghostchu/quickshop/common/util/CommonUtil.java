@@ -3,9 +3,6 @@ package com.ghostchu.quickshop.common.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,16 +14,19 @@ import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -98,21 +98,107 @@ public class CommonUtil {
   @Nullable
   public static Date parseTime(@NotNull final String time) {
 
-    if(NumberUtils.isCreatable(time)) {
+    try {
       return new Date(Long.parseLong(time) * 1000L);
+    } catch(final NumberFormatException ignore) {
+
+      return parseZuluDate(time);
     }
-    return zuluTime2Date(time);
   }
 
   @Nullable
-  public static Date zuluTime2Date(@NotNull final String zuluString) {
+  public static Date parseZuluDate(final String zuluString) {
 
-    final String pattern = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.getPattern();
+    final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
     try {
-      return DateUtils.parseDate(zuluString, pattern);
-    } catch(ParseException e) {
+      final ZonedDateTime zdt = ZonedDateTime.parse(zuluString, formatter);
+      return Date.from(zdt.toInstant());
+    } catch(final DateTimeParseException e) {
       return null;
     }
+  }
+
+  public static boolean isEmptyString(final String check) {
+
+    return check == null || check.isEmpty();
+  }
+
+  public static boolean isBlank(final String check) {
+
+    return check == null || check.trim().isEmpty();
+  }
+
+  public static boolean strEquals(final String str1, final String str2) {
+
+    if(str1 == null && str2 == null) {
+      return true;
+    }
+
+    if(str1 == null || str2 == null) {
+      return false;
+    }
+    return str1.equals(str2);
+  }
+
+  public static boolean isNumeric(final CharSequence sequence) {
+
+    if(sequence == null || sequence.isEmpty()) {
+      return false;
+    }
+
+    boolean numeric = true;
+    for(int i = 0; i < sequence.length(); i++) {
+
+      if(Character.isDigit(sequence.charAt(i))) {
+        continue;
+      }
+
+      numeric = false;
+      break;
+    }
+    return numeric;
+  }
+
+  public static String subAfter(final String string, final @NotNull String separator) {
+
+    if(isEmptyString(string)) {
+      return string;
+    }
+
+    final int pos = string.lastIndexOf(separator);
+    if(pos == -1) {
+      return "";
+    }
+
+    return string.substring(pos + separator.length());
+  }
+
+  public static String subBeforeLast(final String string, final String separator) {
+
+    if(isEmptyString(string) || isEmptyString(separator)) {
+      return string;
+    }
+
+    final int pos = string.lastIndexOf(separator);
+    if(pos == -1) {
+      return string;
+    }
+    return string.substring(0, pos);
+  }
+
+  public static <T> boolean arrayContains(final T[] array, final T value) {
+
+    if(array == null) {
+      return false;
+    }
+
+    for(final T element : array) {
+      if(Objects.equals(element, value)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -195,7 +281,7 @@ public class CommonUtil {
 
     try {
       return rootPath.toURI().relativize(targetPath.toURI()).getPath();
-    } catch(Exception e) {
+    } catch(final Exception e) {
       return targetPath.getAbsolutePath();
     }
   }
@@ -230,7 +316,7 @@ public class CommonUtil {
       if(!c.getSimpleName().isEmpty()) {
         className = c.getSimpleName();
       }
-    } catch(ClassNotFoundException ignored) {
+    } catch(final ClassNotFoundException ignored) {
     }
     final String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
     return "[" + className + "-" + methodName + "] ";
@@ -285,7 +371,7 @@ public class CommonUtil {
 
     try {
       return new File(".").toURI().relativize(targetPath.toURI()).getPath();
-    } catch(Exception e) {
+    } catch(final Exception e) {
       return targetPath.getAbsolutePath();
     }
   }
@@ -299,9 +385,9 @@ public class CommonUtil {
    */
   public static byte[] inputStream2ByteArray(@NotNull final String filePath) {
 
-    try(InputStream in = new FileInputStream(filePath)) {
+    try(final InputStream in = new FileInputStream(filePath)) {
       return toByteArray(in);
-    } catch(IOException e) {
+    } catch(final IOException e) {
       return new byte[0];
     }
   }
@@ -329,7 +415,7 @@ public class CommonUtil {
     try {
       Class.forName(qualifiedName);
       return true;
-    } catch(ClassNotFoundException e) {
+    } catch(final ClassNotFoundException e) {
       return false;
     }
   }
@@ -356,7 +442,7 @@ public class CommonUtil {
     try {
       fromTrimmedUUID(string);
       return true;
-    } catch(IllegalArgumentException e) {
+    } catch(final IllegalArgumentException e) {
       return false;
     }
   }
@@ -371,7 +457,7 @@ public class CommonUtil {
       builder.insert(16, "-");
       builder.insert(12, "-");
       builder.insert(8, "-");
-    } catch(StringIndexOutOfBoundsException e) {
+    } catch(final StringIndexOutOfBoundsException e) {
       throw new IllegalArgumentException();
     }
 
@@ -396,7 +482,7 @@ public class CommonUtil {
     try {
       final JsonElement element = JsonParser.parseString(str);
       return element.isJsonObject() || element.isJsonArray();
-    } catch(JsonParseException exception) {
+    } catch(final JsonParseException exception) {
       return false;
     }
   }
@@ -537,9 +623,9 @@ public class CommonUtil {
   public static String readToString(@NotNull final File file) {
 
     final byte[] filecontent = new byte[(int)file.length()];
-    try(FileInputStream in = new FileInputStream(file)) {
+    try(final FileInputStream in = new FileInputStream(file)) {
       in.read(filecontent);
-    } catch(IOException e) {
+    } catch(final IOException e) {
       e.printStackTrace();
     }
     return new String(filecontent, StandardCharsets.UTF_8);

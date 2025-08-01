@@ -37,7 +37,7 @@ public class SubCommand_Discord implements CommandHandler<Player> {
       qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
       return;
     }
-    final NotificationFeature feature = getFeatureByName(parser.getArgs().get(0));
+    final NotificationFeature feature = getFeatureByName(parser.getArgs().getFirst());
     if(feature == null) {
       qs.text().of(sender, "command-incorrect", "/quickshop discord <features> <enable/disable>").send();
       return;

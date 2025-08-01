@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.api.command;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,7 +34,7 @@ public interface CommandHandler<T extends CommandSender> {
   @Nullable
   default Shop getLookingShop(final T sender) throws IllegalStateException {
 
-    if(sender instanceof Player player) {
+    if(sender instanceof final Player player) {
       final BlockIterator bIt = new BlockIterator(player, 10);
       while(bIt.hasNext()) {
         final Block b = bIt.next();
@@ -52,7 +51,7 @@ public interface CommandHandler<T extends CommandSender> {
 
   default @NotNull CompletableFuture<@NotNull List<Shop>> getTaggedShops(final T sender, @NotNull final String tag) {
 
-    if(sender instanceof Player player) {
+    if(sender instanceof final Player player) {
       final UUID tagger = player.getUniqueId();
       return QuickShopAPI.getInstance().getShopManager().queryTaggedShops(tagger, tag);
     }
@@ -86,10 +85,10 @@ public interface CommandHandler<T extends CommandSender> {
     final CommandParser parser = new CommandParser(joiner.toString(), true);
     try {
       onCommand(sender, commandLabel, parser);
-    } catch(NotImplementedException e) {
+    } catch(final UnsupportedOperationException ignore) {
       try {
         onCommand(sender, commandLabel, parser.getArgs().toArray(new String[0]));
-      } catch(NotImplementedException ignored) {
+      } catch(final UnsupportedOperationException ignored) {
 
       }
     }
@@ -104,7 +103,7 @@ public interface CommandHandler<T extends CommandSender> {
    */
   default void onCommand(final T sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    throw new NotImplementedException("This method should be correctly implemented.");
+    throw new UnsupportedOperationException("This method should be correctly implemented.");
   }
 
   /**
@@ -120,7 +119,7 @@ public interface CommandHandler<T extends CommandSender> {
   @Deprecated(since = "4.2.0.0")
   default void onCommand(final T sender, @NotNull final String commandLabel, @NotNull final String[] cmdArgs) {
 
-    throw new NotImplementedException("This method is deprecated, please use onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
+    throw new UnsupportedOperationException("This method is deprecated, please use onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
   }
 
   @Nullable
@@ -133,10 +132,10 @@ public interface CommandHandler<T extends CommandSender> {
     final CommandParser parser = new CommandParser(joiner.toString(), false);
     try {
       return onTabComplete(sender, commandLabel, parser);
-    } catch(NotImplementedException e) {
+    } catch(final UnsupportedOperationException ignore) {
       try {
         return onTabComplete(sender, commandLabel, parser.getArgs().toArray(new String[0]));
-      } catch(NotImplementedException ignored) {
+      } catch(final UnsupportedOperationException ignored) {
         return Collections.emptyList();
       }
     }
@@ -154,7 +153,7 @@ public interface CommandHandler<T extends CommandSender> {
   @Nullable
   default List<String> onTabComplete(@NotNull final T sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    throw new NotImplementedException("This method should be correctly implemented.");
+    throw new UnsupportedOperationException("This method should be correctly implemented.");
   }
 
   /**
@@ -172,6 +171,6 @@ public interface CommandHandler<T extends CommandSender> {
   @Deprecated(since = "4.2.0.0")
   default List<String> onTabComplete(@NotNull final T sender, @NotNull final String commandLabel, @NotNull final String[] cmdArgs) {
 
-    throw new NotImplementedException("This method is deprecated, please use onTabComplete(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
+    throw new UnsupportedOperationException("This method is deprecated, please use onTabComplete(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
   }
 }

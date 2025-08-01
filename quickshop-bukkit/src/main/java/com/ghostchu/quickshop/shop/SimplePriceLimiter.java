@@ -15,7 +15,6 @@ import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -313,7 +312,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     for(final Map.Entry<String, RuleSet> entry : this.rules.entrySet()) {
       final RuleSet rule = entry.getValue();
       String currencies = CommonUtil.list2String(rule.getCurrency());
-      if(StringUtils.isEmpty(currencies)) {
+      if(CommonUtil.isEmptyString(currencies)) {
         currencies = "*";
       }
       rules.insert(entry.getKey(), rule.getBypassPermission(), rule.getItems().size(), currencies, rule.getMin() + " - " + rule.getMax());

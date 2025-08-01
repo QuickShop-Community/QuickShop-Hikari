@@ -28,9 +28,9 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "command.no-world-given").send();
       return;
     }
-    final World world = Bukkit.getWorld(parser.getArgs().get(0));
+    final World world = Bukkit.getWorld(parser.getArgs().getFirst());
     if(world == null) {
-      plugin.text().of(sender, "world-not-exists", parser.getArgs().get(0)).send();
+      plugin.text().of(sender, "world-not-exists", parser.getArgs().getFirst()).send();
       return;
     }
     int shopsDeleted = 0;
@@ -40,7 +40,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
         shopsDeleted++;
       }
     }
-    Log.debug("Successfully deleted all shops in world " + parser.getArgs().get(0) + "!");
+    Log.debug("Successfully deleted all shops in world " + parser.getArgs().getFirst() + "!");
     plugin.text().of(sender, "shops-removed-in-world", shopsDeleted, world.getName()).send();
   }
 

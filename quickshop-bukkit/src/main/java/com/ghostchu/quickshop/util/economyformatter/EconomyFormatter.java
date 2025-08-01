@@ -2,12 +2,12 @@ package com.ghostchu.quickshop.util.economyformatter;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,7 +74,7 @@ public class EconomyFormatter implements Reloadable {
 
     try {
       final String formatted = plugin.getEconomyManager().provider().format(BigDecimal.valueOf(n), world.getName(), currency);
-      if(StringUtils.isEmpty(formatted)) {
+      if(CommonUtil.isEmptyString(formatted)) {
         Log.debug(
                 "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
         return getInternalFormat(n, currency);
@@ -90,7 +90,7 @@ public class EconomyFormatter implements Reloadable {
 
   private String getInternalFormat(final double amount, @Nullable final String currency) {
 
-    if(StringUtils.isEmpty(currency)) {
+    if(CommonUtil.isEmptyString(currency)) {
       Log.debug("Format: Currency is null");
       final String formatted = useDecimalFormat? MsgUtil.decimalFormat(amount) : Double.toString(amount);
       return currencySymbolOnRight? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;

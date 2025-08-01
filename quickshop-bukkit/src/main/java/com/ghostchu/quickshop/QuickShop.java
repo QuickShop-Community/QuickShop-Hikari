@@ -140,7 +140,6 @@ import net.tnemc.menu.paper.PaperPlayer;
 import net.tnemc.menu.paper.listener.PaperChatListener;
 import net.tnemc.menu.paper.listener.PaperInventoryClickListener;
 import net.tnemc.menu.paper.listener.PaperInventoryCloseListener;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -536,7 +535,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       this.platform.updateTranslationMappingSection(this.translationMapping);
     }
 
-    if(StringUtils.isEmpty(this.currency)) {
+    if(CommonUtil.isEmptyString(this.currency)) {
       this.currency = null;
     }
     if(this.getConfig().getBoolean("logging.enable")) {

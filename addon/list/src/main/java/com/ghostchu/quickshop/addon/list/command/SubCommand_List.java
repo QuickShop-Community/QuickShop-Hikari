@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -11,7 +12,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -43,17 +43,17 @@ public class SubCommand_List implements CommandHandler<Player> {
       lookupSelf(sender, page);
       return;
     }
-    if(!StringUtils.isNumeric(parser.getArgs().get(0))) {
+    if(!CommonUtil.isNumeric(parser.getArgs().getFirst())) {
       if(parser.getArgs().size() >= 2) {
-        if(!StringUtils.isNumeric(parser.getArgs().get(1))) {
+        if(!CommonUtil.isNumeric(parser.getArgs().get(1))) {
           quickshop.text().of(sender, "not-a-number", parser.getArgs().get(1)).send();
           return;
         }
         page = Integer.parseInt(parser.getArgs().get(1));
       }
-      lookupOther(sender, parser.getArgs().get(0), page);
+      lookupOther(sender, parser.getArgs().getFirst(), page);
     } else {
-      page = Integer.parseInt(parser.getArgs().get(0));
+      page = Integer.parseInt(parser.getArgs().getFirst());
       lookupSelf(sender, page);
     }
   }
@@ -94,7 +94,7 @@ public class SubCommand_List implements CommandHandler<Player> {
   private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
 
     String name = quickshop.getPlayerFinder().uuid2Name(lookupUser);
-    if(StringUtils.isEmpty(name)) {
+    if(CommonUtil.isEmptyString(name)) {
       name = "Unknown";
     }
     final List<Shop> shops = quickshop.getShopManager().getAllShops(lookupUser);
@@ -113,7 +113,7 @@ public class SubCommand_List implements CommandHandler<Player> {
       String shopName = shop.getShopName();
       final Location location = shop.getLocation();
       final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
-      if(StringUtils.isEmpty(shopName)) {
+      if(CommonUtil.isEmptyString(shopName)) {
         shopName = combineLocation;
       }
       final Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));

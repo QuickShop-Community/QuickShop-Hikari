@@ -38,7 +38,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
       return;
     }
     final ConfigurationSection manager = shop.getExtra(Main.instance);
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "set" -> {
         try {
           final int limitAmount = Integer.parseInt(parser.getArgs().get(1));

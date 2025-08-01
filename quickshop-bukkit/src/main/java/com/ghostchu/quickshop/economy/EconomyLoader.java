@@ -26,7 +26,6 @@ import com.ghostchu.quickshop.economy.provider.VaultUnlockedProvider;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import net.milkbowl.vault2.economy.Economy;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
@@ -130,7 +129,7 @@ public class EconomyLoader {
       return vault;
     }
 
-    if(StringUtils.isEmpty(taxAccount)) {
+    if(CommonUtil.isEmptyString(taxAccount)) {
       return vault;
     }
 
@@ -176,7 +175,7 @@ public class EconomyLoader {
     if(!taxEnabled) {
       return vault;
     }
-    if(StringUtils.isEmpty(taxAccount)) {
+    if(CommonUtil.isEmptyString(taxAccount)) {
       return vault;
     }
     final OfflinePlayer tax;

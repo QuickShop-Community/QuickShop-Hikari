@@ -31,7 +31,7 @@ public class SubCommand_Amount implements CommandHandler<Player> {
       return;
     }
 
-    plugin.getShopManager().handleChat(sender, parser.getArgs().get(0));
+    plugin.getShopManager().handleChat(sender, parser.getArgs().getFirst());
   }
 
   @NotNull

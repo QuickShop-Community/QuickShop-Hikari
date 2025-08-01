@@ -31,7 +31,7 @@ public abstract class SubCommand_SilentBase implements CommandHandler<Player> {
     }
     final UUID uuid;
     try {
-      uuid = UUID.fromString(parser.getArgs().get(0));
+      uuid = UUID.fromString(parser.getArgs().getFirst());
     } catch(IllegalArgumentException e) {
       //Not valid, return for doing nothing
       return;

@@ -10,10 +10,10 @@ import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.management.ShopClickEvent;
 import com.ghostchu.quickshop.api.localization.text.Text;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -128,7 +128,7 @@ public final class Main extends JavaPlugin implements Listener {
       if(limit < 1) {
         return;
       }
-      if(StringUtils.isEmpty(manager.getString("period"))) {
+      if(CommonUtil.isEmptyString(manager.getString("period"))) {
         return;
       }
       try {

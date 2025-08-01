@@ -22,11 +22,11 @@ import com.ghostchu.quickshop.api.economy.benefit.BenefitOverflowException;
 import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.economy.benefit.BenefitsAlreadyException;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,6 +41,8 @@ import java.util.Map;
  * @since 6.2.0.11
  */
 public class QSBenefitProvider implements BenefitProvider {
+
+  public static final QSBenefitProvider EMPTY = new QSBenefitProvider();
 
   private final Map<QUser, BigDecimal> benefits = new HashMap<>();
 
@@ -63,7 +65,7 @@ public class QSBenefitProvider implements BenefitProvider {
   @NotNull
   public static QSBenefitProvider deserialize(@Nullable final String json) {
 
-    if(StringUtils.isEmpty(json)) {
+    if(CommonUtil.isEmptyString(json)) {
       return new QSBenefitProvider();
     }
     final Map<String, BigDecimal> map = JsonUtil.regular().fromJson(json, new TypeToken<Map<String, Double>>() {

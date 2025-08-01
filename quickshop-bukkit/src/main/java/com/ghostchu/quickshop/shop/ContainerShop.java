@@ -50,7 +50,6 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -724,7 +723,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setShopName(@Nullable final String shopName) {
 
-    if(StringUtils.equals(this.shopName, shopName)) {
+    if(com.ghostchu.quickshop.common.util.CommonUtil.strEquals(this.shopName, shopName)) {
       return;
     }
     this.shopName = shopName;
