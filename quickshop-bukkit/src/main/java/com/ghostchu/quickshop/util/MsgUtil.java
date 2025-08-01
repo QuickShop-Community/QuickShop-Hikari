@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.event.general.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -26,7 +25,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -247,22 +245,6 @@ public class MsgUtil {
       }
     }
     return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-  }
-
-  @NotNull
-  @Deprecated(since = "4.2.0.0")
-  public static Component getTranslateText(@NotNull final ItemStack stack) {
-    //if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
-    //    return PLUGIN.getPlatform().getTranslation(stack.getType());
-    //} else {
-    return Util.getItemStackName(stack);
-    //}
-  }
-
-  @Deprecated
-  public static boolean isJson(final String str) {
-
-    return CommonUtil.isJson(str);
   }
 
   public static void printEnchantment(@NotNull final Shop shop, @NotNull final ChatSheetPrinter chatSheetPrinter) {

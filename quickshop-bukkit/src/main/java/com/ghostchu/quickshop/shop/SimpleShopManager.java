@@ -323,7 +323,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     final QUser createQUser = QUserImpl.createFullFilled(p);
     Util.ensureThread(false);
-    if(plugin.getEconomyManager().provider()  == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return;
     }
@@ -538,7 +538,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       throw new IllegalStateException("The owner creating the shop is offline or not exist");
     }
 
-    if(plugin.getEconomyManager().provider()  == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return;
     }
@@ -802,7 +802,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       double cost = plugin.getConfig().getDouble("shop.cost");
       final QSEconomyTransaction transaction;
       if(plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && shop.getTaxAccountActual() != null) {
-        cost = Math.min(cost, plugin.getEconomyManager().provider() .balance(shop.getTaxAccountActual(), world.getName(), plugin.getCurrency()).doubleValue());
+        cost = Math.min(cost, plugin.getEconomyManager().provider().balance(shop.getTaxAccountActual(), world.getName(), plugin.getCurrency()).doubleValue());
         transaction = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(cost)).currency(plugin.getCurrency()).world(world.getName()).from(shop.getTaxAccountActual()).to(shop.getOwner()).build();
       } else {
         transaction = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(cost)).currency(plugin.getCurrency()).world(world.getName()).to(shop.getOwner()).build();
@@ -1125,20 +1125,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     return amount;
   }
 
-  /**
-   * @return Returns the Map. Info contains what their last question etc was.
-   *
-   * @deprecated Use getInteractiveManager instead. This way won't trigger the BungeeCord
-   * notification.
-   */
-  @SuppressWarnings("removal")
-  @Override
-  @Deprecated(forRemoval = true)
-  public @NotNull Map<UUID, Info> getActions() {
-
-    return this.interactiveManager.actions;
-  }
-
 
   @Override
   public @Nullable Shop getShopIncludeAttachedViaCache(@Nullable final Location loc) {
@@ -1215,7 +1201,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   private void actionTrade(@NotNull final Player p, final Info info, @NotNull final String message) {
 
     Util.ensureThread(false);
-    if(plugin.getEconomyManager().provider()  == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return;
     }

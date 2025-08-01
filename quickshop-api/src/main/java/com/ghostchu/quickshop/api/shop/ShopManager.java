@@ -129,15 +129,6 @@ public interface ShopManager {
   String format(double d, @NotNull Shop shop);
 
   /**
-   * @return Returns the Map. Info contains what their last question etc was.
-   *
-   * @deprecated Use getInteractiveManager() instead.
-   */
-  @Deprecated(forRemoval = true)
-  @NotNull
-  Map<UUID, Info> getActions();
-
-  /**
    * Returns all shops in the whole database, include unloaded.
    *
    * <p>Make sure you have caching this, because this need a while to get all shops

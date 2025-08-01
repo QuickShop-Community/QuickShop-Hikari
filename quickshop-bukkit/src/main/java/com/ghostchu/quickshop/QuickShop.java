@@ -412,9 +412,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Initializing NexusManager...");
     this.nexusManager = new NexusManager(this);
     logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
-
-    logger.info("Initializing InteractionManager");
-    //TODO: Register interaction defaults
   }
 
   private void registerService() {
@@ -604,15 +601,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return this.itemMatcher;
   }
 
-  @SuppressWarnings("removal")
-  @Override
-  @ApiStatus.Obsolete
-  @Deprecated(forRemoval = true)
-  public Map<String, Integer> getLimits() {
-
-    return this.rankLimiter.getLimits();
-  }
-
   /**
    * Retrieves the EconomyManager instance that manages all economies associated with their unique
    * identifiers.
@@ -657,15 +645,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public boolean isValidDisplayProvider() {
 
     return !invalidProvider;
-  }
-
-  @SuppressWarnings("removal")
-  @Override
-  @Deprecated(forRemoval = true)
-  @ApiStatus.Obsolete
-  public boolean isLimit() {
-
-    return this.rankLimiter.isLimit();
   }
 
   @Override

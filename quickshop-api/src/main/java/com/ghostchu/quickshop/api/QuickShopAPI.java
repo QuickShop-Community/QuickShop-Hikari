@@ -16,10 +16,7 @@ import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 /**
  * The unique entry point to allow you to access most features of QuickShop
@@ -81,17 +78,6 @@ public interface QuickShopAPI {
   ItemMatcher getItemMatcher();
 
   /**
-   * Getting the mapping of permission to shop amounts
-   *
-   * @return Permissions <-> Shop Amounts mapping
-   *
-   * @deprecated Replaced by RankLimiter
-   */
-  @ApiStatus.Obsolete
-  @Deprecated(forRemoval = true)
-  Map<String, Integer> getLimits();
-
-  /**
    * Retrieves the EconomyManager instance that manages all economies associated with their unique
    * identifiers.
    *
@@ -140,17 +126,6 @@ public interface QuickShopAPI {
    * @return Display item enabled
    */
   boolean isDisplayEnabled();
-
-  /**
-   * Getting shop limit system status false if limit system is disabled
-   *
-   * @return Limit enabled
-   *
-   * @deprecated Replaced by RankLimiter
-   */
-  @ApiStatus.Obsolete
-  @Deprecated(forRemoval = true)
-  boolean isLimit();
 
   RankLimiter getRankLimiter();
 

@@ -103,6 +103,11 @@ public class QSEconomyTransaction implements EconomyTransaction {
     new EconomyTransactionEvent(this).callEvent();
   }
 
+  public static QSEconomyTransactionBuilder builder() {
+
+    return new QSEconomyTransactionBuilder();
+  }
+
   /**
    * Retrieves the currency associated with this transaction.
    *
@@ -486,9 +491,5 @@ public class QSEconomyTransaction implements EconomyTransaction {
       this.lastError = "Failed to execute operation: " + provider.lastError() + "; Operation: " + operation;
       return false;
     }
-  }
-
-  public static QSEconomyTransactionBuilder builder() {
-    return new QSEconomyTransactionBuilder();
   }
 }

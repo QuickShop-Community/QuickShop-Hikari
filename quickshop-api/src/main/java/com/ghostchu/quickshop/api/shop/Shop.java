@@ -527,14 +527,6 @@ public interface Shop {
   List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
 
   /**
-   * Refresh shop sign and display item
-   */
-  @Deprecated(forRemoval = true)
-  default void refresh() {
-
-  }
-
-  /**
    * Remove x ItemStack from the shop inventory
    *
    * @param paramItemStack Want removed ItemStack

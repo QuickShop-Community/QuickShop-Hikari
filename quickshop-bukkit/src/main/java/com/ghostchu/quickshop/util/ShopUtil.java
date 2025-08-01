@@ -358,7 +358,7 @@ public class ShopUtil {
     // Check if shop owner has enough money
     final double ownerBalance = eco
             .balance(shop.getOwner(), shop.getLocation().getWorld().getName(),
-                        shop.getCurrency()).doubleValue();
+                     shop.getCurrency()).doubleValue();
     final int ownerCanAfford;
     if(shop.getPrice() != 0) {
       ownerCanAfford = (int)(ownerBalance / shop.getPrice());
@@ -434,7 +434,7 @@ public class ShopUtil {
     // typed 'all', check if player has enough money than price * amount
     final double price = shop.getPrice();
     final double balance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(),
-                                          shop.getCurrency()).doubleValue();
+                                       shop.getCurrency()).doubleValue();
     amount = Math.min(amount, (int)Math.floor(balance / price));
     if(amount < 1) { // typed 'all' but the auto set amount is 0
       // when typed 'all' but player can't buy any items

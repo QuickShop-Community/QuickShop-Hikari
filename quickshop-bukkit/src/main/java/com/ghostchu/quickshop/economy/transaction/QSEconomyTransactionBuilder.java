@@ -44,46 +44,55 @@ public class QSEconomyTransactionBuilder {
   }
 
   public QSEconomyTransactionBuilder benefitManager(final BenefitProvider benefitManager) {
+
     this.benefitManager = benefitManager;
     return this;
   }
 
   public QSEconomyTransactionBuilder world(final String world) {
+
     this.world = world;
     return this;
   }
 
   public QSEconomyTransactionBuilder currency(final String currency) {
+
     this.currency = currency;
     return this;
   }
 
   public QSEconomyTransactionBuilder amount(final BigDecimal amount) {
+
     this.amount = amount;
     return this;
   }
 
   public QSEconomyTransactionBuilder tax(final BigDecimal tax) {
+
     this.tax = tax;
     return this;
   }
 
   public QSEconomyTransactionBuilder from(final QUser from) {
+
     this.from = from;
     return this;
   }
 
   public QSEconomyTransactionBuilder to(final QUser to) {
+
     this.to = to;
     return this;
   }
 
   public QSEconomyTransactionBuilder taxer(final QUser taxer) {
+
     this.taxer = taxer;
     return this;
   }
 
   public QSEconomyTransaction build() {
+
     return new QSEconomyTransaction(
             benefitManager,
             world,
