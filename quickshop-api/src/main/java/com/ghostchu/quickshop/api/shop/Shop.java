@@ -310,7 +310,7 @@ public interface Shop {
   boolean inventoryAvailable();
 
   /**
-   * Check shop is or not attacked the target block
+   * Check shop is or not attached the target block
    *
    * @param paramBlock Target {@link Block}
    *
