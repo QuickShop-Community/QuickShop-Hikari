@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
         <!-- common lib versions -->
-        <depend.commons.lang3>3.17.0</depend.commons.lang3>
+        <depend.commons.lang3>3.18.0</depend.commons.lang3>
         <depend.adventure-api>4.16.0</depend.adventure-api>
         <depend.adventure-key>4.16.0</depend.adventure-key>
         <depend.adventure-nbt>4.16.0</depend.adventure-nbt>
@@ -191,7 +191,8 @@
                                         <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>io.papermc:paperlib:*</include>
                                         <include>org.bstats:*</include>
-                                        <include>net.kyori:*</include>
+                                        <include>net.kyori:adventure-text-serializer-ansi</include>
+                                        <include>net.kyori:ansi</include>
                                         <include>com.alessiodp.libby:libby-bukkit:*</include>
                                         <include>com.alessiodp.libby:libby-core:*</include>
                                         <include>com.ghostchu.lib.unofficial.com.alessiodp.libby:libby-bukkit:*</include>
@@ -200,12 +201,17 @@
                                         <include>io.vertx:vertx-web:*</include>
                                         <include>org.eclipse.aether:*:*</include>
                                         <include>org.slf4j:slf4j-jdk14:*</include>
+                                        <include>cc.carm.lib:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
                                     <relocation>
                                         <pattern>net.tnemc</pattern>
                                         <shadedPattern>${qs.relocation}.tne</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>cc.carm.lib</pattern>
+                                        <shadedPattern>${qs.relocation}.carm</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.tcoded.folialib</pattern>
@@ -412,11 +418,13 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>2.0.17</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
                 <version>2.0.17</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
