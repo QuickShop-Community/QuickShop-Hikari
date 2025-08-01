@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.shop;
 
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;

@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.menu.trade;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;

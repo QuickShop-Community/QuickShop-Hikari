@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.economyrevamp.benefit;
+package com.ghostchu.quickshop.api.economy.benefit;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -17,11 +17,25 @@ package com.ghostchu.quickshop.api.economyrevamp.benefit;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.math.BigDecimal;
+
 /**
- * BenefitsAlreadyException
+ * BenefitOverflowException
  *
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class BenefitsAlreadyException extends Exception {
+public class BenefitOverflowException extends Exception {
+
+  private final BigDecimal overflow;
+
+  public BenefitOverflowException(final BigDecimal overflow) {
+
+    this.overflow = overflow;
+  }
+
+  public BigDecimal benefit() {
+
+    return overflow;
+  }
 }

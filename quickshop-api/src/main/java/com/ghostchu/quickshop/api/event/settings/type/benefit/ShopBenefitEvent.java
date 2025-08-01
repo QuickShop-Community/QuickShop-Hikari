@@ -17,7 +17,7 @@ package com.ghostchu.quickshop.api.event.settings.type.benefit;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;

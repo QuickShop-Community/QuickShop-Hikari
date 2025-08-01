@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;

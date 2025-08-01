@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economyrevamp.provider;
+package com.ghostchu.quickshop.economy.provider;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.economyrevamp.provider;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;

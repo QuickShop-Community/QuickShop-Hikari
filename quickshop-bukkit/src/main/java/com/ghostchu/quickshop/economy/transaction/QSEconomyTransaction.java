@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economyrevamp.transaction;
+package com.ghostchu.quickshop.economy.transaction;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -18,12 +18,12 @@ package com.ghostchu.quickshop.economyrevamp.transaction;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitProvider;
-import com.ghostchu.quickshop.api.economyrevamp.operation.EconomyDepositOperation;
-import com.ghostchu.quickshop.api.economyrevamp.operation.EconomyWithdrawOperation;
-import com.ghostchu.quickshop.api.economyrevamp.transaction.EconomyTransaction;
-import com.ghostchu.quickshop.api.economyrevamp.transaction.TransactionCallback;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.operation.EconomyDepositOperation;
+import com.ghostchu.quickshop.api.economy.operation.EconomyWithdrawOperation;
+import com.ghostchu.quickshop.api.economy.transaction.EconomyTransaction;
+import com.ghostchu.quickshop.api.economy.transaction.TransactionCallback;
 import com.ghostchu.quickshop.api.event.economy.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.operation.Operation;

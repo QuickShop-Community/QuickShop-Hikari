@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.api;
 
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyManager;
+import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.RegistryManager;

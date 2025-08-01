@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economyrevamp.transaction;
+package com.ghostchu.quickshop.economy.transaction;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -17,7 +17,7 @@ package com.ghostchu.quickshop.economyrevamp.transaction;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 
 import java.math.BigDecimal;

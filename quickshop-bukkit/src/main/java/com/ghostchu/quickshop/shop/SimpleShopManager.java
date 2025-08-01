@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPopulateEvent;
@@ -27,9 +27,9 @@ import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
-import com.ghostchu.quickshop.economyrevamp.QSBenefitProvider;
-import com.ghostchu.quickshop.economyrevamp.transaction.QSEconomyTransaction;
-import com.ghostchu.quickshop.economyrevamp.transaction.QSEconomyTransactionBuilder;
+import com.ghostchu.quickshop.economy.QSBenefitProvider;
+import com.ghostchu.quickshop.economy.transaction.QSEconomyTransaction;
+import com.ghostchu.quickshop.economy.transaction.QSEconomyTransactionBuilder;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;

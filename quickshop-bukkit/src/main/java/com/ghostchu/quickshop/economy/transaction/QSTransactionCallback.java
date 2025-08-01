@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.economyrevamp.transaction;
+package com.ghostchu.quickshop.economy.transaction;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -17,15 +17,19 @@ package com.ghostchu.quickshop.api.economyrevamp.transaction;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.economy.transaction.TransactionCallback;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.logging.Level;
+
 /**
- * TransactionCallback
+ * QSTransactionCallback
  *
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public interface TransactionCallback {
+public interface QSTransactionCallback extends TransactionCallback {
 
   /**
    * Calling while Transaction commit
@@ -34,7 +38,7 @@ public interface TransactionCallback {
    *
    * @return Does commit event has been cancelled
    */
-  default boolean onCommit(@NotNull final EconomyTransaction economyTransaction) {
+  default boolean onCommit(@NotNull final QSEconomyTransaction economyTransaction) {
 
     return true;
   }
@@ -45,8 +49,9 @@ public interface TransactionCallback {
    *
    * @param economyTransaction Transaction
    */
-  default void onFailed(@NotNull final EconomyTransaction economyTransaction) {
+  default void onFailed(@NotNull final QSEconomyTransaction economyTransaction) {
 
+    Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.lastError() + ", transaction: " + economyTransaction);
   }
 
   /**
@@ -54,8 +59,9 @@ public interface TransactionCallback {
    *
    * @param economyTransaction Transaction
    */
-  default void onSuccess(@NotNull final EconomyTransaction economyTransaction) {
+  default void onSuccess(@NotNull final QSEconomyTransaction economyTransaction) {
 
+    Log.transaction("Transaction succeed: " + economyTransaction);
   }
 
   /**
@@ -64,8 +70,8 @@ public interface TransactionCallback {
    *
    * @param economyTransaction Transaction
    */
-  default void onTaxFailed(@NotNull final EconomyTransaction economyTransaction) {
+  default void onTaxFailed(@NotNull final QSEconomyTransaction economyTransaction) {
 
+    Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.lastError() + ", transaction: " + economyTransaction);
   }
-
 }

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economyrevamp;
+package com.ghostchu.quickshop.economy;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -18,9 +18,9 @@ package com.ghostchu.quickshop.economyrevamp;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitOverflowException;
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitProvider;
-import com.ghostchu.quickshop.api.economyrevamp.benefit.BenefitsAlreadyException;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitOverflowException;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitsAlreadyException;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.economyrevamp;
+package com.ghostchu.quickshop.api.economy;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar

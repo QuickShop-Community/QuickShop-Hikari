@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economyrevamp;
+package com.ghostchu.quickshop.economy;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -19,10 +19,10 @@ package com.ghostchu.quickshop.economyrevamp;
 
 import com.ghostchu.quickshop.BuiltInSolution;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.economyrevamp.provider.VaultProvider;
-import com.ghostchu.quickshop.economyrevamp.provider.VaultUnlockedProvider;
+import com.ghostchu.quickshop.economy.provider.VaultProvider;
+import com.ghostchu.quickshop.economy.provider.VaultUnlockedProvider;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import net.milkbowl.vault2.economy.Economy;

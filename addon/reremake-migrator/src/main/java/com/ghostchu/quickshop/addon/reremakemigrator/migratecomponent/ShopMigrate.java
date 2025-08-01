@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
-import com.ghostchu.quickshop.economyrevamp.QSBenefitProvider;
+import com.ghostchu.quickshop.economy.QSBenefitProvider;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;

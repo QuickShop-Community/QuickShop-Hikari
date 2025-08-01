@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.economyrevamp;
+package com.ghostchu.quickshop.economy;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -17,8 +17,8 @@ package com.ghostchu.quickshop.economyrevamp;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.economyrevamp.EconomyManager;
-import com.ghostchu.quickshop.api.economyrevamp.EconomyProvider;
+import com.ghostchu.quickshop.api.economy.EconomyManager;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
