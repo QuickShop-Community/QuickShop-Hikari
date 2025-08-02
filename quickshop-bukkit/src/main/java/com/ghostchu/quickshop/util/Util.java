@@ -67,13 +67,14 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -82,8 +83,8 @@ import java.util.stream.Collectors;
 
 public class Util {
 
-  private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
-  private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
+  private static final Map<Material, Integer> CUSTOM_STACKSIZE = new HashMap<>();
+  private static final Set<Material> SHOPABLES = new HashSet<>();
   private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
   private static int BYPASSED_CUSTOM_STACKSIZE = -1;
   private static Yaml yaml = null;
@@ -100,7 +101,7 @@ public class Util {
 
   @Deprecated
   @ApiStatus.Internal
-  public static EnumMap<Material, Integer> getCustomStacksize() {
+  public static Map<Material, Integer> getCustomStacksize() {
 
     return CUSTOM_STACKSIZE;
   }
@@ -117,7 +118,7 @@ public class Util {
    */
   @ApiStatus.Internal
   @Deprecated
-  public static EnumSet<Material> getShopables() {
+  public static Set<Material> getShopables() {
 
     return SHOPABLES;
   }
@@ -1041,14 +1042,17 @@ public class Util {
       if("*".equalsIgnoreCase(data[0])) {
         BYPASSED_CUSTOM_STACKSIZE = Integer.parseInt(data[1]);
       }
+
       final Material mat = Material.matchMaterial(data[0]);
       if(mat == null || mat == Material.AIR) {
         plugin.logger().warn("{} not a valid material in custom-item-stacksize section.", material);
         continue;
       }
+
       CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
     }
     try {
+
       dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
     } catch(final Exception ignored) {
     }
@@ -1139,11 +1143,6 @@ public class Util {
         return false;
       }
     }
-  }
-
-  public static boolean isDisplayAllowBlock(@NotNull final Material mat) {
-
-    return mat.isTransparent() || isWallSign(mat);
   }
 
   /**
@@ -1371,6 +1370,7 @@ public class Util {
     if(PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean(false)) {
       return true;
     }
+
     return Bukkit.getServer().spigot().getConfig().getBoolean("settings.bungeecord");
   }
 }

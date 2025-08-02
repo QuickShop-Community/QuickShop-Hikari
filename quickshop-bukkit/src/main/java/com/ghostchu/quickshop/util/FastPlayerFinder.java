@@ -137,11 +137,21 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
   @Override
   public @Nullable UUID name2Uuid(@NotNull final String name) {
 
+    final OfflinePlayer offline = Bukkit.getOfflinePlayerIfCached(name);
+    if(offline != null) {
+      return offline.getUniqueId();
+    }
+
     return name2Uuid(name, true, QuickExecutor.getPrimaryProfileIoExecutor());
   }
 
   @Override
   public @Nullable UUID name2Uuid(@NotNull final String name, final boolean writeCache, @NotNull final ExecutorService executorService) {
+
+    final OfflinePlayer offline = Bukkit.getOfflinePlayerIfCached(name);
+    if(offline != null) {
+      return offline.getUniqueId();
+    }
 
     return name2UuidFuture(name, writeCache, executorService).join();
   }
