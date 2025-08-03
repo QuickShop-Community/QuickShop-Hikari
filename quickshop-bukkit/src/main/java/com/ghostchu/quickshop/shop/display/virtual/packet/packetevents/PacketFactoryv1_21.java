@@ -101,7 +101,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
     data.add(new EntityData<>(5, EntityDataTypes.BOOLEAN, true));
     data.add(new EntityData<>(8, EntityDataTypes.ITEMSTACK, SpigotConversionUtil.fromBukkitItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
 
       //final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 

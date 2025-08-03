@@ -124,7 +124,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
     values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get(Boolean.class), true));
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 

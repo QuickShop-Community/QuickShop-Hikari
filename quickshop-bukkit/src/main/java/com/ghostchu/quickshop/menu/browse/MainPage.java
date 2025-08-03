@@ -131,6 +131,8 @@ public class MainPage {
         int i = 0;
         for(final Shop shop : shops) {
 
+          System.out.println("Menu add: id: " + shop.getShopId() + " slot: " + offset + (i - start) + "i: " + i);
+
           if(i < start) {
 
             i++;
@@ -151,7 +153,7 @@ public class MainPage {
           }
 
           final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
-          final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().getKey().toString(), shop.getShopStackingAmount())
+          final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
                   .lore(getList(id, iconLore,
                                 shop.getOwner().getDisplay(),
                                 location,
@@ -161,6 +163,7 @@ public class MainPage {
 
           playerPage.addIcon(id, new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
+          System.out.println("Slots: " + playerPage.getIcons(id).size());
           i++;
         }
       }

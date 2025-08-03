@@ -195,6 +195,14 @@ public class VirtualDisplayItemManager {
     }
   }
 
+  public boolean allowEnchants() {
+    return plugin.getConfig().getBoolean("shop.display-allow-enchants", true);
+  }
+
+  public boolean useItemName() {
+    return plugin.getConfig().getBoolean("shop.display-item-use-name");
+  }
+
   public Map<String, PacketHandler<?>> packetHandlers() {
 
     return packetHandlers;
