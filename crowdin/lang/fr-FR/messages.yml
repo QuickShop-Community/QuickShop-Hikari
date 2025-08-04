@@ -166,7 +166,7 @@ translate-not-completed-yet-url: 'La traduction de la langue {0} a terminé {1},
 success-removed-shop: <green>Boutique supprimée avec succès.
 currency-set: <green>Le mode de la boutique a été définie avec succès à {0}.
 shop-purged-start: <green>La purge a commencé, vérifiez la console pour plus de détails.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
+economy-transaction-failed: <red>Désolé une erreur s'est produite pendant votre transaction. Elle a donc été annulée et vous avez récupéré votre argent. S'il vous plait contactez un administrateur pour résoudre ce problème.
 nothing-to-flush: <green>Aucun nouveau message.
 no-price-change: <red>Le prix ne changera pas!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
