@@ -36,13 +36,13 @@ tasks.compileJava {
     targetCompatibility = "21"
 }
 
-tasks.processResources {
+/*tasks.processResources {
     filesMatching("**/resources/*") {
         expand(rootProject.project.properties)
     }
 
     outputs.upToDateWhen { false }
-}
+}*/
 
 tasks.jar {
     dependsOn(tasks.shadowJar)

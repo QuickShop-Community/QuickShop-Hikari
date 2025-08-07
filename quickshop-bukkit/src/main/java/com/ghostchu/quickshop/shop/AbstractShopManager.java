@@ -22,7 +22,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -433,7 +432,7 @@ public abstract class AbstractShopManager implements ShopManager {
           }
         } else {
           // optimize for performance
-          final BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
+          final BlockState state = currentBlock.getState(false);
           if(!(state instanceof InventoryHolder)) {
             return null;
           }

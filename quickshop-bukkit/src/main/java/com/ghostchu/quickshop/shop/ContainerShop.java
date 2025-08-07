@@ -47,7 +47,6 @@ import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -884,7 +883,7 @@ public class ContainerShop implements Shop, Reloadable {
       if(b == null) {
         continue;
       }
-      final BlockState state = PaperLib.getBlockState(b, false).getState();
+      final BlockState state = b.getState(false);
       if(!(state instanceof final Sign sign)) {
         continue;
       }

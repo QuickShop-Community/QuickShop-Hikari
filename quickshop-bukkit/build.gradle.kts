@@ -10,14 +10,13 @@ dependencies {
     api(libs.net.tnemc.tnil.bukkit)
     api(libs.net.tnemc.tnml.core)
     api(libs.net.tnemc.tnil.core)
-    api(libs.io.papermc.paperlib)
     api(libs.org.bstats.bstats.bukkit)
     api(libs.cc.carm.lib.easysql.hikaricp)
     api(libs.org.apache.commons.commons.compress)
     api(libs.com.tcoded.folialib)
     api(libs.com.ghostchu.lib.unofficial.com.alessiodp.libby.libby.core)
     api(libs.com.ghostchu.lib.unofficial.com.alessiodp.libby.libby.bukkit)
-    compileOnly(libs.io.papermc.paper.paper.api.x1)
+    compileOnly(libs.io.papermc.paper.paper.api)
     compileOnly(libs.com.comphenix.protocol.protocollib)
     compileOnly(libs.com.github.retrooper.packetevents.spigot)
     compileOnly(libs.net.milkbowl.vault.vaultunlockedapi)
@@ -28,7 +27,9 @@ dependencies {
     compileOnly(libs.com.konghq.unirest.java)
     compileOnly(libs.net.sourceforge.csvjdbc.csvjdbc)
     compileOnly(libs.org.dom4j.dom4j)
-    compileOnly(libs.net.essentialsx.essentialsx)
+    compileOnly(libs.net.essentialsx.essentialsx) {
+        exclude("org.spigotmc", "spigot-api")
+    }
     compileOnly(libs.com.ghostchu.crowdin.crowdinota)
     compileOnly(libs.com.rollbar.rollbar.java)
 }

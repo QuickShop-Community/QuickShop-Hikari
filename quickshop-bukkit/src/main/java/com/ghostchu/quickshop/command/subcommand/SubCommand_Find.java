@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
@@ -122,8 +121,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
     if(usingOldLogic) {
       final Map.Entry<Shop, Double> closest = sortedShops.getFirst();
       final Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
-      PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
-                             PlayerTeleportEvent.TeleportCause.UNKNOWN);
+      sender.teleportAsync(Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
+                           PlayerTeleportEvent.TeleportCause.PLUGIN);
       plugin.text().of(sender, "nearby-shop-this-way", closest.getValue().intValue()).send();
     } else {
       plugin.text().of(sender, "nearby-shop-header", lookFor).send();

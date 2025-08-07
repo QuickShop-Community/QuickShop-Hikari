@@ -11,7 +11,6 @@ import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.vdurmont.semver4j.Semver;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -342,12 +341,12 @@ public final class EnvironmentChecker {
     });
   }
 
-  @EnvCheckEntry(name = "Spigot Based Server Test", priority = 2)
-  public ResultContainer spigotBasedServer() {
+  @EnvCheckEntry(name = "Paper Based Server Test", priority = 2)
+  public ResultContainer paperBasedServer() {
 
     final ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
-    final ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
-    if(!PaperLib.isSpigot()) {
+    final ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Paper based, Don't use CraftBukkit!");
+    if(!CommonUtil.isClassAvailable("io.papermc.paper.plugin.configuration.PluginMeta")) {
       return failed;
     }
     return success;

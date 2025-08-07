@@ -48,9 +48,7 @@ de-jeff-media-angelchestapi = "13.6.1"
 de-themoep-minedown-adventure = "1.7.4-SNAPSHOT"
 de-tr7zw-item-nbt-api-plugin = "2.15.0"
 dev-lone-api-itemsadder = "4.0.10"
-io-papermc-paper-paper-api = "1.21-R0.1-SNAPSHOT"
-io-papermc-paper-paper-api-x1 = "1.21.4-R0.1-SNAPSHOT"
-io-papermc-paperlib = "LATEST"
+io-papermc-paper-paper-api = "1.21.4-R0.1-SNAPSHOT"
 io-th0rgal-oraxen = "1.189.0"
 io-vavr-vavr = "0.10.7"
 me-clip-placeholderapi = "2.11.6"
@@ -140,8 +138,6 @@ de-themoep-minedown-adventure = { module = "de.themoep:minedown-adventure", vers
 de-tr7zw-item-nbt-api-plugin = { module = "de.tr7zw:item-nbt-api-plugin", version.ref = "de-tr7zw-item-nbt-api-plugin" }
 dev-lone-api-itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "dev-lone-api-itemsadder" }
 io-papermc-paper-paper-api = { module = "io.papermc.paper:paper-api", version.ref = "io-papermc-paper-paper-api" }
-io-papermc-paper-paper-api-x1 = { module = "io.papermc.paper:paper-api", version.ref = "io-papermc-paper-paper-api-x1" }
-io-papermc-paperlib = { module = "io.papermc:paperlib", version.ref = "io-papermc-paperlib" }
 io-th0rgal-oraxen = { module = "io.th0rgal:oraxen", version.ref = "io-th0rgal-oraxen" }
 io-vavr-vavr = { module = "io.vavr:vavr", version.ref = "io-vavr-vavr" }
 me-clip-placeholderapi = { module = "me.clip:placeholderapi", version.ref = "me-clip-placeholderapi" }

@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     api(project(":quickshop-platform-interface"))
-    compileOnly(libs.io.papermc.paper.paper.api.x1)
+    compileOnly(libs.io.papermc.paper.paper.api)
 }
 
 description = "quickshop-platform-paper"

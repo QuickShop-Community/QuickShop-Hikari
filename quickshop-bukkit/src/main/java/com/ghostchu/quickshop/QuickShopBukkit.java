@@ -11,7 +11,6 @@ import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.vdurmont.semver4j.Semver;
-import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -218,11 +217,13 @@ public class QuickShopBukkit extends JavaPlugin {
   private void loadPlatform() throws Exception {
 
     int platformId = 0;
-    if(PaperLib.isSpigot()) {
-      platformId = 1;
-    }
-    if(PaperLib.isPaper()) {
+    //Check for paper first since paper also contains some spigot classes.
+    if(CommonUtil.isClassAvailable("io.papermc.paper.plugin.configuration.PluginMeta")) {
       platformId = 2;
+    }
+
+    if(CommonUtil.isClassAvailable("org.spigotmc.CustomTimingsHandler")) {
+      platformId = 1;
     }
 
     platformId = PackageUtil.parsePackageProperly("forcePlatform").asInteger(platformId);
