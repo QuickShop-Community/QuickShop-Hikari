@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.menu.browse;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
@@ -36,6 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -130,6 +131,8 @@ public class MainPage {
         int i = 0;
         for(final Shop shop : shops) {
 
+          System.out.println("Menu add: id: " + shop.getShopId() + " slot: " + offset + (i - start) + "i: " + i);
+
           if(i < start) {
 
             i++;
@@ -149,17 +152,18 @@ public class MainPage {
             ownerProfile.setUuid(owner.getUniqueId());
           }
 
-          final AbstractEconomy eco = QuickShop.getInstance().getEconomy();
-          final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().getKey().toString(), shop.getShopStackingAmount())
+          final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+          final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
                   .lore(getList(id, iconLore,
                                 shop.getOwner().getDisplay(),
                                 location,
                                 shop.getShopType(),
-                                eco.format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()),
+                                eco.format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency()),
                                 shop.getRemainingStock()));
 
           playerPage.addIcon(id, new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
+          System.out.println("Slots: " + playerPage.getIcons(id).size());
           i++;
         }
       }

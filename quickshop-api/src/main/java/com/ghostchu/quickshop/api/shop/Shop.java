@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -310,7 +310,7 @@ public interface Shop {
   boolean inventoryAvailable();
 
   /**
-   * Check shop is or not attacked the target block
+   * Check shop is or not attached the target block
    *
    * @param paramBlock Target {@link Block}
    *
@@ -527,14 +527,6 @@ public interface Shop {
   List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
 
   /**
-   * Refresh shop sign and display item
-   */
-  @Deprecated(forRemoval = true)
-  default void refresh() {
-
-  }
-
-  /**
    * Remove x ItemStack from the shop inventory
    *
    * @param paramItemStack Want removed ItemStack
@@ -633,11 +625,11 @@ public interface Shop {
    * Gets the benefit in this shop
    */
   @NotNull
-  Benefit getShopBenefit();
+  BenefitProvider getShopBenefit();
 
   /**
    * Sets the benefit in this shop
    */
-  void setShopBenefit(@NotNull Benefit benefit);
+  void setShopBenefit(@NotNull BenefitProvider benefit);
 
 }

@@ -33,7 +33,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
     }
 
     if(parser.getArgs().size() == 1) {
-      if("test".equals(parser.getArgs().get(0).toLowerCase(Locale.ROOT))) {
+      if("test".equals(parser.getArgs().getFirst().toLowerCase(Locale.ROOT))) {
         if(sender.getInventory().getItemInMainHand().getType().isAir()) {
           plugin.text().of(sender, "no-anythings-in-your-hand").send();
           return;
@@ -50,7 +50,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
       return;
     }
     final String itemRefName = parser.getArgs().get(1);
-    switch(parser.getArgs().get(0).toLowerCase(Locale.ROOT)) {
+    switch(parser.getArgs().getFirst().toLowerCase(Locale.ROOT)) {
       case "create" -> {
         if(sender.getInventory().getItemInMainHand().getType().isAir()) {
           plugin.text().of(sender, "no-anythings-in-your-hand").send();
@@ -86,7 +86,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
       return Arrays.asList("create", "remove", "test");
     }
     if(parser.getArgs().size() > 1) {
-      if("remove".equalsIgnoreCase(parser.getArgs().get(0))) {
+      if("remove".equalsIgnoreCase(parser.getArgs().getFirst())) {
         return plugin.getItemMarker().getRegisteredItems();
       }
     }

@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
 import com.ghostchu.quickshop.api.event.display.ItemPreviewComponentPopulateEvent;
@@ -26,9 +26,11 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
-import com.ghostchu.quickshop.economy.SimpleBenefit;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.economy.QSBenefitProvider;
+import com.ghostchu.quickshop.economy.transaction.QSEconomyTransaction;
+import com.ghostchu.quickshop.economy.transaction.QSEconomyTransactionBuilder;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
@@ -46,7 +48,6 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -173,7 +174,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
   @Override
-  public boolean actionBuying(@NotNull final Player buyer, @NotNull final InventoryWrapper buyerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
+  public boolean actionBuying(@NotNull final Player buyer, @NotNull final InventoryWrapper buyerInventory, @NotNull final EconomyProvider eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
 
     final QUser buyerQUser = QUserImpl.createFullFilled(buyer);
     if(!plugin.perm().hasPermission(buyer, "quickshop.other.use") && !shop.playerAuthorize(buyer.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
@@ -233,23 +234,23 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         taxAccount = this.cacheTaxAccount;
       }
     }
-    final SimpleEconomyTransaction transaction;
-    final SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder().core(eco).amount(total).taxModifier(taxModifier).taxAccount(taxAccount).currency(shop.getCurrency()).world(shop.getLocation().getWorld()).to(buyerQUser);
+    final QSEconomyTransaction transaction;
+    final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(total)).tax(BigDecimal.valueOf(taxModifier)).taxer(taxAccount).currency(shop.getCurrency()).world(shop.getLocation().getWorld().getName()).to(buyerQUser);
     if(shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
-      builder.taxModifier(0.0d);
+      builder.tax(BigDecimal.ZERO);
     }
     if(!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
       transaction = builder.from(shop.getOwner()).build();
     } else {
       transaction = builder.from(null).build();
     }
-    if(!transaction.checkBalance()) {
-      plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
+    if(!transaction.completable()) {
+      plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.getLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
-    if(!transaction.failSafeCommit()) {
-      plugin.text().of(buyer, "economy-transaction-failed", transaction.getLastError()).send();
-      plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
+    if(!transaction.safeCommit()) {
+      plugin.text().of(buyer, "economy-transaction-failed", transaction.lastError()).send();
+      plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
       plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
       return false;
     }
@@ -262,8 +263,8 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
       return false;
     }
-    sendSellSuccess(buyerQUser, shop, amount, total, transaction.getTax());
-    new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.getTax()).callEvent();
+    sendSellSuccess(buyerQUser, shop, amount, total, transaction.tax().doubleValue());
+    new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.tax().doubleValue()).callEvent();
     shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
     notifySold(buyerQUser, shop, amount, space);
     return true;
@@ -302,7 +303,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   @Override
   public boolean shopIsNotValid(@Nullable final QUser qUser, @NotNull final Info info, @NotNull final Shop shop) {
 
-    if(plugin.getEconomy() == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(qUser, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return true;
     }
@@ -322,7 +323,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     final QUser createQUser = QUserImpl.createFullFilled(p);
     Util.ensureThread(false);
-    if(plugin.getEconomy() == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return;
     }
@@ -377,7 +378,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                                                    ShopType.SELLING, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
                                                    null, plugin.getJavaPlugin().getName(),
                                                    symbolLink,
-                                                   null, Collections.emptyMap(), new SimpleBenefit());
+                                                   null, Collections.emptyMap(), new QSBenefitProvider());
       createShop(shop, info.getSignBlock(), info.isBypassed());
     } else {
       plugin.text().of(p, "invalid-container").send();
@@ -385,7 +386,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
   @Override
-  public boolean actionSelling(@NotNull final Player seller, @NotNull final InventoryWrapper sellerInventory, @NotNull final AbstractEconomy eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
+  public boolean actionSelling(@NotNull final Player seller, @NotNull final InventoryWrapper sellerInventory, @NotNull final EconomyProvider eco, @NotNull final Info info, @NotNull final Shop shop, final int amount) {
 
     Util.ensureThread(false);
     final QUser sellerQUser = QUserImpl.createFullFilled(seller);
@@ -445,7 +446,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     // Money handling
     // SELLING Player -> Shop Owner
-    final SimpleEconomyTransaction transaction;
+    final QSEconomyTransaction transaction;
     QUser taxAccount = null;
     if(shop.getTaxAccount() != null) {
       taxAccount = shop.getTaxAccount();
@@ -454,9 +455,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         taxAccount = this.cacheTaxAccount;
       }
     }
-    final SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder().core(eco).from(sellerQUser).amount(total).taxModifier(taxModifier).taxAccount(taxAccount).benefit(shop.getShopBenefit()).world(shop.getLocation().getWorld()).currency(shop.getCurrency());
+    final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().from(sellerQUser).amount(BigDecimal.valueOf(total)).tax(BigDecimal.valueOf(taxModifier)).taxer(taxAccount).benefitManager(shop.getShopBenefit()).world(shop.getLocation().getWorld().getName()).currency(shop.getCurrency());
     if(shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
-      builder.taxModifier(0.0d);
+      builder.tax(BigDecimal.ZERO);
     }
     if(!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
       transaction = builder.to(shop.getOwner()).build();
@@ -464,13 +465,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.to(null).build();
     }
 
-    if(!transaction.checkBalance()) {
-      plugin.text().of(seller, "you-cant-afford-to-buy", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.getBalance(sellerQUser, shop.getLocation().getWorld(), shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
+    if(!transaction.completable()) {
+      plugin.text().of(seller, "you-cant-afford-to-buy", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.getLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
-    if(!transaction.failSafeCommit()) {
-      plugin.text().of(seller, "economy-transaction-failed", transaction.getLastError()).send();
-      plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
+    if(!transaction.safeCommit()) {
+      plugin.text().of(seller, "economy-transaction-failed", transaction.lastError()).send();
+      plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
       return false;
     }
 
@@ -482,9 +483,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
       return false;
     }
-    sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.getTax());
-    new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.getTax()).callEvent();
-    notifyBought(sellerQUser, shop, amount, stock, transaction.getTax(), total);
+    sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.tax().doubleValue());
+    new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.tax().doubleValue()).callEvent();
+    notifyBought(sellerQUser, shop, amount, stock, transaction.tax().doubleValue(), total);
     return true;
   }
 
@@ -537,7 +538,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       throw new IllegalStateException("The owner creating the shop is offline or not exist");
     }
 
-    if(plugin.getEconomy() == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return;
     }
@@ -636,14 +637,14 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           createCost = 0;
         }
         if(createCost > 0) {
-          final SimpleEconomyTransaction economyTransaction = SimpleEconomyTransaction.builder().taxAccount(cacheTaxAccount).taxModifier(0.0).core(plugin.getEconomy()).from(QUserImpl.createFullFilled(p)).to(null).amount(createCost).currency(plugin.getCurrency()).world(shop.getLocation().getWorld()).build();
-          if(!economyTransaction.checkBalance()) {
+          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).tax(BigDecimal.ZERO).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.getLocation().getWorld().getName()).build();
+          if(!economyTransaction.completable()) {
             plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.getLocation().getWorld(), shop.getCurrency())).send();
             return;
           }
-          if(!economyTransaction.failSafeCommit()) {
-            plugin.text().of(p, "economy-transaction-failed", economyTransaction.getLastError()).send();
-            plugin.logger().error("EconomyTransaction Failed, last error:{} ", economyTransaction.getLastError());
+          if(!economyTransaction.safeCommit()) {
+            plugin.text().of(p, "economy-transaction-failed", economyTransaction.lastError()).send();
+            plugin.logger().error("EconomyTransaction Failed, last error:{} ", economyTransaction.lastError());
             plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
             return;
           }
@@ -799,15 +800,15 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final World world = shop.getLocation().getWorld();
     if(plugin.getConfig().getBoolean("shop.refund")) {
       double cost = plugin.getConfig().getDouble("shop.cost");
-      final SimpleEconomyTransaction transaction;
+      final QSEconomyTransaction transaction;
       if(plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && shop.getTaxAccountActual() != null) {
-        cost = Math.min(cost, plugin.getEconomy().getBalance(shop.getTaxAccountActual(), world, plugin.getCurrency()));
-        transaction = SimpleEconomyTransaction.builder().amount(cost).core(plugin.getEconomy()).currency(plugin.getCurrency()).world(world).from(shop.getTaxAccountActual()).to(shop.getOwner()).build();
+        cost = Math.min(cost, plugin.getEconomyManager().provider().balance(shop.getTaxAccountActual(), world.getName(), plugin.getCurrency()).doubleValue());
+        transaction = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(cost)).currency(plugin.getCurrency()).world(world.getName()).from(shop.getTaxAccountActual()).to(shop.getOwner()).build();
       } else {
-        transaction = SimpleEconomyTransaction.builder().amount(cost).core(plugin.getEconomy()).currency(plugin.getCurrency()).world(world).to(shop.getOwner()).build();
+        transaction = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(cost)).currency(plugin.getCurrency()).world(world.getName()).to(shop.getOwner()).build();
       }
-      if(!transaction.failSafeCommit()) {
-        plugin.logger().warn("Shop deletion refund failed. Reason: {}", transaction.getLastError());
+      if(!transaction.safeCommit()) {
+        plugin.logger().warn("Shop deletion refund failed. Reason: {}", transaction.lastError());
       }
     }
   }
@@ -1080,13 +1081,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   }
 
 
-  private int buyingShopAllCalc(@NotNull final AbstractEconomy eco, @NotNull final Shop shop, @NotNull final Player p) {
+  private int buyingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
     final int shopHaveSpaces = Util.countSpace(shop.getInventory(), shop);
     final int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
     // Check if shop owner has enough money
-    final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
+    final double ownerBalance = eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
     final int ownerCanAfford;
     if(shop.getPrice() != 0) {
       ownerCanAfford = (int)(ownerBalance / shop.getPrice());
@@ -1122,20 +1123,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return 0;
     }
     return amount;
-  }
-
-  /**
-   * @return Returns the Map. Info contains what their last question etc was.
-   *
-   * @deprecated Use getInteractiveManager instead. This way won't trigger the BungeeCord
-   * notification.
-   */
-  @SuppressWarnings("removal")
-  @Override
-  @Deprecated(forRemoval = true)
-  public @NotNull Map<UUID, Info> getActions() {
-
-    return this.interactiveManager.actions;
   }
 
 
@@ -1214,11 +1201,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   private void actionTrade(@NotNull final Player p, final Info info, @NotNull final String message) {
 
     Util.ensureThread(false);
-    if(plugin.getEconomy() == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /quickshop main command to get details.").color(NamedTextColor.RED));
       return;
     }
-    final AbstractEconomy eco = plugin.getEconomy();
+    final EconomyProvider eco = plugin.getEconomyManager().provider();
 
     // Get the shop they interacted with
     final Shop shop = plugin.getShopManager().getShop(info.getLocation());
@@ -1237,7 +1224,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
     if(shop.isBuying()) {
-      if(StringUtils.isNumeric(message)) {
+      if(CommonUtil.isNumeric(message)) {
         amount = Integer.parseInt(message);
       } else {
         if(message.equalsIgnoreCase(tradeAllKeyword)) {
@@ -1252,7 +1239,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     } else if(shop.isSelling()) {
-      if(StringUtils.isNumeric(message)) {
+      if(CommonUtil.isNumeric(message)) {
         amount = Integer.parseInt(message);
       } else {
         if(message.equalsIgnoreCase(tradeAllKeyword)) {
@@ -1280,7 +1267,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     return ReloadResult.builder().status(ReloadStatus.SCHEDULED).build();
   }
 
-  private int sellingShopAllCalc(@NotNull final AbstractEconomy eco, @NotNull final Shop shop, @NotNull final Player p) {
+  private int sellingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
     final int shopHaveItems = shop.getRemainingStock();
@@ -1294,7 +1281,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     // typed 'all', check if player has enough money than price * amount
     final double price = shop.getPrice();
-    final double balance = eco.getBalance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld(), shop.getCurrency());
+    final double balance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
     amount = Math.min(amount, (int)Math.floor(balance / price));
     if(amount < 1) { // typed 'all' but the auto set amount is 0
       // when typed 'all' but player can't buy any items

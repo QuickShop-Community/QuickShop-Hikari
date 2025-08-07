@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryPreviewEvent;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.datatype.PreviewGuiPersistentDataType;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
@@ -9,7 +10,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -57,7 +57,7 @@ public class InventoryPreview implements Listener {
       itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
     }
     previewStr = plugin.text().of("quickshop-gui-preview").legacy(locale);
-    if(StringUtils.isEmpty(previewStr)) {
+    if(CommonUtil.isEmptyString(previewStr)) {
       previewStr = ChatColor.RED + "FIXME: Do not set quickshop-gui-preview to null or empty string.";
     }
     if(itemMeta != null) {

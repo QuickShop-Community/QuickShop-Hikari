@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.shop;
 
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
@@ -43,7 +43,7 @@ public interface ShopManager {
   boolean actionBuying(
           @NotNull Player buyer,
           @NotNull InventoryWrapper buyerInventory,
-          @NotNull AbstractEconomy eco,
+          @NotNull EconomyProvider eco,
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);
@@ -72,7 +72,7 @@ public interface ShopManager {
   boolean actionSelling(
           @NotNull Player seller,
           @NotNull InventoryWrapper sellerInventory,
-          @NotNull AbstractEconomy eco,
+          @NotNull EconomyProvider eco,
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);
@@ -127,15 +127,6 @@ public interface ShopManager {
    */
   @NotNull
   String format(double d, @NotNull Shop shop);
-
-  /**
-   * @return Returns the Map. Info contains what their last question etc was.
-   *
-   * @deprecated Use getInteractiveManager() instead.
-   */
-  @Deprecated(forRemoval = true)
-  @NotNull
-  Map<UUID, Info> getActions();
 
   /**
    * Returns all shops in the whole database, include unloaded.

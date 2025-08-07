@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +60,7 @@ public class ConfigurationUpdater {
         }
         plugin.logger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());
         String scriptName = updateScript.description();
-        if(StringUtils.isEmpty(scriptName)) {
+        if(CommonUtil.isEmptyString(scriptName)) {
           scriptName = method.getName();
         }
         plugin.logger().info("[ConfigUpdater] Executing update script " + scriptName);

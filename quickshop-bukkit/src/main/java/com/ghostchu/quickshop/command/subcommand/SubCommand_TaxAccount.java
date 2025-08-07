@@ -29,14 +29,14 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
         plugin.text().of(sender, "taxaccount-unset").send();
         return;
       }
-      QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
+      QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().getFirst())
               .thenAccept(qUser->{
                 shop.setTaxAccount(qUser);
-                plugin.text().of(sender, "taxaccount-set", parser.getArgs().get(0)).send();
+                plugin.text().of(sender, "taxaccount-set", parser.getArgs().getFirst()).send();
               })
               .exceptionally(throwable->{
                 plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
-                plugin.logger().warn("Failed to get uuid of player " + parser.getArgs().get(0), throwable);
+                plugin.logger().warn("Failed to get uuid of player " + parser.getArgs().getFirst(), throwable);
                 return null;
               });
     } else {

@@ -6,9 +6,9 @@ import com.ghostchu.quickshop.addon.discount.type.RateType;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +65,7 @@ public class DiscountCode {
     final DiscountRate discountRate;
     try {
       if(str.endsWith("%")) {
-        double v = Double.parseDouble(StringUtils.substringBeforeLast(str, "%"));
+        double v = Double.parseDouble(CommonUtil.subBeforeLast(str, "%"));
         v = v / 100d;
         if(v <= 0d || v >= 1d) {
           return null;
@@ -79,7 +79,7 @@ public class DiscountCode {
         discountRate = new FixedDiscountRate(v);
       }
       return discountRate;
-    } catch(NumberFormatException e) {
+    } catch(final NumberFormatException e) {
       return null;
     }
   }
@@ -302,7 +302,7 @@ public class DiscountCode {
     if(this == o) {
       return true;
     }
-    if(!(o instanceof DiscountCode that)) {
+    if(!(o instanceof final DiscountCode that)) {
       return false;
     }
     return maxUsage == that.maxUsage && Double.compare(that.threshold, threshold) == 0 && expiredTime == that.expiredTime && code.equals(that.code) && owner.equals(that.owner) && shopScope.equals(that.shopScope) && codeType == that.codeType && rate.equals(that.rate);

@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.util.envcheck;
 
-import org.apache.commons.lang3.StringUtils;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +13,7 @@ public class ResultContainer {
 
     this.result = result;
     this.resultMessage = resultMessage;
-    if(StringUtils.isEmpty(this.resultMessage)) {
+    if(CommonUtil.isEmptyString(this.resultMessage)) {
       this.resultMessage = "null";
     }
   }

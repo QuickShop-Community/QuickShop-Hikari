@@ -50,7 +50,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
     }
     String type = null;
     if(!parser.getArgs().isEmpty()) {
-      type = parser.getArgs().get(0).toLowerCase(Locale.ROOT);
+      type = parser.getArgs().getFirst().toLowerCase(Locale.ROOT);
     }
     String operation = null;
     if(parser.getArgs().size() > 1) {
@@ -153,19 +153,19 @@ public class SubCommand_Permission implements CommandHandler<Player> {
       return List.of("user", "group");
     }
     if(parser.getArgs().size() == 2) {
-      if("user".equalsIgnoreCase(parser.getArgs().get(0))) {
+      if("user".equalsIgnoreCase(parser.getArgs().getFirst())) {
         return List.of("set", "unset");
-      } else if("group".equalsIgnoreCase(parser.getArgs().get(0))) {
+      } else if("group".equalsIgnoreCase(parser.getArgs().getFirst())) {
         return List.of("list");
       }
     }
     if(parser.getArgs().size() == 3) {
-      if("user".equalsIgnoreCase(parser.getArgs().get(0))) {
+      if("user".equalsIgnoreCase(parser.getArgs().getFirst())) {
         return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
       }
     }
     if(parser.getArgs().size() == 4) {
-      if("user".equalsIgnoreCase(parser.getArgs().get(0))) {
+      if("user".equalsIgnoreCase(parser.getArgs().getFirst())) {
         return plugin.getShopPermissionManager().getGroups();
       }
     }

@@ -66,7 +66,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
     }
     Log.debug("Pending task for material: " + item);
 
-    final String price = parser.getArgs().get(0);
+    final String price = parser.getArgs().getFirst();
 
     while(bIt.hasNext()) {
       final Block b = bIt.next();

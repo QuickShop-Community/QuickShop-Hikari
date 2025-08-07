@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.11-SNAPSHOT-1</version>
+        <version>6.2.0.11-SNAPSHOT-4</version>
     </parent>
 
     <properties>
@@ -34,11 +34,6 @@
                 <directory>../crowdin</directory>
                 <filtering>true</filtering>
             </resource>
-            <!--            <resource>-->
-            <!--                <directory>src/main/resources/3rd-party-licenses</directory>-->
-            <!--                <targetPath>3rd-party-licenses</targetPath>-->
-            <!--                <filtering>false</filtering>-->
-            <!--            </resource>-->
         </resources>
     </build>
     <repositories>
@@ -91,62 +86,6 @@
             <artifactId>quickshop-api</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_20_R1</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_20_R2</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_20_R3</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_20_R4</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_21_R1</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_21_R2</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_21_R3</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_21_R4</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
@@ -393,12 +332,6 @@
             <groupId>com.ghostchu.lib.unofficial.com.alessiodp.libby</groupId>
             <artifactId>libby-bukkit</artifactId> <!-- Replace bukkit if you're using another platform -->
             <version>2.0.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_21_R5</artifactId>
-            <version>6.2.0.11-SNAPSHOT-1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,7 +97,7 @@ public class HikariDataExtension implements DataExtension {
         final String balance = dataUtil.formatEconomy(metric);
         tableBuilder.addRow(player, action, shop, item, balance);
       });
-    } catch(ExecutionException | InterruptedException e) {
+    } catch(final ExecutionException | InterruptedException e) {
       throw new RuntimeException(e);
     }
     return tableBuilder.build();
@@ -117,8 +118,8 @@ public class HikariDataExtension implements DataExtension {
       final String owner = PlainTextComponentSerializer.plainText().serialize(shop.ownerName());
       final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
-      if(main.getQuickShop().getEconomy() != null) {
-        price = main.getQuickShop().getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency());
+      if(main.getQuickShop().getEconomyManager().provider() != null) {
+        price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
       }
       final String type = switch(shop.getShopType()) {
         case BUYING -> "Buying";
@@ -164,7 +165,7 @@ public class HikariDataExtension implements DataExtension {
         final String balance = dataUtil.formatEconomy(metric);
         tableBuilder.addRow(action, shop, item, balance);
       });
-    } catch(ExecutionException | InterruptedException e) {
+    } catch(final ExecutionException | InterruptedException e) {
       throw new RuntimeException(e);
     }
     return tableBuilder.build();
@@ -183,8 +184,8 @@ public class HikariDataExtension implements DataExtension {
 
       final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
-      if(main.getQuickShop().getEconomy() != null) {
-        price = main.getQuickShop().getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency());
+      if(main.getQuickShop().getEconomyManager().provider() != null) {
+        price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
       }
 
       final String type = switch(shop.getShopType()) {

@@ -44,7 +44,7 @@ public class TranslationMigrateComponent extends AbstractMigrateComponent {
       }
       try {
         migrateFile(langFolder, langJsonFile);
-      } catch(Exception exception) {
+      } catch(final Exception exception) {
         getHikari().logger().warn("Failed migrate lang file " + langJsonFile.getName() + ".", exception);
       }
     }

@@ -13,6 +13,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
@@ -29,11 +30,11 @@ public class DataUtil {
   public String formatEconomy(@NotNull final ShopMetricRecord record) {
 
     final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
-    if(shop == null || main.getQuickShop().getEconomy() == null) {
+    if(shop == null || main.getQuickShop().getEconomyManager().provider() == null) {
       final DecimalFormat df = new DecimalFormat("#.00");
       return df.format(record.getTotal());
     }
-    return main.getQuickShop().getEconomy().format(record.getTotal(), shop.getLocation().getWorld(), shop.getCurrency());
+    return main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(record.getTotal()), shop.getLocation().getWorld().getName(), shop.getCurrency());
   }
 
   @NotNull
@@ -42,7 +43,7 @@ public class DataUtil {
     final ItemStack stack;
     try {
       stack = Util.deserialize(dataRecord.getItem());
-    } catch(InvalidConfigurationException e) {
+    } catch(final InvalidConfigurationException e) {
       return "[Failed to deserialize]";
     }
     if(stack == null) {

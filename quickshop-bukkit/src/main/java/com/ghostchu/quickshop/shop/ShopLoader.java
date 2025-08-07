@@ -4,14 +4,14 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
-import com.ghostchu.quickshop.economy.SimpleBenefit;
+import com.ghostchu.quickshop.economy.QSBenefitProvider;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -19,7 +19,6 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -316,7 +315,7 @@ public class ShopLoader implements SubPasteItem {
     private ItemStack newItem;
     private boolean needUpdate = false;
 
-    private Benefit benefits;
+    private BenefitProvider benefits;
 
 
     DataRawDatabaseInfo(@NotNull final DataRecord dataRecord) {
@@ -336,10 +335,10 @@ public class ShopLoader implements SubPasteItem {
       }
       this.invSymbolLink = dataRecord.getInventorySymbolLink();
       this.invWrapper = dataRecord.getInventoryWrapper();
-      this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
+      this.benefits = QSBenefitProvider.deserialize(dataRecord.getBenefit());
       final String permissionJson = dataRecord.getPermissions();
 
-      if(!StringUtils.isEmpty(permissionJson) && CommonUtil.isJson(permissionJson)) {
+      if(!CommonUtil.isEmptyString(permissionJson) && CommonUtil.isJson(permissionJson)) {
         final Type typeToken = new TypeToken<Map<UUID, String>>() {
         }.getType();
         this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, typeToken));
@@ -372,7 +371,7 @@ public class ShopLoader implements SubPasteItem {
 
     private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
 
-      if(StringUtils.isEmpty(extraString)) {
+      if(CommonUtil.isEmptyString(extraString)) {
         return null;
       }
       YamlConfiguration yamlConfiguration = new YamlConfiguration();

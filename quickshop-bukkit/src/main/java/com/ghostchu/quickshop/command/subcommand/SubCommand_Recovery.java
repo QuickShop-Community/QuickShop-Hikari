@@ -31,7 +31,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
       return;
     }
 
-    if(parser.getArgs().isEmpty() || !"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
+    if(parser.getArgs().isEmpty() || !"confirm".equalsIgnoreCase(parser.getArgs().getFirst())) {
       plugin.text().of(sender, "importing-early-warning").send();
       return;
     }

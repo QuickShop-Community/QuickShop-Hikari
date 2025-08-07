@@ -259,7 +259,6 @@ shop:
 
   #The display type you want use.
   #Old mode, ArmorStand (display-type=1) is Outdated and could not be used
-  #0=Normal Dropped Item
   #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
 
@@ -280,6 +279,9 @@ shop:
   #Allow displays to show stack effects when stack creation is turned on.
   #It doesn't work under Virtual DisplayItem.
   display-allow-stacks: false
+
+  #Allows display items to show enchantments
+  display-allow-enchants: true
 
   #The coordinates of the display for shop displays.
   #These are added to the shop's container location

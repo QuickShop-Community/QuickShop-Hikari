@@ -1,5 +1,7 @@
 package com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent;
 
+import io.papermc.paper.plugin.configuration.PluginMeta;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -40,6 +42,12 @@ public class MockPlugin implements Plugin {
     return new PluginDescriptionFile(pluginName, "0.0.0", "N/A");
   }
 
+  @Override
+  public @NotNull PluginMeta getPluginMeta() {
+
+    return null;
+  }
+
   @NotNull
   @Override
   public FileConfiguration getConfig() {
@@ -74,9 +82,11 @@ public class MockPlugin implements Plugin {
 
   }
 
-  @NotNull
+  /**
+   * @deprecated
+   */
   @Override
-  public PluginLoader getPluginLoader() {
+  public @NotNull PluginLoader getPluginLoader() {
 
     return null;
   }
@@ -146,6 +156,12 @@ public class MockPlugin implements Plugin {
   public String getName() {
 
     return pluginName;
+  }
+
+  @Override
+  public @NotNull LifecycleEventManager<Plugin> getLifecycleManager() {
+
+    return null;
   }
 
   @Override

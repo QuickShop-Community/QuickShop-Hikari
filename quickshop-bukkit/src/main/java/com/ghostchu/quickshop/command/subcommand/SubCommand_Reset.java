@@ -28,7 +28,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
       return;
     }
 
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "config" -> {
         final File config = new File(plugin.getDataFolder(), "config.yml");
         config.delete();

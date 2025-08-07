@@ -26,7 +26,6 @@ import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Chunk;
@@ -77,8 +76,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     Util.ensureThread(false);
     this.plugin = plugin;
-    this.formatter = new EconomyFormatter(plugin, plugin::getEconomy);
-
+    this.formatter = new EconomyFormatter(plugin);
   }
 
   public void init() {
@@ -569,7 +567,7 @@ public abstract class AbstractShopManager implements ShopManager {
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
       final Location location = shop.getLocation();
-      if(location.isWorldLoaded() && StringUtils.equals(worldName, location.getWorld().getName())) {
+      if(location.isWorldLoaded() && com.ghostchu.quickshop.common.util.CommonUtil.strEquals(worldName, location.getWorld().getName())) {
         worldShops.add(shop);
       }
     }

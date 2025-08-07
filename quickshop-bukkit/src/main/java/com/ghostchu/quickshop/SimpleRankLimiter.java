@@ -8,7 +8,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -68,17 +67,6 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
       }
     }
     return count;
-  }
-
-  @SuppressWarnings("removal")
-  @Override
-  @Deprecated(forRemoval = true)
-  @ApiStatus.Internal
-  @ApiStatus.Obsolete
-  @NotNull
-  public Map<String, Integer> getLimits() {
-
-    return limits;
   }
 
   @Override

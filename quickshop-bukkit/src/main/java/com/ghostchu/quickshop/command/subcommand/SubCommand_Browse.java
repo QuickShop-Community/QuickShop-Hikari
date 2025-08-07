@@ -36,7 +36,7 @@ public class SubCommand_Browse implements CommandHandler<Player> {
 
     final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(sender);
 
-    final boolean world = (!parser.getArgs().isEmpty() && parser.getArgs().get(0).equalsIgnoreCase("world"));
+    final boolean world = (!parser.getArgs().isEmpty() && parser.getArgs().getFirst().equalsIgnoreCase("world"));
 
     Util.asyncThreadRun(()->{
       final List<Shop> shops = new ArrayList<>();

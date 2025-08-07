@@ -11,8 +11,7 @@ import com.ghostchu.quickshop.api.QuickShopProvider;
 import com.ghostchu.quickshop.api.RankLimiter;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.economy.EconomyType;
+import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
@@ -35,8 +34,8 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.economy.impl.Economy_Vault;
-import com.ghostchu.quickshop.economy.impl.Economy_VaultUnlocked;
+import com.ghostchu.quickshop.economy.EconomyLoader;
+import com.ghostchu.quickshop.economy.QSEconomyManager;
 import com.ghostchu.quickshop.listener.BlockListener;
 import com.ghostchu.quickshop.listener.BungeeListener;
 import com.ghostchu.quickshop.listener.ChatListener;
@@ -141,7 +140,6 @@ import net.tnemc.menu.paper.PaperPlayer;
 import net.tnemc.menu.paper.listener.PaperChatListener;
 import net.tnemc.menu.paper.listener.PaperInventoryClickListener;
 import net.tnemc.menu.paper.listener.PaperInventoryCloseListener;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -150,7 +148,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
@@ -159,7 +156,6 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -213,6 +209,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private final Platform platform;
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
+  private final EconomyManager economyManager = new QSEconomyManager();
   @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
@@ -250,11 +247,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private boolean invalidProvider = false;
   @Getter
   private int displayItemCheckTicks;
-  /**
-   * The economy we hook into for transactions
-   */
-  @Getter
-  private AbstractEconomy economy;
   @Nullable
   @Getter
   private LogWatcher logWatcher;
@@ -419,9 +411,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Initializing NexusManager...");
     this.nexusManager = new NexusManager(this);
     logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
-
-    logger.info("Initializing InteractionManager");
-    //TODO: Register interaction defaults
   }
 
   private void registerService() {
@@ -546,7 +535,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       this.platform.updateTranslationMappingSection(this.translationMapping);
     }
 
-    if(StringUtils.isEmpty(this.currency)) {
+    if(CommonUtil.isEmptyString(this.currency)) {
       this.currency = null;
     }
     if(this.getConfig().getBoolean("logging.enable")) {
@@ -611,13 +600,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return this.itemMatcher;
   }
 
-  @SuppressWarnings("removal")
+  /**
+   * Retrieves the EconomyManager instance that manages all economies associated with their unique
+   * identifiers.
+   *
+   * @return The EconomyManager instance.
+   */
   @Override
-  @ApiStatus.Obsolete
-  @Deprecated(forRemoval = true)
-  public Map<String, Integer> getLimits() {
+  public EconomyManager getEconomyManager() {
 
-    return this.rankLimiter.getLimits();
+    return economyManager;
   }
 
   /**
@@ -652,15 +644,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public boolean isValidDisplayProvider() {
 
     return !invalidProvider;
-  }
-
-  @SuppressWarnings("removal")
-  @Override
-  @Deprecated(forRemoval = true)
-  @ApiStatus.Obsolete
-  public boolean isLimit() {
-
-    return this.rankLimiter.isLimit();
   }
 
   @Override
@@ -1338,189 +1321,5 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public enum DatabaseDriverType {
     MYSQL,
     H2
-  }
-
-  public static class EconomyLoader {
-
-    private final QuickShop parent;
-
-    public EconomyLoader(final QuickShop parent) {
-
-      this.parent = parent;
-    }
-
-    /**
-     * Tries to load the economy and its core. If this fails, it will try to use vault. If that
-     * fails, it will return false.
-     *
-     * @return true if successful, false if the core is invalid or is not found, and vault cannot be
-     * used.
-     */
-
-    public boolean load() {
-
-      try(final PerfMonitor ignored = new PerfMonitor("Loading Economy Bridge")) {
-        return setupEconomy();
-      } catch(final Exception e) {
-        if(parent.sentryErrorReporter != null) {
-          parent.sentryErrorReporter.ignoreThrow();
-        }
-        parent.logger().error("Something went wrong while trying to load the economy system!");
-        parent.logger().error("QuickShop was unable to hook into an economy system (Couldn't find Vault or Reserve)!");
-        parent.logger().error("QuickShop can NOT enable properly!");
-        parent.setupBootError(BuiltInSolution.econError(), false);
-        parent.logger().error("Plugin Listeners have been disabled. Please fix this economy issue.", e);
-        return false;
-      }
-    }
-
-    private boolean setupEconomy() throws Exception {
-
-      AbstractEconomy abstractEconomy = switch(EconomyType.fromID(parent.getConfig().getInt("economy-type"))) {
-        case VAULT -> loadVaultAbstract();
-        default -> null;
-      };
-      abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
-      if(abstractEconomy == null) {
-        Log.debug("No economy bridge found.");
-        return false;
-      }
-      if(!abstractEconomy.isValid()) {
-        parent.setupBootError(BuiltInSolution.econError(), false);
-        return false;
-      }
-      parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
-      parent.economy = abstractEconomy;
-      return true;
-    }
-
-    /**
-     * Used to load Vault or VaultUnlocked depending on which is loaded.
-     */
-    @Nullable
-    private AbstractEconomy loadVaultAbstract() throws Exception {
-
-      if(vaultUnlockedPresent()) {
-
-        final RegisteredServiceProvider<net.milkbowl.vault2.economy.Economy> economyProvider;
-        try {
-
-          economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault2.economy.Economy.class);
-
-          if(economyProvider == null) {
-
-            return loadVault();
-          }
-
-        } catch(final Exception ignore) {
-
-          return loadVault();
-        }
-
-        return loadVaultUnlocked();
-
-      } else {
-
-        return loadVault();
-      }
-    }
-
-    @Nullable
-    private AbstractEconomy loadVaultUnlocked() throws Exception {
-
-      final Economy_VaultUnlocked vault = new Economy_VaultUnlocked(parent);
-      final boolean taxEnabled = parent.getConfig().getDouble("tax", 0.0d) > 0;
-      final String taxAccount = parent.getConfig().getString("tax-account", "tax");
-      if(!vault.isValid()) {
-        return null;
-      }
-      if(!taxEnabled) {
-        return vault;
-      }
-
-      if(StringUtils.isEmpty(taxAccount)) {
-        return vault;
-      }
-
-      UUID taxID;
-
-      try {
-        taxID = UUID.fromString(taxAccount);
-
-      } catch(final Exception ignore) {
-        taxID = UUID.nameUUIDFromBytes(taxAccount.getBytes(StandardCharsets.UTF_8));
-      }
-
-      if(!Objects.requireNonNull(vault.getVault()).hasAccount(taxID)) {
-
-        Log.debug("Tax account doesn't exists: " + taxAccount);
-
-        parent.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
-
-        if(vault.getVault().createAccount(taxID, taxAccount, false)) {
-
-          parent.logger().info("Tax account created.");
-        } else {
-
-          parent.logger().warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
-        }
-
-        if(!vault.getVault().hasAccount(taxID)) {
-
-          parent.logger().warn("Player for the Tax-account has never played on this server before and we couldn't create an account. This may cause server lag or economy errors, therefore changing the name is recommended. You may ignore this warning if it doesn't cause any issues.");
-        }
-      }
-      return vault;
-    }
-
-    // Vault may create exception, we need catch it.
-    @SuppressWarnings("RedundantThrows")
-    @Nullable
-    private AbstractEconomy loadVault() throws Exception {
-
-      final Economy_Vault vault = new Economy_Vault(parent);
-      final boolean taxEnabled = parent.getConfig().getDouble("tax", 0.0d) > 0;
-      final String taxAccount = parent.getConfig().getString("tax-account", "tax");
-      if(!vault.isValid()) {
-        return null;
-      }
-      if(!taxEnabled) {
-        return vault;
-      }
-      if(StringUtils.isEmpty(taxAccount)) {
-        return vault;
-      }
-      final OfflinePlayer tax;
-      if(CommonUtil.isUUID(taxAccount)) {
-        tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
-      } else {
-        tax = Bukkit.getOfflinePlayer(taxAccount);
-      }
-      if(!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
-        Log.debug("Tax account doesn't exists: " + tax);
-        parent.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
-        if(vault.getVault().createPlayerAccount(tax)) {
-          parent.logger().info("Tax account created.");
-        } else {
-          parent.logger().warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
-        }
-        if(!vault.getVault().hasAccount(tax)) {
-          parent.logger().warn("Player for the Tax-account has never played on this server before and we couldn't create an account. This may cause server lag or economy errors, therefore changing the name is recommended. You may ignore this warning if it doesn't cause any issues.");
-        }
-      }
-      return vault;
-    }
-
-    private boolean vaultUnlockedPresent() {
-
-      final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
-      return vault != null && vault.getDescription().getVersion().startsWith("2");
-    }
-
-    private boolean vaultPresent() {
-
-      final Plugin vault = parent.javaPlugin.getServer().getPluginManager().getPlugin("Vault");
-      return vault != null && vault.getDescription().getVersion().startsWith("1");
-    }
   }
 }

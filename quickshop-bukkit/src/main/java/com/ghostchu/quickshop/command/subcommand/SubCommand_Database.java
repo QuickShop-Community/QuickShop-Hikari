@@ -41,7 +41,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     }
     final List<String> subParams = new ArrayList<>(parser.getArgs());
     subParams.remove(0);
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "trim" -> handleTrim(sender, subParams);
       case "purgelogs" -> purgeLogs(sender, subParams);
       case "purgeplayerscache" -> purgePlayersCache(sender, subParams);
@@ -60,7 +60,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
 
   private void handleTrim(@NotNull final CommandSender sender, @NotNull final List<String> subParams) {
 
-    if(subParams.isEmpty() || !"confirm".equalsIgnoreCase(subParams.get(0))) {
+    if(subParams.isEmpty() || !"confirm".equalsIgnoreCase(subParams.getFirst())) {
       plugin.text().of(sender, "database.trim-warning").send();
       return;
     }
@@ -109,7 +109,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
       return;
     }
     try {
-      final int days = Integer.parseInt(subParams.get(0));
+      final int days = Integer.parseInt(subParams.getFirst());
       final Calendar calendar = Calendar.getInstance();
       calendar.add(Calendar.DATE, days);
       plugin.text().of(sender, "database.purge-task-created").send();
@@ -131,7 +131,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "database.trim-start").send();
       databaseHelper.purgeIsolated().whenComplete((data, err)->plugin.text().of(sender, "database.trim-complete", data).send());
     } catch(NumberFormatException e) {
-      plugin.text().of(sender, "not-a-number", subParams.get(0)).send();
+      plugin.text().of(sender, "not-a-number", subParams.getFirst()).send();
     }
   }
 

@@ -35,7 +35,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
     final List<String> candidate = new ArrayList<>();
     container:
     for(final CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
-      if(!parser.getArgs().isEmpty() && !container.getPrefix().startsWith(parser.getArgs().get(0))) {
+      if(!parser.getArgs().isEmpty() && !container.getPrefix().startsWith(parser.getArgs().getFirst())) {
         continue;
       }
 

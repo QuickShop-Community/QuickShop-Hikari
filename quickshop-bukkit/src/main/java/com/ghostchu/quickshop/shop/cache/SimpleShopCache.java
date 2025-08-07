@@ -77,7 +77,7 @@ public class SimpleShopCache implements SubPasteItem, ShopCache {
     }
     try {
       return targetCacheContainer.get(location, ()->new BoxedShop(provider.apply(location))).getShop();
-    } catch(ExecutionException e) {
+    } catch(final ExecutionException e) {
       plugin.logger().warn("Loading shops into cache failure, fallback to direct access", e);
       return provider.apply(location);
     }

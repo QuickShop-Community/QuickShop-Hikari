@@ -113,7 +113,7 @@ public class BuiltInCollects {//Statistic
   @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - Economy Types", description = "We collect this so we can know the percent of different economy types users.")
   public CustomChart statisticEconomyTypes() {
 
-    return new SimplePie("statistic_economy_types", ()->plugin.getEconomy().getName());
+    return new SimplePie("statistic_economy_types", ()->plugin.getEconomyManager().provider().name());
   }
 
   @MetricCollectEntry(dataType = MetricDataType.STATISTIC, moduleName = "Statistic - ItemMatcher", description = "We collect this so we can know the item matcher that users using, and improve it.")

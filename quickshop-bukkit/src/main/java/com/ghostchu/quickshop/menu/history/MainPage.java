@@ -122,7 +122,7 @@ public class MainPage {
         final int next = (page >= maxPages)? 1 : page + 1;
 
         //header icon
-        final Shop shop = shops.get(0);
+        final Shop shop = shops.getFirst();
         final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
 
         final Component shopName;

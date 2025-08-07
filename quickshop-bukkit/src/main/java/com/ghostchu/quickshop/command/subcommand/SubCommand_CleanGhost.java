@@ -32,7 +32,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
       return;
     }
 
-    if(!"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
+    if(!"confirm".equalsIgnoreCase(parser.getArgs().getFirst())) {
       plugin.text().of(sender, "cleanghost-warning").send();
       return;
     }

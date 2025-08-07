@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
 import com.ghostchu.quickshop.api.event.inventory.ShopInventoryCalculateEvent;
@@ -50,7 +50,6 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -139,35 +138,7 @@ public class ContainerShop implements Shop, Reloadable {
   private String shopName;
 
   @NotNull
-  private Benefit benefit;
-
-//    ContainerShop(@NotNull ContainerShop s) {
-//        Util.ensureThread(false);
-//        this.shopId = s.shopId;
-//        this.shopType = s.shopType;
-//        this.item = s.item.clone();
-//        this.originalItem = s.originalItem.clone();
-//        this.location = s.location.clone();
-//        this.plugin = s.plugin;
-//        this.unlimited = s.unlimited;
-//        this.owner = s.owner;
-//        this.price = s.price;
-//        this.isLoaded = s.isLoaded;
-//        this.isDeleted = s.isDeleted;
-//        this.createBackup = s.createBackup;
-//        this.extra = s.extra;
-//        this.dirty = true;
-//        this.inventoryPreview = null;
-//        this.currency = s.currency;
-//        this.disableDisplay = s.disableDisplay;
-//        this.taxAccount = s.taxAccount;
-//        this.inventoryWrapper = s.inventoryWrapper;
-//        this.inventoryWrapperProvider = s.inventoryWrapperProvider;
-//        this.symbolLink = s.symbolLink;
-//        this.shopName = s.shopName;
-//        this.playerGroup = s.playerGroup;
-//        this.benefit = s.benefit;
-//    }
+  private BenefitProvider benefit;
 
 
   /**
@@ -200,7 +171,7 @@ public class ContainerShop implements Shop, Reloadable {
           @NotNull final String symbolLink,
           @Nullable final String shopName,
           @NotNull final Map<UUID, String> playerGroup,
-          @NotNull final Benefit shopBenefit) {
+          @NotNull final BenefitProvider shopBenefit) {
 
     this.shopId = shopId;
     this.shopName = shopName;
@@ -752,7 +723,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public void setShopName(@Nullable final String shopName) {
 
-    if(StringUtils.equals(this.shopName, shopName)) {
+    if(com.ghostchu.quickshop.common.util.CommonUtil.strEquals(this.shopName, shopName)) {
       return;
     }
     this.shopName = shopName;
@@ -1714,7 +1685,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public @NotNull Benefit getShopBenefit() {
+  public @NotNull BenefitProvider getShopBenefit() {
 
     final ShopBenefitEvent event = ShopBenefitEvent.RETRIEVE(this, this.benefit);
     event.callEvent();
@@ -1723,7 +1694,7 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   @Override
-  public void setShopBenefit(@NotNull final Benefit benefit) {
+  public void setShopBenefit(@NotNull final BenefitProvider benefit) {
 
     this.benefit = benefit;
     setDirty();

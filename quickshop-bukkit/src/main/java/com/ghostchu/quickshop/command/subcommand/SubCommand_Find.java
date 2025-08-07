@@ -46,7 +46,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     final Vector playerVector = loc.toVector();
 
     //Combing command args
-    final StringBuilder sb = new StringBuilder(parser.getArgs().get(0));
+    final StringBuilder sb = new StringBuilder(parser.getArgs().getFirst());
     for(int i = 1; i < parser.getArgs().size(); i++) {
       sb.append("_").append(parser.getArgs().get(i));
     }
@@ -54,7 +54,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
     final String lookFor = sb.toString().toLowerCase();
 
-    final StringBuilder originLookForSb = new StringBuilder(parser.getArgs().get(0));
+    final StringBuilder originLookForSb = new StringBuilder(parser.getArgs().getFirst());
     for(int i = 1; i < parser.getArgs().size(); i++) {
       originLookForSb.append(" ").append(parser.getArgs().get(i));
     }
@@ -120,7 +120,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
     //Function
     if(usingOldLogic) {
-      final Map.Entry<Shop, Double> closest = sortedShops.get(0);
+      final Map.Entry<Shop, Double> closest = sortedShops.getFirst();
       final Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
       PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
                              PlayerTeleportEvent.TeleportCause.UNKNOWN);
