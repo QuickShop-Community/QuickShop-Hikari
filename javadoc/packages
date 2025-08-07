@@ -24,8 +24,10 @@ com.ghostchu.quickshop.api.shop.permission
 com.ghostchu.quickshop.api.shop.interaction
 com.ghostchu.quickshop.api.shop.cache
 com.ghostchu.quickshop.api.inventory
+com.ghostchu.quickshop.api.economy.benefit
 com.ghostchu.quickshop.api.economy.operation
 com.ghostchu.quickshop.api.economy
+com.ghostchu.quickshop.api.economy.transaction
 com.ghostchu.quickshop.api.command
 com.ghostchu.quickshop.api.localization.text
 com.ghostchu.quickshop.api.localization.text.postprocessor
@@ -36,15 +38,6 @@ com.ghostchu.quickshop.api.database
 com.ghostchu.quickshop.api.database.bean
 com.ghostchu.quickshop.api.serialize
 com.ghostchu.quickshop.platform
-com.ghostchu.quickshop.platform.spigot
-com.ghostchu.quickshop.platform.spigot.v1_20_1
-com.ghostchu.quickshop.platform.spigot.v1_20_2
-com.ghostchu.quickshop.platform.spigot.v1_20_3
-com.ghostchu.quickshop.platform.spigot.v1_20_4
-com.ghostchu.quickshop.platform.spigot.v1_21_1
-com.ghostchu.quickshop.platform.spigot.v1_21_3
-com.ghostchu.quickshop.platform.spigot.v1_21_4
-com.ghostchu.quickshop.platform.spigot.v1_21_5
 com.ghostchu.quickshop.platform.paper
 com.ghostchu.quickshop
 com.ghostchu.quickshop.obj
@@ -99,8 +92,9 @@ com.ghostchu.quickshop.shop.history
 com.ghostchu.quickshop.shop.sign
 com.ghostchu.quickshop.shop.sign.impl
 com.ghostchu.quickshop.mock
+com.ghostchu.quickshop.economy.provider
 com.ghostchu.quickshop.economy
-com.ghostchu.quickshop.economy.impl
+com.ghostchu.quickshop.economy.transaction
 com.ghostchu.quickshop.command.subcommand
 com.ghostchu.quickshop.command.subcommand.silent
 com.ghostchu.quickshop.command
