@@ -8,9 +8,15 @@ plugins {
 
 dependencies {
     api(project(":common"))
-    compileOnly(libs.io.papermc.paper.paper.api)
-    compileOnly(libs.com.intellectualsites.plotsquared.plotsquared.bukkit)
-    compileOnly(libs.com.sk89q.worldedit.worldedit.bukkit)
+    compileOnly(libs.io.papermc.paper.paper.api) {
+        exclude(group = "com.google.code.gson", module = "gson")
+    }
+    compileOnly(libs.com.intellectualsites.plotsquared.plotsquared.bukkit) {
+        exclude(group = "com.google.code.gson", module = "gson")
+    }
+    compileOnly(libs.com.sk89q.worldedit.worldedit.bukkit) {
+        exclude(group = "com.google.code.gson", module = "gson")
+    }
     compileOnly(project(":quickshop-bukkit"))
 }
 

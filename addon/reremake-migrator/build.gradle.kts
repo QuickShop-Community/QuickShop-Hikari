@@ -12,7 +12,9 @@ dependencies {
     api(libs.net.minidev.json.smart)
     compileOnly(libs.io.papermc.paper.paper.api)
     compileOnly(libs.io.vavr.vavr)
-    compileOnly(libs.org.maxgamer.quickshop)
+    compileOnly(libs.org.maxgamer.quickshop) {
+        isTransitive = false
+    }
     compileOnly(project(":quickshop-bukkit"))
 }
 
