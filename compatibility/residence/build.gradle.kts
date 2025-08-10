@@ -4,6 +4,7 @@
 
 plugins {
     id("buildlogic.java-conventions")
+    id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
 
 dependencies {
@@ -12,6 +13,25 @@ dependencies {
     compileOnly(project(":quickshop-bukkit"))
     compileOnly(files("lib/CMILib1.5.4.1.jar"))
     compileOnly(files("lib/Residence5.1.7.3.jar"))
+}
+
+tasks {
+    compileJava {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
+    }
+
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-${description}-${project.version}.jar"
+    }
+
+    shadowJar {
+        archiveFileName = "QuickShop-${description}-${project.version}.jar"
+        archiveClassifier = ""
+
+        configurations = listOf(project.configurations.shadow.get())
+    }
 }
 
 group = "com.ghostchu.quickshop.compatibility"

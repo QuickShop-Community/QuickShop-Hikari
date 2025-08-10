@@ -4,12 +4,40 @@
 
 plugins {
     id("buildlogic.java-conventions")
+    id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
 
 dependencies {
     api(project(":quickshop-common"))
     compileOnly(libs.io.papermc.paper.paper.api)
     compileOnly(libs.de.tr7zw.item.nbt.api.plugin)
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks {
+    compileJava {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
+    }
+
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-QuickShop-Platform-${project.version}.jar"
+    }
+
+    shadowJar {
+        archiveFileName = "QuickShop-Platform-${project.version}.jar"
+        archiveClassifier = ""
+
+        configurations = listOf(project.configurations.shadow.get())
+    }
 }
 
 description = "quickshop-platform-interface"

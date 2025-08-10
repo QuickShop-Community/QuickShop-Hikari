@@ -50,8 +50,6 @@ public interface DatabaseHelper {
    * @param dataId The data Id that shop id point to
    *
    * @return The shop id
-   *
-   * @throws SQLException something going wrong
    */
   CompletableFuture<Long> createShop(long dataId);
 
@@ -60,8 +58,6 @@ public interface DatabaseHelper {
    *
    * @param shopId   The shop record id
    * @param location The shop location
-   *
-   * @throws SQLException something going wrong
    */
   CompletableFuture<@NotNull Void> createShopMap(long shopId, @NotNull Location location);
 
@@ -71,8 +67,6 @@ public interface DatabaseHelper {
    * @param dataId The data Id
    *
    * @return The data record, null for not exists
-   *
-   * @throws SQLException something going wrong
    */
   @NotNull
   CompletableFuture<@Nullable DataRecord> getDataRecord(long dataId);

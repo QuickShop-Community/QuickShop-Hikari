@@ -1,4 +1,5 @@
 plugins {
+    `java`
     id("buildlogic.java-conventions")
     id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
@@ -20,32 +21,32 @@ dependencies {
     compileOnly(libs.annotations.jetbrains)
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+subprojects {
+
+    apply(plugin = "java")
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
     }
-}
 
-tasks.compileJava {
-    options.encoding = "UTF-8"
-    options.release.set(21)
+    tasks {
 
-    sourceCompatibility = "21"
-    targetCompatibility = "21"
-}
+        compileJava {
+            options.encoding = "UTF-8"
+            options.release.set(21)
 
-tasks.jar {
-    dependsOn(tasks.shadowJar)
-    archiveFileName = "original-QuickShop-Hikari-${project.version}.jar"
-}
+            sourceCompatibility = "21"
+            targetCompatibility = "21"
+        }
 
-tasks.shadowJar {
-
-    archiveClassifier = ""
-    archiveBaseName.set("QuickShop-Hikari")
-    relocate("org.bstats", "$relocation.bstats")
+        jar {
+            from("../LICENSE")
+        }
+    }
 }
 
 //TODO: Publishing to modrinth, etc

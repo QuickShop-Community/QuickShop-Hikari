@@ -4,11 +4,31 @@
 
 plugins {
     id("buildlogic.java-conventions")
+    id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
 
 dependencies {
     compileOnly(libs.io.papermc.paper.paper.api)
     compileOnly(project(":quickshop-bukkit"))
+}
+
+tasks {
+    compileJava {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
+    }
+
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-Addon-ShopItemOnly-${project.version}.jar"
+    }
+
+    shadowJar {
+        archiveFileName = "QuickShop-Addon-ShopItemOnly-${project.version}.jar"
+        archiveClassifier = ""
+
+        configurations = listOf(project.configurations.shadow.get())
+    }
 }
 
 group = "com.ghostchu.quickshop.addon"

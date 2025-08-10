@@ -1,5 +1,6 @@
 plugins {
     id("buildlogic.java-conventions")
+    id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
 
 dependencies {
@@ -31,7 +32,28 @@ dependencies {
         exclude("org.spigotmc", "spigot-api")
     }
     compileOnly(libs.com.ghostchu.crowdin.crowdinota)
-    compileOnly(libs.com.rollbar.rollbar.java)
+    compileOnly(libs.com.rollbar.rollbar.java) {
+        exclude("org.slf4j", "slf4j-api")
+    }
+}
+
+tasks {
+    compileJava {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
+    }
+
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-QuickShop-Bukkit-${project.version}.jar"
+    }
+
+    shadowJar {
+        archiveFileName = "QuickShop-Bukkit-${project.version}.jar"
+        archiveClassifier = ""
+
+        configurations = listOf(project.configurations.shadow.get())
+    }
 }
 
 description = "QuickShop-Hikari"
