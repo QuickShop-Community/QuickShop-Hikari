@@ -679,9 +679,9 @@ transfer-single-request: <yellow>El Jugador <aqua>{0}</aqua> desea transferirte 
 transfer-ask: |-
   <gold>Escribe <red>/tiendaempresa transfer accept</red> para aceptar.<red>/tiendaempresa transfer deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
 transferall-ask: |-
-  <gold>Escribe <red>/tiendaempresa transferall accept</red> para aceptar o <red>/tiendaempresa transferall deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
+  <gold>Escribe <red>/tiendaempresa transferirtodas accept</red> para aceptar o <red>/tiendaempresa transferirtodas deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
 transfer-single-ask: |-
-  <gold>Escribe <red>/tiendaempresa transferownership accept</red> para aceptar o <red>/tiendaempresa transferownership deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
+  <gold>Escribe <red>/tiendaempresa transferirpropiedad accept</red> para aceptar o <red>/tiendaempresa transferirpropiedad deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
