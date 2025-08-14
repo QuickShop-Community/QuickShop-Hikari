@@ -457,11 +457,11 @@ command:
     suggestprice: <yellow>Sugerir un precio recomendado para la tienda de empresa, basado en otras tiendas
     history: <yellow>Ver el historial de transacciones de una tienda de empresa
     sign: <yellow>Cambiar el material del letrero de una tienda de empresa
-  bulk-size-not-set: '<red>Usa: /tiendaempresa size \<cantidad>'
-  no-type-given: '<red>Usa: /tiendaempresa find \<artículo>'
+  bulk-size-not-set: '<red>Usa: /tiendaempresa cantidadpaquete \<cantidad>'
+  no-type-given: '<red>Usa: /tiendaempresa encontrar \<artículo>'
   feature-not-enabled: La característica no está habilitada en la configuración.
   now-debuging: <green>Modo desarrollador habilitado. Recargando QuickShop...
-  no-amount-given: <red>No se especificó cantidad. Usa <green>/tiendaempresa refill <amount><red>
+  no-amount-given: <red>No se especificó cantidad. Usa <green>/tiendaempresa rellenar <amount><red>
   no-owner-given: <red>No hay dueño proporcionado
   disabled: '<red>Este comando esta deshabilitado: <yellow>{0}'
   bulk-size-now: <green>Ahora intercambiando <yellow>{0}x {1}
@@ -475,7 +475,7 @@ command:
     unlimited: <green>La tienda de empresa ahora es ilimitada.
   transfer-success-other: <green>Se ha transferido la tienda de empresa de <yellow>{0} {1}<green> a <yellow>{2}
   no-trade-item: <green>Ten en la mano principal un artículo para comerciar
-  wrong-args: <red>Argumento no válido. Usa <bold>/tiendaempresa help<red> ara ver una lista de comandos.
+  wrong-args: <red>Argumento no válido. Usa <bold>/tiendaempresa ayuda<red> para ver una lista de comandos.
   some-shops-removed: <yellow>{0} <green>tienda(s) de empresa eliminada
   new-owner: '<green>Nuevo dueño: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -551,7 +551,7 @@ paste-451: |-
   <gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
-command-incorrect: '<red>Uso incorrecto del comando, usa /tiendaempresa help para consultar ayuda. Uso: {0}.'
+command-incorrect: '<red>Uso incorrecto del comando, usa /tiendaempresa ayuda para consultar ayuda. Uso: {0}.'
 successfully-set-player-group: <green>Se ha establecido correctamente el grupo de jugadores {0} a <aqua>{1}</aqua>.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
 successfully-set-player-permission: <green>Se ha establecido correctamente el permiso <aqua>{1}</aqua> al jugador{0} en la tienda de empresa <aqua>{2}</aqua>.
@@ -600,7 +600,7 @@ debug:
   force-shop-loader-reload-complete:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
-  handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
+  handler-list-not-valid-bukkit-event-class: quicks
   update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
@@ -719,7 +719,7 @@ addon:
     make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
     make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    shop-owning-changing-notice: <grey>Esta tienda ahora es propiedad de una ciudad/nación, el propietario original de la tienda se ha añadido automáticamente a la lista de administradores. Modifica o añade cualquier nuevo propietario/personal utilizando el comando /tiendaempresa permission.
+    shop-owning-changing-notice: <grey>Esta tienda ahora es propiedad de una ciudad/nación, el propietario original de la tienda se ha añadido automáticamente a la lista de administradores. Modifica o añade cualquier nuevo propietario/personal utilizando el comando /tiendaempresa permiso.
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
     target-shop-not-in-town-region: <red>The target shop is not in the town.
@@ -1351,7 +1351,7 @@ addon:
     invalid-expire-time: <red>No se puede especificar una hora en el pasado.
     invalid-discount-rate: <red>La tasa de descuento <yellow>{0}</yellow> no es válida, puede ser un número fijo o un porcentaje.
     discount-code-expired: <red>¡Tu código de descuento <yellow>{0}</yellow> ha expirado!
-    discount-code-installed: "<green>Has instalado el código de descuento <gold>{0}</gold>. El código se aplicará automáticamente a todas las compras disponibles durante esta sesión.\nPara desinstalar el código de descuento, ejecuta <aqua>/tiendaempresa discount uninstall {0}</aqua>."
+    discount-code-installed: "<green>Has instalado el código de descuento <gold>{0}</gold>. El código se aplicará automáticamente a todas las compras disponibles durante esta sesión.\nPara desinstalar el código de descuento, ejecuta <aqua>/tiendaempresa descuento uninstall {0}</aqua>."
     discount-code-uninstalled: <green>Has desinstalado tu código de descuento.
     discount-code-query-nothing: <red>¡Aún no has instalado un código de descuento!
     discount-code-query: '<green>Está utilizando el código de descuento: <yellow>{0}</yellow>.'
@@ -1372,7 +1372,7 @@ addon:
       <gold>Ámbito: <aqua>{1}</aqua></gold>.
       <gold>Comparte con otros: <color:#bcef26>{2}</color:#bcef26></gold>.
       <yellow>Solo para el ámbito <gray>Tiendas Específicas</gray>: Para agregar tiendas a la lista permitida de tu código de descuento, haz clic derecho en una tienda y ejecuta el comando <aqua>{3}</aqua>
-      <yellow>You can use <aqua>/tiendaempresa discount config {0}</aqua> para editar en cualquier momento tu código de descuento.
+      <yellow>You can use <aqua>/tiendaempresa descuento config {0}</aqua> para editar en cualquier momento tu código de descuento.
     discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
     percentage-off: '<bold><color:#bcef26>-{0}%</color:#bcef26></bold>'
     fixed-off: '<bold><color:#bcef26>-{0}</color:#bcef26></bold>'
