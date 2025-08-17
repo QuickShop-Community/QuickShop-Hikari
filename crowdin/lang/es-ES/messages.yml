@@ -1316,34 +1316,36 @@ addon:
           code: <code>
         create:
           rate: |
-            Command Hint:
-            Argument: <rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            Cómo usar este argumento:
+            Argumento: \<porcentaje>
+            Descripción: Porcentaje del total o cantidad que obtendrás
+            Si colocas `30%` (con %), obtienes: precio normal * 0.3
+            Si colocas `50` (sin el %), obtienes: precio normal - 50
           max-usage: |
-            Command Hint:
-            Argument: [max-usage]
-            Description: The times that code can be used
-            `-1` for unlimited.
+            Cómo usar este argumento:
+            Argumento: [max-usos]
+            Descripción: Veces que el código de descuento puede usarse
+            Coloca `-1` para hacerlo ilimitado.
           threshold: |
-            Command Hint:
-            Argument: [threshold]
-            Description: The minimum price that code can be applied
-            `-1` for unlimited
+            Cómo usar este argumento:
+            Argumento: [precio-mínimo]
+            Descripción: Precio mínimo al que se puede aplicar el código
+            Coloca `-1` para hacerlo ilimitado.
           expired: |
-            Command Hint
-            Argument: [expired]
-            Description: The code expired time.
-            `-1` for unlimited duration.
-            Accept both Zulu time and UNIX timestamp in seconds.
-            Zulu Example: 2022-12-17T10:31:37Z
-            UNIX Example: 1671273097
+            Cómo usar este argumento:
+            Argumento: [expiración]
+            Descripción: ¿Cuándo expira el código de descuento?.
+            Coloca `-1` para hacerlo permanente hasta que tú lo elimines.
+            Permite tanto formato de tiempo `Zulu` y `UNIX` en segundos.
+            Ejemplo Zulu: 2025-04-27T14:58:00Z ó 2025-04-27T14:58:00-06:00
+            La Z al final hace referencia a la zona horaria UTC
+            Si en vez de Z usas +hh:mm o -hh:mm cambias la zona horaria
+            Ejemplo UNIX: 1671273097
     discount-code-already-exists: <red>Lo sentimos, el nombre de su código de descuento ya está en uso.
-    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}</yellow>'
+    invalid-discount-code-regex: '<red>Formato de código incorrecto, debe coincidir con el REGEX: <yellow>{0}</yellow>.'
     invalid-discount-code: <red>Este código de descuento no es válido.
-    discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>
+    discount-code-added: <green>Tu código de descuento <yellow>{0}</yellow> ha sido agregado a la tienda de empresa <aqua>{1}</aqua>
+    discount-code-removed: <green>Tu código de descuento <yellow>{0}</yellow> ha sido removido de la tienda de empresa <aqua>{1}</aqua>
     invalid-code-type: <red>El tipo de código <yellow>{0}</yellow> no es válido.
     invalid-usage-restriction: <red>La restricción de uso <yellow>{0}</yellow> no es válida.
     invalid-threshold-restriction: <red>La restricción de umbral <yellow>{0}</yellow> no es válida.
@@ -1351,14 +1353,14 @@ addon:
     invalid-expire-time: <red>No se puede especificar una hora en el pasado.
     invalid-discount-rate: <red>La tasa de descuento <yellow>{0}</yellow> no es válida, puede ser un número fijo o un porcentaje.
     discount-code-expired: <red>¡Tu código de descuento <yellow>{0}</yellow> ha expirado!
-    discount-code-installed: "<green>Has instalado el código de descuento <gold>{0}</gold>. El código se aplicará automáticamente a todas las compras disponibles durante esta sesión.\nPara desinstalar el código de descuento, ejecuta <aqua>/tiendaempresa descuento uninstall {0}</aqua>."
-    discount-code-uninstalled: <green>Has desinstalado tu código de descuento.
+    discount-code-installed: "<green>Has instalado el código de descuento <gold>{0}</gold>. El código se aplicará automáticamente a todas las próximas compras aplicables disponibles durante esta sesión.\nPara desinstalar el código de descuento, ejecuta <aqua>/tiendaempresa descuento uninstall {0}</aqua>. Podrás instalarlo nuevamente cuando lo necesites."
+    discount-code-uninstalled: <green>Has desinstalado tu código de descuento. Ya no se utilizará en tus próximas tiendas hasta que vuelvas a instalarlo.
     discount-code-query-nothing: <red>¡Aún no has instalado un código de descuento!
     discount-code-query: '<green>Está utilizando el código de descuento: <yellow>{0}</yellow>.'
-    discount-code-applicable: '<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop!'
-    discount-code-applicable-with-threshold: '<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!
-    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied.
+    discount-code-applicable: '<color:#bcef26>El código de descuento <yellow><bold>{0}</bold></yellow> es <bold>aplicable</bold> en esta tienda de empresa!'
+    discount-code-applicable-with-threshold: '<color:#bcef26>El código de descuento <yellow><bold>{0}</bold></yellow> es <bold>aplicable</bold> en esta tienda de empresa, pero solo si el costo total de una sola compra es superior a <yellow>{1}</yellow>.'
+    discount-code-not-applicable: <red>El código de descuento <yellow><bold>{0}</bold></yellow> <bold>no es aplicable</bold> en esta tienda de empresa!
+    discount-code-reach-the-limit: <red>Alcanzaste el límite de usos para el código de descuento <yellow><bold>{0}</bold></yellow>, ya no se aplicarán más descuentos con este código.
     discount-code-no-permission: <red>¡No tenías permiso para usar ningún código de descuento en esta tienda de empresa!
     discount-code-has-been-expired: <red>¡Tu descuento ha caducado!
     discount-code-config-shop-added: <green>Correctamente añadida esta tienda de empresa a tu lista de códigos de descuento permitidos.
@@ -1376,8 +1378,8 @@ addon:
     discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
     percentage-off: '<bold><color:#bcef26>-{0}%</color:#bcef26></bold>'
     fixed-off: '<bold><color:#bcef26>-{0}</color:#bcef26></bold>'
-    discount-code-list: '<gold>Listing your discount codes:</gold>'
-    discount-code-applied-in-purchase: '<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    discount-code-list: '<gold>Tus códigos de descuento existentes:</gold>'
+    discount-code-applied-in-purchase: '<color:#bcef26>El código de descuento <yellow>{0}</yellow> se aplicó en esta compra y ahorraste <gold>{1}</gold>!'
     scope:
       this-shop: '{0}'
       your-shops-owned: todas tus tiendas de empresa (propias)
@@ -1385,16 +1387,16 @@ addon:
       server: todo el servidor
     code-type:
       SERVER_ALL_SHOPS: Todas las tiendas de empresa en esta ciudad
-      PLAYER_ALL_SHOPS: Todas las tiendas de empresa creadas por el propietario del código
+      PLAYER_ALL_SHOPS: Todas las tiendas de empresa creadas por el creador del código
       SPECIFIC_SHOPS: Tiendas de empresa específicas
     discount-code-details: |-
-      <gold>Code: <yellow>{0}</yellow>
-      <gold>Creator: <yellow>{1}</yellow>
-      <gold>Applied to: <yellow>{2}</yellow>
-      <gold>Remaining usage: <yellow>{3}</yellow>
-      <gold>Expired on: <yellow>{4}</yellow>
-      <gold>Threshold: <yellow>{5}</yellow>
-      <gold>Discount: <yellow>{6}</yellow>
+      <gold>Código: <yellow>{0}</yellow>
+      <gold>Creador: <yellow>{1}</yellow>
+      <gold>Aplica a: <yellow>{2}</yellow>
+      <gold>Usos restantes: <yellow>{3}</yellow>
+      <gold>Expira el: <yellow>{4}</yellow>
+      <gold>Precio mínimo aplicado: <yellow>{5}</yellow>
+      <gold>Descuento: <yellow>{6}</yellow>
   list:
     commands:
       list: Listado de todas las tiendas de empresa que son propiedad tuya o de un jugador específico.
@@ -1415,7 +1417,7 @@ addon:
     success-setup: <green>La configuración de restricciones para esta tienda de empresa se ha guardado correctamente
     trade-limit-reached-cancel-reason: <red>Alcanzó la restricción de esta tienda de empresa
     remains-limits: '<gold>Aún puedes hacer <yellow>{0}</yellow> transacciones en esta tienda</gold>'
-    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>'
+    remains-limits-before-reset-period-note: '<gold>Esta tienda reiniciará su límite de transacciones cada: <yellow>{0}</yellow>'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
@@ -1499,11 +1501,11 @@ suite:
       Space: {9}
       Stock: {10}
   limited:
-    command-description: <yellow>Establece un límite que restrinja la compra que el jugador puede hacer en el periodo.
-    reach-the-quota-limit: <red>Ha alcanzado el límite de compra en esta tienda de empresa ({0}/{1}).
-    quota-reset-countdown: <yellow>La cuota de esta tienda de empresa se restablecerá en {0}.
-    quota-reset-player-successfully: <green>La cuota para el jugador {0} en esta tienda de empresa se ha restablecido correctamente.
-    quota-reset-everybody-successfully: <green>La cuota para todos los clientes de esta tienda de empresa se ha restablecido correctamente.
+    command-description: <yellow>Establece un límite que restrinja las transacciones que los clientes pueden hacer en un periodo de tiempo.
+    reach-the-quota-limit: <red>Ha alcanzado el límite de transacciones en esta tienda de empresa ({0}/{1}).
+    quota-reset-countdown: <yellow>El límite de esta tienda de empresa se restablecerá en {0}.
+    quota-reset-player-successfully: <green>El límite para el cliente {0} en esta tienda de empresa se ha restablecido correctamente.
+    quota-reset-everybody-successfully: <green>El límite para todos los clientes de esta tienda de empresa se ha restablecido correctamente.
     quota-setup: <green>¡La restricción de compra ahora se aplica a esta tienda de empresa!
     quota-remove: <green>¡La restricción de compra ha sido eliminada de esta tienda de empresa!
     subtitles:
