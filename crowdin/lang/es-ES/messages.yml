@@ -1414,7 +1414,7 @@ addon:
     success-remove: <green>Eliminó con éxito todas las restricciones de esta tienda de empresa
     success-setup: <green>La configuración de restricciones para esta tienda de empresa se ha guardado correctamente
     trade-limit-reached-cancel-reason: <red>Alcanzó la restricción de esta tienda de empresa
-    remains-limits: '<gold>Movimientos restantes en esta tienda: <yellow>{0}</yellow>'
+    remains-limits: '<gold>Aún puedes hacer <yellow>{0}</yellow> transacciones en esta tienda</gold>'
     remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
