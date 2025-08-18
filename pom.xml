@@ -465,7 +465,7 @@
         <module>addon/reremake-migrator</module>
         <module>addon/shopitemonly</module>
         <module>compatibility/advancedregionmarket</module>
-        <module>compatibility/angelchest</module>
+          <!--   <module>compatibility/angelchest</module>  -->
         <module>compatibility/bentobox</module>
         <module>compatibility/bungeecord</module>
         <module>compatibility/bungeecord-geyser</module>
