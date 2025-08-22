@@ -1,4 +1,4 @@
-package com.github.quickshopcommunity.dominion;
+package com.ghostchu.quickshop.compatibility.dominion;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -36,7 +36,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
-import com.github.quickshopcommunity.dominion.util.ChunkBounds;
+import com.ghostchu.quickshop.compatibility.dominion.util.ChunkBounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
