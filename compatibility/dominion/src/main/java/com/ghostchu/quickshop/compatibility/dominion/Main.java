@@ -68,15 +68,14 @@ public class Main extends CompatibilityModule {
 
     try {
       this.api = DominionAPI.getInstance();
-
-    } catch(final Exception ignore) {
-
+    } catch (final Exception e) {
+      getLogger().warning("Failed to hook DominionAPI, plugin disabled.");
+      this.enabled = false;
       return;
     }
 
-    this.enabled = DominionAPI.isDominionEnabled();
+    this.enabled = Bukkit.getPluginManager().isPluginEnabled("Dominion");
     whitelist = getConfig().getBoolean("whitelist-mode");
-    deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
     deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
     deleteWhenLandDeleted = getConfig().getBoolean("delete-shops-in-dominion-when-dominion-deleted");
   }
