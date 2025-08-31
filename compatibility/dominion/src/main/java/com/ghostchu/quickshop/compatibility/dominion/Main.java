@@ -1,4 +1,4 @@
-package com.github.quickshopcommunity.dominion;
+package com.ghostchu.quickshop.compatibility.dominion;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -36,7 +36,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
-import com.github.quickshopcommunity.dominion.util.ChunkBounds;
+import com.ghostchu.quickshop.compatibility.dominion.util.ChunkBounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -68,15 +68,14 @@ public class Main extends CompatibilityModule {
 
     try {
       this.api = DominionAPI.getInstance();
-
-    } catch(final Exception ignore) {
-
+    } catch (final Exception e) {
+      getLogger().warning("Failed to hook DominionAPI, plugin disabled.");
+      this.enabled = false;
       return;
     }
 
-    this.enabled = DominionAPI.isDominionEnabled();
+    this.enabled = Bukkit.getPluginManager().isPluginEnabled("Dominion");
     whitelist = getConfig().getBoolean("whitelist-mode");
-    deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
     deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
     deleteWhenLandDeleted = getConfig().getBoolean("delete-shops-in-dominion-when-dominion-deleted");
   }

@@ -1,4 +1,4 @@
-package com.github.quickshopcommunity.dominion.util;
+package com.ghostchu.quickshop.compatibility.dominion.util;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
