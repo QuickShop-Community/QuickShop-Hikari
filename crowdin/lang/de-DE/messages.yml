@@ -311,7 +311,7 @@ signs:
 negative-amount: <red>Du kannst keine negative Anzahl handeln
 display-turn-on: <green>Shop-Display erfolgreich aktiviert.
 display-turn-off: <green>Shop-Display erfolgreich deaktiviert.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-on-owned:
 display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
 display-turn-on-all: <green>Successfully turned on shop display for all server shops.
 display-turn-off-all: <green>Successfully turned off shop display for all server shops.
