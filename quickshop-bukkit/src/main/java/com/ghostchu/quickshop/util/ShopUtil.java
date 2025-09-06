@@ -180,7 +180,6 @@ public class ShopUtil {
               .amount(BigDecimal.valueOf(fee))
               .world(Objects.requireNonNull(shop.getLocation().getWorld()).getName())
               .currency(plugin.getCurrency())
-              .tax(BigDecimal.ZERO)
               .build();
       if(!transaction.completable()) {
         plugin.text().of(user, "you-cant-afford-to-change-price", plugin.getShopManager().format(fee, shop)).send();
