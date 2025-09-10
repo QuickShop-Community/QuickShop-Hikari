@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":quickshop-common"))
+    compileOnly(project(":quickshop-common"))
     compileOnly(libs.io.papermc.paper.paper.api)
 }
 
