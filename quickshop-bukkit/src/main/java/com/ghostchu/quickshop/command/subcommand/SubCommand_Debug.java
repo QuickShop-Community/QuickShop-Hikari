@@ -134,6 +134,10 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     if(!(sender instanceof Player player)) {
       return;
     }
+    if(player.getInventory().getItemInMainHand().getType().isAir()) {
+        plugin.text().of(sender, "no-anythings-in-your-hand").send();
+        return;
+    }
     final String hand = player.getInventory().getItemInMainHand().getItemMeta().getAsString();
     plugin.text().of(sender, "debug.item-info-hand-as-string", hand, Hashing.crc32().hashString(hand, StandardCharsets.UTF_8).toString()).send();
     final Shop shop = getLookingShop(sender);
