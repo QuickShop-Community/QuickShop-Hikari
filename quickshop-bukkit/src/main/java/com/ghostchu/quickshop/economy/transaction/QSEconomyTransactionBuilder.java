@@ -98,7 +98,7 @@ public class QSEconomyTransactionBuilder {
             world,
             currency,
             amount,
-            tax != null ? tax : BigDecimal.ZERO,
+            (tax != null)? tax : BigDecimal.ZERO,
             from,
             to,
             taxer
