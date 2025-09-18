@@ -166,7 +166,7 @@ public class CommonUtil {
       return string;
     }
 
-    final int pos = string.lastIndexOf(separator);
+    final int pos = string.indexOf(separator);
     if(pos == -1) {
       return "";
     }
