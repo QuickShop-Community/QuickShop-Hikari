@@ -153,7 +153,7 @@ public class MsgUtil {
       final String arg = args[i];
       final String replacement = (arg == null? "" : arg);
 
-      raw = raw.replaceAll(Pattern.quote("{" + i + "}"), Pattern.quote(replacement));
+      raw = raw.replaceAll(Pattern.quote("{" + i + "}"), replacement);
       //raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null? "" : args[i]);
     }
     return raw;
