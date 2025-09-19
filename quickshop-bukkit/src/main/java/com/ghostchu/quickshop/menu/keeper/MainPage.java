@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.core.builder.IconBuilder;
@@ -110,17 +111,21 @@ public class MainPage extends QuickShopPage {
               && QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.sell")
               && QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.buy")) {
 
+          final Component sellingText = QuickShop.getInstance().text().of("shop-type.selling").forLocale();
+          final Component buyingText = QuickShop.getInstance().text().of("shop-type.buying").forLocale();
+          final Component frozenText = QuickShop.getInstance().text().of("shop-type.frozen").forLocale();
+
           final AbstractItemStack<?> buyingStack = QuickShop.getInstance().stack().of("GREEN_WOOL", 1)
                   .display(get(id, "gui.keeper.mode-icon.display"))
-                  .lore(getList(id, "gui.keeper.mode-icon.lore", "SELLING", "BUYING"));
+                  .lore(getList(id, "gui.keeper.mode-icon.lore", sellingText, buyingText));
 
           final AbstractItemStack<?> sellingStack = QuickShop.getInstance().stack().of("RED_WOOL", 1)
                   .display(get(id, "gui.keeper.mode-icon.display"))
-                  .lore(getList(id, "gui.keeper.mode-icon.lore", "BUYING", "FROZEN"));
+                  .lore(getList(id, "gui.keeper.mode-icon.lore", buyingText, frozenText));
 
           final AbstractItemStack<?> frozenStack = QuickShop.getInstance().stack().of("RED_WOOL", 1)
                   .display(get(id, "gui.keeper.mode-icon.display"))
-                  .lore(getList(id, "gui.keeper.mode-icon.lore", "FROZEN", "SELLING"));
+                  .lore(getList(id, "gui.keeper.mode-icon.lore", frozenText, sellingText));
 
           String modeState = (shop.get().getShopType().equals(ShopType.BUYING))? "BUYING" : "SELLING";
           if(shop.get().getShopType().equals(ShopType.FROZEN)) {

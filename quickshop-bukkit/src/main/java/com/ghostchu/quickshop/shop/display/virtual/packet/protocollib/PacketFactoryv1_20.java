@@ -267,12 +267,11 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        final StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
-        final ChunkCoordIntPair pair = intPairStructureModifier.read(0);
-        //chunk x
-        final int x = pair.getChunkX();
-        //chunk z
-        final int z = pair.getChunkZ();
+        
+          final StructureModifier<Integer> intModifier = event.getPacket().getIntegers();
+          final int x = intModifier.read(0);
+          final int z = intModifier.read(1);
+
         VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList) {
 
