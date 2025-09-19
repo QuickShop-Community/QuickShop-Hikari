@@ -68,7 +68,7 @@ public class QSBenefitProvider implements BenefitProvider {
     if(CommonUtil.isEmptyString(json)) {
       return new QSBenefitProvider();
     }
-    final Map<String, BigDecimal> map = JsonUtil.regular().fromJson(json, new TypeToken<Map<String, Double>>() {
+    final Map<String, BigDecimal> map = JsonUtil.regular().fromJson(json, new TypeToken<Map<String, BigDecimal>>() {
     }.getType());
 
     final Map<QUser, BigDecimal> parsed = new HashMap<>();
