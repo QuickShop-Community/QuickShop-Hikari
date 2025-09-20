@@ -159,10 +159,10 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
       return false; // One of them is null (Can't be both, see above)
     }
 
-    final String shopIdOrigin = plugin.getPlatform().getItemShopId(requireStack);
+    final String shopIdOrigin = plugin.platform().getItemShopId(requireStack);
     if(shopIdOrigin != null) {
-      Log.debug("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.getPlatform().getItemShopId(givenStack));
-      final String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
+      Log.debug("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.platform().getItemShopId(givenStack));
+      final String shopIdTester = plugin.platform().getItemShopId(givenStack);
       if(shopIdOrigin.equals(shopIdTester)) {
         return true;
       }
@@ -258,9 +258,9 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
         return true;
       });
-      addIfEnable(itemMatcherConfig, "displayname", ((meta1, meta2)->Objects.equals(plugin.getPlatform().getDisplayName(meta1), plugin.getPlatform().getDisplayName(meta2))));
+      addIfEnable(itemMatcherConfig, "displayname", ((meta1, meta2)->Objects.equals(plugin.platform().getDisplayName(meta1), plugin.platform().getDisplayName(meta2))));
       // We didn't touch the loresMatches because many plugin use this check item.
-      addIfEnable(itemMatcherConfig, "lores", ((meta1, meta2)->Objects.equals(plugin.getPlatform().getLore(meta1), plugin.getPlatform().getLore(meta2))));
+      addIfEnable(itemMatcherConfig, "lores", ((meta1, meta2)->Objects.equals(plugin.platform().getLore(meta1), plugin.platform().getLore(meta2))));
       addIfEnable(itemMatcherConfig, "enchs", ((meta1, meta2)->{
         if(meta1.hasEnchants() != meta2.hasEnchants()) {
           return false;

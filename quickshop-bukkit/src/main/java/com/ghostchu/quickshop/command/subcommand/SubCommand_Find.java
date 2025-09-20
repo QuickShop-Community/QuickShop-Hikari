@@ -144,7 +144,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
                                                     location.getBlockZ(),
                                                     shopDoubleEntry.getValue().intValue()
                                                    ).forLocale();
-        entryComponent = plugin.getPlatform().setItemStackHoverEvent(entryComponent, previewItemStack);
+        entryComponent = plugin.platform().setItemStackHoverEvent(entryComponent, previewItemStack);
         MsgUtil.sendDirectMessage(sender, entryComponent);
       }
 

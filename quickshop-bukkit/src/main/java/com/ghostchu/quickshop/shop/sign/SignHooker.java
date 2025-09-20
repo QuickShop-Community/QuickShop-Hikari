@@ -87,7 +87,7 @@ public class SignHooker {
     final List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
     for(final Sign sign : shop.getSigns()) {
 
-      PLUGIN.getPlatform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
+      PLUGIN.platform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
     }
   }
 

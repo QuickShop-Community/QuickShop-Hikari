@@ -38,7 +38,6 @@ import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -229,26 +228,19 @@ public class MainPage {
           if(i >= (start + items)) break;
 
           if(dataRecord == null) continue;
-          int max = 64;
-          String type = "STONE";
-          Component itemName;
-          try {
-            ItemStack historyItem = Util.deserialize(dataRecord.getItem());
-            if(historyItem == null) {
-              historyItem = new ItemStack(Material.STONE);
-              final ItemMeta meta = historyItem.getItemMeta();
-              if(meta != null) {
-                meta.setDisplayName("Failed to deserialize item");
-                historyItem.setItemMeta(meta);
-              }
+
+          ItemStack historyItem = QuickShop.getInstance().platform().decodeStack(dataRecord.getEncoded());
+          if(historyItem == null) {
+            historyItem = new ItemStack(Material.STONE);
+            final ItemMeta meta = historyItem.getItemMeta();
+            if(meta != null) {
+              meta.setDisplayName("Failed to deserialize item");
+              historyItem.setItemMeta(meta);
             }
-            type = historyItem.getType().getKey().getKey();
-            itemName = Util.getItemStackName(historyItem);
-            max = historyItem.getMaxStackSize();
-          } catch(InvalidConfigurationException e) {
-            itemName = get(id, "internal-error");
-            QuickShop.getInstance().logger().error("Failed to deserialize itemstack {}", dataRecord.getItem(), e);
           }
+          final String type = historyItem.getType().getKey().getKey();
+          final Component itemName = Util.getItemStackName(historyItem);
+          final int max = historyItem.getMaxStackSize();
 
           final List<Component> lore = getList(id, "history.shop.log-icon-description-with-store-name",
                                                shopName,

@@ -1059,7 +1059,7 @@ public class ContainerShop implements Shop, Reloadable {
     // Check for new shop sign
     final Component[] lines = new Component[sign.getLines().length];
     for(int i = 0; i < sign.getLines().length; i++) {
-      lines[i] = plugin.getPlatform().getLine(sign, i);
+      lines[i] = plugin.platform().getLine(sign, i);
     }
     // Can be claim
 
@@ -1406,7 +1406,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     return new ShopInfoStorage(getLocation().getWorld().getName(),
                                new BlockPos(getLocation()), this.owner, this.price,
-                               Util.serialize(this.originalItem), isUnlimited()? 1 : 0
+                               QuickShop.getInstance().platform().encodeStack(this.originalItem), isUnlimited()? 1 : 0
             , getShopType().toID(),
                                saveExtraToYaml(), this.currency, this.disableDisplay,
                                this.taxAccount, inventoryWrapperProvider,
@@ -1616,7 +1616,7 @@ public class ContainerShop implements Shop, Reloadable {
       sign.setGlowingText(isGlowing);
       sign.setWaxed(isWaxed);
       sign.update(true);
-      plugin.getPlatform().setLines(sign, event.updated());
+      plugin.platform().setLines(sign, event.updated());
 
       new ShopSignUpdateEvent(this, sign).callEvent();
     }
@@ -1704,8 +1704,8 @@ public class ContainerShop implements Shop, Reloadable {
 
     return new SimpleDataRecord(
             getOwner(),
-            Util.serialize(getItem()),
-            plugin.getPlatform().encodeStack(getItem()),
+            plugin.platform().encodeStack(getItem()),
+            plugin.platform().encodeStack(getItem()),
             getShopName(),
             getShopType().toID(),
             getCurrency(),

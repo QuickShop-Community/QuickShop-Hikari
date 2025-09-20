@@ -205,7 +205,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final QuickShopBukkit javaPlugin;
   private final Logger logger;
-  @Getter
   private final Platform platform;
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
@@ -1231,6 +1230,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
       this.virtualDisplayItemManager.unload();
     }
+  }
+
+  public Platform platform() {
+    return platform;
   }
 
   @NotNull

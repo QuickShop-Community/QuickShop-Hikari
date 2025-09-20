@@ -349,24 +349,11 @@ public class ShopLoader implements SubPasteItem {
 
       if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
 
-        this.item = QuickShop.getInstance().getPlatform().decodeStack(dataRecord.getEncoded());
+        this.item = QuickShop.getInstance().platform().decodeStack(dataRecord.getEncoded());
         this.newItem = item;
-      } else {
-
-        this.item = deserializeItem(dataRecord.getItem());
       }
+
       this.extra = deserializeExtra(extraStr);
-    }
-
-    private @Nullable ItemStack deserializeItem(@NotNull final String itemConfig) {
-
-      try {
-        return Util.deserialize(itemConfig);
-      } catch(final Exception e) {
-        QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
-        Log.debug("Failed to load data to the ItemStack: " + itemConfig);
-        return null;
-      }
     }
 
     private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {

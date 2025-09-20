@@ -659,7 +659,7 @@ public class Util {
     Component result = getItemCustomName(itemStack);
     if(isEmptyComponent(result)) {
       try {
-        result = plugin.getPlatform().getTranslation(itemStack);
+        result = plugin.platform().getTranslation(itemStack);
       } catch(final Throwable th) {
         result = MsgUtil.setHandleFailedHover(null, Component.text(itemStack.getType().getKey().toString()));
         plugin.logger().warn("Failed to handle translation for ItemStack {}", Util.serialize(itemStack), th);
@@ -713,7 +713,7 @@ public class Util {
 
     if(Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() || itemName) {
 
-      return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
+      return plugin.platform().getDisplayName(itemStack.getItemMeta());
     }
     return null;
   }
@@ -802,7 +802,7 @@ public class Util {
 
     Component name;
     try {
-      name = plugin.getPlatform().getTranslation(enchantment);
+      name = plugin.platform().getTranslation(enchantment);
     } catch(final Throwable throwable) {
       name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
       plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
