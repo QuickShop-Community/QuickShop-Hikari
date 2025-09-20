@@ -4,7 +4,7 @@ not-allowed-to-create: <red>ไม่สามารถสร้างร้า�
 disabled-in-this-world: <red>QuickShop  ถูกปิดในโลกนี้
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
-shops-backingup: Creating Shop-backup from database...
+shops-backingup:
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/qs-hikari
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
