@@ -92,7 +92,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     final Location shopLoc = event.shop().get().getLocation();
-    final RegionContainer container = WorldGuard.getInstance().platform().getRegionContainer();
+    final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 
     final World world = shopLoc.getWorld();
     if(world == null) {
@@ -126,7 +126,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     event.user().getBukkitPlayer().ifPresent(player->{
       final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-      final RegionContainer container = WorldGuard.getInstance().platform().getRegionContainer();
+      final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       final RegionQuery query = container.createQuery();
       if(!query.testState(BukkitAdapter.adapt(event.shop().get().getLocation()), localPlayer, this.createFlag)) {
         event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.worldguard.creation-flag-test-failed").forLocale());
@@ -177,7 +177,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     event.getPurchaser().getBukkitPlayer().ifPresent(player->{
       final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-      final RegionContainer container = WorldGuard.getInstance().platform().getRegionContainer();
+      final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       final RegionQuery query = container.createQuery();
       if(!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.tradeFlag)) {
         event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.worldguard.trade-flag-test-failed").forLocale());
