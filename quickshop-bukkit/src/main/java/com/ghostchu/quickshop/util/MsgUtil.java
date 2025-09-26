@@ -196,7 +196,7 @@ public class MsgUtil {
     PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
             .thenAccept(msgs->{
               for(final String msg : msgs) {
-                PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
+                PLUGIN.platform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
               }
               PLUGIN.getDatabaseHelper().cleanMessageForPlayer(playerUniqueId)
                       .exceptionally(error->{
@@ -276,7 +276,7 @@ public class MsgUtil {
       final Integer level = entries.getValue();
       Component component;
       try {
-        component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
+        component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.platform().getTranslation(entries.getKey()));
       } catch(final Throwable error) {
         component = MsgUtil.setHandleFailedHover(null, Component.text(entries.getKey().getKey().toString()));
         QuickShop.getInstance().logger().warn("Failed to handle translation for Enchantment {}", entries.getKey().getKey(), error);
@@ -370,7 +370,7 @@ public class MsgUtil {
     } else {
       final Player player = p.getPlayer();
       if(player != null) {
-        PLUGIN.getPlatform().sendMessage(player, shopTransactionMessage);
+        PLUGIN.platform().sendMessage(player, shopTransactionMessage);
       }
     }
   }
@@ -431,7 +431,7 @@ public class MsgUtil {
       if(Util.isEmptyComponent(msg)) {
         return;
       }
-      PLUGIN.getPlatform().sendMessage(sender, msg);
+      PLUGIN.platform().sendMessage(sender, msg);
     }
   }
 

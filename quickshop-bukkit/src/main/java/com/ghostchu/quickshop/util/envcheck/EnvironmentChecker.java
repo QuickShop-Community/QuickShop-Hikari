@@ -71,10 +71,10 @@ public final class EnvironmentChecker {
   public ResultContainer coreSupportTest() {
 
     if(!plugin.getGameVersion().isCoreSupports()) {
-      return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.getPlatform().getMinecraftVersion() + " (" + ReflectFactory.getNMSVersion() + ")");
+      return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.platform().getMinecraftVersion() + " (" + ReflectFactory.getNMSVersion() + ")");
     }
     if(plugin.getGameVersion() == GameVersion.UNKNOWN) {
-      return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + ReflectFactory.getNMSVersion() + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
+      return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + ReflectFactory.getNMSVersion() + "/" + plugin.platform().getMinecraftVersion() + ", Some features may not work.");
     }
     return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
   }

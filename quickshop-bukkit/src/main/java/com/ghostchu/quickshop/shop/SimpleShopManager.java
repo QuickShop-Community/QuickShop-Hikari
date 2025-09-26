@@ -276,7 +276,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       final String langCode = plugin.text().findRelativeLanguages(buyerQUser, true).getLocale();
       final List<Component> sendList = new ArrayList<>();
       Component notify = plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem())).forLocale(langCode);
-      notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
+      notify = plugin.platform().setItemStackHoverEvent(notify, shop.getItem());
       sendList.add(notify);
       if(space == amount) {
         Component spaceWarn;
@@ -285,7 +285,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         } else {
           spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
         }
-        spaceWarn = plugin.getPlatform().setItemStackHoverEvent(spaceWarn, shop.getItem());
+        spaceWarn = plugin.platform().setItemStackHoverEvent(spaceWarn, shop.getItem());
         sendList.add(spaceWarn);
       }
       for(final Component component : sendList) {
@@ -895,7 +895,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         previewComponentPrePopulateEvent.callEvent();
         previewItemStack = previewComponentPrePopulateEvent.getItemStack();
         Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
-        previewComponent = plugin.getPlatform().setItemStackHoverEvent(previewComponent, shop.getItem());
+        previewComponent = plugin.platform().setItemStackHoverEvent(previewComponent, shop.getItem());
         final ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
         itemPreviewComponentPopulateEvent.callEvent();
         previewComponent = itemPreviewComponentPopulateEvent.getComponent();
@@ -904,7 +904,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         final ItemStack previewItemStack = shop.getItem().clone();
         final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, p);
         previewComponentPrePopulateEvent.callEvent();
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", plugin.getPlatform().setItemStackHoverEvent(Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack()), previewComponentPrePopulateEvent.getItemStack())).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", plugin.platform().setItemStackHoverEvent(Util.getItemStackName(previewComponentPrePopulateEvent.getItemStack()), previewComponentPrePopulateEvent.getItemStack())).forLocale());
       }
 
       if(Util.isTool(items.getType()) && plugin.getConfig().getBoolean("shop.info-panel.show-durability")) {
@@ -970,7 +970,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
               final int level = potionEffect.getAmplifier() + 1;
               Component translation;
               try {
-                translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                translation = plugin.platform().getTranslation(potionEffect.getType());
               } catch(final Throwable th) {
                 translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
                 plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
@@ -985,7 +985,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
             if(potionEffectType != null) {
               Component translation;
               try {
-                translation = plugin.getPlatform().getTranslation(potionEffectType);
+                translation = plugin.platform().getTranslation(potionEffectType);
               } catch(final Throwable th) {
                 translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
                 plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
@@ -999,7 +999,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                 final int level = potionEffect.getAmplifier();
                 Component translation;
                 try {
-                  translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                  translation = plugin.platform().getTranslation(potionEffect.getType());
                 } catch(final Throwable th) {
                   translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
                   plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
@@ -1029,7 +1029,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       } else {
         notify = plugin.text().of("player-bought-from-your-store", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(total - tax, shop)).forLocale(langCode);
       }
-      notify = plugin.getPlatform().setItemStackHoverEvent(notify, shop.getItem());
+      notify = plugin.platform().setItemStackHoverEvent(notify, shop.getItem());
       sendList.add(notify);
       // Transfers the item from A to B
       if(stock == amount) {
@@ -1039,7 +1039,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         } else {
           stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
         }
-        stockWarn = plugin.getPlatform().setItemStackHoverEvent(stockWarn, shop.getItem());
+        stockWarn = plugin.platform().setItemStackHoverEvent(stockWarn, shop.getItem());
         sendList.add(stockWarn);
       }
       for(final Component component : sendList) {
