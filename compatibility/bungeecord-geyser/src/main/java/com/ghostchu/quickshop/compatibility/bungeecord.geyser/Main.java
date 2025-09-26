@@ -82,7 +82,7 @@ public final class Main extends Plugin implements Listener {
       playerTypeDbgString = "Floodgate (Bedrock)";
     }
     out.writeShort(playerType);
-    getLogger().info("Player " + event.getPlayer().getName() + " client: " + playerTypeDbgString + ", forwarding to backend Spigot server.");
+    getLogger().info("Player " + event.getPlayer().getName() + " client: " + playerTypeDbgString + ", forwarding to backend server.");
     event.getServer().getInfo().sendData(BUNGEE_CHANNEL, out.toByteArray());
   }
 }

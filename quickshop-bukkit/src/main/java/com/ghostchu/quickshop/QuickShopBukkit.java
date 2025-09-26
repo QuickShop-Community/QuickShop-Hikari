@@ -234,6 +234,7 @@ public class QuickShopBukkit extends JavaPlugin {
           bootstrapLogger.warning("=========================   ATTENTION   =========================");
           bootstrapLogger.warning("=================================================================");
           bootstrapLogger.warning("Spigot is no longer supported!");
+          bootstrapLogger.warning("QuickShop will disabled. Please switch to Paper");
           bootstrapLogger.warning("=================================================================");
 
           throw new UnsupportedOperationException("Unsupported platform");
