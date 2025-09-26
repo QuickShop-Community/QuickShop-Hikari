@@ -19,7 +19,7 @@ body:
         Please fill out all required fields in their entirety and as details as possible. Failing to do so could get your issue closed without any warning.
 
         #### Additional Notes
-        Please only provide Sampler results from [Spark](https://www.spigotmc.org/resources/57242/)! Spigot Timings - no matter if v1 or v2 - will be ignored.
+        Please only provide profiler results from [Spark](https://www.spigotmc.org/resources/57242/)! Spigot Timings - no matter if v1 or v2 - will be ignored.
         Your issue will be closed without any reply if only a Spigot Timings Report was provided.
   - type: 'textarea'
     attributes:
@@ -71,15 +71,15 @@ body:
       required: true
   - type: 'input'
     attributes:
-      label: 'Spark Sample URL'
+      label: 'Spark Profiler URL'
       description: |-
         **How to use [Spark](https://www.spigotmc.org/resources/57242/)**
 
         1. Download the plugin from the Spigot page (linked above) if you haven't already.
         2. Add it to the server like any other plugin (Stop Server, add jar, start server).
-        3. Join the server and execute `/spark sampler --start`
+        3. Join the server and execute `/spark profiler --start`
         4. Wait at least 10 minutes and/or perform the actions that cause performance issues with QuickShop.
-        5. Execute `/spark sampler --stop` to get the URL
+        5. Execute `/spark profiler --stop` to get the URL
         6. Paste the URL in the field below.
     validations:
       required: true
