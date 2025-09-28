@@ -75,6 +75,7 @@
         <compat.plotsquared>7.5.2</compat.plotsquared>
         <compat.reforges>6.74.0</compat.reforges>
         <compat.residence>5.0.1.7</compat.residence>
+        <compat.simpleclaimsystem>1.11.6.1</compat.simpleclaimsystem>
         <compat.slimefun>RC-37</compat.slimefun>
         <compat.superiorskyblock>1.11.1</compat.superiorskyblock>
         <compat.tne>0.1.3.6-Pre-1</compat.tne>
@@ -486,6 +487,7 @@
         <module>compatibility/plotsquared</module>
         <module>compatibility/reforges</module>
         <module>compatibility/residence</module>
+        <module>compatibility/simpleclaimsystem</module>
         <module>compatibility/slimefun</module>
         <module>compatibility/superiorskyblock</module>
         <module>compatibility/towny</module>
