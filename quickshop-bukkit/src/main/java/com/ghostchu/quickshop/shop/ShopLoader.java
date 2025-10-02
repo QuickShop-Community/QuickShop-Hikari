@@ -346,6 +346,9 @@ public class ShopLoader implements SubPasteItem {
         this.permissions = new HashMap<>();
       }
 
+      if(dataRecord.getEncoded() == null) {
+        Log.debug("Shop :" +  name + " doesn't have encoded item. Cannot load.");
+      }
 
       if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
 

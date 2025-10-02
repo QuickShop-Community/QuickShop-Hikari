@@ -182,6 +182,11 @@ public class ContainerShop implements Shop, Reloadable {
 
     // Upgrade the shop moderator
     this.owner = owner;
+    if(item == null) {
+
+      throw new IllegalArgumentException("Loaded item is null. This is usually from an invalid shop.");
+    }
+
     this.item = item.clone();
     this.originalItem = item.clone();
     this.plugin = plugin;
