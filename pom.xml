@@ -50,6 +50,7 @@
         <addon.discordsrv>1.29.0</addon.discordsrv>
         <addon.dynmap>2.0</addon.dynmap>
         <addon.plan>5.6.2965</addon.plan>
+        <addon.quests>5.2.6</addon.quests>
 
         <!-- compat versions -->
         <compat.arm>3.5.5</compat.arm>
@@ -464,6 +465,7 @@
         <module>addon/limited</module>
         <module>addon/list</module>
         <module>addon/plan</module>
+        <module>addon/quests</module>
         <module>addon/reremake-migrator</module>
         <module>addon/shopitemonly</module>
         <module>compatibility/advancedregionmarket</module>
