@@ -4,6 +4,6 @@ main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
 #Has to be included for folia support
 folia-supported: true
 api-version: '1.20'
-depend: [ Quests, QuickShop-Hikari ]
+depend: [ BetonQuest, QuickShop-Hikari ]
 authors: [ creatorfromhell ]
-description: Addon module for Quests
+description: Addon module for BetonQuest

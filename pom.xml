@@ -46,6 +46,7 @@
         <depend.vaultunlocked>2.13</depend.vaultunlocked>
 
         <!-- addon versions -->
+        <addon.betonquest>3.0.0-SNAPSHOT</addon.betonquest>
         <addon.bluemap>2.7.2</addon.bluemap>
         <addon.discordsrv>1.29.0</addon.discordsrv>
         <addon.dynmap>2.0</addon.dynmap>
@@ -457,6 +458,7 @@
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
 
+        <module>addon/betonquest</module>
         <module>addon/bluemap</module>
         <module>addon/discordsrv</module>
         <module>addon/displaycontrol</module>
