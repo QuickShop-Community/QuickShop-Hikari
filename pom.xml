@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.11-SNAPSHOT-7</version>
+    <version>6.2.0.11-SNAPSHOT-8</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -51,6 +51,7 @@
         <addon.discordsrv>1.29.0</addon.discordsrv>
         <addon.dynmap>2.0</addon.dynmap>
         <addon.plan>5.6.2965</addon.plan>
+        <addon.pl3xmap>1.21.5-527</addon.pl3xmap>
         <addon.quests>5.2.6</addon.quests>
 
         <!-- compat versions -->
@@ -466,6 +467,7 @@
         <module>addon/dynmap</module>
         <module>addon/limited</module>
         <module>addon/list</module>
+        <module>addon/pl3xmap</module>
         <module>addon/plan</module>
         <module>addon/quests</module>
         <module>addon/reremake-migrator</module>
