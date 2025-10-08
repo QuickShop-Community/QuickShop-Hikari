@@ -52,7 +52,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
-    if(!isQuestComplete(event.user().getUniqueId(), this.questCreateShop, "separatorhere")) {
+    if(!isQuestComplete(event.user().getUniqueId(), this.questCreateShop, ">")) {
 
       event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.quests.create-quest-required", this.questCreateShop).forLocale());
     }
@@ -62,13 +62,13 @@ public final class Main extends CompatibilityModule {
   public void onTrading(final ShopPurchaseEvent event) {
 
     if(event.getShop().getShopType() == ShopType.BUYING && this.questRequiredSell
-       && !isQuestComplete(event.getPurchaser().getUniqueId(), this.questSellShop, "separatorhere")) {
+       && !isQuestComplete(event.getPurchaser().getUniqueId(), this.questSellShop, ">")) {
 
       event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.quests.sell-quest-required", this.questSellShop).forLocale());
     }
 
     if(event.getShop().getShopType() == ShopType.SELLING && this.questRequiredBuy
-       && !isQuestComplete(event.getPurchaser().getUniqueId(), this.questBuyShop, "separatorhere")) {
+       && !isQuestComplete(event.getPurchaser().getUniqueId(), this.questBuyShop, ">")) {
 
       event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.quests.buy-quest-required", this.questBuyShop).forLocale());
     }
@@ -88,7 +88,7 @@ public final class Main extends CompatibilityModule {
 
         final String[] split = t.split(separator);
 
-        return split[1].equalsIgnoreCase(questTag);
+        return split[0].equalsIgnoreCase(questTag) && split[1].equalsIgnoreCase("finished");
       }
 
       return false;
