@@ -32,6 +32,13 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -51,18 +58,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>zrips.residence</groupId>
+            <groupId>com.github.Zrips</groupId>
             <artifactId>Residence</artifactId>
             <version>${compat.residence}</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Residence5.1.7.3.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>zrips.cmilib</groupId>
+            <groupId>com.github.Zrips</groupId>
             <artifactId>CMILib</artifactId>
             <version>${compat.cmilib}</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/CMILib1.5.4.1.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
