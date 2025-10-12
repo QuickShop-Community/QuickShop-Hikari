@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.papi.impl;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.obj.QUser;
-import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.MetricQuery;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
@@ -64,7 +64,7 @@ public class PurchasesPAPI implements PAPISubHandler {
     if(!CommonUtil.isNumeric(days)) {
       return null;
     }
-    final ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
+    final IShopType shopType = QuickShop.getInstance().getShopManager().shopTypeOrDefault(type.toUpperCase(Locale.ROOT));
     final int recentDays = Integer.parseInt(days);
     final Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
     final long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
@@ -72,10 +72,10 @@ public class PurchasesPAPI implements PAPISubHandler {
               if(shopType == null) {
                 return true;
               }
-              if(shopType == ShopType.SELLING) {
+              if(!shopType.isBuying()) {
                 return record.getType() == ShopOperationEnum.PURCHASE_SELLING_SHOP;
               }
-              if(shopType == ShopType.BUYING) {
+              if(shopType.isBuying()) {
                 return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
               }
               return false;
@@ -94,7 +94,7 @@ public class PurchasesPAPI implements PAPISubHandler {
     if(!CommonUtil.isNumeric(days)) {
       return null;
     }
-    final ShopType shopType = ShopType.fromString(type.toUpperCase(Locale.ROOT));
+    final IShopType shopType = QuickShop.getInstance().getShopManager().shopTypeOrDefault(type.toUpperCase(Locale.ROOT));
     final int recentDays = Integer.parseInt(days);
     final Date startTime = new Date(Instant.now().minus(Duration.ofDays(recentDays)).toEpochMilli());
     final long count = this.query.queryServerPurchaseRecords(startTime, -1, false).stream()
@@ -102,10 +102,10 @@ public class PurchasesPAPI implements PAPISubHandler {
               if(shopType == null) {
                 return true;
               }
-              if(shopType == ShopType.SELLING) {
+              if(!shopType.isBuying()) {
                 return record.getType() == ShopOperationEnum.PURCHASE_SELLING_SHOP;
               }
-              if(shopType == ShopType.BUYING) {
+              if(shopType.isBuying()) {
                 return record.getType() == ShopOperationEnum.PURCHASE_BUYING_SHOP;
               }
               return false;

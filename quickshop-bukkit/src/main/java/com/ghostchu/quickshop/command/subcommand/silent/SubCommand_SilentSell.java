@@ -3,12 +3,13 @@ package com.ghostchu.quickshop.command.subcommand.silent;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import static com.ghostchu.quickshop.shop.SimpleShopManager.SELLING_TYPE;
 
 public class SubCommand_SilentSell extends SubCommand_SilentBase {
 
@@ -30,7 +31,7 @@ public class SubCommand_SilentSell extends SubCommand_SilentBase {
       return;
     }
 
-    shop.setShopType(ShopType.SELLING);
+    shop.shopType(SELLING_TYPE);
     shop.setSignText(plugin.text().findRelativeLanguages(sender));
     MsgUtil.sendControlPanelInfo(sender, shop);
     plugin.text().of(sender,

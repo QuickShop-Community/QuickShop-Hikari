@@ -157,7 +157,7 @@ public class MainPage {
                   .lore(getList(id, iconLore,
                                 shop.getOwner().getDisplay(),
                                 location,
-                                shop.getShopType(),
+                                shop.shopType().identifier(),
                                 eco.format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency()),
                                 shop.getRemainingStock()));
 

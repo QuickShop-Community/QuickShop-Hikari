@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.api.event.economy.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.event.general.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
-import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.listener.AbstractQSListener;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.event.EventHandler;
@@ -100,7 +99,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
                             .player(event.getPurchaser())
                             .tax(event.getTax())
                             .total(event.getBalanceWithoutTax())
-                            .type(wrapShopOperation(event.getShop()))
+                            .type(event.getShop().shopType().operationType())
                             .amount(event.getAmount())
                             .build()
                                                  )
@@ -108,14 +107,5 @@ public class MetricListener extends AbstractQSListener implements Listener {
               Log.debug("Failed to insert shop metric record: " + e.getMessage());
               return 0;
             });
-  }
-
-  private ShopOperationEnum wrapShopOperation(final Shop shop) {
-
-    return switch(shop.getShopType()) {
-      case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
-      case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
-      case FROZEN -> ShopOperationEnum.FROZEN;
-    };
   }
 }

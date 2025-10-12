@@ -4,12 +4,12 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.pl3x.map.core.markers.Point;
+import net.pl3x.map.core.markers.marker.Icon;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.option.Options;
 import net.pl3x.map.core.markers.option.Tooltip;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-import net.pl3x.map.core.markers.marker.Icon;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -97,7 +97,7 @@ public class ShopMarkerManager {
     s = s.replace("%item%", shop.getItem().getType().name());
     s = s.replace("%price%", String.valueOf(shop.getPrice()));
     s = s.replace("%stock%", String.valueOf(shop.getRemainingStock()));
-    s = s.replace("%type%", shop.getShopType().name());
+    s = s.replace("%type%", shop.shopType().identifier());
     s = s.replace("%location%", x + "," + y + "," + z);
     return s;
   }

@@ -246,15 +246,40 @@ public interface Shop {
    * Get shop type
    *
    * @return shop type
+   * @deprecated Use shopType() instead
    */
   @NotNull
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   ShopType getShopType();
+
+  /**
+   * Retrieves the type of shop associated with this entity.
+   *
+   * @return an instance of IShopType representing the shop type
+   */
+  IShopType shopType();
+
+  /**
+   * Sets the type of shop using the provided shop type parameter.
+   *
+   * @param newShopType the shop type to set, must not be null
+   */
+  void shopType(@NotNull IShopType newShopType);
+
+  /**
+   * Specifies the type of shop based on the given identifier.
+   *
+   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
+   */
+  void shopType(@NotNull String shopTypeIdentifier);
 
   /**
    * Set new shop type for this shop
    *
    * @param paramShopType New {@link ShopType}
+   * @deprecated Use shopType(IShopType shopType) or shopType(String shopTypeIdentifier) instead
    */
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   void setShopType(@NotNull ShopType paramShopType);
 
   /**

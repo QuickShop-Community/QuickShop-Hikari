@@ -4,8 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -147,7 +147,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     final double balance = jObj.get("balance").getAsDouble();
     final double tax = jObj.get("tax").getAsDouble();
     final UUID trader = UUID.fromString(jObj.get("trader").getAsString());
-    final ShopType type = ShopType.valueOf(jObj.get("type").getAsString());
+    final IShopType type = QuickShop.getInstance().getShopManager().shopTypeOrDefault(jObj.get("type").getAsString());
     final JsonObject shop = jObj.get("shop").getAsJsonObject();
     final JsonObject pos = shop.get("position").getAsJsonObject();
     final World world = Bukkit.getWorld(pos.get("world").getAsString());
@@ -165,7 +165,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     final ShopMetricRecord shopMetricRecord = new ShopMetricRecord(
             date.getTime(),
             shopInstance.getShopId(),
-            type == ShopType.SELLING? ShopOperationEnum.PURCHASE_SELLING_SHOP : ShopOperationEnum.PURCHASE_BUYING_SHOP,
+            (!type.isBuying())? ShopOperationEnum.PURCHASE_SELLING_SHOP : ShopOperationEnum.PURCHASE_BUYING_SHOP,
             balance,
             tax,
             amount,

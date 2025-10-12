@@ -19,7 +19,6 @@ package com.ghostchu.quickshop.menu.keeper;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;
 import com.ghostchu.quickshop.obj.QUserImpl;
@@ -45,6 +44,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.ghostchu.quickshop.menu.ShopKeeperMenu.KEEPER_MAIN;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_TYPE;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.SELLING_TYPE;
 
 /**
  * MainPage
@@ -127,19 +129,17 @@ public class MainPage extends QuickShopPage {
                   .display(get(id, "gui.keeper.mode-icon.display"))
                   .lore(getList(id, "gui.keeper.mode-icon.lore", frozenText, sellingText));
 
-          String modeState = (shop.get().getShopType().equals(ShopType.BUYING))? "BUYING" : "SELLING";
-          if(shop.get().getShopType().equals(ShopType.FROZEN)) {
-            modeState = "FROZEN";
-          }
+          final String modeState = shop.get().shopType().identifier().toUpperCase(Locale.ROOT);
+
           final StateIcon changeIcon = new StateIcon(buyingStack, null, "SHOP_TYPE", modeState, (currentState)->{
             if(currentState.toUpperCase(Locale.ROOT).equals("SELLING")) {
-              Util.mainThreadRun(()->shop.get().setShopType(ShopType.BUYING));
+              Util.mainThreadRun(()->shop.get().shopType(BUYING_TYPE));
               return "BUYING";
             } else if(currentState.toUpperCase(Locale.ROOT).equals("FROZEN")) {
-              Util.mainThreadRun(()->shop.get().setShopType(ShopType.SELLING));
+              Util.mainThreadRun(()->shop.get().shopType(SELLING_TYPE));
               return "SELLING";
             }
-            Util.mainThreadRun(()->shop.get().setShopType(ShopType.FROZEN));
+            Util.mainThreadRun(()->shop.get().shopType(FROZEN_TYPE));
             return "FROZEN";
           });
           changeIcon.setSlot(12);

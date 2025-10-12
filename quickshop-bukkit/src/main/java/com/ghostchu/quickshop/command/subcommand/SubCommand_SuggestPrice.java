@@ -95,7 +95,7 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
     Util.asyncThreadRun(()->{
       final List<Double> matched = plugin.getShopManager().getAllShops().stream()
               .filter(s->s.getShopId() != shop.getShopId())
-              .filter(s->s.getShopType() == shop.getShopType())
+              .filter(s->s.shopType().identifier().equalsIgnoreCase(shop.shopType().identifier()))
               .filter(s->Objects.equals(s.getCurrency(), shop.getCurrency()))
               .filter(s->plugin.getItemMatcher().matches(shop.getItem(), s.getItem()))
               .map(Shop::getPrice)

@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.addon.betonquest;
 
 import com.ghostchu.quickshop.api.event.economy.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.betonquest.betonquest.BetonQuest;
@@ -61,13 +60,13 @@ public final class Main extends CompatibilityModule {
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(event.getShop().getShopType() == ShopType.BUYING && this.questRequiredSell
+    if(event.getShop().shopType().isBuying() && this.questRequiredSell
        && !isQuestComplete(event.getPurchaser().getUniqueId(), this.questSellShop, ">")) {
 
       event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.quests.sell-quest-required", this.questSellShop).forLocale());
     }
 
-    if(event.getShop().getShopType() == ShopType.SELLING && this.questRequiredBuy
+    if(!event.getShop().shopType().isBuying() && !event.getShop().shopType().isTradingBlocked() && this.questRequiredBuy
        && !isQuestComplete(event.getPurchaser().getUniqueId(), this.questBuyShop, ">")) {
 
       event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.quests.buy-quest-required", this.questBuyShop).forLocale());

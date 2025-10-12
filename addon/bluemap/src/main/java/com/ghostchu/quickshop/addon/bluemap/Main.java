@@ -113,7 +113,7 @@ public final class Main extends JavaPlugin implements Listener {
     s = s.replace("%item%", shop.getItem().getType().name());
     s = s.replace("%price%", String.valueOf(shop.getPrice()));
     s = s.replace("%stock%", String.valueOf(shop.getRemainingStock()));
-    s = s.replace("%type%", shop.getShopType().name());
+    s = s.replace("%type%", shop.shopType().identifier());
     s = s.replace("%location%", x + "," + y + "," + z);
     return s;
   }
