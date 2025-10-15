@@ -8,5 +8,7 @@ depend:
   - QuickShop-Hikari
 softdepend:
   - SilkSpawners_v2
+  - ExcellentCrates
+  - CrazyCrates
 authors: [ creatorfromhell ]
 description: Compatibility module for various special item plugins

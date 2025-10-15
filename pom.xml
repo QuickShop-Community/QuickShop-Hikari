@@ -65,9 +65,11 @@
         <compat.chestprotect>5.19.16</compat.chestprotect>
         <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
         <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
+        <compat.crazycrates>4.10.5</compat.crazycrates>
         <compat.eco>6.75.2</compat.eco>
         <compat.ecoenchants>12.22.0</compat.ecoenchants>
         <compat.elitemobs>9.2.3</compat.elitemobs>
+        <compat.excellentcrates>6.4.0</compat.excellentcrates>
         <compat.fabledskyblock>3.5.2-SNAPSHOT</compat.fabledskyblock>
         <compat.griefprevention>17.0.0</compat.griefprevention>
         <compat.husktowns>3.1.4</compat.husktowns>
@@ -78,6 +80,7 @@
         <compat.plotsquared>7.5.2</compat.plotsquared>
         <compat.reforges>6.74.0</compat.reforges>
         <compat.residence>5.0.1.7</compat.residence>
+        <compat.silkspawners>8.3.0</compat.silkspawners>
         <compat.simpleclaimsystem>1.11.6.1</compat.simpleclaimsystem>
         <compat.slimefun>RC-37</compat.slimefun>
         <compat.superiorskyblock>1.11.1</compat.superiorskyblock>
