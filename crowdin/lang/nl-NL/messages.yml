@@ -301,11 +301,11 @@ signs:
   stack-buying: '{0} kopen'
   freeze: Ruilen uitgeschakeld
   price: '{0} per stuk'
-  buying: '{0} kopen'
+  buying: '{0} In koop'
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Verkopen {0}
+  selling: Te koop {0}
   status-available: <green>
   item-left: ''
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
