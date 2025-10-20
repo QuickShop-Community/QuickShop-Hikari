@@ -373,14 +373,15 @@ shop:
   #NOTE: Only one effect is shown and is randomly chosen.
   use-effect-for-potion-item: false
 
-  #The list of worlds in which creating new shops is disabled.
-  blacklist-world:
-    - disabled_world_name
-
   #The list of worlds in which creating new shops is enabled.
   #When this list is not empty, only worlds in this list will be allowed to create shops.
   #This takes priority over blacklist-world.
   whitelist-world: []
+
+  #The list of worlds in which creating new shops is disabled.
+  #This will only be checked when whitelist-world is empty.
+  blacklist-world:
+    - disabled_world_name
 
   #The list of lore keywords that are blocked from being sold.
   #This will not affect existing shops!
@@ -490,10 +491,10 @@ shop:
 blacklist:
   - Bedrock
 
+database-loading-whitelist-worlds: []
+
 database-loading-blacklist-worlds:
   - "the world that shop won't to be loaded"
-
-database-loading-whitelist-worlds: []
 
 #Enable or disable plugin support.
 plugin:
