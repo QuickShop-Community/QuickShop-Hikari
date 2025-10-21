@@ -289,12 +289,12 @@ public class Util {
   }
 
   public static boolean isBlacklistWorld(@NotNull final World world) {
-    List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
-    if(!whitelist.isEmpty()) {
-      return !whitelist.contains(world.getName());
-    }
-    // fall back to blacklist check
-    return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
+      final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
+      if (!whitelist.isEmpty()) {
+          return !whitelist.contains(world.getName());
+      }
+      // fall back to blacklist check
+      return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
   }
 
   /**
@@ -305,11 +305,11 @@ public class Util {
    * @return true if the world should be skipped, false otherwise
    */
   public static boolean isDatabaseLoadingBlacklisted(@NotNull final String worldName) {
-    List<String> whitelist = plugin.getConfig().getStringList("database-loading-whitelist-worlds");
-    if(!whitelist.isEmpty()) {
-      return !whitelist.contains(worldName);
-    }
-    return plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName);
+      final List<String> whitelist = plugin.getConfig().getStringList("database-loading-whitelist-worlds");
+      if (!whitelist.isEmpty()) {
+          return !whitelist.contains(worldName);
+      }
+      return plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName);
   }
 
   /**
