@@ -292,13 +292,20 @@
             <groupId>com.rollbar</groupId>
             <version>2.0.0</version>
             <artifactId>rollbar-java</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.rollbar</groupId>
+            <artifactId>rollbar-api</artifactId>
+            <version>2.0.0</version>
+            <scope>compile</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
