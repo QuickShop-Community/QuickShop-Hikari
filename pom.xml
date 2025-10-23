@@ -206,6 +206,7 @@
                                         <include>org.eclipse.aether:*:*</include>
                                         <include>org.slf4j:slf4j-jdk14:*</include>
                                         <include>cc.carm.lib:*</include>
+                                        <include>com.rollbar:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -259,6 +260,10 @@
                                     <relocation>
                                         <pattern>io.vertx.</pattern>
                                         <shadedPattern>${qs.relocation}.io.vertx.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.rollbar.</pattern>
+                                        <shadedPattern>${qs.relocation}.com.rollbar.</shadedPattern>
                                     </relocation>
                                     <!--<relocation>
                                         <pattern>org.apache.commons:commons-compress</pattern>

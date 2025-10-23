@@ -188,7 +188,7 @@ public class QuickShopBukkit extends JavaPlugin {
                 .groupId(groupId)
                 .artifactId(artifactId)
                 .version(version)
-                .resolveTransitiveDependencies(true)
+                .resolveTransitiveDependencies(false)
                 .isolatedLoad(false);
         if(classifier != null) {
           libBuilder = libBuilder.classifier(classifier);
