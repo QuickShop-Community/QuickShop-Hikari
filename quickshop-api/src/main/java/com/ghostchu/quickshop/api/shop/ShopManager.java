@@ -353,7 +353,6 @@ public interface ShopManager {
    * Load shop method for loading shop into mapping, so getShops method will can find it. It also
    * effects a lots of feature, make sure load it after create it.
    *
-   * @param world The world the shop is in
    * @param shop  The shop to load
    */
   void loadShop(@NotNull Shop shop);
@@ -362,7 +361,6 @@ public interface ShopManager {
    * Load shop method for loading shop into mapping, so getShops method will can find it. It also
    * effects a lots of feature, make sure load it after create it.
    *
-   * @param world The world the shop is in
    * @param shop  The shop to load
    */
   void unloadShop(@NotNull Shop shop);
@@ -371,7 +369,6 @@ public interface ShopManager {
    * Load shop method for loading shop into mapping, so getShops method will can find it. It also
    * effects a lots of feature, make sure load it after create it.
    *
-   * @param world          The world the shop is in
    * @param shop           The shop to load
    * @param chunkUnloading If unloadShop called caused by chunk unloading, when this is true,
    *                       QuickShop will try avoid any main-thread opreations to avoid
@@ -385,20 +382,24 @@ public interface ShopManager {
   void migrateOwnerToUnlimitedShopOwner(Shop shop);
 
   /**
-   * Register shop to database.
+   * Registers a shop in the system. This may optionally include persisting the shop's
+   * information to a database or some other storage mechanism.
    *
-   * @param info The info object
-   *
-   * @return True if the shop was register successfully.
+   * @param shop the shop object to be registered. Must not be null.
+   * @param persist indicates whether the shop's information should be persisted.
+   *                If true, the shop data will be saved persistently.
+   * @return a CompletableFuture representing the status of the registration operation.
+   *         The future will complete when the registration process is finished.
    */
   CompletableFuture<?> registerShop(@NotNull Shop shop, boolean persist);
 
   /**
-   * Unregister a shop from database.
+   * Unregisters the specified shop from the system. If the persist flag is true, the
+   * shop's removal will also be persisted in the underlying data store.
    *
-   * @param info The info object
-   *
-   * @return True if the shop was unregister successfully.
+   * @param shop the shop to be unregistered; must not be null
+   * @param persist a boolean indicating whether the unregistration should be persisted
+   * @return a CompletableFuture representing the pending completion of the unregistration process
    */
   CompletableFuture<?> unregisterShop(@NotNull Shop shop, boolean persist);
 

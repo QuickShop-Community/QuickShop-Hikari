@@ -563,7 +563,7 @@ public interface Shop {
    * @param seller          Seller
    * @param sellerInventory Seller's inventory ( may not a player inventory )
    * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a
-   *                        number that < 0, it will turn to buying item)
+   *                        number that &lt; 0, it will turn to buying item)
    * @param paramInt        How many sold?
    *
    * @throws Exception Possible exception thrown if anything wrong.

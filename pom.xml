@@ -260,14 +260,6 @@
                                         <pattern>io.vertx.</pattern>
                                         <shadedPattern>${qs.relocation}.io.vertx.</shadedPattern>
                                     </relocation>
-                                    <!--<relocation>
-                                        <pattern>org.apache.commons:commons-compress</pattern>
-                                        <shadedPattern>${qs.relocation}.compress.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.apache.commons.compress.</pattern>
-                                        <shadedPattern>${qs.relocation}.compress.</shadedPattern>
-                                    </relocation>-->
                                 </relocations>
                                 <transformers>
                                     <transformer

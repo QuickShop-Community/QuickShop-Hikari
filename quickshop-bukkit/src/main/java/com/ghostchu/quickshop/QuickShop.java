@@ -114,7 +114,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
-import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.tnemc.item.AbstractItemStack;
@@ -1255,7 +1254,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   public AbstractItemStack<?> stack() {
 
-    if(PaperLib.isPaper()) {
+    if(folia.isPaper()) {
       return new PaperItemStack();
     }
     return new BukkitItemStack();

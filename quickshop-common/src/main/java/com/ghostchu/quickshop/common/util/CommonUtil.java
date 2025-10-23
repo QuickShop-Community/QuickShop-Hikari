@@ -415,7 +415,7 @@ public class CommonUtil {
     try {
       Class.forName(qualifiedName);
       return true;
-    } catch(final ClassNotFoundException e) {
+    } catch(final ClassNotFoundException ignore) {
       return false;
     }
   }
