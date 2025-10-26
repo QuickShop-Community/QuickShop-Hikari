@@ -19,7 +19,7 @@ public class CustomInventoryListener extends AbstractQSListener {
   @EventHandler(ignoreCancelled = true)
   public void invEvent(final InventoryInteractEvent e) {
 
-    if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
+    if(e.getInventory().getHolder(false) instanceof QuickShopPreviewGUIHolder) {
       e.setCancelled(true);
     }
   }
@@ -27,7 +27,7 @@ public class CustomInventoryListener extends AbstractQSListener {
   @EventHandler(ignoreCancelled = true)
   public void invEvent(final InventoryClickEvent e) {
 
-    if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
+    if(e.getInventory().getHolder(false) instanceof QuickShopPreviewGUIHolder) {
       e.setCancelled(true);
     }
   }
@@ -35,7 +35,7 @@ public class CustomInventoryListener extends AbstractQSListener {
   @EventHandler(ignoreCancelled = true)
   public void invEvent(final InventoryDragEvent e) {
 
-    if(e.getInventory().getHolder() instanceof QuickShopPreviewGUIHolder) {
+    if(e.getInventory().getHolder(false) instanceof QuickShopPreviewGUIHolder) {
       e.setCancelled(true);
     }
   }
