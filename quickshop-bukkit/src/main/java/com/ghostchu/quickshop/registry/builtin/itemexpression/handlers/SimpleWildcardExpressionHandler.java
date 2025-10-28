@@ -31,8 +31,7 @@ public class SimpleWildcardExpressionHandler implements ItemExpressionHandler {
 
   @Override
   public String getInternalPrefix0() {
-
-    return getPrefix();
+    return "";
   }
 
   @Override
