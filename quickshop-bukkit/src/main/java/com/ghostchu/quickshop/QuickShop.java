@@ -63,6 +63,7 @@ import com.ghostchu.quickshop.registry.builtin.itemexpression.SimpleItemExpressi
 import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleEnchantmentExpressionHandler;
 import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleItemReferenceExpressionHandler;
 import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleMaterialExpressionHandler;
+import com.ghostchu.quickshop.registry.builtin.itemexpression.handlers.SimpleWildcardExpressionHandler;
 import com.ghostchu.quickshop.shop.ShopLoader;
 import com.ghostchu.quickshop.shop.ShopPurger;
 import com.ghostchu.quickshop.shop.SimpleShopItemBlackList;
@@ -827,6 +828,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     itemExpressionRegistry.registerHandlerSafely(new SimpleMaterialExpressionHandler(this));
     itemExpressionRegistry.registerHandlerSafely(new SimpleEnchantmentExpressionHandler(this));
     itemExpressionRegistry.registerHandlerSafely(new SimpleItemReferenceExpressionHandler(this));
+    itemExpressionRegistry.registerHandlerSafely(new SimpleWildcardExpressionHandler(this));
   }
 
   private void loadErrorReporter() {
