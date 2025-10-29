@@ -321,7 +321,7 @@ signs:
 negative-amount: <red>你输入的数字是负数。
 display-turn-on: <green>成功开启商店悬浮物显示
 display-turn-off: <green>成功关闭商店悬浮物显示
-display-turn-on-owned: '。'
+display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
 display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
 display-turn-on-all: <green>Successfully turned on shop display for all server shops.
 display-turn-off-all: <green>Successfully turned off shop display for all server shops.
