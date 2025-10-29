@@ -154,7 +154,7 @@ public class BlockListener extends AbstractProtectionListener {
       return;
     }
 
-    if(event.getInitiator().getHolder() instanceof final Player player) {
+    if(event.getInitiator().getHolder(false) instanceof final Player player) {
       if(!QuickShop.inShop.contains(player.getUniqueId())) {
         return;
       }

@@ -338,6 +338,8 @@ public class Log {
   @Data
   public final static class Caller {
 
+    private static final ThreadLocal<CallerCache> CALLER_CACHE = ThreadLocal.withInitial(CallerCache::new);
+
     @NotNull
     private final String threadName;
     @NotNull
@@ -374,13 +376,18 @@ public class Log {
 
     @NotNull
     public static Caller create(final int steps, final boolean force) {
-
       if(!force) {
         if("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
           return new Caller("<DISABLED>", "<DISABLED>", "<DISABLED>", -1);
         }
       }
-      return STACK_WALKER.walk(stream->stream.skip(steps).findFirst()
+
+      final CallerCache cache = CALLER_CACHE.get();
+      if(!force && cache.steps == steps && cache.caller != null) {
+        return cache.caller;
+      }
+
+      final Caller caller = STACK_WALKER.walk(stream->stream.skip(steps).findFirst()
               .map(frame->{
                 final String threadName = Thread.currentThread().getName();
                 final String className = frame.getClassName();
@@ -389,6 +396,23 @@ public class Log {
                 return new Caller(threadName, className, methodName, codeLine);
               })
               .orElseGet(()->new Caller("<INVALID>", "<INVALID>", "<INVALID>", -1)));
+
+      cache.steps = steps;
+      cache.caller = caller;
+      return caller;
+    }
+
+    /**
+     * Cleans up the ThreadLocal cache for the current thread.
+     * Should be called during plugin shutdown or when threads are being terminated.
+     */
+    public static void cleanupThreadLocal() {
+      CALLER_CACHE.remove();
+    }
+
+    private static class CallerCache {
+      int steps = -1;
+      Caller caller = null;
     }
   }
 
