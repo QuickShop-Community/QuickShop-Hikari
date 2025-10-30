@@ -32,7 +32,6 @@ import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.Reloadable;
-import com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -107,28 +106,28 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
       return cloned;
     }
 
-    final int amount = cloned.getEnchantments().size();
-    boolean removed = false;
+    if(manager.packetHandler() != null && "PacketEvents".equals(manager.packetHandler().pluginName())) {
+      try {
+        Class<?> eType = Class.forName("com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentTypes");
+        Object registry = eType.getMethod("getRegistry").invoke(null);
+        java.lang.reflect.Method getByName = registry.getClass().getMethod("getByName", String.class);
 
-    for(final Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+        int count = cloned.getEnchantments().size();
+        boolean removed = false;
 
-      final Enchantment enchantment = entry.getKey();
+        for(Enchantment e : new ArrayList<>(cloned.getEnchantments().keySet())) {
+          if(getByName.invoke(registry, e.key().asString()) == null) {
+            cloned.removeEnchantment(e);
+            removed = true;
+          }
+        }
 
-      if(EnchantmentTypes.getRegistry().getByName(enchantment.key().asString()) == null) {
-        cloned.removeEnchantment(enchantment);
-        removed = true;
-        continue;
-      }
-      if(EnchantmentTypes.getByName(enchantment.key().asString()) == null) {
-        cloned.removeEnchantment(enchantment);
-        removed = true;
+        if(count == 1 && removed) cloned.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
+
+      } catch (Exception e) {
+        Log.debug("PacketEvents enchantment check failed: " + e.getMessage());
       }
     }
-
-    if(amount == 1 && removed) {
-      cloned.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
-    }
-
     return cloned;
   }
 
