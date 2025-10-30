@@ -105,30 +105,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
       cloned.getEnchantments().clear();
       return cloned;
     }
-
-    if(manager.packetHandler() != null && "PacketEvents".equals(manager.packetHandler().pluginName())) {
-      try {
-        Class<?> eType = Class.forName("com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentTypes");
-        Object registry = eType.getMethod("getRegistry").invoke(null);
-        java.lang.reflect.Method getByName = registry.getClass().getMethod("getByName", String.class);
-
-        int count = cloned.getEnchantments().size();
-        boolean removed = false;
-
-        for(Enchantment e : new ArrayList<>(cloned.getEnchantments().keySet())) {
-          if(getByName.invoke(registry, e.key().asString()) == null) {
-            cloned.removeEnchantment(e);
-            removed = true;
-          }
-        }
-
-        if(count == 1 && removed) cloned.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
-
-      } catch (Exception e) {
-        Log.debug("PacketEvents enchantment check failed: " + e.getMessage());
-      }
-    }
-    return cloned;
+    return manager.packetHandler() != null ? manager.packetHandler().filterEnchantments(cloned) : cloned;
   }
 
   @Override
