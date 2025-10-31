@@ -78,7 +78,8 @@ public interface PacketHandler<T> {
    *
    * @return The filtered item stack with compatible enchantments only.
    */
-  default org.bukkit.inventory.ItemStack filterEnchantments(org.bukkit.inventory.ItemStack itemStack) {
+  default org.bukkit.inventory.ItemStack filterEnchantments(final org.bukkit.inventory.ItemStack itemStack) {
+
     return itemStack;
   }
 }

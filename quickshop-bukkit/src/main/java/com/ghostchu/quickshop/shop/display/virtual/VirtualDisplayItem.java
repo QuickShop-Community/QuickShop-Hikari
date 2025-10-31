@@ -105,7 +105,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
       cloned.getEnchantments().clear();
       return cloned;
     }
-    return manager.packetHandler() != null ? manager.packetHandler().filterEnchantments(cloned) : cloned;
+    return (manager.packetHandler() != null)? manager.packetHandler().filterEnchantments(cloned) : cloned;
   }
 
   @Override

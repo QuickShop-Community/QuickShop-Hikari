@@ -117,14 +117,16 @@ public class PacketEventsHandler implements PacketHandler<PacketEventsAPI<?>> {
   }
 
   @Override
-  public org.bukkit.inventory.ItemStack filterEnchantments(org.bukkit.inventory.ItemStack itemStack) {
+  public org.bukkit.inventory.ItemStack filterEnchantments(final org.bukkit.inventory.ItemStack itemStack) {
+
     final org.bukkit.inventory.ItemStack cloned = itemStack.asOne();
     if(cloned.getEnchantments().isEmpty()) return cloned;
 
-    int count = cloned.getEnchantments().size();
+    final int count = cloned.getEnchantments().size();
     boolean removed = false;
 
-    for(org.bukkit.enchantments.Enchantment e : new java.util.ArrayList<>(cloned.getEnchantments().keySet())) {
+    for(final org.bukkit.enchantments.Enchantment e : new java.util.ArrayList<>(cloned.getEnchantments().keySet())) {
+
       if(com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentTypes.getRegistry().getByName(e.key().asString()) == null) {
         cloned.removeEnchantment(e);
         removed = true;
