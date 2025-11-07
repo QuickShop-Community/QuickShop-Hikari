@@ -374,11 +374,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
         }
         final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
-            priceDouble, info.getItem(), createQUser, false,
-            ShopType.SELLING, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
-            null, plugin.getJavaPlugin().getName(),
-            symbolLink,
-            null, Collections.emptyMap(), new QSBenefitProvider());
+                                                     priceDouble, info.getItem(), createQUser, false,
+                                                     ShopType.SELLING, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
+                                           null, plugin.getJavaPlugin().getName(), 
+                                                     symbolLink,
+                                                     null, Collections.emptyMap(), new QSBenefitProvider());
         createShop(shop, info.getSignBlock(), info.isBypassed());
       } else {
         plugin.text().of(p, "invalid-container").send();
