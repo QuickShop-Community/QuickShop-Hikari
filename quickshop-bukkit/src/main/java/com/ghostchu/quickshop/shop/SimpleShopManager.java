@@ -133,7 +133,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     return this.interactiveManager;
   }
 
-
   @Override
   public void init() {
 
@@ -363,26 +362,28 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
 
-    final BlockState state = info.getLocation().getBlock().getState();
-    if(state instanceof final InventoryHolder holder) {
-      // Create the basic shop
-      final String symbolLink;
-      final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
-      if(manager instanceof final BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
-        symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
+    QuickShop.folia().getScheduler().runAtLocation(info.getLocation(), task -> {
+      final BlockState state = info.getLocation().getBlock().getState();
+      if(state instanceof final InventoryHolder holder) {
+        // Create the basic shop
+        final String symbolLink;
+        final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
+        if(manager instanceof final BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
+          symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
+        } else {
+          symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+        }
+        final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
+            priceDouble, info.getItem(), createQUser, false,
+            ShopType.SELLING, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
+            null, plugin.getJavaPlugin().getName(),
+            symbolLink,
+            null, Collections.emptyMap(), new QSBenefitProvider());
+        createShop(shop, info.getSignBlock(), info.isBypassed());
       } else {
-        symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+        plugin.text().of(p, "invalid-container").send();
       }
-      final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
-                                                   priceDouble, info.getItem(), createQUser, false,
-                                                   ShopType.SELLING, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
-                                                   null, plugin.getJavaPlugin().getName(),
-                                                   symbolLink,
-                                                   null, Collections.emptyMap(), new QSBenefitProvider());
-      createShop(shop, info.getSignBlock(), info.isBypassed());
-    } else {
-      plugin.text().of(p, "invalid-container").send();
-    }
+    });
   }
 
   @Override
@@ -488,7 +489,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     notifyBought(sellerQUser, shop, amount, stock, transaction.tax().doubleValue(), total);
     return true;
   }
-
 
   /**
    * Removes all shops from memory and the world. Does not delete them from the database. Call this
@@ -730,7 +730,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     shop.setSignText(plugin.text().findRelativeLanguages(shop.getOwner(), false));
   }
 
-
   @Override
   public double getTax(@NotNull final Shop shop, @NotNull final QUser p) {
 
@@ -793,7 +792,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
     });
   }
-
 
   private void refundShop(final Shop shop) {
 
@@ -1080,7 +1078,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     return signBlockState;
   }
 
-
   private int buyingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
 
     int amount;
@@ -1124,7 +1121,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     return amount;
   }
-
 
   @Override
   public @Nullable Shop getShopIncludeAttachedViaCache(@Nullable final Location loc) {
