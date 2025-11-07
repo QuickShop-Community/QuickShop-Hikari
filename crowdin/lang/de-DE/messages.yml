@@ -1657,7 +1657,7 @@ about:
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Klicke um Crowdin Übersetzungs-Seite zu öffnen'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Hilf beim Übesetzen auf Crowdin]</click></hover></color></yellow>"
     - "<aqua>Spendenschlüssel <yellow>>></yellow> <green>{6}</green></aqua>"
   valid-donation-key: "<color:#00AFF1>Gebunden an <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Ungültiger Spendenschlüssel</gray>"
+  invalid-donation-key: "<gray>Invalid donation key</gra>"
   kofi-thanks: "<gold>Besonderer Dank geht an alle, welche QuickShop auf Ko-fi unterstützen :)</gold>"
 history-command-leave-blank: "<Leer lassen um Laden zu sehen>"
 browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
