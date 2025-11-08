@@ -296,7 +296,7 @@ signs:
   unlimited: Неограниченно
   stack-selling: Продажа {0}
   stack-price: '{0} за {1}x {2}'
-  status-unavailable:
+  status-unavailable: <red>
   out-of-stock: Нет товара
   stack-buying: Покупка {0}
   freeze: Обмен отключен
@@ -1336,7 +1336,13 @@ addon:
             Description: The minimum price that code can be applied
             `-1` for unlimited
           expired: |
-
+            Command Hint
+            Argument: [expired]
+            Description: The code expired time.
+            `-1` for unlimited duration.
+            Accept both Zulu time and UNIX timestamp in seconds.
+            Zulu Example: 2022-12-17T10:31:37Z
+            UNIX Example: 1671273097
     discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
     invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}</yellow>'
     invalid-discount-code: <red>This discount code are invalid.
