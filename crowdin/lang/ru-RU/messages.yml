@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Ты можешь сломать магазин используя super инструмент.
 fee-charged-for-price-change: <green>Вы заплатили <red>{0}<green> за изменение цены.
 not-allowed-to-create: <red>Вы не можете создать магазин здесь.
 disabled-in-this-world: <red>QuickShop отключен в этом мире
@@ -48,7 +48,7 @@ quick-fill:
     - '<yellow>Цена: <aqua>{price}'
     - '<yellow>Предмет: <aqua>{item}'
     - '<yellow>Локация: <aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
+  header: '<yellow>У вас несколько магазинов с названием "<green>{0}</green>", выберите один для продолжения:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[совместный] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
@@ -117,7 +117,7 @@ menu:
   space: '<green>Свободное место: <yellow>{0}'
   effects: <green>Эффекты
   damage-percent-remaining: <green>Осталось <yellow>{0}%.
-  item-holochat-data-too-large: <red>[Error] Элемент NBT слишком большой для отображения
+  item-holochat-data-too-large: <red>[Ошибка] Элемент NBT слишком большой для отображения
   stock: '<green>Доступно: <yellow>{0}'
   this-shop-is-buying: <green>Этот магазин <light_purple>ПОКУПАЕТ<green> предметы.
   this-shop-is-frozen: <green>Магазин в режиме заморозки <red>в режиме заморозки<green>
@@ -253,7 +253,7 @@ no-double-chests: <red>Вы не можете создать магазин из
 price-too-cheap: <red>Цена должна быть больше <yellow>${0}
 shop-not-exist: <red>Такого магазина нет.
 bad-command-usage: <red>Некорректные аргументы команды!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>Эта команда удалит <red>все</red> магазины, если магазин поврежден, был создан в неразрешенных мирах, продает/покупает неразрешенные предметы или <bold><red>СУЩЕСТВУЕТ В НЕЗАГРУЖЕННОМ МИРЕ</red></bold>. Убедитесь, что вы создали полную резервную копию данных ваших магазинов, и используйте <aqua>/quickshop cleanghost confirm</aqua> для продолжения.
 cleanghost-starting: <green>Начало проверки на наличие нерабочих магазинов (без блока с предметами). Все нерабочие магазины будут удалены...
 cleanghost-deleting: <yellow>Найден нерабочий магазин <aqua>{0}</aqua> потому что {1}, помечен на удаление...
 cleanghost-deleted: <green>Всего <yellow>{0}</yellow> магазинов были удалены.
@@ -397,7 +397,7 @@ timeunit:
   minutes: "{0} минут"
   justnow: только что
   minute: "{0} минута"
-  std-format: dd/MM/yyyy HH:mm:ss
+  std-format: dd.MM.yyyy HH:mm:ss
   future-plain-text: будущее
   month: "{0} месяц"
   future: через {0}
@@ -541,7 +541,7 @@ player-no-group: <yellow>Игрок {0} не состоит в группе эт
 player-in-group: <green>Игрок {0} находится в группе <aqua>{1}</aqua> в этом магазине.
 permission-required: <red>У вас нет разрешения {0} в этом магазине, чтобы это сделать.
 no-permission-detailed: <red>У вас нет разрешения <yellow>{0}</yellow>, чтобы сделать это.
-paste-notice: "<yellow>Note: If you are creating a Paste for troubleshooting purposes, be sure to reproduce the error before creating the Paste as quickly as possible; we need the logs retained briefly in the buffer to troubleshoot. If you create a Paste too slowly or without first reproducing the error or restarted server, the Paste will record nothing and useless."
+paste-notice: "<yellow>Примечание: Если вы создаете Paste для устранения неполадок, обязательно воспроизведите ошибку перед созданием Paste как можно быстрее; нам нужно, чтобы логи ненадолго сохранились в буфере для диагностики. Если вы создадите Paste слишком медленно или без предварительного воспроизведения ошибки, или после перезагрузки сервера, Paste ничего не запишет и будет бесполезен."
 paste-uploading: <aqua>Пожалуйста, подождите... Идет загрузка на pastebin......
 paste-created: '<green>Копия создана, нажмите, чтобы открыть в браузере: <yellow>{0}</yellow><newline><red>Предупреждение: <gray>Никогда не отправляйте тем, кому не доверяете.'
 paste-created-local: |-
@@ -568,14 +568,14 @@ argument-cannot-be: <red>Аргумент <aqua>{0}</aqua> не может бы�
 argument-must-between: <red>Значение <aqua>{0}</aqua> должно быть между <yellow>{1}</yellow> и <yellow>{2}</yellow>
 invalid-percentage: <red>Неправильное значение - вы должны добавить '%' после числа процентов.
 display-fallback: |-
-  <red>Due to an internal failure, a fallback message is being displayed.
-  The value of this item may not be localized or processed correctly.
-  Please contact the server administrator.
+  <red>Из-за внутреннего сбоя отображается резервное сообщение.
+  Значение этого предмета может быть не локализовано или обработано правильно.
+  Пожалуйста, свяжитесь с администратором сервера.
 not-a-valid-time: |-
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
-  <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
-  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
+  <red>Строка <yellow>{0}</yellow> не является допустимой меткой времени. Укажите <aqua>время в формате Zulu (ISO 8601)</aqua> или <aqua>Unix Epoch Time в секундах</aqua>.<br>
+  <gold>Пример допустимой метки времени (для Сб, 17 Дек 2022 10:31:37 GMT):</gold><br>
+  <aqua>-</aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(время в формате Zulu)</grey><br>
+  <aqua>-</aqua> <yellow>1671273097</yellow> <grey>(время Unix Epoch в секундах)</grey>
 invalid-past-time: <red>Вы не можете указать время в прошлом.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
@@ -679,17 +679,18 @@ transfer-sent: <green>Shops transfer request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?
 transfer-single-request: <yellow>Игрок <aqua>{0}</aqua> хочет передать один магазин вам. Вы хотите принять запрос?
 transfer-ask: |-
-  <gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds.
-transferall-ask: |-
   <gold>Введите <red>/quickshop transfer accept</red> чтобы принять или <red>/quickshop transfer deny</red> чтобы отказать.
+  Запрос истечет через <red>{0}</red> секунд.
+transferall-ask: |-
+  <gold>Введите <red>/quickshop transferall accept</red> чтобы принять или <red>/quickshop transferall deny</red> чтобы отказать.
   Запрос истечет через <red>{0}</red> секунд.
 transfer-single-ask: |-
   <gold>Введите <red>/quickshop transferownership accept</red> чтобы принять или <red>/quickshop transferownership deny</red> чтобы отказать.
   Запрос истечет через <red>{0}</red> секунд.
-transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
-transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
-transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
-transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
+transfer-accepted-fromside: <green>Игрок <aqua>{0}</aqua> принял ваш запрос на передачу магазинов.
+transfer-accepted-toside: <green>Вы приняли запрос на передачу от <aqua>{0}</aqua>.
+transfer-rejected-fromside: <red>Игрок <aqua>{0}</aqua> отклонил ваш запрос на передачу магазинов.
+transfer-rejected-toside: <red>Вы отклонили запрос на передачу магазинов от <aqua>{0}</aqua>.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>Вы не можете передать свои магазины самому себе.
 benefit-overflow: <red>Сумма всех выплат не может быть больше или равна 100%.
@@ -711,8 +712,8 @@ tag-query-no-tag: <red>В этом магазине нет тегов.
 tag-query-shops: '<green>Этот тег содержит <yellow>{0}</yellow> магазинов:'
 tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green>Успешно пакетно обработано <yellow>{0}</yellow> магазинов.
-batch-operations-based-on-tags-have-failure: <yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed.
-batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>'
+batch-operations-based-on-tags-have-failure: <yellow>Всего {0} магазинов в пакетной обработке успешно завершены, но <red>{1}</red> запросов не завершены.
+batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Всего {0} магазинов в пакетной обработке успешно завершены, но <red>{1}</red> запросов не завершены. Причина: <gold>{2}'
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>Сообщения об ошибках будут отправлены вам выше этого сообщения в чате.
 addon:
   towny:
@@ -1521,7 +1522,7 @@ suite:
 compatibility:
   elitemobs:
     soulbound-disallowed: You can't trade item which have EliteMobs Soulbound enchantment.
-internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
+internet-paste-forbidden-privacy-reason: "<red>Не удалось! Согласно вашим настройкам конфиденциальности, QuickShop-Hikari не разрешено загружать вашу пасту в Интернет. Включите разрешение DIAGNOSTIC в настройках конфиденциальности в config.yml или используйте <aqua>/quickshop paste --file</aqua>."
 no-sign-type-given: "<red>Вам нужно указать материал таблички. Доступные материалы табличек на этом сервере: {0}"
 sign-type-invalid: "<red>Тип <yellow>{0}</yellow> не является допустимым материалом для таблички."
 delete-controlpanel-button-confirm: "<red>Вы действительно хотите удалить этот магазин? Нажмите кнопку <bold>[удалить Магазин]</bold> еще раз в течение {0} секунд для подтверждения."
@@ -1610,7 +1611,7 @@ history:
     gui-title: "История покупок"
     header-icon-multiple-shop: "<white>Результат запроса по {0} магазинам</white>"
     header-icon-shop-name: '<yellow>Магазин {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Магазин в мире ''''{0}'''' по x: {1}, y: {2}, z: {3}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Магазин в мире ''{0}'' по x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Тип: <yellow>{0}</yellow></white>"
       - "<white>Владелец: <yellow>{1}</yellow></white>"
