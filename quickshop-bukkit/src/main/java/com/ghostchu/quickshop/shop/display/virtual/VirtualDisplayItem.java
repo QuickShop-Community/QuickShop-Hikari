@@ -106,30 +106,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
       cloned.getEnchantments().clear();
       return cloned;
     }
-
-    final int amount = cloned.getEnchantments().size();
-    boolean removed = false;
-
-    for(final Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
-
-      final Enchantment enchantment = entry.getKey();
-
-      if(EnchantmentTypes.getRegistry().getByName(enchantment.key().asString()) == null) {
-        cloned.removeEnchantment(enchantment);
-        removed = true;
-        continue;
-      }
-      if(EnchantmentTypes.getByName(enchantment.key().asString()) == null) {
-        cloned.removeEnchantment(enchantment);
-        removed = true;
-      }
-    }
-
-    if(amount == 1 && removed) {
-      cloned.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
-    }
-
-    return cloned;
+    return (manager.packetHandler() != null)? manager.packetHandler().filterEnchantments(cloned) : cloned;
   }
 
   @Override

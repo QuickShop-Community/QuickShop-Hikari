@@ -422,26 +422,28 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
 
-    final BlockState state = info.getLocation().getBlock().getState();
-    if(state instanceof final InventoryHolder holder) {
-      // Create the basic shop
-      final String symbolLink;
-      final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
-      if(manager instanceof final BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
-        symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
+    QuickShop.folia().getScheduler().runAtLocation(info.getLocation(), task -> {
+      final BlockState state = info.getLocation().getBlock().getState();
+      if(state instanceof final InventoryHolder holder) {
+        // Create the basic shop
+        final String symbolLink;
+        final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
+        if(manager instanceof final BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
+          symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
+        } else {
+          symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+        }
+        final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
+                                                     priceDouble, info.getItem(), createQUser, false,
+                                                     SELLING_TYPE, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
+                                                     null, plugin.getJavaPlugin().getName(),
+                                                     symbolLink,
+                                                     null, Collections.emptyMap(), new QSBenefitProvider());
+        createShop(shop, info.getSignBlock(), info.isBypassed());
       } else {
-        symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+        plugin.text().of(p, "invalid-container").send();
       }
-      final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
-                                                   priceDouble, info.getItem(), createQUser, false,
-                                                   SELLING_TYPE, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
-                                                   null, plugin.getJavaPlugin().getName(),
-                                                   symbolLink,
-                                                   null, Collections.emptyMap(), new QSBenefitProvider());
-      createShop(shop, info.getSignBlock(), info.isBypassed());
-    } else {
-      plugin.text().of(p, "invalid-container").send();
-    }
+    });
   }
 
   @Override

@@ -23,6 +23,13 @@ public class ConfigUpdateScript {
     this.plugin = plugin;
   }
 
+  @UpdateScript(version = 1034)
+  public void configWorldWhitelist() {
+
+    getConfig().set("shop.whitelist-world", Collections.emptyList());
+    getConfig().set("database-loading-whitelist-worlds", Collections.emptyList());
+  }
+
   @UpdateScript(version = 1033)
   public void configDisplayCoords() {
 

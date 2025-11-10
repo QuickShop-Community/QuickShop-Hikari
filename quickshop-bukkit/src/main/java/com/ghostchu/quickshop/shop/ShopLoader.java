@@ -81,7 +81,8 @@ public class ShopLoader implements SubPasteItem {
         plugin.logger().warn("World {} not exists, skip loading shops in this world.", worldName);
         return;
       }
-      if(plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
+      if(Util.isDatabaseLoadingBlacklisted(worldName)) {
+        plugin.logger().info("World {} is blacklisted or not whitelisted, skip loading shops in this world.", worldName);
         return;
       }
     }
@@ -146,7 +147,7 @@ public class ShopLoader implements SubPasteItem {
       if(!worldName.equals(infoRecord.getWorld())) {
         return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
       }
-      if(plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
+      if(Util.isDatabaseLoadingBlacklisted(worldName)) {
         return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
       }
     }

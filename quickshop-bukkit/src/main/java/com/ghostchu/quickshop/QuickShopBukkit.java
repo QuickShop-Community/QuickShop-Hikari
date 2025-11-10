@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.common.util.GeoUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
@@ -82,6 +83,7 @@ public class QuickShopBukkit extends JavaPlugin {
     Unirest.shutDown(true);
     Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
     this.platform.shutdown();
+    Log.Caller.cleanupThreadLocal();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> All Complete (" + (System.currentTimeMillis() - shutdownAtTime) + "ms)");
   }
 
@@ -188,7 +190,7 @@ public class QuickShopBukkit extends JavaPlugin {
                 .groupId(groupId)
                 .artifactId(artifactId)
                 .version(version)
-                .resolveTransitiveDependencies(true)
+                .resolveTransitiveDependencies(false)
                 .isolatedLoad(false);
         if(classifier != null) {
           libBuilder = libBuilder.classifier(classifier);
@@ -234,6 +236,7 @@ public class QuickShopBukkit extends JavaPlugin {
           bootstrapLogger.warning("=========================   ATTENTION   =========================");
           bootstrapLogger.warning("=================================================================");
           bootstrapLogger.warning("Spigot is no longer supported!");
+          bootstrapLogger.warning("QuickShop will disabled. Please switch to Paper");
           bootstrapLogger.warning("=================================================================");
 
           throw new UnsupportedOperationException("Unsupported platform");

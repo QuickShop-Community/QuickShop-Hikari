@@ -909,6 +909,9 @@ public class ContainerShop implements Shop, Reloadable {
       if(!(state instanceof final Sign sign)) {
         continue;
       }
+      if(!location.getBlock().equals(Util.getAttached(b))) {
+        continue;
+      }
       if(isShopSign(sign)) {
         claimShopSign(sign);
         signs.add(sign);

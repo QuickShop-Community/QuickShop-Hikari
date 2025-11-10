@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.11-SNAPSHOT-8</version>
+    <version>6.2.0.11-SNAPSHOT-9</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -64,7 +64,7 @@
         <compat.geyser.floodgate>2.0-SNAPSHOT</compat.geyser.floodgate>
         <compat.chestprotect>5.19.16</compat.chestprotect>
         <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
-        <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
+        <compat.cmilib>1.5.6.3</compat.cmilib><!-- no maven repository? -->
         <compat.crazycrates>4.10.5</compat.crazycrates>
         <compat.eco>6.75.2</compat.eco>
         <compat.ecoenchants>12.22.0</compat.ecoenchants>
@@ -79,7 +79,7 @@
         <compat.openinv>5.1.6</compat.openinv>
         <compat.plotsquared>7.5.2</compat.plotsquared>
         <compat.reforges>6.74.0</compat.reforges>
-        <compat.residence>5.0.1.7</compat.residence>
+        <compat.residence>6.0.0.1</compat.residence>
         <compat.silkspawners>8.3.0</compat.silkspawners>
         <compat.simpleclaimsystem>1.11.6.1</compat.simpleclaimsystem>
         <compat.slimefun>RC-37</compat.slimefun>
@@ -214,6 +214,7 @@
                                         <include>org.eclipse.aether:*:*</include>
                                         <include>org.slf4j:slf4j-jdk14:*</include>
                                         <include>cc.carm.lib:*</include>
+                                        <include>com.rollbar:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -267,6 +268,10 @@
                                     <relocation>
                                         <pattern>io.vertx.</pattern>
                                         <shadedPattern>${qs.relocation}.io.vertx.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.rollbar.</pattern>
+                                        <shadedPattern>${qs.relocation}.com.rollbar.</shadedPattern>
                                     </relocation>
                                     <!--<relocation>
                                         <pattern>org.apache.commons:commons-compress</pattern>
