@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Parduotuvės šiame pasaulyje yra išjungtos.
 how-much-to-trade-for: <green>Įveskite pokalbyje, už kiek norite mainyti <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop aptiko, kad pakeitėte kliento kalbą, dabar naudojame {0} lokalę.
 shops-backingup: Sukuriamas parduotuvių atkūrimo failas iš duomenų bazės...
-_comment: Sveiki, vertėjau! Jei redaguojate šį failą GitHub arba per šaltinio kodą, turėtumėte eiti į https://crowdin.com/project/qs-hikari.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>Parduotuvės savininkas pakeistas į {0}.
 bad-command-usage-detailed: '<red>Neteisingi komandos argumentai! Galimi parametrai: <gray>{0}'
 thats-not-a-number: <red>Neteisingas skaičius
@@ -760,6 +760,10 @@ addon:
   lands:
     world-not-enabled: <red>Negalite kurti ar pirkti šioje pasaulio vietoje.
     creation-denied: <red>Neturite teisės kurti parduotuvių šioje Lands teritorijoje.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>Neturite teisės kurti parduotuvių šioje Dominion teritorijoje.
     trade-denied: <red>Parduotuvė turi būti Dominion teritorijoje, kad joje būtų galima prekiauti.
@@ -801,13 +805,12 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Kažkas pardavė daiktus jūsų parduotuvėje",
-              "description": "Žaidėjas %%purchase.name%% pardavė x%%purchase.amount%% %%shop.item.name%% jūsų parduotuvei.",
-              "color": 52084,
-              "author": {
-                "name": "QuickShop-Hikari",
-                "icon_url": ""
-              }
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "color": 52084,
+             "author": {
+               "name": "QuickShop-Hikari",
+               "icon_url": ""
              },
              "thumbnail": {
                "url": ""
@@ -821,32 +824,33 @@ addon:
              },
              "fields": [
                {
-                 "name": "Parduotuvė",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Pirkėjas",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Daiktas",
+                 "name": "Item",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Kiekis",
+               {
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Jūsų užmokestis",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Mokesčiai",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }

@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Quickshop відключений у цьому св
 how-much-to-trade-for: <green>Введіть у чат ціну, за якою бажаєте продавати <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop виявив зміну мови вашого клієнта. Тепер для вас використовується {0}.
 shops-backingup: Створення резервної копії магазину з бази даних...
-_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/qs-hikari.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>Власника безлімітного магазину було змінено на {0}.
 bad-command-usage-detailed: '<red>Неправильні аргументи команди! Приймаються наступні параметри: <gray>{0}'
 thats-not-a-number: <red>Неправильне число
@@ -761,6 +761,10 @@ addon:
   lands:
     world-not-enabled: <red>Вам не дозволено створювати або торгувати в цьому світі.
     creation-denied: <red>У вас немає дозволу на створення магазинів на цій землі.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>У вас немає дозволу на створення магазинів у цій зоні Dominion.
     trade-denied: <red>Магазин повинен знаходитися в межах Dominion, щоб з ним можна було торгувати.
@@ -802,8 +806,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Хтось продав предмети у ваш магазин",
-             "description": "Гравець %%purchase.name%% продав x%%purchase.amount%% %%shop.item.name%% у ваш магазин.",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -816,37 +820,38 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "Сповіщення QuickShop-Hikari Discord",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Магазин",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Покупець",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Предмет",
+                 "name": "Item",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Кількість",
+               {
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Ви заплатили",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Податки",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }

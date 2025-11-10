@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
 how-much-to-trade-for: <green>Gib im Chat ein, für wieviel du {1}x <yellow>{0}<green> handeln willst.
 client-language-changed: <green>QuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.
 shops-backingup: Erstelle Shop-Backup von der Datenbank...
-_comment: Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https://crowdin.com/project/qs-hikari wechseln.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>Der Besitzer des unbegrenzten Shops wurde zu {0} geändert.
 bad-command-usage-detailed: '<red>Falsche Befehlsargumente! Folgende Parameter sind erlaubt: <gray>{0}'
 thats-not-a-number: <red>Ungültige Zahl
@@ -743,6 +743,10 @@ addon:
   lands:
     world-not-enabled: <red>Du kannst keine Shops in dieser Welt kaufen oder erstellen.
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Dominion-Area zu erstellen.
     trade-denied: <red>Der Shop muss innerhalb eines Dominion sein, um mit ihm zu handeln.
@@ -784,8 +788,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Jemand hat Items an deinen Shop verkauft",
-             "description": "Der Spieler %%purchase.name%% hat %%purchase.amount%% x %%shop.item.name%% an deinen Shop verkauft.",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -798,7 +802,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Benachrichtigung",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
@@ -808,7 +812,7 @@ addon:
                  "inline": false
                },
                {
-                 "name": "Käufer",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -818,17 +822,18 @@ addon:
                  "inline": true
                },
                {
-                 "name": "Menge",
+               {
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Du zahlst",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Steuern",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
