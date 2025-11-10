@@ -1,0 +1,5 @@
+format:
+  line-1: "${t:${if:available=true?signs.header-available:signs.header-unavailable}|${var:owner}}"
+  line-2: "${if:remaining=-1?${t:${if:stacking=true?${var:stackTradingKey}:${var:tradingKey}}|${t:signs.unlimited}}:${if:remaining=0?${t:${var:noRemainingKey}}:${t:${if:stacking=true?${var:stackTradingKey}:${var:tradingKey}}|${var:remaining}}}}"
+  line-3: "${t:signs.item-left}${var:itemName}${t:signs.item-right}"
+  line-4: "${if:stacking=true?${t:signs.stack-price|${var:price}|${var:itemAmount}|${var:itemName}}:${t:signs.price|${var:price}}}"

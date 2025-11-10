@@ -246,15 +246,40 @@ public interface Shop {
    * Get shop type
    *
    * @return shop type
+   * @deprecated Use shopType() instead
    */
   @NotNull
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   ShopType getShopType();
+
+  /**
+   * Retrieves the type of shop associated with this entity.
+   *
+   * @return an instance of IShopType representing the shop type
+   */
+  IShopType shopType();
+
+  /**
+   * Sets the type of shop using the provided shop type parameter.
+   *
+   * @param newShopType the shop type to set, must not be null
+   */
+  void shopType(@NotNull IShopType newShopType);
+
+  /**
+   * Specifies the type of shop based on the given identifier.
+   *
+   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
+   */
+  void shopType(@NotNull String shopTypeIdentifier);
 
   /**
    * Set new shop type for this shop
    *
    * @param paramShopType New {@link ShopType}
+   * @deprecated Use shopType(IShopType shopType) or shopType(String shopTypeIdentifier) instead
    */
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   void setShopType(@NotNull ShopType paramShopType);
 
   /**
@@ -359,6 +384,20 @@ public interface Shop {
    * @param disabled Has been disabled
    */
   void setDisableDisplay(boolean disabled);
+
+  /**
+   * Determines whether a custom item name should be used.
+   *
+   * @return true if a custom item name is enabled, false otherwise
+   */
+  boolean useCustomItemName();
+
+  /**
+   * Customizes and returns a Component representing an item name.
+   *
+   * @return a Component representing the customized item name
+   */
+  Component customItemName();
 
   /**
    * Check if this shop is free shop

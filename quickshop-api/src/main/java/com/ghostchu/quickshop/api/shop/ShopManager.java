@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -27,6 +28,71 @@ import java.util.concurrent.CompletableFuture;
  */
 @SuppressWarnings("ALL")
 public interface ShopManager {
+
+  /**
+   * Retrieves a map containing shop types.
+   *
+   * @return a map where the key is an integer representing the shop type ID,
+   * and the value is an object implementing the IShopType interface,
+   * which provides details about a shop type.
+   */
+  @NotNull Map<Integer, IShopType> shopTypes();
+
+  /**
+   * Adds a shop type to the internal collection of shop types.
+   *
+   * @param type the shop type to be added. It must contain a valid ID and properties.
+   */
+  default void addShopType(IShopType type) {
+    shopTypes().put(type.id(), type);
+  }
+
+  /**
+   * Removes the shop type identified by the specified ID from the collection of shop types.
+   *
+   * @param id the unique identifier of the shop type to be removed
+   */
+  default void removeShopType(final int id) {
+    shopTypes().remove(id);
+  }
+
+  /**
+   * Retrieves the shop type corresponding to the given identifier.
+   *
+   * @param id the identifier of the shop type to retrieve
+   * @return an Optional containing the shop type if found, otherwise an empty Optional
+   */
+  default Optional<IShopType> shopType(final int id) {
+    return Optional.ofNullable(shopTypes().get(id));
+  }
+
+  /**
+   * Retrieves the shop type associated with the specified ID.
+   * If no shop type is found, returns a default shop type.
+   *
+   * @param id the identifier for the desired shop type
+   * @return the shop type associated with the given ID, or a default shop type if none exists
+   */
+  @NotNull IShopType shopTypeOrDefault(final int id);
+
+  /**
+   * Retrieves an optional shop type based on the provided identifier.
+   *
+   * @param identifier the unique identifier of the shop type to search for
+   * @return an {@code Optional} containing the matching shop type if found, otherwise an empty {@code Optional}
+   */
+  default Optional<IShopType> shopType(final String identifier) {
+    return shopTypes().values().stream().filter(type -> type.identifier().equalsIgnoreCase(identifier)).findFirst();
+  }
+
+  /**
+   * Retrieves the shop type associated with the given identifier, or returns a default
+   * shop type if no match is found.
+   *
+   * @param identifier the unique identifier for the shop type to retrieve
+   * @return the corresponding IShopType if found, or a default IShopType if no match exists
+   */
+  @NotNull IShopType shopTypeOrDefault(final String identifier);
 
   /**
    * Handle the player buying
@@ -271,7 +337,7 @@ public interface ShopManager {
    *
    * @return Shops
    */
-  @Nullable
+  @NotNull
   Map<Location, Shop> getShops(@NotNull Chunk c);
 
   /**
@@ -283,7 +349,7 @@ public interface ShopManager {
    *
    * @return The shop at the world and specific chunk.
    */
-  @Nullable
+  @NotNull
   Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
 
   /**
@@ -293,7 +359,7 @@ public interface ShopManager {
    *
    * @return The shop at the world and specific chunk.
    */
-  @Nullable
+  @NotNull
   Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk);
 
   /**
@@ -303,7 +369,7 @@ public interface ShopManager {
    *
    * @return a map of Chunk - Shop
    */
-  @Nullable
+  @NotNull
   Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
 
   /**

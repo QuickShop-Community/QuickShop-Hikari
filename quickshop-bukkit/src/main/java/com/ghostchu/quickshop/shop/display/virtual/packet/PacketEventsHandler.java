@@ -108,6 +108,8 @@ public class PacketEventsHandler implements PacketHandler<PacketEventsAPI<?>> {
     factories.put("1.21.6", oneTwentyOne);
     factories.put("1.21.7", oneTwentyOne);
     factories.put("1.21.8", oneTwentyOne);
+    factories.put("1.21.9", oneTwentyOne);
+    factories.put("1.21.10", oneTwentyOne);
   }
 
   @Override

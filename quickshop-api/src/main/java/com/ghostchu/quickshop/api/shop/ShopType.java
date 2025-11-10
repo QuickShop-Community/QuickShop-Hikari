@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The shop trading type *SELLING* or *BUYING*
  */
+@Deprecated(since = "6.2.0.11", forRemoval = true)
 public enum ShopType {
   SELLING(0), // Sell Mode
   BUYING(1), // Buy Mode

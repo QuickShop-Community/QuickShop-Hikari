@@ -778,6 +778,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     loadCommandHandler();
 //        this.invWrapperUpdateManager = new InventoryWrapperUpdateManager(this);
 //        this.invWrapperUpdateManager.register();
+
     this.shopManager = new SimpleShopManager(this);
     // Limit
     //this.registerLimitRanks();

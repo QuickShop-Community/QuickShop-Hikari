@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -121,10 +122,11 @@ public class HikariDataExtension implements DataExtension {
       if(main.getQuickShop().getEconomyManager().provider() != null) {
         price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
       }
-      final String type = switch(shop.getShopType()) {
-        case BUYING -> "Buying";
-        case SELLING -> "Selling";
-        case FROZEN -> "Frozen";
+
+      final String type = switch(shop.shopType().identifier().toUpperCase(Locale.ROOT)) {
+        case "BUYING" -> "Buying";
+        case "FROZEN" -> "Frozen";
+        default -> "Selling";
       };
       final String location = dataUtil.loc2String(shop.getLocation());
       tableBuilder.addRow(owner, item, price, type, location);
@@ -188,10 +190,10 @@ public class HikariDataExtension implements DataExtension {
         price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
       }
 
-      final String type = switch(shop.getShopType()) {
-        case BUYING -> "Buying";
-        case SELLING -> "Selling";
-        case FROZEN -> "Frozen";
+      final String type = switch(shop.shopType().identifier().toUpperCase(Locale.ROOT)) {
+        case "BUYING" -> "Buying";
+        case "FROZEN" -> "Frozen";
+        default -> "Selling";
       };
       final String location = dataUtil.loc2String(shop.getLocation());
       tableBuilder.addRow(item, price, type, location);

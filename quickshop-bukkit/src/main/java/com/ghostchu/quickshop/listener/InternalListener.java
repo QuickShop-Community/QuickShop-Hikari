@@ -158,7 +158,7 @@ public class InternalListener extends AbstractQSListener {
 
     if(loggingAction) {
       plugin.logEvent(new ShopPurchaseLog(event.getShop().saveToInfoStorage(),
-                                          event.getShop().getShopType(),
+                                          event.getShop().shopType(),
                                           event.getPurchaser(),
                                           LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(event.getShop().getItem())),
                                           Util.serialize(event.getShop().getItem()),

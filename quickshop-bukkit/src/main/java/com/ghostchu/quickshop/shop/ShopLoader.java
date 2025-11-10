@@ -6,8 +6,8 @@ import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
@@ -301,7 +301,7 @@ public class ShopLoader implements SubPasteItem {
 
     private QUser owner;
     private String name;
-    private ShopType type;
+    private IShopType type;
     private String currency;
     private double price;
     private boolean unlimited;
@@ -323,7 +323,7 @@ public class ShopLoader implements SubPasteItem {
 
       this.owner = dataRecord.getOwner();
       this.price = dataRecord.getPrice();
-      this.type = ShopType.fromID(dataRecord.getType());
+      this.type = QuickShop.getInstance().getShopManager().shopTypeOrDefault(dataRecord.getType());
       this.unlimited = dataRecord.isUnlimited();
       final String extraStr = dataRecord.getExtra();
       this.name = dataRecord.getName();
@@ -347,6 +347,9 @@ public class ShopLoader implements SubPasteItem {
         this.permissions = new HashMap<>();
       }
 
+      if(dataRecord.getEncoded() == null) {
+        Log.debug("Shop :" +  name + " doesn't have encoded item. Cannot load.");
+      }
 
       if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
 

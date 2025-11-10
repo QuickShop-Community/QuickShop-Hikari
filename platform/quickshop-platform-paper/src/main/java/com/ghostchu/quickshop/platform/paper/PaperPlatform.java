@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -73,6 +74,15 @@ public class PaperPlatform implements Platform {
     try {
       if(meta.hasItemName()) {
         return meta.itemName();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
+    }
+
+    try {
+      final Component customName = meta.customName();
+      if(customName != null) {
+        return customName;
       }
     } catch(final NoSuchMethodError ignore) {
       //old version
@@ -246,6 +256,10 @@ public class PaperPlatform implements Platform {
 
     for(int i = 0; i < Math.min(component.size(), 4); i++) {
       sign.line(i, component.get(i));
+
+      System.out.println("Line #" + i);
+      System.out.println(PlainTextComponentSerializer.plainText().serialize(component.get(i)));
+      //System.out.println(component.get(i).toString());
     }
     sign.update(true, false);
   }

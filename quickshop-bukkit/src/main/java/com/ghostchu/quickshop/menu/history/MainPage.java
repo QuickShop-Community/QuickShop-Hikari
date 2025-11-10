@@ -45,7 +45,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -132,7 +131,7 @@ public class MainPage {
           shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale();
         }
 
-        final Component shopType = QuickShop.getInstance().text().of("shop-type." + shop.getShopType().name().toLowerCase(Locale.ROOT)).forLocale();
+        final Component shopType = QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
 
         if(shops.size() == 1) {
 

@@ -20,13 +20,14 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
-import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.ShopType;
@@ -107,7 +108,7 @@ public class ContainerShop implements Shop, Reloadable {
   private long shopId;
   private QUser owner;
   private double price;
-  private ShopType shopType;
+  private IShopType shopType;
   private boolean unlimited;
   @NotNull
   private ItemStack item;
@@ -162,7 +163,7 @@ public class ContainerShop implements Shop, Reloadable {
           @NotNull final ItemStack item,
           @NotNull final QUser owner,
           final boolean unlimited,
-          @NotNull final ShopType type,
+          @NotNull final IShopType type,
           @Nullable final YamlConfiguration extra,
           @Nullable final String currency,
           final boolean disableDisplay,
@@ -182,6 +183,11 @@ public class ContainerShop implements Shop, Reloadable {
 
     // Upgrade the shop moderator
     this.owner = owner;
+    if(item == null) {
+
+      throw new IllegalArgumentException("Loaded item is null. This is usually from an invalid shop.");
+    }
+
     this.item = item.clone();
     this.originalItem = item.clone();
     this.plugin = plugin;
@@ -302,7 +308,7 @@ public class ContainerShop implements Shop, Reloadable {
       final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
               .builder()
               .from(buyerInventory)
-              .to(chestInv) // To void
+              .to(chestInv)
               .item(this.getItem())
               .amount(amount)
               .build();
@@ -744,37 +750,50 @@ public class ContainerShop implements Shop, Reloadable {
     return 1;
   }
 
+  @SuppressWarnings("removal")
   @Override
   public @NotNull ShopType getShopType() {
 
-    final ShopTypeEvent event = new ShopTypeEvent(Phase.RETRIEVE, this, this.shopType);
+    return ShopType.fromID(shopType.id());
+  }
+
+  /**
+   * Retrieves the type of shop associated with this entity.
+   *
+   * @return an instance of IShopType representing the shop type
+   */
+  @Override
+  public IShopType shopType() {
+
+    final ShopTypeEnhancedEvent event = new ShopTypeEnhancedEvent(Phase.RETRIEVE, this, this.shopType);
     event.callEvent();
 
     return event.updated();
   }
 
   /**
-   * Changes a shop type to Buying or Selling. Also updates the signs nearby.
+   * Sets the type of shop using the provided shop type parameter.
    *
-   * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
+   * @param newShopType the shop type to set, must not be null
    */
   @Override
-  public void setShopType(@NotNull final ShopType newShopType) {
+  public void shopType(@NotNull final IShopType newShopType) {
 
     Util.ensureThread(false);
-    if(this.shopType == newShopType) {
 
-      return; //Ignore if there actually no changes
+    if(this.shopType.identifier().equalsIgnoreCase(newShopType.identifier())) {
+
+      return;
     }
 
-    ShopTypeEvent event = new ShopTypeEvent(Phase.PRE, this, this.shopType, newShopType);
+    ShopTypeEnhancedEvent event = new ShopTypeEnhancedEvent(Phase.PRE, this, this.shopType, newShopType);
     event.callEvent();
 
     event = event.clone(Phase.MAIN);
 
     if(event.callCancellableEvent()) {
-      Log.debug(
-              "Some addon cancelled shop type changes, target shop: " + this);
+
+      Log.debug("Some addon cancelled shop type changes, target shop: " + this);
       return;
     }
 
@@ -787,41 +806,43 @@ public class ContainerShop implements Shop, Reloadable {
     setDirty();
   }
 
+  /**
+   * Specifies the type of shop based on the given identifier.
+   *
+   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
+   */
+  @Override
+  public void shopType(@NotNull final String shopTypeIdentifier) {
+
+    shopType(QuickShop.getInstance().getShopManager().shopTypeOrDefault(shopTypeIdentifier));
+  }
+
+  /**
+   * Changes a shop type to Buying or Selling. Also updates the signs nearby.
+   *
+   * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
+   */
+  @SuppressWarnings("removal")
+  @Override
+  public void setShopType(@NotNull final ShopType newShopType) {
+
+    shopType(QuickShop.getInstance().getShopManager().shopTypeOrDefault(newShopType.name()));
+  }
+
   @Override
   public List<Component> getSignText(@NotNull final ProxiedLocale locale) {
 
     Util.ensureThread(false);
-    final List<Component> lines = new ArrayList<>();
+    final List<Component> lines = new ArrayList<>(4);
     //Line 1
     final String headerKey = inventoryAvailable()? "signs.header-available" : "signs.header-unavailable";
     lines.add(plugin.text().of(headerKey, this.ownerName(false, locale)).forLocale(locale.getLocale()));
     //Line 2
-    final String tradingStringKey;
-    final String noRemainingStringKey;
-    final int shopRemaining;
+    final String tradingStringKey = (isStackingShop()? shopType().stackTradingTranslationKey() : shopType().tradingTranslationKey());
+    final String noRemainingStringKey = shopType.outOfStockTranslationKey();
+    final int shopRemaining = shopType().remainingStock(this);
 
-    switch(shopType) {
-      case BUYING -> {
-        shopRemaining = getRemainingSpace();
-        tradingStringKey = isStackingShop()? "signs.stack-buying" : "signs.buying";
-        noRemainingStringKey = "signs.out-of-space";
-      }
-      case SELLING -> {
-        shopRemaining = getRemainingStock();
-        tradingStringKey = isStackingShop()? "signs.stack-selling" : "signs.selling";
-        noRemainingStringKey = "signs.out-of-stock";
-      }
-      case FROZEN -> {
-        shopRemaining = 0;
-        tradingStringKey = "signs.freeze";
-        noRemainingStringKey = "signs.freeze";
-      }
-      default -> {
-        shopRemaining = 0;
-        tradingStringKey = "MissingKey for shop type:" + shopType;
-        noRemainingStringKey = "MissingKey for shop type:" + shopType;
-      }
-    }
+
     final Component line2 = switch(shopRemaining) {
       //Unlimited
       case -1 ->
@@ -980,13 +1001,13 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public boolean isBuying() {
 
-    return this.shopType == ShopType.BUYING;
+    return this.shopType.isBuying();
   }
 
   @Override
   public boolean isFrozen() {
 
-    return this.shopType == ShopType.FROZEN;
+    return this.shopType.isTradingBlocked();
   }
 
   private boolean isDeleted() {
@@ -1027,6 +1048,53 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   /**
+   * Determines whether a custom item name should be used.
+   *
+   * @return true if a custom item name is enabled, false otherwise
+   */
+  @Override
+  public boolean useCustomItemName() {
+
+    if(!plugin.getConfig().getBoolean("shop.force-use-item-original-name")) {
+      return false;
+    }
+
+    final ItemMeta itemMeta = this.item.getItemMeta();
+    if(itemMeta == null) {
+      return false;
+    }
+
+    try {
+      if(itemMeta.hasItemName()) {
+        return true;
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
+    }
+
+    try {
+      if(itemMeta.hasCustomName()) {
+        return true;
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
+    }
+
+    return itemMeta.hasDisplayName();
+  }
+
+  /**
+   * Customizes and returns a Component representing an item name.
+   *
+   * @return a Component representing the customized item name
+   */
+  @Override
+  public Component customItemName() {
+
+    return Util.getItemStackName(getItem());
+  }
+
+  /**
    * Check if this shop is free shop
    *
    * @return Free Shop
@@ -1043,11 +1111,10 @@ public class ContainerShop implements Shop, Reloadable {
     return this.isLoaded;
   }
 
-
   @Override
   public boolean isSelling() {
 
-    return this.shopType == ShopType.SELLING;
+    return !this.shopType.isBuying();
   }
 
   /**
@@ -1410,7 +1477,7 @@ public class ContainerShop implements Shop, Reloadable {
     return new ShopInfoStorage(getLocation().getWorld().getName(),
                                new BlockPos(getLocation()), this.owner, this.price,
                                QuickShop.getInstance().platform().encodeStack(this.originalItem), isUnlimited()? 1 : 0
-            , getShopType().toID(),
+            , shopType().id(),
                                saveExtraToYaml(), this.currency, this.disableDisplay,
                                this.taxAccount, inventoryWrapperProvider,
                                saveToSymbolLink(), this.playerGroup);
@@ -1710,7 +1777,7 @@ public class ContainerShop implements Shop, Reloadable {
             plugin.platform().encodeStack(getItem()),
             plugin.platform().encodeStack(getItem()),
             getShopName(),
-            getShopType().toID(),
+            shopType().id(),
             getCurrency(),
             getPrice(),
             isUnlimited(),
