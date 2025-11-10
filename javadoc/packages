@@ -32,6 +32,7 @@ com.ghostchu.quickshop.api.localization.text.postprocessor
 com.ghostchu.quickshop.api.shop
 com.ghostchu.quickshop.api.shop.permission
 com.ghostchu.quickshop.api.shop.cache
+com.ghostchu.quickshop.api.shop.type
 com.ghostchu.quickshop.api.shop.display
 com.ghostchu.quickshop.api.shop.interaction
 com.ghostchu.quickshop.api.inventory
@@ -109,6 +110,7 @@ com.ghostchu.quickshop.util.reporter.error
 com.ghostchu.quickshop.util.envcheck
 com.ghostchu.quickshop.util.mojangapi
 com.ghostchu.quickshop.compatibility
+com.ghostchu.quickshop.addon.betonquest
 com.ghostchu.quickshop.addon.bluemap
 com.ghostchu.quickshop.addon.discordsrv.listener
 com.ghostchu.quickshop.addon.discordsrv.bean
@@ -132,8 +134,10 @@ com.ghostchu.quickshop.addon.limited
 com.ghostchu.quickshop.addon.limited.command
 com.ghostchu.quickshop.addon.list
 com.ghostchu.quickshop.addon.list.command
+com.ghostchu.quickshop.addon.pl3xmap
 com.ghostchu.quickshop.addon.plan
 com.ghostchu.quickshop.addon.plan.util
+com.ghostchu.quickshop.addon.quests
 com.ghostchu.quickshop.addon.reremakemigrator
 com.ghostchu.quickshop.addon.reremakemigrator.command
 com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent
@@ -161,6 +165,7 @@ com.ghostchu.quickshop.compatibility.openinv
 com.ghostchu.quickshop.compatibility.plotsquared
 com.ghostchu.quickshop.compatibility.reforges
 com.ghostchu.quickshop.compatibility.residence
+com.ghostchu.quickshop.compatibility.simpleclaimsystem
 com.ghostchu.quickshop.compatibility.slimefun
 com.ghostchu.quickshop.compatibility.superiorskyblock
 com.ghostchu.quickshop.compatibility.towny
@@ -170,6 +175,7 @@ com.ghostchu.quickshop.compatibility.towny.compat.essentials
 com.ghostchu.quickshop.compatibility.towny.compat.gringotts.towny
 com.ghostchu.quickshop.compatibility.towny.compat.general
 com.ghostchu.quickshop.compatibility.towny.command
+com.ghostchu.quickshop.compatibility.ultimateclaims
 com.ghostchu.quickshop.compatibility.velocity
 com.ghostchu.quickshop.compatibility.voidchest
 com.ghostchu.quickshop.compatibility.worldedit
