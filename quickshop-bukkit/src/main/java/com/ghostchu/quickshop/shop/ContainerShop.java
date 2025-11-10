@@ -32,7 +32,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.api.shop.parser.ParserContext;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -836,7 +835,7 @@ public class ContainerShop implements Shop, Reloadable {
     Util.ensureThread(false);
     final List<Component> lines = new ArrayList<>(4);
     //Line 1
-    /*final String headerKey = inventoryAvailable()? "signs.header-available" : "signs.header-unavailable";
+    final String headerKey = inventoryAvailable()? "signs.header-available" : "signs.header-unavailable";
     lines.add(plugin.text().of(headerKey, this.ownerName(false, locale)).forLocale(locale.getLocale()));
     //Line 2
     final String tradingStringKey = (isStackingShop()? shopType().stackTradingTranslationKey() : shopType().tradingTranslationKey());
@@ -876,26 +875,7 @@ public class ContainerShop implements Shop, Reloadable {
     } else {
       line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale(locale.getLocale());
     }
-    lines.add(line4);*/
-
-    final String t1 = plugin.getConfig().getString("line-1",
-                                                   "${t:${if:available=true?<green>Open Shop~<red>Closed Shop:} ${var:owner}}");
-
-    final String t2 = plugin.getConfig().getString("line-2",
-                                             "${if:remaining=-1?${t:${if:stacking=true?${var:stackTradingKey}~${var:tradingKey}}|${t:signs.unlimited}}:"
-                                             + "${if:remaining=0?${t:${var:noRemainingKey}}~${t:${if:stacking=true?${var:stackTradingKey}~${var:tradingKey}}|${var:remaining}}}}");
-
-    final String t3 = plugin.getConfig().getString("line-3",
-                                                   "${t:signs.item-left}${var:itemName}${t:signs.item-right}");
-
-    final String t4 = plugin.getConfig().getString("line-4",
-                                                   "${if:stacking=true?${t:signs.stack-price|${var:price}|${var:itemAmount}|${var:itemName}}~${t:signs.price|${var:price}}}");
-
-    final ParserContext context = new ParserContext(QuickShop.getInstance());
-    lines.add(plugin.signParserProvider().parse(t1, plugin.signParserProvider(), this, context));
-    lines.add(plugin.signParserProvider().parse(t2, plugin.signParserProvider(), this, context));
-    lines.add(plugin.signParserProvider().parse(t3, plugin.signParserProvider(), this, context));
-    lines.add(plugin.signParserProvider().parse(t4, plugin.signParserProvider(), this, context));
+    lines.add(line4);
 
     final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.RETRIEVE, this, lines);
     event.callEvent();

@@ -166,9 +166,5 @@ public final class Main extends CompatibilityModule {
         event.hasPermission(true);
       }
     }
-
-    if(allowMemberDeletion && land.) {
-    }
   }
-
 }

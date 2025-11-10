@@ -21,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -167,6 +168,11 @@ public class PlayerListener extends AbstractQSListener {
           }
         }
       }
+    }
+
+    if(shop == null && b.getBlockData() instanceof Chest) {
+
+      return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.CONTAINER);
     }
     return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.SHOPBLOCK);
   }
