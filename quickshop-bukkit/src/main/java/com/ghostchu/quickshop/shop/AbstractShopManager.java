@@ -113,6 +113,7 @@ public abstract class AbstractShopManager implements ShopManager {
     // Put it in the world
     // Put the shop in its location in the chunk list.
     inChunk.put(shop.getLocation(), shop);
+    shopCache.invalidate(null, shop.getLocation());
   }
 
   @Override
