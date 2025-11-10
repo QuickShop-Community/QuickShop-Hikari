@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.parser;
+package com.ghostchu.quickshop.api.shop.parser.node;
 
 
 /*
@@ -20,6 +20,9 @@ package com.ghostchu.quickshop.api.shop.parser;
  */
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.SignParserProvider;
+import com.ghostchu.quickshop.api.shop.parser.Node;
+import com.ghostchu.quickshop.api.shop.parser.ParserContext;
 import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
@@ -54,20 +57,21 @@ public class TranslationNode implements Node {
   }
 
   /**
-   * Parses the provided shop information using a specific parsing context to produce a component.
+   * Parses the provided shop information using the specified parser provider and parsing context
+   * to produce a Component.
    *
-   * @param shop    the shop instance containing the data to be parsed
-   * @param context the parser context containing additional parsing metadata or rules
-   *
-   * @return the resulting Component created by parsing the shop with the given context
+   * @param parserProvider the SignParserProvider instance providing parsing logic and variable definitions
+   * @param shop the Shop instance containing the data to be parsed
+   * @param context the ParserContext containing additional metadata or rules for the parsing process
+   * @return the resulting Component created by parsing the shop with the provided parser provider and context
    */
   @Override
-  public Component parse(final Shop shop, final ParserContext context) {
+  public Component parse(final SignParserProvider parserProvider, final Shop shop, final ParserContext context) {
 
     final List<Component> args = new ArrayList<>(arguments.size());
     for(final Node argument : arguments) {
 
-      args.add(argument.parse(shop, context));
+      args.add(argument.parse(parserProvider, shop, context));
     }
     return context.translate(key, args.toArray());
   }

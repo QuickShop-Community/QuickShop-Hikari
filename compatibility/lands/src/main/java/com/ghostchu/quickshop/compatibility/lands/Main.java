@@ -32,6 +32,7 @@ public final class Main extends CompatibilityModule {
   private LandsIntegration landsIntegration;
   private boolean deleteWhenLosePermission;
   private boolean deleteWhenLandDeleted;
+  private boolean allowMemberDeletion;
 
   @Override
   public void init() {
@@ -41,6 +42,7 @@ public final class Main extends CompatibilityModule {
     whitelist = getConfig().getBoolean("whitelist-mode");
     deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
     deleteWhenLandDeleted = getConfig().getBoolean("delete-shops-in-land-when-land-deleted");
+    allowMemberDeletion = getConfig().getBoolean("allow-member-deletion");
   }
 
   @EventHandler(ignoreCancelled = true)
@@ -163,6 +165,9 @@ public final class Main extends CompatibilityModule {
       if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
         event.hasPermission(true);
       }
+    }
+
+    if(allowMemberDeletion && land.) {
     }
   }
 

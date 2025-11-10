@@ -386,6 +386,20 @@ public interface Shop {
   void setDisableDisplay(boolean disabled);
 
   /**
+   * Determines whether a custom item name should be used.
+   *
+   * @return true if a custom item name is enabled, false otherwise
+   */
+  boolean useCustomItemName();
+
+  /**
+   * Customizes and returns a Component representing an item name.
+   *
+   * @return a Component representing the customized item name
+   */
+  Component customItemName();
+
+  /**
    * Check if this shop is free shop
    *
    * @return Free Shop

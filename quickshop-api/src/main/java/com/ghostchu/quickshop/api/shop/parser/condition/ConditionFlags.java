@@ -29,5 +29,7 @@ public enum ConditionFlags {
 
   AVAILABLE,
   STACKING,
-  CUSTOM_NAME
+  CUSTOM_NAME,
+
+  DEFAULT
 }

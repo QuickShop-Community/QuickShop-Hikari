@@ -1,5 +1,4 @@
-package com.ghostchu.quickshop.api.shop.parser.condition;
-
+package com.ghostchu.quickshop.api.shop.parser;
 
 /*
  * QuickShop-Hikari
@@ -20,21 +19,10 @@ package com.ghostchu.quickshop.api.shop.parser.condition;
  */
 
 /**
- * ConditionOperations
+ * ParseResult
  *
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public enum ConditionOperations {
-
-  EQUAL,
-  NOT_EQUAL,
-  GREATER_THAN,
-  LESS_THAN,
-  GREATER_THAN_OR_EQUAL,
-  LESS_THAN_OR_EQUAL,
-  CONTAINS,
-  NOT_CONTAINS,
-  STARTS_WITH,
-  ENDS_WITH,
+public record ParseResult(Node node, int statementLength) {
 }

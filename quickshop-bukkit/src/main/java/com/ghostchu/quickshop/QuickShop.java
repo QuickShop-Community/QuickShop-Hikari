@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.SignParserProvider;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
@@ -75,6 +76,7 @@ import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.interaction.QuickShopInteractionManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.sign.SignHooker;
+import com.ghostchu.quickshop.shop.sign.SimpleSignParserProvider;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -209,6 +211,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   private final EconomyManager economyManager = new QSEconomyManager();
+  private SignParserProvider signParserProvider;
   @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
@@ -628,6 +631,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return this.shopManager;
   }
 
+  public SignParserProvider signParserProvider() {
+    return signParserProvider;
+  }
+
   @Override
   public TextManager getTextManager() {
 
@@ -777,6 +784,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     loadCommandHandler();
 //        this.invWrapperUpdateManager = new InventoryWrapperUpdateManager(this);
 //        this.invWrapperUpdateManager.register();
+
+    this.signParserProvider = new SimpleSignParserProvider(this);
     this.shopManager = new SimpleShopManager(this);
     // Limit
     //this.registerLimitRanks();

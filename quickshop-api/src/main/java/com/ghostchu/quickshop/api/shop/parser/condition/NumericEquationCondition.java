@@ -25,26 +25,26 @@ import com.ghostchu.quickshop.api.shop.parser.NodeCondition;
 import com.ghostchu.quickshop.api.shop.parser.ParserContext;
 
 /**
- * FlagCondition
+ * EquationCondition
  *
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class FlagCondition implements NodeCondition {
+public class NumericEquationCondition implements NodeCondition {
 
-  private final ConditionFlags flag;
-  private final boolean value;
+  private final ConditionOperations operation;
+  private final int rightHandSide;
 
-  public FlagCondition(final ConditionFlags flag, final boolean value) {
+  public NumericEquationCondition(final ConditionOperations operation, final int rightHandSide) {
 
-    this.flag = flag;
-    this.value = value;
+    this.operation = operation;
+    this.rightHandSide = rightHandSide;
   }
 
   @Override
   public String identifier() {
 
-    return "flag-condition";
+    return "equation-condition";
   }
 
   /**
@@ -62,12 +62,16 @@ public class FlagCondition implements NodeCondition {
   @Override
   public boolean test(final SignParserProvider parserProvider, final Shop shop, final ParserContext context) {
 
-    return switch(flag) {
+    final int leftHandSide = shop.shopType().remainingStock(shop);
+    return switch(operation) {
 
-      case AVAILABLE -> shop.inventoryAvailable() == value;
-      case CUSTOM_NAME -> shop.useCustomItemName() == value;
-      case STACKING -> shop.isStackingShop() == value;
-      case DEFAULT -> false;
+      case NOT_EQUAL -> leftHandSide != rightHandSide;
+      case LESS_THAN -> leftHandSide < rightHandSide;
+      case LESS_THAN_OR_EQUAL -> leftHandSide <= rightHandSide;
+      case GREATER_THAN -> leftHandSide > rightHandSide;
+      case GREATER_THAN_OR_EQUAL -> leftHandSide >= rightHandSide;
+
+      default -> leftHandSide == rightHandSide;
     };
   }
 }

@@ -19,7 +19,7 @@ package com.ghostchu.quickshop.api.shop.parser;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.QuickShopProvider;
+import com.ghostchu.quickshop.api.QuickShopAPI;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,19 +31,19 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ParserContext {
 
-  private final QuickShopProvider provider;
+  private final QuickShopAPI api;
 
-  public ParserContext(final QuickShopProvider provider) {
-    this.provider = provider;
+  public ParserContext(final QuickShopAPI provider) {
+    this.api = provider;
   }
 
-  public QuickShopProvider provider() {
+  public QuickShopAPI provider() {
 
-    return provider;
+    return api;
   }
 
   public Component translate(final String key, final @Nullable Object... args) {
 
-    return provider.getApiInstance().getTextManager().of(key, args).forLocale();
+    return api.getTextManager().of(key, args).forLocale();
   }
 }

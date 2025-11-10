@@ -39,6 +39,18 @@ public interface SignParserProvider {
 
   Pattern TOKEN = Pattern.compile("\\$\\{([^}]+)}");
 
+  default Component parse(final String template, final SignParserProvider parserProvider, final Shop shop, final ParserContext context) {
+
+    final List<Node> nodes = parseTemplate(template);
+
+    Component out = Component.empty();
+    for(final Node node : nodes) {
+
+      out = out.append(node.parse(parserProvider, shop, context));
+    }
+    return out;
+  }
+
   /**
    * Provides a map of variable names to functions responsible for generating components based on a shop instance
    * and parsing context. Each variable is associated with a BiFunction that takes a Shop object and a ParserContext
@@ -106,14 +118,4 @@ public interface SignParserProvider {
    * @return a ConditionNode object resulting from parsing the provided template
    */
   NodeCondition parseOperatorNodes(final String template);
-
-  /**
-   * Parses the provided template into a Component using the given shop and parser context.
-   *
-   * @param template the template string to be parsed
-   * @param shop the shop instance providing context for parsing
-   * @param context the parser context containing additional parsing details
-   * @return a Component representation of the parsed template
-   */
-  Component parse(final String template, final Shop shop, final ParserContext context);
 }
