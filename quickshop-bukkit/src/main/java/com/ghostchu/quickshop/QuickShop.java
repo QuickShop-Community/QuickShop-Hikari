@@ -169,8 +169,10 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
 
@@ -1181,8 +1183,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       logger.info("Saving all in-memory changed shops...");
       final List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
       final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
-      CompletableFuture.allOf(completableFutures)
-              .join();
+      //CompletableFuture.allOf(completableFutures).join();
+
+      try {
+        CompletableFuture.allOf(completableFutures)
+                .orTimeout(15, TimeUnit.SECONDS)
+                .join();
+      } catch (final CompletionException ex) {
+        //TODO: Sync save fallback for the failed shops?
+        logger.info("Timed out flushing the rest of the shops on disable", ex);
+      }
     }
     /* Remove all display items, and any dupes we can find */
     if(shopManager != null) {

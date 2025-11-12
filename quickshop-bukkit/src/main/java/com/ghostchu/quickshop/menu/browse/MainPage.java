@@ -131,7 +131,7 @@ public class MainPage {
         int i = 0;
         for(final Shop shop : shops) {
 
-          System.out.println("Menu add: id: " + shop.getShopId() + " slot: " + offset + (i - start) + "i: " + i);
+          //System.out.println("Menu add: id: " + shop.getShopId() + " slot: " + offset + (i - start) + "i: " + i);
 
           if(i < start) {
 
@@ -163,7 +163,7 @@ public class MainPage {
 
           playerPage.addIcon(id, new IconBuilder(stack).withSlot(offset + (i - start)).build());
 
-          System.out.println("Slots: " + playerPage.getIcons(id).size());
+          //System.out.println("Slots: " + playerPage.getIcons(id).size());
           i++;
         }
       }

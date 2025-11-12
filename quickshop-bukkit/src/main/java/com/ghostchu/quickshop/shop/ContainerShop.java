@@ -84,6 +84,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * ChestShop core
@@ -140,6 +141,10 @@ public class ContainerShop implements Shop, Reloadable {
 
   @NotNull
   private BenefitProvider benefit;
+
+  //updating objects
+  private final AtomicBoolean updatingAtomic = new AtomicBoolean(false);
+  private volatile CompletableFuture<Void> inFlightUpdate;
 
 
   /**
@@ -1725,6 +1730,7 @@ public class ContainerShop implements Shop, Reloadable {
     if(updating) {
       return CompletableFuture.completedFuture(null);
     }
+
     if(this.shopId == -1) {
       Log.debug("Skip shop database update because it not fully setup!");
       return CompletableFuture.completedFuture(null);
@@ -1741,7 +1747,7 @@ public class ContainerShop implements Shop, Reloadable {
     event = event.clone(Phase.POST);
     event.callEvent();
 
-    updating = true;
+    /*updating = true;
     return plugin.getDatabaseHelper().updateShop(this)
             .whenComplete((result, throwable)->{
               updating = false;
@@ -1751,7 +1757,26 @@ public class ContainerShop implements Shop, Reloadable {
                 plugin.logger().warn(
                         "Could not update a shop in the database! Changes will revert after a reboot!", throwable);
               }
+            });*/
+
+    // If already updating, just return the same future
+    if (!updatingAtomic.compareAndSet(false, true)) {
+      return inFlightUpdate != null ? inFlightUpdate : CompletableFuture.completedFuture(null);
+    }
+
+    // Start a new update
+    final CompletableFuture<Void> f = plugin.getDatabaseHelper().updateShop(this)
+            .whenComplete((r, th) -> {
+              updatingAtomic.set(false);
+              if (th == null) {
+                dirty = false;
+              } else {
+                plugin.logger().warn("Could not update shop in DB!", th);
+              }
             });
+
+    inFlightUpdate = f;
+    return f;
   }
 
   @Override
