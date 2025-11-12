@@ -1189,7 +1189,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         CompletableFuture.allOf(completableFutures)
                 .orTimeout(15, TimeUnit.SECONDS)
                 .join();
-      } catch (final CompletionException ex) {
+      } catch(final CompletionException ex) {
         //TODO: Sync save fallback for the failed shops?
         logger.info("Timed out flushing the rest of the shops on disable", ex);
       }
