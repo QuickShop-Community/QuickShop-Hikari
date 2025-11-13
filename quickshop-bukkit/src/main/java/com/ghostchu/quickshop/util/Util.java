@@ -76,6 +76,10 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -289,12 +293,13 @@ public class Util {
   }
 
   public static boolean isBlacklistWorld(@NotNull final World world) {
-      final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
-      if (!whitelist.isEmpty()) {
-          return !whitelist.contains(world.getName());
-      }
-      // fall back to blacklist check
-      return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
+
+    final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
+    if(!whitelist.isEmpty()) {
+      return !whitelist.contains(world.getName());
+    }
+    // fall back to blacklist check
+    return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
   }
 
   /**
@@ -305,11 +310,12 @@ public class Util {
    * @return true if the world should be skipped, false otherwise
    */
   public static boolean isDatabaseLoadingBlacklisted(@NotNull final String worldName) {
-      final List<String> whitelist = plugin.getConfig().getStringList("database-loading-whitelist-worlds");
-      if (!whitelist.isEmpty()) {
-          return !whitelist.contains(worldName);
-      }
-      return plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName);
+
+    final List<String> whitelist = plugin.getConfig().getStringList("database-loading-whitelist-worlds");
+    if(!whitelist.isEmpty()) {
+      return !whitelist.contains(worldName);
+    }
+    return plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName);
   }
 
   /**
@@ -854,6 +860,48 @@ public class Util {
       total += value.getAmount();
     }
     return total;
+  }
+
+  /**
+   * Waits for the completion of a given {@link CompletableFuture} within a specified timeout period.
+   * Throws appropriate exceptions if the future times out, encounters an execution error,
+   * or the thread is interrupted.
+   *
+   * @param <T> The type of the result returned by the CompletableFuture.
+   * @param future The CompletableFuture to wait for; must not be null.
+   * @param timeout The maximum time to wait for the future to complete.
+   * @param unit The time unit of the timeout argument.
+   * @param description A description of the future operation, used for exception messages.
+   * @return The result of the completed CompletableFuture.
+   * @throws IllegalStateException If the provided future is null.
+   * @throws RuntimeException If the future times out, is interrupted, or encounters an execution error.
+   */
+  public static <T> T waitForFuture(final CompletableFuture<T> future, final long timeout, final TimeUnit unit, final String description) throws RuntimeException {
+
+    if(future == null) {
+
+      throw new IllegalStateException("Future for " + description + " was null");
+    }
+    try {
+
+      return future.get(timeout, unit);
+    } catch(final TimeoutException e) {
+
+      throw new RuntimeException("Timed out waiting for " + description, e);
+    } catch(final ExecutionException e) {
+
+      //Unwrap the cause so logs are more useful
+      final Throwable cause = (e.getCause() != null)? e.getCause() : e;
+      if(cause instanceof final RuntimeException re) {
+
+        throw re;
+      }
+      throw new RuntimeException("Error while waiting for " + description, cause);
+    } catch(final InterruptedException e) {
+
+      Thread.currentThread().interrupt();
+      throw new RuntimeException("Interrupted while waiting for " + description, e);
+    }
   }
 
   /**

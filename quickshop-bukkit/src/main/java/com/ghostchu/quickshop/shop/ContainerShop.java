@@ -84,7 +84,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.ghostchu.quickshop.util.Util.waitForFuture;
 
 /**
  * ChestShop core
@@ -1726,7 +1731,8 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   @NotNull
   public CompletableFuture<Void> update() {
-    // Warning! This method can be run in async thread.
+
+    //Warning! This method can be run in async thread.
     if(updating) {
       return CompletableFuture.completedFuture(null);
     }
@@ -1747,24 +1753,12 @@ public class ContainerShop implements Shop, Reloadable {
     event = event.clone(Phase.POST);
     event.callEvent();
 
-    /*updating = true;
-    return plugin.getDatabaseHelper().updateShop(this)
-            .whenComplete((result, throwable)->{
-              updating = false;
-              if(throwable == null) {
-                this.dirty = false;
-              } else {
-                plugin.logger().warn(
-                        "Could not update a shop in the database! Changes will revert after a reboot!", throwable);
-              }
-            });*/
-
-    // If already updating, just return the same future
-    if (!updatingAtomic.compareAndSet(false, true)) {
+    //If already updating, just return the same future
+    if(!updatingAtomic.compareAndSet(false, true)) {
       return inFlightUpdate != null ? inFlightUpdate : CompletableFuture.completedFuture(null);
     }
 
-    // Start a new update
+    //Start a new update
     final CompletableFuture<Void> f = plugin.getDatabaseHelper().updateShop(this)
             .whenComplete((r, th) -> {
               updatingAtomic.set(false);
@@ -1777,6 +1771,13 @@ public class ContainerShop implements Shop, Reloadable {
 
     inFlightUpdate = f;
     return f;
+  }
+
+  @Override
+  public void updateSync() throws RuntimeException {
+    final CompletableFuture<Void> future = update();
+
+    waitForFuture(future, 15, TimeUnit.SECONDS, "updateShop(" + shopId + ")");
   }
 
   @Override
