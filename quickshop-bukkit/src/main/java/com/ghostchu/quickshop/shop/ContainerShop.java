@@ -349,7 +349,11 @@ public class ContainerShop implements Shop, Reloadable {
       try {
         final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
         if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getVirtualDisplayItemManager() == null) {
-          plugin.logger().warn("Using invalid display provider.");
+          plugin.logger().warn("Invalid display provider! " +
+                               "No compatible display backend found. " +
+                               "This may occur if ProtocolLib or PacketEvents is missing, outdated, or incompatible with your Minecraft version, " +
+                               "or if this QuickShop-Hikari build does not yet support the current server version. " +
+                               "Shops will function normally, but displays above containers are disabled.");
           return;
         }
 
@@ -366,7 +370,11 @@ public class ContainerShop implements Shop, Reloadable {
         }
 
         if(this.displayItem == null) {
-          plugin.logger().warn("Using invalid display provider.");
+          plugin.logger().warn("Invalid display provider! " +
+                               "No compatible display backend found. " +
+                               "This may occur if ProtocolLib or PacketEvents is missing, outdated, or incompatible with your Minecraft version, " +
+                               "or if this QuickShop-Hikari build does not yet support the current server version. " +
+                               "Shops will function normally, but displays above containers are disabled.");
           return;
         }
       } catch(final Throwable anyError) {
