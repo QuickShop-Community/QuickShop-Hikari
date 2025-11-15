@@ -52,7 +52,11 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public ItemStack decodeStack(@NotNull final String serialized) {
+  public @Nullable ItemStack decodeStack(@NotNull final String serialized) {
+    if(serialized.isEmpty()) {
+
+      return null;
+    }
 
     return ItemStack.deserializeBytes(Base64.getDecoder().decode(serialized));
   }

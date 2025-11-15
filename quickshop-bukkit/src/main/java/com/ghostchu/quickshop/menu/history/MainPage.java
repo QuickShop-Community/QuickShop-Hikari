@@ -230,11 +230,22 @@ public class MainPage {
 
           ItemStack historyItem = QuickShop.getInstance().platform().decodeStack(dataRecord.getEncoded());
           if(historyItem == null) {
-            historyItem = new ItemStack(Material.STONE);
-            final ItemMeta meta = historyItem.getItemMeta();
-            if(meta != null) {
-              meta.setDisplayName("Failed to deserialize item");
-              historyItem.setItemMeta(meta);
+
+            //try the old serialization for old shops.
+            try {
+              historyItem = Util.deserialize(dataRecord.getItem());
+            } catch(final Exception ignore) {
+            }
+
+            if(historyItem == null) {
+
+              historyItem = new ItemStack(Material.STONE);
+              final ItemMeta meta = historyItem.getItemMeta();
+              if(meta != null) {
+
+                meta.setDisplayName("Failed to deserialize item");
+                historyItem.setItemMeta(meta);
+              }
             }
           }
           final String type = historyItem.getType().getKey().getKey();

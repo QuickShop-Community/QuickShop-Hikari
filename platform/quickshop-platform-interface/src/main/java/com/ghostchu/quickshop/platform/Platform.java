@@ -35,7 +35,7 @@ public interface Platform {
     return "";
   }
 
-  default ItemStack decodeStack(@NotNull final String serialized) {
+  default @Nullable ItemStack decodeStack(@NotNull final String serialized) {
 
     return null;
   }
