@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop bị vô hiệu hóa trong thế giới n
 how-much-to-trade-for: <green>Nhập vào khung chat số tiền bạn muốn giao dịch <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Tạo bản sao lưu shop từ cơ sở dữ liệu...
-_comment: Chào người biên dịch! Nếu bạn đang chỉnh sửa code trên GitHub hoặc thông qua mã nguồn, bạn nên truy cập https://crowdin.com/project/qs-hikari.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Lệnh không hợp lệ! Chấp nhận các lệnh sau:<gray>{0}'
 thats-not-a-number: <red>Số không hợp lệ
@@ -745,6 +745,10 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -819,6 +823,7 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
+               {
                {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",

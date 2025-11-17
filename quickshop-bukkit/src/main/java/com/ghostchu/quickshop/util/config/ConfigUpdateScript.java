@@ -53,7 +53,7 @@ public class ConfigUpdateScript {
   public void configDisplayCoords() {
 
     getConfig().set("shop.display-coords.x", "0.5");
-    getConfig().set("shop.display-coords.y", "0.5");
+    getConfig().set("shop.display-coords.y", "0.8");
     getConfig().set("shop.display-coords.z", "0.5");
   }
 

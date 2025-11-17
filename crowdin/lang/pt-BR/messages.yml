@@ -5,7 +5,7 @@ disabled-in-this-world: <red>O QuickShop está desativado neste mundo
 how-much-to-trade-for: <green>Digite no chat, por quanto você deseja vender <yellow>{1}x {0}<green>.
 client-language-changed: <green>O plugin detectou sua linguagem, agora estamos usando a linguagem {0} com você.
 shops-backingup: Criando backup de lojas no banco de dados...
-_comment: Olá, tradutor! Se você está editando isto no GitHub ou através do código-fonte, você deve ir em https://crowdin.com/project/qs-hikari.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>Este proprietário de loja ilimitado foi alterado para {0}.
 bad-command-usage-detailed: '<red>Argumentos de comando inválidos! Aceita os seguintes parâmetros: <gray>{0}'
 thats-not-a-number: <red>Numero inválido
@@ -761,6 +761,10 @@ addon:
   lands:
     world-not-enabled: <red>Você não está permitido a criar ou comprar nesse mundo.
     creation-denied: <red>Você não tem permissão para criar lojas nesse terreno.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -802,8 +806,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Alguém vendeu itens na sua loja",
-             "description": "O jogador %%purchase.name%% vendeu x%%purchase.amount%% %%shop.item.name%% para sua loja.",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -816,17 +820,17 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "Notificação do QuickShop-Hikari",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Loja",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Cliente",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -836,17 +840,18 @@ addon:
                  "inline": true
                },
                {
-                 "name": "Quantia",
+               {
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Você pagou",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxas",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
