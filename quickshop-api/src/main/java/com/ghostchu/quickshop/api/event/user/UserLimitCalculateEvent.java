@@ -27,12 +27,12 @@ import com.ghostchu.quickshop.api.obj.QUser;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class UserRankCalculateEvent extends AbstractQSEvent {
+public class UserLimitCalculateEvent extends AbstractQSEvent {
 
   private final QUser user;
   private int limit;
 
-  public UserRankCalculateEvent(final QUser user, final int limit) {
+  public UserLimitCalculateEvent(final QUser user, final int limit) {
     this.user = user;
     this.limit = limit;
   }
