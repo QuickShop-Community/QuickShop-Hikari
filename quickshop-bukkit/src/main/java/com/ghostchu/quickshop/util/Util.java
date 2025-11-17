@@ -560,9 +560,9 @@ public class Util {
       }
       yamlConfiguration.loadFromString(config);
       return yamlConfiguration.getItemStack("item");
-    } catch(final Exception e) {
+    } catch(final Throwable th) {
 
-      QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
+      QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", th);
       Log.debug("Failed to load data to the ItemStack: " + config);
       return null;
     }
