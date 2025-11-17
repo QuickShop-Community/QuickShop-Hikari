@@ -16,6 +16,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.IShopLayoutProvider;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
@@ -123,6 +124,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   private boolean sendStockMessageToStaff;
   private boolean useShopableChecks;
   private boolean useShopCache;
+  private IShopLayoutProvider shopLayoutProvider;
 
   //Initialize our shop types
   public static final BuyingType BUYING_TYPE = new BuyingType();
@@ -135,6 +137,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     Util.ensureThread(false);
     plugin.getReloadManager().register(this);
     this.interactiveManager = new InteractiveManager(plugin);
+    this.shopLayoutProvider = new SimpleShopLayoutProvider(plugin);
     init();
   }
 
@@ -188,6 +191,28 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.useShopableChecks = PackageUtil.parsePackageProperly("shoppableChecks").asBoolean(false);
     this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
 
+  }
+
+  /**
+   * Provides an instance of {@code IShopLayoutProvider} responsible for managing shop layouts.
+   *
+   * @return an implementation of {@code IShopLayoutProvider} that handles the shop layout
+   * configuration.
+   */
+  @Override
+  public IShopLayoutProvider shopLayoutProvider() {
+
+    return shopLayoutProvider;
+  }
+
+  /**
+   * Sets the shop layout provider to customize the layout of the shop.
+   *
+   * @param provider the instance of IShopLayoutProvider that defines the layout of the shop
+   */
+  @Override
+  public void shopLayoutProvider(final IShopLayoutProvider provider) {
+    this.shopLayoutProvider = provider;
   }
 
   /**

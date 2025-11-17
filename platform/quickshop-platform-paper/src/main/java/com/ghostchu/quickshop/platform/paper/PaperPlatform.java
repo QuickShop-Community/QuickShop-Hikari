@@ -260,10 +260,6 @@ public class PaperPlatform implements Platform {
 
     for(int i = 0; i < Math.min(component.size(), 4); i++) {
       sign.line(i, component.get(i));
-
-      //System.out.println("Line #" + i);
-      //System.out.println(PlainTextComponentSerializer.plainText().serialize(component.get(i)));
-      //System.out.println(component.get(i).toString());
     }
     sign.update(true, false);
   }

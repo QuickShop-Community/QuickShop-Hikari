@@ -191,6 +191,30 @@ shop:
     - history
     - remove
 
+  #The layout of signs for shops.
+  layout:
+
+    #The layout of BUYING shops.
+    BUYING:
+      line1: "header"
+      line2: "trading"
+      line3: "item"
+      line4: "price"
+
+    #The layout of FROZEN shops.
+    FROZEN:
+      line1: "header"
+      line2: "trading"
+      line3: "item"
+      line4: "price"
+
+    #The layout of SELLING shops.
+    SELLING:
+      line1: "header"
+      line2: "trading"
+      line3: "item"
+      line4: "price"
+
   #The cost to make a shop.
   cost: 10
 
