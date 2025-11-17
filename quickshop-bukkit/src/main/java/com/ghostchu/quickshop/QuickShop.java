@@ -1182,6 +1182,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     if(getShopManager() != null) {
       logger.info("Saving all in-memory changed shops...");
       final List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+
+      logger.info("Shops needed saved: " + futures.size());
       final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
 
       try {
