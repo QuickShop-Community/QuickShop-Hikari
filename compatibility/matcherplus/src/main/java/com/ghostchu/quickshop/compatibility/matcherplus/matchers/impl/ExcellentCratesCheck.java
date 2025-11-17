@@ -1,9 +1,7 @@
 package com.ghostchu.quickshop.compatibility.matcherplus.matchers.impl;
 
-import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.ghostchu.quickshop.compatibility.matcherplus.matchers.ItemCheck;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.key.CrateKey;
