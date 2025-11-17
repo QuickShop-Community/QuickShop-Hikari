@@ -169,8 +169,10 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
 
@@ -1180,9 +1182,32 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     if(getShopManager() != null) {
       logger.info("Saving all in-memory changed shops...");
       final List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+
+      logger.info("Shops needed saved: " + futures.size());
       final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
-      CompletableFuture.allOf(completableFutures)
-              .join();
+
+      try {
+
+        CompletableFuture.allOf(completableFutures)
+                .orTimeout(15, TimeUnit.SECONDS)
+                .join();
+
+      } catch(final CompletionException ex) {
+
+        logger.info("Timed out, running saving synchronously to determine shop with issue.", ex);
+        for(final Shop shop : getShopManager().getAllShops()) {
+
+          if(shop.isDirty()) {
+            try {
+
+              shop.updateSync();
+            } catch(final RuntimeException re) {
+
+              logger.warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.getLocation(), re);
+            }
+          }
+        }
+      }
     }
     /* Remove all display items, and any dupes we can find */
     if(shopManager != null) {

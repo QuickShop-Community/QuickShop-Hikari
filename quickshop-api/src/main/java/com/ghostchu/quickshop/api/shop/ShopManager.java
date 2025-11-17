@@ -30,6 +30,20 @@ import java.util.concurrent.CompletableFuture;
 public interface ShopManager {
 
   /**
+   * Provides an instance of {@code IShopLayoutProvider} responsible for managing shop layouts.
+   *
+   * @return an implementation of {@code IShopLayoutProvider} that handles the shop layout configuration.
+   */
+  IShopLayoutProvider shopLayoutProvider();
+
+  /**
+   * Sets the shop layout provider to customize the layout of the shop.
+   *
+   * @param provider the instance of IShopLayoutProvider that defines the layout of the shop
+   */
+  void shopLayoutProvider(final IShopLayoutProvider provider);
+
+  /**
    * Retrieves a map containing shop types.
    *
    * @return a map where the key is an integer representing the shop type ID,

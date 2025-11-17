@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop;
 
 import com.ghostchu.quickshop.api.RankLimiter;
+import com.ghostchu.quickshop.api.event.user.UserLimitCalculateEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
@@ -66,7 +67,11 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
         count = entry.getValue();
       }
     }
-    return count;
+
+    final UserLimitCalculateEvent event = new UserLimitCalculateEvent(p, count);
+    event.callEvent();
+
+    return event.limit();
   }
 
   @Override

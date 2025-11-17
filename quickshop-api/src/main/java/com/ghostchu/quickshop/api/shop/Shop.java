@@ -661,6 +661,14 @@ public interface Shop {
   CompletableFuture<Void> update();
 
   /**
+   * Update shop data to database synchronously. This will create the completeable future for the save
+   * function, and wait for it to complete. DON'T USE IF YOU DON'T KNOW WHAT YOU'RE DOING!
+   *
+   * @throws RuntimeException
+   */
+  void updateSync() throws RuntimeException;
+
+  /**
    * Gets the benefit in this shop
    */
   @NotNull
