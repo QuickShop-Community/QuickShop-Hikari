@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop er deaktivert i denne verdenen
 how-much-to-trade-for: <green>Skriv i chat hvor mye du ønsker å selge <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop oppdaget at språkinnstillingen for klienten din er endret. Vi bruker nå språkoppsettet {0} for deg.
 shops-backingup: Oppretter sikkerhetskopi av butikker fra databasen...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>Eieren til denne ubegrensede butikken har blitt endret til {0}.
 bad-command-usage-detailed: '<red>Feil argumenter! Følgende parametere er akseptert: <gray>{0}'
 thats-not-a-number: <red>Ugyldig nummer

@@ -5,7 +5,7 @@ disabled-in-this-world: <red>El sistema de tiendas está deshabilitado en este m
 how-much-to-trade-for: <green>Ingresa en el chat, por cuánto deseas intercambiar <yellow>{1}x {0}<green>.
 client-language-changed: <green>El sistema de tiendas ha detectado que la configuración de idioma del cliente ha sido cambiada, ahora estamos usando la configuración regional de {0} para ti.
 shops-backingup: Creando copia de seguridad de la tienda de empresa desde la base de datos...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>El propietario de esta tienda de empresa ilimitada ha cambiado a {0}.
 bad-command-usage-detailed: '<red>¡Argumentos incorrectos del comando! Acepta los siguientes parámetros: <gray>{0}'
 thats-not-a-number: <red>Número inválido.

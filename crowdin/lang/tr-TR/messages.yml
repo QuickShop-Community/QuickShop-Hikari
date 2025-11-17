@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Bu komut bu dünyada devre dışı
 how-much-to-trade-for: <yellow>{1} <green>tane <yellow>{0} <green>için ne kadar ticaret yapmak istediğini sohbete yaz.
 client-language-changed: <green>QuickShop, istemci dil ayarınızın değiştirildiğini algıladı, şimdi sizin için {0} yerel ayarını kullanıyoruz.
 shops-backingup: Veri tabanından market yedeği oluşturuluyor...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>Bu sınırsız marketin sahibi {0} olarak değiştirildi.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Geçersiz sayı
