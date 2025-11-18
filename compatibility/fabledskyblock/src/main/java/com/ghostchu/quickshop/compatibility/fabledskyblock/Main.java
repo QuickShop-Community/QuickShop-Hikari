@@ -167,7 +167,6 @@ public final class Main extends CompatibilityModule {
           getApi().getShopManager().deleteShop(shop);
         }
       });
-      ;
     }
   }
 
