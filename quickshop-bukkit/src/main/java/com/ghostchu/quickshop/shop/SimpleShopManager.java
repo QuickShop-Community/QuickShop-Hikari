@@ -1025,18 +1025,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       boolean shouldDisplayEnchantments = plugin.getConfig().getBoolean("shop.info-panel.show-enchantments");
       boolean shouldDisplayPotionEffects = plugin.getConfig().getBoolean("shop.info-panel.show-effects");
 
-      if(respectItemFlag) {
-        if(items.hasItemMeta()) {
-          final ItemMeta shopItemMeta = shop.getItem().getItemMeta();
-          shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
-          ItemFlag hidePotionEffect;
-          try {
-            hidePotionEffect = ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP");
-          } catch(final Exception e) {
-            hidePotionEffect = ItemFlag.valueOf("HIDE_POTION_EFFECTS"); // Remove this when we dropped 1.20.x support
-          }
-          shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(hidePotionEffect);
+      if(respectItemFlag && items.hasItemMeta()) {
+
+        final ItemMeta shopItemMeta = shop.getItem().getItemMeta();
+        shouldDisplayEnchantments = !shopItemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS);
+
+        ItemFlag hidePotionEffect;
+        try {
+          hidePotionEffect = ItemFlag.valueOf("HIDE_ADDITIONAL_TOOLTIP");
+        } catch(final Exception e) {
+          hidePotionEffect = ItemFlag.valueOf("HIDE_POTION_EFFECTS"); // Remove this when we dropped 1.20.x support
         }
+        shouldDisplayPotionEffects = !shopItemMeta.hasItemFlag(hidePotionEffect);
       }
 
       if(shouldDisplayEnchantments) {
