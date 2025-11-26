@@ -1,0 +1,10 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+#Has to be included for folia support
+folia-supported: true
+api-version: '1.20'
+depend:
+  - squaremap
+authors: [ creatorfromhell, ghostchu ]
+description: Display QuickShop shops on your Squaremap instance
