@@ -333,8 +333,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private MetricManager metricManager;
   @Getter
   private RegistryManager registry;
-//    @Getter
-//    private InventoryWrapperUpdateManager invWrapperUpdateManager;
 
   public QuickShop(final QuickShopBukkit javaPlugin, final Logger logger, final Platform platform) {
 
@@ -1030,9 +1028,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void registerTasks() {
 
     calendarWatcher = new CalendarWatcher(this);
-    // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
     signUpdateWatcher.start(1, 10);
-    //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
     if(logWatcher != null) {
       logWatcher.start(10, 10);
       logger.info("Log actions is enabled. Actions will be logged in the qs.log file!");
