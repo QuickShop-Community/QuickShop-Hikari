@@ -1,0 +1,467 @@
+# QuickShop-Hikari GUI Configuration
+# Configure the appearance and layout of all GUI menus
+# 
+# Each icon supports:
+#   material: The material type (e.g., PAPER, BARRIER, LIME_CONCRETE)
+#   name: Display name (supports MiniMessage format)
+#   lore: List of lore lines (supports MiniMessage format)
+#   custom-model-data: Custom model data for resource packs (integer, optional)
+#   slot: The slot position in the inventory (0-53)
+#   amount: Item amount (default: 1)
+#
+# TEXT OPTIONS:
+#   1. Direct inline text: Write MiniMessage formatted text directly
+#      Example: name: "<bold><green>Buy Items</green></bold>"
+#
+#   2. Empty name: Use a single space " " for blank display names
+#      Example: name: " "
+#
+# MiniMessage format reference: https://docs.advntr.dev/minimessage/format.html
+# Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
+
+version: 2
+
+# ===================
+# GLOBAL STYLE SETTINGS
+# ===================
+style:
+  border-material: GRAY_STAINED_GLASS_PANE
+  accent-positive: LIME_CONCRETEff
+  accent-negative: ORANGE_CONCRETE
+  accent-neutral: LIGHT_BLUE_CONCRETE
+
+# ===================
+# TRADE MENU
+# ===================
+trade:
+  title: "<dark_aqua>Shop</dark_aqua>"
+  rows: 6
+  
+  # Border configuration - gray for modern look
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 4, 6]  # Top, middle separator, bottom
+  
+  # Shop item display (the item being traded) - centered in row 2
+  shop-item:
+    slot: 13
+    # Note: material, name, lore are from the actual shop item
+  
+  # Info icons row (row 3)
+  info-stock:
+    material: CHEST
+    name: "<yellow>Stock Information</yellow>"
+    lore:
+      - "<gray>Available: <white>{0}</white></gray>"
+    custom-model-data: 0
+    slot: 21
+  
+  info-price:
+    material: GOLD_INGOT
+    name: "<gold>Price Information</gold>"
+    lore:
+      - "<gray>Price: <white>{0}</white></gray>"
+      - "<gray>Per: <white>{1} item(s)</white></gray>"
+    custom-model-data: 0
+    slot: 22
+  
+  info-seller:
+    material: PLAYER_HEAD
+    name: "<aqua>Seller Information</aqua>"
+    lore:
+      - "<gray>Owner: <white>{0}</white></gray>"
+    custom-model-data: 0
+    slot: 23
+  
+  # Custom amount button - NAME_TAG for intuitive "enter amount"
+  custom-amount:
+    material: NAME_TAG
+    name: "<bold><blue>Custom Order</blue></bold>"
+    custom-model-data: 0
+    slot: 43
+  
+  # Quantity buttons (row 5) - color-coded by buy/sell
+  # {0} = total price
+  quantity-buttons:
+    material-buy: LIME_CONCRETE
+    material-sell: ORANGE_CONCRETE
+    custom-model-data: 0
+    slots: [37, 38, 39, 40, 41, 42]
+    quantities: [1, 2, 4, 8, 16, 64]
+    lore:
+      - "<yellow>{0}</yellow>"
+  
+  # Close button - centered at bottom
+  close:
+    material: BARRIER
+    name: "<red>Close</red>"
+    custom-model-data: 0
+    slot: 49
+
+# ===================
+# KEEPER MENU (Shop Owner Control Panel)
+# ===================
+keeper:
+  title: "<dark_aqua>Shop Management</dark_aqua>"
+  rows: 4
+  
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [2, 4]  # Separator and bottom
+  
+  # Shop item preview - top center
+  shop-item:
+    slot: 4
+  
+  # Change price button - GOLD_NUGGET for "price"
+  # {0} = current price
+  change-price:
+    material: GOLD_NUGGET
+    name: "<bold><green>Change Price</green></bold>"
+    lore:
+      - "<gray>Current price: <white>{0}</white></gray>"
+      - ""
+      - "<yellow>Click to change price</yellow>"
+    custom-model-data: 0
+    slot: 19
+  
+  # Mode toggle (buy/sell/frozen) - concrete for clean look
+  # {0} = current mode, {1} = next mode
+  mode-toggle:
+    selling:
+      material: LIME_CONCRETE
+      custom-model-data: 0
+    buying:
+      material: ORANGE_CONCRETE
+      custom-model-data: 0
+    frozen:
+      material: LIGHT_BLUE_CONCRETE
+      custom-model-data: 0
+    name: "<bold><green>Change Mode</green></bold>"
+    lore:
+      - "<gray>Current: <white>{0}</white></gray>"
+      - "<gray>Click to change to: <white>{1}</white></gray>"
+    slot: 21
+  
+  # Staff management button
+  staff:
+    material: PLAYER_HEAD
+    name: "<bold><aqua>Shop Staff</aqua></bold>"
+    lore:
+      - "<gray>Click to manage your</gray>"
+      - "<gray>shop's staff members.</gray>"
+    custom-model-data: 0
+    slot: 23
+  
+  # History button
+  history:
+    material: BOOK
+    name: "<bold><light_purple>Transaction History</light_purple></bold>"
+    lore:
+      - "<gray>Click to view your</gray>"
+      - "<gray>shop's transaction history.</gray>"
+    custom-model-data: 0
+    slot: 24
+  
+  # Remove shop button - TNT for dramatic effect
+  remove:
+    material: TNT
+    name: "<bold><red>Delete Shop</red></bold>"
+    lore:
+      - "<gray>Click to delete your shop.</gray>"
+      - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+    custom-model-data: 0
+    slot: 25
+  
+  # Close/back button - OAK_DOOR for "exit"
+  close:
+    material: OAK_DOOR
+    name: "<red>Close</red>"
+    custom-model-data: 0
+    slot: 31
+
+# ===================
+# STAFF MENU
+# ===================
+staff:
+  title: "<dark_aqua>Staff Management</dark_aqua>"
+  rows: 6
+  
+  # Row 1 has borders in empty slots (buttons override border at their slots)
+  # Row 6 is the pagination/control row at bottom
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 6]
+  
+  # Search button - opens chat input for player search
+  # {0} = current search query or "None"
+  search:
+    material: ANVIL
+    name: "<yellow>Search: {0}</yellow>"
+    lore:
+      - "<gray>Left-click to search for players</gray>"
+      - "<gray>Right-click to clear search</gray>"
+    custom-model-data: 0
+    slot: 0
+  
+  # Add staff button - EMERALD (green = add)
+  add-staff:
+    material: EMERALD
+    name: "<green>Add Staff Member</green>"
+    lore:
+      - "<gray>Click to add a new</gray>"
+      - "<gray>staff member to your shop.</gray>"
+    custom-model-data: 0
+    slot: 4
+  
+  # Back button - OAK_DOOR for "go back"
+  back:
+    material: OAK_DOOR
+    name: "<white>Back to Shop</white>"
+    custom-model-data: 0
+    slot: 8
+  
+  # Pagination controls (bottom row)
+  previous-page:
+    material: ARROW
+    name: "<white><< Previous Page</white>"
+    custom-model-data: 0
+    slot: 48
+  
+  next-page:
+    material: ARROW
+    name: "<white>Next Page >></white>"
+    custom-model-data: 0
+    slot: 50
+  
+  page-info:
+    material: BOOK
+    name: "<yellow>Page {0}/{1}</yellow>"
+    custom-model-data: 0
+    slot: 49
+  
+  # Staff list starts at row 2 (slot 9+)
+  list-start-slot: 9
+
+# ===================
+# HISTORY MENU
+# ===================
+history:
+  title: "<dark_aqua>Transaction History</dark_aqua>"
+  rows: 6
+  
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 6]
+  
+  # Summary icon
+  summary:
+    material: OAK_SIGN
+    name: "<yellow>Summary</yellow>"
+    custom-model-data: 0
+    slot: 0
+  
+  # Shop info (single shop)
+  shop-info:
+    material: PLAYER_HEAD
+    custom-model-data: 0
+    slot: 4
+  
+  # Multiple shops info
+  multi-shop-info:
+    material: CHEST
+    name: "<yellow>Multiple Shops</yellow>"
+    custom-model-data: 0
+    slot: 4
+  
+  # Top customers
+  top-customers:
+    material: DIAMOND
+    name: "<aqua>Top Customers</aqua>"
+    custom-model-data: 0
+    slot: 8
+  
+  previous-page:
+    material: ARROW
+    name: "<white><< Previous Page</white>"
+    custom-model-data: 0
+    slot: 3
+  
+  next-page:
+    material: ARROW
+    name: "<white>Next Page >></white>"
+    custom-model-data: 0
+    slot: 5
+  
+  back:
+    material: OAK_DOOR
+    name: "<white>Back</white>"
+    custom-model-data: 0
+    slot: 49
+  
+  list-start-slot: 9
+
+# ===================
+# BROWSE MENU (Market Browser)
+# ===================
+browse:
+  title: "<dark_aqua>Market Browser</dark_aqua>"
+  rows: 6
+  
+  # Row 1 has borders in empty slots (buttons override border at their slots)
+  # Row 6 is the pagination/control row at bottom
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 6]
+  
+  # Search button - opens chat input for item search
+  # {0} = current search query or "None"
+  search:
+    material: ANVIL
+    name: "<yellow>Search: {0}</yellow>"
+    lore:
+      - "<gray>Left-click to search for items</gray>"
+      - "<gray>Right-click to clear search</gray>"
+    custom-model-data: 0
+    slot: 0
+  
+  # Sort button - cycles through sort options
+  # {0} = current sort mode
+  sort:
+    material: HOPPER
+    name: "<green>Sort: {0}</green>"
+    lore:
+      - "<gray>Click to cycle</gray>"
+    custom-model-data: 0
+    slot: 2
+  
+  # Filter button - cycles through filter options
+  # {0} = current filter
+  filter:
+    material: NAME_TAG
+    name: "<aqua>Filter: {0}</aqua>"
+    lore:
+      - "<gray>Click to cycle</gray>"
+    custom-model-data: 0
+    slot: 4
+  
+  # Stock filter toggle - show only shops with available stock/space
+  # {0} = ON or OFF
+  stock-filter:
+    material: CHEST
+    name: "<gold>In Stock Only: {0}</gold>"
+    lore:
+      - "<gray>Click to toggle</gray>"
+    custom-model-data: 0
+    slot: 6
+  
+  # Close button
+  close:
+    material: BARRIER
+    name: "<red>Close</red>"
+    custom-model-data: 0
+    slot: 8
+  
+  # Back button (for shop list page)
+  back:
+    material: OAK_DOOR
+    name: "<white>Back to Market</white>"
+    custom-model-data: 0
+    slot: 8
+  
+  # Pagination controls (bottom row)
+  previous-page:
+    material: ARROW
+    name: "<white><< Previous Page</white>"
+    custom-model-data: 0
+    slot: 48
+  
+  next-page:
+    material: ARROW
+    name: "<white>Next Page >></white>"
+    custom-model-data: 0
+    slot: 50
+  
+  page-info:
+    material: BOOK
+    name: "<yellow>Page {0}/{1}</yellow>"
+    custom-model-data: 0
+    slot: 49
+  
+  list-start-slot: 9
+
+# ===================
+# SHARED ICONS
+# ===================
+shared:
+  previous-page:
+    material: ARROW
+    name: "<white><< Previous Page</white>"
+    custom-model-data: 0
+  
+  next-page:
+    material: ARROW
+    name: "<white>Next Page >></white>"
+    custom-model-data: 0
+  
+  back:
+    material: OAK_DOOR
+    name: "<white>Back</white>"
+    custom-model-data: 0
+  
+  close:
+    material: BARRIER
+    name: "<red>Close</red>"
+    custom-model-data: 0
+
+# ===================
+# CHAT MESSAGES
+# ===================
+# These messages are sent to players in chat when they interact with GUI elements
+messages:
+  # Keeper menu messages
+  keeper:
+    # Shown when player clicks "Change Price" button
+    enter-price: "<yellow>Enter a new price in chat.</yellow>"
+    # Shown when player clicks "Delete Shop" button
+    confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+  
+  # Staff menu messages
+  staff:
+    # Shown when player left-clicks "Search" button (right-click clears instantly)
+    enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+    # Shown when player left-clicks a staff member to remove them
+    # {0} = staff member name
+    confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+    # Shown when player right-clicks a staff member to transfer ownership
+    # {0} = staff member name
+    confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+  
+  # Trade menu messages
+  trade:
+    # Shown when player clicks "Custom Order" button (buying)
+    # {0} = item amount per purchase
+    enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+    # Shown when player clicks "Custom Order" button (selling)
+    # {0} = item amount per purchase
+    enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+    # Shown when player enters invalid quantity (not multiple of item amount)
+    # {0} = item amount per purchase
+    invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+    # Shown when player enters quantity exceeding stock
+    invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+  
+  # Browse menu messages
+  browse:
+    # Shown when player left-clicks "Search" button (right-click clears instantly)
+    enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
