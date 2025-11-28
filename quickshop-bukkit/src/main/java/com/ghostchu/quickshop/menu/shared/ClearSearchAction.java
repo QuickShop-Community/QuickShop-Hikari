@@ -56,7 +56,7 @@ public class ClearSearchAction extends IconAction {
   public boolean onClick(final MenuClickHandler handler) {
     // Get existing viewer and modify data directly
     final java.util.Optional<MenuViewer> viewerOpt = handler.player().viewer();
-    if (viewerOpt.isPresent()) {
+    if(viewerOpt.isPresent()) {
       final MenuViewer viewer = viewerOpt.get();
       
       // Clear search and reset page on existing viewer

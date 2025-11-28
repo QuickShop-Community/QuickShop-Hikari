@@ -77,7 +77,7 @@ public class GroupedItemPage {
 
   public void handle(final PageOpenCallback callback) {
     final Optional<MenuViewer> viewerOpt = callback.getPlayer().viewer();
-    if (viewerOpt.isEmpty()) return;
+    if(viewerOpt.isEmpty()) return;
     
     final MenuViewer viewer = viewerOpt.get();
     final Page menuPage = callback.getPage();
@@ -86,23 +86,23 @@ public class GroupedItemPage {
     final UUID id = viewer.uuid();
     final Player player = Bukkit.getPlayer(id);
     
-    if (shopsData.isEmpty() || player == null) return;
+    if(shopsData.isEmpty() || player == null) return;
 
     menuPage.getIcons().clear();
 
     // Load GUI configuration
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-    final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-    final GuiConfig.IconConfig searchConfig = menuConfig != null ? menuConfig.getIcon("search") : null;
-    final GuiConfig.IconConfig sortConfig = menuConfig != null ? menuConfig.getIcon("sort") : null;
-    final GuiConfig.IconConfig filterConfig = menuConfig != null ? menuConfig.getIcon("filter") : null;
-    final GuiConfig.IconConfig stockConfig = menuConfig != null ? menuConfig.getIcon("stock-filter") : null;
-    final GuiConfig.IconConfig prevPageConfig = menuConfig != null ? menuConfig.getIcon("previous-page") : null;
-    final GuiConfig.IconConfig nextPageConfig = menuConfig != null ? menuConfig.getIcon("next-page") : null;
-    final GuiConfig.IconConfig pageInfoConfig = menuConfig != null ? menuConfig.getIcon("page-info") : null;
-    final GuiConfig.IconConfig closeConfig = menuConfig != null ? menuConfig.getIcon("close") : null;
+    final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+    final GuiConfig.IconConfig searchConfig = menuConfig != null?menuConfig.getIcon("search") : null;
+    final GuiConfig.IconConfig sortConfig = menuConfig != null?menuConfig.getIcon("sort") : null;
+    final GuiConfig.IconConfig filterConfig = menuConfig != null?menuConfig.getIcon("filter") : null;
+    final GuiConfig.IconConfig stockConfig = menuConfig != null?menuConfig.getIcon("stock-filter") : null;
+    final GuiConfig.IconConfig prevPageConfig = menuConfig != null?menuConfig.getIcon("previous-page") : null;
+    final GuiConfig.IconConfig nextPageConfig = menuConfig != null?menuConfig.getIcon("next-page") : null;
+    final GuiConfig.IconConfig pageInfoConfig = menuConfig != null?menuConfig.getIcon("page-info") : null;
+    final GuiConfig.IconConfig closeConfig = menuConfig != null?menuConfig.getIcon("close") : null;
     
-    final int listStartSlot = menuConfig != null ? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+    final int listStartSlot = menuConfig != null?menuConfig.getSection().getInt("list-start-slot", 9) : 9;
 
     // Get current state
     final BrowseSortMode sortMode = (BrowseSortMode) viewer.dataOrDefault(BROWSE_SORT, BrowseSortMode.PRICE_ASC);
@@ -121,24 +121,24 @@ public class GroupedItemPage {
     final int offset = 9;
     final int items = (menuRows - 2) * offset;
     final int start = ((page - 1) * offset);
-    final int maxPages = (groups.size() / items) + (((groups.size() % items) > 0) ? 1 : 0);
-    final int prev = (page <= 1) ? maxPages : page - 1;
-    final int next = (page >= maxPages) ? 1 : page + 1;
+    final int maxPages = (groups.size() / items) + (((groups.size() % items) > 0)?1 : 0);
+    final int prev = (page <= 1)?maxPages : page - 1;
+    final int next = (page >= maxPages)?1 : page + 1;
 
     // Set up border rows
-    final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+    final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
     final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-    final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(1, 6);
-    for (final int row : borderRows) {
+    final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 6);
+    for(final int row : borderRows) {
       menuPage.setRow(row, borderBuilder);
     }
 
     // === Control Row (Row 1) ===
     
     // Search button (slot 0) - Left-click to search, Right-click to clear
-    final String searchMaterial = searchConfig != null ? searchConfig.getMaterial() : "ANVIL";
-    final int searchSlot = searchConfig != null ? searchConfig.getSlot() : 0;
-    final String currentSearchDisplay = searchQuery.isEmpty() ? "None" : searchQuery;
+    final String searchMaterial = searchConfig != null?searchConfig.getMaterial() : "ANVIL";
+    final int searchSlot = searchConfig != null?searchConfig.getSlot() : 0;
+    final String currentSearchDisplay = searchQuery.isEmpty()?"None" : searchQuery;
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
             .display(getConfigDisplay(searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
@@ -146,7 +146,7 @@ public class GroupedItemPage {
             .withSlot(searchSlot)
             .withActions(new GuiChatAction((message) -> {
               // Handle clear command
-              final String searchValue = (message.equalsIgnoreCase("clear") || message.equals("0")) ? "" : message;
+              final String searchValue = (message.equalsIgnoreCase("clear") || message.equals("0"))?"" : message;
               
               // Create new viewer with ALL state preserved + new search value
               // (TNMS removes viewer when inventory closes, so we recreate it)
@@ -161,7 +161,7 @@ public class GroupedItemPage {
               
               // Manually reopen the menu
               final Player p = Bukkit.getPlayer(id);
-              if (p != null && p.isOnline()) {
+              if(p != null && p.isOnline()) {
                 final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(p);
                 menuPlayer.inventory().openMenu(menuPlayer, menuName, 1);  // Page 1 is GroupedItemPage
               }
@@ -171,8 +171,8 @@ public class GroupedItemPage {
             .build());
 
     // Sort button (slot 2)
-    final String sortMaterial = sortConfig != null ? sortConfig.getMaterial() : "HOPPER";
-    final int sortSlot = sortConfig != null ? sortConfig.getSlot() : 2;
+    final String sortMaterial = sortConfig != null?sortConfig.getMaterial() : "HOPPER";
+    final int sortSlot = sortConfig != null?sortConfig.getSlot() : 2;
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
             .display(getConfigDisplay(sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
@@ -186,8 +186,8 @@ public class GroupedItemPage {
             .build());
 
     // Filter button (slot 4)
-    final String filterMaterial = filterConfig != null ? filterConfig.getMaterial() : "NAME_TAG";
-    final int filterSlot = filterConfig != null ? filterConfig.getSlot() : 4;
+    final String filterMaterial = filterConfig != null?filterConfig.getMaterial() : "NAME_TAG";
+    final int filterSlot = filterConfig != null?filterConfig.getSlot() : 4;
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
             .display(getConfigDisplay(filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
@@ -201,9 +201,9 @@ public class GroupedItemPage {
             .build());
 
     // Stock filter toggle button (slot 6)
-    final String stockMaterial = stockConfig != null ? stockConfig.getMaterial() : "CHEST";
-    final int stockSlot = stockConfig != null ? stockConfig.getSlot() : 6;
-    final String stockStatus = stockOnly ? "ON" : "OFF";
+    final String stockMaterial = stockConfig != null?stockConfig.getMaterial() : "CHEST";
+    final int stockSlot = stockConfig != null?stockConfig.getSlot() : 6;
+    final String stockStatus = stockOnly?"ON" : "OFF";
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
             .display(getConfigDisplay(stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
@@ -217,27 +217,27 @@ public class GroupedItemPage {
             .build());
 
     // Close button (slot 8)
-    final String closeMaterial = closeConfig != null ? closeConfig.getMaterial() : "BARRIER";
-    final int closeSlot = closeConfig != null ? closeConfig.getSlot() : 8;
+    final String closeMaterial = closeConfig != null?closeConfig.getMaterial() : "BARRIER";
+    final int closeSlot = closeConfig != null?closeConfig.getSlot() : 8;
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
             .display(getConfigDisplay(closeConfig, "<red>Close</red>")))
             .withSlot(closeSlot)
             .withActions(new RunnableAction((click) -> {
               final Player p = Bukkit.getPlayer(click.player().identifier());
-              if (p != null) p.closeInventory();
+              if(p != null) p.closeInventory();
             }))
             .build());
 
     // === Pagination Row (Bottom) ===
-    final String prevMaterial = prevPageConfig != null ? prevPageConfig.getMaterial() : "ARROW";
-    final int prevSlot = prevPageConfig != null ? prevPageConfig.getSlot() : 48;
-    final String nextMaterial = nextPageConfig != null ? nextPageConfig.getMaterial() : "ARROW";
-    final int nextSlot = nextPageConfig != null ? nextPageConfig.getSlot() : 50;
-    final String pageInfoMaterial = pageInfoConfig != null ? pageInfoConfig.getMaterial() : "BOOK";
-    final int pageInfoSlot = pageInfoConfig != null ? pageInfoConfig.getSlot() : 49;
+    final String prevMaterial = prevPageConfig != null?prevPageConfig.getMaterial() : "ARROW";
+    final int prevSlot = prevPageConfig != null?prevPageConfig.getSlot() : 48;
+    final String nextMaterial = nextPageConfig != null?nextPageConfig.getMaterial() : "ARROW";
+    final int nextSlot = nextPageConfig != null?nextPageConfig.getSlot() : 50;
+    final String pageInfoMaterial = pageInfoConfig != null?pageInfoConfig.getMaterial() : "BOOK";
+    final int pageInfoSlot = pageInfoConfig != null?pageInfoConfig.getSlot() : 49;
     
-    if (maxPages > 1) {
+    if(maxPages > 1) {
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
               .display(getConfigDisplay(prevPageConfig, "<white><< Previous Page</white>")))
               .withSlot(prevSlot)
@@ -259,12 +259,12 @@ public class GroupedItemPage {
 
     // === Item Grid ===
     int i = 0;
-    for (final MarketItemGroup group : groups) {
-      if (i < start) {
+    for(final MarketItemGroup group : groups) {
+      if(i < start) {
         i++;
         continue;
       }
-      if (i >= (start + items)) break;
+      if(i >= (start + items)) break;
       
       // Build item lore with market statistics
       final List<Component> lore = buildGroupLore(id, group);
@@ -288,7 +288,7 @@ public class GroupedItemPage {
               .withActions(
                       new RunnableAction((click) -> {
                         final Optional<MenuViewer> v = click.player().viewer();
-                        if (v.isPresent()) {
+                        if(v.isPresent()) {
                           v.get().addData(SELECTED_ITEM_SHOPS, new ArrayList<>(allShopsForItem));
                           v.get().addData(SHOP_LIST_PAGE, 1);
                         }
@@ -302,7 +302,7 @@ public class GroupedItemPage {
   }
   
   private String getSortDisplayName(final BrowseSortMode mode) {
-    return switch (mode) {
+    return switch(mode) {
       case PRICE_ASC -> "Price ↑";
       case PRICE_DESC -> "Price ↓";
       case STOCK -> "Stock";
@@ -311,7 +311,7 @@ public class GroupedItemPage {
   }
   
   private String getFilterDisplayName(final BrowseFilterMode mode) {
-    return switch (mode) {
+    return switch(mode) {
       case ALL -> "All";
       case BUYING -> "Buying";
       case SELLING -> "Selling";
@@ -330,7 +330,7 @@ public class GroupedItemPage {
     lore.add(Component.empty());
     
     // Selling shops statistics
-    if (group.hasSellingShops()) {
+    if(group.hasSellingShops()) {
       lore.add(mm.deserialize("<green>▼ Selling (" + group.getSellingShopCount() + " shops)</green>"));
       lore.add(mm.deserialize("<gray>  Price: <white>" + formatPrice(group.getSellingMinPrice()) + 
               " - " + formatPrice(group.getSellingMaxPrice()) + "</white></gray>"));
@@ -340,8 +340,8 @@ public class GroupedItemPage {
     }
     
     // Buying shops statistics
-    if (group.hasBuyingShops()) {
-      if (group.hasSellingShops()) lore.add(Component.empty());
+    if(group.hasBuyingShops()) {
+      if(group.hasSellingShops()) lore.add(Component.empty());
       lore.add(mm.deserialize("<#FFA500>▲ Buying (" + group.getBuyingShopCount() + " shops)</#FFA500>"));
       lore.add(mm.deserialize("<gray>  Price: <white>" + formatPrice(group.getBuyingMinPrice()) + 
               " - " + formatPrice(group.getBuyingMaxPrice()) + "</white></gray>"));

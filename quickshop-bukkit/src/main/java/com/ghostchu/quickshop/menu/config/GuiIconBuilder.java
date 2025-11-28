@@ -49,8 +49,8 @@ public class GuiIconBuilder {
 
     // Set display name if configured
     final String name = config.getName();
-    if (name != null && !name.isEmpty()) {
-      if (name.equals(" ")) {
+    if(name != null && !name.isEmpty()) {
+      if(name.equals(" ")) {
         // Empty name (single space = blank display name)
         stack = stack.display(Component.empty());
       } else {
@@ -61,9 +61,9 @@ public class GuiIconBuilder {
 
     // Set lore if configured
     final List<String> loreLines = config.getLore();
-    if (!loreLines.isEmpty()) {
+    if(!loreLines.isEmpty()) {
       final List<Component> lore = new ArrayList<>();
-      for (final String loreLine : loreLines) {
+      for(final String loreLine : loreLines) {
         // Direct inline MiniMessage text (e.g., "<yellow>Click to buy</yellow>")
         lore.add(parseMiniMessage(loreLine));
       }
@@ -152,8 +152,8 @@ public class GuiIconBuilder {
             .of(config.getMaterial(), 1);
 
     final String name = config.getName();
-    if (name != null) {
-      if (name.equals(" ") || name.isEmpty()) {
+    if(name != null) {
+      if(name.equals(" ") || name.isEmpty()) {
         stack = stack.display(Component.empty());
       }
     }
@@ -171,9 +171,9 @@ public class GuiIconBuilder {
   @NotNull
   public static ItemStack applyCustomModelData(@NotNull final ItemStack item,
                                                 @NotNull final GuiConfig.IconConfig config) {
-    if (config.hasCustomModelData()) {
+    if(config.hasCustomModelData()) {
       final ItemMeta meta = item.getItemMeta();
-      if (meta != null) {
+      if(meta != null) {
         meta.setCustomModelData(config.getCustomModelData());
         item.setItemMeta(meta);
       }

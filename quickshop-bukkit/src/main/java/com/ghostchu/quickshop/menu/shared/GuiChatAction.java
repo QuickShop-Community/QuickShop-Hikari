@@ -104,7 +104,7 @@ public class GuiChatAction extends IconAction {
   @Override
   public boolean onClick(final MenuClickHandler clickHandler) {
     final Player bukkitPlayer = Bukkit.getPlayer(clickHandler.player().identifier());
-    if (bukkitPlayer == null) {
+    if(bukkitPlayer == null) {
       return false;
     }
 
@@ -112,9 +112,9 @@ public class GuiChatAction extends IconAction {
     String currentMenu = null;
     int currentPage = 1;
     
-    if (reopenMenu) {
+    if(reopenMenu) {
       final Optional<MenuViewer> viewer = clickHandler.player().viewer();
-      if (viewer.isPresent()) {
+      if(viewer.isPresent()) {
         currentMenu = viewer.get().menu();
         currentPage = viewer.get().page();
       }

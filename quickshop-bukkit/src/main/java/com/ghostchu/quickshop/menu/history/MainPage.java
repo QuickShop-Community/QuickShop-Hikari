@@ -89,7 +89,7 @@ public class MainPage {
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
-    this.menuRows = (menuRows <= 1)? 2 : menuRows;
+    this.menuRows = (menuRows <= 1)?2 : menuRows;
   }
 
   public void handle(final PageOpenCallback callback) {
@@ -110,16 +110,16 @@ public class MainPage {
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("history");
-        final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-        final GuiConfig.IconConfig summaryConfig = menuConfig != null ? menuConfig.getIcon("summary") : null;
-        final GuiConfig.IconConfig shopInfoConfig = menuConfig != null ? menuConfig.getIcon("shop-info") : null;
-        final GuiConfig.IconConfig multiShopConfig = menuConfig != null ? menuConfig.getIcon("multi-shop-info") : null;
-        final GuiConfig.IconConfig topCustomersConfig = menuConfig != null ? menuConfig.getIcon("top-customers") : null;
-        final GuiConfig.IconConfig prevPageConfig = menuConfig != null ? menuConfig.getIcon("previous-page") : null;
-        final GuiConfig.IconConfig nextPageConfig = menuConfig != null ? menuConfig.getIcon("next-page") : null;
-        final GuiConfig.IconConfig backConfig = menuConfig != null ? menuConfig.getIcon("back") : null;
+        final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+        final GuiConfig.IconConfig summaryConfig = menuConfig != null?menuConfig.getIcon("summary") : null;
+        final GuiConfig.IconConfig shopInfoConfig = menuConfig != null?menuConfig.getIcon("shop-info") : null;
+        final GuiConfig.IconConfig multiShopConfig = menuConfig != null?menuConfig.getIcon("multi-shop-info") : null;
+        final GuiConfig.IconConfig topCustomersConfig = menuConfig != null?menuConfig.getIcon("top-customers") : null;
+        final GuiConfig.IconConfig prevPageConfig = menuConfig != null?menuConfig.getIcon("previous-page") : null;
+        final GuiConfig.IconConfig nextPageConfig = menuConfig != null?menuConfig.getIcon("next-page") : null;
+        final GuiConfig.IconConfig backConfig = menuConfig != null?menuConfig.getIcon("back") : null;
 
-        final int listStartSlot = menuConfig != null ? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+        final int listStartSlot = menuConfig != null?menuConfig.getSection().getInt("list-start-slot", 9) : 9;
 
         final int offset = 9;
         final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
@@ -130,22 +130,22 @@ public class MainPage {
         final List<ShopHistory.ShopHistoryRecord> queryResult = (List<ShopHistory.ShopHistoryRecord>)historyData.get();
         final ShopHistory.ShopSummary summary = (ShopHistory.ShopSummary)summaryData.get();
 
-        final int maxPages = (queryResult.size() / items) + (((queryResult.size() % items) > 0)? 1 : 0);
+        final int maxPages = (queryResult.size() / items) + (((queryResult.size() % items) > 0)?1 : 0);
 
-        final int prev = (page <= 1)? maxPages : page - 1;
-        final int next = (page >= maxPages)? 1 : page + 1;
+        final int prev = (page <= 1)?maxPages : page - 1;
+        final int next = (page >= maxPages)?1 : page + 1;
 
         // Set up borders from config
-        final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+        final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-        final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(1, 6);
+        final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 6);
         for (final int row : borderRows) {
           callback.getPage().setRow(row, borderBuilder);
         }
 
         //header icon
         final Shop shop = shops.getFirst();
-        final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
+        final String world = (shop.getLocation().getWorld() != null)?shop.getLocation().getWorld().getName() : "World";
 
         final Component shopName;
         if(shop.getShopName() != null) {
@@ -158,10 +158,10 @@ public class MainPage {
         final Component shopType = QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
 
         // Shop info icon from config
-        final String shopInfoMaterial = shopInfoConfig != null ? shopInfoConfig.getMaterial() : "PLAYER_HEAD";
-        final int shopInfoSlot = shopInfoConfig != null ? shopInfoConfig.getSlot() : 4;
-        final String multiShopMaterial = multiShopConfig != null ? multiShopConfig.getMaterial() : "CHEST";
-        final int multiShopSlot = multiShopConfig != null ? multiShopConfig.getSlot() : 4;
+        final String shopInfoMaterial = shopInfoConfig != null?shopInfoConfig.getMaterial() : "PLAYER_HEAD";
+        final int shopInfoSlot = shopInfoConfig != null?shopInfoConfig.getSlot() : 4;
+        final String multiShopMaterial = multiShopConfig != null?multiShopConfig.getMaterial() : "CHEST";
+        final int multiShopSlot = multiShopConfig != null?multiShopConfig.getSlot() : 4;
 
         if(shops.size() == 1) {
 
@@ -196,8 +196,8 @@ public class MainPage {
         }
 
         // Summary icon from config
-        final String summaryMaterial = summaryConfig != null ? summaryConfig.getMaterial() : "OAK_SIGN";
-        final int summarySlot = summaryConfig != null ? summaryConfig.getSlot() : 0;
+        final String summaryMaterial = summaryConfig != null?summaryConfig.getMaterial() : "OAK_SIGN";
+        final int summarySlot = summaryConfig != null?summaryConfig.getSlot() : 0;
 
         final List<Component> description = new ArrayList<>();
         description.add(get(id, "history.shop.total-unique-purchasers", locale.getNumberFormat().format(summary.uniquePurchasers())));
@@ -219,8 +219,8 @@ public class MainPage {
                                            .build());
 
         // Top customers icon from config
-        final String topCustomersMaterial = topCustomersConfig != null ? topCustomersConfig.getMaterial() : "DIAMOND";
-        final int topCustomersSlot = topCustomersConfig != null ? topCustomersConfig.getSlot() : 8;
+        final String topCustomersMaterial = topCustomersConfig != null?topCustomersConfig.getMaterial() : "DIAMOND";
+        final int topCustomersSlot = topCustomersConfig != null?topCustomersConfig.getSlot() : 8;
 
         final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
         for(final Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
@@ -234,10 +234,10 @@ public class MainPage {
                                                            .lore(valuableDescription)).withSlot(topCustomersSlot).build());
 
         // Pagination icons from config
-        final String prevPageMaterial = prevPageConfig != null ? prevPageConfig.getMaterial() : "ARROW";
-        final int prevPageSlot = prevPageConfig != null ? prevPageConfig.getSlot() : 3;
-        final String nextPageMaterial = nextPageConfig != null ? nextPageConfig.getMaterial() : "ARROW";
-        final int nextPageSlot = nextPageConfig != null ? nextPageConfig.getSlot() : 5;
+        final String prevPageMaterial = prevPageConfig != null?prevPageConfig.getMaterial() : "ARROW";
+        final int prevPageSlot = prevPageConfig != null?prevPageConfig.getSlot() : 3;
+        final String nextPageMaterial = nextPageConfig != null?nextPageConfig.getMaterial() : "ARROW";
+        final int nextPageSlot = nextPageConfig != null?nextPageConfig.getSlot() : 5;
 
         if(maxPages > 1) {
 

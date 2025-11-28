@@ -66,9 +66,9 @@ public class MarketItemGroup {
    */
   public void addShop(@NotNull final Shop shop) {
     shops.add(shop);
-    if (shop.isSelling()) {
+    if(shop.isSelling()) {
       sellingShops.add(shop);
-    } else if (shop.isBuying()) {
+    } else if(shop.isBuying()) {
       buyingShops.add(shop);
     }
   }
@@ -79,7 +79,7 @@ public class MarketItemGroup {
    */
   public void calculateStatistics() {
     // Calculate selling shop statistics
-    if (!sellingShops.isEmpty()) {
+    if(!sellingShops.isEmpty()) {
       final List<Double> sellingPrices = sellingShops.stream()
               .map(Shop::getPrice)
               .toList();
@@ -94,7 +94,7 @@ public class MarketItemGroup {
     }
     
     // Calculate buying shop statistics
-    if (!buyingShops.isEmpty()) {
+    if(!buyingShops.isEmpty()) {
       final List<Double> buyingPrices = buyingShops.stream()
               .map(Shop::getPrice)
               .toList();
@@ -116,13 +116,13 @@ public class MarketItemGroup {
    * @return Color indicator: "low" (below avg), "avg" (around avg), "high" (above avg)
    */
   public String getPriceIndicator(final double price, final boolean isSelling) {
-    final double avg = isSelling ? sellingAvgPrice : buyingAvgPrice;
-    if (avg == 0) return "avg";
+    final double avg = isSelling?sellingAvgPrice : buyingAvgPrice;
+    if(avg == 0) return "avg";
     
     final double ratio = price / avg;
-    if (ratio < 0.9) {
+    if(ratio < 0.9) {
       return "low";
-    } else if (ratio > 1.1) {
+    } else if(ratio > 1.1) {
       return "high";
     }
     return "avg";
@@ -228,7 +228,7 @@ public class MarketItemGroup {
    */
   @NotNull
   public String getItemDisplayName() {
-    if (representativeItem.hasItemMeta() && representativeItem.getItemMeta().hasDisplayName()) {
+    if(representativeItem.hasItemMeta() && representativeItem.getItemMeta().hasDisplayName()) {
       return representativeItem.getItemMeta().getDisplayName();
     }
     return CommonUtil.prettifyText(representativeItem.getType().name());

@@ -58,10 +58,10 @@ public class GuiConfig implements Reloadable {
     Log.debug("GUI Config Loading.");
 
     final File configFile = new File(plugin.getDataFolder(), "gui.yml");
-    if (!configFile.exists()) {
+    if(!configFile.exists()) {
       try {
         Files.copy(plugin.getJavaPlugin().getResource("gui.yml"), configFile.toPath());
-      } catch (final IOException e) {
+      } catch(final IOException e) {
         plugin.logger().warn("Failed to copy gui.yml to plugin folder!", e);
       }
     }
@@ -80,7 +80,7 @@ public class GuiConfig implements Reloadable {
 
   private void loadMenuConfig(final String menuName) {
     final ConfigurationSection section = config.getConfigurationSection(menuName);
-    if (section != null) {
+    if(section != null) {
       menuConfigs.put(menuName, new MenuConfig(section));
     }
   }
@@ -139,11 +139,11 @@ public class GuiConfig implements Reloadable {
     }
 
     private void loadIcons() {
-      for (final String key : section.getKeys(false)) {
-        if (key.equals("title") || key.equals("rows")) continue;
+      for(final String key : section.getKeys(false)) {
+        if(key.equals("title") || key.equals("rows")) continue;
         
         final Object value = section.get(key);
-        if (value instanceof ConfigurationSection iconSection) {
+        if(value instanceof ConfigurationSection iconSection) {
           icons.put(key, new IconConfig(iconSection));
         }
       }
@@ -191,15 +191,15 @@ public class GuiConfig implements Reloadable {
     @NotNull
     public List<String> getLore() {
       final Object loreObj = section.get("lore");
-      if (loreObj instanceof List<?>) {
+      if(loreObj instanceof List<?>) {
         final List<String> result = new ArrayList<>();
-        for (final Object item : (List<?>) loreObj) {
-          if (item != null) {
+        for(final Object item : (List<?>) loreObj) {
+          if(item != null) {
             result.add(item.toString());
           }
         }
         return result;
-      } else if (loreObj instanceof String) {
+      } else if(loreObj instanceof String) {
         final List<String> result = new ArrayList<>();
         result.add((String) loreObj);
         return result;
@@ -246,7 +246,7 @@ public class GuiConfig implements Reloadable {
     @Nullable
     public IconConfig getSubIcon(final String name) {
       final ConfigurationSection sub = section.getConfigurationSection(name);
-      return sub != null ? new IconConfig(sub) : null;
+      return sub != null?new IconConfig(sub) : null;
     }
   }
 }

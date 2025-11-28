@@ -61,7 +61,7 @@ public class GuiChatInputManager implements Listener {
    */
   @NotNull
   public static GuiChatInputManager getInstance() {
-    if (instance == null) {
+    if(instance == null) {
       instance = new GuiChatInputManager(QuickShop.getInstance());
     }
     return instance;
@@ -87,7 +87,7 @@ public class GuiChatInputManager implements Listener {
     
     pendingInputs.put(player.getUniqueId(), new ChatInputContext(handler, menuName, menuPage));
     
-    if (prompt != null && !prompt.isEmpty()) {
+    if(prompt != null && !prompt.isEmpty()) {
       player.sendMessage(prompt);
     }
     
@@ -117,7 +117,7 @@ public class GuiChatInputManager implements Listener {
     final ChatInputContext context = pendingInputs.remove(playerId);
     Log.debug("GuiChatInputManager: Cancelled input handler for player " + playerId);
     
-    if (reopenMenu && context != null && context.menuName() != null) {
+    if(reopenMenu && context != null && context.menuName() != null) {
       reopenMenu(playerId, context);
     }
   }
@@ -141,7 +141,7 @@ public class GuiChatInputManager implements Listener {
     final UUID playerId = event.getPlayer().getUniqueId();
     final ChatInputContext context = pendingInputs.get(playerId);
     
-    if (context == null) {
+    if(context == null) {
       return;
     }
     
@@ -156,21 +156,21 @@ public class GuiChatInputManager implements Listener {
     QuickShop.folia().getScheduler().runAtEntityLater(eventPlayer, () -> {
       try {
         final boolean accepted = context.handler().apply(message);
-        if (accepted) {
+        if(accepted) {
           pendingInputs.remove(playerId);
           Log.debug("GuiChatInputManager: Input accepted, removed handler for " + playerId);
           
           // Re-open the menu if configured
-          if (context.menuName() != null) {
+          if(context.menuName() != null) {
             reopenMenu(playerId, context);
           }
         }
-      } catch (final Exception e) {
+      } catch(final Exception e) {
         plugin.logger().warn("Error processing GUI chat input for player " + playerId, e);
         pendingInputs.remove(playerId);
         
         // Re-open menu even on error
-        if (context.menuName() != null) {
+        if(context.menuName() != null) {
           reopenMenu(playerId, context);
         }
       }
@@ -182,7 +182,7 @@ public class GuiChatInputManager implements Listener {
    */
   private void reopenMenu(@NotNull final UUID playerId, @NotNull final ChatInputContext context) {
     final Player player = Bukkit.getPlayer(playerId);
-    if (player == null || !player.isOnline()) {
+    if(player == null || !player.isOnline()) {
       return;
     }
     
@@ -192,7 +192,7 @@ public class GuiChatInputManager implements Listener {
     // Small delay on player's region thread to ensure everything is cleaned up before re-opening
     QuickShop.folia().getScheduler().runAtEntityLater(player, () -> {
       final Player onlinePlayer = Bukkit.getPlayer(playerId);
-      if (onlinePlayer == null || !onlinePlayer.isOnline()) {
+      if(onlinePlayer == null || !onlinePlayer.isOnline()) {
         return;
       }
       final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(onlinePlayer);
@@ -206,7 +206,7 @@ public class GuiChatInputManager implements Listener {
   }
 
   private void ensureRegistered() {
-    if (!registered) {
+    if(!registered) {
       Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
       registered = true;
       Log.debug("GuiChatInputManager: Registered event listener");
@@ -217,7 +217,7 @@ public class GuiChatInputManager implements Listener {
    * Unregisters the listener (call on plugin disable).
    */
   public void shutdown() {
-    if (registered) {
+    if(registered) {
       HandlerList.unregisterAll(this);
       registered = false;
     }

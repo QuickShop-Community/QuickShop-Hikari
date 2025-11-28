@@ -49,7 +49,7 @@ public class ShopBrowseMenu extends Menu {
 
     // Load rows from GUI config
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-    this.rows = menuConfig != null ? menuConfig.getRows() : 6;
+    this.rows = (menuConfig != null?menuConfig.getRows() : 6);
     this.name = "qs:browse";
 
     setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "gui.browse.title").legacy()));

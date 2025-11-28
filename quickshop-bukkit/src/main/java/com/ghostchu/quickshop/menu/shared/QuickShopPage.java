@@ -116,9 +116,9 @@ public class QuickShopPage extends Page {
     String message = QuickShop.getInstance().getGuiConfig().getMessage(path);
     
     // Replace {0}, {1}, etc. with args
-    if (args != null) {
-      for (int i = 0; i < args.length; i++) {
-        message = message.replace("{" + i + "}", args[i] != null ? args[i].toString() : "");
+    if(args != null) {
+      for(int i = 0; i < args.length; i++) {
+        message = message.replace("{" + i + "}", args[i] != null?args[i].toString() : "");
       }
     }
     
@@ -137,7 +137,7 @@ public class QuickShopPage extends Page {
    */
   @NotNull
   public static Component getConfigDisplay(@Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName) {
-    final String name = config != null && config.getName() != null ? config.getName() : defaultName;
+    final String name = config != null && config.getName() != null?config.getName() : defaultName;
     return QuickShop.getInstance().platform().miniMessage().deserialize(name);
   }
 
@@ -152,10 +152,10 @@ public class QuickShopPage extends Page {
    */
   @NotNull
   public static Component getConfigDisplay(@Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName, @Nullable final Object... args) {
-    String name = config != null && config.getName() != null ? config.getName() : defaultName;
-    if (args != null) {
-      for (int i = 0; i < args.length; i++) {
-        name = name.replace("{" + i + "}", args[i] != null ? args[i].toString() : "");
+    String name = config != null && config.getName() != null?config.getName() : defaultName;
+    if(args != null) {
+      for(int i = 0; i < args.length; i++) {
+        name = name.replace("{" + i + "}", args[i] != null?args[i].toString() : "");
       }
     }
     return QuickShop.getInstance().platform().miniMessage().deserialize(name);
@@ -172,15 +172,15 @@ public class QuickShopPage extends Page {
   @NotNull
   public static List<Component> getConfigLore(@Nullable final GuiConfig.IconConfig config, @Nullable final Object... args) {
     final List<Component> result = new ArrayList<>();
-    if (config == null) {
+    if(config == null) {
       return result;
     }
     
-    for (String line : config.getLore()) {
+    for(String line : config.getLore()) {
       // Replace {0}, {1}, etc. with args
-      if (args != null) {
-        for (int i = 0; i < args.length; i++) {
-          line = line.replace("{" + i + "}", args[i] != null ? args[i].toString() : "");
+      if(args != null) {
+        for(int i = 0; i < args.length; i++) {
+          line = line.replace("{" + i + "}", args[i] != null?args[i].toString() : "");
         }
       }
       result.add(QuickShop.getInstance().platform().miniMessage().deserialize(line));

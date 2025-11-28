@@ -84,7 +84,7 @@ public class StaffSelectionPage {
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
-    this.menuRows = (menuRows <= 1)? 2 : menuRows;
+    this.menuRows = (menuRows <= 1)?2 : menuRows;
   }
 
   public void handle(final PageOpenCallback callback) {
@@ -105,13 +105,13 @@ public class StaffSelectionPage {
           
           // Load GUI configuration for modern styling
           final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("staff");
-          final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-          final GuiConfig.IconConfig prevPageConfig = menuConfig != null ? menuConfig.getIcon("previous-page") : null;
-          final GuiConfig.IconConfig nextPageConfig = menuConfig != null ? menuConfig.getIcon("next-page") : null;
-          final GuiConfig.IconConfig pageInfoConfig = menuConfig != null ? menuConfig.getIcon("page-info") : null;
-          final GuiConfig.IconConfig addStaffConfig = menuConfig != null ? menuConfig.getIcon("add-staff") : null;
-          final GuiConfig.IconConfig backConfig = menuConfig != null ? menuConfig.getIcon("back") : null;
-          final GuiConfig.IconConfig searchConfig = menuConfig != null ? menuConfig.getIcon("search") : null;
+          final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+          final GuiConfig.IconConfig prevPageConfig = menuConfig != null?menuConfig.getIcon("previous-page") : null;
+          final GuiConfig.IconConfig nextPageConfig = menuConfig != null?menuConfig.getIcon("next-page") : null;
+          final GuiConfig.IconConfig pageInfoConfig = menuConfig != null?menuConfig.getIcon("page-info") : null;
+          final GuiConfig.IconConfig addStaffConfig = menuConfig != null?menuConfig.getIcon("add-staff") : null;
+          final GuiConfig.IconConfig backConfig = menuConfig != null?menuConfig.getIcon("back") : null;
+          final GuiConfig.IconConfig searchConfig = menuConfig != null?menuConfig.getIcon("search") : null;
           
           // Get search query from viewer data
           final String searchQuery = (String) viewer.get().dataOrDefault(STAFF_SEARCH, "");
@@ -120,32 +120,32 @@ public class StaffSelectionPage {
           final List<UUID> staffs = filterStaffs(allStaffs, searchQuery);
           
           // Set up borders from config (rows 1 and 6 like browse page)
-          final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+          final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
           final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-          final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(1, 6);
+          final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 6);
           for (final int row : borderRows) {
             callback.getPage().setRow(row, borderBuilder);
           }
           
           // Get list start slot from config (slot 9 = row 2 like browse page)
-          final int listStartSlot = menuConfig != null ? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+          final int listStartSlot = menuConfig != null?menuConfig.getSection().getInt("list-start-slot", 9) : 9;
           
           final int offset = 9;
           final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
           final int items = (menuRows - 2) * offset; // Adjusted for border rows
           final int start = ((page - 1) * offset);
 
-          final int maxPages = (staffs.size() / items) + (((staffs.size() % items) > 0)? 1 : 0);
+          final int maxPages = (staffs.size() / items) + (((staffs.size() % items) > 0)?1 : 0);
 
-          final int prev = (page <= 1)? maxPages : page - 1;
-          final int next = (page >= maxPages)? 1 : page + 1;
+          final int prev = (page <= 1)?maxPages : page - 1;
+          final int next = (page >= maxPages)?1 : page + 1;
 
           // === Control Row (Row 1) ===
           
           // Search button (slot 0) - Left-click to search, Right-click to clear
-          final String searchMaterial = searchConfig != null ? searchConfig.getMaterial() : "ANVIL";
-          final int searchSlot = searchConfig != null ? searchConfig.getSlot() : 0;
-          final String currentSearchDisplay = searchQuery.isEmpty() ? "None" : searchQuery;
+          final String searchMaterial = searchConfig != null?searchConfig.getMaterial() : "ANVIL";
+          final int searchSlot = searchConfig != null?searchConfig.getSlot() : 0;
+          final String currentSearchDisplay = searchQuery.isEmpty()?"None" : searchQuery;
           
           // Capture variables for closure
           final Long capturedShopId = shop.get().getShopId();
@@ -156,7 +156,7 @@ public class StaffSelectionPage {
                                              .withSlot(searchSlot)
                                              .withActions(new GuiChatAction((message) -> {
                                                // Handle clear command
-                                               final String searchValue = (message.equalsIgnoreCase("clear") || message.equals("0")) ? "" : message;
+                                               final String searchValue = (message.equalsIgnoreCase("clear") || message.equals("0"))?"" : message;
                                                
                                                // Create new viewer with state preserved + new search value
                                                final net.tnemc.menu.core.viewer.MenuViewer newViewer = new net.tnemc.menu.core.viewer.MenuViewer(id);
@@ -177,8 +177,8 @@ public class StaffSelectionPage {
                                              .build());
 
           // Add staff button (slot 4 - center)
-          final String addStaffMaterial = addStaffConfig != null ? addStaffConfig.getMaterial() : "EMERALD";
-          final int addStaffSlot = addStaffConfig != null ? addStaffConfig.getSlot() : 4;
+          final String addStaffMaterial = addStaffConfig != null?addStaffConfig.getMaterial() : "EMERALD";
+          final int addStaffSlot = addStaffConfig != null?addStaffConfig.getSlot() : 4;
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(addStaffMaterial, 1)
                                                              .display(getConfigDisplay(addStaffConfig, "<green>Add Staff Member</green>"))
                                                              .lore(getConfigLore(addStaffConfig)))
@@ -187,8 +187,8 @@ public class StaffSelectionPage {
                                              .build());
 
           // Back button (slot 8 - right side like browse close button)
-          final String backMaterial = backConfig != null ? backConfig.getMaterial() : "OAK_DOOR";
-          final int backSlot = backConfig != null ? backConfig.getSlot() : 8;
+          final String backMaterial = backConfig != null?backConfig.getMaterial() : "OAK_DOOR";
+          final int backSlot = backConfig != null?backConfig.getSlot() : 8;
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(backMaterial, 1)
                                                              .display(getConfigDisplay(backConfig, "<white>Back to Shop</white>")))
                                              .withActions(new SwitchPageAction(returnMenu, returnPage))
@@ -196,12 +196,12 @@ public class StaffSelectionPage {
                                              .build());
           
           // === Pagination Row (Bottom - Row 6) ===
-          final String prevMaterial = prevPageConfig != null ? prevPageConfig.getMaterial() : "ARROW";
-          final int prevSlot = prevPageConfig != null ? prevPageConfig.getSlot() : 48;
-          final String nextMaterial = nextPageConfig != null ? nextPageConfig.getMaterial() : "ARROW";
-          final int nextSlot = nextPageConfig != null ? nextPageConfig.getSlot() : 50;
-          final String pageInfoMaterial = pageInfoConfig != null ? pageInfoConfig.getMaterial() : "BOOK";
-          final int pageInfoSlot = pageInfoConfig != null ? pageInfoConfig.getSlot() : 49;
+          final String prevMaterial = prevPageConfig != null?prevPageConfig.getMaterial() : "ARROW";
+          final int prevSlot = prevPageConfig != null?prevPageConfig.getSlot() : 48;
+          final String nextMaterial = nextPageConfig != null?nextPageConfig.getMaterial() : "ARROW";
+          final int nextSlot = nextPageConfig != null?nextPageConfig.getSlot() : 50;
+          final String pageInfoMaterial = pageInfoConfig != null?pageInfoConfig.getMaterial() : "BOOK";
+          final int pageInfoSlot = pageInfoConfig != null?pageInfoConfig.getSlot() : 49;
 
           if(maxPages > 1) {
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
@@ -247,7 +247,7 @@ public class StaffSelectionPage {
 
             } catch(final Exception ignore) { }
 
-            final String name = (player.isPresent() && player.get().getName() != null)? player.get().getName() : uuid.toString();
+            final String name = (player.isPresent() && player.get().getName() != null)?player.get().getName() : uuid.toString();
             callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of("PLAYER_HEAD", 1)
                                                                .display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + name + "</yellow>"))
                                                                .lore(getConfigLore(null, name))

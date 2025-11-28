@@ -79,7 +79,7 @@ public class MainPage {
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
-    this.menuRows = (menuRows <= 1)? 3 : menuRows;
+    this.menuRows = (menuRows <= 1)?3 : menuRows;
   }
 
   public void handle(final PageOpenCallback callback) {
@@ -96,12 +96,12 @@ public class MainPage {
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-        final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-        final GuiConfig.IconConfig prevPageConfig = menuConfig != null ? menuConfig.getIcon("previous-page") : null;
-        final GuiConfig.IconConfig nextPageConfig = menuConfig != null ? menuConfig.getIcon("next-page") : null;
-        final GuiConfig.IconConfig pageInfoConfig = menuConfig != null ? menuConfig.getIcon("page-info") : null;
+        final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+        final GuiConfig.IconConfig prevPageConfig = menuConfig != null?menuConfig.getIcon("previous-page") : null;
+        final GuiConfig.IconConfig nextPageConfig = menuConfig != null?menuConfig.getIcon("next-page") : null;
+        final GuiConfig.IconConfig pageInfoConfig = menuConfig != null?menuConfig.getIcon("page-info") : null;
 
-        final int listStartSlot = menuConfig != null ? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+        final int listStartSlot = (menuConfig != null?menuConfig.getSection().getInt("list-start-slot", 9) : 9);
 
         final int offset = 9;
         final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
@@ -110,26 +110,26 @@ public class MainPage {
 
         final List<Shop> shops = (ArrayList<Shop>)shopsData.get();
 
-        final int maxPages = (shops.size() / items) + (((shops.size() % items) > 0)? 1 : 0);
+        final int maxPages = (shops.size() / items) + (((shops.size() % items) > 0)?1 : 0);
 
-        final int prev = (page <= 1)? maxPages : page - 1;
-        final int next = (page >= maxPages)? 1 : page + 1;
+        final int prev = (page <= 1)?maxPages : page - 1;
+        final int next = (page >= maxPages)?1 : page + 1;
 
         // Set up borders from config
-        final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+        final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-        final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(1, 6);
-        for (final int row : borderRows) {
+        final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 6);
+        for(final int row : borderRows) {
           playerPage.setRow(id, row, borderBuilder);
         }
 
         // Pagination icons from config
-        final String prevPageMaterial = prevPageConfig != null ? prevPageConfig.getMaterial() : "ARROW";
-        final int prevPageSlot = prevPageConfig != null ? prevPageConfig.getSlot() : 3;
-        final String nextPageMaterial = nextPageConfig != null ? nextPageConfig.getMaterial() : "ARROW";
-        final int nextPageSlot = nextPageConfig != null ? nextPageConfig.getSlot() : 5;
-        final String pageInfoMaterial = pageInfoConfig != null ? pageInfoConfig.getMaterial() : "BOOK";
-        final int pageInfoSlot = pageInfoConfig != null ? pageInfoConfig.getSlot() : 4;
+        final String prevPageMaterial = prevPageConfig != null?prevPageConfig.getMaterial() : "ARROW";
+        final int prevPageSlot = (prevPageConfig != null?prevPageConfig.getSlot() : 3);
+        final String nextPageMaterial = nextPageConfig != null?nextPageConfig.getMaterial() : "ARROW";
+        final int nextPageSlot = (nextPageConfig != null?nextPageConfig.getSlot() : 5);
+        final String pageInfoMaterial = pageInfoConfig != null?pageInfoConfig.getMaterial() : "BOOK";
+        final int pageInfoSlot = (pageInfoConfig != null?pageInfoConfig.getSlot() : 4);
 
         if(maxPages > 1) {
 
@@ -167,7 +167,7 @@ public class MainPage {
 
           if(i >= (start + items)) break;
 
-          final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
+          final String world = (shop.getLocation().getWorld() != null)?shop.getLocation().getWorld().getName() : "World";
           final String location = world + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ();
           final QUser owner = shop.getOwner();
           SkullProfile ownerProfile = null;

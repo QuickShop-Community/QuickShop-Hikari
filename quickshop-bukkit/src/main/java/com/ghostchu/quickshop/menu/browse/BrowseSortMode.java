@@ -76,8 +76,8 @@ public enum BrowseSortMode {
    * @return The sort mode, or PRICE_ASC if not found
    */
   public static BrowseSortMode fromId(final String id) {
-    for (final BrowseSortMode mode : values()) {
-      if (mode.getId().equalsIgnoreCase(id)) {
+    for(final BrowseSortMode mode : values()) {
+      if(mode.getId().equalsIgnoreCase(id)) {
         return mode;
       }
     }

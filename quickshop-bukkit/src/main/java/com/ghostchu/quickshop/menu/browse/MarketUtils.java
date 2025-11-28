@@ -54,19 +54,19 @@ public final class MarketUtils {
     final List<MarketItemGroup> groups = new ArrayList<>();
     final ItemMatcher matcher = QuickShop.getInstance().getItemMatcher();
     
-    for (final Shop shop : shops) {
+    for(final Shop shop : shops) {
       MarketItemGroup matchingGroup = null;
       
       // Find existing group that matches this shop's item
-      for (final MarketItemGroup group : groups) {
-        if (matcher.matches(group.getRepresentativeItem(), shop.getItem())) {
+      for(final MarketItemGroup group : groups) {
+        if(matcher.matches(group.getRepresentativeItem(), shop.getItem())) {
           matchingGroup = group;
           break;
         }
       }
       
       // Create new group if no match found
-      if (matchingGroup == null) {
+      if(matchingGroup == null) {
         matchingGroup = new MarketItemGroup(shop.getItem());
         groups.add(matchingGroup);
       }
@@ -75,7 +75,7 @@ public final class MarketUtils {
     }
     
     // Calculate statistics for all groups
-    for (final MarketItemGroup group : groups) {
+    for(final MarketItemGroup group : groups) {
       group.calculateStatistics();
     }
     
@@ -91,7 +91,7 @@ public final class MarketUtils {
   @NotNull
   public static List<Shop> filterShops(@NotNull final List<Shop> shops, 
                                         @NotNull final BrowseFilterMode filterMode) {
-    return switch (filterMode) {
+    return switch(filterMode) {
       case ALL -> new ArrayList<>(shops);
       case BUYING -> shops.stream()
               .filter(Shop::isBuying)
@@ -112,15 +112,15 @@ public final class MarketUtils {
    */
   @NotNull
   public static List<Shop> filterByStock(@NotNull final List<Shop> shops, final boolean stockOnly) {
-    if (!stockOnly) {
+    if(!stockOnly) {
       return new ArrayList<>(shops);
     }
     return shops.stream()
             .filter(shop -> {
-              if (shop.isUnlimited()) return true;
+              if(shop.isUnlimited()) return true;
               // For selling shops, check stock; for buying shops, check space
               // Use database cache to avoid Folia cross-region block access
-              if (shop.isSelling()) {
+              if(shop.isSelling()) {
                 return getStockFromCache(shop) > 0;
               } else {
                 return getSpaceFromCache(shop) > 0;
@@ -138,7 +138,7 @@ public final class MarketUtils {
   @NotNull
   public static List<MarketItemGroup> filterGroups(@NotNull final List<MarketItemGroup> groups,
                                                     @NotNull final BrowseFilterMode filterMode) {
-    return switch (filterMode) {
+    return switch(filterMode) {
       case ALL -> new ArrayList<>(groups);
       case BUYING -> groups.stream()
               .filter(MarketItemGroup::hasBuyingShops)
@@ -160,7 +160,7 @@ public final class MarketUtils {
   @NotNull
   public static List<MarketItemGroup> filterGroupsByStock(@NotNull final List<MarketItemGroup> groups, 
                                                            final boolean stockOnly) {
-    if (!stockOnly) {
+    if(!stockOnly) {
       return new ArrayList<>(groups);
     }
     return groups.stream()
@@ -168,8 +168,8 @@ public final class MarketUtils {
               // Check if any shop in the group has stock/space
               // Use database cache to avoid Folia cross-region block access
               return group.getShops().stream().anyMatch(shop -> {
-                if (shop.isUnlimited()) return true;
-                if (shop.isSelling()) {
+                if(shop.isUnlimited()) return true;
+                if(shop.isSelling()) {
                   return getStockFromCache(shop) > 0;
                 } else {
                   return getSpaceFromCache(shop) > 0;
@@ -192,7 +192,7 @@ public final class MarketUtils {
                                       @NotNull final BrowseSortMode sortMode) {
     final List<Shop> sorted = new ArrayList<>(shops);
     
-    switch (sortMode) {
+    switch(sortMode) {
       case PRICE_ASC -> sorted.sort(Comparator.comparingDouble(Shop::getPrice));
       case PRICE_DESC -> sorted.sort(Comparator.comparingDouble(Shop::getPrice).reversed());
       case STOCK -> sorted.sort(Comparator.comparingInt(MarketUtils::getStockFromCache).reversed());
@@ -214,16 +214,16 @@ public final class MarketUtils {
                                                   @NotNull final BrowseSortMode sortMode) {
     final List<MarketItemGroup> sorted = new ArrayList<>(groups);
     
-    switch (sortMode) {
+    switch(sortMode) {
       case PRICE_ASC -> sorted.sort(Comparator.comparingDouble(group -> {
         // Use selling price if available, otherwise buying price
-        if (group.hasSellingShops()) {
+        if(group.hasSellingShops()) {
           return group.getSellingMinPrice();
         }
         return group.getBuyingMinPrice();
       }));
       case PRICE_DESC -> sorted.sort(Comparator.comparingDouble((MarketItemGroup group) -> {
-        if (group.hasSellingShops()) {
+        if(group.hasSellingShops()) {
           return group.getSellingMaxPrice();
         }
         return group.getBuyingMaxPrice();
@@ -244,7 +244,7 @@ public final class MarketUtils {
   @NotNull
   public static List<Shop> searchShops(@NotNull final List<Shop> shops,
                                         @Nullable final String searchQuery) {
-    if (searchQuery == null || searchQuery.trim().isEmpty()) {
+    if(searchQuery == null || searchQuery.trim().isEmpty()) {
       return new ArrayList<>(shops);
     }
     
@@ -264,7 +264,7 @@ public final class MarketUtils {
   @NotNull
   public static List<MarketItemGroup> searchGroups(@NotNull final List<MarketItemGroup> groups,
                                                     @Nullable final String searchQuery) {
-    if (searchQuery == null || searchQuery.trim().isEmpty()) {
+    if(searchQuery == null || searchQuery.trim().isEmpty()) {
       return new ArrayList<>(groups);
     }
     
@@ -284,20 +284,20 @@ public final class MarketUtils {
   private static boolean matchesSearch(@NotNull final ItemStack item, @NotNull final String query) {
     // Check material name
     final String materialName = item.getType().name().toLowerCase(Locale.ROOT).replace("_", " ");
-    if (materialName.contains(query)) {
+    if(materialName.contains(query)) {
       return true;
     }
     
     // Check prettified name
     final String prettyName = CommonUtil.prettifyText(item.getType().name()).toLowerCase(Locale.ROOT);
-    if (prettyName.contains(query)) {
+    if(prettyName.contains(query)) {
       return true;
     }
     
     // Check custom display name if present
-    if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+    if(item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
       final String displayName = item.getItemMeta().getDisplayName().toLowerCase(Locale.ROOT);
-      if (displayName.contains(query)) {
+      if(displayName.contains(query)) {
         return true;
       }
     }
@@ -366,7 +366,7 @@ public final class MarketUtils {
    * @return Stock count, or -1 for unlimited shops, 0 for errors/uninitialized
    */
   public static int getStockFromCache(@NotNull final Shop shop) {
-    if (shop.isUnlimited()) {
+    if(shop.isUnlimited()) {
       return -1;
     }
     try {
@@ -374,8 +374,8 @@ public final class MarketUtils {
               .queryShopInventoryCacheInDatabase(shop).join();
       final int stock = cache.getStock();
       // Return stock if available, otherwise return 0 for uninitialized cache
-      return stock >= 0 ? stock : 0;
-    } catch (final Exception e) {
+      return stock >= 0?stock : 0;
+    } catch(final Exception e) {
       // Fallback to 0 if cache query fails
       return 0;
     }
@@ -390,7 +390,7 @@ public final class MarketUtils {
    * @return Space count, or -1 for unlimited shops, 0 for errors/uninitialized
    */
   public static int getSpaceFromCache(@NotNull final Shop shop) {
-    if (shop.isUnlimited()) {
+    if(shop.isUnlimited()) {
       return -1;
     }
     try {
@@ -398,8 +398,8 @@ public final class MarketUtils {
               .queryShopInventoryCacheInDatabase(shop).join();
       final int space = cache.getSpace();
       // Return space if available, otherwise return 0 for uninitialized cache
-      return space >= 0 ? space : 0;
-    } catch (final Exception e) {
+      return space >= 0?space : 0;
+    } catch(final Exception e) {
       // Fallback to 0 if cache query fails
       return 0;
     }

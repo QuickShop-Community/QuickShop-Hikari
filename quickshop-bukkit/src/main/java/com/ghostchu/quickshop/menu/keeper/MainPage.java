@@ -92,36 +92,36 @@ public class MainPage extends QuickShopPage {
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("keeper");
-        final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-        final GuiConfig.IconConfig shopItemConfig = menuConfig != null ? menuConfig.getIcon("shop-item") : null;
-        final GuiConfig.IconConfig changePriceConfig = menuConfig != null ? menuConfig.getIcon("change-price") : null;
-        final GuiConfig.IconConfig modeToggleConfig = menuConfig != null ? menuConfig.getIcon("mode-toggle") : null;
-        final GuiConfig.IconConfig staffConfig = menuConfig != null ? menuConfig.getIcon("staff") : null;
-        final GuiConfig.IconConfig historyConfig = menuConfig != null ? menuConfig.getIcon("history") : null;
-        final GuiConfig.IconConfig removeConfig = menuConfig != null ? menuConfig.getIcon("remove") : null;
-        final GuiConfig.IconConfig closeConfig = menuConfig != null ? menuConfig.getIcon("close") : null;
+        final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+        final GuiConfig.IconConfig shopItemConfig = menuConfig != null?menuConfig.getIcon("shop-item") : null;
+        final GuiConfig.IconConfig changePriceConfig = menuConfig != null?menuConfig.getIcon("change-price") : null;
+        final GuiConfig.IconConfig modeToggleConfig = menuConfig != null?menuConfig.getIcon("mode-toggle") : null;
+        final GuiConfig.IconConfig staffConfig = menuConfig != null?menuConfig.getIcon("staff") : null;
+        final GuiConfig.IconConfig historyConfig = menuConfig != null?menuConfig.getIcon("history") : null;
+        final GuiConfig.IconConfig removeConfig = menuConfig != null?menuConfig.getIcon("remove") : null;
+        final GuiConfig.IconConfig closeConfig = menuConfig != null?menuConfig.getIcon("close") : null;
 
         // Set up our borders from config (gray for modern look)
-        final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+        final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
         
         // Rows 2 and 4 for modern 4-row layout
-        final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(2, 4);
+        final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(2, 4);
         for (final int row : borderRows) {
           open.getPage().setRow(row, borderBuilder);
         }
 
         // Shop item preview - top center (slot 4)
         final ItemStack shopItem = shop.get().getItem();
-        final int shopItemSlot = shopItemConfig != null ? shopItemConfig.getSlot() : 4;
+        final int shopItemSlot = shopItemConfig != null?shopItemConfig.getSlot() : 4;
         open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(shopItemSlot).build());
 
         // Always read price directly from shop to get the latest value
         final double currentPrice = shop.get().getPrice();
 
         // Change price icon from config (GOLD_NUGGET for "price")
-        final String changePriceMaterial = changePriceConfig != null ? changePriceConfig.getMaterial() : "GOLD_NUGGET";
-        final int changePriceSlot = changePriceConfig != null ? changePriceConfig.getSlot() : 19;
+        final String changePriceMaterial = changePriceConfig != null?changePriceConfig.getMaterial() : "GOLD_NUGGET";
+        final int changePriceSlot = changePriceConfig != null?changePriceConfig.getSlot() : 19;
         
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_PRICE)
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.price")) {
@@ -148,13 +148,13 @@ public class MainPage extends QuickShopPage {
         }
 
         // Mode Toggle Icon from config (concrete for clean look)
-        final GuiConfig.IconConfig sellingConfig = modeToggleConfig != null ? modeToggleConfig.getSubIcon("selling") : null;
-        final GuiConfig.IconConfig buyingConfig = modeToggleConfig != null ? modeToggleConfig.getSubIcon("buying") : null;
-        final GuiConfig.IconConfig frozenConfig = modeToggleConfig != null ? modeToggleConfig.getSubIcon("frozen") : null;
-        final String sellingMaterial = sellingConfig != null ? sellingConfig.getMaterial() : "LIME_CONCRETE";
-        final String buyingMaterial = buyingConfig != null ? buyingConfig.getMaterial() : "ORANGE_CONCRETE";
-        final String frozenMaterial = frozenConfig != null ? frozenConfig.getMaterial() : "LIGHT_BLUE_CONCRETE";
-        final int modeToggleSlot = modeToggleConfig != null ? modeToggleConfig.getSlot() : 21;
+        final GuiConfig.IconConfig sellingConfig = modeToggleConfig != null?modeToggleConfig.getSubIcon("selling") : null;
+        final GuiConfig.IconConfig buyingConfig = modeToggleConfig != null?modeToggleConfig.getSubIcon("buying") : null;
+        final GuiConfig.IconConfig frozenConfig = modeToggleConfig != null?modeToggleConfig.getSubIcon("frozen") : null;
+        final String sellingMaterial = sellingConfig != null?sellingConfig.getMaterial() : "LIME_CONCRETE";
+        final String buyingMaterial = buyingConfig != null?buyingConfig.getMaterial() : "ORANGE_CONCRETE";
+        final String frozenMaterial = frozenConfig != null?frozenConfig.getMaterial() : "LIGHT_BLUE_CONCRETE";
+        final int modeToggleSlot = modeToggleConfig != null?modeToggleConfig.getSlot() : 21;
         
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_SHOPTYPE)
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.freeze")
@@ -198,8 +198,8 @@ public class MainPage extends QuickShopPage {
         }
 
         // Staff Icon from config
-        final String staffMaterial = staffConfig != null ? staffConfig.getMaterial() : "PLAYER_HEAD";
-        final int staffSlot = staffConfig != null ? staffConfig.getSlot() : 23;
+        final String staffMaterial = staffConfig != null?staffConfig.getMaterial() : "PLAYER_HEAD";
+        final int staffSlot = staffConfig != null?staffConfig.getSlot() : 23;
         
         SkullProfile profile = null;
         if(shop.get().getOwner().isRealPlayer()) {
@@ -225,8 +225,8 @@ public class MainPage extends QuickShopPage {
         }
 
         // History Icon from config (NEW - quick access to history)
-        final String historyMaterial = historyConfig != null ? historyConfig.getMaterial() : "BOOK";
-        final int historySlot = historyConfig != null ? historyConfig.getSlot() : 24;
+        final String historyMaterial = historyConfig != null?historyConfig.getMaterial() : "BOOK";
+        final int historySlot = historyConfig != null?historyConfig.getSlot() : 24;
         
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.VIEW_PURCHASE_LOGS)
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.history")) {
@@ -275,8 +275,8 @@ public class MainPage extends QuickShopPage {
         }
 
         // Remove Icon from config (TNT for dramatic effect)
-        final String removeMaterial = removeConfig != null ? removeConfig.getMaterial() : "TNT";
-        final int removeSlot = removeConfig != null ? removeConfig.getSlot() : 25;
+        final String removeMaterial = removeConfig != null?removeConfig.getMaterial() : "TNT";
+        final int removeSlot = removeConfig != null?removeConfig.getSlot() : 25;
         
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.DELETE)
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.destroy")) {
@@ -299,8 +299,8 @@ public class MainPage extends QuickShopPage {
         }
 
         // Close button - OAK_DOOR for "exit" (slot 31)
-        final String closeMaterial = closeConfig != null ? closeConfig.getMaterial() : "OAK_DOOR";
-        final int closeSlot = closeConfig != null ? closeConfig.getSlot() : 31;
+        final String closeMaterial = closeConfig != null?closeConfig.getMaterial() : "OAK_DOOR";
+        final int closeSlot = closeConfig != null?closeConfig.getSlot() : 31;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
                 .display(getConfigDisplay(closeConfig, "<red>Close</red>")))
                 .withActions(new RunnableAction((click -> viewer.get().close(QuickShop.getInstance().createMenuPlayer(player)))))

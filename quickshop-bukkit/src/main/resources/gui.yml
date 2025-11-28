@@ -26,7 +26,7 @@ version: 2
 # ===================
 style:
   border-material: GRAY_STAINED_GLASS_PANE
-  accent-positive: LIME_CONCRETEff
+  accent-positive: LIME_CONCRETE
   accent-negative: ORANGE_CONCRETE
   accent-neutral: LIGHT_BLUE_CONCRETE
 

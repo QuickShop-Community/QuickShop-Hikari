@@ -71,8 +71,8 @@ public enum BrowseFilterMode {
    * @return The filter mode, or ALL if not found
    */
   public static BrowseFilterMode fromId(final String id) {
-    for (final BrowseFilterMode mode : values()) {
-      if (mode.getId().equalsIgnoreCase(id)) {
+    for(final BrowseFilterMode mode : values()) {
+      if(mode.getId().equalsIgnoreCase(id)) {
         return mode;
       }
     }

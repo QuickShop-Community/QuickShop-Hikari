@@ -78,21 +78,21 @@ public class MainPage extends QuickShopPage {
         
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("trade");
-        final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-        final GuiConfig.IconConfig customAmountConfig = menuConfig != null ? menuConfig.getIcon("custom-amount") : null;
-        final GuiConfig.IconConfig quantityConfig = menuConfig != null ? menuConfig.getIcon("quantity-buttons") : null;
-        final GuiConfig.IconConfig shopItemConfig = menuConfig != null ? menuConfig.getIcon("shop-item") : null;
-        final GuiConfig.IconConfig infoStockConfig = menuConfig != null ? menuConfig.getIcon("info-stock") : null;
-        final GuiConfig.IconConfig infoPriceConfig = menuConfig != null ? menuConfig.getIcon("info-price") : null;
-        final GuiConfig.IconConfig infoSellerConfig = menuConfig != null ? menuConfig.getIcon("info-seller") : null;
-        final GuiConfig.IconConfig closeConfig = menuConfig != null ? menuConfig.getIcon("close") : null;
+        final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+        final GuiConfig.IconConfig customAmountConfig = menuConfig != null?menuConfig.getIcon("custom-amount") : null;
+        final GuiConfig.IconConfig quantityConfig = menuConfig != null?menuConfig.getIcon("quantity-buttons") : null;
+        final GuiConfig.IconConfig shopItemConfig = menuConfig != null?menuConfig.getIcon("shop-item") : null;
+        final GuiConfig.IconConfig infoStockConfig = menuConfig != null?menuConfig.getIcon("info-stock") : null;
+        final GuiConfig.IconConfig infoPriceConfig = menuConfig != null?menuConfig.getIcon("info-price") : null;
+        final GuiConfig.IconConfig infoSellerConfig = menuConfig != null?menuConfig.getIcon("info-seller") : null;
+        final GuiConfig.IconConfig closeConfig = menuConfig != null?menuConfig.getIcon("close") : null;
 
         // Set up our borders from config (gray for modern look)
-        final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+        final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
         
         // Get border rows from config or use defaults (rows 1, 4, 6 for modern 6-row layout)
-        final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(1, 4, 6);
+        final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 4, 6);
         for (final int row : borderRows) {
           open.getPage().setRow(row, borderBuilder);
         }
@@ -100,35 +100,35 @@ public class MainPage extends QuickShopPage {
         final ItemStack shopItem = shop.get().getItem();
         final int amount = shopItem.getAmount();
         // Use cache to avoid Folia cross-region block access issues
-        final int stock = (shop.get().isBuying())? -1 : MarketUtils.getStockFromCache(shop.get());
-        final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
+        final int stock = (shop.get().isBuying())?-1 : MarketUtils.getStockFromCache(shop.get());
+        final String stockString = (shop.get().isUnlimited())?"Unlimited" : stock + "";
         final String priceFormatted = eco.format(BigDecimal.valueOf(shop.get().getPrice()),
                 shop.get().getLocation().getWorld().getName(),
                 shop.get().getCurrency());
 
         // Shop item display slot from config (centered in row 2)
-        final int shopItemSlot = shopItemConfig != null ? shopItemConfig.getSlot() : 13;
+        final int shopItemSlot = shopItemConfig != null?shopItemConfig.getSlot() : 13;
         open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(shopItemSlot).build());
 
         // Info icons row (row 3) - Stock info
-        final String infoStockMaterial = infoStockConfig != null ? infoStockConfig.getMaterial() : "CHEST";
-        final int infoStockSlot = infoStockConfig != null ? infoStockConfig.getSlot() : 21;
+        final String infoStockMaterial = infoStockConfig != null?infoStockConfig.getMaterial() : "CHEST";
+        final int infoStockSlot = infoStockConfig != null?infoStockConfig.getSlot() : 21;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoStockMaterial, 1)
                 .display(getConfigDisplay(infoStockConfig, "<yellow>Stock Information</yellow>"))
                 .lore(getConfigLore(infoStockConfig, stockString)))
                 .withSlot(infoStockSlot).build());
 
         // Info icons row - Price info
-        final String infoPriceMaterial = infoPriceConfig != null ? infoPriceConfig.getMaterial() : "GOLD_INGOT";
-        final int infoPriceSlot = infoPriceConfig != null ? infoPriceConfig.getSlot() : 22;
+        final String infoPriceMaterial = infoPriceConfig != null?infoPriceConfig.getMaterial() : "GOLD_INGOT";
+        final int infoPriceSlot = infoPriceConfig != null?infoPriceConfig.getSlot() : 22;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoPriceMaterial, 1)
                 .display(getConfigDisplay(infoPriceConfig, "<gold>Price Information</gold>"))
                 .lore(getConfigLore(infoPriceConfig, priceFormatted, amount)))
                 .withSlot(infoPriceSlot).build());
 
         // Info icons row - Seller info
-        final String infoSellerMaterial = infoSellerConfig != null ? infoSellerConfig.getMaterial() : "PLAYER_HEAD";
-        final int infoSellerSlot = infoSellerConfig != null ? infoSellerConfig.getSlot() : 23;
+        final String infoSellerMaterial = infoSellerConfig != null?infoSellerConfig.getMaterial() : "PLAYER_HEAD";
+        final int infoSellerSlot = infoSellerConfig != null?infoSellerConfig.getSlot() : 23;
         SkullProfile sellerProfile = null;
         if(shop.get().getOwner().isRealPlayer()) {
           sellerProfile = new SkullProfile();
@@ -142,10 +142,10 @@ public class MainPage extends QuickShopPage {
                 .withSlot(infoSellerSlot).build());
 
         // Custom amount button from config (NAME_TAG for intuitive "enter amount")
-        final String customAmountMaterial = customAmountConfig != null ? customAmountConfig.getMaterial() : "NAME_TAG";
-        final int customAmountSlot = customAmountConfig != null ? customAmountConfig.getSlot() : 43;
+        final String customAmountMaterial = customAmountConfig != null?customAmountConfig.getMaterial() : "NAME_TAG";
+        final int customAmountSlot = customAmountConfig != null?customAmountConfig.getSlot() : 43;
         
-        final String enterPath = (shop.get().isSelling())? "trade.enter-buy" : "trade.enter-sell";
+        final String enterPath = (shop.get().isSelling())?"trade.enter-buy" : "trade.enter-sell";
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(customAmountMaterial, 1)
                                                        .display(getConfigDisplay(customAmountConfig, "<bold><blue>Custom Order</blue></bold>"))
                                                        .lore(getConfigLore(customAmountConfig, amount, stockString)))
@@ -184,13 +184,13 @@ public class MainPage extends QuickShopPage {
 
         // Quantity buttons from config - color-coded (LIME_CONCRETE for buy, ORANGE_CONCRETE for sell)
         final String quantityMaterialBuy = quantityConfig != null && quantityConfig.getSection() != null 
-                ? quantityConfig.getSection().getString("material-buy", "LIME_CONCRETE") : "LIME_CONCRETE";
+              ?quantityConfig.getSection().getString("material-buy", "LIME_CONCRETE") : "LIME_CONCRETE";
         final String quantityMaterialSell = quantityConfig != null && quantityConfig.getSection() != null 
-                ? quantityConfig.getSection().getString("material-sell", "ORANGE_CONCRETE") : "ORANGE_CONCRETE";
-        final String quantityMaterial = shop.get().isSelling() ? quantityMaterialBuy : quantityMaterialSell;
+              ?quantityConfig.getSection().getString("material-sell", "ORANGE_CONCRETE") : "ORANGE_CONCRETE";
+        final String quantityMaterial = shop.get().isSelling()?quantityMaterialBuy : quantityMaterialSell;
         
-        final List<Integer> configQuantities = quantityConfig != null ? quantityConfig.getQuantities() : List.of(1, 2, 4, 8, 16, 64);
-        final List<Integer> configSlots = quantityConfig != null ? quantityConfig.getSlots() : List.of(37, 38, 39, 40, 41, 42);
+        final List<Integer> configQuantities = quantityConfig != null?quantityConfig.getQuantities() : List.of(1, 2, 4, 8, 16, 64);
+        final List<Integer> configSlots = quantityConfig != null?quantityConfig.getSlots() : List.of(37, 38, 39, 40, 41, 42);
 
         for(int i = 0; i < configQuantities.size() && i < configSlots.size(); i++) {
 
@@ -200,7 +200,7 @@ public class MainPage extends QuickShopPage {
           final String totalPrice = eco.format(BigDecimal.valueOf((quantity * shop.get().getPrice())),
                                                shop.get().getLocation().getWorld().getName(),
                                                shop.get().getCurrency());
-          final String displayText = (shop.get().isSelling())? "<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
+          final String displayText = (shop.get().isSelling())?"<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(quantityMaterial, Math.min(adjustedAmount, 64))
                                                          .display(QuickShop.getInstance().platform().miniMessage().deserialize(displayText))
@@ -223,8 +223,8 @@ public class MainPage extends QuickShopPage {
         }
 
         // Close button - centered at bottom (slot 49)
-        final String closeMaterial = closeConfig != null ? closeConfig.getMaterial() : "BARRIER";
-        final int closeSlot = closeConfig != null ? closeConfig.getSlot() : 49;
+        final String closeMaterial = closeConfig != null?closeConfig.getMaterial() : "BARRIER";
+        final int closeSlot = closeConfig != null?closeConfig.getSlot() : 49;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
                 .display(getConfigDisplay(closeConfig, "<red>Close</red>")))
                 .withActions(new RunnableAction((click -> viewer.get().close(QuickShop.getInstance().createMenuPlayer(player)))))

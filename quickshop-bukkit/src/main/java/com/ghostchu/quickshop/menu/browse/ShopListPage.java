@@ -72,7 +72,7 @@ public class ShopListPage {
 
   public void handle(final PageOpenCallback callback) {
     final Optional<MenuViewer> viewerOpt = callback.getPlayer().viewer();
-    if (viewerOpt.isEmpty()) return;
+    if(viewerOpt.isEmpty()) return;
 
     final MenuViewer viewer = viewerOpt.get();
     final Page menuPage = callback.getPage();
@@ -81,22 +81,22 @@ public class ShopListPage {
     final UUID id = viewer.uuid();
     final Player player = Bukkit.getPlayer(id);
 
-    if (shopsData.isEmpty() || player == null) return;
+    if(shopsData.isEmpty() || player == null) return;
 
     menuPage.getIcons().clear();
 
     // Load GUI configuration
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-    final GuiConfig.IconConfig borderConfig = menuConfig != null ? menuConfig.getIcon("border") : null;
-    final GuiConfig.IconConfig backConfig = menuConfig != null ? menuConfig.getIcon("back") : null;
-    final GuiConfig.IconConfig itemInfoConfig = menuConfig != null ? menuConfig.getIcon("item-info") : null;
-    final GuiConfig.IconConfig sortConfig = menuConfig != null ? menuConfig.getIcon("shop-list-sort") : null;
-    final GuiConfig.IconConfig closeConfig = menuConfig != null ? menuConfig.getIcon("close") : null;
-    final GuiConfig.IconConfig prevPageConfig = menuConfig != null ? menuConfig.getIcon("previous-page") : null;
-    final GuiConfig.IconConfig nextPageConfig = menuConfig != null ? menuConfig.getIcon("next-page") : null;
-    final GuiConfig.IconConfig pageInfoConfig = menuConfig != null ? menuConfig.getIcon("page-info") : null;
+    final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
+    final GuiConfig.IconConfig backConfig = menuConfig != null?menuConfig.getIcon("back") : null;
+    final GuiConfig.IconConfig itemInfoConfig = menuConfig != null?menuConfig.getIcon("item-info") : null;
+    final GuiConfig.IconConfig sortConfig = menuConfig != null?menuConfig.getIcon("shop-list-sort") : null;
+    final GuiConfig.IconConfig closeConfig = menuConfig != null?menuConfig.getIcon("close") : null;
+    final GuiConfig.IconConfig prevPageConfig = menuConfig != null?menuConfig.getIcon("previous-page") : null;
+    final GuiConfig.IconConfig nextPageConfig = menuConfig != null?menuConfig.getIcon("next-page") : null;
+    final GuiConfig.IconConfig pageInfoConfig = menuConfig != null?menuConfig.getIcon("page-info") : null;
     
-    final int listStartSlot = menuConfig != null ? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+    final int listStartSlot = menuConfig != null?menuConfig.getSection().getInt("list-start-slot", 9) : 9;
 
     // Get current state
     final BrowseSortMode sortMode = (BrowseSortMode) viewer.dataOrDefault(BROWSE_SORT, BrowseSortMode.PRICE_ASC);
@@ -113,22 +113,22 @@ public class ShopListPage {
     final List<Shop> sortedShops = MarketUtils.sortShops(filteredShops, sortMode);
 
     // Calculate average price for comparison indicators
-    final double avgPrice = sortedShops.isEmpty() ? 0 : 
+    final double avgPrice = sortedShops.isEmpty()?0 : 
             CommonUtil.avg(sortedShops.stream().map(Shop::getPrice).toList());
 
     // Calculate pagination (same pattern as MainPage)
     final int offset = 9;
     final int items = (menuRows - 2) * offset;
     final int start = ((page - 1) * offset);
-    final int maxPages = (sortedShops.size() / items) + (((sortedShops.size() % items) > 0) ? 1 : 0);
-    final int prev = (page <= 1) ? maxPages : page - 1;
-    final int next = (page >= maxPages) ? 1 : page + 1;
+    final int maxPages = (sortedShops.size() / items) + (((sortedShops.size() % items) > 0)?1 : 0);
+    final int prev = (page <= 1)?maxPages : page - 1;
+    final int next = (page >= maxPages)?1 : page + 1;
 
     // Set up border rows
-    final String borderMaterial = borderConfig != null ? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+    final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
     final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-    final List<Integer> borderRows = borderConfig != null ? borderConfig.getRows() : List.of(1, 6);
-    for (final int row : borderRows) {
+    final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 6);
+    for(final int row : borderRows) {
       menuPage.setRow(row, borderBuilder);
     }
 
@@ -137,9 +137,9 @@ public class ShopListPage {
     // Uses same slot positions as GroupedItemPage for consistency
 
     // Item info - shows what item we're viewing (slot 0 - top left)
-    final GuiConfig.IconConfig searchConfig = menuConfig != null ? menuConfig.getIcon("search") : null;
-    final int itemInfoSlot = searchConfig != null ? searchConfig.getSlot() : 0;
-    if (!allShops.isEmpty()) {
+    final GuiConfig.IconConfig searchConfig = menuConfig != null?menuConfig.getIcon("search") : null;
+    final int itemInfoSlot = searchConfig != null?searchConfig.getSlot() : 0;
+    if(!allShops.isEmpty()) {
       final Shop firstShop = allShops.getFirst();
       final String filterIndicator = getFilterIndicator(filterMode);
       final AbstractItemStack<ItemStack> infoStack = new BukkitItemStack()
@@ -156,8 +156,8 @@ public class ShopListPage {
     }
 
     // Sort button (slot 2)
-    final String sortMaterial = sortConfig != null ? sortConfig.getMaterial() : "HOPPER";
-    final int sortSlot = sortConfig != null ? sortConfig.getSlot() : 2;
+    final String sortMaterial = sortConfig != null?sortConfig.getMaterial() : "HOPPER";
+    final int sortSlot = sortConfig != null?sortConfig.getSlot() : 2;
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
             .display(getConfigDisplay(sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
             .lore(getConfigLore(sortConfig)))
@@ -170,9 +170,9 @@ public class ShopListPage {
             .build());
 
     // Filter button (slot 4)
-    final GuiConfig.IconConfig filterConfig = menuConfig != null ? menuConfig.getIcon("filter") : null;
-    final String filterMaterial = filterConfig != null ? filterConfig.getMaterial() : "NAME_TAG";
-    final int filterSlot = filterConfig != null ? filterConfig.getSlot() : 4;
+    final GuiConfig.IconConfig filterConfig = menuConfig != null?menuConfig.getIcon("filter") : null;
+    final String filterMaterial = filterConfig != null?filterConfig.getMaterial() : "NAME_TAG";
+    final int filterSlot = filterConfig != null?filterConfig.getSlot() : 4;
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
             .display(getConfigDisplay(filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
@@ -186,10 +186,10 @@ public class ShopListPage {
             .build());
 
     // Stock filter toggle button (slot 6)
-    final GuiConfig.IconConfig stockConfig = menuConfig != null ? menuConfig.getIcon("stock-filter") : null;
-    final String stockMaterial = stockConfig != null ? stockConfig.getMaterial() : "CHEST";
-    final int stockSlot = stockConfig != null ? stockConfig.getSlot() : 6;
-    final String stockStatus = stockOnly ? "ON" : "OFF";
+    final GuiConfig.IconConfig stockConfig = menuConfig != null?menuConfig.getIcon("stock-filter") : null;
+    final String stockMaterial = stockConfig != null?stockConfig.getMaterial() : "CHEST";
+    final int stockSlot = stockConfig != null?stockConfig.getSlot() : 6;
+    final String stockStatus = stockOnly?"ON" : "OFF";
     
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
             .display(getConfigDisplay(stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
@@ -203,8 +203,8 @@ public class ShopListPage {
             .build());
 
     // Back button
-    final String backMaterial = backConfig != null ? backConfig.getMaterial() : "OAK_DOOR";
-    final int backSlot = backConfig != null ? backConfig.getSlot() : 8;
+    final String backMaterial = backConfig != null?backConfig.getMaterial() : "OAK_DOOR";
+    final int backSlot = backConfig != null?backConfig.getSlot() : 8;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(backMaterial, 1)
             .display(getConfigDisplay(backConfig, "<white>Back to Market</white>")))
@@ -216,14 +216,14 @@ public class ShopListPage {
             .build());
 
     // === Pagination Row (Bottom) ===
-    final String prevMaterial = prevPageConfig != null ? prevPageConfig.getMaterial() : "ARROW";
-    final int prevSlot = prevPageConfig != null ? prevPageConfig.getSlot() : 48;
-    final String nextMaterial = nextPageConfig != null ? nextPageConfig.getMaterial() : "ARROW";
-    final int nextSlot = nextPageConfig != null ? nextPageConfig.getSlot() : 50;
-    final String pageInfoMaterial = pageInfoConfig != null ? pageInfoConfig.getMaterial() : "BOOK";
-    final int pageInfoSlot = pageInfoConfig != null ? pageInfoConfig.getSlot() : 49;
+    final String prevMaterial = prevPageConfig != null?prevPageConfig.getMaterial() : "ARROW";
+    final int prevSlot = prevPageConfig != null?prevPageConfig.getSlot() : 48;
+    final String nextMaterial = nextPageConfig != null?nextPageConfig.getMaterial() : "ARROW";
+    final int nextSlot = nextPageConfig != null?nextPageConfig.getSlot() : 50;
+    final String pageInfoMaterial = pageInfoConfig != null?pageInfoConfig.getMaterial() : "BOOK";
+    final int pageInfoSlot = pageInfoConfig != null?pageInfoConfig.getSlot() : 49;
 
-    if (maxPages > 1) {
+    if(maxPages > 1) {
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
               .display(getConfigDisplay(prevPageConfig, "<white><< Previous Page</white>")))
               .withSlot(prevSlot)
@@ -248,12 +248,12 @@ public class ShopListPage {
 
     // === Shop Grid ===
     int i = 0;
-    for (final Shop shop : sortedShops) {
-      if (i < start) {
+    for(final Shop shop : sortedShops) {
+      if(i < start) {
         i++;
         continue;
       }
-      if (i >= (start + items)) break;
+      if(i >= (start + items)) break;
 
       // Build shop lore with price indicator and click instruction
       final List<Component> lore = buildShopLore(shop, avgPrice, canTeleport);
@@ -275,14 +275,14 @@ public class ShopListPage {
               .withSlot(listStartSlot + (i - start));
       
       // Only add teleport action if player has permission
-      if (canTeleport) {
+      if(canTeleport) {
         // Capture for lambda
         final Location finalTeleportTarget = teleportTarget;
         final Location shopLoc = shop.getLocation().clone().add(0.5, 0.5, 0.5);
         
         iconBuilder.withActions(new RunnableAction((click) -> {
           final Player p = Bukkit.getPlayer(click.player().identifier());
-          if (p != null) {
+          if(p != null) {
             p.closeInventory();
             // Teleport player to sign location, facing the shop
             final Location teleportLoc = finalTeleportTarget.clone();
@@ -314,8 +314,8 @@ public class ShopListPage {
     lore.add(mm.deserialize("<gray>Owner: <white>" + shop.getOwner().getDisplay() + "</white></gray>"));
 
     // Shop type
-    final String typeColor = shop.isSelling() ? "<green>" : "<#FFA500>";
-    final String typeText = shop.isSelling() ? "Selling" : "Buying";
+    final String typeColor = shop.isSelling()?"<green>" : "<#FFA500>";
+    final String typeText = shop.isSelling()?"Selling" : "Buying";
     lore.add(mm.deserialize("<gray>Type: " + typeColor + typeText + "</gray>"));
 
     // Price with indicator
@@ -325,18 +325,18 @@ public class ShopListPage {
 
     // Stock/Space - Use database cache to avoid Folia cross-region block access
     // The shop may be in a different region than the player viewing the menu
-    if (shop.isSelling()) {
+    if(shop.isSelling()) {
       final int stock = getStockFromCache(shop);
-      final String stockText = stock < 0 ? "Unlimited" : String.valueOf(stock);
+      final String stockText = stock < 0?"Unlimited" : String.valueOf(stock);
       lore.add(mm.deserialize("<gray>Stock: <aqua>" + stockText + "</aqua></gray>"));
     } else {
       final int space = getSpaceFromCache(shop);
-      final String spaceText = space < 0 ? "Unlimited" : String.valueOf(space);
+      final String spaceText = space < 0?"Unlimited" : String.valueOf(space);
       lore.add(mm.deserialize("<gray>Space: <aqua>" + spaceText + "</aqua></gray>"));
     }
 
     // Location
-    final String world = shop.getLocation().getWorld() != null ? 
+    final String world = shop.getLocation().getWorld() != null?
             shop.getLocation().getWorld().getName() : "Unknown";
     final String coords = shop.getLocation().getBlockX() + ", " + 
             shop.getLocation().getBlockY() + ", " + 
@@ -345,7 +345,7 @@ public class ShopListPage {
     lore.add(mm.deserialize("<dark_gray>" + coords + "</dark_gray>"));
     
     // Click instruction (only if player has teleport permission)
-    if (canTeleport) {
+    if(canTeleport) {
       lore.add(Component.empty());
       lore.add(mm.deserialize("<yellow>Click to teleport</yellow>"));
     }
@@ -357,22 +357,22 @@ public class ShopListPage {
    * Get a price indicator based on comparison to average
    */
   private String getPriceIndicator(final double price, final double avgPrice, final boolean isSelling) {
-    if (avgPrice == 0) return "";
+    if(avgPrice == 0) return "";
     
     final double ratio = price / avgPrice;
     
-    if (isSelling) {
+    if(isSelling) {
       // For selling shops: lower is better for buyers
-      if (ratio < 0.85) return "▼▼ Great Deal!";
-      if (ratio < 0.95) return "▼ Below Avg";
-      if (ratio > 1.15) return "▲▲ Expensive";
-      if (ratio > 1.05) return "▲ Above Avg";
+      if(ratio < 0.85) return "▼▼ Great Deal!";
+      if(ratio < 0.95) return "▼ Below Avg";
+      if(ratio > 1.15) return "▲▲ Expensive";
+      if(ratio > 1.05) return "▲ Above Avg";
     } else {
       // For buying shops: higher is better for sellers
-      if (ratio > 1.15) return "▲▲ Great Price!";
-      if (ratio > 1.05) return "▲ Above Avg";
-      if (ratio < 0.85) return "▼▼ Low Offer";
-      if (ratio < 0.95) return "▼ Below Avg";
+      if(ratio > 1.15) return "▲▲ Great Price!";
+      if(ratio > 1.05) return "▲ Above Avg";
+      if(ratio < 0.85) return "▼▼ Low Offer";
+      if(ratio < 0.95) return "▼ Below Avg";
     }
     return "● Average";
   }
@@ -381,10 +381,10 @@ public class ShopListPage {
    * Get color based on price indicator
    */
   private String getPriceColor(final String indicator) {
-    if (indicator.contains("Great")) return "<green>";
-    if (indicator.contains("Below") || indicator.contains("Low")) return "<yellow>";
-    if (indicator.contains("Above")) return "<gold>";
-    if (indicator.contains("Expensive")) return "<red>";
+    if(indicator.contains("Great")) return "<green>";
+    if(indicator.contains("Below") || indicator.contains("Low")) return "<yellow>";
+    if(indicator.contains("Above")) return "<gold>";
+    if(indicator.contains("Expensive")) return "<red>";
     return "<white>";
   }
 
@@ -392,7 +392,7 @@ public class ShopListPage {
    * Get display name for sort mode
    */
   private String getSortDisplayName(final BrowseSortMode mode) {
-    return switch (mode) {
+    return switch(mode) {
       case PRICE_ASC -> "Price ↑";
       case PRICE_DESC -> "Price ↓";
       case STOCK -> "Stock";
@@ -404,7 +404,7 @@ public class ShopListPage {
    * Get display name for filter mode
    */
   private String getFilterDisplayName(final BrowseFilterMode mode) {
-    return switch (mode) {
+    return switch(mode) {
       case ALL -> "All";
       case BUYING -> "Buying";
       case SELLING -> "Selling";
@@ -415,7 +415,7 @@ public class ShopListPage {
    * Get colored indicator for current filter mode
    */
   private String getFilterIndicator(final BrowseFilterMode mode) {
-    return switch (mode) {
+    return switch(mode) {
       case ALL -> "<white>All Shops</white>";
       case BUYING -> "<#FFA500>Buying Shops</#FFA500>";
       case SELLING -> "<green>Selling Shops</green>";

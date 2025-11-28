@@ -38,7 +38,7 @@ public class ShopKeeperMenu extends QuickShopMenu {
 
     // Load rows from config or use default (4 rows for modern layout)
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("keeper");
-    this.rows = menuConfig != null ? menuConfig.getRows() : 4;
+    this.rows = (menuConfig != null?menuConfig.getRows() : 4);
     this.name = "qs:keeper";
 
     setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.keeper.title")));
