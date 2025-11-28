@@ -134,6 +134,7 @@ permissions:
       quickshop.permission: true
       quickshop.benefit: true
       quickshop.browse: true
+      quickshop.browse.teleport: true
       quickshop.sign: true
       quickshop.history: true
       quickshop.history.owned: true
@@ -356,6 +357,9 @@ permissions:
   quickshop.browse:
     description: Permission to use /quickshop browse
     default: op
+  quickshop.browse.teleport:
+    description: Permission to teleport to shops from the browse GUI
+    default: true
   quickshop.transferall:
     description: Permission to transfer all shops of a player to someone
     default: op
