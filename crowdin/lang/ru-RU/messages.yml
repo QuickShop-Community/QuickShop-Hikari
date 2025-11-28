@@ -1437,7 +1437,7 @@ addon:
       Неограничен: {6}
       Локация: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
       Название: {0}
@@ -1541,82 +1541,6 @@ cannot-suggest-price: "<red>Извините, в настоящее время �
 price-suggest: "<green>На основе данных из <aqua>{0}</aqua> магазинов, самая высокая цена составляет <light_purple>{1}</light_purple>, самая низкая цена составляет <light_purple>{2}</light_purple>, средняя цена составляет <light_purple>{3}</light_purple>, а медианная цена составляет <light_purple>{4}</light_purple>. <newline><yellow>Рекомендуется установить вашу цену около <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Рекомендация для {0} типа.</green>{1}"
 suggest-wait: "<green>Пожалуйста, подождите... Вычисление рекомендуемой цены."
-gui:
-  shared:
-    previous-page: "<white><< Предыдущая Страница</white>"
-    next-page: "<white>Следующая Страница >></white>"
-    previous-menu: "<white>Предыдущее Меню</white>"
-  player:
-    select:
-      - "<yellow>Нажмите, чтобы выбрать этого игрока.</yellow>"
-  staff:
-    confirm-remove: "<red>Введите 'confirm' для подтверждения удаления '{0}' из числа сотрудников.</red>"
-    confirm-transfer: "<red>Введите 'confirm' для подтверждения передачи этого магазина {0}.</red>"
-    add-staff: "<green>Добавить Сотрудника</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Левый клик - удалить сотрудника.</yellow>"
-        - "<yellow>Правый клик - передать владение</yellow>"
-        - "<yellow>Этому сотруднику.</yellow>"
-  trade:
-    title: "Обзор Магазинов"
-    custom:
-      display: "<bold><blue>Индивидуальный Заказ</blue></bold>"
-      lore-buy:
-        - "<white>Выберите количество,</white>"
-        - "<white>Которое хотите купить.</white>"
-        - "<yellow>Нажмите, чтобы ввести количество.</yellow>"
-        - "<yellow>Должно быть кратно <bold><red>{0}</red></bold></yellow>"
-        - "<white>В наличии: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Выберите количество,</white>"
-        - "<white>Которое хотите продать.</white>"
-        - "<yellow>Нажмите, чтобы ввести количество.</yellow>"
-        - "<yellow>Должно быть кратно <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Введите количество для покупки, должно быть кратно {0}. Введите 0 для отмены.</yellow>"
-      enter-sell: "<yellow>Введите количество для продажи, должно быть кратно {0}. Введите 0 для отмены.</yellow>"
-      multiple: "<yellow>Неверное количество! Должно быть кратно {0}. Введите 0 для отмены.</yellow>"
-      stock: "<yellow>Неверное количество! Недостаточно товара в магазине. Введите 0 для отмены.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Купить {0}</green></bold>"
-      display-sell: "<bold><green>Продать {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> За </white><bold><green>{1}</green></bold>"
-        - "<white>Итого: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Обзор Магазинов"
-    info:
-      - "<green>Владелец: </green><yellow>{0}</yellow>"
-      - "<green>Локация: </green><yellow>{1}</yellow>"
-      - "<green>Тип: </green><yellow>{2}</yellow>"
-      - "<green>Цена: </green><yellow>{3}</yellow>"
-      - "<green>В наличии: </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Управление Магазином"
-    change-icon:
-      display: "<bold><green>Изменить Цену</green></bold>"
-      enter: "<yellow>Введите новую цену в чат.</yellow>"
-      lore:
-        - "<white>Нажмите, чтобы изменить цену каждого предмета в вашем магазине.</white>"
-        - "<white>Текущая Цена:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Изменить Режим</green></bold>"
-      lore:
-        - "<white>Нажмите, чтобы переключить режим покупки/продажи.</white>"
-        - "<white>Текущий Режим: </white><red>{0}</red>"
-        - "<yellow>Нажмите, чтобы переключить на </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Сотрудники Магазина</aqua></bold>"
-      no-permission: "<bold><red>Нет прав для управления сотрудниками</red></bold>"
-      lore:
-        - "<white>Нажмите, чтобы управлять сотрудниками вашего магазина.</white>"
-    remove-icon:
-      display: "<bold><red>Удалить Магазин</red></bold>"
-      confirm: "<yellow>Введите 'confirm' в чат для подтверждения удаления. Или введите что-либо другое для отмены.</yellow>"
-      lore:
-        - "<white>Нажмите, чтобы удалить ваш магазин.</white>"
-        - "<grey>Вы также можете сломать табличку/сундук.</grey>"
 history:
   shop:
     gui-title: "История покупок"
