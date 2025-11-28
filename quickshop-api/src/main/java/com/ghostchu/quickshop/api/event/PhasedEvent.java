@@ -102,6 +102,7 @@ public abstract class PhasedEvent extends AbstractQSEvent implements QSCancellab
     }
 
     this.cancelled = cancel;
+    this.cancelReason = reason;
   }
 
   @Override

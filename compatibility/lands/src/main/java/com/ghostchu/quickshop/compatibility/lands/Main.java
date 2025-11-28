@@ -113,7 +113,8 @@ public final class Main extends CompatibilityModule {
               }
               if(target.equals(owner)) {
                 recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Lands", false), shop, "Lands: shop deleted because owner lost permission");
-                Util.mainThreadRun(()->getApi().getShopManager().deleteShop(shop));
+                // Use regionThread for Folia/Canvas compatibility - must run on the region thread for this location
+                Util.regionThread(shop.getLocation(), ()->getApi().getShopManager().deleteShop(shop));
               }
             }
           }
@@ -161,10 +162,21 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
+    // Check if this is a delete permission check from QuickShop
+    if(!event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) 
+       || !event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+      return;
+    }
+
+    // Land owner can always delete shops in their land
     if(land.getOwnerUID().equals(event.playerUUID())) {
-      if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-        event.hasPermission(true);
-      }
+      event.hasPermission(true);
+      return;
+    }
+
+    // If allowMemberDeletion is enabled, trusted members can also delete shops in the land
+    if(allowMemberDeletion && land.isTrusted(event.playerUUID())) {
+      event.hasPermission(true);
     }
   }
 }

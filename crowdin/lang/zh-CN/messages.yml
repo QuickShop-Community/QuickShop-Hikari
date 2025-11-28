@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
 how-much-to-trade-for: <green>请在聊天中输入交易<yellow>{1}个{0}<green>所需的价格。
 client-language-changed: <green>QuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。
 shops-backingup: 从数据库创建商店备份...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/qs-hikari
 unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
@@ -319,12 +319,12 @@ signs:
   status-available: <green>
   item-left: ''
 negative-amount: <red>你输入的数字是负数。
-display-turn-on: <green>成功开启商店悬浮物显示
+display-turn-on: <green>成功启用商店悬浮物显示
 display-turn-off: <green>成功关闭商店悬浮物显示
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-owned: <green>成功启用所有拥有商店的悬浮物显示
+display-turn-off-owned: <green>成功禁用所有拥有商店的悬浮物显示
+display-turn-on-all: <green>成功启用服务器所有商店的悬浮物显示
+display-turn-off-all: <green>成功禁用服务器所有商店的悬浮物显示
 shop-staff-deleted: <green>成功移除 {0} 的商店助手权限
 nearby-shop-header: '<green>匹配附近<aqua>{0}<green>的商店：'
 backup-failed: 无法备份数据库，请查看控制台以获取详细信息。
@@ -457,7 +457,7 @@ command:
     taxaccount: <yellow>设置商店使用的税务账户
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
-    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
+    toggledisplayall: <yellow>切换所有拥有或服务器的所有商店悬浮物
     permission: <yellow>商店权限管理
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
@@ -754,9 +754,9 @@ addon:
     world-not-enabled: <red>你不能在这个世界中交易或创建
     creation-denied: <red>您没有在该Land区域创建商店的权限
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>你必须完成任务 <aqua>{0}</aqua> 才能创建商店
+    sell-quest-required: <red>你必须完成任务 <aqua>{0}</aqua> 才能向商店出售物品
+    buy-quest-required: <red>你必须完成任务 <aqua>{0}</aqua> 才能从商店购买物品
   dominion:
     creation-denied: <red>你没有权限在这个支配区创建商店。
     trade-denied: <red>商店必须位于自治领内才能与其进行交易。
@@ -798,8 +798,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: 有人向你的商店出售物品",
+             "description": "此玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -812,38 +812,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "QuickShop-Hikari Discord消息通知",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "商店",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "玩家",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "物品",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-               {
-                 "name": "Amount",
+                 "name": "数量",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "您已支付",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "税",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }

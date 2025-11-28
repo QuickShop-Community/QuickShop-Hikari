@@ -703,25 +703,6 @@ public class Util {
       }
     }
 
-    if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("MUSIC_DISC")) {
-
-      final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
-      final String[] split = working.split("_");
-      if(split.length >= 3) {
-
-        return Component.text(split[1] + " " + split[2]);
-      }
-    }
-
-    if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("SMITHING_TEMPLATE")) {
-
-      final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
-      final String[] split = working.split("_");
-      if(split.length >= 2) {
-
-        return Component.text(split[0] + " " + split[1]);
-      }
-    }
 
     if(!itemStack.hasItemMeta() || QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
 
