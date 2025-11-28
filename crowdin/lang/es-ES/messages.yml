@@ -1436,7 +1436,7 @@ addon:
       Unlimited: {6}
       Location: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
       Name: {0}
@@ -1540,82 +1540,6 @@ cannot-suggest-price: "<red>Lo sentimos, por el momento, no hay más personas qu
 price-suggest: "<green>Basado en datos de <aqua>{0}</aqua> tiendas de empresa que comercian este mismo artículo, el precio más alto es <light_purple>{1}</light_purple>, el precio más bajo es <light_purple>{2}</light_purple>, el precio promedio es <light_purple>{3}</light_purple>y la mediana del precio es <light_purple>{4}</light_purple>. <newline><yellow>Es recomendable que fijes tu precio alrededor de <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Sugerencia para el tipo {0}.</green>{1}"
 suggest-wait: "<green>Por favor espere... Calculando el precio recomendado."
-gui:
-  shared:
-    previous-page: "<white><< Página Anterior</white>"
-    next-page: "<white>Página siguiente >></white>"
-    previous-menu: "<white>Menú Anterior</white>"
-  player:
-    select:
-      - "<yellow>Haz clic para seleccionar este jugador.</yellow>"
-  staff:
-    confirm-remove: "<red>Escribe 'confirm' (si no funciona, use 'confirmar') para confirmar la eliminación de '{0}' como miembro del personal.</red>"
-    confirm-transfer: "<red>Escribe 'confirm' (si no funciona, usa 'confirmar') para confirmar la transferencia de esta tienda de empresa a {0}.</red>"
-    add-staff: "<green>Añadir miembro del personal (staff)</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Clic izquierdo para eliminar miembro del personal (staff).</yellow>"
-        - "<yellow>Haz clic con el botón derecho para transferir la propiedad</yellow>"
-        - "<yellow>a este miembro del personal (staff) de la tienda de empresa.</yellow>"
-  trade:
-    title: "Buscador de tienda de empresa"
-    custom:
-      display: "<bold><blue>Pedido Personalizado</blue></bold>"
-      lore-buy:
-        - "<white>Elige la cantidad</white>"
-        - "<white>te gustaría comprar.</white>"
-        - "<yellow>Haz clic para introducir una cantidad personalizada.</yellow>"
-        - "<yellow>Debe ser un múltiplo de <bold><red>{0}</red></bold></yellow>"
-        - "<white>Existencias: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Elige la cantidad</white>"
-        - "<white>te gustaría vender.</white>"
-        - "<yellow>Haz clic para introducir una cantidad personalizada.</yellow>"
-        - "<yellow>Debe ser un múltiplo de <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Introduzca la cantidad que desea comprar, debe ser un múltiplo de {0}. Introduzca 0 para salir.</yellow>"
-      enter-sell: "<yellow>Introduzca la cantidad que desea vender, debe ser un múltiplo de {0}. Introduzca 0 para salir.</yellow>"
-      multiple: "<yellow>¡Cantidad inválida introducida! Debe ser un múltiplo de {0}. Introduzca 0 para escapar.</yellow>"
-      stock: "<yellow>¡Cantidad introducida no válida! No hay suficiente stock en la tienda de empresa. Introduzca 0 para salir.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Comprar {0}</green></bold>"
-      display-sell: "<bold><green>Vender {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> cada </white><bold><green>{1}</green></bold>"
-        - "<white>Total:</white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Buscador de tienda de empresa"
-    info:
-      - "<green>Propietario: </green><yellow>{0}</yellow>"
-      - "<green>Ubicación: </green><yellow>{1}</yellow>"
-      - "<green>Tipo: </green><yellow>{2}</yellow>"
-      - "<green>Precio: </green><yellow>{3}</yellow>"
-      - "<green>Existencias </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Comerciante"
-    change-icon:
-      display: "<bold><green>Cambiar precio</green></bold>"
-      enter: "<yellow>Ingresa un nuevo precio en el chat.</yellow>"
-      lore:
-        - "<white>Haz clic para cambiar el precio de cada artículo en tu tienda de empresa.</white>"
-        - "<white>Precio actual:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Cambiar Modo</green></bold>"
-      lore:
-        - "<white>Haz clic para alternar entre el modo compra/venta.</white>"
-        - "<white>Modo actual: </white><red>{0}</red>"
-        - "<yellow>Haz clic para alternar a </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Personal (staff) de la tienda de empresa</aqua></bold>"
-      no-permission: "<bold><red>No permitido para administrar el personal (staff)</red></bold>"
-      lore:
-        - "<white>Haz clic para administrar el personal (staff) de tu tienda de empresa.</white>"
-    remove-icon:
-      display: "<bold><red>Eliminar Tienda de Empresa</red></bold>"
-      confirm: "<yellow>Escribe 'confirm' (si no funciona, use 'confirmar') en el chat para confirmar la eliminación. O introduzca cualquier otra cosa para detener la eliminación.</yellow>"
-      lore:
-        - "<white>Haz clic para eliminar tu tienda de empresa.</white>"
-        - "<grey>También puedes romper el letrero/cofre/barril"
 history:
   shop:
     gui-title: "Ver historial de compras"
