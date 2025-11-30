@@ -34,7 +34,7 @@ public class ShopLayerProvider {
         .build();
   }
 
-    public void addWorld(@NotNull final String worldName) {
+  public void addWorld(@NotNull final String worldName) {
     if(registeredWorlds.containsKey(worldName)) {
       return;
     }
@@ -96,8 +96,7 @@ public class ShopLayerProvider {
     final Location loc = shop.getLocation();
     final Point point = Point.of(loc.getBlockX(), loc.getBlockZ());
 
-      fillPlaceholders(Main.instance().markerLabel(), shop);
-      final String tooltip = fillPlaceholders(Main.instance().markerTooltip(), shop);
+    final String tooltip = fillPlaceholders(Main.instance().markerTooltip(), shop);
 
     // Use custom icon registered by the plugin
     final Icon icon = Marker.icon(point, Main.instance().shopIconKey(), 16);

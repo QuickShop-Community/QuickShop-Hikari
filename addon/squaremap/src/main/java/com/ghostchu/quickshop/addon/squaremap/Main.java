@@ -24,6 +24,7 @@ public final class Main extends JavaPlugin implements Listener {
 
   public static final String SQUAREMAP_KEY = "quickshop-hikari";
   public static final String SHOP_ICON_KEY = "quickshop_shop_icon";
+  private static final long TICKS_IN_SECOND = 20L;
 
   private static Main instance;
 
@@ -31,7 +32,7 @@ public final class Main extends JavaPlugin implements Listener {
   private Squaremap squaremapApi = null;
   private Key shopIconKey = null;
 
-    //our configs
+  //our configs
   private boolean layerEnabled = false;
   private String layerName = "QuickShop-Hikari Shops";
   private int layerPriority = 99;
@@ -41,7 +42,7 @@ public final class Main extends JavaPlugin implements Listener {
   private String markerLabel = "";
   private String markerTooltip = "";
 
-    @Override
+  @Override
   public void onLoad() {
 
     instance = this;
@@ -73,7 +74,7 @@ public final class Main extends JavaPlugin implements Listener {
     this.defaultHidden = getConfig().getBoolean("default-hidden");
     this.markerLabel = getConfig().getString("marker-label");
     this.markerTooltip = getConfig().getString("marker-tooltip");
-      final int refreshPerSeconds = getConfig().getInt("refresh-per-seconds");
+    final int refreshPerSeconds = getConfig().getInt("refresh-per-seconds");
 
     if(!this.layerEnabled) {
       getLogger().info("Squaremap layer is disabled in config. Not loading.");
@@ -92,7 +93,7 @@ public final class Main extends JavaPlugin implements Listener {
       registerAllWorlds();
 
       // Register event listeners
-        final ShopEventListener shopEventListener = new ShopEventListener(layerProvider);
+      final ShopEventListener shopEventListener = new ShopEventListener(layerProvider);
       getServer().getPluginManager().registerEvents(this, this);
       getServer().getPluginManager().registerEvents(shopEventListener, this);
 
@@ -103,12 +104,12 @@ public final class Main extends JavaPlugin implements Listener {
               layerProvider.updateMarkers();
             }
           },
-          20L, // Initial delay: 1 second
-          refreshPerSeconds * 20L // Repeat every configured seconds
+          TICKS_IN_SECOND,
+          refreshPerSeconds * TICKS_IN_SECOND
       );
 
       getLogger().info("Successfully integrated with Squaremap!");
-    } catch (final Exception e) {
+    } catch(final Exception e) {
       getLogger().severe("Failed to hook into Squaremap: " + e.getMessage());
       e.printStackTrace();
     }
@@ -149,7 +150,7 @@ public final class Main extends JavaPlugin implements Listener {
               getLogger().info("Registered QuickShop layer for world: " + world.getName());
             }
           });
-    } catch (final Exception e) {
+    } catch(final Exception e) {
       getLogger().warning("Failed to register world " + world.getName() + ": " + e.getMessage());
     }
   }
@@ -165,7 +166,7 @@ public final class Main extends JavaPlugin implements Listener {
               getLogger().info("Unregistered QuickShop layer for world: " + world.getName());
             }
           });
-    } catch (final Exception e) {
+    } catch(final Exception e) {
       getLogger().warning("Failed to unregister world " + world.getName() + ": " + e.getMessage());
     }
   }
@@ -216,7 +217,7 @@ public final class Main extends JavaPlugin implements Listener {
     try {
       // Load icon from resources
       final InputStream iconStream = getResource("shop_icon.png");
-      if (iconStream == null) {
+      if(iconStream == null) {
         getLogger().severe("Could not load shop_icon.png from resources!");
         throw new RuntimeException("Custom shop icon not found in resources");
       }
@@ -224,7 +225,7 @@ public final class Main extends JavaPlugin implements Listener {
       final BufferedImage iconImage = ImageIO.read(iconStream);
       iconStream.close();
 
-      if (iconImage == null) {
+      if(iconImage == null) {
         getLogger().severe("Failed to read shop_icon.png - ImageIO.read() returned null!");
         getLogger().severe("This usually means the image file is corrupted or not a valid PNG/image format.");
         throw new RuntimeException("Failed to parse custom shop icon - image data is invalid");
@@ -237,7 +238,7 @@ public final class Main extends JavaPlugin implements Listener {
       squaremapApi.iconRegistry().register(shopIconKey, iconImage);
 
       getLogger().info("Registered custom shop icon with squaremap");
-    } catch (final IOException e) {
+    } catch(final IOException e) {
       getLogger().severe("Failed to load custom icon: " + e.getMessage());
       throw new RuntimeException("Failed to load custom shop icon", e);
     }

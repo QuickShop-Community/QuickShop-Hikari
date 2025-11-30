@@ -6,5 +6,5 @@ folia-supported: true
 api-version: '1.20'
 depend:
   - squaremap
-authors: [ creatorfromhell, ghostchu ]
+authors: [ creatorfromhell, ghostchu, Hazmad_ ]
 description: Display QuickShop shops on your Squaremap instance
