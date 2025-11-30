@@ -1,0 +1,40 @@
+config-version: 1
+
+# Enable or disable the squaremap layer
+layer-enabled: true
+
+# If you want the marker set/markers to display by default when opening the map.
+default-hidden: false
+
+# The name for the map layer
+layer-name: "QuickShop-Hikari Shops"
+
+# The priority for the map layer (higher = appears above other layers)
+layer-priority: 99
+
+# The z-index for the layer (controls stacking order)
+z-index: 250
+
+# Should we show the controls for the layer?
+show-controls: true
+
+# This is the label shown in the marker list
+# Available placeholders: %item%, %price%, %stock%, %owner%, %type%, %location%, %x%, %y%, %z%, %world%
+marker-label: "%item% - %price%"
+
+# This is the tooltip text when hovering over the shop marker
+# Available placeholders: %item%, %price%, %stock%, %owner%, %type%, %location%, %x%, %y%, %z%, %world%
+marker-tooltip: |
+  <div style="font-size: 14px; padding: 5px;">
+    <strong>QuickShop</strong><br>
+    <hr style="margin: 5px 0;">
+    <strong>Owner:</strong> %owner%<br>
+    <strong>Item:</strong> %item%<br>
+    <strong>Price:</strong> %price%<br>
+    <strong>Stock:</strong> %stock%<br>
+    <strong>Type:</strong> %type%<br>
+    <strong>Location:</strong> %x%, %y%, %z%
+  </div>
+
+# How many seconds between marker refreshes
+refresh-per-seconds: 5
