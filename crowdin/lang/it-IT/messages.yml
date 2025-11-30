@@ -1442,7 +1442,7 @@ addon:
       Illimitato: {6}
       Posizione: {7}
   bluemap:
-    markerset-title: Negozi QuickShop-Hikari
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} per x{4} @ {5}'
     marker-description: |
       Nome: {0}
@@ -1546,82 +1546,6 @@ cannot-suggest-price: "<red>Siamo spiacenti, per il momento, non più le persone
 price-suggest: "<green>Basato sui dati dei negozi <aqua>{0}</aqua> , il prezzo più alto del negozio è <light_purple>{1}</light_purple>, il prezzo più basso è <light_purple>{2}</light_purple>, il prezzo medio è <light_purple>{3}</light_purple>e il prezzo medio è <light_purple>{4}</light_purple>. <newline><yellow>Si consiglia di impostare il prezzo intorno <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Suggerimento per il tipo {0} .</green>{1}"
 suggest-wait: "<green>Attendere prego... Calcolando il prezzo consigliato."
-gui:
-  shared:
-    previous-page: "<white><< Pagina Precedente</white>"
-    next-page: "<white>Pagina Successiva >></white>"
-    previous-menu: "<white>Menu Precedente</white>"
-  player:
-    select:
-      - "<yellow>Clicca per selezionare questo giocatore.</yellow>"
-  staff:
-    confirm-remove: "<red>Digita 'confirm' per confermare la rimozione di '{0}' come membro dello staff.</red>"
-    confirm-transfer: "<red>Digita 'confirm' per confermare il trasferimento di questo negozio a {0}.</red>"
-    add-staff: "<green>Aggiungi Membro</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Click sinistro per rimuovere il membro dello staff.</yellow>"
-        - "<yellow>Click destro per trasferire la proprietà</yellow>"
-        - "<yellow>a questo membro dello staff.</yellow>"
-  trade:
-    title: "Browser Negozio"
-    custom:
-      display: "<bold><blue>Ordine Personalizzato</blue></bold>"
-      lore-buy:
-        - "<white>Scegli la quantità</white>"
-        - "<white>che vorresti acquistare.</white>"
-        - "<yellow>Clicca per inserire la quantità personalizzata.</yellow>"
-        - "<yellow>deve essere un multiplo di <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Scegli la quantità</white>"
-        - "<white>che vuoi vendere.</white>"
-        - "<yellow>Clicca per inserire la quantità personalizzata.</yellow>"
-        - "<yellow>deve essere un multiplo di <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Inserisci una quantità che vorresti acquistare, deve essere un multiplo di {0}. Inserisci 0 per scappare.</yellow>"
-      enter-sell: "<yellow>Inserisci una quantità che vuoi vendere, deve essere un multiplo di {0}. Inserisci 0 per fuggire.</yellow>"
-      multiple: "<yellow>Quantità inserita non valida! Deve essere un multiplo di {0}. Inserisci 0 per scappare.</yellow>"
-      stock: "<yellow>Quantità non valida inserita! Non abbastanza scorta nel negozio. Inserisci 0 per fuggire.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Acquista {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> ogni </white><bold><green>{1}</green></bold>"
-        - "<white>Totale: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Browser Negozio"
-    info:
-      - "<green>Proprietario: </green><yellow>{0}</yellow>"
-      - "<green>Posizione: </green><yellow>{1}</yellow>"
-      - "<green>Tipo: </green><yellow>{2}</yellow>"
-      - "<green>Prezzo: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Negoziante"
-    change-icon:
-      display: "<bold><green>Modifica Prezzo</green></bold>"
-      enter: "<yellow>Inserisci un nuovo prezzo nella chat.</yellow>"
-      lore:
-        - "<white>Clicca per cambiare il prezzo di ogni articolo nel tuo negozio.</white>"
-        - "<white>Prezzo Attuale:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Cambia Modalità</green></bold>"
-      lore:
-        - "<white>Clicca per passare tra la modalità acquisto/vendita.</white>"
-        - "<white>Modalità Attuale: </white><red>{0}</red>"
-        - "<yellow>Clicca per attivare/disattivare </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Non è consentito gestire lo staff</red></bold>"
-      lore:
-        - "<white>Clicca per gestire lo staff del tuo negozio.</white>"
-    remove-icon:
-      display: ""
-      confirm: "<yellow>Digita 'confirm' in chat per confermare la rimozione. O inserisci qualsiasi altra cosa per fermare la cancellazione.</yellow>"
-      lore:
-        - "<white>Clicca per eliminare il tuo negozio.</white>"
-        - "<grey>Puoi anche rompere il segno/torace.</grey>"
 history:
   shop:
     gui-title: "Controlla storico acquisti"

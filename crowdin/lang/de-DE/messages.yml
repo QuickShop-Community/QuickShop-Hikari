@@ -1434,7 +1434,7 @@ addon:
       Unbegrenzt: {6}
       Ort: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} für x{4} @ {5}'
     marker-description: |
       Name: {0}
@@ -1538,82 +1538,6 @@ cannot-suggest-price: "<red>Sorry, aktuell gibt es nicht genug Spieler welche da
 price-suggest: "<green>Basierend auf den Daten von <aqua>{0}</aqua> Shops ist der höchste Preis, für welchen ein Shop das Item verkauft <light_purple>{1}</light_purple>, der niedrigste Preis <light_purple>{2}</light_purple>, der durchschnittliche Preis <light_purple>{3}</light_purple> und der Median Preis<light_purple>{4}</light_purple>.<newline><yellow>Es wird empfohlen, dass du den Preis auf um die <gold>{5}</gold> setzt.</yellow>"
 price-suggest-multi: "<green>Vorschlag für {0} Typ.</green>{1}"
 suggest-wait: "<green>Bitte warten... Berechne empfohlenen Preis."
-gui:
-  shared:
-    previous-page: "<white><< Vorherige Seite</white>"
-    next-page: "<white>Nächste Seite >></white>"
-    previous-menu: "<white>Vorheriges Menü</white>"
-  player:
-    select:
-      - "<yellow>Klicke, um diesen Spieler auszuwählen.</yellow>"
-  staff:
-    confirm-remove: "<red>Schreibe 'confirm', um '{0}' als Staff-Mitglied zu entfernen.</red>"
-    confirm-transfer: "<red>Schreibe 'confirm' um den Shop-Transfer zu {0} zu bestätigen.</red>"
-    add-staff: "<green>Staff-Mitglied hinzufügen</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Linksklick um Staff-Mitglied zu entfernen.</yellow>"
-        - "<yellow>Rechtsklick um Eigentum zu transferieren.</yellow>"
-        - "<yellow>zu diesem Staff-Mitglied.</yellow>"
-  trade:
-    title: "Shop Browser"
-    custom:
-      display: "<bold><blue>Custom Bestellung</blue></bold>"
-      lore-buy:
-        - "<white>Wähle die Menge</white>"
-        - "<white>, den du kaufen möchtest.</white>"
-        - "<yellow>Klicke, um wählbare Menge auszuwählen.</yellow>"
-        - "<yellow>Muss ein Vielfaches von <bold><red>{0}</red></bold> sein </yellow>"
-        - "<white>Lager: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Wähle die Menge</white>"
-        - "<white>, den du verkaufen möchtest.</white>"
-        - "<yellow>Klicke, um wählbare Menge auszuwählen.</yellow>"
-        - "<yellow>Muss ein Vielfaches von <bold><red>{0}</red></bold> sein </yellow>"
-      enter-buy: "<yellow>Gebe eine Menge an, die du kaufen möchtest. Muss ein Vielfaches von {0} sein. Schreibe 0, um abzubrechen</yellow>"
-      enter-sell: "<yellow>Gebe eine Menge an, die du verkaufen möchtest. Muss ein Vielfaches von {0} sein. Schreibe 0, um abzubrechen.</yellow>"
-      multiple: "<yellow>Ungültige Menge eingegeben! Muss ein Vielfaches von {0} sein. Schreibe 0, um abzubrechen.</yellow>"
-      stock: "<yellow>Ungültige Menge eingeben! Nicht genug Lagerbestand im Shop. Schreibe 0, um abzubrechen.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Kaufe {0}</green></bold>"
-      display-sell: "<bold><green>Verkaufe {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> jeweils </white><bold><green>{1}</green></bold>"
-        - "<white>Insgesamt: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Shop Browser"
-    info:
-      - "<green>Inhaber: </green><yellow>{0}</yellow>"
-      - "<green>Standort: </green><yellow>{1}</yellow>"
-      - "<green>Typ: </green><yellow>{2}</yellow>"
-      - "<green>Preis: </green><yellow>{3}</yellow>"
-      - "<green>Lagerbestand: </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Shop Keeper"
-    change-icon:
-      display: "<bold><green>Preis ändern</green></bold>"
-      enter: "<yellow>Gebe ein neuen Preis in Chat ein.</yellow>"
-      lore:
-        - "<white>Klicke, um den Preis für jeden Gegenstand im Shop zu ändern.</white>"
-        - "<white>Aktueller Preis:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Modus ändern</green></bold>"
-      lore:
-        - "<white>Klicke, um zwischen Kauf- und Verkaufsmodus zu wechseln.</white>"
-        - "<white>Aktueller Modus: </white><red>{0}</red>"
-        - "<yellow>Klicke, um zu </yellow><red>{1}</red> <yellow>umzuschalten.</yellow>"
-    staff-icon:
-      display: "<bold><aqua>Shop-Staff</aqua></bold>"
-      no-permission: "<bold><red>Dir ist nicht erlaubt Staff zu Verwalten.</red></bold>"
-      lore:
-        - "<white>Klicke, um Shop-Staff zu verwalten.</white>"
-    remove-icon:
-      display: "<bold><red>Shop löschen</red></bold>"
-      confirm: "<yellow>Schreibe 'confirm' in Chat, um die Löschung zu bestätigen. Oder schreiben Sie etwas anderes hinein, um die Löschung abzubrechen.</yellow>"
-      lore:
-        - "<white>Klicke, um dein Shop zu löschen.</white>"
-        - "<grey>Du kannst das Schild/die Truhe zerstören.</grey>"
 history:
   shop:
     gui-title: "Zeige Kaufprotokolle"
