@@ -217,6 +217,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   protected MenuHandler menuHandler;
   protected HelperMethods helperMethods;
   private QuickShopInteractionManager interactionManager;
+  @Getter
+  private com.ghostchu.quickshop.menu.config.GuiConfig guiConfig;
   private FoliaLib folia;
   /* Public QuickShop API End */
   private GameVersion gameVersion;
@@ -732,6 +734,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       Bukkit.getPluginManager().registerEvents(new BukkitInventoryCloseListener(javaPlugin), javaPlugin);
       this.menuHandler = new BukkitMenuHandler(javaPlugin, false);
     }
+
+    // Initialize GuiConfig before menus that depend on it
+    this.guiConfig = new com.ghostchu.quickshop.menu.config.GuiConfig(this);
 
     MenuManager.instance().addMenu(new ShopHistoryMenu());
     MenuManager.instance().addMenu(new ShopKeeperMenu());

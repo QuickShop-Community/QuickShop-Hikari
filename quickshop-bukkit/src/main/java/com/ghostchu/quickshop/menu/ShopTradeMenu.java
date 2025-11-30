@@ -17,6 +17,8 @@ package com.ghostchu.quickshop.menu;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.menu.config.GuiConfig;
 import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 import com.ghostchu.quickshop.menu.trade.MainPage;
 
@@ -30,7 +32,9 @@ public class ShopTradeMenu extends QuickShopMenu {
 
   public ShopTradeMenu() {
 
-    this.rows = 5;
+    // Load rows from config or use default (6 rows for modern layout)
+    final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("trade");
+    this.rows = (menuConfig != null?menuConfig.getRows() : 6);
     this.name = "qs:trade";
 
     setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.trade.title")));
