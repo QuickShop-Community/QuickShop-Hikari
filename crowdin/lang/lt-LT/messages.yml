@@ -1452,7 +1452,7 @@ addon:
       Neribota: {6}
       Vieta: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Parduotuvės
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} už x{4} @ {5}'
     marker-description: |
       Pavadinimas: {0}
@@ -1556,82 +1556,6 @@ cannot-suggest-price: "<red>Atsiprašome, šiuo metu niekas kitas neparduoda tok
 price-suggest: "<green>Remiantis <aqua>{0}</aqua> parduotuvėmis, didžiausia kaina: <light_purple>{1}</light_purple>, mažiausia: <light_purple>{2}</light_purple>, vidutinė: <light_purple>{3}</light_purple>, medianinė: <light_purple>{4}</light_purple>. <newline><yellow>Rekomenduojama nustatyti kainą apie <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Pasiūlymai {0} tipui.</green>{1}"
 suggest-wait: "<green>Laukiama... Skaičiuojama rekomenduojama kaina."
-gui:
-  shared:
-    previous-page: "<white><< Ankstesnis puslapis</white>"
-    next-page: "<white>Kitas puslapis >></white>"
-    previous-menu: "<white>Ankstesnis meniu</white>"
-  player:
-    select:
-      - "<yellow>Spustelėkite, kad pasirinktumėte šį žaidėją.</yellow>"
-  staff:
-    confirm-remove: "<red>Įveskite 'confirm', kad patvirtintumėte {0} pašalinimą kaip darbuotojo.</red>"
-    confirm-transfer: "<red>Įveskite 'confirm', kad patvirtintumėte parduotuvės perdavimą {0}.</red>"
-    add-staff: "<green>Pridėti darbuotoją</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Kairiu pelės mygtuku pašalinsite darbuotoją.</yellow>"
-        - "<yellow>Dešiniu pelės mygtuku perduosite nuosavybę</yellow>"
-        - "<yellow>šiam darbuotojui.</yellow>"
-  trade:
-    title: "Parduotuvės naršyklė"
-    custom:
-      display: "<bold><blue>Pasirinktinė užklausa</blue></bold>"
-      lore-buy:
-        - "<white>Pasirinkite kiekį</white>"
-        - "<white>kurį norite nusipirkti.</white>"
-        - "<yellow>Spustelėkite įvesti pasirinktinį kiekį.</yellow>"
-        - "<yellow>Turi būti dauginamas iš <bold><red>{0}</red></bold></yellow>"
-        - "<white>Atsargos: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Pasirinkite kiekį</white>"
-        - "<white>kurį norite parduoti.</white>"
-        - "<yellow>Spustelėkite įvesti pasirinktinį kiekį.</yellow>"
-        - "<yellow>Turi būti dauginamas iš <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Įveskite kiekį, kurį norite nusipirkti, turi būti dauginamas iš {0}. Įveskite 0, kad atsisakytumėte.</yellow>"
-      enter-sell: "<yellow>Įveskite kiekį, kurį norite parduoti, turi būti dauginamas iš {0}. Įveskite 0, kad atsisakytumėte.</yellow>"
-      multiple: "<yellow>Neteisingas įvestas kiekis! Turi būti dauginamas iš {0}. Įveskite 0, kad atsisakytumėte.</yellow>"
-      stock: "<yellow>Neteisingas kiekis! Parduotuvėje trūksta atsargų. Įveskite 0, kad atsisakytumėte.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Pirkti {0}</green></bold>"
-      display-sell: "<bold><green>Parduoti {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> kiekvienam </white><bold><green>{1}</green></bold>"
-        - "<white>Iš viso: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Parduotuvės naršyklė"
-    info:
-      - "<green>Savininkas: </green><yellow>{0}</yellow>"
-      - "<green>Vieta: </green><yellow>{1}</yellow>"
-      - "<green>Tipas: </green><yellow>{2}</yellow>"
-      - "<green>Kaina: </green><yellow>{3}</yellow>"
-      - "<green>Atsargos: </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Parduotuvės savininkas"
-    change-icon:
-      display: "<bold><green>Pakeisti kainą</green></bold>"
-      enter: "<yellow>Įveskite naują kainą pokalbyje.</yellow>"
-      lore:
-        - "<white>Spustelėkite, kad pakeistumėte kiekvienos prekės kainą.</white>"
-        - "<white>Dabartinė kaina:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Keisti režimą</green></bold>"
-      lore:
-        - "<white>Spustelėkite, kad perjungtumėte pirkimo/pardavimo režimą.</white>"
-        - "<white>Dabartinis režimas: </white><red>{0}</red>"
-        - "<yellow>Spustelėkite, kad perjungtumėte į </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Parduotuvės darbuotojai</aqua></bold>"
-      no-permission: "<bold><red>Negalima valdyti darbuotojų</red></bold>"
-      lore:
-        - "<white>Spustelėkite, kad valdytumėte parduotuvės darbuotojus.</white>"
-    remove-icon:
-      display: "<bold><red>Pašalinti parduotuvę</red></bold>"
-      confirm: "<yellow>Įveskite 'confirm' pokalbyje, kad patvirtintumėte pašalinimą. Įveskite ką nors kitą, jei norite atšaukti.</yellow>"
-      lore:
-        - "<white>Spustelėkite, kad pašalintumėte parduotuvę.</white>"
-        - "<grey>Galite taip pat sugadinti lentą / chestą.</grey>"
 history:
   shop:
     gui-title: "Peržiūrėti pirkimų istoriją"

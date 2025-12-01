@@ -90,17 +90,62 @@ public final class Main extends JavaPlugin implements Listener {
       final MarkerSet markerSet = map.getMarkerSets().computeIfAbsent("quickshop-hikari-shops", (key)->createMarkerSet());
       final String markerName = fillPlaceholders(getConfig().getString("marker-label"), shop);
       final String desc = fillPlaceholders(getConfig().getString("marker-detail"), shop);
-      final POIMarker marker = POIMarker.builder()
+      
+      final POIMarker.Builder markerBuilder = POIMarker.builder()
               .label(markerName)
               .position(shop.getLocation().getX(),
-                        shop.getLocation().getY(),
+                        shop.getLocation().getY() + 1,
                         shop.getLocation().getZ())
               .maxDistance(getConfig().getDouble("max-distance"))
-              .detail(desc)
-              .styleClasses()
-              .build();
-      markerSet.getMarkers().put("quickshop-hikari-shop" + shop.getShopId(), marker);
+              .detail(desc);
+      
+      // Use custom icon or colored circle based on config
+      if(getConfig().getBoolean("use-custom-icon", false)) {
+        final String iconPath = getConfig().getString("icon-file-location", "/assets/chest.png");
+        markerBuilder.icon(iconPath, 0, 0);
+      } else {
+        final String color = getShopColor(shop);
+        final String svgIcon = "data:image/svg+xml," + createColoredMarkerSvg(color);
+        markerBuilder.icon(svgIcon, 12, 24);  // Anchor at bottom-center of 24x24 icon
+      }
+      
+      markerSet.getMarkers().put("quickshop-hikari-shop" + shop.getShopId(), markerBuilder.build());
     }
+  }
+
+  /**
+   * Create a colored circle SVG marker
+   *
+   * @param color The fill color
+   * @return SVG string (URL encoded)
+   */
+  @NotNull
+  private String createColoredMarkerSvg(final String color) {
+
+    final String svg = "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'>" +
+            "<circle cx='12' cy='12' r='10' fill='" + color + "' stroke='white' stroke-width='2'/>" +
+            "</svg>";
+    // URL encode for data URI
+    return svg.replace("#", "%23").replace("'", "%27");
+  }
+
+  /**
+   * Get the color for a shop based on its state
+   *
+   * @param shop The shop to get color for
+   * @return The color (CSS format)
+   */
+  @NotNull
+  private String getShopColor(final Shop shop) {
+
+    if(shop.isFrozen()) {
+      return getConfig().getString("colors.frozen", "#888888");
+    }
+    if(shop.isBuying()) {
+      return getConfig().getString("colors.buying", "#3498db");
+    }
+    // Default to selling
+    return getConfig().getString("colors.selling", "#2ecc71");
   }
 
   private String fillPlaceholders(String s, final Shop shop) {
