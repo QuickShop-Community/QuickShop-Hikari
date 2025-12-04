@@ -1,0 +1,26 @@
+{
+  "releases": [
+    {
+      "version": "6.2.0.11",
+      "downloadUrl": "https://github.com/QuickShop-Community/QuickShop-Hikari/releases/download/6.2.0.11/QuickShop-Hikari-6.2.0.11.jar"
+    }
+  ],
+  "snapshots": [
+    {
+      "version": "6.3.0-SNAPSHOT",
+      "downloadUrl": "https://github.com/QuickShop-Community/QuickShop-Hikari/releases/download/6.3.0.0/6.3.0.0-SNAPSHOT.jar"
+    }
+  ],
+  "addons": [
+    {
+      "name": "BlueMap Addon",
+      "downloadUrl": "https://github.com/QuickShop-Community/QuickShop-Hikari/releases/download/6.3.0.0/6.3.0.0-SNAPSHOT.jar"
+    }
+  ],
+  "compatibility": [
+    {
+      "name": "ItemsAdder Compat",
+      "downloadUrl": "https://github.com/QuickShop-Community/QuickShop-Hikari/releases/download/6.3.0.0/6.3.0.0-SNAPSHOT.jar"
+    }
+  ]
+}
