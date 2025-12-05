@@ -367,12 +367,13 @@ public class QSEconomyTransaction implements EconomyTransaction {
     }
 
     //Benefits exist for this transaction
-    final BigDecimal fullAmount = BigDecimal.ZERO;
+    final BigDecimal fullAmount = BigDecimal.ONE;
     BigDecimal payout = BigDecimal.ZERO;
 
     Log.transaction("Benefit processing per-player...");
     for(final Map.Entry<QUser, BigDecimal> entry : benefitProvider.benefits().entrySet()) {
 
+      Log.transaction("Processing benefit for " + entry.getKey() + ", value: " + entry.getValue().toPlainString());
       if(!this.executeOperation(new EconomyDepositOperation(entry.getKey(), amountAfterTax.multiply(entry.getValue()), world, currency))) {
 
         this.lastError = "Failed to deposit " + amountAfterTax.toPlainString() + " to account " + entry.getKey() + "LastError: " + provider.lastError();

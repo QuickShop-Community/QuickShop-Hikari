@@ -5,7 +5,7 @@ import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
