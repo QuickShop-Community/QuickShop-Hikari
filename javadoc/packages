@@ -59,6 +59,7 @@ com.ghostchu.quickshop.menu
 com.ghostchu.quickshop.menu.trade
 com.ghostchu.quickshop.menu.browse
 com.ghostchu.quickshop.menu.staff
+com.ghostchu.quickshop.menu.config
 com.ghostchu.quickshop.menu.shared
 com.ghostchu.quickshop.menu.history
 com.ghostchu.quickshop.command.subcommand
@@ -111,7 +112,6 @@ com.ghostchu.quickshop.util.reporter.error
 com.ghostchu.quickshop.util.envcheck
 com.ghostchu.quickshop.util.mojangapi
 com.ghostchu.quickshop.compatibility
-com.ghostchu.quickshop.addon.betonquest
 com.ghostchu.quickshop.addon.bluemap
 com.ghostchu.quickshop.addon.discordsrv.listener
 com.ghostchu.quickshop.addon.discordsrv.bean
@@ -142,6 +142,7 @@ com.ghostchu.quickshop.addon.quests
 com.ghostchu.quickshop.addon.reremakemigrator
 com.ghostchu.quickshop.addon.reremakemigrator.command
 com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent
+com.ghostchu.quickshop.addon.squaremap
 com.ghostchu.quickshop.addon.shopitemonly
 com.ghostchu.quickshop.compatibility.advancedregionmarket
 com.ghostchu.quickshop.compatibility.bentobox
