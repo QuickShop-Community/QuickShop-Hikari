@@ -9,8 +9,16 @@
   ],
   "snapshots": [
     {
-      "version": "6.2.0.11=SNAPSHOT-11",
-      "downloadUrl": "https://github.com/QuickShop-Community/QuickShop-Hikari/releases/download/6.3.0.0/6.3.0.0-SNAPSHOT.jar"
+      "version": "6.2.0.11-SNAPSHOT-11",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1439841509829513316/1439841510035165245/QuickShop-Hikari-6.2.0.11-SNAPSHOT-11.jar?ex=6933b766&is=693265e6&hm=ce7a4c012d1ecd2e3a0ce4ffcfcc2c76e26e6dea0aa04cc1d795cd0a151a9743&"
+    },
+    {
+      "version": "6.2.0.11-SNAPSHOT-10",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1439076868350541865/1439076898926755890/QuickShop-Hikari-6.2.0.11-SNAPSHOT-10.jar?ex=69343b0d&is=6932e98d&hm=15359e38db7d92683ab4287d2be1dc5037417db359b2744698c6d87cbcd5b8f8&"
+    },
+    {
+      "version": "6.2.0.11-SNAPSHOT-9",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1437407447634542753/1437409142586347560/QuickShop-Hikari-6.2.0.11-SNAPSHOT-9.jar?ex=69341895&is=6932c715&hm=7869fe077e5d6983730d05a16d3c3e0732cbd0d737270eb6fdfd055a31a1f8ae&"
     }
   ],
   "addons": [
