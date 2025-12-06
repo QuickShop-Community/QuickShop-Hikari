@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
@@ -15,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeUnit;
 
 public class SubCommand_Database implements CommandHandler<CommandSender> {
 
@@ -30,7 +34,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
    *
    * @param sender       The command sender but will automatically convert to specified instance
    * @param commandLabel The command prefix (/quickshop = qs, /shop = shop)
-   * @param cmdArg       The arguments (/quickshop create stone will receive stone)
+   * @param parser       The arguments (/quickshop create stone will receive stone)
    */
   @Override
   public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
@@ -43,6 +47,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     subParams.remove(0);
     switch(parser.getArgs().getFirst()) {
       case "trim" -> handleTrim(sender, subParams);
+      case "save" -> saveShops(sender, subParams);
       case "purgelogs" -> purgeLogs(sender, subParams);
       case "purgeplayerscache" -> purgePlayersCache(sender, subParams);
       default -> plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
@@ -73,6 +78,38 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
               return null;
             });
 
+  }
+
+  private void saveShops(final CommandSender sender, @NotNull final List<String> subParams) {
+
+    plugin.logger().info("Saving all in-memory changed shops...");
+    final List<CompletableFuture<Void>> futures = plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+
+    plugin.logger().info("Shops needed saved: " + futures.size());
+    final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
+
+    try {
+
+      CompletableFuture.allOf(completableFutures)
+              .orTimeout(15, TimeUnit.SECONDS)
+              .join();
+
+    } catch(final CompletionException ex) {
+
+      plugin.logger().info("Timed out, running saving synchronously to determine shop with issue.", ex);
+      for(final Shop shop : plugin.getShopManager().getAllShops()) {
+
+        if(shop.isDirty()) {
+          try {
+
+            shop.updateSync();
+          } catch(final RuntimeException re) {
+
+            plugin.logger().warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.getLocation(), re);
+          }
+        }
+      }
+    }
   }
 //
 //    private void handleStatus(@NotNull CommandSender sender) {
@@ -130,7 +167,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
       // Then we need also purge the isolated data after purge the logs.
       plugin.text().of(sender, "database.trim-start").send();
       databaseHelper.purgeIsolated().whenComplete((data, err)->plugin.text().of(sender, "database.trim-complete", data).send());
-    } catch(NumberFormatException e) {
+    } catch(final NumberFormatException e) {
       plugin.text().of(sender, "not-a-number", subParams.getFirst()).send();
     }
   }
