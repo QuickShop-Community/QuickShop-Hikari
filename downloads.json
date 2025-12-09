@@ -8,9 +8,15 @@
     }
   ],
   "snapshots": [
-    {
+   {
+
       "version": "6.2.0.11-SNAPSHOT-12",
-      "downloadUrl": "https://cdn.discordapp.com/attachments/1439841509829513316/1439841510035165245/QuickShop-Hikari-6.2.0.11-SNAPSHOT-12.jar?ex=6933b766&is=693265e6&hm=ce7a4c012d1ecd2e3a0ce4ffcfcc2c76e26e6dea0aa04cc1d795cd0a151a9743&"
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1447773525803925614/1447774048154292264/QuickShop-Hikari-6.2.0.11-SNAPSHOT-12.jar?ex=6938d827&is=693786a7&hm=e83923c019d519526ab82ceab7b576af8c66093f18893a56a3fb58ca70b0fef8&"
+    },
+    {
+
+      "version": "6.2.0.11-SNAPSHOT-11",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1439841509829513316/1439841510035165245/QuickShop-Hikari-6.2.0.11-SNAPSHOT-11.jar?ex=6933b766&is=693265e6&hm=ce7a4c012d1ecd2e3a0ce4ffcfcc2c76e26e6dea0aa04cc1d795cd0a151a9743&"
     },
     {
       "version": "6.2.0.11-SNAPSHOT-10",
