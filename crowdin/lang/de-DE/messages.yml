@@ -12,7 +12,7 @@ thats-not-a-number: <red>Ungültige Zahl
 shop-name-disallowed: <red>Der Shopname <yellow>{0}</yellow> ist nicht erlaubt. Wähle einen anderen!
 console-only-danger: <red>Dies ist ein gefährlicher Befehl, verwnde es also nur in der Konsole.
 not-a-number: <red>Du kannst nur eine Zahl eingeben, Deine Eingabe war {0}.
-not-looking-at-valid-shop-block: <red>Konnte keinen Block zum erstellen eines Shops finden. Stelle sicher dass du einen ansiehst.
+not-looking-at-valid-shop-block: <red>Konnte keinen Block zum Erstellen eines Shops finden. Stelle sicher, dass du einen ansiehst.
 shop-removed-cause-ongoing-fee: <red>Dein Shop bei den Koordinaten {0} wurde entfernt, da du nicht genug Geld hattest um ihn zu behalten!
 tabcomplete:
   amount: '[Anzahl]'
