@@ -28,6 +28,7 @@ public enum GameVersion {
   v1_21_R5(new String[]{ "1.21.6" }, true, false, true, true, true),
   v1_21_R6(new String[]{ "1.21.7", "1.21.8", "1.21.9" }, true, false, true, true, true),
   v1_21_R9(new String[]{ "1.21.10" }, true, false, true, true, true),
+  v1_21_R10(new String[]{ "1.21.11" }, true, false, true, true, true),
   UNKNOWN(new String[0], true, false, false, true, true);
   private final String[] mcVersion;
   /**
