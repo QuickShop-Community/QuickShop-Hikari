@@ -5,7 +5,7 @@ disabled-in-this-world: <red>已停用此世界的 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
-_comment: 你好翻譯者！假若你正在從 Github 或其它代管平台編輯，你應此前往 https://crowdin.com/project/qs-hikari 進行翻譯。
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>已變更此無限商店擁有者為 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
@@ -761,6 +761,10 @@ addon:
   lands:
     world-not-enabled: <red>你不能在此世界中建立或購買商店。
     creation-denied: <red>你沒有在此領土建立商店的權限。
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>您無權在此區域建立商店。
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -802,8 +806,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "此玩家 %%purchase.name%% 出售 %%purchase.amount%% 個 %%shop.item.name%% 到你的商店。",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -816,37 +820,38 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord 訊息通知",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "商店",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "玩家",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "物品",
+                 "name": "Item",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "數量",
+               {
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "你已支付",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "稅",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -1447,7 +1452,7 @@ addon:
       無限商店：{6}
       座標：{7}
   bluemap:
-    markerset-title: QuickShop-Hikari 商店
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
     marker-description: |
       名稱：{0}
@@ -1551,82 +1556,6 @@ cannot-suggest-price: "<red>對不起，目前沒有更多的人和你交易相�
 price-suggest: "<green>基於來自 <aqua>{0}</aqua> 商店的資料，價格最高的商店價格為 <light_purple>{1}</light_purple> 元，價格最低的商店價格為 <light_purple>{2}</light_purple> 元，平均價格為 <light_purple>{3}</light_purple> 元，中位數價格為 <light_purple>{4}</light_purple> 元。<newline><yellow>建議你將價格設定在 <gold>{5}</gold> 元。</yellow>"
 price-suggest-multi: ""
 suggest-wait: "<green>請稍候……正在計算建議價格。"
-gui:
-  shared:
-    previous-page: "<white><<上一頁</white>"
-    next-page: "<white>下一頁 >></white>"
-    previous-menu: "<white>上一個選單</white>"
-  player:
-    select:
-      - "<yellow>Click to select this player.</yellow>"
-  staff:
-    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
-    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
-    add-staff: "<green>Add Staff Member</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>右鍵單擊以轉移所有權</yellow>"
-        - "<yellow>to this staff member.</yellow>"
-  trade:
-    title: "瀏覽商店"
-    custom:
-      display: "<bold><blue>Custom Order</blue></bold>"
-      lore-buy:
-        - "<white>選擇數量</white>"
-        - "<white>you would like to buy.</white>"
-        - "<yellow>點擊輸入自訂數量</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>庫存: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to sell.</white>"
-        - "<yellow>點擊輸入自訂數量</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Buy {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
-        - "<white>Total: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Shop Browser"
-    info:
-      - "<green>Owner: </green><yellow>{0}</yellow>"
-      - "<green>Location: </green><yellow>{1}</yellow>"
-      - "<green>Type: </green><yellow>{2}</yellow>"
-      - "<green>Price: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Shop Keeper"
-    change-icon:
-      display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
-      lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
-        - "<white>Current Price:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Change Mode</green></bold>"
-      lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
-      lore:
-        - "<white>Click to manage your shop's staff.</white>"
-    remove-icon:
-      display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
-      lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
 history:
   shop:
     gui-title: "查看購買歷史記錄"

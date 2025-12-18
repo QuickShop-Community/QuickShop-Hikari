@@ -23,11 +23,37 @@ public class ConfigUpdateScript {
     this.plugin = plugin;
   }
 
+  @UpdateScript(version = 1035)
+  public void configLayout() {
+
+    getConfig().set("shop.layout.BUYING.line1", "header");
+    getConfig().set("shop.layout.BUYING.line2", "trading");
+    getConfig().set("shop.layout.BUYING.line3", "item");
+    getConfig().set("shop.layout.BUYING.line4", "price");
+
+    getConfig().set("shop.layout.FROZEN.line1", "header");
+    getConfig().set("shop.layout.FROZEN.line2", "trading");
+    getConfig().set("shop.layout.FROZEN.line3", "item");
+    getConfig().set("shop.layout.FROZEN.line4", "price");
+
+    getConfig().set("shop.layout.SELLING.line1", "header");
+    getConfig().set("shop.layout.SELLING.line2", "trading");
+    getConfig().set("shop.layout.SELLING.line3", "item");
+    getConfig().set("shop.layout.SELLING.line4", "price");
+  }
+
+  @UpdateScript(version = 1034)
+  public void configWorldWhitelist() {
+
+    getConfig().set("shop.whitelist-world", Collections.emptyList());
+    getConfig().set("database-loading-whitelist-worlds", Collections.emptyList());
+  }
+
   @UpdateScript(version = 1033)
   public void configDisplayCoords() {
 
     getConfig().set("shop.display-coords.x", "0.5");
-    getConfig().set("shop.display-coords.y", "0.5");
+    getConfig().set("shop.display-coords.y", "0.8");
     getConfig().set("shop.display-coords.z", "0.5");
   }
 

@@ -28,12 +28,16 @@ import com.ghostchu.quickshop.shop.interaction.behaviors.TradeDirect;
 import com.ghostchu.quickshop.shop.interaction.behaviors.TradeDirectAll;
 import com.ghostchu.quickshop.shop.interaction.behaviors.TradeInteraction;
 import com.ghostchu.quickshop.shop.interaction.behaviors.TradeUI;
+import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickContainer;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickSign;
+import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickContainer;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickSign;
+import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickContainer;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickSign;
+import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickContainer;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickSign;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -81,13 +85,22 @@ public class QuickShopInteractionManager implements InteractionManager, Reloadab
 
   public void loadDefaults() {
 
+    //Container Interactions
+    interaction(new SneakingLeftClickContainer());
+    interaction(new SneakingRightClickContainer());
+    interaction(new StandingLeftClickContainer());
+    interaction(new StandingRightClickContainer());
+    
+    //Shop Interactions
     interaction(new SneakingLeftClickShop());
-    interaction(new SneakingLeftClickSign());
     interaction(new SneakingRightClickShop());
-    interaction(new SneakingRightClickSign());
     interaction(new StandingLeftClickShop());
-    interaction(new StandingLeftClickSign());
     interaction(new StandingRightClickShop());
+    
+    //Sign Interactions
+    interaction(new SneakingLeftClickSign());
+    interaction(new SneakingRightClickSign());
+    interaction(new StandingLeftClickSign());
     interaction(new StandingRightClickSign());
 
     behavior(new ControlPanel());

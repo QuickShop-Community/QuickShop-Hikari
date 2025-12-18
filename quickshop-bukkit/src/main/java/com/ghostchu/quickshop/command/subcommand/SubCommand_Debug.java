@@ -157,7 +157,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     hikariDataSource.setMaximumPoolSize(size);
     hikariDataSource.setMinimumIdle(size);
     plugin.text().of(sender, "debug.hikari-cp-size-tweak", size).send();
-    ;
   }
 
   private void handleDbConnectionTest(final CommandSender sender, final List<String> subParams) {
@@ -168,7 +167,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         try(Connection connection = plugin.getSqlManager().getConnection()) {
           if(connection.isValid(1000)) {
             plugin.text().of(sender, "debug.hikari-cp-working").send();
-            ;
           } else {
             plugin.text().of(sender, "debug.hikari-cp-not-working");
           }

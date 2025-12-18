@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.11-SNAPSHOT-6</version>
+    <version>6.2.0.11-SNAPSHOT-12</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -46,10 +46,14 @@
         <depend.vaultunlocked>2.13</depend.vaultunlocked>
 
         <!-- addon versions -->
+        <addon.betonquest>3.0.0-20250112.153201-1</addon.betonquest>
         <addon.bluemap>2.7.2</addon.bluemap>
         <addon.discordsrv>1.29.0</addon.discordsrv>
         <addon.dynmap>2.0</addon.dynmap>
         <addon.plan>5.6.2965</addon.plan>
+        <addon.pl3xmap>1.21.5-527</addon.pl3xmap>
+        <addon.quests>5.2.6</addon.quests>
+        <addon.squaremap>1.3.9</addon.squaremap>
 
         <!-- compat versions -->
         <compat.arm>3.5.5</compat.arm>
@@ -61,10 +65,12 @@
         <compat.geyser.floodgate>2.0-SNAPSHOT</compat.geyser.floodgate>
         <compat.chestprotect>5.19.16</compat.chestprotect>
         <compat.clearlag>latest</compat.clearlag><!-- no maven repository? -->
-        <compat.cmilib>1.2.2.0</compat.cmilib><!-- no maven repository? -->
+        <compat.cmilib>1.5.6.3</compat.cmilib><!-- no maven repository? -->
+        <compat.crazycrates>4.10.5</compat.crazycrates>
         <compat.eco>6.75.2</compat.eco>
         <compat.ecoenchants>12.22.0</compat.ecoenchants>
         <compat.elitemobs>9.2.3</compat.elitemobs>
+        <compat.excellentcrates>6.4.0</compat.excellentcrates>
         <compat.fabledskyblock>3.5.2-SNAPSHOT</compat.fabledskyblock>
         <compat.griefprevention>17.0.0</compat.griefprevention>
         <compat.husktowns>3.1.4</compat.husktowns>
@@ -74,11 +80,14 @@
         <compat.openinv>5.1.6</compat.openinv>
         <compat.plotsquared>7.5.2</compat.plotsquared>
         <compat.reforges>6.74.0</compat.reforges>
-        <compat.residence>5.0.1.7</compat.residence>
+        <compat.residence>6.0.0.1</compat.residence>
+        <compat.silkspawners>8.3.0</compat.silkspawners>
+        <compat.simpleclaimsystem>1.11.6.1</compat.simpleclaimsystem>
         <compat.slimefun>RC-37</compat.slimefun>
         <compat.superiorskyblock>1.11.1</compat.superiorskyblock>
         <compat.tne>0.1.3.6-Pre-1</compat.tne>
         <compat.towny>0.101.1.15</compat.towny>
+        <compat.ultimateclaims>3.0.2-SNAPSHOT</compat.ultimateclaims>
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
         <compat.worldedit>7.3.11</compat.worldedit>
@@ -206,6 +215,7 @@
                                         <include>org.eclipse.aether:*:*</include>
                                         <include>org.slf4j:slf4j-jdk14:*</include>
                                         <include>cc.carm.lib:*</include>
+                                        <include>com.rollbar:*</include>
                                     </includes>
                                 </artifactSet>
                                 <relocations>
@@ -259,6 +269,10 @@
                                     <relocation>
                                         <pattern>io.vertx.</pattern>
                                         <shadedPattern>${qs.relocation}.io.vertx.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.rollbar.</pattern>
+                                        <shadedPattern>${qs.relocation}.com.rollbar.</shadedPattern>
                                     </relocation>
                                     <!--<relocation>
                                         <pattern>org.apache.commons:commons-compress</pattern>
@@ -454,6 +468,7 @@
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
 
+        <!--<module>addon/betonquest</module>-->
         <module>addon/bluemap</module>
         <module>addon/discordsrv</module>
         <module>addon/displaycontrol</module>
@@ -461,8 +476,11 @@
         <module>addon/dynmap</module>
         <module>addon/limited</module>
         <module>addon/list</module>
+        <module>addon/pl3xmap</module>
         <module>addon/plan</module>
+        <module>addon/quests</module>
         <module>addon/reremake-migrator</module>
+        <module>addon/squaremap</module>
         <module>addon/shopitemonly</module>
         <module>compatibility/advancedregionmarket</module>
           <!--   <module>compatibility/angelchest</module>  -->
@@ -485,9 +503,11 @@
         <module>compatibility/plotsquared</module>
         <module>compatibility/reforges</module>
         <module>compatibility/residence</module>
+        <module>compatibility/simpleclaimsystem</module>
         <module>compatibility/slimefun</module>
         <module>compatibility/superiorskyblock</module>
         <module>compatibility/towny</module>
+        <module>compatibility/ultimateclaims</module>
         <module>compatibility/velocity</module>
         <module>compatibility/voidchest</module>
         <module>compatibility/worldedit</module>

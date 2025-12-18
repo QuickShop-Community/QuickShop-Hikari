@@ -833,7 +833,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
           return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
         }
-        final List<Component> components = str.stream().map(s->manager.plugin.getPlatform().miniMessage().deserialize(s, tagResolvers)).toList();
+        final List<Component> components = str.stream().map(s->manager.plugin.platform().miniMessage().deserialize(s, tagResolvers)).toList();
         return postProcess(components);
       }
     }
@@ -994,7 +994,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           }
           return LegacyComponentSerializer.legacySection().deserialize(path);
         }
-        final Component component = manager.plugin.getPlatform().miniMessage().deserialize(str, tagResolvers);
+        final Component component = manager.plugin.platform().miniMessage().deserialize(str, tagResolvers);
         return postProcess(component);
       }
     }

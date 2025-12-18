@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -112,6 +113,7 @@ public abstract class AbstractShopManager implements ShopManager {
     // Put it in the world
     // Put the shop in its location in the chunk list.
     inChunk.put(shop.getLocation(), shop);
+    shopCache.invalidate(null, shop.getLocation());
   }
 
   @Override
@@ -506,24 +508,24 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return Shops
    */
   @Override
-  public @Nullable Map<Location, Shop> getShops(@NotNull final Chunk c) {
+  public @NotNull Map<Location, Shop> getShops(@NotNull final Chunk c) {
 
     return getShops(c.getWorld().getName(), c.getX(), c.getZ());
   }
 
   @Override
-  public @Nullable Map<Location, Shop> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
+  public @NotNull Map<Location, Shop> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
 
     final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
-    if(inWorld == null) {
+    if(inWorld.isEmpty()) {
 
-      return null;
+      return Collections.emptyMap();
     }
     return inWorld.get(new SimpleShopChunk(world, chunkX, chunkZ));
   }
 
   @Override
-  public @Nullable Map<Location, Shop> getShops(@NotNull final ShopChunk shopChunk) {
+  public @NotNull Map<Location, Shop> getShops(@NotNull final ShopChunk shopChunk) {
 
     return getShops(shopChunk.getWorld(), shopChunk.getX(), shopChunk.getZ());
   }
@@ -536,7 +538,11 @@ public abstract class AbstractShopManager implements ShopManager {
    * @return a map of Chunk - Shop
    */
   @Override
-  public @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull final String world) {
+  public @NotNull Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull final String world) {
+
+    if(!this.shops.containsKey(world)) {
+      return Collections.emptyMap();
+    }
 
     return this.shops.get(world);
   }

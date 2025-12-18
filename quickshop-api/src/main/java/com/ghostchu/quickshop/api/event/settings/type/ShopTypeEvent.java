@@ -30,7 +30,9 @@ import org.jetbrains.annotations.NotNull;
  * @author creatorfromhell
  * @see ShopType
  * @since 6.2.0.9
+ * @deprecated Use ShopTypeEnhancedEvent instead
  */
+@Deprecated(since = "6.2.0.11", forRemoval = true)
 public class ShopTypeEvent extends ShopSettingEvent<ShopType> {
 
   public ShopTypeEvent(final @NotNull Phase phase, final @NotNull Shop shop,

@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.addon.reremakemigrator.migratecomponent;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -80,7 +79,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
                 reremakeShop.getItem().clone(),
                 QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getOwner()),
                 reremakeShop.isUnlimited(),
-                ShopType.fromID(reremakeShop.getShopType().toID()),
+                QuickShop.getInstance().getShopManager().shopTypeOrDefault(reremakeShop.getShopType().toID()),
                 getReremakeShopExtra(reremakeShop),
                 reremakeShop.getCurrency(),
                 reremakeShop.isDisableDisplay(),

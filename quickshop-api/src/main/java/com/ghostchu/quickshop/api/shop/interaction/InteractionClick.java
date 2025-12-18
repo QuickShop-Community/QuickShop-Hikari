@@ -26,6 +26,7 @@ package com.ghostchu.quickshop.api.shop.interaction;
 public enum InteractionClick {
 
   SHOPBLOCK,
+  CONTAINER,
   SIGN,
   AIR
 }

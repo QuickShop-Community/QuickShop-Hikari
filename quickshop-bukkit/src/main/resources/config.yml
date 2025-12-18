@@ -191,6 +191,30 @@ shop:
     - history
     - remove
 
+  #The layout of signs for shops.
+  layout:
+
+    #The layout of BUYING shops.
+    BUYING:
+      line1: "header"
+      line2: "trading"
+      line3: "item"
+      line4: "price"
+
+    #The layout of FROZEN shops.
+    FROZEN:
+      line1: "header"
+      line2: "trading"
+      line3: "item"
+      line4: "price"
+
+    #The layout of SELLING shops.
+    SELLING:
+      line1: "header"
+      line2: "trading"
+      line3: "item"
+      line4: "price"
+
   #The cost to make a shop.
   cost: 10
 
@@ -373,7 +397,13 @@ shop:
   #NOTE: Only one effect is shown and is randomly chosen.
   use-effect-for-potion-item: false
 
+  #The list of worlds in which creating new shops is enabled.
+  #When this list is not empty, only worlds in this list will be allowed to create shops.
+  #This takes priority over blacklist-world.
+  whitelist-world: []
+
   #The list of worlds in which creating new shops is disabled.
+  #This will only be checked when whitelist-world is empty.
   blacklist-world:
     - disabled_world_name
 
@@ -478,12 +508,14 @@ shop:
     show-durability: true
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
-#Add the reference the item lookup table by adding @ before the name.
+#Add the reference to the item lookup table by adding @ before the name.
 #For referenced item, the permission quickshop.bypass.reference will be used.
 #SUPPORT Item Expression!
 #https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
 blacklist:
   - Bedrock
+
+database-loading-whitelist-worlds: []
 
 database-loading-blacklist-worlds:
   - "the world that shop won't to be loaded"
@@ -661,6 +693,3 @@ privacy:
 # Turn off this will stop recording transactions for metrics.
 transaction-metric:
   enable: true
-
-# Fill the donation key to show your donated QuickShop-Hikari in /quickshop about and QuickShop Paste.
-donation-key: ''

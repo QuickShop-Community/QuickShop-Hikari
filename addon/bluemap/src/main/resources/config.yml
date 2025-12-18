@@ -1,10 +1,24 @@
-config-version: 1
+config-version: 2
 # If you want the marker set/markers to display by default when opening the map.
 display-by-default: true
-#Location for the image you want as your quick-shop marker, it's defaulted to the BlueMap assets folder.
+
+# Icon settings
+# If true, uses a custom icon from icon-file-location
+# If false, uses colored circle markers based on shop state
+use-custom-icon: false
+# Location for the image you want as your quick-shop marker (only used if use-custom-icon is true)
 icon-file-location: "/assets/chest.png"
-# If you want to display the marker icon.
-display-icon: true
+
+# Marker colors for different shop states (CSS color format: hex, rgb, or color name)
+# Only used when use-custom-icon is false
+colors:
+  # Selling shops (players buy from this shop) - Green
+  selling: "#2ecc71"
+  # Buying shops (players sell to this shop) - Blue
+  buying: "#3498db"
+  # Frozen/disabled shops - Gray
+  frozen: "#888888"
+
 # Max distance of range where the user can see the marker, useful for lag reduction in frames.
 max-distance: 1000
 # This is where the name of each quick-shop marker when looking at the list (placeholders are %item%, %price%, %stock%, %owner%, %type%, %location%).

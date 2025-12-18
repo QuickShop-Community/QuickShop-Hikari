@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop jest wyłączony w tym świecie
 how-much-to-trade-for: <green>Wpisz na czacie cenę za <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop wykrył, że ustawienia języka klienta zostały zmienione, teraz używamy dla Ciebie wersji językowej {0}.
 shops-backingup: Tworzenie kopii zapasowej sklepu z bazy danych...
-_comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/qs-hikari
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>Ten właściciel sklepu nielimitowanego został zmieniony na {0}.
 bad-command-usage-detailed: '<red>Błędne argumenty poleceń! Akceptuje następujące parametry: <gray>{0}'
 thats-not-a-number: <red>Nieprawidłowa liczba
@@ -745,6 +745,10 @@ addon:
   lands:
     world-not-enabled: <red>Nie masz pozwolenia, aby tworzyć lub kupować w tym świecie.
     creation-denied: <red>Nie masz uprawnień na tworzenie sklepów w tym miejscu.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -819,6 +823,7 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
+               {
                {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
@@ -1431,7 +1436,7 @@ addon:
       Nielimitowany: {6}
       Lokalizacja: {7}
   bluemap:
-    markerset-title: Sklepy QuickShop-Hikari
+    markerset-title: Player Shops
     marker-name: '{0} @ {2} @ {3} dla x{4} @ {5}'
     marker-description: |
       Nazwa: {0}
@@ -1535,82 +1540,6 @@ cannot-suggest-price: "<red>Sorry, For the time being, no more people are tradin
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
-gui:
-  shared:
-    previous-page: "<white><< Poprzednia Strona</white>"
-    next-page: "<white>Następna strona >></white>"
-    previous-menu: "<white>Poprzednie Menu</white>"
-  player:
-    select:
-      - "<yellow>Kliknij, aby wybrać tego gracza.</yellow>"
-  staff:
-    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
-    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
-    add-staff: "<green>Add Staff Member</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>Right click to transfer ownership</yellow>"
-        - "<yellow>to this staff member.</yellow>"
-  trade:
-    title: "Przeglądarka sklepów"
-    custom:
-      display: "<bold><blue>Custom Order</blue></bold>"
-      lore-buy:
-        - "<white>Wybierz ilość</white>"
-        - "<white>którą chcesz kupić.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to sell.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Buy {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
-      lore:
-        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
-        - "<white>Total: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Przeglądarka sklepów"
-    info:
-      - "<green>Właściciel: </green><yellow>{0}</yellow>"
-      - "<green>Location: </green><yellow>{1}</yellow>"
-      - "<green>Type: </green><yellow>{2}</yellow>"
-      - "<green>Price: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
-  keeper:
-    title: "Shop Keeper"
-    change-icon:
-      display: "<bold><green>Zmień Cenę</green></bold>"
-      enter: "<yellow>Wpisz nową cenę na chat.</yellow>"
-      lore:
-        - "<white>Kliknij aby zmienić cenę przedmiotów w twoim sklepie.</white>"
-        - "<white>Aktualna cena:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Zmień Tryb</green></bold>"
-      lore:
-        - "<white>Kliknij, aby przełączać między trybami zakupu/sprzedaży.</white>"
-        - "<white>Aktualny Tryb: </white><red>{0}</red>"
-        - "<yellow>Kliknij, aby przełączyć na </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
-      lore:
-        - "<white>Click to manage your shop's staff.</white>"
-    remove-icon:
-      display: "<bold><red>Usuń Sklep</red></bold>"
-      confirm: "<yellow>Napisz 'confirm' na czacie, aby potwierdzić usunięcie. Lub wpisz cokolwiek innego, aby anulować.</yellow>"
-      lore:
-        - "<white>Kliknij, aby usunąć swój sklep.</white>"
-        - "<grey>Możesz też zniszczyć znak/skrzynię.</grey>"
 history:
   shop:
     gui-title: "Wyświetl historię zakupów"
