@@ -138,13 +138,12 @@ It has the goal to modernize the core content of QuickShop and adapt it to the l
 - i18n support for displayed Enchantment names.
 - A cool item preview.
 - World/region protection plugins support.
-- ProtocolLib based Virtual Display Item support.
+- ProtocolLib/PacketEvents based Virtual Display Item support.
 - Powerful API.
 - Optimized performance.
 - MiniMessage syntax support.
 - H2 (local) or MySQL (remote) datasource support.
 - Supports custom inventory! Use the InventoryWrapper API.
-- Optimized for Paper, but also runs on Spigot (Though slower and with a more "hacky" approach).
 - Advanced Transaction System. Undo any Inventory/Economy operation with a shop when it failed to prevent duplications
   and exploits.
 - Per-shop permission management.
