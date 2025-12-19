@@ -71,6 +71,8 @@ public class TradeUI implements InteractionBehavior {
                                                                                event.getBlockFace(),
                                                                                event.getHand(),
                                                                                event.getItem())) {
+
+        //cancel our interaction.
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
@@ -82,12 +84,15 @@ public class TradeUI implements InteractionBehavior {
         return;
       }
 
+      //open our menus.
       final MenuViewer viewer = new MenuViewer(event.getPlayer().getUniqueId());
       viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
       MenuManager.instance().addViewer(viewer);
 
       final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
       MenuManager.instance().open("qs:trade", 1, menuPlayer);
+
+      //cancel our item use
       event.setCancelled(true);
       event.setUseInteractedBlock(Event.Result.DENY);
       event.setUseItemInHand(Event.Result.DENY);
