@@ -762,9 +762,9 @@ addon:
     world-not-enabled: <red>Вам не дозволено створювати або торгувати в цьому світі.
     creation-denied: <red>У вас немає дозволу на створення магазинів на цій землі.
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>Ви повинні завершити завдання <aqua>{0}</aqua>, щоб мати змогу створити магазин.
+    sell-quest-required: <red>Ви повинні завершити завдання <aqua>{0}</aqua>, щоб мати змогу продавати предмети в магазині.
+    buy-quest-required: <red>Ви повинні завершити завдання <aqua>{0}</aqua>, щоб мати змогу купувати предмети в магазині.
   dominion:
     creation-denied: <red>У вас немає дозволу на створення магазинів у цій зоні Dominion.
     trade-denied: <red>Магазин повинен знаходитися в межах Dominion, щоб з ним можна було торгувати.
@@ -806,8 +806,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: Хтось продав предмети у ваш магазин",
+             "description": "Гравець %%purchase.name%% продав x%%purchase.amount%% %%shop.item.name%% вашому магазину.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -820,38 +820,38 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "Discord-сповіщення QuickShop-Hikari",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "Магазин",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "Продавець",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "Предмет",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
                {
-                 "name": "Amount",
+                 "name": "Кількість",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "Ви заплатили",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "Податки",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -1452,7 +1452,7 @@ addon:
       Безлімітно: {6}
       Локація: {7}
   bluemap:
-    markerset-title: Player Shops
+    markerset-title: Магазини Гравців
     marker-name: '{0} @ {2} @ {3} за x{4} @ {5}'
     marker-description: |
       Назва: {0}
