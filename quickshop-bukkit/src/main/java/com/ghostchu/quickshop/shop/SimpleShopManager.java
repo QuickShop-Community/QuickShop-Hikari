@@ -500,6 +500,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     if(stock == -1) {
       stock = 10000;
     }
+
+    /*if(shop.isStackingShop()) {
+      stock = stock * shop.getItem().getAmount();
+    }*/
+
     if(stock < amount) {
       plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
       return false;

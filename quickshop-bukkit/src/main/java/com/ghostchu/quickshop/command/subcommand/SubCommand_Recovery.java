@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
+import com.ghostchu.quickshop.database.QuickShopCsvTransfer;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -11,6 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
@@ -47,13 +49,14 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
     Util.asyncThreadRun(()->{
       try {
         databaseIOUtil.performBackup("recovery");
-        databaseIOUtil.importTables(file);
+        QuickShopCsvTransfer.importTablesFromZip(file, true);
+        //databaseIOUtil.importTables(file);
         Log.debug("Re-loading shop from database...");
         Util.mainThreadRun(()->{
           plugin.getShopLoader().loadShops();
           plugin.text().of(sender, "imported-database", "recovery.zip").send();
         });
-      } catch(SQLException | ClassNotFoundException e) {
+      } catch(final SQLException | IOException | ClassNotFoundException e) {
         plugin.text().of(sender, "importing-failed", e.getMessage()).send();
         plugin.logger().warn("Failed to import the database from backup file.", e);
       }
