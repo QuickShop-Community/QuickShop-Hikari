@@ -60,11 +60,11 @@ public class DatabaseIOUtil {
       try {
         exportTables(backupFile);
         return true;
-      } catch(SQLException | IOException e) {
+      } catch(final SQLException | IOException e) {
         QuickShop.getInstance().logger().warn("[DB Backup] Failed to create backup", e);
         return false;
       }
-    } catch(Throwable throwable) {
+    } catch(final Throwable throwable) {
       QuickShop.getInstance().logger().warn("[DB Backup] Unexpected error", throwable);
       return false;
     }
@@ -73,12 +73,12 @@ public class DatabaseIOUtil {
   public void exportTables(@NotNull final File zipFile) throws SQLException, IOException {
     // zipFile.getParentFile().mkdirs();
     zipFile.createNewFile();
-    try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
+    try(final ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
       for(final DataTables table : DataTables.values()) {
         Log.debug("Exporting table " + table.name());
         final File tableCsv = new File(Util.getCacheFolder(), table.getName() + ".csv");
         tableCsv.deleteOnExit();
-        try(SQLQuery query = table.createQuery().build().execute()) {
+        try(final SQLQuery query = table.createQuery().build().execute()) {
           final ResultSet result = query.getResultSet();
           writeToCSV(result, tableCsv);
           Log.debug("Exported table " + table.name() + " to " + tableCsv.getAbsolutePath());
@@ -107,10 +107,10 @@ public class DatabaseIOUtil {
 
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
-    try(Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
-        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                                              ResultSet.CONCUR_READ_ONLY);
-        ResultSet results = stmt.executeQuery("SELECT * FROM " + table.getName())) {
+    try(final Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
+        final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                    ResultSet.CONCUR_READ_ONLY);
+        final ResultSet results = stmt.executeQuery("SELECT * FROM " + table.logicalName())) {
       final ResultSetMetaData metaData = results.getMetaData();
       final String[] columns = new String[metaData.getColumnCount()];
       for(int i = 0; i < columns.length; i++) {
@@ -118,9 +118,19 @@ public class DatabaseIOUtil {
       }
       Log.debug("Parsed " + columns.length + " columns: " + CommonUtil.array2String(columns));
       while(results.next()) {
-        final Object[] values = new String[columns.length];
+        final Object[] values = new Object[columns.length];
         for(int i = 0; i < values.length; i++) {
           Log.debug("Copying column: " + columns[i]);
+
+          final Object obj = results.getObject(columns[i]);
+          //System.out.println("checking obj: " + columns[i] + " = " + obj.toString());
+          if(columns[i].equalsIgnoreCase("unlimited") || columns[i].equalsIgnoreCase("hologram")) {
+
+            //System.out.println("result is boolean");
+            values[i] = obj.toString().equalsIgnoreCase("TRUE");
+            continue;
+          }
+
           values[i] = results.getObject(columns[i]);
         }
         Log.debug("Inserting row: " + CommonUtil.array2String(Arrays.stream(values).map(Object::toString).toArray(String[]::new)));
@@ -140,7 +150,7 @@ public class DatabaseIOUtil {
     if(!csvFile.exists()) {
       csvFile.createNewFile();
     }
-    try(PrintStream stream = new PrintStream(csvFile)) {
+    try(final PrintStream stream = new PrintStream(csvFile)) {
       Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
       CsvDriver.writeToCsv(set, stream, true);
     }
