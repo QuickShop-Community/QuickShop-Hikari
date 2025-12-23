@@ -37,7 +37,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
     final int amount;
     try {
       amount = Integer.parseInt(parser.getArgs().getFirst());
-    } catch(NumberFormatException e) {
+    } catch(final NumberFormatException e) {
       plugin.text().of(sender, "not-a-integer", parser.getArgs().getFirst()).send();
       return;
     }
@@ -49,6 +49,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
           plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
           return;
         }
+
         if(amount > Util.getItemMaxStackSize(shop.getItem().getType()) && !plugin.getConfig().getBoolean("shop.disable-max-size-check-for-size-command", false)) {
           plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
           return;

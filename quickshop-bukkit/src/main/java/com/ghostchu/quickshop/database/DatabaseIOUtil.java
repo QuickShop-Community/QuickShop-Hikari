@@ -118,18 +118,10 @@ public class DatabaseIOUtil {
       }
       Log.debug("Parsed " + columns.length + " columns: " + CommonUtil.array2String(columns));
       while(results.next()) {
-        final Object[] values = new Object[columns.length];
+        final Object[] values = new String[columns.length];
         for(int i = 0; i < values.length; i++) {
           Log.debug("Copying column: " + columns[i]);
 
-          final Object obj = results.getObject(columns[i]);
-          //System.out.println("checking obj: " + columns[i] + " = " + obj.toString());
-          if(columns[i].equalsIgnoreCase("unlimited") || columns[i].equalsIgnoreCase("hologram")) {
-
-            //System.out.println("result is boolean");
-            values[i] = obj.toString().equalsIgnoreCase("TRUE");
-            continue;
-          }
 
           values[i] = results.getObject(columns[i]);
         }
