@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.util.Util;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -79,6 +80,10 @@ public class TradeUI implements InteractionBehavior {
 
       if(shop.isFrozen()) {
         ((QuickShop)plugin).text().of(event.getPlayer(), "shop-cannot-trade-when-freezing").send();
+        return;
+      }
+
+      if(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
         return;
       }
 
