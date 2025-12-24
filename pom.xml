@@ -41,7 +41,7 @@
         <depend.nbtapi>2.15.0</depend.nbtapi>
         <depend.packetevents>2.9.0-SNAPSHOT</depend.packetevents>
         <depend.paper>1.21-R0.1-SNAPSHOT</depend.paper>
-        <depend.protocollib>5.3.0</depend.protocollib>
+        <depend.protocollib>5.4.0</depend.protocollib>
         <depend.vault>1.7.1</depend.vault>
         <depend.vaultunlocked>2.13</depend.vaultunlocked>
 
