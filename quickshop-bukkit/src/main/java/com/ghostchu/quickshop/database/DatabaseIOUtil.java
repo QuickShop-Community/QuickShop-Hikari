@@ -108,9 +108,10 @@ public class DatabaseIOUtil {
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
     try(final Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
-        final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+      final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                                                     ResultSet.CONCUR_READ_ONLY);
-        final ResultSet results = stmt.executeQuery("SELECT * FROM " + table.logicalName())) {
+      final ResultSet results = stmt.executeQuery("SELECT * FROM " + table.logicalName())) {
+
       final ResultSetMetaData metaData = results.getMetaData();
       final String[] columns = new String[metaData.getColumnCount()];
       for(int i = 0; i < columns.length; i++) {
