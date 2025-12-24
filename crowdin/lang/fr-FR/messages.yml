@@ -1428,24 +1428,24 @@ addon:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Nom: {0}
+      Propriétaire : {1}
+      Article : {2}
+      Prix : {3} pour x{4} article(s)
+      Type : {5}
+      Illimité : {6}
+      Emplacement : {1}{7}
   bluemap:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Nom: {0}
+      Propriétaire : {1}
+      Article : {2}
+      Prix : {3} pour x{4} article(s)
+      Type : {5}
+      Illimité : {6}
+      Emplacement : {1}{7}
   chestprotect:
     protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
     shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
