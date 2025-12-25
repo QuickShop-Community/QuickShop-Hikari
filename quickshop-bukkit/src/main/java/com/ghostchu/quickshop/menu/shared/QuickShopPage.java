@@ -105,82 +105,89 @@ public class QuickShopPage extends Page {
   }
 
   /**
-   * Gets a chat message from gui.yml and formats it as a legacy string.
-   * This is used for chat messages sent to players from GUI interactions.
+   * Gets a chat message from gui.yml and formats it as a legacy string. This is used for chat
+   * messages sent to players from GUI interactions.
    *
    * @param path The path under "messages" section in gui.yml (e.g., "keeper.confirm-delete")
    * @param args Arguments to replace {0}, {1}, etc. placeholders
+   *
    * @return The formatted legacy string
    */
   public static String guiMessage(final String path, @Nullable final Object... args) {
+
     String message = QuickShop.getInstance().getGuiConfig().getMessage(path);
-    
+
     // Replace {0}, {1}, etc. with args
     if(args != null) {
       for(int i = 0; i < args.length; i++) {
-        message = message.replace("{" + i + "}", args[i] != null?args[i].toString() : "");
+        message = message.replace("{" + i + "}", args[i] != null? args[i].toString() : "");
       }
     }
-    
+
     // Parse MiniMessage and convert to legacy
     final Component component = QuickShop.getInstance().platform().miniMessage().deserialize(message);
     return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(component);
   }
 
   /**
-   * Gets an icon's display name from gui.yml as a Component.
-   * Parses MiniMessage formatting.
+   * Gets an icon's display name from gui.yml as a Component. Parses MiniMessage formatting.
    *
-   * @param config The icon config
+   * @param config      The icon config
    * @param defaultName The default name if not configured
+   *
    * @return The parsed Component
    */
   @NotNull
   public static Component getConfigDisplay(@Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName) {
-    final String name = config != null && config.getName() != null?config.getName() : defaultName;
+
+    final String name = config != null && config.getName() != null? config.getName() : defaultName;
     return QuickShop.getInstance().platform().miniMessage().deserialize(name);
   }
 
   /**
-   * Gets an icon's display name from gui.yml as a Component with placeholder replacement.
-   * Parses MiniMessage formatting and replaces {0}, {1}, etc. placeholders.
+   * Gets an icon's display name from gui.yml as a Component with placeholder replacement. Parses
+   * MiniMessage formatting and replaces {0}, {1}, etc. placeholders.
    *
-   * @param config The icon config
+   * @param config      The icon config
    * @param defaultName The default name if not configured
-   * @param args Arguments to replace placeholders
+   * @param args        Arguments to replace placeholders
+   *
    * @return The parsed Component
    */
   @NotNull
   public static Component getConfigDisplay(@Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName, @Nullable final Object... args) {
-    String name = config != null && config.getName() != null?config.getName() : defaultName;
+
+    String name = config != null && config.getName() != null? config.getName() : defaultName;
     if(args != null) {
       for(int i = 0; i < args.length; i++) {
-        name = name.replace("{" + i + "}", args[i] != null?args[i].toString() : "");
+        name = name.replace("{" + i + "}", args[i] != null? args[i].toString() : "");
       }
     }
     return QuickShop.getInstance().platform().miniMessage().deserialize(name);
   }
 
   /**
-   * Gets an icon's lore from gui.yml as a list of Components.
-   * Parses MiniMessage formatting and replaces {0}, {1}, etc. placeholders.
+   * Gets an icon's lore from gui.yml as a list of Components. Parses MiniMessage formatting and
+   * replaces {0}, {1}, etc. placeholders.
    *
    * @param config The icon config
-   * @param args Arguments to replace placeholders
+   * @param args   Arguments to replace placeholders
+   *
    * @return The parsed list of Components
    */
   @NotNull
   public static List<Component> getConfigLore(@Nullable final GuiConfig.IconConfig config, @Nullable final Object... args) {
+
     final List<Component> result = new ArrayList<>();
     if(config == null) {
       return result;
     }
-    
+
     for(String line : config.getLore()) {
       // Replace {0}, {1}, etc. with args
       if(args != null) {
         for(int i = 0; i < args.length; i++) {
-          line = line.replace("{" + i + "}", args[i] != null?args[i].toString() : "");
+          line = line.replace("{" + i + "}", args[i] != null? args[i].toString() : "");
         }
       }
       result.add(QuickShop.getInstance().platform().miniMessage().deserialize(line));

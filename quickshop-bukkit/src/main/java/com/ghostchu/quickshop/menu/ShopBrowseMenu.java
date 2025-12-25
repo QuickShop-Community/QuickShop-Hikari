@@ -40,7 +40,7 @@ public class ShopBrowseMenu extends Menu {
   public static final String BROWSE_SEARCH = "BROWSE_SEARCH";
   public static final String BROWSE_STOCK_ONLY = "BROWSE_STOCK_ONLY";
   public static final String BROWSE_WORLD_ONLY = "BROWSE_WORLD_ONLY";
-  
+
   // Data keys for shop list page (when viewing shops for a specific item)
   public static final String SELECTED_ITEM_SHOPS = "SELECTED_ITEM_SHOPS";
   public static final String SHOP_LIST_PAGE = "SHOP_LIST_PAGE";
@@ -49,7 +49,7 @@ public class ShopBrowseMenu extends Menu {
 
     // Load rows from GUI config
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
-    this.rows = (menuConfig != null?menuConfig.getRows() : 6);
+    this.rows = (menuConfig != null? menuConfig.getRows() : 6);
     this.name = "qs:browse";
 
     setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "gui.browse.title").legacy()));
@@ -59,7 +59,7 @@ public class ShopBrowseMenu extends Menu {
     final GroupedItemPage groupedPageHandler = new GroupedItemPage(this.name, this.rows);
     groupedPage.setOpen(groupedPageHandler::handle);
     addPage(groupedPage);
-    
+
     // Page 2: Shop list view (all shops for a specific item)
     final Page shopListPage = new Page(2);
     final ShopListPage shopListPageHandler = new ShopListPage(this.name, this.rows);

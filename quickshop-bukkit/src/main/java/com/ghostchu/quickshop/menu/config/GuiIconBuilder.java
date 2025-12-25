@@ -40,10 +40,12 @@ public class GuiIconBuilder {
    * Creates an AbstractItemStack from IconConfig
    *
    * @param config The icon configuration
+   *
    * @return The configured AbstractItemStack
    */
   @NotNull
   public static AbstractItemStack<?> createStack(@NotNull final GuiConfig.IconConfig config) {
+
     AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), config.getAmount());
 
@@ -77,10 +79,12 @@ public class GuiIconBuilder {
    * Creates an IconBuilder from IconConfig with slot
    *
    * @param config The icon configuration
+   *
    * @return The configured IconBuilder
    */
   @NotNull
   public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config) {
+
     return new IconBuilder(createStack(config))
             .withSlot(config.getSlot());
   }
@@ -90,11 +94,13 @@ public class GuiIconBuilder {
    *
    * @param config The icon configuration
    * @param slot   The slot to use
+   *
    * @return The configured IconBuilder
    */
   @NotNull
   public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config,
-                                               final int slot) {
+                                              final int slot) {
+
     return new IconBuilder(createStack(config))
             .withSlot(slot);
   }
@@ -102,18 +108,20 @@ public class GuiIconBuilder {
   /**
    * Creates an IconBuilder with custom display name and lore
    *
-   * @param config     The icon configuration (for material and custom model data)
-   * @param slot       The slot to use
-   * @param name       The display name component
-   * @param lore       The lore components
+   * @param config The icon configuration (for material and custom model data)
+   * @param slot   The slot to use
+   * @param name   The display name component
+   * @param lore   The lore components
+   *
    * @return The configured IconBuilder
    */
   @NotNull
   public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config,
-                                               final int slot,
-                                               @NotNull final Component name,
-                                               @NotNull final List<Component> lore) {
-    AbstractItemStack<?> stack = QuickShop.getInstance().stack()
+                                              final int slot,
+                                              @NotNull final Component name,
+                                              @NotNull final List<Component> lore) {
+
+    final AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), config.getAmount())
             .display(name)
             .lore(lore);
@@ -127,13 +135,15 @@ public class GuiIconBuilder {
    * @param config The icon configuration
    * @param slot   The slot to use
    * @param name   The display name component
+   *
    * @return The configured IconBuilder
    */
   @NotNull
   public static IconBuilder createIconBuilder(@NotNull final GuiConfig.IconConfig config,
-                                               final int slot,
-                                               @NotNull final Component name) {
-    AbstractItemStack<?> stack = QuickShop.getInstance().stack()
+                                              final int slot,
+                                              @NotNull final Component name) {
+
+    final AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), config.getAmount())
             .display(name);
 
@@ -144,10 +154,12 @@ public class GuiIconBuilder {
    * Creates a border IconBuilder
    *
    * @param config The border icon configuration
+   *
    * @return The configured IconBuilder for borders
    */
   @NotNull
   public static IconBuilder createBorderBuilder(@NotNull final GuiConfig.IconConfig config) {
+
     AbstractItemStack<?> stack = QuickShop.getInstance().stack()
             .of(config.getMaterial(), 1);
 
@@ -166,11 +178,13 @@ public class GuiIconBuilder {
    *
    * @param item   The ItemStack to modify
    * @param config The icon configuration
+   *
    * @return The modified ItemStack
    */
   @NotNull
   public static ItemStack applyCustomModelData(@NotNull final ItemStack item,
-                                                @NotNull final GuiConfig.IconConfig config) {
+                                               @NotNull final GuiConfig.IconConfig config) {
+
     if(config.hasCustomModelData()) {
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
@@ -185,10 +199,12 @@ public class GuiIconBuilder {
    * Parses a string as MiniMessage format directly.
    *
    * @param text The MiniMessage formatted text (e.g., "<bold><green>Buy Items</green></bold>")
+   *
    * @return The parsed Component
    */
   @NotNull
   private static Component parseMiniMessage(@NotNull final String text) {
+
     return QuickShop.getInstance().platform().miniMessage().deserialize(text);
   }
 }

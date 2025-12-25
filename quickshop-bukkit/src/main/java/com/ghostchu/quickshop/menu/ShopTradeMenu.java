@@ -34,7 +34,7 @@ public class ShopTradeMenu extends QuickShopMenu {
 
     // Load rows from config or use default (6 rows for modern layout)
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("trade");
-    this.rows = (menuConfig != null?menuConfig.getRows() : 6);
+    this.rows = (menuConfig != null? menuConfig.getRows() : 6);
     this.name = "qs:trade";
 
     setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.trade.title")));
