@@ -152,7 +152,7 @@ permissions:
       quickshop.alerts: true
       quickshop.create.admin: true
       quickshop.history.*: true
-      quickshop.transferownershop.other: true
+      quickshop.transferownership: true
       quickshop.other.changeitem: true
       quickshop.other.changeamount: true
       quickshop.other.staff: true
