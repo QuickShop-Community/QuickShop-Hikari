@@ -207,7 +207,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
           @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
-      return List.of("add", "remove");
+      return List.of("add", "remove", "query");
     }
     if(parser.getArgs().size() == 2) {
       return null;
