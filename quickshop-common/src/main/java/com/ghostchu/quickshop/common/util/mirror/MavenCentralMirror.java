@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.common.util.mirror;
 public enum MavenCentralMirror {
   CENTRAL("US", "https://repo1.maven.org/maven2", "https://repo1.maven.org/maven2/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom"),
   APACHE("US", "https://repo.maven.apache.org/maven2", "https://repo.maven.apache.org/maven2/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom"),
-  GOOGLE("EU", "https://maven-central-eu.storage-download.googleapis.com", "https://maven-central-eu.storage-download.googleapis.com/maven2/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom");
+  GOOGLE("EU", "https://maven-central-eu.storage-download.googleapis.com", "https://maven-central-eu.storage-download.googleapis.com/maven2/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom"),
   ALIYUN("CN", "https://maven.aliyun.com/repository/public", "https://maven.aliyun.com/repository/central/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom"),
   TENCENT("CN", "https://mirrors.cloud.tencent.com/nexus/repository/maven-public", "https://mirrors.cloud.tencent.com/nexus/repository/maven-public/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom"),
   HUAWEI("CN", "https://repo.huaweicloud.com/repository/maven", "https://repo.huaweicloud.com/repository/maven/net/kyori/adventure-api/4.9.1/adventure-api-4.9.1.pom");
