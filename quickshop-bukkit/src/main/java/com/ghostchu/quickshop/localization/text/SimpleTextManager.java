@@ -739,7 +739,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   @Override
-  public com.ghostchu.quickshop.api.localization.text.@NotNull TextList ofList(@Nullable final QUser sender, @NotNull final String path, @Nullable final Object... args) {
+  public @NotNull com.ghostchu.quickshop.api.localization.text.TextList ofList(@Nullable final QUser sender, @NotNull final String path, @Nullable final Object... args) {
 
     return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }

@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.util.privacy;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.UUID;
@@ -18,12 +19,12 @@ public class PrivacyController {
 
   private boolean isAllowed(final MetricDataType dataType, final String moduleName, final UUID transaction) {
 
-    final ConfigurationSection section = plugin.getConfig().getConfigurationSection("privacy");
+    final Section section = plugin.getConfig().getSection("privacy");
     if(section == null) {
       Log.privacy("[CHECK] Transaction " + transaction + " was declined: `privacy` ROOT section missing.");
       return false;
     }
-    final ConfigurationSection dataTypeSection = section.getConfigurationSection("type");
+    final Section dataTypeSection = section.getSection("type");
     if(dataTypeSection == null) {
       Log.privacy("[CHECK] Transaction " + transaction + " was declined: `type` section missing.");
       return false;
@@ -33,7 +34,7 @@ public class PrivacyController {
       Log.privacy("[CHECK] Transaction " + transaction + " was declined: item in `type` section missing.");
       return false;
     }
-    final ConfigurationSection moduleSection = section.getConfigurationSection("module");
+    final Section moduleSection = section.getSection("module");
     if(moduleSection == null) {
       Log.privacy("[CHECK] Transaction " + transaction + " was approved: `module` section not found but " + dataType.name() + " type was explicitly enabled.");
       return true;

@@ -34,6 +34,7 @@
         <depend.adventure-platform-facet>4.3.4</depend.adventure-platform-facet>
         <depend.adventure-platform-viaversion>4.3.4</depend.adventure-platform-viaversion>
         <depend.adventure-text-serializer-bungeecord>4.3.4</depend.adventure-text-serializer-bungeecord>
+        <depend.boosted>1.3.7</depend.boosted>
         <depend.commons.lang3>3.18.0</depend.commons.lang3>
         <depend.easy>0.4.7</depend.easy>
         <depend.examination-api>1.3.0</depend.examination-api>
@@ -213,6 +214,7 @@
                                         <include>io.vertx:vertx-core:*</include>
                                         <include>io.vertx:vertx-web:*</include>
                                         <include>org.eclipse.aether:*:*</include>
+                                        <include>dev.dejvokep:boosted-yaml</include>
                                         <include>org.slf4j:slf4j-jdk14:*</include>
                                         <include>cc.carm.lib:*</include>
                                         <include>com.rollbar:*</include>
@@ -427,12 +429,6 @@
                 <version>1.18.38</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>org.jetbrains</groupId>
-                <artifactId>annotations</artifactId>
-                <version>26.0.2</version>
-                <scope>provided</scope>
-            </dependency>
             <!-- SLF4J is a real dickhead. -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -457,6 +453,8 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
+            <version>26.0.2-1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

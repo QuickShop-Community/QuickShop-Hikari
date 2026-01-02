@@ -54,6 +54,8 @@ import com.ghostchu.quickshop.menu.ShopHistoryMenu;
 import com.ghostchu.quickshop.menu.ShopKeeperMenu;
 import com.ghostchu.quickshop.menu.ShopStaffMenu;
 import com.ghostchu.quickshop.menu.ShopTradeMenu;
+import com.ghostchu.quickshop.menu.config.InteractionConfig;
+import com.ghostchu.quickshop.menu.config.MainConfig;
 import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
@@ -84,8 +86,6 @@ import com.ghostchu.quickshop.util.PermissionChecker;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
-import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
 import com.ghostchu.quickshop.util.envcheck.CheckResult;
 import com.ghostchu.quickshop.util.envcheck.EnvCheckEntry;
 import com.ghostchu.quickshop.util.envcheck.EnvironmentChecker;
@@ -115,6 +115,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
@@ -145,8 +147,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
@@ -172,7 +172,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
 
@@ -193,6 +192,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    */
   @ApiStatus.Internal
   private static QuickShop instance;
+  private MainConfig config;
   /**
    * The manager to check permissions.
    */
@@ -469,15 +469,19 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     /* Process the config */
     //noinspection ResultOfMethodCallIgnored
     javaPlugin.getDataFolder().mkdirs();
-    try {
+
+    this.config = new MainConfig();
+    if(!this.config.load()) {
+      logger.error("Failed to load config.yml, The binary file of QuickShop may be corrupted. Please re-download from our website.");
+    }
+
+    /*try {
       javaPlugin.saveDefaultConfig();
     } catch(final IllegalArgumentException resourceNotFoundException) {
       logger.error("Failed to save config.yml from jar, The binary file of QuickShop may be corrupted. Please re-download from our website.");
     }
-    javaPlugin.reloadConfig();
-    if(getConfig().getInt("config-version", 0) == 0) {
-      getConfig().set("config-version", 1);
-    }
+    javaPlugin.reloadConfig();*/
+
     /* It will generate a new UUID above updateConfig */
     this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
     updateConfig();
@@ -550,14 +554,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   }
 
   @NotNull
-  public FileConfiguration getConfig() {
+  public YamlDocument getConfig() {
 
-    return javaPlugin.getConfig();
+    return this.config.getYaml();
   }
 
   private void updateConfig() {
 
-    new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
+    //new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
   }
 
   @NotNull
@@ -1078,7 +1082,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Setting up database...");
     final HikariConfig config = HikariUtil.createHikariConfig();
     try {
-      final ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
+      final Section dbCfg = getConfig().getSection("database");
       if(Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
         databaseDriverType = DatabaseDriverType.MYSQL;
         // MySQL database - Required database be created first.
@@ -1341,7 +1345,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   public String getCommandPrefix(final String commandLabel) {
 
-    final ConfigurationSection section = getConfig().getConfigurationSection("custom-subcommands");
+    final Section section = getConfig().getSection("custom-subcommands");
 
     if(section == null) return commandLabel;
     final String prefix = section.getString(commandLabel);
