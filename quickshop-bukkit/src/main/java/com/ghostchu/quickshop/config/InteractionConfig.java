@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.menu.config;
+package com.ghostchu.quickshop.config;
 
 
 /*

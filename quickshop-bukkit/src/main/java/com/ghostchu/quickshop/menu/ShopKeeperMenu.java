@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.menu;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.keeper.MainPage;
 import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 

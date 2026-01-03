@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.menu.browse.MarketUtils;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.shared.GuiChatAction;
 import com.ghostchu.quickshop.menu.shared.PageSwitchWithCloseAction;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;

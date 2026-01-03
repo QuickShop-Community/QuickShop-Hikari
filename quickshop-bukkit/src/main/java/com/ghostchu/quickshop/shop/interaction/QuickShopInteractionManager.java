@@ -22,7 +22,7 @@ import com.ghostchu.quickshop.api.shop.interaction.InteractionBehavior;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionManager;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionType;
-import com.ghostchu.quickshop.menu.config.InteractionConfig;
+import com.ghostchu.quickshop.config.InteractionConfig;
 import com.ghostchu.quickshop.shop.interaction.behaviors.ControlPanel;
 import com.ghostchu.quickshop.shop.interaction.behaviors.ControlPanelUI;
 import com.ghostchu.quickshop.shop.interaction.behaviors.TradeDirect;

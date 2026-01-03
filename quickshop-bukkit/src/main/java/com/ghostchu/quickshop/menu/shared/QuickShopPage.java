@@ -19,7 +19,7 @@ package com.ghostchu.quickshop.menu.shared;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import net.kyori.adventure.text.Component;
 import net.tnemc.menu.core.Page;
 import net.tnemc.menu.core.viewer.MenuViewer;

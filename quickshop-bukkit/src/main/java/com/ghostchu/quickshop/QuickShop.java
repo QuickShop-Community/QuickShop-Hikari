@@ -31,6 +31,7 @@ import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
+import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
@@ -54,8 +55,7 @@ import com.ghostchu.quickshop.menu.ShopHistoryMenu;
 import com.ghostchu.quickshop.menu.ShopKeeperMenu;
 import com.ghostchu.quickshop.menu.ShopStaffMenu;
 import com.ghostchu.quickshop.menu.ShopTradeMenu;
-import com.ghostchu.quickshop.menu.config.InteractionConfig;
-import com.ghostchu.quickshop.menu.config.MainConfig;
+import com.ghostchu.quickshop.config.MainConfig;
 import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
@@ -218,7 +218,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   protected HelperMethods helperMethods;
   private QuickShopInteractionManager interactionManager;
   @Getter
-  private com.ghostchu.quickshop.menu.config.GuiConfig guiConfig;
+  private GuiConfig guiConfig;
   private FoliaLib folia;
   /* Public QuickShop API End */
   private GameVersion gameVersion;
@@ -738,7 +738,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     // Initialize GuiConfig before menus that depend on it
-    this.guiConfig = new com.ghostchu.quickshop.menu.config.GuiConfig(this);
+    this.guiConfig = new GuiConfig(this);
 
     MenuManager.instance().addMenu(new ShopHistoryMenu());
     MenuManager.instance().addMenu(new ShopKeeperMenu());

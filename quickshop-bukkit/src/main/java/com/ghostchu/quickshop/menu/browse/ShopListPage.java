@@ -20,7 +20,7 @@ package com.ghostchu.quickshop.menu.browse;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;

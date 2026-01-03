@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.menu;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.history.MainPage;
 import net.tnemc.menu.core.Menu;
 import net.tnemc.menu.core.Page;

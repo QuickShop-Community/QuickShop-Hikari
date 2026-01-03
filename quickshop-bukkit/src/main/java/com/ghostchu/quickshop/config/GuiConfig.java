@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.menu.config;
+package com.ghostchu.quickshop.config;
 /*
  * QuickShop-Hikari
  * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
