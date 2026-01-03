@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.config;
 
-
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -41,7 +40,9 @@ public class MainConfig extends QSConfig {
 
     super("config.yml", "config.yml", Collections.emptyList(),
           LoaderSettings.builder().setAutoUpdate(true).build(),
-          UpdaterSettings.builder().setAutoSave(true).setVersioning(new BasicVersioning("config-version")).build());
+          UpdaterSettings.builder().setAutoSave(true)
+                  .setVersioning(new BasicVersioning("config-version"))
+                  .addIgnoredRoute("1033", "limits.ranks", '.').build());
 
     instance = this;
   }
