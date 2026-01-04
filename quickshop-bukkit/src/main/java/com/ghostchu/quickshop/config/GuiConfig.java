@@ -18,20 +18,20 @@ package com.ghostchu.quickshop.config;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.config.QSConfig;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import com.ghostchu.simplereloadlib.Reloadable;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
+import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
+import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
+import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,15 +42,22 @@ import java.util.Map;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class GuiConfig implements Reloadable {
+public class GuiConfig extends QSConfig {
 
   private final QuickShop plugin;
+  private static GuiConfig instance;
   private final Map<String, MenuConfig> menuConfigs = new HashMap<>();
-  private FileConfiguration config;
 
   public GuiConfig(@NotNull final QuickShop plugin) {
 
+    super("gui.yml", "gui.yml", Collections.emptyList(),
+          LoaderSettings.builder().setAutoUpdate(true).build(),
+          UpdaterSettings.builder().setAutoSave(true)
+                  .setVersioning(new BasicVersioning("version")).build());
+
+    instance = this;
     this.plugin = plugin;
+
     loadConfig();
     plugin.getReloadManager().register(this);
   }
@@ -58,17 +65,9 @@ public class GuiConfig implements Reloadable {
   public void loadConfig() {
 
     Log.debug("GUI Config Loading.");
-
-    final File configFile = new File(plugin.getDataFolder(), "gui.yml");
-    if(!configFile.exists()) {
-      try {
-        Files.copy(plugin.getJavaPlugin().getResource("gui.yml"), configFile.toPath());
-      } catch(final IOException e) {
-        plugin.logger().warn("Failed to copy gui.yml to plugin folder!", e);
-      }
-    }
-    config = YamlConfiguration.loadConfiguration(configFile);
     menuConfigs.clear();
+
+    this.load();
 
     // Load menu configurations
     loadMenuConfig("trade");
@@ -82,7 +81,7 @@ public class GuiConfig implements Reloadable {
 
   private void loadMenuConfig(final String menuName) {
 
-    final ConfigurationSection section = config.getConfigurationSection(menuName);
+    final Section section = this.yaml.getSection(menuName);
     if(section != null) {
       menuConfigs.put(menuName, new MenuConfig(section));
     }
@@ -94,10 +93,9 @@ public class GuiConfig implements Reloadable {
     return menuConfigs.get(menuName);
   }
 
-  @NotNull
-  public FileConfiguration getConfig() {
+  public static YamlDocument yaml() {
 
-    return config;
+    return instance.getYaml();
   }
 
   /**
@@ -111,7 +109,7 @@ public class GuiConfig implements Reloadable {
   @NotNull
   public String getMessage(@NotNull final String path, @NotNull final String defaultValue) {
 
-    return config.getString("messages." + path, defaultValue);
+    return yaml.getString("messages." + path, defaultValue);
   }
 
   /**
@@ -124,7 +122,7 @@ public class GuiConfig implements Reloadable {
   @NotNull
   public String getMessage(@NotNull final String path) {
 
-    return config.getString("messages." + path, path);
+    return yaml.getString("messages." + path, path);
   }
 
   @Override
@@ -141,10 +139,10 @@ public class GuiConfig implements Reloadable {
    */
   public static class MenuConfig {
 
-    private final ConfigurationSection section;
+    private final Section section;
     private final Map<String, IconConfig> icons = new HashMap<>();
 
-    public MenuConfig(final ConfigurationSection section) {
+    public MenuConfig(final Section section) {
 
       this.section = section;
       loadIcons();
@@ -152,11 +150,13 @@ public class GuiConfig implements Reloadable {
 
     private void loadIcons() {
 
-      for(final String key : section.getKeys(false)) {
+      for(final Object keyObj : section.getKeys()) {
+
+        final String key = String.valueOf(keyObj);
         if(key.equals("title") || key.equals("rows")) continue;
 
         final Object value = section.get(key);
-        if(value instanceof final ConfigurationSection iconSection) {
+        if(value instanceof final Section iconSection) {
           icons.put(key, new IconConfig(iconSection));
         }
       }
@@ -179,99 +179,99 @@ public class GuiConfig implements Reloadable {
     }
 
     @NotNull
-    public ConfigurationSection getSection() {
+    public Section getSection() {
 
       return section;
     }
   }
 
   /**
-     * Represents configuration for a single icon/button
-     */
-    public record IconConfig(ConfigurationSection section) {
+   * Represents configuration for a single icon/button
+   */
+  public record IconConfig(Section section) {
 
     @NotNull
-      public String getMaterial() {
+    public String getMaterial() {
 
-        return section.getString("material", "STONE");
-      }
-
-      @Nullable
-      public String getName() {
-
-        return section.getString("name");
-      }
-
-      @NotNull
-      public List<String> getLore() {
-
-        final Object loreObj = section.get("lore");
-        if(loreObj instanceof List<?>) {
-          final List<String> result = new ArrayList<>();
-          for(final Object item : (List<?>)loreObj) {
-            if(item != null) {
-              result.add(item.toString());
-            }
-          }
-          return result;
-        } else if(loreObj instanceof String) {
-          final List<String> result = new ArrayList<>();
-          result.add((String)loreObj);
-          return result;
-        }
-        return new ArrayList<>();
-      }
-
-      public int getCustomModelData() {
-
-        return section.getInt("custom-model-data", 0);
-      }
-
-      public int getSlot() {
-
-        return section.getInt("slot", 0);
-      }
-
-      public int getAmount() {
-
-        return section.getInt("amount", 1);
-      }
-
-      @NotNull
-      public List<Integer> getSlots() {
-
-        return section.getIntegerList("slots");
-      }
-
-      @NotNull
-      public List<Integer> getQuantities() {
-
-        return section.getIntegerList("quantities");
-      }
-
-      @NotNull
-      public List<Integer> getRows() {
-
-        return section.getIntegerList("rows");
-      }
-
-      public boolean hasCustomModelData() {
-
-        return section.contains("custom-model-data") && getCustomModelData() != 0;
-      }
-
-      @Override
-      @Nullable
-      public ConfigurationSection section() {
-
-        return section;
-      }
-
-      @Nullable
-      public IconConfig getSubIcon(final String name) {
-
-        final ConfigurationSection sub = section.getConfigurationSection(name);
-        return sub != null? new IconConfig(sub) : null;
-      }
+      return section.getString("material", "STONE");
     }
+
+    @Nullable
+    public String getName() {
+
+      return section.getString("name");
+    }
+
+    @NotNull
+    public List<String> getLore() {
+
+      final Object loreObj = section.get("lore");
+      if(loreObj instanceof List<?>) {
+        final List<String> result = new ArrayList<>();
+        for(final Object item : (List<?>)loreObj) {
+          if(item != null) {
+            result.add(item.toString());
+          }
+        }
+        return result;
+      } else if(loreObj instanceof String) {
+        final List<String> result = new ArrayList<>();
+        result.add((String)loreObj);
+        return result;
+      }
+      return new ArrayList<>();
+    }
+
+    public int getCustomModelData() {
+
+      return section.getInt("custom-model-data", 0);
+    }
+
+    public int getSlot() {
+
+      return section.getInt("slot", 0);
+    }
+
+    public int getAmount() {
+
+      return section.getInt("amount", 1);
+    }
+
+    @NotNull
+    public List<Integer> getSlots() {
+
+      return section.getIntList("slots");
+    }
+
+    @NotNull
+    public List<Integer> getQuantities() {
+
+      return section.getIntList("quantities");
+    }
+
+    @NotNull
+    public List<Integer> getRows() {
+
+      return section.getIntList("rows");
+    }
+
+    public boolean hasCustomModelData() {
+
+      return section.contains("custom-model-data") && getCustomModelData() != 0;
+    }
+
+    @Override
+    @Nullable
+    public Section section() {
+
+      return section;
+    }
+
+    @Nullable
+    public IconConfig getSubIcon(final String name) {
+
+      final Section sub = section.getSection(name);
+      return sub != null? new IconConfig(sub) : null;
+    }
+  }
 }

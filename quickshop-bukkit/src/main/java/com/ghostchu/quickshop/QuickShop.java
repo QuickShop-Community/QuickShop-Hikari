@@ -470,7 +470,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     //noinspection ResultOfMethodCallIgnored
     javaPlugin.getDataFolder().mkdirs();
 
-    this.config = new MainConfig();
+    this.config = new MainConfig(this);
     if(!this.config.load()) {
       logger.error("Failed to load config.yml, The binary file of QuickShop may be corrupted. Please re-download from our website.");
     }

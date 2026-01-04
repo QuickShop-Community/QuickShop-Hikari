@@ -19,6 +19,9 @@ package com.ghostchu.quickshop.api.config;
  */
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.settings.Settings;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +42,7 @@ import java.util.List;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class QSConfig {
+public class QSConfig implements Reloadable {
 
   protected final String fileName;
   protected final File file;
@@ -130,5 +133,15 @@ public class QSConfig {
     } catch(final IOException ignore) {
       return null;
     }
+  }
+
+  @Override
+  public ReloadResult reloadModule() throws Exception {
+
+    load();
+
+    QuickShopAPI.getPluginInstance().getLogger().info("Configuration reloaded successfully. File Name:" + fileName);
+
+    return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
   }
 }

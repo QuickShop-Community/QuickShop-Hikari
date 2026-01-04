@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.config;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.config.QSConfig;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
@@ -36,15 +37,18 @@ public class MainConfig extends QSConfig {
 
   private static MainConfig instance;
 
-  public MainConfig() {
+  public MainConfig(final QuickShop plugin) {
 
     super("config.yml", "config.yml", Collections.emptyList(),
           LoaderSettings.builder().setAutoUpdate(true).build(),
           UpdaterSettings.builder().setAutoSave(true)
                   .setVersioning(new BasicVersioning("config-version"))
-                  .addIgnoredRoute("1033", "limits.ranks", '.').build());
+                  .addIgnoredRoute("1032", "limits.ranks", '.')
+                  .addIgnoredRoute("1033", "limits.ranks", '.')
+                  .addIgnoredRoute("1034", "limits.ranks", '.').build());
 
     instance = this;
+    plugin.getReloadManager().register(this);
   }
 
   public static YamlDocument yaml() {
