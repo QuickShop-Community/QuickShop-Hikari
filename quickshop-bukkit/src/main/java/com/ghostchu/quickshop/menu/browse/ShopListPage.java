@@ -21,7 +21,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.config.GuiConfig;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
@@ -290,9 +289,11 @@ public class ShopListPage {
             // Calculate direction to look at shop
             final double dx = shopLoc.getX() - teleportLoc.getX();
             final double dz = shopLoc.getZ() - teleportLoc.getZ();
+
             teleportLoc.setYaw((float)Math.toDegrees(Math.atan2(-dx, dz)));
-            teleportLoc.setPitch(30); // Slightly looking down
-            PaperLib.teleportAsync(p, teleportLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            teleportLoc.setPitch(30);
+
+            p.teleportAsync(teleportLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
           }
         }));
       }

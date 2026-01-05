@@ -17,7 +17,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
-import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -286,7 +285,7 @@ public class Util {
     if(!isShoppables(b.getType())) {
       return false;
     }
-    final BlockState bs = PaperLib.getBlockState(b, false).getState();
+    final BlockState bs = b.getState(false);
     final boolean container = bs instanceof InventoryHolder;
     if(!container) {
       if(Util.isDevMode()) {
