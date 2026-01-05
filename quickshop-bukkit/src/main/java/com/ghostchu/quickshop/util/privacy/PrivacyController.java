@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.UUID;
 

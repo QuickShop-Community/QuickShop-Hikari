@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.database;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class HikariUtil {
 

@@ -85,9 +85,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.ghostchu.quickshop.util.Util.waitForFuture;
@@ -859,49 +857,6 @@ public class ContainerShop implements Shop, Reloadable {
     event.callEvent();
 
     return event.updated();
-
-//    //Line 1
-//    final String headerKey = inventoryAvailable()? "signs.header-available" : "signs.header-unavailable";
-//    lines.add(plugin.text().of(headerKey, this.ownerName(false, locale)).forLocale(locale.getLocale()));
-//    //Line 2
-//    final String tradingStringKey = (isStackingShop()? shopType().stackTradingTranslationKey() : shopType().tradingTranslationKey());
-//    final String noRemainingStringKey = shopType.outOfStockTranslationKey();
-//    final int shopRemaining = shopType().remainingStock(this);
-//
-//
-//    final Component line2 = switch(shopRemaining) {
-//      //Unlimited
-//      case -1 ->
-//              plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale())).forLocale(locale.getLocale());
-//      //No remaining
-//      case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale.getLocale());
-//      //Has remaining
-//      default ->
-//              plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale.getLocale());
-//    };
-//    lines.add(line2);
-//
-//    //line 3
-//    if(plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
-//      final Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
-//      final Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
-//      final Component itemName = Util.getItemStackName(getItem());
-//      lines.add(left.append(itemName).append(right));
-//    } else {
-//      lines.add(plugin.text().of("signs.item-left").forLocale(locale.getLocale()).append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale(locale.getLocale()))));
-//    }
-//
-//    //line 4
-//    final Component line4;
-//    if(this.isStackingShop()) {
-//      line4 = plugin.text().of("signs.stack-price",
-//                               plugin.getShopManager().format(this.getPrice(), this),
-//                               item.getAmount(),
-//                               Util.getItemStackName(item)).forLocale(locale.getLocale());
-//    } else {
-//      line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale(locale.getLocale());
-//    }
-//    lines.add(line4);
   }
 
   /**
