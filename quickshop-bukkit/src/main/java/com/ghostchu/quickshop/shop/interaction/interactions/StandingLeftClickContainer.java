@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.shop.interaction.interactions;
 
 import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionType;
+import org.bukkit.Material;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,7 @@ public class StandingLeftClickContainer implements InteractionType {
   public boolean applies(final @NotNull PlayerInteractEvent event, final @NotNull InteractionClick click) {
 
     return click == InteractionClick.CONTAINER && event.getAction() == Action.LEFT_CLICK_BLOCK
-           && !event.getPlayer().isSneaking();
+           && !event.getPlayer().isSneaking()
+           && event.getPlayer().getInventory().getItemInMainHand().getType() != Material.GOLDEN_AXE;
   }
 }
