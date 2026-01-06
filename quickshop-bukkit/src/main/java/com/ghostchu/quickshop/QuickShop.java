@@ -255,6 +255,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private LogWatcher logWatcher;
 
+  private boolean onFolia = false;
+
   /**
    * The plugin PlaceHolderAPI(null if not present)
    */
@@ -719,6 +721,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     if(this.folia.isFolia()) {
 
+      this.onFolia = true;
       Bukkit.getPluginManager().registerEvents(new FoliaChatListener(javaPlugin), javaPlugin);
       Bukkit.getPluginManager().registerEvents(new FoliaInventoryClickListener(javaPlugin), javaPlugin);
       Bukkit.getPluginManager().registerEvents(new FoliaInventoryCloseListener(javaPlugin), javaPlugin);
@@ -1267,6 +1270,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   public Platform platform() {
     return platform;
+  }
+
+  public boolean onFolia() {
+
+    return onFolia;
   }
 
   @NotNull

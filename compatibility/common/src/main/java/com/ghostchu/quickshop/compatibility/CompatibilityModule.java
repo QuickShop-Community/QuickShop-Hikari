@@ -66,7 +66,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
 
     try {
       saveDefaultConfig();
-    } catch(IllegalArgumentException ignored) {
+    } catch(final IllegalArgumentException ignored) {
     }
     this.api = QuickShopAPI.getInstance();
     getLogger().info("Loading up...");
@@ -84,7 +84,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     // Plugin startup logic
     try {
       saveDefaultConfig();
-    } catch(IllegalArgumentException ignored) {
+    } catch(final IllegalArgumentException ignored) {
     }
     this.api = QuickShopAPI.getInstance();
     Bukkit.getPluginManager().registerEvents(this, this);

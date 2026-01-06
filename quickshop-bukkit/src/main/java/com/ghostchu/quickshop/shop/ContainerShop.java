@@ -657,13 +657,17 @@ public class ContainerShop implements Shop, Reloadable {
   public int getRemainingSpace() {
 
     if(this.unlimited) {
+
       return -1;
     }
+
     if(Bukkit.isPrimaryThread()) {
+
       if(this.getInventory() == null) {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
         return 0;
       }
+
       final int space = Util.countSpace(this.getInventory(), this);
       new ShopInventoryCalculateEvent(this, space, -1).callEvent();
       Log.debug("Space count is: " + space);
@@ -699,10 +703,10 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   /**
-   * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
-   * IT TO STORE DATA!
+   * Retrieves the runtime-generated random unique identifier for the current instance. DO NOT USE FOR
+   * DATA STORAGE.
    *
-   * @return Random UUID
+   * @return a non-null {@link UUID} representing a unique identifier that was generated at runtime.
    */
   @Override
   public @NotNull UUID getRuntimeRandomUniqueId() {
