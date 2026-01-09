@@ -106,6 +106,7 @@ permissions:
       quickshop.preview: true
       quickshop.currency: true
       quickshop.toggledisplay: true
+      quickshop.inventory: true
       quickshop.shopnaming: true
       quickshop.permission: true
       quickshop.benefit: true
