@@ -146,13 +146,13 @@ public class MainPage extends QuickShopPage {
         }
 
         // Mode Toggle Icon from config (concrete for clean look)
-        final GuiConfig.IconConfig sellingConfig = modeToggleConfig != null? modeToggleConfig.getSubIcon("selling") : null;
-        final GuiConfig.IconConfig buyingConfig = modeToggleConfig != null? modeToggleConfig.getSubIcon("buying") : null;
-        final GuiConfig.IconConfig frozenConfig = modeToggleConfig != null? modeToggleConfig.getSubIcon("frozen") : null;
-        final String sellingMaterial = sellingConfig != null? sellingConfig.getMaterial() : "LIME_CONCRETE";
-        final String buyingMaterial = buyingConfig != null? buyingConfig.getMaterial() : "ORANGE_CONCRETE";
-        final String frozenMaterial = frozenConfig != null? frozenConfig.getMaterial() : "LIGHT_BLUE_CONCRETE";
-        final int modeToggleSlot = modeToggleConfig != null? modeToggleConfig.getSlot() : 21;
+        final GuiConfig.IconConfig sellingConfig = (modeToggleConfig != null)? modeToggleConfig.getSubIcon("selling") : null;
+        final GuiConfig.IconConfig buyingConfig = (modeToggleConfig != null)? modeToggleConfig.getSubIcon("buying") : null;
+        final GuiConfig.IconConfig frozenConfig = (modeToggleConfig != null)? modeToggleConfig.getSubIcon("frozen") : null;
+        final String sellingMaterial = (sellingConfig != null)? sellingConfig.getMaterial() : "LIME_CONCRETE";
+        final String buyingMaterial = (buyingConfig != null)? buyingConfig.getMaterial() : "ORANGE_CONCRETE";
+        final String frozenMaterial = (frozenConfig != null)? frozenConfig.getMaterial() : "LIGHT_BLUE_CONCRETE";
+        final int modeToggleSlot = (modeToggleConfig != null)? modeToggleConfig.getSlot() : 21;
 
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_SHOPTYPE)
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.freeze")

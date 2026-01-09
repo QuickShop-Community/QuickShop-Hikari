@@ -555,6 +555,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     //Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
   }
 
+  public MainConfig mainConfig() {
+    return this.config;
+  }
+
   @NotNull
   public YamlDocument getConfig() {
 
