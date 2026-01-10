@@ -36,6 +36,7 @@ com.ghostchu.quickshop.api.shop.cache
 com.ghostchu.quickshop.api.shop.type
 com.ghostchu.quickshop.api.shop.display
 com.ghostchu.quickshop.api.shop.interaction
+com.ghostchu.quickshop.api.config
 com.ghostchu.quickshop.api.inventory
 com.ghostchu.quickshop.api.database.bean
 com.ghostchu.quickshop.api.database
@@ -59,7 +60,6 @@ com.ghostchu.quickshop.menu
 com.ghostchu.quickshop.menu.trade
 com.ghostchu.quickshop.menu.browse
 com.ghostchu.quickshop.menu.staff
-com.ghostchu.quickshop.menu.config
 com.ghostchu.quickshop.menu.shared
 com.ghostchu.quickshop.menu.history
 com.ghostchu.quickshop.command.subcommand
@@ -88,6 +88,7 @@ com.ghostchu.quickshop.shop.history
 com.ghostchu.quickshop.shop.interaction.interactions
 com.ghostchu.quickshop.shop.interaction.behaviors
 com.ghostchu.quickshop.shop.interaction
+com.ghostchu.quickshop.config
 com.ghostchu.quickshop.mock
 com.ghostchu.quickshop.database.bean
 com.ghostchu.quickshop.database
@@ -104,7 +105,6 @@ com.ghostchu.quickshop.util.paste.item
 com.ghostchu.quickshop.util.paste.util
 com.ghostchu.quickshop.util.metric
 com.ghostchu.quickshop.util.metric.collect
-com.ghostchu.quickshop.util.config
 com.ghostchu.quickshop.util.logging.container
 com.ghostchu.quickshop.util.matcher.item
 com.ghostchu.quickshop.util.updater
