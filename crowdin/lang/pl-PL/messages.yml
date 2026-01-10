@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow>Kliknij, żeby usunąć sklep.
   toggledisplay-hover: <yellow>Przełącz status wyświetlania przedmiotu w sklepie
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Przełącz status zamrożenia sklepu.
   lock-hover: <yellow>Włącz/Wyłącz ochronę blokady sklepu.
