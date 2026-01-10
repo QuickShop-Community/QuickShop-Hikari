@@ -43,8 +43,13 @@ public class QuickShopBukkit extends JavaPlugin {
   @Override
   public void reloadConfig() {
 
-    super.reloadConfig();
     this.quickShop.reloadConfigSubModule();
+  }
+
+  @Override
+  public void saveConfig() {
+
+    this.quickShop.mainConfig().save();
   }
 
   @Override

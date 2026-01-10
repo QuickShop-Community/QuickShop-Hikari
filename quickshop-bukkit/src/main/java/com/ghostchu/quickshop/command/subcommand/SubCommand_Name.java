@@ -71,7 +71,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
       return;
     }
 
-    final double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
+    final double fee = plugin.getConfig().getDouble("shop.name-fee", 0.0);
     QSEconomyTransaction transaction = null;
     if(fee > 0) {
       if(!plugin.perm().hasPermission(sender, "quickshop.bypass.namefee")) {

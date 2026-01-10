@@ -24,58 +24,66 @@ package com.ghostchu.quickshop.menu.browse;
  * @since 6.2.0.8
  */
 public enum BrowseFilterMode {
-  
+
   /**
    * Show all shops
    */
   ALL("all", "gui.browse.filter.all"),
-  
+
   /**
    * Show only buying shops (shops that buy from players)
    */
   BUYING("buying", "gui.browse.filter.buying"),
-  
+
   /**
    * Show only selling shops (shops that sell to players)
    */
   SELLING("selling", "gui.browse.filter.selling");
-  
+
   private final String id;
   private final String translationKey;
-  
+
   BrowseFilterMode(final String id, final String translationKey) {
+
     this.id = id;
     this.translationKey = translationKey;
   }
-  
-  public String getId() {
-    return id;
-  }
-  
-  public String getTranslationKey() {
-    return translationKey;
-  }
-  
-  /**
-   * Get the next filter mode in the cycle
-   * @return The next filter mode
-   */
-  public BrowseFilterMode next() {
-    final BrowseFilterMode[] values = values();
-    return values[(this.ordinal() + 1) % values.length];
-  }
-  
+
   /**
    * Get filter mode from id string
+   *
    * @param id The id string
+   *
    * @return The filter mode, or ALL if not found
    */
   public static BrowseFilterMode fromId(final String id) {
+
     for(final BrowseFilterMode mode : values()) {
       if(mode.getId().equalsIgnoreCase(id)) {
         return mode;
       }
     }
     return ALL;
+  }
+
+  public String getId() {
+
+    return id;
+  }
+
+  public String getTranslationKey() {
+
+    return translationKey;
+  }
+
+  /**
+   * Get the next filter mode in the cycle
+   *
+   * @return The next filter mode
+   */
+  public BrowseFilterMode next() {
+
+    final BrowseFilterMode[] values = values();
+    return values[(this.ordinal() + 1) % values.length];
   }
 }

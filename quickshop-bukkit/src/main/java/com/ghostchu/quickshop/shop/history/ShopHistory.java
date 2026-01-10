@@ -75,9 +75,9 @@ public class ShopHistory {
       String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
                    "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")  GROUP BY `buyer` ORDER BY `count` DESC  LIMIT " + n;
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
@@ -87,7 +87,7 @@ public class ShopHistory {
           orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
         }
         return orderedMap;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary valuable customers", exception);
         return orderedMap;
       }
@@ -100,9 +100,9 @@ public class ShopHistory {
       String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
                    "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")";
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
@@ -112,7 +112,7 @@ public class ShopHistory {
           return set.getLong(1);
         }
         return 0L;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
       }
@@ -126,16 +126,16 @@ public class ShopHistory {
       String SQL = "SELECT `buyer`, COUNT(`buyer`) AS `count` FROM %s " +
                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ") GROUP BY `buyer` ORDER BY `count` DESC LIMIT " + n;
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryTopNValuableCustomers");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         mappingPreparedStatement(ps, 1);
         @Cleanup final ResultSet set = ps.executeQuery();
         while(set.next()) {
           orderedMap.put(UUID.fromString(set.getString("buyer")), set.getLong("count"));
         }
         return orderedMap;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary valuable customers", exception);
         return orderedMap;
       }
@@ -148,9 +148,9 @@ public class ShopHistory {
       String SQL = "SELECT COUNT(DISTINCT `buyer`) FROM %s " +
                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ")";
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryUniquePurchasers");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         mappingPreparedStatement(ps, 1);
         @Cleanup final ResultSet set = ps.executeQuery();
@@ -158,7 +158,7 @@ public class ShopHistory {
           return set.getLong(1);
         }
         return 0L;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
       }
@@ -171,9 +171,9 @@ public class ShopHistory {
       String SQL = "SELECT SUM(`money`) FROM %s " +
                    "WHERE `time` >= ? AND `time` <= ? AND `shop` IN (" + this.shopIdsPlaceHolders + ")";
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
@@ -183,7 +183,7 @@ public class ShopHistory {
           return set.getDouble(1);
         }
         return 0.0d;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0d;
       }
@@ -196,9 +196,9 @@ public class ShopHistory {
       String SQL = "SELECT SUM(`money`) FROM %s " +
                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ")";
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesBalance");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         mappingPreparedStatement(ps, 1);
         @Cleanup final ResultSet set = ps.executeQuery();
@@ -206,7 +206,7 @@ public class ShopHistory {
           return set.getDouble(1);
         }
         return 0.0d;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0d;
       }
@@ -222,9 +222,9 @@ public class ShopHistory {
       String SQL = "SELECT COUNT(*) FROM %s " +
                    "WHERE `time` >= ? AND `time` <= ?  AND `shop` IN (" + this.shopIdsPlaceHolders + ")";
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         ps.setTimestamp(1, new Timestamp(from.toEpochMilli()));
         ps.setTimestamp(2, new Timestamp(to.toEpochMilli()));
         mappingPreparedStatement(ps, 3);
@@ -234,7 +234,7 @@ public class ShopHistory {
           return set.getLong(1);
         }
         return 0L;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
       }
@@ -247,9 +247,9 @@ public class ShopHistory {
       String SQL = "SELECT COUNT(*) FROM %s " +
                    "WHERE `shop` IN (" + this.shopIdsPlaceHolders + ")";
       SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-      try(PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
-          Connection connection = plugin.getSqlManager().getConnection();
-          PreparedStatement ps = connection.prepareStatement(SQL)) {
+      try(final PerfMonitor perfMonitor = new PerfMonitor("summaryPurchasesCount");
+          final Connection connection = plugin.getSqlManager().getConnection();
+          final PreparedStatement ps = connection.prepareStatement(SQL)) {
         mappingPreparedStatement(ps, 1);
         perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
         @Cleanup final ResultSet set = ps.executeQuery();
@@ -257,7 +257,7 @@ public class ShopHistory {
           return set.getLong(1);
         }
         return 0L;
-      } catch(SQLException exception) {
+      } catch(final SQLException exception) {
         plugin.logger().warn("Failed to summary unique purchasers", exception);
         return 0L;
       }
@@ -304,12 +304,12 @@ public class ShopHistory {
     //String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC LIMIT " + (page - 1) * pageSize + "," + pageSize;
     String SQL = "SELECT * FROM %s WHERE `shop` IN (" + shopIdsPlaceHolders + ") ORDER BY `time` DESC";
     SQL = String.format(SQL, DataTables.LOG_PURCHASE.getName());
-    try(PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
-        Connection connection = plugin.getSqlManager().getConnection();
-        PreparedStatement ps = connection.prepareStatement(SQL)) {
+    try(final PerfMonitor perfMonitor = new PerfMonitor("historyPageableQuery");
+        final Connection connection = plugin.getSqlManager().getConnection();
+        final PreparedStatement ps = connection.prepareStatement(SQL)) {
       mappingPreparedStatement(ps, 1);
       perfMonitor.setContext("shopIds=" + shopsMapping.keySet());
-      try(ResultSet set = ps.executeQuery()) {
+      try(final ResultSet set = ps.executeQuery()) {
         while(set.next()) {
           if(!isValidSummaryRecordType(set.getString("type"))) {
             continue;

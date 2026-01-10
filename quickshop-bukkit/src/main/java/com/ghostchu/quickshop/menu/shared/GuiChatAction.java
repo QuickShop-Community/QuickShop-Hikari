@@ -30,9 +30,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * A custom icon action that properly handles chat input by using QuickShop's
- * GuiChatInputManager, which cancels the chat event so messages don't appear
- * in public chat. Automatically re-opens the menu after input is processed.
+ * A custom icon action that properly handles chat input by using QuickShop's GuiChatInputManager,
+ * which cancels the chat event so messages don't appear in public chat. Automatically re-opens the
+ * menu after input is processed.
  *
  * @author creatorfromhell
  * @since 6.2.0.11
@@ -44,21 +44,22 @@ public class GuiChatAction extends IconAction {
   private final boolean reopenMenu;
 
   /**
-   * Creates a new GuiChatAction with default ANY action type.
-   * Will attempt to re-open the current menu after input.
+   * Creates a new GuiChatAction with default ANY action type. Will attempt to re-open the current
+   * menu after input.
    *
-   * @param handler The handler function. Returns true if input is accepted (stop listening),
-   *                false to keep waiting for more input.
+   * @param handler The handler function. Returns true if input is accepted (stop listening), false
+   *                to keep waiting for more input.
    * @param prompt  The prompt message to send to the player (supports legacy color codes)
    */
-  public GuiChatAction(@NotNull final Function<String, Boolean> handler, 
+  public GuiChatAction(@NotNull final Function<String, Boolean> handler,
                        @Nullable final String prompt) {
+
     this(handler, prompt, true, ActionType.ANY);
   }
 
   /**
-   * Creates a new GuiChatAction with specified action type.
-   * Will attempt to re-open the current menu after input.
+   * Creates a new GuiChatAction with specified action type. Will attempt to re-open the current
+   * menu after input.
    *
    * @param handler    The handler function
    * @param prompt     The prompt message
@@ -67,6 +68,7 @@ public class GuiChatAction extends IconAction {
   public GuiChatAction(@NotNull final Function<String, Boolean> handler,
                        @Nullable final String prompt,
                        @NotNull final ActionType actionType) {
+
     this(handler, prompt, true, actionType);
   }
 
@@ -82,6 +84,7 @@ public class GuiChatAction extends IconAction {
                        @Nullable final String prompt,
                        final boolean reopenMenu,
                        @NotNull final ActionType actionType) {
+
     super(actionType);
     this.handler = handler;
     this.prompt = prompt;
@@ -98,11 +101,13 @@ public class GuiChatAction extends IconAction {
   public GuiChatAction(@NotNull final Function<String, Boolean> handler,
                        @Nullable final String prompt,
                        final boolean reopenMenu) {
+
     this(handler, prompt, reopenMenu, ActionType.ANY);
   }
 
   @Override
   public boolean onClick(final MenuClickHandler clickHandler) {
+
     final Player bukkitPlayer = Bukkit.getPlayer(clickHandler.player().identifier());
     if(bukkitPlayer == null) {
       return false;
@@ -111,7 +116,7 @@ public class GuiChatAction extends IconAction {
     // Get current menu context for re-opening (only if reopenMenu is true)
     String currentMenu = null;
     int currentPage = 1;
-    
+
     if(reopenMenu) {
       final Optional<MenuViewer> viewer = clickHandler.player().viewer();
       if(viewer.isPresent()) {
@@ -126,16 +131,16 @@ public class GuiChatAction extends IconAction {
     // setting a chatHandler would cause NPE in TNMS's chat listener.
     // Pass menu context for re-opening after input
     GuiChatInputManager.getInstance().requestInput(
-            bukkitPlayer, 
-            handler, 
+            bukkitPlayer,
+            handler,
             prompt,
             currentMenu,
             currentPage
-    );
-    
+                                                  );
+
     // Close the inventory so player can type in chat
     clickHandler.player().inventory().close();
-    
+
     return true;
   }
 }

@@ -246,7 +246,8 @@ public class ShopUtil {
         if(all) {
           arg = buyingShopAllCalc(eco, shop, p);
         } else {
-          arg = shop.getShopStackingAmount();
+          //if it's not all, it's one
+          arg = 1;
         }
         if(arg == 0) {
           return true;
@@ -271,7 +272,8 @@ public class ShopUtil {
     if(all) {
       arg = sellingShopAllCalc(eco, shop, p);
     } else {
-      arg = shop.getShopStackingAmount();
+      //if it's not all, it's one
+      arg = 1;
     }
 
     if(arg == 0) {

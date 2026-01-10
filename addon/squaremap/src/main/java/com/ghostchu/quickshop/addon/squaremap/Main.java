@@ -1,10 +1,6 @@
 package com.ghostchu.quickshop.addon.squaremap;
 
 import com.ghostchu.quickshop.QuickShop;
-import xyz.jpenilla.squaremap.api.BukkitAdapter;
-import xyz.jpenilla.squaremap.api.Key;
-import xyz.jpenilla.squaremap.api.Squaremap;
-import xyz.jpenilla.squaremap.api.SquaremapProvider;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -14,6 +10,10 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import xyz.jpenilla.squaremap.api.BukkitAdapter;
+import xyz.jpenilla.squaremap.api.Key;
+import xyz.jpenilla.squaremap.api.Squaremap;
+import xyz.jpenilla.squaremap.api.SquaremapProvider;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

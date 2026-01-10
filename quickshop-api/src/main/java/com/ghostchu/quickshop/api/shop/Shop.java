@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A shop
  */
-public interface Shop {
+public interface Shop extends Locatable<Location> {
 
   NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 
@@ -129,14 +129,6 @@ public interface Shop {
    * @param item ItemStack to set
    */
   void setItem(@NotNull ItemStack item);
-
-  /**
-   * Get shop's location
-   *
-   * @return Shop's location
-   */
-  @NotNull
-  Location getLocation();
 
 
   /**
@@ -678,5 +670,4 @@ public interface Shop {
    * Sets the benefit in this shop
    */
   void setShopBenefit(@NotNull BenefitProvider benefit);
-
 }

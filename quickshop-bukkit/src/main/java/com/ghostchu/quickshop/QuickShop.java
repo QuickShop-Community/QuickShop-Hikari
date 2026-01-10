@@ -31,6 +31,8 @@ import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
+import com.ghostchu.quickshop.config.GuiConfig;
+import com.ghostchu.quickshop.config.MainConfig;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
@@ -84,8 +86,6 @@ import com.ghostchu.quickshop.util.PermissionChecker;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
-import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
 import com.ghostchu.quickshop.util.envcheck.CheckResult;
 import com.ghostchu.quickshop.util.envcheck.EnvCheckEntry;
 import com.ghostchu.quickshop.util.envcheck.EnvironmentChecker;
@@ -115,6 +115,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
@@ -145,8 +147,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
@@ -172,7 +172,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
 
@@ -193,6 +192,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
    */
   @ApiStatus.Internal
   private static QuickShop instance;
+  private MainConfig config;
   /**
    * The manager to check permissions.
    */
@@ -218,7 +218,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   protected HelperMethods helperMethods;
   private QuickShopInteractionManager interactionManager;
   @Getter
-  private com.ghostchu.quickshop.menu.config.GuiConfig guiConfig;
+  private GuiConfig guiConfig;
   private FoliaLib folia;
   /* Public QuickShop API End */
   private GameVersion gameVersion;
@@ -254,6 +254,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Nullable
   @Getter
   private LogWatcher logWatcher;
+
+  private boolean onFolia = false;
 
   /**
    * The plugin PlaceHolderAPI(null if not present)
@@ -469,15 +471,19 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     /* Process the config */
     //noinspection ResultOfMethodCallIgnored
     javaPlugin.getDataFolder().mkdirs();
-    try {
+
+    this.config = new MainConfig(this);
+    if(!this.config.load()) {
+      logger.error("Failed to load config.yml, The binary file of QuickShop may be corrupted. Please re-download from our website.");
+    }
+
+    /*try {
       javaPlugin.saveDefaultConfig();
     } catch(final IllegalArgumentException resourceNotFoundException) {
       logger.error("Failed to save config.yml from jar, The binary file of QuickShop may be corrupted. Please re-download from our website.");
     }
-    javaPlugin.reloadConfig();
-    if(getConfig().getInt("config-version", 0) == 0) {
-      getConfig().set("config-version", 1);
-    }
+    javaPlugin.reloadConfig();*/
+
     /* It will generate a new UUID above updateConfig */
     this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
     updateConfig();
@@ -549,15 +555,19 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     //Util.mainThreadRun(() -> new QSConfigurationReloadEvent(javaPlugin).callEvent());
   }
 
-  @NotNull
-  public FileConfiguration getConfig() {
+  public MainConfig mainConfig() {
+    return this.config;
+  }
 
-    return javaPlugin.getConfig();
+  @NotNull
+  public YamlDocument getConfig() {
+
+    return this.config.getYaml();
   }
 
   private void updateConfig() {
 
-    new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
+    //new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
   }
 
   @NotNull
@@ -715,6 +725,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     if(this.folia.isFolia()) {
 
+      this.onFolia = true;
       Bukkit.getPluginManager().registerEvents(new FoliaChatListener(javaPlugin), javaPlugin);
       Bukkit.getPluginManager().registerEvents(new FoliaInventoryClickListener(javaPlugin), javaPlugin);
       Bukkit.getPluginManager().registerEvents(new FoliaInventoryCloseListener(javaPlugin), javaPlugin);
@@ -734,7 +745,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
 
     // Initialize GuiConfig before menus that depend on it
-    this.guiConfig = new com.ghostchu.quickshop.menu.config.GuiConfig(this);
+    this.guiConfig = new GuiConfig(this);
 
     MenuManager.instance().addMenu(new ShopHistoryMenu());
     MenuManager.instance().addMenu(new ShopKeeperMenu());
@@ -1078,7 +1089,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Setting up database...");
     final HikariConfig config = HikariUtil.createHikariConfig();
     try {
-      final ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
+      final Section dbCfg = getConfig().getSection("database");
       if(Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
         databaseDriverType = DatabaseDriverType.MYSQL;
         // MySQL database - Required database be created first.
@@ -1265,6 +1276,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     return platform;
   }
 
+  public boolean onFolia() {
+
+    return onFolia;
+  }
+
   @NotNull
   public File getDataFolder() {
 
@@ -1341,7 +1357,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   public String getCommandPrefix(final String commandLabel) {
 
-    final ConfigurationSection section = getConfig().getConfigurationSection("custom-subcommands");
+    final Section section = getConfig().getSection("custom-subcommands");
 
     if(section == null) return commandLabel;
     final String prefix = section.getString(commandLabel);

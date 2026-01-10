@@ -46,7 +46,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
           pendingRemoval.add(shop);
           i++;
         }
-      } catch(IllegalStateException e) {
+      } catch(final IllegalStateException e) {
         pendingRemoval.add(shop); // The shop is not there anymore, remove it
       }
     }

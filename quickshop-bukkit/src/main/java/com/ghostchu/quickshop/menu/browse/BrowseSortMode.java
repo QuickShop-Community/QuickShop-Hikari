@@ -24,63 +24,71 @@ package com.ghostchu.quickshop.menu.browse;
  * @since 6.2.0.8
  */
 public enum BrowseSortMode {
-  
+
   /**
    * Sort by price, lowest first
    */
   PRICE_ASC("price-low-high", "gui.browse.sort.price-asc"),
-  
+
   /**
    * Sort by price, highest first
    */
   PRICE_DESC("price-high-low", "gui.browse.sort.price-desc"),
-  
+
   /**
    * Sort by stock amount, highest first
    */
   STOCK("stock", "gui.browse.sort.stock"),
-  
+
   /**
    * Sort by item name alphabetically
    */
   NAME("name", "gui.browse.sort.name");
-  
+
   private final String id;
   private final String translationKey;
-  
+
   BrowseSortMode(final String id, final String translationKey) {
+
     this.id = id;
     this.translationKey = translationKey;
   }
-  
-  public String getId() {
-    return id;
-  }
-  
-  public String getTranslationKey() {
-    return translationKey;
-  }
-  
-  /**
-   * Get the next sort mode in the cycle
-   * @return The next sort mode
-   */
-  public BrowseSortMode next() {
-    final BrowseSortMode[] values = values();
-    return values[(this.ordinal() + 1) % values.length];
-  }
-  
+
   /**
    * Get sort mode from id string
+   *
    * @param id The id string
+   *
    * @return The sort mode, or PRICE_ASC if not found
    */
   public static BrowseSortMode fromId(final String id) {
+
     for(final BrowseSortMode mode : values()) {
       if(mode.getId().equalsIgnoreCase(id)) {
         return mode;
       }
     }
     return PRICE_ASC;
+  }
+
+  public String getId() {
+
+    return id;
+  }
+
+  public String getTranslationKey() {
+
+    return translationKey;
+  }
+
+  /**
+   * Get the next sort mode in the cycle
+   *
+   * @return The next sort mode
+   */
+  public BrowseSortMode next() {
+
+    final BrowseSortMode[] values = values();
+    return values[(this.ordinal() + 1) % values.length];
   }
 }

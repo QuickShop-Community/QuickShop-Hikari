@@ -72,6 +72,8 @@ public class TradeUI implements InteractionBehavior {
                                                                                event.getBlockFace(),
                                                                                event.getHand(),
                                                                                event.getItem())) {
+
+        //cancel our interaction.
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
@@ -83,6 +85,7 @@ public class TradeUI implements InteractionBehavior {
         return;
       }
 
+      //open our menus.
       if(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
         return;
       }
@@ -93,6 +96,8 @@ public class TradeUI implements InteractionBehavior {
 
       final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
       MenuManager.instance().open("qs:trade", 1, menuPlayer);
+
+      //cancel our item use
       event.setCancelled(true);
       event.setUseInteractedBlock(Event.Result.DENY);
       event.setUseItemInHand(Event.Result.DENY);

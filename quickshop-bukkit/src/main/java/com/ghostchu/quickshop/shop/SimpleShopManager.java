@@ -89,6 +89,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -101,6 +102,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   public static final String DEFAULT_TYPE = "BUYING";
 
   protected final Map<Integer, IShopType> shopTypes = Maps.newConcurrentMap();
+  protected final ConcurrentLinkedQueue<Long> inDeletion = new ConcurrentLinkedQueue<>();
 
   protected final InteractiveManager interactiveManager;
   @Getter
@@ -500,6 +502,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     if(stock == -1) {
       stock = 10000;
     }
+
+    /*if(shop.isStackingShop()) {
+      stock = stock * shop.getItem().getAmount();
+    }*/
+
     if(stock < amount) {
       plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
       return false;
@@ -1268,8 +1275,16 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   @Override
   public void deleteShop(@NotNull final Shop shop) {
 
+    if(inDeletion.contains(shop.getShopId())) {
+
+      //if we're already in deletion, don't do anything
+      return;
+    }
+
+    inDeletion.add(shop.getShopId());
     ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(shop, false);
     if(shopDeleteEvent.callCancellableEvent()) {
+      inDeletion.remove(shop.getShopId());
       Log.debug("Shop delete was cancelled by 3rd-party plugin");
       return;
     }
@@ -1281,6 +1296,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     unregisterShop(shop, true);
     shopDeleteEvent = shopDeleteEvent.clone(Phase.POST);
     shopDeleteEvent.callEvent();
+    inDeletion.remove(shop.getShopId());
   }
 
 

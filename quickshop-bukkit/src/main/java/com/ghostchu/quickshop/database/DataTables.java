@@ -218,6 +218,10 @@ public enum DataTables {
     return this.prefix + this.name;
   }
 
+  @NotNull String logicalName() {
+    return this.name;
+  }
+
   public @NotNull DeleteBuilder createDelete() {
 
     return this.createDelete(this.manager);

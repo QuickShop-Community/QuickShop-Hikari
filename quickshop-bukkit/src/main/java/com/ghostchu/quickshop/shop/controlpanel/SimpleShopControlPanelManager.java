@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.shop.controlpanel.component.DisplayComponent;
 import com.ghostchu.quickshop.shop.controlpanel.component.EmptyComponent;
 import com.ghostchu.quickshop.shop.controlpanel.component.FreezeComponent;
 import com.ghostchu.quickshop.shop.controlpanel.component.HistoryComponent;
+import com.ghostchu.quickshop.shop.controlpanel.component.InventoryComponent;
 import com.ghostchu.quickshop.shop.controlpanel.component.OwnerComponent;
 import com.ghostchu.quickshop.shop.controlpanel.component.RefillComponent;
 import com.ghostchu.quickshop.shop.controlpanel.component.RemoveComponent;
@@ -122,6 +123,7 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager, S
     addComponent(new ShopModeComponent());
     addComponent(new SetPriceComponent());
     addComponent(new SetAmountComponent());
+    addComponent(new InventoryComponent());
     addComponent(new RefillComponent());
     addComponent(new EmptyComponent());
     addComponent(new DisplayComponent());

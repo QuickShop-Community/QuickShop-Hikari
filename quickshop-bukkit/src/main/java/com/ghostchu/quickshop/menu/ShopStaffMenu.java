@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.menu;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 import com.ghostchu.quickshop.menu.staff.PlayerSelectionPage;
 import com.ghostchu.quickshop.menu.staff.StaffSelectionPage;
@@ -47,7 +47,7 @@ public class ShopStaffMenu extends QuickShopMenu {
 
     // Load rows from config or use default (6 rows for modern layout)
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("staff");
-    this.rows = (menuConfig != null?menuConfig.getRows() : 6);
+    this.rows = (menuConfig != null? menuConfig.getRows() : 6);
     this.name = "qs:staff";
     this.title = "Shop Staff";
 

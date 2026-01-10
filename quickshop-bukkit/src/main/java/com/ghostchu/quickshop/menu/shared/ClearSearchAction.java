@@ -45,6 +45,7 @@ public class ClearSearchAction extends IconAction {
    */
   public ClearSearchAction(final String searchDataKey, final String pageDataKey,
                            final String menuName, final int menuPage) {
+
     super(ActionType.RIGHT_CLICK);
     this.searchDataKey = searchDataKey;
     this.pageDataKey = pageDataKey;
@@ -58,15 +59,15 @@ public class ClearSearchAction extends IconAction {
     final java.util.Optional<MenuViewer> viewerOpt = handler.player().viewer();
     if(viewerOpt.isPresent()) {
       final MenuViewer viewer = viewerOpt.get();
-      
+
       // Clear search and reset page on existing viewer
       viewer.addData(searchDataKey, "");
       viewer.addData(pageDataKey, 1);
-      
+
       // Switch to same page to refresh (this triggers page open callback)
       handler.player().inventory().openMenu(handler.player(), menuName, menuPage);
     }
-    
+
     return true;
   }
 }

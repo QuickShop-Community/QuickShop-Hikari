@@ -122,7 +122,7 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
   }
 
   @Override
-  public void onPluginMessageReceived(@NotNull final String channel, @NotNull final Player player, final byte @NotNull [] message) {
+  public void onPluginMessageReceived(@NotNull final String channel, @NotNull final Player player, final @NotNull byte[] message) {
 
     if(!channel.equalsIgnoreCase(BUNGEE_CHANNEL)) {
       return;

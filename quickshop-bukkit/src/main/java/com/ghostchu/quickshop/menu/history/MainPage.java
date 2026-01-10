@@ -22,7 +22,7 @@ import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.menu.config.GuiConfig;
+import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
 import com.ghostchu.quickshop.util.Util;
@@ -56,7 +56,6 @@ import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigDisplay;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigLore;
-import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getList;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getPlayer;
 
 /**
@@ -89,7 +88,7 @@ public class MainPage {
     this.actions = actions;
 
     //we need a controller row and then at least one row for items.
-    this.menuRows = (menuRows <= 1)?2 : menuRows;
+    this.menuRows = (menuRows <= 1)? 2 : menuRows;
   }
 
   public void handle(final PageOpenCallback callback) {
@@ -110,16 +109,17 @@ public class MainPage {
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("history");
-        final GuiConfig.IconConfig borderConfig = menuConfig != null?menuConfig.getIcon("border") : null;
-        final GuiConfig.IconConfig summaryConfig = menuConfig != null?menuConfig.getIcon("summary") : null;
-        final GuiConfig.IconConfig shopInfoConfig = menuConfig != null?menuConfig.getIcon("shop-info") : null;
-        final GuiConfig.IconConfig multiShopConfig = menuConfig != null?menuConfig.getIcon("multi-shop-info") : null;
-        final GuiConfig.IconConfig topCustomersConfig = menuConfig != null?menuConfig.getIcon("top-customers") : null;
-        final GuiConfig.IconConfig prevPageConfig = menuConfig != null?menuConfig.getIcon("previous-page") : null;
-        final GuiConfig.IconConfig nextPageConfig = menuConfig != null?menuConfig.getIcon("next-page") : null;
-        final GuiConfig.IconConfig backConfig = menuConfig != null?menuConfig.getIcon("back") : null;
+        final GuiConfig.IconConfig borderConfig = (menuConfig != null)? menuConfig.getIcon("border") : null;
+        final GuiConfig.IconConfig entryConfig = (menuConfig != null)? menuConfig.getIcon("entry") : null;
+        final GuiConfig.IconConfig summaryConfig = (menuConfig != null)? menuConfig.getIcon("summary") : null;
+        final GuiConfig.IconConfig shopInfoConfig = (menuConfig != null)? menuConfig.getIcon("shop-info") : null;
+        final GuiConfig.IconConfig multiShopConfig = (menuConfig != null)? menuConfig.getIcon("multi-shop-info") : null;
+        final GuiConfig.IconConfig topCustomersConfig = (menuConfig != null)? menuConfig.getIcon("top-customers") : null;
+        final GuiConfig.IconConfig prevPageConfig = (menuConfig != null)? menuConfig.getIcon("previous-page") : null;
+        final GuiConfig.IconConfig nextPageConfig = (menuConfig != null)? menuConfig.getIcon("next-page") : null;
+        final GuiConfig.IconConfig backConfig = (menuConfig != null)? menuConfig.getIcon("back") : null;
 
-        final int listStartSlot = menuConfig != null?menuConfig.getSection().getInt("list-start-slot", 9) : 9;
+        final int listStartSlot = (menuConfig != null)? menuConfig.getSection().getInt("list-start-slot", 9) : 9;
 
         final int offset = 9;
         final int page = (Integer)viewer.get().dataOrDefault(staffPageID, 1);
@@ -130,22 +130,22 @@ public class MainPage {
         final List<ShopHistory.ShopHistoryRecord> queryResult = (List<ShopHistory.ShopHistoryRecord>)historyData.get();
         final ShopHistory.ShopSummary summary = (ShopHistory.ShopSummary)summaryData.get();
 
-        final int maxPages = (queryResult.size() / items) + (((queryResult.size() % items) > 0)?1 : 0);
+        final int maxPages = (queryResult.size() / items) + (((queryResult.size() % items) > 0)? 1 : 0);
 
-        final int prev = (page <= 1)?maxPages : page - 1;
-        final int next = (page >= maxPages)?1 : page + 1;
+        final int prev = (page <= 1)? maxPages : page - 1;
+        final int next = (page >= maxPages)? 1 : page + 1;
 
         // Set up borders from config
-        final String borderMaterial = borderConfig != null?borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
+        final String borderMaterial = (borderConfig != null)? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-        final List<Integer> borderRows = borderConfig != null?borderConfig.getRows() : List.of(1, 6);
-        for (final int row : borderRows) {
+        final List<Integer> borderRows = (borderConfig != null)? borderConfig.getRows() : List.of(1, 6);
+        for(final int row : borderRows) {
           callback.getPage().setRow(row, borderBuilder);
         }
 
         //header icon
         final Shop shop = shops.getFirst();
-        final String world = (shop.getLocation().getWorld() != null)?shop.getLocation().getWorld().getName() : "World";
+        final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
 
         final Component shopName;
         if(shop.getShopName() != null) {
@@ -158,10 +158,10 @@ public class MainPage {
         final Component shopType = QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
 
         // Shop info icon from config
-        final String shopInfoMaterial = shopInfoConfig != null?shopInfoConfig.getMaterial() : "PLAYER_HEAD";
-        final int shopInfoSlot = shopInfoConfig != null?shopInfoConfig.getSlot() : 4;
-        final String multiShopMaterial = multiShopConfig != null?multiShopConfig.getMaterial() : "CHEST";
-        final int multiShopSlot = multiShopConfig != null?multiShopConfig.getSlot() : 4;
+        final String shopInfoMaterial = (shopInfoConfig != null)? shopInfoConfig.getMaterial() : "PLAYER_HEAD";
+        final int shopInfoSlot = (shopInfoConfig != null)? shopInfoConfig.getSlot() : 4;
+        final String multiShopMaterial = (multiShopConfig != null)? multiShopConfig.getMaterial() : "CHEST";
+        final int multiShopSlot = (multiShopConfig != null)? multiShopConfig.getSlot() : 4;
 
         if(shops.size() == 1) {
 
@@ -175,14 +175,14 @@ public class MainPage {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(shopInfoMaterial, 1)
                                                              .display(shopName)
-                                                             .lore(getConfigLore(shopInfoConfig,
-                                                                           shopType,
-                                                                           shop.getOwner().getDisplay(),
-                                                                           Util.getItemStackName(shop.getItem()),
-                                                                           shop.getPrice(), shop.getShopStackingAmount(),
-                                                                           shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
-                                                                           + ", " + shop.getLocation().getBlockY() + ", "
-                                                                           + shop.getLocation().getBlockZ()))
+                                                             .lore(getConfigLore(id, shopInfoConfig,
+                                                                                 shopType,
+                                                                                 shop.getOwner().getDisplay(),
+                                                                                 Util.getItemStackName(shop.getItem()),
+                                                                                 shop.getPrice(), shop.getShopStackingAmount(),
+                                                                                 shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
+                                                                                 + ", " + shop.getLocation().getBlockY() + ", "
+                                                                                 + shop.getLocation().getBlockZ()))
                                                              .profile(ownerProfile))
                                              .withActions(new SwitchPageAction(returnMenu, returnPage))
                                              .withSlot(shopInfoSlot)
@@ -190,67 +190,65 @@ public class MainPage {
         } else {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(multiShopMaterial, 1)
-                                                             .display(getConfigDisplay(multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
+                                                             .display(getConfigDisplay(id, multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
                                              .withSlot(multiShopSlot)
                                              .build());
         }
 
         // Summary icon from config
-        final String summaryMaterial = summaryConfig != null?summaryConfig.getMaterial() : "OAK_SIGN";
-        final int summarySlot = summaryConfig != null?summaryConfig.getSlot() : 0;
-
-        final List<Component> description = new ArrayList<>();
-        description.add(get(id, "history.shop.total-unique-purchasers", locale.getNumberFormat().format(summary.uniquePurchasers())));
-        description.add(get(id, "history.shop.recent-purchases", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h())));
-        description.add(get(id, "history.shop.recent-purchases", days(id, 3), locale.getNumberFormat().format(summary.recentPurchases3d())));
-        description.add(get(id, "history.shop.recent-purchases", days(id, 7), locale.getNumberFormat().format(summary.recentPurchases7d())));
-        description.add(get(id, "history.shop.recent-purchases", days(id, 30), locale.getNumberFormat().format(summary.recentPurchases30d())));
-        description.add(get(id, "history.shop.total-purchases", locale.getNumberFormat().format(summary.totalPurchases())));
-        description.add(get(id, "history.shop.recent-purchase-balance", hours(id, 24), locale.getNumberFormat().format(summary.recentPurchasesBalance24h())));
-        description.add(get(id, "history.shop.recent-purchase-balance", days(id, 3), locale.getNumberFormat().format(summary.recentPurchasesBalance3d())));
-        description.add(get(id, "history.shop.recent-purchase-balance", days(id, 7), locale.getNumberFormat().format(summary.recentPurchasesBalance7d())));
-        description.add(get(id, "history.shop.recent-purchase-balance", days(id, 30), locale.getNumberFormat().format(summary.recentPurchasesBalance30d())));
-        description.add(get(id, "history.shop.total-balances", locale.getNumberFormat().format(summary.totalBalance())));
+        final String summaryMaterial = (summaryConfig != null)? summaryConfig.getMaterial() : "OAK_SIGN";
+        final int summarySlot = (summaryConfig != null)? summaryConfig.getSlot() : 0;
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(summaryMaterial, 1)
-                                                           .display(getConfigDisplay(summaryConfig, "<yellow>Summary</yellow>"))
-                                                           .lore(description))
+                                                           .display(getConfigDisplay(id, summaryConfig, "<yellow>Summary</yellow>"))
+                                                           .lore(getConfigLore(id, summaryConfig, locale.getNumberFormat().format(summary.totalPurchases()),
+                                                                               locale.getNumberFormat().format(summary.uniquePurchasers()),
+                                                                               hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h()),
+                                                                               days(id, 3), locale.getNumberFormat().format(summary.recentPurchases3d()),
+                                                                               days(id, 7), locale.getNumberFormat().format(summary.recentPurchases7d()),
+                                                                               days(id, 30), locale.getNumberFormat().format(summary.recentPurchases30d()),
+                                                                               locale.getNumberFormat().format(summary.totalPurchases()),
+                                                                               hours(id, 24), locale.getNumberFormat().format(summary.recentPurchasesBalance24h()),
+                                                                               days(id, 3), locale.getNumberFormat().format(summary.recentPurchasesBalance3d()),
+                                                                               days(id, 7), locale.getNumberFormat().format(summary.recentPurchasesBalance7d()),
+                                                                               days(id, 30), locale.getNumberFormat().format(summary.recentPurchasesBalance30d()),
+                                                                               locale.getNumberFormat().format(summary.totalBalance())
+                                                                               )))
                                            .withSlot(summarySlot)
                                            .build());
 
         // Top customers icon from config
-        final String topCustomersMaterial = topCustomersConfig != null?topCustomersConfig.getMaterial() : "DIAMOND";
-        final int topCustomersSlot = topCustomersConfig != null?topCustomersConfig.getSlot() : 8;
+        final String topCustomersMaterial = (topCustomersConfig != null)? topCustomersConfig.getMaterial() : "DIAMOND";
+        final int topCustomersSlot = (topCustomersConfig != null)? topCustomersConfig.getSlot() : 8;
 
         final List<Component> valuableDescription = new ArrayList<>(summary.valuableCustomers().size());
         for(final Map.Entry<UUID, Long> entry : summary.valuableCustomers().entrySet()) {
-          valuableDescription.add(get(id, "history.shop.top-n-valuable-customers-entry",
-                                      QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
-                                                           entry.getKey()).getDisplay(), entry.getValue()));
+          valuableDescription.addAll(getConfigLore(id, topCustomersConfig, QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(),
+                                                                                         entry.getKey()).getDisplay(), entry.getValue()));
         }
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(topCustomersMaterial, 1)
-                                                           .display(getConfigDisplay(topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
+                                                           .display(getConfigDisplay(id, topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
                                                            .lore(valuableDescription)).withSlot(topCustomersSlot).build());
 
         // Pagination icons from config
-        final String prevPageMaterial = prevPageConfig != null?prevPageConfig.getMaterial() : "ARROW";
-        final int prevPageSlot = prevPageConfig != null?prevPageConfig.getSlot() : 3;
-        final String nextPageMaterial = nextPageConfig != null?nextPageConfig.getMaterial() : "ARROW";
-        final int nextPageSlot = nextPageConfig != null?nextPageConfig.getSlot() : 5;
+        final String prevPageMaterial = (prevPageConfig != null)? prevPageConfig.getMaterial() : "ARROW";
+        final int prevPageSlot = (prevPageConfig != null)? prevPageConfig.getSlot() : 3;
+        final String nextPageMaterial = (nextPageConfig != null)? nextPageConfig.getMaterial() : "ARROW";
+        final int nextPageSlot = (nextPageConfig != null)? nextPageConfig.getSlot() : 5;
 
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
-                                                             .display(getConfigDisplay(prevPageConfig, "<white><< Previous Page</white>"))
-                                                             .lore(getConfigLore(prevPageConfig, page)))
+                                                             .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
+                                                             .lore(getConfigLore(id, prevPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(prevPageSlot)
                                              .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
-                                                             .display(getConfigDisplay(nextPageConfig, "<white>Next Page >></white>"))
-                                                             .lore(getConfigLore(nextPageConfig, page)))
+                                                             .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
+                                                             .lore(getConfigLore(id, nextPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(nextPageSlot)
                                              .build());
@@ -298,23 +296,11 @@ public class MainPage {
           final String timeFormat = "yyyy-MM-dd HH:mm";
           final SimpleDateFormat format = new SimpleDateFormat(timeFormat);
           final String dateStr = format.format(record.date());
-          
-          // Build lore dynamically - this is transaction data that needs to be shown
-          final List<Component> lore = new ArrayList<>();
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Shop: <white>" + shopName + "</white></gray>"));
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Buyer: <white>" + userName + "</white></gray>"));
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Item: <white>" + itemName + "</white></gray>"));
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Amount: <white>" + record.amount() + "</white></gray>"));
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Total: <white>" + record.money() + "</white></gray>"));
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Tax: <white>" + record.tax() + "</white></gray>"));
-          lore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Net: <white>" + (record.money() - record.tax()) + "</white></gray>"));
 
           AbstractItemStack<ItemStack> stack = new BukkitItemStack();
 
           if(shops.size() == 1) {
-            stack = stack.of("PLAYER_HEAD", Math.min(max, record.amount()))
-                    .display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + dateStr + "</yellow>"))
-                    .lore(lore);
+            stack = stack.of("PLAYER_HEAD", Math.min(max, record.amount()));
 
             final Optional<OfflinePlayer> offline = getPlayer(record.buyer());
             if(offline.isPresent() && offline.get().hasPlayedBefore()) {
@@ -326,8 +312,10 @@ public class MainPage {
           } else {
             stack = stack.of(type, Math.min(max, record.amount()));
           }
-          stack = stack.lore(lore);
-          stack = stack.display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + dateStr + "</yellow>"));
+          stack = stack.display(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
+          stack = stack.lore(getConfigLore(id, entryConfig, shopName, userName, itemName,
+                                           record.amount(), record.money(), record.tax(),
+                                           record.money() - record.tax()));
 
           callback.getPage().addIcon(new IconBuilder(stack).withSlot(listStartSlot + (i - start)).build());
 
