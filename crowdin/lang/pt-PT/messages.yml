@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow>Clique para remover esta loja.
   toggledisplay-hover: <yellow>Ativar o display de itens nessa loja
   refill: '<green>Repreencher: Recarregue os itens <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Alterna o status de congelamento da loja.
   lock-hover: <yellow>Enable/Disable proteção de bloqueio de loja
