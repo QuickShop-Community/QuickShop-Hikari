@@ -373,7 +373,7 @@ controlpanel:
   remove-hover: <yellow>Spustelėkite, kad pašalintumėte šią parduotuvę.
   toggledisplay-hover: <yellow>Įjungti / išjungti parduotuvės rodymo daiktą.
   refill: '<green>Papildymas: papildyti daiktus <yellow>[<bold><light_purple>OK</light_purple></bold>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Perjungti parduotuvę į "laikinai uždarytą" statusą.
   lock-hover: <yellow>Įjungti / išjungti parduotuvės užraktą.
