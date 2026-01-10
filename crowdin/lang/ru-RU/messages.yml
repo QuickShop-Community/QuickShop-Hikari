@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow>Нажмите, чтобы удалить магазин.
   toggledisplay-hover: <yellow>Переключает состояние отображения товара над магазином
   refill: '<green>Пополнение: добавить предметов <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Переключить состояние заморозки магазина.
   lock-hover: <yellow>Переключить состояние блокировки магазина.
