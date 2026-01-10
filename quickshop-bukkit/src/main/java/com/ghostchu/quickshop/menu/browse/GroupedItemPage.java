@@ -97,6 +97,7 @@ public class GroupedItemPage {
     final GuiConfig.IconConfig borderConfig = (menuConfig != null)? menuConfig.getIcon("border") : null;
     final GuiConfig.IconConfig searchConfig = (menuConfig != null)? menuConfig.getIcon("search") : null;
     final GuiConfig.IconConfig sortConfig = (menuConfig != null)? menuConfig.getIcon("sort") : null;
+    final GuiConfig.IconConfig groupedConfig = (menuConfig != null)? menuConfig.getIcon("grouped-item") : null;
     final GuiConfig.IconConfig filterConfig = (menuConfig != null)? menuConfig.getIcon("filter") : null;
     final GuiConfig.IconConfig stockConfig = (menuConfig != null)? menuConfig.getIcon("stock-filter") : null;
     final GuiConfig.IconConfig prevPageConfig = (menuConfig != null)? menuConfig.getIcon("previous-page") : null;
@@ -113,7 +114,8 @@ public class GroupedItemPage {
     final boolean stockOnly = (Boolean)viewer.dataOrDefault(BROWSE_STOCK_ONLY, false);
     final int page = (Integer)viewer.dataOrDefault(SHOPS_PAGE, 1);
 
-    @SuppressWarnings("unchecked") final List<Shop> allShops = (ArrayList<Shop>)shopsData.get();
+    @SuppressWarnings("unchecked")
+    final List<Shop> allShops = (ArrayList<Shop>)shopsData.get();
 
     // Process shops into groups with current filters/sort/search
     final List<MarketItemGroup> groups = MarketUtils.processGroups(allShops, filterMode, sortMode, searchQuery, stockOnly);
@@ -142,8 +144,8 @@ public class GroupedItemPage {
     final String currentSearchDisplay = searchQuery.isEmpty()? "None" : searchQuery;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(searchMaterial, 1)
-                                             .display(getConfigDisplay(searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
-                                             .lore(getConfigLore(searchConfig, currentSearchDisplay)))
+                                             .display(getConfigDisplay(id, searchConfig, "<yellow>Search: {0}</yellow>", currentSearchDisplay))
+                                             .lore(getConfigLore(id, searchConfig, currentSearchDisplay)))
                              .withSlot(searchSlot)
                              .withActions(new GuiChatAction((message)->{
                                // Handle clear command
@@ -176,8 +178,8 @@ public class GroupedItemPage {
     final int sortSlot = (sortConfig != null)? sortConfig.getSlot() : 2;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
-                                             .display(getConfigDisplay(sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
-                                             .lore(getConfigLore(sortConfig)))
+                                             .display(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(id, sortMode)))
+                                             .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
                              .withActions(
                                      new DataAction(BROWSE_SORT, sortMode.next()),
@@ -191,8 +193,8 @@ public class GroupedItemPage {
     final int filterSlot = (filterConfig != null)? filterConfig.getSlot() : 4;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
-                                             .display(getConfigDisplay(filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
-                                             .lore(getConfigLore(filterConfig)))
+                                             .display(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(id, filterMode)))
+                                             .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
                              .withActions(
                                      new DataAction(BROWSE_FILTER, filterMode.next()),
@@ -207,8 +209,8 @@ public class GroupedItemPage {
     final String stockStatus = (stockOnly)? "ON" : "OFF";
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
-                                             .display(getConfigDisplay(stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
-                                             .lore(getConfigLore(stockConfig)))
+                                             .display(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
+                                             .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
                              .withActions(
                                      new DataAction(BROWSE_STOCK_ONLY, !stockOnly),
@@ -222,7 +224,7 @@ public class GroupedItemPage {
     final int closeSlot = (closeConfig != null)? closeConfig.getSlot() : 8;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
-                                             .display(getConfigDisplay(closeConfig, "<red>Close</red>")))
+                                             .display(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
                              .withSlot(closeSlot)
                              .withActions(new RunnableAction((click)->{
                                final Player p = Bukkit.getPlayer(click.player().identifier());
@@ -240,13 +242,13 @@ public class GroupedItemPage {
 
     if(maxPages > 1) {
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
-                                               .display(getConfigDisplay(prevPageConfig, "<white><< Previous Page</white>")))
+                                               .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                .withSlot(prevSlot)
                                .withActions(new DataAction(SHOPS_PAGE, prev), new SwitchPageAction(menuName, 1))
                                .build());
 
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
-                                               .display(getConfigDisplay(nextPageConfig, "<white>Next Page >></white>")))
+                                               .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                .withSlot(nextSlot)
                                .withActions(new DataAction(SHOPS_PAGE, next), new SwitchPageAction(menuName, 1))
                                .build());
@@ -254,7 +256,7 @@ public class GroupedItemPage {
 
     // Page info
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                             .display(getConfigDisplay(pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
+                                             .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                              .withSlot(pageInfoSlot)
                              .build());
 
@@ -268,14 +270,14 @@ public class GroupedItemPage {
       if(i >= (start + items)) break;
 
       // Build item lore with market statistics
-      final List<Component> lore = buildGroupLore(id, group);
+      final List<Component> lore = buildGroupLore(id, player.getWorld().getName(), group);
 
       // Get display name for the item
       final String itemName = CommonUtil.prettifyText(group.getRepresentativeItem().getType().name());
 
       final AbstractItemStack<ItemStack> stack = new BukkitItemStack()
               .of(group.getRepresentativeItem().getType().key().asString(), 1)
-              .display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + itemName + "</yellow>"))
+              .display(getConfigDisplay(id, groupedConfig, "<yellow>{0}</yellow>", itemName))
               .lore(lore);
 
       // Find ALL shops for this item type from unfiltered list (so filter can be changed on ShopListPage)
@@ -302,59 +304,61 @@ public class GroupedItemPage {
     }
   }
 
-  private String getSortDisplayName(final BrowseSortMode mode) {
+  private String getSortDisplayName(final UUID id, final BrowseSortMode mode) {
 
     return switch(mode) {
-      case PRICE_ASC -> "Price ↑";
-      case PRICE_DESC -> "Price ↓";
-      case STOCK -> "Stock";
-      case NAME -> "Name";
+      case PRICE_ASC -> QuickShop.getInstance().text().of(id, "gui.browse.sort.price-asc").legacy();
+      case PRICE_DESC -> QuickShop.getInstance().text().of(id, "gui.browse.sort.price-desc").legacy();
+      case STOCK -> QuickShop.getInstance().text().of(id, "gui.browse.sort.stock").legacy();
+      case NAME -> QuickShop.getInstance().text().of(id, "gui.browse.sort.name").legacy();
     };
   }
 
-  private String getFilterDisplayName(final BrowseFilterMode mode) {
+  private String getFilterDisplayName(final UUID id, final BrowseFilterMode mode) {
 
     return switch(mode) {
-      case ALL -> "All";
-      case BUYING -> "Buying";
-      case SELLING -> "Selling";
+      case ALL -> QuickShop.getInstance().text().of(id, "gui.browse.filter.all").legacy();
+      case BUYING -> QuickShop.getInstance().text().of(id, "gui.browse.filter.buying").legacy();
+      case SELLING -> QuickShop.getInstance().text().of(id, "gui.browse.filter.selling").legacy();
     };
   }
 
   /**
    * Build the lore for a grouped item showing market statistics
    */
-  private List<Component> buildGroupLore(final UUID playerId, final MarketItemGroup group) {
+  private List<Component> buildGroupLore(final UUID id, final String world, final MarketItemGroup group) {
 
-    final List<Component> lore = new ArrayList<>();
-    final var mm = QuickShop.getInstance().platform().miniMessage();
+    final var text = QuickShop.getInstance().text();
 
-    // Total shops count
-    lore.add(mm.deserialize("<gray>Shops: <white>" + group.getTotalShopCount() + "</white></gray>"));
+    //initialize with our shops count.
+    final List<Component> lore = new ArrayList<>(text.ofList(id, "gui.browse.grouped-item.lore-title", group.getTotalShopCount()).forLocale());
     lore.add(Component.empty());
 
-    // Selling shops statistics
+    //our selling statistics.
     if(group.hasSellingShops()) {
-      lore.add(mm.deserialize("<green>▼ Selling (" + group.getSellingShopCount() + " shops)</green>"));
-      lore.add(mm.deserialize("<gray>  Price: <white>" + formatPrice(group.getSellingMinPrice()) +
-                              " - " + formatPrice(group.getSellingMaxPrice()) + "</white></gray>"));
-      lore.add(mm.deserialize("<gray>  Average: <yellow>" + formatPrice(group.getSellingAvgPrice()) + "</yellow></gray>"));
-      lore.add(mm.deserialize("<gray>  Median: <gold>" + formatPrice(group.getSellingMedianPrice()) + "</gold></gray>"));
-      lore.add(mm.deserialize("<gray>  Stock: <aqua>" + group.getSellingTotalStock() + "</aqua></gray>"));
+      lore.addAll(text.ofList(id, "gui.browse.grouped-item.lore-selling", group.getSellingShopCount(),
+                              formatPrice(world, group.getSellingMinPrice()),
+                              formatPrice(world, group.getSellingMaxPrice()),
+                              formatPrice(world, group.getSellingAvgPrice()),
+                              formatPrice(world, group.getSellingMedianPrice()),
+                              group.getSellingTotalStock()).forLocale());
     }
 
-    // Buying shops statistics
     if(group.hasBuyingShops()) {
-      if(group.hasSellingShops()) lore.add(Component.empty());
-      lore.add(mm.deserialize("<#FFA500>▲ Buying (" + group.getBuyingShopCount() + " shops)</#FFA500>"));
-      lore.add(mm.deserialize("<gray>  Price: <white>" + formatPrice(group.getBuyingMinPrice()) +
-                              " - " + formatPrice(group.getBuyingMaxPrice()) + "</white></gray>"));
-      lore.add(mm.deserialize("<gray>  Average: <yellow>" + formatPrice(group.getBuyingAvgPrice()) + "</yellow></gray>"));
-      lore.add(mm.deserialize("<gray>  Median: <gold>" + formatPrice(group.getBuyingMedianPrice()) + "</gold></gray>"));
-    }
 
-    lore.add(Component.empty());
-    lore.add(mm.deserialize("<yellow>Click to view all shops</yellow>"));
+      if(group.hasSellingShops()) {
+        lore.add(Component.empty());
+      }
+
+      lore.addAll(text.ofList(id, "gui.browse.grouped-item.lore-buying", group.getBuyingShopCount(),
+                              formatPrice(world, group.getBuyingMinPrice()),
+                              formatPrice(world, group.getBuyingMaxPrice()),
+                              formatPrice(world, group.getBuyingAvgPrice()),
+                              formatPrice(world, group.getBuyingMedianPrice())).forLocale());
+
+      lore.add(Component.empty());
+      lore.addAll(text.ofList(id, "gui.browse.grouped-item.lore-footer").forLocale());
+    }
 
     return lore;
   }
@@ -362,9 +366,12 @@ public class GroupedItemPage {
   /**
    * Format a price value
    */
-  private String formatPrice(final double price) {
+  private String formatPrice(final String world, final double price) {
 
+    if(QuickShop.getInstance().getEconomyManager().provider() == null) {
+      return String.valueOf(price);
+    }
     return QuickShop.getInstance().getEconomyManager().provider()
-            .format(BigDecimal.valueOf(price), null, null);
+            .format(BigDecimal.valueOf(price), world, null);
   }
 }

@@ -159,8 +159,8 @@ public class ShopListPage {
     final String sortMaterial = sortConfig != null? sortConfig.getMaterial() : "HOPPER";
     final int sortSlot = sortConfig != null? sortConfig.getSlot() : 2;
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
-                                             .display(getConfigDisplay(sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
-                                             .lore(getConfigLore(sortConfig)))
+                                             .display(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
+                                             .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
                              .withActions(
                                      new DataAction(BROWSE_SORT, sortMode.next()),
@@ -175,8 +175,8 @@ public class ShopListPage {
     final int filterSlot = filterConfig != null? filterConfig.getSlot() : 4;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
-                                             .display(getConfigDisplay(filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
-                                             .lore(getConfigLore(filterConfig)))
+                                             .display(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
+                                             .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
                              .withActions(
                                      new DataAction(BROWSE_FILTER, filterMode.next()),
@@ -192,8 +192,8 @@ public class ShopListPage {
     final String stockStatus = stockOnly? "ON" : "OFF";
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
-                                             .display(getConfigDisplay(stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
-                                             .lore(getConfigLore(stockConfig)))
+                                             .display(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
+                                             .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
                              .withActions(
                                      new DataAction(BROWSE_STOCK_ONLY, !stockOnly),
@@ -207,7 +207,7 @@ public class ShopListPage {
     final int backSlot = backConfig != null? backConfig.getSlot() : 8;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(backMaterial, 1)
-                                             .display(getConfigDisplay(backConfig, "<white>Back to Market</white>")))
+                                             .display(getConfigDisplay(id, backConfig, "<white>Back to Market</white>")))
                              .withSlot(backSlot)
                              .withActions(
                                      new DataAction(SHOPS_PAGE, 1),
@@ -225,13 +225,13 @@ public class ShopListPage {
 
     if(maxPages > 1) {
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
-                                               .display(getConfigDisplay(prevPageConfig, "<white><< Previous Page</white>")))
+                                               .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                .withSlot(prevSlot)
                                .withActions(new DataAction(SHOP_LIST_PAGE, prev), new SwitchPageAction(menuName, 2))
                                .build());
 
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
-                                               .display(getConfigDisplay(nextPageConfig, "<white>Next Page >></white>")))
+                                               .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                .withSlot(nextSlot)
                                .withActions(new DataAction(SHOP_LIST_PAGE, next), new SwitchPageAction(menuName, 2))
                                .build());
@@ -239,7 +239,7 @@ public class ShopListPage {
 
     // Page info
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                             .display(getConfigDisplay(pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
+                                             .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                              .withSlot(pageInfoSlot)
                              .build());
 

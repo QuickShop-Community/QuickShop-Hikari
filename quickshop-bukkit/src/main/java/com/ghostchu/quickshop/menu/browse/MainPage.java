@@ -99,6 +99,7 @@ public class MainPage {
         final GuiConfig.IconConfig prevPageConfig = menuConfig != null? menuConfig.getIcon("previous-page") : null;
         final GuiConfig.IconConfig nextPageConfig = menuConfig != null? menuConfig.getIcon("next-page") : null;
         final GuiConfig.IconConfig pageInfoConfig = menuConfig != null? menuConfig.getIcon("page-info") : null;
+        final GuiConfig.IconConfig shopItemConfig = menuConfig != null? menuConfig.getIcon("shop-item") : null;
 
         final int listStartSlot = (menuConfig != null? menuConfig.getSection().getInt("list-start-slot", 9) : 9);
 
@@ -133,22 +134,22 @@ public class MainPage {
         if(maxPages > 1) {
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
-                                                         .display(getConfigDisplay(prevPageConfig, "<white><< Previous Page</white>"))
-                                                         .lore(getConfigLore(prevPageConfig, page)))
+                                                         .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
+                                                         .lore(getConfigLore(id, prevPageConfig, page)))
                   .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                   .withSlot(prevPageSlot)
                   .build());
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
-                                                         .display(getConfigDisplay(nextPageConfig, "<white>Next Page >></white>"))
-                                                         .lore(getConfigLore(nextPageConfig, page)))
+                                                         .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
+                                                         .lore(getConfigLore(id, nextPageConfig, page)))
                   .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                   .withSlot(nextPageSlot)
                   .build());
         }
 
         playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                                       .display(getConfigDisplay(pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
+                                                       .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
                 .withSlot(pageInfoSlot)
                 .build());
 
@@ -179,20 +180,13 @@ public class MainPage {
           final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
           final String priceFormatted = eco.format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
 
-          // Build lore dynamically for shop info
-          final List<Component> shopLore = new ArrayList<>();
-          shopLore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Owner: <white>" + shop.getOwner().getDisplay() + "</white></gray>"));
-          shopLore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Location: <white>" + location + "</white></gray>"));
-          shopLore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Type: <white>" + shop.shopType().identifier() + "</white></gray>"));
-          shopLore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Price: <white>" + priceFormatted + "</white></gray>"));
-          shopLore.add(QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Stock: <white>" + MarketUtils.getStockFromCache(shop) + "</white></gray>"));
-
           final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
-                  .lore(shopLore);
+                  .lore(getConfigLore(id, shopItemConfig, shop.getOwner().getDisplay(), location,
+                                      shop.shopType().identifier(), priceFormatted,
+                                      MarketUtils.getStockFromCache(shop)));
 
           playerPage.addIcon(id, new IconBuilder(stack).withSlot(listStartSlot + (i - start)).build());
 
-          //System.out.println("Slots: " + playerPage.getIcons(id).size());
           i++;
         }
       }

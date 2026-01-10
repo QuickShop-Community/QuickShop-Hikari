@@ -83,6 +83,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
+
 public class Util {
 
   private static final Map<Material, Integer> CUSTOM_STACKSIZE = new HashMap<>();
