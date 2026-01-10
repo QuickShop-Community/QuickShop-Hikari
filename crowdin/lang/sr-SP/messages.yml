@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow>Click to remove this shop.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Toggle the shop's freeze status.
   lock-hover: <yellow>Enable/Disable the shop's lock protection.
