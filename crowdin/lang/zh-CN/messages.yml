@@ -372,6 +372,8 @@ controlpanel:
   remove-hover: <yellow>点击来删除商店
   toggledisplay-hover: <yellow>切换商店是否显示悬浮物
   refill: '<green>填充: 重新填充商品 <yellow>[<bold><light_purple>确认</light_purple></bold>]'
+  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>切换商店冻结状态。
   lock-hover: <yellow>启用/禁用商店锁
   item-hover: <yellow>点击以更改商店物品
@@ -1443,7 +1445,7 @@ addon:
       无限模式: {6}
       位置: {7}
   bluemap:
-    markerset-title: Player Shops
+    markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
     marker-description: |
       名称: {0}
@@ -1547,6 +1549,171 @@ cannot-suggest-price: "<red>对不起，暂时没有更多的玩家与您交易�
 price-suggest: "<green>基于来自 <aqua>{0}</aqua> 商店的数据 最高价格的商店价格为 <light_purple>{1}</light_purple>价格最低的商店价格为 <light_purple>{2}</light_purple>平均价格为 <light_purple>{3}</light_purple>，中位价格为 <light_purple>{4}</light_purple> <newline><yellow>建议您将价格设置在 <gold>{5}</gold>。</yellow>"
 price-suggest-multi: "<green>建议使用 {0} </green>{1}"
 suggest-wait: "<green>请稍候... 计算推荐价格。"
+gui:
+  trade:
+    title: "<dark_aqua>Shop</dark_aqua>"
+    info-stock:
+      display: "<yellow>Stock Information</yellow>"
+      lore:
+        - "<gray>Available: <white>{0}</white></gray>"
+    info-price:
+      display: "<gold>Price Information</gold>"
+      lore:
+        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Per: <white>{1} item(s)</white></gray>"
+    info-seller:
+      display: "<aqua>Seller Information</aqua>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+    custom-amount:
+      display: "<bold><blue>Custom Order</blue></bold>"
+    quantity-button:
+      lore:
+        - "<yellow>{0}</yellow>"
+  keeper:
+    title: "<dark_aqua>Shop Management</dark_aqua>"
+    change-price:
+      display: "<bold><green>Change Price</green></bold>"
+      lore:
+        - "<gray>Current price: <white>{0}</white></gray>"
+        - ""
+        - "<yellow>Click to change price</yellow>"
+    mode-toggle:
+      display: "<bold><green>Change Mode</green></bold>"
+      lore:
+        - "<gray>Current: <white>{0}</white></gray>"
+        - "<gray>Click to change to: <white>{1}</white></gray>"
+    inventory:
+      display: "<bold><green>View Inventory</green></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's chest inventory.</gray>"
+    staff:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      lore:
+        - "<gray>Click to manage your</gray>"
+        - "<gray>shop's staff members.</gray>"
+    history:
+      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's transaction history.</gray>"
+    remove:
+      display: "<bold><red>Delete Shop</red></bold>"
+      lore:
+        - "<gray>Click to delete your shop.</gray>"
+        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+  staff:
+    title: "<dark_aqua>Staff Management</dark_aqua>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for players</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    add-staff:
+      display: "<green>Add Staff Member</green>"
+      lore:
+        - "<gray>Click to add a new</gray>"
+        - "<gray>staff member to your shop.</gray>"
+    back:
+      display: "<white>Back to Shop</white>"
+  browse:
+    title: "<dark_aqua>Market Browser</dark_aqua>"
+    shop-item:
+      lore:
+        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>Location: </green><yellow>{1}</yellow>"
+        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Price: </green><yellow>{3}</yellow>"
+        - "<green>Stock: </green><yellow>{4}</yellow>"
+    grouped-item:
+      display: "<yellow>{0}</yellow>"
+      lore-title:
+        - "<gray>Shops: <white>{0}</white></gray>"
+      lore-selling:
+        - "<green>▼ Selling ({0} shops)</green>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+      lore-buying:
+        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+      lore-footer:
+        - "<yellow>Click to view all shops</yellow>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for items</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    sort:
+      display: "<green>Sort: {0}</green>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      price-asc: "Price ↑"
+      price-desc: "Price ↓"
+      stock: "Stock"
+      name: "Name"
+    filter:
+      display: "<aqua>Filter: {0}</aqua>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      all: "All"
+      selling: "Selling"
+      buying: "Buying"
+    stock-filter:
+      display: "<gold>In Stock Only: {0}</gold>"
+      lore:
+        - "<gray>Click to toggle</gray>"
+    back:
+      display: "<white>Back to Market</white>"
+  shared:
+    previous-page:
+      display: "<white><< Previous Page</white>"
+    next-page:
+      display: "<white>Next Page >></white>"
+    page-info:
+      display: "<yellow>Page {0}/{1}</yellow>"
+    back:
+      display: "<white>Back</white>"
+    close:
+      display: "<red>Close</red>"
+  messages:
+    #Keeper menu messages
+    keeper:
+      #Shown when player clicks "Change Price" button
+      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      #Shown when player clicks "Delete Shop" button
+      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+    #Staff menu messages
+    staff:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      #Shown when player left-clicks a staff member to remove them
+      #{0} = staff member name
+      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      #Shown when player right-clicks a staff member to transfer ownership
+      #{0} = staff member name
+      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+    #Trade menu messages
+    trade:
+      #Shown when player clicks "Custom Order" button (buying)
+      #{0} = item amount per purchase
+      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player clicks "Custom Order" button (selling)
+      #{0} = item amount per purchase
+      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player enters invalid quantity (not multiple of item amount)
+      #{0} = item amount per purchase
+      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      #Shown when player enters quantity exceeding stock
+      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+    #Browse menu messages
+    browse:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
     gui-title: "查看交易记录"
@@ -1567,23 +1734,31 @@ history:
       - "<white>税： <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>商店： <yellow>{0}</yellow></white>"
-      - "<white>交易者: <yellow>{1}</yellow></white>"
+      - "<white>Buyer: <yellow>{1}</yellow></white>"
       - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>余额： <yellow>{4}</yellow></white>"
-      - "<white>税： <yellow>{5}</yellow></white>"
-      - "<white>最终收入： <yellow>{6}</yellow></white>"
+      - "<white>Amount: <yellow>{4}</yellow></white>"
+      - "<white>Total: <yellow>{5}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
-    previous-page: "<white><< 前一页</white>"
-    next-page: "<white>下一页 >></white>"
     current-page: "<white>页面 {0}</white>"
-    summary-icon-title: "<green>商店摘要"
-    recent-purchases: "<white>最近 <aqua>{0}</aqua> 购买： <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>最近 <aqua>{0}</aqua> 营业额： <yellow>{1}</yellow></white>"
-    total-purchases: "<white>交易总数： <yellow>{0}</yellow></white>"
-    total-balances: "<white>总营业额： <yellow>{0}</yellow></white>"
+    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    summary-icon-title: "<yellow>Summary</yellow>"
+    summary-icon-description:
+      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
+      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
+      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
+      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>Total purchases: <yellow>{10}</yellow></white>"
+      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
+      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
+      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
+      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
+      - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>交易者总数： <yellow>{0}</yellow></white>"
-    top-n-valuable-customers-title: "<gold>前 {0} 个最有价值客户</gold>"
     top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    top-n-valuable-customers-title: "<gold>前 {0} 个最有价值客户</gold>"
     no-result: "<white>没有结果</white>"
 about:
   text:
