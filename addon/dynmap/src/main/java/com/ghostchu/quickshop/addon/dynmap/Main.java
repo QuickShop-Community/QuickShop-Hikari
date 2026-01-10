@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -145,7 +146,7 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopTypeEvent event) {
+  public void onEvent(final ShopTypeEnhancedEvent event) {
 
     if(event.phase() != Phase.POST) {
 
