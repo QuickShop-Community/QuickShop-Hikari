@@ -373,7 +373,7 @@ controlpanel:
   remove-hover: <yellow>Klikk for å fjerne denne butikken.
   toggledisplay-hover: <yellow>Slå av/på butikkens utstillingsvare
   refill: '<green>Påfyll: Fyll på varene <yellow>[<bold><light_purple>OK</light_purple></bold>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Veksle butikkens frysestatus.
   lock-hover: <yellow>Aktiver/Deaktiver butikkens låsebeskyttelse.

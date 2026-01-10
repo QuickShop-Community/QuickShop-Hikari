@@ -373,7 +373,7 @@ controlpanel:
   remove-hover: <yellow>點擊移除此商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
   refill: '<green>補貨：重新填充商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>啟用 / 停用商店鎖保護。

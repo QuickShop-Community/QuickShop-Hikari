@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <aqua>Klikněte pro odstranění tohoto obchodu.
   toggledisplay-hover: <white>Přepne obchodu status ukazovaného předmětu
   refill: '<green>Plnění: Doplnit položky <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <aqua>Přepnout stav zmrazení obchodu.
   lock-hover: <aqua>Povolit/Zakázat ochranu zámku obchodu.
