@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow> 클릭해서 상점 삭제.
   toggledisplay-hover: <yellow>상점 표시 항목 상태 전환
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>상점 동결 상태 전환.
   lock-hover: <yellow>상점 잠금 보호를 활성화/비활성화 합니다.
