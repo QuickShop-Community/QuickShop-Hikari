@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow>Cliquez pour supprimer cette boutique.
   toggledisplay-hover: <yellow>Activer/désactiver l'affichage de l'item de la boutique
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Activer/désactiver le statut de blocage de la boutique.
   lock-hover: <yellow>Activer/Désactiver la protection de verrouillage de la boutique.
