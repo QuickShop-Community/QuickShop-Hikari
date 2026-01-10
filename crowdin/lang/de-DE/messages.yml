@@ -362,7 +362,7 @@ controlpanel:
   remove-hover: <yellow>Klicke um diesen Shop zu entfernen.
   toggledisplay-hover: <yellow>Ändere den Status des Display-Items für den Shop
   refill: '<green>Auffüllen: Füllt die Items auf <yellow>[<light_purple><bold>OK</bold></light_purple>]'
-  inventory: '<yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Ändere den Freeze-Status des Shops.
   lock-hover: <yellow>Aktiviere/Deaktiviere den Sperrschutz des Shops.
