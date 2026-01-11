@@ -1445,7 +1445,7 @@ addon:
       无限模式: {6}
       位置: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: QuickShop-Hikari 商店
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
     marker-description: |
       名称: {0}
@@ -1551,98 +1551,98 @@ price-suggest-multi: "<green>建议使用 {0} </green>{1}"
 suggest-wait: "<green>请稍候... 计算推荐价格。"
 gui:
   trade:
-    title: "<dark_aqua>Shop</dark_aqua>"
+    title: "<dark_aqua>商店</dark_aqua>"
     info-stock:
-      display: "<yellow>Stock Information</yellow>"
+      display: "<yellow>库存</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>可用： <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>价格信息</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
-        - "<gray>Per: <white>{1} item(s)</white></gray>"
+        - "<gray>价格： <white>{0}</white></gray>"
+        - "<gray>每次交易物品数量: <white>{1} 个物品</white></gray>"
     info-seller:
-      display: "<aqua>Seller Information</aqua>"
+      display: "<aqua>卖家信息</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>所有者: <white>{0}</white></gray>"
     custom-amount:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>自定义交易</blue></bold>"
     quantity-button:
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>商店管理</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>更改价格</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>当前价格：<white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>点击更改价格</yellow>"
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>更改模式</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>当前模式： <white>{0}</white></gray>"
+        - "<gray>点击切换到： <white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>预览库存</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's chest inventory.</gray>"
+        - "<gray>点击查看您的</gray>"
+        - "<gray>商店库存</gray>"
     staff:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      display: "<bold><aqua>商店助手</aqua></bold>"
       lore:
-        - "<gray>Click to manage your</gray>"
-        - "<gray>shop's staff members.</gray>"
+        - "<gray>点击管理您的</gray>"
+        - "<gray>商店助手列表</gray>"
     history:
-      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      display: "<bold><light_purple>交易历史</light_purple></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's transaction history.</gray>"
+        - "<gray>点击查看您的</gray>"
+        - "<gray>商店交易历史</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>删除商店</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
-        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+        - "<gray>点击删除您的商店</gray>"
+        - "<dark_gray>您也可以破坏牌子/商店</dark_gray>"
   staff:
-    title: "<dark_aqua>Staff Management</dark_aqua>"
+    title: "<dark_aqua>助手管理</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>搜索： {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>左键点击搜索玩家</gray>"
+        - "<gray>右键单击清除搜索</gray>"
     add-staff:
-      display: "<green>Add Staff Member</green>"
+      display: "<green>添加商店助手</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
-        - "<gray>staff member to your shop.</gray>"
+        - "<gray>点击添加新的</gray>"
+        - "<gray>商店助手到您的商店</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>返回商店</white>"
   browse:
-    title: "<dark_aqua>Market Browser</dark_aqua>"
+    title: "<dark_aqua>商店浏览</dark_aqua>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>所有者: </green>{0}<yellow></yellow>"
+        - "<green>位置： </green>{1}<yellow></yellow>"
+        - "<green>类型： </green>{2}<yellow></yellow>"
+        - "<green>价格:</green><yellow>{3}</yellow>"
+        - "<green>库存： </green><yellow>{4}</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
-        - "<gray>Shops: <white>{0}</white></gray>"
+        - "<gray>商店: <white>{0}</white></gray>"
       lore-selling:
-        - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<green>▼ 出售 ({0} 商店)</green>"
+        - "<gray> 价格: <white>{1} - {2}</white></gray>"
+        - "<gray> 平均值： <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
-        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+        - "<gray> 库存： <aqua>{5}</aqua></gray>"
       lore-buying:
-        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<#FFA500>▲ 收购 ({0} 商店)</#FFA500>"
+        - "<gray> 价格: <white>{1} - {2}</white></gray>"
+        - "<gray> 平均值： <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
       lore-footer:
-        - "<yellow>Click to view all shops</yellow>"
+        - "<yellow>点击查看所有商店</yellow>"
     search:
       display: "<yellow>Search: {0}</yellow>"
       lore:
