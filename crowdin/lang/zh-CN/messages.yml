@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
 how-much-to-trade-for: <green>请在聊天中输入交易<yellow>{1}个{0}<green>所需的价格。
 client-language-changed: <green>QuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。
 shops-backingup: 从数据库创建商店备份...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/qs-hikari
 unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
@@ -372,8 +372,8 @@ controlpanel:
   remove-hover: <yellow>点击来删除商店
   toggledisplay-hover: <yellow>切换商店是否显示悬浮物
   refill: '<green>填充: 重新填充商品 <yellow>[<bold><light_purple>确认</light_purple></bold>]'
-  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
-  inventory-hover: <yellow>Open the shop's inventory.
+  inventory: '<green>库存： </green><yellow>[<bold><light_purple>预览商店库存</light_purple></bold>]'
+  inventory-hover: <yellow>打开商店库存
   freeze-hover: <yellow>切换商店冻结状态。
   lock-hover: <yellow>启用/禁用商店锁
   item-hover: <yellow>点击以更改商店物品
