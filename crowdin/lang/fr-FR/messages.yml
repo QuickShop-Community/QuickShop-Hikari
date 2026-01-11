@@ -386,13 +386,13 @@ timeunit:
   std-past-format: 'il y a {5}{4}{3}{2}{1}{0}'
   std-time-format: HH:mm:ss
   seconds: "{0} secondes"
-  hour: "{0} hour"
+  hour: "{0} heure"
   scheduled-at: scheduled at {0}
-  after: after
-  day: "{0} day"
+  after: après
+  day: "{0} jour"
   recent: recent
-  between: between
-  hours: "{0} hours"
+  between: entre
+  hours: "{0} heures"
   months: "{0} months"
   longtimeago: long time ago
   between-format: between {0} and {1}
@@ -656,7 +656,7 @@ database:
   trim-start: <green>Database trim started, please wait...
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
   generated-at: '<yellow>Generated at: <gold>{0}</gold>'
-  purge-date: <red>You must given a date.
+  purge-date: <red>Vous devez indiquer une date.
   purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
@@ -693,7 +693,7 @@ transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer reques
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-self: <red>Vous ne pouvez pas transférer vos boutiques à vous-même.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
 benefit-removed: <red>Target player has been removed from shop benefits.
