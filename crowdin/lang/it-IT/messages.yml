@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop è disabilitato in questo mondo
 how-much-to-trade-for: <green>Scrivi in chat, per quanto desideri scambiare <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop ha rilevato che l'impostazione della lingua del tuo client è stata modificata, ora stiamo utilizzando {0} locale per te.
 shops-backingup: Creazione backup negozio dal database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: Ciao traduttore!, se stai modificando da GitHub o attraverso la sorgente di codice, dovresti andare su https://crowdin.com/project/qs-hikari.
 unlimited-shop-owner-changed: <yellow>Questo proprietario di negozio illimitato è stato cambiato in {0}.
 bad-command-usage-detailed: '<red>Argomenti di comando errati! Accetta i seguenti parametri: <gray>{0}'
 thats-not-a-number: <red>Numero non valido
@@ -319,10 +319,10 @@ signs:
 negative-amount: <red>Non puoi scambiare importi negativi
 display-turn-on: <green>Accensione riuscita del display del negozio.
 display-turn-off: <green>Spegnimento con successo il display del negozio.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-owned: <green>Visualizzazione dei negozi per tutti i negozi posseduti attivata con successo.
+display-turn-off-owned: <green>Visualizzazione dei negozi per tutti i negozi posseduti disattivata con successo.
+display-turn-on-all: <green>Visualizzazione dei negozi per tutti i negozi del server attivata con successo.
+display-turn-off-all: <green>Visualizzazione dei negozi per tutti i negozi del server disattivata con successo.
 shop-staff-deleted: <green>Rimosso {0} come membro dello staff per il tuo negozio.
 nearby-shop-header: '<green>Abbinamento negozio nelle vicinanze <aqua>{0}<green>:'
 backup-failed: Impossibile eseguire il backup del database. Controlla la console per i dettagli.
@@ -370,8 +370,8 @@ controlpanel:
   remove-hover: <yellow>Clicca per rimuovere questo negozio.
   toggledisplay-hover: <yellow>Attiva/disattiva lo stato dell'oggetto visualizzato nel negozio
   refill: '<green>Riempi: ricarica gli oggetti <yellow>[<light_purple><bold>OK<yellow>]'
-  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
-  inventory-hover: <yellow>Open the shop's inventory.
+  inventory: '<green>Inventario: </green><yellow>[<bold><light_purple>Visualizza Inventario</light_purple></bold>]'
+  inventory-hover: <yellow>Apri l'inventario del negozio.
   freeze-hover: <yellow>Attiva/Disattiva il congelamento del negozio.
   lock-hover: <yellow>Abilita/Disabilita la protezione del blocco del negozio.
   item-hover: <yellow>Click per cambiare l'elemento del negozio
@@ -457,7 +457,7 @@ command:
     taxaccount: <yellow>Imposta la tassa utilizzata dal negozio
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Attiva/disattiva lo stato dell'articolo di visualizzazione del negozio
-    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
+    toggledisplayall: <yellow>Attiva/disattiva tutte le visualizzazioni degli oggetti del negozio che possiedi, o per il server.
     permission: <yellow>Gestione autorizzazioni negozio
     lookup: <yellow>Gestisce la tabella degli elementi ricercati
     database: <yellow>View and maintain QuickShop database
