@@ -60,11 +60,11 @@ public class Log {
 
   private static void debugStdOutputs(final Record recordEntry) {
 
-    recordEntry.generate().thenAccept(log->{
-      if(Util.isDevMode()) {
-        QuickShop.getInstance().logger().info("[DEBUG] " + log);
+    if (Util.isDevMode()) {
+      recordEntry
+          .generate()
+          .thenAccept(log -> QuickShop.getInstance().logger().info("[DEBUG] " + log));
       }
-    });
   }
 
   public static void cron(@NotNull final Level level, @NotNull final String message) {
