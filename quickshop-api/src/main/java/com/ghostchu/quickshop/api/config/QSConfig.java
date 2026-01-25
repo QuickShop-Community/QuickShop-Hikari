@@ -61,7 +61,7 @@ public class QSConfig implements Reloadable {
     this.settings = settings;
 
     if(!file.exists()) {
-      QuickShopAPI.getPluginInstance().getLogger().warning("Configuration doesn't exist! File Name:" + fileName);
+      QuickShopAPI.getPluginInstance().getLogger().warning("Configuration file doesn't exist, creating new one. File Name:" + fileName);
     }
   }
 
