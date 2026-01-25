@@ -1,6 +1,6 @@
 break-shop-use-supertool:
 fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
+not-allowed-to-create:
 disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop detected that your client language has been changed. We now use the {0} locale for you.
