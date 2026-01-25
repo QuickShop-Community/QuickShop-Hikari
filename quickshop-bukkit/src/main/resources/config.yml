@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1033
+config-version: 1034
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -331,6 +331,8 @@ shop:
     limit: 10
     #Should this ignore the distance?
     global: false
+    #The cooldown between searches in seconds.
+    cooldown: 20
     #Should non-loaded shops be incuded in the search?
     all: true
     #Should QS exclude out-of-stock/space shops?

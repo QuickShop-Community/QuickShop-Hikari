@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class SubCommand_Find implements CommandHandler<Player> {
 
@@ -40,6 +41,14 @@ public class SubCommand_Find implements CommandHandler<Player> {
       plugin.text().of(sender, "command.no-type-given").send();
       return;
     }
+
+    //cooldown to prevent data abuse.
+    final UUID uuid = sender.getUniqueId();
+    final long cooldown = plugin.getShopManager().findCooldown().getOrDefault(uuid, 0L);
+    if(cooldown != 0L && cooldown > System.currentTimeMillis()) {
+      return;
+    }
+    plugin.getShopManager().findCooldown().put(uuid, System.currentTimeMillis() + plugin.getConfig().getLong("shop.finding.cooldown", 20L) * 1000);
 
     final Location loc = sender.getLocation().clone();
     final Vector playerVector = loc.toVector();
@@ -114,8 +123,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
 
     //Okay now all shops is our wanted shop in Map
-
-    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double> comparingByValue(Double::compare).reversed()).toList();
+    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double>comparingByValue(Double::compare).reversed()).toList();
 
     //Function
     if(usingOldLogic) {

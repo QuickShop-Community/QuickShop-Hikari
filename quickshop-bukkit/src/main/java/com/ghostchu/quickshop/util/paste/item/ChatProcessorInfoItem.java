@@ -6,7 +6,6 @@ import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.viaversion.ViaFacet;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -44,7 +43,6 @@ public class ChatProcessorInfoItem implements SubPasteItem {
     table.insert("Adventure Text Serializer (Legacy)", CommonUtil.getClassPathRelative(LegacyComponentSerializer.class));
     table.insert("Adventure Text Serializer (Gson)", CommonUtil.getClassPathRelative(GsonComponentSerializer.class));
     table.insert("Adventure Text Serializer (Json)", CommonUtil.getClassPathRelative(JSONComponentSerializer.class));
-    table.insert("Adventure Text Serializer (BungeeChat)", CommonUtil.getClassPathRelative(BungeeComponentSerializer.class));
     table.insert("Adventure Text Serializer (ViaVersion Facet)", CommonUtil.getClassPathRelative(ViaFacet.class));
     table.insert("Adventure Text Serializer (ANSI)", CommonUtil.getClassPathRelative(ANSIComponentSerializer.class));
     table.insert("Adventure Text Serializer (Plain)", CommonUtil.getClassPathRelative(PlainTextComponentSerializer.class));

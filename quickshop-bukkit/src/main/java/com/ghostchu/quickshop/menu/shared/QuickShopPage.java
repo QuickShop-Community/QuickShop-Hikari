@@ -177,7 +177,6 @@ public class QuickShopPage extends Page {
       //check if this should be a lang-file lookup
       if(line.contains("lang:")) {
 
-        System.out.println("lang entry found");
         result.addAll(getList(player, line.replaceAll("lang:", ""), args));
         continue;
       }

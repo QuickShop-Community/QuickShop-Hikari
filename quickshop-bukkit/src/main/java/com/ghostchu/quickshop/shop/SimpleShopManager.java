@@ -101,6 +101,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
   public static final String DEFAULT_TYPE = "BUYING";
 
+  protected final Map<UUID, Long> cooldowns = Maps.newConcurrentMap();
   protected final Map<Integer, IShopType> shopTypes = Maps.newConcurrentMap();
   protected final ConcurrentLinkedQueue<Long> inDeletion = new ConcurrentLinkedQueue<>();
 
@@ -205,6 +206,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   public IShopLayoutProvider shopLayoutProvider() {
 
     return shopLayoutProvider;
+  }
+
+  /**
+   * Retrieves a map of cooldown information where the keys represent unique identifiers (UUIDs),
+   * and the values represent the corresponding timestamps indicating when the cooldown expires.
+   *
+   * @return A map mapping UUIDs to their cooldown expiration timestamps in milliseconds.
+   */
+  @Override
+  public Map<UUID, Long> findCooldown() {
+
+    return cooldowns;
   }
 
   /**

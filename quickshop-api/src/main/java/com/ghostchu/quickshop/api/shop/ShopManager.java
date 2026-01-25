@@ -44,6 +44,14 @@ public interface ShopManager {
   void shopLayoutProvider(final IShopLayoutProvider provider);
 
   /**
+   * Retrieves a map of cooldown information where the keys represent unique identifiers (UUIDs),
+   * and the values represent the corresponding timestamps indicating when the cooldown expires.
+   *
+   * @return A map mapping UUIDs to their cooldown expiration timestamps in milliseconds.
+   */
+  Map<UUID, Long> findCooldown();
+
+  /**
    * Retrieves a map containing shop types.
    *
    * @return a map where the key is an integer representing the shop type ID,

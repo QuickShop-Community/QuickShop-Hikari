@@ -484,6 +484,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     javaPlugin.reloadConfig();*/
 
+    javaPlugin.reloadConfig();
+
     /* It will generate a new UUID above updateConfig */
     this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
     updateConfig();
