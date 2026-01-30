@@ -667,7 +667,7 @@ database:
   trim-exception: <red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。
   generated-at: '<yellow>生成于： <gold>{0}'
   purge-date: <red>您必须给出一个日期
-  purge-warning: <yellow>此操作将清除存储在数据库中的历史记录，包括商店创建/更改/删除、购买、交易和系统日志。 删除这些数据可以释放磁盘空间，但所有历史数据都会丢失，依赖计量的其它插件将停止工作。 要继续执行此操作，请执行指令以 `/quickshop database purgelogs <before-days> 确认`
+  purge-warning: <yellow>此操作将清除存储在数据库中的历史记录，包括商店创建/更改/删除、购买、交易和系统日志。 删除这些数据可以释放磁盘空间，但所有历史数据都会丢失，依赖计量的其它插件将停止工作。 要继续执行此操作，请执行指令以 `/quickshop database purgelogs <before-days> confirm`
   purge-task-created: <green>任务已创建! 数据库在控制台静默清除历史记录
   purge-done-with-line: <green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。
   purge-done-with-error: <red>清除任务失败，请检查服务器控制台获取详细信息。
@@ -1634,86 +1634,86 @@ gui:
         - "<green>▼ 出售 ({0} 商店)</green>"
         - "<gray> 价格: <white>{1} - {2}</white></gray>"
         - "<gray> 平均值： <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> 中间价： <gold>{4}</gold></gray>"
         - "<gray> 库存： <aqua>{5}</aqua></gray>"
       lore-buying:
         - "<#FFA500>▲ 收购 ({0} 商店)</#FFA500>"
         - "<gray> 价格: <white>{1} - {2}</white></gray>"
         - "<gray> 平均值： <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> 中间价： <gold>{4}</gold></gray>"
       lore-footer:
         - "<yellow>点击查看所有商店</yellow>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>搜索： {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for items</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>左键点击搜索玩家</gray>"
+        - "<gray>右键单击清除搜索</gray>"
     sort:
-      display: "<green>Sort: {0}</green>"
+      display: "<green>排序： {0}</green>"
       lore:
-        - "<gray>Click to cycle</gray>"
-      price-asc: "Price ↑"
-      price-desc: "Price ↓"
-      stock: "Stock"
-      name: "Name"
+        - "<gray>点击切换</gray>"
+      price-asc: "价格 ↑"
+      price-desc: "价格 ↓"
+      stock: "库存"
+      name: "名称"
     filter:
-      display: "<aqua>Filter: {0}</aqua>"
+      display: "<aqua>筛选: {0}</aqua>"
       lore:
-        - "<gray>Click to cycle</gray>"
-      all: "All"
-      selling: "Selling"
-      buying: "Buying"
+        - "<gray>点击切换</gray>"
+      all: "全部"
+      selling: "出售"
+      buying: "收购"
     stock-filter:
-      display: "<gold>In Stock Only: {0}</gold>"
+      display: "<gold>仅显示有货: {0}</gold>"
       lore:
-        - "<gray>Click to toggle</gray>"
+        - "<gray>点击切换</gray>"
     back:
-      display: "<white>Back to Market</white>"
+      display: "<white>返回市场</white>"
   shared:
     previous-page:
-      display: "<white><< Previous Page</white>"
+      display: "<white><< 上一页</white>"
     next-page:
-      display: "<white>Next Page >></white>"
+      display: "<white>下一页 >></white>"
     page-info:
-      display: "<yellow>Page {0}/{1}</yellow>"
+      display: "<yellow>页 {0}/{1}</yellow>"
     back:
-      display: "<white>Back</white>"
+      display: "<white>返回</white>"
     close:
-      display: "<red>Close</red>"
+      display: "<red>关闭</red>"
   messages:
     #Keeper menu messages
     keeper:
       #Shown when player clicks "Change Price" button
-      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      enter-price: "<yellow>在聊天中输入新价格</yellow>"
       #Shown when player clicks "Delete Shop" button
-      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+      confirm-delete: "<yellow>输入 '<white>confirm</white>' 以删除你的商店. 输入其他内容取消.</yellow>"
     #Staff menu messages
     staff:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
-      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      enter-search: "<yellow>输入玩家名搜索。输入“<white>clear</white>”清空，或右键搜索按钮。</yellow>"
       #Shown when player left-clicks a staff member to remove them
       #{0} = staff member name
-      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      confirm-remove: "<yellow>输入“<white>confirm</white>”以移除商店助手 <red>{0}</red>。输入其他内容取消。</yellow>"
       #Shown when player right-clicks a staff member to transfer ownership
       #{0} = staff member name
-      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+      confirm-transfer: "<yellow>输入“<white>confirm</white>”将商店所有权转让给 <green>{0}</green>。输入其他内容取消。</yellow>"
     #Trade menu messages
     trade:
       #Shown when player clicks "Custom Order" button (buying)
       #{0} = item amount per purchase
-      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-buy: "<yellow>输入您想要购买的数量。必须是 <white>{0}</white> 的倍数。输入 <white>0</white> 即可取消。</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
-      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-sell: "<yellow>输入您想要出售的数量。必须是 <white>{0}</white> 的倍数。输入 <white>0</white> 即可取消。</yellow>"
       #Shown when player enters invalid quantity (not multiple of item amount)
       #{0} = item amount per purchase
-      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      invalid-multiple: "<red>数量无效！必须是 <white>{0}</white> 的倍数。输入 <white>0</white> 即可取消。</red>"
       #Shown when player enters quantity exceeding stock
-      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+      invalid-stock: "<red>数量无效！库存不足。输入 <white>0</white> 即可取消。</red>"
     #Browse menu messages
     browse:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
-      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      enter-search: "<yellow>输入物品名称搜索。输入“<white>clear</white>”清空，或右键搜索按钮。</yellow>"
 history:
   shop:
     gui-title: "查看交易记录"
@@ -1739,7 +1739,7 @@ history:
       - "<white>数量: <yellow>{4}</yellow></white>"
       - "<white>总计： <yellow>{5}</yellow></white>"
       - "<white>税： <yellow>{5}</yellow></white>"
-      - "<white>Net: <yellow>{6}</yellow></white>"
+      - "<white>实收： <yellow>{6}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
     current-page: "<white>页面 {0}</white>"
     multi-shops-icon-title: "<yellow>多个商店</yellow>"
