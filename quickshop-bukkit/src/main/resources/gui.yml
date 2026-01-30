@@ -296,13 +296,14 @@ history:
   top-customers:
     material: DIAMOND
     name: "lang:history.shop.top-n-valuable-customers-title"
-    lore: "lang:history.shop.top-n-valuable-customers-entry"
+    lore:
+      - "lang:history.shop.top-n-valuable-customers-entry"
     custom-model-data: 0
     slot: 8
   
   previous-page:
     material: ARROW
-    name: "lang:shared.previous-page.display"
+    name: "lang:gui.shared.previous-page.display"
     custom-model-data: 0
     slot: 3
   
