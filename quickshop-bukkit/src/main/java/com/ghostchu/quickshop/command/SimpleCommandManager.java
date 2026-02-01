@@ -678,12 +678,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     cmds.removeIf(commandContainer->commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
     cmds.removeIf(container::equals);
 
-    final String oldPrefix = container.getPrefix();
-    final String newPrefix = plugin.getCommandPrefix(oldPrefix);
+    final String newPrefix = plugin.getCommandPrefix(container.getPrefix());
     if(newPrefix != null && !newPrefix.isEmpty()) {
 
       container.setPrefix(newPrefix);
-      container.setDescription((locale)->plugin.text().of("command.description." + oldPrefix).forLocale());
+      container.setDescription((locale)->plugin.text().of("command.description." + newPrefix).forLocale());
     }
     cmds.add(container);
     cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
