@@ -33,21 +33,25 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
     int i = 0;
 
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
+      boolean shouldRemove = false;
       try {
         if(Util.isLoaded(shop.getLocation())
            && shop.isSelling()
            && shop.getRemainingStock() == 0) {
-          pendingRemoval.add(
-                  shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
+          // Is selling, but has no stock, and is a chest shop, but is not a double shop.
           // Can be deleted safely.
-          i++;
+          shouldRemove = true;
         }
         if(plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
-          pendingRemoval.add(shop);
-          i++;
+          shouldRemove = true;
         }
       } catch(final IllegalStateException e) {
-        pendingRemoval.add(shop); // The shop is not there anymore, remove it
+        shouldRemove = true; // The shop is not there anymore, remove it
+      }
+
+      if(shouldRemove) {
+        pendingRemoval.add(shop);
+        i++;
       }
     }
 
