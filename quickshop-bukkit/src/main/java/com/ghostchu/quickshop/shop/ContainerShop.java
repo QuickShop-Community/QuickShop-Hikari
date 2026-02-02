@@ -1671,7 +1671,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      QuickShop.folia().getScheduler().runLater(()->plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+      plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this);
       Log.debug("Sign broadcast completed.");
     }
   }
