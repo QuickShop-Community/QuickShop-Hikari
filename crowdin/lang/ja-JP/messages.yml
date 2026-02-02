@@ -5,14 +5,14 @@ disabled-in-this-world: <red>このワールドではクイックショップが
 how-much-to-trade-for: <green>チャットで<yellow>{1}個の {0}<green>をいくらで取引したいか入力してください。
 client-language-changed: <green>QuickShop はクライアントの言語設定が変更されていることを検出しました。現在 {0} ロケールを使用しています。
 shops-backingup: データベースからショップのバックアップを作成しています...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: 翻訳者の皆さまへ。もしこれをGitHub上やソースコードから編集しているなら、代わりにhttps://crowdin.com/project/qs-hikari をご覧ください。
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
 bad-command-usage-detailed: '<red>コマンド引数が不正です! 次のパラメータを受け付けます: <gray>{0}'
 thats-not-a-number: <red>無効な番号です
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>これは危険なコマンドなので、コンソールのみが実行できます。
 not-a-number: <red>数字しか入力出来ません。あなたの入力は {0} でした。
-not-looking-at-valid-shop-block: <red>ショップを作成するためのブロックが見つかりませんでした。確認する必要があります。
+not-looking-at-valid-shop-block: <red>ショップを作成できませんでした。対応するブロックの種類を確認して、再度お試しください。
 shop-removed-cause-ongoing-fee: <red>あなたの {0} のショップは十分な資金がなかったため削除されました！
 tabcomplete:
   amount: '[個数]'
@@ -77,7 +77,7 @@ flush-finished: <green>未読メッセージの取り出しに成功しました
 no-price-given: <red>有効な価格を設定してください
 shop-already-owned: <red>これはすでにショップです。
 backup-success: <green>バックアップに成功しました。
-not-looking-at-shop: <red>QuickShopが見つかりませんでした。確認する必要があります。
+not-looking-at-shop: <red>ショップが見つかりませんでした。<yellow>ショップを選択しているか確認してください。
 you-cant-afford-a-new-shop: <red>新しいショップを作成するには {0} かかります。
 success-created-shop: <red>ショップが作成されました。
 shop-creation-cancelled: <red>ショップの作成がキャンセルされました。
@@ -214,7 +214,7 @@ updatenotify:
     - どかーん！新しいアップデート {0} がやってきました。更新しよう！
     - サプライズです！ {0} がやってきました！あなたは {1} です
     - アップデートが必要です。{0} がリリースされました！
-    - おっと！ {0} がリリースされました。今は {1} です！
+    - わお！遂に {0} がリリースされました。あなたは現在 {1} を使用しています！
     - マジでQSが {0} にアップデートされてるんだって！なんでまだ更新してないんだ？
     - 修正と再... 申し訳ありませんが、{0} がリリースされました！
     - エラー！間違えました。これはエラーではありません。{0} がリリースされました！
@@ -489,7 +489,7 @@ command:
   no-world-given: <red>ワールド名を指定してください
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>その値 {0} は最大値よりも大きいか、若しくは1よりも小さい値です
-currency-not-support: <red>エコノミープラグインはマルチエコノミー機能をサポートしていません。
+currency-not-support: <red>この経済プラグインは複数の経済システムをサポートしていません。
 trading-in-creative-mode-is-disabled: <red>クリエイティブモードではこのショップと取引することはできません。
 the-owner-cant-afford-to-buy-from-you: <red>この商品の買取価格は {0} ですが、店主は {1} しか所持していません。
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
@@ -1750,7 +1750,8 @@ history:
       - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
       - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
     no-result: "<white>No result</white>"
 about:

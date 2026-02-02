@@ -64,6 +64,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
         plugin.getShopManager().deleteShop(shop);
         deletionCounter.incrementAndGet();
         plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
+        return;
       }
       if(!shop.getLocation().isWorldLoaded()) {
         plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "unloaded world").send();
@@ -77,6 +78,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
         plugin.getShopManager().deleteShop(shop);
         deletionCounter.incrementAndGet();
         plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
+        return;
       }
     }).whenComplete((aVoid, throwable)->
                             plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()
