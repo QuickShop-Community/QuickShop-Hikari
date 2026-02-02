@@ -28,6 +28,10 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
   public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     plugin.text().of(sender, "command.cleaning").send();
+    Util.mainThreadRun(() -> executeClean(sender));
+  }
+
+  private void executeClean(@NotNull final CommandSender sender) {
 
     final List<Shop> pendingRemoval = new ArrayList<>();
     int i = 0;
