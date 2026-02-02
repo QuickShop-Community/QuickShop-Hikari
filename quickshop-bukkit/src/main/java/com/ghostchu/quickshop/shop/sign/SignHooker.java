@@ -66,7 +66,9 @@ public class SignHooker {
 
           return;
         }
-        QuickShop.folia().getScheduler().runLater(()->shops.forEach((loc, shop)->updatePerPlayerShopSign(player, loc, shop)), 2);
+        shops.forEach((loc, shop)->
+          QuickShop.folia().getScheduler().runAtLocationLater(loc, ()->updatePerPlayerShopSign(player, loc, shop), 2)
+        );
       }
     };
 
