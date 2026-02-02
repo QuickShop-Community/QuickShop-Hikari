@@ -68,6 +68,8 @@ public class QSEconomyTransaction implements EconomyTransaction {
   private @Nullable QUser to;
   private @Nullable QUser taxer;
 
+  private @NotNull BigDecimal ownerPayment;
+
   private String lastError = "No transaction error logged";
 
   public QSEconomyTransaction(final BenefitProvider benefitManager, @NotNull final String world,
@@ -275,6 +277,16 @@ public class QSEconomyTransaction implements EconomyTransaction {
   }
 
   /**
+   * Retrieves the amount the owner actually receives after benefits and tax deductions.
+   *
+   * @return a BigDecimal value representing the owner payment amount
+   */
+  public @NotNull BigDecimal ownerPayment() {
+
+    return ownerPayment;
+  }
+
+  /**
    * Indicates whether the transaction is completable.
    *
    * @return true if the transaction can be completed, false otherwise
@@ -354,6 +366,7 @@ public class QSEconomyTransaction implements EconomyTransaction {
     //if there's no benefits
     if(benefitProvider.none()) {
 
+      this.ownerPayment = amountAfterTax;
       if(to != null && !this.executeOperation(new EconomyDepositOperation(to, amountAfterTax, world, currency))) {
 
         this.lastError = "Failed to deposit " + amountAfterTax.toPlainString() + " to account " + to + "LastError: " + provider.lastError();
@@ -386,9 +399,9 @@ public class QSEconomyTransaction implements EconomyTransaction {
     }
 
 
-    final BigDecimal ownerPayment = CalculateUtil.multiply(amountAfterTax, fullAmount.subtract(payout));
+    this.ownerPayment = CalculateUtil.multiply(amountAfterTax, fullAmount.subtract(payout));
     Log.transaction("Benefit for owner remaining: " + ownerPayment.toPlainString());
-    if(ownerPayment.compareTo(BigDecimal.ZERO) > 0 && !this.executeOperation(new EconomyWithdrawOperation(to, ownerPayment, world, currency))) {
+    if(ownerPayment.compareTo(BigDecimal.ZERO) > 0 && !this.executeOperation(new EconomyDepositOperation(to, ownerPayment, world, currency))) {
 
       this.lastError = "Failed to deposit " + ownerPayment.toPlainString() + " to account " + to + "LastError: " + provider.lastError();
       callback.onFailed(this);
