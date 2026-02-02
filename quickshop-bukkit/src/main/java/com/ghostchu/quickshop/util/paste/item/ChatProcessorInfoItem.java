@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.util.paste.item;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import net.kyori.adventure.Adventure;
-import net.kyori.adventure.platform.viaversion.ViaFacet;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.ansi.ANSIComponentSerializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -43,7 +42,6 @@ public class ChatProcessorInfoItem implements SubPasteItem {
     table.insert("Adventure Text Serializer (Legacy)", CommonUtil.getClassPathRelative(LegacyComponentSerializer.class));
     table.insert("Adventure Text Serializer (Gson)", CommonUtil.getClassPathRelative(GsonComponentSerializer.class));
     table.insert("Adventure Text Serializer (Json)", CommonUtil.getClassPathRelative(JSONComponentSerializer.class));
-    table.insert("Adventure Text Serializer (ViaVersion Facet)", CommonUtil.getClassPathRelative(ViaFacet.class));
     table.insert("Adventure Text Serializer (ANSI)", CommonUtil.getClassPathRelative(ANSIComponentSerializer.class));
     table.insert("Adventure Text Serializer (Plain)", CommonUtil.getClassPathRelative(PlainTextComponentSerializer.class));
     table.insert("Adventure MiniMessage", CommonUtil.getClassPathRelative(MiniMessage.class));
