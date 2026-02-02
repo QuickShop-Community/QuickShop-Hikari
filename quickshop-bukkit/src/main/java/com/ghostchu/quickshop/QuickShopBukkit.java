@@ -98,6 +98,11 @@ public class QuickShopBukkit extends JavaPlugin {
     if(abortLoading != null) {
       throw new IllegalStateException("Plugin is disabled due an loading error", abortLoading);
     }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("BarrelShops")) {
+
+      throw new IllegalStateException("Plugin is disabled due an loading error");
+    }
     final long enableAtTime = System.currentTimeMillis();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the enable sequence");
     this.quickShop.onEnable();
