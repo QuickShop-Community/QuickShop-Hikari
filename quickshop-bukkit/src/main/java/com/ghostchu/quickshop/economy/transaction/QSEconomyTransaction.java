@@ -388,7 +388,7 @@ public class QSEconomyTransaction implements EconomyTransaction {
 
     final BigDecimal ownerPayment = CalculateUtil.multiply(amountAfterTax, fullAmount.subtract(payout));
     Log.transaction("Benefit for owner remaining: " + ownerPayment.toPlainString());
-    if(ownerPayment.compareTo(BigDecimal.ZERO) > 0 && !this.executeOperation(new EconomyWithdrawOperation(to, ownerPayment, world, currency))) {
+    if(ownerPayment.compareTo(BigDecimal.ZERO) > 0 && !this.executeOperation(new EconomyDepositOperation(to, ownerPayment, world, currency))) {
 
       this.lastError = "Failed to deposit " + ownerPayment.toPlainString() + " to account " + to + "LastError: " + provider.lastError();
       callback.onFailed(this);
