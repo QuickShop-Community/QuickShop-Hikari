@@ -1757,7 +1757,8 @@ history:
       - "<white>最近 <aqua>{17}</aqua> 营业额： <yellow>{18}</yellow></white>"
       - "<white>总营业额： <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>交易者总数： <yellow>{0}</yellow></white>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>前 {0} 个最有价值客户</gold>"
     no-result: "<white>没有结果</white>"
 about:

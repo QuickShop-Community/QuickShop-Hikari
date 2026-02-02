@@ -1748,7 +1748,8 @@ history:
       - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
       - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>Gesamte Einzelkäufe: <yellow>{0}</yellow></white>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} reichste Kunden</gold>"
     no-result: "<white>Keine Ergebnisse</white>"
 about:
