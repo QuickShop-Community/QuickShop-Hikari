@@ -682,7 +682,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     if(newPrefix != null && !newPrefix.isEmpty()) {
 
       container.setPrefix(newPrefix);
-      container.setDescription((locale)->plugin.text().of("command.description." + newPrefix).forLocale());
+      if(container.getDescription() == null) {
+        container.setDescription((locale)->plugin.text().of("command.description." + newPrefix).forLocale());
+      }
     }
     cmds.add(container);
     cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
