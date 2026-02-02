@@ -109,12 +109,13 @@ public class SignHooker {
     if(world == null) {
       return;
     }
-    final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
-    for(final Entity nearbyPlayer : nearbyPlayers) {
-
-      if(nearbyPlayer instanceof final Player player) {
-        updatePerPlayerShopSign(player, location, shop);
+    QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc)->{
+      final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
+      for(final Entity nearbyPlayer : nearbyPlayers) {
+        if(nearbyPlayer instanceof final Player player) {
+          updatePerPlayerShopSign(player, location, shop);
+        }
       }
-    }
+    });
   }
 }
