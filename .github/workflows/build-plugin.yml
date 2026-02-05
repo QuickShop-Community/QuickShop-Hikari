@@ -1,0 +1,25 @@
+name: Build Plugin Jar
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build plugin jar
+        run: mvn package -pl !com.ghostchu.quickshop.compatibility:itemsadder --batch-mode --update-snapshots -T 1.5C -f pom.xml -P github
+      - name: Upload plugin jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: quickshop-hikari-jar
+          path: quickshop-bukkit/target/*.jar
+          if-no-files-found: error
