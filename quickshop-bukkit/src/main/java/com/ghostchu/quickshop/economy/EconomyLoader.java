@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.BuiltInSolution;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.economy.provider.CoinsEngineProvider;
 import com.ghostchu.quickshop.economy.provider.VaultProvider;
 import com.ghostchu.quickshop.economy.provider.VaultUnlockedProvider;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -61,7 +62,7 @@ public class EconomyLoader {
       }
 
       plugin.logger().error("Something went wrong while trying to load the economy system!");
-      plugin.logger().error("QuickShop was unable to hook into an economy system (Couldn't find Vault or VaultUnlocked)!");
+      plugin.logger().error("QuickShop was unable to hook into an economy system (Couldn't find CoinsEngine, Vault, or VaultUnlocked)!");
       plugin.logger().error("QuickShop can NOT enable properly!");
       plugin.setupBootError(BuiltInSolution.econError(), false);
       plugin.logger().error("Plugin Listeners have been disabled. Please fix this economy issue.", e);
@@ -71,12 +72,8 @@ public class EconomyLoader {
 
   public boolean setup() throws Exception {
 
-    final String provider = switch(plugin.getConfig().getInt("economy-type")) {
-      case 0 -> "Vault";
-      default -> null;
-    };
-
-    if(provider == null) {
+    final int economyType = plugin.getConfig().getInt("economy-type");
+    if(economyType != 0) {
       Log.debug("No economy bridge found.");
       return false;
     }
@@ -94,6 +91,10 @@ public class EconomyLoader {
   }
 
   public EconomyProvider provider() {
+
+    if(coinsEnginePresent()) {
+      return loadCoinsEngine();
+    }
 
     if(vaultUnlockedPresent()) {
 
@@ -115,6 +116,17 @@ public class EconomyLoader {
     }
 
     return loadVault();
+  }
+
+  private EconomyProvider loadCoinsEngine() {
+
+    final CoinsEngineProvider coinsEngineProvider = new CoinsEngineProvider(plugin);
+    if(!coinsEngineProvider.valid()) {
+      return null;
+    }
+
+    plugin.logger().info("Using economy system: CoinsEngine");
+    return coinsEngineProvider;
   }
 
   private EconomyProvider loadVaultUnlocked() {
@@ -209,5 +221,11 @@ public class EconomyLoader {
 
     final Plugin vault = plugin.getJavaPlugin().getServer().getPluginManager().getPlugin("Vault");
     return vault != null && vault.getDescription().getVersion().startsWith("1");
+  }
+
+  private boolean coinsEnginePresent() {
+
+    final Plugin coinsEngine = plugin.getJavaPlugin().getServer().getPluginManager().getPlugin("CoinsEngine");
+    return coinsEngine != null && coinsEngine.isEnabled();
   }
 }
