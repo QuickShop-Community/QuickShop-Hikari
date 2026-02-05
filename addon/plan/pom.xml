@@ -82,11 +82,11 @@
             <version>0.4.7</version>
             <scope>provided</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>net.kyori</groupId>-->
-        <!--            <artifactId>adventure-text-serializer-plain</artifactId>-->
-        <!--            <version>4.12.0</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-interface</artifactId>
+            <version>6.2.0.11-RELEASE-CANDIDATE-2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
