@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
@@ -38,6 +39,7 @@ import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.EconomyLoader;
 import com.ghostchu.quickshop.economy.QSEconomyManager;
+import com.ghostchu.quickshop.hook.WorldEditHook;
 import com.ghostchu.quickshop.listener.BlockListener;
 import com.ghostchu.quickshop.listener.BungeeListener;
 import com.ghostchu.quickshop.listener.ChatListener;
@@ -174,6 +176,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
+
+
+  private final Map<String, Hook> hooks = new HashMap<>();
 
   public static final Queue<UUID> inShop = new ConcurrentLinkedQueue<>();
 
@@ -356,6 +361,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public static QuickShop getInstance() {
 
     return instance;
+  }
+
+  @Override
+  public Map<String, Hook> hooks() {
+
+    return hooks;
   }
 
   /**
@@ -838,6 +849,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
     }
 
+    //initialize our hooks and things
+    logger.info("Initializing built-in hooks...");
+    addHook(new WorldEditHook());
+
+    loadHooks();
   }
 
   private void loadRegistry() {

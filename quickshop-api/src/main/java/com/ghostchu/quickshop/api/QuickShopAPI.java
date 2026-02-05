@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
+import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
@@ -17,6 +18,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * The unique entry point to allow you to access most features of QuickShop
@@ -39,6 +43,65 @@ public interface QuickShopAPI {
       throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
     }
     return provider.getPlugin();
+  }
+
+  /**
+   * Retrieves the map of all registered hooks in the QuickShop system. Each hook
+   * is identified by its unique string identifier and provides custom integration
+   * capabilities for plugins or addons.
+   *
+   * @return a map containing hook identifiers as keys and their corresponding Hook
+   *         instances as values. The map will be empty if no hooks are registered.
+   */
+  Map<String, Hook> hooks();
+
+  /**
+   * Iterates through all registered hooks in the QuickShop system and enables them
+   * if they meet the requirements for activation. The hooks are retrieved from the
+   * internal map of registered hooks, where each hook is identified by a unique string key.
+   *
+   * This method ensures that hooks capable of being enabled are activated, allowing
+   * for custom integrations or behaviors added by plugins or addons to become functional.
+   *
+   * The activation of individual hooks depends on their internal logic, as determined
+   * by the {@code canEnable()} method of each hook. If a hook is eligible, its {@code enable()}
+   * method is invoked to update its state.
+   *
+   * Note: This method operates on all hooks currently available in the system through
+   * the {@code hooks()} method and does not handle any hooks added or removed after its invocation.
+   */
+  default void loadHooks() {
+
+    for(final Hook hook : hooks().values()) {
+
+      if(hook.canEnable()) {
+        hook.enable();
+      }
+    }
+  }
+
+  /**
+   * Adds a new hook to the QuickShop system. The hook is identified by its unique identifier
+   * and is stored in the hooks map. This allows plugins or addons to integrate with
+   * QuickShop by providing custom behavior through hooks.
+   *
+   * @param hook the hook to be added, must not be null. The identifier of the hook must be unique.
+   */
+  default void addHook(final Hook hook) {
+
+    hooks().put(hook.identifier().toLowerCase(Locale.ROOT), hook);
+  }
+
+  /**
+   * Removes a hook from the QuickShop system using its unique identifier. The hook is removed
+   * from the internal hooks map, which is used to manage integrations or custom behaviors added
+   * to QuickShop by plugins or addons.
+   *
+   * @param identifier the unique identifier of the hook to be removed, must not be null.
+   */
+  default void removeHook(final String identifier) {
+
+    hooks().remove(identifier.toLowerCase(Locale.ROOT));
   }
 
   /**
