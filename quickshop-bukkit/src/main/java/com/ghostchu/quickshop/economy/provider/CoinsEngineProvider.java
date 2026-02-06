@@ -39,11 +39,13 @@ public class CoinsEngineProvider implements EconomyProvider {
 
   private static final String API_CLASS = "su.nightexpress.coinsengine.api.CoinsEngineAPI";
   private static final String CURRENCY_CLASS = "su.nightexpress.coinsengine.api.currency.Currency";
+  private final QuickShop plugin;
   private final BuiltInEconomyFormatter formatter;
   private String lastError = "No transaction error logged";
 
   public CoinsEngineProvider(@NotNull final QuickShop plugin) {
 
+    this.plugin = plugin;
     this.formatter = new BuiltInEconomyFormatter(plugin);
   }
 
@@ -100,6 +102,7 @@ public class CoinsEngineProvider implements EconomyProvider {
       return false;
     }
     if(currency == null) {
+      return getCurrencyCount() > 0;
       return true;
     }
     return hasCurrency(currency);
@@ -259,6 +262,9 @@ public class CoinsEngineProvider implements EconomyProvider {
       final Class<?> apiClass = Class.forName(API_CLASS);
 
       if(currency != null) {
+        if(!isAllowedCurrency(currency)) {
+          return null;
+        }
         final Method getCurrency = apiClass.getMethod("getCurrency", String.class);
         return getCurrency.invoke(null, currency);
       }
@@ -272,6 +278,9 @@ public class CoinsEngineProvider implements EconomyProvider {
       Object fallback = null;
       for(final Object entry : currencies) {
         if(entry == null) {
+          continue;
+        }
+        if(!isAllowedCurrency(entry)) {
           continue;
         }
         if(fallback == null) {
@@ -290,6 +299,9 @@ public class CoinsEngineProvider implements EconomyProvider {
 
   private boolean hasCurrency(@NotNull final String currency) {
 
+    if(!isAllowedCurrency(currency)) {
+      return false;
+    }
     try {
       final Class<?> apiClass = Class.forName(API_CLASS);
       final Method hasCurrency = apiClass.getMethod("hasCurrency", String.class);
@@ -306,11 +318,46 @@ public class CoinsEngineProvider implements EconomyProvider {
       final Method getCurrencies = apiClass.getMethod("getCurrencies");
       final Object result = getCurrencies.invoke(null);
       if(result instanceof Collection<?> currencies) {
+        int count = 0;
+        for(final Object entry : currencies) {
+          if(entry != null && isAllowedCurrency(entry)) {
+            count++;
+          }
+        }
+        return count;
         return currencies.size();
       }
     } catch(final Exception e) {
       return 0;
     }
     return 0;
+  }
+
+  private boolean isAllowedCurrency(@NotNull final String currencyId) {
+
+    final var allowed = plugin.getConfig().getStringList("economy.coinsengine.allowed-currencies");
+    if(allowed.isEmpty()) {
+      return true;
+    }
+    final String normalized = currencyId.toLowerCase();
+    return allowed.stream().anyMatch(entry->entry != null && entry.equalsIgnoreCase(normalized));
+  }
+
+  private boolean isAllowedCurrency(@NotNull final Object currencyInstance) {
+
+    final var allowed = plugin.getConfig().getStringList("economy.coinsengine.allowed-currencies");
+    if(allowed.isEmpty()) {
+      return true;
+    }
+    try {
+      final Method getId = currencyInstance.getClass().getMethod("getId");
+      final Object id = getId.invoke(currencyInstance);
+      if(id instanceof String currencyId) {
+        return isAllowedCurrency(currencyId);
+      }
+    } catch(final Exception ignored) {
+      return false;
+    }
+    return false;
   }
 }

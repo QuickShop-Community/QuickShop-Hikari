@@ -96,6 +96,14 @@ include-offlineplayer-list: false
 #DO NOT TOUCH THIS IF YOU DON'T KNOW WHAT IT DOES. ASK FOR SUPPORT BEFORE TOUCHING THIS!
 economy-type: 0
 
+#CoinsEngine economy options (only used when CoinsEngine is installed).
+economy:
+  coinsengine:
+    #Limit which CoinsEngine currencies are allowed for QuickShop.
+    #Leave empty to allow all currencies.
+    #Example: ["money", "rainbowcitymoney"]
+    allowed-currencies: []
+
 #Whether to use decimal format to display money.
 use-decimal-format: false
 
