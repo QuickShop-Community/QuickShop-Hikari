@@ -103,6 +103,7 @@ public class CoinsEngineProvider implements EconomyProvider {
     }
     if(currency == null) {
       return getCurrencyCount() > 0;
+      return true;
     }
     return hasCurrency(currency);
   }
@@ -324,6 +325,7 @@ public class CoinsEngineProvider implements EconomyProvider {
           }
         }
         return count;
+        return currencies.size();
       }
     } catch(final Exception e) {
       return 0;
