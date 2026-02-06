@@ -82,7 +82,7 @@ public enum GameVersion {
         return version;
       }
     }
-    return UNKNOWN;
+    return v1_21_R10;
   }
 
 }

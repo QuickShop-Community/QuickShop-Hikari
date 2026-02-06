@@ -65,6 +65,10 @@ public interface PacketHandler<T> {
    */
   default Optional<PacketFactory<?>> factory(final String version) {
 
+    if(!factories().containsKey(version)) {
+      return Optional.ofNullable(factories().get("1.21.11"));
+    }
+
     return Optional.ofNullable(factories().get(version));
   }
 
