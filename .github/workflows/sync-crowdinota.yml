@@ -18,9 +18,9 @@ jobs:
         with:
           args: uploads3
         env:
-          CROWDIN_ACCESS_TOKEN: ${{ secrets.CROWDIN_ACCESS_TOKEN }}
-          CROWDIN_PROJECT_BRANCH_ID: '126'
-          CROWDIN_PROJECT_ID: '524354'
+          CROWDIN_ACCESS_TOKEN: ${{ secrets.CROWDIN_ACCESS_TOKEN_NEW }}
+          CROWDIN_PROJECT_BRANCH_ID: '62'
+          CROWDIN_PROJECT_ID: '695407'
           #DEPLOY_PATH: './deploy-prod'
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
