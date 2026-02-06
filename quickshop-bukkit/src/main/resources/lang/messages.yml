@@ -589,7 +589,7 @@ command:
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>The given value {0} is larger than the max stack size
     or below one
-currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
+currency-not-support: <red>The economy plugin doesn't support the multi-economy feature or only has one currency available.
 trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while in
   creative mode.
 the-owner-cant-afford-to-buy-from-you: <red>This item is worth {0}, but the shop-owner
