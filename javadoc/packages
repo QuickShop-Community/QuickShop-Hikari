@@ -3,6 +3,7 @@ com.ghostchu.quickshop.common.util
 com.ghostchu.quickshop.common.util.mirror
 com.ghostchu.quickshop.api
 com.ghostchu.quickshop.api.obj
+com.ghostchu.quickshop.api.hook
 com.ghostchu.quickshop.api.event.packet
 com.ghostchu.quickshop.api.event.packet.send
 com.ghostchu.quickshop.api.event.packet.handler
@@ -45,6 +46,8 @@ com.ghostchu.quickshop.platform.paper
 com.ghostchu.quickshop.listener
 com.ghostchu.quickshop.obj
 com.ghostchu.quickshop
+com.ghostchu.quickshop.hook
+com.ghostchu.quickshop.hook.worldedit
 com.ghostchu.quickshop.bootstrap
 com.ghostchu.quickshop.permission
 com.ghostchu.quickshop.permission.impl
@@ -180,5 +183,4 @@ com.ghostchu.quickshop.compatibility.towny.command
 com.ghostchu.quickshop.compatibility.ultimateclaims
 com.ghostchu.quickshop.compatibility.velocity
 com.ghostchu.quickshop.compatibility.voidchest
-com.ghostchu.quickshop.compatibility.worldedit
 com.ghostchu.quickshop.compatibility.worldguard
