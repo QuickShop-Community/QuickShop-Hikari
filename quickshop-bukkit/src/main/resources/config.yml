@@ -92,9 +92,18 @@ auto-report-errors: true
 include-offlineplayer-list: false
 
 #What economy provider should QuickShop use?
-#0=Vault/VaultUnlocked - VaultUnlocked supports multi-currency if you economy plugin supports it.
+#0=Auto (CoinsEngine if installed, otherwise Vault/VaultUnlocked)
 #DO NOT TOUCH THIS IF YOU DON'T KNOW WHAT IT DOES. ASK FOR SUPPORT BEFORE TOUCHING THIS!
 economy-type: 0
+
+#CoinsEngine economy options (only used when CoinsEngine is installed).
+economy:
+  coinsengine:
+    #Limit which CoinsEngine currencies are allowed for QuickShop.
+    #Configure the list below to control which currencies are usable.
+    allowed-currencies:
+      - money
+      - rainbowcitymoney
 
 #Whether to use decimal format to display money.
 use-decimal-format: false
