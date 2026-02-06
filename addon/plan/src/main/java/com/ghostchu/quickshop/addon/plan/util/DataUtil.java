@@ -5,11 +5,9 @@ import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.util.Util;
 import com.google.common.html.HtmlEscapers;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,12 +38,8 @@ public class DataUtil {
   @NotNull
   public String getItemName(@NotNull final DataRecord dataRecord) {
 
-    final ItemStack stack;
-    try {
-      stack = Util.deserialize(dataRecord.getItem());
-    } catch(final InvalidConfigurationException e) {
-      return "[Failed to deserialize]";
-    }
+    final ItemStack stack = main.getQuickShop().platform().decodeStack(dataRecord.getItem());
+
     if(stack == null) {
       return "[Failed to deserialize]";
     }

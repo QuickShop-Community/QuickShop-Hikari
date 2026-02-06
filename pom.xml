@@ -508,7 +508,6 @@
         <module>compatibility/ultimateclaims</module>
         <module>compatibility/velocity</module>
         <module>compatibility/voidchest</module>
-        <module>compatibility/worldedit</module>
         <module>compatibility/worldguard</module>
 
     </modules>

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.compatibility.worldedit;
+package com.ghostchu.quickshop.hook.worldedit;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.sk89q.worldedit.EditSession;
@@ -8,15 +8,17 @@ import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.util.eventbus.EventHandler;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.World;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 public class WorldEditAdapter implements Listener {
 
-  private final WorldEditPlugin weBukkit;
+  private final WorldEditPlugin worldEditPlugin;
 
-  public WorldEditAdapter(final WorldEditPlugin weBukkit) {
+  public WorldEditAdapter() {
 
-    this.weBukkit = weBukkit;
+    worldEditPlugin = (WorldEditPlugin)Bukkit.getPluginManager().getPlugin("WorldEdit");
+    Bukkit.getPluginManager().registerEvents(this, QuickShop.getInstance().getJavaPlugin());
   }
 
   @Subscribe(priority = EventHandler.Priority.NORMAL)
@@ -31,12 +33,12 @@ public class WorldEditAdapter implements Listener {
 
   public void register() {
 
-    weBukkit.getWorldEdit().getEventBus().register(this);
+    worldEditPlugin.getWorldEdit().getEventBus().register(this);
   }
 
   public void unregister() {
 
-    weBukkit.getWorldEdit().getEventBus().unregister(this);
+    worldEditPlugin.getWorldEdit().getEventBus().unregister(this);
   }
 
 }

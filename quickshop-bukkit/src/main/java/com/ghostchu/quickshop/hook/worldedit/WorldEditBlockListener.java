@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.compatibility.worldedit;
+package com.ghostchu.quickshop.hook.worldedit;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;

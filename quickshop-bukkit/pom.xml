@@ -69,6 +69,10 @@
             <id>sonatype-oss-snapshots1</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>enginehub-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -341,6 +345,78 @@
             <groupId>com.ghostchu.lib.unofficial.com.alessiodp.libby</groupId>
             <artifactId>libby-bukkit</artifactId> <!-- Replace bukkit if you're using another platform -->
             <version>2.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>${compat.worldedit}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bstats</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>fastutil</artifactId>
+                    <groupId>it.unimi.dsi</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paperlib</artifactId>
+                    <groupId>io.papermc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>antlr4</artifactId>
+                    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>antlr4-runtime</artifactId>
+                    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jchronic</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jlibnoise</artifactId>
+                    <groupId>com.sk89q.lib</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>lin-bus-format-snbt</artifactId>
+                    <groupId>org.enginehub.lin-bus.format</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>lin-bus-tree</artifactId>
+                    <groupId>org.enginehub.lin-bus</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paranamer</artifactId>
+                    <groupId>com.thoughtworks.paranamer</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>rhino-runtime</artifactId>
+                    <groupId>org.mozilla</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
