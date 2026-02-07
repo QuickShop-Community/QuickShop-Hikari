@@ -119,12 +119,30 @@ public final class Main extends CompatibilityModule implements Listener {
 
     event.user().getBukkitPlayer().ifPresent(player->{
       final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+
       final RegionQuery query = container.createQuery();
       final Location shopLocation = event.shop().get().getLocation();
       final ApplicableRegionSet regions = query.getApplicableRegions(BukkitAdapter.adapt(shopLocation));
 
-      // Allow creation if outside regions
-      if(regions.size() == 0) return;
+      final RegionManager manager = container.get(BukkitAdapter.adapt(shopLocation.getWorld()));
+
+      if(manager != null && regions.size() == 0) {
+        //we are in the global region.
+        final ProtectedRegion globalRegion = manager.getRegion(ProtectedRegion.GLOBAL_REGION);
+        if(globalRegion == null) return;
+
+        final StateFlag.State createState = globalRegion.getFlag(this.createFlag);
+        boolean createAllowed = getConfig().getBoolean("create.default-allow", false);
+        if(createState != null) {
+          createAllowed = createState == StateFlag.State.ALLOW;
+        }
+
+        if(!createAllowed) {
+          event.setCancelled(true, getApi().getTextManager().of(event.user(), "addon.worldguard.creation-flag-test-failed").forLocale());
+          return;
+        }
+        return;
+      }
 
       if(!hasRegionAccess(player.getUniqueId(), regions)) {
         final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
@@ -176,8 +194,25 @@ public final class Main extends CompatibilityModule implements Listener {
       final Location shopLocation = event.getShop().getLocation();
       final ApplicableRegionSet regions = query.getApplicableRegions(BukkitAdapter.adapt(shopLocation));
 
-      // Allow purchase if outside regions
-      if(regions.size() == 0) return;
+      final RegionManager manager = container.get(BukkitAdapter.adapt(shopLocation.getWorld()));
+
+      if(manager != null && regions.size() == 0) {
+        //we are in the global region.
+        final ProtectedRegion globalRegion = manager.getRegion(ProtectedRegion.GLOBAL_REGION);
+        if(globalRegion == null) return;
+
+        final StateFlag.State tradeState = globalRegion.getFlag(this.tradeFlag);
+        boolean tradeAllowed = getConfig().getBoolean("trade.default-allow", true);
+        if(tradeState != null) {
+          tradeAllowed = tradeState == StateFlag.State.ALLOW;
+        }
+
+        if(!tradeAllowed) {
+          event.setCancelled(true, getApi().getTextManager().of(event.getPurchaser(), "addon.worldguard.trade-flag-test-failed").forLocale());
+          return;
+        }
+        return;
+      }
 
       if(!hasRegionAccess(player.getUniqueId(), regions)) {
         final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
