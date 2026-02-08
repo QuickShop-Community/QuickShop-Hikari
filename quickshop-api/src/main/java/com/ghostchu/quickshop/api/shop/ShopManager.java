@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
+import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,6 +36,14 @@ public interface ShopManager {
    * @return an implementation of {@code IShopLayoutProvider} that handles the shop layout configuration.
    */
   IShopLayoutProvider shopLayoutProvider();
+
+  /**
+   * Retrieves an instance of the TaxManager class, responsible for handling tax-related computations
+   * and operations within the application.
+   *
+   * @return an instance of TaxManager that manages tax calculations and logic.
+   */
+  TaxManager taxManager();
 
   /**
    * Sets the shop layout provider to customize the layout of the shop.
@@ -164,15 +173,6 @@ public interface ShopManager {
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);
-
-//    /**
-//     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
-//     * by yourself
-//     *
-//     * @param world The name of the world
-//     * @param shop  The shop to add
-//     */
-//    void addShop(@NotNull String world, @NotNull Shop shop);
 
   void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop);
 

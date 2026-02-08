@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import com.ghostchu.quickshop.api.shop.type.BuyingType;
 import com.ghostchu.quickshop.api.shop.type.FrozenType;
 import com.ghostchu.quickshop.api.shop.type.SellingType;
@@ -38,6 +39,7 @@ import com.ghostchu.quickshop.economy.transaction.QSEconomyTransactionBuilder;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
+import com.ghostchu.quickshop.shop.tax.QuickShopTaxManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -87,6 +89,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -106,6 +109,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   protected final ConcurrentLinkedQueue<Long> inDeletion = new ConcurrentLinkedQueue<>();
 
   protected final InteractiveManager interactiveManager;
+  protected final TaxManager taxManager;
   @Getter
   @Nullable
   private QUser cacheTaxAccount;
@@ -141,6 +145,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     plugin.getReloadManager().register(this);
     this.interactiveManager = new InteractiveManager(plugin);
     this.shopLayoutProvider = new SimpleShopLayoutProvider(plugin);
+    this.taxManager = new QuickShopTaxManager();
     init();
   }
 
@@ -162,7 +167,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     addShopType(FROZEN_TYPE);
 
     Log.debug("Loading caching tax account...");
-    final String taxAccount = plugin.getConfig().getString("tax-account", "tax");
+    final String taxAccount = taxManager().taxAccount();
     if(!taxAccount.isEmpty()) {
       this.cacheTaxAccount = QUserImpl.createSync(plugin.getPlayerFinder(), taxAccount);
     } else {
@@ -206,6 +211,18 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   public IShopLayoutProvider shopLayoutProvider() {
 
     return shopLayoutProvider;
+  }
+
+  /**
+   * Retrieves an instance of the TaxManager class, responsible for handling tax-related
+   * computations and operations within the application.
+   *
+   * @return an instance of TaxManager that manages tax calculations and logic.
+   */
+  @Override
+  public TaxManager taxManager() {
+
+    return taxManager;
   }
 
   /**
@@ -842,7 +859,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     Util.ensureThread(false);
     double tax = globalTax;
-    if(plugin.perm().hasPermission(p, "quickshop.tax")) {
+    if(plugin.perm().hasPermission(shop.getOwner(), "quickshop.tax")) {
       tax = 0;
       Log.debug("Disable the Tax for player " + p + " cause they have permission quickshop.tax");
     }
