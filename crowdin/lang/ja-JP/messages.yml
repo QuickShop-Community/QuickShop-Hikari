@@ -143,9 +143,9 @@ metric:
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
     PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
     CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
+    PURCHASE_SELLING_SHOP:
     PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+  query-argument: 'クエリの引数: {0}'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: |-
