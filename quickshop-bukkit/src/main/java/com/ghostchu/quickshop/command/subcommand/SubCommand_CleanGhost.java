@@ -8,14 +8,14 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
 
@@ -43,8 +43,8 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
     final AtomicInteger deletionCounter = new AtomicInteger(0);
     final List<CompletableFuture<Void>> pendingTasks = new CopyOnWriteArrayList<>();
 
-    for(Shop shop : plugin.getShopManager().getAllShops()) {
-      CompletableFuture<Void> task = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc) -> {
+    for(final Shop shop : plugin.getShopManager().getAllShops()) {
+      final CompletableFuture<Void> task = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc) -> {
         if(shop == null) {
           return; // WTF
         }

@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tax.TaxProvider;
 import com.ghostchu.quickshop.api.shop.tax.TaxRates;
+import com.ghostchu.quickshop.util.logger.Log;
 
 /**
  * BasicProvider
@@ -68,9 +69,31 @@ public class BasicProvider implements TaxProvider {
   @Override
   public TaxRates calculateTax(final Shop shop, final QUser player) {
 
-    final double interactorRate = (appliesTo.equalsIgnoreCase("player") || appliesTo.equalsIgnoreCase("both"))? rate : 0.0;
-    final double ownerRate = (appliesTo.equalsIgnoreCase("shop") || appliesTo.equalsIgnoreCase("both"))? rate : 0.0;
+    final double interactorRate = (appliesTo.equalsIgnoreCase("player")
+                                   || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, player) : 0.0;
+    final double ownerRate = (appliesTo.equalsIgnoreCase("shop")
+                              || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, shop.getOwner()) : 0.0;
 
     return new TaxRates(interactorRate, ownerRate);
+  }
+
+  private double normalizeRate(final Shop shop, final QUser user) {
+
+    if(QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax")) {
+      Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax");
+      return 0.0;
+    }
+
+    if(shop.isUnlimited() && QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax.bypassunlimited")) {
+      Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
+      return 0.0;
+    }
+
+    if(rate >= 1.0 || rate < 0.0) {
+
+      Log.debug("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is " + rate + ")");
+      return 0.0;
+    }
+    return rate;
   }
 }

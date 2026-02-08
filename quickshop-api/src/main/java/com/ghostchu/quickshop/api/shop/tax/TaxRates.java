@@ -19,16 +19,30 @@ package com.ghostchu.quickshop.api.shop.tax;
  */
 
 /**
- * Represents the tax rates applicable to interactions between different entities,
- * specifically the interactor and the owner.
+ * Provides a container for managing tax rates applied to both the interactor
+ * and the owner during a transaction in the shop.
  *
- * @param interactorRate the tax rate applied to the interactor
- * @param ownerRate the tax rate applied to the owner
+ * This class stores and manages the tax rates for the interactor (e.g., the user
+ * interacting with the shop) and the owner (e.g., the owner of the shop).
+ * It includes methods to retrieve and modify these rates as well as to check
+ * if taxes are applied to either party.
+ *
+ * Instances of this class are primarily used to encapsulate tax rates when
+ * calculating taxes using a {@link TaxProvider}.
  *
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public record TaxRates(double interactorRate, double ownerRate) {
+public class TaxRates {
+
+  private double interactorRate;
+  private double shopRate;
+
+  public TaxRates(final double interactorRate, final double shopRate) {
+
+    this.interactorRate = interactorRate;
+    this.shopRate = shopRate;
+  }
 
   /**
    * Checks whether a tax rate is applied to the interactor.
@@ -41,12 +55,32 @@ public record TaxRates(double interactorRate, double ownerRate) {
   }
 
   /**
-   * Checks whether a tax rate is applied to the owner.
+   * Checks whether a tax rate is applied to the shop.
    *
-   * @return true if the owner tax rate is not 0.0, false otherwise
+   * @return true if the shop tax rate is not 0.0, false otherwise
    * @since 6.2.0.11
    */
-  public boolean taxOwner() {
-    return ownerRate != 0.0;
+  public boolean taxShop() {
+    return shopRate != 0.0;
+  }
+
+  public double interactorRate() {
+
+    return interactorRate;
+  }
+
+  public void interactorRate(final double interactorRate) {
+
+    this.interactorRate = interactorRate;
+  }
+
+  public double shopRate() {
+
+    return shopRate;
+  }
+
+  public void shopRate(final double shopRate) {
+
+    this.shopRate = shopRate;
   }
 }

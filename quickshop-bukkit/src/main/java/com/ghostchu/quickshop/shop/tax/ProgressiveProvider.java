@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tax.TaxProvider;
 import com.ghostchu.quickshop.api.shop.tax.TaxRates;
+import com.ghostchu.quickshop.util.logger.Log;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 
 import java.math.BigDecimal;
@@ -74,9 +75,9 @@ public class ProgressiveProvider implements TaxProvider {
   public TaxRates calculateTax(final Shop shop, final QUser player) {
 
     final double interactorRate = (appliesTo.equalsIgnoreCase("player")
-                                   || appliesTo.equalsIgnoreCase("both"))? getRate(player, shop.getLocation().getWorld().getName(), shop.getCurrency()) : 0.0;
+                                   || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, player, getRate(player, shop.getLocation().getWorld().getName(), shop.getCurrency())) : 0.0;
     final double ownerRate = (appliesTo.equalsIgnoreCase("shop")
-                              || appliesTo.equalsIgnoreCase("both"))? getRate(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()) : 0.0;
+                              || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, shop.getOwner(), getRate(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency())) : 0.0;
 
     return new TaxRates(interactorRate, ownerRate);
   }
@@ -97,6 +98,26 @@ public class ProgressiveProvider implements TaxProvider {
     return taxRates.lastEntry().getValue();
   }
 
+  private double normalizeRate(final Shop shop, final QUser user, final double rate) {
+
+    if(QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax")) {
+      Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax");
+      return 0.0;
+    }
+
+    if(shop.isUnlimited() && QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax.bypassunlimited")) {
+      Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
+      return 0.0;
+    }
+
+    if(rate >= 1.0 || rate < 0.0) {
+
+      Log.debug("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is " + rate + ")");
+      return 0.0;
+    }
+    return rate;
+  }
+
   private void loadRates() {
 
     final String route = "shop-tax.progressive.brackets";
@@ -110,6 +131,13 @@ public class ProgressiveProvider implements TaxProvider {
     for(final String key : section.getRoutesAsStrings(false)) {
 
       try {
+
+        if(key.isEmpty()) continue;
+
+        if(key.equalsIgnoreCase("-1")) {
+          taxRates.put(new BigDecimal(Long.MAX_VALUE), section.getDouble(key));
+          continue;
+        }
 
         final BigDecimal upperBalance = new BigDecimal(key);
         taxRates.put(upperBalance, section.getDouble(key));

@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.listener.LockListener;
 import com.ghostchu.quickshop.shop.ContainerShop;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

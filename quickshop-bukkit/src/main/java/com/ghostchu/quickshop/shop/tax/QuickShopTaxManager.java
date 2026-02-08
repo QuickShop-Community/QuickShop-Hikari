@@ -21,6 +21,10 @@ package com.ghostchu.quickshop.shop.tax;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import com.ghostchu.quickshop.api.shop.tax.TaxProvider;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -32,7 +36,7 @@ import java.util.Map;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class QuickShopTaxManager implements TaxManager {
+public class QuickShopTaxManager implements TaxManager, Reloadable {
 
   protected final Map<String, TaxProvider> providers = new HashMap<>();
 
@@ -43,6 +47,13 @@ public class QuickShopTaxManager implements TaxManager {
   protected String appliesTo;
 
   public QuickShopTaxManager() {
+
+    QuickShop.getInstance().getReloadManager().register(this);
+    init();
+  }
+
+  public void init() {
+
 
     this.defaultProvider = QuickShop.getInstance().getConfig().getString("shop-tax.type", "basic").toLowerCase(Locale.ROOT);
     this.taxAccount = QuickShop.getInstance().getConfig().getString("shop-tax.account", "tax");
@@ -165,5 +176,20 @@ public class QuickShopTaxManager implements TaxManager {
   public void defaultProvider(final String defaultProvider) {
 
     this.defaultProvider = defaultProvider.toLowerCase(Locale.ROOT);
+  }
+
+  /**
+   * Callback for reloading
+   *
+   * @return Reloading success
+   *
+   * @throws Exception Throws error if module failed to process reloading (this will turn
+   *                   ReloadStatus to ReloadStatus.EXCEPTION)
+   */
+  @Override
+  public ReloadResult reloadModule() throws Exception {
+
+    Util.asyncThreadRun(this::init);
+    return ReloadResult.builder().status(ReloadStatus.SCHEDULED).build();
   }
 }

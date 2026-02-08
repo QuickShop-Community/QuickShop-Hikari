@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.config.GuiConfig;
-import com.ghostchu.quickshop.listener.LockListener;
 import com.ghostchu.quickshop.menu.shared.GuiChatAction;
 import com.ghostchu.quickshop.menu.shared.QuickShopPage;
 import com.ghostchu.quickshop.obj.QUserImpl;

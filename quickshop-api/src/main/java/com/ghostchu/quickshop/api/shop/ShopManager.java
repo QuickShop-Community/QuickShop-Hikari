@@ -422,8 +422,12 @@ public interface ShopManager {
    * @param p    The player
    *
    * @return The tax of the shop
+   * @deprecated no longer apart of the enhanced tax system
    */
-  double getTax(@NotNull Shop shop, @NotNull QUser p);
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
+  default double getTax(@NotNull Shop shop, @NotNull QUser p) {
+    return 0.0;
+  }
 
   void handleChat(@NotNull Player player, @NotNull String msg);
 

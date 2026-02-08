@@ -35,6 +35,8 @@ public class QSEconomyTransactionBuilder {
   private String currency;
   private BigDecimal amount;
   private BigDecimal tax;
+  private BigDecimal fromTax;
+  private BigDecimal toTax;
   private QUser from;
   private QUser to;
   private QUser taxer;
@@ -73,6 +75,18 @@ public class QSEconomyTransactionBuilder {
     return this;
   }
 
+  public QSEconomyTransactionBuilder fromTax(final BigDecimal fromTax) {
+
+    this.fromTax = fromTax;
+    return this;
+  }
+
+  public QSEconomyTransactionBuilder toTax(final BigDecimal toTax) {
+
+    this.toTax = toTax;
+    return this;
+  }
+
   public QSEconomyTransactionBuilder from(final QUser from) {
 
     this.from = from;
@@ -98,7 +112,8 @@ public class QSEconomyTransactionBuilder {
             world,
             currency,
             amount,
-            (tax != null)? tax : BigDecimal.ZERO,
+            (toTax != null)? toTax : BigDecimal.ZERO,
+            (fromTax != null)? fromTax : BigDecimal.ZERO,
             from,
             to,
             taxer

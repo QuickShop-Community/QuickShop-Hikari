@@ -131,16 +131,53 @@ public interface EconomyTransaction {
    * Retrieves the tax amount associated with this transaction.
    *
    * @return a BigDecimal value representing the tax amount of the transaction
+   * @deprecated no longer apart of the enhanced tax system
    */
   @NotNull
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   BigDecimal tax();
 
   /**
    * Sets the tax for the transaction.
    *
    * @param tax the amount of tax to be set for the transaction
+   * @deprecated no longer apart of the enhanced tax system
    */
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   void tax(final @NotNull BigDecimal tax);
+
+  /**
+   * Calculates and retrieves the tax amount associated with this transaction
+   * based on the defined tax rules or system configuration.
+   *
+   * @return a BigDecimal representing the calculated tax amount for the transaction
+   * @since 6.2.0.11
+   */
+  BigDecimal toTax();
+
+  /**
+   * Sets the tax amount for the current transaction related to the specified user or entity.
+   *
+   * @param tax the tax amount to be set for the transaction, represented as a BigDecimal
+   * @since 6.2.0.11
+   */
+  void toTax(BigDecimal tax);
+
+  /**
+   * Retrieves the tax amount associated with the originator of the transaction.
+   *
+   * @return the tax amount originating from the source of the transaction, represented as a BigDecimal
+   * @since 6.2.0.11
+   */
+  BigDecimal fromTax();
+
+  /**
+   * Sets the tax amount for the current transaction originating from a specific source.
+   *
+   * @param tax the tax amount to be set, represented as a BigDecimal
+   * @since 6.2.0.11
+   */
+  void fromTax(BigDecimal tax);
 
   /**
    * Indicates whether the transaction is completable.
