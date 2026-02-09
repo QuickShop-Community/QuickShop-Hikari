@@ -159,11 +159,11 @@ metric:
   transaction-count: Total de <yellow>{0}
   shop-hover: |-
     <yellow>{0}
-    <gold>Pos: <gray>{1} {2} {3}, World: {4}
-    <gold>Owner: <gray>{5}
-    <gold>Shop Type: <gray>{6}
+    <gold>Posição: <gray>{1} {2} {3}, Mundo: {4}
+    <gold>Proprietário: <gray>{5}
+    <gold>Categoria de Loja: <gray>{6}
     <gold>Item: <gray>{7}
-    <gold>Price: <gray>{8}
+    <gold>Preço: <gray>{8}
   time-hover: '<yellow>Hora: {0}'
   amount-stack-hover: <yellow>{0}x pilha
 permission-denied-3rd-party: '<red>Permissão negada: Plugin de terceiros [{0}].'
@@ -240,7 +240,7 @@ updatenotify:
     - Paimon quer lhe dizer que a QuickShop tem uma nova atualização {0}!
   remote-disable-warning: '<red>Esta versão do QuickShop está marcada como desabilitada pelo servidor remoto o que significa que esta versão pode ter problemas sérios, obtenha detalhes da nossa página do SpigotMC: {0}. Este aviso continuará a aparecer até que você mude para uma versão estável, mas isso não afetará a performance do seu servidor.'
 purchase-out-of-stock: <red>Essa loja está sem itens no estoque, Chame o dono ou alguém da equipe caso for lojas de admin para re-estocar.
-nearby-shop-entry: '<green>- Info: {0} Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
+nearby-shop-entry: '<green>- Info: {0} Preço: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distancia: <aqua>{5} <green>bloco(s)'
 chest-title: Loja QuickShop
 console-only: <red>Este comando só pode ser executado pelo Console.
 failed-to-put-sign: <red>Não há espaço suficiente na loja para colocar a placa de informações.
@@ -351,7 +351,7 @@ booleanformat:
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   price-hover: <yellow>Clique para definir um novo preço para o item.
-  remove: <bold><red>[Remove Shop]
+  remove: <bold><red>[Remover Loja]
   mode-buying-hover: <yellow>Clique para trocar a loja para o modo VENDA.
   empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>Clique para definir o valor do pacote. Deixe 1 para comportamento normal.
@@ -381,7 +381,7 @@ controlpanel:
   infomation: '<green>Painel de Controle da Loja:'
   mode-selling-hover: <yellow>Clique para trocar a loja para o modo de COMPRA.
   empty-hover: <yellow>Clique para limpar o inventário da loja.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  toggledisplay: '<green>Exibir Item: <aqua>{0} <yellow>[<bold><light_purple>Mudar</light_purple></bold>]'
   history: '<green>History: <yellow>[<bold><light_purple>View</light_purple></bold>]</yellow>'
   history-hover: <yellow>Click to view shop history logs
 timeunit:
@@ -1553,7 +1553,7 @@ compatibility:
 internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
 no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
 sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
-delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
+delete-controlpanel-button-confirm: "<red>Você realmente quer remover esta loja? Clique no botão <bold>[Remover Loja]</bold> novamente em {0} segundos para confirmar."
 cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
