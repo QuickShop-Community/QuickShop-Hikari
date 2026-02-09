@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1034
+config-version: 1035
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -29,16 +29,88 @@ mojangapi-mirror: 0
 #This enables the developer mode, do not touch this if you don't not know what it does!
 dev-mode: false
 
-#Tax amount (decimal)
-#Example: P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and the tax-account gains $(0.05)*50.
-tax: 0.05
+#configurations related to taxes.
+shop-tax:
 
-#The fake player where the tax money goes to.
-#Set this to "" to disable it (Taxing will still work but not deposit to any account)
-tax-account: tax
+  #The type of tax system to use.
+  #basic = basic tax system
+  #progressive = progressive tax system
+  type: basic
 
-# Disable taxes for unlimited shop
-tax-free-for-unlimited-shop: false
+  #The fake player where the tax money goes to.
+  #Set this to "" to disable it (Taxing will still work but not deposit to any account)
+  account: tax
+
+  #Whether to show taxes paid on shop transactions.
+  show: false
+
+  # Disable taxes for unlimited shop
+  disable-for-unlimited-shop: false
+
+  #who to apply the tax to, be it the shop or the player interacting with the shop.
+  #the person that the tax is applied to will have the permission check ran on them to see if they
+  #should be taxed be it the player or the shop owner or both.
+  #player = apply tax to the player who is interacting with the shop.
+  #shop = apply tax to the shop owner.
+  #both = apply tax to both the player and the shop owner.
+  apply-to: player
+
+  #the basic tax system configuration.
+  basic:
+
+    #Tax amount (decimal)
+    rate: 0.05
+
+  # =========================================
+  # Progressive Tax System
+  # =========================================
+  # This system applies tax rates based on the player's balance.
+  # The higher the balance, the higher the tax rate applied.
+  #
+  # Bracket format:
+  #   <upper-balance>: <tax-rate>
+  #
+  # Meaning:
+  #   - If the player's balance is LESS THAN OR EQUAL TO the upper-balance,
+  #     the corresponding tax rate will be used.
+  #   - Tax rates are decimals:
+  #       0.01 = 1%
+  #       0.05 = 5%
+  #       0.10 = 10%
+  #
+  # Special value:
+  #   - Use -1 as the upper-balance to represent "no upper limit"
+  #     (internally mapped to a very large value).
+  #
+  # Example:
+  #   10000: 0.01
+  #   - Players with ≤ 10,000 balance are taxed 1%
+  progressive:
+
+    # -----------------------------------------
+    # Tax Brackets
+    # -----------------------------------------
+    # Recommended to keep brackets ordered from lowest to highest
+    # for readability (ordering is enforced internally).
+    brackets:
+      #New / low-balance players
+      #≤ 10,000 → 1%
+      10000: 0.01
+      #Early progression
+      #≤ 50,000 → 2%
+      50000: 0.02
+      #Mid-game economy
+      #≤ 250,000 → 3%
+      250000: 0.03
+      #Wealthy players
+      #≤ 1,000,000 → 5%
+      1000000: 0.05
+      #Very wealthy players
+      #≤ 5,000,000 → 8%
+      5000000: 0.08
+      #Ultra-wealthy / no upper limit
+      #> 5,000,000 → 12%
+      -1: 0.12
 
 #Turn on this option will migrate shop owner to specified account when you set a shop to unlimited.
 #It won't affect exists shops, you will need switch to unlimited again to apply it.
@@ -47,9 +119,6 @@ unlimited-shop-owner-change: false
 #Set the account used by unlimited-shop-owner-change option
 #Only take effect when unlimited-shop-owner-change enabled
 unlimited-shop-owner-change-account: quickshop
-
-#Whether to show taxes paid when selling to a shop
-show-tax: false
 
 #Whether to respect item flags (e.g. hide the enchantment info when item have HIDE_ENCHANTS flag).
 respect-item-flag: true

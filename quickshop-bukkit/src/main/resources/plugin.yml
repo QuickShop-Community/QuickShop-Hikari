@@ -18,6 +18,7 @@ softdepend:
   - Mohist
   - EcoEnchants # Add ecoenchants to allow us to detect if ee is installed for compatibility warning
   - WorldEdit
+  - FastAsyncWorldEdit
   - BarrelShops
 api-version: '1.20'
 # TODO: https://github.com/PaperMC/Paper/pull/7177

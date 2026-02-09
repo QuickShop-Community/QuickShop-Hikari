@@ -39,6 +39,7 @@ import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.EconomyLoader;
 import com.ghostchu.quickshop.economy.QSEconomyManager;
+import com.ghostchu.quickshop.hook.FWorldEditHook;
 import com.ghostchu.quickshop.hook.WorldEditHook;
 import com.ghostchu.quickshop.listener.BlockListener;
 import com.ghostchu.quickshop.listener.BungeeListener;
@@ -852,6 +853,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     //initialize our hooks and things
     logger.info("Initializing built-in hooks...");
     addHook(new WorldEditHook());
+    addHook(new FWorldEditHook());
 
     loadHooks();
   }
