@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.hook.worldedit;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -25,16 +26,14 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
   private final Actor actor;
   private final World world;
   private final Extent extent;
-  private final QuickShopAPI api;
 
   // Same Package access
-  WorldEditBlockListener(final Actor actor, final World world, final Extent originalExtent, final QuickShopAPI api) {
+  WorldEditBlockListener(final Actor actor, final World world, final Extent originalExtent) {
 
     super(originalExtent);
     this.actor = actor;
     this.world = world;
     this.extent = originalExtent;
-    this.api = api;
   }
 
   @Override
@@ -47,16 +46,17 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
     final BlockState oldBlock = extent.getBlock(position);
     final BlockState newBlock = block.toImmutableState();
 
-    final Location location = new Location(bukkitWorld, position.getBlockX(), position.getBlockY(), position.getBlockZ());
+    final Location location = new Location(bukkitWorld, position.x(), position.y(), position.z());
 
     if(extent.setBlock(position, block)) {
       // Block Changed
       if(oldBlock.getBlockType().getMaterial().hasContainer() && !newBlock.getBlockType().getMaterial().hasContainer()) {
-        final Shop shop = api.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
+
+        final Shop shop = QuickShop.getInstance().getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
         if(shop != null) {
           Util.mainThreadRun(()->{
-            api.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "WorldEdit", false), "WorldEdit", shop.saveToInfoStorage()));
-            api.getShopManager().deleteShop(shop);
+            QuickShop.getInstance().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "WorldEdit", false), "WorldEdit", shop.saveToInfoStorage()));
+            QuickShop.getInstance().getShopManager().deleteShop(shop);
           });
         }
       }

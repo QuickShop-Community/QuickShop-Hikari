@@ -1,6 +1,7 @@
-package com.ghostchu.quickshop.hook.worldedit;
+package com.ghostchu.quickshop.hook.fworldedit;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.event.extent.EditSessionEvent;
 import com.sk89q.worldedit.extension.platform.Actor;
@@ -10,11 +11,11 @@ import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-public class WorldEditAdapter implements Listener {
+public class FWorldEditAdapter implements Listener {
 
   private final WorldEditPlugin worldEditPlugin;
 
-  public WorldEditAdapter() {
+  public FWorldEditAdapter() {
 
     this.worldEditPlugin = (WorldEditPlugin)Bukkit.getPluginManager().getPlugin("WorldEdit");
     Bukkit.getPluginManager().registerEvents(this, QuickShop.getInstance().getJavaPlugin());
@@ -29,7 +30,10 @@ public class WorldEditAdapter implements Listener {
     if(actor == null) {
       return;
     }
-    event.setExtent(new WorldEditBlockListener(actor, world, event.getExtent()));
+
+    if(event.getStage() == EditSession.Stage.BEFORE_HISTORY) {
+      event.getExtent().addProcessor(new ShopProcessor(world));
+    }
   }
 
   public void register() {

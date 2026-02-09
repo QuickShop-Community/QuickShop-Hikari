@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.hook;
  */
 
 import com.ghostchu.quickshop.api.hook.Hook;
+import com.ghostchu.quickshop.hook.fworldedit.FWorldEditAdapter;
 import com.ghostchu.quickshop.hook.worldedit.WorldEditAdapter;
 import org.bukkit.Bukkit;
 
@@ -27,9 +28,9 @@ import org.bukkit.Bukkit;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
-public class WorldEditHook implements Hook {
+public class FWorldEditHook implements Hook {
 
-  private WorldEditAdapter adapter;
+  private FWorldEditAdapter adapter;
 
   /**
    * Retrieves the identifier for the hook.
@@ -39,7 +40,7 @@ public class WorldEditHook implements Hook {
   @Override
   public String identifier() {
 
-    return "WorldEdit";
+    return "FastAsyncWorldEdit";
   }
 
   /**
@@ -50,8 +51,7 @@ public class WorldEditHook implements Hook {
   @Override
   public boolean canEnable() {
 
-    return Bukkit.getPluginManager().isPluginEnabled("WorldEdit")
-           && !Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+    return Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
   }
 
   /**
@@ -63,7 +63,7 @@ public class WorldEditHook implements Hook {
   public boolean enable() {
 
     if(adapter == null) {
-      adapter = new WorldEditAdapter();
+      adapter = new FWorldEditAdapter();
       adapter.register();
       return true;
     }
