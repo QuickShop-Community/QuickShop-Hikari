@@ -52,9 +52,9 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: ''
 average-price-nearby: '<green>Preço médio: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Checagem] <gray>Aviso! Encontrado item de vitrine <gold>{2}</gold> no inventário em <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>. Isso não deveria acontecer e geralmente indica que alguém está usando um exploit para duplicar o item."
 digits-reach-the-limit: <red>Você atingiu os limites de números no preço.
 currency-unset: <green>Moeda da loja removida com sucesso. Usando as configurações padrão agora.
 you-cant-create-shop-in-there: <red>Você não tem permissão para criar uma loja neste local.
@@ -96,8 +96,8 @@ shop-name-success: <green>Defina o nome da loja com sucesso para <yellow>{0}<gre
 shop-staff-added: <green>Adicionado com sucesso {0} como membro da equipe da sua loja.
 shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Recuperando lojas do backup...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: ''
+real-player-component-hover: "<gray>Este é um jogador real.\n<green>UUID: <yellow>{0}</yellow></green><green>\nUsuário: <yellow>{1}</yellow></green><green>\nExibido como: <yellow>{2}</yellow></green>\n<gray>Se quiser usar uma conta virtual com o mesmo nome, adicione\n<dark_gray>\"[]\"</dark_gray> ao redor do nome: \n<dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>Você pagou <yellow>{0} <green>em impostos.
   owner: '<green>Proprietário: {0}'
@@ -313,7 +313,7 @@ signs:
   freeze: Trading desabilitado
   price: '{0} cada'
   buying: Comprando {0}
-  header: '{1}{0}'
+  header: ''
   header-available: <green>{0}
   header-unavailable: <red>{0}
   selling: Vendendo {0}
@@ -322,7 +322,7 @@ signs:
 negative-amount: <red>Você não pode trocar com valores negativos
 display-turn-on: <green>Você ativou o display de item.
 display-turn-off: <green>Você desativou o display de item.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
+display-turn-on-owned: <green>Exibição de itens ativada com sucesso em todas as suas lojas.
 display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
 display-turn-on-all: <green>Successfully turned on shop display for all server shops.
 display-turn-off-all: <green>Successfully turned off shop display for all server shops.
@@ -353,16 +353,16 @@ controlpanel:
   price-hover: <yellow>Clique para definir um novo preço para o item.
   remove: <bold><red>[Remover Loja]
   mode-buying-hover: <yellow>Clique para trocar a loja para o modo VENDA.
-  empty: '<green>Empty: Remove all items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  empty: '<green>Vazio: Remover todos itens <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>Clique para definir o valor do pacote. Deixe 1 para comportamento normal.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  alwayscounting: '<green>Sempre considerando: {0} <yellow>[<bold><light_purple>Alterar</light_purple></bold>]'
+  setowner: '<green>Proprietário: <aqua>{0} <yellow>[<bold><light_purple>Alterar</light_purple></bold>]'
+  freeze: '<green>Modo Congelar: <aqua>{0} <yellow>[<bold><light_purple>Alternar</light_purple></bold>]'
   price: '<green>Price: <aqua>{0} <yellow>[<bold><light_purple>Change</light_purple></bold>]'
   currency-hover: <yellow>Clique para definir ou remover a moeda que esta loja está usando
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<bold><light_purple>Change</light_purple></bold>]'
+  lock: '<yellow>Trancar Loja: <aqua>{0} <yellow>[<bold><light_purple>Alternar</light_purple></bold>]'
+  mode-selling: '<green>Modo da Loja: <aqua>Vendendo <yellow>[<bold><light_purple>Alterar</light_purple></bold>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<bold><light_purple>Set</light_purple></bold>]'
   setowner-hover: <yellow>Clique para alterar o proprietário.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<bold><light_purple>Change</light_purple></bold>]'
@@ -542,7 +542,7 @@ permission:
     set-stack-amount: <yellow>Permissão para permitir que usuários que têm isto para definir o valor da pilha na loja.
     set-currency: <yellow>Permissão para permitir que usuários que têm isso para configurar a moeda de loja.
     set-name: <yellow>Permissão para permitir que usuários que têm isso para definir o nome da loja.
-    set-sign-type: <yellow>Change the sign material that attached on the shop.
+    set-sign-type: .
     view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
     everyone: <yellow>Grupo padrão para todos os usuários, exceto para proprietários de lojas.
