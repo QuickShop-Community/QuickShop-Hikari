@@ -32,6 +32,7 @@ com.ghostchu.quickshop.api.command
 com.ghostchu.quickshop.api.localization.text
 com.ghostchu.quickshop.api.localization.text.postprocessor
 com.ghostchu.quickshop.api.shop
+com.ghostchu.quickshop.api.shop.tax
 com.ghostchu.quickshop.api.shop.permission
 com.ghostchu.quickshop.api.shop.cache
 com.ghostchu.quickshop.api.shop.type
@@ -48,6 +49,7 @@ com.ghostchu.quickshop.obj
 com.ghostchu.quickshop
 com.ghostchu.quickshop.hook
 com.ghostchu.quickshop.hook.worldedit
+com.ghostchu.quickshop.hook.fworldedit
 com.ghostchu.quickshop.bootstrap
 com.ghostchu.quickshop.permission
 com.ghostchu.quickshop.permission.impl
@@ -74,6 +76,7 @@ com.ghostchu.quickshop.metric
 com.ghostchu.quickshop.papi
 com.ghostchu.quickshop.papi.impl
 com.ghostchu.quickshop.shop
+com.ghostchu.quickshop.shop.tax
 com.ghostchu.quickshop.shop.controlpanel
 com.ghostchu.quickshop.shop.controlpanel.component
 com.ghostchu.quickshop.shop.sign
