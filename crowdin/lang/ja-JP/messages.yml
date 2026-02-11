@@ -154,7 +154,7 @@ metric:
   tax-hover: <yellow>{0} 税金：
   header-global: '<yellow>サーバー {0} {1} 取引'
   na: <gray>該当なし
-  transaction-count: <yellow>合計{0} 
+  transaction-count: <yellow>合計{0}
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
   time-hover: '<yellow>時間: {0}'
