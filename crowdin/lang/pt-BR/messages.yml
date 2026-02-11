@@ -531,7 +531,7 @@ permission:
     preview-shop: <yellow>Permissão para permitir que usuários pré-visualizem a loja (preview)
     search: <yellow>Permissão para permitir que usuários pesquisem a loja (Remover permissão irá ocultar a loja da pesquisa)
     delete: <yellow>Permissão para permitir que usuários excluam a loja
-    receive-alert: <yellow>Permissão para permitir que os usuários que tem isso para receber mensagens de alertas (por exemplo, fora do estoque ou novas negociações).
+    receive-alert: <yellow>Permissão para permitir que os usuários recebam alertas (ex sem estoque ou novas negociações)
     access-inventory: <yellow>Permissão para permitir que os usuários acessem o inventário da loja
     ownership-transfer: <yellow>Permissão para permitir que os usuários transfiram o proprietário da loja
     management-permission: <yellow>Permissão para permitir que usuários gerenciem as permissões e editem grupos de usuários
@@ -1341,11 +1341,11 @@ addon:
           code: \<code>
         create:
           rate: |
-            Command Hint:
-            Argument: \<rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            Dica de Comando:
+            Argumento: \<taxa>
+            Descrição: A porcentagem real ou dinheiro que você ganhará
+            Input `30%` = preço * 0.3 (30% de desconto)
+            Input `50` = preço - 50 (50 de desconto fixo)
           max-usage: |
             Dica de comando:
             Argumento: [max-usage]
@@ -1353,96 +1353,96 @@ addon:
             `-1` para ilimitado.
           threshold: |
             Dica de comando:
-            Argumento: [threshold]
-            Descrição: O preço mínimo que esse código precisa para ser aplicado
-            `-1` para ilimitado
+            Argumento: [limite]
+            Descrição: O preço mínimo que a compra precisa ter para esse código funcionar
+            `-1` para sem mínimo
           expired: |
             Dica de comando
-            Argumento: [expired]
+            Argumento: [expiração]
             Descrição: O tempo de expiração do código.
             `-1` para duração ilimitada.
             Aceita tanto tempo Zulu e UNIX timestamp em segundos.
             Exemplo Zulu: 2022-12-17T10:31:37Z
             Exemplo UNIX: 1671273097
-    discount-code-already-exists: <red>Desculpe mas o nome do seu código de desconto já está em uso.
-    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}'
+    discount-code-already-exists: <red>Desculpe, mas o nome do seu código de desconto já está em uso.
+    invalid-discount-code-regex: '<red>O código de desconto deve corresponder à regex: <yellow>{0}'
     invalid-discount-code: <red>Esse código de desconto é inválido.
-    discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}
+    discount-code-added: <green>Seu código de desconto <yellow>{0}</yellow> foi adicionado à loja <aqua>{1}
+    discount-code-removed: <green>Seu código de desconto <yellow>{0}</yellow> foi removido da loja <aqua>{1}
     invalid-code-type: <red>O tipo de código <yellow>{0}</yellow> é inválido.
     invalid-usage-restriction: <red>A restrição de uso <yellow>{0}</yellow> é inválida.
-    invalid-threshold-restriction: <red>A restrição de limite <yellow>{0}</yellow> é inválida.
+    invalid-threshold-restriction: <red>A restrição de limite (threshold) <yellow>{0}</yellow> é inválida.
     invalid-effect-scope: <red>O escopo <yellow>{0}</yellow> é inválido.
     invalid-expire-time: <red>Você não pode especificar um horário no passado.
-    invalid-discount-rate: <red>A porcentagem de desconto <yellow>{0}</yellow> é inválida, isso pode ser resolvido por um número fixo ou porcentagem.
+    invalid-discount-rate: <red>A taxa de desconto <yellow>{0}</yellow> é inválida. Use um número fixo ou porcentagem (ex 10%).
     discount-code-expired: <red>Eita! Seu código de desconto <yellow>{0}</yellow> expirou!
-    discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/quickshop discount uninstall {0}</aqua>.
+    discount-code-installed: <green>Você ativou o código de desconto <gold>{0}</gold>. Ele será aplicado automaticamente em todas as compras nesta sessão. Para desativar, use <aqua>/quickshop discount uninstall {0}</aqua>.
     discount-code-uninstalled: <green>Você removeu o seu código de desconto.
     discount-code-query-nothing: <red>Você não tem nenhum código de desconto ativo ainda!
     discount-code-query: '<green>Você está usando o código de desconto: <yellow>{0}</yellow>.'
-    discount-code-applicable: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop!'
-    discount-code-applicable-with-threshold: '<#bcef26>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <bold><yellow>{0}</yellow></bold> are <bold>not applicable</bold> in this shop!
-    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <bold><yellow>{0}</yellow></bold>, discount are not applied.
-    discount-code-no-permission: <red>Você não tem permissão para usar qualquer código de desconto nessa loja!
+    discount-code-applicable: '<#bcef26>Seu código de desconto <bold><yellow>{0}</yellow></bold> é <bold>aplicável</bold> nesta loja!'
+    discount-code-applicable-with-threshold: '<#bcef26>Seu código de desconto <bold><yellow>{0}</yellow></bold> é <bold>aplicável</bold>, mas apenas se sua compra custar mais de <yellow>{1}</yellow>.'
+    discount-code-not-applicable: <red>Seu código de desconto <bold><yellow>{0}</yellow></bold> <bold>não se aplica</bold> a esta loja!
+    discount-code-reach-the-limit: <red>Você atingiu o limite de uso do código <bold><yellow>{0}</yellow></bold>, o desconto não foi aplicado.
+    discount-code-no-permission: <red>Você não tem permissão para usar códigos de desconto nesta loja!
     discount-code-has-been-expired: <red>Seu código de desconto expirou!
-    discount-code-config-shop-added: <green>Sucesso ao adicionar essa loja na sua lista de código de desconto.
-    discount-code-config-shop-add-failure: <red>Essa loja já possui seu código de desconto na lista de permissões.
-    discount-code-config-shop-removed: <green>Sucesso ao remover essa loja da sua lista de permissões do código de desconto.
-    discount-code-config-shop-remove-failure: <red>Essa loja não existe na sua lista de permissões do código de desconto.
+    discount-code-config-shop-added: <green>Sucesso ao adicionar essa loja na sua lista de permissão do cupom.
+    discount-code-config-shop-add-failure: <red>Essa loja já está na lista de permissões do cupom.
+    discount-code-config-shop-removed: <green>Sucesso ao remover essa loja da sua lista de permissões do cupom.
+    discount-code-config-shop-remove-failure: <red>Essa loja não está na lista de permissões do cupom.
     discount-code-config-expire: <green>Sucesso ao alterar a data de expiração do seu código de desconto.
     discount-code-config-applied: <green>Configuração de código de desconto recarregada!
     discount-code-created-successfully: |
-      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
-      <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <#bcef26>{2}</#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      You can use <aqua>/quickshop discount config {0}</aqua> to edit your discount code anytime.
-    discount-code-under-threshold: <red>O desconto não foi aplicado a sua compra devido ao valor total estar abaixo do limite de desconto <yellow>{0}</yellow>.
+      <green>Seu código de desconto <yellow>{0}</yellow> foi criado com sucesso!
+      <gold>Escopo: <aqua>{1}</aqua></gold>.
+      <gold>Compartilhe: <#bcef26>{2}</#bcef26></gold>.
+      <yellow>Para escopo <gray>Lojas Específicas</gray>: Para adicionar lojas, olhe para uma QuickShop e execute <aqua>{3}</aqua>.
+      Use <aqua>/quickshop discount config {0}</aqua> para editar seu código a qualquer momento.
+    discount-code-under-threshold: <red>O desconto não foi aplicado pois o valor total está abaixo do limite mínimo de <yellow>{0}</yellow>.
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
-    discount-code-list: '<gold>Listing your discount codes:'
-    discount-code-applied-in-purchase: '<#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    discount-code-list: '<gold>Listando seus códigos de desconto:'
+    discount-code-applied-in-purchase: '<#bcef26>Seu cupom <yellow>{0}</yellow> foi aplicado e você economizou <gold>{1}</gold>!'
     scope:
       this-shop: '{0}'
-      your-shops-owned: todas suas lojas (da sua posse)
+      your-shops-owned: todas suas lojas (próprias)
       your-shops-managed: todas suas lojas (gerenciadas)
       server: todo servidor
     code-type:
-      SERVER_ALL_SHOPS: Todas as lojas nesse servidor
+      SERVER_ALL_SHOPS: Todas as lojas neste servidor
       PLAYER_ALL_SHOPS: Todas as lojas criadas pelo dono do código
       SPECIFIC_SHOPS: Lojas específicas
     discount-code-details: |-
-      <gold>Code: <yellow>{0}</yellow>
-      Creator: <yellow>{1}</yellow>
-      Applied to: <yellow>{2}</yellow>
-      Remaining usage: <yellow>{3}</yellow>
-      Expired on: <yellow>{4}</yellow>
-      Threshold: <yellow>{5}</yellow>
-      Discount: <yellow>{6}</yellow><br>
+      <gold>Código: <yellow>{0}</yellow>
+      Criador: <yellow>{1}</yellow>
+      Aplicado em: <yellow>{2}</yellow>
+      Usos restantes: <yellow>{3}</yellow>
+      Expira em: <yellow>{4}</yellow>
+      Mínimo (Threshold): <yellow>{5}</yellow>
+      Desconto: <yellow>{6}</yellow><br>
   list:
     commands:
-      list: <yellow>Lista todas as lojas que você possui ou um jogador específico
-    table-prefix: '<yellow><green>{0}</green>''s lojas <gray>(Total {1})</gray>: '
-    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+      list: <yellow>Lista todas as lojas que você possui ou de um jogador específico
+    table-prefix: '<yellow>Lojas de <green>{0}</green> <gray>(Total {1})</gray>: '
+    table-prefix-pageable: '<yellow>Lojas de <green>{0}</green> <gray>(Pág {1}/{2})</gray>: '
+    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Preço <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
-    message: <red>Você não pode colocar itens não listados em um baú de loja, todos os tipos de itens não listados serão dropados na sua localização.
+    message: <red>Você não pode colocar itens não listados em um baú de loja. Itens não permitidos serão dropados no chão.
   limited:
     commands:
-      limit: <yellow>Seta um limite que restringe as compras que esse jogador pode fazer em um período de tempo
+      limit: <yellow>Define um limite de compras para um jogador em um período de tempo
     titles:
       title: <green>Sucesso na compra
-      subtitle: <aqua>Você pode comprar mais <gold>{0}</gold> itens nessa loja
-    reach-the-limit: <red>Você alcançou a limite para essa loja. Você também pode comprar <green>{0}</green> itens, mas você está tentando comprar <yellow>{1}</yellow>.
-    success-reset: <green>Reseta a restrição dessa loja com sucesso
-    success-remove: <green>Foram removidas com sucesso todas as restrições dessa loja
-    success-setup: <green>Configurações de restrição para essa loja foram salvas com sucesso
-    trade-limit-reached-cancel-reason: <red>Alcançou a restrição dessa loja
-    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
-    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}'
+      subtitle: <aqua>Você ainda pode comprar <gold>{0}</gold> itens nessa loja
+    reach-the-limit: <red>Você alcançou o limite para essa loja. Você ainda pode comprar <green>{0}</green> itens, mas tentou comprar <yellow>{1}</yellow>.
+    success-reset: <green>Restrição resetada com sucesso
+    success-remove: <green>Removidas com sucesso todas as restrições dessa loja
+    success-setup: <green>Configurações de restrição salvas com sucesso
+    trade-limit-reached-cancel-reason: <red>Alcançou o limite de compra desta loja
+    remains-limits: '<gold>Sua cota restante nesta loja: <yellow>{0}'
+    remains-limits-before-reset-period-note: '<gold>A cota desta loja reseta a cada: <yellow>{0}'
   dynmap:
-    markerset-title: QuickShop-Hikari Lojas
+    markerset-title: Lojas QuickShop-Hikari
     marker-name: '{0} @ {2} @ {3} por x{4} @ {5}'
     marker-description: |
       Nome: {0}
@@ -1453,7 +1453,7 @@ addon:
       Ilimitado: {6}
       Localização: {7}
   bluemap:
-    markerset-title: QuickShop-Hikari Shops
+    markerset-title: Lojas QuickShop-Hikari
     marker-name: '{0} @ {2} @ {3} por x{4} @ {5}'
     marker-description: |
       Nome: {0}
@@ -1464,50 +1464,50 @@ addon:
       Ilimitado: {6}
       Localização: {7}
   chestprotect:
-    protection-exists: <red>Essa região já está protegida pelo ChestProtect e você não tem permissão para criar lojas aqui.
-    shops-exsts: <red>A região que você deseja proteger contem uma loja criada por outro jogador, e você não tem permissão para acessar.
+    protection-exists: <red>Esta região já está protegida pelo ChestProtect e você não tem permissão para criar lojas aqui.
+    shops-exsts: <red>A região que você deseja proteger contém uma loja de outro jogador, e você não tem permissão para acessar.
   displaycontrol:
     toggle: |-
       <green>Sucesso ao alternar os hologramas de item em baús de loja para <aqua>{0}</aqua>.
-      <yellow>Você talvez precise relogar para confirmar a alteração.
-    toggle-exception: <red>Falha ao alternar para mostrar ou remover o holograma de itens de loja devido a um erro interno, por favor contate um administrador.
+      <yellow>Você talvez precise relogar para ver a alteração.
+    toggle-exception: <red>Falha ao alternar holograma devido a um erro interno, contate um administrador.
     command:
-      displaycontrol: <yellow>Alterna suas configurações para mostrar ou não os itens em cima dos baús de loja
+      displaycontrol: <yellow>Alterna a exibição de itens flutuantes (hologramas) em cima dos baús
   reremake-migrator:
     commands:
-      migratefromreremake: Migrate QuickShop-Reremake's data to QuickShop-Hikari
-    server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
-    starting-convert-progress: "<gold>Starting the convert progress, <red>DO NOT SHUTDOWN YOUR SERVER!</red>"
-    executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-    completed: "<green>Done! Migrate completed, please restart your server and remove QuickShop-Reremake from plugins directory."
-    join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
-    join_blocking_finished: "<red>[QuickShop-Hikari Migrator] This server has just completed a data conversion and is waiting for a reboot to apply the changes, try again later!"
-    failed: "<red>Migration progress exited with error, please check the server console."
+      migratefromreremake: Migrar dados do QuickShop-Reremake para QuickShop-Hikari
+    server-not-empty: "<red>Nenhum jogador pode estar online durante a conversão. Ative a whitelist ou modo manutenção."
+    starting-convert-progress: "<gold>Iniciando conversão, <red>NÃO DESLIGUE O SERVIDOR!</red>"
+    executing: "<gold>Executando componente de migração <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+    completed: "<green>Feito! Migração completa, reinicie o servidor e remova o QuickShop-Reremake da pasta plugins."
+    join_blocking_converting: "<red>[QuickShop-Hikari Migrator] O servidor está convertendo dados e você não pode entrar agora, tente mais tarde!"
+    join_blocking_finished: "<red>[QuickShop-Hikari Migrator] A conversão terminou e o servidor aguarda reinício. Tente mais tarde!"
+    failed: "<red>Migração falhou com erro, verifique o console."
     modules:
       config:
-        copy-values: "<yellow>Copying values (total {0} entries)..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
-        migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copy-values: "<yellow>Copiando valores (total {0} entradas)..."
+        copying-value: "<gray> - Copiando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-price-restriction: "<yellow>Migrando configurações de restrição de preço..."
+        migrate-price-restriction-entry: "<gray> - Migrando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
-        start-migrate: "<yellow>Migrating shops (total {0} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
-        register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
-        conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
+        start-migrate: "<yellow>Migrando lojas (total {0} entradas)..."
+        migrate-entry: "<gray> - Migrando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        unloading-reremake: "<gold>Descarregando Reremake para evitar sobrescrita de dados..."
+        register-entry: "<gray> - Registrando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Salvando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        saving-shops: "<yellow>Salvando <gold>{0}</gold> lojas, isso pode demorar um pouco..."
+        conflict: "<gray> - CONFLITO > Detectado conflito entre loja Reremake e Hikari, tomando ação: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
-        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Migrando arquivos de tradução...</yellow>"
+        copy-values: "<yellow>Copiando valores em <gold>{0}</gold> (total {1} entradas)..."
+        migrate-entry: "<gray> - Migrando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copying-value: "<gray> - Copiando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
-        filtered-history-files: "<gray>Filtered {0} lines out of queue."
-        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Migrando logs de loja (detalhes no console)...</yellow>"
+        extract-history-files: "<gray>Aguarde descompactação e anexo dos logs de histórico..."
+        filter-history-files: "<gray>Aguarde filtragem do log de histórico..."
+        filtered-history-files: "<gray>Filtradas {0} linhas da fila."
+        import-entry: "<gray> - Migrando <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
     created: <green>Você criou uma loja em um baú do AdvancedChests!
