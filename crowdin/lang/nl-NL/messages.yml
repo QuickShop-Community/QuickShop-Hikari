@@ -324,7 +324,7 @@ display-turn-on: <green>Schakel de winkeldisplay succesvol in.
 display-turn-off: <green>Winkeldisplay succesvol uitgeschakeld.
 display-turn-on-owned: <green>Winkeldisplay voor alle winkels in bezit succesvol ingeschakeld.
 display-turn-off-owned: <green>Winkeldisplay voor alle winkels in bezit succesvol uitgeschakeld.
-display-turn-on-all: <green>Winkeldisplay voor alle winkels succesvol ingeschakeld. 
+display-turn-on-all: <green>Winkeldisplay voor alle winkels succesvol ingeschakeld.
 display-turn-off-all: <green>Winkel weergave voor alle winkels succesvol uitgeschakeld.
 shop-staff-deleted: <green>Succesvol {0} verwijderd als staflid van uw winkel.
 nearby-shop-header: '<green>Winkels in de buurt die overeenkomen met <aqua>{0}</aqua>:'
