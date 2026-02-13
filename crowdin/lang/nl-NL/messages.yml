@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is uitgeschakeld in deze wereld
 how-much-to-trade-for: <green>Enter in de chat, voor hoeveel u wilt handelen <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Shop-back-up aanmaken vanuit database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: Hallo vertaler! Als je dit op GitHub of via de broncode bewerkt, ga dan naar https://crowdin.com/project/qs-hikari.
 unlimited-shop-owner-changed: <yellow>Deze ongelimiteerde winkel is verander van eigenaar. Naar {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ongeldig nummer
@@ -36,31 +36,31 @@ quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Naam: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
+    - '<aqua>Eigenaar:<aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Prijs: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Lokatie: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Naam: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Eigenaar: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Prijs: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Locatie: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Nabijgelegen gemiddelde prijs: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Inventariscontrole] <gray>Waarschuwing! Er is een QuickShop-displayitem <goud>{2}</gold> gevonden in de inventaris bij <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, wat niet zou mogen gebeuren. Dit betekent meestal dat iemand kwaadwillig misbruik maakt van de exploit om het displayitem te dupliceren."
 digits-reach-the-limit: <red>Je hebt de limiet van decimalen in de prijs bereikt.
 currency-unset: <green>Shop valuta verwijderd. Standaard instellingen nu gebruiken.
 you-cant-create-shop-in-there: <red>Je hebt geen toestemming om een winkel te maken op deze locatie.
 no-pending-action: <red>Je hebt geen lopende acties
 refill-success: <green>Refill succesvol
 failed-to-paste: <red>Mislukt om de gegevens te uploaden naar Pastebin. Controleer je internetverbinding en probeer het opnieuw. (Bekijk console voor details)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>Je winkel {0} heeft geen {1} meer op voorraad!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <green>Typ in de chat, hoe veel bulk je wilt <light_purple>VERKOPEN<green>. Er zijn <yellow>{0}<green> items per bulk en je kan <yellow>{1}<green> bulk verkopen. Voer <aqua>{2}<green> in je chat in om alles te verkopen.
 exceeded-maximum: <red>De waarde overschrijdt de maximale waarde in Java.
@@ -82,21 +82,21 @@ you-cant-afford-a-new-shop: <red>Het maken van een nieuwe winkel kost {0}.
 success-created-shop: <red>Shop aangemaakt.
 shop-creation-cancelled: <red>Shop aanmaken geannuleerd.
 shop-owner-self-trade: Je handelt met jezelf. Je zal dan ook geen geld krijgen
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: <red>Je kunt niet handelen met je eigen winkel.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
   success: <green>Reload completed without any errors.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} heeft {1} {2} gekocht in uw winkel en u heeft {3} ({4} aan belasting) verdiend.
 not-enough-space: <red>Je hebt slechts ruimte voor {0} meer!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Succesvol toegevoegd {0} als staflid in uw winkel.
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Deze winkel heeft geen personeel.
 shops-recovering: Winkels herstellen van backup...
-virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
+virtual-player-component-hover: "<gray>Dit is een virtuele speler.\n<gray>Verwijst naar een systeemaccount met dezelfde naam.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>"
+real-player-component-hover: "<gray>Dit is een echte bestaande speler.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam:<yellow>{1}</yellow></green>\n<green>Weergeven als:<yellow>{2}</yellow></green>\n<gray>Als u een virtueel systeemaccount met dezelfde naam wilt gebruiken, voeg dan<dark_gray>\"[]\"</dark_gray>toe aan beide zijden van de gebruikersnaam: \n<dark_gray>[{1}]</dark_gray>"
 menu:
   sell-tax: <green>U heeft &{0} Btw betaald.
   owner: '<green>Eigenaar: {0}'
@@ -105,18 +105,18 @@ menu:
   sell-tax-self: <green>Je hebt geen belastingen betaald omdat je eigenaar bent van deze winkel.
   shop-information: '<green>Shop Informatie:'
   item: ''
-  price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
+  price-per: <green>Prijs per <yellow>{0}<green>-<yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
   item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>
   successful-purchase: '<green>Succesvol aangeschaft:'
-  price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
+  price-per-stack: <green>Prijs per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
   this-shop-is-selling: <green>Deze winkel is <aqua>SELLING<yellow>en items.
   shop-stack: '<green>Hoeveelheid bulk: <yellow>{0}'
   space: '<green>Spatie: <yellow>{0}'
   effects: <green>Effecten
-  damage-percent-remaining: <yellow>{0}% <green>remaining.
+  damage-percent-remaining: <yellow>{0}% <green>resterende.
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Voorraad <yellow>{0}'
   this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<yellow>en items.
@@ -125,39 +125,39 @@ menu:
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
 no-nearby-shop: <red>Geen winkel in de buurt die overeenkomt met {0}.
-translation-author: 'Ghost_chu, Andre_601'
+translation-author: 'Ghost_chu, Andre_601, Prutteltje'
 integrations-check-failed-trade: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Succesvol de winkeleigenaar ingesteld op Server.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Deze winkelnaam is te lang (max. lengte {0}), kies een andere naam!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}''s {1} {2} transacties:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
+  price-hover: <yellow>Totaal {0}, inclusief {1} belastingen.
   unknown: <gray>(unknown)
   undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  no-results: <red>Geen transacties gevonden.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
+    PURCHASE_BUYING_SHOP: <yellow>Speler heeft enkele items verkocht aan een inkoopwinkel.
+    CREATE: <yellow>Speler heeft een winkel gemaakt.
+    PURCHASE_SELLING_SHOP: <yellow>Speler heeft een aantal items gekocht bij een winkel.
+    PURCHASE: <yellow>Aangekocht artikel bij een winkel
   query-argument: 'Query Argument: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>De winkel {0} heeft {1} {2} transacties uitgevoerd:'
   player-hover: |-
     <yellow>{0}<newline><gold>UUID: <gray>{1}
-  looking-up: <yellow>Performing metric lookup, Please wait...
+  looking-up: <yellow>Statistieken worden opgezocht, even geduld a.u.b...
   tax-hover: <yellow>{0} belasting
-  header-global: '<yellow>The server {0} {1} transactions:'
-  na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  header-global: '<yellow>De server {0} {1} transacties:'
+  na: <gray>NVT
+  transaction-count: <yellow>{0} totaal
   shop-hover: |-
     <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
-  time-hover: '<yellow>Time: {0}'
+  time-hover: '<yellow>Tijd:{0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permissie geweigerd: 3rd Party Plugin [{0}].'
 you-dont-have-that-many-items: <red>Je hebt slechts {0} {1}.
@@ -165,7 +165,7 @@ complete: <green>Complete!
 translate-not-completed-yet-url: 'De vertaling van de taal {0} is nog niet voltooid door {1}. Wilt u ons helpen bij het verbeteren van de vertaling? Browse: {2}'
 success-removed-shop: <green>Winkel verwijderd.
 currency-set: <green>Shop valuta succesvol ingesteld op {0}.
-shop-purged-start: <green>Shop purge started, check the console for details.
+shop-purged-start: <green>Winkelopruiming gestart, kijk op de console voor meer info.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
 nothing-to-flush: <green>U heeft geen nieuwe winkel berichten.
 no-price-change: <red>Dit zou geen prijswijziging tot gevolg hebben!
@@ -177,14 +177,14 @@ unknown-player: <red>Target player bestaat niet, controleer de gebruikersnaam di
 player-offline: <red>The target player currently is offline.
 player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
 shop-type:
-  selling: SELLING
-  buying: BUYING
-  frozen: FROZEN
+  selling: VERKOPEN
+  buying: KOPEN
+  frozen: BEVROREN
 language:
   qa-issues: '<yellow>Kwaliteit geruststelling problemen: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
   approval-progress: '<yellow>Goedkeuring voortgang: <aqua>{0}%'
-  translate-progress: '<yellow>Translation Progress: <aqua>{0}%'
+  translate-progress: '<yellow>Vertalingsvoortgang:<aqua>{0}%'
   name: '<yellow>Naam: <gold>{0}'
   help-us: <green>[Help ons de vertaalkwaliteit te verbeteren]
 warn-to-paste: |-
@@ -248,15 +248,15 @@ translate-not-completed-yet-click: De vertaling van de taal {0} is nog niet volt
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} heeft {1} {2} gekocht van uw winkel, en u heeft {3} verdiend.
 reached-maximum-can-create: <red>Je hebt al een maximum van {0}/{1} winkels gemaakt!
-translation-version: 'Support Version: Hikari'
+translation-version: 'Ondersteunde versie: Hikari'
 no-double-chests: <red>Je kunt de dubbele kist winkel niet maken.
 price-too-cheap: <red>Price moet groter zijn dan <yellow>${0}
 shop-not-exist: <red>Er is geen winkel.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Ongeldige opdrachtargumenten!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-starting: <green>Beginnen met controleren op spookwinkels (ontbrekende containerblokken). Alle niet-bestaande winkels worden verwijderd...
+cleanghost-deleting: <yellow>Een beschadigde winkel <aqua>{0}</aqua>gevonden vanwege{1},markeer deze om te verwijderen...
+cleanghost-deleted: <green>In totaal zijn<yellow>{0}</yellow> winkels verwijderd.
 shop-purchase-cancelled: <red>Shop aankoop geannuleerd.
 bypassing-lock: <red>Bypassing van een QuickShop vergrendeling!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -273,7 +273,7 @@ how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<gre
 shop-freezed-at-location: <yellow>Uw winkel {0} om {1} is bevroren!
 translation-contributors: 'Medewerkers'
 empty-success: '&Het leegmaken van winkel gelukt'
-taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
+taxaccount-set: <green>De belastingrekening van deze winkel is ingesteld op <yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
   outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
@@ -289,7 +289,7 @@ unknown-owner: onbekend
 restricted-prices: '<red>Beperkte prijs voor {0}: Min {1}, max {2}'
 nearby-shop-this-way: <green>Shop is {0} blokken ver van je.
 owner-bypass-check: <yellow>Bypassed alle controles. Handel succesvol! (Je bent nu de eigenaar van de winkel!)
-april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
+april-rick-and-roll-easter-egg: "<hover:show_text:‘Klik om te openen in de browser voor tijdelijke beloningen!’><click:open_url:‘https://www.youtube.com/watch?v=dQw4w9WgXcQ’><green>Klik hier om je tijdelijke beloningen te ontvangen die worden aangeboden door QuickShop-Hikari-ontwikkelaar!</green></click></hover>"
 signs:
   item-right: ''
   out-of-space: Te weinig ruimte
@@ -311,10 +311,10 @@ signs:
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
 display-turn-on: <green>Successfully turn on the shop display.
 display-turn-off: <green>Successfully turn off the shop display.
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-owned: <green>Winkelweergave voor alle winkels in bezit succesvol ingeschakeld.
+display-turn-off-owned: <green>Winkelweergave voor alle winkels in bezit succesvol uitgeschakeld.
+display-turn-on-all: <green>Winkelweergave voor alle serverwinkels succesvol ingeschakeld.
+display-turn-off-all: <green>Winkelweergave voor alle serverwinkels succesvol uitgeschakeld.
 shop-staff-deleted: <green>Succesvol {0} verwijderd als staflid van uw winkel.
 nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Kan de database niet back-uppen. Controleer de console voor details.
@@ -347,7 +347,7 @@ controlpanel:
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<green>Freeze mode: <aqua>{0} <yellow>[<bold><light_purple>Toggle</light_purple></bold>]'
+  freeze: "<green>Bevriezingsmodus:<aqua>{0}\n<yellow>[<bold><light_purple>Omschakelen</light_purple></bold>"
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klik om de valuta die deze winkel gebruikt in te stellen of te verwijderen
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
