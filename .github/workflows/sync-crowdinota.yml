@@ -14,14 +14,19 @@ jobs:
       #         java-version: '17'
       #         distribution: 'temurin'
       - name: Build Translations
-        uses: Ghost-chu/CrowdinCopyDeploy-action@master
+        uses: QuickShop-Community/CrowdinCopyDeploy-action@master
         with:
           args: uploads3
         env:
+          STORAGE_HANDLER: "bunny"
           CROWDIN_ACCESS_TOKEN: ${{ secrets.CROWDIN_ACCESS_TOKEN_NEW }}
           CROWDIN_PROJECT_BRANCH_ID: '62'
           CROWDIN_PROJECT_ID: '695407'
           #DEPLOY_PATH: './deploy-prod'
+          BUNNY_ZONE: ${{ secrets.BUNNY_ZONE }}
+          BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+          BUNNY_MAIN_ZONE: ${{ secrets.BUNNY_MAIN_ZONE }}
+          BUNNY_DEST: ${{ secrets.BUNNY_DEST }}
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
