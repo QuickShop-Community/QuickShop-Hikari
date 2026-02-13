@@ -119,7 +119,7 @@ menu:
   damage-percent-remaining: <yellow>{0}% <green>resterende.
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Voorraad <yellow>{0}'
-  this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<yellow>en items.
+  this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<green>en items.
   this-shop-is-frozen: <green>De winkel is nu in <red>vriesmodus<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
@@ -253,7 +253,7 @@ no-double-chests: <red>Je kunt de dubbele kist winkel niet maken.
 price-too-cheap: <red>Price moet groter zijn dan <yellow>${0}
 shop-not-exist: <red>Er is geen winkel.
 bad-command-usage: <red>Ongeldige opdrachtargumenten!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-warning: <yellow>Dit commando verwijdert <red>alle</red> winkels als de winkel beschadigd is, is aangemaakt in niet-toegestane werelden, niet-toegestane items verkoopt/koopt of <bold><red>BESTAAT IN EEN NIET-GELADEN WERELD</red></bold>. Zorg ervoor dat je eerst een volledige back-up van je winkelgegevens maakt en gebruik <aqua>/quickshop cleanghost confirm</aqua> om door te gaan.
 cleanghost-starting: <green>Beginnen met controleren op spookwinkels (ontbrekende containerblokken). Alle niet-bestaande winkels worden verwijderd...
 cleanghost-deleting: <yellow>Een beschadigde winkel <aqua>{0}</aqua>gevonden vanwege{1},markeer deze om te verwijderen...
 cleanghost-deleted: <green>In totaal zijn<yellow>{0}</yellow> winkels verwijderd.
@@ -351,10 +351,10 @@ controlpanel:
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klik om de valuta die deze winkel gebruikt in te stellen of te verwijderen
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Shop mode: <aqua>Inkopen<yellow>[<light_purple><bold>Wijzigen<yellow>]'
+  mode-selling: '<green>Shop mode: <aqua>Verkopen<yellow>[<light_purple><bold>Wijzigen<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Klik om van eigenaar te wisselen.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: "<green>Shop mode: <aqua>Kopen \n<yellow>[<bold><light_purple>Wijzig</light_purple></bold>]"
   item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Click om te schakelen als de winkel onbeperkt is.
@@ -482,7 +482,7 @@ command:
   new-owner: '<green>Nieuwe eigenaar: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>Overgedragen van{0} <green>shop(s) naar <yellow>{1}
-  now-buying: <green>Nu <light_purple>BUYING <yellow>{0}
+  now-buying: <green>Nu <light_purple>kopen</light_purple>{0}
   now-selling: <green>Nu <aqua>SELLING <yellow>{0}
   cleaned: <green>Verwijderd{0}<yellow>en winkels.
   trade-item-now: <green>Nu handelen <yellow>{0}x {1}
@@ -514,7 +514,7 @@ permission:
   header-group: <green>Details over winkelmachtigingen voor groep {0}
   table: <gold><b>{0}</b>:</gold> <gray>{1}</gray>
   item:
-    purchase: <yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)
+    purchase: <yellow>Toestemming om gebruikers die dit hebben, toe te staan aankopen te doen in de winkel. (inclusief kopen en verkopen)
     show-information: <yellow>Toestemming om gebruikers die dit hebben de winkelinformatie te laten zien. (winkelinformatiepaneel openen)
     preview-shop: <yellow>Toestemming om gebruikers die dit hebben een voorbeeld van de winkel te laten zien. (voorbeelditem)
     search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
@@ -524,7 +524,7 @@ permission:
     ownership-transfer: <yellow>Toestemming om gebruikers die dit hebben, het eigendom van de winkel te laten overdragen.
     management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
     toggle-display: <yellow>Toestemming om gebruikers die dit hebben, de weergave van het winkelartikel te laten wijzigen.
-    set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
+    set-shoptype: <yellow>Toestemming om gebruikers die dit hebben, het winkelsysteem te laten instellen (overschakelen naar kopen of verkopen).
     set-price: <yellow>Toestemming om gebruikers die dit hebben de winkelprijs te laten instellen.
     set-item: <yellow>Toestemming om gebruikers die dit hebben, het winkelartikel in te stellen.
     set-stack-amount: <yellow>Toestemming om gebruikers die dit hebben, het aantal stapels in de winkel te laten instellen.
@@ -686,91 +686,91 @@ transfer-ask: |-
   <gold>Typ <red>/quickshop transfer accept</red> om te accepteren of <red>/quickshop transfer deny</red> om te weigeren.
   Het verzoek verloopt na <red>{0}</red> seconden.
 transferall-ask: |-
-  <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Typ <red>/quickshop transferall accept</red> om te accepteren of <red>/quickshop transferall deny</red> om te weigeren.
+  Het verzoek verloopt na <red>{0}</red> seconden.
 transfer-single-ask: |-
-  <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  <gold>Typ <red>/quickshop transferownership accept</red> om te accepteren of <red>/quickshop transferownership deny</red> om te weigeren.
+  Het verzoek verloopt na <red>{0}</red> seconden.
 transfer-accepted-fromside: <green>Speler <aqua>{0}</aqua> heeft je verzoek om een winkeltransfer geaccepteerd.
 transfer-accepted-toside: <green>Je hebt de overdrachtsaanvraag van <aqua>{0}</aqua> geaccepteerd.
 transfer-rejected-fromside: <red>Speler <aqua>{0}</aqua> heeft je verzoek om een winkeltransfer afgewezen.
 transfer-rejected-toside: <red>Je hebt het verzoek van <aqua>{0}</aqua> om de winkel over te dragen afgewezen.
 transfer-no-pending-operation: <red>Je hebt geen lopende transferverzoeken.
-transfer-no-self: <red>You can't transfer your shops to yourself.
-benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
-benefit-exists: <red>Target player already in benefits list on this shop.
-benefit-removed: <red>Target player has been removed from shop benefits.
-benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
-benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
-benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
+transfer-no-self: <red>Je kunt je winkels niet aan jezelf overdragen.
+benefit-overflow: <red>De som van alle voordelen kan niet groter of gelijk zijn aan 100%.
+benefit-exists: <red>De speler staat al op de voordelenlijst van deze winkel.
+benefit-removed: <red>De betreffende speler is verwijderd uit de winkelvoordelen.
+benefit-added: <green>Speler <aqua>{0}</aqua> is toegevoegd aan de voordelen van de winkel!
+benefit-updated: <green>Speler <aqua>{0}</aqua>'s voordelen zijn bijgewerkt!
+benefit-query: <green>Deze winkel heeft <yellow>{0}</yellow> spelers in de voordelenlijst!
 benefit-query-list: <yellow> - </yellow><white>Speler <gold>{0}</gold>, Voordeel <gold>{1}%
-tag-added: '<green>Successfully added <aqua>#{0}</aqua> to this shop!'
-tag-add-duplicate: '<red>The tag <aqua>#{0}</aqua> already exists at this shop!'
-tag-removed: '<green>Successfully removed <aqua>#{0}</aqua> from this shop!'
-tag-remove-not-exists: 'The tag <aqua>#{0}</aqua> not exists at this shop!'
-tag-cleared: <green>Successfully cleared all tags from this shop!
-tag-shops-cleared: '<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!'
-tag-query: '<green>This shop have <yellow>{0}</yellow> tags:'
+tag-added: '<green>Succesvol toegevoegd <aqua>#{0}</aqua> aan deze winkel!'
+tag-add-duplicate: '<red>De tag <aqua>#{0}</aqua> bestaat al in deze winkel!'
+tag-removed: '<green>Succesvol verwijderd <aqua>#{0}</aqua> uit deze winkel!'
+tag-remove-not-exists: 'De tag <aqua>#{0}</aqua> bestaat niet in deze winkel!'
+tag-cleared: <green>Alle tags uit deze winkel zijn succesvol gewist!
+tag-shops-cleared: '<green>Succesvol verwijderd <aqua>#{0}</aqua> van al uw getagde winkels!'
+tag-query: '<green>Deze winkel heeft <yellow>{0}</yellow> tags:'
 tag-query-listing: '<yellow> - <aqua>#{0}'
-tag-query-no-tag: <red>This shop have no tags.
-tag-query-shops: '<green>This tag contains <yellow>{0}</yellow> shops:'
+tag-query-no-tag: <red>Deze winkel heeft geen tags
+tag-query-shops: '<green>Deze tag bevat <yellow>{0}</yellow> winkels:'
 tag-query-shops-listing: <yellow> - <aqua>{0}
-batch-operations-based-on-tags-no-failure: <green>Successfully batch processed <yellow>{0}</yellow> shops.
+batch-operations-based-on-tags-no-failure: <green>Succesvol batch verwerkt <yellow>{0}</yellow> winkels.
 batch-operations-based-on-tags-have-failure: <yellow>In totaal {0} winkels in batchverwerking succesvol voltooid, maar <red>{1}</red> verzoeken niet voltooid.
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>In totaal {0} winkels in batchverwerking succesvol voltooid, maar <red>{1}</red>verzoeken niet voltooid. Reden: <gold>{2}'
-batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>The error messages will send to you above this message in the chat.
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <gray>De foutmeldingen worden boven dit bericht in de chat naar u verzonden.
 addon:
   towny:
     commands:
-      town: <yellow>Set or unset a shop to a Town shop
-      nation: <yellow>Set or unset a shop to a Nation shop
-    make-shop-owned-by-town: <green>You have made the shop owned by town <yellow>{0}</yellow>.
-    make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
-    make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
+      town: <yellow>Een winkel instellen of uitschakelen als winkel in de stad
+      nation: <yellow>Een winkel instellen of uitschakelen als Nation-winkel
+    make-shop-owned-by-town: <green>Je hebt de winkel van de stad <yellow>{0}</yellow> gekocht.
+    make-shop-no-longer-owned-by-town: <green>Je hebt het eigendom van de winkel gereset, het is nu weer overgedragen aan de oorspronkelijke winkeleigenaar.
+    make-shop-owned-by-nation: <green>Je hebt de winkel eigendom gemaakt van natie <yellow>{0}</yellow>.
+    make-shop-no-longer-owned-by-nation: <green>Je hebt het eigendom van de winkel gereset, het is nu weer overgedragen aan de oorspronkelijke winkeleigenaar.
     shop-owning-changing-notice: <gray>Deze winkel is nu eigendom van een stad/land. De oorspronkelijke winkeleigenaar is automatisch toegevoegd aan de lijst met beheerders. Wijzig of voeg nieuwe eigenaren/medewerkers toe met behulp van het commando /quickshop permission
-    target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
-    target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
-    target-shop-not-in-town-region: <red>The target shop is not in the town.
-    target-shop-not-in-nation-region: <red>The target shop is not in the nation.
-    item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
-    operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
-    plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
+    target-shop-already-is-town-shop: <red>De geselecteerde winkel is al eigendom van een gemeente.
+    target-shop-already-is-nation-shop: <red>De geselecteerde winkel is al eigendom van een land.
+    target-shop-not-in-town-region: <red>De geselecteerde winkel bevindt zich niet in de stad.
+    target-shop-not-in-nation-region: <red>De geselecteerde winkel bevindt zich niet in het land.
+    item-not-allowed: <red>De artikelen van deze winkel mogen niet worden gebruikt door winkels in steden/landen, kies een andere!
+    operation-disabled-due-shop-status: <red>Deze winkel is uitgeschakeld omdat dit al een stads-/nationale winkel is.
+    plot-type-disallowed: <red>Je kunt op dit type perceel geen dorps-/nationale winkel bouwen.
     flags:
-      own: <red>You can only create shops at your owned shop type towny plot.
-      modify: <red>You didn't have build permission on this towny plot.
-      shop-type: <red>You must create shop on a shop type towny plot.
+      own: <red>Je kunt alleen winkels bouwen op je eigen winkelperceel in Towny.
+      modify: <red>Je had geen bouwvergunning voor dit perceel in Towny.
+      shop-type: <red>Je moet een winkel bouwen op een perceel van het type ‘winkel’ in Towny.
   residence:
-    creation-flag-denied: <red>You don't have permission to create shops in this residence.
-    trade-flag-denied: <red>You don't have permission to purchase in this residence.
-    you-cannot-create-shop-in-wildness: <red>You can't create shop in wildness.
+    creation-flag-denied: <red>Je hebt geen toestemming om winkels te openen in deze woonwijk.
+    trade-flag-denied: <red>U hebt geen toestemming om in deze woning te kopen.
+    you-cannot-create-shop-in-wildness: <red>Je kunt geen winkel creëren in de wildernis.
   griefprevention:
-    creation-denied: <red>You don't have permission to create shops in this claim.
-    trade-denied: <red>You don't have permission to purchase shops in this claim.
+    creation-denied: <red>Je hebt geen toestemming om winkels te maken in deze claim.
+    trade-denied: <red>Je hebt geen toestemming om winkels te kopen in deze claim.
   lands:
-    world-not-enabled: <red>You are not allowed to create or purchase in this world.
-    creation-denied: <red>You don't have permission to create shops in this Land area.
+    world-not-enabled: <red>Je hebt geen toestemming om te kopen of te maken in deze wereld.
+    creation-denied: <red>U heeft geen toestemming om winkels te maken in dit Land gebied.
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>Je moet de quest <aqua>{0}</aqua> voltooien om een winkel te maken.
+    sell-quest-required: <red>Je moet de quest <aqua>{0}</aqua> voltooien om voorwerpen te verkopen aan een winkel.
+    buy-quest-required: <red>Je moet de quest <aqua>{0}</aqua> voltooien om voorwerpen in een winkel te kopen.
   dominion:
-    creation-denied: <red>You don't have permission to create shops in this Dominion area.
-    trade-denied: <red>The shop must be within a Dominion to trade with it.
+    creation-denied: <red>Je hebt geen toestemming om een winkel te maken op deze locatie.
+    trade-denied: <red>De winkel moet zich binnen een Dominion bevinden om er handel mee te kunnen drijven.
   plotsquared:
-    no-plot-whitelist-creation: <red>You cannot create shop outside of Plot.
-    no-plot-whitelist-trade: <red>You cannot purchase shop outside of Plot.
-    creation-denied: <red>You don't have permission to create shops in this Plot.
-    trade-denied: <red>You don't have permission to purchase shops in this Plot.
+    no-plot-whitelist-creation: <red>U kunt geen winkel aanmaken buiten de Plot.
+    no-plot-whitelist-trade: <red>Je kunt geen winkel kopen buiten Plot.
+    creation-denied: <red>Je hebt geen toestemming om winkels in deze Plot te maken.
+    trade-denied: <red>Je hebt geen toestemming om winkels in deze Plot te kopen.
     flag:
-      create: Create QuickShop-Hikari shops
-      trade: Purchase QuickShop-Hikari shops
+      create: QuickShop-Hikari winkels creëren
+      trade: QuickShop-Hikari winkels kopen
   superiorskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-create-only: <red>Alleen de eigenaar van het eiland kan een winkel maken.
+    owner-member-create-only: <red>Alleen eigenaar van een eiland of lid kan een winkel maken.
   fabledskyblock:
-    owner-create-only: <red>Only island owner can create shop there.
-    owner-member-create-only: <red>Only island owner or member can create shop there.
+    owner-create-only: <red>Alleen de eigenaar van het eiland kan een winkel maken.
+    owner-member-create-only: <red>Alleen eigenaar van een eiland of lid kan een winkel maken.
   worldguard:
     creation-flag-test-failed: <red>You don't have permission create shop in this WorldGuard area.
     trade-flag-test-failed: <red>You don't have permission trade shop in this WorldGuard area.
@@ -1377,29 +1377,29 @@ addon:
     discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
     discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
     discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
-    discount-code-config-shop-remove-failure: <red>This shop not exists in your discount code allow list.
-    discount-code-config-expire: <green>Successfully changed your code expire time.
-    discount-code-config-applied: <green>Config the discount code successfully!
+    discount-code-config-shop-remove-failure: <red>Deze winkel staat niet op uw lijst met toegestane kortingscodes.
+    discount-code-config-expire: <green>De vervaldatum van uw code is succesvol gewijzigd.
+    discount-code-config-applied: <green>De kortingscode is succesvol geconfigureerd!
     discount-code-created-successfully: |
       <green>Je kortingscode <yellow>{0}</yellow> is met succes aangemaakt!
       <gold>Scope: <aqua>{1}</aqua></gold>.
       <gold>Delen met anderen: <#bcef26>{2}</#bcef26></gold>.
       <yellow>Voor <gray>Specifieke Shops</gray> toepassingsgebied: winkels toevoegen aan uw kortingscode toestaan lijst, kijk naar een quickshop en voer <aqua>{3}</aqua> commando uit.
       U kunt <aqua>/ quickshop discount config {0}</aqua> gebruiken om uw kortingscode op elk gewenst moment te bewerken.
-    discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
+    discount-code-under-threshold: <red>De korting is niet toegepast op uw aankoop omdat de totale waarde onder de kortingscodedrempel <yellow>{0}</yellow> ligt.
     percentage-off: '<bold><#bcef26>-{0}%'
     fixed-off: '<bold><#bcef26>-{0}'
     discount-code-list: '<gold>Uw promotiecodes weergeven:'
     discount-code-applied-in-purchase: '<#bcef26>Uw kortingscode <yellow>{0}</yellow> is toegepast op deze aankoop en u heeft <gold>{1}</gold> bespaard!'
     scope:
       this-shop: '{0}'
-      your-shops-owned: all your shops (owned)
-      your-shops-managed: all your shops (managed)
-      server: whole server
+      your-shops-owned: al uw winkels (in bezit)
+      your-shops-managed: al uw winkels (onder beheer)
+      server: hele server
     code-type:
-      SERVER_ALL_SHOPS: All shops on this server
-      PLAYER_ALL_SHOPS: All shops that created by code owner
-      SPECIFIC_SHOPS: Specific shops
+      SERVER_ALL_SHOPS: Alle winkels op deze server
+      PLAYER_ALL_SHOPS: Alle winkels die zijn gemaakt door de code-eigenaar
+      SPECIFIC_SHOPS: Specifieke winkels
     discount-code-details: |-
       <gold>Code: <yellow>{0}</yellow>
       Maker: <yellow>{1}</yellow>
@@ -1410,121 +1410,121 @@ addon:
       Korting: <yellow>{6}</yellow><br>
   list:
     commands:
-      list: <yellow>Listing all shops owned by your or specific player
-    table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Total {1})</gray>: '
-    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Page {1}/{2})</gray>: '
+      list: <yellow>Alle winkels weergeven die eigendom zijn van jou of een specifieke speler
+    table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Totaal {1})</gray>: '
+    table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Pagina {1}/{2})</gray>: '
     entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Prijs<yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
   shopitemonly:
-    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
+    message: <red>Je kunt geen niet-winkelartikelen in de winkelcontainer plaatsen, alle niet-winkelartikelen worden op je locatie achtergelaten.
   limited:
     commands:
-      limit: <yellow>Set a limit that restrict the purchase that player can make in period
+      limit: <yellow>Stel een limiet in die de aankopen die een speler in een bepaalde periode kan doen, beperkt.
     titles:
-      title: <green>Purchase Success
-      subtitle: <aqua>You can also purchase <gold>{0}</gold> more in this shop
-    reach-the-limit: <red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items.
-    success-reset: <green>Reset the restriction of this shop successfully
-    success-remove: <green>Successfully remove the all restriction of this shop
-    success-setup: <green>Restriction settings for this shop were saved successfully
-    trade-limit-reached-cancel-reason: <red>Reached the restriction of this shop
+      title: <green>Aankoop geslaagd
+      subtitle: <aqua>U kunt ook <gold>{0}</gold> meer kopen in deze winkel.
+    reach-the-limit: <red>Je hebt de limiet bereikt in deze winkel. Je kunt ook <green>{0}</green> artikelen kopen, maar je probeert <yellow>{1}</yellow> artikelen te kopen.
+    success-reset: <green>De beperking van deze winkel is succesvol gereset.
+    success-remove: <green>Alle beperkingen van deze winkel zijn succesvol verwijderd.
+    success-setup: <green>De beperkingsinstellingen voor deze winkel zijn succesvol opgeslagen.
+    trade-limit-reached-cancel-reason: <red>De beperking van deze winkel is bereikt
     remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}'
     remains-limits-before-reset-period-note: '<gold>Deze winkel zal hun verkoopquota opnieuw instellen elke: <yellow>{0}'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
-    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
+    marker-name: '{0} @ {2} @ {3} voor x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
+      Naam: {0}
+      Eigenaar: {1}
+      Artikel: {2}
+      Prijs: {3} voor x{4} artikel(en)
       Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Onbeperkt: {6}
+      Locatie: {7}
   bluemap:
     markerset-title: QuickShop-Hikari Shops
-    marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
+    marker-name: '{0} @ {2} @ {3} voor x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
+      Naam: {0}
+      Eigenaar: {1}
+      Artikel: {2}
+      Prijs: {3} voor x{4} artikel(en)
       Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Onbeperkt: {6}
+      Locatie: {7}
   chestprotect:
-    protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
-    shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
+    protection-exists: <red>Deze regio is al beschermd door ChestProtect en je hebt geen toestemming om winkels hier te maken.
+    shops-exsts: <red>De regio die je wilt beschermen bevat winkels van andere spelers en je hebt geen toestemming om ze te openen.
   displaycontrol:
     toggle: |-
-      <green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.
-      <yellow>You may need re-join to take effect.
-    toggle-exception: <red>Failed to toggle your display showcase settings due an internal error, please contact server administrator.
+      <green>Je QuickShop-weergave is succesvol gewijzigd naar <aqua>{0}</aqua>.
+      <yellow>Je moet mogelijk opnieuw inloggen om de wijziging door te voeren.
+    toggle-exception: <red>Het wijzigen van uw display-showcase-instellingen is mislukt vanwege een interne fout. Neem contact op met de serverbeheerder.
     command:
-      displaycontrol: <yellow>Toggle your QuickShop display showcasing
+      displaycontrol: <yellow>Schakel uw QuickShop-weergave in om te laten zien
   reremake-migrator:
     commands:
-      migratefromreremake: Migrate QuickShop-Reremake's data to QuickShop-Hikari
-    server-not-empty: "<red>No players are allowed to be online on the server during the conversion progress, please enable server whitelist or maintenance mode."
-    starting-convert-progress: "<gold>Starting the convert progress, <red>DO NOT SHUTDOWN YOUR SERVER!</red>"
-    executing: "<gold>Executing migrate component <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-    completed: "<green>Done! Migrate completed, please restart your server and remove QuickShop-Reremake from plugins directory."
-    join_blocking_converting: "<red>[QuickShop-Hikari Migrator] This server is performing a data conversion and you cannot join the server at this time, try again later!"
-    join_blocking_finished: "<red>[QuickShop-Hikari Migrator] This server has just completed a data conversion and is waiting for a reboot to apply the changes, try again later!"
-    failed: "<red>Migration progress exited with error, please check the server console."
+      migratefromreremake: Migreer de gegevens van QuickShop-Reremake naar QuickShop-Hikari
+    server-not-empty: "<red>Tijdens het conversieproces mogen er geen spelers online zijn op de server. Schakel de whitelist of onderhoudsmodus van de server in."
+    starting-convert-progress: "<gold>Start het conversieproces, <red>SLUIT UW SERVER NIET AF!</red>"
+    executing: "<gold>Migratiecomponent uitvoeren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+    completed: "<green>Klaar! Migratie voltooid. Start uw server opnieuw op en verwijder QuickShop-Reremake uit de map met plug-ins."
+    join_blocking_converting: "<red>[QuickShop-Hikari Migrator] Deze server voert momenteel een gegevensconversie uit en u kunt op dit moment geen verbinding maken met de server. Probeer het later nog eens!"
+    join_blocking_finished: "<red>[QuickShop-Hikari Migrator] Deze server heeft zojuist een gegevensconversie voltooid en wacht op een herstart om de wijzigingen toe te passen. Probeer het later nog eens!"
+    failed: "<red>Migratieproces is met een fout afgesloten, controleer de serverconsole."
     modules:
       config:
-        copy-values: "<yellow>Copying values (total {0} entries)..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        migrate-price-restriction: "<yellow>Migrating price-restriction related settings..."
-        migrate-price-restriction-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copy-values: "<yellow>Waarden kopiëren (totaal {0} vermeldingen)..."
+        copying-value: "<gray> - Kopiëren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        migrate-price-restriction: "<yellow>Instellingen met betrekking tot prijsbeperkingen migreren..."
+        migrate-price-restriction-entry: "<gray> - Migreren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop:
-        start-migrate: "<yellow>Migrating shops (total {0} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        unloading-reremake: "<gold>Unloading Reremake to avoid data overwrite..."
-        register-entry: "<gray> - Registering <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        save-entry: "<gray> - Saving <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        saving-shops: "<yellow>Saving <gold>{0}</gold> shops, this may need a while™ (the time based on shops amounts)..."
-        conflict: "<gray> - CONFLICT > Detects a conflict between a Reremake store and an existing Hikari store location, taking a predefined behavior: <dark_gray>{0}</dark_gray>"
+        start-migrate: "<yellow>Winkels migreren (totaal {0} vermeldingen)..."
+        migrate-entry: "<gray> - Migreren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        unloading-reremake: "<gold>Reremake wordt verwijderd om overschrijven van gegevens te voorkomen..."
+        register-entry: "<gray> - Registreren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        save-entry: "<gray> - Opslaan <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        saving-shops: "<yellow>Het opslaan van <gold>{0}</gold> winkels kan even duren™ (de tijd is afhankelijk van het aantal winkels)..."
+        conflict: "<gray> - CONFLICT > Detecteert een conflict tussen een Reremake-winkel en een bestaande Hikari-winkel, waarbij een vooraf gedefinieerd gedrag wordt gevolgd: <dark_gray>{0}</dark_gray>"
       translation:
-        start-migrate: "<yellow>Migrating translation files...</yellow>"
-        copy-values: "<yellow>Copying values in locale <gold>{0}</gold> (total {1} entries)..."
-        migrate-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
-        copying-value: "<gray> - Copying <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Vertalingsbestanden worden gemigreerd...</yellow>"
+        copy-values: "<yellow>Waarden kopiëren in locale <gold>0}</gold> (totaal {1} vermeldingen)..."
+        migrate-entry: "<gray> - Migreren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        copying-value: "<gray> - Kopiëren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
       shop-logs:
-        start-migrate: "<yellow>Migrating shop logs (details in console), please wait...</yellow>"
-        extract-history-files: "<gray>Please wait for us to unzip and append the history logs..."
-        filter-history-files: "<gray>Please wait for us to filter the history log..."
-        filtered-history-files: "<gray>Filtered {0} lines out of queue."
-        import-entry: "<gray> - Migrating <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
+        start-migrate: "<yellow>Winkellogboeken worden gemigreerd (details in console), even geduld a.u.b...</yellow>"
+        extract-history-files: "<gray>Wacht even terwijl wij de logbestanden uitpakken en toevoegen..."
+        filter-history-files: "<gray>Wacht even terwijl wij het historielogboek filteren..."
+        filtered-history-files: "<gray>{0} regels uit wachtrij gefilterd."
+        import-entry: "<gray> - Migreren <aqua>{0}</aqua> <dark_gray>({1}/{2})</dark_gray>..."
 compat:
   advancedchests:
-    created: <green>You're successfully created a shop on AdvancedChests container!
-    permission-denied: <red>Sorry! You don't have the permission to create a shop on a AdvancedChests container!
+    created: <green>Je hebt met succes een winkel aangemaakt op de AdvancedChests-container!
+    permission-denied: <red>Sorry! Je hebt geen toestemming om een winkel aan te maken op een AdvancedChests-container!
 suite:
   dynmap:
     title: '{0} - {1} - {2}'
     description: |-
       Item: {0}
-      Owner: {1}
+      Eigenaar: {1}
       Type: {2} {3}
-      Price: {4}
-      Location: {5} {6}, {7}, {8}
-      Space: {9}
-      Stock: {10}
+      Prijs: {4}
+      Locatie: {5} {6}, {7}, {8}
+      Ruimte: {9}
+      Voorraad: {10}
   limited:
-    command-description: <yellow>Set a limit that restrict the purchase that player can make in period.
-    reach-the-quota-limit: <red>You have reach the purchase limit in this shop ({0}/{1}).
-    quota-reset-countdown: <yellow>The quota in this shop will reset in {0}.
-    quota-reset-player-successfully: <green>The quota for player {0} in this shop has been reset successfully.
-    quota-reset-everybody-successfully: <green>The quota for everyone in this shop has been reset successfully.
-    quota-setup: <green>The purchase restriction now apply to this shop!
-    quota-remove: <green>The purchase restriction now removed from this shop!
+    command-description: <yellow>Stel een limiet in die de aankopen die een speler in een bepaalde periode kan doen, beperkt.
+    reach-the-quota-limit: <red>Je hebt de aankooplimiet in deze winkel bereikt ({0}/{1}).
+    quota-reset-countdown: <yellow>De quota in deze winkel wordt over {0} gereset.
+    quota-reset-player-successfully: <green>Het quotum voor speler {0} in deze winkel is succesvol gereset.
+    quota-reset-everybody-successfully: <green>Het quotum voor iedereen in deze winkel is succesvol gereset.
+    quota-setup: <green>De inkoopbeperking is nu van toepassing op deze winkel!
+    quota-remove: <green>De inkoopbeperking is nu verwijderd van deze winkel!
     subtitles:
-      title: <green>Purchase Success
-      subtitle: <aqua>You can purchase <yellow>{0}</yellow> more in this shop
+      title: <green>Aankoop geslaagd
+      subtitle: <aqua>U kunt <yellow>{0}</yellow> meer kopen in deze winkel
   list:
-    command-description: <yellow>List all shops owned by yourself or another player.
-    table-prefix: <yellow>You owned total <aqua>{0}</aqua> shops on this server.
+    command-description: <yellow>Laat alle winkels zien die eigendom zijn van jezelf of een andere speler.
+    table-prefix: <yellow>Je bezit een totaal van <aqua>{0}</aqua> winkels op deze server.
     entry-syntax: <aqua>- <yellow>{0}
     entry-syntax-fallback-name: '<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}'
     hover-text: |-
@@ -1533,15 +1533,15 @@ suite:
       <aqua>{5} - <yellow>{6}
       {7} items per stack.
   shopitemonly:
-    message: <red>You can't put non-shop items into shop container, all non-shop items will dropped at your location.
+    message: <red>U kunt niet-winkelartikelen niet in de winkelcontainer plaatsen, alle niet winkelartikels zullen laten vallen op uw locaties.
 compatibility:
   elitemobs:
-    soulbound-disallowed: You can't trade item which have EliteMobs Soulbound enchantment.
-internet-paste-forbidden-privacy-reason: "<red>Failed! According your privacy setting, QuickShop-Hikari are not allowed upload your paste to Internet, turn on DIAGNOSTIC permission in privacy setting in config.yml or use <aqua>/quickshop paste --file</aqua> instead."
-no-sign-type-given: "<red>You need give a sign material, the sign materials that available on this server: {0}"
-sign-type-invalid: "<red>The type <yellow>{0}</yellow> not a valid sign material."
-delete-controlpanel-button-confirm: "<red>Do you really want remove this shop? Click the <bold>[Remove Shop]</bold> button again in {0} seconds to confirm."
-cannot-suggest-price: "<red>Sorry, For the time being, no more people are trading the same item as you and there is not enough data to generate a suggested price."
+    soulbound-disallowed: U kunt geen voorwerp verhandelen met de EliteMobs Soulbound betovering.
+internet-paste-forbidden-privacy-reason: "<red>Mislukt! Volgens uw privacyinstellingen mag QuickShop-Hikari uw plaktekst niet uploaden naar internet. Schakel de DIAGNOSTIC-toestemming in de privacyinstellingen in config.yml in of gebruik in plaats daarvan <aqua>/quickshop paste --file</aqua>."
+no-sign-type-given: "<red>Je hebt een bord nodig, het bord materiaal dat beschikbaar is op deze server: {0}"
+sign-type-invalid: "<red>Het type <yellow>{0}</yellow> is geen geldig bord materiaal."
+delete-controlpanel-button-confirm: "<red>Wilt u deze winkel echt verwijderen? Klik op de <bold>[Verwijder Shop]</bold> knop in {0} seconden om te bevestigen."
+cannot-suggest-price: "<red>Sorry, op dit moment zijn er geen andere mensen die hetzelfde item als jij verhandelen en zijn er onvoldoende gegevens om een adviesprijs te genereren."
 price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
 price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
@@ -1633,9 +1633,9 @@ gui:
         - "<gray> Median: <gold>{4}</gold></gray>"
         - "<gray> Stock: <aqua>{5}</aqua></gray>"
       lore-buying:
-        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<#FFA500>▲ kopen ({0} winkels)</#FFA500>"
+        - "<gray> Prijs: <white>{1} - {2}</white></gray>"
+        - "<gray> Gemiddelde: <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
       lore-footer:
         - "<yellow>Click to view all shops</yellow>"
@@ -1658,7 +1658,7 @@ gui:
         - "<gray>Click to cycle</gray>"
       all: "All"
       selling: "Selling"
-      buying: "Buying"
+      buying: "Kopen"
     stock-filter:
       display: "<gold>In Stock Only: {0}</gold>"
       lore:
@@ -1697,7 +1697,7 @@ gui:
     trade:
       #Shown when player clicks "Custom Order" button (buying)
       #{0} = item amount per purchase
-      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-buy: "<yellow>Voer het aantal in dat je wilt kopen. Moet een veelvoud van <white>{0}</white>zijn. Typ <white>0</white> in om te annuleren.</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
       enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
