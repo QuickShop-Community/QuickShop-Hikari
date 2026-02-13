@@ -1,18 +1,18 @@
-break-shop-use-supertool: <yellow>U kunt de winkel breken door gebruik te maken van SuperTool.
-fee-charged-for-price-change: <green>U betaald <red>{0}<green> om de prijs te wijzigen.
+break-shop-use-supertool: <yellow>U kunt de winkel breken door gebruik te maken van Super Tool.
+fee-charged-for-price-change: <green>Je hebt <red>{0}</red> betaald om de prijs te wijzigen.
 not-allowed-to-create: <red>U kunt hier geen winkel aanmaken.
 disabled-in-this-world: <red>QuickShop is uitgeschakeld in deze wereld
-how-much-to-trade-for: <green>Enter in de chat, voor hoeveel u wilt handelen <yellow>{1}x {0}<green>.
-client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
+how-much-to-trade-for: <green>Geef in de chat aan hoeveel je wilt handelen <yellow>{1}x {0}</yellow>.
+client-language-changed: <green>QuickShop heeft gedetecteerd dat uw clienttaal is gewijzigd. We gebruiken nu de {0} locale voor u.
 shops-backingup: Shop-back-up aanmaken vanuit database...
 _comment: Hallo vertaler! Als je dit op GitHub of via de broncode bewerkt, ga dan naar https://crowdin.com/project/qs-hikari.
 unlimited-shop-owner-changed: <yellow>Deze ongelimiteerde winkel is verander van eigenaar. Naar {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ongeldig nummer
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>De winkelnaam <yellow>{0}</yellow> is niet toegestaan. Kies een andere naam!
 console-only-danger: <red>Dit is een gevaarlijk commando, zodat alleen de console het kan uitvoeren.
 not-a-number: <red>U kunt alleen een nummer invoeren, uw invoer was {0}.
-not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
+not-looking-at-valid-shop-block: <red>Kan geen winkel aanmaken. Bekijk een ondersteund bloktype en probeer het opnieuw.
 shop-removed-cause-ongoing-fee: <red>Uw winkel op {0} is verwijderd omdat u niet genoeg geld heeft om het te behouden!
 tabcomplete:
   amount: '[aantal]'
@@ -22,25 +22,26 @@ tabcomplete:
   range: '[bereik]'
   currency: '[valuta naam]'
   percentage: '[percentage%]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
+taxaccount-unset: <green>De belastingrekening van deze winkel volgt nu de algemene serverinstelling.
 blacklisted-item: <red>Je kunt dit item niet verkopen omdat het op de zwarte lijst staat
-command-type-mismatch: <red>This command only can executed by <aqua>{0}.
-server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
+command-type-mismatch: <red>Dit commando kan alleen worden uitgevoerd door <aqua>{0}</aqua>.
+server-crash-warning: '<red>WAARSCHUWING: Als je het commando /quickshop reload gebruikt om het QuickShop Jar-bestand te vervangen/verwijderen, kan de server crashen terwijl hij draait.'
 you-cant-afford-to-change-price: <red>Het kost {0} om de prijs in uw winkel te wijzigen.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: <red>QuickShop staat in de veilige modus. U kunt deze winkelcontainer niet openen. Neem contact op met de serverbeheerder om dit probleem op te lossen.
 forbidden-vanilla-behavior: <red>De bewerking is niet toegestaan omdat deze niet in overeenstemming is met het gedrag van vanilla
 shop-out-of-space-name: <dark_purple>Uw winkel op {0}, is nu vol!
 paste-disabled: |-
-  <red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}
+  <red>De functie Plakken is uitgeschakeld! U kunt geen technische ondersteuning aanvragen.
+  Reden: {0}
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Naam: <aqua>{0}'
-    - '<aqua>Eigenaar:<aqua>{0}'
+    - '<yellow>Eigenaar: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Prijs: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Lokatie: <aqua>{0}'
+    - '<yellow>Locatie: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Naam: <aqua>{name}'
     - '<yellow>Eigenaar: <aqua>{owner}'
@@ -48,55 +49,55 @@ quick-fill:
     - '<yellow>Prijs: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
     - '<yellow>Locatie: <aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
+  header: '<yellow>Je hebt meerdere winkels met de naam “<green>{0}</green>”, kies er één om door te gaan:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Alleen beheerder) <light_purple>{0}<dark_gray> heeft de toestemmingscontroles geweigerd. Als dit niet verwacht werd, probeer dan <light_purple>{1} <gray>toe te voegen aan de zwarte lijst van luisteraars. Configuratiegids:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Nabijgelegen gemiddelde prijs: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventariscontrole] <gray>Waarschuwing! Er is een QuickShop-displayitem <goud>{2}</gold> gevonden in de inventaris bij <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, wat niet zou mogen gebeuren. Dit betekent meestal dat iemand kwaadwillig misbruik maakt van de exploit om het displayitem te dupliceren."
+inventory-check-global-alert: "<red>[Inventariscontrole] <gray>Waarschuwing! Er is een QuickShop-displayitem <gold>{2}</gold> gevonden in de inventaris bij <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, wat niet zou mogen gebeuren. Dit betekent meestal dat iemand kwaadwillig misbruik maakt van de exploit om het displayitem te dupliceren."
 digits-reach-the-limit: <red>Je hebt de limiet van decimalen in de prijs bereikt.
 currency-unset: <green>Shop valuta verwijderd. Standaard instellingen nu gebruiken.
 you-cant-create-shop-in-there: <red>Je hebt geen toestemming om een winkel te maken op deze locatie.
 no-pending-action: <red>Je hebt geen lopende acties
-refill-success: <green>Refill succesvol
+refill-success: <green>Bijvullen gelukt
 failed-to-paste: <red>Mislukt om de gegevens te uploaden naar Pastebin. Controleer je internetverbinding en probeer het opnieuw. (Bekijk console voor details)
 shop-out-of-stock-name: <dark_purple>Je winkel {0} heeft geen {1} meer op voorraad!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <green>Typ in de chat, hoe veel bulk je wilt <light_purple>VERKOPEN<green>. Er zijn <yellow>{0}<green> items per bulk en je kan <yellow>{1}<green> bulk verkopen. Voer <aqua>{2}<green> in je chat in om alles te verkopen.
+shop-name-invalid: <red>De winkelnaam <yellow>{0}</yellow> is ongeldig. Kies een andere!
+how-many-buy-stack: <yellow>Typ in de chat, hoe veel bulk je wilt <aqua>VERKOPEN</aqua>. Er zijn <green>{0}</green> items per bulk en je kan<green>{1}</green> bulk verkopen. Voer <aqua>{2}</aqua> in je chat in om alles te verkopen.
 exceeded-maximum: <red>De waarde overschrijdt de maximale waarde in Java.
-unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
+unlimited-shop-owner-keeped: '<yellow>Let op: De winkeleigenaar is nog steeds eigenaar van een onbeperkte winkel en u moet zelf de nieuwe winkeleigenaar opnieuw instellen.'
 no-enough-money-to-keep-shops: <red>Je had niet genoeg geld om je winkels te houden! Alle winkels zijn verwijderd...
-3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> heeft de controle van de permissions geweigerd, hebt u permissions ingesteld?
+3rd-plugin-build-check-failed: <red>Plug-in van derden <bold>{0}</bold> heeft de toestemmingscontroles geweigerd. Had u daar toestemming ingesteld?
 not-a-integer: <red>U moet een nummer invoeren, uw invoer was {0}.
-translation-country: 'Taal Zone: Engels (nl_US)'
+translation-country: 'Language Zone: English (en_US)'
 buying-more-than-selling: '<red>WAARSCHUWING: U koopt items voor meer dan u ze verkoopt!'
 purchase-failed: '<red>Aankoop mislukt: Interne fout. Neem contact op met de serverbeheerder.'
 denied-put-in-item: <red>U kunt dit item niet in uw winkel plaatsen!
 shop-has-changed: <red>De winkel die u probeerde te gebruiken is veranderd sinds u erop klikt!
-flush-finished: <green>Succesvol de berichten gefluseerd.
+flush-finished: <green>Recente berichten zijn succesvol gewist.
 no-price-given: <red>Geef een geldige prijs.
 shop-already-owned: <red>Dit is al een winkel.
 backup-success: <green>Back-up succesvol.
-not-looking-at-shop: <red>Geen QuickShop gevonden, je moet naar een QuickShop kijken.
-you-cant-afford-a-new-shop: <red>Het maken van een nieuwe winkel kost {0}.
-success-created-shop: <red>Shop aangemaakt.
+not-looking-at-shop: <red>Geen QuickShop gevonden, <yellow>je moet naar een QuickShop kijken.
+you-cant-afford-a-new-shop: <red>Het maken van een nieuwe winkel kost <green>{0}<red>.
+success-created-shop: <green>Shop aangemaakt.
 shop-creation-cancelled: <red>Shop aanmaken geannuleerd.
-shop-owner-self-trade: Je handelt met jezelf. Je zal dan ook geen geld krijgen
+shop-owner-self-trade: <yellow>Je handelt met jezelf. <gray>Je zal dan ook geen geld krijgen
 shop-owner-self-trade-denied: <red>Je kunt niet handelen met je eigen winkel.
-purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
+purchase-out-of-space: <red>Deze winkel heeft geen ruimte meer! Neem contact op met de winkeleigenaar of het personeel om deze te laten leegmaken.
 reloading-status:
-  success: <green>Reload completed without any errors.
-  scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
-  require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
-  failed: <red>Reload failed, check the server console
+  success: <green>Plug-in succesvol opnieuw geladen zonder fouten.
+  scheduled: <green>Herladen voltooid! <gray>(<yellow>Sommige wijzigingen hebben even tijd nodig om actief te worden<gray>)
+  require-restart: <green>Herladen voltooid.<gray>(<yellow>Sommige wijzigingen vereisen een herstart van de server om van kracht te worden<gray>)
+  failed: <red>Herladen mislukt, controleer de serverconsole op fouten
 player-bought-from-your-store-tax: <green>{0} heeft {1} {2} gekocht in uw winkel en u heeft {3} ({4} aan belasting) verdiend.
-not-enough-space: <red>Je hebt slechts ruimte voor {0} meer!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
-shop-staff-added: <green>Succesvol toegevoegd {0} als staflid in uw winkel.
+not-enough-space: <red>Je hebt slechts ruimte voor<yellow> {0}<red> meer!
+shop-name-success: <green>Winkelnaam succesvol hernoemd naar  <yellow>{0}<green>.
+shop-staff-added: <green>Succesvol toegevoegd<yellow> {0}<green> als staflid in uw winkel.
 shop-staff-empty: <yellow>Deze winkel heeft geen personeel.
 shops-recovering: Winkels herstellen van backup...
 virtual-player-component-hover: "<gray>Dit is een virtuele speler.\n<gray>Verwijst naar een systeemaccount met dezelfde naam.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>"
-real-player-component-hover: "<gray>Dit is een echte bestaande speler.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam:<yellow>{1}</yellow></green>\n<green>Weergeven als:<yellow>{2}</yellow></green>\n<gray>Als u een virtueel systeemaccount met dezelfde naam wilt gebruiken, voeg dan<dark_gray>\"[]\"</dark_gray>toe aan beide zijden van de gebruikersnaam: \n<dark_gray>[{1}]</dark_gray>"
+real-player-component-hover: "<gray>Dit is een echte speler.\n<green>UUID:<yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>\n<gray>Als je een virtueel systeemaccount met dezelfde naam wilt gebruiken, voeg dan <dark_gray>“[]”</dark_gray> toe aan beide kanten van de gebruikersnaam: <dark_gray>[{1}]</dark_gray>."
 menu:
   sell-tax: <green>U heeft &{0} Btw betaald.
   owner: '<green>Eigenaar: {0}'
@@ -1542,157 +1543,157 @@ no-sign-type-given: "<red>Je hebt een bord nodig, het bord materiaal dat beschik
 sign-type-invalid: "<red>Het type <yellow>{0}</yellow> is geen geldig bord materiaal."
 delete-controlpanel-button-confirm: "<red>Wilt u deze winkel echt verwijderen? Klik op de <bold>[Verwijder Shop]</bold> knop in {0} seconden om te bevestigen."
 cannot-suggest-price: "<red>Sorry, op dit moment zijn er geen andere mensen die hetzelfde item als jij verhandelen en zijn er onvoldoende gegevens om een adviesprijs te genereren."
-price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest priced store is priced at <light_purple>{1}</light_purple>, the lowest priced store is priced at <light_purple>{2}</light_purple>, the average price is <light_purple>{3}</light_purple>, and the median price is <light_purple>{4}</light_purple>. <newline><yellow>It's recommended that you set your price around <gold>{5}</gold>.</yellow>"
-price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
-suggest-wait: "<green>Please wait... Calculating recommend price."
+price-suggest: "<green>Op basis van gegevens van <aqua>{0}</aqua> winkels is de duurste winkel geprijsd op <light_purple>{1}</light_purple>, de goedkoopste winkel op <light_purple>{2}</light_purple>, de gemiddelde prijs is<light_purple>{3}</light_purple> en de mediane prijs is <light_purple> {4}</light_purple>. <newline><yellow>Het wordt aanbevolen om uw prijs rond <gold>{5}</gold> vast te stellen.</yellow>"
+price-suggest-multi: "<green>Suggestie voor {0} type.</green>{1}"
+suggest-wait: "<green>Even geduld a.u.b... Aanbevolen prijs wordt berekend."
 gui:
   trade:
     title: "<dark_aqua>Shop</dark_aqua>"
     info-stock:
-      display: "<yellow>Stock Information</yellow>"
+      display: "<yellow>Voorraadinformatie</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>Beschikbaar: <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>Prijs Informatie</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Prijs: <white>{0}</white></gray>"
         - "<gray>Per: <white>{1} item(s)</white></gray>"
     info-seller:
-      display: "<aqua>Seller Information</aqua>"
+      display: "<aqua>Verkoper Informatie</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Eigenaar: <white>{0}</white></gray>"
     custom-amount:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>Aangepaste Bestelling</blue></bold>"
     quantity-button:
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>Winkelbeheer</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>Wijzig Prijs</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>Huidige prijs: <white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>Klik om de prijs te veranderen</yellow> "
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Wijzig Modus</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>Huidig: <white>{0}</white></gray>"
+        - "<gray>Klik om te wijzigen naar: <white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>Bekijk Inventaris</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's chest inventory.</gray>"
+        - "<gray>Klik om te bekijken </gray>"
+        - "<gray>Winkelkist inventaris.</gray>"
     staff:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      display: "<bold><aqua>Werknemers</aqua></bold>"
       lore:
-        - "<gray>Click to manage your</gray>"
-        - "<gray>shop's staff members.</gray>"
+        - "<gray>Klik om te beheren</gray>"
+        - "<gray>medewerkers van de winkel.</gray>"
     history:
-      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      display: "<bold><light_purple>Transactie Geschiedenis</light_purple></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's transaction history.</gray>"
+        - "<gray>Klik om te bekijken </gray>"
+        - "<gray>Winkel's transactiegeschiedenis.</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>Verwijder Winkel</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
-        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+        - "<gray>Klik om uw winkel te verwijderen.</gray>"
+        - "<dark_gray>Je kunt ook het bord/de kist breken.</dark_gray>"
   staff:
-    title: "<dark_aqua>Staff Management</dark_aqua>"
+    title: "<dark_aqua>Winkelbeheer</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Zoeken: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Linksklik om te zoeken naar spelers</gray>"
+        - "<gray>Klik met de rechtermuisknop om zoekopdracht te wissen</gray>"
     add-staff:
-      display: "<green>Add Staff Member</green>"
+      display: "<green>Medewerker toevoegen</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
-        - "<gray>staff member to your shop.</gray>"
+        - "<gray>Klik om een nieuwe toe te voegen</gray>"
+        - "<gray>medewerker van uw winkel.</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>Terug naar Winkel</white>"
   browse:
-    title: "<dark_aqua>Market Browser</dark_aqua>"
+    title: "<dark_aqua>Marktbrowser</dark_aqua>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
+        - "<green>Eigenaar: </green>{0}<yellow></yellow>"
+        - "<green>locatie: </green><yellow>{1}</yellow>"
         - "<green>Type: </green><yellow>{2}</yellow>"
-        - "<green>Price: </green><yellow>{3}</yellow>"
-        - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<green>Prijs: </green>{3}<yellow></yellow>"
+        - "<green>Voorraad: </green><yellow>{4}</yellow>"
     grouped-item:
       display: "<yellow>{0}</yellow>"
       lore-title:
-        - "<gray>Shops: <white>{0}</white></gray>"
+        - "<gray>Winkels: <white>{0}</white></gray>"
       lore-selling:
-        - "<green>▼ Selling ({0} shops)</green>"
-        - "<gray> Price: <white>{1} - {2}</white></gray>"
-        - "<gray> Average: <yellow>{3}</yellow></gray>"
-        - "<gray> Median: <gold>{4}</gold></gray>"
-        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+        - "<green>▼ Verkoop ({0} shops)</green>"
+        - "<gray> Prijs: <white>{1} - {2}</white></gray>"
+        - "<gray> Gemiddelde: <yellow>{3}</yellow></gray>"
+        - "<gray> Mediaan: <gold>{4}</gold></gray>"
+        - "<gray> Voorraad: <aqua>{5}</aqua></gray>"
       lore-buying:
         - "<#FFA500>▲ kopen ({0} winkels)</#FFA500>"
         - "<gray> Prijs: <white>{1} - {2}</white></gray>"
         - "<gray> Gemiddelde: <yellow>{3}</yellow></gray>"
         - "<gray> Median: <gold>{4}</gold></gray>"
       lore-footer:
-        - "<yellow>Click to view all shops</yellow>"
+        - "<yellow>Klik om alle winkels te bekijken</yellow>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Zoeken: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for items</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Linksklik om te zoeken naar items</gray>"
+        - "<gray>Klik met de rechtermuisknop om zoekopdracht te wissen</gray>"
     sort:
-      display: "<green>Sort: {0}</green>"
+      display: "<green>Sorteren: {0}</green>"
       lore:
-        - "<gray>Click to cycle</gray>"
-      price-asc: "Price ↑"
-      price-desc: "Price ↓"
-      stock: "Stock"
-      name: "Name"
+        - "<gray>Klik om door te gaan</gray>"
+      price-asc: "Prijs ↑"
+      price-desc: "Prijs ↓"
+      stock: "Voorraad"
+      name: "Naam"
     filter:
       display: "<aqua>Filter: {0}</aqua>"
       lore:
-        - "<gray>Click to cycle</gray>"
-      all: "All"
-      selling: "Selling"
+        - "<gray>Klik om door te gaan</gray>"
+      all: "Alle"
+      selling: "Te koop"
       buying: "Kopen"
     stock-filter:
-      display: "<gold>In Stock Only: {0}</gold>"
+      display: "<gold>Alleen op voorraad: {0}</gold>"
       lore:
-        - "<gray>Click to toggle</gray>"
+        - "<gray>Klik om te schakelen</gray>"
     back:
-      display: "<white>Back to Market</white>"
+      display: "<white>Terug naar Winkel</white>"
   shared:
     previous-page:
-      display: "<white><< Previous Page</white>"
+      display: "<white><< Vorige pagina</white>"
     next-page:
-      display: "<white>Next Page >></white>"
+      display: "<white>Volgende pagina >></white>"
     page-info:
-      display: "<yellow>Page {0}/{1}</yellow>"
+      display: "<yellow>Pagina {0}/{1}</yellow>"
     back:
-      display: "<white>Back</white>"
+      display: "<white>Terug</white>"
     close:
-      display: "<red>Close</red>"
+      display: "<red>Sluiten</red>"
   messages:
     #Keeper menu messages
     keeper:
       #Shown when player clicks "Change Price" button
-      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      enter-price: "<yellow>Voer een nieuwe prijs in de chat.</yellow>"
       #Shown when player clicks "Delete Shop" button
-      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+      confirm-delete: "<yellow>Type '<white>bevestig</white>' in de chat om uw winkel te verwijderen. Typ iets anders om te annuleren.</yellow>"
     #Staff menu messages
     staff:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
-      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      enter-search: "<yellow>Typ een spelernaam om te zoeken. Typ '<white>clear</white>' om opnieuw in te stellen, of klik met de rechtermuisknop op de zoekknop.</yellow>"
       #Shown when player left-clicks a staff member to remove them
       #{0} = staff member name
-      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      confirm-remove: "<yellow>Type '<white>confirm</white>' in de chat om uw winkel te verwijderen. Typ iets anders om te annuleren.</yellow>"
       #Shown when player right-clicks a staff member to transfer ownership
       #{0} = staff member name
-      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+      confirm-transfer: "<yellow>Type '<white>confirm</white>' om eigendom over te dragen naar <green>{0}</green>. Typ iets anders om te annuleren.</yellow>"
     #Trade menu messages
     trade:
       #Shown when player clicks "Custom Order" button (buying)
@@ -1700,75 +1701,75 @@ gui:
       enter-buy: "<yellow>Voer het aantal in dat je wilt kopen. Moet een veelvoud van <white>{0}</white>zijn. Typ <white>0</white> in om te annuleren.</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
-      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-sell: "<yellow>Voer het aantal in dat je wilt verkopen. Moet een veelvoud van <white>{0}</white>zijn. Typ <white>0</white> in om te annuleren.</yellow>"
       #Shown when player enters invalid quantity (not multiple of item amount)
       #{0} = item amount per purchase
-      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      invalid-multiple: "<red>Ongeldig aantal! Moet een veelvoud van <white>{0}</white>zijn. Voer <white>0</white> in om te annuleren.</red>"
       #Shown when player enters quantity exceeding stock
-      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+      invalid-stock: "<red>Ongeldige hoeveelheid! Onvoldoende voorraad beschikbaar. Voer <white>0</white> in om te annuleren.</red>"
     #Browse menu messages
     browse:
       #Shown when player left-clicks "Search" button (right-click clears instantly)
-      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      enter-search: "<yellow>Voer een itemnaam in om te zoeken. Typ ‘<white>clear</white>’ om te resetten, of klik met de rechtermuisknop op de zoekknop.</yellow>"
 history:
   shop:
-    gui-title: "View purchase history"
-    header-icon-multiple-shop: "<white>The query result across {0} shops</white>"
-    header-icon-shop-name: '<yellow>Shop {0}</yellow>'
-    header-icon-shop-empty-name: '<yellow>Shop in world ''{0}'' at x: {1}, y: {2}, z: {3}</yellow>'
+    gui-title: "Aankoopgeschiedenis weergeven."
+    header-icon-multiple-shop: "<white>Het zoekresultaat voor {0} winkels</white>"
+    header-icon-shop-name: '<yellow>Winkel {0}</yellow>'
+    header-icon-shop-empty-name: '<yellow>Winkel in wereld ''{0}'' op x: {1}, y: {2}, z: {3}</yellow>'
     header-icon-description:
       - "<white>Type: <yellow>{0}</yellow></white>"
-      - "<white>Owner: <yellow>{1}</yellow></white>"
+      - "<white>Eigenaar: <yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2}</yellow></white>"
-      - "<white>Price: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
-      - "<white>Location: <yellow>{5}</yellow></white>"
-    log-icon-title: "<reset><green>Time: {0}</green>"
+      - "<white>Prijs: <yellow>{3} <aqua>x{4}</aqua></yellow></white>"
+      - "<white>locatie: <yellow></yellow>{5}</white>"
+    log-icon-title: "<reset><green>Tijd: {0}</green>"
     log-icon-description:
       - "<white>Purchaser: <yellow>{0}</yellow></white>"
       - "<white>Item: <yellow>{1} <aqua>x{2}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{3}</yellow></white>"
-      - "<white>Tax: <yellow>{4}</yellow></white>"
+      - "<white>Saldo: <yellow>{3}</yellow></white>"
+      - "<white>Belasting: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
-      - "<white>Store: <yellow>{0}</yellow></white>"
-      - "<white>Buyer: <yellow>{1}</yellow></white>"
+      - "<white>Winkel: <yellow>{0}</yellow></white>"
+      - "<white>Koper: <yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Amount: <yellow>{4}</yellow></white>"
-      - "<white>Total: <yellow>{5}</yellow></white>"
-      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Hoeveelheid: <yellow>{4}</yellow></white>"
+      - "<white>Totaal: <yellow>{5}</yellow></white>"
+      - "<white>Belasting: <yellow>{5}</yellow></white>"
       - "<white>Net: <yellow>{6}</yellow></white>"
-    query-icon: "<gray>Please wait, querying...</gray>"
-    current-page: "<white>Page {0}</white>"
-    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    query-icon: "<gray>Een moment geduld, zoeken...</gray>"
+    current-page: "<white>Pagina {0}/</white>"
+    multi-shops-icon-title: "<yellow>Meerdere Winkels</yellow>"
     summary-icon-title: "<yellow>Summary</yellow>"
     summary-icon-description:
-      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
-      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
-      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
-      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
-      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
-      - "<white>Total purchases: <yellow>{10}</yellow></white>"
-      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
-      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
-      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
-      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
-      - "<white>Total turnover: <yellow>{19}</yellow></white>"
-    total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+      - "<white>Totaal aantal unieke kopers: <yellow>{0}</yellow></white>"
+      - "<white>Recente <aqua>{2}</aqua> aankopen: <yellow>{3}</yellow></white>"
+      - "<white>Recente <aqua>{4}</aqua> aankopen: <yellow>{5}</yellow></white>"
+      - "<white>Recente <aqua>{6}</aqua> aankopen: <yellow>{7}</yellow></white>"
+      - "<white>Recente <aqua>{8}</aqua> aankopen: <yellow>{9}</yellow></white>"
+      - "<white>Totaal aankopen: <yellow>{10}</yellow></white>"
+      - "<white>Recente <aqua>{11}</aqua> omzet: <yellow>{12}</yellow></white>"
+      - "<white>Recente <aqua>{13}</aqua> omzet: <yellow>{14}</yellow></white>"
+      - "<white>Recente <aqua>{15}</aqua> omzet: <yellow>{16}</yellow></white>"
+      - "<white>Recente <aqua>{17}</aqua> omzet: <yellow>{18}</yellow></white>"
+      - "<white>Totale omzet: <yellow>{19}</yellow></white>"
+    total-unique-purchasers: "<white>Totaal aantal unieke kopers: <yellow>{0}</yellow></white>"
     top-n-valuable-customers-entry:
       - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
-    top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
-    no-result: "<white>No result</white>"
+    top-n-valuable-customers-title: "<gold>Top {0} waardevolle klanten</gold>"
+    no-result: "<white>Geen resultaat</white>"
 about:
   text:
     - "<b><aqua>QuickShop <yellow>{0}</yellow></aqua></b>"
-    - "<aqua>Version <yellow>>></yellow> <green>{1}</green></aqua>"
+    - "<aqua>Versie <yellow>>></yellow> <green>{1}</green></aqua>"
     - "<aqua>Release <yellow>>></yellow> <green>{2}</green></aqua>"
-    - "<aqua>Developers <yellow>>></yellow> <color:#218bff><hover:show_text:'<yellow>Click to check contributors'><click:open_url:'https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors'>[View contributors on GitHub]</click></hover></color></aqua>"
-    - "<aqua>Localized members <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
+    - "<aqua>Ontwikkelaars <yellow>>></yellow> <color:#218bff><hover:show_text:‘<yellow>Klik om bijdragers te bekijken’><click:open_url:‘https://github.com/QuickShop-Community/QuickShop-Hikari/graphs/contributors’>[Bekijk bijdragers op GitHub]</click></hover></color></aqua>"
+    - "<aqua>Gelokaliseerde leden <gold>({4})</gold>: <yellow>>></yellow> <green>{5}</green></aqua>"
     - "  <yellow>+ <color:#43A047><hover:show_text:'<yellow>Click to open Crowdin translate page'><click:open_url:'https://crowdin.com/project/qs-hikari'>[Help translate on Crowdin]</click></hover></color></yellow>"
     - "<gold>Mogelijk gemaakt door de Community</gold> <red>Gemaakt met ❤</red>"
-  valid-donation-key: "<color:#00AFF1>Bound to <color:#F9C23C>{0}</color></color>"
-  invalid-donation-key: "<gray>Invalid donation key</gra>"
-  kofi-thanks: "<gold>Special thanks to those who support QuickShop on Ko-fi :)</gold>"
+  valid-donation-key: "<color:#00AFF1>Gebonden aan <color:#F9C23C>{0}</color></color>"
+  invalid-donation-key: "<gray>Ongeldige donatiesleutel</gra>"
+  kofi-thanks: "<gold>Speciale dank aan iedereen die QuickShop op Ko-fi steunt :)</gold>"
 history-command-leave-blank: "<Leave blank for seeing store>"
 browse-command-leave-blank: "<Leave blank for seeing all stores in server>"
-shop-information-not-shown-due-an-internal-error: "<red>An internal error occurred. The store information panel may be displayed incompletely, please contact the server administrator."
+shop-information-not-shown-due-an-internal-error: "<red>Er is een interne fout opgetreden. Het winkelinformatiepaneel wordt mogelijk onvolledig weergegeven. Neem contact op met de serverbeheerder."
