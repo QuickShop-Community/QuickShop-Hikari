@@ -7,7 +7,7 @@ client-language-changed: <green>QuickShop heeft gedetecteerd dat uw clienttaal i
 shops-backingup: Shop-back-up aanmaken vanuit database...
 _comment: Hallo vertaler! Als je dit op GitHub of via de broncode bewerkt, ga dan naar https://crowdin.com/project/qs-hikari.
 unlimited-shop-owner-changed: <yellow>Deze ongelimiteerde winkel is verander van eigenaar. Naar {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Ongeldige opdrachtargumenten! De volgende parameters worden geaccepteerd: <gray>{0}'
 thats-not-a-number: <red>Ongeldig nummer
 shop-name-disallowed: <red>De winkelnaam <yellow>{0}</yellow> is niet toegestaan. Kies een andere naam!
 console-only-danger: <red>Dit is een gevaarlijk commando, zodat alleen de console het kan uitvoeren.
@@ -82,7 +82,7 @@ not-looking-at-shop: <red>Geen QuickShop gevonden, <yellow>je moet naar een Quic
 you-cant-afford-a-new-shop: <red>Het maken van een nieuwe winkel kost <green>{0}<red>.
 success-created-shop: <green>Shop aangemaakt.
 shop-creation-cancelled: <red>Shop aanmaken geannuleerd.
-shop-owner-self-trade: <yellow>Je handelt met jezelf. <gray>Je zal dan ook geen geld krijgen
+shop-owner-self-trade: <yellow>Je handelt met jezelf. <gray>Je zal dan ook geen geld krijgen.
 shop-owner-self-trade-denied: <red>Je kunt niet handelen met je eigen winkel.
 purchase-out-of-space: <red>Deze winkel heeft geen ruimte meer! Neem contact op met de winkeleigenaar of het personeel om deze te laten leegmaken.
 reloading-status:
@@ -92,35 +92,35 @@ reloading-status:
   failed: <red>Herladen mislukt, controleer de serverconsole op fouten
 player-bought-from-your-store-tax: <green>{0} heeft {1} {2} gekocht in uw winkel en u heeft {3} ({4} aan belasting) verdiend.
 not-enough-space: <red>Je hebt slechts ruimte voor<yellow> {0}<red> meer!
-shop-name-success: <green>Winkelnaam succesvol hernoemd naar  <yellow>{0}<green>.
+shop-name-success: <green>Winkelnaam succesvol hernoemd naar <yellow>{0}<green>.
 shop-staff-added: <green>Succesvol toegevoegd<yellow> {0}<green> als staflid in uw winkel.
 shop-staff-empty: <yellow>Deze winkel heeft geen personeel.
 shops-recovering: Winkels herstellen van backup...
 virtual-player-component-hover: "<gray>Dit is een virtuele speler.\n<gray>Verwijst naar een systeemaccount met dezelfde naam.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Dit is een echte speler.\n<green>UUID:<yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>\n<gray>Als je een virtueel systeemaccount met dezelfde naam wilt gebruiken, voeg dan <dark_gray>“[]”</dark_gray> toe aan beide kanten van de gebruikersnaam: <dark_gray>[{1}]</dark_gray>."
 menu:
-  sell-tax: <green>U heeft &{0} Btw betaald.
+  sell-tax: <green>U heeft &<yellow>{0}</yellow> Btw betaald.
   owner: '<green>Eigenaar: {0}'
-  preview: <aqua>[Item voorbeeld]
+  preview: <gray>[<aqua>Item voorbeeld<gray>]
   enchants: <dark_purple>Betoveringen
   sell-tax-self: <green>Je hebt geen belastingen betaald omdat je eigenaar bent van deze winkel.
   shop-information: '<green>Shop Informatie:'
-  item: ''
+  item: '<green>Item: <yellow>{0}'
   price-per: <green>Prijs per <yellow>{0}<green>-<yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>
+  item-name-and-price: <yellow>{0} {1} <green>voor</green>{2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>voor</green> {2} <gray>(<green>{3}</green> in belasting)
   successful-purchase: '<green>Succesvol aangeschaft:'
   price-per-stack: <green>Prijs per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>Deze winkel is <aqua>SELLING<yellow>en items.
+  this-shop-is-selling: <green>Deze winkel is <aqua>SELLING</aqua>en items.
   shop-stack: '<green>Hoeveelheid bulk: <yellow>{0}'
   space: '<green>Spatie: <yellow>{0}'
   effects: <green>Effecten
   damage-percent-remaining: <yellow>{0}% <green>resterende.
-  item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
+  item-holochat-data-too-large: <red>[Fout] Item NBT is te groot om weer te geven
   stock: '<green>Voorraad <yellow>{0}'
-  this-shop-is-buying: <green>Deze winkel is <light_purple>BUYING<green>en items.
+  this-shop-is-buying: <green>Deze winkel <light_purple>koopt<green> items.
   this-shop-is-frozen: <green>De winkel is nu in <red>vriesmodus<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
@@ -128,9 +128,9 @@ currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Missch
 no-nearby-shop: <red>Geen winkel in de buurt die overeenkomt met {0}.
 translation-author: 'Ghost_chu, Andre_601, Prutteltje'
 integrations-check-failed-trade: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
+shop-transaction-failed: <red>Sorry, er is een interne fout opgetreden tijdens het verwerken van uw aankoop. De aankoop is geannuleerd en alle andere bewerkingen zijn teruggedraaid. Neem contact op met de serverbeheerders als deze fout zich blijft voordoen.
 success-change-owner-to-server: <green>Succesvol de winkeleigenaar ingesteld op Server.
-shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
+shop-name-not-found: <red>De winkel met de naam <yellow>{0}</yellow> bestaat niet.
 shop-name-too-long: <red>Deze winkelnaam is te lang (max. lengte {0}), kies een andere naam!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transacties:'
@@ -140,24 +140,30 @@ metric:
   undefined: <gray>(noname)
   no-results: <red>Geen transacties gevonden.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
+    DELETE: <yellow>Speler heeft een winkel verwijderd. Indien mogelijk is de kosten voor het aanmaken van de winkel terugbetaald aan de eigenaar.
+    ONGOING_FEE: <yellow>De speler heeft de lopende kosten betaald vanwege de betalingstermijn.
     PURCHASE_BUYING_SHOP: <yellow>Speler heeft enkele items verkocht aan een inkoopwinkel.
     CREATE: <yellow>Speler heeft een winkel gemaakt.
-    PURCHASE_SELLING_SHOP: <yellow>Speler heeft een aantal items gekocht bij een winkel.
+    PURCHASE_SELLING_SHOP: <yellow>Speler heeft een aantal items gekocht bij een winkel
     PURCHASE: <yellow>Aangekocht artikel bij een winkel
   query-argument: 'Query Argument: {0}'
   amount-hover: <yellow>{0}x
   header-shop: '<yellow>De winkel {0} heeft {1} {2} transacties uitgevoerd:'
   player-hover: |-
-    <yellow>{0}<newline><gold>UUID: <gray>{1}
-  looking-up: <yellow>Statistieken worden opgezocht, even geduld a.u.b...
+    <yellow>{0}
+    <gold>UUID: <gray>{1}
+  looking-up: <yellow>Statistieken worden opgezocht, even geduld a.u.b.
   tax-hover: <yellow>{0} belasting
   header-global: '<yellow>De server {0} {1} transacties:'
-  na: <gray>NVT
+  na: <gray>N/A
   transaction-count: <yellow>{0} totaal
   shop-hover: |-
-    <yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}
+    <yellow>{0}
+    <gold>Positie: <gray>{1} {2} {3}, Wereld: {4}
+    <gold>Eigenaar: <gray>{5}
+    <gold>Type winkel: <gray>{6}
+    <gold>Artikel: <gray>{7}
+    <gold>Prijs: <gray>{8}
   time-hover: '<yellow>Tijd:{0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permissie geweigerd: 3rd Party Plugin [{0}].'
@@ -167,16 +173,17 @@ translate-not-completed-yet-url: 'De vertaling van de taal {0} is nog niet volto
 success-removed-shop: <green>Winkel verwijderd.
 currency-set: <green>Shop valuta succesvol ingesteld op {0}.
 shop-purged-start: <green>Winkelopruiming gestart, kijk op de console voor meer info.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
+economy-transaction-failed: <red>Sorry, er is een interne fout opgetreden tijdens het verwerken van je transactie. De transactie is geannuleerd en alle economische veranderingen zijn teruggedraaid. Neem contact op met de serverbeheerders als deze fout blijft optreden.
 nothing-to-flush: <green>U heeft geen nieuwe winkel berichten.
 no-price-change: <red>Dit zou geen prijswijziging tot gevolg hebben!
-edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
+edition-confilct: QuickShop-Hikari met QuickShop-Reremake geïnstalleerd kan conflicten tussen beide veroorzaken. Verwijder een van beide.
 inventory-unavailable: |-
-  <red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.
-file-test: Dit is een test textfile. We gebruiken dit om te testen of de "message.json" kapot is. Je kan dit vullen met elke easter egg die jij leuk vindt
-unknown-player: <red>Target player bestaat niet, controleer de gebruikersnaam die u heeft ingevoerd.
-player-offline: <red>The target player currently is offline.
-player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>
+  <red>InventoryWrapper bestaat niet of is ongeldig. Gebruik je een add-on om de winkelvoorraad opnieuw te koppelen?
+  Informatie: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Neem contact op met de serverbeheerders.administrators.
+file-test: Dit is een testtekstbestand. We gebruiken het om te testen of het bestand messages.json beschadigd is. Je kunt het vullen met alle easter eggs die je maar wilt :)
+unknown-player: <red>De doelspeler bestaat niet. Controleer de gebruikersnaam die u hebt ingevoerd.
+player-offline: <red>De geselecteerde speler is momenteel offline.
+player-profile-format: <aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)
 shop-type:
   selling: VERKOPEN
   buying: KOPEN
@@ -189,8 +196,9 @@ language:
   name: '<yellow>Naam: <gold>{0}'
   help-us: <green>[Help ons de vertaalkwaliteit te verbeteren]
 warn-to-paste: |-
-  &Het verzamelen van gegevens en het uploaden naar de Pastebin, dit kan enige tijd duren. <red><bold>Waarschuwing:<red> De gegevens worden één week openbaar gemaakt! Het kan uw serverconfiguratie en andere gevoelige informatie lekken. Zorg ervoor dat je het alleen doorstuurt naar &vertrouwde medewerkers/ontwikkelaars.
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
+  <yellow>Gegevens verzamelen en uploaden naar Pastebin. Dit kan even duren...
+  <red><bold>Waarschuwing:</bold> De gegevens blijven een week lang openbaar Hierdoor kunnen uw serverconfiguratie en andere gevoelige informatie uitlekken. Zorg ervoor dat u deze alleen naar <bold>vertrouwde medewerkers/ontwikkelaars stuurt.
+how-many-sell-stack: <green>Voer in de chat in hoeveel bulk je wilt <light_purple>VERKOPEN</light_purple>. Er zijn <yellow>{0}</yellow> items per bulk en je kunt <yellow>{1}</yellow>bulks verkopen. Voer <aqua>{2}</aqua> in de chat in om alles te verkopen.
 updatenotify:
   buttontitle: '[Nu bijwerken]'
   onekeybuttontitle: '[OneKey Update]'
@@ -213,7 +221,7 @@ updatenotify:
   list:
     - '{0} is vrijgegeven. Je gebruikt nog steeds {1}!'
     - Boom! Nieuwe update {0} inkomens. Update!
-    - Verrading! {0} is uitgekomen. Je bent in {1}
+    - Verrassing! {0} is uitgekomen. Je bent op {1}
     - Het lijkt erop dat je moet bijwerken. {0} is vrijgelaten!
     - Oeps! {0} is nu vrijgelaten. Je bent in {1}!
     - Ik zweer dat QS is bijgewerkt naar {0}. Waarom ben je nog niet bijgewerkt?
@@ -230,11 +238,11 @@ updatenotify:
     - Doctor, QuickShop heeft een nieuwe update {0}! U moet bijwerken~
     - Ko~ko~da~yo~ QuickShop heeft een nieuwe update {0}~
     - Paimon wil u vertellen dat de QuickShop een nieuwe update heeft {0}!
-  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
-purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
-nearby-shop-entry: '<green>- Info:{0} <green>Price:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>distance: <aqua>{5} <green>block(s)'
+  remote-disable-warning: '<red>Deze versie van QuickShop is door de externe server gemarkeerd als uitgeschakeld, wat betekent dat deze versie mogelijk ernstige problemen heeft. Ga voor meer informatie naar onze SpigotMC-pagina: {0}. Deze waarschuwing blijft verschijnen totdat u overschakelt naar een stabiele versie, maar heeft geen invloed op de prestaties van uw server.'
+purchase-out-of-stock: <red>Deze winkel heeft geen voorraad meer. Neem contact op met de winkeleigenaar of het personeel om het aan te vullen.
+nearby-shop-entry: '<green>- Info: {0} Prijs: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>blok(ken)'
 chest-title: QuickShop Winkel
-console-only: Deze opdracht kan alleen worden gestart vanaf de console!
+console-only: <red>Deze opdracht kan alleen worden gestart vanaf de console!
 failed-to-put-sign: <red>Niet genoeg ruimte rond de winkel om het informatiebord te plaatsen.
 shop-name-unset: <red>This shop's name now removed
 shop-nolonger-freezed: <green>Je hebt de winkel gevroren. Het is nu weer normaal!
@@ -246,8 +254,8 @@ tableformat:
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop GUI Item Voorbeeld
 translate-not-completed-yet-click: De vertaling van de taal {0} is nog niet voltooid door {1}. Wilt u ons helpen met het verbeteren van de vertaling? Klik hier!
-taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
-player-bought-from-your-store: <red>{0} heeft {1} {2} gekocht van uw winkel, en u heeft {3} verdiend.
+taxaccount-invalid: <red>Account ongeldig. Voer een geldige spelersnaam of UUID in (met streepjes).
+player-bought-from-your-store: <green>{0} heeft {1} {2} gekocht van uw winkel, en u heeft {3} verdiend.
 reached-maximum-can-create: <red>Je hebt al een maximum van {0}/{1} winkels gemaakt!
 translation-version: 'Ondersteunde versie: Hikari'
 no-double-chests: <red>Je kunt de dubbele kist winkel niet maken.
@@ -256,7 +264,7 @@ shop-not-exist: <red>Er is geen winkel.
 bad-command-usage: <red>Ongeldige opdrachtargumenten!
 cleanghost-warning: <yellow>Dit commando verwijdert <red>alle</red> winkels als de winkel beschadigd is, is aangemaakt in niet-toegestane werelden, niet-toegestane items verkoopt/koopt of <bold><red>BESTAAT IN EEN NIET-GELADEN WERELD</red></bold>. Zorg ervoor dat je eerst een volledige back-up van je winkelgegevens maakt en gebruik <aqua>/quickshop cleanghost confirm</aqua> om door te gaan.
 cleanghost-starting: <green>Beginnen met controleren op spookwinkels (ontbrekende containerblokken). Alle niet-bestaande winkels worden verwijderd...
-cleanghost-deleting: <yellow>Een beschadigde winkel <aqua>{0}</aqua>gevonden vanwege{1},markeer deze om te verwijderen...
+cleanghost-deleting: <yellow>Een beschadigde winkel <aqua>{0}</aqua>gevonden vanwege{1}, markeer deze om te verwijderen...
 cleanghost-deleted: <green>In totaal zijn<yellow>{0}</yellow> winkels verwijderd.
 shop-purchase-cancelled: <red>Shop aankoop geannuleerd.
 bypassing-lock: <red>Bypassing van een QuickShop vergrendeling!
@@ -267,29 +275,31 @@ price-is-now: <green>De nieuwe prijs van de winkel is <yellow>{0}
 shops-arent-locked: <red>Onthoud, winkels zijn NIET beschermd tegen diefstal! Als je dieven wilt stoppen, vergrendel het met LWC, Lockette, etc!
 that-is-locked: <red>Deze winkel is vergrendeld.
 shop-has-no-space: <red>De winkel heeft alleen ruimte voor {0} {1} meer.
-safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
+safe-mode-admin: <red><bold>WAARSCHUWING:</bold> De QuickShop-versie op deze server draait momenteel in de veilige modus. Functies werken niet. Gebruik het commando <yellow>/quickshop</yellow> om te controleren op fouten.
 shop-stock-too-low: <red>De winkel heeft nog maar {0} {1} over!
-world-not-exists: <red>De wereld <yellow>{0}<red> bestaat niet
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
+world-not-exists: <red>De wereld <yellow>{0}</yellow> bestaat niet
+how-many-sell: <green>Voer in de chat in hoeveel je wilt <light_purple>VERKOPEN</light_purple>. Je kunt <yellow>{0}</yellow> verkopen. Voer <aqua>{1}</aqua> in de chat in om alles te verkopen.
 shop-freezed-at-location: <yellow>Uw winkel {0} om {1} is bevroren!
-translation-contributors: 'Medewerkers'
-empty-success: '&Het leegmaken van winkel gelukt'
+translation-contributors: 'Bijdragers: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken en Andre_601,Prutteltje'
+empty-success: <green>Het leegmaken van winkel gelukt
 taxaccount-set: <green>De belastingrekening van deze winkel is ingesteld op <yellow>{0}
 support-disable-reason:
-  hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
-  outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
+  hot-reload: <yellow>Niet ondersteund hot reloaded, start de server opnieuw op en controleer nogmaals.
+  outdated: <yellow>Deze versie van QuickShop is verouderd. Werk deze bij voordat u ondersteuning aanvraagt!
   bad-hosts: |-
-    <yellow>This server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\windows\system32\drivers\etc\hosts, Linux at /etc/hosts.
-  privacy: <yellow>This server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.
-  modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
-  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
-  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
-  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
+    <yellow>De HOSTS van de server zijn gewijzigd en bepaalde QuickShop-functies vereisen een verbinding met de Mojang API om te kunnen werken. Corrigeer de HOSTS-instellingen voordat u ondersteuning vraagt.
+    Windows: C:\\windows\\system32\\drivers\\etc\\hosts
+    Linux: /etc/hosts
+  privacy: <yellow>Deze server draait in de modus Cracked (Offline). Als u de server onder een proxy draait en de online modus is ingesteld op true in de proxy, configureer dan de proxy-gerelateerde instellingen correct.
+  modified: <yellow>Controle van de bestandsintegriteit mislukt. Deze QuickShop-build is door anderen gewijzigd.
+  consolespamfix-installed: <yellow>ConsoleSpamFix is geïnstalleerd. Het verbergt uitzonderingsdetails. Schakel het tijdelijk uit tijdens ondersteuningsverzoeken.
+  authlib-injector-detected: <yellow>Deze server draait met een Auth-bibliotheek van een derde partij, zoals AuthLib-Injector.
+  unsupported-server-software: <yellow>Niet-ondersteunde serversoftware. Alle gemodificeerde Hybrid-Server-software wordt niet ondersteund, waaronder MCPC, Cauldron, CatServer, Mohis, Magma, Fukkit, Cardboard, enz.
 supertool-is-disabled: <red>Supertool is uitgeschakeld. Kan geen winkels breken.
-unknown-owner: onbekend
+unknown-owner: Onbekend
 restricted-prices: '<red>Beperkte prijs voor {0}: Min {1}, max {2}'
-nearby-shop-this-way: <green>Shop is {0} blokken ver van je.
-owner-bypass-check: <yellow>Bypassed alle controles. Handel succesvol! (Je bent nu de eigenaar van de winkel!)
+nearby-shop-this-way: <green>Shop is {0} blok(ken) ver van je.
+owner-bypass-check: <yellow>Alle controles omzeild. Handel succesvol! (Je bent nu de eigenaar van de winkel!)
 april-rick-and-roll-easter-egg: "<hover:show_text:‘Klik om te openen in de browser voor tijdelijke beloningen!’><click:open_url:‘https://www.youtube.com/watch?v=dQw4w9WgXcQ’><green>Klik hier om je tijdelijke beloningen te ontvangen die worden aangeboden door QuickShop-Hikari-ontwikkelaar!</green></click></hover>"
 signs:
   item-right: ''
@@ -310,59 +320,59 @@ signs:
   status-available: <green>
   item-left: ''
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
-display-turn-on: <green>Successfully turn on the shop display.
-display-turn-off: <green>Successfully turn off the shop display.
-display-turn-on-owned: <green>Winkelweergave voor alle winkels in bezit succesvol ingeschakeld.
-display-turn-off-owned: <green>Winkelweergave voor alle winkels in bezit succesvol uitgeschakeld.
-display-turn-on-all: <green>Winkelweergave voor alle serverwinkels succesvol ingeschakeld.
-display-turn-off-all: <green>Winkelweergave voor alle serverwinkels succesvol uitgeschakeld.
+display-turn-on: <green>Schakel de winkeldisplay succesvol in.
+display-turn-off: <green>Winkeldisplay succesvol uitgeschakeld.
+display-turn-on-owned: <green>Winkeldisplay voor alle winkels in bezit succesvol ingeschakeld.
+display-turn-off-owned: <green>Winkeldisplay voor alle winkels in bezit succesvol uitgeschakeld.
+display-turn-on-all: <green>Winkeldisplay voor alle winkels succesvol ingeschakeld. 
+display-turn-off-all: <green>Winkel weergave voor alle winkels succesvol uitgeschakeld.
 shop-staff-deleted: <green>Succesvol {0} verwijderd als staflid van uw winkel.
-nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
+nearby-shop-header: '<green>Winkels in de buurt die overeenkomen met <aqua>{0}</aqua>:'
 backup-failed: Kan de database niet back-uppen. Controleer de console voor details.
 shop-staff-cleared: <green>Succesvol alle medewerkers verwijderd uit uw winkel.
 price-too-high: <red>De prijs van de winkel is te hoog! U kunt er niet een maken met een prijs hoger dan {0}.
-plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: '{0} verkocht {1} {2} aan uw winkel.'
+plugin-cancelled: '<red>Operatie geannuleerd. Reden: {0}'
+player-sold-to-your-store: <green>{0} verkocht {1} {2} aan uw winkel.
 shop-out-of-stock: <dark_purple>Uw winkel op {0}, {1}, {2} heeft geen {3} meer!
-how-many-buy: <green>Typ in de chat hoeveel je wilt <aqua>KOPEN<green>. Je kunt er <yellow>{0}<green> kopen. Typ <aqua>{1}<green> om ze allemaal te kopen.
+how-many-buy: <green>Typ in de chat hoeveel je wilt <aqua>KOPEN</aqua>. Je kunt er <yellow>{0}<green> kopen. Typ <aqua>{1}</aqua> om ze allemaal te kopen.
 language-info-panel:
   help: 'Help ons: '
-  code: 'Code '
+  code: 'Code: '
   name: 'Taal: '
   progress: 'Voortgang: '
   translate-on-crowdin: '[Vertaal op Crowdin]'
-item-not-exist: <red>Het item <yellow>{0} <red>bestaat niet, controleer je spelling.
+item-not-exist: <red>Het item <yellow>{0} </yellow>bestaat niet, controleer je spelling.
 shop-creation-failed: Het maken van <red>Shop is mislukt, neem contact op met de serverbeheerder.
-inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
-no-creative-break: <red>Je kan de shops van andere spelers niet kapot maken in creative mode, switch naar survival mode of probeer de supertool {0}
+inventory-space-full: <red>Er kan nog maar <green>{1}</green> item aan je resterende inventarisruimte worden toegevoegd. Probeer je inventaris leeg te maken!
+no-creative-break: <red>Je kan de shops van andere spelers niet kapot maken in creative mode, switch naar survival mode of probeer de supertool {0}.
 booleanformat:
   success: <green>✔
   failed: <red>Uitgeschakeld
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>Per bulkhoeveelheid: <aqua>{0} <yellow>[<bold><light_purple>Wijzigen</light_purple></bold>]'
   price-hover: <yellow>Klik om een nieuwe prijs voor het artikel in te stellen.
-  remove: <red><bold>[Verwijder winkel]
+  remove: <bold><red>[Verwijder winkel]
   mode-buying-hover: <yellow>Klik om de winkel in VERKOOP modus te wijzigen.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Leeg: verwijder alle items <yellow>[<bold><light_purple>OK</light_purple></bold>]'
   stack-hover: <yellow>Klik om de hoeveelheid item per bulk in te stellen. Stel in op 1 voor normaal gedrag.
-  alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting-hover: <yellow>Klik om in te schakelen of de winkel altijd de inhoud van de container moet tellen.
+  alwayscounting: '<green>Altijd tellen: {0} <yellow>[<bold><light_purple>Wijzigen</light_purple></bold>]'
+  setowner: '<green>Eigenaar: <aqua>{0} <yellow>[<bold><light_purple>Wijzigen</light_purple></bold>]'
   freeze: "<green>Bevriezingsmodus:<aqua>{0}\n<yellow>[<bold><light_purple>Omschakelen</light_purple></bold>"
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  price: "<green>Prijs: <aqua>{0} \n<yellow>[<light_purple><bold>Wijzigen<yellow>]"
   currency-hover: <yellow>Klik om de valuta die deze winkel gebruikt in te stellen of te verwijderen
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Shop mode: <aqua>Verkopen<yellow>[<light_purple><bold>Wijzigen<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
+  lock: "<yellow>Winkelvergrendeling:: <aqua>{0} \n<yellow>[<light_purple><bold>Toggle<yellow>]"
+  mode-selling: "<green>Shop mode: <aqua>Verkopen\n<yellow>[<bold><light_purple>Wijzigen</light_purple></bold>"
+  currency: "<green>Valuta: <aqua>{0} \n<yellow>[<light_purple><bold>Set<yellow>]"
   setowner-hover: <yellow>Klik om van eigenaar te wisselen.
   mode-buying: "<green>Shop mode: <aqua>Kopen \n<yellow>[<bold><light_purple>Wijzig</light_purple></bold>]"
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<bold><light_purple>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<bold><light_purple>Change<yellow>]'
   unlimited-hover: <yellow>Click om te schakelen als de winkel onbeperkt is.
   refill-hover: <yellow>Klik om de winkel te hervullen.
   remove-hover: <yellow>Klik om deze winkel te verwijderen.
-  toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  toggledisplay-hover: '<yellow>Bijvullen: Vul de artikelen bij. '
+  refill: '<green>Bijvullen: Vul de artikelen bij.  <yellow>[<light_purple><bold>OK<yellow>]'
   inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>Bekijk Inventory</light_purple></bold>]'
   inventory-hover: <yellow>Open de inventaris van de winkel.
   freeze-hover: <yellow>Schakel de bevriezingsstatus van de winkel in of uit.
@@ -773,24 +783,24 @@ addon:
     owner-create-only: <red>Alleen de eigenaar van het eiland kan een winkel maken.
     owner-member-create-only: <red>Alleen eigenaar van een eiland of lid kan een winkel maken.
   worldguard:
-    creation-flag-test-failed: <red>You don't have permission create shop in this WorldGuard area.
-    trade-flag-test-failed: <red>You don't have permission trade shop in this WorldGuard area.
-    reached-per-region-amount-limit: "<red>You have reached the maximum amount of shops in this region."
+    creation-flag-test-failed: <red>Je hebt geen toestemming om een winkel te openen in dit WorldGuard-gebied.
+    trade-flag-test-failed: <red>Je hebt geen toestemming om handel te drijven in dit WorldGuard-gebied.
+    reached-per-region-amount-limit: "<red>Je hebt het maximale aantal winkels in deze regio bereikt."
   discord:
     __to_translators: 'To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop''s style {LANG_INDEX}, do not translate anything inside double ''%'' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don''t need translate this string, it''s a comment)'
-    __to_users: Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings.
-    __to_message_designer: 'Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!'
-    discord-enabled: <aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord.
-    discord-disabled: <aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore.
-    discord-not-integrated: <red>You hadn't link your Discord yet! Please link your Discord account first!
-    feature-enabled-for-user: <aqua>You have <green>enabled</green> <gold>{0}</gold> notification.
-    feature-disabled-for-user: <aqua>You have <red>disabled</red> <gold>{0}</gold> notification.
-    link-help: <yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account.
-    save-notifaction-exception: <red>An error occurred while saving your Discord notifaction settings, please contact the server administrator.
+    __to_users: Net als het QuickShop-tekstsysteem detecteert ook de Discord-add-on automatisch de taal van de gebruiker en gebruikt deze taal om Discord-berichten te versturen, waarbij het de taalinstellingen van QuickShop-Hikari volgt.
+    __to_message_designer: 'Ontwerp je Discord-bericht met GUI: https://glitchii.github.io/embedbuilder/, kopieer vervolgens de JSON-code en plak deze in de vertaling en klaar is Kees!'
+    discord-enabled: <aqua>Je QuickShop Discord-berichten zijn nu <green>ingeschakeld</green>, zodat je de winkelberichten van Discord kunt ontvangen.
+    discord-disabled: <aqua>Je QuickShop-Discord-berichten zijn nu <red>uitgeschakeld</red>, dus je ontvangt geen winkelberichten meer van Discord.
+    discord-not-integrated: <red>Je hebt je Discord nog niet gekoppeld! Koppel eerst je Discord-account!
+    feature-enabled-for-user: <aqua>Je hebt <green>ingeschakeld</green> <gold>{0}</gold> meldingen.
+    feature-disabled-for-user: <aqua>Je hebt <red>uitgeschakeld</red> <gold>{0}</gold> meldingen.
+    link-help: <yellow>Deze server gebruikt <gold>{0}</gold> voor de Discord-driver. Gebruik <green>{0}</green> om je Discord-account te koppelen.
+    save-notifaction-exception: <red>Er is een fout opgetreden tijdens het opslaan van je Discord-meldingsinstellingen. Neem contact op met de serverbeheerder.
     feature-status-changed: <green>De status van de melding <aqua>{0}</aqua> is succesvol ingesteld op<gold>{1}
     commands:
       discord:
-        description: <yellow>Managing your QuickShop Discord settings
+        description: <yellow>Je QuickShop Discord-instellingen beheren
     discord-messages:
       sold-to-your-shop: |
         {
@@ -1312,18 +1322,18 @@ addon:
             }
         }
     field:
-      player: Player
+      player: Speler
       item: Item
-      amount: Amount
-      balance: Balance
-      balance-after-tax: Balance (after tax)
-      account: Your account balance
-      taxes: Taxes
-      cost: Cost
+      amount: Aantal
+      balance: Huidig saldo
+      balance-after-tax: Saldo (na belastingen)
+      account: Uw accountsaldo
+      taxes: Belastingen
+      cost: Kosten
   discount:
     commands:
       discount:
-        description: <yellow>Apply a discount code or manage your discount codes.
+        description: <yellow>Pas een kortingscode toe of beheer uw kortingscodes.
     tab-complete:
       discount:
         general:
@@ -1336,10 +1346,10 @@ addon:
             Input `30%` = price * 0.3
             Input `50` = price - 50
           max-usage: |
-            Command Hint:
+            Commando-tip:
             Argument: [max-usage]
-            Description: The times that code can be used
-            `-1` for unlimited.
+            Beschrijving: Het aantal keren dat de code kan worden gebruikt.
+            `-1` voor onbeperkt.
           threshold: |
             Command Hint:
             Argument: [threshold]
@@ -1353,31 +1363,31 @@ addon:
             Accept both Zulu time and UNIX timestamp in seconds.
             Zulu Example: 2022-12-17T10:31:37Z
             UNIX Example: 1671273097
-    discount-code-already-exists: <red>Sorry, the name of your discount code already in use.
+    discount-code-already-exists: <red>Sorry, de naam van uw kortingscode wordt al gebruikt.
     invalid-discount-code-regex: '<red>De kortingscode moet overeenkomen met de regex: <yellow>{0}'
-    invalid-discount-code: <red>This discount code are invalid.
+    invalid-discount-code: <red>Deze kortingscode is ongeldig.
     discount-code-added: <green>Uw kortingscode <yellow>{0}</yellow> is toegevoegd aan winkel <aqua>{1}
     discount-code-removed: <green>Uw kortingscode<yellow>{0}</yellow> is verwijderd uit winkel <aqua>{1}
-    invalid-code-type: <red>The code type <yellow>{0}</yellow> are invalid.
-    invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
-    invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
-    invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
-    invalid-expire-time: <red>You can't specify a time in the past.
-    invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
-    discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
+    invalid-code-type: <red>Het codetype <yellow>{0}</yellow> is ongeldig.
+    invalid-usage-restriction: <red>De gebruiksbeperking <yellow>{0}</yellow> is ongeldig.
+    invalid-threshold-restriction: <red>De limietbeperking <yellow>{0}</yellow> is ongeldig.
+    invalid-effect-scope: <red>Het bereik <yellow>{0}</yellow> is ongeldig.
+    invalid-expire-time: <red>Je kunt geen tijdstip in het verleden opgeven.
+    invalid-discount-rate: <red>Het kortingspercentage <yellow>{0}</yellow> is ongeldig, het kan een vast getal of een percentage zijn.
+    discount-code-expired: <red>Au! Uw kortingscode <yellow>{0}</yellow> is verlopen!
     discount-code-installed: <green>U hebt kortingscode <gold>{0}</gold> geïnstalleerd. De kortingscode wordt automatisch toegepast op alle aankopen die u tijdens deze sessie doet. Om de kortingscode te verwijderen, voert u <aqua>/quickshop discount uninstall {0}</aqua> uit.
-    discount-code-uninstalled: <green>You have uninstalled your discount code.
-    discount-code-query-nothing: <red>You hadn't install a discount code yet!
-    discount-code-query: '<green>You are using discount code: <yellow>{0}</yellow>.'
+    discount-code-uninstalled: <green>Je hebt je kortingscode verwijderd.
+    discount-code-query-nothing: <red>Je hebt nog geen kortingscode ingesteld!
+    discount-code-query: '<green>U gebruikt kortingscode: <yellow>{0}</yellow>.'
     discount-code-applicable: '<#bcef26>Uw kortingscode <bold><yellow>{0}</yellow></bold> is <bold>van toepassing</bold> in deze winkel!'
     discount-code-applicable-with-threshold: '<#bcef26>Uw kortingscode <bold><yellow>{0}</yellow></bold> is <bold>van toepassing</bold> in deze winkel, maar alleen bij aankopen van meer dan <yellow>{1}</yellow> in één transactie.'
     discount-code-not-applicable: <red>Uw kortingscode <bold><yellow>{0}</yellow></bold> is <bold>niet van toepassing</bold> in deze winkel!
     discount-code-reach-the-limit: <red>U hebt de gebruikslimiet van kortingscode <bold><yellow>{0}</yellow></bold> bereikt, kortingen worden niet toegepast.
-    discount-code-no-permission: <red>You didn't have permission to use any discount code in this shop!
-    discount-code-has-been-expired: <red>Your discount has been expired!
-    discount-code-config-shop-added: <green>Successfully to add this shop into your discount code allow list.
-    discount-code-config-shop-add-failure: <red>This shop already in your discount code allow list.
-    discount-code-config-shop-removed: <green>Successfully to remove this shop from your discount code allow list.
+    discount-code-no-permission: <red>U heeft geen toestemming om kortingscode te gebruiken in deze winkel!
+    discount-code-has-been-expired: <red>Je korting is verlopen!
+    discount-code-config-shop-added: <green>Deze winkel is succesvol toegevoegd aan uw lijst met toegestane kortingscodes.
+    discount-code-config-shop-add-failure: <red>Deze winkel staat al op uw lijst met toegestane kortingscodes.
+    discount-code-config-shop-removed: <green>Deze winkel is succesvol verwijderd uit uw lijst met toegestane kortingscodes.
     discount-code-config-shop-remove-failure: <red>Deze winkel staat niet op uw lijst met toegestane kortingscodes.
     discount-code-config-expire: <green>De vervaldatum van uw code is succesvol gewijzigd.
     discount-code-config-applied: <green>De kortingscode is succesvol geconfigureerd!
