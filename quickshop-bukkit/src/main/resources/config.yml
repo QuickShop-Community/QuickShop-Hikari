@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1035
+config-version: 1036
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -25,6 +25,12 @@ enabled-languages:
 #You can choose which one you want to use for downloading resources.
 #By default, QuickShop use Mojang official server to downloading resources.
 mojangapi-mirror: 0
+
+#Crowdin OTA host, you can change it to your own host if you want.
+crowdin-host: "https://crowdinota.hikari.r2.quickshop-powered.top"
+
+#Use Crowdin OTA to update language files?
+use-crowdin-ota: true
 
 #This enables the developer mode, do not touch this if you don't not know what it does!
 dev-mode: false
