@@ -1,0 +1,443 @@
+# QuickShop-Hikari GUI Configuration
+# Configure the appearance and layout of all GUI menus
+# 
+# Each icon supports:
+#   material: The material type (e.g., PAPER, BARRIER, LIME_CONCRETE)
+#   name: Display name (supports MiniMessage format)
+#   lore: List of lore lines (supports MiniMessage format)
+#   custom-model-data: Custom model data for resource packs (integer, optional)
+#   slot: The slot position in the inventory (0-53)
+#   amount: Item amount (default: 1)
+#
+# TEXT OPTIONS:
+#   1. Direct inline text: Write MiniMessage formatted text directly
+#      Example: name: "<bold><green>Buy Items</green></bold>"
+#
+#   2. Empty name: Use a single space " " for blank display names
+#      Example: name: " "
+#
+# MiniMessage format reference: https://docs.advntr.dev/minimessage/format.html
+# Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
+# If you wish to use a value from the language file for display names or lore, start your value with "lang:"
+
+version: 3
+
+# ===================
+# GLOBAL STYLE SETTINGS
+# ===================
+style:
+  border-material: GRAY_STAINED_GLASS_PANE
+  accent-positive: LIME_CONCRETE
+  accent-negative: ORANGE_CONCRETE
+  accent-neutral: LIGHT_BLUE_CONCRETE
+
+# ===================
+# TRADE MENU
+# ===================
+trade:
+  title: "lang:gui.trade.title"
+  rows: 6
+  
+  # Border configuration - gray for a modern look
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 4, 6]  # Top, middle separator, bottom
+  
+  # Shop item display (the item being traded) - centered in row 2
+  shop-item:
+    slot: 13
+    # Note: material, name, lore are from the actual shop item
+  
+  # Info icons row (row 3)
+  info-stock:
+    material: CHEST
+    name: "lang:gui.trade.info-stock.display"
+    lore:
+      - "lang:gui.trade.info-stock.lore"
+    custom-model-data: 0
+    slot: 21
+  
+  info-price:
+    material: GOLD_INGOT
+    name: "lang:gui.trade.info-price.display"
+    lore:
+      - "lang:gui.trade.info-price.lore"
+    custom-model-data: 0
+    slot: 22
+  
+  info-seller:
+    material: PLAYER_HEAD
+    name: "lang:gui.trade.info-seller.display"
+    lore:
+      - "lang:gui.trade.info-seller.lore"
+    custom-model-data: 0
+    slot: 23
+  
+  # Custom amount button - NAME_TAG for intuitive "enter amount"
+  custom-amount:
+    material: NAME_TAG
+    name: "lang:gui.trade.custom-amount.display"
+    custom-model-data: 0
+    slot: 43
+  
+  # Quantity buttons (row 5) - color-coded by buy/sell
+  # {0} = total price
+  quantity-buttons:
+    material-buy: LIME_CONCRETE
+    material-sell: ORANGE_CONCRETE
+    custom-model-data: 0
+    slots: [37, 38, 39, 40, 41, 42]
+    quantities: [1, 2, 4, 8, 16, 64]
+    lore:
+      - "lang:gui.trade.quantity-button.lore"
+  
+  # Close button - centered at bottom
+  close:
+    material: BARRIER
+    name: "lang:gui.shared.close.display"
+    custom-model-data: 0
+    slot: 49
+
+# ===================
+# KEEPER MENU (Shop Owner Control Panel)
+# ===================
+keeper:
+  title: "lang:gui.keeper.title"
+  rows: 4
+  
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [2, 4]  # Separator and bottom
+  
+  # Shop item preview - top center
+  shop-item:
+    slot: 4
+  
+  # Change price button - GOLD_NUGGET for "price"
+  # {0} = current price
+  change-price:
+    material: GOLD_NUGGET
+    name: "lang:gui.keeper.change-price.display"
+    lore:
+      - "lang:gui.keeper.change-price.lore"
+    custom-model-data: 0
+    slot: 19
+  
+  # Mode toggle (buy/sell/frozen) - concrete for clean look
+  # {0} = current mode, {1} = next mode
+  mode-toggle:
+    selling:
+      material: LIME_CONCRETE
+      custom-model-data: 0
+    buying:
+      material: ORANGE_CONCRETE
+      custom-model-data: 0
+    frozen:
+      material: LIGHT_BLUE_CONCRETE
+      custom-model-data: 0
+    name: "lang:gui.keeper.mode-toggle.display"
+    lore:
+      - "lang:gui.keeper.mode-toggle.lore"
+    slot: 21
+
+  inventory:
+    material: CHEST
+    name: "lang:gui.keeper.inventory.display"
+    lore:
+      - "lang:gui.keeper.inventory.lore"
+    slot: 22
+  
+  # Staff management button
+  staff:
+    material: PLAYER_HEAD
+    name: "lang:gui.keeper.staff.display"
+    lore:
+      - "lang:gui.keeper.staff.lore"
+    custom-model-data: 0
+    slot: 23
+  
+  # History button
+  history:
+    material: BOOK
+    name: "lang:gui.keeper.history.display"
+    lore:
+      - "lang:gui.keeper.history.lore"
+    custom-model-data: 0
+    slot: 24
+  
+  # Remove shop button - TNT for dramatic effect
+  remove:
+    material: TNT
+    name: "lang:gui.keeper.remove.display"
+    lore:
+      - "lang:gui.keeper.remove.lore"
+    custom-model-data: 0
+    slot: 25
+  
+  # Close/back button - OAK_DOOR for "exit"
+  close:
+    material: OAK_DOOR
+    name: "lang:gui.shared.close.display"
+    custom-model-data: 0
+    slot: 31
+
+# ===================
+# STAFF MENU
+# ===================
+staff:
+  title: "lang:gui.staff.title"
+  rows: 6
+  
+  # Row 1 has borders in empty slots (buttons override border at their slots)
+  # Row 6 is the pagination/control row at bottom
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 6]
+  
+  # Search button - opens chat input for player search
+  # {0} = current search query or "None"
+  search:
+    material: ANVIL
+    name: "lang:gui.staff.search.display"
+    lore:
+      - "lang:gui.staff.search.lore"
+    custom-model-data: 0
+    slot: 0
+  
+  # Add staff button - EMERALD (green = add)
+  add-staff:
+    material: EMERALD
+    name: "lang:gui.staff.add-staff.display"
+    lore:
+      - "lang:gui.staff.add-staff.lore"
+    custom-model-data: 0
+    slot: 4
+  
+  # Back button - OAK_DOOR for "go back"
+  back:
+    material: OAK_DOOR
+    name: "lang:gui.shared.back.display"
+    custom-model-data: 0
+    slot: 8
+  
+  # Pagination controls (bottom row)
+  previous-page:
+    material: ARROW
+    name: "lang:gui.shared.previous-page.display"
+    custom-model-data: 0
+    slot: 48
+  
+  next-page:
+    material: ARROW
+    name: "lang:gui.shared.next-page.display"
+    custom-model-data: 0
+    slot: 50
+  
+  page-info:
+    material: BOOK
+    name: "lang:gui.shared.page-info.display"
+    custom-model-data: 0
+    slot: 49
+  
+  # Staff list starts at row 2 (slot 9+)
+  list-start-slot: 9
+
+# ===================
+# HISTORY MENU
+# ===================
+history:
+  title: "lang:history.shop.gui-title"
+  rows: 6
+  
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 6]
+
+  entry:
+    material: PLAYER_HEAD
+    name: "lang:history.shop.log-icon-title"
+    lore:
+      - "lang:history.shop.log-icon-description-with-store-name"
+    custom-model-data: 0
+  
+  # Summary icon
+  summary:
+    material: OAK_SIGN
+    name: "lang:history.shop.summary-icon-title"
+    lore:
+      - "lang:history.shop.summary-icon-description"
+    custom-model-data: 0
+    slot: 0
+  
+  # Shop info (single shop)
+  shop-info:
+    material: PLAYER_HEAD
+    lore:
+      - "lang:history.shop.header-icon-description"
+    custom-model-data: 0
+    slot: 4
+  
+  # Multiple shops info
+  multi-shop-info:
+    material: CHEST
+    name: "lang:history.shop.multi-shops-icon-title"
+    custom-model-data: 0
+    slot: 4
+  
+  # Top customers
+  top-customers:
+    material: DIAMOND
+    name: "lang:history.shop.top-n-valuable-customers-title"
+    lore:
+      - "lang:history.shop.top-n-valuable-customers-entry"
+    custom-model-data: 0
+    slot: 8
+  
+  previous-page:
+    material: ARROW
+    name: "lang:gui.shared.previous-page.display"
+    custom-model-data: 0
+    slot: 3
+  
+  next-page:
+    material: ARROW
+    name: "lang:gui.shared.next-page.display"
+    custom-model-data: 0
+    slot: 5
+  
+  back:
+    material: OAK_DOOR
+    name: "lang:gui.shared.back.display"
+    custom-model-data: 0
+    slot: 49
+  
+  list-start-slot: 9
+
+# ===================
+# BROWSE MENU (Market Browser)
+# ===================
+browse:
+  title: "lang:gui.browse.title"
+  rows: 6
+  
+  # Row 1 has borders in empty slots (buttons override border at their slots)
+  # Row 6 is the pagination/control row at bottom
+  border:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    custom-model-data: 0
+    rows: [1, 6]
+
+  shop-item:
+    lore:
+      - "lang:gui.browse.shop-item.lore"
+  
+  # Search button - opens chat input for item search
+  # {0} = current search query or "None"
+  search:
+    material: ANVIL
+    name: "lang:gui.browse.search.display"
+    lore:
+      - "lang:gui.browse.search.lore"
+    custom-model-data: 0
+    slot: 0
+  
+  # Sort button - cycles through sort options
+  # {0} = current sort mode
+  sort:
+    material: HOPPER
+    name: "lang:gui.browse.sort.display"
+    lore:
+      - "lang:gui.browse.sort.lore"
+    custom-model-data: 0
+    slot: 2
+
+  grouped-item:
+    display: "lang:gui.browse.grouped-item.display"
+  
+  # Filter button - cycles through filter options
+  # {0} = current filter
+  filter:
+    material: NAME_TAG
+    name: "lang:gui.browse.filter.display"
+    lore:
+      - "lang:gui.browse.filter.lore"
+    custom-model-data: 0
+    slot: 4
+  
+  # Stock filter toggle - show only shops with available stock/space
+  # {0} = ON or OFF
+  stock-filter:
+    material: CHEST
+    name: "lang:gui.browse.stock-filter.display"
+    lore:
+      - "lang:gui.browse.stock-filter.lore"
+    custom-model-data: 0
+    slot: 6
+  
+  # Close button
+  close:
+    material: BARRIER
+    name: "lang:gui.shared.close.display"
+    custom-model-data: 0
+    slot: 8
+  
+  # Back button (for shop list page)
+  back:
+    material: OAK_DOOR
+    name: "lang:gui.shared.back.display"
+    custom-model-data: 0
+    slot: 8
+  
+  # Pagination controls (bottom row)
+  previous-page:
+    material: ARROW
+    name: "lang:gui.shared.previous-page.display"
+    custom-model-data: 0
+    slot: 48
+  
+  next-page:
+    material: ARROW
+    name: "lang:gui.shared.next-page.display"
+    custom-model-data: 0
+    slot: 50
+  
+  page-info:
+    material: BOOK
+    name: "lang:gui.shared.page-info.display"
+    custom-model-data: 0
+    slot: 49
+  
+  list-start-slot: 9
+
+# ===================
+# SHARED ICONS
+# ===================
+shared:
+  previous-page:
+    material: ARROW
+    name: "lang:gui.shared.previous-page.display"
+    custom-model-data: 0
+  
+  next-page:
+    material: ARROW
+    name: "lang:gui.shared.next-page.display"
+    custom-model-data: 0
+  
+  back:
+    material: OAK_DOOR
+    name: "lang:gui.shared.back.display"
+    custom-model-data: 0
+  
+  close:
+    material: BARRIER
+    name: "lang:gui.shared.close.display"
+    custom-model-data: 0

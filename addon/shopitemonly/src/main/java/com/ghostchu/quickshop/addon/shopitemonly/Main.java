@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.addon.shopitemonly;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import net.tnemc.menu.core.manager.MenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,6 +48,11 @@ public final class Main extends JavaPlugin implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void invClose(final InventoryCloseEvent event) {
+
+    if(MenuManager.instance().inMenu(event.getPlayer().getUniqueId())) {
+      //if the player is in a quickshop-based menu we don't care about it.
+      return;
+    }
 
     final Inventory inventory = event.getInventory();
     if(inventory == null) {

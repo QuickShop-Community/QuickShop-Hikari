@@ -4,6 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.menu.browse.BrowseFilterMode;
+import com.ghostchu.quickshop.menu.browse.BrowseSortMode;
 import com.ghostchu.quickshop.util.Util;
 import net.tnemc.menu.core.compatibility.MenuPlayer;
 import net.tnemc.menu.core.manager.MenuManager;
@@ -16,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ghostchu.quickshop.menu.ShopBrowseMenu.BROWSE_FILTER;
+import static com.ghostchu.quickshop.menu.ShopBrowseMenu.BROWSE_SEARCH;
+import static com.ghostchu.quickshop.menu.ShopBrowseMenu.BROWSE_SORT;
+import static com.ghostchu.quickshop.menu.ShopBrowseMenu.BROWSE_WORLD_ONLY;
 import static com.ghostchu.quickshop.menu.ShopBrowseMenu.SHOPS_DATA;
 
 
@@ -36,7 +42,13 @@ public class SubCommand_Browse implements CommandHandler<Player> {
 
     final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(sender);
 
-    final boolean world = (!parser.getArgs().isEmpty() && parser.getArgs().get(0).equalsIgnoreCase("world"));
+    final boolean world = (!parser.getArgs().isEmpty() && parser.getArgs().getFirst().equalsIgnoreCase("world"));
+
+    // Initialize browse state
+    viewer.addData(BROWSE_SORT, BrowseSortMode.PRICE_ASC);
+    viewer.addData(BROWSE_FILTER, BrowseFilterMode.ALL);
+    viewer.addData(BROWSE_SEARCH, "");
+    viewer.addData(BROWSE_WORLD_ONLY, world);
 
     Util.asyncThreadRun(()->{
       final List<Shop> shops = new ArrayList<>();
@@ -48,20 +60,10 @@ public class SubCommand_Browse implements CommandHandler<Player> {
             return false;
           }
 
-          if(shop.getRemainingStock() == 0) {
-            return false;
-          }
-
           return shop.getLocation().getWorld().getUID().equals(sender.getLocation().getWorld().getUID());
         }).toList());
       } else {
-        shops.addAll(plugin.getShopManager().getAllShops().stream().filter(shop->{
-
-          if(shop.getRemainingStock() == 0) {
-            return false;
-          }
-          return true;
-        }).toList());
+        shops.addAll(plugin.getShopManager().getAllShops());
       }
 
       viewer.addData(SHOPS_DATA, shops);

@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class MainListener implements Listener {
@@ -47,7 +48,7 @@ public class MainListener implements Listener {
         case APPLICABLE ->
                 quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code).send();
         case APPLICABLE_WITH_THRESHOLD ->
-                quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code, quickshop.getEconomy().format(codeInstalled.getThreshold(), shop.getLocation().getWorld(), shop.getCurrency())).send();
+                quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code, quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(codeInstalled.getThreshold()), shop.getLocation().getWorld().getName(), shop.getCurrency())).send();
         case NOT_APPLICABLE ->
                 quickshop.text().of(purchaser, "addon.discount.discount-code-not-applicable", code).send();
         case REACHED_THE_LIMIT ->
@@ -83,16 +84,16 @@ public class MainListener implements Listener {
         final double beforeDiscount = event.getTotal();
         event.setTotal(codeInstalled.apply(purchaser, event.getTotal()));
         final double discounted = beforeDiscount - event.getTotal();
-        quickshop.text().of(purchaser, "addon.discount.discount-code-applied-in-purchase", code, quickshop.getEconomy().format(discounted, shop.getLocation().getWorld(), shop.getCurrency())).send();
+        quickshop.text().of(purchaser, "addon.discount.discount-code-applied-in-purchase", code, quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(discounted), shop.getLocation().getWorld().getName(), shop.getCurrency())).send();
       }
       case APPLICABLE_WITH_THRESHOLD -> {
         if(event.getTotal() < codeInstalled.getThreshold()) {
-          quickshop.text().of(purchaser, "addon.discount.discount-code-under-threshold", quickshop.getEconomy().format(codeInstalled.getThreshold(), shop.getLocation().getWorld(), shop.getCurrency())).send();
+          quickshop.text().of(purchaser, "addon.discount.discount-code-under-threshold", quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(codeInstalled.getThreshold()), shop.getLocation().getWorld().getName(), shop.getCurrency())).send();
         } else {
           final double beforeDiscount = event.getTotal();
           event.setTotal(codeInstalled.apply(purchaser, event.getTotal()));
           final double discounted = beforeDiscount - event.getTotal();
-          quickshop.text().of(purchaser, "addon.discount.discount-code-applied-in-purchase", code, quickshop.getEconomy().format(discounted, shop.getLocation().getWorld(), shop.getCurrency())).send();
+          quickshop.text().of(purchaser, "addon.discount.discount-code-applied-in-purchase", code, quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(discounted), shop.getLocation().getWorld().getName(), shop.getCurrency())).send();
         }
       }
       case NOT_APPLICABLE ->

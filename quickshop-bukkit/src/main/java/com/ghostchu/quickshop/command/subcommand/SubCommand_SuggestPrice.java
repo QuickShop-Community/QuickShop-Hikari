@@ -54,11 +54,13 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
         }
 
         final List<Double> matchedBuy = plugin.getShopManager().getAllShops().stream()
+                .filter(s->s.isBuying())
                 .filter(s->plugin.getItemMatcher().matches(stack, s.getItem()))
                 .map(Shop::getPrice)
                 .toList();
 
         final List<Double> matchedSell = plugin.getShopManager().getAllShops().stream()
+                .filter(s->s.isSelling())
                 .filter(s->plugin.getItemMatcher().matches(stack, s.getItem()))
                 .map(Shop::getPrice)
                 .toList();
@@ -95,7 +97,7 @@ public class SubCommand_SuggestPrice implements CommandHandler<Player> {
     Util.asyncThreadRun(()->{
       final List<Double> matched = plugin.getShopManager().getAllShops().stream()
               .filter(s->s.getShopId() != shop.getShopId())
-              .filter(s->s.getShopType() == shop.getShopType())
+              .filter(s->s.shopType().identifier().equalsIgnoreCase(shop.shopType().identifier()))
               .filter(s->Objects.equals(s.getCurrency(), shop.getCurrency()))
               .filter(s->plugin.getItemMatcher().matches(shop.getItem(), s.getItem()))
               .map(Shop::getPrice)

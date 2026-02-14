@@ -9,16 +9,8 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GeoUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
-import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import com.ghostchu.quickshop.platform.spigot.v1_20_1.Spigot1201Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_20_2.Spigot1202Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_20_3.Spigot1203Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_20_4.Spigot1205Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_21_1.Spigot1210Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_21_3.Spigot1231Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_21_4.Spigot1214Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_21_5.Spigot1215Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
@@ -51,8 +43,13 @@ public class QuickShopBukkit extends JavaPlugin {
   @Override
   public void reloadConfig() {
 
-    super.reloadConfig();
     this.quickShop.reloadConfigSubModule();
+  }
+
+  @Override
+  public void saveConfig() {
+
+    this.quickShop.mainConfig().save();
   }
 
   @Override
@@ -91,6 +88,7 @@ public class QuickShopBukkit extends JavaPlugin {
     Unirest.shutDown(true);
     Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
     this.platform.shutdown();
+    Log.Caller.cleanupThreadLocal();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> All Complete (" + (System.currentTimeMillis() - shutdownAtTime) + "ms)");
   }
 
@@ -99,6 +97,11 @@ public class QuickShopBukkit extends JavaPlugin {
 
     if(abortLoading != null) {
       throw new IllegalStateException("Plugin is disabled due an loading error", abortLoading);
+    }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("BarrelShops")) {
+
+      throw new IllegalStateException("Plugin is disabled due an loading error");
     }
     final long enableAtTime = System.currentTimeMillis();
     bootstrapLogger.info("QuickShop-" + getFork() + " - Bootstrap -> Execute the enable sequence");
@@ -197,7 +200,7 @@ public class QuickShopBukkit extends JavaPlugin {
                 .groupId(groupId)
                 .artifactId(artifactId)
                 .version(version)
-                .resolveTransitiveDependencies(true)
+                .resolveTransitiveDependencies(false)
                 .isolatedLoad(false);
         if(classifier != null) {
           libBuilder = libBuilder.classifier(classifier);
@@ -218,6 +221,8 @@ public class QuickShopBukkit extends JavaPlugin {
       }
     } catch(final IOException e) {
       throw new IllegalStateException("Cannot download the libraries, the first time install/upgrade need the Internet connection.", e);
+    } catch(final Exception ignore) {
+      //try to get rid of console errors from logger loading.
     }
   }
 
@@ -240,30 +245,11 @@ public class QuickShopBukkit extends JavaPlugin {
           bootstrapLogger.warning("=================================================================");
           bootstrapLogger.warning("=========================   ATTENTION   =========================");
           bootstrapLogger.warning("=================================================================");
-          bootstrapLogger.warning("Use Paper or Paper's fork to get best performance and enhanced features!");
-          bootstrapLogger.warning("Spigot lacks modern functionality and overall performance fixes.");
+          bootstrapLogger.warning("Spigot is no longer supported!");
+          bootstrapLogger.warning("QuickShop will disabled. Please switch to Paper");
           bootstrapLogger.warning("=================================================================");
 
-          initNbtApi();
-
-          //noinspection deprecation
-          final String internalNMSVersion = AbstractSpigotPlatform.getNMSVersion();
-          this.platform = switch(internalNMSVersion) {
-            case "v1_20_R1" -> new Spigot1201Platform(this);
-            case "v1_20_R2" -> new Spigot1202Platform(this);
-            case "v1_20_R3" -> new Spigot1203Platform(this);
-            case "v1_20_R4" -> new Spigot1205Platform(this);
-            case "v1_21_R1" -> new Spigot1210Platform(this);
-            //case "v1_21_R2" -> new Spigot1211Platform(this);
-            case "v1_21_R2" -> new Spigot1231Platform(this);
-            case "v1_21_R3" -> new Spigot1214Platform(this);
-            case "v1_21_R4" -> new Spigot1215Platform(this);
-            default -> {
-              bootstrapLogger.warning("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-              Bukkit.getPluginManager().disablePlugin(this);
-              throw new IllegalStateException("This server running " + internalNMSVersion + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-            }
-          };
+          throw new UnsupportedOperationException("Unsupported platform");
         }
         case 2 -> {
           bootstrapLogger.info("Platform detected: Paper");
@@ -281,11 +267,6 @@ public class QuickShopBukkit extends JavaPlugin {
     } catch(final Throwable e) {
       throw new Exception("Failed to initialize the platform", e);
     }
-  }
-
-  private void initNbtApi() {
-
-    new NbtApiInitializer(bootstrapLogger);
   }
 
   private void initQuickShop() {

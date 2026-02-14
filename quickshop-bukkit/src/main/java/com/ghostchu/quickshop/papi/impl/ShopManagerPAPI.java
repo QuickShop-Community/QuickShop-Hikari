@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.papi.impl;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopManager;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.papi.PAPISubHandler;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -89,11 +88,11 @@ public class ShopManagerPAPI implements PAPISubHandler {
     return String.valueOf(switch(passThroughArgsChild[0]) {
       case "all" -> allShops.size();
       case "selling" ->
-              allShops.stream().filter(shop->shop.getShopType() == ShopType.SELLING).count();
+              allShops.stream().filter(shop->!shop.shopType().isBuying() && !shop.shopType().isTradingBlocked()).count();
       case "buying" ->
-              allShops.stream().filter(shop->shop.getShopType() == ShopType.BUYING).count();
+              allShops.stream().filter(shop->shop.shopType().isBuying()).count();
       case "freeze" ->
-              allShops.stream().filter(shop->shop.getShopType() == ShopType.FROZEN).count();
+              allShops.stream().filter(shop->shop.shopType().isTradingBlocked()).count();
       case "loaded" -> shopManager.getLoadedShops().size();
       case "unloaded" -> allShops.size() - shopManager.getLoadedShops().size();
       default -> null;
@@ -110,11 +109,11 @@ public class ShopManagerPAPI implements PAPISubHandler {
     return String.valueOf(switch(passThroughArgsChild[0]) {
       case "all" -> belongToPlayers.size();
       case "selling" ->
-              belongToPlayers.stream().filter(shop->shop.getShopType() == ShopType.SELLING).count();
+              belongToPlayers.stream().filter(shop->!shop.shopType().isBuying() && !shop.shopType().isTradingBlocked()).count();
       case "buying" ->
-              belongToPlayers.stream().filter(shop->shop.getShopType() == ShopType.BUYING).count();
+              belongToPlayers.stream().filter(shop->shop.shopType().isBuying()).count();
       case "freeze" ->
-              belongToPlayers.stream().filter(shop->shop.getShopType() == ShopType.FROZEN).count();
+              belongToPlayers.stream().filter(shop->shop.shopType().isTradingBlocked()).count();
       case "loaded" -> shopManager.getLoadedShops().size();
       case "unloaded" -> belongToPlayers.stream().filter(shop->!shop.isLoaded()).count();
       default -> null;

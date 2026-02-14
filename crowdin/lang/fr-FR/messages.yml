@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop est désactivé dans ce monde
 how-much-to-trade-for: <green>Entrez dans le chat, combien vous souhaitez échanger <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop a détecté que votre paramètre de langue client a été modifié, nous utilisons maintenant la locale {0} pour vous.
 shops-backingup: Création d'une sauvegarde de la boutique à partir de la base de données...
-_comment: Bonjour, traducteur ! Si vous éditez ceci sur Github ou depuis le code source, rendez-vous plutôt sur https://crowdin.com/project/qs-hikari.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
 bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
 thats-not-a-number: <red>Nombre invalide.
@@ -166,7 +166,7 @@ translate-not-completed-yet-url: 'La traduction de la langue {0} a terminé {1},
 success-removed-shop: <green>Boutique supprimée avec succès.
 currency-set: <green>Le mode de la boutique a été définie avec succès à {0}.
 shop-purged-start: <green>La purge a commencé, vérifiez la console pour plus de détails.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
+economy-transaction-failed: <red>Désolé une erreur s'est produite pendant votre transaction. Elle a donc été annulée et vous avez récupéré votre argent. S'il vous plait contactez un administrateur pour résoudre ce problème.
 nothing-to-flush: <green>Aucun nouveau message.
 no-price-change: <red>Le prix ne changera pas!
 edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
@@ -362,6 +362,8 @@ controlpanel:
   remove-hover: <yellow>Cliquez pour supprimer cette boutique.
   toggledisplay-hover: <yellow>Activer/désactiver l'affichage de l'item de la boutique
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Activer/désactiver le statut de blocage de la boutique.
   lock-hover: <yellow>Activer/Désactiver la protection de verrouillage de la boutique.
   item-hover: <yellow>Cliquez pour changer l'objet de la boutique
@@ -384,13 +386,13 @@ timeunit:
   std-past-format: 'il y a {5}{4}{3}{2}{1}{0}'
   std-time-format: HH:mm:ss
   seconds: "{0} secondes"
-  hour: "{0} hour"
+  hour: "{0} heure"
   scheduled-at: scheduled at {0}
-  after: after
-  day: "{0} day"
+  after: après
+  day: "{0} jour"
   recent: recent
-  between: between
-  hours: "{0} hours"
+  between: entre
+  hours: "{0} heures"
   months: "{0} months"
   longtimeago: long time ago
   between-format: between {0} and {1}
@@ -441,7 +443,7 @@ command:
     unban: <yellow>Débannir un joueur de la boutique
     transfer: <yellow>Transférer TOUS les shops d'un joueur vers un autre
     transferall: <yellow>Transférer TOUS les shops d'un joueur vers un autre
-    transferownership: <yellow>Transferer the shop que vous regardez à quelqu'un d'autre
+    transferownership: <yellow>Transferer le shop que vous regardez à quelqu'un d'autre
     size: <yellow>Changez par quantité en vrac d'une boutique
     supercreate: <yellow>Créer une boutique en contournant tous les contrôles de protection
     taxaccount: <yellow>Définir le compte de taxe que la boutique utilise
@@ -513,21 +515,21 @@ permission:
   table: <gold><b>{0}</b>:</gold> <gray>{1}</gray>
   item:
     purchase: <yellow>Permission qui autorise les utilisateurs qui l'ont à acheter la boutique. (y compris l'achat et la vente)
-    show-information: <yellow>Permission permettant aux utilisateurs qui la possèdent de voir les informations du shop. (ouvrir le panneau d'information de la boutique)
-    preview-shop: <yellow>Permission permettant aux utilisateurs qui la possèdent de prévisualiser le shop. (aperçu de l'objet)
+    show-information: <yellow>Permet aux utilisateurs ayant cette permission de voir les informations du shop. (ouvrir le panneau d'information de la boutique)
+    preview-shop: <yellow>Permet aux utilisateurs ayant cette permission de prévisualiser le shop. (aperçu de l'objet)
     search: <yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)
-    delete: <yellow>Permission permettant aux utilisateurs qui la possèdent de supprimer le shop.
+    delete: <yellow>Permet aux utilisateurs ayant cette permission de supprimer le shop.
     receive-alert: <yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade).
-    access-inventory: <yellow>Permission to allow users who have this to access the shop inventory.
-    ownership-transfer: <yellow>Permission to allow users who have this to transfer the shop ownership.
+    access-inventory: <yellow>Permet aux utilisateurs ayant cette permission de d'accéder à l'inventaire du shop.
+    ownership-transfer: <yellow>Permet aux utilisateurs ayant cette permission de transférer la propriété du shop.
     management-permission: <yellow>Permission to allow users who have this to manage the groups permissions and edit user's group.
-    toggle-display: <yellow>Permission to allow users who have this to toggle the shop display item.
+    toggle-display: <yellow>Permet aux utilisateurs ayant cette permission d'afficher ou non l'item du shop.
     set-shoptype: <yellow>Permission to allow users who have this to set the shop type (switch buying or selling).
-    set-price: <yellow>Permission to allow users who have this to set the shop price.
-    set-item: <yellow>Permission to allow users who have this to set the shop item.
-    set-stack-amount: <yellow>Permission to allow users who have this to set the shop stack amount.
-    set-currency: <yellow>Permission to allow users who have this to set the shop currency.
-    set-name: <yellow>Permission to allow users who have this to set the shop name.
+    set-price: <yellow>Permet aux utilisateurs ayant cette permission de configurer le prix du shop.
+    set-item: <yellow>Permet aux utilisateurs ayant cette permission de configurer l'article du shop.
+    set-stack-amount: <yellow>Permet aux utilisateurs ayant cette permission de configurer la quantité d’objets par stack du shop.
+    set-currency: <yellow>Permet aux utilisateurs ayant cette permission de configurer monnaie du shop.
+    set-name: <yellow>Permet aux utilisateurs ayant cette permission de configurer le nom du shop.
     set-sign-type: <yellow>Change the sign material that attached on the shop.
     view-purchase-logs: <yellow>Permission to view shop purchase logs.
   group:
@@ -563,10 +565,10 @@ lookup-item-name-regex: '<red>The name must match this regex: <aqua>{0}</aqua>.'
 lookup-item-test-not-found: '<gold>Test: <yellow>The item in your hand not registered in lookup table.'
 lookup-item-test-found: '<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table.'
 lookup-item-removed: <green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table.
-internal-error: <red>An internal error occurred, please contact the server administrator.
-argument-cannot-be: <red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>.
+internal-error: <red>Une erreur interne s'est produite, veuillez contacter l'administrateur du serveur.
+argument-cannot-be: <red>L'argument <aqua>{0}</aqua> ne peut pas être <yellow>{1}</yellow>.
 argument-must-between: <red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>
-invalid-percentage: <red>Percentage invalid, you must add '%' after the number of percentage.
+invalid-percentage: <red>Pourcentage invalide, vous devez ajouter '%' après le nombre de pourcentages.
 display-fallback: |-
   <red>Due to an internal failure, a fallback message is being displayed.
   The value of this item may not be localized or processed correctly.
@@ -654,7 +656,7 @@ database:
   trim-start: <green>Database trim started, please wait...
   trim-exception: <red>Database trim failed, an exception raised during database trimming, check the server console.
   generated-at: '<yellow>Generated at: <gold>{0}</gold>'
-  purge-date: <red>You must given a date.
+  purge-date: <red>Vous devez indiquer une date.
   purge-warning: <yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`
   purge-task-created: <green>Task created! Database are silent purging history records in background.
   purge-done-with-line: <green>Purge task completed, total <gold>{0}</gold> lines purged from database.
@@ -691,7 +693,7 @@ transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer reques
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
-transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-self: <red>Vous ne pouvez pas transférer vos boutiques à vous-même.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to 100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
 benefit-removed: <red>Target player has been removed from shop benefits.
@@ -727,7 +729,7 @@ addon:
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
     target-shop-not-in-town-region: <red>The target shop is not in the town.
-    target-shop-not-in-nation-region: <red>The target shop is not in the nation.
+    target-shop-not-in-nation-region: .
     item-not-allowed: <red>This shop's item are not allowed used by town/nation shop, pick another one!
     operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
     plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
@@ -745,6 +747,10 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -819,6 +825,7 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
+               {
                {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
@@ -1423,24 +1430,24 @@ addon:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Nom: {0}
+      Propriétaire : {1}
+      Article : {2}
+      Prix : {3} pour x{4} article(s)
+      Type : {5}
+      Illimité : {6}
+      Emplacement : {1}{7}
   bluemap:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Nom: {0}
+      Propriétaire : {1}
+      Article : {2}
+      Prix : {3} pour x{4} article(s)
+      Type : {5}
+      Illimité : {6}
+      Emplacement : {1}{7}
   chestprotect:
     protection-exists: <red>This region already protected by ChestProtect and you don't have permission to create shops at here.
     shops-exsts: <red>The region that you want to protect contains other player's shops and you don't have permission to access them.
@@ -1536,81 +1543,170 @@ price-suggest: "<green>Based on data from <aqua>{0}</aqua> stores, the highest p
 price-suggest-multi: "<green>Suggestion for {0} type.</green>{1}"
 suggest-wait: "<green>Please wait... Calculating recommend price."
 gui:
-  shared:
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
-    previous-menu: "<white>Previous Menu</white>"
-  player:
-    select:
-      - "<yellow>Click to select this player.</yellow>"
-  staff:
-    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
-    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
-    add-staff: "<green>Add Staff Member</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>Right click to transfer ownership</yellow>"
-        - "<yellow>to this staff member.</yellow>"
   trade:
-    title: "Shop Browser"
-    custom:
+    title: "<dark_aqua>Shop</dark_aqua>"
+    info-stock:
+      display: "<yellow>Stock Information</yellow>"
+      lore:
+        - "<gray>Available: <white>{0}</white></gray>"
+    info-price:
+      display: "<gold>Price Information</gold>"
+      lore:
+        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Per: <white>{1} item(s)</white></gray>"
+    info-seller:
+      display: "<aqua>Seller Information</aqua>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+    custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
-      lore-buy:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to buy.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>Stock: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to sell.</white>"
-        - "<yellow>Click to input custom quantity.</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Buy {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
+    quantity-button:
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
-        - "<white>Total: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Shop Browser"
-    info:
-      - "<green>Owner: </green><yellow>{0}</yellow>"
-      - "<green>Location: </green><yellow>{1}</yellow>"
-      - "<green>Type: </green><yellow>{2}</yellow>"
-      - "<green>Price: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<yellow>{0}</yellow>"
   keeper:
-    title: "Shop Keeper"
-    change-icon:
+    title: "<dark_aqua>Shop Management</dark_aqua>"
+    change-price:
       display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
       lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
-        - "<white>Current Price:</white> <yellow>{0}</yellow>"
-    mode-icon:
+        - "<gray>Current price: <white>{0}</white></gray>"
+        - ""
+        - "<yellow>Click to change price</yellow>"
+    mode-toggle:
       display: "<bold><green>Change Mode</green></bold>"
       lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
-    staff-icon:
+        - "<gray>Current: <white>{0}</white></gray>"
+        - "<gray>Click to change to: <white>{1}</white></gray>"
+    inventory:
+      display: "<bold><green>View Inventory</green></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's chest inventory.</gray>"
+    staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
       lore:
-        - "<white>Click to manage your shop's staff.</white>"
-    remove-icon:
+        - "<gray>Click to manage your</gray>"
+        - "<gray>shop's staff members.</gray>"
+    history:
+      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's transaction history.</gray>"
+    remove:
       display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
       lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
+        - "<gray>Click to delete your shop.</gray>"
+        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+  staff:
+    title: "<dark_aqua>Staff Management</dark_aqua>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for players</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    add-staff:
+      display: "<green>Add Staff Member</green>"
+      lore:
+        - "<gray>Click to add a new</gray>"
+        - "<gray>staff member to your shop.</gray>"
+    back:
+      display: "<white>Back to Shop</white>"
+  browse:
+    title: "<dark_aqua>Market Browser</dark_aqua>"
+    shop-item:
+      lore:
+        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>Location: </green><yellow>{1}</yellow>"
+        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Price: </green><yellow>{3}</yellow>"
+        - "<green>Stock: </green><yellow>{4}</yellow>"
+    grouped-item:
+      display: "<yellow>{0}</yellow>"
+      lore-title:
+        - "<gray>Shops: <white>{0}</white></gray>"
+      lore-selling:
+        - "<green>▼ Selling ({0} shops)</green>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+      lore-buying:
+        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+      lore-footer:
+        - "<yellow>Click to view all shops</yellow>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for items</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    sort:
+      display: "<green>Sort: {0}</green>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      price-asc: "Price ↑"
+      price-desc: "Price ↓"
+      stock: "Stock"
+      name: "Name"
+    filter:
+      display: "<aqua>Filter: {0}</aqua>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      all: "All"
+      selling: "Selling"
+      buying: "Buying"
+    stock-filter:
+      display: "<gold>In Stock Only: {0}</gold>"
+      lore:
+        - "<gray>Click to toggle</gray>"
+    back:
+      display: "<white>Back to Market</white>"
+  shared:
+    previous-page:
+      display: "<white><< Previous Page</white>"
+    next-page:
+      display: "<white>Next Page >></white>"
+    page-info:
+      display: "<yellow>Page {0}/{1}</yellow>"
+    back:
+      display: "<white>Back</white>"
+    close:
+      display: "<red>Close</red>"
+  messages:
+    #Keeper menu messages
+    keeper:
+      #Shown when player clicks "Change Price" button
+      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      #Shown when player clicks "Delete Shop" button
+      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+    #Staff menu messages
+    staff:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      #Shown when player left-clicks a staff member to remove them
+      #{0} = staff member name
+      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      #Shown when player right-clicks a staff member to transfer ownership
+      #{0} = staff member name
+      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+    #Trade menu messages
+    trade:
+      #Shown when player clicks "Custom Order" button (buying)
+      #{0} = item amount per purchase
+      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player clicks "Custom Order" button (selling)
+      #{0} = item amount per purchase
+      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player enters invalid quantity (not multiple of item amount)
+      #{0} = item amount per purchase
+      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      #Shown when player enters quantity exceeding stock
+      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+    #Browse menu messages
+    browse:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
     gui-title: "View purchase history"
@@ -1631,23 +1727,32 @@ history:
       - "<white>Tax: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>Store: <yellow>{0}</yellow></white>"
-      - "<white>Purchaser: <yellow>{1}</yellow></white>"
+      - "<white>Buyer: <yellow>{1}</yellow></white>"
       - "<white>Item: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Balance: <yellow>{4}</yellow></white>"
+      - "<white>Amount: <yellow>{4}</yellow></white>"
+      - "<white>Total: <yellow>{5}</yellow></white>"
       - "<white>Tax: <yellow>{5}</yellow></white>"
-      - "<white>Final earning: <yellow>{6}</yellow></white>"
+      - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Please wait, querying...</gray>"
-    previous-page: "<white><< Previous Page</white>"
-    next-page: "<white>Next Page >></white>"
     current-page: "<white>Page {0}</white>"
-    summary-icon-title: "<green>Shop Summary"
-    recent-purchases: "<white>Recent <aqua>{0}</aqua> purchases: <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>Recent <aqua>{0}</aqua> turnover: <yellow>{1}</yellow></white>"
-    total-purchases: "<white>Total purchases: <yellow>{0}</yellow></white>"
-    total-balances: "<white>Total turnover: <yellow>{0}</yellow></white>"
+    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    summary-icon-title: "<yellow>Summary</yellow>"
+    summary-icon-description:
+      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
+      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
+      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
+      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>Total purchases: <yellow>{10}</yellow></white>"
+      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
+      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
+      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
+      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
+      - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} valuable customers</gold>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>No result</white>"
 about:
   text:

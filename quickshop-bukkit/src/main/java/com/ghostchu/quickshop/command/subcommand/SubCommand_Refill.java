@@ -4,7 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.apache.commons.lang3.StringUtils;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,13 +33,13 @@ public class SubCommand_Refill implements CommandHandler<Player> {
       plugin.text().of(sender, "not-looking-at-shop").send();
       return;
     }
-    if(StringUtils.isNumeric(parser.getArgs().get(0))) {
-      add = Integer.parseInt(parser.getArgs().get(0));
+    if(CommonUtil.isNumeric(parser.getArgs().getFirst())) {
+      add = Integer.parseInt(parser.getArgs().getFirst());
     } else {
-      if(parser.getArgs().get(0).equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
+      if(parser.getArgs().getFirst().equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
         add = shop.getRemainingSpace();
       } else {
-        plugin.text().of(sender, "not-a-number", parser.getArgs().get(0)).send();
+        plugin.text().of(sender, "not-a-number", parser.getArgs().getFirst()).send();
         return;
       }
     }

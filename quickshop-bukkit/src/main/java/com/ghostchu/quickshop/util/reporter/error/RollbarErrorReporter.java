@@ -128,7 +128,7 @@ public class RollbarErrorReporter {
                                                     if(Util.isDevMode()) {
                                                       finalThrowable.printStackTrace();
                                                     }
-                                                  } catch(Exception ex) {
+                                                  } catch(final Exception ex) {
                                                     ignoreThrow();
                                                     plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", throwable);
                                                     plugin.logger().warn("An error occurred during error handling, hard break it to prevent StackOverFlowError", ex);
@@ -260,11 +260,11 @@ public class RollbarErrorReporter {
       if(!plugin.getNexusManager().isLatest()) { // We only receive latest reports.
         return false;
       }
-    } catch(Exception exception) {
+    } catch(final Exception exception) {
       Log.debug("Cannot to check reportable: " + exception.getMessage());
       return false;
     }
-    if(!GameVersion.get(plugin.getPlatform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
+    if(!GameVersion.get(plugin.platform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
       // version.
       return false;
     }
@@ -319,7 +319,7 @@ public class RollbarErrorReporter {
     Bukkit.getLogger().setFilter(serverExceptionFilter.preFilter);
     try {
       rollbar.close(false);
-    } catch(Exception ignored) {
+    } catch(final Exception ignored) {
     }
   }
 

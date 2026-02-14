@@ -76,6 +76,8 @@ public class BlockListener extends AbstractProtectionListener {
             return;
           }
           plugin.text().of(p, "break-shop-use-supertool").send();
+          plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(p), "BlockBreak(player)", shop.saveToInfoStorage())); 
+          plugin.getShopManager().deleteShop(shop);
           return;
         }
         e.setCancelled(true);
@@ -154,7 +156,7 @@ public class BlockListener extends AbstractProtectionListener {
       return;
     }
 
-    if(event.getInitiator().getHolder() instanceof final Player player) {
+    if(event.getInitiator().getHolder(false) instanceof final Player player) {
       if(!QuickShop.inShop.contains(player.getUniqueId())) {
         return;
       }

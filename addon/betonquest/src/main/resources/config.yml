@@ -1,0 +1,17 @@
+#Is a quest required to create shops?
+quest-required-create: true
+
+#The name of the quest required to create shops
+quest-create-name: "quest-create-shop"
+
+#Is a quest required to buy items from shops?
+quest-required-buy: true
+
+#The name of the quest required to buy items from shops
+quest-buy-name: "quest-buy-shop"
+
+#Is a quest required to sell items to shops?
+quest-required-sell: true
+
+#The name of the quest required to sell items to shops
+quest-sell-name: "quest-sell-shop"

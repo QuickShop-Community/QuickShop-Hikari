@@ -55,6 +55,7 @@ import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentBuy;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentEmpty;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentFreeze;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentHistory;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentInventory;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentPreview;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentRemove;
 import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentSell;
@@ -239,6 +240,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .hidden(true)
                     .permission("quickshop.empty")
                     .executor(new SubCommand_SilentEmpty(plugin))
+                    .build());
+    registerCmd(
+            CommandContainer.builder()
+                    .prefix("silentinventory")
+                    .hidden(true)
+                    .permission("quickshop.inventory")
+                    .executor(new SubCommand_SilentInventory(plugin))
                     .build());
     registerCmd(
             CommandContainer.builder()
@@ -670,12 +678,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     cmds.removeIf(commandContainer->commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
     cmds.removeIf(container::equals);
 
-    final String oldPrefix = container.getPrefix();
-    final String newPrefix = plugin.getCommandPrefix(oldPrefix);
+    final String newPrefix = plugin.getCommandPrefix(container.getPrefix());
     if(newPrefix != null && !newPrefix.isEmpty()) {
 
       container.setPrefix(newPrefix);
-      container.setDescription((locale)->plugin.text().of("command.description." + oldPrefix).forLocale());
+      if(container.getDescription() == null) {
+        container.setDescription((locale)->plugin.text().of("command.description." + newPrefix).forLocale());
+      }
     }
     cmds.add(container);
     cmds.sort(Comparator.comparing(CommandContainer::getPrefix));

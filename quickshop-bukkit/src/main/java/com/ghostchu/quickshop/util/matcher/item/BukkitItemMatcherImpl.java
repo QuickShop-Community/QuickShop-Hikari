@@ -82,10 +82,10 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
     tester = tester.clone();
     tester.setAmount(1);
 
-    final String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
+    final String shopIdOrigin = plugin.platform().getItemShopId(original);
     if(shopIdOrigin != null) {
 
-      final String shopIdTester = plugin.getPlatform().getItemShopId(tester);
+      final String shopIdTester = plugin.platform().getItemShopId(tester);
       if(shopIdOrigin.equals(shopIdTester)) {
 
         return true;

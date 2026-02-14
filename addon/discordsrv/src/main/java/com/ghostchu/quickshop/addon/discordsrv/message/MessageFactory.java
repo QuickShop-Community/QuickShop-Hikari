@@ -79,7 +79,7 @@ public class MessageFactory {
       // world, x, y, z
       map.put("shop.display-name", String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()));
     }
-    map.put("shop.type", shop.getShopType().name());
+    map.put("shop.type", shop.shopType().identifier());
     return map;
   }
 

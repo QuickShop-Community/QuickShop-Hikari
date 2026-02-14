@@ -65,8 +65,25 @@ public interface PacketHandler<T> {
    */
   default Optional<PacketFactory<?>> factory(final String version) {
 
+    if(!factories().containsKey(version)) {
+      return Optional.ofNullable(factories().get("1.21.11"));
+    }
+
     return Optional.ofNullable(factories().get(version));
   }
 
   T internal();
+
+  /**
+   * Filters enchantments on an item stack based on packet handler requirements.
+   * Implementations can override this to remove unsupported enchantments or apply transformations.
+   *
+   * @param itemStack The item stack to filter.
+   *
+   * @return The filtered item stack with compatible enchantments only.
+   */
+  default org.bukkit.inventory.ItemStack filterEnchantments(final org.bukkit.inventory.ItemStack itemStack) {
+
+    return itemStack;
+  }
 }

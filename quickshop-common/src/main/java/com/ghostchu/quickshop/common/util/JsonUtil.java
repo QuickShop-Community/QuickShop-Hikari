@@ -36,13 +36,6 @@ public final class JsonUtil {
           .create();
 
   @NotNull
-  @Deprecated
-  public static Gson get() {
-
-    return standard();
-  }
-
-  @NotNull
   public static Gson standard() {
 
     return STANDARD_GSON;
@@ -51,13 +44,6 @@ public final class JsonUtil {
   public static Gson getGson() {
 
     return STANDARD_GSON;
-  }
-
-  @NotNull
-  @Deprecated
-  public static Gson getPrettyPrinting() {
-
-    return prettyPrinting();
   }
 
   @NotNull

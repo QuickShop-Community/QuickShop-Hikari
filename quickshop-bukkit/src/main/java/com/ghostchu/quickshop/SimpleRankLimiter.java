@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop;
 
 import com.ghostchu.quickshop.api.RankLimiter;
+import com.ghostchu.quickshop.api.event.user.UserLimitCalculateEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
@@ -8,7 +9,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -67,18 +67,11 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem 
         count = entry.getValue();
       }
     }
-    return count;
-  }
 
-  @SuppressWarnings("removal")
-  @Override
-  @Deprecated(forRemoval = true)
-  @ApiStatus.Internal
-  @ApiStatus.Obsolete
-  @NotNull
-  public Map<String, Integer> getLimits() {
+    final UserLimitCalculateEvent event = new UserLimitCalculateEvent(p, count);
+    event.callEvent();
 
-    return limits;
+    return event.limit();
   }
 
   @Override

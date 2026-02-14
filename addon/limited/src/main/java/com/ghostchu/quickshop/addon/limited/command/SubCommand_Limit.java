@@ -37,8 +37,12 @@ public class SubCommand_Limit implements CommandHandler<Player> {
       quickshop.text().of(sender, "not-looking-at-shop").send();
       return;
     }
+    if (!sender.getUniqueId().equals(shop.getOwner().getUniqueId())){
+      quickshop.text().of(sender, "not-managed-shop").send();
+      return;
+    }
     final ConfigurationSection manager = shop.getExtra(Main.instance);
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "set" -> {
         try {
           final int limitAmount = Integer.parseInt(parser.getArgs().get(1));

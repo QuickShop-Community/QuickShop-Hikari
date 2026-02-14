@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.10</version>
+        <version>6.2.0.11</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -55,12 +55,26 @@
             <id>jsinco-repo</id>
             <url>https://repo.jsinco.dev/releases</url>
         </repository>
+        <repository>
+            <id>crazycrew-releases</id>
+            <name>CrazyCrew Repository</name>
+            <url>https://repo.crazycrew.us/releases</url>
+        </repository>
+        <repository>
+            <id>SilkSpawners-Repo</id>
+            <url>https://repo.dustplanet.de/artifactory/libs-release-local/</url>
+        </repository>
+        <repository>
+            <id>nightexpress-releases</id>
+            <url>https://repo.nightexpressdev.com/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>${depend.paper}</version>
         </dependency>
         <dependency>
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -78,6 +92,47 @@
             <groupId>com.dre.brewery</groupId>
             <artifactId>BreweryX</artifactId>
             <version>3.4.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>su.nightexpress.excellentcrates</groupId>
+            <artifactId>ExcellentCrates</artifactId>
+            <version>6.5.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.badbones69.crazycrates</groupId>
+            <artifactId>crazycrates-paper-api</artifactId>
+            <version>1.21.7-1e861ff</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>dev.triumphteam</groupId>
+                    <artifactId>triumph-cmd-bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>CrazyCrates</groupId>
+                    <artifactId>crazycrates-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.nightcore</groupId>
+            <artifactId>main</artifactId>
+            <version>2.10.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.dustplanet</groupId>
+            <artifactId>silkspawners</artifactId>
+            <version>8.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.nexomc</groupId>

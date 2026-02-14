@@ -19,13 +19,16 @@ package com.ghostchu.quickshop.menu.shared;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.config.GuiConfig;
 import net.kyori.adventure.text.Component;
 import net.tnemc.menu.core.Page;
 import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -99,5 +102,114 @@ public class QuickShopPage extends Page {
   public static List<Component> getList(final UUID player, final String route, @Nullable final Object... args) {
 
     return QuickShop.getInstance().text().ofList(player, route, args).forLocale();
+  }
+
+  /**
+   * Gets a chat message from gui.yml and formats it as a legacy string. This is used for chat
+   * messages sent to players from GUI interactions.
+   *
+   * @param path The path under "gui.messages" section in messages.yml (e.g., "keeper.confirm-delete")
+   * @param args Arguments to replace {0}, {1}, etc. placeholders
+   *
+   * @return The formatted legacy string
+   */
+  public static String guiMessage(final String path, @Nullable final Object... args) {
+
+    return QuickShop.getInstance().text().of("gui.messages." + path, args).legacy();
+  }
+
+  /**
+   * Gets an icon's display name from gui.yml as a Component. Parses MiniMessage formatting.
+   *
+   * @param config      The icon config
+   * @param defaultName The default name if not configured
+   *
+   * @return The parsed Component
+   */
+  @NotNull
+  public static Component getConfigDisplay(final UUID player, @Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName) {
+
+    return getConfigDisplay(player, config, defaultName, null);
+  }
+
+  /**
+   * Gets an icon's display name from gui.yml as a Component with placeholder replacement. Parses
+   * MiniMessage formatting and replaces {0}, {1}, etc. placeholders.
+   *
+   * @param config      The icon config
+   * @param defaultName The default name if not configured
+   * @param args        Arguments to replace placeholders
+   *
+   * @return The parsed Component
+   */
+  @NotNull
+  public static Component getConfigDisplay(final UUID player, @Nullable final GuiConfig.IconConfig config, @NotNull final String defaultName, @Nullable final Object... args) {
+
+    //check if this should be a lang-file lookup
+    final String name = (config != null && config.getName() != null)? config.getName() : defaultName;
+
+    if(config != null && name.startsWith("lang:")) {
+      return get(player, name.replaceAll("lang:", ""), args);
+    }
+
+    return QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(name, args));
+  }
+
+  /**
+   * Gets an icon's lore from gui.yml as a list of Components. Parses MiniMessage formatting and
+   * replaces {0}, {1}, etc. placeholders.
+   *
+   * @param config The icon config
+   * @param args   Arguments to replace placeholders
+   *
+   * @return The parsed list of Components
+   */
+  @NotNull
+  public static List<Component> getConfigLore(final UUID player, @Nullable final GuiConfig.IconConfig config, @Nullable final Object... args) {
+
+    final List<Component> result = new ArrayList<>();
+    if(config == null) {
+      return result;
+    }
+
+    for(final String line : config.getLore()) {
+
+      //check if this should be a lang-file lookup
+      if(line.contains("lang:")) {
+
+        result.addAll(getList(player, line.replaceAll("lang:", ""), args));
+        continue;
+      }
+      // Replace {0}, {1}, etc. with args
+      result.add(QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(line, args)));
+    }
+    return result;
+  }
+
+  /**
+   * Replaces placeholders in the given message with the provided arguments.
+   * Placeholders in the message should be in the format {0}, {1}, etc., where
+   * the numeric index corresponds to the position of the argument in the args array.
+   * If an argument is null, the placeholder will be replaced with an empty string.
+   *
+   * @param message The message containing placeholders to be replaced.
+   * @param args    The arguments to replace the placeholders. If null, no replacement is performed.
+   *
+   * @return The message with placeholders replaced by the corresponding arguments.
+   *         If args is null, the original message is returned.
+   */
+  public static String replaceArguments(final String message, final Object... args) {
+
+    if(args == null) {
+      return message;
+    }
+
+    String workingStr = message;
+    for(int i = 0; i < args.length; i++) {
+
+      final Object arg = args[i];
+      workingStr = workingStr.replace("{" + i + "}", (arg != null)? arg.toString() : "");
+    }
+    return workingStr;
   }
 }

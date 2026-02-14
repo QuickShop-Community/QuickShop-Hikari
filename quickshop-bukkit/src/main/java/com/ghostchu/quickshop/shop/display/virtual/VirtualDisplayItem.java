@@ -35,6 +35,7 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,7 +79,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
     if(getDisplayLocation() != null) {
 
       this.spawnPacket = packetFactory.createSpawnPacket(entityID, getDisplayLocation());
-      this.metaPacket = packetFactory.createMetaDataPacket(entityID, getOriginalItemStack().clone());
+      this.metaPacket = packetFactory.createMetaDataPacket(entityID, checkEnchants(getOriginalItemStack().clone()));
       this.velocityPacket = packetFactory.createVelocityPacket(entityID);
       this.destroyPacket = packetFactory.createDestroyPacket(entityID);
 
@@ -90,6 +91,19 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
     }
 
     load();
+  }
+
+  public ItemStack checkEnchants(final ItemStack itemStack) {
+
+    final ItemStack cloned = itemStack.asOne();
+    if(cloned.getEnchantments().isEmpty()) return cloned;
+
+    if(!manager.allowEnchants()) {
+
+      cloned.getEnchantments().clear();
+      return cloned;
+    }
+    return (manager.packetHandler() != null)? manager.packetHandler().filterEnchantments(cloned) : cloned;
   }
 
   @Override

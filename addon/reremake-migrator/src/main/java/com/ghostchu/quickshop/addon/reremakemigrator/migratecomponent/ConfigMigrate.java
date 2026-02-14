@@ -77,7 +77,7 @@ public class ConfigMigrate extends AbstractMigrateComponent {
     if(!configFile.exists()) {
       try {
         Files.copy(getHikariJavaPlugin().getResource("price-restriction.yml"), configFile.toPath());
-      } catch(IOException e) {
+      } catch(final IOException e) {
         getHikari().logger().warn("Failed to copy price-restriction.yml.yml to plugin folder!", e);
       }
     }
@@ -106,13 +106,13 @@ public class ConfigMigrate extends AbstractMigrateComponent {
         configuration.set("rules." + name + ".currency", List.of("*"));
         configuration.set("rules." + name + ".min", min);
         configuration.set("rules." + name + ".max", max);
-      } catch(Exception e) {
+      } catch(final Exception e) {
         getHikari().logger().warn("Failed to migrate rule {}", record, e);
       }
     }
     try {
       configuration.save(configFile);
-    } catch(IOException e) {
+    } catch(final IOException e) {
       getHikari().logger().warn("Failed to save the price-restriction.yml", e);
     }
   }

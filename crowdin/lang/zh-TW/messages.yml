@@ -5,7 +5,7 @@ disabled-in-this-world: <red>已停用此世界的 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
-_comment: 你好翻譯者！假若你正在從 Github 或其它代管平台編輯，你應此前往 https://crowdin.com/project/qs-hikari 進行翻譯。
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>已變更此無限商店擁有者為 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
@@ -373,6 +373,8 @@ controlpanel:
   remove-hover: <yellow>點擊移除此商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
   refill: '<green>補貨：重新填充商品 <yellow>[<bold><light_purple>好</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>啟用 / 停用商店鎖保護。
   item-hover: <yellow>點擊變更商店物品
@@ -761,6 +763,10 @@ addon:
   lands:
     world-not-enabled: <red>你不能在此世界中建立或購買商店。
     creation-denied: <red>你沒有在此領土建立商店的權限。
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>您無權在此區域建立商店。
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -802,8 +808,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "此玩家 %%purchase.name%% 出售 %%purchase.amount%% 個 %%shop.item.name%% 到你的商店。",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -816,37 +822,38 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord 訊息通知",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "商店",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "玩家",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "物品",
+                 "name": "Item",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "數量",
+               {
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "你已支付",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "稅",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -1447,7 +1454,7 @@ addon:
       無限商店：{6}
       座標：{7}
   bluemap:
-    markerset-title: QuickShop-Hikari 商店
+    markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} x{4} @ {5}'
     marker-description: |
       名稱：{0}
@@ -1552,81 +1559,170 @@ price-suggest: "<green>基於來自 <aqua>{0}</aqua> 商店的資料，價格最
 price-suggest-multi: ""
 suggest-wait: "<green>請稍候……正在計算建議價格。"
 gui:
-  shared:
-    previous-page: "<white><<上一頁</white>"
-    next-page: "<white>下一頁 >></white>"
-    previous-menu: "<white>上一個選單</white>"
-  player:
-    select:
-      - "<yellow>Click to select this player.</yellow>"
-  staff:
-    confirm-remove: "<red>Type 'confirm' to confirm the removal of '{0}' as a staff member.</red>"
-    confirm-transfer: "<red>Type 'confirm' to confirm the transfer of this shop to {0}.</red>"
-    add-staff: "<green>Add Staff Member</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Left click to remove staff member.</yellow>"
-        - "<yellow>右鍵單擊以轉移所有權</yellow>"
-        - "<yellow>to this staff member.</yellow>"
   trade:
-    title: "瀏覽商店"
-    custom:
+    title: "<dark_aqua>Shop</dark_aqua>"
+    info-stock:
+      display: "<yellow>Stock Information</yellow>"
+      lore:
+        - "<gray>Available: <white>{0}</white></gray>"
+    info-price:
+      display: "<gold>Price Information</gold>"
+      lore:
+        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Per: <white>{1} item(s)</white></gray>"
+    info-seller:
+      display: "<aqua>Seller Information</aqua>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+    custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
-      lore-buy:
-        - "<white>選擇數量</white>"
-        - "<white>you would like to buy.</white>"
-        - "<yellow>點擊輸入自訂數量</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-        - "<white>庫存: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Choose the quantity</white>"
-        - "<white>you would like to sell.</white>"
-        - "<yellow>點擊輸入自訂數量</yellow>"
-        - "<yellow>Must be a multiple of <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Enter a quantity you would like to buy, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      enter-sell: "<yellow>Enter a quantity you would like to sell, must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      multiple: "<yellow>Invalid Quantity Entered! Must be a multiple of {0}. Enter 0 to escape.</yellow>"
-      stock: "<yellow>Invalid Quantity Entered! Not enough stock in store. Enter 0 to escape.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Buy {0}</green></bold>"
-      display-sell: "<bold><green>Sell {0}</green></bold>"
+    quantity-button:
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> each </white><bold><green>{1}</green></bold>"
-        - "<white>Total: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Shop Browser"
-    info:
-      - "<green>Owner: </green><yellow>{0}</yellow>"
-      - "<green>Location: </green><yellow>{1}</yellow>"
-      - "<green>Type: </green><yellow>{2}</yellow>"
-      - "<green>Price: </green><yellow>{3}</yellow>"
-      - "<green>Stock: </green><yellow>{4}</yellow>"
+        - "<yellow>{0}</yellow>"
   keeper:
-    title: "Shop Keeper"
-    change-icon:
+    title: "<dark_aqua>Shop Management</dark_aqua>"
+    change-price:
       display: "<bold><green>Change Price</green></bold>"
-      enter: "<yellow>Enter a new price in the chat.</yellow>"
       lore:
-        - "<white>Click to change the price of each item in your shop.</white>"
-        - "<white>Current Price:</white> <yellow>{0}</yellow>"
-    mode-icon:
+        - "<gray>Current price: <white>{0}</white></gray>"
+        - ""
+        - "<yellow>Click to change price</yellow>"
+    mode-toggle:
       display: "<bold><green>Change Mode</green></bold>"
       lore:
-        - "<white>Click to toggle between buying/selling mode.</white>"
-        - "<white>Current Mode: </white><red>{0}</red>"
-        - "<yellow>Click to toggle to </yellow><red>{1}</red>"
-    staff-icon:
+        - "<gray>Current: <white>{0}</white></gray>"
+        - "<gray>Click to change to: <white>{1}</white></gray>"
+    inventory:
+      display: "<bold><green>View Inventory</green></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's chest inventory.</gray>"
+    staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
-      no-permission: "<bold><red>Not Allowed to Manage Staff</red></bold>"
       lore:
-        - "<white>Click to manage your shop's staff.</white>"
-    remove-icon:
+        - "<gray>Click to manage your</gray>"
+        - "<gray>shop's staff members.</gray>"
+    history:
+      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's transaction history.</gray>"
+    remove:
       display: "<bold><red>Delete Shop</red></bold>"
-      confirm: "<yellow>Type 'confirm' in chat to confirm removal. Or enter anything else to stop deletion.</yellow>"
       lore:
-        - "<white>Click to delete your shop.</white>"
-        - "<grey>You can also break the sign/chest.</grey>"
+        - "<gray>Click to delete your shop.</gray>"
+        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+  staff:
+    title: "<dark_aqua>Staff Management</dark_aqua>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for players</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    add-staff:
+      display: "<green>Add Staff Member</green>"
+      lore:
+        - "<gray>Click to add a new</gray>"
+        - "<gray>staff member to your shop.</gray>"
+    back:
+      display: "<white>Back to Shop</white>"
+  browse:
+    title: "<dark_aqua>Market Browser</dark_aqua>"
+    shop-item:
+      lore:
+        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>Location: </green><yellow>{1}</yellow>"
+        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Price: </green><yellow>{3}</yellow>"
+        - "<green>Stock: </green><yellow>{4}</yellow>"
+    grouped-item:
+      display: "<yellow>{0}</yellow>"
+      lore-title:
+        - "<gray>Shops: <white>{0}</white></gray>"
+      lore-selling:
+        - "<green>▼ Selling ({0} shops)</green>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+      lore-buying:
+        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+      lore-footer:
+        - "<yellow>Click to view all shops</yellow>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for items</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    sort:
+      display: "<green>Sort: {0}</green>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      price-asc: "Price ↑"
+      price-desc: "Price ↓"
+      stock: "Stock"
+      name: "Name"
+    filter:
+      display: "<aqua>Filter: {0}</aqua>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      all: "All"
+      selling: "Selling"
+      buying: "Buying"
+    stock-filter:
+      display: "<gold>In Stock Only: {0}</gold>"
+      lore:
+        - "<gray>Click to toggle</gray>"
+    back:
+      display: "<white>Back to Market</white>"
+  shared:
+    previous-page:
+      display: "<white><< Previous Page</white>"
+    next-page:
+      display: "<white>Next Page >></white>"
+    page-info:
+      display: "<yellow>Page {0}/{1}</yellow>"
+    back:
+      display: "<white>Back</white>"
+    close:
+      display: "<red>Close</red>"
+  messages:
+    #Keeper menu messages
+    keeper:
+      #Shown when player clicks "Change Price" button
+      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      #Shown when player clicks "Delete Shop" button
+      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+    #Staff menu messages
+    staff:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      #Shown when player left-clicks a staff member to remove them
+      #{0} = staff member name
+      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      #Shown when player right-clicks a staff member to transfer ownership
+      #{0} = staff member name
+      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+    #Trade menu messages
+    trade:
+      #Shown when player clicks "Custom Order" button (buying)
+      #{0} = item amount per purchase
+      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player clicks "Custom Order" button (selling)
+      #{0} = item amount per purchase
+      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player enters invalid quantity (not multiple of item amount)
+      #{0} = item amount per purchase
+      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      #Shown when player enters quantity exceeding stock
+      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+    #Browse menu messages
+    browse:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
     gui-title: "查看購買歷史記錄"
@@ -1647,23 +1743,32 @@ history:
       - "<white>税金：<yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>商店：<yellow>{0}</yellow></white>"
-      - "<white>買家：<yellow>{1}</yellow></white>"
+      - "<white>Buyer: <yellow>{1}</yellow></white>"
       - "<white>物品：<yellow>{2}<aqua>{3}</aqua></yellow></white>"
-      - "<white>花費：<yellow>{4}</yellow></white>"
-      - "<white>税：<yellow>{5}</yellow></white>"
-      - "<white>Final earning: <yellow>{6}</yellow></white>"
+      - "<white>Amount: <yellow>{4}</yellow></white>"
+      - "<white>Total: <yellow>{5}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>請稍候，正在查詢……</gray>"
-    previous-page: "<white>上一頁</white>"
-    next-page: "<white>下一頁</white>"
     current-page: "<white>第{0}頁</white>"
-    summary-icon-title: "<green>商店摘要"
-    recent-purchases: "<white>最近 <aqua>{0}</aqua> 購買：<yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>最近 <aqua>{0}</aqua> 營業額：<yellow>{1}</yellow></white>"
-    total-purchases: "<white>總購買：<yellow>{0}</yellow></white>"
-    total-balances: "<white>總營業額：<yellow>{0}</yellow></white>"
+    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    summary-icon-title: "<yellow>Summary</yellow>"
+    summary-icon-description:
+      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
+      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
+      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
+      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>Total purchases: <yellow>{10}</yellow></white>"
+      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
+      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
+      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
+      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
+      - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>總交易者：<yellow>{0}</yellow></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>消費次數排行榜TOP{0}</gold>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>暫無結果</white>"
 about:
   text:

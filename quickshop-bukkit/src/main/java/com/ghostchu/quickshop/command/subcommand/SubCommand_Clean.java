@@ -28,7 +28,6 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
   public void onCommand(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     plugin.text().of(sender, "command.cleaning").send();
-
     final List<Shop> pendingRemoval = new ArrayList<>();
     int i = 0;
 
@@ -41,19 +40,20 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
                   shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
           // Can be deleted safely.
           i++;
-        }
-        if(plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
+        } else if(plugin.getShopItemBlackList().isBlacklisted(shop.getItem())) {
           pendingRemoval.add(shop);
           i++;
         }
-      } catch(IllegalStateException e) {
-        pendingRemoval.add(shop); // The shop is not there anymore, remove it
+      } catch(final IllegalStateException e) {
+        pendingRemoval.add(shop);
       }
     }
 
     for(final Shop shop : pendingRemoval) {
-      plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop clean", shop.saveToInfoStorage()));
-      plugin.getShopManager().deleteShop(shop);
+      Util.regionThread(shop.getLocation(), () -> {
+        plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop clean", shop.saveToInfoStorage()));
+        plugin.getShopManager().deleteShop(shop);
+      });
     }
 
     MsgUtil.clean();

@@ -95,8 +95,8 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);
     plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
-    this.crowdinHost = PackageUtil.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top");
-    if(PackageUtil.parsePackageProperly("enableCrowdinOTA").asBoolean(true)) {
+    this.crowdinHost = plugin.getConfig().getString("crowdin-host", "https://qshikari.b-cdn.net");
+    if(plugin.getConfig().getBoolean("use-crowdin-ota", true)) {
       try {
         plugin.logger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
         this.crowdinOTA = new CrowdinOTA(crowdinHost, new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
@@ -739,7 +739,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
   }
 
   @Override
-  public com.ghostchu.quickshop.api.localization.text.@NotNull TextList ofList(@Nullable final QUser sender, @NotNull final String path, @Nullable final Object... args) {
+  public @NotNull com.ghostchu.quickshop.api.localization.text.TextList ofList(@Nullable final QUser sender, @NotNull final String path, @Nullable final Object... args) {
 
     return new TextList(this, sender, languageFilesManager.getDistributions(), path, tagResolvers, convert(args));
   }
@@ -833,7 +833,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
           return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
         }
-        final List<Component> components = str.stream().map(s->manager.plugin.getPlatform().miniMessage().deserialize(s, tagResolvers)).toList();
+        final List<Component> components = str.stream().map(s->manager.plugin.platform().miniMessage().deserialize(s, tagResolvers)).toList();
         return postProcess(components);
       }
     }
@@ -994,7 +994,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
           }
           return LegacyComponentSerializer.legacySection().deserialize(path);
         }
-        final Component component = manager.plugin.getPlatform().miniMessage().deserialize(str, tagResolvers);
+        final Component component = manager.plugin.platform().miniMessage().deserialize(str, tagResolvers);
         return postProcess(component);
       }
     }

@@ -7,13 +7,14 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.economy.transaction.QSEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
       return;
     }
 
-    String shopName = parser.getArgs().get(0);
+    String shopName = parser.getArgs().getFirst();
     // Translate the all chat colors
     shopName = ChatColor.translateAlternateColorCodes('&', shopName);
     // Then strip all of them, Shop name reference is disallow any color
@@ -70,21 +71,20 @@ public class SubCommand_Name implements CommandHandler<Player> {
       return;
     }
 
-    final double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
-    SimpleEconomyTransaction transaction = null;
+    final double fee = plugin.getConfig().getDouble("shop.name-fee", 0.0);
+    QSEconomyTransaction transaction = null;
     if(fee > 0) {
       if(!plugin.perm().hasPermission(sender, "quickshop.bypass.namefee")) {
-        transaction = SimpleEconomyTransaction.builder()
-                .world(shop.getLocation().getWorld())
+        transaction = QSEconomyTransaction.builder()
+                .world(shop.getLocation().getWorld().getName())
                 .from(QUserImpl.createFullFilled(sender))
                 .to(shop.getTaxAccount())
                 .currency(plugin.getCurrency())
-                .taxAccount(shop.getTaxAccount())
-                .taxModifier(0.0d)
-                .core(plugin.getEconomy())
-                .amount(fee)
+                .taxer(shop.getTaxAccount())
+                .tax(BigDecimal.ZERO)
+                .amount(BigDecimal.valueOf(fee))
                 .build();
-        if(!transaction.checkBalance()) {
+        if(!transaction.completable()) {
           plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee, shop.getLocation().getWorld(), plugin.getCurrency())).send();
           return;
         }
@@ -102,10 +102,10 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
     shopName = event.updated();
 
-    if(transaction != null && !transaction.failSafeCommit()) {
+    if(transaction != null && !transaction.safeCommit()) {
 
-      plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();
-      plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
+      plugin.text().of(sender, "economy-transaction-failed", transaction.lastError()).send();
+      plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
       return;
     }
 

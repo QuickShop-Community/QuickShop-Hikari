@@ -1,0 +1,6 @@
+#Should we prevent the creation of a shop or trade with a shop outside claim's area?
+whitelist-mode: false
+#Delete all shops in the claim when that claim was deleted
+delete-shops-in-claim-when-deleted: false
+#Delete all shops in a claim's chunk when that chunk is unclaimed
+delete-shops-in-chunk-when-unclaimed: false

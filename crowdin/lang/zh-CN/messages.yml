@@ -319,12 +319,12 @@ signs:
   status-available: <green>
   item-left: ''
 negative-amount: <red>你输入的数字是负数。
-display-turn-on: <green>成功开启商店悬浮物显示
+display-turn-on: <green>成功启用商店悬浮物显示
 display-turn-off: <green>成功关闭商店悬浮物显示
-display-turn-on-owned: <green>Successfully turned on shop display for all owned shops.
-display-turn-off-owned: <green>Successfully turned off shop display for all owned shops.
-display-turn-on-all: <green>Successfully turned on shop display for all server shops.
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-on-owned: <green>成功启用所有拥有商店的悬浮物显示
+display-turn-off-owned: <green>成功禁用所有拥有商店的悬浮物显示
+display-turn-on-all: <green>成功启用服务器所有商店的悬浮物显示
+display-turn-off-all: <green>成功禁用服务器所有商店的悬浮物显示
 shop-staff-deleted: <green>成功移除 {0} 的商店助手权限
 nearby-shop-header: '<green>匹配附近<aqua>{0}<green>的商店：'
 backup-failed: 无法备份数据库，请查看控制台以获取详细信息。
@@ -372,6 +372,8 @@ controlpanel:
   remove-hover: <yellow>点击来删除商店
   toggledisplay-hover: <yellow>切换商店是否显示悬浮物
   refill: '<green>填充: 重新填充商品 <yellow>[<bold><light_purple>确认</light_purple></bold>]'
+  inventory: '<green>库存： </green><yellow>[<bold><light_purple>预览商店库存</light_purple></bold>]'
+  inventory-hover: <yellow>打开商店库存
   freeze-hover: <yellow>切换商店冻结状态。
   lock-hover: <yellow>启用/禁用商店锁
   item-hover: <yellow>点击以更改商店物品
@@ -457,7 +459,7 @@ command:
     taxaccount: <yellow>设置商店使用的税务账户
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
-    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
+    toggledisplayall: <yellow>切换所有拥有或服务器的所有商店悬浮物
     permission: <yellow>商店权限管理
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
@@ -665,7 +667,7 @@ database:
   trim-exception: <red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。
   generated-at: '<yellow>生成于： <gold>{0}'
   purge-date: <red>您必须给出一个日期
-  purge-warning: <yellow>此操作将清除存储在数据库中的历史记录，包括商店创建/更改/删除、购买、交易和系统日志。 删除这些数据可以释放磁盘空间，但所有历史数据都会丢失，依赖计量的其它插件将停止工作。 要继续执行此操作，请执行指令以 `/quickshop database purgelogs <before-days> 确认`
+  purge-warning: <yellow>此操作将清除存储在数据库中的历史记录，包括商店创建/更改/删除、购买、交易和系统日志。 删除这些数据可以释放磁盘空间，但所有历史数据都会丢失，依赖计量的其它插件将停止工作。 要继续执行此操作，请执行指令以 `/quickshop database purgelogs <before-days> confirm`
   purge-task-created: <green>任务已创建! 数据库在控制台静默清除历史记录
   purge-done-with-line: <green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。
   purge-done-with-error: <red>清除任务失败，请检查服务器控制台获取详细信息。
@@ -753,6 +755,10 @@ addon:
   lands:
     world-not-enabled: <red>你不能在这个世界中交易或创建
     creation-denied: <red>您没有在该Land区域创建商店的权限
+  quests:
+    create-quest-required: <red>你必须完成任务 <aqua>{0}</aqua> 才能创建商店
+    sell-quest-required: <red>你必须完成任务 <aqua>{0}</aqua> 才能向商店出售物品
+    buy-quest-required: <red>你必须完成任务 <aqua>{0}</aqua> 才能从商店购买物品
   dominion:
     creation-denied: <red>你没有权限在这个支配区创建商店。
     trade-denied: <red>商店必须位于自治领内才能与其进行交易。
@@ -1544,81 +1550,170 @@ price-suggest: "<green>基于来自 <aqua>{0}</aqua> 商店的数据 最高价�
 price-suggest-multi: "<green>建议使用 {0} </green>{1}"
 suggest-wait: "<green>请稍候... 计算推荐价格。"
 gui:
-  shared:
-    previous-page: "<white><< 上一页</white>"
-    next-page: "<white>下一页 >></white>"
-    previous-menu: "<white>上一个菜单</white>"
-  player:
-    select:
-      - "<yellow>点击选中该玩家</yellow>"
-  staff:
-    confirm-remove: "<red>输入 'confirm' 以确认移除 '{0}' 的商店助手</red>"
-    confirm-transfer: "<red>输入 'confirm' 以确认将该商店转让到 {0}.</red>"
-    add-staff: "<green>添加商店助手</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>左键点击以移除商店助手.</yellow>"
-        - "<yellow>右键点击以转让商店的所有者</yellow>"
-        - "<yellow>到该商店助手</yellow>"
   trade:
-    title: "商店浏览"
-    custom:
+    title: "<dark_aqua>商店</dark_aqua>"
+    info-stock:
+      display: "<yellow>库存</yellow>"
+      lore:
+        - "<gray>可用： <white>{0}</white></gray>"
+    info-price:
+      display: "<gold>价格信息</gold>"
+      lore:
+        - "<gray>价格： <white>{0}</white></gray>"
+        - "<gray>每次交易物品数量: <white>{1} 个物品</white></gray>"
+    info-seller:
+      display: "<aqua>卖家信息</aqua>"
+      lore:
+        - "<gray>所有者: <white>{0}</white></gray>"
+    custom-amount:
       display: "<bold><blue>自定义交易</blue></bold>"
-      lore-buy:
-        - "<white>选择数量</white>"
-        - "<white>想要购买</white>"
-        - "<yellow>输入你想要交易的数量</yellow>"
-        - "<yellow>必须是 <bold><red>{0}</red></bold></yellow>"
-        - "<white>库存： <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>选择数量</white>"
-        - "<white>想要出售</white>"
-        - "<yellow>输入你想要交易的数量</yellow>"
-        - "<yellow>必须是 <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>输入您要购买的数量，必须是 {0} 的倍数。输入 0 可以退出</yellow>"
-      enter-sell: "<yellow>输入您要出售的数量，必须是 {0} 的倍数。输入 0 可以退出</yellow>"
-      multiple: "<yellow>输入的数量无效！必须是 {0} 的倍数。输入 0 可以退出</yellow>"
-      stock: "<yellow>输入的数量无效！商店中没有足够的库存。输入 0 可以退出</yellow>"
-    quantity:
-      display-buy: "<bold><green>收购 {0}</green></bold>"
-      display-sell: "<bold><green>出售 {0}</green></bold>"
+    quantity-button:
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> </white><bold><green>{1}</green></bold>"
-        - "<white>总计： </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "商店浏览"
-    info:
-      - "<green>所有者: </green>{0}<yellow></yellow>"
-      - "<green>位置： </green>{1}<yellow></yellow>"
-      - "<green>类型： </green>{2}<yellow></yellow>"
-      - "<green>价格:</green><yellow>{3}</yellow>"
-      - "<green>库存： </green><yellow>{4}</yellow>"
+        - "<yellow>{0}</yellow>"
   keeper:
-    title: "商店控制面板"
-    change-icon:
+    title: "<dark_aqua>商店管理</dark_aqua>"
+    change-price:
       display: "<bold><green>更改价格</green></bold>"
-      enter: "<yellow>在聊天中输入新价格</yellow>"
       lore:
-        - "<white>点击可更改商店中每件物品的价格</white>"
-        - "<white>当前价格：</white> <yellow>{0}</yellow>"
-    mode-icon:
+        - "<gray>当前价格：<white>{0}</white></gray>"
+        - ""
+        - "<yellow>点击更改价格</yellow>"
+    mode-toggle:
       display: "<bold><green>更改模式</green></bold>"
       lore:
-        - "<white>点击可在收购/出售模式之间切换</white>"
-        - "<white>当前模式： </white><red>{0}</red>"
-        - "<yellow>点击切换到 </yellow><red>{1}</red>"
-    staff-icon:
+        - "<gray>当前模式： <white>{0}</white></gray>"
+        - "<gray>点击切换到： <white>{1}</white></gray>"
+    inventory:
+      display: "<bold><green>预览库存</green></bold>"
+      lore:
+        - "<gray>点击查看您的</gray>"
+        - "<gray>商店库存</gray>"
+    staff:
       display: "<bold><aqua>商店助手</aqua></bold>"
-      no-permission: "<bold><red>未被允许管理商店助手</red></bold>"
       lore:
-        - "<white>点击管理您的商店助手</white>"
-    remove-icon:
+        - "<gray>点击管理您的</gray>"
+        - "<gray>商店助手列表</gray>"
+    history:
+      display: "<bold><light_purple>交易历史</light_purple></bold>"
+      lore:
+        - "<gray>点击查看您的</gray>"
+        - "<gray>商店交易历史</gray>"
+    remove:
       display: "<bold><red>删除商店</red></bold>"
-      confirm: "<yellow>在聊天中输入'confirm'以确认商店删除。或者输入任何其它内容以取消删除</yellow>"
       lore:
-        - "<white>点击删除您的商店</white>"
-        - "<grey>您也可以破坏牌子/商店容器方块</grey>"
+        - "<gray>点击删除您的商店</gray>"
+        - "<dark_gray>您也可以破坏牌子/商店</dark_gray>"
+  staff:
+    title: "<dark_aqua>助手管理</dark_aqua>"
+    search:
+      display: "<yellow>搜索： {0}</yellow>"
+      lore:
+        - "<gray>左键点击搜索玩家</gray>"
+        - "<gray>右键单击清除搜索</gray>"
+    add-staff:
+      display: "<green>添加商店助手</green>"
+      lore:
+        - "<gray>点击添加新的</gray>"
+        - "<gray>商店助手到您的商店</gray>"
+    back:
+      display: "<white>返回商店</white>"
+  browse:
+    title: "<dark_aqua>商店浏览</dark_aqua>"
+    shop-item:
+      lore:
+        - "<green>所有者: </green>{0}<yellow></yellow>"
+        - "<green>位置： </green>{1}<yellow></yellow>"
+        - "<green>类型： </green>{2}<yellow></yellow>"
+        - "<green>价格:</green><yellow>{3}</yellow>"
+        - "<green>库存： </green><yellow>{4}</yellow>"
+    grouped-item:
+      display: "<yellow>{0}</yellow>"
+      lore-title:
+        - "<gray>商店: <white>{0}</white></gray>"
+      lore-selling:
+        - "<green>▼ 出售 ({0} 商店)</green>"
+        - "<gray> 价格: <white>{1} - {2}</white></gray>"
+        - "<gray> 平均值： <yellow>{3}</yellow></gray>"
+        - "<gray> 中间价： <gold>{4}</gold></gray>"
+        - "<gray> 库存： <aqua>{5}</aqua></gray>"
+      lore-buying:
+        - "<#FFA500>▲ 收购 ({0} 商店)</#FFA500>"
+        - "<gray> 价格: <white>{1} - {2}</white></gray>"
+        - "<gray> 平均值： <yellow>{3}</yellow></gray>"
+        - "<gray> 中间价： <gold>{4}</gold></gray>"
+      lore-footer:
+        - "<yellow>点击查看所有商店</yellow>"
+    search:
+      display: "<yellow>搜索： {0}</yellow>"
+      lore:
+        - "<gray>左键点击搜索玩家</gray>"
+        - "<gray>右键单击清除搜索</gray>"
+    sort:
+      display: "<green>排序： {0}</green>"
+      lore:
+        - "<gray>点击切换</gray>"
+      price-asc: "价格 ↑"
+      price-desc: "价格 ↓"
+      stock: "库存"
+      name: "名称"
+    filter:
+      display: "<aqua>筛选: {0}</aqua>"
+      lore:
+        - "<gray>点击切换</gray>"
+      all: "全部"
+      selling: "出售"
+      buying: "收购"
+    stock-filter:
+      display: "<gold>仅显示有货: {0}</gold>"
+      lore:
+        - "<gray>点击切换</gray>"
+    back:
+      display: "<white>返回市场</white>"
+  shared:
+    previous-page:
+      display: "<white><< 上一页</white>"
+    next-page:
+      display: "<white>下一页 >></white>"
+    page-info:
+      display: "<yellow>页 {0}/{1}</yellow>"
+    back:
+      display: "<white>返回</white>"
+    close:
+      display: "<red>关闭</red>"
+  messages:
+    #Keeper menu messages
+    keeper:
+      #Shown when player clicks "Change Price" button
+      enter-price: "<yellow>在聊天中输入新价格</yellow>"
+      #Shown when player clicks "Delete Shop" button
+      confirm-delete: "<yellow>输入 '<white>confirm</white>' 以删除你的商店. 输入其他内容取消.</yellow>"
+    #Staff menu messages
+    staff:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>输入玩家名搜索。输入“<white>clear</white>”清空，或右键搜索按钮。</yellow>"
+      #Shown when player left-clicks a staff member to remove them
+      #{0} = staff member name
+      confirm-remove: "<yellow>输入“<white>confirm</white>”以移除商店助手 <red>{0}</red>。输入其他内容取消。</yellow>"
+      #Shown when player right-clicks a staff member to transfer ownership
+      #{0} = staff member name
+      confirm-transfer: "<yellow>输入“<white>confirm</white>”将商店所有权转让给 <green>{0}</green>。输入其他内容取消。</yellow>"
+    #Trade menu messages
+    trade:
+      #Shown when player clicks "Custom Order" button (buying)
+      #{0} = item amount per purchase
+      enter-buy: "<yellow>输入您想要购买的数量。必须是 <white>{0}</white> 的倍数。输入 <white>0</white> 即可取消。</yellow>"
+      #Shown when player clicks "Custom Order" button (selling)
+      #{0} = item amount per purchase
+      enter-sell: "<yellow>输入您想要出售的数量。必须是 <white>{0}</white> 的倍数。输入 <white>0</white> 即可取消。</yellow>"
+      #Shown when player enters invalid quantity (not multiple of item amount)
+      #{0} = item amount per purchase
+      invalid-multiple: "<red>数量无效！必须是 <white>{0}</white> 的倍数。输入 <white>0</white> 即可取消。</red>"
+      #Shown when player enters quantity exceeding stock
+      invalid-stock: "<red>数量无效！库存不足。输入 <white>0</white> 即可取消。</red>"
+    #Browse menu messages
+    browse:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>输入物品名称搜索。输入“<white>clear</white>”清空，或右键搜索按钮。</yellow>"
 history:
   shop:
     gui-title: "查看交易记录"
@@ -1639,23 +1734,32 @@ history:
       - "<white>税： <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>商店： <yellow>{0}</yellow></white>"
-      - "<white>交易者: <yellow>{1}</yellow></white>"
+      - "<white>买家： <yellow>{1}</yellow></white>"
       - "<white>物品： <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>余额： <yellow>{4}</yellow></white>"
+      - "<white>数量: <yellow>{4}</yellow></white>"
+      - "<white>总计： <yellow>{5}</yellow></white>"
       - "<white>税： <yellow>{5}</yellow></white>"
-      - "<white>最终收入： <yellow>{6}</yellow></white>"
+      - "<white>实收： <yellow>{6}</yellow></white>"
     query-icon: "<gray>请稍候，正在查询...</gray>"
-    previous-page: "<white><< 前一页</white>"
-    next-page: "<white>下一页 >></white>"
     current-page: "<white>页面 {0}</white>"
-    summary-icon-title: "<green>商店摘要"
-    recent-purchases: "<white>最近 <aqua>{0}</aqua> 购买： <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>最近 <aqua>{0}</aqua> 营业额： <yellow>{1}</yellow></white>"
-    total-purchases: "<white>交易总数： <yellow>{0}</yellow></white>"
-    total-balances: "<white>总营业额： <yellow>{0}</yellow></white>"
+    multi-shops-icon-title: "<yellow>多个商店</yellow>"
+    summary-icon-title: "<yellow>商店摘要</yellow>"
+    summary-icon-description:
+      - "<white>交易者总数： <yellow>{0}</yellow></white>"
+      - "<white>最近 <aqua>{2}</aqua> 购买： <yellow>{3}</yellow></white>"
+      - "<white>最近 <aqua>{4}</aqua> 购买： <yellow>{5}</yellow></white>"
+      - "<white>最近 <aqua>{6}</aqua> 购买： <yellow>{7}</yellow></white>"
+      - "<white>最近 <aqua>{8}</aqua> 购买： <yellow>{9}</yellow></white>"
+      - "<white>交易总数： <yellow>{10}</yellow></white>"
+      - "<white>最近 <aqua>{11}</aqua> 营业额： <yellow>{12}</yellow></white>"
+      - "<white>最近 <aqua>{13}</aqua> 营业额： <yellow>{14}</yellow></white>"
+      - "<white>最近 <aqua>{15}</aqua> 营业额： <yellow>{16}</yellow></white>"
+      - "<white>最近 <aqua>{17}</aqua> 营业额： <yellow>{18}</yellow></white>"
+      - "<white>总营业额： <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>交易者总数： <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>前 {0} 个最有价值客户</gold>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>没有结果</white>"
 about:
   text:

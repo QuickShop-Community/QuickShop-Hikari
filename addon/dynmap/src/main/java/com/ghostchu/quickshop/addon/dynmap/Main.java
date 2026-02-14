@@ -10,10 +10,9 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
-import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
@@ -146,7 +145,7 @@ public final class Main extends JavaPlugin implements Listener {
   }
 
   @EventHandler(ignoreCancelled = true)
-  public void onEvent(final ShopTypeEvent event) {
+  public void onEvent(final ShopTypeEnhancedEvent event) {
 
     if(event.phase() != Phase.POST) {
 
@@ -213,11 +212,9 @@ public final class Main extends JavaPlugin implements Listener {
       shopName = posStr;
     }
     Marker marker = markerSet.findMarker("quickshop-hikari-shop-" + shop.getShopId());
-    final String type = switch(shop.getShopType()) {
-      case SELLING -> plain(text().of("shop-type.selling").forLocale());
-      case BUYING -> plain(text().of("shop-type.buying").forLocale());
-      case FROZEN -> plain(text().of("shop-type.frozen").forLocale());
-    };
+
+
+    final String type = plain(text().of(shop.shopType().translationKey()).forLocale());
 
     final String markerName = plain(text().of("addon.dynmap.marker-name",
                                               shopName,
@@ -249,7 +246,7 @@ public final class Main extends JavaPlugin implements Listener {
                                         plain(Util.getItemStackName(shop.getItem())),
                                         plugin.getShopManager().format(shop.getPrice(), shop),
                                         shop.getShopStackingAmount(),
-                                        shop.getShopType() == ShopType.SELLING? plain(text().of("shop-type.selling").forLocale()) : plain(text().of("shop-type.buying").forLocale()),
+                                        plain(text().of(shop.shopType().translationKey()).forLocale()),
                                         shop.isUnlimited(),
                                         posStr
                                        ).forLocale());

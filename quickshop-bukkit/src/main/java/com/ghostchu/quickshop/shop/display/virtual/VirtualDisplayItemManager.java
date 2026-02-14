@@ -116,10 +116,10 @@ public class VirtualDisplayItemManager {
 
     Log.debug("Attempting to load packet factory...");
 
-    final Optional<PacketFactory<?>> factoryOptional = packetHandler.factory(plugin.getPlatform().getMinecraftVersion());
+    final Optional<PacketFactory<?>> factoryOptional = packetHandler.factory(plugin.platform().getMinecraftVersion());
     if(factoryOptional.isEmpty()) {
 
-      throw new IllegalStateException("No PacketFactory found for platform version " + plugin.getPlatform().getMinecraftVersion());
+      throw new IllegalStateException("No PacketFactory found for platform version " + plugin.platform().getMinecraftVersion());
     }
 
     this.packetFactory = factoryOptional.get();
@@ -193,6 +193,14 @@ public class VirtualDisplayItemManager {
 
       packetHandlers.put(packetHandler.identifier().toLowerCase(Locale.ROOT), packetHandler);
     }
+  }
+
+  public boolean allowEnchants() {
+    return plugin.getConfig().getBoolean("shop.display-allow-enchants", true);
+  }
+
+  public boolean useItemName() {
+    return plugin.getConfig().getBoolean("shop.display-item-use-name");
   }
 
   public Map<String, PacketHandler<?>> packetHandlers() {

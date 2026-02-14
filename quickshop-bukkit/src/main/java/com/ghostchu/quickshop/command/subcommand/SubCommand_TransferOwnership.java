@@ -52,7 +52,7 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
     }
 
     if(parser.getArgs().size() == 1) {
-      switch(parser.getArgs().get(0)) {
+      switch(parser.getArgs().getFirst()) {
         case "accept", "allow", "yes" -> {
           final ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
           taskCache.invalidate(sender.getUniqueId());
@@ -77,11 +77,12 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
           }
-          if(!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
+          if (!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)
+              && !plugin.perm().hasPermission(sender, "quickshop.transferownership.other")) {
             plugin.text().of(sender, "no-permission").send();
             return;
           }
-          final String name = parser.getArgs().get(0);
+          final String name = parser.getArgs().getFirst();
           plugin.getPlayerFinder().name2UuidFuture(name).whenComplete((uuid, throwable)->{
             if(uuid == null) {
               plugin.text().of(sender, "unknown-player").send();

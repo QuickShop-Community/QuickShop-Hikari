@@ -4,8 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.registry.PrefixAlreadyRegisteredException;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionHandler;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.google.common.collect.ImmutableSet;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -33,7 +33,7 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
 
     for(final ItemExpressionHandler handler : handlers) {
       if(handler.getPrefix().isBlank() || expression.startsWith(handler.getPrefix())) {
-        if(handler.match(stack, StringUtils.substringAfter(expression, handler.getInternalPrefix0()))) {
+        if(handler.match(stack, CommonUtil.subAfter(expression, handler.getInternalPrefix0()))) {
           return true;
         }
       }
@@ -63,7 +63,7 @@ public class SimpleItemExpressionRegistry implements ItemExpressionRegistry {
     try {
       registerHandler(handler);
       return true;
-    } catch(PrefixAlreadyRegisteredException e) {
+    } catch(final PrefixAlreadyRegisteredException e) {
       return false;
     }
   }

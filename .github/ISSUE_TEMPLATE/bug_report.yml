@@ -76,9 +76,9 @@ body:
       label: Checklist
       description: Check all inspections according to the checklist below.
       options:
-        - label: "I'm running Paper or Spigot, and not a fork"
+        - label: "I'm running Paper, and not a fork"
           required: false
-        - label: I confirm that Paper/Spigot has been updated to the latest build
+        - label: I confirm that Paper has been updated to the latest build
           required: false
         - label: I confirm that QuickShop-Hikari has been updated to the latest stable version released on Modrinth (or the latest CI version)
           required: false

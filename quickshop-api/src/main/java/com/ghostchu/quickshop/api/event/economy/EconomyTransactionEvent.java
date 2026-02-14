@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.api.event.economy;
 
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
+import com.ghostchu.quickshop.api.economy.transaction.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.AbstractQSEvent;
 import org.jetbrains.annotations.NotNull;
 

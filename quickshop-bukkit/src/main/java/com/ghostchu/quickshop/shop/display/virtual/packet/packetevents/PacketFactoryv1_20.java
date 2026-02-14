@@ -32,6 +32,7 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChunkData;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
@@ -83,7 +84,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
 
     return new WrapperPlayServerSpawnEntity(id, identifier, SpigotConversionUtil.fromBukkitEntityType(type),
                                             SpigotConversionUtil.fromBukkitLocation(displayLocation),
-                                            0F, 0, null);
+                                            0F, 0, Vector3d.zero());
   }
 
   /**
@@ -101,7 +102,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
     data.add(new EntityData<>(5, EntityDataTypes.BOOLEAN, true));
     data.add(new EntityData<>(8, EntityDataTypes.ITEMSTACK, SpigotConversionUtil.fromBukkitItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 

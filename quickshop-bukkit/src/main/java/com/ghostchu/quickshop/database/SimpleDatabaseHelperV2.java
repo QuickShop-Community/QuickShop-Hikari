@@ -24,7 +24,6 @@ import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -331,7 +330,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   public CompletableFuture<@NotNull Long> createShop(final long dataId) {
 
-    Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
+    if(dataId <= 0) {
+
+      throw new IllegalArgumentException("Shop id must be greater than 0. Provided ID: " + dataId);
+    }
+
     return DataTables.SHOPS.createInsert()
             .setColumnNames("data")
             .setParams(dataId)
@@ -342,7 +345,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @Override
   public CompletableFuture<@NotNull Void> createShopMap(final long shopId, @NotNull final Location location) {
 
-    Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
+    if(shopId <= 0) {
+
+      throw new IllegalArgumentException("Shop id must be greater than 0. Provided ID: " + shopId);
+    }
+
     return DataTables.SHOP_MAP.createReplace()
             .setColumnNames("world", "x", "y", "z", "shop")
             .setParams(location.getWorld().getName(),
@@ -625,7 +632,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @Override
   public @NotNull CompletableFuture<@NotNull Integer> removeData(final long dataId) {
 
-    Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
+    if(dataId <= 0) {
+
+      throw new IllegalArgumentException("Data id must be greater than 0. Provided ID: " + dataId);
+    }
+
     return DataTables.DATA.createDelete()
             .addCondition("id", dataId)
             .build().executeFuture(lines->lines);
@@ -634,7 +645,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @Override
   public @NotNull CompletableFuture<@NotNull Integer> removeShop(final long shopId) {
 
-    Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
+
+    if(shopId <= 0) {
+
+      throw new IllegalArgumentException("Shop id must be greater than 0. Provided ID: " + shopId);
+    }
+
     return DataTables.SHOPS.createDelete()
             .addCondition("id", shopId)
             .build().executeFuture(lines->lines);
@@ -748,7 +764,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @Override
   public @NotNull CompletableFuture<@NotNull Integer> updateExternalInventoryProfileCache(final long shopId, final int space, final int stock) {
 
-    Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
+
+    if(shopId <= 0) {
+
+      throw new IllegalArgumentException("Shop id must be greater than 0. Provided ID: " + shopId);
+    }
+
     return DataTables.EXTERNAL_CACHE.createReplace()
             .setColumnNames("shop", "space", "stock")
             .setParams(shopId, space, stock)
@@ -764,7 +785,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     final long shopId = shop.getShopId();
     if(shopId < 1) {
       Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
-      return null;
+      return CompletableFuture.completedFuture(null);
     }
     return queryDataId(simpleDataRecord).thenCompose(dataId->{
       if(dataId != null) {

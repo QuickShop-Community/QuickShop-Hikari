@@ -6,3 +6,5 @@ ignore-disabled-worlds: true
 delete-on-lose-permission: false
 #Delete all shops in the land when that land was deleted
 delete-shops-in-land-when-land-deleted: false
+#Allow trusted land members to delete any shop in the land (not just their own)
+allow-member-deletion: false

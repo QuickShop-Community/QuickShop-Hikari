@@ -83,7 +83,7 @@ public class ShopPurger {
           continue;
         }
         pendingRemovalShops.add(shop);
-      } catch(Exception e) {
+      } catch(final Exception e) {
         plugin.logger().warn("Failed to purge shop " + shop.getShopId(), e);
       }
     }

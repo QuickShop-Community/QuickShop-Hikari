@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.database.TableZipCsvBackup;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -31,14 +32,14 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
     final DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2)plugin.getDatabaseHelper());
     Util.asyncThreadRun(()->{
       try {
-        databaseIOUtil.exportTables(file);
+        TableZipCsvBackup.exportTables(file);
+
         plugin.text().of(sender, "exported-database", file.toString()).send();
-      } catch(SQLException | IOException e) {
+      } catch(final SQLException | IOException e) {
         plugin.logger().warn("Exporting database failed.", e);
         plugin.text().of(sender, "exporting-failed", e.getMessage()).send();
       }
     });
 
   }
-
 }

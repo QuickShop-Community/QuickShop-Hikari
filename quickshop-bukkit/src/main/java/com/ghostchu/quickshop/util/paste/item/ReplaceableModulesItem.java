@@ -17,10 +17,10 @@ public class ReplaceableModulesItem implements SubPasteItem {
 
     final QuickShop plugin = QuickShop.getInstance();
     itemMatcher = plugin.getItemMatcher().getName() + "@" + plugin.getItemMatcher().getPlugin().getName();
-    if(plugin.getEconomy() == null) {
+    if(plugin.getEconomyManager().provider() == null) {
       economyCore = "undefined@unknown";
     } else {
-      economyCore = plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName();
+      economyCore = plugin.getEconomyManager().provider().name() + "@" + plugin.getEconomyManager().provider().providerName();
     }
     final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
     if(provider == null) {

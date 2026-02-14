@@ -80,12 +80,14 @@ public class BatchBukkitExecutor<T> {
     private final CompletableFuture<Void> callback;
     private WrappedTask task;
 
-    public BatchBukkitTask(final Queue<T> tasks, final Consumer<T> consumer, final int maxTickMsUsage, final CompletableFuture<Void> callback) {
+    public BatchBukkitTask(final Queue<T> tasks, final Consumer<T> consumer, final int maxTickMsUsage,
+                           final CompletableFuture<Void> callback) {
 
       this.tasks = tasks;
       this.consumer = consumer;
       this.maxTickMsUsage = maxTickMsUsage;
       this.callback = callback;
+
     }
 
     @Override

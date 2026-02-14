@@ -45,7 +45,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
       plugin.text().of(sender, "no-permission").send();
       return;
     }
-    QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().get(0))
+    QUserImpl.createAsync(plugin.getPlayerFinder(), parser.getArgs().getFirst())
             .thenAccept(newShopOwner->{
               if(newShopOwner == null) {
                 plugin.text().of(sender, "unknown-player").send();

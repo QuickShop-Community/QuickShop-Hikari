@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A shop
  */
-public interface Shop {
+public interface Shop extends Locatable<Location> {
 
   NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 
@@ -129,14 +129,6 @@ public interface Shop {
    * @param item ItemStack to set
    */
   void setItem(@NotNull ItemStack item);
-
-  /**
-   * Get shop's location
-   *
-   * @return Shop's location
-   */
-  @NotNull
-  Location getLocation();
 
 
   /**
@@ -246,15 +238,40 @@ public interface Shop {
    * Get shop type
    *
    * @return shop type
+   * @deprecated Use shopType() instead
    */
   @NotNull
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   ShopType getShopType();
+
+  /**
+   * Retrieves the type of shop associated with this entity.
+   *
+   * @return an instance of IShopType representing the shop type
+   */
+  IShopType shopType();
+
+  /**
+   * Sets the type of shop using the provided shop type parameter.
+   *
+   * @param newShopType the shop type to set, must not be null
+   */
+  void shopType(@NotNull IShopType newShopType);
+
+  /**
+   * Specifies the type of shop based on the given identifier.
+   *
+   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
+   */
+  void shopType(@NotNull String shopTypeIdentifier);
 
   /**
    * Set new shop type for this shop
    *
    * @param paramShopType New {@link ShopType}
+   * @deprecated Use shopType(IShopType shopType) or shopType(String shopTypeIdentifier) instead
    */
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   void setShopType(@NotNull ShopType paramShopType);
 
   /**
@@ -310,7 +327,7 @@ public interface Shop {
   boolean inventoryAvailable();
 
   /**
-   * Check shop is or not attacked the target block
+   * Check shop is or not attached the target block
    *
    * @param paramBlock Target {@link Block}
    *
@@ -359,6 +376,20 @@ public interface Shop {
    * @param disabled Has been disabled
    */
   void setDisableDisplay(boolean disabled);
+
+  /**
+   * Determines whether a custom item name should be used.
+   *
+   * @return true if a custom item name is enabled, false otherwise
+   */
+  boolean useCustomItemName();
+
+  /**
+   * Customizes and returns a Component representing an item name.
+   *
+   * @return a Component representing the customized item name
+   */
+  Component customItemName();
 
   /**
    * Check if this shop is free shop
@@ -527,14 +558,6 @@ public interface Shop {
   List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
 
   /**
-   * Refresh shop sign and display item
-   */
-  @Deprecated(forRemoval = true)
-  default void refresh() {
-
-  }
-
-  /**
    * Remove x ItemStack from the shop inventory
    *
    * @param paramItemStack Want removed ItemStack
@@ -630,14 +653,21 @@ public interface Shop {
   CompletableFuture<Void> update();
 
   /**
+   * Update shop data to database synchronously. This will create the completeable future for the save
+   * function, and wait for it to complete. DON'T USE IF YOU DON'T KNOW WHAT YOU'RE DOING!
+   *
+   * @throws RuntimeException
+   */
+  void updateSync() throws RuntimeException;
+
+  /**
    * Gets the benefit in this shop
    */
   @NotNull
-  Benefit getShopBenefit();
+  BenefitProvider getShopBenefit();
 
   /**
    * Sets the benefit in this shop
    */
-  void setShopBenefit(@NotNull Benefit benefit);
-
+  void setShopBenefit(@NotNull BenefitProvider benefit);
 }

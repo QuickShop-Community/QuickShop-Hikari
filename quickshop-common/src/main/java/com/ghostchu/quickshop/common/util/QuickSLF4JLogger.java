@@ -32,12 +32,14 @@ public class QuickSLF4JLogger {
     // Trigger provider search
     LoggerFactory.getLogger(parent.getName()).info("Initialize logging service");
     try {
+
       parent.setLevel(Level.ALL);
       final Class<JDK14LoggerAdapter> adapterClass = JDK14LoggerAdapter.class;
       final Constructor<JDK14LoggerAdapter> cons = adapterClass.getDeclaredConstructor(java.util.logging.Logger.class);
       cons.setAccessible(true);
       return cons.newInstance(parent);
-    } catch(Throwable reflectEx) {
+
+    } catch(final Throwable reflectEx) {
       parent.log(Level.WARNING, "Cannot create slf4j logging adapter", reflectEx);
       parent.log(Level.WARNING, "Creating logger instance manually...");
       return LoggerFactory.getLogger(parent.getName());

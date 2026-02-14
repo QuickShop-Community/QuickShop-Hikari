@@ -84,7 +84,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
       return;
     }
     Log.debug("Loading usercache.json at " + file.getAbsolutePath());
-    try(FileReader reader = new FileReader(file)) {
+    try(final FileReader reader = new FileReader(file)) {
       final List<UserCacheBean> userCacheBeans = JsonUtil.getGson().fromJson(reader, new TypeToken<List<UserCacheBean>>() {
       }.getType());
       final List<UserCacheBean> fullCacheBeans = userCacheBeans.stream()
@@ -93,7 +93,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
               .toList();
       cacheInBatch(fullCacheBeans);
       Log.debug("Loaded " + userCacheBeans.size() + " entries from usercache.json");
-    } catch(Exception e) {
+    } catch(final Exception e) {
       Log.debug("Giving up usercache.json loading: " + e.getMessage());
     }
   }
@@ -137,11 +137,21 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
   @Override
   public @Nullable UUID name2Uuid(@NotNull final String name) {
 
+    final OfflinePlayer offline = Bukkit.getOfflinePlayerIfCached(name);
+    if(offline != null) {
+      return offline.getUniqueId();
+    }
+
     return name2Uuid(name, true, QuickExecutor.getPrimaryProfileIoExecutor());
   }
 
   @Override
   public @Nullable UUID name2Uuid(@NotNull final String name, final boolean writeCache, @NotNull final ExecutorService executorService) {
+
+    final OfflinePlayer offline = Bukkit.getOfflinePlayerIfCached(name);
+    if(offline != null) {
+      return offline.getUniqueId();
+    }
 
     return name2UuidFuture(name, writeCache, executorService).join();
   }
@@ -290,11 +300,11 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     public String uuid2Name(@NotNull final UUID uuid, @NotNull final ExecutorService executorService, @NotNull final Consumer<String> endCallback) {
 
       String name = null;
-      try(PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
+      try(final PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
         final GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(executorService, new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new BukkitFindNameTask(uuid), new EssentialsXFindNameTask(uuid), new PlayerDBFindNameTask(uuid));
         name = grabConcurrentTask.invokeAll("Username Lookup - " + uuid, 10, TimeUnit.SECONDS, Objects::nonNull);
         return name;
-      } catch(InterruptedException e) {
+      } catch(final InterruptedException e) {
         return null;
       } finally {
         endCallback.accept(name);
@@ -305,7 +315,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     public UUID name2Uuid(@NotNull final String name, @NotNull final ExecutorService executorService, @NotNull final Consumer<UUID> endCallback) {
 
       UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
-      try(PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
+      try(final PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
         final GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(executorService, new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name), new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new PlayerDBFindUUIDTask(name));
         // This cannot fail.
         final UUID lookupResult = grabConcurrentTask.invokeAll("UniqueID Lookup - " + name, 15, TimeUnit.SECONDS, Objects::nonNull);
@@ -313,7 +323,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
           uuid = lookupResult;
         }
         return uuid;
-      } catch(InterruptedException e) {
+      } catch(final InterruptedException e) {
         return uuid;
       } finally {
         endCallback.accept(uuid);
@@ -762,7 +772,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         final UUID uuid = user.getUUID();
         Log.debug("Lookup result: " + uuid);
         return uuid;
-      } catch(Throwable th) {
+      } catch(final Throwable th) {
         return null;
       }
     }
@@ -796,7 +806,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         final String name = user.getName();
         Log.debug("Lookup result: " + name);
         return name;
-      } catch(Throwable th) {
+      } catch(final Throwable th) {
         return null;
       }
     }
@@ -827,13 +837,13 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         final String name = db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
         Log.debug("Lookup result: " + name);
         return name;
-      } catch(InterruptedException e) {
+      } catch(final InterruptedException e) {
         Thread.currentThread().interrupt();
         return null;
-      } catch(ExecutionException e) {
+      } catch(final ExecutionException e) {
         Log.debug("Error: a exception created while query the database for username looking up: " + e.getMessage());
         return null;
-      } catch(TimeoutException e) {
+      } catch(final TimeoutException e) {
         Log.debug("Warning, timeout when query the database for username looking up, slow connection?");
         return null;
       }
@@ -864,13 +874,13 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
         final UUID uuid = db.getPlayerUUID(name).get(30, TimeUnit.SECONDS);
         Log.debug("Lookup result: " + uuid);
         return uuid;
-      } catch(InterruptedException e) {
+      } catch(final InterruptedException e) {
         Thread.currentThread().interrupt();
         return null;
-      } catch(ExecutionException e) {
+      } catch(final ExecutionException e) {
         Log.debug("Error: a exception created while query the database for unique id looking up: " + e.getMessage());
         return null;
-      } catch(TimeoutException e) {
+      } catch(final TimeoutException e) {
         Log.debug("Warning, timeout when query the database for unique id looking up, slow connection?");
         return null;
       }

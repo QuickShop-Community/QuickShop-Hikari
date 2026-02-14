@@ -66,7 +66,9 @@ public class SignHooker {
 
           return;
         }
-        QuickShop.folia().getScheduler().runLater(()->shops.forEach((loc, shop)->updatePerPlayerShopSign(player, loc, shop)), 2);
+        shops.forEach((loc, shop)->
+          QuickShop.folia().getScheduler().runAtLocationLater(loc, ()->updatePerPlayerShopSign(player, loc, shop), 2)
+        );
       }
     };
 
@@ -87,7 +89,7 @@ public class SignHooker {
     final List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
     for(final Sign sign : shop.getSigns()) {
 
-      PLUGIN.getPlatform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
+      PLUGIN.platform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
     }
   }
 
@@ -107,12 +109,13 @@ public class SignHooker {
     if(world == null) {
       return;
     }
-    final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
-    for(final Entity nearbyPlayer : nearbyPlayers) {
-
-      if(nearbyPlayer instanceof final Player player) {
-        updatePerPlayerShopSign(player, location, shop);
+    QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc)->{
+      final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
+      for(final Entity nearbyPlayer : nearbyPlayers) {
+        if(nearbyPlayer instanceof final Player player) {
+          updatePerPlayerShopSign(player, location, shop);
+        }
       }
-    }
+    });
   }
 }

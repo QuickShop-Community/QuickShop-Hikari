@@ -55,7 +55,7 @@ public class SubCommand_ToggleDisplayAll implements CommandHandler<Player> {
     //should we be toggling displays off?
     boolean off = true;
     if(!parser.getArgs().isEmpty()) {
-      off = (!parser.getArgs().get(0).equalsIgnoreCase("on"));
+      off = (!parser.getArgs().getFirst().equalsIgnoreCase("on"));
     }
 
     boolean server = false;

@@ -27,7 +27,7 @@ public class ServerInfoItem implements SubPasteItem {
     final QuickShop plugin = QuickShop.getInstance();
     this.serverName = Bukkit.getServer().getName();
     this.build = Bukkit.getServer().getVersion();
-    this.nmsVersion = ReflectFactory.getNMSVersion() + "/" + plugin.getPlatform().getMinecraftVersion();
+    this.nmsVersion = ReflectFactory.getNMSVersion() + "/" + plugin.platform().getMinecraftVersion();
     this.dataVersion = String.valueOf(Bukkit.getServer().getUnsafe().getDataVersion());
     this.moddedServerType = "Bukkit";
     if(PaperLib.isSpigot()) {
@@ -45,9 +45,9 @@ public class ServerInfoItem implements SubPasteItem {
     this.players = Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers();
     this.onlineMode = CommonUtil.boolean2Status(Bukkit.getOnlineMode());
     this.bukkitVersion = Bukkit.getServer().getVersion();
-    this.mcVersion = plugin.getPlatform().getMinecraftVersion();
+    this.mcVersion = plugin.platform().getMinecraftVersion();
     this.worldContainer = Bukkit.getWorldContainer().getPath();
-    this.platform = plugin.getPlatform().getClass().getName();
+    this.platform = plugin.platform().getClass().getName();
   }
 
   @Override

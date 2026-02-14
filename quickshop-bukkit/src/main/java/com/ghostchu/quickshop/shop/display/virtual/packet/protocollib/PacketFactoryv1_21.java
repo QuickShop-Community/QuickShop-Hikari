@@ -124,7 +124,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
     values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get(Boolean.class), true));
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -221,6 +221,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
         //chunk z
         final int z = integerStructureModifier.read(1);
 
+        final List<VirtualDisplayItem<?>> items = new ArrayList<>();
         VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList) {
             if(!target.isSpawned()) {
@@ -228,12 +229,16 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
             }
             if(target.isApplicableForPlayer(player)) { // TODO: Refactor with better way
               target.getPacketSenders().add(player.getUniqueId());
-              target.sendDestroyPacket(player);
-              target.sendFakeItem(player);
+              items.add(target);
             }
           }
           return targetList;
         });
+
+        for(final VirtualDisplayItem<?> target : items) {
+          target.sendDestroyPacket(player);
+          target.sendFakeItem(player);
+        }
       }
     };
 
@@ -275,6 +280,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
         final int x = pair.getChunkX();
         //chunk z
         final int z = pair.getChunkZ();
+        final List<VirtualDisplayItem<?>> items = new ArrayList<>();
         VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList) {
 
@@ -282,11 +288,15 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
 
               continue;
             }
-            target.sendDestroyPacket(player);
+            items.add(target);
             target.getPacketSenders().remove(player.getUniqueId());
           }
           return targetList;
         });
+
+        for(final VirtualDisplayItem<?> target : items) {
+          target.sendDestroyPacket(player);
+        }
       }
     };
 

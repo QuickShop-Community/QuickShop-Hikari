@@ -5,12 +5,14 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.database.TableZipCsvBackup;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
@@ -31,7 +33,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
       return;
     }
 
-    if(parser.getArgs().isEmpty() || !"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
+    if(parser.getArgs().isEmpty() || !"confirm".equalsIgnoreCase(parser.getArgs().getFirst())) {
       plugin.text().of(sender, "importing-early-warning").send();
       return;
     }
@@ -47,13 +49,13 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
     Util.asyncThreadRun(()->{
       try {
         databaseIOUtil.performBackup("recovery");
-        databaseIOUtil.importTables(file);
+        TableZipCsvBackup.importTables(file);
         Log.debug("Re-loading shop from database...");
         Util.mainThreadRun(()->{
           plugin.getShopLoader().loadShops();
           plugin.text().of(sender, "imported-database", "recovery.zip").send();
         });
-      } catch(SQLException | ClassNotFoundException e) {
+      } catch(final SQLException | IOException | ClassNotFoundException e) {
         plugin.text().of(sender, "importing-failed", e.getMessage()).send();
         plugin.logger().warn("Failed to import the database from backup file.", e);
       }

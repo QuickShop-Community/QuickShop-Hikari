@@ -120,3 +120,4 @@ run/
 /${rootDir}/
 .${rootDir}/
 /.paper-nms/
+build/

@@ -51,7 +51,11 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public ItemStack decodeStack(@NotNull final String serialized) {
+  public @Nullable ItemStack decodeStack(@NotNull final String serialized) {
+    if(serialized.isEmpty()) {
+
+      return null;
+    }
 
     return ItemStack.deserializeBytes(Base64.getDecoder().decode(serialized));
   }
@@ -73,6 +77,15 @@ public class PaperPlatform implements Platform {
     try {
       if(meta.hasItemName()) {
         return meta.itemName();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      //old version
+    }
+
+    try {
+      final Component customName = meta.customName();
+      if(customName != null) {
+        return customName;
       }
     } catch(final NoSuchMethodError ignore) {
       //old version

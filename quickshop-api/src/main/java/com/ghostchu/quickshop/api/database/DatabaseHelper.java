@@ -87,7 +87,7 @@ public interface DatabaseHelper {
   /**
    * Async gets the player last use locale code from database
    *
-   * @param uuid The player UUID
+   * @param qUser The QUser
    */
   CompletableFuture<@Nullable String> getPlayerLocale(@NotNull QUser qUser);
 

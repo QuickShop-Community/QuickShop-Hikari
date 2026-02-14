@@ -20,17 +20,16 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -39,6 +38,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 
 public class MsgUtil {
@@ -114,6 +114,21 @@ public class MsgUtil {
     return decimalFormat.format(value);
   }
 
+  public static String decimalFormat(final BigDecimal value) {
+
+    if(decimalFormat == null) {
+      //lazy initialize
+      try {
+        final String format = PLUGIN.getConfig().getString("decimal-format");
+        decimalFormat = format == null? new DecimalFormat() : new DecimalFormat(format);
+      } catch(final Exception e) {
+        QuickShop.getInstance().logger().warn("Error when processing decimal format, using system default!", e);
+        decimalFormat = new DecimalFormat();
+      }
+    }
+    return decimalFormat.format(value);
+  }
+
   /**
    * Replace args in raw to args
    *
@@ -125,13 +140,21 @@ public class MsgUtil {
   @NotNull
   public static String fillArgs(@Nullable String raw, @Nullable final String... args) {
 
-    if(StringUtils.isEmpty(raw)) {
+    if(CommonUtil.isEmptyString(raw)) {
       return "";
     }
-    if(args != null) {
-      for(int i = 0; i < args.length; i++) {
-        raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null? "" : args[i]);
-      }
+
+    if(args == null || args.length == 0) {
+      return raw;
+    }
+
+    for(int i = 0; i < args.length; i++) {
+
+      final String arg = args[i];
+      final String replacement = (arg == null? "" : arg);
+
+      raw = raw.replaceAll(Pattern.quote("{" + i + "}"), replacement);
+      //raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null? "" : args[i]);
     }
     return raw;
   }
@@ -173,7 +196,7 @@ public class MsgUtil {
     PLUGIN.getDatabaseHelper().selectPlayerMessages(playerUniqueId)
             .thenAccept(msgs->{
               for(final String msg : msgs) {
-                PLUGIN.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
+                PLUGIN.platform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
               }
               PLUGIN.getDatabaseHelper().cleanMessageForPlayer(playerUniqueId)
                       .exceptionally(error->{
@@ -215,8 +238,8 @@ public class MsgUtil {
       final Locale locale = Locale.getDefault();
       final String language = locale.getLanguage();
       final String country = locale.getCountry();
-      final boolean isLanguageEmpty = StringUtils.isEmpty(language);
-      final boolean isCountryEmpty = StringUtils.isEmpty(country);
+      final boolean isLanguageEmpty = CommonUtil.isEmptyString(language);
+      final boolean isCountryEmpty = CommonUtil.isEmptyString(country);
       if(isLanguageEmpty && isCountryEmpty) {
         languageCode = "en_us";
       } else {
@@ -231,22 +254,6 @@ public class MsgUtil {
       }
     }
     return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-  }
-
-  @NotNull
-  @Deprecated(since = "4.2.0.0")
-  public static Component getTranslateText(@NotNull final ItemStack stack) {
-    //if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
-    //    return PLUGIN.getPlatform().getTranslation(stack.getType());
-    //} else {
-    return Util.getItemStackName(stack);
-    //}
-  }
-
-  @Deprecated
-  public static boolean isJson(final String str) {
-
-    return CommonUtil.isJson(str);
   }
 
   public static void printEnchantment(@NotNull final Shop shop, @NotNull final ChatSheetPrinter chatSheetPrinter) {
@@ -269,7 +276,7 @@ public class MsgUtil {
       final Integer level = entries.getValue();
       Component component;
       try {
-        component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
+        component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.platform().getTranslation(entries.getKey()));
       } catch(final Throwable error) {
         component = MsgUtil.setHandleFailedHover(null, Component.text(entries.getKey().getKey().toString()));
         QuickShop.getInstance().logger().warn("Failed to handle translation for Enchantment {}", entries.getKey().getKey(), error);
@@ -363,7 +370,7 @@ public class MsgUtil {
     } else {
       final Player player = p.getPlayer();
       if(player != null) {
-        PLUGIN.getPlatform().sendMessage(player, shopTransactionMessage);
+        PLUGIN.platform().sendMessage(player, shopTransactionMessage);
       }
     }
   }
@@ -424,7 +431,7 @@ public class MsgUtil {
       if(Util.isEmptyComponent(msg)) {
         return;
       }
-      PLUGIN.getPlatform().sendMessage(sender, msg);
+      PLUGIN.platform().sendMessage(sender, msg);
     }
   }
 
@@ -449,7 +456,7 @@ public class MsgUtil {
       return;
     }
     for(final String msg : messages) {
-      if(StringUtils.isEmpty(msg)) {
+      if(CommonUtil.isEmptyString(msg)) {
         return;
       }
       sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));

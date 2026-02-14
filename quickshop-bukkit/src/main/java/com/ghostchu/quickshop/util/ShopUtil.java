@@ -18,16 +18,23 @@ package com.ghostchu.quickshop.util;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
+import com.ghostchu.quickshop.economy.transaction.QSEconomyTransaction;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.SimpleInfo;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
@@ -35,10 +42,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -165,19 +175,18 @@ public class ShopUtil {
     }
 
     if(fee > 0) {
-      final SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
-              .core(plugin.getEconomy())
+      final QSEconomyTransaction transaction = QSEconomyTransaction.builder()
               .from(QUserImpl.createFullFilled(user.getBukkitPlayer().get()))
-              .amount(fee)
-              .world(Objects.requireNonNull(shop.getLocation().getWorld()))
+              .amount(BigDecimal.valueOf(fee))
+              .world(Objects.requireNonNull(shop.getLocation().getWorld()).getName())
               .currency(plugin.getCurrency())
               .build();
-      if(!transaction.checkBalance()) {
+      if(!transaction.completable()) {
         plugin.text().of(user, "you-cant-afford-to-change-price", plugin.getShopManager().format(fee, shop)).send();
         return;
       }
-      if(!transaction.failSafeCommit()) {
-        plugin.text().of(user, "economy-transaction-failed", transaction.getLastError()).send();
+      if(!transaction.safeCommit()) {
+        plugin.text().of(user, "economy-transaction-failed", transaction.lastError()).send();
         return;
       }
     }
@@ -194,6 +203,265 @@ public class ShopUtil {
 
     event = event.clone(Phase.POST);
     event.callEvent();
+  }
+
+  public static boolean sellToShop(@NotNull final Player p, @Nullable final Shop shop, final boolean direct, final boolean all) {
+
+    if(shop == null) {
+      return false;
+    }
+    if(!shop.isBuying()) {
+      return false;
+    }
+    if(!QuickShop.getInstance().perm().hasPermission(p, "quickshop.use")) {
+      return false;
+    }
+    QuickShop.getInstance().getShopManager().sendShopInfo(p, shop);
+    shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(p));
+    Util.playClickSound(p);
+    shop.onClick(p);
+    if(shop.getRemainingSpace() == 0) {
+      QuickShop.getInstance().text().of(p, "purchase-out-of-space", shop.ownerName()).send();
+      return true;
+    }
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    final double price = shop.getPrice();
+    final Inventory playerInventory = p.getInventory();
+    final String tradeAllWord = QuickShop.getInstance().getConfig().getString("shop.word-for-trade-all-items", "all");
+    final double ownerBalance = eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
+    final int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
+    final ShopManager.InteractiveManager actions = QuickShop.getInstance().getShopManager().getInteractiveManager();
+    if(shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
+       || QuickShop.getInstance().perm().hasPermission(p, "quickshop.other.use")) {
+      final Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
+      actions.put(p.getUniqueId(), info);
+      if(!direct) {
+        if(shop.isStackingShop()) {
+          QuickShop.getInstance().text().of(p, "how-many-sell-stack", shop.getItem().getAmount(), items, tradeAllWord).send();
+        } else {
+          QuickShop.getInstance().text().of(p, "how-many-sell", items, tradeAllWord).send();
+        }
+      } else {
+        final int arg;
+        if(all) {
+          arg = buyingShopAllCalc(eco, shop, p);
+        } else {
+          //if it's not all, it's one
+          arg = 1;
+        }
+        if(arg == 0) {
+          return true;
+        }
+        QuickShop.getInstance().getShopManager().actionBuying(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+      }
+    }
+    return true;
+  }
+
+  public static boolean buyFromShop(@NotNull final Player p, @Nullable final Shop shop, final boolean direct, final boolean all) {
+
+    if(shop == null) {
+      return false;
+    }
+    if(!shop.isSelling()) {
+      return false;
+    }
+
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    final int arg;
+    if(all) {
+      arg = sellingShopAllCalc(eco, shop, p);
+    } else {
+      //if it's not all, it's one
+      arg = 1;
+    }
+
+    if(arg == 0) {
+      return true;
+    }
+    return buyFromShop(p, shop, arg, direct, all);
+  }
+
+  public static boolean buyFromShop(@NotNull final Player p, @Nullable final Shop shop, final int arg, final boolean direct, final boolean all) {
+
+    if(shop == null) {
+      return false;
+    }
+    if(!shop.isSelling()) {
+      return false;
+    }
+    if(!QuickShop.getInstance().perm().hasPermission(p, "quickshop.use")) {
+      return false;
+    }
+    QuickShop.getInstance().getShopManager().sendShopInfo(p, shop);
+    shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(p));
+    if(shop.getRemainingStock() == 0) {
+      QuickShop.getInstance().text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
+      return true;
+    }
+    Util.playClickSound(p);
+    shop.onClick(p);
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    final double price = shop.getPrice();
+    final Inventory playerInventory = p.getInventory();
+    final String tradeAllWord = QuickShop.getInstance().getConfig().getString("shop.word-for-trade-all-items", "all");
+    final ShopManager.InteractiveManager actions = QuickShop.getInstance().getShopManager().getInteractiveManager();
+    final double traderBalance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
+    final int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
+    if(shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
+       || QuickShop.getInstance().perm().hasPermission(p, "quickshop.other.use")) {
+      final Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
+      actions.put(p.getUniqueId(), info);
+      if(!direct) {
+        if(shop.isStackingShop()) {
+          QuickShop.getInstance().text().of(p, "how-many-buy-stack", shop.getItem().getAmount(), itemAmount, tradeAllWord).send();
+        } else {
+          QuickShop.getInstance().text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
+        }
+      } else {
+        QuickShop.getInstance().getShopManager().actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
+      }
+    }
+    return true;
+  }
+
+  private static int getPlayerCanSell(@NotNull final Shop shop, final double ownerBalance, final double price, @NotNull final InventoryWrapper playerInventory) {
+
+    final boolean isContainerCountingNeeded = shop.isUnlimited();
+    if(shop.isFreeShop()) {
+      return isContainerCountingNeeded? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
+    }
+
+    int items = Util.countItems(playerInventory, shop);
+    final int ownerCanAfford = (int)(ownerBalance / price);
+    if(!isContainerCountingNeeded) {
+      // Amount check player amount and shop empty slot
+      items = Math.min(items, shop.getRemainingSpace());
+      // Amount check player selling item total cost and the shop owner's balance
+      items = Math.min(items, ownerCanAfford);
+    } else if(QuickShop.getInstance().getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+      // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
+      // true,
+      // the unlimited shop owner should have enough money.
+      items = Math.min(items, ownerCanAfford);
+    }
+    if(items < 0) {
+      items = 0;
+    }
+    return items;
+  }
+
+  private static int buyingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
+
+    int amount;
+    final int shopHaveSpaces =
+            Util.countSpace(shop.getInventory(), shop);
+    final int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+    // Check if shop owner has enough money
+    final double ownerBalance = eco
+            .balance(shop.getOwner(), shop.getLocation().getWorld().getName(),
+                     shop.getCurrency()).doubleValue();
+    final int ownerCanAfford;
+    if(shop.getPrice() != 0) {
+      ownerCanAfford = (int)(ownerBalance / shop.getPrice());
+    } else {
+      ownerCanAfford = Integer.MAX_VALUE;
+    }
+    if(!shop.isUnlimited()) {
+      amount = Math.min(shopHaveSpaces, invHaveItems);
+      amount = Math.min(amount, ownerCanAfford);
+    } else {
+      amount = invHaveItems;
+      // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
+      // true,
+      // the unlimited shop owner should have enough money.
+      if(QuickShop.getInstance().getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+        amount = Math.min(amount, ownerCanAfford);
+      }
+    }
+    if(amount < 1) { // typed 'all' but the auto set amount is 0
+      if(shopHaveSpaces == 0) {
+        // when typed 'all' but the shop doesn't have any empty space
+        QuickShop.getInstance().text().of(p, "shop-has-no-space", shopHaveSpaces,
+                                          Util.getItemStackName(shop.getItem())).send();
+        return 0;
+      }
+      if(ownerCanAfford == 0
+         && (!shop.isUnlimited()
+             || QuickShop.getInstance().getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
+        // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
+        // item (and shop isn't unlimited or pay-unlimited is true)
+        QuickShop.getInstance().text().of(p, "the-owner-cant-afford-to-buy-from-you",
+                                          QuickShop.getInstance().getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
+                                                                                          shop.getCurrency()),
+                                          QuickShop.getInstance().getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
+                                                                                          shop.getCurrency())).send();
+        return 0;
+      }
+      // when typed 'all' but player doesn't have any items to sell
+      QuickShop.getInstance().text().of(p, "you-dont-have-that-many-items", amount, Util.getItemStackName(shop.getItem())).send();
+      return 0;
+    }
+    return amount;
+  }
+
+  private static int getPlayerCanBuy(@NotNull final Shop shop, final double traderBalance, final double price, @NotNull final InventoryWrapper playerInventory) {
+
+    final boolean isContainerCountingNeeded = shop.isUnlimited();
+    if(shop.isFreeShop()) { // Free shop
+      return isContainerCountingNeeded? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
+    }
+    int itemAmount = Math.min(Util.countSpace(playerInventory, shop), (int)Math.floor(traderBalance / price));
+    if(!isContainerCountingNeeded) {
+      itemAmount = Math.min(itemAmount, shop.getRemainingStock());
+    }
+    if(itemAmount < 0) {
+      itemAmount = 0;
+    }
+    return itemAmount;
+  }
+
+  private static int sellingShopAllCalc(@NotNull final EconomyProvider eco, @NotNull final Shop shop, @NotNull final Player p) {
+
+    int amount;
+    final int shopHaveItems = shop.getRemainingStock();
+    final int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+    if(!shop.isUnlimited()) {
+      amount = Math.min(shopHaveItems, invHaveSpaces);
+    } else {
+      // should check not having items but having empty slots, cause player is trying to buy
+      // items from the shop.
+      amount = invHaveSpaces;
+    }
+    // typed 'all', check if player has enough money than price * amount
+    final double price = shop.getPrice();
+    final double balance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(),
+                                       shop.getCurrency()).doubleValue();
+    amount = Math.min(amount, (int)Math.floor(balance / price));
+    if(amount < 1) { // typed 'all' but the auto set amount is 0
+      // when typed 'all' but player can't buy any items
+      if(!shop.isUnlimited() && shopHaveItems < 1) {
+        // but also the shop's stock is 0
+        QuickShop.getInstance().text().of(p, "shop-stock-too-low",
+                                          shop.getRemainingStock(),
+                                          Util.getItemStackName(shop.getItem())).send();
+        return 0;
+      } else {
+        // when if player's inventory is full
+        if(invHaveSpaces <= 0) {
+          QuickShop.getInstance().text().of(p, "not-enough-space",
+                                            invHaveSpaces).send();
+          return 0;
+        }
+        QuickShop.getInstance().text().of(p, "you-cant-afford-to-buy",
+                                          QuickShop.getInstance().getShopManager().format(price, shop.getLocation().getWorld(),
+                                                                                          shop.getCurrency()),
+                                          QuickShop.getInstance().getShopManager().format(balance, shop.getLocation().getWorld(),
+                                                                                          shop.getCurrency())).send();
+      }
+      return 0;
+    }
+    return amount;
   }
 
   @Data

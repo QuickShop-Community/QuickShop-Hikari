@@ -5,7 +5,7 @@ disabled-in-this-world: <red>El sistema de tiendas está deshabilitado en este m
 how-much-to-trade-for: <green>Ingresa en el chat, por cuánto deseas intercambiar <yellow>{1}x {0}<green>.
 client-language-changed: <green>El sistema de tiendas ha detectado que la configuración de idioma del cliente ha sido cambiada, ahora estamos usando la configuración regional de {0} para ti.
 shops-backingup: Creando copia de seguridad de la tienda de empresa desde la base de datos...
-_comment: '¡Hola traductor! Si está editando esto en GitHub o a través del código fuente, debe ir a https://crowdin.com/project/qs-hikari.'
+_comment:
 unlimited-shop-owner-changed: <yellow>El propietario de esta tienda de empresa ilimitada ha cambiado a {0}.
 bad-command-usage-detailed: '<red>¡Argumentos incorrectos del comando! Acepta los siguientes parámetros: <gray>{0}'
 thats-not-a-number: <red>Número inválido.
@@ -362,6 +362,8 @@ controlpanel:
   remove-hover: <yellow>Clic para eliminar esta tienda de empresa.
   toggledisplay-hover: <yellow>Alternar el estado para exhibir el artículo de la tienda de empresa
   refill: '<green>Rellenar: Recarga los artículos. <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Cambiar estado de congelación de la tienda de empresa.
   lock-hover: <yellow>Activar/Desactivar protección contra bloqueo/seguro de la tienda de empresa.
   item-hover: <yellow>Clic para cambiar el artículo de la tienda de empresa
@@ -457,11 +459,11 @@ command:
     suggestprice: <yellow>Sugerir un precio recomendado para la tienda de empresa, basado en otras tiendas
     history: <yellow>Ver el historial de transacciones de una tienda de empresa
     sign: <yellow>Cambiar el material del letrero de una tienda de empresa
-  bulk-size-not-set: '<red>Usa: /tiendaempresa size \<cantidad>'
-  no-type-given: '<red>Usa: /tiendaempresa find \<artículo>'
+  bulk-size-not-set: '<red>Usa: /tiendaempresa cantidadpaquete \<cantidad>'
+  no-type-given: '<red>Usa: /tiendaempresa encontrar \<artículo>'
   feature-not-enabled: La característica no está habilitada en la configuración.
   now-debuging: <green>Modo desarrollador habilitado. Recargando QuickShop...
-  no-amount-given: <red>No se especificó cantidad. Usa <green>/tiendaempresa refill <amount><red>
+  no-amount-given: <red>No se especificó cantidad. Usa <green>/tiendaempresa rellenar <amount><red>
   no-owner-given: <red>No hay dueño proporcionado
   disabled: '<red>Este comando esta deshabilitado: <yellow>{0}'
   bulk-size-now: <green>Ahora intercambiando <yellow>{0}x {1}
@@ -475,7 +477,7 @@ command:
     unlimited: <green>La tienda de empresa ahora es ilimitada.
   transfer-success-other: <green>Se ha transferido la tienda de empresa de <yellow>{0} {1}<green> a <yellow>{2}
   no-trade-item: <green>Ten en la mano principal un artículo para comerciar
-  wrong-args: <red>Argumento no válido. Usa <bold>/tiendaempresa help<red> ara ver una lista de comandos.
+  wrong-args: <red>Argumento no válido. Usa <bold>/tiendaempresa ayuda<red> para ver una lista de comandos.
   some-shops-removed: <yellow>{0} <green>tienda(s) de empresa eliminada
   new-owner: '<green>Nuevo dueño: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -551,7 +553,7 @@ paste-451: |-
   <gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>
 paste-upload-failed: <red>Failed to upload paste to {0}, trying other pastebin provider...
 paste-upload-failed-local: <red>Failed to upload paste, trying generate local paste...
-command-incorrect: '<red>Uso incorrecto del comando, usa /tiendaempresa help para consultar ayuda. Uso: {0}.'
+command-incorrect: '<red>Uso incorrecto del comando, usa /tiendaempresa ayuda para consultar ayuda. Uso: {0}.'
 successfully-set-player-group: <green>Se ha establecido correctamente el grupo de jugadores {0} a <aqua>{1}</aqua>.
 successfully-unset-player-group: <green>Successfully remove player group in this shop.
 successfully-set-player-permission: <green>Se ha establecido correctamente el permiso <aqua>{1}</aqua> al jugador{0} en la tienda de empresa <aqua>{2}</aqua>.
@@ -600,7 +602,7 @@ debug:
   force-shop-loader-reload-complete:
   toggle-shop-loaded-status: <aqua>Toggle this shop loaded status to <gold>{0}</gold>
   shop-internal-data: '<yellow>The internal data of this shop: <reset>{0}</reset>'
-  handler-list-not-valid-bukkit-event-class: <red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class.
+  handler-list-not-valid-bukkit-event-class: quicks
   update-player-shops-signs-no-username-given: <red>You must provide a valid player username.
   update-player-shops-signs-create-async-task: <yellow>Creating async tasks for force updating signs...
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
@@ -614,7 +616,7 @@ debug:
   hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
   hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
   hikari-cp-working: "<green>Pass! HikariCP working well!"
-  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
+  hikari-cp-not-working: "<red>¡Fracasado! ¡La conexión que devolvió HikariCP está muerta! (No pasó la prueba en 1 segundo)"
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
   queries-stopped: "<green>Stopped <white>{0}</white> active queries."
   queries-dumping: "<yellow>Dumping active queries..."
@@ -628,7 +630,7 @@ debug:
   property-security-block: "<red>Request was rejected, for security reason, you can only change the property that startsWith <aqua>com.ghostchu.quickshop</aqua> or <aqua>quickshop</aqua>."
   property-removed: "<green>Removed property key <white>{0}</white>"
   property-changed: "<green>Property key <white>{0}</white> was changed from <white>{1}</white> to <white>{2}</white>"
-  marked-as-dirty: "<green>Marked all stores as dirty status, they will be force save in next auto-save task. (Restart the server to force execute store saving task)"
+  marked-as-dirty: ""
   display-removed: ""
 database:
   scanning: <green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while...
@@ -679,9 +681,9 @@ transfer-single-request: <yellow>El Jugador <aqua>{0}</aqua> desea transferirte 
 transfer-ask: |-
   <gold>Escribe <red>/tiendaempresa transfer accept</red> para aceptar.<red>/tiendaempresa transfer deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
 transferall-ask: |-
-  <gold>Escribe <red>/tiendaempresa transferall accept</red> para aceptar o <red>/tiendaempresa transferall deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
+  <gold>Escribe <red>/tiendaempresa transferirtodas accept</red> para aceptar o <red>/tiendaempresa transferirtodas deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
 transfer-single-ask: |-
-  <gold>Escribe <red>/tiendaempresa transferownership accept</red> para aceptar o <red>/tiendaempresa transferownership deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
+  <gold>Escribe <red>/tiendaempresa transferirpropiedad accept</red> para aceptar o <red>/tiendaempresa transferirpropiedad deny</red> para rechazar. La solicitud expira después de <red>{0}</red> segundos.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your shop transfer request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s transfer request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop transfer request.
@@ -719,7 +721,7 @@ addon:
     make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
     make-shop-owned-by-nation: <green>You have made the shop owned by nation <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-nation: <green>You have reset shop ownership, it now transfer back to original shop owner.
-    shop-owning-changing-notice: <grey>Esta tienda ahora es propiedad de una ciudad/nación, el propietario original de la tienda se ha añadido automáticamente a la lista de administradores. Modifica o añade cualquier nuevo propietario/personal utilizando el comando /tiendaempresa permission.
+    shop-owning-changing-notice: <grey>Esta tienda ahora es propiedad de una ciudad/nación, el propietario original de la tienda se ha añadido automáticamente a la lista de administradores. Modifica o añade cualquier nuevo propietario/personal utilizando el comando /tiendaempresa permiso.
     target-shop-already-is-town-shop: <red>The target shop is already owned by a town.
     target-shop-already-is-nation-shop: <red>The target shop is already owned by a nation.
     target-shop-not-in-town-region: <red>The target shop is not in the town.
@@ -741,6 +743,10 @@ addon:
   lands:
     world-not-enabled: <red>You are not allowed to create or purchase in this world.
     creation-denied: <red>You don't have permission to create shops in this Land area.
+  quests:
+    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
+    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
+    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
   dominion:
     creation-denied: <red>You don't have permission to create shops in this Dominion area.
     trade-denied: <red>The shop must be within a Dominion to trade with it.
@@ -780,57 +786,59 @@ addon:
     discord-messages:
       sold-to-your-shop: |
         {
-          "embed": {
-            "title": ":inbox_tray: Alguien vendió objetos a tu tienda",
-            "description": "El jugador %%purchase.name%% vendió x%%purchase.amount%% %%shop.item.name%% a tu tienda.",
-            "color": 52084,
-            "author": {
-              "name": "QuickShop-Hikari",
-              "icon_url": ""
-            },
-            "thumbnail": {
-              "url": ""
-            },
-            "image": {
-              "url": ""
-            },
-            "footer": {
-              "text": "Notificación de Discord de QuickShop-Hikari",
-              "icon_url": ""
-            },
-            "fields": [
-              {
-                "name": "Tienda",
-                "value": "%%shop.display-name%%",
-                "inline": false
-              },
-              {
-                "name": "Vendedor",
-                "value": "%%purchase.name%%",
-                "inline": true
-              },
-              {
-                "name": "Artículo",
-                "value": "%%shop.item.name%%",
-                "inline": true
-              },
-              {
-                "name": "Cantidad",
-                "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
-                "inline": true
-              },
-              {
-                "name": "Pagado",
-                "value": "%%purchase.balance-formatted%%",
-                "inline": true
-              },
-              {
-                "name": "Impuestos",
-                "value": "%%purchase.taxes-formatted%%",
-                "inline": true
-              }
-            ]
-          }
+         "embed":
+           {
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "color": 52084,
+             "author": {
+               "name": "QuickShop-Hikari",
+               "icon_url": ""
+             },
+             "thumbnail": {
+               "url": ""
+             },
+             "image": {
+               "url": ""
+             },
+             "footer": {
+               "text": "QuickShop-Hikari Discord Notification",
+               "icon_url": ""
+             },
+             "fields": [
+               {
+                 "name": "Shop",
+                 "value": "%%shop.display-name%%",
+                 "inline": false
+               },
+               {
+                 "name": "Purchaser",
+                 "value": "%%purchase.name%%",
+                 "inline": true
+               },
+               {
+                 "name": "Item",
+                 "value": "%%shop.item.name%%",
+                 "inline": true
+               },
+               {
+               {
+                 "name": "Amount",
+                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
+                 "inline": true
+               },
+               {
+                 "name": "Your paid",
+                 "value": "%%purchase.balance-formatted%%",
+                 "inline": true
+               },
+               {
+                 "name": "Taxes",
+                 "value": "%%purchase.taxes-formatted%%",
+                 "inline": true
+               }
+             ]
+           }
         }
       bought-from-your-shop: |
         {
@@ -1316,34 +1324,36 @@ addon:
           code: <code>
         create:
           rate: |
-            Command Hint:
-            Argument: <rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            Cómo usar este argumento:
+            Argumento: \<porcentaje>
+            Descripción: Porcentaje del total o cantidad que obtendrás
+            Si colocas `30%` (con %), obtienes: precio normal * 0.3
+            Si colocas `50` (sin el %), obtienes: precio normal - 50
           max-usage: |
-            Command Hint:
-            Argument: [max-usage]
-            Description: The times that code can be used
-            `-1` for unlimited.
+            Cómo usar este argumento:
+            Argumento: [max-usos]
+            Descripción: Veces que el código de descuento puede usarse
+            Coloca `-1` para hacerlo ilimitado.
           threshold: |
-            Command Hint:
-            Argument: [threshold]
-            Description: The minimum price that code can be applied
-            `-1` for unlimited
+            Cómo usar este argumento:
+            Argumento: [precio-mínimo]
+            Descripción: Precio mínimo al que se puede aplicar el código
+            Coloca `-1` para hacerlo ilimitado.
           expired: |
-            Command Hint
-            Argument: [expired]
-            Description: The code expired time.
-            `-1` for unlimited duration.
-            Accept both Zulu time and UNIX timestamp in seconds.
-            Zulu Example: 2022-12-17T10:31:37Z
-            UNIX Example: 1671273097
+            Cómo usar este argumento:
+            Argumento: [expiración]
+            Descripción: ¿Cuándo expira el código de descuento?.
+            Coloca `-1` para hacerlo permanente hasta que tú lo elimines.
+            Permite tanto formato de tiempo `Zulu` y `UNIX` en segundos.
+            Ejemplo Zulu: 2025-04-27T14:58:00Z ó 2025-04-27T14:58:00-06:00
+            La Z al final hace referencia a la zona horaria UTC
+            Si en vez de Z usas +hh:mm o -hh:mm cambias la zona horaria
+            Ejemplo UNIX: 1671273097
     discount-code-already-exists: <red>Lo sentimos, el nombre de su código de descuento ya está en uso.
-    invalid-discount-code-regex: '<red>The discount code must matches the regex: <yellow>{0}</yellow>'
+    invalid-discount-code-regex: '<red>Formato de código incorrecto, debe coincidir con el REGEX: <yellow>{0}</yellow>.'
     invalid-discount-code: <red>Este código de descuento no es válido.
-    discount-code-added: <green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>
-    discount-code-removed: <green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>
+    discount-code-added: <green>Tu código de descuento <yellow>{0}</yellow> ha sido agregado a la tienda de empresa <aqua>{1}</aqua>
+    discount-code-removed: <green>Tu código de descuento <yellow>{0}</yellow> ha sido removido de la tienda de empresa <aqua>{1}</aqua>
     invalid-code-type: <red>El tipo de código <yellow>{0}</yellow> no es válido.
     invalid-usage-restriction: <red>La restricción de uso <yellow>{0}</yellow> no es válida.
     invalid-threshold-restriction: <red>La restricción de umbral <yellow>{0}</yellow> no es válida.
@@ -1351,14 +1361,14 @@ addon:
     invalid-expire-time: <red>No se puede especificar una hora en el pasado.
     invalid-discount-rate: <red>La tasa de descuento <yellow>{0}</yellow> no es válida, puede ser un número fijo o un porcentaje.
     discount-code-expired: <red>¡Tu código de descuento <yellow>{0}</yellow> ha expirado!
-    discount-code-installed: "<green>Has instalado el código de descuento <gold>{0}</gold>. El código se aplicará automáticamente a todas las compras disponibles durante esta sesión.\nPara desinstalar el código de descuento, ejecuta <aqua>/tiendaempresa discount uninstall {0}</aqua>."
-    discount-code-uninstalled: <green>Has desinstalado tu código de descuento.
+    discount-code-installed: "<green>Has instalado el código de descuento <gold>{0}</gold>. El código se aplicará automáticamente a todas las próximas compras aplicables disponibles durante esta sesión.\nPara desinstalar el código de descuento, ejecuta <aqua>/tiendaempresa descuento uninstall {0}</aqua>. Podrás instalarlo nuevamente cuando lo necesites."
+    discount-code-uninstalled: <green>Has desinstalado tu código de descuento. Ya no se utilizará en tus próximas tiendas hasta que vuelvas a instalarlo.
     discount-code-query-nothing: <red>¡Aún no has instalado un código de descuento!
     discount-code-query: '<green>Está utilizando el código de descuento: <yellow>{0}</yellow>.'
-    discount-code-applicable: '<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop!'
-    discount-code-applicable-with-threshold: '<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction.'
-    discount-code-not-applicable: <red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!
-    discount-code-reach-the-limit: <red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied.
+    discount-code-applicable: '<color:#bcef26>El código de descuento <yellow><bold>{0}</bold></yellow> es <bold>aplicable</bold> en esta tienda de empresa!'
+    discount-code-applicable-with-threshold: '<color:#bcef26>El código de descuento <yellow><bold>{0}</bold></yellow> es <bold>aplicable</bold> en esta tienda de empresa, pero solo si el costo total de una sola compra es superior a <yellow>{1}</yellow>.'
+    discount-code-not-applicable: <red>El código de descuento <yellow><bold>{0}</bold></yellow> <bold>no es aplicable</bold> en esta tienda de empresa!
+    discount-code-reach-the-limit: <red>Alcanzaste el límite de usos para el código de descuento <yellow><bold>{0}</bold></yellow>, ya no se aplicarán más descuentos con este código.
     discount-code-no-permission: <red>¡No tenías permiso para usar ningún código de descuento en esta tienda de empresa!
     discount-code-has-been-expired: <red>¡Tu descuento ha caducado!
     discount-code-config-shop-added: <green>Correctamente añadida esta tienda de empresa a tu lista de códigos de descuento permitidos.
@@ -1372,12 +1382,12 @@ addon:
       <gold>Ámbito: <aqua>{1}</aqua></gold>.
       <gold>Comparte con otros: <color:#bcef26>{2}</color:#bcef26></gold>.
       <yellow>Solo para el ámbito <gray>Tiendas Específicas</gray>: Para agregar tiendas a la lista permitida de tu código de descuento, haz clic derecho en una tienda y ejecuta el comando <aqua>{3}</aqua>
-      <yellow>You can use <aqua>/tiendaempresa discount config {0}</aqua> para editar en cualquier momento tu código de descuento.
+      <yellow>You can use <aqua>/tiendaempresa descuento config {0}</aqua> para editar en cualquier momento tu código de descuento.
     discount-code-under-threshold: <red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>.
     percentage-off: '<bold><color:#bcef26>-{0}%</color:#bcef26></bold>'
     fixed-off: '<bold><color:#bcef26>-{0}</color:#bcef26></bold>'
-    discount-code-list: '<gold>Listing your discount codes:</gold>'
-    discount-code-applied-in-purchase: '<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!'
+    discount-code-list: '<gold>Tus códigos de descuento existentes:</gold>'
+    discount-code-applied-in-purchase: '<color:#bcef26>El código de descuento <yellow>{0}</yellow> se aplicó en esta compra y ahorraste <gold>{1}</gold>!'
     scope:
       this-shop: '{0}'
       your-shops-owned: todas tus tiendas de empresa (propias)
@@ -1385,16 +1395,16 @@ addon:
       server: todo el servidor
     code-type:
       SERVER_ALL_SHOPS: Todas las tiendas de empresa en esta ciudad
-      PLAYER_ALL_SHOPS: Todas las tiendas de empresa creadas por el propietario del código
+      PLAYER_ALL_SHOPS: Todas las tiendas de empresa creadas por el creador del código
       SPECIFIC_SHOPS: Tiendas de empresa específicas
     discount-code-details: |-
-      <gold>Code: <yellow>{0}</yellow>
-      <gold>Creator: <yellow>{1}</yellow>
-      <gold>Applied to: <yellow>{2}</yellow>
-      <gold>Remaining usage: <yellow>{3}</yellow>
-      <gold>Expired on: <yellow>{4}</yellow>
-      <gold>Threshold: <yellow>{5}</yellow>
-      <gold>Discount: <yellow>{6}</yellow>
+      <gold>Código: <yellow>{0}</yellow>
+      <gold>Creador: <yellow>{1}</yellow>
+      <gold>Aplica a: <yellow>{2}</yellow>
+      <gold>Usos restantes: <yellow>{3}</yellow>
+      <gold>Expira el: <yellow>{4}</yellow>
+      <gold>Precio mínimo aplicado: <yellow>{5}</yellow>
+      <gold>Descuento: <yellow>{6}</yellow>
   list:
     commands:
       list: Listado de todas las tiendas de empresa que son propiedad tuya o de un jugador específico.
@@ -1414,8 +1424,8 @@ addon:
     success-remove: <green>Eliminó con éxito todas las restricciones de esta tienda de empresa
     success-setup: <green>La configuración de restricciones para esta tienda de empresa se ha guardado correctamente
     trade-limit-reached-cancel-reason: <red>Alcanzó la restricción de esta tienda de empresa
-    remains-limits: '<gold>Your remaining purchase quota in this shop: <yellow>{0}</yellow>'
-    remains-limits-before-reset-period-note: '<gold>This shop will reset their purchase quota every: <yellow>{0}</yellow>'
+    remains-limits: '<gold>Aún puedes hacer <yellow>{0}</yellow> transacciones en esta tienda</gold>'
+    remains-limits-before-reset-period-note: '<gold>Esta tienda reiniciará su límite de transacciones cada: <yellow>{0}</yellow>'
   dynmap:
     markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} for x{4} @ {5}'
@@ -1499,11 +1509,11 @@ suite:
       Space: {9}
       Stock: {10}
   limited:
-    command-description: <yellow>Establece un límite que restrinja la compra que el jugador puede hacer en el periodo.
-    reach-the-quota-limit: <red>Ha alcanzado el límite de compra en esta tienda de empresa ({0}/{1}).
-    quota-reset-countdown: <yellow>La cuota de esta tienda de empresa se restablecerá en {0}.
-    quota-reset-player-successfully: <green>La cuota para el jugador {0} en esta tienda de empresa se ha restablecido correctamente.
-    quota-reset-everybody-successfully: <green>La cuota para todos los clientes de esta tienda de empresa se ha restablecido correctamente.
+    command-description: <yellow>Establece un límite que restrinja las transacciones que los clientes pueden hacer en un periodo de tiempo.
+    reach-the-quota-limit: <red>Ha alcanzado el límite de transacciones en esta tienda de empresa ({0}/{1}).
+    quota-reset-countdown: <yellow>El límite de esta tienda de empresa se restablecerá en {0}.
+    quota-reset-player-successfully: <green>El límite para el cliente {0} en esta tienda de empresa se ha restablecido correctamente.
+    quota-reset-everybody-successfully: <green>El límite para todos los clientes de esta tienda de empresa se ha restablecido correctamente.
     quota-setup: <green>¡La restricción de compra ahora se aplica a esta tienda de empresa!
     quota-remove: <green>¡La restricción de compra ha sido eliminada de esta tienda de empresa!
     subtitles:
@@ -1533,81 +1543,170 @@ price-suggest: "<green>Basado en datos de <aqua>{0}</aqua> tiendas de empresa qu
 price-suggest-multi: "<green>Sugerencia para el tipo {0}.</green>{1}"
 suggest-wait: "<green>Por favor espere... Calculando el precio recomendado."
 gui:
-  shared:
-    previous-page: "<white><< Página Anterior</white>"
-    next-page: "<white>Página siguiente >></white>"
-    previous-menu: "<white>Menú Anterior</white>"
-  player:
-    select:
-      - "<yellow>Haz clic para seleccionar este jugador.</yellow>"
-  staff:
-    confirm-remove: "<red>Escribe 'confirm' (si no funciona, use 'confirmar') para confirmar la eliminación de '{0}' como miembro del personal.</red>"
-    confirm-transfer: "<red>Escribe 'confirm' (si no funciona, usa 'confirmar') para confirmar la transferencia de esta tienda de empresa a {0}.</red>"
-    add-staff: "<green>Añadir miembro del personal (staff)</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Clic izquierdo para eliminar miembro del personal (staff).</yellow>"
-        - "<yellow>Haz clic con el botón derecho para transferir la propiedad</yellow>"
-        - "<yellow>a este miembro del personal (staff) de la tienda de empresa.</yellow>"
   trade:
-    title: "Buscador de tienda de empresa"
-    custom:
-      display: "<bold><blue>Pedido Personalizado</blue></bold>"
-      lore-buy:
-        - "<white>Elige la cantidad</white>"
-        - "<white>te gustaría comprar.</white>"
-        - "<yellow>Haz clic para introducir una cantidad personalizada.</yellow>"
-        - "<yellow>Debe ser un múltiplo de <bold><red>{0}</red></bold></yellow>"
-        - "<white>Existencias: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Elige la cantidad</white>"
-        - "<white>te gustaría vender.</white>"
-        - "<yellow>Haz clic para introducir una cantidad personalizada.</yellow>"
-        - "<yellow>Debe ser un múltiplo de <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Introduzca la cantidad que desea comprar, debe ser un múltiplo de {0}. Introduzca 0 para salir.</yellow>"
-      enter-sell: "<yellow>Introduzca la cantidad que desea vender, debe ser un múltiplo de {0}. Introduzca 0 para salir.</yellow>"
-      multiple: "<yellow>¡Cantidad inválida introducida! Debe ser un múltiplo de {0}. Introduzca 0 para escapar.</yellow>"
-      stock: "<yellow>¡Cantidad introducida no válida! No hay suficiente stock en la tienda de empresa. Introduzca 0 para salir.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Comprar {0}</green></bold>"
-      display-sell: "<bold><green>Vender {0}</green></bold>"
+    title: "<dark_aqua>Shop</dark_aqua>"
+    info-stock:
+      display: "<yellow>Stock Information</yellow>"
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> cada </white><bold><green>{1}</green></bold>"
-        - "<white>Total:</white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Buscador de tienda de empresa"
-    info:
-      - "<green>Propietario: </green><yellow>{0}</yellow>"
-      - "<green>Ubicación: </green><yellow>{1}</yellow>"
-      - "<green>Tipo: </green><yellow>{2}</yellow>"
-      - "<green>Precio: </green><yellow>{3}</yellow>"
-      - "<green>Existencias </green><yellow>{4}</yellow>"
+        - "<gray>Available: <white>{0}</white></gray>"
+    info-price:
+      display: "<gold>Price Information</gold>"
+      lore:
+        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Per: <white>{1} item(s)</white></gray>"
+    info-seller:
+      display: "<aqua>Seller Information</aqua>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+    custom-amount:
+      display: "<bold><blue>Custom Order</blue></bold>"
+    quantity-button:
+      lore:
+        - "<yellow>{0}</yellow>"
   keeper:
-    title: "Comerciante"
-    change-icon:
-      display: "<bold><green>Cambiar precio</green></bold>"
-      enter: "<yellow>Ingresa un nuevo precio en el chat.</yellow>"
+    title: "<dark_aqua>Shop Management</dark_aqua>"
+    change-price:
+      display: "<bold><green>Change Price</green></bold>"
       lore:
-        - "<white>Haz clic para cambiar el precio de cada artículo en tu tienda de empresa.</white>"
-        - "<white>Precio actual:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Cambiar Modo</green></bold>"
+        - "<gray>Current price: <white>{0}</white></gray>"
+        - ""
+        - "<yellow>Click to change price</yellow>"
+    mode-toggle:
+      display: "<bold><green>Change Mode</green></bold>"
       lore:
-        - "<white>Haz clic para alternar entre el modo compra/venta.</white>"
-        - "<white>Modo actual: </white><red>{0}</red>"
-        - "<yellow>Haz clic para alternar a </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Personal (staff) de la tienda de empresa</aqua></bold>"
-      no-permission: "<bold><red>No permitido para administrar el personal (staff)</red></bold>"
+        - "<gray>Current: <white>{0}</white></gray>"
+        - "<gray>Click to change to: <white>{1}</white></gray>"
+    inventory:
+      display: "<bold><green>View Inventory</green></bold>"
       lore:
-        - "<white>Haz clic para administrar el personal (staff) de tu tienda de empresa.</white>"
-    remove-icon:
-      display: "<bold><red>Eliminar Tienda de Empresa</red></bold>"
-      confirm: "<yellow>Escribe 'confirm' (si no funciona, use 'confirmar') en el chat para confirmar la eliminación. O introduzca cualquier otra cosa para detener la eliminación.</yellow>"
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's chest inventory.</gray>"
+    staff:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
       lore:
-        - "<white>Haz clic para eliminar tu tienda de empresa.</white>"
-        - "<grey>También puedes romper el letrero/cofre/barril"
+        - "<gray>Click to manage your</gray>"
+        - "<gray>shop's staff members.</gray>"
+    history:
+      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's transaction history.</gray>"
+    remove:
+      display: "<bold><red>Delete Shop</red></bold>"
+      lore:
+        - "<gray>Click to delete your shop.</gray>"
+        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+  staff:
+    title: "<dark_aqua>Staff Management</dark_aqua>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for players</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    add-staff:
+      display: "<green>Add Staff Member</green>"
+      lore:
+        - "<gray>Click to add a new</gray>"
+        - "<gray>staff member to your shop.</gray>"
+    back:
+      display: "<white>Back to Shop</white>"
+  browse:
+    title: "<dark_aqua>Market Browser</dark_aqua>"
+    shop-item:
+      lore:
+        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>Location: </green><yellow>{1}</yellow>"
+        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Price: </green><yellow>{3}</yellow>"
+        - "<green>Stock: </green><yellow>{4}</yellow>"
+    grouped-item:
+      display: "<yellow>{0}</yellow>"
+      lore-title:
+        - "<gray>Shops: <white>{0}</white></gray>"
+      lore-selling:
+        - "<green>▼ Selling ({0} shops)</green>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+      lore-buying:
+        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+      lore-footer:
+        - "<yellow>Click to view all shops</yellow>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for items</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    sort:
+      display: "<green>Sort: {0}</green>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      price-asc: "Price ↑"
+      price-desc: "Price ↓"
+      stock: "Stock"
+      name: "Name"
+    filter:
+      display: "<aqua>Filter: {0}</aqua>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      all: "All"
+      selling: "Selling"
+      buying: "Buying"
+    stock-filter:
+      display: "<gold>In Stock Only: {0}</gold>"
+      lore:
+        - "<gray>Click to toggle</gray>"
+    back:
+      display: "<white>Back to Market</white>"
+  shared:
+    previous-page:
+      display: "<white><< Previous Page</white>"
+    next-page:
+      display: "<white>Next Page >></white>"
+    page-info:
+      display: "<yellow>Page {0}/{1}</yellow>"
+    back:
+      display: "<white>Back</white>"
+    close:
+      display: "<red>Close</red>"
+  messages:
+    #Keeper menu messages
+    keeper:
+      #Shown when player clicks "Change Price" button
+      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      #Shown when player clicks "Delete Shop" button
+      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+    #Staff menu messages
+    staff:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      #Shown when player left-clicks a staff member to remove them
+      #{0} = staff member name
+      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      #Shown when player right-clicks a staff member to transfer ownership
+      #{0} = staff member name
+      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+    #Trade menu messages
+    trade:
+      #Shown when player clicks "Custom Order" button (buying)
+      #{0} = item amount per purchase
+      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player clicks "Custom Order" button (selling)
+      #{0} = item amount per purchase
+      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player enters invalid quantity (not multiple of item amount)
+      #{0} = item amount per purchase
+      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      #Shown when player enters quantity exceeding stock
+      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+    #Browse menu messages
+    browse:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
     gui-title: "Ver historial de compras"
@@ -1628,23 +1727,32 @@ history:
       - "<white>Impuesto: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>Tienda de empresa: <yellow>{0}</yellow></white>"
-      - "<white>Comprador: <yellow>{1}</yellow></white>"
+      - "<white>Buyer: <yellow>{1}</yellow></white>"
       - "<white>Artículo: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Saldo: <yellow>{4}</yellow></white>"
-      - "<white>Impuesto: <yellow>{5}</yellow></white>"
-      - "<white>Ganancia Final: <yellow>{6}</yellow></white>"
+      - "<white>Amount: <yellow>{4}</yellow></white>"
+      - "<white>Total: <yellow>{5}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Por favor espere, consultando...</gray>"
-    previous-page: "<white><< Página Anterior</white>"
-    next-page: "<white>Página siguiente >></white>"
     current-page: "<white>Página {0}</white>"
-    summary-icon-title: "<green>Resumen de la tienda de empresa"
-    recent-purchases: "<white>Compras recientes en <aqua>{0}</aqua>: <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>Ganancias recientes en <aqua>{0}</aqua>: <yellow>${1}</yellow></white>"
-    total-purchases: "<white>Compras totales: <yellow>{0}</yellow></white>"
-    total-balances: "<white>Ganancias totales: <yellow>${0}</yellow></white>"
+    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    summary-icon-title: "<yellow>Summary</yellow>"
+    summary-icon-description:
+      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
+      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
+      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
+      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>Total purchases: <yellow>{10}</yellow></white>"
+      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
+      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
+      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
+      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
+      - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>Total de compradores únicos: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Top {0} clientes valiosos</gold>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>No hay resultados</white>"
 about:
   text:

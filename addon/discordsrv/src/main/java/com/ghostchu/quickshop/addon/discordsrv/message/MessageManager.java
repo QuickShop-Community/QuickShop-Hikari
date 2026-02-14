@@ -2,9 +2,9 @@ package com.ghostchu.quickshop.addon.discordsrv.message;
 
 import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,7 @@ public class MessageManager {
         if(annotation == null) {
           continue;
         }
-        if(StringUtils.isEmpty(annotation.key())) {
+        if(CommonUtil.isEmptyString(annotation.key())) {
           continue;
         }
 
@@ -57,7 +57,7 @@ public class MessageManager {
         } else {
           plugin.getLogger().warning("Skipping message " + obj.getClass().getName() + "." + declaredMethod.getName() + " for registering: Unsupported return type: " + declaredMethod.getReturnType().getName());
         }
-      } catch(Throwable e) {
+      } catch(final Throwable e) {
         plugin.getLogger().log(Level.WARNING, "Failed to register message: " + declaredMethod.getDeclaringClass().getName() + "." + declaredMethod.getName(), e);
       }
     }
@@ -76,12 +76,12 @@ public class MessageManager {
     }
     try {
       final Object returns = method.getValue().invoke(method.getKey(), receiver, placeholders);
-      if(!(returns instanceof MessageEmbed embed)) {
+      if(!(returns instanceof final MessageEmbed embed)) {
         plugin.getLogger().log(Level.WARNING, "Cannot handle embed message: " + key + " Mismatched type!");
         return failSafeEmbedMessage(key);
       }
       return embed;
-    } catch(IllegalAccessException | InvocationTargetException e) {
+    } catch(final IllegalAccessException | InvocationTargetException e) {
       plugin.getLogger().log(Level.WARNING, "Cannot handle embed message: " + key, e);
       return failSafeEmbedMessage(key);
     }
@@ -111,12 +111,12 @@ public class MessageManager {
     }
     try {
       final Object returns = method.getValue().invoke(method.getKey(), receiver, placeholders);
-      if(!(returns instanceof String msg)) {
+      if(!(returns instanceof final String msg)) {
         plugin.getLogger().log(Level.WARNING, "Cannot handle message: " + key + " Mismatched type!");
         return failSafeMessage(key);
       }
       return msg;
-    } catch(IllegalAccessException | InvocationTargetException e) {
+    } catch(final IllegalAccessException | InvocationTargetException e) {
       plugin.getLogger().log(Level.WARNING, "Cannot handle message: " + key, e);
       return failSafeMessage(key);
     }

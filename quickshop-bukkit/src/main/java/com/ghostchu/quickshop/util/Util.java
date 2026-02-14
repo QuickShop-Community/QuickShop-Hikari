@@ -1,26 +1,33 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
+import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
-import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -37,6 +44,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -58,14 +66,18 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,8 +85,8 @@ import java.util.stream.Collectors;
 
 public class Util {
 
-  private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
-  private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
+  private static final Map<Material, Integer> CUSTOM_STACKSIZE = new HashMap<>();
+  private static final Set<Material> SHOPABLES = new HashSet<>();
   private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
   private static int BYPASSED_CUSTOM_STACKSIZE = -1;
   private static Yaml yaml = null;
@@ -91,7 +103,7 @@ public class Util {
 
   @Deprecated
   @ApiStatus.Internal
-  public static EnumMap<Material, Integer> getCustomStacksize() {
+  public static Map<Material, Integer> getCustomStacksize() {
 
     return CUSTOM_STACKSIZE;
   }
@@ -108,11 +120,10 @@ public class Util {
    */
   @ApiStatus.Internal
   @Deprecated
-  public static EnumSet<Material> getShopables() {
+  public static Set<Material> getShopables() {
 
     return SHOPABLES;
   }
-
 
   /**
    * Execute the Runnable in async thread. If it already on main-thread, will be move to async
@@ -131,6 +142,133 @@ public class Util {
     QuickShop.folia().getScheduler().runLaterAsync(runnable, 0);
   }
 
+  public static void playClickSound(@NotNull final Player player) {
+
+    if(plugin.getConfig().getBoolean("effect.sound.onclick")) {
+      player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
+    }
+  }
+
+  public static boolean createShop(@NotNull final Player player, @Nullable final Block block, @NotNull final BlockFace blockFace, @NotNull final EquipmentSlot hand, @NotNull final ItemStack item) {
+
+    Log.debug("==== Entering Shop Creation ====");
+
+    final QUser qUser = QUserImpl.createFullFilled(player);
+    if(block == null) {
+      Log.debug("Block is null");
+      return false; // This shouldn't happen because we have checked action type.
+    }
+    if(player.getGameMode() != GameMode.SURVIVAL) {
+      Log.debug("Not in survival mode");
+      return false; // Only survival :)
+    }
+
+    final ItemStack stack = item.clone();
+
+    final int maxSize = Util.getItemMaxStackSize(stack.getType());
+    if(stack.getAmount() > maxSize) {
+      stack.setAmount(maxSize);
+    }
+
+    if(stack.getType().isAir()) {
+      Log.debug("Invalid trade item: air");
+      return false; // Air cannot be used for trade
+    }
+    if(!Util.canBeShop(block)) {
+      Log.debug("Invalid shop block");
+      return false;
+    }
+
+    if(plugin.getConfig().getBoolean("disable-quick-create")) {
+      Log.debug("quick create disabled");
+      return false;
+    }
+    if(plugin.getConfig().getBoolean("shop.disable-quick-create")) {
+      Log.debug("quick create disabled");
+      return false;
+    }
+
+    ShopAction action = null;
+    if(plugin.perm().hasPermission(player, "quickshop.create.sell")) {
+      action = ShopAction.CREATE_SELL;
+    } else if(plugin.perm().hasPermission(player, "quickshop.create.buy")) {
+      action = ShopAction.CREATE_BUY;
+    }
+    if(action == null) {
+      Log.debug("No permission");
+      // No permission
+      return false;
+    }
+    // Double chest creation permission check
+    if(Util.isDoubleChest(block.getBlockData()) &&
+       !plugin.perm().hasPermission(player, "quickshop.create.double")) {
+      plugin.text().of(player, "no-double-chests").send();
+      return false;
+    }
+    // Blacklist check
+    if(plugin.getShopItemBlackList().isBlacklisted(stack)
+       && !plugin.perm()
+            .hasPermission(player, "quickshop.bypass." + stack.getType().name())) {
+      plugin.text().of(player, "blacklisted-item").send();
+      Log.debug("Invalid item - blacklisted");
+      return false;
+    }
+    // Check if had enderchest shop creation permission
+    if(block.getType() == Material.ENDER_CHEST
+       && !plugin.perm().hasPermission(player, "quickshop.create.enderchest")) {
+      Log.debug("Invalid permission for enderchest");
+      return false;
+    }
+    // Check if block is a wall sign
+    if(Util.isWallSign(block.getType())) {
+      Log.debug("Block is wallsign");
+      return false;
+    }
+    // Finds out where the sign should be placed for the shop
+    final Block last;
+    if(Util.getVerticalFacing().contains(blockFace)) {
+
+      last = block.getRelative(blockFace);
+    } else {
+
+      final Location playerLocation = player.getLocation();
+      final double x = playerLocation.getX() - block.getX();
+      final double z = playerLocation.getZ() - block.getZ();
+      if(Math.abs(x) > Math.abs(z)) {
+        if(x > 0) {
+          last = block.getRelative(BlockFace.EAST);
+        } else {
+          last = block.getRelative(BlockFace.WEST);
+        }
+      } else {
+        if(z > 0) {
+          last = block.getRelative(BlockFace.SOUTH);
+        } else {
+          last = block.getRelative(BlockFace.NORTH);
+        }
+      }
+    }
+
+    // Send creation menu.
+    final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
+
+    final ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, null, qUser, block.getLocation());
+
+    if(event.callCancellableEvent()) {
+
+      Log.debug("ShopCreateEvent PRE_CANCELLABLE phase cancelled");
+      return false;
+    }
+
+    plugin.getShopManager().getInteractiveManager().put(player.getUniqueId(), info);
+    plugin.text().of(player, "how-much-to-trade-for", Util.getItemStackName(stack),
+                     plugin.isAllowStack() &&
+                     plugin.perm().hasPermission(player, "quickshop.create.stacks")
+                     ? stack.getAmount() : 1).send();
+    Log.debug("==== Ending Shop Creation ====");
+    return false;
+  }
+
   /**
    * Returns true if the given block could be used to make a shop out of.
    *
@@ -147,7 +285,7 @@ public class Util {
     if(!isShoppables(b.getType())) {
       return false;
     }
-    final BlockState bs = PaperLib.getBlockState(b, false).getState();
+    final BlockState bs = b.getState(false);
     final boolean container = bs instanceof InventoryHolder;
     if(!container) {
       if(Util.isDevMode()) {
@@ -160,7 +298,28 @@ public class Util {
 
   public static boolean isBlacklistWorld(@NotNull final World world) {
 
+    final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
+    if(!whitelist.isEmpty()) {
+      return !whitelist.contains(world.getName());
+    }
+    // fall back to blacklist check
     return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
+  }
+
+  /**
+   * Check if a world is blacklisted for database loading
+   *
+   * @param worldName The name of the world to check
+   *
+   * @return true if the world should be skipped, false otherwise
+   */
+  public static boolean isDatabaseLoadingBlacklisted(@NotNull final String worldName) {
+
+    final List<String> whitelist = plugin.getConfig().getStringList("database-loading-whitelist-worlds");
+    if(!whitelist.isEmpty()) {
+      return !whitelist.contains(worldName);
+    }
+    return plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName);
   }
 
   /**
@@ -405,9 +564,9 @@ public class Util {
       }
       yamlConfiguration.loadFromString(config);
       return yamlConfiguration.getItemStack("item");
-    } catch(final Exception e) {
+    } catch(final Throwable th) {
 
-      QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
+      QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", th);
       Log.debug("Failed to load data to the ItemStack: " + config);
       return null;
     }
@@ -529,7 +688,7 @@ public class Util {
     Component result = getItemCustomName(itemStack);
     if(isEmptyComponent(result)) {
       try {
-        result = plugin.getPlatform().getTranslation(itemStack);
+        result = plugin.platform().getTranslation(itemStack);
       } catch(final Throwable th) {
         result = MsgUtil.setHandleFailedHover(null, Component.text(itemStack.getType().getKey().toString()));
         plugin.logger().warn("Failed to handle translation for ItemStack {}", Util.serialize(itemStack), th);
@@ -548,25 +707,6 @@ public class Util {
       }
     }
 
-    if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("MUSIC_DISC")) {
-
-      final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
-      final String[] split = working.split("_");
-      if(split.length >= 3) {
-
-        return Component.text(split[1] + " " + split[2]);
-      }
-    }
-
-    if(itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT).contains("SMITHING_TEMPLATE")) {
-
-      final String working = itemStack.getType().getKey().getKey().toUpperCase(Locale.ROOT);
-      final String[] split = working.split("_");
-      if(split.length >= 2) {
-
-        return Component.text(split[0] + " " + split[1]);
-      }
-    }
 
     if(!itemStack.hasItemMeta() || QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
 
@@ -583,7 +723,7 @@ public class Util {
 
     if(Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() || itemName) {
 
-      return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
+      return plugin.platform().getDisplayName(itemStack.getItemMeta());
     }
     return null;
   }
@@ -672,7 +812,7 @@ public class Util {
 
     Component name;
     try {
-      name = plugin.getPlatform().getTranslation(enchantment);
+      name = plugin.platform().getTranslation(enchantment);
     } catch(final Throwable throwable) {
       name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
       plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
@@ -705,6 +845,48 @@ public class Util {
       total += value.getAmount();
     }
     return total;
+  }
+
+  /**
+   * Waits for the completion of a given {@link CompletableFuture} within a specified timeout period.
+   * Throws appropriate exceptions if the future times out, encounters an execution error,
+   * or the thread is interrupted.
+   *
+   * @param <T> The type of the result returned by the CompletableFuture.
+   * @param future The CompletableFuture to wait for; must not be null.
+   * @param timeout The maximum time to wait for the future to complete.
+   * @param unit The time unit of the timeout argument.
+   * @param description A description of the future operation, used for exception messages.
+   * @return The result of the completed CompletableFuture.
+   * @throws IllegalStateException If the provided future is null.
+   * @throws RuntimeException If the future times out, is interrupted, or encounters an execution error.
+   */
+  public static <T> T waitForFuture(final CompletableFuture<T> future, final long timeout, final TimeUnit unit, final String description) throws RuntimeException {
+
+    if(future == null) {
+
+      throw new IllegalStateException("Future for " + description + " was null");
+    }
+    try {
+
+      return future.get(timeout, unit);
+    } catch(final TimeoutException e) {
+
+      throw new RuntimeException("Timed out waiting for " + description, e);
+    } catch(final ExecutionException e) {
+
+      //Unwrap the cause so logs are more useful
+      final Throwable cause = (e.getCause() != null)? e.getCause() : e;
+      if(cause instanceof final RuntimeException re) {
+
+        throw re;
+      }
+      throw new RuntimeException("Error while waiting for " + description, cause);
+    } catch(final InterruptedException e) {
+
+      Thread.currentThread().interrupt();
+      throw new RuntimeException("Interrupted while waiting for " + description, e);
+    }
   }
 
   /**
@@ -912,14 +1094,17 @@ public class Util {
       if("*".equalsIgnoreCase(data[0])) {
         BYPASSED_CUSTOM_STACKSIZE = Integer.parseInt(data[1]);
       }
+
       final Material mat = Material.matchMaterial(data[0]);
       if(mat == null || mat == Material.AIR) {
         plugin.logger().warn("{} not a valid material in custom-item-stacksize section.", material);
         continue;
       }
+
       CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
     }
     try {
+
       dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
     } catch(final Exception ignored) {
     }
@@ -1010,11 +1195,6 @@ public class Util {
         return false;
       }
     }
-  }
-
-  public static boolean isDisplayAllowBlock(@NotNull final Material mat) {
-
-    return mat.isTransparent() || isWallSign(mat);
   }
 
   /**
@@ -1242,6 +1422,7 @@ public class Util {
     if(PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean(false)) {
       return true;
     }
+
     return Bukkit.getServer().spigot().getConfig().getBoolean("settings.bungeecord");
   }
 }

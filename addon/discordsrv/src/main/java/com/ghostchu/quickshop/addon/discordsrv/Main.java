@@ -70,7 +70,7 @@ public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
     quickshop.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode(), this, "discordalert");
     try {
       this.databaseHelper = new DiscordDatabaseHelper(this, quickshop.getSqlManager(), quickshop.getDbPrefix());
-    } catch(SQLException e) {
+    } catch(final SQLException e) {
       getLogger().log(Level.SEVERE, "Failed to connect to database, please check your database settings.", e);
       Bukkit.getPluginManager().disablePlugin(this);
       return;
@@ -92,12 +92,6 @@ public class Main extends JavaPlugin implements Listener, SlashCommandProvider {
   public JDAWrapper getJdaWrapper() {
 
     return jdaWrapper;
-  }
-
-  @Deprecated
-  public boolean isServerNotifactionFeatureEnabled(@NotNull final NotificationFeature feature) {
-
-    return isServerNotificationFeatureEnabled(feature);
   }
 
   public boolean isServerNotificationFeatureEnabled(@NotNull final NotificationFeature feature) {

@@ -24,7 +24,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftReflection;
-import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
@@ -122,7 +121,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
     values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get(Boolean.class), true));
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getConfig().getBoolean("shop.display-item-use-name")) {
+    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -267,12 +266,11 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
         if(player.getClass().getName().contains("TemporaryPlayer")) {
           return;
         }
-        final StructureModifier<ChunkCoordIntPair> intPairStructureModifier = event.getPacket().getChunkCoordIntPairs();
-        final ChunkCoordIntPair pair = intPairStructureModifier.read(0);
-        //chunk x
-        final int x = pair.getChunkX();
-        //chunk z
-        final int z = pair.getChunkZ();
+        
+          final StructureModifier<Integer> intModifier = event.getPacket().getIntegers();
+          final int x = intModifier.read(0);
+          final int z = intModifier.read(1);
+
         VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
           for(final VirtualDisplayItem<?> target : targetList) {
 

@@ -53,7 +53,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
       return;
     }
     if(parser.getArgs().size() == 1) {
-      switch(parser.getArgs().get(0)) {
+      switch(parser.getArgs().getFirst()) {
         case "accept", "allow", "yes" -> {
           final ShopUtil.PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
           taskCache.invalidate(sender.getUniqueId());
@@ -73,7 +73,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
           task.cancel(true);
         }
         default -> {
-          final String name = parser.getArgs().get(0);
+          final String name = parser.getArgs().getFirst();
           plugin.getPlayerFinder().name2UuidFuture(name).whenComplete((uuid, throwable)->{
             if(uuid == null) {
               plugin.text().of(sender, "unknown-player").send();
@@ -107,7 +107,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
         return;
       }
       Util.asyncThreadRun(()->{
-        final QUser fromQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(0));
+        final QUser fromQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().getFirst());
         final QUser targetQUser = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), parser.getArgs().get(1));
 
         final Player fromPlayer = fromQUser.getUniqueIdIfRealPlayer().map(Bukkit::getPlayer).orElse(null);
@@ -126,7 +126,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
         final ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(fromQUser, targetQUser, shopList);
         Util.mainThreadRun(()->{
           task.commit(false);
-          plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
+          plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().getFirst(), parser.getArgs().get(1)).send();
         });
       });
 

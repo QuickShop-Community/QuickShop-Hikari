@@ -21,6 +21,7 @@ import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimTransferEvent;
 import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -173,7 +175,8 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
     for(final Claim claim : event.getClaims()) {
-      handleClaimTrustChanged(Objects.requireNonNullElse(claim.parent, claim), event);
+
+      handleClaimTrustChanged(claim, event);
     }
   }
 
@@ -213,20 +216,35 @@ public final class Main extends CompatibilityModule implements Listener {
     if(event.isGiven()) {
       return;
     }
-    final List<Shop> shops = getApi().getShopManager().getAllShops();
-    for(final Shop shop : shops) {
-      if(claim.getOwnerID().equals(shop.getOwner().getUniqueId())) {
+
+    for(final Chunk chunk : claim.getChunks()) {
+
+      final Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+
+      if(shops.isEmpty()) {
+
         continue;
       }
-      if(event.getIdentifier().equals(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
-        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-        getApi().getShopManager().deleteShop(shop);
-      } else if(event.getIdentifier().contains(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
-        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-        getApi().getShopManager().deleteShop(shop);
-      } else if("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
-        getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
-        getApi().getShopManager().deleteShop(shop);
+
+      for(final Shop shop : shops.values()) {
+
+        if(claim.getOwnerID().equals(shop.getOwner().getUniqueId())) {
+
+          continue;
+        }
+        if(event.getIdentifier().equals(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
+
+          getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+          getApi().getShopManager().deleteShop(shop);
+        } else if(event.getIdentifier().contains(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()).toString())) {
+
+          getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [Group] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+          getApi().getShopManager().deleteShop(shop);
+        } else if("all".equals(event.getIdentifier()) || "public".equals(event.getIdentifier())) {
+
+          getApi().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(event.getChanger()), String.format("[%s Integration]Shop %s deleted caused by [All/Public] Claim/SubClaim Trust Changed", this.getName(), shop), shop.saveToInfoStorage()));
+          getApi().getShopManager().deleteShop(shop);
+        }
       }
     }
   }

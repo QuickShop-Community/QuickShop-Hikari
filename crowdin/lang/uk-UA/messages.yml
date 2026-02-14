@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Quickshop відключений у цьому св
 how-much-to-trade-for: <green>Введіть у чат ціну, за якою бажаєте продавати <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop виявив зміну мови вашого клієнта. Тепер для вас використовується {0}.
 shops-backingup: Створення резервної копії магазину з бази даних...
-_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/qs-hikari.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
 unlimited-shop-owner-changed: <yellow>Власника безлімітного магазину було змінено на {0}.
 bad-command-usage-detailed: '<red>Неправильні аргументи команди! Приймаються наступні параметри: <gray>{0}'
 thats-not-a-number: <red>Неправильне число
@@ -373,6 +373,8 @@ controlpanel:
   remove-hover: <yellow>Натисніть, щоб видалити цей магазин.
   toggledisplay-hover: <yellow>Перемкнути статус відображення предмета магазину
   refill: '<green>Поповнити: Поповнити предмети <yellow>[<bold><light_purple>OK</light_purple></bold>]'
+  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
+  inventory-hover: <yellow>Open the shop's inventory.
   freeze-hover: <yellow>Перемкнути статус заморозки магазину.
   lock-hover: <yellow>Увімкнути/вимкнути захист блокування магазину.
   item-hover: <yellow>Натисніть, щоб змінити предмет магазину
@@ -761,6 +763,10 @@ addon:
   lands:
     world-not-enabled: <red>Вам не дозволено створювати або торгувати в цьому світі.
     creation-denied: <red>У вас немає дозволу на створення магазинів на цій землі.
+  quests:
+    create-quest-required: <red>Ви повинні завершити завдання <aqua>{0}</aqua>, щоб мати змогу створити магазин.
+    sell-quest-required: <red>Ви повинні завершити завдання <aqua>{0}</aqua>, щоб мати змогу продавати предмети в магазині.
+    buy-quest-required: <red>Ви повинні завершити завдання <aqua>{0}</aqua>, щоб мати змогу купувати предмети в магазині.
   dominion:
     creation-denied: <red>У вас немає дозволу на створення магазинів у цій зоні Dominion.
     trade-denied: <red>Магазин повинен знаходитися в межах Dominion, щоб з ним можна було торгувати.
@@ -803,7 +809,7 @@ addon:
          "embed":
            {
              "title": ":inbox_tray: Хтось продав предмети у ваш магазин",
-             "description": "Гравець %%purchase.name%% продав x%%purchase.amount%% %%shop.item.name%% у ваш магазин.",
+             "description": "Гравець %%purchase.name%% продав x%%purchase.amount%% %%shop.item.name%% вашому магазину.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -816,7 +822,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "Сповіщення QuickShop-Hikari Discord",
+               "text": "Discord-сповіщення QuickShop-Hikari",
                "icon_url": ""
              },
              "fields": [
@@ -826,7 +832,7 @@ addon:
                  "inline": false
                },
                {
-                 "name": "Покупець",
+                 "name": "Продавець",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -835,6 +841,7 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
+               {
                {
                  "name": "Кількість",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
@@ -1447,7 +1454,7 @@ addon:
       Безлімітно: {6}
       Локація: {7}
   bluemap:
-    markerset-title: Магазини QuickShop-Hikari
+    markerset-title: QuickShop-Hikari Shops
     marker-name: '{0} @ {2} @ {3} за x{4} @ {5}'
     marker-description: |
       Назва: {0}
@@ -1552,81 +1559,170 @@ price-suggest: "<green>На основі даних з <aqua>{0}</aqua> мага
 price-suggest-multi: "<green>Пропозиція для типу {0}.</green>{1}"
 suggest-wait: "<green>Будь ласка, зачекайте... Розрахунок рекомендованої ціни."
 gui:
-  shared:
-    previous-page: "<white><< Попередня сторінка</white>"
-    next-page: "<white>Наступна сторінка >></white>"
-    previous-menu: "<white>Попереднє меню</white>"
-  player:
-    select:
-      - "<yellow>Натисніть, щоб вибрати цього гравця.</yellow>"
-  staff:
-    confirm-remove: "<red>Введіть 'confirm' для підтвердження видалення '{0}' як співробітника.</red>"
-    confirm-transfer: "<red>Введіть 'confirm' для підтвердження передачі цього магазину гравцю {0}.</red>"
-    add-staff: "<green>Додати співробітника</green>"
-    head-icon:
-      display: "<aqua>{0}</aqua>"
-      lore:
-        - "<yellow>Лівий клік, щоб видалити співробітника.</yellow>"
-        - "<yellow>Правий клік, щоб передати власність</yellow>"
-        - "<yellow>цьому співробітнику.</yellow>"
   trade:
-    title: "Оглядач магазинів"
-    custom:
-      display: "<bold><blue>Власне замовлення</blue></bold>"
-      lore-buy:
-        - "<white>Оберіть кількість,</white>"
-        - "<white>яку хочете купити.</white>"
-        - "<yellow>Натисніть, щоб ввести свою кількість.</yellow>"
-        - "<yellow>Має бути кратно <bold><red>{0}</red></bold></yellow>"
-        - "<white>Запас: <bold><red>{1}</red></bold>"
-      lore-sell:
-        - "<white>Оберіть кількість,</white>"
-        - "<white>яку хочете продати.</white>"
-        - "<yellow>Натисніть, щоб ввести свою кількість.</yellow>"
-        - "<yellow>Має бути кратно <bold><red>{0}</red></bold></yellow>"
-      enter-buy: "<yellow>Введіть кількість, яку хочете купити, має бути кратно {0}. Введіть 0 для виходу.</yellow>"
-      enter-sell: "<yellow>Введіть кількість, яку хочете продати, має бути кратно {0}. Введіть 0 для виходу.</yellow>"
-      multiple: "<yellow>Введено недійсну кількість! Має бути кратно {0}. Введіть 0 для виходу.</yellow>"
-      stock: "<yellow>Введено недійсну кількість! Недостатньо товару в магазині. Введіть 0 для виходу.</yellow>"
-    quantity:
-      display-buy: "<bold><green>Купити {0}</green></bold>"
-      display-sell: "<bold><green>Продати {0}</green></bold>"
+    title: "<dark_aqua>Shop</dark_aqua>"
+    info-stock:
+      display: "<yellow>Stock Information</yellow>"
       lore:
-        - "<bold><yellow>{0}</yellow></bold><white> за </white><bold><green>{1}</green></bold>"
-        - "<white>Разом: </white><bold><green>{2}</green></bold>"
-  browse:
-    title: "Оглядач магазинів"
-    info:
-      - "<green>Власник: </green><yellow>{0}</yellow>"
-      - "<green>Локація: </green><yellow>{1}</yellow>"
-      - "<green>Тип: </green><yellow>{2}</yellow>"
-      - "<green>Ціна: </green><yellow>{3}</yellow>"
-      - "<green>Запас: </green><yellow>{4}</yellow>"
+        - "<gray>Available: <white>{0}</white></gray>"
+    info-price:
+      display: "<gold>Price Information</gold>"
+      lore:
+        - "<gray>Price: <white>{0}</white></gray>"
+        - "<gray>Per: <white>{1} item(s)</white></gray>"
+    info-seller:
+      display: "<aqua>Seller Information</aqua>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+    custom-amount:
+      display: "<bold><blue>Custom Order</blue></bold>"
+    quantity-button:
+      lore:
+        - "<yellow>{0}</yellow>"
   keeper:
-    title: "Керування магазином"
-    change-icon:
-      display: "<bold><green>Змінити ціну</green></bold>"
-      enter: "<yellow>Введіть нову ціну в чаті.</yellow>"
+    title: "<dark_aqua>Shop Management</dark_aqua>"
+    change-price:
+      display: "<bold><green>Change Price</green></bold>"
       lore:
-        - "<white>Натисніть, щоб змінити ціну кожного предмета у вашому магазині.</white>"
-        - "<white>Поточна ціна:</white> <yellow>{0}</yellow>"
-    mode-icon:
-      display: "<bold><green>Змінити режим</green></bold>"
+        - "<gray>Current price: <white>{0}</white></gray>"
+        - ""
+        - "<yellow>Click to change price</yellow>"
+    mode-toggle:
+      display: "<bold><green>Change Mode</green></bold>"
       lore:
-        - "<white>Натисніть, щоб перемкнутися між режимами купівлі/продажу.</white>"
-        - "<white>Поточний режим: </white><red>{0}</red>"
-        - "<yellow>Натисніть, щоб перемкнути на </yellow><red>{1}</red>"
-    staff-icon:
-      display: "<bold><aqua>Персонал магазину</aqua></bold>"
-      no-permission: "<bold><red>Немає дозволу керувати персоналом</red></bold>"
+        - "<gray>Current: <white>{0}</white></gray>"
+        - "<gray>Click to change to: <white>{1}</white></gray>"
+    inventory:
+      display: "<bold><green>View Inventory</green></bold>"
       lore:
-        - "<white>Натисніть, щоб керувати персоналом вашого магазину.</white>"
-    remove-icon:
-      display: "<bold><red>Видалити магазин</red></bold>"
-      confirm: "<yellow>Введіть 'confirm' в чаті для підтвердження видалення. Або введіть будь-що інше, щоб скасувати.</yellow>"
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's chest inventory.</gray>"
+    staff:
+      display: "<bold><aqua>Shop Staff</aqua></bold>"
       lore:
-        - "<white>Натисніть, щоб видалити ваш магазин.</white>"
-        - "<grey>Ви також можете зламати табличку/скриню.</grey>"
+        - "<gray>Click to manage your</gray>"
+        - "<gray>shop's staff members.</gray>"
+    history:
+      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      lore:
+        - "<gray>Click to view your</gray>"
+        - "<gray>shop's transaction history.</gray>"
+    remove:
+      display: "<bold><red>Delete Shop</red></bold>"
+      lore:
+        - "<gray>Click to delete your shop.</gray>"
+        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+  staff:
+    title: "<dark_aqua>Staff Management</dark_aqua>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for players</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    add-staff:
+      display: "<green>Add Staff Member</green>"
+      lore:
+        - "<gray>Click to add a new</gray>"
+        - "<gray>staff member to your shop.</gray>"
+    back:
+      display: "<white>Back to Shop</white>"
+  browse:
+    title: "<dark_aqua>Market Browser</dark_aqua>"
+    shop-item:
+      lore:
+        - "<green>Owner: </green><yellow>{0}</yellow>"
+        - "<green>Location: </green><yellow>{1}</yellow>"
+        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Price: </green><yellow>{3}</yellow>"
+        - "<green>Stock: </green><yellow>{4}</yellow>"
+    grouped-item:
+      display: "<yellow>{0}</yellow>"
+      lore-title:
+        - "<gray>Shops: <white>{0}</white></gray>"
+      lore-selling:
+        - "<green>▼ Selling ({0} shops)</green>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+        - "<gray> Stock: <aqua>{5}</aqua></gray>"
+      lore-buying:
+        - "<#FFA500>▲ Buying ({0} shops)</#FFA500>"
+        - "<gray> Price: <white>{1} - {2}</white></gray>"
+        - "<gray> Average: <yellow>{3}</yellow></gray>"
+        - "<gray> Median: <gold>{4}</gold></gray>"
+      lore-footer:
+        - "<yellow>Click to view all shops</yellow>"
+    search:
+      display: "<yellow>Search: {0}</yellow>"
+      lore:
+        - "<gray>Left-click to search for items</gray>"
+        - "<gray>Right-click to clear search</gray>"
+    sort:
+      display: "<green>Sort: {0}</green>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      price-asc: "Price ↑"
+      price-desc: "Price ↓"
+      stock: "Stock"
+      name: "Name"
+    filter:
+      display: "<aqua>Filter: {0}</aqua>"
+      lore:
+        - "<gray>Click to cycle</gray>"
+      all: "All"
+      selling: "Selling"
+      buying: "Buying"
+    stock-filter:
+      display: "<gold>In Stock Only: {0}</gold>"
+      lore:
+        - "<gray>Click to toggle</gray>"
+    back:
+      display: "<white>Back to Market</white>"
+  shared:
+    previous-page:
+      display: "<white><< Previous Page</white>"
+    next-page:
+      display: "<white>Next Page >></white>"
+    page-info:
+      display: "<yellow>Page {0}/{1}</yellow>"
+    back:
+      display: "<white>Back</white>"
+    close:
+      display: "<red>Close</red>"
+  messages:
+    #Keeper menu messages
+    keeper:
+      #Shown when player clicks "Change Price" button
+      enter-price: "<yellow>Enter a new price in chat.</yellow>"
+      #Shown when player clicks "Delete Shop" button
+      confirm-delete: "<yellow>Type '<white>confirm</white>' in chat to delete your shop. Type anything else to cancel.</yellow>"
+    #Staff menu messages
+    staff:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter a player name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
+      #Shown when player left-clicks a staff member to remove them
+      #{0} = staff member name
+      confirm-remove: "<yellow>Type '<white>confirm</white>' to remove <red>{0}</red> as staff. Type anything else to cancel.</yellow>"
+      #Shown when player right-clicks a staff member to transfer ownership
+      #{0} = staff member name
+      confirm-transfer: "<yellow>Type '<white>confirm</white>' to transfer ownership to <green>{0}</green>. Type anything else to cancel.</yellow>"
+    #Trade menu messages
+    trade:
+      #Shown when player clicks "Custom Order" button (buying)
+      #{0} = item amount per purchase
+      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player clicks "Custom Order" button (selling)
+      #{0} = item amount per purchase
+      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      #Shown when player enters invalid quantity (not multiple of item amount)
+      #{0} = item amount per purchase
+      invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
+      #Shown when player enters quantity exceeding stock
+      invalid-stock: "<red>Invalid quantity! Not enough stock available. Enter <white>0</white> to cancel.</red>"
+    #Browse menu messages
+    browse:
+      #Shown when player left-clicks "Search" button (right-click clears instantly)
+      enter-search: "<yellow>Enter an item name to search. Type '<white>clear</white>' to reset, or right-click the search button.</yellow>"
 history:
   shop:
     gui-title: "Переглянути історію покупок"
@@ -1647,23 +1743,32 @@ history:
       - "<white>Податок: <yellow>{4}</yellow></white>"
     log-icon-description-with-store-name:
       - "<white>Магазин: <yellow>{0}</yellow></white>"
-      - "<white>Покупець: <yellow>{1}</yellow></white>"
+      - "<white>Buyer: <yellow>{1}</yellow></white>"
       - "<white>Предмет: <yellow>{2} <aqua>x{3}</aqua></yellow></white>"
-      - "<white>Баланс: <yellow>{4}</yellow></white>"
-      - "<white>Податок: <yellow>{5}</yellow></white>"
-      - "<white>Кінцевий заробіток: <yellow>{6}</yellow></white>"
+      - "<white>Amount: <yellow>{4}</yellow></white>"
+      - "<white>Total: <yellow>{5}</yellow></white>"
+      - "<white>Tax: <yellow>{5}</yellow></white>"
+      - "<white>Net: <yellow>{6}</yellow></white>"
     query-icon: "<gray>Будь ласка, зачекайте, йде запит...</gray>"
-    previous-page: "<white><< Попередня сторінка</white>"
-    next-page: "<white>Наступна сторінка >></white>"
     current-page: "<white>Сторінка {0}</white>"
-    summary-icon-title: "<green>Підсумок магазину"
-    recent-purchases: "<white>Недавні <aqua>{0}</aqua> покупки: <yellow>{1}</yellow></white>"
-    recent-purchase-balance: "<white>Недавній <aqua>{0}</aqua> оборот: <yellow>{1}</yellow></white>"
-    total-purchases: "<white>Всього покупок: <yellow>{0}</yellow></white>"
-    total-balances: "<white>Загальний оборот: <yellow>{0}</yellow></white>"
+    multi-shops-icon-title: "<yellow>Multiple Shops</yellow>"
+    summary-icon-title: "<yellow>Summary</yellow>"
+    summary-icon-description:
+      - "<white>Total unique purchasers: <yellow>{0}</yellow></white>"
+      - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
+      - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
+      - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
+      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>Total purchases: <yellow>{10}</yellow></white>"
+      - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
+      - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
+      - "<white>Recent <aqua>{15}</aqua> turnover: <yellow>{16}</yellow></white>"
+      - "<white>Recent <aqua>{17}</aqua> turnover: <yellow>{18}</yellow></white>"
+      - "<white>Total turnover: <yellow>{19}</yellow></white>"
     total-unique-purchasers: "<white>Всього унікальних покупців: <yellow>{0}</yellow></white>"
+    top-n-valuable-customers-entry:
+      - "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     top-n-valuable-customers-title: "<gold>Топ {0} найцінніших клієнтів</gold>"
-    top-n-valuable-customers-entry: "<white>- <yellow>{0}</yellow> <aqua>{1}</aqua></white>"
     no-result: "<white>Немає результатів</white>"
 about:
   text:

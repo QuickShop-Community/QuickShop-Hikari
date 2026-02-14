@@ -87,12 +87,12 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     final List<Entity> entities = new ArrayList<>();
     for(final World world : Bukkit.getWorlds()) {
       for(final Entity entity : world.getEntities()) {
-        if(entity instanceof Item itemEntity) {
+        if(entity instanceof final Item itemEntity) {
           if(AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
             entities.add(entity);
           }
         }
-        if(entity instanceof ItemDisplay itemDisplay) {
+        if(entity instanceof final ItemDisplay itemDisplay) {
           if(AbstractDisplayItem.checkIsGuardItemStack(itemDisplay.getItemStack())) {
             entities.add(entity);
           }
@@ -112,11 +112,11 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
     final List<String> subParams = new ArrayList<>(parser.getArgs());
     subParams.remove(0);
-    final String arg = parser.getArgs().get(0);
+    final String arg = parser.getArgs().getFirst();
 
     final BiConsumer<CommandSender, List<String>> executor = subParamMapping.get(arg);
     if(executor == null) {
-      plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
+      plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().getFirst()).send();
       return;
     }
 
@@ -131,8 +131,12 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
   private void handleItemInfo(final CommandSender sender, final List<String> subParams) {
 
-    if(!(sender instanceof Player player)) {
+    if(!(sender instanceof final Player player)) {
       return;
+    }
+    if(player.getInventory().getItemInMainHand().getType().isAir()) {
+        plugin.text().of(sender, "no-anythings-in-your-hand").send();
+        return;
     }
     final String hand = player.getInventory().getItemInMainHand().getItemMeta().getAsString();
     plugin.text().of(sender, "debug.item-info-hand-as-string", hand, Hashing.crc32().hashString(hand, StandardCharsets.UTF_8).toString()).send();
@@ -148,12 +152,11 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
   private void handleSetHikariCPCapacity(final CommandSender sender, final List<String> subParams) {
 
-    final int size = Integer.parseInt(subParams.get(0));
+    final int size = Integer.parseInt(subParams.getFirst());
     final HikariDataSource hikariDataSource = (HikariDataSource)plugin.getSqlManager().getDataSource();
     hikariDataSource.setMaximumPoolSize(size);
     hikariDataSource.setMinimumIdle(size);
     plugin.text().of(sender, "debug.hikari-cp-size-tweak", size).send();
-    ;
   }
 
   private void handleDbConnectionTest(final CommandSender sender, final List<String> subParams) {
@@ -161,22 +164,21 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     plugin.text().of(sender, "debug.hikari-cp-testing").send();
     try {
       CompletableFuture.supplyAsync(()->{
-        try(Connection connection = plugin.getSqlManager().getConnection()) {
+        try(final Connection connection = plugin.getSqlManager().getConnection()) {
           if(connection.isValid(1000)) {
             plugin.text().of(sender, "debug.hikari-cp-working").send();
-            ;
           } else {
             plugin.text().of(sender, "debug.hikari-cp-not-working");
           }
-        } catch(SQLException e) {
+        } catch(final SQLException e) {
           plugin.text().of(sender, "internal-error").send();
           e.printStackTrace();
         }
         return null;
       }).get(5, TimeUnit.SECONDS);
-    } catch(TimeoutException e) {
+    } catch(final TimeoutException e) {
       plugin.text().of(sender, "debug.hikari-cp-timeout").send();
-    } catch(ExecutionException | InterruptedException e) {
+    } catch(final ExecutionException | InterruptedException e) {
       plugin.text().of(sender, "internal-error").send();
       e.printStackTrace();
     }
@@ -210,7 +212,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       sender.sendMessage("Idle connections: " + hikariPool.getIdleConnections());
       sender.sendMessage("Total connections: " + hikariPool.getTotalConnections());
       sender.sendMessage("Threads Awaiting connections: " + hikariPool.getThreadsAwaitingConnection());
-    } catch(Exception e) {
+    } catch(final Exception e) {
       plugin.logger().warn("Failed retrieve HikariPool internal state.", e);
     }
   }
@@ -261,7 +263,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "debug.property-incorrect").send();
       return;
     }
-    final String[] split = subParams.get(0).split("=");
+    final String[] split = subParams.getFirst().split("=");
     if(split.length < 1) {
       plugin.text().of(sender, "debug.property-incorrect").send();
       return;
@@ -366,7 +368,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
       return;
     }
-    printHandlerList(sender, remove.get(0));
+    printHandlerList(sender, remove.getFirst());
   }
 
   private void handleSigns(@NotNull final CommandSender sender) {
@@ -385,7 +387,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       plugin.text().of("debug.operation-missing");
       return;
     }
-    plugin.text().of(sender, "debug.operation-invalid", remove.get(0)).send();
+    plugin.text().of(sender, "debug.operation-invalid", remove.getFirst()).send();
   }
 
   private void handleSignsUpdate(final CommandSender sender, final List<String> remove) {
@@ -395,7 +397,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
       return;
     }
     plugin.text().of(sender, "debug.update-player-shops-signs-create-async-task").send();
-    plugin.getPlayerFinder().name2UuidFuture(remove.get(0)).whenComplete((uuid, throwable)->{
+    plugin.getPlayerFinder().name2UuidFuture(remove.getFirst()).whenComplete((uuid, throwable)->{
       if(throwable != null) {
         plugin.text().of(sender, "internal-error", throwable.getMessage()).send();
         return;
@@ -435,7 +437,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                                                                                         + ChatColor.GREEN
                                                                                         + listener1.getListener().getClass().getCanonicalName()));
       }
-    } catch(Exception th) {
+    } catch(final Exception th) {
       MsgUtil.sendDirectMessage(sender, Component.text("ERR " + th.getMessage()).color(NamedTextColor.RED));
       plugin.logger().warn("An error has occurred while getting the HandlerList", th);
     }
@@ -447,7 +449,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
           @NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
-      return List.copyOf(subParamMapping.keySet()).stream().filter(s->s.startsWith(parser.getArgs().get(0))).toList();
+      return List.copyOf(subParamMapping.keySet()).stream().filter(s->s.startsWith(parser.getArgs().getFirst())).toList();
     }
     return Collections.emptyList();
   }

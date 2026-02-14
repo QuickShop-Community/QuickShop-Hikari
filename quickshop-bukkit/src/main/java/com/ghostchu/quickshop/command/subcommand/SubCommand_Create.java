@@ -56,6 +56,12 @@ public class SubCommand_Create implements CommandHandler<Player> {
           if(amount < 1) {
             amount = 1;
           }
+
+          final int maxSize = Util.getItemMaxStackSize(material);
+          if(amount > maxSize) {
+            amount = maxSize;
+          }
+
           item = new ItemStack(material, amount);
         } catch(final NumberFormatException e) {
           item = new ItemStack(material, 1);
@@ -66,7 +72,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
     }
     Log.debug("Pending task for material: " + item);
 
-    final String price = parser.getArgs().get(0);
+    final String price = parser.getArgs().getFirst();
 
     while(bIt.hasNext()) {
       final Block b = bIt.next();

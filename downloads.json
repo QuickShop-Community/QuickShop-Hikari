@@ -1,0 +1,207 @@
+{
+  "releases": [
+    {
+      "version": "6.2.0.11"
+    },
+    {
+      "version": "6.2.0.10"
+    },
+    {
+      "version": "6.2.0.9"
+    }
+  ],
+  "snapshots": [
+   {
+
+      "version": "6.2.0.11-SNAPSHOT-14",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1457411929550229557/1457411929982107802/QuickShop-Hikari-6.2.0.11-SNAPSHOT-13.jar?ex=695be821&is=695a96a1&hm=a78b56041d7ee2efdfdf44ad9b0f25109f378878cd973f75a57fae53158358d7&"
+    },
+   {
+
+      "version": "6.2.0.11-SNAPSHOT-13",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1457411929550229557/1457411929982107802/QuickShop-Hikari-6.2.0.11-SNAPSHOT-13.jar?ex=695be821&is=695a96a1&hm=a78b56041d7ee2efdfdf44ad9b0f25109f378878cd973f75a57fae53158358d7&"
+    },
+    {
+
+      "version": "6.2.0.11-SNAPSHOT-12",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1447773525803925614/1447774048154292264/QuickShop-Hikari-6.2.0.11-SNAPSHOT-12.jar?ex=6938d827&is=693786a7&hm=e83923c019d519526ab82ceab7b576af8c66093f18893a56a3fb58ca70b0fef8&"
+    },
+    {
+
+      "version": "6.2.0.11-SNAPSHOT-11",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1439841509829513316/1439841510035165245/QuickShop-Hikari-6.2.0.11-SNAPSHOT-11.jar?ex=6933b766&is=693265e6&hm=ce7a4c012d1ecd2e3a0ce4ffcfcc2c76e26e6dea0aa04cc1d795cd0a151a9743&"
+    },
+    {
+      "version": "6.2.0.11-SNAPSHOT-10",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1439076868350541865/1439076898926755890/QuickShop-Hikari-6.2.0.11-SNAPSHOT-10.jar?ex=69343b0d&is=6932e98d&hm=15359e38db7d92683ab4287d2be1dc5037417db359b2744698c6d87cbcd5b8f8&"
+    },
+    {
+      "version": "6.2.0.11-SNAPSHOT-9",
+      "downloadUrl": "https://cdn.discordapp.com/attachments/1437407447634542753/1437409142586347560/QuickShop-Hikari-6.2.0.11-SNAPSHOT-9.jar?ex=69341895&is=6932c715&hm=7869fe077e5d6983730d05a16d3c3e0732cbd0d737270eb6fdfd055a31a1f8ae&"
+    }
+  ],
+  "addons": [
+    {
+      "name": "BlueMap",
+      "version": "6.2.0.11",
+      "remoteDescription": "Displays QuickShop-Hikari shops as markers on your BlueMap web map."
+    },
+    {
+      "name": "DiscordSRV",
+      "version": "6.2.0.11",
+      "remoteDescription": "Sends real-time shop notifications and updates to players via DiscordSRV embeds and DMs."
+    },
+    {
+      "name": "Discount",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds configurable discount codes that apply percentage discounts to selected shops or players."
+    },
+    {
+      "name": "DisplayControl",
+      "version": "6.2.0.11",
+      "remoteDescription": "Lets players control whether virtual display items are shown on their client, including auto-detection for Bedrock."
+    },
+    {
+      "name": "Dynmap",
+      "version": "6.2.0.11",
+      "remoteDescription": "Shows shops as markers on your Dynmap instance with customizable icons and labels."
+    },
+    {
+      "name": "EcoEnchants",
+      "version": "6.2.0.11",
+      "remoteDescription": "Allows ItemExpression to target specific EcoEnchants items when configuring shops."
+    },
+    {
+      "name": "Limited",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds per-player shop limits so you can cap how many shops each user can create or own."
+    },
+    {
+      "name": "List",
+      "version": "6.2.0.11",
+      "remoteDescription": "Provides listing commands to view your shops and discover other shops on the server."
+    },
+    {
+      "name": "Plan",
+      "version": "6.2.0.11",
+      "remoteDescription": "Integrates QuickShop-Hikari data with the Plan analytics plugin for richer statistics."
+    },
+    {
+      "name": "Reforges",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds compatibility for items from the Reforges plugin when used in QuickShop-Hikari shops."
+    },
+    {
+      "name": "Reremake Migrator",
+      "version": "6.2.0.11",
+      "remoteDescription": "Helps migrate shop data and settings from QuickShop-Reremake into QuickShop-Hikari."
+    },
+    {
+      "name": "ShopItemOnly",
+      "version": "6.2.0.11",
+      "remoteDescription": "Prevents players from storing non-shop items in shop containers, checking on closes and hopper transfers."
+    }
+  ],
+  "compatibility": [
+    {
+      "name": "AdvancedRegionMarket",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds AdvancedRegionMarket support and removes shops automatically when regions are removed or restored."
+    },
+    {
+      "name": "AngelChest",
+      "version": "6.2.0.11",
+      "remoteDescription": "Integrates with AngelChest so QuickShop-Hikari respects its death chest handling."
+    },
+    {
+      "name": "BentoBox",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds BentoBox support, letting island owners control shops and cleaning them up when islands or team members change."
+    },
+    {
+      "name": "BungeeCord-Geyser",
+      "version": "6.2.0.11",
+      "remoteDescription": "A BungeeCord bridge that exposes Geyser/Floodgate player status to backend QuickShop-Hikari servers."
+    },
+    {
+      "name": "BungeeCord",
+      "version": "6.2.0.11",
+      "remoteDescription": "BungeeCord bridge that forwards QuickShop-Hikari chat and command input between proxy and backend servers."
+    },
+    {
+      "name": "ChestProtect",
+      "version": "6.2.0.11",
+      "remoteDescription": "Prevents accidental ChestProtect protection removal and blocks shop creation on protected containers."
+    },
+    {
+      "name": "Clearlag",
+      "version": "6.2.0.11",
+      "remoteDescription": "Stops Clearlag from purging QuickShop-Hikari real display items."
+    },
+    {
+      "name": "EliteMobs",
+      "version": "6.2.0.11",
+      "remoteDescription": "Disallows trading items with EliteMobs soulbound enchantments to prevent scams."
+    },
+    {
+      "name": "GreifPrevention",
+      "version": "6.2.0.11",
+      "remoteDescription": "Integrates with GriefPrevention claims for shop access checks and removes shops when claims or trusts change."
+    },
+    {
+      "name": "ItemsAdder",
+      "version": "6.2.0.11",
+      "remoteDescription": "Enables ItemExpression to target specific ItemsAdder items for shop configuration."
+    },
+    {
+      "name": "Lands",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds Lands support for shop permission checks and optional automatic shop deletion on permission loss."
+    },
+    {
+      "name": "OpenInv",
+      "version": "6.2.0.11",
+      "remoteDescription": "Allows players to use their EnderChest as the backing container for a shop."
+    },
+    {
+      "name": "PlotSquared",
+      "version": "6.2.0.11",
+      "remoteDescription": "Registers quickshop-create and quickshop-trade flags in PlotSquared v6 and can delete shops when users are untrusted."
+    },
+    {
+      "name": "Residence",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds Residence flags for shop creation and trading and lets residence owners control all shops in their claims."
+    },
+    {
+      "name": "Slimefun",
+      "version": "6.2.0.11",
+      "remoteDescription": "Enables ItemExpression support for selecting specific Slimefun items in shops."
+    },
+    {
+      "name": "SuperiorSkyBlock",
+      "version": "6.2.0.11",
+      "remoteDescription": "Integrates with SuperiorSkyBlock, giving island owners control over island shops and optional cleanup when members leave."
+    },
+    {
+      "name": "Towny",
+      "version": "6.2.0.11",
+      "remoteDescription": "Adds nation and town shops that use Towny tax accounts and optional bank mode for controlled pricing."
+    },
+    {
+      "name": "Velocity",
+      "version": "6.2.0.11",
+      "remoteDescription": "Velocity bridge plugin that forwards QuickShop-Hikari player input over the quickshop:bungee channel."
+    },
+    {
+      "name": "WorldEdit",
+      "version": "6.2.0.11",
+      "remoteDescription": "Deletes shops in edited WorldEdit regions to avoid leaving ghost shops behind."
+    },
+    {
+      "name": "WorldGuard",
+      "version": "6.2.0.11",
+      "remoteDescription": "Registers create and trade flags in WorldGuard and can limit the number of shops per region."
+    }
+  ]
+}

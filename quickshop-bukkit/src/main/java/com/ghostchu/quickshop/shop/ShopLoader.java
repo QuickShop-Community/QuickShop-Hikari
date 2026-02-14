@@ -4,14 +4,14 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
-import com.ghostchu.quickshop.economy.SimpleBenefit;
+import com.ghostchu.quickshop.economy.QSBenefitProvider;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -19,7 +19,6 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -82,7 +81,8 @@ public class ShopLoader implements SubPasteItem {
         plugin.logger().warn("World {} not exists, skip loading shops in this world.", worldName);
         return;
       }
-      if(plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
+      if(Util.isDatabaseLoadingBlacklisted(worldName)) {
+        plugin.logger().info("World {} is blacklisted or not whitelisted, skip loading shops in this world.", worldName);
         return;
       }
     }
@@ -147,7 +147,7 @@ public class ShopLoader implements SubPasteItem {
       if(!worldName.equals(infoRecord.getWorld())) {
         return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
       }
-      if(plugin.getConfig().getStringList("database-loading-blacklist-worlds").contains(worldName)) {
+      if(Util.isDatabaseLoadingBlacklisted(worldName)) {
         return ShopLoadResult.WORLD_NOT_MATCH_SKIPPED;
       }
     }
@@ -301,7 +301,7 @@ public class ShopLoader implements SubPasteItem {
 
     private QUser owner;
     private String name;
-    private ShopType type;
+    private IShopType type;
     private String currency;
     private double price;
     private boolean unlimited;
@@ -316,14 +316,14 @@ public class ShopLoader implements SubPasteItem {
     private ItemStack newItem;
     private boolean needUpdate = false;
 
-    private Benefit benefits;
+    private BenefitProvider benefits;
 
 
     DataRawDatabaseInfo(@NotNull final DataRecord dataRecord) {
 
       this.owner = dataRecord.getOwner();
       this.price = dataRecord.getPrice();
-      this.type = ShopType.fromID(dataRecord.getType());
+      this.type = QuickShop.getInstance().getShopManager().shopTypeOrDefault(dataRecord.getType());
       this.unlimited = dataRecord.isUnlimited();
       final String extraStr = dataRecord.getExtra();
       this.name = dataRecord.getName();
@@ -336,10 +336,10 @@ public class ShopLoader implements SubPasteItem {
       }
       this.invSymbolLink = dataRecord.getInventorySymbolLink();
       this.invWrapper = dataRecord.getInventoryWrapper();
-      this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
+      this.benefits = QSBenefitProvider.deserialize(dataRecord.getBenefit());
       final String permissionJson = dataRecord.getPermissions();
 
-      if(!StringUtils.isEmpty(permissionJson) && CommonUtil.isJson(permissionJson)) {
+      if(!CommonUtil.isEmptyString(permissionJson) && CommonUtil.isJson(permissionJson)) {
         final Type typeToken = new TypeToken<Map<UUID, String>>() {
         }.getType();
         this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, typeToken));
@@ -347,15 +347,28 @@ public class ShopLoader implements SubPasteItem {
         this.permissions = new HashMap<>();
       }
 
+      if(dataRecord.getEncoded() == null) {
+        Log.debug("Shop :" +  name + " doesn't have encoded item. Cannot load.");
+      }
 
+      boolean encodedLoaded = false;
       if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
+        Log.debug("Shop has correct encoded item type, loaded as usual.");
 
-        this.item = QuickShop.getInstance().getPlatform().decodeStack(dataRecord.getEncoded());
+        this.item = QuickShop.getInstance().platform().decodeStack(dataRecord.getEncoded());
         this.newItem = item;
-      } else {
+
+        encodedLoaded = true;
+      }
+
+      if(!encodedLoaded || this.item == null) {
+        Log.debug("Attempting to migrate shop to new encoded type....");
 
         this.item = deserializeItem(dataRecord.getItem());
+        this.newItem = item;
+        needUpdate = true;
       }
+
       this.extra = deserializeExtra(extraStr);
     }
 
@@ -372,7 +385,7 @@ public class ShopLoader implements SubPasteItem {
 
     private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
 
-      if(StringUtils.isEmpty(extraString)) {
+      if(CommonUtil.isEmptyString(extraString)) {
         return null;
       }
       YamlConfiguration yamlConfiguration = new YamlConfiguration();

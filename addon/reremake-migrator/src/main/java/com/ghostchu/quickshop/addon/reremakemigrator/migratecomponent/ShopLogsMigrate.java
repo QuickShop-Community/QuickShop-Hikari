@@ -4,8 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.reremakemigrator.Main;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -59,7 +58,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     final File logsFile = new File(getReremake().getDataFolder(), "appended-qs.log");
     final File filteredFile = new File(getReremake().getDataFolder(), "filtered-qs.log");
     final File formattedFile = new File(getReremake().getDataFolder(), "formatted-qs.log");
-    try(PrintWriter printWriter = new PrintWriter(logsFile, StandardCharsets.UTF_8)) {
+    try(final PrintWriter printWriter = new PrintWriter(logsFile, StandardCharsets.UTF_8)) {
       logsFile.createNewFile();
       filteredFile.createNewFile();
       appendFiles(getReremake().getDataFolder(), printWriter);
@@ -67,7 +66,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
       migrateAppendedLogs(logsFile, filteredFile);
       readAndFormatEntire(filteredFile, formattedFile);
       importToDatabase(formattedFile);
-    } catch(Exception ex) {
+    } catch(final Exception ex) {
       getHikari().logger().warn("Failed to migrate logs", ex);
       return true;
     } finally {
@@ -98,7 +97,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
              && jObj.has("tax")) {
             try {
               importThePurchaseRecord(date, jObj);
-            } catch(Exception e) {
+            } catch(final Exception e) {
               getHikari().logger().warn("Error on importing to database", e);
             }
             continue;
@@ -108,7 +107,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
 //                    continue;
 //                }
           getHikari().logger().warn("Invalid record {}, skipping", entry);
-        } catch(Exception e2) {
+        } catch(final Exception e2) {
           getHikari().logger().warn("Parse the log failed, cursor [{}]", cursor, e2);
         }
       }
@@ -148,7 +147,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     final double balance = jObj.get("balance").getAsDouble();
     final double tax = jObj.get("tax").getAsDouble();
     final UUID trader = UUID.fromString(jObj.get("trader").getAsString());
-    final ShopType type = ShopType.valueOf(jObj.get("type").getAsString());
+    final IShopType type = QuickShop.getInstance().getShopManager().shopTypeOrDefault(jObj.get("type").getAsString());
     final JsonObject shop = jObj.get("shop").getAsJsonObject();
     final JsonObject pos = shop.get("position").getAsJsonObject();
     final World world = Bukkit.getWorld(pos.get("world").getAsString());
@@ -166,7 +165,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     final ShopMetricRecord shopMetricRecord = new ShopMetricRecord(
             date.getTime(),
             shopInstance.getShopId(),
-            type == ShopType.SELLING? ShopOperationEnum.PURCHASE_SELLING_SHOP : ShopOperationEnum.PURCHASE_BUYING_SHOP,
+            (!type.isBuying())? ShopOperationEnum.PURCHASE_SELLING_SHOP : ShopOperationEnum.PURCHASE_BUYING_SHOP,
             balance,
             tax,
             amount,
@@ -208,7 +207,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
   @Nullable
   private DatedLogEntry _formatLine(final String line) throws DateTimeParseException {
 
-    final String json = StringUtils.substringAfter(line, "] ");
+    final String json = CommonUtil.subAfter(line, "] ");
     if(!CommonUtil.isJson(json)) return null;
     final String dateStr = line.substring(1, template.length() - 1).trim();
     final TemporalAccessor accessor = DATETIME_FORMATTER.parse(dateStr);
@@ -234,7 +233,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
         if(line.contains("beforeTrading") && line.contains("player") && line.contains("holding")) {
           continue;
         }
-        if(StringUtils.isBlank(line)) {
+        if(CommonUtil.isBlank(line)) {
           continue;
         }
         writer.println(line);
@@ -255,7 +254,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
       final File[] files = logsSubFolder.listFiles(f->f.getName().endsWith(".log.gz"));
       if(files != null) {
         for(final File file : files) {
-          try(GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
+          try(final GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(file))) {
             final String content = new String(gzipInputStream.readAllBytes(), StandardCharsets.UTF_8);
             logsFile.println(content);
             logsFile.flush();
@@ -268,7 +267,7 @@ public class ShopLogsMigrate extends AbstractMigrateComponent {
     if(mainLogFile.exists()) {
       try {
         logsFile.println(Files.readString(mainLogFile.toPath()));
-      } catch(MalformedInputException e) {
+      } catch(final MalformedInputException e) {
         logsFile.println(Files.readString(mainLogFile.toPath(), Charset.defaultCharset()));
       }
     } else {

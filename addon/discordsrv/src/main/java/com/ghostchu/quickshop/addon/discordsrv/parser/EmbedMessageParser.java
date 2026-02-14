@@ -8,7 +8,6 @@ import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +49,7 @@ public class EmbedMessageParser {
     if(dto.getThumbnail() != null) {
       builder.setThumbnail(emptyDefault(dto.getThumbnail().getUrl()));
     }
-    if(dto.getImage() != null && StringUtils.isNotBlank(dto.getImage().getUrl())) {
+    if(dto.getImage() != null && !CommonUtil.isBlank(dto.getImage().getUrl())) {
       builder.setImage(emptyDefault(dto.getImage().getUrl()));
     }
     if(dto.getAuthor() != null) {
@@ -62,10 +61,10 @@ public class EmbedMessageParser {
         if(field != null && field.getName() != null && field.getValue() != null) {
           String fieldName = field.getName();
           String fieldValue = field.getValue();
-          if(StringUtils.isEmpty(fieldName)) {
+          if(CommonUtil.isEmptyString(fieldName)) {
             fieldName = ZERO_WIDTH_SPACE;
           }
-          if(StringUtils.isEmpty(fieldValue)) {
+          if(CommonUtil.isEmptyString(fieldValue)) {
             fieldValue = ZERO_WIDTH_SPACE;
           }
           builder.addField(fieldName, fieldValue, field.inline);
@@ -78,7 +77,7 @@ public class EmbedMessageParser {
   @Nullable
   private String emptyDefault(@Nullable final String v) {
 
-    if(v == null || StringUtils.isBlank(v) || !v.startsWith("http")) {
+    if(v == null || CommonUtil.isBlank(v) || !v.startsWith("http")) {
       return null;
     }
     return v;

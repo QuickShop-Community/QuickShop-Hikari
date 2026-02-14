@@ -3,21 +3,24 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.economy.Benefit;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitOverflowException;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitsAlreadyException;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitAddEvent;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitRemoveEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +54,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       return;
     }
 
-    switch(parser.getArgs().get(0)) {
+    switch(parser.getArgs().getFirst()) {
       case "add" -> addBenefit(sender, shop, parser);
       case "remove" -> removeBenefit(sender, shop, parser);
       case "query" -> queryBenefit(sender, shop, parser);
@@ -83,10 +86,10 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
       }
       if(!parser.getArgs().get(2).endsWith("%")) {
         // Force player enter '%' to avoid player type something like 0.01 for 1%
-        plugin.text().of(sender, "invalid-percentage", parser.getArgs().get(0)).send();
+        plugin.text().of(sender, "invalid-percentage", parser.getArgs().getFirst()).send();
         return;
       }
-      final String percentageStr = StringUtils.substringBeforeLast(parser.getArgs().get(2), "%");
+      final String percentageStr = CommonUtil.subBeforeLast(parser.getArgs().get(2), "%");
       Util.mainThreadRun(()->{
         try {
           double percent = Double.parseDouble(percentageStr);
@@ -113,21 +116,21 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             return;
           }
 
-          final Benefit benefit = shop.getShopBenefit();
+          final BenefitProvider benefit = shop.getShopBenefit();
 
 
-          benefit.addBenefit(qUser, percent / 100d);
+          benefit.add(qUser, BigDecimal.valueOf(percent / 100d));
           shop.setShopBenefit(benefit);
 
           event = event.clone(Phase.POST);
           event.callEvent();
 
           plugin.text().of(sender, "benefit-added", qUser.getDisplay()).send();
-        } catch(final NumberFormatException e) {
+        } catch(final NumberFormatException ignore) {
           plugin.text().of(sender, "not-a-number", percentageStr).send();
-        } catch(final Benefit.BenefitOverflowException e) {
-          plugin.text().of(sender, "benefit-overflow", (e.getOverflow() * 100) + "%").send();
-        } catch(final Benefit.BenefitExistsException e) {
+        } catch(final BenefitOverflowException e) {
+          plugin.text().of(sender, "benefit-overflow", (e.benefit().doubleValue() * 100) + "%").send();
+        } catch(final BenefitsAlreadyException ignore) {
           plugin.text().of(sender, "benefit-exists").send();
         }
       });
@@ -153,11 +156,11 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 return;
               }
 
-              final Benefit benefit = shop.getShopBenefit();
+              final BenefitProvider benefit = shop.getShopBenefit();
 
-              final Double percent = benefit.getRegistry().getOrDefault(qUser, 0.0d);
+              final BigDecimal percent = benefit.benefits().getOrDefault(qUser, BigDecimal.ZERO);
 
-              ShopBenefitRemoveEvent event = ShopBenefitRemoveEvent.PRE(shop, qUser, percent, 0.0d);
+              ShopBenefitRemoveEvent event = ShopBenefitRemoveEvent.PRE(shop, qUser, percent, BigDecimal.ZERO);
               event.callEvent();
 
               event = event.clone(Phase.MAIN);
@@ -168,7 +171,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 return;
               }
 
-              benefit.removeBenefit(qUser);
+              benefit.remove(qUser);
               shop.setShopBenefit(benefit);
 
               event = event.clone(Phase.POST);
@@ -186,12 +189,12 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
   private void queryBenefit(final Player sender, final Shop shop, @NotNull final CommandParser parser) {
 
-    plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
+    plugin.text().of(sender, "benefit-query", shop.getShopBenefit().benefits().size()).send();
     Util.asyncThreadRun(()->{
 
-      for(final Map.Entry<QUser, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
+      for(final Map.Entry<QUser, BigDecimal> entry : shop.getShopBenefit().benefits().entrySet()) {
 
-        final String v = MsgUtil.decimalFormat(entry.getValue() * 100);
+        final String v = MsgUtil.decimalFormat(entry.getValue().multiply(BigDecimal.valueOf(100)));
         plugin.text().of(sender, "benefit-query-list", entry.getKey().getDisplay(), v + "%").send();
       }
     });
@@ -204,7 +207,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
           @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
-      return List.of("add", "remove");
+      return List.of("add", "remove", "query");
     }
     if(parser.getArgs().size() == 2) {
       return null;

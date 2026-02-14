@@ -1,9 +1,10 @@
 package com.ghostchu.quickshop.api.shop;
 
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
+import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -27,6 +29,101 @@ import java.util.concurrent.CompletableFuture;
  */
 @SuppressWarnings("ALL")
 public interface ShopManager {
+
+  /**
+   * Provides an instance of {@code IShopLayoutProvider} responsible for managing shop layouts.
+   *
+   * @return an implementation of {@code IShopLayoutProvider} that handles the shop layout configuration.
+   */
+  IShopLayoutProvider shopLayoutProvider();
+
+  /**
+   * Retrieves an instance of the TaxManager class, responsible for handling tax-related computations
+   * and operations within the application.
+   *
+   * @return an instance of TaxManager that manages tax calculations and logic.
+   */
+  TaxManager taxManager();
+
+  /**
+   * Sets the shop layout provider to customize the layout of the shop.
+   *
+   * @param provider the instance of IShopLayoutProvider that defines the layout of the shop
+   */
+  void shopLayoutProvider(final IShopLayoutProvider provider);
+
+  /**
+   * Retrieves a map of cooldown information where the keys represent unique identifiers (UUIDs),
+   * and the values represent the corresponding timestamps indicating when the cooldown expires.
+   *
+   * @return A map mapping UUIDs to their cooldown expiration timestamps in milliseconds.
+   */
+  Map<UUID, Long> findCooldown();
+
+  /**
+   * Retrieves a map containing shop types.
+   *
+   * @return a map where the key is an integer representing the shop type ID,
+   * and the value is an object implementing the IShopType interface,
+   * which provides details about a shop type.
+   */
+  @NotNull Map<Integer, IShopType> shopTypes();
+
+  /**
+   * Adds a shop type to the internal collection of shop types.
+   *
+   * @param type the shop type to be added. It must contain a valid ID and properties.
+   */
+  default void addShopType(IShopType type) {
+    shopTypes().put(type.id(), type);
+  }
+
+  /**
+   * Removes the shop type identified by the specified ID from the collection of shop types.
+   *
+   * @param id the unique identifier of the shop type to be removed
+   */
+  default void removeShopType(final int id) {
+    shopTypes().remove(id);
+  }
+
+  /**
+   * Retrieves the shop type corresponding to the given identifier.
+   *
+   * @param id the identifier of the shop type to retrieve
+   * @return an Optional containing the shop type if found, otherwise an empty Optional
+   */
+  default Optional<IShopType> shopType(final int id) {
+    return Optional.ofNullable(shopTypes().get(id));
+  }
+
+  /**
+   * Retrieves the shop type associated with the specified ID.
+   * If no shop type is found, returns a default shop type.
+   *
+   * @param id the identifier for the desired shop type
+   * @return the shop type associated with the given ID, or a default shop type if none exists
+   */
+  @NotNull IShopType shopTypeOrDefault(final int id);
+
+  /**
+   * Retrieves an optional shop type based on the provided identifier.
+   *
+   * @param identifier the unique identifier of the shop type to search for
+   * @return an {@code Optional} containing the matching shop type if found, otherwise an empty {@code Optional}
+   */
+  default Optional<IShopType> shopType(final String identifier) {
+    return shopTypes().values().stream().filter(type -> type.identifier().equalsIgnoreCase(identifier)).findFirst();
+  }
+
+  /**
+   * Retrieves the shop type associated with the given identifier, or returns a default
+   * shop type if no match is found.
+   *
+   * @param identifier the unique identifier for the shop type to retrieve
+   * @return the corresponding IShopType if found, or a default IShopType if no match exists
+   */
+  @NotNull IShopType shopTypeOrDefault(final String identifier);
 
   /**
    * Handle the player buying
@@ -43,7 +140,7 @@ public interface ShopManager {
   boolean actionBuying(
           @NotNull Player buyer,
           @NotNull InventoryWrapper buyerInventory,
-          @NotNull AbstractEconomy eco,
+          @NotNull EconomyProvider eco,
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);
@@ -72,19 +169,10 @@ public interface ShopManager {
   boolean actionSelling(
           @NotNull Player seller,
           @NotNull InventoryWrapper sellerInventory,
-          @NotNull AbstractEconomy eco,
+          @NotNull EconomyProvider eco,
           @NotNull Info info,
           @NotNull Shop shop,
           int amount);
-
-//    /**
-//     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
-//     * by yourself
-//     *
-//     * @param world The name of the world
-//     * @param shop  The shop to add
-//     */
-//    void addShop(@NotNull String world, @NotNull Shop shop);
 
   void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop);
 
@@ -127,15 +215,6 @@ public interface ShopManager {
    */
   @NotNull
   String format(double d, @NotNull Shop shop);
-
-  /**
-   * @return Returns the Map. Info contains what their last question etc was.
-   *
-   * @deprecated Use getInteractiveManager() instead.
-   */
-  @Deprecated(forRemoval = true)
-  @NotNull
-  Map<UUID, Info> getActions();
 
   /**
    * Returns all shops in the whole database, include unloaded.
@@ -280,7 +359,7 @@ public interface ShopManager {
    *
    * @return Shops
    */
-  @Nullable
+  @NotNull
   Map<Location, Shop> getShops(@NotNull Chunk c);
 
   /**
@@ -292,7 +371,7 @@ public interface ShopManager {
    *
    * @return The shop at the world and specific chunk.
    */
-  @Nullable
+  @NotNull
   Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
 
   /**
@@ -302,7 +381,7 @@ public interface ShopManager {
    *
    * @return The shop at the world and specific chunk.
    */
-  @Nullable
+  @NotNull
   Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk);
 
   /**
@@ -312,7 +391,7 @@ public interface ShopManager {
    *
    * @return a map of Chunk - Shop
    */
-  @Nullable
+  @NotNull
   Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
 
   /**
@@ -343,8 +422,12 @@ public interface ShopManager {
    * @param p    The player
    *
    * @return The tax of the shop
+   * @deprecated no longer apart of the enhanced tax system
    */
-  double getTax(@NotNull Shop shop, @NotNull QUser p);
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
+  default double getTax(@NotNull Shop shop, @NotNull QUser p) {
+    return 0.0;
+  }
 
   void handleChat(@NotNull Player player, @NotNull String msg);
 

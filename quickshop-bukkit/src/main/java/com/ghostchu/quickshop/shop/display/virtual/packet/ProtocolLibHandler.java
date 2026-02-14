@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv1_20;
 import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv1_21;
+import com.ghostchu.quickshop.shop.display.virtual.packet.protocollib.PacketFactoryv1_21_10;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -108,6 +109,11 @@ public class ProtocolLibHandler implements PacketHandler<ProtocolManager> {
     factories.put("1.21.6", oneTwentyOne);
     factories.put("1.21.7", oneTwentyOne);
     factories.put("1.21.8", oneTwentyOne);
+    factories.put("1.21.9", oneTwentyOne);
+
+    final PacketFactoryv1_21_10 oneTwentyOneTen = new PacketFactoryv1_21_10();
+    factories.put("1.21.10", oneTwentyOneTen);
+    factories.put("1.21.11", oneTwentyOneTen);
   }
 
   @Override
