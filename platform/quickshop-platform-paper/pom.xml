@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.2.0.11-RELEASE-CANDIDATE-4</version>
+        <version>6.2.0.11</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
