@@ -105,6 +105,10 @@ public class ProgressiveProvider implements TaxProvider {
       return 0.0;
     }
 
+    if(shop.isUnlimited() && QuickShop.getInstance().getConfig().getBoolean("shop-tax.disable-for-unlimited-shop", false)) {
+      return 0.0;
+    }
+
     if(shop.isUnlimited() && QuickShop.getInstance().perm().hasPermission(user, "quickshop.tax.bypassunlimited")) {
       Log.debug("Disable the Tax for player " + user + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
       return 0.0;
