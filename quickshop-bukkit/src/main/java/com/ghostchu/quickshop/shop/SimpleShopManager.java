@@ -123,7 +123,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   private boolean useDecFormat;
   private double shopCreateCost;
   private boolean useShopLock;
-  private double globalTax;
   private boolean showTax;
   private boolean payUnlimitedShopOwner;
   private String tradeAllKeyword;
@@ -190,7 +189,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.useDecFormat = plugin.getConfig().getBoolean("use-decimal-format");
     this.shopCreateCost = plugin.getConfig().getDouble("shop.cost");
     this.useShopLock = plugin.getConfig().getBoolean("shop.lock");
-    this.globalTax = plugin.getConfig().getDouble("tax");
     this.showTax = plugin.getConfig().getBoolean("shop-tax.show");
     this.payUnlimitedShopOwner = plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners");
     this.tradeAllKeyword = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
@@ -357,14 +355,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     final QSEconomyTransaction transaction;
     final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(total)).toTax(new BigDecimal(taxEvent.getTax().interactorRate())).taxer(taxAccount).currency(shop.getCurrency()).world(shop.getLocation().getWorld().getName()).to(buyerQUser);
-    if(shop.isUnlimited() && plugin.getConfig().getBoolean("shop-tax.disable-for-unlimited-shop", false)) {
-      builder.tax(BigDecimal.ZERO);
-    }
+
     if(!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
       transaction = builder.from(shop.getOwner()).fromTax(new BigDecimal(taxEvent.getTax().shopRate())).build();
     } else {
       transaction = builder.from(null).build();
     }
+
     if(!transaction.completable()) {
       plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format(total, shop.getLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.getLocation().getWorld(), shop.getCurrency())).send();
       return false;
@@ -587,9 +584,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
     }
     final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().from(sellerQUser).amount(BigDecimal.valueOf(total)).fromTax(new BigDecimal(taxEvent.getTax().interactorRate())).taxer(taxAccount).benefitManager(shop.getShopBenefit()).world(shop.getLocation().getWorld().getName()).currency(shop.getCurrency());
-    if(shop.isUnlimited() && plugin.getConfig().getBoolean("shop-tax.disable-for-unlimited-shop", false)) {
-      builder.tax(BigDecimal.ZERO);
-    }
+
     if(!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
       transaction = builder.to(shop.getOwner()).toTax(new BigDecimal(taxEvent.getTax().shopRate())).build();
     } else {
