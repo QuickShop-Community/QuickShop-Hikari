@@ -1419,7 +1419,7 @@ public class Util {
 
   public static boolean checkIfBungee() {
 
-    if(PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("proxy.force-bungeecord", false)) {
       return true;
     }
 

@@ -73,7 +73,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
   private void checkDatabaseVersion() {
 
-    if(PackageUtil.parsePackageProperly("skipDatabaseVersionCheck").asBoolean(false)) {
+    if(QuickShop.getInstance().getConfig().getBoolean("database.skip-version-check", false)) {
       return;
     }
     final int databaseVersion = getDatabaseVersion();

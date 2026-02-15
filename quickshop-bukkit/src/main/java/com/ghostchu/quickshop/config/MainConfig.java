@@ -47,7 +47,9 @@ public class MainConfig extends QSConfig {
                   .addIgnoredRoute("1033", "limits.ranks", '.')
                   .addIgnoredRoute("1034", "limits.ranks", '.')
                   .addIgnoredRoute("1035", "limits.ranks", '.')
-                  .addIgnoredRoute("1035", "shop-tax.progressive.brackets", '.').build());
+                  .addIgnoredRoute("1035", "shop-tax.progressive.brackets", '.')
+                  .addIgnoredRoute("1036", "shop-tax.progressive.brackets", '.')
+                  .addIgnoredRoute("1037", "shop-tax.progressive.brackets", '.').build());
 
     instance = this;
     plugin.getReloadManager().register(this);

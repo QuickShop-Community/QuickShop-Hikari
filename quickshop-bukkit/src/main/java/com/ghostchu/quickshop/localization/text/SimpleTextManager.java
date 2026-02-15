@@ -191,13 +191,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
     // Register post processor
     postProcessors.add(new FillerProcessor());
-    if(PackageUtil.parsePackageProperly("betaForceReplaceFillerProcessor").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("lang-processor.replace-filller-post-process", false)) {
       postProcessors.add(new ForceReplaceFillerProcessor());
     }
-    if(PackageUtil.parsePackageProperly("usePAPIPostProcess").asBoolean(true)) {
+    if(plugin.getConfig().getBoolean("lang-processor.papi-post-process", true)) {
       postProcessors.add(new PlaceHolderApiProcessor());
     }
-    if(PackageUtil.parsePackageProperly("fixClientItemTextRenderAlwaysItalic").asBoolean(true)) {
+    if(plugin.getConfig().getBoolean("lang-processor.fix-item-always-italic", true)) {
       postProcessors.add(new FixClientItemItalicRenderProcessor());
     }
 

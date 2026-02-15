@@ -87,7 +87,7 @@ public class PlayerListener extends AbstractQSListener {
   @EventHandler(priority = EventPriority.LOW)
   public void onClick(final PlayerInteractEvent event) {
     // Deprecated: Can use useInteractedBlock() == Result.DENY instead
-    if(event.isCancelled() && PackageUtil.parsePackageProperly("ignoreCancelledInteractEvent").asBoolean(true)) {
+    if(event.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancelled-interact-event", true)) {
       return;
     }
     if(event.getHand() != EquipmentSlot.HAND) {
@@ -257,7 +257,7 @@ public class PlayerListener extends AbstractQSListener {
     plugin.getPlayerFinder().cache(e.getPlayer().getUniqueId(), e.getPlayer().getName());
     // Notify the player any messages they were sent
     if(plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-      final long delay = PackageUtil.parsePackageProperly("flushTransactionDelay").asLong(60);
+      final long delay = plugin.getConfig().getLong("shop.join-flush-delay", 60L);
       QuickShop.folia().getScheduler().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
     }
   }

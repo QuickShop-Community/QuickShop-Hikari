@@ -194,7 +194,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.tradeAllKeyword = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
     this.disableCreativePurchase = plugin.getConfig().getBoolean("shop.disable-creative-mode-trading");
     this.sendStockMessageToStaff = plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs");
-    this.useShopableChecks = PackageUtil.parsePackageProperly("shoppableChecks").asBoolean(false);
+    this.useShopableChecks = plugin.getConfig().getBoolean("shop.shoppable-check", false);
     this.useShopCache = plugin.getConfig().getBoolean("shop.use-cache", true);
 
   }
@@ -629,7 +629,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     plugin.logger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
     final CompletableFuture<?> saveTask = CompletableFuture.allOf(plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toArray(CompletableFuture[]::new));
     try {
-      if(PackageUtil.parsePackageProperly("unlimitedWait").asBoolean()) {
+      if(plugin.getConfig().getBoolean("database.unlimited-save-wait", false)) {
         saveTask.get();
       } else {
         saveTask.get(30, TimeUnit.SECONDS);
