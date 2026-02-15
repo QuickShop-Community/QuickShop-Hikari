@@ -102,7 +102,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
   public void cacheInBatch(final List<UserCacheBean> cacheBeans) {
 
     cacheBeans.forEach(b->nameCache.put(b.getUuid(), Optional.of(b.getName())));
-    if(PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
+    if(QuickShop.getInstance().getConfig().getBoolean("database.disable-username-cache", false)) {
       return;
     }
     final List<Triple<UUID, String, String>> batchUpdate = new ArrayList<>();
@@ -244,7 +244,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
       return;
     }
     this.nameCache.put(uuid, Optional.of(name));
-    if(PackageUtil.parsePackageProperly("disableDatabaseCacheWrite").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("database.disable-username-cache", false)) {
       return;
     }
     final DatabaseHelper databaseHelper = plugin.getDatabaseHelper();
@@ -343,7 +343,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public UUID get() {
 
-      if(!PackageUtil.parsePackageProperly("bukkitFindUUIDTask").asBoolean(true)) {
+      if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-bukkit-uuid", true)) {
         return null;
       }
       final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
@@ -365,7 +365,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public UUID get() {
 
-      if(!PackageUtil.parsePackageProperly("playerDBFindUUIDTask").asBoolean(false)) {
+      if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-playerdb-uuid", false)) {
         return null;
       }
       final HttpResponse<String> response = Unirest.get("https://playerdb.co/api/player/minecraft/" + name).asString();
@@ -549,7 +549,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public String get() {
 
-      if(!PackageUtil.parsePackageProperly("playerDBFindNameTask").asBoolean(false)) {
+      if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-playerdb-name", false)) {
         return null;
       }
       final HttpResponse<String> response = Unirest.get("https://playerdb.co/api/player/minecraft/" + uuid).asString();
@@ -733,7 +733,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public String get() {
 
-      if(!PackageUtil.parsePackageProperly("bukkitFindNameTask").asBoolean(true)) {
+      if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-bukkit-name", true)) {
         return null;
       }
       final OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
@@ -757,7 +757,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     public UUID get() {
 
       try {
-        if(!PackageUtil.parsePackageProperly("essentialsXFindUUIDTask").asBoolean(true)) {
+        if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-essentialsx-uuid", true)) {
           return null;
         }
         final Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
@@ -791,7 +791,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     public String get() {
 
       try {
-        if(!PackageUtil.parsePackageProperly("essentialsXFindNameTask").asBoolean(true)) {
+        if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-essentialsx-name", true)) {
           return null;
         }
         final Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
@@ -827,7 +827,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
     @Override
     public String get() {
 
-      if(!PackageUtil.parsePackageProperly("databaseFindNameTask").asBoolean(true)) {
+      if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-db-name", true)) {
         return null;
       }
       if(this.db == null) {
@@ -863,8 +863,7 @@ public class FastPlayerFinder implements PlayerFinder, SubPasteItem {
 
     @Override
     public UUID get() {
-
-      if(!PackageUtil.parsePackageProperly("databaseFindUUIDTask").asBoolean(true)) {
+      if(!QuickShop.getInstance().getConfig().getBoolean("uuid-lookup.allow-db-uuid", true)) {
         return null;
       }
       if(this.db == null) {

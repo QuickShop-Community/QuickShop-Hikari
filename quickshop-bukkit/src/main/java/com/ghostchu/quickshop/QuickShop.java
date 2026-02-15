@@ -961,7 +961,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void bakeShopsOwnerCache() {
 
-    if(PackageUtil.parsePackageProperly("bakeuuids").asBoolean(false)) {
+    if(config.getYaml().getBoolean("database.bake-uuids", false)) {
       logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
       final Set<UUID> waitingForBake = new HashSet<>();
       this.shopManager.getAllShops().forEach(shop->{

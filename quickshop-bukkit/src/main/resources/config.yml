@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1036
+config-version: 1037
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -17,6 +17,15 @@ game-language: default
 #https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/localization
 enabled-languages:
   - '*'
+
+#Configurations relating to the language processing system.
+lang-processor:
+  #Beta config option.
+  replace-filler-post-process: false
+  #should we use the placeholder post process system?
+  papi-post-process: true
+  #Should we disable item names always being italicized?
+  fix-item-always-italic: true
 
 #Setting the game language file download channel, like item name, effect translations etc.
 #We will get those files from mojang resources server:
@@ -133,6 +142,11 @@ respect-item-flag: true
 #It could cause the kicking on some network (which have multiple server that using different minecraft versions)
 bungee-cross-server-msg: false
 
+#Configurations related to server proxies.
+proxy:
+  #Force bungeecord mode on?
+  force-bungeecord: false
+
 #The currency used to create shops.
 #Set this to "" to use default currency.
 #Only required if you use multiple currencies.
@@ -203,6 +217,18 @@ database:
   prefix: "qs_"
   # Should QuickShop use SSL for database connections?  (Only required if mysql is true)
   usessl: false
+  # Should QuickShop disable username caching to the database?
+  disable-username-cache: false
+  bake-uuids: false
+  #The maximum number of threads for the loader service, don't touch unless you know what you're doing.
+  #Defaults to the recommended number based on your machine's processor.
+  loader-threads: -1
+  #Should we generate the full database information section for /qs paste?
+  generate-full-report: false
+  #Should we disable a timeout for max wait for the savetask when disabling the plugin? could cause hanging on shutdown.
+  unlimited-save-wait: false
+  #Should we skip checking if the QS database and tables are up-to-date? Disable at your own risk, no support will be provided.
+  skip-version-check: false
   # Properties for creating connections, you can add your own properties for datasource here. (Both local and remote will be used).
   properties:
     connectionTimeout: 60000
@@ -252,6 +278,10 @@ shop-blocks:
 
 shop:
 
+  #Should QS check if the shop is a valid shop block during retrieval? Could cause extra validation and chunk loading(could cause lag).
+  shoppable-check: true
+  #Should we update the shop's sign when the shop is loaded? Could cause lag.
+  update-sign-on-load: false
   #The components to use for the control panel if not set to the GUI-based control panel
   control-panel:
     - owner
@@ -440,8 +470,14 @@ shop:
   #Disabling it may cause database issues!
   auto-fetch-shop-messages: true
 
+  #The interval (in ticks) to flush pending QS messages to the player when they join the server.
+  join-flush-delay: 60
+
   #Ignore cancelled chat event, can sometimes improve compatibility with some chat plugins.
   ignore-cancel-chat-event: false
+
+  #Should we allow shop owners to add benefits to offline players?
+  allow-offline-benefit: false
 
   #Allow shops to be created in places where a sign cannot be placed?
   #(e.g There are blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
@@ -498,6 +534,9 @@ shop:
 
   # Cancel the fake BlockBreakEvent before it passed to MONITOR level listeners.
   cancel-protection-fake-event-before-reach-monitor-listeners: true
+
+  #Should we ignore PlayerInteractEvents that have been cancelled already?
+  ignore-cancelled-interact-event: true
 
   #The list of worlds in which protection checking is disabled.
   protection-checking-blacklist:
@@ -727,7 +766,8 @@ debug:
 # Only turn it on when you updating from old versions.
 legacy-updater:
   shop-sign: false
-
+#Should we skip requiring confirmation when executing commands such as remove?
+skip-command-confirmation: false
 #Set the command alias for qs main command
 # - playershop
 # - pshop
@@ -748,6 +788,33 @@ config-damaged: false
 #Example:
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: [ ]
+
+#Configurations relating to looking up a player's uuid<->username combination
+uuid-lookup:
+
+  #Should QuickShop use the QS database to lookups uuids?
+  allow-db-uuid: true
+
+  #Should QuickShop use the QS database to lookups names?
+  allow-db-name: true
+
+  #Should we allow utilizing EssentialsX's player username->uuid cache when it's on the server?
+  allow-essentialsx-uuid: true
+
+  #Should we allow utilizing EssentialsX's player uuid->username cache when it's on the server?
+  allow-essentialsx-name: true
+
+  #Should we allow utilizing PlayerDB's player uuid<-username cache?
+  allow-playerdb-uuid: false
+
+  #Should we allow utilizing PlayerDB's player uuid->username cache?
+  allow-playerdb-name: false
+
+  #Should we allow utilizing offline player lookup for uuid<-username?
+  allow-bukkit-uuid: true
+
+  #Should we allow utilizing offline player lookup for uuid->username?
+  allow-bukkit-name: true
 
 
 #Privacy Controller allows you turn on/off some options that related to privacy. This is our move towards privacy transparency.
