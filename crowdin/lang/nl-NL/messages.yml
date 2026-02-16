@@ -312,11 +312,11 @@ signs:
   stack-buying: '{0} kopen'
   freeze: Ruilen uitgeschakeld
   price: '{0} per stuk'
-  buying: '{0} In koop'
+  buying: '{0} Verkopen'
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Te koop {0}
+  selling: '{0} Te Koop'
   status-available: <green>
   item-left: ''
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
@@ -379,7 +379,7 @@ controlpanel:
   lock-hover: <yellow>Het slot van de winkel in- of uitschakelen.
   item-hover: <yellow>Klik om winkel item te wijzigen
   infomation: '<green>Shop Control Panel:'
-  mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de KOPIE modus.
+  mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de verkoop modus.
   empty-hover: <yellow>Klik om de inventaris van de winkel te wissen.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
   history: '<green>Geschiedenis:<yellow>[<bold><light_purple>Bekijken</light_purple></bold>]</yellow>'
