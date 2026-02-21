@@ -8,6 +8,7 @@ import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.util.eventbus.EventHandler;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.World;
+import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -31,8 +32,18 @@ public class FWorldEditAdapter implements Listener {
       return;
     }
 
+    final String version = worldEditPlugin.getPluginMeta().getVersion();
+    //check if version is greater than 2.11.0
+    final boolean isLegacy = new Semver(version).isLowerThanOrEqualTo("2.11.0");
+
+
     if(event.getStage() == EditSession.Stage.BEFORE_HISTORY) {
-      event.getExtent().addProcessor(new ShopProcessor(world));
+
+      if(isLegacy) {
+        event.getExtent().addProcessor(new ShopProcessorLegacy(world));
+      } else {
+        event.getExtent().addProcessor(new ShopProcessor(world));
+      }
     }
   }
 

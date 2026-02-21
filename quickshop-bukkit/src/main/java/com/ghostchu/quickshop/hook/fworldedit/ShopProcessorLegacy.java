@@ -18,7 +18,6 @@ package com.ghostchu.quickshop.hook.fworldedit;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.fastasyncworldedit.core.nbt.FaweCompoundTag;
 import com.fastasyncworldedit.core.queue.IBatchProcessor;
 import com.fastasyncworldedit.core.queue.IChunk;
 import com.fastasyncworldedit.core.queue.IChunkGet;
@@ -29,11 +28,11 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockState;
-import com.sk89q.worldedit.world.block.BlockTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jspecify.annotations.Nullable;
@@ -41,16 +40,16 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 
 /**
- * ShopProcessor
+ * ShopProcessorLegacy
  *
  * @author creatorfromhell
- * @since 6.2.0.11
+ * @since 6.3.0.0
  */
-public class ShopProcessor implements IBatchProcessor {
+public class ShopProcessorLegacy implements IBatchProcessor {
 
   private final World world;
 
-  public ShopProcessor(final World world) {
+  public ShopProcessorLegacy(final World world) {
 
     this.world = world;
   }
@@ -63,22 +62,18 @@ public class ShopProcessor implements IBatchProcessor {
       return set;
     }
 
-    final Map<BlockVector3, FaweCompoundTag> tilesFrom = get.tiles();
+    final Map<BlockVector3, CompoundTag> tilesFrom = get.getTiles();
 
     if(tilesFrom.isEmpty()) {
       return set;
     }
 
-    for(final Map.Entry<BlockVector3, FaweCompoundTag> entry : tilesFrom.entrySet()) {
+    for(final Map.Entry<BlockVector3, CompoundTag> entry : tilesFrom.entrySet()) {
 
       final BlockVector3 pos = entry.getKey();
 
       final BlockState fromBlock = get.getBlock(pos.x() & 15, pos.y(), pos.z() & 15);
       final BlockState toBlock = set.getBlock(pos.x() & 15, pos.y(), pos.z() & 15);
-
-      if(toBlock.getBlockType() == null || toBlock.getBlockType() == BlockTypes.__RESERVED__) {
-        continue;
-      }
 
       final Location location = new Location(bukkitWorld, pos.x(), pos.y(), pos.z());
       if(fromBlock.getBlockType().getMaterial().hasContainer() && !toBlock.getBlockType().getMaterial().hasContainer()) {
