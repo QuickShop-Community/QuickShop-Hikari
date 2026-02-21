@@ -80,7 +80,7 @@ public class ShopProcessor implements IBatchProcessor {
 
         final Shop shop = QuickShop.getInstance().getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
         if(shop != null) {
-          Util.mainThreadRun(()->{
+          Util.regionThread(shop.getLocation(), () -> {
             QuickShop.getInstance().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "WorldEdit", false), "WorldEdit", shop.saveToInfoStorage()));
             QuickShop.getInstance().getShopManager().deleteShop(shop);
           });
