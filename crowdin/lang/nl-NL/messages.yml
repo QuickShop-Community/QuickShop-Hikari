@@ -113,7 +113,7 @@ menu:
   price-per-stack: <green>Prijs per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>Deze winkel is <aqua>SELLING</aqua>en items.
+  this-shop-is-selling: <green>Deze winkel i<aqua>VERKOOPT</aqua> items.
   shop-stack: '<green>Hoeveelheid bulk: <yellow>{0}'
   space: '<green>Spatie: <yellow>{0}'
   effects: <green>Effecten
@@ -305,18 +305,18 @@ signs:
   item-right: ''
   out-of-space: Te weinig ruimte
   unlimited: Onbeperkt
-  stack-selling: Verkopen {0}
+  stack-selling: Te koop {0}
   stack-price: '{0} per {1}x {2}'
   status-unavailable: <red>
   out-of-stock: Niet op voorraad
-  stack-buying: '{0} kopen'
+  stack-buying: '{0} in kopen'
   freeze: Ruilen uitgeschakeld
   price: '{0} per stuk'
-  buying: '{0} In koop'
+  buying: '{0} in kopen'
   header: '{1}{0}'
   header-available: <green>{0}
   header-unavailable: <red>{0}
-  selling: Te koop {0}
+  selling: '{0} Te Koop'
   status-available: <green>
   item-left: ''
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
@@ -379,7 +379,7 @@ controlpanel:
   lock-hover: <yellow>Het slot van de winkel in- of uitschakelen.
   item-hover: <yellow>Klik om winkel item te wijzigen
   infomation: '<green>Shop Control Panel:'
-  mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de KOPIE modus.
+  mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de VERKOOP modus.
   empty-hover: <yellow>Klik om de inventaris van de winkel te wissen.
   toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
   history: '<green>Geschiedenis:<yellow>[<bold><light_purple>Bekijken</light_purple></bold>]</yellow>'
