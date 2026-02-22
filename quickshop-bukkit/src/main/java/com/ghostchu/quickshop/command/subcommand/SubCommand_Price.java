@@ -46,7 +46,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
       return;
     }
 
-    final int maximumDigitsInPrice = plugin.getConfig().getInt("maximum-digits-in-price", -1);
+    final int maximumDigitsInPrice = plugin.getConfig().getInt("shop.maximum-digits-in-price", -1);
     if(maximumDigitsInPrice != -1) {
       final int inputScale = Math.max(price.stripTrailingZeros().scale(), 0);
       if(inputScale > maximumDigitsInPrice) {

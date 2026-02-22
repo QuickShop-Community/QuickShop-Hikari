@@ -184,7 +184,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     this.priceLimiter = new SimplePriceLimiter(plugin);
     this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
     this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
-    this.maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price", -1);
+    this.maximumDigitsLimit = plugin.getConfig().getInt("shop.maximum-digits-in-price", -1);
     this.allowNoSpaceForSign = plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign");
     this.useDecFormat = plugin.getConfig().getBoolean("use-decimal-format");
     this.shopCreateCost = plugin.getConfig().getDouble("shop.cost");
