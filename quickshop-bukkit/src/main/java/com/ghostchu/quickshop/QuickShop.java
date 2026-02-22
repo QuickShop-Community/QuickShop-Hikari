@@ -84,7 +84,6 @@ import com.ghostchu.quickshop.shop.sign.SignHooker;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.PermissionChecker;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.ShopUtil;
@@ -103,7 +102,7 @@ import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.privacy.PrivacyController;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
-import com.ghostchu.quickshop.util.updater.NexusManager;
+import com.ghostchu.quickshop.util.updater.UpdateManager;
 import com.ghostchu.quickshop.watcher.CalendarWatcher;
 import com.ghostchu.quickshop.watcher.DisplayAutoDespawnWatcher;
 import com.ghostchu.quickshop.watcher.LogWatcher;
@@ -218,6 +217,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   private final EconomyManager economyManager = new QSEconomyManager();
+  private UpdateManager updateManager;
   @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
@@ -326,8 +326,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private ShopItemBlackList shopItemBlackList;
   @Getter
-  private NexusManager nexusManager;
-  @Getter
   private ShopDataSaveWatcher shopSaveWatcher;
   @Getter
   private SignHooker signHooker;
@@ -424,8 +422,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     loadTextManager();
     logger.info("Register InventoryWrapper...");
     this.inventoryWrapperRegistry.register(javaPlugin, this.inventoryWrapperManager);
-    logger.info("Initializing NexusManager...");
-    this.nexusManager = new NexusManager(this);
     logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
   }
 
@@ -581,7 +577,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void updateConfig() {
 
-    //new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
   }
 
   @NotNull
@@ -636,6 +631,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public EconomyManager getEconomyManager() {
 
     return economyManager;
+  }
+
+  public UpdateManager updateManager() {
+    return this.updateManager;
   }
 
   /**
@@ -1051,6 +1050,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     final boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
     if(updaterEnabled) {
+      this.updateManager = new UpdateManager(this);
       updateWatcher = new UpdateWatcher();
       updateWatcher.init();
     } else {
