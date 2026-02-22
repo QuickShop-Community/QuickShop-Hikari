@@ -28,8 +28,8 @@ public class UpdateWatcher implements Listener {
   public void init() {
 
     cronTask = QuickShop.folia().getScheduler().runTimerAsync(()->{
-      if(!plugin.getNexusManager().isLatest()) {
-        plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.getNexusManager().getLatestVersion());
+      if(!plugin.updateManager().isLatest()) {
+        plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.updateManager().getLatestVersion());
         plugin.logger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");
         for(final Player player : Bukkit.getOnlinePlayers()) {
           if(plugin.perm().hasPermission(player, "quickshop.alerts")) {
@@ -56,14 +56,14 @@ public class UpdateWatcher implements Listener {
     } else {
       notify = Component.text("New update {0} now available! Please update!");
     }
-    return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getVersion()));
+    return MsgUtil.fillArgs(notify, Component.text(plugin.updateManager().getLatestVersion()), Component.text(plugin.getVersion()));
   }
 
   @EventHandler
   public void playerJoin(final PlayerJoinEvent e) {
 
     Util.asyncThreadRun(()->{
-      if(!plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts") || plugin.getNexusManager().isLatest()) {
+      if(!plugin.perm().hasPermission(e.getPlayer(), "quickshop.alerts") || plugin.updateManager().isLatest()) {
         return;
       }
       MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + "---------------------------------------------------");
