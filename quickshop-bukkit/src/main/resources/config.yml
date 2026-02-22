@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1037
+config-version: 1038
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -170,6 +170,11 @@ force-bukkit-chat-handler: false
 
 #Should QS be allowed to check for updates on SpigotMC.org?
 updater: true
+
+#The source to check for updates on.
+#Allowed values: "nexus", "modrinth"
+#Nexus shows snapshots and releases, modrinth shows releases only.
+updater-source: "modrinth"
 
 #Should QS be allowed to automatically report errors to the author?
 auto-report-errors: true
