@@ -42,6 +42,7 @@ com.ghostchu.quickshop.api.config
 com.ghostchu.quickshop.api.inventory
 com.ghostchu.quickshop.api.database.bean
 com.ghostchu.quickshop.api.database
+com.ghostchu.quickshop.api.updater
 com.ghostchu.quickshop.platform
 com.ghostchu.quickshop.platform.paper
 com.ghostchu.quickshop.listener
