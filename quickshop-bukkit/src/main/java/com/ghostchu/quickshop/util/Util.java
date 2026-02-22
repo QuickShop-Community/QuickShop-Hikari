@@ -501,7 +501,7 @@ public class Util {
 
         if(exponent > 0) {
 
-          final int digits = QuickShop.getInstance().getConfig().getInt("maximum-digits-in-price", -1);
+          final int digits = QuickShop.getInstance().getConfig().getInt("shop.maximum-digits-in-price", -1);
           final BigDecimal value = baseValue.multiply(BigDecimal.TEN.pow(exponent));
           if(digits == -1) {
             return value;
