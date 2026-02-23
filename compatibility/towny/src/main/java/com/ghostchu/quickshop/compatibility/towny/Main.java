@@ -59,9 +59,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -232,24 +234,38 @@ public final class Main extends CompatibilityModule implements Listener {
 
   public void purgeShops(@NotNull final Collection<TownBlock> worldCoords, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
 
+    final Set<WorldCoord> targetCoords = new HashSet<>(worldCoords.size());
     for(final TownBlock townBlock : worldCoords) {
-      purgeShops(townBlock.getWorldCoord(), owner, deleter, reason, overrideOwner);
+      targetCoords.add(townBlock.getWorldCoord());
     }
+    purgeShops(targetCoords, owner, deleter, reason, overrideOwner);
   }
 
   public void purgeShops(@NotNull final WorldCoord worldCoord, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
-    //Getting all shop with world-chunk-shop mapping
-    for(final Shop shop : api.getShopManager().getAllShops()) {
-      if(!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld())) {
-        continue;
-      }
-      if(WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
+    purgeShops(Set.of(worldCoord), owner, deleter, reason, overrideOwner);
+  }
+
+  private void purgeShops(@NotNull final Set<WorldCoord> worldCoords, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason, final boolean overrideOwner) {
+
+    if(worldCoords.isEmpty()) {
+      return;
+    }
+
+    Util.asyncThreadRun(()->{
+      final QUser actor = QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false);
+      //Getting all shop with world-chunk-shop mapping
+      for(final Shop shop : api.getShopManager().getAllShops()) {
+        if(!worldCoords.contains(WorldCoord.parseWorldCoord(shop.getLocation()))) {
+          continue;
+        }
         if(overrideOwner || owner != null && owner.equals(shop.getOwner().getUniqueId())) {
-          recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false), shop, reason);
-          getApi().getShopManager().deleteShop(shop);
+          Util.regionThread(shop.getLocation(), ()->{
+            recordDeletion(actor, shop, reason);
+            getApi().getShopManager().deleteShop(shop);
+          });
         }
       }
-    }
+    });
   }
 
   @EventHandler
