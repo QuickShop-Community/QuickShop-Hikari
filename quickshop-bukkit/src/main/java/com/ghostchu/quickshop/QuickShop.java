@@ -95,6 +95,7 @@ import com.ghostchu.quickshop.util.envcheck.ResultContainer;
 import com.ghostchu.quickshop.util.envcheck.ResultReport;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
+import com.ghostchu.quickshop.util.matcher.item.ModernCustomMatcher;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.TNEItemMatcherImpl;
 import com.ghostchu.quickshop.util.metric.MetricManager;
@@ -885,7 +886,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void loadItemMatcher() {
 
     final ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
-      case 3 -> new TNEItemMatcherImpl(this);
+      case 3 -> new ModernCustomMatcher(this);
       case 1 -> new BukkitItemMatcherImpl(this);
       case 0 -> new QuickShopItemMatcherImpl(this);
       default ->
