@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1038
+config-version: 1039
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -665,53 +665,115 @@ effect:
     #Should we play sound while player clicking shop container/sign?
     onclick: true
 #Item matcher.
-#Do not touch it if you don't know what you're doing!
+#don't touch if you don't know what you're doing.
 matcher:
+
   #Matcher type
   #0= QuickShop item matcher with configurable options below.
   #1= Bukkit item matcher, can be more accurate.
   #2= Stricter Bukkit matcher, equals method.
+  #3 = modern matcher
   work-type: 1
-  #For Item (Only works under QuickShop ItemMatcher)
-  item:
-    #Should the Plugin check the item damage?
-    damage: true
-    #Should the Plugin check the item repair cost?
-    repaircost: false
-    #Should the Plugin check the item display name?
-    displayname: true
-    #Should the Plugin check the item lores?
-    lores: true
-    #Should the Plugin check the item enchs?
-    enchs: true
-    #Should the Plugin check the item potions?
-    potions: true
-    #Should the Plugin check the item attributes?
-    attributes: true
-    #Should the Plugin check the item itemflags?
-    itemflags: true
-    #Should the Plugin check the item custommodeldata?
-    custommodeldata: true
-    #Should the Plugin check the item bookmetas?
-    books: true
-    #Should the Plugin check the banner meta?
-    banner: true
-    #Should the Plugin check the skull meta?
-    skull: true
-    #Should the Plugin check the firework meta?
-    firework: true
-    #Should the Plugin check the map meta?
-    map: true
-    #Should the Plugin check the leather armor meta?
-    leatherArmor: true
-    #Should the Plugin check the fishBucket meta?
-    fishBucket: true
-    #Should the Plugin check the suspiciousStew meta?
-    suspiciousStew: true
-    #Should the Plugin check the shulkerBox contents?
-    shulkerBox: true
-    #Should the Plugin check the bundle contents?
-    bundle: true
+
+  # If true, stack amount will NOT be considered during matching.
+  # Recommended for shop matching.
+  ignore-count: true
+
+  # If true, material (ItemStack#getType) must match.
+  # Strongly recommended.
+  check-material: true
+
+  # Compare ONLY what is enabled below.
+  # - DIRECT keys map 1:1 to DataComponentTypeKeys.<KEY>
+  # - GROUP keys expand to multiple underlying component keys
+  components:
+
+    # ------------------------------
+    # DIRECT COMPONENT KEYS
+    # ------------------------------
+
+    #Should the Plugin check the item damage (durability)?
+    DAMAGE: true
+
+    #Should the Plugin check the anvil repair cost?
+    REPAIR_COST: false
+
+    #Should the Plugin check the custom display name?
+    CUSTOM_NAME: true
+
+    #Should the Plugin check the item name override?
+    ITEM_NAME: false
+
+    #Should the Plugin check lore?
+    LORE: true
+
+    #Should the Plugin check CustomModelData?
+    CUSTOM_MODEL_DATA: true
+
+    #Should the Plugin check enchantments?
+    ENCHANTMENTS: true
+
+    #Should the Plugin check stored enchantments (enchanted books)?
+    STORED_ENCHANTMENTS: true
+
+    #Should the Plugin check attribute modifiers?
+    ATTRIBUTE_MODIFIERS: true
+
+    #Should the Plugin check unbreakable flag?
+    UNBREAKABLE: true
+
+    #Should the Plugin check armor trim?
+    TRIM: true
+
+    #Should the Plugin check dyed color?
+    DYED_COLOR: true
+
+    #Should the Plugin check tooltip hide flags?
+    HIDE_ADDITIONAL_TOOLTIP: true
+
+    #Should the Plugin check enchantment glint override?
+    ENCHANTMENT_GLINT_OVERRIDE: true
+
+    #Should the Plugin check potion contents?
+    POTION_CONTENTS: true
+
+    #Should the Plugin check potion duration scaling?
+    POTION_DURATION_SCALE: true
+
+    # ------------------------------
+    # GROUP COMPONENT TOGGLES
+    # (Expand into multiple component keys)
+    # ------------------------------
+
+    #Should the Plugin check book content (written & writable)?
+    BOOKS: true
+
+    #Should the Plugin check banner patterns?
+    BANNER: true
+
+    #Should the Plugin check skull profile/texture?
+    SKULL: true
+
+    #Should the Plugin check firework meta (rockets + stars)?
+    FIREWORK: true
+
+    #Should the Plugin check map metadata?
+    MAP: true
+
+    #Should the Plugin check leather armor dye color?
+    LEATHER_ARMOR: true
+
+    #Should the Plugin check fish bucket entity data?
+    FISH_BUCKET: true
+
+    #Should the Plugin check suspicious stew effects?
+    SUSPICIOUS_STEW: true
+
+    #Should the Plugin check shulker box contents?
+    SHULKER_BOX: true
+
+    #Should the Plugin check bundle contents?
+    BUNDLE: true
 
 #The protection that a shop should check.
 protect:
