@@ -1,4 +1,8 @@
 # QuickShop-Hikari Plugin Configuration
+#
+# Website: https://quickshophikari.org/
+# Docs: https://quickshop-community.github.io/QuickShop-Hikari-Documents/
+# Discord: https://discord.com/invite/Bu3dVtmsD3
 
 # Do not touch this if you don't know what you're doing!
 config-version: 1039
@@ -154,13 +158,13 @@ currency: ""
 
 logging:
   # Enable logging?
-  # The log file is located at "plugins/QuickShop/qs.log".
+  # The log file is located at "plugins/QuickShop-Hikari/qs.log".
   enable: true
   # Should QuickShop log shop trading/creations?
   log-actions: true
   # Should QuickShop log balance before and after when trading?
   log-balance: true
-  # The target size (in MB) to split log files to the "plugins\QuickShop\logs" folder.
+  # The target size (in MB) to split log files to the "plugins\QuickShop-Hikari\logs" folder.
   file-size: 10.0
   # Log data storage location (0 to file, 1 to database)
   location: 1
@@ -288,7 +292,9 @@ shop:
   shoppable-check: true
   # Should we update the shop's sign when the shop is loaded? Could cause lag.
   update-sign-on-load: false
-  # The components to use for the control panel if not set to the GUI-based control panel
+  # Should we skip requiring confirmation when executing commands such as remove?
+  skip-command-confirmation: false                                               
+ # The components to use for the control panel if not set to the GUI-based control panel
   control-panel:
     - owner
     - unlimited
@@ -381,7 +387,7 @@ shop:
   pay-unlimited-shop-owners: false
 
   # Should we place display items on the chests?
-  # This may cause duped items, especially for modded servers if you're using Real DisplayItem!
+  # This may cause duped items
   display-items: true
 
   # The default status for display items.
@@ -394,7 +400,7 @@ shop:
 
   # The display type you want use.
   # Old mode, ArmorStand (display-type=1) is Outdated and could not be used
-  # 2=Virtual Item (Requires ProtocolLib or PacketEvents; if neither is installed, this feature will be automatically disabled)
+  # 2=Virtual Item (Requires ProtocolLib or PacketEvents; this feature will be disabled if the required plugin is not installed)
   display-type: 2
 
   # The preferred protocol to use for virtual item displays.
@@ -667,6 +673,7 @@ effect:
     oncommand: true
     # Should we play sound while player clicking shop container/sign?
     onclick: true
+
 # Item matcher.
 # Don't touch if you don't know what you're doing.
 matcher:
@@ -837,9 +844,6 @@ debug:
 # WARNING: Only enable if you are explicitly migrating data from older versions.
 legacy-updater:
   shop-sign: false
-
-# Should we skip requiring confirmation when executing commands such as remove?
-skip-command-confirmation: false
 
 # Set the command alias for qs main command
 # - playershop
