@@ -194,37 +194,55 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler
   public void onTownLeave(final TownLeaveEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Resident left town", false));
+    final UUID residentUUID = event.getResident().getUUID();
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, residentUUID, null, "Resident left town", false));
   }
 
   @EventHandler
   public void onTownKick(final TownKickEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), event.getKickedResident().getUUID(), null, "Town kicked a resident", false));
+    final UUID kickedResidentUUID = event.getKickedResident().getUUID();
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, kickedResidentUUID, null, "Town kicked a resident", false));
   }
 
   @EventHandler
   public void onPlayerLeave(final TownRemoveResidentEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Town removed a resident", false));
+    final UUID residentUUID = event.getResident().getUUID();
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, residentUUID, null, "Town removed a resident", false));
   }
 
   public void purgeShops(@NotNull final Collection<TownBlock> worldCoords, @Nullable final UUID owner, @Nullable final UUID deleter, @NotNull final String reason) {
@@ -271,37 +289,44 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler
   public void onPlotClear(final PlotClearEvent event) {
 
-    if(isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
+    final WorldCoord worldCoord = event.getTownBlock().getWorldCoord();
+    if(isWorldIgnored(worldCoord.getBukkitWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared", true));
+    Util.mainThreadRun(()->purgeShops(worldCoord, null, null, "Plot cleared", true));
   }
 
   @EventHandler
   public void onRuin(final TownRuinedEvent event) {
 
-    if(isWorldIgnored(event.getTown().getWorld())) {
+    final Town town = event.getTown();
+    if(town == null) {
+      return;
+    }
+    if(isWorldIgnored(town.getWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-town-ruin")) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getTown().getTownBlocks(), null, null, "Town ruined", true));
+    final Collection<TownBlock> townBlocks = new HashSet<>(town.getTownBlocks());
+    Util.mainThreadRun(()->purgeShops(townBlocks, null, null, "Town ruined", true));
   }
 
   @EventHandler
   public void onPlotUnclaim(final TownUnclaimEvent event) {
 
-    if(isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
+    final WorldCoord worldCoord = event.getWorldCoord();
+    if(isWorldIgnored(worldCoord.getBukkitWorld())) {
       return;
     }
     if(!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
       return;
     }
-    Util.mainThreadRun(()->purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed", true));
+    Util.mainThreadRun(()->purgeShops(worldCoord, null, null, "Town Unclaimed", true));
   }
 
   @EventHandler(ignoreCancelled = true)
