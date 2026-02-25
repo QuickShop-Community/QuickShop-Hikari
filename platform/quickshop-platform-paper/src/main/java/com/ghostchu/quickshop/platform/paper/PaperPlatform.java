@@ -121,7 +121,13 @@ public class PaperPlatform implements Platform {
   @Override
   public @NotNull Component setItemStackHoverEvent(@NotNull final Component oldComponent, @NotNull final ItemStack stack) {
 
-    return oldComponent.hoverEvent(stack.asHoverEvent());
+    final int amount = stack.getAmount();
+    if(amount >= 1 && amount <= 99) {
+      return oldComponent.hoverEvent(stack.asHoverEvent());
+    }
+    final ItemStack hoverStack = stack.clone();
+    hoverStack.setAmount(Math.max(1, Math.min(99, amount)));
+    return oldComponent.hoverEvent(hoverStack.asHoverEvent());
   }
 
   @Override
