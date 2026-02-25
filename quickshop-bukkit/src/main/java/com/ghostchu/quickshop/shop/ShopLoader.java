@@ -355,7 +355,7 @@ public class ShopLoader implements SubPasteItem {
       if(dataRecord.getEncoded() != null && !dataRecord.getEncoded().isEmpty()) {
         Log.debug("Shop has correct encoded item type, loaded as usual.");
 
-        this.item = QuickShop.getInstance().platform().decodeStack(dataRecord.getEncoded());
+        this.item = sanitizeLoadedItemStack(QuickShop.getInstance().platform().decodeStack(dataRecord.getEncoded()));
         this.newItem = item;
 
         encodedLoaded = true;
@@ -364,7 +364,7 @@ public class ShopLoader implements SubPasteItem {
       if(!encodedLoaded || this.item == null) {
         Log.debug("Attempting to migrate shop to new encoded type....");
 
-        this.item = deserializeItem(dataRecord.getItem());
+        this.item = sanitizeLoadedItemStack(deserializeItem(dataRecord.getItem()));
         this.newItem = item;
         needUpdate = true;
       }
@@ -381,6 +381,22 @@ public class ShopLoader implements SubPasteItem {
         Log.debug("Failed to load data to the ItemStack: " + itemConfig);
         return null;
       }
+    }
+
+    private @Nullable ItemStack sanitizeLoadedItemStack(@Nullable final ItemStack stack) {
+
+      if(stack == null) {
+        return null;
+      }
+      final int amount = stack.getAmount();
+      final int normalizedAmount = Math.max(1, Math.min(99, amount));
+      if(amount == normalizedAmount) {
+        return stack;
+      }
+      final ItemStack sanitized = stack.clone();
+      sanitized.setAmount(normalizedAmount);
+      needUpdate = true;
+      return sanitized;
     }
 
     private @Nullable YamlConfiguration deserializeExtra(@NotNull final String extraString) {
