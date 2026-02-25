@@ -12,7 +12,11 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SubCommand_Info implements CommandHandler<CommandSender> {
 
@@ -31,6 +35,8 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
     int chunks = 0;
     int worlds = 0;
     int nostock = 0;
+    final boolean folia = QuickShop.folia().isFolia();
+    final List<Shop> outOfStockCheckQueue = folia? new ArrayList<>() : null;
 
     for(final Map<ShopChunk, Map<Location, Shop>> inWorld :
             plugin.getShopManager().getShops().values()) {
@@ -44,12 +50,51 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
           } else if(shop.isSelling()) {
             selling++;
           }
-          if(shop.isSelling() && shop.isLoaded() && shop.getRemainingStock() == 0) {
-            nostock++;
+          if(shop.isSelling() && shop.isLoaded()) {
+            if(folia) {
+              outOfStockCheckQueue.add(shop);
+            } else if(shop.getRemainingStock() == 0) {
+              nostock++;
+            }
           }
         }
       }
     }
+
+    if(!folia) {
+      sendStats(sender, buying, selling, chunks, worlds, nostock);
+      return;
+    }
+
+    if(outOfStockCheckQueue.isEmpty()) {
+      sendStats(sender, buying, selling, chunks, worlds, 0);
+      return;
+    }
+
+    final AtomicInteger noStockCounter = new AtomicInteger(0);
+    final List<CompletableFuture<Void>> futures = new ArrayList<>(outOfStockCheckQueue.size());
+    for(final Shop shop : outOfStockCheckQueue) {
+      final CompletableFuture<Void> future = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), task -> {
+        try {
+          if(shop.getRemainingStock() == 0) {
+            noStockCounter.incrementAndGet();
+          }
+        } catch(final Throwable ignored) {
+        }
+      });
+      futures.add(future);
+    }
+
+    final int buyingFinal = buying;
+    final int sellingFinal = selling;
+    final int chunksFinal = chunks;
+    final int worldsFinal = worlds;
+    CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+            .whenComplete((unused, throwable)->QuickShop.folia().getScheduler().runLater(()->
+                    sendStats(sender, buyingFinal, sellingFinal, chunksFinal, worldsFinal, noStockCounter.get()), 1));
+  }
+
+  private void sendStats(@NotNull final CommandSender sender, final int buying, final int selling, final int chunks, final int worlds, final int nostock) {
 
     MsgUtil.sendDirectMessage(sender, Component.text("QuickShop Statistics...").color(NamedTextColor.GOLD));
     MsgUtil.sendDirectMessage(sender, Component.text("Server UniqueId: " + plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
