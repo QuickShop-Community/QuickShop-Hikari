@@ -78,7 +78,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
         return;
       }
 
-      if(!PackageUtil.parsePackageProperly("allowOffline").asBoolean()) {
+      if(!plugin.getConfig().getBoolean("shop.allow-offline-benefit", false)) {
         if(qUser.getBukkitPlayer().isEmpty()) {
           plugin.text().of(sender, "player-offline", player).send();
           return;

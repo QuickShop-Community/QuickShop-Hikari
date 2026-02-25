@@ -21,10 +21,10 @@ tabcomplete:
   name: '[nazwa]'
   range: '[zakres]'
   currency: '[nazwa waluty]'
-  percentage: '[procent%]'
+  percentage: '[percentage%]'
 taxaccount-unset: <green>Konto podatkowe tego sklepu jest teraz zgodne z ustawieniami globalnymi serwera.
 blacklisted-item: <red>Nie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście
-command-type-mismatch: <red>Ta komenda może być wykonana tylko przez <aqua>{0}.
+command-type-mismatch: <red>Ta komenda może być wykonana tylko przez <aqua>{0}</aqua>.
 server-crash-warning: '<red>Serwer może się zawiesić po wykonaniu polecenia /qs reload po zastąpieniu/usunięciu pliku Jar pluginu QuickShop podczas uruchamiania serwera.'
 you-cant-afford-to-change-price: <red>Musisz mieć {0} aby zmienić cenę w sklepie.
 safe-mode: <red>QuickShop jest teraz w trybie bezpiecznym, nie możesz otworzyć pojemnika tego sklepu, skontaktuj się z administratorem serwera, aby naprawić błędy.
@@ -120,7 +120,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Element NBT jest zbyt duży, aby go pokazać
   stock: '<green>Ilość <yellow>{0}'
   this-shop-is-buying: <green>Ten sklep <light_purple>SKUPUJE<green> itemy.
-  this-shop-is-frozen: <green>The shop is now in <red>freeze mode<green>.
+  this-shop-is-frozen: <green>Sklep jest teraz w <red>trybie zamrożenia<green>.
   successfully-sold: '<green>Sprzedano:'
   total-value-of-chest: '<green>Ilość w skrzyni: <yellow>{0}'
 currency-not-exists: <red>Nie można znaleźć waluty, którą chcesz ustawić. Może pisownia jest błędna lub ta waluta nie jest dostępna w tym świecie.
@@ -256,7 +256,7 @@ bad-command-usage: <red>Błędne argumenty poleceń!
 cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
 cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
 cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-deleted: <green>Usunięto łącznie <yellow>{0}</yellow> sklepów.
 shop-purchase-cancelled: <red>Zakup w sklepie został anulowany.
 bypassing-lock: <red>Omijanie blokady QuickShop!
 bungee-cross-server-msg: '<yellow>Szybki sklep CSM: <green>{0}'
@@ -363,7 +363,7 @@ controlpanel:
   toggledisplay-hover: <yellow>Przełącz status wyświetlania przedmiotu w sklepie
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
-  inventory-hover: <yellow>Open the shop's inventory.
+  inventory-hover: <yellow>Otwórz ekwipunek sklepu.
   freeze-hover: <yellow>Przełącz status zamrożenia sklepu.
   lock-hover: <yellow>Włącz/Wyłącz ochronę blokady sklepu.
   item-hover: <yellow>Kliknij, aby zmienić przedmiot sklepu
@@ -578,7 +578,7 @@ not-a-valid-time: |-
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
   <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: <red>You can't specify a time in the past.
+invalid-past-time: <red>Nie możesz podać czasu w przeszłości.
 debug:
   arguments-invalid: <red>Provided arguments <yellow>{0}</yellow> invalid.
   sign-located: '<green>Sign valid: <yellow>{0}</yellow>.'
@@ -595,8 +595,8 @@ debug:
   sql-completed: <green>Completed, {0} rows affected.
   sql-exception: <red>An error occurred while executing the SQL query, check the Console for details!
   sql-disabled: '<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it.'
-  force-shop-reload: <yellow>Forcing reload all loaded shops...
-  force-shop-reload-complete: <green>Forced <aqua>{0}</aqua> shops to be reloaded.
+  force-shop-reload: <yellow>Wymuszanie przeładowania wszystkich załadowanych sklepów...
+  force-shop-reload-complete: <green>Wymuszono przeładowanie <aqua>{0}</aqua> sklepów.
   force-shop-loader-reload: <yellow>Forcing shop-loader reloading...
   force-shop-loader-reload-unloading-shops: <yellow>Unloading <aqua>{0}</aqua> loaded shops...
   force-shop-loader-reload-unloading-shops-from-memory: <yellow>Removing <aqua>{0}</aqua> shops from memory...
@@ -616,9 +616,9 @@ debug:
   item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-matching-result: "<green>Hand2Store: <aqua>{0}</aqua>, Store2Hand: <aqua>{1}</aqua>"
   hikari-cp-size-tweak: "<green>HikariCP MaximumPoolSize and MinimumIdle was set to <white>{0}</white>"
-  hikari-cp-testing: "<green>Please wait, testing HikariCP connection..."
-  hikari-cp-working: "<green>Pass! HikariCP working well!"
-  hikari-cp-not-working: "<red>Failed! The connection that returned by HikariCP is dead! (Not passed test in 1 second)"
+  hikari-cp-testing: "<green>Proszę czekać, trwa testowanie połączenia HikariCP..."
+  hikari-cp-working: "<green>Dalej! HikariCP działa bez problemów!"
+  hikari-cp-not-working: "<red>Niepowodzenie! Połączenie z HikariCP nie powiodło się (nie przeszło testu w 1 sekundę)"
   hikari-cp-timeout: "<red>HikariCP is timed out while getting a valid connection, please clean up all active queries to release connection resources."
   queries-stopped: "<green>Stopped <white>{0}</white> active queries."
   queries-dumping: "<yellow>Dumping active queries..."
@@ -1358,7 +1358,7 @@ addon:
     invalid-usage-restriction: <red>The usage restriction <yellow>{0}</yellow> are invalid.
     invalid-threshold-restriction: <red>The threshold restriction <yellow>{0}</yellow> are invalid.
     invalid-effect-scope: <red>The scope <yellow>{0}</yellow> are invalid.
-    invalid-expire-time: <red>You can't specify a time in the past.
+    invalid-expire-time: <red>Nie możesz podać czasu w przeszłości.
     invalid-discount-rate: <red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage.
     discount-code-expired: <red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!
     discount-code-installed: <green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>.

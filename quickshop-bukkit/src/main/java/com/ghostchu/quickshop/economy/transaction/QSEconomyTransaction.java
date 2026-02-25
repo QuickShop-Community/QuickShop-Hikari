@@ -62,7 +62,11 @@ public class QSEconomyTransaction implements EconomyTransaction {
   private @Nullable String currency;
   private @NotNull BigDecimal amount;
   private @NotNull BigDecimal tax = BigDecimal.ZERO;
+  private final @NotNull BigDecimal fromAmount;
   private @NotNull BigDecimal amountAfterTax = BigDecimal.ZERO;
+  private @NotNull BigDecimal toTax = BigDecimal.ZERO;
+  private @NotNull BigDecimal fromTax = BigDecimal.ZERO;
+  private final @NotNull BigDecimal totalTax;
 
   private @Nullable QUser from;
   private @Nullable QUser to;
@@ -73,9 +77,9 @@ public class QSEconomyTransaction implements EconomyTransaction {
   private String lastError = "No transaction error logged";
 
   public QSEconomyTransaction(final BenefitProvider benefitManager, @NotNull final String world,
-                              @Nullable final String currency, @NotNull final BigDecimal amount,
-                              @NotNull final BigDecimal tax,
-                              @Nullable final QUser from, @Nullable final QUser to, @Nullable final QUser taxer) {
+                                      @Nullable final String currency, @NotNull final BigDecimal amount,
+                                      @NotNull final BigDecimal toTax, @NotNull final BigDecimal fromTax,
+                                      @Nullable final QUser from, @Nullable final QUser to, @Nullable final QUser taxer) {
 
     this.benefitProvider = benefitManager;
     this.world = world;
@@ -86,13 +90,24 @@ public class QSEconomyTransaction implements EconomyTransaction {
     this.taxer = taxer;
 
     //Calc total money and apply tax
-    if(tax.compareTo(BigDecimal.ZERO) != 0) {
-      this.amountAfterTax = CalculateUtil.multiply(CalculateUtil.subtract(BigDecimal.ONE, tax), amount);
+    if(toTax.compareTo(BigDecimal.ZERO) != 0) {
+      this.amountAfterTax = CalculateUtil.multiply(CalculateUtil.subtract(BigDecimal.ONE, toTax), amount);
     } else {
       this.amountAfterTax = amount;
     }
 
-    this.tax = CalculateUtil.subtract(amount, amountAfterTax); //Calc total tax
+    this.toTax = CalculateUtil.subtract(amount, amountAfterTax); //Calc total tax
+
+    //calculate from tax and from amount
+    if(fromTax.compareTo(BigDecimal.ZERO) != 0) {
+      this.fromAmount = amount.add(CalculateUtil.multiply(amount, fromTax));
+    } else {
+      this.fromAmount = amount;
+    }
+
+    this.fromTax = CalculateUtil.subtract(fromAmount, amount);
+
+    this.totalTax = toTax.add(fromTax);
 
     if(from == null && to == null) {
       lastError = "From and To cannot be null in same time.";
@@ -271,6 +286,58 @@ public class QSEconomyTransaction implements EconomyTransaction {
     this.tax = tax;
   }
 
+  /**
+   * Calculates and retrieves the tax amount associated with this transaction based on the defined
+   * tax rules or system configuration.
+   *
+   * @return a BigDecimal representing the calculated tax amount for the transaction
+   *
+   * @since 6.2.0.11
+   */
+  @Override
+  public BigDecimal toTax() {
+
+    return toTax;
+  }
+
+  /**
+   * Sets the tax amount for the current transaction related to the specified user or entity.
+   *
+   * @param tax the tax amount to be set for the transaction, represented as a BigDecimal
+   *
+   * @since 6.2.0.11
+   */
+  @Override
+  public void toTax(final BigDecimal tax) {
+    this.toTax = tax;
+  }
+
+  /**
+   * Retrieves the tax amount associated with the originator of the transaction.
+   *
+   * @return the tax amount originating from the source of the transaction, represented as a
+   * BigDecimal
+   *
+   * @since 6.2.0.11
+   */
+  @Override
+  public BigDecimal fromTax() {
+
+    return fromTax;
+  }
+
+  /**
+   * Sets the tax amount for the current transaction originating from a specific source.
+   *
+   * @param tax the tax amount to be set, represented as a BigDecimal
+   *
+   * @since 6.2.0.11
+   */
+  @Override
+  public void fromTax(final BigDecimal tax) {
+    this.fromTax = tax;
+  }
+
   public String lastError() {
 
     return lastError;
@@ -294,7 +361,7 @@ public class QSEconomyTransaction implements EconomyTransaction {
   @Override
   public boolean completable() {
 
-    return from == null || provider.balance(from, world, currency).compareTo(amount) >= 0;
+    return from == null || provider.balance(from, world, currency).compareTo(fromAmount) >= 0;
   }
 
   /**
@@ -343,7 +410,8 @@ public class QSEconomyTransaction implements EconomyTransaction {
   @Override
   public boolean commit(@NotNull final TransactionCallback callback) {
 
-    Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + provider.name());
+    Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " FromAmount: " + fromAmount + " Total(after tax): " + amountAfterTax + " From Tax: " + fromTax + " To Tax: " + toTax + ", EconomyCore: " + provider.name());
+
     if(!callback.onCommit(this)) {
 
       this.lastError = "Plugin cancelled this transaction.";
@@ -357,9 +425,9 @@ public class QSEconomyTransaction implements EconomyTransaction {
       return false;
     }
 
-    if(from != null && !this.executeOperation(new EconomyWithdrawOperation(from, amount, world, currency))) {
+    if(from != null && !this.executeOperation(new EconomyWithdrawOperation(from, fromAmount, world, currency))) {
 
-      this.lastError = "Failed to withdraw " + amount.toPlainString() + " from account " + from + "LastError: " + provider.lastError();
+      this.lastError = "Failed to withdraw " + fromAmount.toPlainString() + " from account " + from + "LastError: " + provider.lastError();
       return false;
     }
 
@@ -415,7 +483,7 @@ public class QSEconomyTransaction implements EconomyTransaction {
 
   private void checkTax(@NotNull final TransactionCallback callback) {
 
-    if(tax.compareTo(BigDecimal.ZERO) > 0) {
+    if(totalTax.compareTo(BigDecimal.ZERO) > 0) {
       return;
     }
 
@@ -423,9 +491,9 @@ public class QSEconomyTransaction implements EconomyTransaction {
       return;
     }
 
-    if(!this.executeOperation(new EconomyDepositOperation(taxer, tax, world, currency))) {
+    if(!this.executeOperation(new EconomyDepositOperation(taxer, totalTax, world, currency))) {
 
-      this.lastError = "Failed to deposit tax to tax account: " + tax.toPlainString() + ". LastError: " + provider.lastError();
+      this.lastError = "Failed to deposit tax to tax account: " + totalTax.toPlainString() + ". LastError: " + provider.lastError();
       callback.onTaxFailed(this);
     }
   }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>6.2.0.11-RELEASE-CANDIDATE-2</version>
+        <version>6.3.0.0-SNAPSHOT-5</version>
     </parent>
     <build>
         <plugins>
@@ -241,6 +241,10 @@
                     <artifactId>examination-api</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.jetbrains</groupId>
                     <artifactId>annotations</artifactId>
                 </exclusion>
@@ -255,6 +259,10 @@
                 <exclusion>
                     <groupId>net.kyori</groupId>
                     <artifactId>examination-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.jetbrains</groupId>

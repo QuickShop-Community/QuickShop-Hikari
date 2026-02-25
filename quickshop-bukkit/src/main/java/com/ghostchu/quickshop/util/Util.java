@@ -83,8 +83,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
-
 public class Util {
 
   private static final Map<Material, Integer> CUSTOM_STACKSIZE = new HashMap<>();
@@ -503,7 +501,7 @@ public class Util {
 
         if(exponent > 0) {
 
-          final int digits = QuickShop.getInstance().getConfig().getInt("maximum-digits-in-price", -1);
+          final int digits = QuickShop.getInstance().getConfig().getInt("shop.maximum-digits-in-price", -1);
           final BigDecimal value = baseValue.multiply(BigDecimal.TEN.pow(exponent));
           if(digits == -1) {
             return value;
@@ -1421,7 +1419,7 @@ public class Util {
 
   public static boolean checkIfBungee() {
 
-    if(PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("proxy.force-bungeecord", false)) {
       return true;
     }
 

@@ -38,7 +38,7 @@ public class DatabaseInfoItem implements SubPasteItem {
       table.insert("Version", meta.getDatabaseProductVersion());
       table.insert("Driver", meta.getDriverName());
       table.insert("Driver Version", meta.getDriverVersion());
-      if(PackageUtil.parsePackageProperly("generateDatabaseFullReport").asBoolean()) {
+      if(QuickShop.getInstance().getConfig().getBoolean("database.generate-full-report", false)) {
         processFullReportGenerate(meta, table);
       }
       return table.render();

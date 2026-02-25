@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Calling when shop tax calculation
+ * @deprecated use ShopEnhancedTaxEvent
  */
+@Deprecated(since = "6.2.0.11", forRemoval = true)
 public class ShopTaxEvent extends AbstractQSEvent {
 
   private final QUser user;

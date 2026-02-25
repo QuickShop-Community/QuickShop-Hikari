@@ -95,8 +95,8 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     this.plugin = plugin;
     plugin.getReloadManager().register(this);
     plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
-    this.crowdinHost = PackageUtil.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top");
-    if(PackageUtil.parsePackageProperly("enableCrowdinOTA").asBoolean(true)) {
+    this.crowdinHost = plugin.getConfig().getString("crowdin-host", "https://qshikari.b-cdn.net");
+    if(plugin.getConfig().getBoolean("use-crowdin-ota", true)) {
       try {
         plugin.logger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
         this.crowdinOTA = new CrowdinOTA(crowdinHost, new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
@@ -191,13 +191,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
     // Register post processor
     postProcessors.add(new FillerProcessor());
-    if(PackageUtil.parsePackageProperly("betaForceReplaceFillerProcessor").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("lang-processor.replace-filller-post-process", false)) {
       postProcessors.add(new ForceReplaceFillerProcessor());
     }
-    if(PackageUtil.parsePackageProperly("usePAPIPostProcess").asBoolean(true)) {
+    if(plugin.getConfig().getBoolean("lang-processor.papi-post-process", true)) {
       postProcessors.add(new PlaceHolderApiProcessor());
     }
-    if(PackageUtil.parsePackageProperly("fixClientItemTextRenderAlwaysItalic").asBoolean(true)) {
+    if(plugin.getConfig().getBoolean("lang-processor.fix-item-always-italic", true)) {
       postProcessors.add(new FixClientItemItalicRenderProcessor());
     }
 

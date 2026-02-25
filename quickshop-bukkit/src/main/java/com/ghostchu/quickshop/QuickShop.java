@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
@@ -38,6 +39,8 @@ import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.EconomyLoader;
 import com.ghostchu.quickshop.economy.QSEconomyManager;
+import com.ghostchu.quickshop.hook.FWorldEditHook;
+import com.ghostchu.quickshop.hook.WorldEditHook;
 import com.ghostchu.quickshop.listener.BlockListener;
 import com.ghostchu.quickshop.listener.BungeeListener;
 import com.ghostchu.quickshop.listener.ChatListener;
@@ -81,7 +84,6 @@ import com.ghostchu.quickshop.shop.sign.SignHooker;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.PermissionChecker;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.ShopUtil;
@@ -93,6 +95,7 @@ import com.ghostchu.quickshop.util.envcheck.ResultContainer;
 import com.ghostchu.quickshop.util.envcheck.ResultReport;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
+import com.ghostchu.quickshop.util.matcher.item.ModernCustomMatcher;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.TNEItemMatcherImpl;
 import com.ghostchu.quickshop.util.metric.MetricManager;
@@ -100,7 +103,7 @@ import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.privacy.PrivacyController;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
-import com.ghostchu.quickshop.util.updater.NexusManager;
+import com.ghostchu.quickshop.util.updater.UpdateManager;
 import com.ghostchu.quickshop.watcher.CalendarWatcher;
 import com.ghostchu.quickshop.watcher.DisplayAutoDespawnWatcher;
 import com.ghostchu.quickshop.watcher.LogWatcher;
@@ -175,6 +178,9 @@ import java.util.concurrent.TimeUnit;
 
 public class QuickShop implements QuickShopAPI, Reloadable {
 
+
+  private final Map<String, Hook> hooks = new HashMap<>();
+
   public static final Queue<UUID> inShop = new ConcurrentLinkedQueue<>();
 
   public static final Cache<UUID, ShopUtil.PendingTransferTask> taskCache = CacheBuilder
@@ -212,6 +218,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   private final EconomyManager economyManager = new QSEconomyManager();
+  private UpdateManager updateManager;
   @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
@@ -320,8 +327,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private ShopItemBlackList shopItemBlackList;
   @Getter
-  private NexusManager nexusManager;
-  @Getter
   private ShopDataSaveWatcher shopSaveWatcher;
   @Getter
   private SignHooker signHooker;
@@ -356,6 +361,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public static QuickShop getInstance() {
 
     return instance;
+  }
+
+  @Override
+  public Map<String, Hook> hooks() {
+
+    return hooks;
   }
 
   /**
@@ -412,8 +423,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     loadTextManager();
     logger.info("Register InventoryWrapper...");
     this.inventoryWrapperRegistry.register(javaPlugin, this.inventoryWrapperManager);
-    logger.info("Initializing NexusManager...");
-    this.nexusManager = new NexusManager(this);
     logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
   }
 
@@ -569,7 +578,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void updateConfig() {
 
-    //new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
   }
 
   @NotNull
@@ -624,6 +632,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public EconomyManager getEconomyManager() {
 
     return economyManager;
+  }
+
+  public UpdateManager updateManager() {
+    return this.updateManager;
   }
 
   /**
@@ -838,6 +850,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
     }
 
+    //initialize our hooks and things
+    logger.info("Initializing built-in hooks...");
+    addHook(new WorldEditHook());
+    addHook(new FWorldEditHook());
+
+    loadHooks();
   }
 
   private void loadRegistry() {
@@ -868,7 +886,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void loadItemMatcher() {
 
     final ItemMatcher defItemMatcher = switch(getConfig().getInt("matcher.work-type")) {
-      case 3 -> new TNEItemMatcherImpl(this);
+      case 3 -> new ModernCustomMatcher(this);
       case 1 -> new BukkitItemMatcherImpl(this);
       case 0 -> new QuickShopItemMatcherImpl(this);
       default ->
@@ -943,7 +961,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void bakeShopsOwnerCache() {
 
-    if(PackageUtil.parsePackageProperly("bakeuuids").asBoolean(false)) {
+    if(config.getYaml().getBoolean("database.bake-uuids", false)) {
       logger.info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
       final Set<UUID> waitingForBake = new HashSet<>();
       this.shopManager.getAllShops().forEach(shop->{
@@ -1033,6 +1051,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
     final boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
     if(updaterEnabled) {
+      this.updateManager = new UpdateManager(this);
       updateWatcher = new UpdateWatcher();
       updateWatcher.init();
     } else {

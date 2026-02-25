@@ -1258,7 +1258,7 @@ public class ContainerShop implements Shop, Reloadable {
     try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
       checkDisplay();
     }
-    if(PackageUtil.parsePackageProperly("updateShopSignOnLoad").asBoolean(false)) {
+    if(plugin.getConfig().getBoolean("shop.update-sign-on-load", false)) {
       Log.debug("Scheduled sign update for shop " + this + " because updateShopSignOnLoad has been enabled.");
       plugin.getSignUpdateWatcher().scheduleSignUpdate(this);
     }

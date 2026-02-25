@@ -4,7 +4,6 @@ main: com.ghostchu.quickshop.QuickShopBukkit
 folia-supported: true
 softdepend:
   - Vault
-  - Reserve
   - PlaceholderAPI
   - LuckPerms
   - PermissionEx
@@ -18,9 +17,8 @@ softdepend:
   - ItemNBTAPI
   - Mohist
   - EcoEnchants # Add ecoenchants to allow us to detect if ee is installed for compatibility warning
-  - CoinsEngine
-  - Treasury
-  - TheNewEconomy
+  - WorldEdit
+  - FastAsyncWorldEdit
   - BarrelShops
 api-version: '1.20'
 # TODO: https://github.com/PaperMC/Paper/pull/7177

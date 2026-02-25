@@ -59,9 +59,9 @@ public class ShopLoader implements SubPasteItem {
   public ShopLoader(@NotNull final QuickShop plugin) {
 
     this.plugin = plugin;
-    this.executorService = Executors.newWorkStealingPool(PackageUtil
-                                                                 .parsePackageProperly("parallelism")
-                                                                 .asInteger(CommonUtil.multiProcessorThreadRecommended()));
+    int parallelism = plugin.getConfig().getInt("database.loader-threads", -1);
+    if(parallelism  <= 0) parallelism = CommonUtil.multiProcessorThreadRecommended();
+    this.executorService = Executors.newWorkStealingPool(parallelism);
   }
 
   public void loadShops() {

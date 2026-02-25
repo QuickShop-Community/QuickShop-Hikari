@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>6.2.0.11-RELEASE-CANDIDATE-2</version>
+    <version>6.3.0.0-SNAPSHOT-5</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -92,6 +92,7 @@
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
         <compat.worldedit>7.3.11</compat.worldedit>
+        <compat.worldeditfawe>2.12.0</compat.worldeditfawe>
         <compat.worldguard>7.0.13</compat.worldguard>
     </properties>
 
@@ -184,7 +185,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${project.name}-${project.version}</finalName>
-        <!--                                 <outputDirectory>C:\Releases\QS\build-artifacts</outputDirectory> -->
+                                <!--<outputDirectory>C:\Releases\QS\build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
                                 <createSourcesJar>true</createSourcesJar>
@@ -219,6 +220,9 @@
                                         <include>cc.carm.lib:*</include>
                                         <include>com.rollbar:*</include>
                                     </includes>
+                                    <excludes>
+                                        <exclude>net.kyori:adventure-api</exclude>
+                                    </excludes>
                                 </artifactSet>
                                 <relocations>
                                     <relocation>
@@ -508,7 +512,6 @@
         <module>compatibility/ultimateclaims</module>
         <module>compatibility/velocity</module>
         <module>compatibility/voidchest</module>
-        <module>compatibility/worldedit</module>
         <module>compatibility/worldguard</module>
 
     </modules>
