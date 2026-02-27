@@ -314,7 +314,7 @@ display-turn-off: <green>Shop-Display erfolgreich deaktiviert.
 display-turn-on-owned:
 display-turn-off-owned:
 display-turn-on-all: .
-display-turn-off-all: <green>Successfully turned off shop display for all server shops.
+display-turn-off-all: <green>Shop-Anzeige für alle Server-Shops erfolgreich deaktiviert.
 shop-staff-deleted: <green>{0} erfolgreich von deinem Shop als Shopmitarbeiter entfernt.
 nearby-shop-header: '<green>Shops in der nähe welche <aqua>{0}<green> entsprechen:'
 backup-failed: Kann Datenbank nicht sichern. Überprüfe die Konsole für Details.
@@ -362,8 +362,8 @@ controlpanel:
   remove-hover: <yellow>Klicke um diesen Shop zu entfernen.
   toggledisplay-hover: <yellow>Ändere den Status des Display-Items für den Shop
   refill: '<green>Auffüllen: Füllt die Items auf <yellow>[<light_purple><bold>OK</bold></light_purple>]'
-  inventory: '<green>Inventory: </green><yellow>[<bold><light_purple>View Inventory</light_purple></bold>]'
-  inventory-hover: <yellow>Open the shop's inventory.
+  inventory: '<green>Inventar: </green><yellow>[<bold><light_purple>Inventar ansehen</light_purple></bold>]'
+  inventory-hover: <yellow>Shop Inventar öffnen.
   freeze-hover: <yellow>Ändere den Freeze-Status des Shops.
   lock-hover: <yellow>Aktiviere/Deaktiviere den Sperrschutz des Shops.
   item-hover: <yellow>Klicke um das Shop Item zu ändern
@@ -746,9 +746,9 @@ addon:
     world-not-enabled: <red>Du kannst keine Shops in dieser Welt kaufen oder erstellen.
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen.
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>Du musst die Quest abschließen <aqua>{0}</aqua> um einen Shop zu erstellen.
+    sell-quest-required: <red>Du musst die Quest abschließen <aqua>{0}</aqua> um Gegenstände an einen Shop zu verkaufen.
+    buy-quest-required: <red>Du musst die Quest abschließen <aqua>{0}</aqua> um Gegenstände von einem Shop zu kaufen.
   dominion:
     creation-denied: <red>Du hast keine Berechtigung einen Shop in dieser Dominion-Area zu erstellen.
     trade-denied: <red>Der Shop muss innerhalb eines Dominion sein, um mit ihm zu handeln.
@@ -790,8 +790,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: Jemand hat Gegenstände an deinen Shop verkauft",
+             "description": "Der Spieler %%purchase.name%% verkaufte x%%purchase.amount%% %%shop.item.name%% an deinen Shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -804,7 +804,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "QuickShop-Hikari Discord Benachrichtigung",
                "icon_url": ""
              },
              "fields": [
@@ -814,28 +814,28 @@ addon:
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "Käufer",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "Gegenstand",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
                {
-                 "name": "Amount",
+                 "name": "Anzahl",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "Du bezahltest",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "Steuern",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -1544,77 +1544,77 @@ gui:
   trade:
     title: "<dark_aqua>Shop</dark_aqua>"
     info-stock:
-      display: "<yellow>Stock Information</yellow>"
+      display: "<yellow>Vorrats Information</yellow>"
       lore:
-        - "<gray>Available: <white>{0}</white></gray>"
+        - "<gray>Verfügbar: <white>{0}</white></gray>"
     info-price:
-      display: "<gold>Price Information</gold>"
+      display: "<gold>Preis Information</gold>"
       lore:
-        - "<gray>Price: <white>{0}</white></gray>"
-        - "<gray>Per: <white>{1} item(s)</white></gray>"
+        - "<gray>Preis: <white>{0}</white></gray>"
+        - "<gray>Pro: <white>{1} Gegenstand/stände</white></gray>"
     info-seller:
-      display: "<aqua>Seller Information</aqua>"
+      display: "<aqua>Verkäufer Information</aqua>"
       lore:
-        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Besitzer: <white>{0}</white></gray>"
     custom-amount:
-      display: "<bold><blue>Custom Order</blue></bold>"
+      display: "<bold><blue>Benutzerdefinierte Bestellung</blue></bold>"
     quantity-button:
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
-    title: "<dark_aqua>Shop Management</dark_aqua>"
+    title: "<dark_aqua>Shop-Verwaltung</dark_aqua>"
     change-price:
-      display: "<bold><green>Change Price</green></bold>"
+      display: "<bold><green>Preis ändern</green></bold>"
       lore:
-        - "<gray>Current price: <white>{0}</white></gray>"
+        - "<gray>Aktueller Preis: <white>{0}</white></gray>"
         - ""
-        - "<yellow>Click to change price</yellow>"
+        - "<yellow>Klicken, um Preis zu ändern</yellow>"
     mode-toggle:
-      display: "<bold><green>Change Mode</green></bold>"
+      display: "<bold><green>Modus ändern</green></bold>"
       lore:
         - "<gray>Current: <white>{0}</white></gray>"
-        - "<gray>Click to change to: <white>{1}</white></gray>"
+        - "<gray>Klicken, um zu ändern: <white>{1}</white></gray>"
     inventory:
-      display: "<bold><green>View Inventory</green></bold>"
+      display: "<bold><green>Inventar ansehen</green></bold>"
       lore:
         - "<gray>Click to view your</gray>"
-        - "<gray>shop's chest inventory.</gray>"
+        - "<gray>Shop-Truhen Inventar</gray>"
     staff:
       display: "<bold><aqua>Shop Staff</aqua></bold>"
       lore:
         - "<gray>Click to manage your</gray>"
         - "<gray>shop's staff members.</gray>"
     history:
-      display: "<bold><light_purple>Transaction History</light_purple></bold>"
+      display: "<bold><light_purple>Transaktionsverlauf</light_purple></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
-        - "<gray>shop's transaction history.</gray>"
+        - "<gray>Klicken, um deine</gray>"
+        - "<gray>Transaktionsverlauf deines Shops.</gray>"
     remove:
-      display: "<bold><red>Delete Shop</red></bold>"
+      display: "<bold><red>Shop löschen</red></bold>"
       lore:
-        - "<gray>Click to delete your shop.</gray>"
-        - "<dark_gray>You can also break the sign/chest.</dark_gray>"
+        - "<gray>Klicke, um dein Shop zu löschen.</gray>"
+        - "<dark_gray>Du kannst auch das Schild/die Truhe zerstören.</dark_gray>"
   staff:
     title: "<dark_aqua>Staff Management</dark_aqua>"
     search:
-      display: "<yellow>Search: {0}</yellow>"
+      display: "<yellow>Suche: {0}</yellow>"
       lore:
-        - "<gray>Left-click to search for players</gray>"
-        - "<gray>Right-click to clear search</gray>"
+        - "<gray>Linksklick um Spieler zu suchen</gray>"
+        - "<gray>Rechtsklick um Suche zu löschen</gray>"
     add-staff:
       display: "<green>Add Staff Member</green>"
       lore:
-        - "<gray>Click to add a new</gray>"
+        - "<gray>Klicken, um einen neuen</gray>"
         - "<gray>staff member to your shop.</gray>"
     back:
-      display: "<white>Back to Shop</white>"
+      display: "<white>Zurück zum Shop</white>"
   browse:
-    title: "<dark_aqua>Market Browser</dark_aqua>"
+    title: "<dark_aqua>Markt-Browser</dark_aqua>"
     shop-item:
       lore:
-        - "<green>Owner: </green><yellow>{0}</yellow>"
-        - "<green>Location: </green><yellow>{1}</yellow>"
-        - "<green>Type: </green><yellow>{2}</yellow>"
+        - "<green>Besitzer: </green><yellow>{0}</yellow>"
+        - "<green>Standort: </green><yellow>{1}</yellow>"
+        - "<green>Typ: </green><yellow>{2}</yellow>"
         - "<green>Price: </green><yellow>{3}</yellow>"
         - "<green>Stock: </green><yellow>{4}</yellow>"
     grouped-item:
@@ -1692,10 +1692,10 @@ gui:
     trade:
       #Shown when player clicks "Custom Order" button (buying)
       #{0} = item amount per purchase
-      enter-buy: "<yellow>Enter the quantity you want to buy. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-buy: "<yellow>Gebe die Menge ein, die du kaufen willst. Muss ein Vielfaches von <white>{0}</white> sein. <white>0</white> eingeben um abzubrechen.</yellow>"
       #Shown when player clicks "Custom Order" button (selling)
       #{0} = item amount per purchase
-      enter-sell: "<yellow>Enter the quantity you want to sell. Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</yellow>"
+      enter-sell: "<yellow>Gebe die Menge ein, die du verkaufen willst. Muss ein Vielfaches von <white>{0}</white> sein. <white>0</white> eingeben um abzubrechen.</yellow>"
       #Shown when player enters invalid quantity (not multiple of item amount)
       #{0} = item amount per purchase
       invalid-multiple: "<red>Invalid quantity! Must be a multiple of <white>{0}</white>. Enter <white>0</white> to cancel.</red>"
