@@ -18,8 +18,8 @@ package com.ghostchu.quickshop.hook;
  */
 
 import com.ghostchu.quickshop.api.hook.Hook;
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.hook.fworldedit.FWorldEditAdapter;
-import com.ghostchu.quickshop.hook.worldedit.WorldEditAdapter;
 import org.bukkit.Bukkit;
 
 /**
@@ -51,7 +51,8 @@ public class FWorldEditHook implements Hook {
   @Override
   public boolean canEnable() {
 
-    return Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+    return Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit")
+           && QuickShop.getInstance().getConfig().getBoolean("plugin.WorldEdit", true);
   }
 
   /**
