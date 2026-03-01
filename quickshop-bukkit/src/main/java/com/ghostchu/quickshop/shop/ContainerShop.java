@@ -1241,7 +1241,7 @@ public class ContainerShop implements Shop, Reloadable {
         plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
         if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
           plugin.logger().warn("Deleting corrupt shop...");
-          plugin.getShopManager().deleteShop(this);
+          Util.regionThread(location, () -> plugin.getShopManager().deleteShop(this));
         } else {
           plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
           plugin.getShopManager().unloadShop(this);
