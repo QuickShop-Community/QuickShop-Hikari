@@ -231,11 +231,11 @@ updatenotify:
     - 此版本已弃坑，你现在应该升级插件到新版本 {0} ！
     - 更新 {0} 发布了。现在就下载拯救更新吧！
     - 这里是升级指挥官，{0}版本刚刚发布了！
-    - 看我的Style——{0} 发布了, 你为什么还在用 {1} 呢？
+    - 看看我的样式——{0} 发布了, 你为什么还在用 {1} 呢？
     - 啊啊啊啊啊啊啊啊啊啊！更新 {0} 来了！快升级！
     - 你在想什么呢？{0}已经发布了！快更新！
-    - 刀客塔，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~
-    - 在~这~里~哦~QuickShop有一个新的更新 {0}~
+    - 博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~
+    - Ko~ko~da~yo~QuickShop有一个新的更新 {0}~
     - 派蒙想要告诉你QuickShop有新的更新 {0}！
   remote-disable-warning: '<red>这个版本的 QuickShop 被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的 SpigotMC 插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。'
 purchase-out-of-stock: <red>这个商店已缺货，请联系商店所有者或助手补充库存
@@ -253,17 +253,17 @@ tableformat:
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop 物品预览界面
 translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： '
-taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或UUID(含破折号)。
+taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。
 player-bought-from-your-store: <red>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}
 reached-maximum-can-create: <red>你创建的商店数量达到上限：{0}/{1}
 translation-version: '支持版本: Hikari'
 no-double-chests: <red>你没有权限创建大箱子商店。
-price-too-cheap: <red>价格必须高于<yellow>${0}
+price-too-cheap: <red>价格必须大于<yellow>${0}
 shop-not-exist: <red>这里没有商店
 bad-command-usage: <red>错误的命令参数！
 cleanghost-warning: <yellow>这个命令将清理<red>所有</red>在不允许创建商店的世界的、出售/购买不允许的物品的，以及 <bold><red>所有在服务器没有加载的世界</red></bold>的商店， 请在确保您的商店数据备份完整后使用 <aqua>/quickshop cleanghost confirm </aqua>来继续。
 cleanghost-starting: <green>开始检查幽灵商店(缺少容器方块)。所有不存在的商店将被移除...
-cleanghost-deleting: <yellow>发现一个损坏的商店 <aqua>{0}</aqua> 因为 {1}, 标记它以删除...
+cleanghost-deleting: <yellow>发现一个损坏的商店 <aqua>{0}</aqua> 因为 {1}, 标记它删除...
 cleanghost-deleted: <green>总计 <yellow>{0}</yellow> 家商店已被删除。
 shop-purchase-cancelled: <red>您取消了交易操作。
 bypassing-lock: <red>你绕过了QuickShop的锁！
@@ -271,7 +271,7 @@ bungee-cross-server-msg: '<yellow>QuickShop跨服信息: <green>{0}'
 saved-to-path: 备份文件已保存到 {0}。
 shop-now-freezed: <green>你已经冻结了商店。现在没有人可以与这家商店交易！
 price-is-now: <green>商店的新价格是 <yellow>{0}
-shops-arent-locked: <red>注意，商店无法防盗，如果您想要防盗功能，请使用Lockette、LWC等插件锁住商店。
+shops-arent-locked: <red>注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住商店。
 that-is-locked: <red>这个商店已上锁。
 shop-has-no-space: <red>这个商店只能装下 {0} 个 {1} 了。
 safe-mode-admin: '<red><bold>警告: <red>此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入<yellow>/quickshop <red> 来检查错误。'
