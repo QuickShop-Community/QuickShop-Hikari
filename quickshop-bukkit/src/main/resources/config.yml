@@ -652,7 +652,7 @@ plugin:
     # The PAPI request caching expire time. (ms)
     # Low value may increase the database load and hurt server performance.
     cache: 900000
-  #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
+  #If you have or FastAsyncWorldEdit, QuickShop deletes shops in selected regions to prevent ghost shops.
   WorldEdit: true
 #Special in-game effect
 effect:
