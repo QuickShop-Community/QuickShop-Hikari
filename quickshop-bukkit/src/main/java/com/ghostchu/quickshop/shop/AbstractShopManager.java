@@ -213,6 +213,7 @@ public abstract class AbstractShopManager implements ShopManager {
       unregisterShop(shop, true);
       removeShopFromLookupTable(shop);
     });
+
   }
 
   @Override
