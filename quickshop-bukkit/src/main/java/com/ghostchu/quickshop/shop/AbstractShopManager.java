@@ -207,7 +207,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
     plugin.text().of(owner, "shop-creation-failed").send();
-    Util.mainThreadRun(()->{
+    Util.regionThread(shop.getLocation(), () -> {
       deleteShop(shop);
       unloadShop(shop);
       unregisterShop(shop, true);
