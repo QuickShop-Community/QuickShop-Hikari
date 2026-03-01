@@ -1572,18 +1572,18 @@ gui:
     mode-toggle:
       display: "<bold><green>Modus ändern</green></bold>"
       lore:
-        - "<gray>Current: <white>{0}</white></gray>"
+        - "<gray>Zurzeit: <white>{0}</white></gray>"
         - "<gray>Klicken, um zu ändern: <white>{1}</white></gray>"
     inventory:
       display: "<bold><green>Inventar ansehen</green></bold>"
       lore:
-        - "<gray>Click to view your</gray>"
+        - "<gray>Klicke, um deine</gray>"
         - "<gray>Shop-Truhen Inventar</gray>"
     staff:
-      display: "<bold><aqua>Shop Staff</aqua></bold>"
+      display: "<bold><aqua>Shop-Personal</aqua></bold>"
       lore:
-        - "<gray>Click to manage your</gray>"
-        - "<gray>shop's staff members.</gray>"
+        - "<gray>Klicke, um deine</gray>"
+        - "<gray>Shop-Personal.</gray>"
     history:
       display: "<bold><light_purple>Transaktionsverlauf</light_purple></bold>"
       lore:
