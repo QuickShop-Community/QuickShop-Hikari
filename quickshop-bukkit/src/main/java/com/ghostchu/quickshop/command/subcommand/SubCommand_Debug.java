@@ -324,12 +324,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
   private void handleShopsLoaderReload(final CommandSender sender, final List<String> remove) {
 
     plugin.text().of(sender, "debug.force-shop-loader-reload").send();
-    final List<Shop> allShops = plugin.getShopManager().getAllShops();
+    final List<Shop> allShops = new ArrayList<>(plugin.getShopManager().getAllShops());
     plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops-from-memory", allShops.size()).send();
-    plugin.getShopManager().getAllShops().forEach(shop->plugin.getShopManager().unloadShop(shop));
+    allShops.forEach(shop->plugin.getShopManager().unloadShop(shop));
     plugin.text().of(sender, "debug.force-shop-loader-reload-reloading-shop-loader").send();
-    plugin.getShopLoader().loadShops();
-    plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
+    Util.asyncThreadRun(()->{
+      plugin.getShopLoader().loadShops();
+      plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
+    });
   }
 
   private void handleShopsReload(final CommandSender sender, final List<String> remove) {
