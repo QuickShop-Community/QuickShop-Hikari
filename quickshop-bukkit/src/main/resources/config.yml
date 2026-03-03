@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1039
+config-version: 1040
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -876,6 +876,8 @@ protect:
   explode: true
   hopper: true
   hopper-owner-exclude: false
+  dropper: true
+  dropper-owner-exclude: false
   entity: true
 
 # ----------------------------------------------------------
