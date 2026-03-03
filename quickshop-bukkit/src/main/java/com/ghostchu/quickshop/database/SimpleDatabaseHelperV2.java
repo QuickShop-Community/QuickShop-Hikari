@@ -527,6 +527,21 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
+  public @NotNull List<Long> listShopsByTag(@NotNull final String tag) {
+
+    final List<Long> shopIds = new ArrayList<>();
+    try(final SQLQuery query = DataTables.TAGS.createQuery()
+            .addCondition("tag", tag)
+            .build().execute()) {
+      final ResultSet set = query.getResultSet();
+      shopIds.add(set.getLong("shop"));
+    } catch(final SQLException e) {
+      plugin.logger().error("Failed to list shops by with tag " + tag, e);
+    }
+    return shopIds;
+  }
+
+  @Override
   public @NotNull List<Long> listShopsTaggedBy(@NotNull final UUID tagger, @NotNull final String tag) {
 
     final List<Long> shopIds = new ArrayList<>();
@@ -558,6 +573,47 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
+  public @NotNull List<String> listTags(@NotNull final UUID tagger, @NotNull final Long shopId) {
+
+    final List<String> tags = new ArrayList<>();
+    try(final SQLQuery query = DataTables.TAGS.createQuery()
+            .addCondition("tagger", tagger.toString())
+            .addCondition("shop", shopId)
+            .build().execute()) {
+      final ResultSet set = query.getResultSet();
+      tags.add(set.getString("tag"));
+    } catch(final SQLException e) {
+      plugin.logger().error("Failed to list tags by " + tagger, e);
+    }
+    return tags;
+  }
+
+  @Override
+  public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
+
+    return DataTables.TAGS.createInsert()
+            .setColumnNames("tagger", "shop", "tag")
+            .setParams(tagger.toString(), shopId, tag)
+            .executeFuture(i->i);
+  }
+
+  @Override
+  public CompletableFuture<@Nullable Integer> removeAllShopTags(@NotNull final Long shopId) {
+
+    return DataTables.TAGS.createDelete()
+            .addCondition("shop", shopId)
+            .build().executeFuture(i->i);
+  }
+
+  @Override
+  public CompletableFuture<@Nullable Integer> removeAllTagsBy(@NotNull final UUID tagger) {
+
+    return DataTables.TAGS.createDelete()
+            .addCondition("tagger", tagger.toString())
+            .build().executeFuture(i->i);
+  }
+
+  @Override
   public CompletableFuture<@Nullable Integer> removeShopTag(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
 
     return DataTables.TAGS.createDelete()
@@ -582,15 +638,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .addCondition("tagger", tagger.toString())
             .addCondition("tag", tag)
             .build().executeFuture(i->i);
-  }
-
-  @Override
-  public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
-
-    return DataTables.TAGS.createInsert()
-            .setColumnNames("tagger", "shop", "tag")
-            .setParams(tagger.toString(), shopId, tag)
-            .executeFuture(i->i);
   }
 
   @Override

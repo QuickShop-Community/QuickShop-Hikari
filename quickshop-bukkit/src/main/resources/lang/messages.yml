@@ -879,6 +879,9 @@ benefit-added: <green>Player <aqua>{0}</aqua> has been added into shop benefits!
 benefit-updated: <green>Player <aqua>{0}</aqua>'s benefits has been updated!
 benefit-query: <green>This shop have <yellow>{0}</yellow> players in benefits list!
 benefit-query-list: <yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%
+tag-favorite: Favorite
+tag-watch: Watch
+tag-avoid: Avoid
 tag-added: <green>Successfully added <aqua>#{0}</aqua> to this shop!
 tag-add-duplicate: <red>The tag <aqua>#{0}</aqua> already exists at this shop!
 tag-removed: <green>Successfully removed <aqua>#{0}</aqua> from this shop!
@@ -891,6 +894,7 @@ tag-query-listing: <yellow> - <aqua>#{0}
 tag-query-no-tag: <red>This shop have no tags.
 tag-query-shops: '<green>This tag contains <yellow>{0}</yellow> shops:'
 tag-query-shops-listing: <yellow> - <aqua>{0}
+tag-invalid: '<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: {0}'
 batch-operations-based-on-tags-no-failure: <green>Successfully batch processed <yellow>{0}</yellow>
   shops.
 batch-operations-based-on-tags-have-failure: <yellow>Total {0} shops in batch processing
