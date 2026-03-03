@@ -136,7 +136,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
   public void onInventoryMove(final InventoryMoveItemEvent event) {
 
-    if(!this.hopperProtect) {
+    if(!this.hopperProtect || !(event.getDestination().getHolder() instanceof Hopper)) {
       return;
     }
 
@@ -165,7 +165,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
   public void onDropperMove(final InventoryMoveItemEvent event) {
 
-    if(!this.dropperProtect || (event.getInitiator().getHolder() instanceof Dropper)) {
+    if(!this.dropperProtect || !(event.getInitiator().getHolder() instanceof Dropper)) {
       return;
     }
 
