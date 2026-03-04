@@ -32,9 +32,7 @@ game-language: default
 enabled-languages:
   - '*'
 
-# ----------------------------------------------------------
 # Language Processing Options
-# ----------------------------------------------------------
 # These settings control how translations and placeholders are processed.
 lang-processor:
   # [BETA] Post-process filler replacements.
@@ -64,9 +62,7 @@ use-crowdin-ota: true
 # Advanced feature—only enable if you know why you need it.
 dev-mode: false
 
-# ----------------------------------------------------------
 # Shop Tax Configuration
-# ----------------------------------------------------------
 # Controls how transaction taxes are calculated and applied.
 shop-tax:
 
@@ -173,9 +169,7 @@ respect-item-flag: true
 # May cause disconnects on some networks with mixed Minecraft versions.
 bungee-cross-server-msg: false
 
-# ----------------------------------------------------------
 # Proxy / Network Settings
-# ----------------------------------------------------------
 proxy:
   # Force BungeeCord mode.
   force-bungeecord: false
@@ -185,9 +179,7 @@ proxy:
 # Only required for multi-currency setups.
 currency: ""
 
-# ----------------------------------------------------------
 # Logging
-# ----------------------------------------------------------
 logging:
   # Enable file/database logging.
   # Main log file: plugins/QuickShop-Hikari/qs.log
@@ -244,9 +236,7 @@ send-display-item-protection-alert: false
 # Send alerts if someone tries to steal from a shop.
 send-shop-protection-alert: false
 
-# ----------------------------------------------------------
 # Database Configuration
-# ----------------------------------------------------------
 # QuickShop supports:
 # - H2 (local file database; simplest setup)
 # - MySQL (recommended for large servers or networks)
@@ -300,9 +290,7 @@ database:
     allowPublicKeyRetrieval: true
     keepaliveTime: 60000
 
-# ----------------------------------------------------------
 # Shop Limits
-# ----------------------------------------------------------
 # Limits how many shops a player can own.
 limits:
   # Enable shop limits.
@@ -322,9 +310,7 @@ limits:
     # Example: players with quickshop.example permission can create 20 shops.
     quickshop.example: 20
 
-# ----------------------------------------------------------
 # Shop Blocks
-# ----------------------------------------------------------
 # Blocks allowed for shop containers.
 # Must implement InventoryHolder (not normal blocks like dirt/stone).
 #
@@ -365,9 +351,7 @@ shop:
     - history
     - remove
 
-  # ----------------------------------------------------------
   # Shop Sign Layout
-  # ----------------------------------------------------------
   layout:
 
     # Layout for BUYING shops.
@@ -510,9 +494,7 @@ shop:
   # Requires ProtocolLib.
   per-player-shop-sign: false
 
-  # ----------------------------------------------------------
   # /quickshop find Settings
-  # ----------------------------------------------------------
   # Allows players to search for nearby shops by item name.
   finding:
     # Use legacy find behavior (closest shop focus).
@@ -601,9 +583,7 @@ shop:
   blacklist-lores:
     - "SoulBound"
 
-  # ----------------------------------------------------------
   # Protection Checking
-  # ----------------------------------------------------------
   # Uses a simulated BlockBreakEvent to check whether a player can break blocks.
   # Some protection plugins may conflict with this approach.
   #
@@ -658,9 +638,7 @@ shop:
   name-fee: 0
   name-max-length: 32
 
-  # ----------------------------------------------------------
   # Ongoing Fee
-  # ----------------------------------------------------------
   # Charges shop owners a recurring fee.
   # Shops are removed automatically if the owner cannot pay.
   ongoing-fee:
@@ -672,9 +650,7 @@ shop:
     # Ignore unlimited shops.
     ignore-unlimited: true
 
-  # ----------------------------------------------------------
   # Cross-Version Item Loading (Advanced / Risky)
-  # ----------------------------------------------------------
   # Attempts to load items created on newer Minecraft versions.
   # WARNING: This may corrupt server or shop data. Always backup first.
   force-load-downgrade-items:
@@ -705,9 +681,7 @@ shop:
     show-enchantments: true
     show-durability: true
 
-# ----------------------------------------------------------
 # Item Blacklist
-# ----------------------------------------------------------
 # Items that cannot be sold in shops.
 # Permission quickshop.bypass.<itemID> bypasses the restriction.
 #
@@ -725,9 +699,7 @@ database-loading-whitelist-worlds: []
 database-loading-blacklist-worlds:
   - "the world that shop won't to be loaded"
 
-# ----------------------------------------------------------
 # Plugin Integrations
-# ----------------------------------------------------------
 plugin:
   # If Multiverse-Core is present, QuickShop may attempt to load worlds that are missing.
   # This may throw exceptions and then attempt to repair shop data.
@@ -744,9 +716,7 @@ plugin:
   # Helps delete shops in selected regions to prevent ghost shops.
   WorldEdit: true
 
-# ----------------------------------------------------------
 # In-Game Effects
-# ----------------------------------------------------------
 effect:
   sound:
     # Play sounds during tab completion.
@@ -756,9 +726,7 @@ effect:
     # Play sounds when clicking shop container/sign.
     onclick: true
 
-# ----------------------------------------------------------
 # Item Matcher
-# ----------------------------------------------------------
 # Advanced option—controls how items are compared for shop matching.
 matcher:
 
@@ -869,9 +837,7 @@ matcher:
     # Compare bundle contents.
     BUNDLE: true
 
-# ----------------------------------------------------------
 # Shop Protection Toggles
-# ----------------------------------------------------------
 protect:
   explode: true
   hopper: true
@@ -880,9 +846,7 @@ protect:
   dropper-owner-exclude: false
   entity: true
 
-# ----------------------------------------------------------
 # Backup Policy
-# ----------------------------------------------------------
 # Controls when QuickShop creates automatic backups.
 backup-policy:
   shops-auto-purge: false
@@ -890,9 +854,7 @@ backup-policy:
   startup: false
   recovery: true
 
-# ----------------------------------------------------------
 # Custom Item Stack Sizes
-# ----------------------------------------------------------
 # Set custom max stack sizes for items.
 #
 # Examples:
@@ -901,9 +863,7 @@ backup-policy:
 #  - STONE:128
 custom-item-stacksize: [ ]
 
-# ----------------------------------------------------------
 # Shop Purger
-# ----------------------------------------------------------
 # Purges shops owned by players who have been offline for X days.
 purge:
   enabled: false
@@ -916,18 +876,14 @@ purge:
   # Compatibility note: currently supports vanilla OP system behavior.
   skip-op: true
 
-# ----------------------------------------------------------
 # Debug Settings
-# ----------------------------------------------------------
 # Disabling debug logging improves performance but reduces support visibility.
 debug:
   disable-debuglogger: false
   shop-deletion: false
   delete-corrupt-shops: false
 
-# ----------------------------------------------------------
 # Legacy Data Updater
-# ----------------------------------------------------------
 # Backward compatibility for older QuickShop versions.
 # Enable ONLY if migrating from very old QuickShop versions.
 legacy-updater:
@@ -953,9 +909,7 @@ config-damaged: false
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: [ ]
 
-# ----------------------------------------------------------
 # UUID / Username Lookup
-# ----------------------------------------------------------
 # Controls how QuickShop resolves UUID <-> username mappings.
 uuid-lookup:
 
@@ -977,9 +931,7 @@ uuid-lookup:
   allow-bukkit-uuid: true
   allow-bukkit-name: true
 
-# ----------------------------------------------------------
 # Privacy Controls
-# ----------------------------------------------------------
 # Controls privacy-related features and reporting categories.
 #
 # Use `/quickshop paste` and review the "Privacy Logs" section to audit.
@@ -995,9 +947,7 @@ privacy:
   module:
   #  SOME_MODULE_NAME_HERE: false
 
-# ----------------------------------------------------------
 # Transaction Metrics
-# ----------------------------------------------------------
 # Records transactions into the database for metrics/analytics.
 # Disabling stops transaction metric recording.
 transaction-metric:

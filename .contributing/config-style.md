@@ -1,186 +1,244 @@
-# Configuration Style Guide (QuickShop-Hikari)
+# QuickShop-Hikari Configuration Style Guide
 
-This guide standardizes how contributors should **add or modify configuration options** in a configuration file so the file stays:
+This document defines the **standards contributors must follow when adding or modifying configuration options** in `config.yml`.
 
-- beginner-friendly for casual server owners
-- understandable for non-native English speakers
-- technically helpful for developers
-- consistent, readable, and stable across releases
+The goal is to keep the configuration:
 
----
+* beginner-friendly for server owners
+* understandable for non-native English speakers
+* technically helpful for developers
+* consistent across contributions
+* stable across releases
 
-## Goals
-
-All new configuration entries must be:
-
-- **Beginner-safe**: clearly explains what it does and when to change it.
-- **Non-native friendly**: short sentences, simple vocabulary, minimal idioms.
-- **Developer-informative**: optional technical detail without overwhelming admins.
-- **Backward compatible**: never silently break existing configs.
-- **Discoverable**: predictable placement and consistent structure.
+All configuration changes must follow this guide.
 
 ---
 
-## File Structure and Placement
+# 1. Core Principles
 
-### Top-level section ordering
+Configuration must be:
 
-Add new options in the most relevant existing section. Prefer this general order:
+### Beginner Safe
 
-1. Core / version / language
-2. Taxes / economy
-3. Logging
-4. Database
-5. Limits
-6. Shop blocks
-7. `shop:` (main shop behavior)
-8. `matcher:`
-9. `protect:`
-10. `backup-policy:`
-11. `purge:`
-12. Debug / legacy / migration
-13. Commands
-14. Privacy / metrics
+Comments must clearly explain what the option does and when a server owner should change it.
 
-If an option does not clearly belong anywhere, create a new section only when:
-- the feature introduces **3+ related options**, or
-- it is a distinct feature area (example: “shop tags”, “market analytics”).
+### Non-Native Friendly
 
-### Grouping inside a section
+Use simple grammar and short sentences.
 
-Within a section (example: `shop:`), group options in this order:
+Avoid:
 
-1. Safety / permissions / protection
-2. Performance / caching
-3. UX / messages
-4. Feature toggles
-5. Costs / economics
-6. Advanced / experimental
-7. Integration-specific options
+* idioms
+* slang
+* unnecessary technical jargon
 
-Add new options next to the most related existing options. Do not append unrelated items at the end.
+### Developer Informative
 
-### Section headers
+Technical notes may be included but must **follow the plain explanation**, not replace it.
 
-Use consistent section separators for major blocks:
+### Consistent
+
+All configuration options must follow the same:
+
+* naming style
+* comment structure
+* placement rules
+* formatting
+
+### Backward Compatible
+
+Never remove or change configuration behavior without proper migration guidance.
+
+---
+
+# 2. File Structure
+
+Configuration sections should follow a consistent order.
+
+Preferred top-level ordering:
+
+1. Core configuration (version, language)
+2. Localization / translation
+3. Economy / taxes
+4. Logging
+5. Database
+6. Limits
+7. Shop blocks
+8. `shop:` section (main shop behavior)
+9. Matcher
+10. Protection
+11. Backup
+12. Purge
+13. Debug / legacy migration
+14. Commands
+15. Privacy / metrics
+
+New configuration options should be placed in the **most logically related section**.
+
+Do **not append unrelated options to the bottom of the file**.
+
+---
+
+# 3. Section Header Style
+
+Configuration sections must use **simple comment headers**.
+
+## Allowed Format
+
+```yaml
+# Backup Policy
+backup-policy:
+```
+
+## Disallowed Format
+
+Separator bars are **not allowed** in configuration sections.
 
 ```yaml
 # ----------------------------------------------------------
-# Section Title
+# Backup Policy
 # ----------------------------------------------------------
+backup-policy:
 ```
 
-Use `=` separators only for rare “banner” sections (not everywhere).
+### Exception: File Header
+
+The **file header at the top of the configuration file may use separators**.
+
+Example:
+
+```yaml
+# ==========================================================
+# QuickShop-Hikari Main Configuration
+# ==========================================================
+#
+# Website: https://quickshophikari.org/
+# Documentation: https://quickshop-community.github.io/QuickShop-Hikari-Documents/
+# Community Discord: https://discord.com/invite/Bu3dVtmsD3
+```
+
+This is the **only place where separators are permitted**.
 
 ---
 
-## Configuration Key Naming
+# 4. Configuration Key Naming
 
-### Key style
+## Use kebab-case
 
-* Use **kebab-case**: `price-change-requires-fee`
-* Keep keys **descriptive but not long**
-* Avoid abbreviations unless widely known: `uuid`, `papi`, `sql`
-* Avoid repeating section context:
+Keys must use lowercase kebab-case.
 
-    * ✅ `shop: display-items`
-    * ❌ `shop: shop-display-items`
+Correct:
 
-### Boolean naming
+```
+display-items
+price-change-requires-fee
+ignore-cancelled-interact-event
+```
 
-Boolean keys should read naturally as yes/no:
+Incorrect:
 
-* ✅ `enable`, `use-cache`, `ignore-cancelled-interact-event`
-* ✅ `disable-quick-create` (negative form is OK when the feature is known as “quick create”)
+```
+displayItems
+DisplayItems
+display_items
+```
+
+---
+
+## Boolean Naming
+
+Boolean options should read naturally as **true/false statements**.
+
+Preferred examples:
+
+```
+enable
+use-cache
+disable-quick-create
+ignore-unlimited-shop-messages
+```
 
 Avoid double negatives:
 
-* ❌ `dont-disable-x`
-* ❌ `disable-no-x`
+Incorrect:
 
-### Enum and mode naming
-
-For multi-mode options, prefer:
-
-* `type:` or `mode:`
-
-Document the allowed values clearly. If numeric for legacy reasons, document the mapping.
-
-### Lists and maps
-
-* Use plural nouns for lists: `enabled-languages`, `shop-blocks`
-* Use descriptive names for maps: `brackets`, `alternate-currency-symbol-list`
+```
+dont-disable-x
+disable-no-x
+```
 
 ---
 
-## Comment Style Rules
+## Enum or Mode Options
 
-### Required comment layers (in order)
+For configuration values that support multiple modes, prefer keys such as:
 
-Every new option should have up to 3 layers:
+```
+type
+mode
+method
+strategy
+```
 
-1. **Plain-English purpose** *(required)*
-2. **Behavior details** *(required if non-obvious)*
-3. **Advanced / technical notes** *(optional, only if helpful)*
+Allowed values must always be documented in comments.
+
+Example:
+
+```yaml
+# Display protocol implementation.
+# Allowed values: protocollib, packetevents
+display-protocol: protocollib
+```
+
+---
+
+# 5. Comment Structure
+
+Each configuration option must follow this comment order.
+
+1. **Plain explanation**
+2. **Behavior details**
+3. **Advanced notes (optional)**
+4. **Warnings if needed**
 
 Example:
 
 ```yaml
 # Charge a fee when changing shop prices.
-# Helps reduce endless price undercutting.
-# (Advanced: Fee is charged only when the price update succeeds.)
+# Helps reduce constant price undercutting between shops.
+# (Advanced: Fee is charged only if the price change succeeds.)
 price-change-requires-fee: true
 ```
 
-### Beginner-first, developer-second
+---
 
-If you include internals (events, classes, timing), mark them clearly:
+# 6. Warning Labels
 
-* `Advanced:` or `(Advanced: ...)`
-* `Note:` for important behavior notes
-* `WARNING:` for risky settings
-* `EXPERIMENTAL:` for unstable/beta behavior
+Standardized warning labels must be used.
 
-### Grammar and readability
-
-* Use short sentences.
-* Avoid slang, humor, idioms, and culture-specific expressions.
-* Avoid vague statements like “could cause lag” unless you specify *what kind of load*.
-* Prefer measurable phrasing:
-
-    * ✅ “May increase database writes.”
-    * ✅ “May load chunks during lookups.”
-    * ❌ “Could cause lag.”
-
-### Warnings and risk labels
-
-Use consistent labels:
-
-* `NOTE:` safe but important
-* `WARNING:` risk of data loss, dupes, corruption, exploits, or severe performance issues
-* `ADVANCED:` safe but requires technical knowledge
-* `EXPERIMENTAL:` may be unstable or change
+| Label        | Meaning                                                                  |
+| ------------ | ------------------------------------------------------------------------ |
+| NOTE         | Important behavior information                                           |
+| WARNING      | Risk of data loss, corruption, duplication, or severe performance issues |
+| ADVANCED     | Requires technical understanding                                         |
+| EXPERIMENTAL | Feature may change or behave unpredictably                               |
 
 Example:
 
 ```yaml
-# WARNING: May corrupt shop data if misused. Always backup before enabling.
-# ADVANCED: Intended for cross-version migration only.
+# WARNING: May corrupt shop data if misused.
+# Always create a backup before enabling.
 force-load-downgrade-items:
   enable: false
 ```
 
-### Allowed values and examples
+---
 
-If an option has multiple valid values, list them and include a short example if formatting is not obvious.
+# 7. Allowed Values and Format Documentation
 
-```yaml
-# Preferred protocol implementation for virtual displays.
-# Allowed values: protocollib, packetevents
-display-protocol: 'protocollib'
-```
+If a configuration option requires a specific format, the format must be documented.
 
-For format-based configs, always describe the format:
+Example:
 
 ```yaml
 # Format:
@@ -189,98 +247,100 @@ alternate-currency-symbol-list:
   - USD;$
 ```
 
-### Avoid redundant comments
+For enum options:
 
-Do not restate what the key already says.
-
-* ❌ `# Enable caching` for `use-cache: true`
-* ✅ `# Use shop caching to improve lookup performance.`
-
----
-
-## Defaults and Safety
-
-### Default value expectations
-
-Defaults should favor:
-
-* stability
-* data safety
-* predictable performance
-* minimal surprise
-
-If enabling a feature has risk, default it to **false** and explain why.
-
-### Risky options must include mitigation
-
-If your option can cause:
-
-* data corruption
-* duplication
-* compatibility issues
-* heavy server load
-
-You must include:
-
-* a `WARNING:`
-* what to do first (example: make a backup)
-* when this option should be used
+```yaml
+# Allowed values: protocollib, packetevents
+display-protocol: protocollib
+```
 
 ---
 
-## YAML Formatting Rules
+# 8. Performance Notes
+
+If a configuration option affects performance, describe the **type of load**.
+
+Preferred examples:
+
+```
+May increase database writes.
+May load additional chunks during lookups.
+Adds a database query per transaction.
+```
+
+Avoid vague wording like:
+
+```
+Could cause lag
+```
+
+---
+
+# 9. YAML Formatting Rules
 
 ### Indentation
 
-* Use **2 spaces** per level.
-* Do not use tabs.
-* Keep nested blocks aligned exactly.
+Use **2 spaces per level**.
+
+Tabs are not allowed.
 
 ### Quoting
 
-* Quote strings only when needed (special characters, leading zeros, etc.)
-* Follow the existing file’s style consistently.
+Only quote values when necessary.
 
-### Blank lines
+Examples:
 
-* Use blank lines between major blocks.
-* Avoid inserting blank lines inside small lists/maps unless it improves readability.
+```
+display-protocol: protocollib
+sign-dye-color: ""
+```
 
----
+### Blank Lines
 
-## Workflow Checklist (Adding a New Option)
+Use blank lines between logical blocks.
 
-When adding a new configuration option:
-
-1. **Choose the correct location**
-
-    * nearest relevant section and subgroup
-2. **Choose a consistent key name**
-
-    * kebab-case, clear boolean naming, no redundancy
-3. **Write comments**
-
-    * purpose → behavior → advanced notes → warnings
-4. **Pick a safe default**
-5. **Document allowed values / format**
-6. **Consider migration**
-
-    * if this replaces or changes behavior of an older key
-7. **Ensure discoverability**
-
-    * place near related options; cross-reference if needed
+Avoid excessive whitespace inside lists or maps.
 
 ---
 
-## Deprecations and Renames
+# 10. Default Values
 
-### Never silently remove keys
+Defaults must prioritize:
 
-If a key is being replaced:
+* stability
+* safety
+* predictable performance
+* minimal surprises for server owners
 
-* keep the old key for at least one major cycle
-* mark it as deprecated
-* point to the replacement
+Risky features should default to **false**.
+
+---
+
+# 11. Adding New Configuration Options
+
+When adding a new option:
+
+1. Choose the correct section
+2. Use kebab-case naming
+3. Write comments following the required structure
+4. Choose a safe default
+5. Document allowed values or formats
+6. Ensure the option is discoverable near related options
+7. Verify YAML formatting
+
+---
+
+# 12. Deprecation Policy
+
+Configuration keys must **never be silently removed**.
+
+If a configuration option is replaced:
+
+* mark the old key as deprecated
+* document the replacement
+* keep compatibility for at least one major release
+
+Example:
 
 ```yaml
 # DEPRECATED: Use shop.new-setting instead.
@@ -288,76 +348,55 @@ If a key is being replaced:
 old-setting: true
 ```
 
-### Define precedence when both keys exist
-
-If both old and new keys are present:
-
-* define which one wins
-* document the precedence clearly
-* keep behavior deterministic
-
 ---
 
-## Performance Notes Standard
+# 13. Templates
 
-When describing performance impact, name the type of load:
-
-* CPU
-* memory
-* disk
-* database
-* network
-* chunk loads
-
-Preferred phrasing examples:
-
-* “May increase chunk loads during lookups.”
-* “Adds a database query per transaction.”
-* “May increase database writes at high trade volume.”
-
----
-
-## Templates
-
-### Simple boolean option
+## Simple Boolean Option
 
 ```yaml
-# Enable the shop analytics sidebar in the UI.
-# NOTE: UI-only. Does not change transaction logic.
+# Enable shop analytics sidebar in the UI.
+# NOTE: UI-only setting. Does not affect transactions.
 shop-analytics-sidebar: false
 ```
 
-### Advanced feature toggle
+---
+
+## Advanced Feature
 
 ```yaml
 # Enable asynchronous shop scanning.
 # Improves responsiveness on large servers.
-# WARNING: Experimental. Report issues with debug logs enabled.
-# (Advanced: Runs async tasks; ensure your platform supports this safely.)
+# WARNING: Experimental feature.
+# (Advanced: Uses async tasks to scan shops.)
 async-shop-scan: false
 ```
 
-### Structured sub-section
+---
+
+## Structured Configuration Block
 
 ```yaml
-# ----------------------------------------------------------
 # Market Watch
-# ----------------------------------------------------------
 market-watch:
   # Enable market watch tracking.
   enable: false
 
   # Tracking interval in ticks.
-  # NOTE: Lower values increase database writes.
+  # Lower values increase database writes.
   interval-ticks: 1200
 ```
 
 ---
 
-## Project Consistency Requirements
+# 14. Contributor Checklist
 
-When adding new config options, also ensure:
+When modifying `config.yml`, verify the following:
 
-* documentation is updated (if required by the repo)
-* code references match the config path exactly
-* diagnostic output (like `/qs paste`) includes relevant options when appropriate
+* Section headers use **simple comments (no separators)**
+* Only the **file header** uses separator bars
+* Keys use **kebab-case**
+* Comments follow the **required structure**
+* Risky options include **WARNING labels**
+* YAML formatting uses **2-space indentation**
+* Defaults are **safe and stable**
