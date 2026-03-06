@@ -808,8 +808,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Alguém vendeu itens para sua loja",
-             "description": "O jogador %%purchase.name%% vendeu x%%purchase.amount%% %%shop.item.name%% para sua loja.",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -822,17 +822,17 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "Notificação QuickShop-Hikari",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Loja",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Vendedor",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -842,17 +842,17 @@ addon:
                  "inline": true
                },
                {
-                 "name": "Quantia",
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Você pagou",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxas",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }

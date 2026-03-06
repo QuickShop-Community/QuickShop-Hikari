@@ -808,8 +808,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Хтось продав предмети у ваш магазин",
-             "description": "Гравець %%purchase.name%% продав x%%purchase.amount%% %%shop.item.name%% вашому магазину.",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -822,38 +822,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "Discord-сповіщення QuickShop-Hikari",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Магазин",
+                 "name": "Shop",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Продавець",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Предмет",
+                 "name": "Item",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-               {
-                 "name": "Кількість",
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Ви заплатили",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Податки",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }

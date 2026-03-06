@@ -449,7 +449,7 @@ command:
     taxaccount: <yellow>Legt das Steuerkonto fest, welches der Shop verwenden soll
     name: <yellow>Ändert den Namen eines bestimmten Shops
     toggledisplay: <yellow>Ändere den Status des Display-Items für den Shop
-    toggledisplayall: <yellow>Toggle all shop display items you own, or for the server.
+    toggledisplayall:
     permission: <yellow>Shop-Berechtigungsverwaltung
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
@@ -790,8 +790,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Jemand hat Gegenstände an deinen Shop verkauft",
-             "description": "Der Spieler %%purchase.name%% verkaufte x%%purchase.amount%% %%shop.item.name%% an deinen Shop.",
+             "title": ":inbox_tray: Somebody sold items to your shop",
+             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -804,7 +804,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Benachrichtigung",
+               "text": "QuickShop-Hikari Discord Notification",
                "icon_url": ""
              },
              "fields": [
@@ -814,28 +814,27 @@ addon:
                  "inline": false
                },
                {
-                 "name": "Käufer",
+                 "name": "Purchaser",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Gegenstand",
+                 "name": "Item",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-               {
-                 "name": "Anzahl",
+                 "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Du bezahltest",
+                 "name": "Your paid",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Steuern",
+                 "name": "Taxes",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
