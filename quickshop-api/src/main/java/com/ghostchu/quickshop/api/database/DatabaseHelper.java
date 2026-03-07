@@ -145,7 +145,7 @@ public interface DatabaseHelper {
 
   CompletableFuture<@Nullable Integer> removeShopTag(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag);
 
-  CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull UUID tagger, @NotNull Long shopId);
+  CompletableFuture<@Nullable Integer> removeAllShopTagsBy(@NotNull UUID tagger, @NotNull Long shopId);
 
   CompletableFuture<@Nullable Integer> removeTagFromShops(@NotNull UUID tagger, @NotNull String tag);
 

@@ -218,7 +218,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @Override
   public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull final UUID tagger, @NotNull final Shop shop) {
 
-    return plugin.getDatabaseHelper().removeShopAllTag(tagger, shop.getShopId());
+    return plugin.getDatabaseHelper().removeAllShopTagsBy(tagger, shop.getShopId());
   }
 
   @Override

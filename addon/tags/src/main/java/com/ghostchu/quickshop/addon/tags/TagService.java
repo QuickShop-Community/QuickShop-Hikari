@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.addon.tags;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -41,24 +42,76 @@ public class TagService {
   private final QuickShop plugin;
 
   public TagService(final Main tagsMain, final QuickShop plugin) {
+
     this.tagsMain = tagsMain;
     this.plugin = plugin;
   }
 
-  public @Nullable String normalizePlayerTag(String input) {
-    if (input == null) return null;
+  public CompletableFuture<Boolean> addShopTag(final UUID player, final long shopId, final String tag) {
 
-    if (input.startsWith("#")) {
+    final DatabaseHelper db = plugin.getDatabaseHelper();
+
+    return db.tagShop(player, shopId, tag).thenCompose(result->{
+
+      if(result != null && result > 0) {
+        return CompletableFuture.completedFuture(true);
+      }
+
+      return CompletableFuture.completedFuture(false);
+    });
+  }
+
+  public CompletableFuture<Boolean> removeShopTag(final UUID player, final long shopId, final String tag) {
+
+    final DatabaseHelper db = plugin.getDatabaseHelper();
+
+    return db.removeShopTag(player, shopId, tag).thenCompose(result->{
+
+      if(result != null && result > 0) {
+        return CompletableFuture.completedFuture(true);
+      }
+
+      return CompletableFuture.completedFuture(false);
+    });
+  }
+
+  public CompletableFuture<Boolean> removeAllShopTags(final long shopId) {
+    final DatabaseHelper db = plugin.getDatabaseHelper();
+    return db.removeAllShopTags(shopId).thenCompose(result->{
+      if(result != null && result > 0) {
+        return CompletableFuture.completedFuture(true);
+      }
+
+      return CompletableFuture.completedFuture(false);
+    });
+  }
+
+  public CompletableFuture<Boolean> removeAllShopTagsBy(final long shopId, final UUID player) {
+    final DatabaseHelper db = plugin.getDatabaseHelper();
+    return db.removeAllShopTagsBy(player, shopId).thenCompose(result->{
+      if(result != null && result > 0) {
+        return CompletableFuture.completedFuture(true);
+      }
+
+      return CompletableFuture.completedFuture(false);
+    });
+  }
+
+  public @Nullable String normalizePlayerTag(String input) {
+
+    if(input == null) return null;
+
+    if(input.startsWith("#")) {
       input = input.substring(1);
     }
 
     input = input.trim().toLowerCase(Locale.ROOT);
 
-    if (input.isEmpty()) return null;
-    if (input.length() > MAX_TAG_LENGTH) return null;
-    if (input.startsWith("@")) return null;
+    if(input.isEmpty()) return null;
+    if(input.length() > MAX_TAG_LENGTH) return null;
+    if(input.startsWith("@")) return null;
 
-    if (!VALID_TAG_PATTERN.matcher(input).matches()) {
+    if(!VALID_TAG_PATTERN.matcher(input).matches()) {
       return null;
     }
 
@@ -66,15 +119,16 @@ public class TagService {
   }
 
   public CompletableFuture<Boolean> toggleSystemTag(final UUID player, final long shopId, final String tag) {
-    final var db = plugin.getDatabaseHelper();
 
-    return db.tagShop(player, shopId, tag).thenCompose(result -> {
-      if (result != null && result > 0) {
+    final DatabaseHelper db = plugin.getDatabaseHelper();
+
+    return db.tagShop(player, shopId, tag).thenCompose(result->{
+      if(result != null && result > 0) {
         return CompletableFuture.completedFuture(true);
       }
 
       return db.removeShopTag(player, shopId, tag)
-              .thenApply(r -> false);
+              .thenApply(r->false);
     });
   }
 }

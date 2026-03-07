@@ -623,7 +623,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull final UUID tagger, @NotNull final Long shopId) {
+  public CompletableFuture<@Nullable Integer> removeAllShopTagsBy(@NotNull final UUID tagger, @NotNull final Long shopId) {
 
     return DataTables.TAGS.createDelete()
             .addCondition("tagger", tagger.toString())
