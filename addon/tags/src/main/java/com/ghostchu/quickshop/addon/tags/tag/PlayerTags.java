@@ -18,8 +18,8 @@ package com.ghostchu.quickshop.addon.tags.tag;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Collections;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -45,6 +45,6 @@ public class PlayerTags {
   }
 
   public Set<String> getTags() {
-    return tags;
+    return Collections.unmodifiableSet(tags);
   }
 }

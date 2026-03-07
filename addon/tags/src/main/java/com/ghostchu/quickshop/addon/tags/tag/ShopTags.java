@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.addon.tags.tag;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,10 +40,15 @@ public class ShopTags {
   }
 
   public void removeTag(final UUID player, final String tag) {
-    if(!tags.containsKey(player)) {
+    final PlayerTags playerTags = tags.get(player);
+    if(playerTags == null) {
       return;
     }
-    tags.get(player).removeTag(tag);
+
+    playerTags.removeTag(tag);
+    if(playerTags.getTags().isEmpty()) {
+      tags.remove(player, playerTags);
+    }
 
     //remove our player object if empty to save memory
     if(tags.get(player).getTags().isEmpty()) {
@@ -56,13 +62,12 @@ public class ShopTags {
     }
     tags.remove(player);
     return true;
+
   }
 
   public boolean hasTag(final UUID player, final String tag) {
-    if(!tags.containsKey(player)) {
-      return false;
-    }
-    return getTags(player).hasTag(tag);
+    final PlayerTags playerTags = tags.get(player);
+    return playerTags != null && playerTags.hasTag(tag);
   }
 
   public PlayerTags getTags(final UUID player) {

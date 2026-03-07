@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ghostchu.quickshop.addon.tags.tag.TaggingResult.NOT_FOUND;
+
 /**
  * TagManager
  *
@@ -67,8 +69,8 @@ public class TagManager {
   }
 
   public boolean removeAllShopTags(final long shopId) {
-    final ShopTags shopTags = tags.computeIfAbsent(shopId, id -> new ShopTags());
-    if(shopTags.isEmpty()) {
+    final ShopTags shopTags = tags.get(shopId);
+    if(shopTags == null) {
       return false;
     }
     shopTags.clear();
@@ -78,8 +80,8 @@ public class TagManager {
   }
 
   public boolean removeAllShopTagsBy(final long shopId, final UUID player) {
-    final ShopTags shopTags = tags.computeIfAbsent(shopId, id -> new ShopTags());
-    if(shopTags.isEmpty()) {
+    final ShopTags shopTags = tags.get(shopId);
+    if(shopTags == null) {
       return false;
     }
     shopTags.removeAllTags(player);
@@ -99,15 +101,22 @@ public class TagManager {
   }
 
   public boolean hasTag(final long shopId, final UUID player, final String tag) {
-    final ShopTags shopTags = tags.computeIfAbsent(shopId, id -> new ShopTags());
+    final ShopTags shopTags = tags.get(shopId);
+    if(shopTags == null) {
+      return false;
+    }
     return shopTags.hasTag(player, tag);
   }
 
   public TaggingResult removeTag(final long shopId, final UUID player, final String tag) {
 
-    final ShopTags shopTags = tags.computeIfAbsent(shopId, id -> new ShopTags());
+    final ShopTags shopTags = tags.get(shopId);
+    if(shopTags == null) {
+      return NOT_FOUND;
+    }
+
     if(!shopTags.hasTag(player, tag)) {
-      return TaggingResult.NOT_FOUND;
+      return NOT_FOUND;
     }
 
     shopTags.removeTag(player, tag);
