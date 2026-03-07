@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.addon.tags;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -34,6 +35,11 @@ import java.util.regex.Pattern;
  * @since 6.3.0.0
  */
 public class TagService {
+
+
+  public static final String SYS_FAV = "@fav";
+  public static final String SYS_WATCH = "@watch";
+  public static final String SYS_AVOID = "@avoid";
 
   private static final int MAX_TAG_LENGTH = 32;
   private static final Pattern VALID_TAG_PATTERN = Pattern.compile("^[a-z_-]+$");
@@ -116,6 +122,30 @@ public class TagService {
     }
 
     return input;
+  }
+
+  public static String displayTag(final Player sender, final String stored) {
+    if(stored == null) {
+      return "";
+    }
+
+    return switch (stored) {
+      case SYS_FAV -> "Favorite";
+      case SYS_WATCH -> "Watch";
+      case SYS_AVOID -> "Avoid";
+      default -> "#" + stored;
+    };
+  }
+
+  public static String displayTagOrHash(final String stored) {
+    if(stored == null) {
+      return "";
+    }
+
+    if(stored.startsWith("@")) {
+      return stored;
+    }
+    return "#" + stored;
   }
 
   public CompletableFuture<Boolean> toggleSystemTag(final UUID player, final long shopId, final String tag) {
