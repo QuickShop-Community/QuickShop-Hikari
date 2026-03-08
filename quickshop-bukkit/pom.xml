@@ -73,6 +73,11 @@
             <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>faststats</id>
+            <name>TheNextLvl</name>
+            <url>https://repo.thenextlvl.net/releases</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -323,6 +328,11 @@
             <artifactId>easysql-hikaricp</artifactId>
             <scope>compile</scope>
             <version>0.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.faststats.metrics</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>${depend.faststats}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

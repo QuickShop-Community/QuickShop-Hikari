@@ -99,7 +99,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.ModernCustomMatcher;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
-import com.ghostchu.quickshop.util.matcher.item.TNEItemMatcherImpl;
 import com.ghostchu.quickshop.util.metric.MetricManager;
 import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -421,7 +420,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     this.registry = new SimpleRegistryManager();
     this.registry.registerRegistry(BuiltInRegistry.ITEM_EXPRESSION.getName(), new SimpleItemExpressionRegistry(this));
     logger.info("Setting up metrics manager...");
-    this.metricManager = new MetricManager(this);
+    this.metricManager = new MetricManager();
+    this.metricManager.initPlatforms();
     logger.info("Loading player name and unique id mapping...");
     this.playerFinder = new FastPlayerFinder(this);
     loadTextManager();

@@ -72,13 +72,13 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     try {
       final boolean createResult = file.createNewFile();
       Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
-      try(FileWriter fwriter = new FileWriter(file)) {
+      try(final FileWriter fwriter = new FileWriter(file)) {
         fwriter.write(string);
         fwriter.flush();
       }
       plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
       return true;
-    } catch(IOException e) {
+    } catch(final IOException e) {
       if(plugin.getSentryErrorReporter() != null) {
         plugin.getSentryErrorReporter().ignoreThrow();
       }
