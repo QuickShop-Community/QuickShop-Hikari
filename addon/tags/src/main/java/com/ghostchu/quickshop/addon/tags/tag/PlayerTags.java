@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.addon.tags.tag;
  */
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,18 +34,27 @@ public class PlayerTags {
   private final Set<String> tags = ConcurrentHashMap.newKeySet();
 
   public boolean hasTag(final String tag) {
+
     return tags.contains(tag);
   }
 
-  public void addTag(final String tag) {
-    tags.add(tag);
+  public boolean hasTags(final List<String> filterTags) {
+
+    return tags.containsAll(filterTags);
   }
 
-  public void removeTag(final String tag) {
-    tags.remove(tag);
+  public boolean addTag(final String tag) {
+
+    return tags.add(tag);
+  }
+
+  public boolean removeTag(final String tag) {
+
+    return tags.remove(tag);
   }
 
   public Set<String> getTags() {
+
     return Collections.unmodifiableSet(tags);
   }
 }

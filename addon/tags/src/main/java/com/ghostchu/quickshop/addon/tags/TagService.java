@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 public class TagService {
 
 
+  public static final long TOTAL_INDEX = -1L;
   public static final String SYS_FAV = "@fav";
   public static final String SYS_WATCH = "@watch";
   public static final String SYS_AVOID = "@avoid";
@@ -51,6 +52,64 @@ public class TagService {
 
     this.tagsMain = tagsMain;
     this.plugin = plugin;
+  }
+
+  public static String displayTag(final Player sender, final String stored) {
+
+    if(stored == null) {
+      return "";
+    }
+
+    return switch(stored) {
+      case SYS_FAV -> "Favorite";
+      case SYS_WATCH -> "Watch";
+      case SYS_AVOID -> "Avoid";
+      default -> "#" + stored;
+    };
+  }
+
+  public static String displayTagOrHash(final String stored) {
+
+    if(stored == null) {
+      return "";
+    }
+
+    if(stored.startsWith("@")) {
+      return stored;
+    }
+    return "#" + stored;
+  }
+
+  @Nullable
+  public static String normalizeTag(@Nullable String input, final boolean allowSystem) {
+
+    if(input == null) {
+      return null;
+    }
+
+    if(input.startsWith("#")) {
+      input = input.substring(1);
+    }
+
+    input = input.trim().toLowerCase(Locale.ROOT);
+
+    if(input.isEmpty()) {
+      return null;
+    }
+
+    if(input.length() > MAX_TAG_LENGTH) {
+      return null;
+    }
+
+    if(!allowSystem && input.startsWith("@")) {
+      return null;
+    }
+
+    if(!VALID_TAG_PATTERN.matcher(input).matches()) {
+      return null;
+    }
+
+    return input;
   }
 
   public CompletableFuture<Boolean> addShopTag(final UUID player, final long shopId, final String tag) {
@@ -82,6 +141,7 @@ public class TagService {
   }
 
   public CompletableFuture<Boolean> removeAllShopTags(final long shopId) {
+
     final DatabaseHelper db = plugin.getDatabaseHelper();
     return db.removeAllShopTags(shopId).thenCompose(result->{
       if(result != null && result > 0) {
@@ -93,6 +153,7 @@ public class TagService {
   }
 
   public CompletableFuture<Boolean> removeAllShopTagsBy(final long shopId, final UUID player) {
+
     final DatabaseHelper db = plugin.getDatabaseHelper();
     return db.removeAllShopTagsBy(player, shopId).thenCompose(result->{
       if(result != null && result > 0) {
@@ -101,51 +162,6 @@ public class TagService {
 
       return CompletableFuture.completedFuture(false);
     });
-  }
-
-  public @Nullable String normalizePlayerTag(String input) {
-
-    if(input == null) return null;
-
-    if(input.startsWith("#")) {
-      input = input.substring(1);
-    }
-
-    input = input.trim().toLowerCase(Locale.ROOT);
-
-    if(input.isEmpty()) return null;
-    if(input.length() > MAX_TAG_LENGTH) return null;
-    if(input.startsWith("@")) return null;
-
-    if(!VALID_TAG_PATTERN.matcher(input).matches()) {
-      return null;
-    }
-
-    return input;
-  }
-
-  public static String displayTag(final Player sender, final String stored) {
-    if(stored == null) {
-      return "";
-    }
-
-    return switch (stored) {
-      case SYS_FAV -> "Favorite";
-      case SYS_WATCH -> "Watch";
-      case SYS_AVOID -> "Avoid";
-      default -> "#" + stored;
-    };
-  }
-
-  public static String displayTagOrHash(final String stored) {
-    if(stored == null) {
-      return "";
-    }
-
-    if(stored.startsWith("@")) {
-      return stored;
-    }
-    return "#" + stored;
   }
 
   public CompletableFuture<Boolean> toggleSystemTag(final UUID player, final long shopId, final String tag) {

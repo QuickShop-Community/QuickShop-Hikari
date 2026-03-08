@@ -39,6 +39,7 @@
         <depend.easy>0.4.7</depend.easy>
         <depend.examination-api>1.3.0</depend.examination-api>
         <depend.examination-string>1.3.0</depend.examination-string>
+        <depend.faststats>0.17.2</depend.faststats>
         <depend.nbtapi>2.15.0</depend.nbtapi>
         <depend.packetevents>2.9.0-SNAPSHOT</depend.packetevents>
         <depend.paper>1.21-R0.1-SNAPSHOT</depend.paper>
@@ -279,6 +280,10 @@
                                     <relocation>
                                         <pattern>com.rollbar.</pattern>
                                         <shadedPattern>${qs.relocation}.com.rollbar.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>dev.faststats</pattern>
+                                        <shadedPattern>${qs.relocation}.faststats</shadedPattern>
                                     </relocation>
                                     <!--<relocation>
                                         <pattern>org.apache.commons:commons-compress</pattern>

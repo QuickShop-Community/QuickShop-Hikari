@@ -16,7 +16,10 @@
 
     <name>Addon-Tags</name>
 
-    <description>QuickShop-Tags adds a lightweight, powerful tagging system to QuickShop-Hikari, allowing players to categorize, favorite, and track shops without altering core shop behavior.</description>
+    <description>QuickShop-Tags adds a lightweight, powerful tagging system to QuickShop-Hikari,
+        allowing players to categorize, favorite, and track shops without altering core shop
+        behavior.
+    </description>
 
     <repositories>
         <repository>
