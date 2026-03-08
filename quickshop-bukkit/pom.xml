@@ -128,19 +128,6 @@
             <optional>true</optional>
         </dependency>
         <!--JsonConfiguration Dependency End-->
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>${depend.vault}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>*</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
-            <optional>true</optional>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
         <dependency>
             <groupId>me.clip</groupId>

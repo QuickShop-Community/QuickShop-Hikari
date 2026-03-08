@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -81,6 +82,7 @@ import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.interaction.QuickShopInteractionManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.sign.SignHooker;
+import com.ghostchu.quickshop.shop.tag.QuickShopTagManager;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.ItemMarker;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -218,6 +220,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final EconomyLoader economyLoader = new EconomyLoader(this);
   private final EconomyManager economyManager = new QSEconomyManager();
+  private final QuickShopTagManager tagManager;
   private UpdateManager updateManager;
   @Getter
   private final PasteManager pasteManager = new PasteManager();
@@ -349,6 +352,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     this.logger = logger;
     this.platform = platform;
     this.helperMethods = new BukkitHelper();
+    this.tagManager = new QuickShopTagManager(this);
   }
 
   /**
@@ -632,6 +636,19 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public EconomyManager getEconomyManager() {
 
     return economyManager;
+  }
+
+  /**
+   * Retrieves the TagManager associated with the QuickShop system. The TagManager is responsible
+   * for handling operations related to managing tags, which may include inventory item metadata and
+   * custom item tags used by the system.
+   *
+   * @return The TagManager instance that provides functionality for tag-related operations within
+   * the QuickShop system.
+   */
+  @Override
+  public TagManager tagManager() {
+    return tagManager;
   }
 
   public UpdateManager updateManager() {

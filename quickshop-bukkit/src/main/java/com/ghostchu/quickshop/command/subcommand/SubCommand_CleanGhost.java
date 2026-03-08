@@ -44,7 +44,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
     final List<CompletableFuture<Void>> pendingTasks = new CopyOnWriteArrayList<>();
 
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
-      final CompletableFuture<Void> task = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc) -> {
+      final CompletableFuture<Void> task = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc)->{
         if(shop == null) {
           return; // WTF
         }
@@ -81,14 +81,13 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
           plugin.getShopManager().deleteShop(shop);
           deletionCounter.incrementAndGet();
           plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
-          return;
         }
       });
       pendingTasks.add(task);
     }
 
     CompletableFuture.allOf(pendingTasks.toArray(new CompletableFuture[0]))
-            .whenComplete((v, t) -> plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()).send());
+            .whenComplete((v, t)->plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()).send());
 
   }
 

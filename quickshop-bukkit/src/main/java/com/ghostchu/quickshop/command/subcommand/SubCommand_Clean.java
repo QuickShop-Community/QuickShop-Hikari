@@ -50,7 +50,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
     }
 
     for(final Shop shop : pendingRemoval) {
-      Util.regionThread(shop.getLocation(), () -> {
+      Util.regionThread(shop.getLocation(), ()->{
         plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop clean", shop.saveToInfoStorage()));
         plugin.getShopManager().deleteShop(shop);
       });

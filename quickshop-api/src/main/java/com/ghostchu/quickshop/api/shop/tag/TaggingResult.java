@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.addon.tags.tag;
+package com.ghostchu.quickshop.api.shop.tag;
 
 /*
  * QuickShop-Hikari
@@ -30,5 +30,6 @@ public enum TaggingResult {
   NOT_FOUND,
   ALREADY_EXISTS,
   DATABASE_ERROR,
-  INVALID_TAG
+  INVALID_TAG,
+  PLAYER_MAX_TAG_LIMIT_REACHED
 }

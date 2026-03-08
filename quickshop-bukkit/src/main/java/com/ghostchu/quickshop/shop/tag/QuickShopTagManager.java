@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.addon.tags;
+package com.ghostchu.quickshop.shop.tag;
 
 /*
  * QuickShop-Hikari
@@ -19,41 +19,64 @@ package com.ghostchu.quickshop.addon.tags;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.addon.tags.tag.PlayerTags;
-import com.ghostchu.quickshop.addon.tags.tag.ShopTags;
-import com.ghostchu.quickshop.addon.tags.tag.TaggingResult;
+import com.ghostchu.quickshop.api.shop.tag.PlayerTagIndex;
+import com.ghostchu.quickshop.api.shop.tag.TagManager;
+import com.ghostchu.quickshop.api.shop.tag.TagService;
+import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.ghostchu.quickshop.addon.tags.TagService.TOTAL_INDEX;
-import static com.ghostchu.quickshop.addon.tags.tag.TaggingResult.NOT_FOUND;
+import static com.ghostchu.quickshop.api.shop.tag.TagService.TOTAL_INDEX;
+import static com.ghostchu.quickshop.api.shop.tag.TaggingResult.NOT_FOUND;
 
 /**
- * TagManager
+ * The TagManager class handles the management of tags associated with shops and players. It allows
+ * adding, removing, and querying tags for shops, as well as filtering shops by tags. The data is
+ * stored in memory with support for persistent operations via the TagService.
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class TagManager {
+public class QuickShopTagManager implements TagManager {
 
   private final ConcurrentHashMap<Long, ShopTags> tags = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<UUID, PlayerTagIndex> playerIndexes = new ConcurrentHashMap<>();
 
+  private final QuickShop plugin;
   private final TagService service;
 
-  public TagManager(final Main main, final QuickShop plugin) {
+  public QuickShopTagManager(final QuickShop plugin) {
 
-    this.service = new TagService(main, plugin);
+    this.plugin = plugin;
+    this.service = new QuickShopTagService(plugin);
   }
 
+  private PlayerTagIndex playerIndex(final UUID player) {
+
+    return playerIndexes.computeIfAbsent(player, id->new QuickShopPlayerTagIndex());
+  }
+
+  private void cleanupPlayerIndex(final UUID player) {
+
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index == null) {
+      return;
+    }
+
+    if(index.totalTags() <= 0) {
+      playerIndexes.remove(player);
+    }
+  }
+
+  @Override
   public TaggingResult addTag(final long shopId, final UUID player, final String tag) {
 
     final ShopTags shopTags = tags.computeIfAbsent(shopId, id->new ShopTags());
@@ -62,10 +85,14 @@ public class TagManager {
     }
 
     shopTags.addTag(player, tag);
+    //update our index service
+    playerIndex(player).addTag(shopId, tag);
+    //update our database
     service.addShopTag(player, shopId, tag);
     return TaggingResult.SUCCESS;
   }
 
+  @Override
   public TaggingResult toggleTag(final long shopId, final UUID player, final String tag) {
 
     if(hasTag(shopId, player, tag)) {
@@ -74,6 +101,7 @@ public class TagManager {
     return addTag(shopId, player, tag);
   }
 
+  @Override
   public boolean removeAllTags() {
 
     final Iterator<Long> iterator = tags.keySet().iterator();
@@ -85,30 +113,72 @@ public class TagManager {
     return true;
   }
 
+  @Override
   public boolean removeAllShopTags(final long shopId) {
 
     final ShopTags shopTags = tags.get(shopId);
     if(shopTags == null) {
       return false;
     }
+
+    for(final PlayerTags playerTags : shopTags.getTags()) {
+      final UUID player = playerTags.player();
+
+      final PlayerTagIndex index = playerIndexes.get(player);
+      if(index != null) {
+        for(final String tag : playerTags.getTags()) {
+          index.removeTag(shopId, tag);
+        }
+        cleanupPlayerIndex(player);
+      }
+    }
+
     shopTags.clear();
     service.removeAllShopTags(shopId);
     tags.remove(shopId);
     return true;
   }
 
+  @Override
   public boolean removeAllShopTagsBy(final long shopId, final UUID player) {
 
     final ShopTags shopTags = tags.get(shopId);
     if(shopTags == null) {
       return false;
     }
+
+    final PlayerTags playerTags = shopTags.getTags(player);
+    if(playerTags == null || playerTags.getTags().isEmpty()) {
+      return false;
+    }
+
+    //update our index service
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index != null) {
+      for(final String tag : playerTags.getTags()) {
+        index.removeTag(shopId, tag);
+      }
+      cleanupPlayerIndex(player);
+    }
+
     shopTags.removeAllTags(player);
+    //remove our shop object if empty to save memory
+    if(shopTags.isEmpty()) {
+      tags.remove(shopId);
+    }
+
     service.removeAllShopTagsBy(shopId, player);
     return true;
   }
 
+  @Override
   public boolean removeAllPlayerTags(final UUID player) {
+
+    //update our index service
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index == null || index.totalTags() <= 0) {
+      return false;
+    }
 
     final Iterator<Long> iterator = tags.keySet().iterator();
     while(iterator.hasNext()) {
@@ -116,117 +186,139 @@ public class TagManager {
       final Long shopId = iterator.next();
       removeAllShopTagsBy(shopId, player);
     }
+
+    //update our index service
+    playerIndexes.remove(player);
     return true;
   }
 
+  @Override
   public int totalTags() {
 
     int total = 0;
-    for(final Map.Entry<Long, ShopTags> entry : tags.entrySet()) {
-
-      for(final PlayerTags tags : entry.getValue().getTags()) {
-        total += tags.getTags().size();
-      }
+    for(final PlayerTagIndex index : playerIndexes.values()) {
+      total += index.totalTags();
     }
     return total;
   }
 
+  @Override
   public int totalTagsByPlayer(final UUID player) {
 
-    int total = 0;
-    for(final Map.Entry<Long, ShopTags> entry : tags.entrySet()) {
-
-      final PlayerTags tags = entry.getValue().getTags(player);
-      if(tags == null || tags.getTags().isEmpty()) {
-        continue;
-      }
-      total += tags.getTags().size();
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index == null) {
+      return 0;
     }
-    //our total count for all tags by player.
-    return total;
+    return index.totalTags();
   }
 
+  @Override
   public TreeMap<Long, Integer> tagsCount(final UUID player) {
 
-    int total = 0;
     final TreeMap<Long, Integer> count = new TreeMap<>();
-    for(final Map.Entry<Long, ShopTags> entry : tags.entrySet()) {
+    final PlayerTagIndex index = playerIndexes.get(player);
+    //check out index service
+    if(index == null) {
+      count.put(TOTAL_INDEX, 0);
+      return count;
+    }
 
-      final PlayerTags tags = entry.getValue().getTags(player);
-      if(tags == null || tags.getTags().isEmpty()) {
+    int total = 0;
+    for(final Long shopId : index.shops()) {
+      final int size = index.getTags(shopId).size();
+      if(size <= 0) {
         continue;
       }
 
-      count.put(entry.getKey(), tags.getTags().size());
-      total += tags.getTags().size();
+      count.put(shopId, size);
+      total += size;
     }
-    //our total count for all tags by player.
+
+    //our total count
     count.put(TOTAL_INDEX, total);
     return count;
   }
 
+  @Override
   public Set<String> tagsFilteredByShop(final UUID player, final long shopId) {
+
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index != null) {
+      return index.getTags(shopId);
+    }
 
     final ShopTags shopTags = tags.get(shopId);
     if(shopTags == null) {
       return Collections.emptySet();
     }
-    return shopTags.getTags(player).getTags();
+
+    final PlayerTags playerTags = shopTags.getTags(player);
+    if(playerTags == null) {
+      return Collections.emptySet();
+    }
+
+    return playerTags.getTags();
   }
 
+  @Override
   public List<Long> shopsFilteredByTag(final UUID player, final String tag) {
 
-    final List<Long> shopIds = new ArrayList<>();
-    final Iterator<Long> iterator = tags.keySet().iterator();
-    while(iterator.hasNext()) {
-
-      final Long shopId = iterator.next();
-      final ShopTags shopTags = tags.get(shopId);
-      if(shopTags == null) {
-        continue;
-      }
-
-      if(shopTags.hasTag(player, tag)) {
-        shopIds.add(shopId);
-      }
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index == null) {
+      return Collections.emptyList();
     }
-    return shopIds;
+
+    return new ArrayList<>(index.getShops(tag));
   }
 
+  @Override
   public List<Long> shopsFilteredByTags(final UUID player, final List<String> filterTags) {
 
-    final List<Long> shopIds = new ArrayList<>();
-    final Iterator<Long> iterator = tags.keySet().iterator();
-    while(iterator.hasNext()) {
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index == null || filterTags.isEmpty()) {
+      return Collections.emptyList();
+    }
 
-      final Long shopId = iterator.next();
-      final ShopTags shopTags = tags.get(shopId);
-      if(shopTags == null) {
+    Set<Long> result = null;
+
+    for(final String tag : filterTags) {
+      final Set<Long> shops = index.getShops(tag);
+      if(shops.isEmpty()) {
+        return Collections.emptyList();
+      }
+
+      if(result == null) {
+        result = ConcurrentHashMap.newKeySet();
+        result.addAll(shops);
         continue;
       }
 
-      if(shopTags.hasTags(player, filterTags)) {
-        shopIds.add(shopId);
+      result.retainAll(shops);
+      if(result.isEmpty()) {
+        return Collections.emptyList();
       }
     }
-    return shopIds;
+
+    return result == null? Collections.emptyList() : Collections.unmodifiableList(new ArrayList<>(result));
   }
 
+  @Override
   public void listShopsByFilter(final Player player, final List<String> filterTags, final String titleNode,
                                 final String noEntries) {
 
     final List<Long> shopIds = shopsFilteredByTags(player.getUniqueId(), filterTags);
     if(shopIds.isEmpty()) {
-      Main.instance().quickShop().text().of(player, noEntries).send();
+      plugin.text().of(player, noEntries).send();
       return;
     }
 
-    Main.instance().quickShop().text().of(player, titleNode).send();
+    plugin.text().of(player, titleNode).send();
     for(final Long shopId : shopIds) {
-      Main.instance().quickShop().text().of(player, "addon.tags.general.list-entry", shopId).send();
+      plugin.text().of(player, "tags.general.list-entry", shopId).send();
     }
   }
 
+  @Override
   public boolean hasTag(final long shopId, final UUID player, final String tag) {
 
     final ShopTags shopTags = tags.get(shopId);
@@ -236,6 +328,7 @@ public class TagManager {
     return shopTags.hasTag(player, tag);
   }
 
+  @Override
   public boolean removeTag(final UUID player, final String tag) {
 
     final Iterator<Long> iterator = tags.keySet().iterator();
@@ -246,6 +339,7 @@ public class TagManager {
     return true;
   }
 
+  @Override
   public TaggingResult removeTag(final long shopId, final UUID player, final String tag) {
 
     final ShopTags shopTags = tags.get(shopId);
@@ -258,6 +352,13 @@ public class TagManager {
     }
 
     shopTags.removeTag(player, tag);
+    //update our index service
+    final PlayerTagIndex index = playerIndexes.get(player);
+    if(index != null) {
+
+      index.removeTag(shopId, tag);
+    }
+    //update our database
     service.removeShopTag(player, shopId, tag);
 
     //remove our shop object if empty to save memory
@@ -268,6 +369,7 @@ public class TagManager {
     return TaggingResult.SUCCESS;
   }
 
+  @Override
   public TagService service() {
 
     return service;

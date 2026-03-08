@@ -123,7 +123,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
 
     //Okay now all shops is our wanted shop in Map
-    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double>comparingByValue(Double::compare).reversed()).toList();
+    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double> comparingByValue(Double::compare).reversed()).toList();
 
     //Function
     if(usingOldLogic) {

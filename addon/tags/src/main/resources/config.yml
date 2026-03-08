@@ -1,6 +1,0 @@
-config-version: 1
-
-tag:
-  max-length: 32
-  max-per-shop: 20
-  max-total-per-player: 200

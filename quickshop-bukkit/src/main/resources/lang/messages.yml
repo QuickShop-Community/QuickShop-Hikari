@@ -133,6 +133,57 @@ shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Recovering shops from backup...
 virtual-player-component-hover: '<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>'
 real-player-component-hover: '<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>"[]"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>.'
+tags:
+  commands:
+    tag: <yellow>Manage your shop tags.
+    favorite: <yellow>Toggle favorite on looked-at shop.
+    watch: <yellow>Toggle watch on looked-at shop.
+    avoid: <yellow>Toggle avoid on looked-at shop.
+  general:
+    database-error: <red>An error occurred while execution tags operation.
+    list-entry: '<yellow> - <aqua>{0}'
+    invalid: '<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: {0}'
+  avoid:
+    added: <green>Shop has been added to your avoid list.
+    removed: <green>Shop has been removed from your avoid list.
+    unable: <red>Unable to toggle avoid on this shop.
+    none: <red>You don't have any shop in your avoid list.
+    list-title: '<green>Avoided Shops:'
+    label: Avoid
+  favorite:
+    added: <green>Shop has been added to your favorite list.
+    removed: <green>Shop has been removed from your favorite list.
+    unable: <red>Unable to add shop to your favorite list.
+    none: <red>You have no favorite shops.
+    list-title: '<green>Favorited Shops:'
+    label: Favorite
+  watch:
+    added: <green>You are watching this shop now.
+    removed: <green>You are no longer watching this shop.
+    unable: <red>Unable to toggle watch on this shop.
+    none: <red>You are not watching any shops.
+    list-title: '<green>Watched Shops:'
+    label: Watching
+  tag:
+    added: <green>Successfully added tag <aqua>{0}</aqua> to this shop!
+    duplicate: <red>This shop already has tag <aqua>{0}</aqua>!
+    failed-add: <red>An error occurred while adding tag <aqua>{0}</aqua> to this shop.
+    failed-remove: <red>An error occurred while removing tag <aqua>{0}</aqua> from this shop.
+    removed: <green>Successfully removed tag <aqua>{0}</aqua> from this shop!
+    does-not-exist: <red>This shop does not have tag <aqua>{0}</aqua>!
+    list-player-shop-title: '<green>You have {0} tags on shop #{1}:'
+    list-player-shops-title: '<green>You have {0} tags on {1} shops:'
+    list-player-shop-entry: '<aqua>Shop #{0}</aqua> - <yellow>{1} tags</yellow>'
+    list-title: '<green>This shop has <yellow>{0}</yellow> tags:'
+    list-tag-title: '<green>This tag is applied to <yellow>{0}</yellow> shops:'
+    cleared: <green>Successfully cleared all tags from this shop!
+    cleared-all: <green>Successfully cleared all tags from all shops!
+    cleared-tag: <green>Successfully cleared tag <aqua>{0}</aqua> from all your tagged shops!
+    no-tags-all: <red>There are no tags on any shop!
+    no-tags: <red>This shop has no tags!
+    no-tagged-shops-player: <red>You have no tags on this shop!
+    no-tagged-shops: <red>You have no tagged shops!
+    no-tagged-shops-tag: <red>You have no shops with tag <aqua>{0}</aqua>!
 menu:
   sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
   owner: '<green>Owner: {0}'
@@ -1636,59 +1687,6 @@ addon:
   shopitemonly:
     message: <red>You can't put non-shop items into shop container, all non-shop items
       will dropped at your location.
-  tags:
-    commands:
-      tag: <yellow>Manage your shop tags.
-      favorite: <yellow>Toggle favorite on looked-at shop.
-      watch: <yellow>Toggle watch on looked-at shop.
-      avoid: <yellow>Toggle avoid on looked-at shop.
-    general:
-      database-error: <red>An error occurred while execution tags operation.
-      list-entry: '<yellow> - <aqua>{0}'
-      invalid: '<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: {0}'
-    avoid:
-      added: <green>Shop has been added to your avoid list.
-      removed: <green>Shop has been removed from your avoid list.
-      unable: <red>Unable to toggle avoid on this shop.
-      none: <red>You don't have any shop in your avoid list.
-      list-title: '<green>Avoided Shops:'
-      label: Avoid
-    favorite:
-      added: <green>Shop has been added to your favorite list.
-      removed: <green>Shop has been removed from your favorite list.
-      unable: <red>Unable to add shop to your favorite list.
-      none: <red>You have no favorite shops.
-      list-title: '<green>Favorited Shops:'
-      label: Favorite
-    watch:
-      added: <green>You are watching this shop now.
-      removed: <green>You are no longer watching this shop.
-      unable: <red>Unable to toggle watch on this shop.
-      none: <red>You are not watching any shops.
-      list-title: '<green>Watched Shops:'
-      label: Watching
-    tag:
-      added: <green>Successfully added tag <aqua>{0}</aqua> to this shop!
-      duplicate: <red>This shop already has tag <aqua>{0}</aqua>!
-      failed-add: <red>An error occurred while adding tag <aqua>{0}</aqua> to this shop.
-      failed-remove: <red>An error occurred while removing tag <aqua>{0}</aqua> from this shop.
-      removed: <green>Successfully removed tag <aqua>{0}</aqua> from this shop!
-      does-not-exist: <red>This shop does not have tag <aqua>{0}</aqua>!
-      list-player-shop-title: '<green>You have {0} tags on shop #{1}:'
-      list-player-shops-title: '<green>You have {0} tags on {1} shops:'
-      list-player-shop-entry: '<aqua>Shop #{0}</aqua> - <yellow>{1} tags</yellow>'
-      list-title: '<green>This shop has <yellow>{0}</yellow> tags:'
-      list-tag-title: '<green>This tag is applied to <yellow>{0}</yellow> shops:'
-      cleared: <green>Successfully cleared all tags from this shop!
-      cleared-all: <green>Successfully cleared all tags from all shops!
-      cleared-tag: <green>Successfully cleared tag <aqua>{0}</aqua> from all your tagged shops!
-      no-tags-all: <red>There are no tags on any shop!
-      no-tags: <red>This shop has no tags!
-      no-tagged-shops-player: <red>You have no tags on this shop!
-      no-tagged-shops: <red>You have no tagged shops!
-      no-tagged-shops-tag: <red>You have no shops with tag <aqua>{0}</aqua>!
-
-
   limited:
     commands:
       limit: <yellow>Set a limit that restrict the purchase that player can make in

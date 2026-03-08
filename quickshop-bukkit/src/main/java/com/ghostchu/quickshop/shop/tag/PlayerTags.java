@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.addon.tags.tag;
+package com.ghostchu.quickshop.shop.tag;
 
 /*
  * QuickShop-Hikari
@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.addon.tags.tag;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -32,6 +33,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerTags {
 
   private final Set<String> tags = ConcurrentHashMap.newKeySet();
+
+  private final UUID player;
+
+  public PlayerTags(final UUID player) {
+
+    this.player = player;
+  }
 
   public boolean hasTag(final String tag) {
 
@@ -56,5 +64,10 @@ public class PlayerTags {
   public Set<String> getTags() {
 
     return Collections.unmodifiableSet(tags);
+  }
+
+  public UUID player() {
+
+    return player;
   }
 }

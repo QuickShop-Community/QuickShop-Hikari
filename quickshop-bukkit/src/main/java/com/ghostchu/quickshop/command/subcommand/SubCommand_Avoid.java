@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.addon.tags.command;
+package com.ghostchu.quickshop.command.subcommand;
 
 /*
  * QuickShop-Hikari
@@ -19,12 +19,10 @@ package com.ghostchu.quickshop.addon.tags.command;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.addon.tags.Main;
-import com.ghostchu.quickshop.addon.tags.TagService;
-import com.ghostchu.quickshop.addon.tags.tag.TaggingResult;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,20 +31,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ghostchu.quickshop.api.shop.tag.TagService.SYS_AVOID;
+
 /**
- * SubCommand_Favorite
+ * SubCommand_Avoid
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class SubCommand_Favorite implements CommandHandler<Player> {
+public class SubCommand_Avoid implements CommandHandler<Player> {
 
-  private final Main main;
   private final QuickShop plugin;
 
-  public SubCommand_Favorite(final Main main, final QuickShop plugin) {
+  public SubCommand_Avoid(final QuickShop plugin) {
 
-    this.main = main;
     this.plugin = plugin;
   }
 
@@ -55,34 +53,35 @@ public class SubCommand_Favorite implements CommandHandler<Player> {
                         @NotNull final String commandLabel,
                         @NotNull final CommandParser parser) {
 
-    final String tag = TagService.normalizeTag(TagService.SYS_FAV, true);
+    final String tag = plugin.tagManager().service().normalizeTag(SYS_AVOID, true);
     if(tag == null) {
 
       //should never happen, but we'll catch just in case.
-      plugin.text().of(sender, "addon.tags.general.invalid").send();
+      plugin.text().of(sender, "tags.general.invalid").send();
       return;
     }
 
     if(parser.getArgs().isEmpty()) {
+
       final Shop shop = getLookingShop(sender);
       if(shop == null) {
         plugin.text().of(sender, "not-looking-at-shop").send();
         return;
       }
 
-      final TaggingResult result = main.tagManager()
-              .toggleTag(shop.getShopId(), sender.getUniqueId(), tag);
+      final TaggingResult result = plugin.tagManager().toggleTag(shop.getShopId(), sender.getUniqueId(), tag);
 
       switch(result) {
-        case SUCCESS -> {
-          if(main.tagManager().hasTag(shop.getShopId(), sender.getUniqueId(), tag)) {
-            plugin.text().of(sender, "addon.tags.favorite.added").send();
+        case TaggingResult.SUCCESS -> {
+          if(plugin.tagManager().hasTag(shop.getShopId(), sender.getUniqueId(), tag)) {
+            plugin.text().of(sender, "tags.avoid.added").send();
           } else {
-            plugin.text().of(sender, "addon.tags.favorite.removed").send();
+            plugin.text().of(sender, "tags.avoid.removed").send();
           }
         }
-        case DATABASE_ERROR -> plugin.text().of(sender, "addon.tags.general.database-error").send();
-        default -> plugin.text().of(sender, "addon.tags.favorite.unable").send();
+        case TaggingResult.DATABASE_ERROR ->
+                plugin.text().of(sender, "tags.general.database-error").send();
+        default -> plugin.text().of(sender, "tags.avoid.unable").send();
       }
       return;
     }
@@ -91,9 +90,9 @@ public class SubCommand_Favorite implements CommandHandler<Player> {
     switch(sub.toLowerCase(Locale.ROOT)) {
       case "list" -> {
 
-        Main.instance().tagManager().listShopsByFilter(sender, new ArrayList<>(List.of(tag)),
-                                                       "addon.tags.favorite.list-title",
-                                                       "addon.tags.favorite.none");
+        plugin.tagManager().listShopsByFilter(sender, new ArrayList<>(List.of(tag)),
+                                                       "tags.avoid.list-title",
+                                                       "tags.avoid.none");
       }
       default -> sendUsage(sender);
     }
@@ -113,6 +112,6 @@ public class SubCommand_Favorite implements CommandHandler<Player> {
 
   private void sendUsage(final Player sender) {
 
-    plugin.text().of(sender, "command-incorrect", "/quickshop fav [list]").send();
+    plugin.text().of(sender, "command-incorrect", "/quickshop avoid [list]").send();
   }
 }

@@ -489,7 +489,6 @@
         <module>addon/reremake-migrator</module>
         <module>addon/squaremap</module>
         <module>addon/shopitemonly</module>
-        <module>addon/tags</module>
         <module>compatibility/advancedregionmarket</module>
           <!--   <module>compatibility/angelchest</module>  -->
         <module>compatibility/bentobox</module>

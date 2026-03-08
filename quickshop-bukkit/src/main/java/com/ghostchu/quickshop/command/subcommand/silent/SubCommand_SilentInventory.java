@@ -33,7 +33,7 @@ public class SubCommand_SilentInventory extends SubCommand_SilentBase {
       Log.debug("Inventory is empty! " + cs);
       return;
     }
-    
+
     if(plugin.getConfig().getBoolean("shop.lock") && !shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
       if(plugin.perm().hasPermission(sender, "quickshop.other.open")) {
         if(LockListener.lockCoolDown.getIfPresent(sender.getUniqueId()) == null) {

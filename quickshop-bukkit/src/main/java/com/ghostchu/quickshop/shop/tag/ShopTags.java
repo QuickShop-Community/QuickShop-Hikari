@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.addon.tags.tag;
+package com.ghostchu.quickshop.shop.tag;
 
 /*
  * QuickShop-Hikari
@@ -37,7 +37,7 @@ public class ShopTags {
   public void addTag(final UUID player, final String tag) {
 
     if(!tags.containsKey(player)) {
-      tags.put(player, new PlayerTags());
+      tags.put(player, new PlayerTags(player));
     }
     tags.get(player).addTag(tag);
   }
@@ -63,7 +63,6 @@ public class ShopTags {
     }
     tags.remove(player);
     return true;
-
   }
 
   public boolean hasTag(final UUID player, final String tag) {

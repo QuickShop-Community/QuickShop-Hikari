@@ -3,47 +3,24 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
-import com.ghostchu.quickshop.api.economy.benefit.BenefitOverflowException;
-import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
-import com.ghostchu.quickshop.api.economy.benefit.BenefitsAlreadyException;
-import com.ghostchu.quickshop.api.event.Phase;
-import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitAddEvent;
-import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitRemoveEvent;
-import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.obj.QUserImpl;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.math.BigDecimal;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.TreeMap;
+
+import static com.ghostchu.quickshop.api.shop.tag.TagService.TOTAL_INDEX;
 
 public class SubCommand_Tag implements CommandHandler<Player> {
 
   private final QuickShop plugin;
-  //our system tags
-  private static final String SYS_FAV = "@fav";
-  private static final String SYS_WATCH = "@watch";
-  private static final String SYS_AVOID = "@avoid";
-
-  private static final int MAX_TAG_LENGTH = 32;
-  //we only want letters, underscores and dashes
-  private static final Pattern VALID_TAG_PATTERN = Pattern.compile("^[a-z_-]+$");
 
   public SubCommand_Tag(final QuickShop plugin) {
 
@@ -51,48 +28,32 @@ public class SubCommand_Tag implements CommandHandler<Player> {
   }
 
   @Override
-  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel,
+                        @NotNull final CommandParser parser) {
 
     if(parser.getArgs().isEmpty()) {
       sendUsage(sender);
       return;
     }
 
-    final String sub = parser.getArgs().getFirst();
+    final String sub = parser.getArgs().getFirst().toLowerCase(Locale.ROOT);
 
-    //These are our global tag-related commands. They don't require looking at a shop.
-    switch (sub) {
-      // /qs tag tags
+    // Global commands that do not require looking at a shop.
+    switch(sub) {
       case "tags" -> {
         handleTags(sender);
         return;
       }
-      // /qs tag tagged <tag>
       case "tagged" -> {
         handleTaggedList(sender, parser);
         return;
       }
-      // /qs tag favs
-      case "favs" -> {
-        handleTaggedList(sender, new ArrayDeque<>(List.of(SYS_FAV)));
-        return;
-      }
-      // /qs tag watched
-      case "watched" -> {
-        handleTaggedList(sender, new ArrayDeque<>(List.of(SYS_WATCH)));
-        return;
-      }
-      // /qs tag avoided
-      case "avoided" -> {
-        handleTaggedList(sender, new ArrayDeque<>(List.of(SYS_AVOID)));
-        return;
-      }
-      // /qs tag purge <tag>
       case "purge", "removefromall", "untagall" -> {
         handleRemoveTagFromAllShops(sender, parser);
         return;
       }
-      default -> {}
+      default -> {
+      }
     }
 
     final Shop shop = getLookingShop(sender);
@@ -101,180 +62,191 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
-    // Check permission
     if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_BENEFIT)
        && !plugin.perm().hasPermission(sender, "quickshop.other.benefit")) {
       plugin.text().of(sender, "not-managed-shop").send();
       return;
     }
 
-    switch(parser.getArgs().getFirst()) {
+    switch(sub) {
       case "add" -> handleAdd(sender, shop, parser, 2);
       case "remove", "del", "delete" -> handleRemove(sender, shop, parser);
       case "clear" -> handleClear(sender, shop);
-
-      // Optional: admin "clear all tags from this shop for everyone"
-      case "clearall" -> handleClearAll(sender, shop);
-
-      // System tag shortcuts (looked-at shop)
-      case "fav" -> handleToggleSystem(sender, shop, SYS_FAV);
-      case "unfav" -> handleUnsetSystem(sender, shop, SYS_FAV);
-
-      case "watch" -> handleToggleSystem(sender, shop, SYS_WATCH);
-      case "unwatch" -> handleUnsetSystem(sender, shop, SYS_WATCH);
-
-      case "avoid" -> handleToggleSystem(sender, shop, SYS_AVOID);
-      case "unavoid" -> handleUnsetSystem(sender, shop, SYS_AVOID);
-
+      case "clearall" ->
+              handleClearAll(sender, parser); //todo: confirmation maybe for clear and clearall?
       case "list" -> handleTags(sender, shop);
-
       default -> handleAdd(sender, shop, parser, 1);
     }
   }
 
+  private void handleAdd(final Player sender, final Shop shop,
+                         final CommandParser parser, final int tagIndex) {
+
+    if(parser.getArgs().size() <= tagIndex) {
+      sendUsage(sender);
+      return;
+    }
+
+    final String normalized = plugin.tagManager().service().normalizeTag(parser.getArgs().get(tagIndex), false);
+    if(normalized == null) {
+      plugin.text().of(sender, "tags.general.invalid").send();
+      return;
+    }
+
+    final TaggingResult result = plugin.tagManager().addTag(shop.getShopId(), sender.getUniqueId(), normalized);
+    switch(result) {
+      case SUCCESS ->
+              plugin.text().of(sender, "tags.tag.added", plugin.tagManager().service().displayTag(sender, normalized)).send();
+      case ALREADY_EXISTS ->
+              plugin.text().of(sender, "tags.tag.duplicate", plugin.tagManager().service().displayTag(sender, normalized)).send();
+      case INVALID_TAG -> plugin.text().of(sender, "tags.general.invalid").send();
+      case DATABASE_ERROR -> plugin.text().of(sender, "tags.general.database-error").send();
+      default ->
+              plugin.text().of(sender, "tags.tag.failed-add", plugin.tagManager().service().displayTag(sender, normalized)).send();
+    }
+  }
+
+  private void handleRemove(final Player sender, final Shop shop, final CommandParser parser) {
+
+    if(parser.getArgs().size() < 2) {
+      sendUsage(sender);
+      return;
+    }
+
+    final String normalized = plugin.tagManager().service().normalizeTag(parser.getArgs().get(1), false);
+    if(normalized == null) {
+      plugin.text().of(sender, "tags.general.invalid").send();
+      return;
+    }
+
+    final TaggingResult result = plugin.tagManager().removeTag(shop.getShopId(), sender.getUniqueId(), normalized);
+    switch(result) {
+      case SUCCESS ->
+              plugin.text().of(sender, "tags.tag.removed", plugin.tagManager().service().displayTag(sender, normalized)).send();
+      case NOT_FOUND ->
+              plugin.text().of(sender, "tags.tag.does-not-exist", plugin.tagManager().service().displayTag(sender, normalized)).send();
+      case DATABASE_ERROR -> plugin.text().of(sender, "tags.general.database-error").send();
+      default ->
+              plugin.text().of(sender, "tags.tag.failed-remove", plugin.tagManager().service().displayTag(sender, normalized)).send();
+    }
+  }
+
+  private void handleClear(final Player sender, final Shop shop) {
+
+    final boolean removed = plugin.tagManager().removeAllShopTagsBy(shop.getShopId(), sender.getUniqueId());
+    if(removed) {
+      plugin.text().of(sender, "tags.tag.cleared", shop.getShopId()).send();
+    } else {
+      plugin.text().of(sender, "tags.tag.no-tags", shop.getShopId()).send();
+    }
+  }
+
+  private void handleClearAll(final Player sender, final CommandParser parser) {
+
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.admin.clearall")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
+    final boolean removed = plugin.tagManager().removeAllTags();
+    if(removed) {
+      plugin.text().of(sender, "tags.tag.cleared-all").send();
+    } else {
+      plugin.text().of(sender, "tags.tag.no-tags-all").send();
+    }
+  }
+
+  private void handleTags(final Player sender) {
+
+    final TreeMap<Long, Integer> count = plugin.tagManager().tagsCount(sender.getUniqueId());
+    if(count.isEmpty()) {
+      plugin.text().of(sender, "tags.tag.no-tagged-shops").send();
+      return;
+    }
+
+    plugin.text().of(sender, "tags.tag.list-player-shops-title", count.get(TOTAL_INDEX), count.size()).send();
+    for(final Map.Entry<Long, Integer> entry : count.entrySet()) {
+
+      plugin.text().of(sender, "tags.tag.list-player-shop-entry", entry.getKey(), entry.getValue()).send();
+    }
+  }
+
+  private void handleTags(final Player sender, final Shop shop) {
+
+    final Set<String> tags = Collections.unmodifiableSet(plugin.tagManager().tagsFilteredByShop(sender.getUniqueId(), shop.getShopId()));
+    if(tags.isEmpty()) {
+      plugin.text().of(sender, "tags.tag.no-tagged-shops-player", shop.getShopId()).send();
+      return;
+    }
+
+    plugin.text().of(sender, "tags.tag.list-player-shop-title", tags.size(), shop.getShopId()).send();
+    for(final String tag : tags) {
+      plugin.text().of(sender, "tags.general.list-entry", tag).send();
+    }
+  }
+
+  private void handleTaggedList(final Player sender, final CommandParser parser) {
+
+    if(parser.getArgs().size() < 2) {
+      sendUsage(sender);
+      return;
+    }
+
+    final String normalized = plugin.tagManager().service().normalizeTag(parser.getArgs().get(1), false);
+    if(normalized == null) {
+      plugin.text().of(sender, "tags.general.invalid").send();
+      return;
+    }
+
+    final List<Long> shopIds = plugin.tagManager().shopsFilteredByTag(sender.getUniqueId(), normalized);
+    if(shopIds.isEmpty()) {
+      plugin.text().of(sender, "tags.tag.no-tagged-shops-tag", normalized).send();
+      return;
+    }
+
+    plugin.text().of(sender, "tags.tag.list-tag-title", shopIds.size()).send();
+    for(final Long shopId : shopIds) {
+      plugin.text().of(sender, "tags.general.list-entry", shopId).send();
+    }
+  }
+
+  private void handleRemoveTagFromAllShops(final Player sender, final CommandParser parser) {
+
+    if(parser.getArgs().size() < 2) {
+      sendUsage(sender);
+      return;
+    }
+
+    final String normalized = plugin.tagManager().service().normalizeTag(parser.getArgs().get(1), false);
+    if(normalized == null) {
+      plugin.text().of(sender, "tags.general.invalid").send();
+      return;
+    }
+
+    final boolean cleared = plugin.tagManager().removeTag(sender.getUniqueId(), normalized);
+    if(!cleared) {
+      plugin.text().of(sender, "tags.general.database-error", normalized).send();
+      return;
+    }
+
+    plugin.text().of(sender, "tags.tag.clearing-tag", normalized).send();
+  }
+
   @NotNull
   @Override
-  public List<String> onTabComplete(
-          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+  public List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel,
+                                    @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
-      return List.of("add", "remove", "query");
-    }
-    if(parser.getArgs().size() == 2) {
-      return null;
-    }
-    if(parser.getArgs().size() == 3) {
-      return Collections.singletonList(plugin.text().of(sender, "tabcomplete.percentage").legacy());
+      return List.of("add", "remove", "clear", "clearall", "list", "tags", "tagged", "purge");
     }
     return Collections.emptyList();
   }
 
   private void sendUsage(final Player sender) {
+
     plugin.text().of(sender, "command-incorrect",
-                     "/quickshop tag <[tag]/remove/list/clear/tagged/tags/fav/unfav/favs/watch/unwatch/watched/avoid/unavoid/avoided>")
-          .send();
-  }
-
-  //our shop-specific methods
-  private void handleAdd(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser, final int tagPosition) {
-    if(parser.getArgs().size() < tagPosition) {
-      sendUsage(sender);
-      return;
-    }
-
-    final String tag = normalizeTag(parser.getArgs().get(tagPosition - 1), false);
-    if(tag == null) {
-      plugin.text().of(sender, "tag-invalid").send();
-      return;
-    }
-    Util.regionThread(sender.getLocation(), () -> {
-      plugin.getDatabaseHelper().tagShop(sender.getUniqueId(), shop.getShopId(), tag);
-      plugin.text().of(sender, "tag-added", tag).send();
-    });
-  }
-
-  private void handleRemove(final Player sender, @NotNull final Shop shop, @NotNull final CommandParser parser) {
-    if(parser.getArgs().size() < 2) {
-      sendUsage(sender);
-      return;
-    }
-  }
-
-  private void handleClear(final Player sender, @NotNull final Shop shop) {
-
-  }
-
-  private void handleToggleSystem(final Player sender, @NotNull final Shop shop, final String tag) {
-
-  }
-
-  private void handleUnsetSystem(final Player sender, @NotNull final Shop shop, final String tag) {
-
-  }
-
-  private void handleClearAll(final Player sender, @NotNull final Shop shop) {
-
-    //TODO: User parameter
-    if(!sender.hasPermission("quickshop.tag.clearall")) {
-      plugin.text().of(sender, "no-permission").send();
-      return;
-    }
-
-
-  }
-
-  //our global methods
-  private void handleTaggedList(final Player sender, @NotNull final CommandParser parser) {
-  }
-
-  private void handleTaggedList(final Player sender, @NotNull final ArrayDeque<String> tags) {
-  }
-
-  private void handleTags(final Player sender) {
-
-  }
-
-  private void handleTags(final Player sender, @NotNull final Shop shop) {
-
-  }
-
-  private void handleRemoveTagFromAllShops(final Player sender, @NotNull final CommandParser parser) {
-
-  }
-
-  private String displayTag(final Player sender, final String stored) {
-    if(stored == null) {
-      return "";
-    }
-
-    return switch (stored) {
-      case SYS_FAV -> "Favorite";
-      case SYS_WATCH -> "Watch";
-      case SYS_AVOID -> "Avoid";
-      default -> "#" + stored;
-    };
-  }
-
-  private String displayTagOrHash(final String stored) {
-    if(stored == null) {
-      return "";
-    }
-
-    if(stored.startsWith("@")) {
-      return stored;
-    }
-    return "#" + stored;
-  }
-
-  @Nullable
-  private String normalizeTag(@Nullable String input, final boolean allowSystem) {
-
-    if (input == null) {
-      return null;
-    }
-
-    if (input.startsWith("#")) {
-      input = input.substring(1);
-    }
-
-    input = input.trim().toLowerCase(Locale.ROOT);
-
-    if (input.isEmpty()) {
-      return null;
-    }
-
-    if (input.length() > MAX_TAG_LENGTH) {
-      return null;
-    }
-
-    if (!allowSystem && input.startsWith("@")) {
-      return null;
-    }
-
-    if (!VALID_TAG_PATTERN.matcher(input).matches()) {
-      return null;
-    }
-
-    return input;
+                     "/quickshop tag <add/remove/clear/clearall/list/tags/tagged/purge> [tag]")
+            .send();
   }
 }
