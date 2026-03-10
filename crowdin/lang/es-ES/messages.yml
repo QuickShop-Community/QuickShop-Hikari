@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>Puedes romper la tienda de empresa usando la super herramienta.
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>Has pagado <red>{0}<green> para cambiar de precio.
 not-allowed-to-create: <red>No puedes crear una tienda de empresa aquí.
 disabled-in-this-world: <red>El sistema de tiendas está deshabilitado en este mundo.
@@ -358,7 +358,7 @@ controlpanel:
   item: '<green>Artículo: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   unlimited: '<green>Ilimitado: {0} <yellow>[<light_purple><bold>Cambiar</bold><yellow>]'
   unlimited-hover: <yellow>Clic para alternar si la tienda de empresa es ilimitada.
-  refill-hover: <yellow>Clic para rellenar la tienda de empresa.
+  refill-hover: 'break-shop-use-supertool: <yellow>You can break the shop by using the super tool.'
   remove-hover: <yellow>Clic para eliminar esta tienda de empresa.
   toggledisplay-hover: <yellow>Alternar el estado para exhibir el artículo de la tienda de empresa
   refill: '<green>Rellenar: Recarga los artículos. <yellow>[<light_purple><bold>OK</bold><yellow>]'
@@ -608,7 +608,7 @@ debug:
   update-player-shops-player-selected: '<yellow>Player selected: <gold>{0}</gold>'
   update-player-shops-player-shops: <yellow>Total <gold>{0}</gold> shops waiting for updates.
   update-player-shops-per-tick-threshold: '<yellow>Max shops can be update per tick: <gold>{0}</gold>'
-  update-player-shops-complete: <green>Task completed, Used <yellow>{0}ms</yellow> for updating.
+  update-player-shops-complete:
   update-player-shops-task-started: <gold>The tasks has been started, please wait for it to complete.
   item-info-store-as-string: "<green>The store you looking at: <gold>{0}</gold> Hash: <white>{1}</white>"
   item-info-hand-as-string: "<green>The item in your hand: <gold>{0}</gold> Hash: <white>{1}</white>"
