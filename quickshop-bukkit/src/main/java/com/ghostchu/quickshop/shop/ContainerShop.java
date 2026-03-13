@@ -686,20 +686,39 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public int getRemainingStock() {
 
-    if(this.unlimited) {
+    if (this.unlimited) {
       return -1;
     }
-    if(Bukkit.isPrimaryThread()) {
-      if(this.getInventory() == null) {
-        Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
+
+    if (Bukkit.getServer().isOwnedByCurrentRegion(location)) {
+
+      if (this.getInventory() == null) {
         return 0;
       }
       final int stock = Util.countItems(this.getInventory(), this);
       new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
       return stock;
-    } else {
-      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getStock();
     }
+
+    CompletableFuture<Integer> future = new CompletableFuture<>();
+
+    QuickShop.folia()
+        .getScheduler()
+        .runAtLocation(
+            this.location,
+            task -> {
+              if (this.getInventory() == null) {
+                future.complete(0);
+                return;
+              }
+
+              final int stock = Util.countItems(this.getInventory(), this);
+              new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+
+              future.complete(stock);
+            });
+
+    return future.join();
   }
 
   /**
