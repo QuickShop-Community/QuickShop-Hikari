@@ -787,60 +787,7 @@ addon:
         description: <yellow>Verwalte deine QuickShop Discord Einstellungen
     discord-messages:
       sold-to-your-shop: |
-        {
-         "embed":
-           {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
-             "color": 52084,
-             "author": {
-               "name": "QuickShop-Hikari",
-               "icon_url": ""
-             },
-             "thumbnail": {
-               "url": ""
-             },
-             "image": {
-               "url": ""
-             },
-             "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
-               "icon_url": ""
-             },
-             "fields": [
-               {
-                 "name": "Shop",
-                 "value": "%%shop.display-name%%",
-                 "inline": false
-               },
-               {
-                 "name": "Purchaser",
-                 "value": "%%purchase.name%%",
-                 "inline": true
-               },
-               {
-                 "name": "Item",
-                 "value": "%%shop.item.name%%",
-                 "inline": true
-               },
-               {
-                 "name": "Amount",
-                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
-                 "inline": true
-               },
-               {
-                 "name": "Your paid",
-                 "value": "%%purchase.balance-formatted%%",
-                 "inline": true
-               },
-               {
-                 "name": "Taxes",
-                 "value": "%%purchase.taxes-formatted%%",
-                 "inline": true
-               }
-             ]
-           }
-        }
+
       bought-from-your-shop: |
         {
            "embed":
