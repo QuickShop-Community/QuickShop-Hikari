@@ -700,7 +700,7 @@ public class ContainerShop implements Shop, Reloadable {
       return stock;
     }
 
-    CompletableFuture<Integer> future = new CompletableFuture<>();
+    final CompletableFuture<Integer> future = new CompletableFuture<>();
 
     QuickShop.folia()
       .getScheduler()
