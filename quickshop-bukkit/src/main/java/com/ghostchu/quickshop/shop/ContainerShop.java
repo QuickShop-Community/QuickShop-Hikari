@@ -686,13 +686,13 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public int getRemainingStock() {
 
-    if (this.unlimited) {
+    if(this.unlimited) {
       return -1;
     }
 
-    if (Bukkit.getServer().isOwnedByCurrentRegion(location)) {
+    if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
 
-      if (this.getInventory() == null) {
+      if(this.getInventory() == null) {
         return 0;
       }
       final int stock = Util.countItems(this.getInventory(), this);
@@ -703,20 +703,20 @@ public class ContainerShop implements Shop, Reloadable {
     CompletableFuture<Integer> future = new CompletableFuture<>();
 
     QuickShop.folia()
-        .getScheduler()
-        .runAtLocation(
-            this.location,
-            task -> {
-              if (this.getInventory() == null) {
-                future.complete(0);
-                return;
-              }
+      .getScheduler()
+      .runAtLocation(
+        this.location,
+        task->{
+          if(this.getInventory() == null) {
+            future.complete(0);
+            return;
+          }
 
-              final int stock = Util.countItems(this.getInventory(), this);
-              new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+          final int stock = Util.countItems(this.getInventory(), this);
+          new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
 
-              future.complete(stock);
-            });
+          future.complete(stock);
+        });
 
     return future.join();
   }
