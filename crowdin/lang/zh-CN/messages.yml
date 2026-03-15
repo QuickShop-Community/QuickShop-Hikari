@@ -800,8 +800,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: 有人向你的商店出售了商品",
+             "description": "玩家 %%purchase.name%% 向你的商店出售了 x%%purchase.amount%% %%shop.item.name%%。",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -814,37 +814,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "QuickShop-Hikari Discord 通知",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "商店",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "购买者",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "物品",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Amount",
+                 "name": "数量",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "您已付款",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "税",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
