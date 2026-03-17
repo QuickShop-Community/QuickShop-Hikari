@@ -58,7 +58,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   private final String prefix;
 
-  private final int LATEST_DATABASE_VERSION = 19;
+  private final int LATEST_DATABASE_VERSION = 20;
 
   public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
@@ -210,6 +210,20 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public @NotNull SQLManager getManager() {
 
     return manager;
+  }
+
+  private void addStateColumn() {
+
+    fastBackup();
+    try {
+      getManager().alterTable(DataTables.DATA.getName())
+              .addColumn("shop_state", "VARCHAR(64)")
+              .execute();
+
+    } catch(final SQLException e) {
+
+      Log.debug("Failed to add state " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+    }
   }
 
   private void addEncodedColumn() {
@@ -1025,7 +1039,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       int currentDatabaseVersion = parent.getDatabaseVersion();
       if(currentDatabaseVersion == -1) {
 
-        currentDatabaseVersion = 19;
+        currentDatabaseVersion = 20;
       }
 
       logger.info("Database upgrade script running... Current Database Version: " + currentDatabaseVersion);
@@ -1088,6 +1102,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         logger.info("Data upgrading: Creating a new column... encoded for enhanced item storage.");
         parent.addEncodedColumn();
         currentDatabaseVersion = 19;
+      }
+
+      if(currentDatabaseVersion == 16 || currentDatabaseVersion == 17 || currentDatabaseVersion == 18 || currentDatabaseVersion == 19) {
+        logger.info("Data upgrading: Creating a new column... shop_state for the new shop states system.");
+        parent.addStateColumn();
+        currentDatabaseVersion = 20;
       }
 
       parent.setDatabaseVersion(currentDatabaseVersion).join();

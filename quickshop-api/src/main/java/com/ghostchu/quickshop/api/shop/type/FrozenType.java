@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.api.shop.IShopType;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
+@Deprecated(since = "6.3.0.0", forRemoval = true)
 public class FrozenType implements IShopType {
 
   @Override

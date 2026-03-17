@@ -26,6 +26,9 @@ import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
+import com.ghostchu.quickshop.api.shop.state.impl.ActiveState;
+import com.ghostchu.quickshop.api.shop.state.impl.FrozenState;
 import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import com.ghostchu.quickshop.api.shop.tax.TaxRates;
 import com.ghostchu.quickshop.api.shop.type.BuyingType;
@@ -106,6 +109,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
   protected final Map<UUID, Long> cooldowns = Maps.newConcurrentMap();
   protected final Map<Integer, IShopType> shopTypes = Maps.newConcurrentMap();
+  protected final Map<String, ShopState> shopStates = Maps.newConcurrentMap();
   protected final ConcurrentLinkedQueue<Long> inDeletion = new ConcurrentLinkedQueue<>();
 
   protected final InteractiveManager interactiveManager;
@@ -137,6 +141,10 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   public static final SellingType SELLING_TYPE = new SellingType();
   public static final FrozenType FROZEN_TYPE = new FrozenType();
 
+  //Initialize our shop states
+  public static final ActiveState ACTIVE_STATE = new ActiveState();
+  public static final FrozenState FROZEN_STATE = new FrozenState();
+
   public SimpleShopManager(@NotNull final QuickShop plugin) {
 
     super(plugin);
@@ -164,6 +172,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     addShopType(BUYING_TYPE);
     addShopType(SELLING_TYPE);
     addShopType(FROZEN_TYPE);
+
+    addShopState(ACTIVE_STATE);
+    addShopState(FROZEN_STATE);
 
     Log.debug("Loading caching tax account...");
     final String taxAccount = taxManager().taxAccount();
@@ -285,6 +296,34 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     final Optional<IShopType> type = shopType(identifier);
     return type.orElse(SELLING_TYPE);
+  }
+
+  /**
+   * Retrieves a map of shop states where the keys are shop identifiers and the values are the
+   * corresponding shop states.
+   *
+   * @return a non-null map containing shop identifiers as keys and their corresponding
+   * {@link ShopState} objects as values.
+   */
+  @Override
+  public @NotNull Map<String, ShopState> shopStates() {
+
+    return shopStates;
+  }
+
+  /**
+   * Retrieves the ShopState associated with the specified identifier. If no ShopState is found for
+   * the identifier, a default ShopState is returned.
+   *
+   * @param identifier the unique identifier for the shop state to retrieve
+   *
+   * @return the ShopState associated with the identifier, or a default ShopState if not found
+   */
+  @Override
+  public @NotNull ShopState shopStateOrDefault(final String identifier) {
+
+    final Optional<ShopState> type = shopState(identifier);
+    return type.orElse(ACTIVE_STATE);
   }
 
   @Override
@@ -496,7 +535,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         }
         final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
                                                      priceDouble, info.getItem(), createQUser, false,
-                                                     SELLING_TYPE, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
+                                                     SELLING_TYPE, ACTIVE_STATE, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
                                                      null, plugin.getJavaPlugin().getName(),
                                                      symbolLink,
                                                      null, Collections.emptyMap(), new QSBenefitProvider());

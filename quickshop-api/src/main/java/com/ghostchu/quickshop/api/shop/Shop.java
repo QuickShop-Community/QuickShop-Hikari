@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -235,14 +236,26 @@ public interface Shop extends Locatable<Location> {
   int getShopStackingAmount();
 
   /**
-   * Get shop type
+   * Retrieves the current state of the shop.
    *
-   * @return shop type
-   * @deprecated Use shopType() instead
+   * @return the current state of the shop as a ShopState object
    */
-  @NotNull
-  @Deprecated(since = "6.2.0.11", forRemoval = true)
-  ShopType getShopType();
+  ShopState shopState();
+
+  /**
+   * Updates the current state of the shop based on the provided {@code ShopState}.
+   *
+   * @param state the new state to set for the shop; must not be null
+   */
+  void shopState(@NotNull ShopState state);
+
+  /**
+   * Updates or processes the state of a shop based on the provided identifier.
+   *
+   * @param shopStateIdentifier a non-null string representing the unique identifier
+   *                             for the shop state to be updated or processed.
+   */
+  void shopState(@NotNull String shopStateIdentifier);
 
   /**
    * Retrieves the type of shop associated with this entity.
@@ -264,15 +277,6 @@ public interface Shop extends Locatable<Location> {
    * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
    */
   void shopType(@NotNull String shopTypeIdentifier);
-
-  /**
-   * Set new shop type for this shop
-   *
-   * @param paramShopType New {@link ShopType}
-   * @deprecated Use shopType(IShopType shopType) or shopType(String shopTypeIdentifier) instead
-   */
-  @Deprecated(since = "6.2.0.11", forRemoval = true)
-  void setShopType(@NotNull ShopType paramShopType);
 
   /**
    * Get sign texts on shop's sign.

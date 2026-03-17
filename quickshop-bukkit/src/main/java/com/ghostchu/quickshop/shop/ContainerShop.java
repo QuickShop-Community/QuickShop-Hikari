@@ -19,6 +19,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
+import com.ghostchu.quickshop.api.event.settings.type.ShopStateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
@@ -34,6 +35,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
@@ -113,6 +115,7 @@ public class ContainerShop implements Shop, Reloadable {
   private QUser owner;
   private double price;
   private IShopType shopType;
+  private ShopState shopState;
   private boolean unlimited;
   @NotNull
   private ItemStack item;
@@ -172,6 +175,7 @@ public class ContainerShop implements Shop, Reloadable {
           @NotNull final QUser owner,
           final boolean unlimited,
           @NotNull final IShopType type,
+          @NotNull final ShopState state,
           @Nullable final YamlConfiguration extra,
           @Nullable final String currency,
           final boolean disableDisplay,
@@ -214,6 +218,7 @@ public class ContainerShop implements Shop, Reloadable {
       }
     }
     this.shopType = type;
+    this.shopState = state;
     this.unlimited = unlimited;
     this.extra = extra;
     this.currency = currency;
@@ -778,6 +783,67 @@ public class ContainerShop implements Shop, Reloadable {
   }
 
   /**
+   * Retrieves the current state of the shop.
+   *
+   * @return the current state of the shop as a ShopState object
+   */
+  @Override
+  public ShopState shopState() {
+
+    final ShopStateEvent event = new ShopStateEvent(Phase.RETRIEVE, this, this.shopState);
+    event.callEvent();
+
+    return event.updated();
+  }
+
+  /**
+   * Updates the current state of the shop based on the provided {@code ShopState}.
+   *
+   * @param newState the new state to set for the shop; must not be null
+   */
+  @Override
+  public void shopState(@NotNull final ShopState newState) {
+
+    Util.ensureThread(false);
+
+    if(this.shopState.identifier().equalsIgnoreCase(newState.identifier())) {
+
+      return;
+    }
+
+    ShopStateEvent event = new ShopStateEvent(Phase.PRE, this, this.shopState, newState);
+    event.callEvent();
+
+    event = event.clone(Phase.MAIN);
+
+    if(event.callCancellableEvent()) {
+
+      Log.debug("Some addon cancelled shop state changes, target shop: " + this);
+      return;
+    }
+
+    this.shopState = event.updated();
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
+    this.setSignText();
+    setDirty();
+  }
+
+  /**
+   * Updates or processes the state of a shop based on the provided identifier.
+   *
+   * @param shopStateIdentifier a non-null string representing the unique identifier for the shop
+   *                            state to be updated or processed.
+   */
+  @Override
+  public void shopState(@NotNull final String shopStateIdentifier) {
+
+    shopState(QuickShop.getInstance().getShopManager().shopStateOrDefault(shopStateIdentifier));
+  }
+
+  /**
    * Retrieves the type of shop associated with this entity.
    *
    * @return an instance of IShopType representing the shop type
@@ -986,7 +1052,7 @@ public class ContainerShop implements Shop, Reloadable {
   @Override
   public boolean isFrozen() {
 
-    return this.shopType.isTradingBlocked();
+    return this.shopType.isTradingBlocked() || !this.shopState.isTradingAllowed();
   }
 
   private boolean isDeleted() {
@@ -1773,6 +1839,7 @@ public class ContainerShop implements Shop, Reloadable {
             plugin.platform().encodeStack(getItem()),
             getShopName(),
             shopType().id(),
+            shopState().identifier(),
             getCurrency(),
             getPrice(),
             isUnlimited(),

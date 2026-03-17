@@ -23,6 +23,7 @@ public class SimpleDataRecord implements DataRecord {
   private final String encoded;
   private final String name;
   private final int type;
+  private final String state;
   private final String currency;
   private final double price;
   private final boolean unlimited;
@@ -37,7 +38,7 @@ public class SimpleDataRecord implements DataRecord {
   private final String benefit;
 
   public SimpleDataRecord(final QUser owner, final String item, final String encoded, final String name,
-                          final int type, final String currency, final double price, final boolean unlimited,
+                          final int type, final String state, final String currency, final double price, final boolean unlimited,
                           final boolean hologram, final QUser taxAccount, final String permissions,
                           final String extra, final String inventoryWrapper, final String inventorySymbolLink,
                           final Date createTime, final String benefit) {
@@ -47,6 +48,7 @@ public class SimpleDataRecord implements DataRecord {
     this.encoded = encoded;
     this.name = name;
     this.type = type;
+    this.state = state;
     this.currency = currency;
     this.price = price;
     this.unlimited = unlimited;
@@ -74,6 +76,7 @@ public class SimpleDataRecord implements DataRecord {
 
     this.name = set.getString("name");
     this.type = set.getInt("type");
+    this.state = set.getString("shop_state");
     this.currency = set.getString("currency");
     this.price = set.getDouble("price");
     this.unlimited = set.getBoolean("unlimited");
@@ -105,6 +108,7 @@ public class SimpleDataRecord implements DataRecord {
     map.put("encoded", encoded);
     map.put("name", name);
     map.put("type", type);
+    map.put("shop_state", state);
     map.put("currency", currency);
     map.put("price", price);
     map.put("unlimited", unlimited);
@@ -199,6 +203,12 @@ public class SimpleDataRecord implements DataRecord {
   public int getType() {
 
     return type;
+  }
+
+  @Override
+  public String getState() {
+
+    return state;
   }
 
   @Override
