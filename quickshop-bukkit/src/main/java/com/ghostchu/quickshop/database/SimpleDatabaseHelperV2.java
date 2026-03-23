@@ -216,9 +216,22 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     fastBackup();
     try {
+      Log.debug("Adding state column to " + DataTables.DATA.getName());
       getManager().alterTable(DataTables.DATA.getName())
               .addColumn("shop_state", "VARCHAR(64)")
               .execute();
+
+      Log.debug("Converting old frozen type shops to new frozen state.");
+      getManager().createUpdate(DataTables.SHOPS.getName())
+              .setColumnValues("shop_state", "frozen")
+              .addCondition("type", 2)
+              .build().execute();
+
+      Log.debug("Converting old frozen type shops to buy type.");
+      getManager().createUpdate(DataTables.SHOPS.getName())
+              .setColumnValues("type", 1)
+              .addCondition("type", 2)
+              .build().execute();
 
     } catch(final SQLException e) {
 

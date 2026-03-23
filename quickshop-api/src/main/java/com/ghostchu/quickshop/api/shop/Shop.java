@@ -6,9 +6,14 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.inventory.ShopInventory;
+import com.ghostchu.quickshop.api.shop.meta.ShopDisplay;
+import com.ghostchu.quickshop.api.shop.meta.ShopMeta;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.permission.ShopPermission;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
+import com.ghostchu.quickshop.api.shop.trading.ShopTrading;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -30,56 +35,9 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A shop
  */
-public interface Shop extends Locatable<Location> {
+public interface Shop extends Locatable<Location>, ShopInventory, ShopMeta, ShopTrading, ShopDisplay, ShopPermission {
 
   NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
-
-  /**
-   * Add x ItemStack to the shop inventory
-   *
-   * @param paramItemStack The ItemStack you want add
-   * @param paramInt       How many you want add
-   */
-  void add(@NotNull ItemStack paramItemStack, int paramInt);
-
-  /**
-   * Execute buy action for player with x items.
-   *
-   * @param buyer          The player buying
-   * @param buyerInventory The buyer inventory ( may not a player inventory )
-   * @param loc2Drop       The location to drops items if player inventory are full
-   * @param paramInt       How many buyed?
-   *
-   * @throws Exception Possible exception thrown if anything wrong.
-   */
-  void buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
-
-  /**
-   * Check the display location, and teleport, respawn if needs.
-   */
-  void checkDisplay();
-
-  /**
-   * Claim a sign as shop sign (modern method)
-   *
-   * @param sign The shop sign
-   */
-  void claimShopSign(@NotNull Sign sign);
-
-  /**
-   * Gets the currency that shop use
-   *
-   * @return The currency name
-   */
-  @Nullable
-  String getCurrency();
-
-  /**
-   * Sets the currency that shop use
-   *
-   * @param currency The currency name; null to use default currency
-   */
-  void setCurrency(@Nullable String currency);
 
   /**
    * Get shop's item durability, if have.
@@ -100,237 +58,6 @@ public interface Shop extends Locatable<Location> {
   ConfigurationSection getExtra(@NotNull Plugin plugin);
 
   /**
-   * Gets the shop Inventory
-   *
-   * @return Inventory
-   */
-  @Nullable
-  InventoryWrapper getInventory();
-
-  /**
-   * Gets the InventoryWrapper provider name (the plugin name who register it), usually is
-   * QuickShop
-   *
-   * @return InventoryWrapper
-   */
-  @NotNull
-  String getInventoryWrapperProvider();
-
-  /**
-   * Get shop item's ItemStack
-   *
-   * @return The shop's ItemStack
-   */
-  @NotNull
-  ItemStack getItem();
-
-  /**
-   * Set shop item's ItemStack
-   *
-   * @param item ItemStack to set
-   */
-  void setItem(@NotNull ItemStack item);
-
-
-  /**
-   * Get shop's owner QUser
-   *
-   * @return Shop's owner QUser object, can use Bukkit.getOfflinePlayer to convert to the
-   * OfflinePlayer.
-   */
-  @NotNull
-  QUser getOwner();
-
-  /**
-   * Set new owner to the shop's owner
-   *
-   * @param qUser New owner user
-   */
-  void setOwner(@NotNull QUser qUser);
-
-  /**
-   * Gets all player and their group on this shop
-   *
-   * @return Map of UUID and group
-   */
-  @NotNull
-  Map<UUID, String> getPermissionAudiences();
-
-  /**
-   * Gets specific player group on specific shop
-   *
-   * @param player player
-   *
-   * @return namespaced group
-   */
-  @NotNull
-  String getPlayerGroup(@NotNull UUID player);
-
-  /**
-   * Get shop's price
-   *
-   * @return Price
-   */
-  double getPrice();
-
-  /**
-   * Set shop's new price
-   *
-   * @param paramDouble New price
-   */
-  void setPrice(double paramDouble);
-
-  /**
-   * Get shop remaining space.
-   *
-   * @return Remaining space.
-   */
-  int getRemainingSpace();
-
-  /**
-   * Get shop remaining stock.
-   *
-   * @return Remaining stock.
-   */
-  int getRemainingStock();
-
-  /**
-   * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
-   * IT TO STORE DATA!
-   *
-   * @return Random UUID
-   */
-  @NotNull
-  UUID getRuntimeRandomUniqueId();
-
-  /**
-   * Gets the Shop ID to identify the shop.
-   *
-   * @return Shop ID -1 if shop in creating state.
-   */
-  long getShopId();
-
-  /**
-   * Internal Only: Give shop that under id_waiting state an ShopId.
-   *
-   * @param newId The new shop id, once set will cannot change anymore.
-   */
-  @ApiStatus.Internal
-  void setShopId(long newId);
-
-  /**
-   * Gets this shop name that set by player
-   *
-   * @return Shop name, or null if not set
-   */
-  @Nullable
-  String getShopName();
-
-  /**
-   * Sets shop name
-   *
-   * @param shopName shop name, null to remove currently name
-   */
-  void setShopName(@Nullable String shopName);
-
-  int getShopStackingAmount();
-
-  /**
-   * Retrieves the current state of the shop.
-   *
-   * @return the current state of the shop as a ShopState object
-   */
-  ShopState shopState();
-
-  /**
-   * Updates the current state of the shop based on the provided {@code ShopState}.
-   *
-   * @param state the new state to set for the shop; must not be null
-   */
-  void shopState(@NotNull ShopState state);
-
-  /**
-   * Updates or processes the state of a shop based on the provided identifier.
-   *
-   * @param shopStateIdentifier a non-null string representing the unique identifier
-   *                             for the shop state to be updated or processed.
-   */
-  void shopState(@NotNull String shopStateIdentifier);
-
-  /**
-   * Retrieves the type of shop associated with this entity.
-   *
-   * @return an instance of IShopType representing the shop type
-   */
-  IShopType shopType();
-
-  /**
-   * Sets the type of shop using the provided shop type parameter.
-   *
-   * @param newShopType the shop type to set, must not be null
-   */
-  void shopType(@NotNull IShopType newShopType);
-
-  /**
-   * Specifies the type of shop based on the given identifier.
-   *
-   * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
-   */
-  void shopType(@NotNull String shopTypeIdentifier);
-
-  /**
-   * Get sign texts on shop's sign.
-   *
-   * @param locale The locale to be created for
-   *
-   * @return String arrays represents sign texts: Index | Content Line 0: Header Line 1: Shop Type
-   * Line 2: Shop Item Name Line 3: Price
-   */
-  default List<Component> getSignText(@NotNull final ProxiedLocale locale) {
-    //backward support
-    throw new UnsupportedOperationException();
-  }
-
-  /**
-   * Get shop signs, may have multi signs
-   *
-   * @return Signs for the shop
-   */
-  @NotNull
-  List<Sign> getSigns();
-
-  /**
-   * Getting the shop tax account for using, it can be specific uuid or general tax account
-   *
-   * @return Shop Tax Account or fallback to general tax account
-   */
-  @Nullable
-  QUser getTaxAccount();
-
-  /**
-   * Sets shop taxAccount
-   *
-   * @param taxAccount tax account, null to use general tax account
-   */
-  void setTaxAccount(@Nullable QUser taxAccount);
-
-  /**
-   * Getting the shop tax account, it can be specific uuid or general tax account
-   *
-   * @return Shop Tax Account, null if use general tax account
-   */
-
-  @Nullable
-  QUser getTaxAccountActual();
-
-  /**
-   * Check if shop out of space or out of stock
-   *
-   * @return true if out of space or out of stock
-   */
-  boolean inventoryAvailable();
-
-  /**
    * Check shop is or not attached the target block
    *
    * @param paramBlock Target {@link Block}
@@ -338,20 +65,6 @@ public interface Shop extends Locatable<Location> {
    * @return isAttached
    */
   boolean isAttached(@NotNull Block paramBlock);
-
-  /**
-   * Get shop is or not in buying mode
-   *
-   * @return yes or no
-   */
-  boolean isBuying();
-
-  /**
-   * Get shop is frozen or not
-   *
-   * @return yes or no
-   */
-  boolean isFrozen();
 
   /**
    * Gets if shop is dirty (so shop will be save)
@@ -368,41 +81,6 @@ public interface Shop extends Locatable<Location> {
   void setDirty(boolean isDirty);
 
   /**
-   * Getting if this shop has been disabled the display
-   *
-   * @return Does display has been disabled
-   */
-  boolean isDisableDisplay();
-
-  /**
-   * Set the display disable state
-   *
-   * @param disabled Has been disabled
-   */
-  void setDisableDisplay(boolean disabled);
-
-  /**
-   * Determines whether a custom item name should be used.
-   *
-   * @return true if a custom item name is enabled, false otherwise
-   */
-  boolean useCustomItemName();
-
-  /**
-   * Customizes and returns a Component representing an item name.
-   *
-   * @return a Component representing the customized item name
-   */
-  Component customItemName();
-
-  /**
-   * Check if this shop is free shop
-   *
-   * @return Free Shop
-   */
-  boolean isFreeShop();
-
-  /**
    * Get this container shop is loaded or unloaded.
    *
    * @return Loaded
@@ -410,57 +88,11 @@ public interface Shop extends Locatable<Location> {
   boolean isLoaded();
 
   /**
-   * Get shop is or not in selling mode
-   *
-   * @return yes or no
-   */
-  boolean isSelling();
-
-  /**
-   * Checks if a Sign is a ShopSign
-   *
-   * @param sign Target {@link Sign}
-   *
-   * @return Is shop info sign
-   */
-  boolean isShopSign(@NotNull Sign sign);
-
-  /**
-   * Gets shop status is stacking shop
-   *
-   * @return The shop stacking status
-   */
-  boolean isStackingShop();
-
-  /**
-   * Get shop is or not in Unlimited Mode (Admin Shop)
-   *
-   * @return yes or not
-   */
-  boolean isUnlimited();
-
-  /**
-   * Set shop is or not Unlimited Mode (Admin Shop)
-   *
-   * @param paramBoolean status
-   */
-  void setUnlimited(boolean paramBoolean);
-
-  /**
    * Whether Shop is valid
    *
    * @return status
    */
   boolean isValid();
-
-  /**
-   * Check the target ItemStack is matches with this shop's item.
-   *
-   * @param paramItemStack Target ItemStack.
-   *
-   * @return Matches
-   */
-  boolean matches(@NotNull ItemStack paramItemStack);
 
   /**
    * Execute codes when player click the shop will did things
@@ -482,92 +114,6 @@ public interface Shop extends Locatable<Location> {
    * @param player The viewer {@link Player}
    */
   void openPreview(@NotNull Player player);
-
-  /**
-   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-   *
-   * @param forceUsername Force returns username of shop
-   * @param locale        The locale to parse the message
-   *
-   * @return owner name
-   */
-  @NotNull
-  Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale);
-
-  /**
-   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-   *
-   * @param locale The locale to parse the message
-   *
-   * @return owner name
-   */
-  @NotNull
-  Component ownerName(@NotNull ProxiedLocale locale);
-
-  /**
-   * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-   *
-   * @return owner name
-   */
-  @NotNull
-  Component ownerName();
-
-  /**
-   * Check if player have authorized for specific permission on specific shop
-   *
-   * @param player     player
-   * @param namespace  permission namespace
-   * @param permission permission
-   *
-   * @return true if player have authorized
-   */
-  boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission);
-
-  /**
-   * Check if player have authorized for specific permission on specific shop
-   *
-   * @param player     player
-   * @param permission namespaced permission
-   *
-   * @return true if player have authorized
-   */
-  boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);
-
-  /**
-   * Gets the player list of who can authorize specific permission on this shop
-   *
-   * @param permission permission
-   *
-   * @return Collection of UUID
-   */
-  List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission);
-
-  /**
-   * Gets the player list of who can authorize specific group on this shop
-   *
-   * @param permissionGroup group
-   *
-   * @return Collection of UUID
-   */
-  List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup);
-
-  /**
-   * Gets the player list of who can authorize specific permission on this shop
-   *
-   * @param permission raw permission
-   * @param plugin     namespace of permission
-   *
-   * @return Collection of UUID
-   */
-  List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
-
-  /**
-   * Remove x ItemStack from the shop inventory
-   *
-   * @param paramItemStack Want removed ItemStack
-   * @param paramInt       Want remove how many
-   */
-  void remove(@NotNull ItemStack paramItemStack, int paramInt);
 
   /**
    * Save the plugin extra data to Json format
@@ -593,19 +139,6 @@ public interface Shop extends Locatable<Location> {
   String saveToSymbolLink();
 
   /**
-   * Execute sell action for player with x items.
-   *
-   * @param seller          Seller
-   * @param sellerInventory Seller's inventory ( may not a player inventory )
-   * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a
-   *                        number that < 0, it will turn to buying item)
-   * @param paramInt        How many sold?
-   *
-   * @throws Exception Possible exception thrown if anything wrong.
-   */
-  void sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
-
-  /**
    * Sets shop is dirty
    */
   void setDirty();
@@ -617,38 +150,6 @@ public interface Shop extends Locatable<Location> {
    * @param data   The data table
    */
   void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data);
-
-  void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager);
-
-  /**
-   * Sets specific player permission on specfic shop
-   *
-   * @param player player
-   * @param group  namespaced group name
-   */
-  void setPlayerGroup(@NotNull UUID player, @Nullable String group);
-
-  /**
-   * Sets specific player permission on specfic shop
-   *
-   * @param player player
-   * @param group  group
-   */
-  void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);
-
-  /**
-   * Generate new sign texts on shop's sign.
-   */
-  void setSignText();
-
-  /**
-   * Set texts on shop's sign
-   *
-   * @param paramArrayOfString The texts you want set
-   */
-  void setSignText(@NotNull List<Component> paramArrayOfString);
-
-  void setSignText(@NotNull ProxiedLocale locale);
 
   /**
    * Update shop data to database
@@ -663,15 +164,4 @@ public interface Shop extends Locatable<Location> {
    * @throws RuntimeException
    */
   void updateSync() throws RuntimeException;
-
-  /**
-   * Gets the benefit in this shop
-   */
-  @NotNull
-  BenefitProvider getShopBenefit();
-
-  /**
-   * Sets the benefit in this shop
-   */
-  void setShopBenefit(@NotNull BenefitProvider benefit);
 }
