@@ -37,7 +37,7 @@ import java.util.UUID;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopMeta {
+public interface ShopMeta extends ShopPrice<Double> {
 
   /**
    * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
@@ -112,14 +112,18 @@ public interface ShopMeta {
    * Get shop's price
    *
    * @return Price
+   * @deprecated Use {@link ShopPrice#price()} instead
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   double getPrice();
 
   /**
    * Set shop's new price
    *
    * @param paramDouble New price
+   * @deprecated Use {@link ShopPrice#price(Object)} instead.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setPrice(double paramDouble);
 
   /**
