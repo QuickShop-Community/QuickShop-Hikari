@@ -31,7 +31,6 @@ import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
-import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -43,7 +42,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -95,7 +93,7 @@ import static com.ghostchu.quickshop.util.Util.waitForFuture;
  * ChestShop core
  */
 @EqualsAndHashCode
-public class ContainerShop implements Shop, Reloadable {
+public class ContainerShop implements Shop<Double>, Reloadable {
 
   // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
   private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
@@ -633,6 +631,7 @@ public class ContainerShop implements Shop, Reloadable {
   /**
    * @return The price per item this shop is selling
    */
+  @SuppressWarnings("removal")
   @Override
   public double getPrice() {
 
@@ -644,6 +643,7 @@ public class ContainerShop implements Shop, Reloadable {
    *
    * @param price The new price of the shop.
    */
+  @SuppressWarnings("removal")
   @Override
   public void setPrice(final double price) {
 
@@ -651,6 +651,55 @@ public class ContainerShop implements Shop, Reloadable {
     this.price = price;
     setDirty();
     setSignText();
+  }
+
+  //TODO: Implement the new price methods.
+  /**
+   * Retrieves the price of the shop.
+   *
+   * @return the price of the shop as an instance of type U, where U represents a generic type.
+   */
+  @Override
+  public Double price() {
+
+    return 0.0;
+  }
+
+  /**
+   * Sets the price for a shop.
+   *
+   * @param price the price to set for the shop; must be of type U and should not be null
+   */
+  @Override
+  public void price(final Double price) {
+
+  }
+
+  /**
+   * Retrieves the maximum number of items that can currently be purchased or acquired based on the
+   * shop's available balance and the price of the items.
+   *
+   * @return the maximum number of items that can be afforded; always a non-negative integer.
+   */
+  @Override
+  public int getMaxAffordable() {
+
+    return 0;
+  }
+
+  /**
+   * Determines whether the current shop can afford the transaction of a specified quantity of
+   * items.
+   *
+   * @param itemAmount the number of items involved in the transaction; must be a non-negative
+   *                   integer
+   *
+   * @return true if the shop can afford the specified number of items, false otherwise
+   */
+  @Override
+  public boolean canAfford(final int itemAmount) {
+
+    return false;
   }
 
   /**
@@ -775,13 +824,6 @@ public class ContainerShop implements Shop, Reloadable {
     return 1;
   }
 
-  @SuppressWarnings("removal")
-  @Override
-  public @NotNull ShopType getShopType() {
-
-    return ShopType.fromID(shopType.id());
-  }
-
   /**
    * Retrieves the current state of the shop.
    *
@@ -901,18 +943,6 @@ public class ContainerShop implements Shop, Reloadable {
   public void shopType(@NotNull final String shopTypeIdentifier) {
 
     shopType(QuickShop.getInstance().getShopManager().shopTypeOrDefault(shopTypeIdentifier));
-  }
-
-  /**
-   * Changes a shop type to Buying or Selling. Also updates the signs nearby.
-   *
-   * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
-   */
-  @SuppressWarnings("removal")
-  @Override
-  public void setShopType(@NotNull final ShopType newShopType) {
-
-    shopType(QuickShop.getInstance().getShopManager().shopTypeOrDefault(newShopType.name()));
   }
 
   @Override

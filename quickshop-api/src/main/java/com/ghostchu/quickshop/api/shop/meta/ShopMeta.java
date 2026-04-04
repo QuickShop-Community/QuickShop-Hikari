@@ -37,7 +37,7 @@ import java.util.UUID;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopMeta extends ShopPrice<Double> {
+public interface ShopMeta<U> extends ShopPrice<U> {
 
   /**
    * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
