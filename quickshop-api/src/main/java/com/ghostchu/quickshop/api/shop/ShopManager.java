@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.api.shop.tax.TaxManager;
+import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,6 +46,15 @@ public interface ShopManager {
    * @return an instance of TaxManager that manages tax calculations and logic.
    */
   TaxManager taxManager();
+
+  /**
+   * Retrieves the TradeService associated with the EconomyManager.
+   *
+   * @return A non-null instance of TradeService, which provides functionality for executing
+   *         and previewing trade operations such as buying from and selling to shops.
+   */
+  @NotNull
+  TradeService tradeService();
 
   /**
    * Sets the shop layout provider to customize the layout of the shop.

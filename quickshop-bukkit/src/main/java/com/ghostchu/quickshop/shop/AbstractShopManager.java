@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.cache.ShopCache;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
+import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
@@ -65,6 +66,7 @@ public abstract class AbstractShopManager implements ShopManager {
                   .initialCapacity(50)
                   .build();
   protected final QuickShop plugin;
+  protected final TradeService tradeService;
   protected final EconomyFormatter formatter;
   protected final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
   protected final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
@@ -77,6 +79,7 @@ public abstract class AbstractShopManager implements ShopManager {
     Util.ensureThread(false);
     this.plugin = plugin;
     this.formatter = new EconomyFormatter(plugin);
+    this.tradeService = null;
   }
 
   public void init() {
@@ -588,63 +591,15 @@ public abstract class AbstractShopManager implements ShopManager {
     return plugin.getDatabaseHelper().queryInventoryCache(shop.getShopId());
   }
 
+  /**
+   * Retrieves the TradeService associated with the EconomyManager.
+   *
+   * @return A non-null instance of TradeService, which provides functionality for executing and
+   * previewing trade operations such as buying from and selling to shops.
+   */
+  @Override
+  public @NotNull TradeService tradeService() {
 
-  static class TagParser {
-
-    private final List<String> tags;
-    private final ShopManager shopManager;
-    private final UUID tagger;
-    private final Map<String, List<Shop>> singleCaching = new HashMap<>();
-
-    public TagParser(final UUID tagger, final ShopManager shopManager, final List<String> tags) {
-
-      Util.ensureThread(true);
-      this.shopManager = shopManager;
-      this.tags = tags;
-      this.tagger = tagger;
-    }
-
-    public List<Shop> parseTags() {
-
-      final List<Shop> finalShop = new ArrayList<>();
-      for(final String tag : tags) {
-        final ParseResult result = parseSingleTag(tag);
-        if(result.getBehavior() == Behavior.INCLUDE) {
-          finalShop.addAll(result.getShops());
-        } else if(result.getBehavior() == Behavior.EXCLUDE) {
-          finalShop.removeAll(result.getShops());
-        }
-      }
-      return finalShop;
-    }
-
-    public ParseResult parseSingleTag(final String tag) throws IllegalArgumentException {
-
-      Util.ensureThread(true);
-      Behavior behavior = Behavior.INCLUDE;
-      if(tag.startsWith("-")) {
-        behavior = Behavior.EXCLUDE;
-      }
-      final String tagName = tag.substring(1);
-      if(tagName.isEmpty()) {
-        throw new IllegalArgumentException("Tag name can't be empty");
-      }
-      final List<Shop> shops = singleCaching.computeIfAbsent(tag, (t)->shopManager.queryTaggedShops(tagger, t).join());
-      return new ParseResult(behavior, shops);
-    }
-
-    enum Behavior {
-      INCLUDE,
-      EXCLUDE
-    }
-
-    @AllArgsConstructor
-    @Data
-    static class ParseResult {
-
-      private final Behavior behavior;
-      private final List<Shop> shops;
-    }
+    return tradeService;
   }
-
 }
