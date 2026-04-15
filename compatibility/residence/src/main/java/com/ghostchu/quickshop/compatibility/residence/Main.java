@@ -83,7 +83,7 @@ public final class Main extends CompatibilityModule {
   @EventHandler(ignoreCancelled = true)
   public void onPurchase(final ShopPurchaseEvent event) {
 
-    final Location shopLoc = event.getShop().getLocation();
+    final Location shopLoc = event.getShop().bukkitLocation();
     final ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
     if(residence == null) {
       return;
@@ -103,7 +103,7 @@ public final class Main extends CompatibilityModule {
     if(!getConfig().getBoolean("allow-permission-override") || event.shop().isEmpty()) {
       return;
     }
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
 
 
     final ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);

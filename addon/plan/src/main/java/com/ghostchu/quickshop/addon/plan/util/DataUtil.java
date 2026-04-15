@@ -32,7 +32,7 @@ public class DataUtil {
       final DecimalFormat df = new DecimalFormat("#.00");
       return df.format(record.getTotal());
     }
-    return main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(record.getTotal()), shop.getLocation().getWorld().getName(), shop.getCurrency());
+    return main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(record.getTotal()), shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
   }
 
   @NotNull
@@ -73,7 +73,7 @@ public class DataUtil {
       nameBuilder.append(ChatColor.stripColor(shopName));
     } else {
       if(shop != null) {
-        final Location location = shop.getLocation();
+        final Location location = shop.bukkitLocation();
         final String template = "%s %s,%s,%s";
         nameBuilder.append(String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
       } else {

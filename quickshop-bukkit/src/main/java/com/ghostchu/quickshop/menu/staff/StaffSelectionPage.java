@@ -266,7 +266,7 @@ public class StaffSelectionPage {
                                                  if(!message.isEmpty()) {
                                                    if(message.equalsIgnoreCase("confirm")) {
                                                      if(shop.get().playerAuthorize(id, BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
-                                                       Util.regionThread(shop.get().getLocation(), ()->ShopUtil.transferRequest(id, uuid, name, shop.get()));
+                                                       Util.regionThread(shop.get().bukkitLocation(), ()->ShopUtil.transferRequest(id, uuid, name, shop.get()));
                                                      } else {
                                                        QuickShop.getInstance().text().of(id, "no-permission").send();
                                                      }

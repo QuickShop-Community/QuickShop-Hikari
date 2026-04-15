@@ -394,7 +394,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     BigDecimal fromTax = BigDecimal.ZERO;
     final QSEconomyTransaction transaction;
-    final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(total)).toTax(new BigDecimal(taxEvent.getTax().interactorRate())).taxer(taxAccount).currency(shop.getCurrency()).world(shop.getLocation().getWorld().getName()).to(buyerQUser);
+    final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().amount(BigDecimal.valueOf(total)).toTax(new BigDecimal(taxEvent.getTax().interactorRate())).taxer(taxAccount).currency(shop.getCurrency()).world(shop.bukkitLocation().getWorld().getName()).to(buyerQUser);
 
     if(!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
       fromTax = new BigDecimal(taxEvent.getTax().shopRate());
@@ -404,7 +404,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     if(!transaction.completable()) {
-      plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format((total + fromTax.doubleValue()), shop.getLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.getLocation().getWorld(), shop.getCurrency())).send();
+      plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
     if(!transaction.safeCommit()) {
@@ -440,7 +440,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       if(space == amount) {
         Component spaceWarn;
         if(shop.getShopName() == null) {
-          spaceWarn = plugin.text().of("shop-out-of-space", shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale(langCode);
+          spaceWarn = plugin.text().of("shop-out-of-space", shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ()).forLocale(langCode);
         } else {
           spaceWarn = plugin.text().of("shop-out-of-space-name", shop.getShopName(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
         }
@@ -625,7 +625,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
     }
     final BigDecimal fromTax = new BigDecimal(taxEvent.getTax().interactorRate());
-    final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().from(sellerQUser).amount(BigDecimal.valueOf(total)).fromTax(fromTax).taxer(taxAccount).benefitManager(shop.getShopBenefit()).world(shop.getLocation().getWorld().getName()).currency(shop.getCurrency());
+    final QSEconomyTransactionBuilder builder = QSEconomyTransaction.builder().from(sellerQUser).amount(BigDecimal.valueOf(total)).fromTax(fromTax).taxer(taxAccount).benefitManager(shop.getShopBenefit()).world(shop.bukkitLocation().getWorld().getName()).currency(shop.getCurrency());
 
     if(!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
       transaction = builder.to(shop.getOwner()).toTax(new BigDecimal(taxEvent.getTax().shopRate())).build();
@@ -634,7 +634,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     if(!transaction.completable()) {
-      plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.getLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.getLocation().getWorld(), shop.getCurrency())).send();
+      plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
     if(!transaction.safeCommit()) {
@@ -716,7 +716,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
     // Check if target block is allowed shop-block
-    if(!Util.canBeShop(shop.getLocation().getBlock())) {
+    if(!Util.canBeShop(shop.bukkitLocation().getBlock())) {
       plugin.text().of(p, "chest-was-removed").send();
       return;
     }
@@ -736,7 +736,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     // Protection check
     if(!bypassProtectionCheck) {
-      final Result result = plugin.getPermissionChecker().canBuild(p, shop.getLocation());
+      final Result result = plugin.getPermissionChecker().canBuild(p, shop.bukkitLocation());
       if(!result.isSuccess()) {
         plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
         if(plugin.perm().hasPermission(p, "quickshop.alerts")) {
@@ -748,13 +748,13 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     // Check if the shop is already created
-    if(plugin.getShopManager().getShop(shop.getLocation()) != null) {
+    if(plugin.getShopManager().getShop(shop.bukkitLocation()) != null) {
       plugin.text().of(p, "shop-already-owned").send();
       return;
     }
 
     // Check if player and server allow double chest shop
-    if(Util.isDoubleChest(shop.getLocation().getBlock().getBlockData()) && !plugin.perm().hasPermission(p, "quickshop.create.double")) {
+    if(Util.isDoubleChest(shop.bukkitLocation().getBlock().getBlockData()) && !plugin.perm().hasPermission(p, "quickshop.create.double")) {
       plugin.text().of(p, "no-double-chests").send();
       return;
     }
@@ -789,7 +789,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       case PASS -> {
 
         // Calling ShopCreateEvent
-        ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, shop, shop.getOwner(), shop.getLocation());
+        ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, shop, shop.getOwner(), shop.bukkitLocation());
 
         if(event.callCancellableEvent()) {
 
@@ -805,9 +805,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           createCost = 0;
         }
         if(createCost > 0) {
-          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).tax(BigDecimal.ZERO).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.getLocation().getWorld().getName()).build();
+          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).tax(BigDecimal.ZERO).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.bukkitLocation().getWorld().getName()).build();
           if(!economyTransaction.completable()) {
-            plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.getLocation().getWorld(), shop.getCurrency())).send();
+            plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
             return;
           }
           if(!economyTransaction.safeCommit()) {
@@ -826,7 +826,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         // Shop info sign check
         if(signBlock != null && autoSign) {
           if(signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
-            final BlockState signState = this.makeShopSign(shop.getLocation().getBlock(), signBlock, null);
+            final BlockState signState = this.makeShopSign(shop.bukkitLocation().getBlock(), signBlock, null);
             if(signState instanceof final Sign puttedSign) {
               try {
 
@@ -934,7 +934,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
   private void refundShop(final Shop shop) {
 
-    final World world = shop.getLocation().getWorld();
+    final World world = shop.bukkitLocation().getWorld();
     if(plugin.getConfig().getBoolean("shop.refund")) {
       double cost = plugin.getConfig().getDouble("shop.cost");
       final QSEconomyTransaction transaction;
@@ -1174,7 +1174,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       if(stock == amount) {
         Component stockWarn;
         if(shop.getShopName() == null) {
-          stockWarn = plugin.text().of("shop-out-of-stock", shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
+          stockWarn = plugin.text().of("shop-out-of-stock", shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
         } else {
           stockWarn = plugin.text().of("shop-out-of-stock-name", shop.getShopName(), Util.getItemStackName(shop.getItem())).forLocale(langCode);
         }
@@ -1226,7 +1226,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     final int shopHaveSpaces = Util.countSpace(shop.getInventory(), shop);
     final int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
     // Check if shop owner has enough money
-    final double ownerBalance = eco.balance(shop.getOwner(), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
+    final double ownerBalance = eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
     final int ownerCanAfford;
     if(shop.getPrice() != 0) {
       ownerCanAfford = (int)(ownerBalance / shop.getPrice());
@@ -1254,7 +1254,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       if(ownerCanAfford == 0 && (!shop.isUnlimited() || payUnlimitedShopOwner)) {
         // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
         // item (and shop isn't unlimited or pay-unlimited is true)
-        plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you", plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(), shop.getCurrency())).send();
+        plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you", plugin.getShopManager().format(shop.getPrice(), shop.bukkitLocation().getWorld(), shop.getCurrency()), plugin.getShopManager().format(ownerBalance, shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
         return 0;
       }
       // when typed 'all' but player doesn't have any items to sell
@@ -1403,7 +1403,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       actionSelling(p, new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     } else {
       plugin.text().of(p, "shop-purchase-cancelled").send();
-      plugin.logger().warn("Shop data broken? Loc: {}", shop.getLocation());
+      plugin.logger().warn("Shop data broken? Loc: {}", shop.bukkitLocation());
     }
   }
 
@@ -1429,7 +1429,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     // typed 'all', check if player has enough money than price * amount
     final double price = shop.getPrice();
-    final double balance = eco.balance(QUserImpl.createFullFilled(p), shop.getLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
+    final double balance = eco.balance(QUserImpl.createFullFilled(p), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue();
     amount = Math.min(amount, (int)Math.floor(balance / price));
     if(amount < 1) { // typed 'all' but the auto set amount is 0
       // when typed 'all' but player can't buy any items
@@ -1443,7 +1443,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           plugin.text().of(p, "not-enough-space", Component.text(invHaveSpaces)).send();
           return 0;
         }
-        plugin.text().of(p, "you-cant-afford-to-buy", plugin.getShopManager().format(price, shop.getLocation().getWorld(), shop.getCurrency()), plugin.getShopManager().format(balance, shop.getLocation().getWorld(), shop.getCurrency())).send();
+        plugin.text().of(p, "you-cant-afford-to-buy", plugin.getShopManager().format(price, shop.bukkitLocation().getWorld(), shop.getCurrency()), plugin.getShopManager().format(balance, shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       }
       return 0;
     }

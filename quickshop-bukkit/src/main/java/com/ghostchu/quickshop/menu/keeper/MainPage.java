@@ -133,7 +133,7 @@ public class MainPage extends QuickShopPage {
                                              try {
                                                final BigDecimal price = new BigDecimal(message);
                                                // Update price and reopen menu in the same region thread to ensure price is updated before GUI shows
-                                               Util.regionThread(shop.get().getLocation(), ()->{
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->{
                                                  ShopUtil.setPrice(QuickShop.getInstance(), QUserImpl.createFullFilled(player), price.doubleValue(), shop.get());
                                                  // Reopen menu after price is set
                                                  final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
@@ -181,13 +181,13 @@ public class MainPage extends QuickShopPage {
 
           final StateIcon changeIcon = new StateIcon(buyingStack, null, "SHOP_TYPE", modeState, (currentState)->{
             if(currentState.toUpperCase(Locale.ROOT).equals("SELLING")) {
-              Util.regionThread(shop.get().getLocation(), ()->shop.get().shopType(BUYING_TYPE));
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(BUYING_TYPE));
               return "BUYING";
             } else if(currentState.toUpperCase(Locale.ROOT).equals("FROZEN")) {
-              Util.regionThread(shop.get().getLocation(), ()->shop.get().shopType(SELLING_TYPE));
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(SELLING_TYPE));
               return "SELLING";
             }
-            Util.regionThread(shop.get().getLocation(), ()->shop.get().shopType(FROZEN_TYPE));
+            Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(FROZEN_TYPE));
             return "FROZEN";
           });
           changeIcon.setSlot(modeToggleSlot);
@@ -221,7 +221,7 @@ public class MainPage extends QuickShopPage {
                                            }
 
                                            viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
-                                           Util.regionThread(shop.get().getLocation(), ()->{
+                                           Util.regionThread(shop.get().bukkitLocation(), ()->{
 
                                              player.openInventory(inventory.getHolder().getInventory());
                                              QuickShop.inShop.add(player.getUniqueId());
@@ -318,7 +318,7 @@ public class MainPage extends QuickShopPage {
                                          .withActions(new GuiChatAction((message)->{
                                            if(!message.isEmpty()) {
                                              if(message.equalsIgnoreCase("confirm")) {
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().deleteShop(shop.get()));
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().deleteShop(shop.get()));
                                                QuickShop.getInstance().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(player), "/quickshop remove command", shop.get().saveToInfoStorage()));
                                                return true;
                                              }

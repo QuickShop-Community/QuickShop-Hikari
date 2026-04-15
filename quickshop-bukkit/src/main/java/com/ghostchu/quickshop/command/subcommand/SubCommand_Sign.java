@@ -49,7 +49,7 @@ public class SubCommand_Sign implements CommandHandler<Player> {
       return;
     }
     for(final Sign sign : shop.getSigns()) {
-      plugin.getShopManager().makeShopSign(shop.getLocation().getBlock(), sign.getBlock(), material);
+      plugin.getShopManager().makeShopSign(shop.bukkitLocation().getBlock(), sign.getBlock(), material);
       shop.claimShopSign(sign);
     }
     shop.setSignText(plugin.text().findRelativeLanguages(sender));

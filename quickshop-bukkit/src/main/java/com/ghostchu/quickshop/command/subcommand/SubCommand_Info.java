@@ -74,7 +74,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
     final AtomicInteger noStockCounter = new AtomicInteger(0);
     final List<CompletableFuture<Void>> futures = new ArrayList<>(outOfStockCheckQueue.size());
     for(final Shop shop : outOfStockCheckQueue) {
-      final CompletableFuture<Void> future = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), task->{
+      final CompletableFuture<Void> future = QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), task->{
         try {
           if(shop.getRemainingStock() == 0) {
             noStockCounter.incrementAndGet();

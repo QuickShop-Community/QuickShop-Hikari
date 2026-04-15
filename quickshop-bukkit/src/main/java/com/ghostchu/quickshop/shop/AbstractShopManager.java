@@ -96,14 +96,14 @@ public abstract class AbstractShopManager implements ShopManager {
    */
   protected void addShopToLookupTable(@NotNull final Shop shop) {
 
-    final String world = shop.getLocation().getWorld().getName();
+    final String world = shop.bukkitLocation().getWorld().getName();
     final Map<ShopChunk, Map<Location, Shop>> inWorld = shops.computeIfAbsent(world, k->new MapMaker().initialCapacity(3).makeMap());
     // There's no world storage yet. We need to create that map.
     // Put it in the data universe
     // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
     // location rounded to the nearest 16.
-    final int x = (int)Math.floor((shop.getLocation().getBlockX()) / 16.0);
-    final int z = (int)Math.floor((shop.getLocation().getBlockZ()) / 16.0);
+    final int x = (int)Math.floor((shop.bukkitLocation().getBlockX()) / 16.0);
+    final int z = (int)Math.floor((shop.bukkitLocation().getBlockZ()) / 16.0);
     // Get the chunk set from the world info
     final ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
     final Map<Location, Shop> inChunk =
@@ -111,8 +111,8 @@ public abstract class AbstractShopManager implements ShopManager {
     // That chunk data hasn't been created yet - Create it!
     // Put it in the world
     // Put the shop in its location in the chunk list.
-    inChunk.put(shop.getLocation(), shop);
-    shopCache.invalidate(null, shop.getLocation());
+    inChunk.put(shop.bukkitLocation(), shop);
+    shopCache.invalidate(null, shop.bukkitLocation());
   }
 
   @Override
@@ -184,7 +184,7 @@ public abstract class AbstractShopManager implements ShopManager {
    */
   private void removeShopFromLookupTable(@NotNull final Shop shop) {
 
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     final String world = Objects.requireNonNull(loc.getWorld()).getName();
     final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
     if(inWorld == null) {
@@ -198,7 +198,7 @@ public abstract class AbstractShopManager implements ShopManager {
       return;
     }
     inChunk.remove(loc);
-    shopCache.invalidate(null, shop.getLocation());
+    shopCache.invalidate(null, shop.bukkitLocation());
     shopRuntimeUUIDCaching.invalidate(shop.getRuntimeRandomUniqueId());
   }
 
@@ -258,7 +258,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     removeShopFromLookupTable(shop);
     if(!persist) return CompletableFuture.completedFuture(null);
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     return plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
             .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b)->null)
             .exceptionally(throwable->{
@@ -475,11 +475,11 @@ public abstract class AbstractShopManager implements ShopManager {
               Log.debug("DEBUG: Setting shop id");
               shop.setShopId(id);
               Log.debug("DEBUG: Creating shop map");
-              plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
+              plugin.getDatabaseHelper().createShopMap(id, shop.bukkitLocation()).join();
               Log.debug("DEBUG: Creating shop successfully");
               shop.setDirty();
 
-              new ShopCreateEvent(Phase.POST, shop, shop.getOwner(), shop.getLocation()).callEvent();
+              new ShopCreateEvent(Phase.POST, shop, shop.getOwner(), shop.bukkitLocation()).callEvent();
             })
             .exceptionally(err->{
               processCreationFail(shop, shop.getOwner(), err);
@@ -558,7 +558,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
-      final Location location = shop.getLocation();
+      final Location location = shop.bukkitLocation();
       if(location.isWorldLoaded() && Objects.equals(location.getWorld(), world)) {
         worldShops.add(shop);
       }
@@ -571,7 +571,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
-      final Location location = shop.getLocation();
+      final Location location = shop.bukkitLocation();
       if(location.isWorldLoaded() && com.ghostchu.quickshop.common.util.CommonUtil.strEquals(worldName, location.getWorld().getName())) {
         worldShops.add(shop);
       }

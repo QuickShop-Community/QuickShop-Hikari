@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -267,7 +266,7 @@ public class ShopLoader implements SubPasteItem {
       Log.debug("Shop itemStack amount can't be 0");
       return true;
     }
-    if(shop.getLocation() == null) {
+    if(shop.bukkitLocation() == null) {
       Log.debug("Shop location is null");
       return true;
     }

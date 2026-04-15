@@ -35,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A shop
  */
-public interface Shop<U> extends Locatable<Location>, ShopInventory, ShopMeta<U>, ShopTrading, ShopDisplay, ShopPermission {
+public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, ShopTrading, ShopDisplay, ShopPermission {
 
   NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 

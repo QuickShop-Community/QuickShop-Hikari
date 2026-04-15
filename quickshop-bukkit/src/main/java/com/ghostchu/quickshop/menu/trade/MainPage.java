@@ -102,7 +102,7 @@ public class MainPage extends QuickShopPage {
         final int stock = (shop.get().isBuying())? -1 : MarketUtils.getStockFromCache(shop.get());
         final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
         final String priceFormatted = eco.format(BigDecimal.valueOf(shop.get().getPrice()),
-                                                 shop.get().getLocation().getWorld().getName(),
+                                                 shop.get().bukkitLocation().getWorld().getName(),
                                                  shop.get().getCurrency());
 
         // Shop item display slot from config (centered in row 2)
@@ -167,11 +167,11 @@ public class MainPage extends QuickShopPage {
                                                return true;
                                              }
                                              if(shop.get().isBuying()) {
-                                               final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              } else {
-                                               final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              }
                                              return true;
                                            } catch(final NumberFormatException ignore) { }
@@ -197,7 +197,7 @@ public class MainPage extends QuickShopPage {
           final int slot = configSlots.get(i);
           final int adjustedAmount = (amount * quantity);
           final String totalPrice = eco.format(BigDecimal.valueOf((quantity * shop.get().getPrice())),
-                                               shop.get().getLocation().getWorld().getName(),
+                                               shop.get().bukkitLocation().getWorld().getName(),
                                                shop.get().getCurrency());
           final String displayText = (shop.get().isSelling())? "<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
 
@@ -207,13 +207,13 @@ public class MainPage extends QuickShopPage {
                                          .withActions(new RunnableAction((click->{
                                            if(shop.get().isBuying()) {
 
-                                             final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                             Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                             final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                                             Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            } else {
 
-                                             final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                             Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                             final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                                             Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            }
                                          })))

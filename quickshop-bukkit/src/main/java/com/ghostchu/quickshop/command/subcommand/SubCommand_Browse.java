@@ -55,12 +55,12 @@ public class SubCommand_Browse implements CommandHandler<Player> {
 
       if(world) {
         shops.addAll(plugin.getShopManager().getAllShops().stream().filter(shop->{
-          if(shop.getLocation().getWorld() == null
+          if(shop.bukkitLocation().getWorld() == null
              || sender.getLocation().getWorld() == null) {
             return false;
           }
 
-          return shop.getLocation().getWorld().getUID().equals(sender.getLocation().getWorld().getUID());
+          return shop.bukkitLocation().getWorld().getUID().equals(sender.getLocation().getWorld().getUID());
         }).toList());
       } else {
         shops.addAll(plugin.getShopManager().getAllShops());

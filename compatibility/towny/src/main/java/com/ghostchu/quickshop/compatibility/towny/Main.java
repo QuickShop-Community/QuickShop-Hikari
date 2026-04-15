@@ -273,11 +273,11 @@ public final class Main extends CompatibilityModule implements Listener {
       final QUser actor = QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false);
       //Getting all shop with world-chunk-shop mapping
       for(final Shop shop : api.getShopManager().getAllShops()) {
-        if(!worldCoords.contains(WorldCoord.parseWorldCoord(shop.getLocation()))) {
+        if(!worldCoords.contains(WorldCoord.parseWorldCoord(shop.bukkitLocation()))) {
           continue;
         }
         if(overrideOwner || owner != null && owner.equals(shop.getOwner().getUniqueId())) {
-          Util.regionThread(shop.getLocation(), ()->{
+          Util.regionThread(shop.bukkitLocation(), ()->{
             recordDeletion(actor, shop, reason);
             getApi().getShopManager().deleteShop(shop);
           });
@@ -349,11 +349,11 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(isWorldIgnored(event.getShop().getLocation().getWorld())) {
+    if(isWorldIgnored(event.getShop().bukkitLocation().getWorld())) {
       return;
     }
     event.getPurchaser().getBukkitPlayer().ifPresent(player->{
-      final Optional<Component> component = checkFlags(player, event.getShop().getLocation(), this.tradeFlags);
+      final Optional<Component> component = checkFlags(player, event.getShop().bukkitLocation(), this.tradeFlags);
       component.ifPresent(value->event.setCancelled(true, value));
     });
   }
@@ -391,7 +391,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(isWorldIgnored(shopLoc.getWorld())) {
       return;
     }
@@ -507,7 +507,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
     // Modify tax account to town account if they aren't town shop or nation shop but inside town or nation
-    final Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+    final Town town = TownyAPI.getInstance().getTown(shop.bukkitLocation());
     if(town != null) {
       UUID uuid = QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName());
       if(uuid == null) {

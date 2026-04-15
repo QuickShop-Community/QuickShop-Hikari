@@ -119,7 +119,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
-    final Location loc = event.shop().get().getLocation();
+    final Location loc = event.shop().get().bukkitLocation();
     final Island island = SkyBlockAPI.getIslandManager().getIslandAtLocation(loc);
     if(island == null) {
 
@@ -183,6 +183,6 @@ public final class Main extends CompatibilityModule {
       }
     }
     final BoundingBox boundingBox = new BoundingBox(minX, Integer.MIN_VALUE, minZ, maxX, Integer.MAX_VALUE, maxZ);
-    return shopsList.stream().filter(s->boundingBox.contains(s.getLocation().toVector())).toList();
+    return shopsList.stream().filter(s->boundingBox.contains(s.bukkitLocation().toVector())).toList();
   }
 }

@@ -25,6 +25,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.NamespacedKey;
@@ -303,6 +304,7 @@ public class ModernCustomMatcher implements ItemMatcher, Reloadable {
     try {
       //System.out.println("ModernCustomMatcher.resolveTypeKeyFromDataComponentTypeKeys: " + name);
       final DataComponentType.Valued dataType = (DataComponentType.Valued)Registry.DATA_COMPONENT_TYPE.get(NamespacedKey.minecraft(name.toLowerCase(Locale.ROOT)));
+
       return dataType;
     } catch(final ClassCastException ex) {
       //System.out.println("ModernCustomMatcher.resolveTypeKeyFromDataComponentTypeKeys: " + name + " is not a valued type!");

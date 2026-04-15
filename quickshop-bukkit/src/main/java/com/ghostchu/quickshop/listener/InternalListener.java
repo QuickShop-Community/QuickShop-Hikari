@@ -79,13 +79,13 @@ public class InternalListener extends AbstractQSListener {
       return;
     }
 
-    if(isForbidden(event.shop().get().getLocation().getBlock().getType(), event.shop().get().getItem().getType())) {
+    if(isForbidden(event.shop().get().bukkitLocation().getBlock().getType(), event.shop().get().getItem().getType())) {
       event.setCancelled(true, plugin.text().of(event.user(), "forbidden-vanilla-behavior").forLocale());
       return;
     }
 
     if(loggingAction) {
-      plugin.logEvent(new ShopCreationLog(event.user(), event.shop().get().saveToInfoStorage(), new BlockPos(event.shop().get().getLocation())));
+      plugin.logEvent(new ShopCreationLog(event.user(), event.shop().get().saveToInfoStorage(), new BlockPos(event.shop().get().bukkitLocation())));
     }
   }
 
@@ -131,13 +131,13 @@ public class InternalListener extends AbstractQSListener {
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopPrePurchase(final ShopPurchaseEvent event) {
 
-    if(isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
+    if(isForbidden(event.getShop().bukkitLocation().getBlock().getType(), event.getShop().getItem().getType())) {
       event.setCancelled(true, plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").forLocale());
       return;
     }
     if(loggingBalance) {
-      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomyManager().provider().balance(event.getPurchaser(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
-      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomyManager().provider().balance(event.getShop().getOwner(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomyManager().provider().balance(event.getPurchaser(), event.getShop().bukkitLocation().getWorld().getName(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomyManager().provider().balance(event.getShop().getOwner(), event.getShop().bukkitLocation().getWorld().getName(), event.getShop().getCurrency())));
     }
   }
 
@@ -167,8 +167,8 @@ public class InternalListener extends AbstractQSListener {
                                           event.getTax()));
     }
     if(loggingBalance) {
-      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getPurchaser(), plugin.getEconomyManager().provider().balance(event.getPurchaser(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
-      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomyManager().provider().balance(event.getShop().getOwner(), event.getShop().getLocation().getWorld().getName(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getPurchaser(), plugin.getEconomyManager().provider().balance(event.getPurchaser(), event.getShop().bukkitLocation().getWorld().getName(), event.getShop().getCurrency())));
+      plugin.logEvent(new PlayerEconomyPreCheckLog(false, event.getShop().getOwner(), plugin.getEconomyManager().provider().balance(event.getShop().getOwner(), event.getShop().bukkitLocation().getWorld().getName(), event.getShop().getCurrency())));
     }
     if(event.getPurchaser().equals(event.getShop().getOwner())) {
       plugin.text().of(event.getPurchaser(), "shop-owner-self-trade").send();

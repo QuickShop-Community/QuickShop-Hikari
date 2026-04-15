@@ -148,6 +148,7 @@ import net.tnemc.menu.paper.listener.PaperChatListener;
 import net.tnemc.menu.paper.listener.PaperInventoryClickListener;
 import net.tnemc.menu.paper.listener.PaperInventoryCloseListener;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
@@ -1034,12 +1035,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
         logger.info("Registering DisplayCheck task....");
         folia.getScheduler().runTimerAsync(()->{
-          for(final Shop shop : getShopManager().getLoadedShops()) {
+          for(final Shop<?, ?> shop : getShopManager().getLoadedShops()) {
             //Shop may be deleted or unloaded when iterating
             if(!shop.isLoaded()) {
               continue;
             }
-            folia.getScheduler().runAtLocationLater(shop.getLocation(), shop::checkDisplay, 1L);
+            folia.getScheduler().runAtLocationLater((Location)shop.bukkitLocation(), shop::checkDisplay, 1L);
           }
         }, 1L, getDisplayItemCheckTicks());
       } else if(getDisplayItemCheckTicks() == 0) {
@@ -1231,7 +1232,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     if(getShopManager() != null) {
       logger.info("Saving all in-memory changed shops...");
-      final List<CompletableFuture<Void>> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+      final List<@NotNull CompletableFuture> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
 
       logger.info("Shops needed saved: " + futures.size());
       final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
@@ -1253,7 +1254,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
               shop.updateSync();
             } catch(final RuntimeException re) {
 
-              logger.warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.getLocation(), re);
+              logger.warn("Issue occurred while saving a shop. This may cause data loss. Please check the logs for more information. ID: " + shop.getShopId() + " Location: " + shop.bukkitLocation(), re);
             }
           }
         }

@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
+import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
@@ -70,10 +71,12 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -88,12 +91,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.ghostchu.quickshop.util.Util.waitForFuture;
+import static java.math.BigDecimal.ZERO;
 
 /**
  * ChestShop core
  */
 @EqualsAndHashCode
-public class ContainerShop implements Shop<Double>, Reloadable {
+public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
   private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
@@ -562,6 +566,17 @@ public class ContainerShop implements Shop<Double>, Reloadable {
   }
 
   /**
+   * Converts the location associated with this object to a Bukkit-compatible {@link Location}.
+   *
+   * @return the Bukkit {@link Location} representation of this object's location.
+   */
+  @Override
+  public Location bukkitLocation() {
+
+    return this.location;
+  }
+
+  /**
    * @return The name of the player who owns the shop.
    */
   @Override
@@ -662,7 +677,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
   @Override
   public Double price() {
 
-    return 0.0;
+    return price;
   }
 
   /**
@@ -672,7 +687,19 @@ public class ContainerShop implements Shop<Double>, Reloadable {
    */
   @Override
   public void price(final Double price) {
+    this.price = price;
+  }
 
+  /**
+   * Provides a comparator for comparing instances of the generic type U used in the shop's
+   * pricing.
+   *
+   * @return a {@link Comparator} for comparing values of type U
+   */
+  @Override
+  public Comparator<Double> priceComparator() {
+
+    return Comparator.comparingDouble(Double::doubleValue);
   }
 
   /**
@@ -683,8 +710,31 @@ public class ContainerShop implements Shop<Double>, Reloadable {
    */
   @Override
   public int getMaxAffordable() {
+    if(this.isUnlimited() || this.isFreeShop()) {
+      return Integer.MAX_VALUE;
+    }
 
-    return 0;
+    final BigDecimal unitPrice = BigDecimal.valueOf(this.price());
+    if(unitPrice == null || unitPrice.compareTo(ZERO) <= 0) {
+      return 0;
+    }
+
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    if(eco == null) {
+      return 0;
+    }
+
+    final BigDecimal balance = eco.balance(owner, location.getWorld().getName(), currency);
+    if(balance == null || balance.compareTo(ZERO) <= 0) {
+      return 0;
+    }
+
+    final BigDecimal affordable = balance.divideToIntegralValue(unitPrice);
+    if(affordable.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) > 0) {
+      return Integer.MAX_VALUE;
+    }
+
+    return Math.max(0, affordable.intValue());
   }
 
   /**
@@ -698,8 +748,30 @@ public class ContainerShop implements Shop<Double>, Reloadable {
    */
   @Override
   public boolean canAfford(final int itemAmount) {
+    if(itemAmount <= 0) {
+      return false;
+    }
+    if(this.isUnlimited() || this.isFreeShop()) {
+      return true;
+    }
 
-    return false;
+    final BigDecimal unitPrice = BigDecimal.valueOf(this.price());
+    if(unitPrice == null || unitPrice.compareTo(ZERO) <= 0) {
+      return false;
+    }
+
+    final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
+    if(eco == null) {
+      return false;
+    }
+
+    final BigDecimal balance = eco.balance(owner, location.getWorld().getName(), currency);
+    if(balance == null || balance.compareTo(ZERO) <= 0) {
+      return false;
+    }
+
+    final BigDecimal total = unitPrice.multiply(BigDecimal.valueOf(itemAmount));
+    return balance.compareTo(total) >= 0;
   }
 
   /**
@@ -968,7 +1040,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
 
     Util.ensureThread(false);
     final List<Sign> signs = new ArrayList<>(4);
-    if(this.getLocation().getWorld() == null) {
+    if(this.bukkitLocation().getWorld() == null) {
       return Collections.emptyList();
     }
     final Block[] blocks = new Block[4];
@@ -1070,7 +1142,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
   public boolean isAttached(@NotNull final Block b) {
 
     Util.ensureThread(false);
-    return this.getLocation().getBlock().equals(Util.getAttached(b));
+    return this.bukkitLocation().getBlock().equals(Util.getAttached(b));
   }
 
   @Override
@@ -1233,7 +1305,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
       }
     }
     if(shopSignStorage != null) {
-      return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
+      return shopSignStorage.equals(this.bukkitLocation().getWorld().getName(), this.bukkitLocation().getBlockX(), this.bukkitLocation().getBlockY(), this.bukkitLocation().getBlockZ());
     }
     return false;
   }
@@ -1279,7 +1351,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
     if(this.isDeleted) {
       return false;
     }
-    return Util.canBeShop(this.getLocation().getBlock());
+    return Util.canBeShop(this.bukkitLocation().getBlock());
   }
 
   /**
@@ -1549,8 +1621,8 @@ public class ContainerShop implements Shop<Double>, Reloadable {
   @Override
   public ShopInfoStorage saveToInfoStorage() {
 
-    return new ShopInfoStorage(getLocation().getWorld().getName(),
-                               new BlockPos(getLocation()), this.owner, this.price,
+    return new ShopInfoStorage(this.bukkitLocation().getWorld().getName(),
+                               new BlockPos(this.bukkitLocation()), this.owner, this.price,
                                QuickShop.getInstance().platform().encodeStack(this.originalItem), isUnlimited()? 1 : 0
             , shopType().id(),
                                saveExtraToYaml(), this.currency, this.disableDisplay,
@@ -1767,7 +1839,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this);
+      plugin.getSignHooker().updatePerPlayerShopSignBroadcast(this.bukkitLocation(), this);
       Log.debug("Sign broadcast completed.");
     }
   }
@@ -1944,7 +2016,7 @@ public class ContainerShop implements Shop<Double>, Reloadable {
 
   private ShopSignStorage saveToShopSignStorage() {
 
-    return new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
+    return new ShopSignStorage(this.bukkitLocation().getWorld().getName(), this.bukkitLocation().getBlockX(), this.bukkitLocation().getBlockY(), this.bukkitLocation().getBlockZ());
   }
 
   @Override

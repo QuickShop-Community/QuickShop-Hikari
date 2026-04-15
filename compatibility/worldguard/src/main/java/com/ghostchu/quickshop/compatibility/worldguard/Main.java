@@ -89,7 +89,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     if(event.shop().isEmpty()) return;
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     final World world = shopLoc.getWorld();
     if(world == null) return;
 
@@ -121,7 +121,7 @@ public final class Main extends CompatibilityModule implements Listener {
       final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 
       final RegionQuery query = container.createQuery();
-      final Location shopLocation = event.shop().get().getLocation();
+      final Location shopLocation = event.shop().get().bukkitLocation();
       final ApplicableRegionSet regions = query.getApplicableRegions(BukkitAdapter.adapt(shopLocation));
 
       final RegionManager manager = container.get(BukkitAdapter.adapt(shopLocation.getWorld()));
@@ -191,7 +191,7 @@ public final class Main extends CompatibilityModule implements Listener {
     event.getPurchaser().getBukkitPlayer().ifPresent(player->{
       final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
       final RegionQuery query = container.createQuery();
-      final Location shopLocation = event.getShop().getLocation();
+      final Location shopLocation = event.getShop().bukkitLocation();
       final ApplicableRegionSet regions = query.getApplicableRegions(BukkitAdapter.adapt(shopLocation));
 
       final RegionManager manager = container.get(BukkitAdapter.adapt(shopLocation.getWorld()));

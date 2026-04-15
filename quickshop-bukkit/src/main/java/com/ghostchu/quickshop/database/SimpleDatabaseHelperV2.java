@@ -21,7 +21,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import org.apache.commons.lang3.tuple.Triple;
@@ -854,7 +853,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public CompletableFuture<Void> updateShop(@NotNull final Shop shop) {
 
     final SimpleDataRecord simpleDataRecord = ((ContainerShop)shop).createDataRecord();
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     // check if datarecord exists
     final long shopId = shop.getShopId();
     if(shopId < 1) {

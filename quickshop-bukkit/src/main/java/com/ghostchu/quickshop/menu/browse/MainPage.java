@@ -167,8 +167,8 @@ public class MainPage {
 
           if(i >= (start + items)) break;
 
-          final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
-          final String location = world + " " + shop.getLocation().getBlockX() + ", " + shop.getLocation().getBlockY() + ", " + shop.getLocation().getBlockZ();
+          final String world = (shop.bukkitLocation().getWorld() != null)? shop.bukkitLocation().getWorld().getName() : "World";
+          final String location = world + " " + shop.bukkitLocation().getBlockX() + ", " + shop.bukkitLocation().getBlockY() + ", " + shop.bukkitLocation().getBlockZ();
           final QUser owner = shop.getOwner();
           SkullProfile ownerProfile = null;
           if(owner.isRealPlayer() && owner.getUniqueId() != null) {
@@ -178,7 +178,7 @@ public class MainPage {
           }
 
           final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
-          final String priceFormatted = eco.format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
+          final String priceFormatted = eco.format(BigDecimal.valueOf(shop.getPrice()), shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
 
           final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
                   .lore(getConfigLore(id, shopItemConfig, shop.getOwner().getDisplay(), location,

@@ -18,6 +18,8 @@ package com.ghostchu.quickshop.api.shop.meta;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Comparator;
+
 /**
  * ShopPrice
  *
@@ -39,6 +41,29 @@ public interface ShopPrice<U> {
    * @param price the price to set for the shop; must be of type U and should not be null
    */
   void price(U price);
+
+  /**
+   * Provides a comparator for comparing instances of the generic type U used in the shop's pricing.
+   *
+   * @return a {@link Comparator} for comparing values of type U
+   */
+  Comparator<U> priceComparator();
+
+  /**
+   * Compares the price of the current shop with the price of another shop.
+   *
+   * @param other the other {@code ShopPrice<U>} instance to compare with; must not be null
+   * @param reversed whether the comparison should be reversed (i.e., descending order)
+   * @return a negative integer, zero, or a positive integer as the price of this shop
+   *         is less than, equal to, or greater than the price of the other shop
+   */
+  default int comparePrice(final U other, final boolean reversed) {
+
+    if(reversed) {
+      return priceComparator().reversed().compare(this.price(), other);
+    }
+    return priceComparator().compare(this.price(), other);
+  }
 
   /**
    * Retrieves the maximum number of items that can currently be purchased or acquired
