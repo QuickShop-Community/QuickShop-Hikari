@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -149,7 +150,7 @@ public interface ShopManager {
    * @param type the ShopState object to be added, which contains the identifier and related state information
    */
   default void addShopState(final ShopState type) {
-    shopStates().put(type.identifier(), type);
+    shopStates().put(type.identifier().toLowerCase(Locale.ROOT), type);
   }
 
   /**
@@ -169,7 +170,7 @@ public interface ShopManager {
    * @return an {@code Optional} containing the {@code ShopState} if found, or an empty {@code Optional} if no match is found
    */
   default Optional<ShopState> shopState(final String identifier) {
-    return Optional.ofNullable(shopStates().get(identifier));
+    return Optional.ofNullable(shopStates().get(identifier.toLowerCase(Locale.ROOT)));
   }
 
   /**

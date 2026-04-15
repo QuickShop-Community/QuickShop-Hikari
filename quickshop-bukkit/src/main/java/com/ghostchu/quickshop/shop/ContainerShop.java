@@ -36,6 +36,7 @@ import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
+import com.ghostchu.quickshop.api.shop.trading.TradeResult;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
@@ -290,52 +291,17 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @param amount         The amount to buy
    */
   @Override
-  public void buy(@NotNull final QUser buyer, @NotNull final InventoryWrapper buyerInventory,
-                  @NotNull final Location loc2Drop, int amount) throws Exception {
+  public void buy(@NotNull final QUser buyer,
+                  @NotNull final InventoryWrapper buyerInventory,
+                  @NotNull final Location loc2Drop,
+                  final int amount) throws Exception {
+    final TradeResult result = plugin.getShopManager().tradeService().executeSellToShop(this, buyer, buyerInventory, loc2Drop, amount);
 
-    Util.ensureThread(false);
-    amount = amount * item.getAmount();
-    if(amount < 0) {
-      this.sell(buyer, buyerInventory, loc2Drop, -amount);
-      return;
+    if(!result.success()) {
+      throw new IllegalStateException(
+              "Trade failed: " + result.failureReason() + " (" + result.debugMessage() + ")"
+      );
     }
-    if(this.isUnlimited()) {
-      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
-              .builder()
-              .from(buyerInventory)
-              .to(null) // To void
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transaction.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
-      }
-    } else {
-      final InventoryWrapper chestInv = this.getInventory();
-      if(chestInv == null) {
-        plugin.logger().warn("Failed to process buy, reason: {} x{} to shop {}: Inventory null.", item, amount, this);
-        Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-        return;
-      }
-      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
-              .builder()
-              .from(buyerInventory)
-              .to(chestInv)
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transaction.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
-      }
-    }
-    //Update sign
-    this.setSignText(plugin.text().findRelativeLanguages(buyer, false));
   }
 
   @Override
@@ -668,7 +634,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     setSignText();
   }
 
-  //TODO: Implement the new price methods.
   /**
    * Retrieves the price of the shop.
    *
@@ -1646,50 +1611,16 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @param amount          The amount to sell
    */
   @Override
-  public void sell(@NotNull final QUser seller, @NotNull final InventoryWrapper sellerInventory,
-                   @NotNull final Location loc2Drop, int amount) throws Exception {
+  public void sell(@NotNull final QUser seller,
+                   @NotNull final InventoryWrapper sellerInventory,
+                   @NotNull final Location loc2Drop,
+                   final int amount) throws Exception {
+    final TradeResult result = plugin.getShopManager().tradeService().executeBuyFromShop(this, seller, sellerInventory, loc2Drop, amount);
 
-    Util.ensureThread(false);
-    amount = item.getAmount() * amount;
-    if(amount < 0) {
-      this.buy(seller, sellerInventory, loc2Drop, -amount);
-      return;
-    }
-    // Items to drop on floor
-    if(this.isUnlimited()) {
-      final SimpleInventoryTransaction transaction = SimpleInventoryTransaction
-              .builder()
-              .from(null)
-              .to(sellerInventory) // To void
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transaction.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
-      }
-    } else {
-      final InventoryWrapper chestInv = this.getInventory();
-      if(chestInv == null) {
-        plugin.logger().warn("Failed to process sell, reason: {} to shop {}: Inventory null.", item, amount);
-        return;
-      }
-      final SimpleInventoryTransaction transactionTake = SimpleInventoryTransaction
-              .builder()
-              .from(chestInv)
-              .to(sellerInventory) // To void
-              .item(this.getItem())
-              .amount(amount)
-              .build();
-      if(!transactionTake.failSafeCommit()) {
-        if(plugin.getSentryErrorReporter() != null) {
-          plugin.getSentryErrorReporter().ignoreThrow();
-        }
-        throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
-      }
-      this.setSignText(plugin.getTextManager().findRelativeLanguages(seller, false));
+    if(!result.success()) {
+      throw new IllegalStateException(
+              "Trade failed: " + result.failureReason() + " (" + result.debugMessage() + ")"
+      );
     }
   }
 

@@ -79,7 +79,7 @@ public abstract class AbstractShopManager implements ShopManager {
     Util.ensureThread(false);
     this.plugin = plugin;
     this.formatter = new EconomyFormatter(plugin);
-    this.tradeService = null;
+    this.tradeService = new SimpleTradeService(plugin);
   }
 
   public void init() {

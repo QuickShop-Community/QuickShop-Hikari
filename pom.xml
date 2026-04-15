@@ -220,6 +220,7 @@
                                         <include>org.slf4j:slf4j-jdk14:*</include>
                                         <include>cc.carm.lib:*</include>
                                         <include>com.rollbar:*</include>
+                                        <include>dev.faststats.metrics:*</include>
                                     </includes>
                                     <excludes>
                                         <exclude>net.kyori:adventure-api</exclude>
@@ -282,7 +283,7 @@
                                         <shadedPattern>${qs.relocation}.com.rollbar.</shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>dev.faststats</pattern>
+                                        <pattern>dev.faststats.</pattern>
                                         <shadedPattern>${qs.relocation}.faststats</shadedPattern>
                                     </relocation>
                                     <!--<relocation>

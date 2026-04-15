@@ -31,9 +31,7 @@ import dev.faststats.core.data.Metric;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class FastStats implements MetricPlatform<Metric> {
-
-  public static final ErrorTracker ERROR_TRACKER = ErrorTracker.contextAware();
+public class FastStats implements MetricPlatform<Metric> {;
 
   private BukkitMetrics.Factory metrics = BukkitMetrics.factory().token(projectID());
   private final StatCollector collector;

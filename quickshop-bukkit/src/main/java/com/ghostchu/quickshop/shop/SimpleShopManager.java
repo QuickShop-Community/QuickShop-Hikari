@@ -322,6 +322,10 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
   @Override
   public @NotNull ShopState shopStateOrDefault(final String identifier) {
 
+    if(identifier == null) {
+      return ACTIVE_STATE;
+    }
+
     final Optional<ShopState> type = shopState(identifier);
     return type.orElse(ACTIVE_STATE);
   }
