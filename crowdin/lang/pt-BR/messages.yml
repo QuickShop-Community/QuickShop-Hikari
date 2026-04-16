@@ -47,7 +47,7 @@ quick-fill:
     - '<yellow>Proprietário: <aqua>{owner}'
     - '<yellow>Tipo: <aqua>{type}'
     - '<yellow>Preço: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - ''
     - '<yellow>Localização: <aqua>{location}'
   header: '<yellow>Você tem várias lojas com o nome "<green>{0}<yellow>", escolha uma para continuar:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
