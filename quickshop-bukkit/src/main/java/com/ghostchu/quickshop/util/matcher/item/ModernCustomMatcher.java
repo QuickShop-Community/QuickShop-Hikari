@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.util.matcher.item;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.general.ShopItemMatchEvent;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -124,6 +125,17 @@ public class ModernCustomMatcher implements ItemMatcher, Reloadable {
 
     if(original == null || tester == null) {
       return false;
+    }
+
+    if(original.isSimilar(tester)) {
+      return true;
+    }
+
+    final ShopItemMatchEvent shopItemMatchEvent = new ShopItemMatchEvent(original.clone(), tester.clone());
+    shopItemMatchEvent.callEvent();
+
+    if(shopItemMatchEvent.matches()) {
+      return true;
     }
 
     //System.out.println("ModernCustomMatcher.matches: checking material");

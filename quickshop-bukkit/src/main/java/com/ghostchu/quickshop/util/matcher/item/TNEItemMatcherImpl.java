@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.util.matcher.item;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.general.ShopItemMatchEvent;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import net.tnemc.item.bukkit.BukkitCalculationsProvider;
 import net.tnemc.item.bukkit.BukkitItemStack;
@@ -79,8 +80,23 @@ public class TNEItemMatcherImpl implements ItemMatcher {
   @Override
   public boolean matches(@Nullable final ItemStack original, @Nullable final ItemStack tester) {
 
+    if(original == null && tester == null) {
+      return true;
+    }
+
     if(original == null || tester == null) {
       return false;
+    }
+
+    if(original.isSimilar(tester)) {
+      return true;
+    }
+
+    final ShopItemMatchEvent shopItemMatchEvent = new ShopItemMatchEvent(original.clone(), tester.clone());
+    shopItemMatchEvent.callEvent();
+
+    if(shopItemMatchEvent.matches()) {
+      return true;
     }
 
     final int originalFish = fishData(original);
