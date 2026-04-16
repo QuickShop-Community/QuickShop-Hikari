@@ -22,14 +22,17 @@ import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * MarketUtils - Utility class for market/browse operations Handles grouping shops by item,
@@ -55,13 +58,14 @@ public final class MarketUtils {
   public static List<MarketItemGroup> groupShopsByItem(@NotNull final List<Shop> shops) {
 
     final List<MarketItemGroup> groups = new ArrayList<>();
+    final Map<Material, List<MarketItemGroup>> groupsByMat = new EnumMap<>(Material.class);
     final ItemMatcher matcher = QuickShop.getInstance().getItemMatcher();
 
     for(final Shop shop : shops) {
       MarketItemGroup matchingGroup = null;
-
+      List<MarketItemGroup> matGroups = groupsByMat.computeIfAbsent(shop.getItem().getType(), k->new ArrayList<>());
       // Find existing group that matches this shop's item
-      for(final MarketItemGroup group : groups) {
+      for(final MarketItemGroup group : matGroups) {
         if(matcher.matches(group.getRepresentativeItem(), shop.getItem())) {
           matchingGroup = group;
           break;
@@ -71,6 +75,7 @@ public final class MarketUtils {
       // Create new group if no match found
       if(matchingGroup == null) {
         matchingGroup = new MarketItemGroup(shop.getItem());
+        matGroups.add(matchingGroup);
         groups.add(matchingGroup);
       }
 

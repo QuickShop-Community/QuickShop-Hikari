@@ -69,6 +69,11 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
       return false;
     }
 
+    if(original.isSimilar(tester)) {
+
+      return true;
+    }
+
     final ShopItemMatchEvent shopItemMatchEvent = new ShopItemMatchEvent(original.clone(), tester.clone()); //clone so the originals don't get messed up by implementations.
     shopItemMatchEvent.callEvent();
 
