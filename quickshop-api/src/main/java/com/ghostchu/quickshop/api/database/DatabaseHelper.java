@@ -125,6 +125,7 @@ public interface DatabaseHelper {
   @NotNull
   List<ShopRecord> listShops(@Nullable String worldFilter, boolean deleteIfCorrupt);
 
+  void loadAllTags();
 
   List<Long> listShopsByTag(@NotNull String tag);
 

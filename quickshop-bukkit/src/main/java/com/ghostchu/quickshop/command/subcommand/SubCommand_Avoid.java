@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.ghostchu.quickshop.api.shop.tag.TagService.SYS_AVOID;
+import static com.ghostchu.quickshop.shop.tag.QuickShopTagService.MAX_TAG_LENGTH;
 
 /**
  * SubCommand_Avoid
@@ -57,7 +58,7 @@ public class SubCommand_Avoid implements CommandHandler<Player> {
     if(tag == null) {
 
       //should never happen, but we'll catch just in case.
-      plugin.text().of(sender, "tags.general.invalid").send();
+      plugin.text().of(sender, "tags.general.invalid", MAX_TAG_LENGTH).send();
       return;
     }
 

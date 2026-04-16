@@ -50,17 +50,44 @@ import java.util.UUID;
 public interface TagManager {
 
   /**
+   * Loads all tag-related data from the database into memory.
+   *
+   * This method initializes or refreshes the in-memory representation
+   * of tags and their associations by retrieving the complete tag data
+   * set from the underlying database. It should be called during
+   * application startup or when a full reload of tag data is needed.
+   */
+  void loadAllFromDB();
+
+  /**
    * Adds a tag to a shop for a specific player.
+   *
+   * This method calls the underlying {@code addTag} implementation with default
+   * parameters, applying the tag and persisting it to the database.
    *
    * @param shopId the ID of the shop
    * @param player the player applying the tag
    * @param tag    the tag to apply
    *
    * @return the result of the tagging operation
+   */
+  default TaggingResult addTag(final long shopId, final UUID player, final String tag) {
+    return addTag(shopId, player, tag, true);
+  }
+
+  /**
+   * Adds a tag to a shop for a specific player.
+   *
+   * @param shopId the ID of the shop
+   * @param player the player applying the tag
+   * @param tag    the tag to apply
+   * @param db     whether to persist the tag to the database
+   *
+   * @return the result of the tagging operation
    *
    * @since 6.3.0.0
    */
-  TaggingResult addTag(long shopId, UUID player, String tag);
+  TaggingResult addTag(long shopId, UUID player, String tag, final boolean db);
 
   /**
    * Toggles a tag on a shop for a player.

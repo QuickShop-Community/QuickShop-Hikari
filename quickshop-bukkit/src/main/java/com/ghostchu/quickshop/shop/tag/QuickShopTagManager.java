@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.shop.tag;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.shop.tag.PlayerTagIndex;
 import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.ghostchu.quickshop.api.shop.tag.TagService;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.ghostchu.quickshop.api.shop.tag.TagService.TOTAL_INDEX;
@@ -76,8 +78,25 @@ public class QuickShopTagManager implements TagManager {
     }
   }
 
+  /**
+   * Loads all tag-related data from the database into memory.
+   *
+   * This method initializes or refreshes the in-memory representation of tags and their
+   * associations by retrieving the complete tag data set from the underlying database. It should be
+   * called during application startup or when a full reload of tag data is needed.
+   */
   @Override
-  public TaggingResult addTag(final long shopId, final UUID player, final String tag) {
+  public void loadAllFromDB() {
+
+    CompletableFuture.runAsync(() -> {
+
+      final DatabaseHelper db = plugin.getDatabaseHelper();
+      db.loadAllTags();
+    });
+  }
+
+  @Override
+  public TaggingResult addTag(final long shopId, final UUID player, final String tag, final boolean db) {
 
     final ShopTags shopTags = tags.computeIfAbsent(shopId, id->new ShopTags());
     if(shopTags.hasTag(player, tag)) {
@@ -88,7 +107,9 @@ public class QuickShopTagManager implements TagManager {
     //update our index service
     playerIndex(player).addTag(shopId, tag);
     //update our database
-    service.addShopTag(player, shopId, tag);
+    if(db) {
+      service.addShopTag(player, shopId, tag);
+    }
     return TaggingResult.SUCCESS;
   }
 
@@ -358,6 +379,7 @@ public class QuickShopTagManager implements TagManager {
 
       index.removeTag(shopId, tag);
     }
+
     //update our database
     service.removeShopTag(player, shopId, tag);
 

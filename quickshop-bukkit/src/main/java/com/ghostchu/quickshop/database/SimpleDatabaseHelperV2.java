@@ -553,6 +553,25 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
+  public void loadAllTags() {
+    try(final SQLQuery query = DataTables.TAGS.createQuery().build().execute()) {
+
+      final ResultSet set = query.getResultSet();
+      while(set.next()) {
+
+        final String tagger = set.getString("tagger");
+        final long shopID = set.getLong("shop");
+        final String tag = set.getString("tag");
+
+        plugin.tagManager().addTag(shopID, UUID.fromString(tagger), tag, false);
+      }
+
+    } catch(final SQLException e) {
+      plugin.logger().error("Failed to load all tags", e);
+    }
+  }
+
+  @Override
   public @NotNull List<Long> listShopsByTag(@NotNull final String tag) {
 
     final List<Long> shopIds = new ArrayList<>();

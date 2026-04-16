@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  */
 public class QuickShopTagService implements TagService {
 
-  private static final int MAX_TAG_LENGTH = 32;
+  public static final int MAX_TAG_LENGTH = 32;
   private static final Pattern VALID_TAG_PATTERN = Pattern.compile("^[a-z_-]+$");
 
   private static QuickShopTagService instance;
@@ -125,12 +125,23 @@ public class QuickShopTagService implements TagService {
       return null;
     }
 
-    if(!allowSystem && input.startsWith("@")) {
+    final boolean system = input.startsWith("@");
+
+    if(!allowSystem && system) {
       return null;
+    }
+
+    if(system) {
+
+      input = input.substring(1);
     }
 
     if(!VALID_TAG_PATTERN.matcher(input).matches()) {
       return null;
+    }
+
+    if(system) {
+      return "@" + input;
     }
 
     return input;

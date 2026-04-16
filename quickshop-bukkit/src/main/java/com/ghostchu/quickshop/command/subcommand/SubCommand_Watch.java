@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ghostchu.quickshop.shop.tag.QuickShopTagService.MAX_TAG_LENGTH;
+
 
 public class SubCommand_Watch implements CommandHandler<Player> {
 
@@ -33,7 +35,7 @@ public class SubCommand_Watch implements CommandHandler<Player> {
     if(tag == null) {
 
       //should never happen, but we'll catch just in case.
-      plugin.text().of(sender, "tags.general.invalid").send();
+      plugin.text().of(sender, "tags.general.invalid", MAX_TAG_LENGTH).send();
       return;
     }
 

@@ -843,6 +843,10 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     shopLoader = new ShopLoader(this);
     shopLoader.loadShops();
     QuickExecutor.getCommonExecutor().submit(this::bakeShopsOwnerCache);
+
+    logger.info("Loading shop tags...");
+    this.tagManager.loadAllFromDB();
+
     logger.info("Registering listeners...");
     this.interactionManager = new QuickShopInteractionManager(this);
     // Register events
