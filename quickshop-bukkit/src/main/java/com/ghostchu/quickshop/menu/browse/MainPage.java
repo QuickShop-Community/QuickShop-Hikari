@@ -177,8 +177,7 @@ public class MainPage {
             ownerProfile.setUuid(owner.getUniqueId());
           }
 
-          final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
-          final String priceFormatted = eco.format(BigDecimal.valueOf(shop.getPrice()), shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
+          final String priceFormatted = shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
 
           final AbstractItemStack<ItemStack> stack = new BukkitItemStack().of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
                   .lore(getConfigLore(id, shopItemConfig, shop.getOwner().getDisplay(), location,

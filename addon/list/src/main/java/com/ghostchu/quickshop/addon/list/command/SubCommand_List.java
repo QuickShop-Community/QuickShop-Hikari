@@ -125,7 +125,7 @@ public class SubCommand_List implements CommandHandler<Player> {
       } else {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-frozen").forLocale();
       }
-      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
       component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
       printer.printLine(component);
       loopCounter++;

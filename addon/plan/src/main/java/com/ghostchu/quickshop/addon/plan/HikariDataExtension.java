@@ -187,7 +187,7 @@ public class HikariDataExtension implements DataExtension {
       final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
       if(main.getQuickShop().getEconomyManager().provider() != null) {
-        price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
+        price = shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
       }
 
       final String type = switch(shop.shopType().identifier().toUpperCase(Locale.ROOT)) {

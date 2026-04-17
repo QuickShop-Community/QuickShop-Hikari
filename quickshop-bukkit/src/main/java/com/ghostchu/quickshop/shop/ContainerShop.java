@@ -656,6 +656,38 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   /**
+   * Formats a string representation based on the provided world and optional currency.
+   *
+   * @param world    the name of the world for which the string is being formatted; must not be
+   *                 null
+   * @param currency the optional currency to include in the formatted string; can be null
+   *
+   * @return a formatted string combining the world and currency information; never null
+   */
+  @Override
+  public @NotNull String format(final @NotNull String world, final @Nullable String currency) {
+
+    return plugin.getEconomyManager().provider().format(BigDecimal.valueOf(price()), world, currency);
+  }
+
+  /**
+   * Formats a string representation based on the provided world, optional currency, and quantity.
+   *
+   * @param world    the name of the world for which the string is being formatted; must not be
+   *                 null
+   * @param currency the optional currency to include in the formatted string; can be null
+   * @param quantity the quantity to include in the formatted string; represents a non-negative
+   *                 integer
+   *
+   * @return a formatted string combining the world, currency, and quantity information; never null
+   */
+  @Override
+  public @NotNull String format(final @NotNull String world, final @Nullable String currency, final int quantity) {
+
+    return plugin.getEconomyManager().provider().format(BigDecimal.valueOf(price() * quantity), world, currency);
+  }
+
+  /**
    * Provides a comparator for comparing instances of the generic type U used in the shop's
    * pricing.
    *
