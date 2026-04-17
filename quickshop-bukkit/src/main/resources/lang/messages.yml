@@ -133,6 +133,10 @@ shop-staff-empty: <yellow>This shop have no staff members.
 shops-recovering: Recovering shops from backup...
 virtual-player-component-hover: '<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>'
 real-player-component-hover: '<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>"[]"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>.'
+pagination:
+  #header: <dark_gray><st>───────────────────────────────────</st><newline><gradient:#7e5bef:#c9b6ff><bold>{0}</bold></gradient><dark_gray> - <gray>Page <white>{1}</white><dark_gray>/</dark_gray><white>{2}</white><newline><dark_gray><st>───────────────────────────────────</st>
+  header: "<dark_gray>[</dark_gray> <green><bold>{0}</bold></green> <dark_gray>]</dark_gray> <gray>Page <white>{1}</white><dark_gray>/</dark_gray><white>{2}</white>"
+  footer: "<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><light_purple>[<white><</white>]</light_purple></hover></click> <gray><white>{1}</white><dark_gray>/</dark_gray><white>{2}</white></gray> <click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><light_purple>[<white>></white>]</light_purple></hover></click>"
 tags:
   commands:
     tag: <yellow>Manage your shop tags.
@@ -141,7 +145,7 @@ tags:
     avoid: <yellow>Toggle avoid on looked-at shop.
   general:
     database-error: <red>An error occurred while execution tags operation.
-    list-entry: '<yellow> - <aqua>{0}'
+    list-entry: "<green>Tag:</green> <yellow>{0}</yellow> <light_purple>[<click:run_command:\"{1}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
     invalid: '<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: {0}'
   avoid:
     added: <green>Shop has been added to your avoid list.
@@ -165,17 +169,20 @@ tags:
     list-title: '<green>Watched Shops:'
     label: Watching
   tag:
+    title-avoided-shops: "<gradient:#ff6b6b:#ff9e9e><bold>Avoided Shops</bold></gradient><dark_gray> • <gray>{0} total"
+    title-favorited-shops: "<gradient:#7e5bef:#c9b6ff><bold>Favorited Shops</bold></gradient><dark_gray> • <gray>{0} total"
+    title-watched-shops: "<gradient:#5eead4:#2dd4bf><bold>Watched Shops</bold></gradient><dark_gray> • <gray>{0} total"
+    list-player-shop-title: "<gradient:#7e5bef:#c9b6ff><bold>Shop Tags</bold></gradient><dark_gray> • <gray>{0} total"
+    list-player-shops-title: "<gradient:#7e5bef:#c9b6ff><bold>Your Tagged Shops</bold></gradient><dark_gray> • <gray>{0} shops <dark_gray>•</dark_gray> {1} tags"
+    list-player-shop-entry: "<dark_gray>[<light_purple>#{0}</light_purple>]</dark_gray> <white>Shop</white> <dark_gray>•</dark_gray> <yellow>{1} tags</yellow>"
+    list-title: "<gradient:#7e5bef:#c9b6ff><bold>Shop Tags</bold></gradient><dark_gray> • <gray>{0} total"
+    list-tag-title: "<gradient:#7e5bef:#c9b6ff><bold>Tag Usage</bold></gradient><dark_gray> • <yellow>{0}</yellow> <gray>shops"
     added: <green>Successfully added tag <aqua>{0}</aqua> to this shop!
     duplicate: <red>This shop already has tag <aqua>{0}</aqua>!
     failed-add: <red>An error occurred while adding tag <aqua>{0}</aqua> to this shop.
     failed-remove: <red>An error occurred while removing tag <aqua>{0}</aqua> from this shop.
     removed: <green>Successfully removed tag <aqua>{0}</aqua> from this shop!
     does-not-exist: <red>This shop does not have tag <aqua>{0}</aqua>!
-    list-player-shop-title: '<green>You have {0} tags on shop #{1}:'
-    list-player-shops-title: '<green>You have {0} tags on {1} shops:'
-    list-player-shop-entry: '<aqua>Shop #{0}</aqua> - <yellow>{1} tags</yellow>'
-    list-title: '<green>This shop has <yellow>{0}</yellow> tags:'
-    list-tag-title: '<green>This tag is applied to <yellow>{0}</yellow> shops:'
     cleared: <green>Successfully cleared all tags from this shop!
     cleared-all: <green>Successfully cleared all tags from all shops!
     cleared-tag: <green>Successfully cleared tag <aqua>{0}</aqua> from all your tagged shops!
