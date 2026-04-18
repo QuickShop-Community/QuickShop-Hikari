@@ -486,6 +486,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .selectivePermission("quickshop.avoid")
                     .selectivePermission("quickshop.avoid.list")
                     .description((locale)->plugin.text().of("tags.commands.avoid").forLocale(locale))
+                    .disabledSupplier(()->!plugin.getConfig().getBoolean("shop-tag.enabled") || !plugin.getConfig().getBoolean("shop-tag.avoid-enabled"))
                     .executor(avoidCommand)
                     .build());
 
@@ -495,6 +496,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .selectivePermission("quickshop.favorite")
                     .selectivePermission("quickshop.favorite.list")
                     .description((locale)->plugin.text().of("tags.commands.favorite").forLocale(locale))
+                    .disabledSupplier(()->!plugin.getConfig().getBoolean("shop-tag.enabled") || !plugin.getConfig().getBoolean("shop-tag.favorite-enabled"))
                     .executor(favoriteCommand)
                     .build());
 
@@ -512,6 +514,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .selectivePermission("quickshop.tag.clear")
                     .selectivePermission("quickshop.tag.clearall")
                     .description((locale)->plugin.text().of("tags.commands.tag").forLocale(locale))
+                    .disabledSupplier(()->!plugin.getConfig().getBoolean("shop-tag.enabled"))
                     .executor(tagCommand)
                     .build());
 
@@ -521,6 +524,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .selectivePermission("quickshop.watch")
                     .selectivePermission("quickshop.watch.list")
                     .description((locale)->plugin.text().of("tags.commands.watch").forLocale(locale))
+                    .disabledSupplier(()->!plugin.getConfig().getBoolean("shop-tag.enabled") || !plugin.getConfig().getBoolean("shop-tag.watch-enabled"))
                     .executor(watchCommand)
                     .build());
     init();

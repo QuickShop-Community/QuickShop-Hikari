@@ -370,7 +370,46 @@ public class SubCommand_Tag implements CommandHandler<Player> {
                                     @NotNull final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
-      return List.of("add", "remove", "clear", "clearall", "list", "tags", "tagged", "purge");
+
+      return List.of(plugin.text().of(sender, "tabcomplete.add").legacy(),
+                     plugin.text().of(sender, "tabcomplete.remove").legacy(),
+                     plugin.text().of(sender, "tabcomplete.clear").legacy(),
+                     plugin.text().of(sender, "tabcomplete.clearall").legacy(),
+                     plugin.text().of(sender, "tabcomplete.list").legacy(),
+                     plugin.text().of(sender, "tabcomplete.shops").legacy(),
+                     plugin.text().of(sender, "tabcomplete.tagged").legacy(),
+                     plugin.text().of(sender, "tabcomplete.purge").legacy(),
+                     plugin.text().of(sender, "tabcomplete.tag").legacy());
+    }
+
+    if(parser.getArgs().size() == 2) {
+      switch(parser.getArgs().getFirst().toLowerCase(Locale.ROOT)) {
+        case "add", "remove":
+          return List.of(plugin.text().of(sender, "tabcomplete.tag").legacy());
+        case "clear":
+          return List.of(plugin.text().of(sender, "tabcomplete.shop-id").legacy());
+        case "shops":
+        case "list":
+          return List.of(plugin.text().of(sender, "tabcomplete.page").legacy());
+        case "tagged":
+          return List.of(plugin.text().of(sender, "tabcomplete.tag").legacy());
+        case "purge":
+          return List.of(plugin.text().of(sender, "tabcomplete.tag").legacy());
+        default:
+          return Collections.emptyList();
+      }
+    }
+
+    if(parser.getArgs().size() == 3) {
+      switch(parser.getArgs().getFirst().toLowerCase(Locale.ROOT)) {
+        case "list":
+        case "shops":
+        case "remove":
+          return List.of(plugin.text().of(sender, "tabcomplete.shop-id").legacy());
+        case "tagged":
+          return List.of(plugin.text().of(sender, "tabcomplete.page").legacy());
+        default:
+      }
     }
     return Collections.emptyList();
   }
@@ -378,7 +417,6 @@ public class SubCommand_Tag implements CommandHandler<Player> {
   private void sendUsage(final Player sender) {
 
     plugin.text().of(sender, "command-incorrect",
-                     "/quickshop tag <add/remove/clear/clearall/list/tags/tagged/purge> [tag]")
-            .send();
+                     "/quickshop tag <add/remove/clear/clearall/list/shops/tagged/purge> [tag]").send();
   }
 }

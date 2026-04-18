@@ -5,7 +5,7 @@
 # Discord: https://discord.com/invite/Bu3dVtmsD3
 
 # Do not touch this if you don't know what you're doing!
-config-version: 1039
+config-version: 1040
 
 # Set the default language code the plugin should use
 # Set it to default will use your system language.
@@ -130,6 +130,21 @@ shop-tax:
       # Ultra-wealthy / no upper limit
       # > 5,000,000 → 12%
       -1: 0.12
+
+# Configurations relating to the shop tags functionality
+shop-tag:
+
+  # Should the shop tags functionality be enabled?
+  enabled: true
+
+  # Should the avoid system tag be enabled?
+  avoid-enabled: true
+
+  # Should the favorite system tag be enabled?
+  favorite-enabled: true
+
+  # Should the watch system tag be enabled?
+  watch-enabled: true
 
 # Turn on this option will migrate shop owner to specified account when you set a shop to unlimited.
 # It won't affect exists shops, you will need switch to unlimited again to apply it.

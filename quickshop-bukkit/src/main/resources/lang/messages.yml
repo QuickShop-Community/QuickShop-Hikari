@@ -34,6 +34,14 @@ tabcomplete:
   shop-id: '[shop id]'
   currency: '[currency name]'
   percentage: '[percentage%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>This shop's tax account is now following the global server
   setting.
 blacklisted-item: <red>This item cannot be sold as it is on the blacklist
