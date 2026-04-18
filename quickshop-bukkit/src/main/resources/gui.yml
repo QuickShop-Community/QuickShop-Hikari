@@ -20,7 +20,7 @@
 # Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
 # If you wish to use a value from the language file for display names or lore, start your value with "lang:"
 
-version: 3
+version: 4
 
 # ===================
 # GLOBAL STYLE SETTINGS
@@ -126,8 +126,20 @@ keeper:
       - "lang:gui.keeper.change-price.lore"
     custom-model-data: 0
     slot: 19
-  
-  # Mode toggle (buy/sell/frozen) - concrete for clean look
+
+  freeze-toggle:
+
+    freeze:
+      material: LIGHT_BLUE_CONCRETE
+      custom-model-data: 0
+    unfreeze:
+      material: RED_CONCRETE
+      custom-model-data: 0
+    name: "lang:gui.keeper.freeze-toggle.display"
+    lore:
+      - "lang:gui.keeper.freeze-toggle.lore"
+    slot: 20
+  # Mode toggle (buy/sell) - concrete for clean look
   # {0} = current mode, {1} = next mode
   mode-toggle:
     selling:
@@ -135,9 +147,6 @@ keeper:
       custom-model-data: 0
     buying:
       material: ORANGE_CONCRETE
-      custom-model-data: 0
-    frozen:
-      material: LIGHT_BLUE_CONCRETE
       custom-model-data: 0
     name: "lang:gui.keeper.mode-toggle.display"
     lore:

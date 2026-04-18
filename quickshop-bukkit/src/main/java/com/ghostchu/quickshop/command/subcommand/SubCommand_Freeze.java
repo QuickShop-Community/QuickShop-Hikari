@@ -31,7 +31,7 @@ public class SubCommand_Freeze implements CommandHandler<Player> {
 
     final Shop shop = getLookingShop(sender);
     if(shop != null) {
-      if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
+      if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOP_STATE)
          || plugin.perm().hasPermission(sender, "quickshop.other.freeze")) {
 
         if(!shop.shopState().isTradingAllowed() && shop.shopState().identifier().equalsIgnoreCase("FROZEN")) {

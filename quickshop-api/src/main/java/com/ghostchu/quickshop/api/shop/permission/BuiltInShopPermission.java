@@ -18,6 +18,7 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
   MANAGEMENT_PERMISSION("management_permission", "management-permission"),
   TOGGLE_DISPLAY("toggle_display", "toggle-display"),
   SET_SHOPTYPE("set_shoptype", "set-shoptype"),
+  SET_SHOP_STATE("set_shop_state", "set-shop-state"),
   SET_PRICE("set_price", "set-price"),
   SET_ITEM("set_item", "set-item"),
   SET_STACK_AMOUNT("set_stack_amount", "set-stack-amount"),

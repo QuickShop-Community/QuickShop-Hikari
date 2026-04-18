@@ -306,6 +306,11 @@ shop-type:
   selling: SELLING
   buying: BUYING
   frozen: FROZEN
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -1876,6 +1881,11 @@ gui:
         - "<gray>Current price: <white>{0}</white></gray>"
         - ""
         - "<yellow>Click to change price</yellow>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Change Mode</green></bold>"
       lore:
