@@ -225,12 +225,13 @@ public interface TagManager {
    *
    * @param player     the player to send the results to
    * @param filterTags the tags to filter shops by
+   * @param type       the type of tag filter (e.g., "favorite", "watchlist")
    * @param titleNode  the message node used for the list title
    * @param noEntries  the message node used when no results exist
    *
    * @since 6.3.0.0
    */
-  void listShopsByFilter(Player player, List<String> filterTags, String titleNode, String noEntries);
+  void listShopsByFilter(Player player, final String commandLabel, final int page, final List<String> filterTags, final String type, String titleNode, String noEntries);
 
   /**
    * Checks whether a player has applied a specific tag to a shop.

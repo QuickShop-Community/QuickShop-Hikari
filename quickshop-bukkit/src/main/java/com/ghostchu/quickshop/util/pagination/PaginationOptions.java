@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.util.pagination;
 import com.ghostchu.quickshop.api.shop.trading.TradeOptions;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -37,7 +38,7 @@ public final class PaginationOptions<I> {
   private final String command;
   private final int maxPerPage;
   private final int currentPage;
-  private final Consumer<I> entryConsumer;
+  private final BiConsumer<Integer, I> entryConsumer;
 
   private PaginationOptions(final Builder<I> builder) {
 
@@ -90,7 +91,7 @@ public final class PaginationOptions<I> {
     return currentPage;
   }
 
-  public Consumer<I> entryConsumer() {
+  public BiConsumer<Integer, I> entryConsumer() {
 
     return entryConsumer;
   }
@@ -103,7 +104,7 @@ public final class PaginationOptions<I> {
     private String command;
     private int maxPerPage;
     private int currentPage;
-    private Consumer<I> entryConsumer;
+    private BiConsumer<Integer, I> entryConsumer;
 
     private Builder() { }
 
@@ -154,7 +155,7 @@ public final class PaginationOptions<I> {
       return this;
     }
 
-    public Builder<I> setEntryConsumer(final Consumer<I> entryConsumer) {
+    public Builder<I> setEntryConsumer(final BiConsumer<Integer, I> entryConsumer) {
 
       this.entryConsumer = entryConsumer;
       return this;

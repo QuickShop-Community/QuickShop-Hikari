@@ -72,6 +72,22 @@ public interface TagService {
   String SYS_AVOID = "@avoid";
 
   /**
+   * Generates a command based on the provided tag value and list mode.
+   *
+   * @param stored The tag value as a {@code String}. If {@code null}, the fallback "tag list" command is returned.
+   * @param list   A {@code boolean} indicating whether the command should be in list format or not.
+   *               If {@code true}, the method returns commands in the "list" format (e.g., "favorite list").
+   *               If {@code false}, it returns commands in single format (e.g., "favorite").
+   * @return A {@code String} representing the command based on the input {@code stored} and {@code list} values.
+   *         Possible outputs include:
+   *         - "tag list" if {@code stored} is {@code null}.
+   *         - "favorite", "watch", or "avoid" (and their respective list forms) for predefined system tags.
+   *         - "tag remove <stored>" for custom tags if {@code list} is {@code false}.
+   * @since 6.3.0.0
+   */
+  String commandFromTag(String stored, final boolean list);
+
+  /**
    * Formats a stored tag for display to a player.
    *
    * <p>System tags are converted into friendly display names, while

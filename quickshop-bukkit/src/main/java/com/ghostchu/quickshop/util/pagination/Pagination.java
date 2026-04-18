@@ -82,7 +82,7 @@ public final class Pagination<I> {
     final int end = Math.min(start + options.maxPerPage(), options.entries().size());
     for(int i = start; i < end; i++) {
 
-      options.entryConsumer().accept(options.entries().get(i));
+      options.entryConsumer().accept(i + 1, options.entries().get(i));
     }
   }
 

@@ -29,6 +29,9 @@ tabcomplete:
   price: '[price]'
   name: '[name]'
   range: '[range]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[currency name]'
   percentage: '[percentage%]'
 taxaccount-unset: <green>This shop's tax account is now following the global server
@@ -135,62 +138,64 @@ virtual-player-component-hover: '<gray>This is a virtual player.\n<gray>Refers t
 real-player-component-hover: '<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>"[]"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>.'
 pagination:
   #header: <dark_gray><st>───────────────────────────────────</st><newline><gradient:#7e5bef:#c9b6ff><bold>{0}</bold></gradient><dark_gray> - <gray>Page <white>{1}</white><dark_gray>/</dark_gray><white>{2}</white><newline><dark_gray><st>───────────────────────────────────</st>
-  header: "<dark_gray>[</dark_gray> <green><bold>{0}</bold></green> <dark_gray>]</dark_gray> <gray>Page <white>{1}</white><dark_gray>/</dark_gray><white>{2}</white>"
-  footer: "<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><light_purple>[<white><</white>]</light_purple></hover></click> <gray><white>{1}</white><dark_gray>/</dark_gray><white>{2}</white></gray> <click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><light_purple>[<white>></white>]</light_purple></hover></click>"
+  #header: "<dark_gray>[</dark_gray> <green><bold>{0}</bold></green> <dark_gray>]</dark_gray> <gray>Page <white>{1}</white><dark_gray>/</dark_gray><white>{2}</white>"
+  #footer: "<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><light_purple>[<white><</white>]</light_purple></hover></click> <gray><white>{1}</white><dark_gray>/</dark_gray><white>{2}</white></gray> <click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><light_purple>[<white>></white>]</light_purple></hover></click>"
+  #header: "<green>{0}</green> <gray>(Page <white>{1}</white>/<white>{2}</white>)</gray>:"
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: <yellow>Manage your shop tags.
-    favorite: <yellow>Toggle favorite on looked-at shop.
-    watch: <yellow>Toggle watch on looked-at shop.
-    avoid: <yellow>Toggle avoid on looked-at shop.
+    tag: "<yellow>Manage your shop tags."
+    favorite: "<yellow>Toggle favorite on looked-at shop."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
-    database-error: <red>An error occurred while execution tags operation.
-    list-entry: "<green>Tag:</green> <yellow>{0}</yellow> <light_purple>[<click:run_command:\"{1}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: '<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: {0}'
+    database-error: "<red>An error occurred while executing a tag operation."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
   avoid:
-    added: <green>Shop has been added to your avoid list.
-    removed: <green>Shop has been removed from your avoid list.
-    unable: <red>Unable to toggle avoid on this shop.
-    none: <red>You don't have any shop in your avoid list.
-    list-title: '<green>Avoided Shops:'
-    label: Avoid
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
   favorite:
-    added: <green>Shop has been added to your favorite list.
-    removed: <green>Shop has been removed from your favorite list.
-    unable: <red>Unable to add shop to your favorite list.
-    none: <red>You have no favorite shops.
-    list-title: '<green>Favorited Shops:'
-    label: Favorite
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
   watch:
-    added: <green>You are watching this shop now.
-    removed: <green>You are no longer watching this shop.
-    unable: <red>Unable to toggle watch on this shop.
-    none: <red>You are not watching any shops.
-    list-title: '<green>Watched Shops:'
-    label: Watching
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
   tag:
-    title-avoided-shops: "<gradient:#ff6b6b:#ff9e9e><bold>Avoided Shops</bold></gradient><dark_gray> • <gray>{0} total"
-    title-favorited-shops: "<gradient:#7e5bef:#c9b6ff><bold>Favorited Shops</bold></gradient><dark_gray> • <gray>{0} total"
-    title-watched-shops: "<gradient:#5eead4:#2dd4bf><bold>Watched Shops</bold></gradient><dark_gray> • <gray>{0} total"
-    list-player-shop-title: "<gradient:#7e5bef:#c9b6ff><bold>Shop Tags</bold></gradient><dark_gray> • <gray>{0} total"
-    list-player-shops-title: "<gradient:#7e5bef:#c9b6ff><bold>Your Tagged Shops</bold></gradient><dark_gray> • <gray>{0} shops <dark_gray>•</dark_gray> {1} tags"
-    list-player-shop-entry: "<dark_gray>[<light_purple>#{0}</light_purple>]</dark_gray> <white>Shop</white> <dark_gray>•</dark_gray> <yellow>{1} tags</yellow>"
-    list-title: "<gradient:#7e5bef:#c9b6ff><bold>Shop Tags</bold></gradient><dark_gray> • <gray>{0} total"
-    list-tag-title: "<gradient:#7e5bef:#c9b6ff><bold>Tag Usage</bold></gradient><dark_gray> • <yellow>{0}</yellow> <gray>shops"
-    added: <green>Successfully added tag <aqua>{0}</aqua> to this shop!
-    duplicate: <red>This shop already has tag <aqua>{0}</aqua>!
-    failed-add: <red>An error occurred while adding tag <aqua>{0}</aqua> to this shop.
-    failed-remove: <red>An error occurred while removing tag <aqua>{0}</aqua> from this shop.
-    removed: <green>Successfully removed tag <aqua>{0}</aqua> from this shop!
-    does-not-exist: <red>This shop does not have tag <aqua>{0}</aqua>!
-    cleared: <green>Successfully cleared all tags from this shop!
-    cleared-all: <green>Successfully cleared all tags from all shops!
-    cleared-tag: <green>Successfully cleared tag <aqua>{0}</aqua> from all your tagged shops!
-    no-tags-all: <red>There are no tags on any shop!
-    no-tags: <red>This shop has no tags!
-    no-tagged-shops-player: <red>You have no tags on this shop!
-    no-tagged-shops: <red>You have no tagged shops!
-    no-tagged-shops-tag: <red>You have no shops with tag <aqua>{0}</aqua>!
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-entry: "<aqua>Shop #{1}</aqua> <gray>-</gray> <light_purple>[</light_purple><click:run_command:\"{3}\"><hover:show_text:\"<gray>View all tags on this shop\"><yellow>{2} tags</yellow></hover></click><light_purple>]</light_purple>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    list-tag-title: "<green>Tag usage</green> <gray>(<yellow>{0}</yellow> shops)</gray>"
+    list-tag-shop-entry: "<green>{0}.</green> <aqua>Shop #{1}</aqua> <gray>-</gray> <yellow>{2}</yellow> <gray>-</gray> <aqua>{3}</aqua> {4} <red>[<click:run_command:\"{5}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
   owner: '<green>Owner: {0}'

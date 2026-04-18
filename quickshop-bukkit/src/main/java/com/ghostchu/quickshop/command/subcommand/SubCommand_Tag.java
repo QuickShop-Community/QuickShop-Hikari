@@ -7,6 +7,8 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
 import com.ghostchu.quickshop.util.pagination.Pagination;
 import com.ghostchu.quickshop.util.pagination.PaginationOptions;
+import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,12 +18,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 import static com.ghostchu.quickshop.api.shop.tag.TagService.TOTAL_INDEX;
+import static com.ghostchu.quickshop.shop.tag.QuickShopTagManager.MAX_PER_PAGE;
 
 public class SubCommand_Tag implements CommandHandler<Player> {
-
-  private final int maxPerPage = 5;
 
   private final QuickShop plugin;
 
@@ -41,54 +43,38 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
     final String sub = parser.getArgs().getFirst().toLowerCase(Locale.ROOT);
 
-    // Global commands that do not require looking at a shop.
     switch(sub) {
-      case "tags" -> {
-        handleTags(sender);
-        return;
-      }
-      case "tagged" -> {
-        handleTaggedList(sender, commandLabel, parser);
-        return;
-      }
-      case "purge", "removefromall", "untagall" -> {
-        handleRemoveTagFromAllShops(sender, parser);
-        return;
-      }
-      default -> {
-      }
+      case "tags" -> handleShopsTagged(sender, commandLabel, parser);
+      case "tagged" -> handleTaggedList(sender, commandLabel, parser);
+      case "purge", "removefromall", "untagall" -> handleRemoveTagFromAllShops(sender, parser);
+      case "add" -> handleAdd(sender, parser, 1);
+      case "remove", "del", "delete" -> handleRemove(sender, parser);
+      case "clear" -> handleClear(sender, parser);
+      case "clearall" -> handleClearAll(sender, parser); //todo: confirmation maybe for clear and clearall?
+      case "list" -> handleTags(sender, commandLabel, parser);
+      default -> handleAdd(sender, parser, 0);
     }
-
-    final Shop shop = getLookingShop(sender);
-    if(shop == null) {
-      plugin.text().of(sender, "not-looking-at-shop").send();
-      return;
-    }
-
-    /*if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_TAG)
-       && !plugin.perm().hasPermission(sender, "quickshop.other.tag")) {
-      plugin.text().of(sender, "not-managed-shop").send();
-      return;
-    }*/
 
     System.out.println("Tag command: " + sub + " Parser Args: " + parser.getArgs().size() + "");
 
-    switch(sub) {
-      case "add" -> handleAdd(sender, shop, parser, 1);
-      case "remove", "del", "delete" -> handleRemove(sender, shop, parser);
-      case "clear" -> handleClear(sender, shop);
-      case "clearall" ->
-              handleClearAll(sender, parser); //todo: confirmation maybe for clear and clearall?
-      case "list" -> handleTags(sender, commandLabel, parser, shop);
-      default -> handleAdd(sender, shop, parser, 0);
+    int i = 0;
+    for(final String arg : parser.getArgs()) {
+      System.out.println("Arg " + i + ": " + arg);
+      i++;
     }
   }
 
-  private void handleAdd(final Player sender, final Shop shop,
-                         final CommandParser parser, final int tagIndex) {
+  private void handleAdd(final Player sender, final CommandParser parser, final int tagIndex) {
 
     if(parser.getArgs().size() <= tagIndex) {
       sendUsage(sender);
+      return;
+    }
+
+    final Shop shop = findShop(sender, parser, tagIndex + 1);
+    if(shop == null) {
+
+      plugin.text().of(sender, "not-looking-at-shop").send();
       return;
     }
 
@@ -111,10 +97,17 @@ public class SubCommand_Tag implements CommandHandler<Player> {
     }
   }
 
-  private void handleRemove(final Player sender, final Shop shop, final CommandParser parser) {
+  private void handleRemove(final Player sender, final CommandParser parser) {
 
     if(parser.getArgs().size() < 2) {
       sendUsage(sender);
+      return;
+    }
+
+    final Shop shop = findShop(sender, parser, 2);
+    if(shop == null) {
+
+      plugin.text().of(sender, "not-looking-at-shop").send();
       return;
     }
 
@@ -136,7 +129,14 @@ public class SubCommand_Tag implements CommandHandler<Player> {
     }
   }
 
-  private void handleClear(final Player sender, final Shop shop) {
+  private void handleClear(final Player sender, final CommandParser parser) {
+
+    final Shop shop = findShop(sender, parser, 1);
+    if(shop == null) {
+
+      plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
+    }
 
     final boolean removed = plugin.tagManager().removeAllShopTagsBy(shop.getShopId(), sender.getUniqueId());
     if(removed) {
@@ -161,7 +161,7 @@ public class SubCommand_Tag implements CommandHandler<Player> {
     }
   }
 
-  private void handleTags(final Player sender) {
+  private void handleShopsTagged(final Player sender, @NotNull final String commandLabel, final CommandParser parser) {
 
     final TreeMap<Long, Integer> count = plugin.tagManager().tagsCount(sender.getUniqueId());
     if(count.isEmpty()) {
@@ -169,15 +169,48 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
-    plugin.text().of(sender, "tags.tag.list-player-shops-title", count.get(TOTAL_INDEX), count.size()).send();
-    for(final Map.Entry<Long, Integer> entry : count.entrySet()) {
+    final int page = (parser.getArgs().size() >= 2)? Integer.parseInt(parser.getArgs().get(1)) : 1;
 
-      plugin.text().of(sender, "tags.tag.list-player-shop-entry", entry.getKey(), entry.getValue()).send();
-    }
+    final PaginationOptions<String> options = PaginationOptions
+            .builder()
+            .setCommand(commandLabel + " tag tags")
+            .setCurrentPage(page)
+            .setEntries(List.copyOf(count.keySet()))
+            .setMaxPerPage(MAX_PER_PAGE)
+            .setEntryConsumer((pos, entry)->{
+
+              if(entry.equals(TOTAL_INDEX)) {
+                return;
+              }
+
+              plugin.text().of(sender, "tags.tag.list-player-shop-entry",
+                               pos,
+                               entry,
+                               count.getOrDefault((Long)entry, -1),
+                               commandLabel + " tag list 1 " + entry).send();
+            })
+            .setHeaderLanguageKey("pagination.header")
+            .setFooterLanguageKey("pagination.footer").build();
+
+    final Pagination<String> shops = new Pagination<>(options);
+
+    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-player-shops-title", count.size() - 1, count.get(TOTAL_INDEX)).forLocale();
+
+    shops.printHeader(sender, titleComponent, shops.page(), shops.totalPages());
+    shops.printEntries(sender);
+    shops.printFooter(sender, options.command() + " " + shops.previousPage(),
+                      shops.page(), shops.totalPages(),
+                      options.command() + " " + shops.nextPage());
   }
 
-  private void handleTags(final Player sender, @NotNull final String commandLabel,
-                          final CommandParser parser, final Shop shop) {
+  private void handleTags(final Player sender, @NotNull final String commandLabel, final CommandParser parser) {
+
+    final Shop shop = findShop(sender, parser, 2);
+    if(shop == null) {
+
+      plugin.text().of(sender, "not-looking-at-shop").send();
+      return;
+    }
 
     final List<String> tags = List.copyOf(plugin.tagManager().tagsFilteredByShop(sender.getUniqueId(), shop.getShopId()));
     if(tags.isEmpty()) {
@@ -185,32 +218,33 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
-    final int page = (parser.getArgs().size() >= 3)? Integer.parseInt(parser.getArgs().get(2)) : 1;
+    final int page = (parser.getArgs().size() >= 2)? Integer.parseInt(parser.getArgs().get(1)) : 1;
 
     final PaginationOptions<String> options = PaginationOptions
             .builder()
             .setCommand(commandLabel + " tag list")
             .setCurrentPage(page)
             .setEntries(tags)
-            .setMaxPerPage(maxPerPage)
-            .setEntryConsumer((entry)->{
-              plugin.text().of(sender, "tags.general.list-entry", entry, commandLabel + " tag tagged " + entry, commandLabel + " tag remove " + entry).send();
+            .setMaxPerPage(MAX_PER_PAGE)
+            .setEntryConsumer((pos, entry)->{
+              plugin.text().of(sender, "tags.general.list-entry",
+                               pos,
+                               entry,
+                               commandLabel + " " + plugin.tagManager().service().commandFromTag((String)entry, true),
+                               commandLabel + " " + plugin.tagManager().service().commandFromTag((String)entry, false) + " " + shop.getShopId()).send();
             })
             .setHeaderLanguageKey("pagination.header")
             .setFooterLanguageKey("pagination.footer").build();
 
     final Pagination<String> shops = new Pagination<>(options);
 
-    shops.printHeader(sender, "tags.tag.list-player-shop-entry", shops.page(), shops.totalPages());
+    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-player-shop-title", tags.size()).forLocale();
+
+    shops.printHeader(sender, titleComponent, shops.page(), shops.totalPages());
     shops.printEntries(sender);
     shops.printFooter(sender, options.command() + " " + shops.previousPage(),
                       shops.page(), shops.totalPages(),
                       options.command() + " " + shops.nextPage());
-
-    /*plugin.text().of(sender, "tags.tag.list-player-shop-title", tags.size(), shop.getShopId()).send();
-    for(final String tag : tags) {
-      plugin.text().of(sender, "tags.general.list-entry", tag).send();
-    }*/
   }
 
   private void handleTaggedList(final Player sender, @NotNull final String commandLabel, final CommandParser parser) {
@@ -234,27 +268,34 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
-    /*plugin.text().of(sender, "tags.tag.list-tag-title", shopIds.size()).send();
-    for(final Long shopId : shopIds) {
-      plugin.text().of(sender, "tags.general.list-entry", shopId).send();
-    }*/
-
     final PaginationOptions<Long> options = PaginationOptions
             .builder()
             .setCommand(commandLabel + " tag tagged " + normalized + "")
             .setCurrentPage(page)
             .setEntries(shopIds)
-            .setMaxPerPage(maxPerPage)
-            .setEntryConsumer((entry)->{
-              plugin.text().of(sender, "tags.general.list-entry", entry).send();
+            .setMaxPerPage(MAX_PER_PAGE)
+            .setEntryConsumer((pos, entry)->{
+
+              final Shop shop = plugin.getShopManager().getShop((Long)entry);
+              if(shop == null) {
+                return;
+              }
+
+              //TODO: Option to teleport through list? Maybe add a /qs teleport command for this?
+              //final boolean canTeleport = plugin.perm().hasPermission(sender, "quickshop.tagged.teleport");
+              //final Component tpComponent = plugin.text().of(sender, "tags.tag.list-tag-shop-entry-tp", commandLabel + " tp ").forLocale();
+
+              plugin.text().of(sender, "tags.tag.list-tag-shop-entry", pos, entry, shop.getOwner().getDisplay(), shop.getItem().displayName(), "", commandLabel + " tag remove " + normalized).send();
             })
             .setHeaderLanguageKey("pagination.header")
             .setFooterLanguageKey("pagination.footer").build();
 
     final Pagination<Long> shops = new Pagination<>(options);
 
-    //shops.printHeader(sender, "Placeholder header", shops.page(), shops.totalPages());
-    plugin.text().of(sender, "pagination.header", "Placeholder header", shops.page(), shops.totalPages()).send();
+
+    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-tag-title", shopIds.size()).forLocale();
+
+    shops.printHeader(sender, titleComponent, shops.page(), shops.totalPages());
     shops.printEntries(sender);
     shops.printFooter(sender, options.command() + " " + shops.previousPage(),
                       shops.page(), shops.totalPages(),

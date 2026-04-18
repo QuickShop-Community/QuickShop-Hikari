@@ -20,10 +20,14 @@ package com.ghostchu.quickshop.shop.tag;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tag.PlayerTagIndex;
 import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.ghostchu.quickshop.api.shop.tag.TagService;
 import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
+import com.ghostchu.quickshop.util.pagination.Pagination;
+import com.ghostchu.quickshop.util.pagination.PaginationOptions;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -48,6 +52,8 @@ import static com.ghostchu.quickshop.api.shop.tag.TaggingResult.NOT_FOUND;
  * @since 6.3.0.0
  */
 public class QuickShopTagManager implements TagManager {
+
+  public static final int MAX_PER_PAGE = 5;
 
   private final ConcurrentHashMap<Long, ShopTags> tags = new ConcurrentHashMap<>();
   private final ConcurrentHashMap<UUID, PlayerTagIndex> playerIndexes = new ConcurrentHashMap<>();
@@ -324,7 +330,12 @@ public class QuickShopTagManager implements TagManager {
   }
 
   @Override
-  public void listShopsByFilter(final Player player, final List<String> filterTags, final String titleNode,
+  public void listShopsByFilter(final Player player,
+                                final String commandLabel,
+                                final int page,
+                                final List<String> filterTags,
+                                final String type,
+                                final String titleNode,
                                 final String noEntries) {
 
     final List<Long> shopIds = shopsFilteredByTags(player.getUniqueId(), filterTags);
@@ -333,10 +344,38 @@ public class QuickShopTagManager implements TagManager {
       return;
     }
 
-    plugin.text().of(player, titleNode).send();
-    for(final Long shopId : shopIds) {
-      plugin.text().of(player, "tags.general.list-entry", shopId).send();
-    }
+    final PaginationOptions<Long> options = PaginationOptions
+            .builder()
+            .setCommand(commandLabel + " " + type + " list")
+            .setCurrentPage(page)
+            .setEntries(shopIds)
+            .setMaxPerPage(MAX_PER_PAGE)
+            .setEntryConsumer((pos, entry)->{
+
+              final Shop shop = plugin.getShopManager().getShop((Long)entry);
+              if(shop == null) {
+                return;
+              }
+
+              //TODO: Option to teleport through list? Maybe add a /qs teleport command for this?
+              //final boolean canTeleport = plugin.perm().hasPermission(sender, "quickshop.tagged.teleport");
+              //final Component tpComponent = plugin.text().of(sender, "tags.tag.list-tag-shop-entry-tp", commandLabel + " tp ").forLocale();
+
+              plugin.text().of(player, "tags.tag.list-tag-shop-entry", pos, entry, shop.getOwner().getDisplay(), shop.getItem().displayName(), "", commandLabel + " " + type + " " + entry).send();
+            })
+            .setHeaderLanguageKey("pagination.header")
+            .setFooterLanguageKey("pagination.footer").build();
+
+    final Pagination<Long> shops = new Pagination<>(options);
+
+
+    final Component titleComponent = plugin.text().of(player, titleNode, shopIds.size()).forLocale();
+
+    shops.printHeader(player, titleComponent, shops.page(), shops.totalPages());
+    shops.printEntries(player);
+    shops.printFooter(player, options.command() + " " + shops.previousPage(),
+                      shops.page(), shops.totalPages(),
+                      options.command() + " " + shops.nextPage());
   }
 
   @Override
