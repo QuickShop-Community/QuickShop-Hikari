@@ -31,6 +31,11 @@ public class SubCommand_Watch implements CommandHandler<Player> {
                         @NotNull final String commandLabel,
                         @NotNull final CommandParser parser) {
 
+    if(!plugin.perm().hasPermission(sender, "quickshop.watch")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
     final String tag = plugin.tagManager().service().normalizeTag(TagService.SYS_WATCH, true);
     if(tag == null) {
 
@@ -47,6 +52,11 @@ public class SubCommand_Watch implements CommandHandler<Player> {
     final String sub = parser.getArgs().getFirst();
     switch(sub.toLowerCase(Locale.ROOT)) {
       case "list" -> {
+
+        if(!plugin.perm().hasPermission(sender, "quickshop.watch.list")) {
+          plugin.text().of(sender, "no-permission").send();
+          return;
+        }
 
         final int page = (parser.getArgs().size() >= 2)? Integer.parseInt(parser.getArgs().get(1)) : 1;
 

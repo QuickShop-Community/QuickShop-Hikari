@@ -41,10 +41,15 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
     final String sub = parser.getArgs().getFirst().toLowerCase(Locale.ROOT);
 
     switch(sub) {
-      case "tags" -> handleShopsTagged(sender, commandLabel, parser);
+      case "shops" -> handleShopsTagged(sender, commandLabel, parser);
       case "tagged" -> handleTaggedList(sender, commandLabel, parser);
       case "purge", "removefromall", "untagall" -> handleRemoveTagFromAllShops(sender, parser);
       case "add" -> handleAdd(sender, parser, 1);
@@ -65,6 +70,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
   }
 
   private void handleAdd(final Player sender, final CommandParser parser, final int tagIndex) {
+
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.add")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
 
     if(parser.getArgs().size() <= tagIndex) {
       sendUsage(sender);
@@ -99,6 +109,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
   private void handleRemove(final Player sender, final CommandParser parser) {
 
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.delete")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
     if(parser.getArgs().size() < 2) {
       sendUsage(sender);
       return;
@@ -131,6 +146,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
   private void handleClear(final Player sender, final CommandParser parser) {
 
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.clear")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
     final Shop shop = findShop(sender, parser, 1);
     if(shop == null) {
 
@@ -148,7 +168,7 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
   private void handleClearAll(final Player sender, final CommandParser parser) {
 
-    if(!plugin.perm().hasPermission(sender, "quickshop.tag.admin.clearall")) {
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.clearall")) {
       plugin.text().of(sender, "no-permission").send();
       return;
     }
@@ -163,6 +183,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
   private void handleShopsTagged(final Player sender, @NotNull final String commandLabel, final CommandParser parser) {
 
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.shops")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
     final TreeMap<Long, Integer> count = plugin.tagManager().tagsCount(sender.getUniqueId());
     if(count.isEmpty()) {
       plugin.text().of(sender, "tags.tag.no-tagged-shops").send();
@@ -173,7 +198,7 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
     final PaginationOptions<String> options = PaginationOptions
             .builder()
-            .setCommand(commandLabel + " tag tags")
+            .setCommand(commandLabel + " tag shops")
             .setCurrentPage(page)
             .setEntries(List.copyOf(count.keySet()))
             .setMaxPerPage(MAX_PER_PAGE)
@@ -204,6 +229,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
   }
 
   private void handleTags(final Player sender, @NotNull final String commandLabel, final CommandParser parser) {
+
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.list")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
 
     final Shop shop = findShop(sender, parser, 2);
     if(shop == null) {
@@ -248,6 +278,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
   }
 
   private void handleTaggedList(final Player sender, @NotNull final String commandLabel, final CommandParser parser) {
+
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.tagged")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
 
     if(parser.getArgs().size() < 2) {
       sendUsage(sender);
@@ -304,6 +339,11 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
   private void handleRemoveTagFromAllShops(final Player sender, final CommandParser parser) {
 
+    if(!plugin.perm().hasPermission(sender, "quickshop.tag.purge")) {
+      plugin.text().of(sender, "no-permission").send();
+      return;
+    }
+
     if(parser.getArgs().size() < 2) {
       sendUsage(sender);
       return;
@@ -321,7 +361,7 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       return;
     }
 
-    plugin.text().of(sender, "tags.tag.clearing-tag", normalized).send();
+    plugin.text().of(sender, "tags.tag.cleared-tag", normalized).send();
   }
 
   @NotNull

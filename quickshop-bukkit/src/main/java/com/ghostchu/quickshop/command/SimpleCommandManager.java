@@ -492,6 +492,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     registerCmd(
             CommandContainer.builder()
                     .prefix("favorite")
+                    .selectivePermission("quickshop.favorite")
+                    .selectivePermission("quickshop.favorite.list")
                     .description((locale)->plugin.text().of("tags.commands.favorite").forLocale(locale))
                     .executor(favoriteCommand)
                     .build());
@@ -499,6 +501,16 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     registerCmd(
             CommandContainer.builder()
                     .prefix("tag")
+                    .selectivePermission("quickshop.tag")
+                    .selectivePermission("quickshop.tag.add")
+                    .selectivePermission("quickshop.tag.delete")
+                    .selectivePermission("quickshop.tag.list")
+                    .selectivePermission("quickshop.tag.purge")
+                    .selectivePermission("quickshop.tag.shops")
+                    .selectivePermission("quickshop.tag.tagged")
+                    .selectivePermission("quickshop.tag.tagged.teleport")
+                    .selectivePermission("quickshop.tag.clear")
+                    .selectivePermission("quickshop.tag.clearall")
                     .description((locale)->plugin.text().of("tags.commands.tag").forLocale(locale))
                     .executor(tagCommand)
                     .build());
@@ -506,6 +518,8 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     registerCmd(
             CommandContainer.builder()
                     .prefix("watch")
+                    .selectivePermission("quickshop.watch")
+                    .selectivePermission("quickshop.watch.list")
                     .description((locale)->plugin.text().of("tags.commands.watch").forLocale(locale))
                     .executor(watchCommand)
                     .build());
