@@ -346,32 +346,14 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    if(shop.isFrozen()) {
-      plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
-      return false;
-    }
-
     if(shopIsNotValid(buyerQUser, info, shop)) {
       return false;
     }
+
     int space = shop.getRemainingSpace();
+
     if(space == -1) {
-      space = 10000;
-    }
-    if(space < amount) {
-      plugin.text().of(buyer, "shop-has-no-space", Component.text(space), Util.getItemStackName(shop.getItem())).send();
-      return false;
-    }
-    final int count = Util.countItems(buyerInventory, shop);
-    // Not enough items
-    if(amount > count) {
-      plugin.text().of(buyer, "you-dont-have-that-many-items", Component.text(count), Util.getItemStackName(shop.getItem())).send();
-      return false;
-    }
-    if(amount < 1) {
-      // & Dumber
-      plugin.text().of(buyer, "negative-amount").send();
-      return false;
+      space = Integer.MAX_VALUE;
     }
 
     // Money handling
@@ -409,27 +391,41 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.from(null).build();
     }
 
-    try {
-      final TradeResult result = shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
+    //run our trade service stuff
+    final TradeResult result = shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
 
-      if(!result.success()) {
+    if(!result.success()) {
 
-        if(result.failureReason() == TradeFailureReason.INSUFFICIENT_FUNDS) {
-
-          plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
-                           format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()),
-                           format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
+      switch(result.failureReason()) {
+        case INSUFFICIENT_FUNDS-> {
+          plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
           return false;
         }
+        case SHOP_NO_SPACE -> {
 
-        plugin.logger().warn("Failed to processing purchase, rolling back...");
-        plugin.text().of(buyer, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
-        return false;
+          plugin.text().of(buyer, "shop-has-no-space", Component.text(space), Util.getItemStackName(shop.getItem())).send();
+          return false;
+        }
+        case SHOP_FROZEN -> {
+
+          plugin.text().of(buyer, "shop-cannot-trade-when-freezing").send();
+          return false;
+        }
+        case INVALID_AMOUNT -> {
+
+          plugin.text().of(buyer, "negative-amount").send();
+          return false;
+        }
+        case ITEM_NOT_ENOUGH -> {
+
+          final int count = Util.countItems(buyerInventory, shop);
+          plugin.text().of(buyer, "you-dont-have-that-many-items", Component.text(count), Util.getItemStackName(shop.getItem())).send();
+          return false;
+        }
       }
 
-    } catch(final Exception shopError) {
-      plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
-      plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
+      plugin.logger().warn("Failed to processing purchase, rolling back...");
+      plugin.text().of(buyer, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
       return false;
     }
 
@@ -589,39 +585,16 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    if(shop.isFrozen()) {
-      plugin.text().of(seller, "shop-cannot-trade-when-freezing").send();
-      return false;
-    }
-
     int stock = shop.getRemainingStock();
     if(stock == -1) {
-      stock = 10000;
+      stock = Integer.MAX_VALUE;
     }
 
     /*if(shop.isStackingShop()) {
       stock = stock * shop.getItem().getAmount();
     }*/
 
-    if(stock < amount) {
-      plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
-      return false;
-    }
     final int playerSpace = Util.countSpace(sellerInventory, shop);
-    if(playerSpace < amount) {
-      plugin.text().of(seller, "inventory-space-full", amount, playerSpace).send();
-      return false;
-    }
-    if(amount < 1) {
-      // & Dumber
-      plugin.text().of(seller, "negative-amount").send();
-      return false;
-    }
-    final int pSpace = Util.countSpace(sellerInventory, shop);
-    if(amount > pSpace) {
-      plugin.text().of(seller, "not-enough-space", Component.text(pSpace)).send();
-      return false;
-    }
 
     final TaxRates taxRates = taxManager.provider().calculateTax(shop, sellerQUser);
 
@@ -656,23 +629,38 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.to(null).build();
     }
 
-    try {
-      final TradeResult result = shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
-      if(!result.success()) {
+    final TradeResult result = shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
+    if(!result.success()) {
 
-        if(result.failureReason() == TradeFailureReason.INSUFFICIENT_FUNDS) {
-
+      switch(result.failureReason()) {
+        case INSUFFICIENT_FUNDS-> {
           plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
           return false;
         }
+        case SHOP_FROZEN -> {
 
-        plugin.logger().warn("Failed to processing purchase, rolling back...");
-        plugin.text().of(seller, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
-        return false;
+          plugin.text().of(seller, "shop-cannot-trade-when-freezing").send();
+          return false;
+        }
+        case INVALID_AMOUNT -> {
+
+          plugin.text().of(seller, "negative-amount").send();
+          return false;
+        }
+        case STOCK_TOO_LOW -> {
+
+          plugin.text().of(seller, "shop-stock-too-low", Component.text(stock), Util.getItemStackName(shop.getItem())).send();
+          return false;
+        }
+        case INVENTORY_FULL -> {
+
+          plugin.text().of(seller, "inventory-space-full", amount, playerSpace).send();
+          return false;
+        }
       }
-    } catch(final Exception shopError) {
-      plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
-      plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
+
+      plugin.logger().warn("Failed to processing purchase, rolling back...");
+      plugin.text().of(seller, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
       return false;
     }
 

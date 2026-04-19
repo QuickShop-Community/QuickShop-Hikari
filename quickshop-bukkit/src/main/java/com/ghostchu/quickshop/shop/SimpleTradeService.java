@@ -308,6 +308,20 @@ public class SimpleTradeService implements TradeService {
       }
     }
 
+    final int buyerSpace = Util.countSpace(buyerInventory, shop);
+    if(buyerSpace < amount) {
+      return new TradePreview(
+              TradeType.BUY_FROM_SHOP,
+              amount,
+              Math.max(0, buyerSpace),
+              unitPrice(shop),
+              totalPrice(shop, Math.max(0, buyerSpace)),
+              false,
+              TradeFailureReason.INVENTORY_FULL,
+              "Buyer does not have enough inventory space."
+      );
+    }
+
     return new TradePreview(
             TradeType.BUY_FROM_SHOP,
             amount,
@@ -368,6 +382,28 @@ public class SimpleTradeService implements TradeService {
                 false,
                 TradeFailureReason.INSUFFICIENT_FUNDS,
                 "Shop cannot afford that many items."
+        );
+      }
+
+      int space = shop.getRemainingSpace();
+
+      if(space == -1) {
+        space = Integer.MAX_VALUE;
+      }
+
+      final int stackSize = Math.max(1, shop.getItem().getAmount());
+      final int maxTrades = space / stackSize;
+
+      if(amount > maxTrades) {
+        return new TradePreview(
+                TradeType.SELL_TO_SHOP,
+                amount,
+                Math.max(0, maxTrades),
+                unitPrice(shop),
+                totalPrice(shop, Math.max(0, maxTrades)),
+                false,
+                TradeFailureReason.SHOP_NO_SPACE,
+                "Shop does not have enough space."
         );
       }
     }

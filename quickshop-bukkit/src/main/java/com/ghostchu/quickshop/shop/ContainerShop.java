@@ -294,7 +294,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public TradeResult buy(@NotNull final QUser buyer,
                   @NotNull final InventoryWrapper buyerInventory,
                   @NotNull final Location loc2Drop,
-                  final int amount) throws Exception {
+                  final int amount) {
 
     return plugin.getShopManager().tradeService().executeSellToShop(this, buyer, buyerInventory, loc2Drop, amount);
   }
@@ -1644,7 +1644,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public TradeResult sell(@NotNull final QUser seller,
                    @NotNull final InventoryWrapper sellerInventory,
                    @NotNull final Location loc2Drop,
-                   final int amount) throws Exception {
+                   final int amount) {
     return plugin.getShopManager().tradeService().executeBuyFromShop(this, seller, sellerInventory, loc2Drop, amount);
   }
 

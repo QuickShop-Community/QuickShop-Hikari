@@ -69,7 +69,7 @@ public interface ShopTrading {
    *
    * @throws Exception Possible exception thrown if anything wrong.
    */
-  TradeResult buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+  TradeResult buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt);
 
   /**
    * Execute sell action for player with x items.
@@ -82,5 +82,5 @@ public interface ShopTrading {
    *
    * @throws Exception Possible exception thrown if anything wrong.
    */
-  TradeResult sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+  TradeResult sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt);
 }
