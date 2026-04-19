@@ -44,6 +44,9 @@ public class SubCommand_Freeze implements CommandHandler<Player> {
           shop.shopState(FROZEN_STATE);
           plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
         }
+
+        Util.playSound(sender, "effect.sound.shop.freeze-toggle");
+        Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.freeze-toggle");
       } else {
         plugin.text().of(sender, "not-managed-shop").send();
       }

@@ -67,7 +67,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
       return;
     }
 
-    ShopUtil.setPrice(plugin, QUserImpl.createFullFilled(sender), priceDouble, shop);
+    final boolean changed = ShopUtil.setPrice(plugin, QUserImpl.createFullFilled(sender), priceDouble, shop);
+    if(changed) {
+
+      Util.playSound(sender, "effect.sound.shop.price-change");
+      Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.price-change");
+    }
   }
 
   @NotNull

@@ -1,0 +1,466 @@
+# Internal configuration version.
+# Do not change this unless QuickShop support instructs you to.
+config-version: 1
+
+# Special in-game effect
+effect:
+
+  sound:
+
+    # Guide:
+    # - enabled: Enables all sounds in this section.
+    # - volume: Default volume for all sounds.
+    # - pitch: Default pitch for all sounds.
+    # - Each subsection (command, trade, etc.) can be enabled/disabled individually.
+    # - Each sound entry supports:
+    #   sound: The Bukkit sound name.
+    #   volume: Overrides default volume (optional).
+    #   pitch: Overrides default pitch (optional).
+
+    # Enable QuickShop sound effects.
+    enabled: true
+
+    # Default volume for all sounds.
+    volume: 1.0
+
+    # Default pitch for all sounds.
+    pitch: 1.0
+
+    # Play a sound when the player uses tab completion for QuickShop commands.
+    ontabcomplete: true
+
+    # Play a sound when the player executes a QuickShop command.
+    oncommand: true
+
+    # Play a sound when the player clicks a shop sign, shop block, or container.
+    onclick: true
+
+    # Interaction sounds
+    interaction:
+
+      # Enable sounds for shop interaction and GUI usage.
+      enabled: true
+
+      # Sound played when clicking a shop.
+      click:
+        enabled: true
+        sound: UI_BUTTON_CLICK
+        volume: 0.7
+        pitch: 1.2
+
+      # Sound played when opening a GUI.
+      open:
+        enabled: true
+        sound: BLOCK_CHEST_OPEN
+
+      # Sound played when closing a GUI.
+      close:
+        enabled: true
+        sound: BLOCK_CHEST_CLOSE
+
+      # Sound played when changing pages.
+      page:
+        enabled: true
+        sound: ITEM_BOOK_PAGE_TURN
+        pitch: 1.1
+
+      # Sound played when modifying filters or sorting.
+      modify:
+        enabled: true
+        sound: BLOCK_LEVER_CLICK
+        pitch: 0.9
+
+    # Trade sounds
+    trade:
+      # Enable sounds for trading actions.
+      enabled: true
+
+      # Successful buy.
+      buy:
+        enabled: true
+        sound: ENTITY_EXPERIENCE_ORB_PICKUP
+        pitch: 1.1
+
+      # Successful sell.
+      sell:
+        enabled: true
+        sound: ENTITY_VILLAGER_TRADE
+
+      # Bulk trade success.
+      bulk:
+        enabled: true
+        sound: ENTITY_PLAYER_LEVELUP
+        pitch: 1.2
+
+      # Trade failed.
+      fail:
+        enabled: true
+        sound: ENTITY_VILLAGER_NO
+        pitch: 0.6
+
+      # Not enough money.
+      no-money:
+        enabled: true
+        sound: ENTITY_VILLAGER_NO
+        pitch: 0.5
+
+      # Inventory full.
+      inventory-full:
+        enabled: true
+        sound: BLOCK_NOTE_BLOCK_BASS
+        pitch: 0.5
+
+      # Out of stock.
+      out-of-stock:
+        enabled: true
+        sound: ENTITY_ITEM_BREAK
+        pitch: 0.9
+
+    # Shop management sounds
+    shop:
+      # Enable sounds for shop management.
+      enabled: true
+
+      # Shop creation.
+      create:
+        enabled: true
+        sound: BLOCK_WOOD_PLACE
+
+      # Shop removal.
+      remove:
+        enabled: true
+        sound: ITEM_SHIELD_BREAK
+        pitch: 0.8
+
+      # Price change.
+      price-change:
+        enabled: true
+        sound: BLOCK_NOTE_BLOCK_CHIME
+        pitch: 1.3
+
+      # Mode change.
+      mode-change:
+        enabled: true
+        sound: BLOCK_NOTE_BLOCK_BELL
+        pitch: 1.2
+
+      # Shop freeze/unfreeze toggle
+      freeze-toggle:
+        enabled: true
+        sound: BLOCK_AMETHYST_BLOCK_RESONATE
+        volume: 1.0
+        pitch: 0.9
+
+      # Display change
+      toggle-display:
+        enabled: true
+        sound: BLOCK_AMETHYST_BLOCK_CHIME
+        volume: 1.0
+        pitch: 1.2
+
+      # Open shop inventory.
+      inventory:
+        enabled: true
+        sound: BLOCK_CHEST_OPEN
+
+      # Open history.
+      history:
+        enabled: true
+        sound: ITEM_BOOK_PAGE_TURN
+        pitch: 1.1
+
+    # Command-related sounds
+    commands:
+      # Enable command sounds
+      enabled: true
+
+      # Command execution
+      execute:
+        enabled: true
+        sound: UI_BUTTON_CLICK
+        volume: 0.8
+
+      # Tab complete feedback
+      tab-complete:
+        enabled: true
+        sound: UI_BUTTON_CLICK
+        volume: 0.5
+        pitch: 1.5
+
+      # Command success
+      success:
+        enabled: true
+        sound: ENTITY_EXPERIENCE_ORB_PICKUP
+        pitch: 1.3
+
+      # Command failure
+      failure:
+        enabled: true
+        sound: BLOCK_NOTE_BLOCK_BASS
+        pitch: 0.6
+
+
+  # Particle related
+  particle:
+    # Guide:
+    # - enabled: Enables all particles in this section.
+    # - self-only: Show particles only to the player performing the action.
+    # - receiver-distance: Range for nearby players if self-only is false.
+    # - receiver-by-distance: Use spherical distance instead of cubic.
+    # - Each particle entry supports:
+    #   particle: Bukkit particle name.
+    #   count: Number of particles.
+    #   offset: Spread (x, y, z).
+    #   extra: Speed or additional data depending on particle.
+    # - Some particles support extra sections:
+    #   dust: color + scale
+    #   dust-transition: from/to colors + scale
+    #   block: material
+    #   item: material
+
+    # Enable QuickShop particle effects.
+    enabled: true
+
+    # Show particles only to the player performing the action.
+    self-only: true
+
+    # Distance for sending particles to nearby players.
+    receiver-distance: 24
+
+    # Use spherical distance checks.
+    receiver-by-distance: true
+
+    # Interaction particles
+    interaction:
+      # Enable particles for interaction and GUI usage.
+      enabled: true
+
+      # Clicking a shop.
+      click:
+        particle: WAX_ON
+        count: 4
+        offset:
+          x: 0.25
+          y: 0.6
+          z: 0.25
+
+      # Opening GUI.
+      open:
+        particle: ENCHANT
+        count: 8
+        extra: 0.2
+        offset:
+          x: 0.35
+          y: 0.8
+          z: 0.35
+
+      # Closing GUI.
+      close:
+        particle: POOF
+        count: 6
+        extra: 0.02
+        offset:
+          x: 0.25
+          y: 0.8
+          z: 0.25
+
+      # Changing pages.
+      page:
+        particle: DUST_COLOR_TRANSITION
+        count: 6
+        offset:
+          x: 0.35
+          y: 0.8
+          z: 0.35
+        dust-transition:
+          from: '#7EC8FF'
+          to: '#FFFFFF'
+          scale: 1.0
+
+      # Changing filters or sorting.
+      modify:
+        particle: COMPOSTER
+        count: 5
+        offset:
+          x: 0.3
+          y: 0.75
+          z: 0.3
+
+    # Trade particles
+    trade:
+      # Enable particles for trading.
+      enabled: true
+
+      # Successful buy.
+      buy:
+        particle: DUST
+        count: 10
+        offset:
+          x: 0.4
+          y: 0.9
+          z: 0.4
+        dust:
+          color: '#7CFF7C'
+          scale: 1.2
+
+      # Successful sell.
+      sell:
+        particle: DUST
+        count: 10
+        offset:
+          x: 0.4
+          y: 0.9
+          z: 0.4
+        dust:
+          color: '#FFD66B'
+          scale: 1.2
+
+      # Bulk trade.
+      bulk:
+        particle: FIREWORK
+        count: 14
+        extra: 0.15
+        offset:
+          x: 0.5
+          y: 1.0
+          z: 0.5
+
+      # Trade failed.
+      fail:
+        particle: SMOKE
+        count: 6
+        extra: 0.03
+        offset:
+          x: 0.25
+          y: 0.8
+          z: 0.25
+
+      # Partial trade.
+      partial:
+        particle: CLOUD
+        count: 7
+        extra: 0.01
+        offset:
+          x: 0.35
+          y: 0.8
+          z: 0.35
+
+      # Not enough money.
+      no-money:
+        particle: ANGRY_VILLAGER
+        count: 1
+        offset:
+          x: 0.0
+          y: 1.0
+          z: 0.0
+
+      # Inventory full.
+      inventory-full:
+        particle: ITEM
+        count: 4
+        offset:
+          x: 0.2
+          y: 1.0
+          z: 0.2
+        item:
+          material: CHEST
+
+      # Out of stock.
+      out-of-stock:
+        particle: BLOCK_CRUMBLE
+        count: 5
+        offset:
+          x: 0.25
+          y: 0.7
+          z: 0.25
+        block:
+          material: BARRIER
+
+    # Shop particles
+    shop:
+      # Enable particles for shop management.
+      enabled: true
+
+      # Shop creation.
+      create:
+        particle: BLOCK
+        count: 8
+        offset:
+          x: 0.3
+          y: 0.6
+          z: 0.3
+        block:
+          material: OAK_PLANKS
+
+      # Shop removal.
+      remove:
+        particle: BLOCK_CRUMBLE
+        count: 10
+        offset:
+          x: 0.35
+          y: 0.8
+          z: 0.35
+        block:
+          material: OAK_SIGN
+
+      # Price change.
+      price-change:
+        particle: DUST_COLOR_TRANSITION
+        count: 8
+        offset:
+          x: 0.3
+          y: 0.9
+          z: 0.3
+        dust-transition:
+          from: '#FFD54A'
+          to: '#7CFF7C'
+          scale: 1.0
+
+      # Mode change.
+      mode-change:
+        particle: TRAIL
+        count: 4
+        offset:
+          x: 0.3
+          y: 0.8
+          z: 0.3
+        trail:
+          color: '#7EC8FF'
+          duration: 20
+
+      # Shop freeze/unfreeze toggle
+      freeze-toggle:
+        particle: SNOWFLAKE
+        count: 20
+        offset:
+         x: 0.4
+         y: 0.6
+         z: 0.4
+
+      # Display toggled
+      toggle-display:
+        particle: ENCHANT
+        count: 15
+        offset:
+          x: 0.3
+          y: 0.5
+          z: 0.3
+
+      # History view.
+      history:
+        particle: ENCHANT
+        count: 8
+        extra: 0.15
+        offset:
+          x: 0.35
+          y: 0.8
+          z: 0.35
+
+      # Staff management.
+      staff:
+        particle: WITCH
+        count: 6
+        offset:
+          x: 0.25
+          y: 0.9
+          z: 0.25

@@ -33,6 +33,7 @@ import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
+import com.ghostchu.quickshop.config.EffectsConfig;
 import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.config.MainConfig;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
@@ -201,6 +202,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @ApiStatus.Internal
   private static QuickShop instance;
   private MainConfig config;
+  private EffectsConfig effectsConfig;
   /**
    * The manager to check permissions.
    */
@@ -491,6 +493,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       logger.error("Failed to load config.yml, The binary file of QuickShop may be corrupted. Please re-download from our website.");
     }
 
+    this.effectsConfig = new EffectsConfig(this);
+    if(!this.effectsConfig.load()) {
+      logger.error("Failed to load effects.yml, The binary file of QuickShop may be corrupted. Please re-download from our website.");
+    }
+
     /*try {
       javaPlugin.saveDefaultConfig();
     } catch(final IllegalArgumentException resourceNotFoundException) {
@@ -579,6 +586,16 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public YamlDocument getConfig() {
 
     return this.config.getYaml();
+  }
+
+  public EffectsConfig effectsConfig() {
+    return this.effectsConfig;
+  }
+
+  @NotNull
+  public YamlDocument getEffects() {
+
+    return this.effectsConfig.getYaml();
   }
 
   private void updateConfig() {

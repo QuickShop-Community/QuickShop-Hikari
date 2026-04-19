@@ -158,61 +158,65 @@ public class Util {
 
   public static void playSound(@NotNull final Player player, @NotNull final String config) {
 
-    final boolean globalEnabled = plugin.getConfig().getBoolean("effect.sound.enabled");
+    final boolean globalEnabled = plugin.getEffects().getBoolean("effect.sound.enabled");
     if(!globalEnabled) {
       return;
     }
 
-    final float globalVolume = plugin.getConfig().getFloat("effect.sound.volume");
-    final float globalPitch = plugin.getConfig().getFloat("effect.sound.pitch");
+    final float globalVolume = plugin.getEffects().getFloat("effect.sound.volume");
+    final float globalPitch = plugin.getEffects().getFloat("effect.sound.pitch");
 
     final Route route = Route.fromString(config);
 
-    if(!plugin.getConfig().contains(route)) {
+    if(!plugin.getEffects().contains(route)) {
       return;
     }
 
     final Route parentEnabled = route.parent().add("enabled");
-    if(plugin.getConfig().contains(parentEnabled) && !plugin.getConfig().getBoolean(parentEnabled)) {
+    if(plugin.getEffects().contains(parentEnabled) && !plugin.getEffects().getBoolean(parentEnabled)) {
       return;
     }
 
-    final boolean enabled = plugin.getConfig().getBoolean(config + ".enabled", true);
+    final boolean enabled = plugin.getEffects().getBoolean(config + ".enabled", true);
     if(!enabled) {
       return;
     }
 
-    final float volume = plugin.getConfig().getFloat(config + ".volume", globalVolume);
-    final float pitch = plugin.getConfig().getFloat(config + ".pitch", globalPitch);
+    final float volume = plugin.getEffects().getFloat(config + ".volume", globalVolume);
+    final float pitch = plugin.getEffects().getFloat(config + ".pitch", globalPitch);
 
     //final Registry<Sound> registryAccess = RegistryAccess.registryAccess().getRegistry(RegistryKey.SOUND_EVENT);
 
-    player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString(config + ".sound")), volume, pitch);
+    player.playSound(player.getLocation(), Sound.valueOf(plugin.getEffects().getString(config + ".sound")), volume, pitch);
   }
-
   public static void playParticle(@NotNull final Player player, @NotNull final String config) {
 
-    if(!plugin.getConfig().getBoolean("effect.particle.enabled")) {
+    playParticle(player, player.getLocation(), config);
+  }
+
+  public static void playParticle(@NotNull final Player player, final Location location, @NotNull final String config) {
+
+    if(!plugin.getEffects().getBoolean("effect.particle.enabled")) {
       return;
     }
 
     final Route route = Route.fromString(config);
-    if(!plugin.getConfig().contains(route)) {
+    if(!plugin.getEffects().contains(route)) {
       return;
     }
 
     final Route parentEnabled = route.parent().add("enabled");
-    if(plugin.getConfig().contains(parentEnabled) && !plugin.getConfig().getBoolean(parentEnabled)) {
+    if(plugin.getEffects().contains(parentEnabled) && !plugin.getEffects().getBoolean(parentEnabled)) {
 
       return;
     }
 
-    if(!plugin.getConfig().getBoolean(config + ".enabled", true)) {
+    if(!plugin.getEffects().getBoolean(config + ".enabled", true)) {
 
       return;
     }
 
-    final String particleName = plugin.getConfig().getString(config + ".particle", "");
+    final String particleName = plugin.getEffects().getString(config + ".particle", "");
     if(particleName == null || particleName.isEmpty()) {
 
       return;
@@ -228,66 +232,74 @@ public class Util {
       return;
     }
 
-    final int count = plugin.getConfig().getInt(config + ".count", 1);
-    final double extra = plugin.getConfig().getDouble(config + ".extra", 0.0);
+    final int count = plugin.getEffects().getInt(config + ".count", 1);
+    final double extra = plugin.getEffects().getDouble(config + ".extra", 0.0);
 
-    final double offsetX = plugin.getConfig().getDouble(config + ".offset.x", 0.0);
-    final double offsetY = plugin.getConfig().getDouble(config + ".offset.y", 0.0);
-    final double offsetZ = plugin.getConfig().getDouble(config + ".offset.z", 0.0);
+    final double offsetX = plugin.getEffects().getDouble(config + ".offset.x", 0.0);
+    final double offsetY = plugin.getEffects().getDouble(config + ".offset.y", 0.0);
+    final double offsetZ = plugin.getEffects().getDouble(config + ".offset.z", 0.0);
 
-    final boolean selfOnly = plugin.getConfig().getBoolean("effect.particle.self-only", true);
-    final int receiverDistance = plugin.getConfig().getInt("effect.particle.receiver-distance", 24);
-    final boolean byDistance = plugin.getConfig().getBoolean("effect.particle.receiver-by-distance", true);
+    final boolean selfOnly = plugin.getEffects().getBoolean("effect.particle.self-only", true);
+    final int receiverDistance = plugin.getEffects().getInt("effect.particle.receiver-distance", 24);
+    final boolean byDistance = plugin.getEffects().getBoolean("effect.particle.receiver-by-distance", true);
 
-    final Location loc = player.getLocation().add(0, 1, 0);
+    final Location loc = location.clone().add(0, 1, 0);
 
-    final ParticleBuilder builder = new ParticleBuilder(particle)
+    ParticleBuilder builder = new ParticleBuilder(particle)
             .location(loc)
             .count(count)
             .extra(extra)
             .offset(offsetX, offsetY, offsetZ);
 
-    if(plugin.getConfig().contains(config + ".dust.color")) {
+    if(plugin.getEffects().contains(config + ".dust.color")) {
 
-      final Color color = parseColor(plugin.getConfig().getString(config + ".dust.color"));
-      final float scale = (float) plugin.getConfig().getFloat(config + ".dust.scale", 1.0f);
+      final Color color = parseColor(plugin.getEffects().getString(config + ".dust.color"));
+      final float scale = (float) plugin.getEffects().getFloat(config + ".dust.scale", 1.0f);
 
-      builder.color(color, scale);
+      builder = builder.color(color, scale);
     }
 
-    if(plugin.getConfig().contains(config + ".dust-transition.from")) {
+    if(plugin.getEffects().contains(config + ".dust-transition.from")) {
 
-      final Color from = parseColor(plugin.getConfig().getString(config + ".dust-transition.from"));
-      final Color to = parseColor(plugin.getConfig().getString(config + ".dust-transition.to"));
-      final float scale = (float) plugin.getConfig().getFloat(config + ".dust-transition.scale", 1.0f);
+      final Color from = parseColor(plugin.getEffects().getString(config + ".dust-transition.from"));
+      final Color to = parseColor(plugin.getEffects().getString(config + ".dust-transition.to"));
+      final float scale = (float) plugin.getEffects().getFloat(config + ".dust-transition.scale", 1.0f);
 
-      builder.colorTransition(from, to, scale);
+      builder = builder.colorTransition(from, to, scale);
     }
 
-    if(plugin.getConfig().contains(config + ".block.material")) {
+    if(plugin.getEffects().contains(config + ".trail")) {
 
-      final Material mat = Material.matchMaterial(plugin.getConfig().getString(config + ".block.material"));
+      final Color color = parseColor(plugin.getEffects().getString(config + ".trail.color"));
+      final int duration = plugin.getEffects().getInt(config + ".trail.duration", 20);
+
+      builder = builder.data(new Particle.Trail(loc, color, duration));
+    }
+
+    if(plugin.getEffects().contains(config + ".block.material")) {
+
+      final Material mat = Material.matchMaterial(plugin.getEffects().getString(config + ".block.material"));
       if(mat != null) {
 
-        builder.data(mat.createBlockData());
+        builder = builder.data(mat.createBlockData());
       }
     }
 
-    if(plugin.getConfig().contains(config + ".item.material")) {
+    if(plugin.getEffects().contains(config + ".item.material")) {
 
-      final Material mat = Material.matchMaterial(plugin.getConfig().getString(config + ".item.material"));
+      final Material mat = Material.matchMaterial(plugin.getEffects().getString(config + ".item.material"));
       if(mat != null) {
 
-        builder.data(new ItemStack(mat));
+        builder = builder.data(new ItemStack(mat));
       }
     }
 
     if(selfOnly) {
 
-      builder.receivers(player);
+      builder = builder.receivers(player);
     } else {
 
-      builder.receivers(receiverDistance, byDistance);
+      builder = builder.receivers(receiverDistance, byDistance);
     }
 
     builder.spawn();

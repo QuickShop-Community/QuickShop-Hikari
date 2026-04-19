@@ -865,6 +865,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         loadShop(shop);
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
 
+        Util.playSound(p, "effect.sound.shop.create");
+        Util.playParticle(p, shop.bukkitLocation(), "effect.particle.shop.create");
+
         event = event.clone(Phase.MAIN);
         event.callEvent();
       }

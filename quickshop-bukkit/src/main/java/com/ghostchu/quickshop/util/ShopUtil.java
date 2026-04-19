@@ -113,10 +113,10 @@ public class ShopUtil {
     QuickShop.getInstance().text().of(receiver, "transfer-single-ask", 60).send();
   }
 
-  public static void setPrice(final QuickShop plugin, @NotNull final QUser user, final double price, @NotNull final Shop shop) {
+  public static boolean setPrice(final QuickShop plugin, @NotNull final QUser user, final double price, @NotNull final Shop shop) {
 
     if(user.getUniqueId() == null || user.getBukkitPlayer().isEmpty()) {
-      return;
+      return false;
     }
 
     final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
@@ -132,13 +132,13 @@ public class ShopUtil {
     if(!shop.playerAuthorize(user.getUniqueId(), BuiltInShopPermission.SET_PRICE)
        && !plugin.perm().hasPermission(user, "quickshop.other.price")) {
       plugin.text().of(user.getUniqueId(), "not-managed-shop").send();
-      return;
+      return false;
     }
 
     if(shop.getPrice() == price) {
       // Stop here if there isn't a price change
       plugin.text().of(user.getUniqueId(), "no-price-change").send();
-      return;
+      return false;
     }
 
     final int maximumDigitsInPrice = plugin.getConfig().getInt("shop.maximum-digits-in-price", -1);
@@ -146,7 +146,7 @@ public class ShopUtil {
       final int inputScale = Math.max(BigDecimal.valueOf(price).stripTrailingZeros().scale(), 0);
       if(inputScale > maximumDigitsInPrice) {
         plugin.text().of(user, "digits-reach-the-limit", Component.text(maximumDigitsInPrice)).send();
-        return;
+        return false;
       }
     }
 
@@ -157,19 +157,19 @@ public class ShopUtil {
         plugin.text().of(user.getUniqueId(), "restricted-prices", Util.getItemStackName(shop.getItem()),
                          Component.text(checkResult.getMin()),
                          Component.text(checkResult.getMax())).send();
-        return;
+        return false;
       }
       case REACHED_PRICE_MIN_LIMIT -> {
         plugin.text().of(user, "price-too-cheap", (format)? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
-        return;
+        return false;
       }
       case REACHED_PRICE_MAX_LIMIT -> {
         plugin.text().of(user, "price-too-high", (format)? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
-        return;
+        return false;
       }
       case NOT_A_WHOLE_NUMBER -> {
         plugin.text().of(user, "not-a-integer", price).send();
-        return;
+        return false;
       }
     }
 
@@ -180,7 +180,7 @@ public class ShopUtil {
 
     if(event.callCancellableEvent()) {
       Log.debug("A plugin cancelled the price change event.");
-      return;
+      return false;
     }
 
     if(fee > 0) {
@@ -192,11 +192,11 @@ public class ShopUtil {
               .build();
       if(!transaction.completable()) {
         plugin.text().of(user, "you-cant-afford-to-change-price", plugin.getShopManager().format(fee, shop)).send();
-        return;
+        return false;
       }
       if(!transaction.safeCommit()) {
         plugin.text().of(user, "economy-transaction-failed", transaction.lastError()).send();
-        return;
+        return false;
       }
     }
 
@@ -212,6 +212,8 @@ public class ShopUtil {
 
     event = event.clone(Phase.POST);
     event.callEvent();
+
+    return true;
   }
 
   public static boolean sellToShop(@NotNull final Player p, @Nullable final Shop shop, final boolean direct, final boolean all) {
