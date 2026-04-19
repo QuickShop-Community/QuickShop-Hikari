@@ -754,9 +754,9 @@ addon:
     world-not-enabled: <red>Non ti è consentito creare o acquistare in questo mondo.
     creation-denied: <red>Non hai il permesso di creare negozi in questa area della Terra.
   quests:
-    create-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to create a shop.
-    sell-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to sell items to a shop.
-    buy-quest-required: <red>You must complete the quest <aqua>{0}</aqua> to buy items from a shop.
+    create-quest-required: <red>Devi completare la missione <aqua>{0}</aqua> per creare un negozio.
+    sell-quest-required: <red>È necessario completare la missione <aqua>{0}</aqua> per vendere oggetti a un negozio.
+    buy-quest-required: <red>È necessario completare la missione <aqua>{0}</aqua> per acquistare oggetti da un negozio.
   dominion:
     creation-denied: <red>Non hai il permesso di creare negozi in questa area Dominio.
     trade-denied: <red>Il negozio deve essere all'interno di un Dominion per commerciare con esso.
