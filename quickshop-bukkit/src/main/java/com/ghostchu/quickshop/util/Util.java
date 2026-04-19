@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.util;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
@@ -25,11 +26,13 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Particle;
 import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.Tag;
@@ -185,6 +188,122 @@ public class Util {
     //final Registry<Sound> registryAccess = RegistryAccess.registryAccess().getRegistry(RegistryKey.SOUND_EVENT);
 
     player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString(config + ".sound")), volume, pitch);
+  }
+
+  public static void playParticle(@NotNull final Player player, @NotNull final String config) {
+
+    if(!plugin.getConfig().getBoolean("effect.particle.enabled")) {
+      return;
+    }
+
+    final Route route = Route.fromString(config);
+    if(!plugin.getConfig().contains(route)) {
+      return;
+    }
+
+    final Route parentEnabled = route.parent().add("enabled");
+    if(plugin.getConfig().contains(parentEnabled) && !plugin.getConfig().getBoolean(parentEnabled)) {
+
+      return;
+    }
+
+    if(!plugin.getConfig().getBoolean(config + ".enabled", true)) {
+
+      return;
+    }
+
+    final String particleName = plugin.getConfig().getString(config + ".particle", "");
+    if(particleName == null || particleName.isEmpty()) {
+
+      return;
+    }
+
+    final Particle particle;
+    try {
+
+      particle = Particle.valueOf(particleName.toUpperCase());
+    } catch (final Exception e) {
+
+      plugin.logger().warn("Invalid particle: " + particleName);
+      return;
+    }
+
+    final int count = plugin.getConfig().getInt(config + ".count", 1);
+    final double extra = plugin.getConfig().getDouble(config + ".extra", 0.0);
+
+    final double offsetX = plugin.getConfig().getDouble(config + ".offset.x", 0.0);
+    final double offsetY = plugin.getConfig().getDouble(config + ".offset.y", 0.0);
+    final double offsetZ = plugin.getConfig().getDouble(config + ".offset.z", 0.0);
+
+    final boolean selfOnly = plugin.getConfig().getBoolean("effect.particle.self-only", true);
+    final int receiverDistance = plugin.getConfig().getInt("effect.particle.receiver-distance", 24);
+    final boolean byDistance = plugin.getConfig().getBoolean("effect.particle.receiver-by-distance", true);
+
+    final Location loc = player.getLocation().add(0, 1, 0);
+
+    final ParticleBuilder builder = new ParticleBuilder(particle)
+            .location(loc)
+            .count(count)
+            .extra(extra)
+            .offset(offsetX, offsetY, offsetZ);
+
+    if(plugin.getConfig().contains(config + ".dust.color")) {
+
+      final Color color = parseColor(plugin.getConfig().getString(config + ".dust.color"));
+      final float scale = (float) plugin.getConfig().getFloat(config + ".dust.scale", 1.0f);
+
+      builder.color(color, scale);
+    }
+
+    if(plugin.getConfig().contains(config + ".dust-transition.from")) {
+
+      final Color from = parseColor(plugin.getConfig().getString(config + ".dust-transition.from"));
+      final Color to = parseColor(plugin.getConfig().getString(config + ".dust-transition.to"));
+      final float scale = (float) plugin.getConfig().getFloat(config + ".dust-transition.scale", 1.0f);
+
+      builder.colorTransition(from, to, scale);
+    }
+
+    if(plugin.getConfig().contains(config + ".block.material")) {
+
+      final Material mat = Material.matchMaterial(plugin.getConfig().getString(config + ".block.material"));
+      if(mat != null) {
+
+        builder.data(mat.createBlockData());
+      }
+    }
+
+    if(plugin.getConfig().contains(config + ".item.material")) {
+
+      final Material mat = Material.matchMaterial(plugin.getConfig().getString(config + ".item.material"));
+      if(mat != null) {
+
+        builder.data(new ItemStack(mat));
+      }
+    }
+
+    if(selfOnly) {
+
+      builder.receivers(player);
+    } else {
+
+      builder.receivers(receiverDistance, byDistance);
+    }
+
+    builder.spawn();
+  }
+
+  private static Color parseColor(String hex) {
+    if(hex == null) return Color.WHITE;
+
+    hex = hex.replace("#", "");
+
+    try {
+      final int rgb = Integer.parseInt(hex, 16);
+      return Color.fromRGB(rgb);
+    } catch (final Exception e) {
+      return Color.WHITE;
+    }
   }
 
   public static boolean createShop(@NotNull final Player player, @Nullable final Block block, @NotNull final BlockFace blockFace, @NotNull final EquipmentSlot hand, @NotNull final ItemStack item) {
