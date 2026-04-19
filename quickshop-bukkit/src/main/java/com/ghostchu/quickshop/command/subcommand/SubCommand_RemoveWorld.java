@@ -38,7 +38,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
 
       if(Objects.equals(shop.bukkitLocation().getWorld(), world)) {
-        Util.regionThread(shop.getLocation(), () -> plugin.getShopManager().deleteShop(shop));
+        Util.regionThread(shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(shop));
         shopsDeleted++;
       }
     }

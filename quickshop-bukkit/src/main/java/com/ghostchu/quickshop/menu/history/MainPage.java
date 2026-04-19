@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
@@ -98,6 +99,7 @@ public class MainPage {
 
       final Optional<Object> shopsData = viewer.get().findData(SHOPS_DATA);
       final Optional<Object> historyData = viewer.get().findData(HISTORY_RECORDS);
+      final Map<Long, DataRecord> dataRecords = (Map<Long, DataRecord>) viewer.get().findData(HISTORY_DATA_RECORDS).orElse(Map.of());
       final Optional<Object> summaryData = viewer.get().findData(HISTORY_SUMMARY);
       final Player player = Bukkit.getPlayer(viewer.get().uuid());
       if(shopsData.isPresent() && historyData.isPresent() && summaryData.isPresent() && player != null) {
@@ -257,7 +259,7 @@ public class MainPage {
         int i = 0;
         for(final ShopHistory.ShopHistoryRecord record : queryResult) {
           final String userName = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), record.buyer()).getDisplay();
-          final DataRecord dataRecord = QuickShop.getInstance().getDatabaseHelper().getDataRecord(record.dataId()).join();
+          final DataRecord dataRecord = dataRecords.get(record.dataId());
 
           if(i < start) {
 

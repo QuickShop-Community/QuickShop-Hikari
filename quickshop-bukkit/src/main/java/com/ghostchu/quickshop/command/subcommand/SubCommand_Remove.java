@@ -30,7 +30,7 @@ public class SubCommand_Remove implements CommandHandler<Player> {
     }
     if(shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.DELETE)
        || plugin.perm().hasPermission(sender, "quickshop.other.destroy")) {
-      Util.regionThread(shop.getLocation(), () -> {
+      Util.regionThread(shop.bukkitLocation(), () -> {
         plugin.getShopManager().deleteShop(shop);
         plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop remove command", shop.saveToInfoStorage()));
       });
