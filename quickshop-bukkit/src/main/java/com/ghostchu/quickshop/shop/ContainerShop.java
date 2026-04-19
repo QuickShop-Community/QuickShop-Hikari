@@ -291,17 +291,12 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @param amount         The amount to buy
    */
   @Override
-  public void buy(@NotNull final QUser buyer,
+  public TradeResult buy(@NotNull final QUser buyer,
                   @NotNull final InventoryWrapper buyerInventory,
                   @NotNull final Location loc2Drop,
                   final int amount) throws Exception {
-    final TradeResult result = plugin.getShopManager().tradeService().executeSellToShop(this, buyer, buyerInventory, loc2Drop, amount);
 
-    if(!result.success()) {
-      throw new IllegalStateException(
-              "Trade failed: " + result.failureReason() + " (" + result.debugMessage() + ")"
-      );
-    }
+    return plugin.getShopManager().tradeService().executeSellToShop(this, buyer, buyerInventory, loc2Drop, amount);
   }
 
   @Override
@@ -713,16 +708,20 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     final BigDecimal unitPrice = BigDecimal.valueOf(this.price());
     if(unitPrice == null || unitPrice.compareTo(ZERO) <= 0) {
+
       return 0;
     }
 
     final EconomyProvider eco = QuickShop.getInstance().getEconomyManager().provider();
     if(eco == null) {
+
       return 0;
     }
 
     final BigDecimal balance = eco.balance(owner, location.getWorld().getName(), currency);
+
     if(balance == null || balance.compareTo(ZERO) <= 0) {
+
       return 0;
     }
 
@@ -730,7 +729,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(affordable.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) > 0) {
       return Integer.MAX_VALUE;
     }
-
     return Math.max(0, affordable.intValue());
   }
 
@@ -1643,17 +1641,11 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @param amount          The amount to sell
    */
   @Override
-  public void sell(@NotNull final QUser seller,
+  public TradeResult sell(@NotNull final QUser seller,
                    @NotNull final InventoryWrapper sellerInventory,
                    @NotNull final Location loc2Drop,
                    final int amount) throws Exception {
-    final TradeResult result = plugin.getShopManager().tradeService().executeBuyFromShop(this, seller, sellerInventory, loc2Drop, amount);
-
-    if(!result.success()) {
-      throw new IllegalStateException(
-              "Trade failed: " + result.failureReason() + " (" + result.debugMessage() + ")"
-      );
-    }
+    return plugin.getShopManager().tradeService().executeBuyFromShop(this, seller, sellerInventory, loc2Drop, amount);
   }
 
   @Override

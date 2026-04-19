@@ -31,6 +31,8 @@ import com.ghostchu.quickshop.api.shop.state.impl.ActiveState;
 import com.ghostchu.quickshop.api.shop.state.impl.FrozenState;
 import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import com.ghostchu.quickshop.api.shop.tax.TaxRates;
+import com.ghostchu.quickshop.api.shop.trading.TradeFailureReason;
+import com.ghostchu.quickshop.api.shop.trading.TradeResult;
 import com.ghostchu.quickshop.api.shop.type.BuyingType;
 import com.ghostchu.quickshop.api.shop.type.FrozenType;
 import com.ghostchu.quickshop.api.shop.type.SellingType;
@@ -407,10 +409,35 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.from(null).build();
     }
 
+    try {
+      final TradeResult result = shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
+
+      if(!result.success()) {
+
+        if(result.failureReason() == TradeFailureReason.INSUFFICIENT_FUNDS) {
+
+          plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
+                           format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()),
+                           format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
+          return false;
+        }
+
+        plugin.logger().warn("Failed to processing purchase, rolling back...");
+        plugin.text().of(buyer, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
+        return false;
+      }
+
+    } catch(final Exception shopError) {
+      plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
+      plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
+      return false;
+    }
+
     if(!transaction.completable()) {
       plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
+
     if(!transaction.safeCommit()) {
       plugin.text().of(buyer, "economy-transaction-failed", transaction.lastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
@@ -418,14 +445,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return false;
     }
 
-    try {
-      shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
-    } catch(final Exception shopError) {
-      plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
-      transaction.rollback(true);
-      plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
-      return false;
-    }
     sendSellSuccess(buyerQUser, shop, amount, total, transaction.toTax().doubleValue());
     new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.toTax().doubleValue()).callEvent();
     shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
@@ -637,24 +656,37 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.to(null).build();
     }
 
+    try {
+      final TradeResult result = shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
+      if(!result.success()) {
+
+        if(result.failureReason() == TradeFailureReason.INSUFFICIENT_FUNDS) {
+
+          plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
+          return false;
+        }
+
+        plugin.logger().warn("Failed to processing purchase, rolling back...");
+        plugin.text().of(seller, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
+        return false;
+      }
+    } catch(final Exception shopError) {
+      plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
+      plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
+      return false;
+    }
+
     if(!transaction.completable()) {
       plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
+
     if(!transaction.safeCommit()) {
       plugin.text().of(seller, "economy-transaction-failed", transaction.lastError()).send();
       plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.lastError());
       return false;
     }
 
-    try {
-      shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
-    } catch(final Exception shopError) {
-      plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
-      transaction.rollback(true);
-      plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
-      return false;
-    }
     sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.fromTax().doubleValue());
     new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.fromTax().doubleValue()).callEvent();
     notifyBought(sellerQUser, shop, amount, stock, transaction);

@@ -70,8 +70,10 @@ public class BasicProvider implements TaxProvider {
   public TaxRates calculateTax(final Shop shop, final QUser player) {
 
     final double interactorRate = (appliesTo.equalsIgnoreCase("player")
+                                   || appliesTo.equalsIgnoreCase("payee") && shop.isBuying()
                                    || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, player) : 0.0;
     final double ownerRate = (appliesTo.equalsIgnoreCase("shop")
+                              || appliesTo.equalsIgnoreCase("payee") && shop.isSelling()
                               || appliesTo.equalsIgnoreCase("both"))? normalizeRate(shop, shop.getOwner()) : 0.0;
 
     return new TaxRates(interactorRate, ownerRate);

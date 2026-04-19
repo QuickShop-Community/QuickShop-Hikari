@@ -236,9 +236,9 @@ currency-not-exists: <red>Cannot find the currency that you want to set. Maybe t
 no-nearby-shop: <red>No nearby shops matching {0}.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing
   your purchase. The purchase has been cancelled and any other operations have been
-  rolled back. Please contact the server administrators if this error persists.
+  rolled back. Reason: {0}"
 success-change-owner-to-server: <green>Successfully set the shop owner to Server.
 shop-name-not-found: <red>The shop named <yellow>{0}</yellow> does not exist.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick

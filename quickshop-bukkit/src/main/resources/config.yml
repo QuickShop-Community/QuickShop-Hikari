@@ -71,6 +71,7 @@ shop-tax:
   # should be taxed be it the player or the shop owner or both.
   # player = Apply tax to the player who is interacting with the shop.
   # shop = Apply tax to the shop owner.
+  # payee = Apply tax to the person receiving the money.
   # both = Apply tax to both the player and the shop owner.
   apply-to: player
 
