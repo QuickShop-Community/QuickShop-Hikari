@@ -827,7 +827,6 @@ addon:
                  "inline": true
                },
                {
-               {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true

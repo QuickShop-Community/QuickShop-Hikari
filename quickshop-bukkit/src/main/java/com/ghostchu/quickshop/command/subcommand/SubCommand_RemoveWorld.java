@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -35,8 +36,9 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
     }
     int shopsDeleted = 0;
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
+
       if(Objects.equals(shop.bukkitLocation().getWorld(), world)) {
-        plugin.getShopManager().deleteShop(shop);
+        Util.regionThread(shop.getLocation(), () -> plugin.getShopManager().deleteShop(shop));
         shopsDeleted++;
       }
     }

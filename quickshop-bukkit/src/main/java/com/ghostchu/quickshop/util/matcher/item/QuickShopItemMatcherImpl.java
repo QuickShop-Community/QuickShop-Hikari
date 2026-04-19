@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.general.ShopItemMatchEvent;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -159,6 +160,17 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
       return false; // One of them is null (Can't be both, see above)
     }
 
+    if(requireStack.isSimilar(givenStack)) {
+      return true;
+    }
+
+    final ShopItemMatchEvent shopItemMatchEvent = new ShopItemMatchEvent(requireStack.clone(), givenStack.clone());
+    shopItemMatchEvent.callEvent();
+
+    if(shopItemMatchEvent.matches()) {
+      return true;
+    }
+
     final String shopIdOrigin = plugin.platform().getItemShopId(requireStack);
     if(shopIdOrigin != null) {
       Log.debug("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.platform().getItemShopId(givenStack));
@@ -181,10 +193,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
 
     if(!typeMatches(requireStack, givenStack)) {
       return false;
-    }
-
-    if(requireStack.isSimilar(givenStack)) {
-      return true;
     }
 
     if(requireStack.hasItemMeta() && givenStack.hasItemMeta()) {

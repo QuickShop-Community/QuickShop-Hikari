@@ -800,8 +800,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "此玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
+             "title": ":inbox_tray: 有人向你的商店出售了商品",
+             "description": "玩家 %%purchase.name%% 向你的商店出售了 x%%purchase.amount%% %%shop.item.name%%。",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -814,7 +814,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord消息通知",
+               "text": "QuickShop-Hikari Discord 通知",
                "icon_url": ""
              },
              "fields": [
@@ -824,7 +824,7 @@ addon:
                  "inline": false
                },
                {
-                 "name": "玩家",
+                 "name": "购买者",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -839,7 +839,7 @@ addon:
                  "inline": true
                },
                {
-                 "name": "您已支付",
+                 "name": "您已付款",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },

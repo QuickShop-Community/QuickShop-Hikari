@@ -719,7 +719,7 @@ batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: <g
 addon:
   towny:
     commands:
-      town: <yellow>Set or unset a shop to a Town shop
+      town: <yellow>町をショップを設定または解除する。
       nation: <yellow>Set or unset a shop to a Nation shop
     make-shop-owned-by-town: <green>You have made the shop owned by town <yellow>{0}</yellow>.
     make-shop-no-longer-owned-by-town: <green>You have reset shop ownership, it now transfer back to original shop owner.
@@ -734,8 +734,8 @@ addon:
     operation-disabled-due-shop-status: <red>This shop operation has been disabled due this already is a town/nation shop.
     plot-type-disallowed: <red>You can't create town/nation shop on this type of plot.
     flags:
-      own: <red>You can only create shops at your owned shop type towny plot.
-      modify: <red>You didn't have build permission on this towny plot.
+      own:
+      modify:
       shop-type: <red>You must create shop on a shop type towny plot.
   residence:
     creation-flag-denied: <red>You don't have permission to create shops in this residence.
@@ -825,7 +825,6 @@ addon:
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
-               {
                {
                  "name": "Amount",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
@@ -1742,7 +1741,7 @@ history:
       - "<white>Recent <aqua>{2}</aqua> purchases: <yellow>{3}</yellow></white>"
       - "<white>Recent <aqua>{4}</aqua> purchases: <yellow>{5}</yellow></white>"
       - "<white>Recent <aqua>{6}</aqua> purchases: <yellow>{7}</yellow></white>"
-      - "<white>Recent <aqua>{8}</aqua> purchases: <yellow>{9}</yellow></white>"
+      - "<white>最近の <aqua>{8}</aqua> 購入: <yellow>{9}</yellow></white>"
       - "<white>Total purchases: <yellow>{10}</yellow></white>"
       - "<white>Recent <aqua>{11}</aqua> turnover: <yellow>{12}</yellow></white>"
       - "<white>Recent <aqua>{13}</aqua> turnover: <yellow>{14}</yellow></white>"
