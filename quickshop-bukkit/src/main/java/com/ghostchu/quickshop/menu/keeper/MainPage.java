@@ -96,6 +96,7 @@ public class MainPage extends QuickShopPage {
         final GuiConfig.IconConfig borderConfig = menuConfig != null? menuConfig.getIcon("border") : null;
         final GuiConfig.IconConfig shopItemConfig = menuConfig != null? menuConfig.getIcon("shop-item") : null;
         final GuiConfig.IconConfig changePriceConfig = menuConfig != null? menuConfig.getIcon("change-price") : null;
+        final GuiConfig.IconConfig displayToggleConfig = menuConfig != null? menuConfig.getIcon("display-toggle") : null;
         final GuiConfig.IconConfig freezeToggleConfig = menuConfig != null? menuConfig.getIcon("freeze-toggle") : null;
         final GuiConfig.IconConfig modeToggleConfig = menuConfig != null? menuConfig.getIcon("mode-toggle") : null;
         final GuiConfig.IconConfig inventoryConfig = menuConfig != null? menuConfig.getIcon("inventory") : null;
@@ -121,6 +122,47 @@ public class MainPage extends QuickShopPage {
 
         // Always read price directly from shop to get the latest value
         final double currentPrice = shop.get().getPrice();
+
+
+
+        final GuiConfig.IconConfig activeConfig = (displayToggleConfig != null)? displayToggleConfig.getSubIcon("active") : null;
+        final GuiConfig.IconConfig inactiveConfig = (displayToggleConfig != null)? displayToggleConfig.getSubIcon("inactive") : null;
+        final String activeMaterial = (activeConfig != null)? activeConfig.getMaterial() : "GLOW_ITEM_FRAME";
+        final String inactiveMaterial = (inactiveConfig != null)? inactiveConfig.getMaterial() : "ITEM_FRAME";
+        final int displayToggleSlot = (displayToggleConfig != null)? displayToggleConfig.getSlot() : 18;
+
+        if(shop.get().playerAuthorize(id, BuiltInShopPermission.TOGGLE_DISPLAY)
+           || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.toggledisplay")) {
+
+          final String enabledText = QuickShop.getInstance().text().of("shop-display.enabled").plain();
+          final String disabledText = QuickShop.getInstance().text().of("shop-display.disabled").plain();
+
+          final AbstractItemStack<?> activeStack = QuickShop.getInstance().stack().of(activeMaterial, 1)
+                  .display(getConfigDisplay(id, displayToggleConfig, "<bold><green>Toggle Preview</green></bold>"))
+                  .lore(getConfigLore(id, displayToggleConfig, enabledText));
+
+          final AbstractItemStack<?> inactiveStack = QuickShop.getInstance().stack().of(inactiveMaterial, 1)
+                  .display(getConfigDisplay(id, displayToggleConfig, "<bold><green>Toggle Preview</green></bold>"))
+                  .lore(getConfigLore(id, displayToggleConfig, disabledText));
+
+          final String modeState = (!shop.get().isDisableDisplay())? "ACTIVE" : "INACTIVE";
+
+          final StateIcon changeIcon = new StateIcon(activeStack, null, "SHOP_DISPLAY", modeState, (currentState)->{
+            if(currentState.toUpperCase(Locale.ROOT).equals("ACTIVE")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().setDisableDisplay(true));
+              return "INACTIVE";
+            } else if(currentState.toUpperCase(Locale.ROOT).equals("INACTIVE")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().setDisableDisplay(false));
+              return "ACTIVE";
+            }
+            Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().setDisableDisplay(false));
+            return "ACTIVE";
+          });
+          changeIcon.setSlot(displayToggleSlot);
+          changeIcon.addState("ACTIVE", activeStack);
+          changeIcon.addState("INACTIVE", inactiveStack);
+          open.getPage().addIcon(changeIcon);
+        }
 
         // Change price icon from config (GOLD_NUGGET for "price")
         final String changePriceMaterial = changePriceConfig != null? changePriceConfig.getMaterial() : "GOLD_NUGGET";
@@ -167,7 +209,7 @@ public class MainPage extends QuickShopPage {
           final String unfrozenText = QuickShop.getInstance().text().of("shop-state.unfrozen").plain();
 
           final AbstractItemStack<?> freezeStack = QuickShop.getInstance().stack().of(freezeMaterial, 1)
-                  .display(getConfigDisplay(id, freezeConfig, "<bold><green>Toggle Freeze</green></bold>"))
+                  .display(getConfigDisplay(id, freezeToggleConfig, "<bold><green>Toggle Freeze</green></bold>"))
                   .lore(getConfigLore(id, freezeToggleConfig, frozenText, unfreezeText));
 
           final AbstractItemStack<?> unfreezeStack = QuickShop.getInstance().stack().of(unfreezeMaterial, 1)

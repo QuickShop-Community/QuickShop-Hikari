@@ -20,7 +20,7 @@
 # Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
 # If you wish to use a value from the language file for display names or lore, start your value with "lang:"
 
-version: 4
+version: 5
 
 # ===================
 # GLOBAL STYLE SETTINGS
@@ -115,7 +115,22 @@ keeper:
   
   # Shop item preview - top center
   shop-item:
+    lore:
+      - "lang:gui.keeper.freeze-toggle.lore"
     slot: 4
+
+  display-toggle:
+
+    active:
+      material: GLOW_ITEM_FRAME
+      custom-model-data: 0
+    inactive:
+      material: ITEM_FRAME
+      custom-model-data: 0
+    name: "lang:gui.keeper.display-toggle.display"
+    lore:
+      - "lang:gui.keeper.display-toggle.lore"
+    slot: 18
   
   # Change price button - GOLD_NUGGET for "price"
   # {0} = current price
@@ -139,6 +154,7 @@ keeper:
     lore:
       - "lang:gui.keeper.freeze-toggle.lore"
     slot: 20
+
   # Mode toggle (buy/sell) - concrete for clean look
   # {0} = current mode, {1} = next mode
   mode-toggle:
