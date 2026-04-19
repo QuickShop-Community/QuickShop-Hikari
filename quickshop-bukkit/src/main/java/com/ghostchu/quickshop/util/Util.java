@@ -17,6 +17,9 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
+import dev.dejvokep.boostedyaml.route.Route;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -27,6 +30,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.World;
@@ -147,6 +151,40 @@ public class Util {
     if(plugin.getConfig().getBoolean("effect.sound.onclick")) {
       player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
     }
+  }
+
+  public static void playSound(@NotNull final Player player, @NotNull final String config) {
+
+    final boolean globalEnabled = plugin.getConfig().getBoolean("effect.sound.enabled");
+    if(!globalEnabled) {
+      return;
+    }
+
+    final float globalVolume = plugin.getConfig().getFloat("effect.sound.volume");
+    final float globalPitch = plugin.getConfig().getFloat("effect.sound.pitch");
+
+    final Route route = Route.fromString(config);
+
+    if(!plugin.getConfig().contains(route)) {
+      return;
+    }
+
+    final Route parentEnabled = route.parent().add("enabled");
+    if(plugin.getConfig().contains(parentEnabled) && !plugin.getConfig().getBoolean(parentEnabled)) {
+      return;
+    }
+
+    final boolean enabled = plugin.getConfig().getBoolean(config + ".enabled", true);
+    if(!enabled) {
+      return;
+    }
+
+    final float volume = plugin.getConfig().getFloat(config + ".volume", globalVolume);
+    final float pitch = plugin.getConfig().getFloat(config + ".pitch", globalPitch);
+
+    //final Registry<Sound> registryAccess = RegistryAccess.registryAccess().getRegistry(RegistryKey.SOUND_EVENT);
+
+    player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString(config + ".sound")), volume, pitch);
   }
 
   public static boolean createShop(@NotNull final Player player, @Nullable final Block block, @NotNull final BlockFace blockFace, @NotNull final EquipmentSlot hand, @NotNull final ItemStack item) {
