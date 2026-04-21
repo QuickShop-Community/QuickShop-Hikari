@@ -43,5 +43,8 @@ public class SubCommand_SilentFreeze extends SubCommand_SilentBase {
     MsgUtil.sendControlPanelInfo(sender, shop);
 
     shop.setSignText(plugin.text().findRelativeLanguages(sender));
+
+    Util.playSound(sender, "effect.sound.shop.freeze-toggle");
+    Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.freeze-toggle");
   }
 }

@@ -37,5 +37,8 @@ public class SubCommand_SilentSell extends SubCommand_SilentBase {
     plugin.text().of(sender,
                      "command.now-selling", Util.getItemStackName(shop.getItem())).send();
 
+    Util.playSound(sender, "effect.sound.shop.mode-change");
+    Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.mode-change");
+
   }
 }
