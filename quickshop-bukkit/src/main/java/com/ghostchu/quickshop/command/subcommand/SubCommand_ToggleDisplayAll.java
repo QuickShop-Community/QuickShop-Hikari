@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,6 +94,9 @@ public class SubCommand_ToggleDisplayAll implements CommandHandler<Player> {
 
       event = event.clone(Phase.POST);
       event.callEvent();
+
+      Util.playSound(sender, "effect.sound.shop.toggle-display");
+      Util.playParticle(sender, "effect.particle.shop.toggle-display");
     }
 
     final String message = (server)? ((off)? "display-turn-off-all" : "display-turn-on-all") : ((off)? "display-turn-off-owned" : "display-turn-on-owned");

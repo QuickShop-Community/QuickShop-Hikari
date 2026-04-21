@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
@@ -98,6 +99,7 @@ public class MainPage {
 
       final Optional<Object> shopsData = viewer.get().findData(SHOPS_DATA);
       final Optional<Object> historyData = viewer.get().findData(HISTORY_RECORDS);
+      final Map<Long, DataRecord> dataRecords = (Map<Long, DataRecord>) viewer.get().findData(HISTORY_DATA_RECORDS).orElse(Map.of());
       final Optional<Object> summaryData = viewer.get().findData(HISTORY_SUMMARY);
       final Player player = Bukkit.getPlayer(viewer.get().uuid());
       if(shopsData.isPresent() && historyData.isPresent() && summaryData.isPresent() && player != null) {
@@ -145,14 +147,14 @@ public class MainPage {
 
         //header icon
         final Shop shop = shops.getFirst();
-        final String world = (shop.getLocation().getWorld() != null)? shop.getLocation().getWorld().getName() : "World";
+        final String world = (shop.bukkitLocation().getWorld() != null)? shop.bukkitLocation().getWorld().getName() : "World";
 
         final Component shopName;
         if(shop.getShopName() != null) {
 
           shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-name", shop.getShopName()).forLocale();
         } else {
-          shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).forLocale();
+          shopName = QuickShop.getInstance().text().of("history.shop.header-icon-shop-empty-name", world, shop.bukkitLocation().getBlockX(), shop.bukkitLocation().getBlockY(), shop.bukkitLocation().getBlockZ()).forLocale();
         }
 
         final Component shopType = QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
@@ -179,10 +181,10 @@ public class MainPage {
                                                                                  shopType,
                                                                                  shop.getOwner().getDisplay(),
                                                                                  Util.getItemStackName(shop.getItem()),
-                                                                                 shop.getPrice(), shop.getShopStackingAmount(),
-                                                                                 shop.getLocation().getWorld().getName() + " " + shop.getLocation().getBlockX()
-                                                                                 + ", " + shop.getLocation().getBlockY() + ", "
-                                                                                 + shop.getLocation().getBlockZ()))
+                                                                                 shop.price(), shop.getShopStackingAmount(),
+                                                                                 shop.bukkitLocation().getWorld().getName() + " " + shop.bukkitLocation().getBlockX()
+                                                                                 + ", " + shop.bukkitLocation().getBlockY() + ", "
+                                                                                 + shop.bukkitLocation().getBlockZ()))
                                                              .profile(ownerProfile))
                                              .withActions(new SwitchPageAction(returnMenu, returnPage))
                                              .withSlot(shopInfoSlot)
@@ -257,7 +259,7 @@ public class MainPage {
         int i = 0;
         for(final ShopHistory.ShopHistoryRecord record : queryResult) {
           final String userName = QUserImpl.createSync(QuickShop.getInstance().getPlayerFinder(), record.buyer()).getDisplay();
-          final DataRecord dataRecord = QuickShop.getInstance().getDatabaseHelper().getDataRecord(record.dataId()).join();
+          final DataRecord dataRecord = dataRecords.get(record.dataId());
 
           if(i < start) {
 

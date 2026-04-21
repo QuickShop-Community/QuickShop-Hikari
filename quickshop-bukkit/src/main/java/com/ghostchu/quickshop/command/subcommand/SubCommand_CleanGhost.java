@@ -44,7 +44,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
     final List<CompletableFuture<Void>> pendingTasks = new CopyOnWriteArrayList<>();
 
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
-      final CompletableFuture<Void> task = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc) -> {
+      final CompletableFuture<Void> task = QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (loc)->{
         if(shop == null) {
           return; // WTF
         }
@@ -69,26 +69,25 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
           plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
           return;
         }
-        if(!shop.getLocation().isWorldLoaded()) {
+        if(!shop.bukkitLocation().isWorldLoaded()) {
           plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "unloaded world").send();
           plugin.getShopManager().deleteShop(shop);
           deletionCounter.incrementAndGet();
           plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
           return;
         }
-        if(!Util.canBeShop(shop.getLocation().getBlock())) {
+        if(!Util.canBeShop(shop.bukkitLocation().getBlock())) {
           plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid shop block").send();
           plugin.getShopManager().deleteShop(shop);
           deletionCounter.incrementAndGet();
           plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "SYSTEM", false), "/quickshop cleanghost command", shop.saveToInfoStorage()));
-          return;
         }
       });
       pendingTasks.add(task);
     }
 
     CompletableFuture.allOf(pendingTasks.toArray(new CompletableFuture[0]))
-            .whenComplete((v, t) -> plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()).send());
+            .whenComplete((v, t)->plugin.text().of(sender, "cleanghost-deleted", deletionCounter.get()).send());
 
   }
 

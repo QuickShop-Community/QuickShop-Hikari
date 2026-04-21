@@ -87,7 +87,11 @@ permissions:
     description: The permission that provide all player need have permissions
     default: op
     children:
-      quickshop.use: true
+      quickshop.avoid: true
+      quickshop.avoid.list: true
+      quickshop.benefit: true
+      quickshop.browse: true
+      quickshop.browse.teleport: true
       quickshop.create.sell: true
       quickshop.create.buy: true
       quickshop.create.stacks: true
@@ -96,30 +100,42 @@ permissions:
       quickshop.create.changeprice: true
       quickshop.create.double: true
       quickshop.create.cmd: true
-      quickshop.transferall: true
-      quickshop.transferownership: true
-      quickshop.find: true
+      quickshop.currency: true
+      quickshop.favorite: true
+      quickshop.favorite.list: true
       quickshop.fetchmessage: true
+      quickshop.find: true
+      quickshop.history: true
+      quickshop.history.accessible: true
+      quickshop.history.owned: true
+      quickshop.inventory: true
+      quickshop.permission: true
+      quickshop.preview: true
+      quickshop.shopnaming: true
+      quickshop.sign: true
       quickshop.staff: true
       quickshop.staffall: true
-      quickshop.preview: true
-      quickshop.currency: true
-      quickshop.toggledisplay: true
-      quickshop.inventory: true
-      quickshop.shopnaming: true
-      quickshop.permission: true
-      quickshop.benefit: true
-      quickshop.browse: true
-      quickshop.browse.teleport: true
-      quickshop.sign: true
-      quickshop.history: true
-      quickshop.history.owned: true
-      quickshop.history.accessible: true
       quickshop.suggestprice: true
+      quickshop.tag: true
+      quickshop.tag.add: true
+      quickshop.tag.delete: true
+      quickshop.tag.list: true
+      quickshop.tag.purge: true
+      quickshop.tag.shops: true
+      quickshop.tag.tagged: true
+      quickshop.tag.tagged.teleport: true
+      quickshop.toggledisplay: true
+      quickshop.transferall: true
+      quickshop.transferownership: true
+      quickshop.use: true
+      quickshop.watch: true
+      quickshop.watch.list: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
     children:
+      quickshop.tag.clear: true
+      quickshop.tag.clearall: true
       quickshop.setowner: true
       quickshop.other.destroy: true
       quickshop.other.open: true

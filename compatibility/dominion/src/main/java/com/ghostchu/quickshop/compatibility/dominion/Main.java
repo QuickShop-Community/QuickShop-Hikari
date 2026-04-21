@@ -145,7 +145,7 @@ public class Main extends CompatibilityModule {
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    final Location loc = event.getShop().getLocation();
+    final Location loc = event.getShop().bukkitLocation();
     if(loc == null) {
       return;
     }
@@ -163,7 +163,7 @@ public class Main extends CompatibilityModule {
       return;
     }
 
-    final Location loc = event.shop().get().getLocation();
+    final Location loc = event.shop().get().bukkitLocation();
     if(loc.getWorld() == null) {
       return;
     }

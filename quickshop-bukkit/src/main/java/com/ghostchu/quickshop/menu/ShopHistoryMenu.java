@@ -33,6 +33,7 @@ public class ShopHistoryMenu extends Menu {
 
   public static final String SHOPS_DATA = "SHOPS_LIST";
   public static final String HISTORY_RECORDS = "HISTORY_RECORDS";
+  public static final String HISTORY_DATA_RECORDS = "HISTORY_DATA_RECORDS";
   public static final String HISTORY_SUMMARY = "HISTORY_SUMMARY";
   public static final String SHOPS_PAGE = "SHOPS_PAGE_ID";
 

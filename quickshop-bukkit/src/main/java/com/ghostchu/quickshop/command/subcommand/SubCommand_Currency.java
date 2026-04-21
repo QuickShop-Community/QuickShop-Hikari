@@ -65,7 +65,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
           plugin.text().of(sender, "currency-not-support").send();
           return;
         }
-        if(!plugin.getEconomyManager().provider().supportsCurrency(Objects.requireNonNull(shop.getLocation().getWorld()).getName(), parser.getArgs().getFirst())) {
+        if(!plugin.getEconomyManager().provider().supportsCurrency(Objects.requireNonNull(shop.bukkitLocation().getWorld()).getName(), parser.getArgs().getFirst())) {
           plugin.text().of(sender, "currency-not-exists").send();
           return;
         }

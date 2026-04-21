@@ -21,7 +21,6 @@ import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import org.apache.commons.lang3.tuple.Triple;
@@ -58,7 +57,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   @NotNull
   private final String prefix;
 
-  private final int LATEST_DATABASE_VERSION = 19;
+  private final int LATEST_DATABASE_VERSION = 20;
 
   public SimpleDatabaseHelperV2(@NotNull final QuickShop plugin, @NotNull final SQLManager manager, @NotNull final String prefix) throws Exception {
 
@@ -210,6 +209,33 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public @NotNull SQLManager getManager() {
 
     return manager;
+  }
+
+  private void addStateColumn() {
+
+    fastBackup();
+    try {
+      Log.debug("Adding state column to " + DataTables.DATA.getName());
+      getManager().alterTable(DataTables.DATA.getName())
+              .addColumn("shop_state", "VARCHAR(64)")
+              .execute();
+
+      Log.debug("Converting old frozen type shops to new frozen state.");
+      getManager().createUpdate(DataTables.SHOPS.getName())
+              .setColumnValues("shop_state", "frozen")
+              .addCondition("type", 2)
+              .build().execute();
+
+      Log.debug("Converting old frozen type shops to buy type.");
+      getManager().createUpdate(DataTables.SHOPS.getName())
+              .setColumnValues("type", 1)
+              .addCondition("type", 2)
+              .build().execute();
+
+    } catch(final SQLException e) {
+
+      Log.debug("Failed to add state " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+    }
   }
 
   private void addEncodedColumn() {
@@ -527,6 +553,40 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
+  public void loadAllTags() {
+    try(final SQLQuery query = DataTables.TAGS.createQuery().build().execute()) {
+
+      final ResultSet set = query.getResultSet();
+      while(set.next()) {
+
+        final String tagger = set.getString("tagger");
+        final long shopID = set.getLong("shop");
+        final String tag = set.getString("tag");
+
+        plugin.tagManager().addTag(shopID, UUID.fromString(tagger), tag, false);
+      }
+
+    } catch(final SQLException e) {
+      plugin.logger().error("Failed to load all tags", e);
+    }
+  }
+
+  @Override
+  public @NotNull List<Long> listShopsByTag(@NotNull final String tag) {
+
+    final List<Long> shopIds = new ArrayList<>();
+    try(final SQLQuery query = DataTables.TAGS.createQuery()
+            .addCondition("tag", tag)
+            .build().execute()) {
+      final ResultSet set = query.getResultSet();
+      shopIds.add(set.getLong("shop"));
+    } catch(final SQLException e) {
+      plugin.logger().error("Failed to list shops by with tag " + tag, e);
+    }
+    return shopIds;
+  }
+
+  @Override
   public @NotNull List<Long> listShopsTaggedBy(@NotNull final UUID tagger, @NotNull final String tag) {
 
     final List<Long> shopIds = new ArrayList<>();
@@ -558,6 +618,47 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
+  public @NotNull List<String> listTags(@NotNull final UUID tagger, @NotNull final Long shopId) {
+
+    final List<String> tags = new ArrayList<>();
+    try(final SQLQuery query = DataTables.TAGS.createQuery()
+            .addCondition("tagger", tagger.toString())
+            .addCondition("shop", shopId)
+            .build().execute()) {
+      final ResultSet set = query.getResultSet();
+      tags.add(set.getString("tag"));
+    } catch(final SQLException e) {
+      plugin.logger().error("Failed to list tags by " + tagger, e);
+    }
+    return tags;
+  }
+
+  @Override
+  public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
+
+    return DataTables.TAGS.createInsert()
+            .setColumnNames("tagger", "shop", "tag")
+            .setParams(tagger.toString(), shopId, tag)
+            .executeFuture(i->i);
+  }
+
+  @Override
+  public CompletableFuture<@Nullable Integer> removeAllShopTags(@NotNull final Long shopId) {
+
+    return DataTables.TAGS.createDelete()
+            .addCondition("shop", shopId)
+            .build().executeFuture(i->i);
+  }
+
+  @Override
+  public CompletableFuture<@Nullable Integer> removeAllTagsBy(@NotNull final UUID tagger) {
+
+    return DataTables.TAGS.createDelete()
+            .addCondition("tagger", tagger.toString())
+            .build().executeFuture(i->i);
+  }
+
+  @Override
   public CompletableFuture<@Nullable Integer> removeShopTag(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
 
     return DataTables.TAGS.createDelete()
@@ -567,7 +668,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   }
 
   @Override
-  public CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull final UUID tagger, @NotNull final Long shopId) {
+  public CompletableFuture<@Nullable Integer> removeAllShopTagsBy(@NotNull final UUID tagger, @NotNull final Long shopId) {
 
     return DataTables.TAGS.createDelete()
             .addCondition("tagger", tagger.toString())
@@ -582,15 +683,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             .addCondition("tagger", tagger.toString())
             .addCondition("tag", tag)
             .build().executeFuture(i->i);
-  }
-
-  @Override
-  public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull final UUID tagger, @NotNull final Long shopId, @NotNull final String tag) {
-
-    return DataTables.TAGS.createInsert()
-            .setColumnNames("tagger", "shop", "tag")
-            .setParams(tagger.toString(), shopId, tag)
-            .executeFuture(i->i);
   }
 
   @Override
@@ -780,7 +872,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public CompletableFuture<Void> updateShop(@NotNull final Shop shop) {
 
     final SimpleDataRecord simpleDataRecord = ((ContainerShop)shop).createDataRecord();
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     // check if datarecord exists
     final long shopId = shop.getShopId();
     if(shopId < 1) {
@@ -978,7 +1070,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
       int currentDatabaseVersion = parent.getDatabaseVersion();
       if(currentDatabaseVersion == -1) {
 
-        currentDatabaseVersion = 19;
+        currentDatabaseVersion = 20;
       }
 
       logger.info("Database upgrade script running... Current Database Version: " + currentDatabaseVersion);
@@ -1041,6 +1133,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         logger.info("Data upgrading: Creating a new column... encoded for enhanced item storage.");
         parent.addEncodedColumn();
         currentDatabaseVersion = 19;
+      }
+
+      if(currentDatabaseVersion == 16 || currentDatabaseVersion == 17 || currentDatabaseVersion == 18 || currentDatabaseVersion == 19) {
+        logger.info("Data upgrading: Creating a new column... shop_state for the new shop states system.");
+        parent.addStateColumn();
+        currentDatabaseVersion = 20;
       }
 
       parent.setDatabaseVersion(currentDatabaseVersion).join();

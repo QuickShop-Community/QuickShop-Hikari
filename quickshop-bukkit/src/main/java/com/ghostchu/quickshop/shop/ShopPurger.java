@@ -96,7 +96,7 @@ public class ShopPurger {
     final List<CompletableFuture<Void>> deletionFutures = new CopyOnWriteArrayList<>();
     
     for(final Shop shop : pendingRemovalShops) {
-      final CompletableFuture<Void> future = QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc) -> {
+      final CompletableFuture<Void> future = QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (loc) -> {
         try {
           plugin.getShopManager().deleteShop(shop);
           purgedCount.incrementAndGet();

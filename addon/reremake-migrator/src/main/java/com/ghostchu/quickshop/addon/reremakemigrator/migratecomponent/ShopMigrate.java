@@ -80,6 +80,7 @@ public class ShopMigrate extends AbstractMigrateComponent {
                 QUserImpl.createSync(getHikari().getPlayerFinder(), reremakeShop.getOwner()),
                 reremakeShop.isUnlimited(),
                 QuickShop.getInstance().getShopManager().shopTypeOrDefault(reremakeShop.getShopType().toID()),
+                QuickShop.getInstance().getShopManager().shopStateOrDefault("active"),
                 getReremakeShopExtra(reremakeShop),
                 reremakeShop.getCurrency(),
                 reremakeShop.isDisableDisplay(),

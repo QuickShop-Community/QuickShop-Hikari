@@ -105,12 +105,12 @@ public class SignHooker {
 
   public void updatePerPlayerShopSignBroadcast(final Location location, final Shop shop) {
 
-    final World world = shop.getLocation().getWorld();
+    final World world = shop.bukkitLocation().getWorld();
     if(world == null) {
       return;
     }
-    QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc)->{
-      final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
+    QuickShop.folia().getScheduler().runAtLocation(shop.bukkitLocation(), (loc)->{
+      final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.bukkitLocation(), Bukkit.getViewDistance() * 16, shop.bukkitLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
       for(final Entity nearbyPlayer : nearbyPlayers) {
         if(nearbyPlayer instanceof final Player player) {
           updatePerPlayerShopSign(player, location, shop);

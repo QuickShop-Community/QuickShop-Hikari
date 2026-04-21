@@ -28,7 +28,7 @@ public class TownyShopUtil {
       return null;
     }
     final Nation nation = TownyAPI.getInstance().getNation(UUID.fromString(uuid));
-    Log.debug("Nation finding for shop " + shop.getLocation() + " => nation uuid: " + uuid + " nation: " + nation);
+    Log.debug("Nation finding for shop " + shop.bukkitLocation() + " => nation uuid: " + uuid + " nation: " + nation);
     return nation;
   }
 
@@ -56,7 +56,7 @@ public class TownyShopUtil {
       return null;
     }
     final Town town = TownyAPI.getInstance().getTown(UUID.fromString(uuid));
-    Log.debug("Town finding for shop " + shop.getLocation() + " => town uuid: " + uuid + " town: " + town);
+    Log.debug("Town finding for shop " + shop.bukkitLocation() + " => town uuid: " + uuid + " town: " + town);
     return town;
   }
 

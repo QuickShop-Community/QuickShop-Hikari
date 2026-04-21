@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -171,6 +172,7 @@ public class MsgUtil {
   public static Component fillArgs(@NotNull Component origin, @Nullable final Component... args) {
 
     for(int i = 0; i < args.length; i++) {
+
       origin = origin.replaceText(TextReplacementConfig.builder()
                                           .matchLiteral("{" + i + "}")
                                           .replacement(args[i] == null? Component.empty() : args[i])

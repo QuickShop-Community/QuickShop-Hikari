@@ -77,8 +77,8 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
           }
-          if (!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)
-              && !plugin.perm().hasPermission(sender, "quickshop.transferownership.other")) {
+          if(!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)
+             && !plugin.perm().hasPermission(sender, "quickshop.transferownership.other")) {
             plugin.text().of(sender, "no-permission").send();
             return;
           }

@@ -76,7 +76,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
     if(fee > 0) {
       if(!plugin.perm().hasPermission(sender, "quickshop.bypass.namefee")) {
         transaction = QSEconomyTransaction.builder()
-                .world(shop.getLocation().getWorld().getName())
+                .world(shop.bukkitLocation().getWorld().getName())
                 .from(QUserImpl.createFullFilled(sender))
                 .to(shop.getTaxAccount())
                 .currency(plugin.getCurrency())
@@ -85,7 +85,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
                 .amount(BigDecimal.valueOf(fee))
                 .build();
         if(!transaction.completable()) {
-          plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee, shop.getLocation().getWorld(), plugin.getCurrency())).send();
+          plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee, shop.bukkitLocation().getWorld(), plugin.getCurrency())).send();
           return;
         }
       }

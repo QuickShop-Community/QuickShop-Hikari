@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.type.ShopDisplayEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +52,8 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
     shop.setDisableDisplay(event.updated());
 
     final String message = (event.updated())? "display-turn-off" : "display-turn-on";
+    Util.playSound(sender, "effect.sound.shop.toggle-display");
+    Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.toggle-display");
     plugin.text().of(sender, message).send();
 
     event = event.clone(Phase.POST);

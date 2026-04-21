@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -36,13 +37,19 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
     }
     int shopsDeleted = 0;
     for(final Shop shop : plugin.getShopManager().getAllShops()) {
-      if(Objects.equals(shop.getLocation().getWorld(), world)) {
-        Util.regionThread(shop.getLocation(), () -> plugin.getShopManager().deleteShop(shop));
+
+      if(Objects.equals(shop.bukkitLocation().getWorld(), world)) {
+        Util.regionThread(shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(shop));
         shopsDeleted++;
       }
     }
     Log.debug("Successfully deleted all shops in world " + parser.getArgs().getFirst() + "!");
     plugin.text().of(sender, "shops-removed-in-world", shopsDeleted, world.getName()).send();
+
+    if(sender instanceof final Player player) {
+      Util.playSound(player, "effect.sound.shop.remove");
+      Util.playParticle(player, "effect.particle.shop.remove");
+    }
   }
 
 }

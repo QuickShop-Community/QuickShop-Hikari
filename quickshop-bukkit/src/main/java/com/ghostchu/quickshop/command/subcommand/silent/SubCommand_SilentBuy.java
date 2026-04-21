@@ -32,6 +32,8 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
     shop.setSignText(plugin.text().findRelativeLanguages(sender));
     MsgUtil.sendControlPanelInfo(sender, shop);
     plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
-  }
 
+    Util.playSound(sender, "effect.sound.shop.mode-change");
+    Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.mode-change");
+  }
 }

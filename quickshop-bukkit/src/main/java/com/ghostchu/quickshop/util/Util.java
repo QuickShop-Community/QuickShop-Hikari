@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.util;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
@@ -17,16 +18,22 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
+import dev.dejvokep.boostedyaml.route.Route;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Particle;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.World;
@@ -146,6 +153,168 @@ public class Util {
 
     if(plugin.getConfig().getBoolean("effect.sound.onclick")) {
       player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
+    }
+  }
+
+  public static void playSound(@NotNull final Player player, @NotNull final String config) {
+
+    final boolean globalEnabled = plugin.getEffects().getBoolean("effect.sound.enabled");
+    if(!globalEnabled) {
+      return;
+    }
+
+    final float globalVolume = plugin.getEffects().getFloat("effect.sound.volume");
+    final float globalPitch = plugin.getEffects().getFloat("effect.sound.pitch");
+
+    final Route route = Route.fromString(config);
+
+    if(!plugin.getEffects().contains(route)) {
+      return;
+    }
+
+    final Route parentEnabled = route.parent().add("enabled");
+    if(plugin.getEffects().contains(parentEnabled) && !plugin.getEffects().getBoolean(parentEnabled)) {
+      return;
+    }
+
+    final boolean enabled = plugin.getEffects().getBoolean(config + ".enabled", true);
+    if(!enabled) {
+      return;
+    }
+
+    final float volume = plugin.getEffects().getFloat(config + ".volume", globalVolume);
+    final float pitch = plugin.getEffects().getFloat(config + ".pitch", globalPitch);
+
+    //final Registry<Sound> registryAccess = RegistryAccess.registryAccess().getRegistry(RegistryKey.SOUND_EVENT);
+
+    player.playSound(player.getLocation(), Sound.valueOf(plugin.getEffects().getString(config + ".sound")), volume, pitch);
+  }
+  public static void playParticle(@NotNull final Player player, @NotNull final String config) {
+
+    playParticle(player, player.getLocation(), config);
+  }
+
+  public static void playParticle(@NotNull final Player player, final Location location, @NotNull final String config) {
+
+    if(!plugin.getEffects().getBoolean("effect.particle.enabled")) {
+      return;
+    }
+
+    final Route route = Route.fromString(config);
+    if(!plugin.getEffects().contains(route)) {
+      return;
+    }
+
+    final Route parentEnabled = route.parent().add("enabled");
+    if(plugin.getEffects().contains(parentEnabled) && !plugin.getEffects().getBoolean(parentEnabled)) {
+
+      return;
+    }
+
+    if(!plugin.getEffects().getBoolean(config + ".enabled", true)) {
+
+      return;
+    }
+
+    final String particleName = plugin.getEffects().getString(config + ".particle", "");
+    if(particleName == null || particleName.isEmpty()) {
+
+      return;
+    }
+
+    final Particle particle;
+    try {
+
+      particle = Particle.valueOf(particleName.toUpperCase());
+    } catch (final Exception e) {
+
+      plugin.logger().warn("Invalid particle: " + particleName);
+      return;
+    }
+
+    final int count = plugin.getEffects().getInt(config + ".count", 1);
+    final double extra = plugin.getEffects().getDouble(config + ".extra", 0.0);
+
+    final double offsetX = plugin.getEffects().getDouble(config + ".offset.x", 0.0);
+    final double offsetY = plugin.getEffects().getDouble(config + ".offset.y", 0.0);
+    final double offsetZ = plugin.getEffects().getDouble(config + ".offset.z", 0.0);
+
+    final boolean selfOnly = plugin.getEffects().getBoolean("effect.particle.self-only", true);
+    final int receiverDistance = plugin.getEffects().getInt("effect.particle.receiver-distance", 24);
+    final boolean byDistance = plugin.getEffects().getBoolean("effect.particle.receiver-by-distance", true);
+
+    final Location loc = location.clone().add(0, 1, 0);
+
+    ParticleBuilder builder = new ParticleBuilder(particle)
+            .location(loc)
+            .count(count)
+            .extra(extra)
+            .offset(offsetX, offsetY, offsetZ);
+
+    if(plugin.getEffects().contains(config + ".dust.color")) {
+
+      final Color color = parseColor(plugin.getEffects().getString(config + ".dust.color"));
+      final float scale = (float) plugin.getEffects().getFloat(config + ".dust.scale", 1.0f);
+
+      builder = builder.color(color, scale);
+    }
+
+    if(plugin.getEffects().contains(config + ".dust-transition.from")) {
+
+      final Color from = parseColor(plugin.getEffects().getString(config + ".dust-transition.from"));
+      final Color to = parseColor(plugin.getEffects().getString(config + ".dust-transition.to"));
+      final float scale = (float) plugin.getEffects().getFloat(config + ".dust-transition.scale", 1.0f);
+
+      builder = builder.colorTransition(from, to, scale);
+    }
+
+    if(plugin.getEffects().contains(config + ".trail")) {
+
+      final Color color = parseColor(plugin.getEffects().getString(config + ".trail.color"));
+      final int duration = plugin.getEffects().getInt(config + ".trail.duration", 20);
+
+      builder = builder.data(new Particle.Trail(loc, color, duration));
+    }
+
+    if(plugin.getEffects().contains(config + ".block.material")) {
+
+      final Material mat = Material.matchMaterial(plugin.getEffects().getString(config + ".block.material"));
+      if(mat != null) {
+
+        builder = builder.data(mat.createBlockData());
+      }
+    }
+
+    if(plugin.getEffects().contains(config + ".item.material")) {
+
+      final Material mat = Material.matchMaterial(plugin.getEffects().getString(config + ".item.material"));
+      if(mat != null) {
+
+        builder = builder.data(new ItemStack(mat));
+      }
+    }
+
+    if(selfOnly) {
+
+      builder = builder.receivers(player);
+    } else {
+
+      builder = builder.receivers(receiverDistance, byDistance);
+    }
+
+    builder.spawn();
+  }
+
+  private static Color parseColor(String hex) {
+    if(hex == null) return Color.WHITE;
+
+    hex = hex.replace("#", "");
+
+    try {
+      final int rgb = Integer.parseInt(hex, 16);
+      return Color.fromRGB(rgb);
+    } catch (final Exception e) {
+      return Color.WHITE;
     }
   }
 

@@ -44,7 +44,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
       }
     }
     final BoundingBox boundingBox = new BoundingBox(minX, Integer.MIN_VALUE, minZ, maxX, Integer.MAX_VALUE, maxZ);
-    return shopsList.stream().filter(s->boundingBox.contains(s.getLocation().toVector())).toList();
+    return shopsList.stream().filter(s->boundingBox.contains(s.bukkitLocation().toVector())).toList();
   }
 
   public List<Shop> getShops(@NotNull final String worldName, final int chunkX, final int chunkZ) {

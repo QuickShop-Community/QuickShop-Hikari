@@ -101,7 +101,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     final Optional<Island> island = IridiumSkyblockAPI.getInstance().getIslandViaLocation(shopLoc);
     if(island.isEmpty()) {
       return;

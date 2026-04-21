@@ -65,8 +65,8 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
       if(shop.isDisableDisplay()) {
         continue;
       }
-      final Location location = shop.getLocation();
-      final World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
+      final Location location = shop.bukkitLocation();
+      final World world = shop.bukkitLocation().getWorld(); //Cache this, because it will took some time.
       final AbstractDisplayItem displayItem = ((ContainerShop)shop).getDisplayItem();
       if(displayItem != null) {
         // Check the range has player?

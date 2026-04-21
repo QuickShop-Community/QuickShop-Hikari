@@ -18,6 +18,7 @@ import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.S
 import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_ITEM;
 import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_PRICE;
 import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_SHOPTYPE;
+import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_SHOP_STATE;
 import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_SIGN_TYPE;
 import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SET_STACK_AMOUNT;
 import static com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission.SHOW_INFORMATION;
@@ -28,7 +29,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
   BLOCKED("blocked", "blocked"),
   EVERYONE("everyone", "everyone", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH),
   STAFF("staff", "staff", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH, ACCESS_INVENTORY,
-        TOGGLE_DISPLAY, SET_SHOPTYPE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT,
+        TOGGLE_DISPLAY, SET_SHOPTYPE, SET_SHOP_STATE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT,
         SET_CURRENCY, RECEIVE_ALERT, SET_BENEFIT, SET_SIGN_TYPE, VIEW_PURCHASE_LOGS),
   ADMINISTRATOR("administrator", "administrator", BuiltInShopPermission.values());
 

@@ -30,6 +30,9 @@ public class SubCommand_Buy implements CommandHandler<Player> {
         shop.shopType(BUYING_TYPE);
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+
+        Util.playSound(sender, "effect.sound.shop.mode-change");
+        Util.playParticle(sender, shop.bukkitLocation(), "effect.particle.shop.mode-change");
       } else {
         plugin.text().of(sender, "not-managed-shop").send();
       }

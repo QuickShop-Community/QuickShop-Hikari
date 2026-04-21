@@ -8,11 +8,11 @@ import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -182,6 +182,7 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.getOwner(),
                                rawInfo.isUnlimited(),
                                rawInfo.getType(),
+                               rawInfo.getState(),
                                rawInfo.getExtra(),
                                rawInfo.getCurrency(),
                                rawInfo.isHologram(),
@@ -265,7 +266,7 @@ public class ShopLoader implements SubPasteItem {
       Log.debug("Shop itemStack amount can't be 0");
       return true;
     }
-    if(shop.getLocation() == null) {
+    if(shop.bukkitLocation() == null) {
       Log.debug("Shop location is null");
       return true;
     }
@@ -302,6 +303,7 @@ public class ShopLoader implements SubPasteItem {
     private QUser owner;
     private String name;
     private IShopType type;
+    private ShopState state;
     private String currency;
     private double price;
     private boolean unlimited;
@@ -324,6 +326,7 @@ public class ShopLoader implements SubPasteItem {
       this.owner = dataRecord.getOwner();
       this.price = dataRecord.getPrice();
       this.type = QuickShop.getInstance().getShopManager().shopTypeOrDefault(dataRecord.getType());
+      this.state = QuickShop.getInstance().getShopManager().shopStateOrDefault(dataRecord.getState());
       this.unlimited = dataRecord.isUnlimited();
       final String extraStr = dataRecord.getExtra();
       this.name = dataRecord.getName();

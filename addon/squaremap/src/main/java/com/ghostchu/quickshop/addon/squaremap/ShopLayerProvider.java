@@ -70,7 +70,7 @@ public class ShopLayerProvider {
   }
 
   public void updateShopMarker(@NotNull final Shop shop) {
-    final String worldName = shop.getLocation().getWorld().getName();
+    final String worldName = shop.bukkitLocation().getWorld().getName();
     if(!registeredWorlds.containsKey(worldName)) {
       return;
     }
@@ -86,14 +86,14 @@ public class ShopLayerProvider {
   }
 
   public void removeShopMarker(@NotNull final Shop shop) {
-    final String worldName = shop.getLocation().getWorld().getName();
+    final String worldName = shop.bukkitLocation().getWorld().getName();
     final Key markerKey = Key.of(String.format("%s_%s_%s", Main.SQUAREMAP_KEY, worldName, shop.getShopId()));
     provider.removeMarker(markerKey);
   }
 
   @NotNull
   private Icon createShopIcon(@NotNull final Shop shop) {
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     final Point point = Point.of(loc.getBlockX(), loc.getBlockZ());
 
     final String tooltip = fillPlaceholders(Main.instance().markerTooltip(), shop);
@@ -117,7 +117,7 @@ public class ShopLayerProvider {
 
   @NotNull
   private String fillPlaceholders(@NotNull final String text, @NotNull final Shop shop) {
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     final String x = String.valueOf(loc.getBlockX());
     final String y = String.valueOf(loc.getBlockY());
     final String z = String.valueOf(loc.getBlockZ());

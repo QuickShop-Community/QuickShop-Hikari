@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,9 +61,14 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
               }
               pendingRemoval.forEach(shop->{
                 plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /quickshop removeall command.", shop.saveToInfoStorage()));
-                Util.regionThread(shop.getLocation(), () -> plugin.getShopManager().deleteShop(shop));
+                Util.regionThread(shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(shop));
               });
               plugin.text().of(sender, "command.some-shops-removed", pendingRemoval.size()).send();
+
+              if(sender instanceof final Player player) {
+                Util.playSound(player, "effect.sound.shop.remove");
+                Util.playParticle(player, "effect.particle.shop.remove");
+              }
             })
             .exceptionally(err->{
               plugin.text().of(sender, "internal-error", err.getMessage()).send();

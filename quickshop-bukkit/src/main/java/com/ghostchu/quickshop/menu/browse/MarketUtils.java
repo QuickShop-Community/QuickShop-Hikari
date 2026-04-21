@@ -213,8 +213,11 @@ public final class MarketUtils {
     final List<Shop> sorted = new ArrayList<>(shops);
 
     switch(sortMode) {
-      case PRICE_ASC -> sorted.sort(Comparator.comparingDouble(Shop::getPrice));
-      case PRICE_DESC -> sorted.sort(Comparator.comparingDouble(Shop::getPrice).reversed());
+      case PRICE_ASC -> {
+
+        sorted.sort((a, b) -> a.comparePrice(b.price(), false));
+      }
+      case PRICE_DESC -> sorted.sort((a, b) -> a.comparePrice(b.price(), true));
       case STOCK -> sorted.sort(Comparator.comparingInt(MarketUtils::getStockFromCache).reversed());
       case NAME -> sorted.sort(Comparator.comparing(shop->
                                                             CommonUtil.prettifyText(shop.getItem().getType().name())));

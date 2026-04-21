@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.history.ShopHistory;
@@ -19,7 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_DATA_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
@@ -82,6 +87,7 @@ public class SubCommand_History implements CommandHandler<Player> {
         }
       }
     }
+
     final MenuViewer viewer = new MenuViewer(sender.getUniqueId());
     MenuManager.instance().addViewer(viewer);
 
@@ -99,8 +105,36 @@ public class SubCommand_History implements CommandHandler<Player> {
           return;
         }
 
+        final Map<Long, DataRecord> dataRecords = new ConcurrentHashMap<>();
+        final List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for(final ShopHistory.ShopHistoryRecord record : queryResult) {
+          final long id = record.dataId();
+
+          futures.add(QuickShop.getInstance()
+                          .getDatabaseHelper()
+                          .getDataRecord(id)
+                          .thenAccept(data->{
+                            if(data != null) {
+
+                              dataRecords.put(id, data);
+                            }
+                          })
+                          .exceptionally(ex->{
+
+                            QuickShop.getInstance().logger().warn(
+                                    "Failed to load DataRecord for id {}",
+                                    id,
+                                    ex);
+                            return null;
+                          }));
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
         viewer.addData(SHOPS_DATA, shops);
         viewer.addData(HISTORY_RECORDS, queryResult);
+        viewer.addData(HISTORY_DATA_RECORDS, dataRecords);
         viewer.addData(HISTORY_SUMMARY, summary);
         Util.mainThreadRun(()->{
           MenuManager.instance().open("qs:history", 1, menuPlayer);
