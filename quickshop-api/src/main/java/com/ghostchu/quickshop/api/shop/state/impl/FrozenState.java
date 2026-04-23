@@ -46,6 +46,19 @@ public class FrozenState implements ShopState {
     return "signs.freeze";
   }
 
+  /**
+   * Provides the translation key used for the miniature lore text associated with this shop state.
+   * This text typically represents a brief description or summary of the shop's state for display
+   * purposes.
+   *
+   * @return the translation key for the miniature lore associated with the shop state.
+   */
+  @Override
+  public String miniLoreTranslationKey() {
+
+    return "menu.this-shop-is-frozen";
+  }
+
   @Override
   public boolean overrideShopTypeText() {
     return true;

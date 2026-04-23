@@ -314,6 +314,7 @@ public class ShopListPage {
     final var mm = QuickShop.getInstance().platform().miniMessage();
 
     // Owner
+    //TODO: use admin-shop when it's an admin shop
     lore.add(mm.deserialize("<gray>Owner: <white>" + shop.getOwner().getDisplay() + "</white></gray>"));
 
     // Shop type

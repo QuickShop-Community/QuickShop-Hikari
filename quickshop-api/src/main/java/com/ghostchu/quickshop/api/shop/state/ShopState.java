@@ -36,6 +36,15 @@ public interface ShopState {
    */
   String translationKey();
 
+  /**
+   * Provides the translation key used for the miniature lore text associated
+   * with this shop state. This text typically represents a brief description
+   * or summary of the shop's state for display purposes.
+   *
+   * @return the translation key for the miniature lore associated with the shop state.
+   */
+  String miniLoreTranslationKey();
+
   default boolean overrideShopTypeText() {
     return false;
   }

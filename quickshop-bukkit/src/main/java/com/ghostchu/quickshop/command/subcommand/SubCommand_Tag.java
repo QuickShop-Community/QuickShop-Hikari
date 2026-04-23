@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.pagination.Pagination;
 import com.ghostchu.quickshop.util.pagination.PaginationOptions;
 import net.kyori.adventure.text.Component;
@@ -58,14 +59,6 @@ public class SubCommand_Tag implements CommandHandler<Player> {
       case "clearall" -> handleClearAll(sender, parser); //todo: confirmation maybe for clear and clearall?
       case "list" -> handleTags(sender, commandLabel, parser);
       default -> handleAdd(sender, parser, 0);
-    }
-
-    System.out.println("Tag command: " + sub + " Parser Args: " + parser.getArgs().size() + "");
-
-    int i = 0;
-    for(final String arg : parser.getArgs()) {
-      System.out.println("Arg " + i + ": " + arg);
-      i++;
     }
   }
 
@@ -320,7 +313,10 @@ public class SubCommand_Tag implements CommandHandler<Player> {
               //final boolean canTeleport = plugin.perm().hasPermission(sender, "quickshop.tagged.teleport");
               //final Component tpComponent = plugin.text().of(sender, "tags.tag.list-tag-shop-entry-tp", commandLabel + " tp ").forLocale();
 
-              plugin.text().of(sender, "tags.tag.list-tag-shop-entry", pos, entry, shop.getOwner().getDisplay(), shop.getItem().displayName(), "", commandLabel + " tag remove " + normalized).send();
+              MsgUtil.sendDirectMessage(sender, MsgUtil.buildShopHoverTag(sender, shop, false,
+                                                                          (int)pos, commandLabel + " tag remove " + normalized));
+
+              //plugin.text().of(sender, "tags.tag.list-tag-shop-entry", pos, shop.getShopName(), shop.getOwner().getDisplay(), shop.getItem().displayName(), "", commandLabel + " tag remove " + normalized).send();
             })
             .setHeaderLanguageKey("pagination.header")
             .setFooterLanguageKey("pagination.footer").build();
@@ -328,7 +324,7 @@ public class SubCommand_Tag implements CommandHandler<Player> {
     final Pagination<Long> shops = new Pagination<>(options);
 
 
-    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-tag-title", shopIds.size()).forLocale();
+    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-tag-title", normalized, shopIds.size()).forLocale();
 
     shops.printHeader(sender, titleComponent, shops.page(), shops.totalPages());
     shops.printEntries(sender);

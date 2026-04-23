@@ -4,7 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.general.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -14,6 +16,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -21,6 +24,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -128,6 +132,86 @@ public class MsgUtil {
       }
     }
     return decimalFormat.format(value);
+  }
+
+  //todo:
+  public static Component buildShopHover(@NotNull final Player player, @NotNull final Shop shop,
+                                         final boolean clickPreview, final int counter) {
+
+    final Location location = shop.bukkitLocation();
+
+    Component component = QuickShop.getInstance().text().of(player, "addon.list.entry", counter, buildShopName(shop),
+                                              location.getWorld().getName(), location.getBlockX(),
+                                              location.getBlockY(), location.getBlockZ(),
+                                              shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()),
+                                              shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()),
+                                              buildShopType(player, shop),
+                                              buildShopState(player, shop)).forLocale();
+
+    if(clickPreview) {
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}",
+                                                                              QuickShop.getInstance().getMainCommand(),
+                                                                              QuickShop.getInstance().getCommandPrefix("silentpreview"),
+                                                                              shop.getRuntimeRandomUniqueId().toString())));
+    }
+    return component;
+  }
+
+  public static Component buildShopHoverTag(@NotNull final Player player, @NotNull final Shop shop,
+                                         final boolean clickPreview, final int counter, final String removeCommand) {
+
+    final Location location = shop.bukkitLocation();
+
+    final String coords = location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+
+    Component component = QuickShop.getInstance().text().of(player, "tags.tag.entry", counter, buildShopName(shop),
+                                              location.getWorld().getName(), coords,
+                                              shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()),
+                                              shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()),
+                                              buildShopType(player, shop),
+                                              buildShopState(player, shop), removeCommand).forLocale();
+
+    if(clickPreview) {
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}",
+                                                                              QuickShop.getInstance().getMainCommand(),
+                                                                              QuickShop.getInstance().getCommandPrefix("silentpreview"),
+                                                                              shop.getRuntimeRandomUniqueId().toString())));
+    }
+    return component;
+  }
+
+  public static Component buildShopName(@NotNull final Shop shop) {
+
+    String shopName = shop.getShopName();
+    final Location location = shop.bukkitLocation();
+    final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+    if(CommonUtil.isEmptyString(shopName)) {
+      shopName = combineLocation;
+    }
+
+    return LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
+  }
+
+  public static Component buildShopHoverTitle(@NotNull final Shop shop) {
+    String shopName = shop.getShopName();
+    final Location location = shop.bukkitLocation();
+    final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
+
+    if(CommonUtil.isEmptyString(shopName)) {
+      shopName = combineLocation;
+    }
+
+    return LegacyComponentSerializer.legacySection().deserialize(shopName);
+  }
+
+  public static Component buildShopType(@NotNull final Player player, @NotNull final Shop shop) {
+
+    return QuickShop.getInstance().text().of(player, shop.shopType().miniLoreTranslationKey()).forLocale();
+  }
+
+  public static Component buildShopState(@NotNull final Player player, @NotNull final Shop shop) {
+
+    return QuickShop.getInstance().text().of(player, "menu.this-shop-is-state", QuickShop.getInstance().text().of(player, shop.shopState().miniLoreTranslationKey()).forLocale()).forLocale();
   }
 
   /**

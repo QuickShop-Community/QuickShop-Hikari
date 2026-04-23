@@ -42,6 +42,19 @@ public class ActiveState implements ShopState {
     return "shop.state.active";
   }
 
+  /**
+   * Provides the translation key used for the miniature lore text associated with this shop state.
+   * This text typically represents a brief description or summary of the shop's state for display
+   * purposes.
+   *
+   * @return the translation key for the miniature lore associated with the shop state.
+   */
+  @Override
+  public String miniLoreTranslationKey() {
+
+    return "menu.this-shop-is-active";
+  }
+
   @Override
   public boolean overrideShopTypeText() {
     return false;
