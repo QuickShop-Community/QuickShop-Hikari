@@ -472,11 +472,13 @@ public abstract class AbstractShopManager implements ShopManager {
     addShopToLookupTable(shop);
     if(!persist) return CompletableFuture.completedFuture(null);
     return plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop)
-            .thenAccept(id->{
+            .thenCompose(id->{
               Log.debug("DEBUG: Setting shop id");
               shop.setShopId(id);
               Log.debug("DEBUG: Creating shop map");
-              plugin.getDatabaseHelper().createShopMap(id, shop.getLocation()).join();
+              return plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
+            })
+            .thenAccept(v->{
               Log.debug("DEBUG: Creating shop successfully");
               shop.setDirty();
 
