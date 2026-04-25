@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -109,7 +108,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
            && plugin.getItemMarker().get(originLookFor) == null) {
           continue;
         }
-        if(excludeOutOfStock && Bukkit.getServer().isOwnedByCurrentRegion(shop.getLocation())) {
+        if(excludeOutOfStock) {
           if((shop.isSelling() && shop.getRemainingStock() == 0) || (shop.isBuying() && shop.getRemainingSpace() == 0)) {
             continue;
           }
@@ -147,19 +146,16 @@ public class SubCommand_Find implements CommandHandler<Player> {
         previewComponentPrePopulateEvent.callEvent();
         previewItemStack = previewComponentPrePopulateEvent.getItemStack();
 
-        final ItemStack finalPreviewItemStack = previewItemStack;
-        QuickShop.folia().getScheduler().runAtLocation(location, task -> {
-          Component entryComponent = plugin.text().of(sender, "nearby-shop-entry",
-                                                      shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(1),
-                                                      shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(3),
-                                                      location.getBlockX(),
-                                                      location.getBlockY(),
-                                                      location.getBlockZ(),
-                                                      shopDoubleEntry.getValue().intValue()
-                                                     ).forLocale();
-          entryComponent = plugin.platform().setItemStackHoverEvent(entryComponent, finalPreviewItemStack);
-          MsgUtil.sendDirectMessage(sender, entryComponent);
-        });
+        Component entryComponent = plugin.text().of(sender, "nearby-shop-entry",
+                                                    shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(1),
+                                                    shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(3),
+                                                    location.getBlockX(),
+                                                    location.getBlockY(),
+                                                    location.getBlockZ(),
+                                                    shopDoubleEntry.getValue().intValue()
+                                                   ).forLocale();
+        entryComponent = plugin.platform().setItemStackHoverEvent(entryComponent, previewItemStack);
+        MsgUtil.sendDirectMessage(sender, entryComponent);
       }
 
     }

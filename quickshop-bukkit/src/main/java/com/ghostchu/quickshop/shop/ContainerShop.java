@@ -699,12 +699,19 @@ public class ContainerShop implements Shop, Reloadable {
       return stock;
     }
 
-    // Off-region: cannot read the inventory synchronously without
-    // blocking the calling region thread (Folia watchdog kills the tick
-    // after ~10s and it risks a deadlock if the owning region is itself
-    // waiting on us).  Callers iterating shops across regions must wrap
-    // this in QuickShop.folia().getScheduler().runAtLocation(...) - see
-    // SubCommand_Info for the established pattern.
+    QuickShop.folia()
+      .getScheduler()
+      .runAtLocation(
+        this.location,
+        task->{
+          if(this.getInventory() == null) {
+            return;
+          }
+
+          final int stock = Util.countItems(this.getInventory(), this);
+          new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+        });
+
     return 0;
   }
 
