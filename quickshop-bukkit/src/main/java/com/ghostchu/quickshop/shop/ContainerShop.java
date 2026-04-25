@@ -31,7 +31,6 @@ import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.ShopType;
-import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -42,6 +41,7 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -661,7 +661,7 @@ public class ContainerShop implements Shop, Reloadable {
       return -1;
     }
 
-    if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
+    if(Bukkit.isPrimaryThread()) {
 
       if(this.getInventory() == null) {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
@@ -674,9 +674,7 @@ public class ContainerShop implements Shop, Reloadable {
       return space;
     } else {
 
-      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this)
-            .thenApply(ShopInventoryCountCache::getSpace)
-            .getNow(0);
+      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
     }
   }
 
@@ -720,7 +718,7 @@ public class ContainerShop implements Shop, Reloadable {
           future.complete(stock);
         });
 
-    return future.getNow(0);
+    return future.join();
   }
 
   /**
