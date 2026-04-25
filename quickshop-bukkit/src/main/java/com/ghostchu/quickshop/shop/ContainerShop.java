@@ -31,6 +31,7 @@ import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -41,7 +42,6 @@ import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -672,9 +672,12 @@ public class ContainerShop implements Shop, Reloadable {
       new ShopInventoryCalculateEvent(this, space, -1).callEvent();
       Log.debug("Space count is: " + space);
       return space;
-    }
+    } else {
 
-    return 0;
+      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this)
+            .thenApply(ShopInventoryCountCache::getSpace)
+            .getNow(0);
+    }
   }
 
   /**
@@ -699,20 +702,25 @@ public class ContainerShop implements Shop, Reloadable {
       return stock;
     }
 
+    final CompletableFuture<Integer> future = new CompletableFuture<>();
+
     QuickShop.folia()
       .getScheduler()
       .runAtLocation(
         this.location,
         task->{
           if(this.getInventory() == null) {
+            future.complete(0);
             return;
           }
 
           final int stock = Util.countItems(this.getInventory(), this);
           new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+
+          future.complete(stock);
         });
 
-    return 0;
+    return future.getNow(0);
   }
 
   /**
