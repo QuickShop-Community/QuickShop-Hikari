@@ -661,7 +661,7 @@ public class ContainerShop implements Shop, Reloadable {
       return -1;
     }
 
-    if(Bukkit.isPrimaryThread()) {
+    if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
 
       if(this.getInventory() == null) {
         Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
@@ -672,10 +672,9 @@ public class ContainerShop implements Shop, Reloadable {
       new ShopInventoryCalculateEvent(this, space, -1).callEvent();
       Log.debug("Space count is: " + space);
       return space;
-    } else {
-
-      return plugin.getShopManager().queryShopInventoryCacheInDatabase(this).join().getSpace();
     }
+
+    return 0;
   }
 
   /**
@@ -700,25 +699,13 @@ public class ContainerShop implements Shop, Reloadable {
       return stock;
     }
 
-    final CompletableFuture<Integer> future = new CompletableFuture<>();
-
-    QuickShop.folia()
-      .getScheduler()
-      .runAtLocation(
-        this.location,
-        task->{
-          if(this.getInventory() == null) {
-            future.complete(0);
-            return;
-          }
-
-          final int stock = Util.countItems(this.getInventory(), this);
-          new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
-
-          future.complete(stock);
-        });
-
-    return future.join();
+    // Off-region: cannot read the inventory synchronously without
+    // blocking the calling region thread (Folia watchdog kills the tick
+    // after ~10s and it risks a deadlock if the owning region is itself
+    // waiting on us).  Callers iterating shops across regions must wrap
+    // this in QuickShop.folia().getScheduler().runAtLocation(...) - see
+    // SubCommand_Info for the established pattern.
+    return 0;
   }
 
   /**
