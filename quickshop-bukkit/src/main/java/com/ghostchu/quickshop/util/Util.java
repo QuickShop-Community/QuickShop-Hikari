@@ -567,6 +567,7 @@ public class Util {
     if(inv == null) {
       return 0;
     }
+
     if(inv instanceof final CountableInventoryWrapper ciw) {
       return ciw.countSpace(shop::matches);
     } else {

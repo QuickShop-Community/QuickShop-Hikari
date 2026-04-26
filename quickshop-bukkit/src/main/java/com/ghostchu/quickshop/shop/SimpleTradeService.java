@@ -283,17 +283,16 @@ public class SimpleTradeService implements TradeService {
       return previewFailure(TradeType.BUY_FROM_SHOP, amount, TradeFailureReason.SHOP_DISABLED, "Shop is not selling items.");
     }
 
-    final int requestedUnits = normalizeAmount(shop, amount);
-
     if(!shop.isUnlimited()) {
       final InventoryWrapper chestInv = shop.getInventory();
       if(chestInv == null) {
         return previewFailure(TradeType.BUY_FROM_SHOP, amount, TradeFailureReason.SHOP_TRANSACTION_FAILED, "Shop inventory is null.");
       }
 
+      final int stackSize = Math.max(1, shop.getItem().getAmount());
       final int stock = Util.countItems(chestInv, shop);
+      final int requestedUnits = normalizeAmount(shop, amount) / stackSize;
       if(stock < requestedUnits) {
-        final int stackSize = Math.max(1, shop.getItem().getAmount());
         final int allowedTrades = stock / stackSize;
         return new TradePreview(
                 TradeType.BUY_FROM_SHOP,
@@ -352,11 +351,11 @@ public class SimpleTradeService implements TradeService {
       return previewFailure(TradeType.SELL_TO_SHOP, amount, TradeFailureReason.SHOP_DISABLED, "Shop is not buying items.");
     }
 
-    final int requestedUnits = normalizeAmount(shop, amount);
 
+    final int stackSize = Math.max(1, shop.getItem().getAmount());
+    final int requestedUnits = normalizeAmount(shop, amount) / stackSize;
     final int sellerStock = Util.countItems(sellerInventory, shop);
     if(sellerStock < requestedUnits) {
-      final int stackSize = Math.max(1, shop.getItem().getAmount());
       final int allowedTrades = sellerStock / stackSize;
       return new TradePreview(
               TradeType.SELL_TO_SHOP,
@@ -371,6 +370,7 @@ public class SimpleTradeService implements TradeService {
     }
 
     if(!shop.isUnlimited()) {
+
       final int maxAffordable = shop.getMaxAffordable();
       if(amount > maxAffordable) {
         return new TradePreview(
@@ -391,16 +391,13 @@ public class SimpleTradeService implements TradeService {
         space = Integer.MAX_VALUE;
       }
 
-      final int stackSize = Math.max(1, shop.getItem().getAmount());
-      final int maxTrades = space / stackSize;
-
-      if(amount > maxTrades) {
+      if(requestedUnits > space) {
         return new TradePreview(
                 TradeType.SELL_TO_SHOP,
                 amount,
-                Math.max(0, maxTrades),
+                Math.max(0, space),
                 unitPrice(shop),
-                totalPrice(shop, Math.max(0, maxTrades)),
+                totalPrice(shop, Math.max(0, space)),
                 false,
                 TradeFailureReason.SHOP_NO_SPACE,
                 "Shop does not have enough space."
