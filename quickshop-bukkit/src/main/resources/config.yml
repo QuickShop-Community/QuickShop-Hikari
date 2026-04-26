@@ -491,7 +491,6 @@ shop:
 
   # [BETA] Per-player shop sign translations (i18n).
   # Sends an extra sign packet so each player sees text in their own locale.
-  # Requires ProtocolLib.
   per-player-shop-sign: false
 
   # /quickshop find Settings
