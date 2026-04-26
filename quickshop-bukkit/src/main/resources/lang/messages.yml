@@ -184,7 +184,7 @@ tags:
     list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
     list-tag-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
     list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
-    list-tag-shop-entry: "<yellow>{0}.</yellow> <aqua>Shop #{1}</aqua> <gray>-</gray> <yellow>{2}</yellow> <gray>-</gray> <aqua>{3}</aqua> {4} <red>[<click:run_command:\"{5}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry: "<green>{0}.</green> <aqua>Shop #{1}</aqua> <gray>-</gray> <yellow>{2}</yellow> <gray>-</gray> <aqua>{3}</aqua> {4} <red>[<click:run_command:\"{5}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
     added: "<green>Added tag <aqua>{0}</aqua> to this shop."
@@ -211,7 +211,7 @@ menu:
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green>
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green>  
     in taxes)
   successful-purchase: '<green>Successfully purchased:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
@@ -220,7 +220,7 @@ menu:
   this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
   this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
   this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <green>ACTIVE</green>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
   this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Amount of bulk: <yellow>{0}'
   space: '<green>Space: <yellow>{0}'

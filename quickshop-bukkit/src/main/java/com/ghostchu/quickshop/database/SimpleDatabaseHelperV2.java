@@ -811,18 +811,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
               .setColumnNames("uuid", "locale", "cachedName")
               .setParams(uuid.toString(), locale, username)
               .executeFuture(lines->lines);
-    } else {
-      return CompletableFuture.supplyAsync(()->{
-        String cachedLocale = getPlayerLocale(uuid).join();
-        if(cachedLocale == null) {
-          cachedLocale = "en_us";
-        }
-        return DataTables.PLAYERS.createReplace()
-                .setColumnNames("uuid", "locale", "cachedName")
-                .setParams(uuid.toString(), cachedLocale, username)
-                .executeFuture(lines->lines).join();
-      });
     }
+
+    return CompletableFuture.supplyAsync(()->{
+      String cachedLocale = getPlayerLocale(uuid).join();
+      if(cachedLocale == null) {
+        cachedLocale = "en_us";
+      }
+      return DataTables.PLAYERS.createReplace()
+              .setColumnNames("uuid", "locale", "cachedName")
+              .setParams(uuid.toString(), cachedLocale, username)
+              .executeFuture(lines->lines).join();
+    });
   }
 
   @Override

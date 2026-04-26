@@ -1221,22 +1221,22 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Unregistering not successful. Was it already unloaded?");
       }
     }
-    if(getShopManager() != null) {
+    if(shopManager != null) {
       logger.info("Unloading all loaded shops...");
-      getShopManager().getLoadedShops().forEach(shop->getShopManager().unloadShop(shop));
+      shopManager.getLoadedShops().forEach(shop->shopManager.unloadShop(shop));
     }
     if(this.bungeeListener != null) {
       logger.info("Disabling the BungeeChat messenger listener.");
       Bukkit.getOnlinePlayers().forEach(player->this.bungeeListener.notifyForCancel(player));
       this.bungeeListener.unregister();
     }
-    if(getShopSaveWatcher() != null) {
+    if(shopSaveWatcher != null) {
       logger.info("Stopping shop auto save...");
-      getShopSaveWatcher().stop();
+      shopSaveWatcher.stop();
     }
-    if(getShopManager() != null) {
+    if(shopManager != null) {
       logger.info("Saving all in-memory changed shops...");
-      final List<@NotNull CompletableFuture> futures = getShopManager().getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
+      final List<@NotNull CompletableFuture> futures = shopManager.getAllShops().stream().filter(Shop::isDirty).map(Shop::update).toList();
 
       logger.info("Shops needed saved: " + futures.size());
       final CompletableFuture<?>[] completableFutures = futures.toArray(new CompletableFuture<?>[0]);
@@ -1250,7 +1250,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       } catch(final CompletionException ex) {
 
         logger.info("Timed out, running saving synchronously to determine shop with issue.", ex);
-        for(final Shop shop : getShopManager().getAllShops()) {
+        for(final Shop shop : shopManager.getAllShops()) {
 
           if(shop.isDirty()) {
             try {
