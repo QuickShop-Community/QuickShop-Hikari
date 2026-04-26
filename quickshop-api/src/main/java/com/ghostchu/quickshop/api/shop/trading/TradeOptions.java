@@ -29,30 +29,20 @@ public final class TradeOptions {
   public static final TradeOptions DEFAULT = builder().build();
 
   public static final TradeOptions SILENT = builder()
-          .sendMessages(false)
           .updateSigns(true)
           .build();
 
   public static final TradeOptions PREVIEW = builder()
-          .sendMessages(false)
           .updateSigns(false)
-          .callEvents(false)
           .commit(false)
-          .allowRollback(false)
           .build();
 
-  private final boolean sendMessages;
   private final boolean updateSigns;
-  private final boolean callEvents;
-  private final boolean allowRollback;
   private final boolean commit;
 
   private TradeOptions(final Builder builder) {
 
-    this.sendMessages = builder.sendMessages;
     this.updateSigns = builder.updateSigns;
-    this.callEvents = builder.callEvents;
-    this.allowRollback = builder.allowRollback;
     this.commit = builder.commit;
   }
 
@@ -66,24 +56,9 @@ public final class TradeOptions {
     return new Builder(copy);
   }
 
-  public boolean sendMessages() {
-
-    return sendMessages;
-  }
-
   public boolean updateSigns() {
 
     return updateSigns;
-  }
-
-  public boolean callEvents() {
-
-    return callEvents;
-  }
-
-  public boolean allowRollback() {
-
-    return allowRollback;
   }
 
   public boolean commit() {
@@ -93,44 +68,20 @@ public final class TradeOptions {
 
   public static final class Builder {
 
-    private boolean sendMessages = true;
     private boolean updateSigns = true;
-    private boolean callEvents = true;
-    private boolean allowRollback = true;
     private boolean commit = true;
 
     private Builder() { }
 
     private Builder(final TradeOptions copy) {
 
-      this.sendMessages = copy.sendMessages;
       this.updateSigns = copy.updateSigns;
-      this.callEvents = copy.callEvents;
-      this.allowRollback = copy.allowRollback;
       this.commit = copy.commit;
-    }
-
-    public Builder sendMessages(final boolean sendMessages) {
-
-      this.sendMessages = sendMessages;
-      return this;
     }
 
     public Builder updateSigns(final boolean updateSigns) {
 
       this.updateSigns = updateSigns;
-      return this;
-    }
-
-    public Builder callEvents(final boolean callEvents) {
-
-      this.callEvents = callEvents;
-      return this;
-    }
-
-    public Builder allowRollback(final boolean allowRollback) {
-
-      this.allowRollback = allowRollback;
       return this;
     }
 

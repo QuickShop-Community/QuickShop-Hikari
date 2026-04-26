@@ -83,8 +83,7 @@ public class SimpleTradeService implements TradeService {
               preview.unitPrice(),
               preview.totalPrice(),
               preview.limitingReason(),
-              preview.debugMessage()
-                         );
+              preview.debugMessage());
     }
 
     try {
@@ -108,8 +107,7 @@ public class SimpleTradeService implements TradeService {
                   unitPrice(shop),
                   totalPrice(shop, 0),
                   TradeFailureReason.SHOP_TRANSACTION_FAILED,
-                  "Shop inventory is null."
-                             );
+                  "Shop inventory is null.");
         }
 
         transaction = SimpleInventoryTransaction.builder()
@@ -131,8 +129,7 @@ public class SimpleTradeService implements TradeService {
                 unitPrice(shop),
                 totalPrice(shop, 0),
                 TradeFailureReason.INVENTORY_TRANSACTION_FAILED,
-                "Inventory transaction failed: " + transaction.getLastError()
-                           );
+                "Inventory transaction failed: " + transaction.getLastError());
       }
 
       if(options.updateSigns() && !shop.isUnlimited()) {
@@ -143,8 +140,7 @@ public class SimpleTradeService implements TradeService {
               TradeType.BUY_FROM_SHOP,
               amount,
               amount,
-              unitPrice(shop)
-                          );
+              unitPrice(shop));
     } catch(final Exception e) {
       return failedResult(
               TradeType.BUY_FROM_SHOP,
@@ -153,8 +149,7 @@ public class SimpleTradeService implements TradeService {
               unitPrice(shop),
               totalPrice(shop, 0),
               TradeFailureReason.INTERNAL_ERROR,
-              e.getMessage()
-                         );
+              e.getMessage());
     }
   }
 
@@ -190,8 +185,7 @@ public class SimpleTradeService implements TradeService {
               preview.unitPrice(),
               preview.totalPrice(),
               preview.limitingReason(),
-              preview.debugMessage()
-                         );
+              preview.debugMessage());
     }
 
     try {
@@ -215,8 +209,7 @@ public class SimpleTradeService implements TradeService {
                   unitPrice(shop),
                   totalPrice(shop, 0),
                   TradeFailureReason.SHOP_TRANSACTION_FAILED,
-                  "Shop inventory is null."
-                             );
+                  "Shop inventory is null.");
         }
 
         transaction = SimpleInventoryTransaction.builder()
@@ -238,8 +231,7 @@ public class SimpleTradeService implements TradeService {
                 unitPrice(shop),
                 totalPrice(shop, 0),
                 TradeFailureReason.INVENTORY_TRANSACTION_FAILED,
-                "Inventory transaction failed: " + transaction.getLastError()
-                           );
+                "Inventory transaction failed: " + transaction.getLastError());
       }
 
       if(options.updateSigns()) {
@@ -250,8 +242,7 @@ public class SimpleTradeService implements TradeService {
               TradeType.SELL_TO_SHOP,
               amount,
               amount,
-              unitPrice(shop)
-                          );
+              unitPrice(shop));
     } catch(final Exception e) {
       return failedResult(
               TradeType.SELL_TO_SHOP,
@@ -260,8 +251,7 @@ public class SimpleTradeService implements TradeService {
               unitPrice(shop),
               totalPrice(shop, 0),
               TradeFailureReason.INTERNAL_ERROR,
-              e.getMessage()
-                         );
+              e.getMessage());
     }
   }
 
