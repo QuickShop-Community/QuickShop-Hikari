@@ -96,6 +96,8 @@ public class Util {
   private static final Set<Material> SHOPABLES = new HashSet<>();
   private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
   private static int BYPASSED_CUSTOM_STACKSIZE = -1;
+  //add limit for vanilla values
+  public static final int VANILLA_MAX_STACK_SIZE = 99;
   private static Yaml yaml = null;
   private static Boolean devMode = null;
   @Setter
@@ -1250,7 +1252,16 @@ public class Util {
       }
 
       if("*".equalsIgnoreCase(data[0])) {
-        BYPASSED_CUSTOM_STACKSIZE = Integer.parseInt(data[1]);
+        try {
+
+          BYPASSED_CUSTOM_STACKSIZE = Integer.parseInt(data[1]);
+          if(BYPASSED_CUSTOM_STACKSIZE > VANILLA_MAX_STACK_SIZE) {
+
+            BYPASSED_CUSTOM_STACKSIZE = VANILLA_MAX_STACK_SIZE;
+            plugin.logger().warn("custom-item-stacksize for entry * was higher than the vanilla limit, resetting to maximum vanilla limit.", material);
+          }
+        } catch(final NumberFormatException ignore) {
+        }
       }
 
       final Material mat = Material.matchMaterial(data[0]);
@@ -1259,7 +1270,20 @@ public class Util {
         continue;
       }
 
-      CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
+      try {
+
+        final int stackSize = Integer.parseInt(data[1]);
+        final boolean invalid = stackSize > VANILLA_MAX_STACK_SIZE;
+
+        CUSTOM_STACKSIZE.put(mat, ((invalid)? VANILLA_MAX_STACK_SIZE : stackSize));
+
+        if(invalid) {
+
+          plugin.logger().warn("custom-item-stacksize for material {} was higher than the vanilla limit, resetting to maximum vanilla limit.", material);
+        }
+      } catch(final NumberFormatException ignore) {
+
+      }
     }
     try {
 

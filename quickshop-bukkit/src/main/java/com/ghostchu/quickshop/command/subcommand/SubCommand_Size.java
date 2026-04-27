@@ -18,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ghostchu.quickshop.util.Util.VANILLA_MAX_STACK_SIZE;
+
 public class SubCommand_Size implements CommandHandler<Player> {
 
   private final QuickShop plugin;
@@ -39,6 +41,11 @@ public class SubCommand_Size implements CommandHandler<Player> {
       amount = Integer.parseInt(parser.getArgs().getFirst());
     } catch(final NumberFormatException e) {
       plugin.text().of(sender, "not-a-integer", parser.getArgs().getFirst()).send();
+      return;
+    }
+
+    if(amount > VANILLA_MAX_STACK_SIZE) {
+      plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
       return;
     }
     final Shop shop = getLookingShop(sender);

@@ -38,12 +38,19 @@ public class MetricManager {
 
     this.collector = new StatCollector(QuickShop.getInstance());
 
+    QuickShop.getInstance().logger().warn("Initializing bStats....");
     this.bStats = new BStats(collector);
+
+    QuickShop.getInstance().logger().warn("Initializing FastStats....");
     this.fastStats = new FastStats(collector);
   }
 
   public void initPlatforms() {
+
+    QuickShop.getInstance().logger().warn("Registering bStats....");
     bStats.register();
+
+    QuickShop.getInstance().logger().warn("Registering FastStats....");
     fastStats.register();
   }
 }
