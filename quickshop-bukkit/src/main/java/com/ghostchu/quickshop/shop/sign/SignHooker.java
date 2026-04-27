@@ -1,79 +1,38 @@
 package com.ghostchu.quickshop.shop.sign;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.reflect.StructureModifier;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.listener.AbstractQSListener;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.event.EventHandler;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class SignHooker {
-
-  private final QuickShop PLUGIN;
-  private final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
-  private PacketAdapter chunkAdapter;
+public class SignHooker extends AbstractQSListener {
 
   public SignHooker(final QuickShop plugin) {
-
-    PLUGIN = plugin;
-    registerListener();
+    super(plugin);
   }
 
-  public void registerListener() {
+  @EventHandler
+  public void onPlayerChunkLoadEvent(final PlayerChunkLoadEvent event) {
+    final Player player = event.getPlayer();
+    final Chunk chunk = event.getChunk();
 
-    chunkAdapter = new PacketAdapter(PLUGIN.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
-      @Override
-      public void onPacketSending(@NotNull final PacketEvent event) {
-        //is really full chunk data
-        //In 1.17, this value was removed, so read safely
-        final Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
-        final boolean isFull = boxedIsFull == null || boxedIsFull;
-        if(!isFull) {
-          return;
-        }
-        final Player player = event.getPlayer();
-        if(player == null || !player.isOnline()) {
-          return;
-        }
-        if(player.getClass().getName().contains("TemporaryPlayer")) {
-          return;
-        }
-        final StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
-        //chunk x
-        final int x = integerStructureModifier.read(0);
-        //chunk z
-        final int z = integerStructureModifier.read(1);
-
-        final Map<Location, Shop> shops = PLUGIN.getShopManager().getShops(player.getWorld().getName(), x, z);
-        if(shops == null) {
-
-          return;
-        }
-        shops.forEach((loc, shop)->
-          QuickShop.folia().getScheduler().runAtLocationLater(loc, ()->updatePerPlayerShopSign(player, loc, shop), 2)
-        );
-      }
-    };
-
-    PROTOCOL_MANAGER.addPacketListener(chunkAdapter);
-    Log.debug("SignHooker chunk adapter registered.");
+    final Map<Location, Shop> shops = plugin.getShopManager().getShops(player.getWorld().getName(), chunk.getX(), chunk.getZ());
+    if (shops != null) {
+      shops.forEach((loc, shop)->updatePerPlayerShopSign(player, loc, shop));
+    }
   }
 
   public void updatePerPlayerShopSign(final Player player, final Location location, final Shop shop) {
@@ -82,24 +41,11 @@ public class SignHooker {
     if(!shop.isLoaded()) {
       return;
     }
-    if(!Util.isLoaded(location)) {
-      return;
-    }
     Log.debug("Updating per-player packet sign: Player=" + player.getName() + ", Location=" + location + ", Shop=" + shop.getShopId());
-    final List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
+    final List<Component> lines = shop.getSignText(plugin.getTextManager().findRelativeLanguages(player));
     for(final Sign sign : shop.getSigns()) {
 
-      PLUGIN.platform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
-    }
-  }
-
-  public void unload() {
-
-    if(PROTOCOL_MANAGER == null) {
-      return;
-    }
-    if(this.chunkAdapter != null) {
-      PROTOCOL_MANAGER.removePacketListener(chunkAdapter);
+      plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), lines);
     }
   }
 
@@ -109,13 +55,35 @@ public class SignHooker {
     if(world == null) {
       return;
     }
-    QuickShop.folia().getScheduler().runAtLocation(shop.getLocation(), (loc)->{
-      final Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
-      for(final Entity nearbyPlayer : nearbyPlayers) {
-        if(nearbyPlayer instanceof final Player player) {
-          updatePerPlayerShopSign(player, location, shop);
-        }
+    QuickShop.folia().getScheduler().runAtLocationLater(shop.getLocation(), ()->{
+      final Collection<Player> nearbyPlayers = getPlayersTrackingChunk(world, shop.getLocation());
+      for(final Player nearbyPlayer : nearbyPlayers) {
+        updatePerPlayerShopSign(nearbyPlayer, location, shop);
       }
-    });
+    }, 1);
+  }
+
+  private static final boolean CAN_USE_PLAYERS_SEEING_CHUNK;
+
+  // getPlayersSeeingChunk was added in 1.20.6, so check for the existence of the method and fallback to a worse method on earlier versions.
+  static {
+
+    boolean exists = false;
+    try {
+      //noinspection ConstantValue
+      exists = World.class.getMethod("getPlayersSeeingChunk", int.class, int.class) != null;
+    } catch (ReflectiveOperationException ignored) {}
+
+    CAN_USE_PLAYERS_SEEING_CHUNK = exists;
+  }
+
+  private Collection<Player> getPlayersTrackingChunk(final World world, final Location locationForChunk) {
+
+    if (CAN_USE_PLAYERS_SEEING_CHUNK) {
+      return world.getPlayersSeeingChunk(locationForChunk.getBlockX() >> 4, locationForChunk.getBlockZ() >> 4);
+    } else {
+      final int viewDistanceBlocks = plugin.getJavaPlugin().getServer().getViewDistance() * 16;
+      return world.getNearbyEntitiesByType(Player.class, locationForChunk, viewDistanceBlocks, world.getMaxHeight(), viewDistanceBlocks);
+    }
   }
 }
