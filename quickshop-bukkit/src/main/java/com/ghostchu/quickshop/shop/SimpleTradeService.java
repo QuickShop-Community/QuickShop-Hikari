@@ -361,6 +361,7 @@ public class SimpleTradeService implements TradeService {
 
     if(!shop.isUnlimited()) {
 
+      //TODO: Make a separate method for util.count items, requested, etc that provide raw output versus normalized output that is divided into stacks.
       final int maxAffordable = shop.getMaxAffordable();
       if(amount > maxAffordable) {
         return new TradePreview(
