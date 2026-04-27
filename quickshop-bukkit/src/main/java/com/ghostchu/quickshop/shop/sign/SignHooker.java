@@ -56,10 +56,34 @@ public class SignHooker extends AbstractQSListener {
       return;
     }
     QuickShop.folia().getScheduler().runAtLocationLater(shop.getLocation(), ()->{
-      final Collection<Player> nearbyPlayers = world.getPlayersSeeingChunk(shop.getLocation().getBlockX() >> 4, shop.getLocation().getBlockZ() >> 4);
+      final Collection<Player> nearbyPlayers = getPlayersTrackingChunk(world, shop.getLocation());
       for(final Player nearbyPlayer : nearbyPlayers) {
         updatePerPlayerShopSign(nearbyPlayer, location, shop);
       }
     }, 1);
+  }
+
+  private static final boolean CAN_USE_PLAYERS_SEEING_CHUNK;
+
+  // getPlayersSeeingChunk was added in 1.20.6, so check for the existence of the method and fallback to a worse method on earlier versions.
+  static {
+
+    boolean exists = false;
+    try {
+      //noinspection ConstantValue
+      exists = World.class.getMethod("getPlayersSeeingChunk", int.class, int.class) != null;
+    } catch (ReflectiveOperationException ignored) {}
+
+    CAN_USE_PLAYERS_SEEING_CHUNK = exists;
+  }
+
+  private Collection<Player> getPlayersTrackingChunk(final World world, final Location locationForChunk) {
+
+    if (CAN_USE_PLAYERS_SEEING_CHUNK) {
+      return world.getPlayersSeeingChunk(locationForChunk.getBlockX() >> 4, locationForChunk.getBlockZ() >> 4);
+    } else {
+      final int viewDistanceBlocks = plugin.getJavaPlugin().getServer().getViewDistance() * 16;
+      return world.getNearbyEntitiesByType(Player.class, locationForChunk, viewDistanceBlocks, world.getMaxHeight(), viewDistanceBlocks);
+    }
   }
 }
