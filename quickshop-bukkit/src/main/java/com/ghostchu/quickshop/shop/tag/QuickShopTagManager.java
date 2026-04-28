@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.shop.tag.PlayerTagIndex;
 import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.ghostchu.quickshop.api.shop.tag.TagService;
 import com.ghostchu.quickshop.api.shop.tag.TaggingResult;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.pagination.Pagination;
 import com.ghostchu.quickshop.util.pagination.PaginationOptions;
 import net.kyori.adventure.text.Component;
@@ -361,7 +362,9 @@ public class QuickShopTagManager implements TagManager {
               //final boolean canTeleport = plugin.perm().hasPermission(sender, "quickshop.tagged.teleport");
               //final Component tpComponent = plugin.text().of(sender, "tags.tag.list-tag-shop-entry-tp", commandLabel + " tp ").forLocale();
 
-              plugin.text().of(player, "tags.tag.list-tag-shop-entry", pos, entry, shop.getOwner().getDisplay(), shop.getItem().displayName(), "", commandLabel + " " + type + " " + entry).send();
+
+              MsgUtil.sendDirectMessage(player, MsgUtil.buildShopHoverTag(player, shop, true,
+                                                                          (int)pos, commandLabel + " " + type + " " + entry));
             })
             .setHeaderLanguageKey("pagination.header")
             .setFooterLanguageKey("pagination.footer").build();

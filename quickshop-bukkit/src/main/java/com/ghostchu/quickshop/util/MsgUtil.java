@@ -158,18 +158,24 @@ public class MsgUtil {
   }
 
   public static Component buildShopHoverTag(@NotNull final Player player, @NotNull final Shop shop,
-                                         final boolean clickPreview, final int counter, final String removeCommand) {
+                                         final boolean clickPreview, final int counter, final String commandLabel) {
+
+    return buildShopHoverTag(player, shop, "tags.tag.entry", clickPreview, counter, commandLabel, 0);
+  }
+
+  public static Component buildShopHoverTag(@NotNull final Player player, @NotNull final Shop shop, final String languageString,
+                                            final boolean clickPreview, final int counter, final String commandLabel, final int tagAmount) {
 
     final Location location = shop.bukkitLocation();
 
     final String coords = location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
 
-    Component component = QuickShop.getInstance().text().of(player, "tags.tag.entry", counter, buildShopName(shop),
-                                              location.getWorld().getName(), coords,
-                                              shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()),
-                                              shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()),
-                                              buildShopType(player, shop),
-                                              buildShopState(player, shop), removeCommand).forLocale();
+    Component component = QuickShop.getInstance().text().of(player, languageString, counter, buildShopName(shop),
+                                                            location.getWorld().getName(), coords,
+                                                            shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()),
+                                                            shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()),
+                                                            buildShopType(player, shop),
+                                                            buildShopState(player, shop), commandLabel, tagAmount).forLocale();
 
     if(clickPreview) {
       component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}",

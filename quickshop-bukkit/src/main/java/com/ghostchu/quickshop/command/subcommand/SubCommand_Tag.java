@@ -189,6 +189,8 @@ public class SubCommand_Tag implements CommandHandler<Player> {
 
     final int page = (parser.getArgs().size() >= 2)? Integer.parseInt(parser.getArgs().get(1)) : 1;
 
+    final int total = count.get(TOTAL_INDEX);
+    count.remove(TOTAL_INDEX);
     final PaginationOptions<String> options = PaginationOptions
             .builder()
             .setCommand(commandLabel + " tag shops")
@@ -201,18 +203,20 @@ public class SubCommand_Tag implements CommandHandler<Player> {
                 return;
               }
 
-              plugin.text().of(sender, "tags.tag.list-player-shop-entry",
-                               pos,
-                               entry,
-                               count.getOrDefault((Long)entry, -1),
-                               commandLabel + " tag list 1 " + entry).send();
+              //TODO: Fix up this message a bit
+              final long shopID = (Long)entry;
+              final Shop shop = plugin.getShopManager().getShop(shopID);
+
+              MsgUtil.sendDirectMessage(sender, MsgUtil.buildShopHoverTag(sender, shop, "tags.tag.shops-entry", true,
+                                                                          (int)pos, commandLabel + " tag list 1 " + shopID,
+                                                                          count.getOrDefault(shopID, -1)));
             })
             .setHeaderLanguageKey("pagination.header")
             .setFooterLanguageKey("pagination.footer").build();
 
     final Pagination<String> shops = new Pagination<>(options);
 
-    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-player-shops-title", count.size() - 1, count.get(TOTAL_INDEX)).forLocale();
+    final Component titleComponent = plugin.text().of(sender, "tags.tag.list-player-shops-title", count.size(), total).forLocale();
 
     shops.printHeader(sender, titleComponent, shops.page(), shops.totalPages());
     shops.printEntries(sender);
@@ -313,10 +317,8 @@ public class SubCommand_Tag implements CommandHandler<Player> {
               //final boolean canTeleport = plugin.perm().hasPermission(sender, "quickshop.tagged.teleport");
               //final Component tpComponent = plugin.text().of(sender, "tags.tag.list-tag-shop-entry-tp", commandLabel + " tp ").forLocale();
 
-              MsgUtil.sendDirectMessage(sender, MsgUtil.buildShopHoverTag(sender, shop, false,
+              MsgUtil.sendDirectMessage(sender, MsgUtil.buildShopHoverTag(sender, shop, true,
                                                                           (int)pos, commandLabel + " tag remove " + normalized));
-
-              //plugin.text().of(sender, "tags.tag.list-tag-shop-entry", pos, shop.getShopName(), shop.getOwner().getDisplay(), shop.getItem().displayName(), "", commandLabel + " tag remove " + normalized).send();
             })
             .setHeaderLanguageKey("pagination.header")
             .setFooterLanguageKey("pagination.footer").build();
