@@ -7,7 +7,9 @@ import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpression
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
+import com.ghostchu.quickshop.api.shop.limit.RuleSet;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.shop.limit.SimpleRuleSet;
 import com.ghostchu.quickshop.util.ItemContainerUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -30,18 +32,21 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteItem {
+public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, SubPasteItem {
+
+  private final Map<String, SimpleRuleSet> rules = new LinkedHashMap<>();
 
   private final QuickShop plugin;
-  private final Map<String, RuleSet> rules = new LinkedHashMap<>();
   private boolean wholeNumberOnly = false;
   private double undefinedMin = 0.0d;
   private double undefinedMax = Double.MAX_VALUE;
@@ -86,7 +91,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
       return;
     }
     for(final String ruleName : rules.getKeys(false)) {
-      final RuleSet rule = readRule(ruleName, rules.getConfigurationSection(ruleName));
+      final SimpleRuleSet rule = readRule(ruleName, rules.getConfigurationSection(ruleName));
       if(rule == null) {
         plugin.logger().warn("Failed to read rule {}, syntax invalid! Skipping...", ruleName);
         continue;
@@ -127,7 +132,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
 
   @Nullable
   @Contract("_,null -> null")
-  private RuleSet readRule(@NotNull final String ruleName, @Nullable final ConfigurationSection section) {
+  private SimpleRuleSet readRule(@NotNull final String ruleName, @Nullable final ConfigurationSection section) {
 
     if(section == null) {
       return null;
@@ -149,7 +154,91 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         plugin.logger().warn("Failed to read rule {}'s a Currency option, invalid pattern {}! Skipping...", ruleName, currencyStr1);
       }
     }
-    return new RuleSet(items, bypassPermission, currency, min, max);
+    return new SimpleRuleSet(items, bypassPermission, currency, min, max);
+  }
+
+  @Override
+  public Set<RuleSet<Double>> findApplicableRules(@NotNull final ItemStack stack) {
+
+    final Set<RuleSet<Double>> applicableRules = new HashSet<>();
+
+    for(SimpleRuleSet rule : rules.values()) {
+
+      if(rule.isApplicable(stack)) {
+        applicableRules.add(rule);
+      }
+    }
+    return applicableRules;
+  }
+
+  @Override
+  public Set<RuleSet<Double>> findApplicableRules(@NotNull final CommandSender sender, @NotNull final ItemStack stack) {
+
+    final Set<RuleSet<Double>> applicableRules = new HashSet<>();
+
+    for(SimpleRuleSet rule : rules.values()) {
+
+      if(rule.isApplicable(sender, stack)) {
+        applicableRules.add(rule);
+      }
+    }
+    return applicableRules;
+  }
+
+  @Override
+  public Set<RuleSet<Double>> findApplicableRules(@NotNull final QUser user, @NotNull final ItemStack stack) {
+
+    final Set<RuleSet<Double>> applicableRules = new HashSet<>();
+
+    for(SimpleRuleSet rule : rules.values()) {
+
+      if(rule.isApplicable(user, stack)) {
+        applicableRules.add(rule);
+      }
+    }
+    return applicableRules;
+  }
+
+  @Override
+  public Set<RuleSet<Double>> findApplicableRules(@NotNull final ItemStack stack, @NotNull final String currency) {
+
+    final Set<RuleSet<Double>> applicableRules = new HashSet<>();
+
+    for(SimpleRuleSet rule : rules.values()) {
+
+      if(rule.isApplicable(stack, currency)) {
+        applicableRules.add(rule);
+      }
+    }
+    return applicableRules;
+  }
+
+  @Override
+  public Set<RuleSet<Double>> findApplicableRules(@NotNull final CommandSender sender, @NotNull final ItemStack stack, @NotNull final String currency) {
+
+    final Set<RuleSet<Double>> applicableRules = new HashSet<>();
+
+    for(SimpleRuleSet rule : rules.values()) {
+
+      if(rule.isApplicable(sender, stack, currency)) {
+        applicableRules.add(rule);
+      }
+    }
+    return applicableRules;
+  }
+
+  @Override
+  public Set<RuleSet<Double>> findApplicableRules(@NotNull final QUser user, @NotNull final ItemStack stack, @NotNull final String currency) {
+
+    final Set<RuleSet<Double>> applicableRules = new HashSet<>();
+
+    for(SimpleRuleSet rule : rules.values()) {
+
+      if(rule.isApplicable(user, stack, currency)) {
+        applicableRules.add(rule);
+      }
+    }
+    return applicableRules;
   }
 
   /**
@@ -186,25 +275,25 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     boolean hasMaxPrice = false;
     final List<ItemStack> flattenedItems = ItemContainerUtil.flattenContents(itemStack, true, false);
 
-    for(final RuleSet rule : rules.values()) {
+    for(final RuleSet<Double> rule : rules.values()) {
       if(rule.canBypass(sender) || !rule.isApplicableCurrency(currency)) {
         continue;
       }
 
       // we'll manually add the fist item, as we calculate on a single item basis for the parent item.
       // otherwise we would be adding up all the items a player is holding, rather than one.
-      int itemTally = rule.isApply(itemStack)? 1 : 0;
+      int itemTally = rule.isApplicable(itemStack)? 1 : 0;
       itemTally += rule.tallyApplicableItems(flattenedItems);
       if(itemTally == 0) {
         continue;
       }
 
       if(rule.hasMinPrice()) {
-        minPrice += rule.getMin() * itemTally;
+        minPrice += rule.minPrice() * itemTally;
       }
       if(rule.hasMaxPrice()) {
         hasMaxPrice = true;
-        maxPrice += rule.getMax() * itemTally;
+        maxPrice += rule.maxPrice() * itemTally;
       }
     }
 
@@ -254,25 +343,25 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     boolean hasMaxPrice = false;
     final List<ItemStack> flattenedItems = ItemContainerUtil.flattenContents(itemStack, true, false);
 
-    for(final RuleSet rule : rules.values()) {
+    for(final RuleSet<Double> rule : rules.values()) {
       if(rule.canBypass(user) || !rule.isApplicableCurrency(currency)) {
         continue;
       }
 
       // we'll manually add the fist item, as we calculate on a single item basis for the parent item.
       // otherwise we would be adding up all the items a player is holding, rather than one.
-      int itemTally = rule.isApply(itemStack)? 1 : 0;
+      int itemTally = rule.isApplicable(itemStack)? 1 : 0;
       itemTally += rule.tallyApplicableItems(flattenedItems);
       if(itemTally == 0) {
         continue;
       }
 
       if(rule.hasMinPrice()) {
-        minPrice += rule.getMin() * itemTally;
+        minPrice += rule.minPrice() * itemTally;
       }
       if(rule.hasMaxPrice()) {
         hasMaxPrice = true;
-        maxPrice += rule.getMax() * itemTally;
+        maxPrice += rule.maxPrice() * itemTally;
       }
     }
 
@@ -309,13 +398,15 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     joiner.add("<h5>Rules</h5>");
     final HTMLTable rules = new HTMLTable(5);
     rules.setTableTitle("Rule Name", "Bypass Permission", "Items", "Currency", "Price Range");
-    for(final Map.Entry<String, RuleSet> entry : this.rules.entrySet()) {
-      final RuleSet rule = entry.getValue();
-      String currencies = CommonUtil.list2String(rule.getCurrency());
+
+    for(final Map.Entry<String, SimpleRuleSet> entry : this.rules.entrySet()) {
+
+      final SimpleRuleSet rule = entry.getValue();
+      String currencies = CommonUtil.list2String(rule.currencies());
       if(CommonUtil.isEmptyString(currencies)) {
         currencies = "*";
       }
-      rules.insert(entry.getKey(), rule.getBypassPermission(), rule.getItems().size(), currencies, rule.getMin() + " - " + rule.getMax());
+      rules.insert(entry.getKey(), rule.bypassPermission(), rule.items().size(), currencies, rule.minPrice() + " - " + rule.maxPrice());
     }
     joiner.add(rules.render());
     return joiner.toString();
@@ -325,167 +416,5 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
   public @NotNull String getTitle() {
 
     return "Price Limiter";
-  }
-
-  @Data
-  static class RuleSet {
-
-    private final List<Function<ItemStack, Boolean>> items;
-    private final String bypassPermission;
-    private final List<Pattern> currency;
-    private final double min;
-    private final double max;
-
-    public RuleSet(final List<Function<ItemStack, Boolean>> items, final String bypassPermission, final List<Pattern> currency, final double min, final double max) {
-
-      this.items = items;
-      this.bypassPermission = bypassPermission;
-      this.currency = currency;
-      this.min = min;
-      this.max = max;
-    }
-
-    /**
-     * Check if the rule is allowed to apply to the given price.
-     *
-     * @param price the price
-     *
-     * @return true if the rule is allowed for given price
-     */
-    public boolean isAllowed(final double price) {
-
-      if(hasMaxPrice() && price > getMax()) {
-        return false;
-      }
-      if(hasMinPrice()) {
-        return price >= getMin();
-      }
-      return true;
-    }
-
-    /**
-     * @return if this rule has a min price set.
-     */
-    public boolean hasMinPrice() {
-
-      return getMin() > 0;
-    }
-
-    /**
-     * @return if this rule has a max price set.
-     */
-    public boolean hasMaxPrice() {
-
-      return getMax() >= 0;
-    }
-
-    /**
-     * Tallies the number of items this rules applies to.
-     *
-     * @param stacks the items to tally
-     *
-     * @return the sum of the item counts this rules applies to
-     */
-    public int tallyApplicableItems(@NotNull final Iterable<ItemStack> stacks) {
-
-      int tally = 0;
-      for(final ItemStack is : stacks) {
-        if(isApply(is)) {
-          tally += is.getAmount();
-        }
-      }
-      return tally;
-    }
-
-    /**
-     * Checks if the provided CommandSender can bypass restrictions
-     *
-     * @param sender the CommandSender to check
-     *
-     * @return true if they can bypass, otherwise false.
-     */
-    public boolean canBypass(@NotNull final CommandSender sender) {
-
-      return QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission);
-    }
-
-    /**
-     * Checks if the provided QUser can bypass restrictions
-     *
-     * @param user the QUser to check
-     *
-     * @return true if they can bypass, otherwise false.
-     */
-    public boolean canBypass(@NotNull final QUser user) {
-
-      return QuickShop.getPermissionManager().hasPermission(user, this.bypassPermission);
-    }
-
-    /**
-     * Checks if the currency applies to this rule. Will return true if the currency is null
-     *
-     * @param currency the currency to check
-     *
-     * @return true if the currency either applies, or is null. false otherwise.
-     */
-    public boolean isApplicableCurrency(@Nullable final String currency) {
-
-      if(currency != null) {
-        return this.currency.stream().anyMatch(pattern->pattern.matcher(currency).matches());
-      }
-      return true;
-    }
-
-    /**
-     * Check if the rule is allowed to apply to the given price.
-     *
-     * @param sender   the sender
-     * @param item     the item
-     * @param currency the currency
-     *
-     * @return true if the rule is allowed to apply
-     */
-    public boolean isApply(@NotNull final CommandSender sender, @NotNull final ItemStack item, @Nullable final String currency) {
-
-      if(canBypass(sender) || !isApplicableCurrency(currency)) {
-        return false;
-      }
-      return isApply(item);
-    }
-
-    /**
-     * Check if the rule is allowed to apply to the given price.
-     *
-     * @param user     the user
-     * @param item     the item
-     * @param currency the currency
-     *
-     * @return true if the rule is allowed to apply
-     */
-    public boolean isApply(@NotNull final QUser user, @NotNull final ItemStack item, @Nullable final String currency) {
-
-      if(canBypass(user) || !isApplicableCurrency(currency)) {
-        return false;
-      }
-      return isApply(item);
-    }
-
-    /**
-     * Check if a rule applies to an ItemStack
-     *
-     * @param stack the stack to check
-     *
-     * @return true if it applies, otherwise false.
-     */
-    public boolean isApply(@NotNull final ItemStack stack) {
-
-      for(final Function<ItemStack, Boolean> fun : items) {
-        if(fun.apply(stack)) {
-          return true;
-        }
-      }
-      return false;
-    }
-
   }
 }
