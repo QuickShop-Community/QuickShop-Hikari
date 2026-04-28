@@ -807,6 +807,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     } catch(final Exception e) {
       logger.warn("Failed to process virtual display item system", e);
     }
+    loadSignHooker();
     //Load the database
     try(final PerfMonitor ignored = new PerfMonitor("Initialize database")) {
       initDatabase();
@@ -926,19 +927,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         try {
 
           virtualDisplayItemManager = new VirtualDisplayItemManager(this);
-          if(getConfig().getBoolean("shop.per-player-shop-sign")) {
-
-            //TODO: Revamp sign system.
-            signHooker = new SignHooker(this);
-            logger.info("Successfully registered per-player shop sign!");
-          } else {
-
-            signHooker = null;
-          }
         } catch(final Exception e) {
 
           //disable displays since we don't have packet support
-          signHooker = null;
           this.display = false;
           getConfig().set("shop.display-items", false);
           javaPlugin.saveConfig();
@@ -947,6 +938,18 @@ public class QuickShop implements QuickShopAPI, Reloadable {
           throw e;
         }
       }
+    }
+  }
+
+  private void loadSignHooker() {
+    if(getConfig().getBoolean("shop.per-player-shop-sign")) {
+
+      signHooker = new SignHooker(this);
+      signHooker.register();
+      logger.info("Successfully registered per-player shop sign!");
+    } else {
+
+      signHooker = null;
     }
   }
 
@@ -1305,7 +1308,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     if(this.signHooker != null) {
 
-      this.signHooker.unload();
+      this.signHooker.unregister();
       logger.info("Unload SignHooker module successfully!");
     }
 
