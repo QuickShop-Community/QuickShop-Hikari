@@ -101,9 +101,7 @@ public class MainPage extends QuickShopPage {
         // Use cache to avoid Folia cross-region block access issues
         final int stock = (shop.get().isBuying())? -1 : MarketUtils.getStockFromCache(shop.get());
         final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
-        final String priceFormatted = eco.format(BigDecimal.valueOf(shop.get().getPrice()),
-                                                 shop.get().getLocation().getWorld().getName(),
-                                                 shop.get().getCurrency());
+        final String priceFormatted = shop.get().format(shop.get().bukkitLocation().getWorld().getName(), shop.get().getCurrency());
 
         // Shop item display slot from config (centered in row 2)
         final int shopItemSlot = (shopItemConfig != null)? shopItemConfig.getSlot() : 13;
@@ -167,11 +165,11 @@ public class MainPage extends QuickShopPage {
                                                return true;
                                              }
                                              if(shop.get().isBuying()) {
-                                               final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              } else {
-                                               final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                               final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              }
                                              return true;
                                            } catch(final NumberFormatException ignore) { }
@@ -196,9 +194,8 @@ public class MainPage extends QuickShopPage {
           final int quantity = configQuantities.get(i);
           final int slot = configSlots.get(i);
           final int adjustedAmount = (amount * quantity);
-          final String totalPrice = eco.format(BigDecimal.valueOf((quantity * shop.get().getPrice())),
-                                               shop.get().getLocation().getWorld().getName(),
-                                               shop.get().getCurrency());
+          final String totalPrice = shop.get().format(shop.get().bukkitLocation().getWorld().getName(),
+                                               shop.get().getCurrency(), quantity);
           final String displayText = (shop.get().isSelling())? "<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(quantityMaterial, Math.min(adjustedAmount, 64))
@@ -207,13 +204,13 @@ public class MainPage extends QuickShopPage {
                                          .withActions(new RunnableAction((click->{
                                            if(shop.get().isBuying()) {
 
-                                             final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
-                                             Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                             final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
+                                             Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            } else {
 
-                                             final Info info = new SimpleInfo(shop.get().getLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
-                                             Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                             final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
+                                             Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
                                              viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            }
                                          })))

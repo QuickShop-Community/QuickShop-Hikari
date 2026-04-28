@@ -175,8 +175,8 @@ public final class Main extends CompatibilityModule {
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(event.getShop().getLocation().getWorld() == null
-       || huskAPI.getClaimWorld(huskAPI.getWorld(event.getShop().getLocation().getWorld().getName())).isEmpty()) {
+    if(event.getShop().bukkitLocation().getWorld() == null
+       || huskAPI.getClaimWorld(huskAPI.getWorld(event.getShop().bukkitLocation().getWorld().getName())).isEmpty()) {
 
       if(ignoreDisabledWorlds) {
         return;
@@ -192,7 +192,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(shopLoc.getWorld() == null) {
       return;
     }

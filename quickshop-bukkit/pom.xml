@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>6.3.0.0-SNAPSHOT-5</version>
+        <version>6.3.0.0-SNAPSHOT-6</version>
     </parent>
 
     <properties>
@@ -73,6 +73,11 @@
             <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>faststats</id>
+            <name>TheNextLvl</name>
+            <url>https://repo.thenextlvl.net/releases</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -128,19 +133,6 @@
             <optional>true</optional>
         </dependency>
         <!--JsonConfiguration Dependency End-->
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>${depend.vault}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>*</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
-            <optional>true</optional>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
         <dependency>
             <groupId>me.clip</groupId>
@@ -336,6 +328,11 @@
             <artifactId>easysql-hikaricp</artifactId>
             <scope>compile</scope>
             <version>0.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.faststats.metrics</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>${depend.faststats}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

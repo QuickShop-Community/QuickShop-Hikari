@@ -82,7 +82,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void canTradeShopHere(final ShopPurchaseEvent event) {
 
-    final Location location = event.getShop().getLocation();
+    final Location location = event.getShop().bukkitLocation();
     final com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
             location.getWorld().getName(),
             location.getBlockX(),
@@ -182,7 +182,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void onShopTrading(final ShopPurchaseEvent event) {
 
-    final Location location = event.getShop().getLocation();
+    final Location location = event.getShop().bukkitLocation();
     final com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
             location.getWorld().getName(),
             location.getBlockX(),
@@ -207,7 +207,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(shopLoc.getWorld() == null) {
       return;
     }

@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.cache.ShopCache;
 import com.ghostchu.quickshop.api.shop.cache.ShopCacheNamespacedKey;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
+import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.shop.cache.BoxedShop;
 import com.ghostchu.quickshop.shop.cache.SimpleShopCache;
@@ -65,6 +66,7 @@ public abstract class AbstractShopManager implements ShopManager {
                   .initialCapacity(50)
                   .build();
   protected final QuickShop plugin;
+  protected final TradeService tradeService;
   protected final EconomyFormatter formatter;
   protected final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
   protected final Set<Shop> loadedShops = Sets.newConcurrentHashSet(); // Handle it by collection to reduce
@@ -77,6 +79,7 @@ public abstract class AbstractShopManager implements ShopManager {
     Util.ensureThread(false);
     this.plugin = plugin;
     this.formatter = new EconomyFormatter(plugin);
+    this.tradeService = new SimpleTradeService(plugin);
   }
 
   public void init() {
@@ -96,14 +99,14 @@ public abstract class AbstractShopManager implements ShopManager {
    */
   protected void addShopToLookupTable(@NotNull final Shop shop) {
 
-    final String world = shop.getLocation().getWorld().getName();
+    final String world = shop.bukkitLocation().getWorld().getName();
     final Map<ShopChunk, Map<Location, Shop>> inWorld = shops.computeIfAbsent(world, k->new MapMaker().initialCapacity(3).makeMap());
     // There's no world storage yet. We need to create that map.
     // Put it in the data universe
     // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
     // location rounded to the nearest 16.
-    final int x = (int)Math.floor((shop.getLocation().getBlockX()) / 16.0);
-    final int z = (int)Math.floor((shop.getLocation().getBlockZ()) / 16.0);
+    final int x = (int)Math.floor((shop.bukkitLocation().getBlockX()) / 16.0);
+    final int z = (int)Math.floor((shop.bukkitLocation().getBlockZ()) / 16.0);
     // Get the chunk set from the world info
     final ShopChunk shopChunk = new SimpleShopChunk(world, x, z);
     final Map<Location, Shop> inChunk =
@@ -111,8 +114,8 @@ public abstract class AbstractShopManager implements ShopManager {
     // That chunk data hasn't been created yet - Create it!
     // Put it in the world
     // Put the shop in its location in the chunk list.
-    inChunk.put(shop.getLocation(), shop);
-    shopCache.invalidate(null, shop.getLocation());
+    inChunk.put(shop.bukkitLocation(), shop);
+    shopCache.invalidate(null, shop.bukkitLocation());
   }
 
   @Override
@@ -184,7 +187,7 @@ public abstract class AbstractShopManager implements ShopManager {
    */
   private void removeShopFromLookupTable(@NotNull final Shop shop) {
 
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     final String world = Objects.requireNonNull(loc.getWorld()).getName();
     final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
     if(inWorld == null) {
@@ -198,7 +201,7 @@ public abstract class AbstractShopManager implements ShopManager {
       return;
     }
     inChunk.remove(loc);
-    shopCache.invalidate(null, shop.getLocation());
+    shopCache.invalidate(null, shop.bukkitLocation());
     shopRuntimeUUIDCaching.invalidate(shop.getRuntimeRandomUniqueId());
   }
 
@@ -207,7 +210,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
     plugin.text().of(owner, "shop-creation-failed").send();
-    Util.regionThread(shop.getLocation(), () -> {
+    Util.regionThread(shop.bukkitLocation(), () -> {
       deleteShop(shop);
       unloadShop(shop);
       unregisterShop(shop, true);
@@ -219,7 +222,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @Override
   public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull final UUID tagger, @NotNull final Shop shop) {
 
-    return plugin.getDatabaseHelper().removeShopAllTag(tagger, shop.getShopId());
+    return plugin.getDatabaseHelper().removeAllShopTagsBy(tagger, shop.getShopId());
   }
 
   @Override
@@ -259,7 +262,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     removeShopFromLookupTable(shop);
     if(!persist) return CompletableFuture.completedFuture(null);
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     return plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
             .thenCombine(plugin.getDatabaseHelper().removeShop(shop.getShopId()), (a, b)->null)
             .exceptionally(throwable->{
@@ -476,13 +479,13 @@ public abstract class AbstractShopManager implements ShopManager {
               Log.debug("DEBUG: Setting shop id");
               shop.setShopId(id);
               Log.debug("DEBUG: Creating shop map");
-              return plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
+              return plugin.getDatabaseHelper().createShopMap(id, shop.bukkitLocation());
             })
             .thenAccept(v->{
               Log.debug("DEBUG: Creating shop successfully");
               shop.setDirty();
 
-              new ShopCreateEvent(Phase.POST, shop, shop.getOwner(), shop.getLocation()).callEvent();
+              new ShopCreateEvent(Phase.POST, shop, shop.getOwner(), shop.bukkitLocation()).callEvent();
             })
             .exceptionally(err->{
               processCreationFail(shop, shop.getOwner(), err);
@@ -564,7 +567,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
-      final Location location = shop.getLocation();
+      final Location location = shop.bukkitLocation();
       if(location.isWorldLoaded() && Objects.equals(location.getWorld(), world)) {
         worldShops.add(shop);
       }
@@ -577,7 +580,7 @@ public abstract class AbstractShopManager implements ShopManager {
 
     final List<Shop> worldShops = new ArrayList<>();
     for(final Shop shop : getAllShops()) {
-      final Location location = shop.getLocation();
+      final Location location = shop.bukkitLocation();
       if(location.isWorldLoaded() && com.ghostchu.quickshop.common.util.CommonUtil.strEquals(worldName, location.getWorld().getName())) {
         worldShops.add(shop);
       }
@@ -594,63 +597,15 @@ public abstract class AbstractShopManager implements ShopManager {
     return plugin.getDatabaseHelper().queryInventoryCache(shop.getShopId());
   }
 
+  /**
+   * Retrieves the TradeService associated with the EconomyManager.
+   *
+   * @return A non-null instance of TradeService, which provides functionality for executing and
+   * previewing trade operations such as buying from and selling to shops.
+   */
+  @Override
+  public @NotNull TradeService tradeService() {
 
-  static class TagParser {
-
-    private final List<String> tags;
-    private final ShopManager shopManager;
-    private final UUID tagger;
-    private final Map<String, List<Shop>> singleCaching = new HashMap<>();
-
-    public TagParser(final UUID tagger, final ShopManager shopManager, final List<String> tags) {
-
-      Util.ensureThread(true);
-      this.shopManager = shopManager;
-      this.tags = tags;
-      this.tagger = tagger;
-    }
-
-    public List<Shop> parseTags() {
-
-      final List<Shop> finalShop = new ArrayList<>();
-      for(final String tag : tags) {
-        final ParseResult result = parseSingleTag(tag);
-        if(result.getBehavior() == Behavior.INCLUDE) {
-          finalShop.addAll(result.getShops());
-        } else if(result.getBehavior() == Behavior.EXCLUDE) {
-          finalShop.removeAll(result.getShops());
-        }
-      }
-      return finalShop;
-    }
-
-    public ParseResult parseSingleTag(final String tag) throws IllegalArgumentException {
-
-      Util.ensureThread(true);
-      Behavior behavior = Behavior.INCLUDE;
-      if(tag.startsWith("-")) {
-        behavior = Behavior.EXCLUDE;
-      }
-      final String tagName = tag.substring(1);
-      if(tagName.isEmpty()) {
-        throw new IllegalArgumentException("Tag name can't be empty");
-      }
-      final List<Shop> shops = singleCaching.computeIfAbsent(tag, (t)->shopManager.queryTaggedShops(tagger, t).join());
-      return new ParseResult(behavior, shops);
-    }
-
-    enum Behavior {
-      INCLUDE,
-      EXCLUDE
-    }
-
-    @AllArgsConstructor
-    @Data
-    static class ParseResult {
-
-      private final Behavior behavior;
-      private final List<Shop> shops;
-    }
+    return tradeService;
   }
-
 }

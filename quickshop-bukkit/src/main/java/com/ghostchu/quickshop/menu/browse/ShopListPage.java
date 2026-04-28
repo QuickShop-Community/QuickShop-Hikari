@@ -269,7 +269,7 @@ public class ShopListPage {
       // Get teleport location - use shop location + 1 block up
       // Note: We avoid calling shop.getSigns() here as it requires block access
       // which can fail on Folia when the shop is in a different region
-      final Location teleportTarget = shop.getLocation().clone().add(0.5, 1, 0.5);
+      final Location teleportTarget = shop.bukkitLocation().clone().add(0.5, 1, 0.5);
 
       final IconBuilder iconBuilder = new IconBuilder(stack)
               .withSlot(listStartSlot + (i - start));
@@ -278,7 +278,7 @@ public class ShopListPage {
       if(canTeleport) {
         // Capture for lambda
         final Location finalTeleportTarget = teleportTarget;
-        final Location shopLoc = shop.getLocation().clone().add(0.5, 0.5, 0.5);
+        final Location shopLoc = shop.bukkitLocation().clone().add(0.5, 0.5, 0.5);
 
         iconBuilder.withActions(new RunnableAction((click)->{
           final Player p = Bukkit.getPlayer(click.player().identifier());
@@ -314,6 +314,7 @@ public class ShopListPage {
     final var mm = QuickShop.getInstance().platform().miniMessage();
 
     // Owner
+    //TODO: use admin-shop when it's an admin shop
     lore.add(mm.deserialize("<gray>Owner: <white>" + shop.getOwner().getDisplay() + "</white></gray>"));
 
     // Shop type
@@ -339,11 +340,11 @@ public class ShopListPage {
     }
 
     // Location
-    final String world = shop.getLocation().getWorld() != null?
-                         shop.getLocation().getWorld().getName() : "Unknown";
-    final String coords = shop.getLocation().getBlockX() + ", " +
-                          shop.getLocation().getBlockY() + ", " +
-                          shop.getLocation().getBlockZ();
+    final String world = shop.bukkitLocation().getWorld() != null?
+                         shop.bukkitLocation().getWorld().getName() : "Unknown";
+    final String coords = shop.bukkitLocation().getBlockX() + ", " +
+                          shop.bukkitLocation().getBlockY() + ", " +
+                          shop.bukkitLocation().getBlockZ();
     lore.add(mm.deserialize("<gray>Location: <white>" + world + "</white></gray>"));
     lore.add(mm.deserialize("<dark_gray>" + coords + "</dark_gray>"));
 

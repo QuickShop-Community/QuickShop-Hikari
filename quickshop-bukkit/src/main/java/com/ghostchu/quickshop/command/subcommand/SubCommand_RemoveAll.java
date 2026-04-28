@@ -60,7 +60,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
               }
               pendingRemoval.forEach(shop->{
                 plugin.logEvent(new ShopRemoveLog(qUser, "Deleting shop " + shop + " as requested by the /quickshop removeall command.", shop.saveToInfoStorage()));
-                Util.regionThread(shop.getLocation(), () -> plugin.getShopManager().deleteShop(shop));
+                Util.regionThread(shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(shop));
               });
               plugin.text().of(sender, "command.some-shops-removed", pendingRemoval.size()).send();
             })

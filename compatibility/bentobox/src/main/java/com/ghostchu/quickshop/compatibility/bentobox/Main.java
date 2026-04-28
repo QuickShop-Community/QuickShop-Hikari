@@ -96,7 +96,7 @@ public final class Main extends CompatibilityModule implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void permissionOverride(final ShopPermissionCheckEvent event) {
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island->{
       if(event.playerUUID().equals(island.getOwner())) {
         if(event.pluginNamespace().equals(QuickShop.getInstance().getJavaPlugin().getName()) && event.permissionNode().equals(BuiltInShopPermission.DELETE.getRawNode())) {

@@ -265,28 +265,6 @@ public class QSEconomyTransaction implements EconomyTransaction {
   }
 
   /**
-   * Retrieves the tax amount associated with this transaction.
-   *
-   * @return a BigDecimal value representing the tax amount of the transaction
-   */
-  @Override
-  public @NotNull BigDecimal tax() {
-
-    return tax;
-  }
-
-  /**
-   * Sets the tax for the transaction.
-   *
-   * @param tax the amount of tax to be set for the transaction
-   */
-  @Override
-  public void tax(final @NotNull BigDecimal tax) {
-
-    this.tax = tax;
-  }
-
-  /**
    * Calculates and retrieves the tax amount associated with this transaction based on the defined
    * tax rules or system configuration.
    *

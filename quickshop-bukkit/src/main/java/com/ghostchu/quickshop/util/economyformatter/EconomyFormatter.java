@@ -113,7 +113,7 @@ public class EconomyFormatter implements Reloadable {
   @NotNull
   public String format(final double n, @NotNull final Shop shop) {
 
-    return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
+    return format(n, disableVaultFormat, shop.bukkitLocation().getWorld(), shop);
   }
 
   @NotNull

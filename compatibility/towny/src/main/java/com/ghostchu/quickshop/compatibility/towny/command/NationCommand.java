@@ -66,7 +66,7 @@ public class NationCommand implements CommandHandler<Player> {
     }
 
     // Set as a nation shop
-    final Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+    final Town town = TownyAPI.getInstance().getTown(shop.bukkitLocation());
     if(town == null) {
       plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
       return;

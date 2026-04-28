@@ -140,15 +140,20 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     final String noRemainingStringKey = shop.shopType().outOfStockTranslationKey();
     final int shopRemaining = shop.shopType().remainingStock(shop);
 
+    final String finalTradingStringKey = (shop.shopState().overrideShopTypeText())? shop.shopState().translationKey() : tradingStringKey;
+
     final Component trading = switch(shopRemaining) {
       //Unlimited
-      case -1 ->
-              plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale())).forLocale(locale.getLocale());
+      case -1 -> plugin.text().of(finalTradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale())).forLocale(locale.getLocale());
       //No remaining
-      case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale.getLocale());
+      case 0 -> {
+        if(shop.shopState().overrideShopTypeText()) {
+          yield plugin.text().of(shop.shopState().translationKey()).forLocale(locale.getLocale());
+        }
+        yield plugin.text().of(noRemainingStringKey).forLocale(locale.getLocale());
+      }
       //Has remaining
-      default ->
-              plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale.getLocale());
+      default -> plugin.text().of(finalTradingStringKey, Component.text(shopRemaining)).forLocale(locale.getLocale());
     };
     return trading;
   }

@@ -15,7 +15,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

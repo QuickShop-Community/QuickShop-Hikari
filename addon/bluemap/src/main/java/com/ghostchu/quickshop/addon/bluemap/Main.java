@@ -82,7 +82,7 @@ public final class Main extends JavaPlugin implements Listener {
 
   public void updateShopMarker(final Shop shop) {
 
-    final Optional<BlueMapWorld> bWorld = blueMapAPI.getWorld(shop.getLocation().getWorld());
+    final Optional<BlueMapWorld> bWorld = blueMapAPI.getWorld(shop.bukkitLocation().getWorld());
     if(bWorld.isEmpty()) {
       return;
     }
@@ -93,9 +93,9 @@ public final class Main extends JavaPlugin implements Listener {
       
       final POIMarker.Builder markerBuilder = POIMarker.builder()
               .label(markerName)
-              .position(shop.getLocation().getX(),
-                        shop.getLocation().getY() + 1,
-                        shop.getLocation().getZ())
+              .position(shop.bukkitLocation().getX(),
+                        shop.bukkitLocation().getY() + 1,
+                        shop.bukkitLocation().getZ())
               .maxDistance(getConfig().getDouble("max-distance"))
               .detail(desc);
       
@@ -150,7 +150,7 @@ public final class Main extends JavaPlugin implements Listener {
 
   private String fillPlaceholders(String s, final Shop shop) {
 
-    final Location loc = shop.getLocation();
+    final Location loc = shop.bukkitLocation();
     final String x = String.valueOf(loc.getX());
     final String y = String.valueOf(loc.getY());
     final String z = String.valueOf(loc.getZ());

@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.api.shop.IShopType;
  * @author creatorfromhell
  * @since 6.2.0.11
  */
+@Deprecated(since = "6.3.0.0", forRemoval = true)
 public class FrozenType implements IShopType {
 
   @Override
@@ -64,6 +65,17 @@ public class FrozenType implements IShopType {
   public String outOfStockTranslationKey() {
 
     return "signs.freeze";
+  }
+
+  /**
+   * Retrieves the translation key associated with the mini lore functionality of the shop.
+   *
+   * @return a String representing the translation key for the mini lore functionality.
+   */
+  @Override
+  public String miniLoreTranslationKey() {
+
+    return "";
   }
 
   /**

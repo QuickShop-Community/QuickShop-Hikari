@@ -87,7 +87,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
     //Calc distance between player and shop
     for(final Shop shop : scanPool) {
-      if(!Objects.equals(shop.getLocation().getWorld(), loc.getWorld())) {
+      if(!Objects.equals(shop.bukkitLocation().getWorld(), loc.getWorld())) {
         continue;
       }
       if(aroundShops.size() == shopLimit) {
@@ -97,7 +97,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
          && !plugin.perm().hasPermission(sender, "quickshop.other.search")) {
         continue;
       }
-      final Vector shopVector = shop.getLocation().toVector();
+      final Vector shopVector = shop.bukkitLocation().toVector();
       final double distance = shopVector.distance(playerVector);
       //Check distance
       if(distance <= maxDistance || global) {
@@ -123,13 +123,13 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
 
     //Okay now all shops is our wanted shop in Map
-    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double>comparingByValue(Double::compare).reversed()).toList();
+    final List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double> comparingByValue(Double::compare).reversed()).toList();
 
     //Function
     if(usingOldLogic) {
 
       final Map.Entry<Shop, Double> closest = sortedShops.getFirst();
-      final Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
+      final Location lookAt = closest.getKey().bukkitLocation().clone().add(0.5, 0.5, 0.5);
       sender.teleportAsync(Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
 
       plugin.text().of(sender, "nearby-shop-this-way", closest.getValue().intValue()).send();
@@ -138,7 +138,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
       for(final Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
 
         final Shop shop = shopDoubleEntry.getKey();
-        final Location location = shop.getLocation();
+        final Location location = shop.bukkitLocation();
         ItemStack previewItemStack = shop.getItem().clone();
 
         final ItemPreviewComponentPrePopulateEvent previewComponentPrePopulateEvent = new ItemPreviewComponentPrePopulateEvent(previewItemStack, sender);

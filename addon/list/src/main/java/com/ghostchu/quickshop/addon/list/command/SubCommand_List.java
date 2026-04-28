@@ -110,8 +110,8 @@ public class SubCommand_List implements CommandHandler<Player> {
       if(counter < startPos) {
         continue;
       }
-      String shopName = shop.getShopName();
-      final Location location = shop.getLocation();
+      /*String shopName = shop.getShopName();
+      final Location location = shop.bukkitLocation();
       final String combineLocation = location.getWorld().getName() + " " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ();
       if(CommonUtil.isEmptyString(shopName)) {
         shopName = combineLocation;
@@ -125,9 +125,11 @@ public class SubCommand_List implements CommandHandler<Player> {
       } else {
         shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-frozen").forLocale();
       }
-      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
-      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
-      printer.printLine(component);
+      Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+      component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs("/{0} {1} {2}", quickshop.getMainCommand(), quickshop.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));*/
+
+      printer.printLine(MsgUtil.buildShopHover(sender, shop, true, counter));
+
       loopCounter++;
       if(loopCounter >= pageSize) {
         break;

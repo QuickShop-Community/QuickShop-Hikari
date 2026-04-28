@@ -56,7 +56,9 @@ import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_RECORDS;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.HISTORY_SUMMARY;
 import static com.ghostchu.quickshop.menu.ShopHistoryMenu.SHOPS_DATA;
 import static com.ghostchu.quickshop.menu.ShopKeeperMenu.KEEPER_MAIN;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.ACTIVE_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_TYPE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.SELLING_TYPE;
 
@@ -94,6 +96,8 @@ public class MainPage extends QuickShopPage {
         final GuiConfig.IconConfig borderConfig = menuConfig != null? menuConfig.getIcon("border") : null;
         final GuiConfig.IconConfig shopItemConfig = menuConfig != null? menuConfig.getIcon("shop-item") : null;
         final GuiConfig.IconConfig changePriceConfig = menuConfig != null? menuConfig.getIcon("change-price") : null;
+        final GuiConfig.IconConfig displayToggleConfig = menuConfig != null? menuConfig.getIcon("display-toggle") : null;
+        final GuiConfig.IconConfig freezeToggleConfig = menuConfig != null? menuConfig.getIcon("freeze-toggle") : null;
         final GuiConfig.IconConfig modeToggleConfig = menuConfig != null? menuConfig.getIcon("mode-toggle") : null;
         final GuiConfig.IconConfig inventoryConfig = menuConfig != null? menuConfig.getIcon("inventory") : null;
         final GuiConfig.IconConfig staffConfig = menuConfig != null? menuConfig.getIcon("staff") : null;
@@ -119,6 +123,47 @@ public class MainPage extends QuickShopPage {
         // Always read price directly from shop to get the latest value
         final double currentPrice = shop.get().getPrice();
 
+
+
+        final GuiConfig.IconConfig activeConfig = (displayToggleConfig != null)? displayToggleConfig.getSubIcon("active") : null;
+        final GuiConfig.IconConfig inactiveConfig = (displayToggleConfig != null)? displayToggleConfig.getSubIcon("inactive") : null;
+        final String activeMaterial = (activeConfig != null)? activeConfig.getMaterial() : "GLOW_ITEM_FRAME";
+        final String inactiveMaterial = (inactiveConfig != null)? inactiveConfig.getMaterial() : "ITEM_FRAME";
+        final int displayToggleSlot = (displayToggleConfig != null)? displayToggleConfig.getSlot() : 18;
+
+        if(shop.get().playerAuthorize(id, BuiltInShopPermission.TOGGLE_DISPLAY)
+           || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.toggledisplay")) {
+
+          final String enabledText = QuickShop.getInstance().text().of("shop-display.enabled").plain();
+          final String disabledText = QuickShop.getInstance().text().of("shop-display.disabled").plain();
+
+          final AbstractItemStack<?> activeStack = QuickShop.getInstance().stack().of(activeMaterial, 1)
+                  .display(getConfigDisplay(id, displayToggleConfig, "<bold><green>Toggle Preview</green></bold>"))
+                  .lore(getConfigLore(id, displayToggleConfig, enabledText));
+
+          final AbstractItemStack<?> inactiveStack = QuickShop.getInstance().stack().of(inactiveMaterial, 1)
+                  .display(getConfigDisplay(id, displayToggleConfig, "<bold><green>Toggle Preview</green></bold>"))
+                  .lore(getConfigLore(id, displayToggleConfig, disabledText));
+
+          final String modeState = (!shop.get().isDisableDisplay())? "ACTIVE" : "INACTIVE";
+
+          final StateIcon changeIcon = new StateIcon(activeStack, null, "SHOP_DISPLAY", modeState, (currentState)->{
+            if(currentState.toUpperCase(Locale.ROOT).equals("ACTIVE")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().setDisableDisplay(true));
+              return "INACTIVE";
+            } else if(currentState.toUpperCase(Locale.ROOT).equals("INACTIVE")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().setDisableDisplay(false));
+              return "ACTIVE";
+            }
+            Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().setDisableDisplay(false));
+            return "ACTIVE";
+          });
+          changeIcon.setSlot(displayToggleSlot);
+          changeIcon.addState("ACTIVE", activeStack);
+          changeIcon.addState("INACTIVE", inactiveStack);
+          open.getPage().addIcon(changeIcon);
+        }
+
         // Change price icon from config (GOLD_NUGGET for "price")
         final String changePriceMaterial = changePriceConfig != null? changePriceConfig.getMaterial() : "GOLD_NUGGET";
         final int changePriceSlot = changePriceConfig != null? changePriceConfig.getSlot() : 19;
@@ -133,7 +178,7 @@ public class MainPage extends QuickShopPage {
                                              try {
                                                final BigDecimal price = new BigDecimal(message);
                                                // Update price and reopen menu in the same region thread to ensure price is updated before GUI shows
-                                               Util.regionThread(shop.get().getLocation(), ()->{
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->{
                                                  ShopUtil.setPrice(QuickShop.getInstance(), QUserImpl.createFullFilled(player), price.doubleValue(), shop.get());
                                                  // Reopen menu after price is set
                                                  final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
@@ -147,23 +192,65 @@ public class MainPage extends QuickShopPage {
                                          .withSlot(changePriceSlot).build());
         }
 
+        final GuiConfig.IconConfig freezeConfig = (freezeToggleConfig != null)? freezeToggleConfig.getSubIcon("freeze") : null;
+        final GuiConfig.IconConfig unfreezeConfig = (freezeToggleConfig != null)? freezeToggleConfig.getSubIcon("unfreeze") : null;
+        final String freezeMaterial = (freezeConfig != null)? freezeConfig.getMaterial() : "LIGHT_BLUE_CONCRETE";
+        final String unfreezeMaterial = (unfreezeConfig != null)? unfreezeConfig.getMaterial() : "RED_CONCRETE";
+        final int freezeToggleSlot = (freezeToggleConfig != null)? freezeToggleConfig.getSlot() : 20;
+
+        if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_SHOP_STATE)
+           && QuickShop.getInstance().perm().hasPermission(player, "quickshop.freeze")
+           || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.freeze")) {
+
+          final String freezeText = QuickShop.getInstance().text().of("shop-state.freeze").plain();
+          final String unfreezeText = QuickShop.getInstance().text().of("shop-state.unfreeze").plain();
+
+          final String frozenText = QuickShop.getInstance().text().of("shop-state.frozen").plain();
+          final String unfrozenText = QuickShop.getInstance().text().of("shop-state.unfrozen").plain();
+
+          final AbstractItemStack<?> freezeStack = QuickShop.getInstance().stack().of(freezeMaterial, 1)
+                  .display(getConfigDisplay(id, freezeToggleConfig, "<bold><green>Toggle Freeze</green></bold>"))
+                  .lore(getConfigLore(id, freezeToggleConfig, frozenText, unfreezeText));
+
+          final AbstractItemStack<?> unfreezeStack = QuickShop.getInstance().stack().of(unfreezeMaterial, 1)
+                  .display(getConfigDisplay(id, freezeToggleConfig, "<bold><green>Toggle Freeze</green></bold>"))
+                  .lore(getConfigLore(id, freezeToggleConfig, unfrozenText, freezeText));
+
+          final String modeState = shop.get().shopState().identifier().toUpperCase(Locale.ROOT);
+
+          final StateIcon changeIcon = new StateIcon(freezeStack, null, "SHOP_STATE", modeState, (currentState)->{
+            if(currentState.toUpperCase(Locale.ROOT).equals("ACTIVE")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopState(FROZEN_STATE));
+              return "FROZEN";
+            } else if(currentState.toUpperCase(Locale.ROOT).equals("FROZEN")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopState(ACTIVE_STATE));
+              return "ACTIVE";
+            }
+            Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopState(ACTIVE_STATE));
+            return "ACTIVE";
+          });
+          changeIcon.setSlot(freezeToggleSlot);
+          changeIcon.addState("FROZEN", freezeStack);
+          changeIcon.addState("ACTIVE", unfreezeStack);
+          open.getPage().addIcon(changeIcon);
+        }
+
         // Mode Toggle Icon from config (concrete for clean look)
         final GuiConfig.IconConfig sellingConfig = (modeToggleConfig != null)? modeToggleConfig.getSubIcon("selling") : null;
         final GuiConfig.IconConfig buyingConfig = (modeToggleConfig != null)? modeToggleConfig.getSubIcon("buying") : null;
-        final GuiConfig.IconConfig frozenConfig = (modeToggleConfig != null)? modeToggleConfig.getSubIcon("frozen") : null;
         final String sellingMaterial = (sellingConfig != null)? sellingConfig.getMaterial() : "LIME_CONCRETE";
         final String buyingMaterial = (buyingConfig != null)? buyingConfig.getMaterial() : "ORANGE_CONCRETE";
-        final String frozenMaterial = (frozenConfig != null)? frozenConfig.getMaterial() : "LIGHT_BLUE_CONCRETE";
         final int modeToggleSlot = (modeToggleConfig != null)? modeToggleConfig.getSlot() : 21;
 
         if(shop.get().playerAuthorize(id, BuiltInShopPermission.SET_SHOPTYPE)
+           && QuickShop.getInstance().perm().hasPermission(player, "quickshop.create.buy")
+           && QuickShop.getInstance().perm().hasPermission(player, "quickshop.create.sell")
            || QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.freeze")
               && QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.sell")
               && QuickShop.getInstance().perm().hasPermission(player, "quickshop.other.buy")) {
 
           final String sellingText = QuickShop.getInstance().text().of("shop-type.selling").plain();
           final String buyingText = QuickShop.getInstance().text().of("shop-type.buying").plain();
-          final String frozenText = QuickShop.getInstance().text().of("shop-type.frozen").plain();
 
           final AbstractItemStack<?> buyingStack = QuickShop.getInstance().stack().of(sellingMaterial, 1)
                   .display(getConfigDisplay(id, modeToggleConfig, "<bold><green>Change Mode</green></bold>"))
@@ -171,29 +258,24 @@ public class MainPage extends QuickShopPage {
 
           final AbstractItemStack<?> sellingStack = QuickShop.getInstance().stack().of(buyingMaterial, 1)
                   .display(getConfigDisplay(id, modeToggleConfig, "<bold><green>Change Mode</green></bold>"))
-                  .lore(getConfigLore(id, modeToggleConfig, buyingText, frozenText));
-
-          final AbstractItemStack<?> frozenStack = QuickShop.getInstance().stack().of(frozenMaterial, 1)
-                  .display(getConfigDisplay(id, modeToggleConfig, "<bold><green>Change Mode</green></bold>"))
-                  .lore(getConfigLore(id, modeToggleConfig, frozenText, sellingText));
+                  .lore(getConfigLore(id, modeToggleConfig, buyingText, sellingText));
 
           final String modeState = shop.get().shopType().identifier().toUpperCase(Locale.ROOT);
 
           final StateIcon changeIcon = new StateIcon(buyingStack, null, "SHOP_TYPE", modeState, (currentState)->{
             if(currentState.toUpperCase(Locale.ROOT).equals("SELLING")) {
-              Util.regionThread(shop.get().getLocation(), ()->shop.get().shopType(BUYING_TYPE));
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(BUYING_TYPE));
               return "BUYING";
-            } else if(currentState.toUpperCase(Locale.ROOT).equals("FROZEN")) {
-              Util.regionThread(shop.get().getLocation(), ()->shop.get().shopType(SELLING_TYPE));
+            } else if(currentState.toUpperCase(Locale.ROOT).equals("BUYING")) {
+              Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(SELLING_TYPE));
               return "SELLING";
             }
-            Util.regionThread(shop.get().getLocation(), ()->shop.get().shopType(FROZEN_TYPE));
-            return "FROZEN";
+            Util.regionThread(shop.get().bukkitLocation(), ()->shop.get().shopType(SELLING_TYPE));
+            return "SELLING";
           });
           changeIcon.setSlot(modeToggleSlot);
           changeIcon.addState("SELLING", buyingStack);
           changeIcon.addState("BUYING", sellingStack);
-          changeIcon.addState("FROZEN", frozenStack);
           open.getPage().addIcon(changeIcon);
         }
 
@@ -221,7 +303,7 @@ public class MainPage extends QuickShopPage {
                                            }
 
                                            viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
-                                           Util.regionThread(shop.get().getLocation(), ()->{
+                                           Util.regionThread(shop.get().bukkitLocation(), ()->{
 
                                              player.openInventory(inventory.getHolder().getInventory());
                                              QuickShop.inShop.add(player.getUniqueId());
@@ -318,7 +400,7 @@ public class MainPage extends QuickShopPage {
                                          .withActions(new GuiChatAction((message)->{
                                            if(!message.isEmpty()) {
                                              if(message.equalsIgnoreCase("confirm")) {
-                                               Util.regionThread(shop.get().getLocation(), ()->QuickShop.getInstance().getShopManager().deleteShop(shop.get()));
+                                               Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().deleteShop(shop.get()));
                                                QuickShop.getInstance().logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(player), "/quickshop remove command", shop.get().saveToInfoStorage()));
                                                return true;
                                              }

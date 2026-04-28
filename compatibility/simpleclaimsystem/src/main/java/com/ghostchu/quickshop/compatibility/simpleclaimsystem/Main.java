@@ -159,7 +159,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(shopLoc.getWorld() == null) {
       return;
     }

@@ -51,12 +51,12 @@ public class SignHooker extends AbstractQSListener {
 
   public void updatePerPlayerShopSignBroadcast(final Location location, final Shop shop) {
 
-    final World world = shop.getLocation().getWorld();
+    final World world = shop.bukkitLocation().getWorld();
     if(world == null) {
       return;
     }
-    QuickShop.folia().getScheduler().runAtLocationLater(shop.getLocation(), ()->{
-      final Collection<Player> nearbyPlayers = getPlayersTrackingChunk(world, shop.getLocation());
+    QuickShop.folia().getScheduler().runAtLocationLater(shop.bukkitLocation(), ()->{
+      final Collection<Player> nearbyPlayers = getPlayersTrackingChunk(world, shop.bukkitLocation());
       for(final Player nearbyPlayer : nearbyPlayers) {
         updatePerPlayerShopSign(nearbyPlayer, location, shop);
       }

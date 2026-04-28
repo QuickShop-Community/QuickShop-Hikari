@@ -231,15 +231,15 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
 
     Util.ensureThread(false);
     //some time shop can be loaded when world isn't loaded
-    chunkLocation = SimpleShopChunk.fromLocation(shop.getLocation());
+    chunkLocation = SimpleShopChunk.fromLocation(shop.bukkitLocation());
     manager.put(chunkLocation, this);
     //Let nearby player can saw fake item
     final List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
-    onlinePlayers.removeIf(p->!p.getWorld().equals(shop.getLocation().getWorld()));
+    onlinePlayers.removeIf(p->!p.getWorld().equals(shop.bukkitLocation().getWorld()));
 
     for(final Player onlinePlayer : onlinePlayers) {
 
-      final double distance = onlinePlayer.getLocation().distance(shop.getLocation());
+      final double distance = onlinePlayer.getLocation().distance(shop.bukkitLocation());
       if(Math.abs(distance) > Bukkit.getViewDistance() * 16) {
 
         continue;

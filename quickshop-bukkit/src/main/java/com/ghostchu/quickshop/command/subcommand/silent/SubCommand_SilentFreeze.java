@@ -9,7 +9,9 @@ import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static com.ghostchu.quickshop.shop.SimpleShopManager.ACTIVE_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_TYPE;
 
 
@@ -29,12 +31,19 @@ public class SubCommand_SilentFreeze extends SubCommand_SilentBase {
       return;
     }
 
-    if(shop.shopType().isTradingBlocked() && shop.shopType().identifier().equalsIgnoreCase("FROZEN")) {
-      shop.shopType(BUYING_TYPE);
+    if(!shop.shopState().isTradingAllowed() && shop.shopState().identifier().equalsIgnoreCase("FROZEN")) {
+      shop.shopState(ACTIVE_STATE);
       plugin.text().of(sender, "shop-nolonger-freezed", Util.getItemStackName(shop.getItem())).send();
-      plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+
+      if(shop.shopType().identifier().equalsIgnoreCase(BUYING_TYPE.identifier())) {
+
+        plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+      } else {
+
+        plugin.text().of(sender, "command.now-selling", Util.getItemStackName(shop.getItem())).send();
+      }
     } else {
-      shop.shopType(FROZEN_TYPE);
+      shop.shopState(FROZEN_STATE);
       plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
     }
 

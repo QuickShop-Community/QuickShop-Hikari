@@ -38,7 +38,7 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
     }
     final boolean skipConfirmation = plugin.getConfig().getBoolean("shop.skip-command-confirmation", false);
     if(sender.getUniqueId().equals(deleteConfirmation.getIfPresent(shop.getRuntimeRandomUniqueId())) || skipConfirmation) {
-    Util.regionThread(shop.getLocation(), () -> {
+    Util.regionThread(shop.bukkitLocation(), () -> {
       plugin.logEvent(new ShopRemoveLog(QUserImpl.createFullFilled(sender), "/quickshop silentremove command", shop.saveToInfoStorage()));
       plugin.getShopManager().deleteShop(shop);
     });

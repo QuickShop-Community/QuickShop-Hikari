@@ -120,7 +120,7 @@ public class HikariDataExtension implements DataExtension {
       final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
       if(main.getQuickShop().getEconomyManager().provider() != null) {
-        price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
+        price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
       }
 
       final String type = switch(shop.shopType().identifier().toUpperCase(Locale.ROOT)) {
@@ -128,7 +128,7 @@ public class HikariDataExtension implements DataExtension {
         case "FROZEN" -> "Frozen";
         default -> "Selling";
       };
-      final String location = dataUtil.loc2String(shop.getLocation());
+      final String location = dataUtil.loc2String(shop.bukkitLocation());
       tableBuilder.addRow(owner, item, price, type, location);
     }
     return tableBuilder.build();
@@ -187,7 +187,7 @@ public class HikariDataExtension implements DataExtension {
       final String item = dataUtil.getItemName(shop.getItem()) + " x" + shop.getShopStackingAmount();
       String price = df.format(shop.getPrice());
       if(main.getQuickShop().getEconomyManager().provider() != null) {
-        price = main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(shop.getPrice()), shop.getLocation().getWorld().getName(), shop.getCurrency());
+        price = shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency());
       }
 
       final String type = switch(shop.shopType().identifier().toUpperCase(Locale.ROOT)) {
@@ -195,7 +195,7 @@ public class HikariDataExtension implements DataExtension {
         case "FROZEN" -> "Frozen";
         default -> "Selling";
       };
-      final String location = dataUtil.loc2String(shop.getLocation());
+      final String location = dataUtil.loc2String(shop.bukkitLocation());
       tableBuilder.addRow(item, price, type, location);
     }
     return tableBuilder.build();

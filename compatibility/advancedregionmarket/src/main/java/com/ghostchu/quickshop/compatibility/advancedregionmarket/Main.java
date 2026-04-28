@@ -87,7 +87,7 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(shopLoc.getWorld() == null) {
       return;
     }
@@ -132,7 +132,7 @@ public final class Main extends CompatibilityModule implements Listener {
     final List<Shop> shops = getApi().getShopManager().getAllShops();
     for(final Shop shop : shops) {
 
-      final Location shopLocation = shop.getLocation();
+      final Location shopLocation = shop.bukkitLocation();
       if(region.getRegion().contains(shopLocation.getBlockX(), shopLocation.getBlockY(), shopLocation.getBlockZ())) {
 
         getApi().getShopManager().deleteShop(shop);

@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionManager;
+import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -147,6 +148,16 @@ public interface QuickShopAPI {
    * @return The EconomyManager instance.
    */
   EconomyManager getEconomyManager();
+
+  /**
+   * Retrieves the TagManager associated with the QuickShop system. The TagManager
+   * is responsible for handling operations related to managing tags, which may
+   * include inventory item metadata and custom item tags used by the system.
+   *
+   * @return The TagManager instance that provides functionality for tag-related
+   *         operations within the QuickShop system.
+   */
+  TagManager tagManager();
 
   /**
    * Getting the control panel manager

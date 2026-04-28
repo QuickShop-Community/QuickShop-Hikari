@@ -114,7 +114,7 @@ public final class Main extends CompatibilityModule {
               if(target.equals(owner)) {
                 recordDeletion(QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Lands", false), shop, "Lands: shop deleted because owner lost permission");
                 // Use regionThread for Folia/Canvas compatibility - must run on the region thread for this location
-                Util.regionThread(shop.getLocation(), ()->getApi().getShopManager().deleteShop(shop));
+                Util.regionThread(shop.bukkitLocation(), ()->getApi().getShopManager().deleteShop(shop));
               }
             }
           }
@@ -135,8 +135,8 @@ public final class Main extends CompatibilityModule {
   @EventHandler(ignoreCancelled = true)
   public void onTrading(final ShopPurchaseEvent event) {
 
-    if(event.getShop().getLocation().getWorld() == null
-       || landsIntegration.getWorld(event.getShop().getLocation().getWorld()) == null) {
+    if(event.getShop().bukkitLocation().getWorld() == null
+       || landsIntegration.getWorld(event.getShop().bukkitLocation().getWorld()) == null) {
       if(ignoreDisabledWorlds) {
         return;
       }
@@ -151,7 +151,7 @@ public final class Main extends CompatibilityModule {
       return;
     }
 
-    final Location shopLoc = event.shop().get().getLocation();
+    final Location shopLoc = event.shop().get().bukkitLocation();
     if(shopLoc.getWorld() == null) {
       return;
     }

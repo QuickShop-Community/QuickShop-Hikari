@@ -54,8 +54,8 @@ public class WorldListener extends AbstractQSListener {
       for(final Entry<Location, Shop> entry : oldInChunk.getValue().entrySet()) {
         final Shop shop = entry.getValue();
 
-        shop.getLocation().setWorld(world);
-        inChunk.put(shop.getLocation(), shop);
+        shop.bukkitLocation().setWorld(world);
+        inChunk.put(shop.bukkitLocation(), shop);
       }
     }
     // Done - Now we can store the new world dataz!

@@ -72,6 +72,13 @@ public interface IShopType {
   String outOfStockTranslationKey();
 
   /**
+   * Retrieves the translation key associated with the mini lore functionality of the shop.
+   *
+   * @return a String representing the translation key for the mini lore functionality.
+   */
+  String miniLoreTranslationKey();
+
+  /**
    * Retrieves the translation key associated with the "trading blocked" state of the shop.
    *
    * @return a String representing the translation key for the "trading blocked" state.
