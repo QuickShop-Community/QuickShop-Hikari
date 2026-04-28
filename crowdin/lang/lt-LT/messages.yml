@@ -20,8 +20,19 @@ tabcomplete:
   price: '[Kaina]'
   name: '[Pavadinimas]'
   range: '[Atstumas]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[Valiutos pavadinimas]'
   percentage: '[Procentai proc.]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>Šios parduotuvės mokesčių paskyra dabar naudoja serverio numatytus nustatymus.
 blacklisted-item: <red>Jūs negalite parduoti šio daikto, nes jis yra juodajame sąraše.
 command-type-mismatch: <red>Šią komandą gali vykdyti tik <aqua>{0}.
@@ -98,6 +109,61 @@ shop-staff-empty: <yellow>Ši parduotuvė neturi personalo narių.
 shops-recovering: <green>Atkuriamos parduotuvės iš atsarginių failų...
 virtual-player-component-hover: "<gray>Tai virtualus žaidėjas.\n<gray>Nurodo sistemos paskyrą tuo pačiu vardu.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Vardas: <yellow>{1}</yellow></green>\n<green>Rodomas kaip: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Tai tikras žaidėjas.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Vardas: <yellow>{1}</yellow></green>\n<green>Rodomas kaip: <yellow>{2}</yellow></green>\n<gray>Jei norite naudoti virtualią paskyrą su tuo pačiu vardu, pridėkite <dark_gray>\"[]\"</dark_gray> aplink vardą: <dark_gray>[{1}]</dark_gray>."
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>Manage your shop tags."
+    favorite: "<yellow>Toggle favorite on looked-at shop."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>An error occurred while executing a tag operation."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>Jūs sumokėjote <yellow>{0} <green>mokesčių.
   owner: '<green>Savininkas: {0}'
@@ -114,21 +180,23 @@ menu:
   stored-enchants: <dark_purple>Saugomi enchantai
   item-holochat-error: <red>[Klaida]
   this-shop-is-selling: <green>Ši parduotuvė <aqua>PARDUODA<green> daiktus.
+  this-shop-is-buying: <green>Ši parduotuvė <light_purple>SUPERKA<green> daiktus.
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Kaina už steką:<yellow>{0}'
   space: '<green>Vieta:<yellow>{0}'
   effects: <green>Efektai
   damage-percent-remaining: <yellow>{0}proc. <green>Liko.
   item-holochat-data-too-large: <red>[Klaida] Daiktų duomenys per dideli, kad būtų atvaizduoti.
   stock: '<green>Atsargos:<yellow>{0}'
-  this-shop-is-buying: <green>Ši parduotuvė <light_purple>SUPERKA<green> daiktus.
-  this-shop-is-frozen: <green>Parduotuvė dabar yra <red>užšaldyta<green>.
   successfully-sold: '<green>Sėkmingai parduota:'
   total-value-of-chest: '<green>Galutinė chesto vertė:<yellow>{0}'
 currency-not-exists: <red>Nepavyko rasti valiutos, kurią bandote nustatyti. Patikrinkite rašybą arba įsitikinkite, kad tokia valiuta egzistuoja.
 no-nearby-shop: <red>Nėra netoliese esančių parduotuvių {0}.
 translation-author: 'ANGRIS'
 integrations-check-failed-trade: <red>Integracija {0} atmetė šios parduotuvės sandorį.
-shop-transaction-failed: <red>Atsiprašome, įvyko vidinė klaida apdorojant pirkimą. Sandoris buvo atšauktas, o visi veiksmai grąžinti į pradinę būseną. Jei klaida kartojasi, susisiekite su serverio administratoriais.
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
 success-change-owner-to-server: <green>Sėkmingai nustatytas parduotuvės savininkas kaip serveris.
 shop-name-not-found: <red>Parduotuvė pavadinimu <yellow>{0}</yellow> nerasta.
 shop-name-too-long: <red>Parduotuvės pavadinimas per ilgas (maksimalus ilgis {0}). Prašome pasirinkti kitą pavadinimą!
@@ -188,6 +256,14 @@ shop-type:
   selling: PARDUODAMA
   buying: SUPERKAMA
   frozen: UŽŠALDYTA
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: Enabled
+  disabled: Disabled
 language:
   qa-issues: '<yellow>Kokybės užtikrinimo pastabos: <aqua>{0}%'
   code: '<yellow>Kodas: <gold>{0}'
@@ -716,17 +792,6 @@ benefit-added: <green>Žaidėjas <aqua>{0}</aqua> pridėtas į naudos sąrašą!
 benefit-updated: <green>Žaidėjo <aqua>{0}</aqua> nauda atnaujinta!
 benefit-query: <green>Šioje parduotuvėje yra <yellow>{0}</yellow> žaidėjų naudos sąraše!
 benefit-query-list: <yellow> - </yellow><white>Žaidėjas <gold>{0}</gold>, Nauda <gold>{1}%</gold>
-tag-added: '<green>Sėkmingai pridėtas <aqua>#{0}</aqua> šioje parduotuvėje!'
-tag-add-duplicate: '<red>Žyma <aqua>#{0}</aqua> jau egzistuoja šioje parduotuvėje!'
-tag-removed: '<green>Sėkmingai pašalinta <aqua>#{0}</aqua> iš šios parduotuvės!'
-tag-remove-not-exists: '<red>Žyma <aqua>#{0}</aqua> neegzistuoja šioje parduotuvėje!'
-tag-cleared: <green>Sėkmingai išvalytos visos žymos šioje parduotuvėje!
-tag-shops-cleared: '<green>Sėkmingai išvalytos žymos <aqua>#{0}</aqua> iš visų jūsų žymėtų parduotuvių!'
-tag-query: '<green>Šioje parduotuvėje yra <yellow>{0}</yellow> žymos:'
-tag-query-listing: '<yellow> - <aqua>#{0}</aqua>'
-tag-query-no-tag: <red>Šioje parduotuvėje nėra žymų.
-tag-query-shops: '<green>Šioje žymoje yra <yellow>{0}</yellow> parduotuvių:'
-tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green>Sėkmingai apdorotos <yellow>{0}</yellow> parduotuvės pagal žymas.
 batch-operations-based-on-tags-have-failure: <yellow>Viso {0} parduotuvių apdorota sėkmingai, bet <red>{1}</red> užklausų nepavyko įvykdyti.
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>Viso {0} parduotuvių apdorota sėkmingai, bet <red>{1}</red> užklausų nepavyko įvykdyti. Priežastis: <gold>{2}</gold>'
@@ -1425,7 +1490,7 @@ addon:
       list: <yellow>Rodo visas jūsų arba konkretaus žaidėjo valdomas parduotuves
     table-prefix: '<yellow><green>{0}</green>''s parduotuvės <gray>(Iš viso {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s parduotuvės <gray>(Puslapis {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Kaina <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>Negalite įdėti draudžiamų prekių į parduotuvę, visos ne parduotuvei skirtos prekės bus išmestos jūsų dabartinėje vietoje.
   limited:
@@ -1586,6 +1651,16 @@ gui:
         - "<gray>Current price: <white>{0}</white></gray>"
         - ""
         - "<yellow>Click to change price</yellow>"
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Change Mode</green></bold>"
       lore:
