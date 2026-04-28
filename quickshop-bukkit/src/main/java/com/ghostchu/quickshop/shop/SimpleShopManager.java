@@ -389,6 +389,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.from(null).build();
     }
 
+    if(!transaction.completable()) {
+      plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
+      return false;
+    }
+
     //run our trade service stuff
     final TradeResult result = shop.buy(buyerQUser, buyerInventory, buyer.getLocation(), amount);
 
@@ -424,11 +429,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
       plugin.logger().warn("Failed to processing purchase, rolling back...");
       plugin.text().of(buyer, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
-      return false;
-    }
-
-    if(!transaction.completable()) {
-      plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(shop.getOwner(), shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
 
@@ -627,6 +627,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       transaction = builder.to(null).build();
     }
 
+    if(!transaction.completable()) {
+      plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
+      return false;
+    }
+
     final TradeResult result = shop.sell(sellerQUser, sellerInventory, seller.getLocation(), amount);
     if(!result.success()) {
 
@@ -659,11 +664,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
       plugin.logger().warn("Failed to processing purchase, rolling back...");
       plugin.text().of(seller, "shop-transaction-failed", result.failureReason() + " (" + result.debugMessage() + ")").send();
-      return false;
-    }
-
-    if(!transaction.completable()) {
-      plugin.text().of(seller, "you-cant-afford-to-buy", format((total + fromTax.doubleValue()), shop.bukkitLocation().getWorld(), shop.getCurrency()), format(eco.balance(sellerQUser, shop.bukkitLocation().getWorld().getName(), shop.getCurrency()).doubleValue(), shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
       return false;
     }
 

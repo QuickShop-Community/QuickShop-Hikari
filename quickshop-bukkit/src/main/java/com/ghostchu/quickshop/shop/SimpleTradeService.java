@@ -292,8 +292,7 @@ public class SimpleTradeService implements TradeService {
                 totalPrice(shop, Math.max(0, allowedTrades)),
                 false,
                 TradeFailureReason.STOCK_TOO_LOW,
-                "Not enough stock in shop."
-        );
+                "Not enough stock in shop.");
       }
     }
 
@@ -307,8 +306,7 @@ public class SimpleTradeService implements TradeService {
               totalPrice(shop, Math.max(0, buyerSpace)),
               false,
               TradeFailureReason.INVENTORY_FULL,
-              "Buyer does not have enough inventory space."
-      );
+              "Buyer does not have enough inventory space.");
     }
 
     return new TradePreview(
@@ -319,8 +317,7 @@ public class SimpleTradeService implements TradeService {
             totalPrice(shop, amount),
             true,
             null,
-            null
-    );
+            null);
   }
 
   @Override
