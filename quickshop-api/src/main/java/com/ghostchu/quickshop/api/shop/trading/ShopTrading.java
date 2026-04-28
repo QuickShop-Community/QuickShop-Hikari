@@ -65,11 +65,11 @@ public interface ShopTrading {
    * @param buyer          The player buying
    * @param buyerInventory The buyer inventory ( may not a player inventory )
    * @param loc2Drop       The location to drops items if player inventory are full
-   * @param paramInt       How many buyed?
+   * @param amount       How many to buy?
    *
    * @throws Exception Possible exception thrown if anything wrong.
    */
-  TradeResult buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt);
+  TradeResult buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int amount);
 
   /**
    * Execute sell action for player with x items.
@@ -78,9 +78,9 @@ public interface ShopTrading {
    * @param sellerInventory Seller's inventory ( may not a player inventory )
    * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a
    *                        number that < 0, it will turn to buying item)
-   * @param paramInt        How many sold?
+   * @param amount        How many to sell?
    *
    * @throws Exception Possible exception thrown if anything wrong.
    */
-  TradeResult sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt);
+  TradeResult sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int amount);
 }

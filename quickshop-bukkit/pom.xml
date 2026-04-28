@@ -54,6 +54,10 @@
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>codemc-creatorfromhell</id>
+            <url>https://repo.codemc.io/repository/creatorfromhell/</url>
+        </repository>
+        <repository>
             <id>tcoded-releases</id>
             <url>https://repo.tcoded.com/releases</url>
         </repository>
