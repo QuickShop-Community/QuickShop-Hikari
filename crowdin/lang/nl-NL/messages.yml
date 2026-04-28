@@ -20,8 +20,19 @@ tabcomplete:
   price: '[prijs]'
   name: '[name]'
   range: '[bereik]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[valuta naam]'
   percentage: '[percentage%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>De belastingrekening van deze winkel volgt nu de algemene serverinstelling.
 blacklisted-item: <red>Je kunt dit item niet verkopen omdat het op de zwarte lijst staat
 command-type-mismatch: <red>Dit commando kan alleen worden uitgevoerd door <aqua>{0}</aqua>.
@@ -98,6 +109,61 @@ shop-staff-empty: <yellow>Deze winkel heeft geen personeel.
 shops-recovering: Winkels herstellen van backup...
 virtual-player-component-hover: "<gray>Dit is een virtuele speler.\n<gray>Verwijst naar een systeemaccount met dezelfde naam.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>Dit is een echte speler.\n<green>UUID:<yellow>{0}</yellow></green>\n<green>Gebruikersnaam: <yellow>{1}</yellow></green>\n<green>Weergeven als: <yellow>{2}</yellow></green>\n<gray>Als je een virtueel systeemaccount met dezelfde naam wilt gebruiken, voeg dan <dark_gray>“[]”</dark_gray> toe aan beide kanten van de gebruikersnaam: <dark_gray>[{1}]</dark_gray>."
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>Manage your shop tags."
+    favorite: "<yellow>Toggle favorite on looked-at shop."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>An error occurred while executing a tag operation."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>U heeft &<yellow>{0}</yellow> Btw betaald.
   owner: '<green>Eigenaar: {0}'
@@ -114,21 +180,23 @@ menu:
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
   this-shop-is-selling: <green>Deze winkel i<aqua>VERKOOPT</aqua> items.
+  this-shop-is-buying: <green>Deze winkel <light_purple>koopt<green> items.
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Hoeveelheid bulk: <yellow>{0}'
   space: '<green>Spatie: <yellow>{0}'
   effects: <green>Effecten
   damage-percent-remaining: <yellow>{0}% <green>resterende.
   item-holochat-data-too-large: <red>[Fout] Item NBT is te groot om weer te geven
   stock: '<green>Voorraad <yellow>{0}'
-  this-shop-is-buying: <green>Deze winkel <light_purple>koopt<green> items.
-  this-shop-is-frozen: <green>De winkel is nu in <red>vriesmodus<green>.
   successfully-sold: '<green>Succesvol verkocht:'
   total-value-of-chest: '<green>Totale waarde van kist: <yellow>{0}'
 currency-not-exists: <red>Kan de valuta die u wilt instellen niet vinden. Misschien is de spelling verkeerd of is de valuta niet beschikbaar in deze wereld.
 no-nearby-shop: <red>Geen winkel in de buurt die overeenkomt met {0}.
 translation-author: 'Ghost_chu, Andre_601, Prutteltje'
 integrations-check-failed-trade: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
-shop-transaction-failed: <red>Sorry, er is een interne fout opgetreden tijdens het verwerken van uw aankoop. De aankoop is geannuleerd en alle andere bewerkingen zijn teruggedraaid. Neem contact op met de serverbeheerders als deze fout zich blijft voordoen.
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
 success-change-owner-to-server: <green>Succesvol de winkeleigenaar ingesteld op Server.
 shop-name-not-found: <red>De winkel met de naam <yellow>{0}</yellow> bestaat niet.
 shop-name-too-long: <red>Deze winkelnaam is te lang (max. lengte {0}), kies een andere naam!
@@ -188,6 +256,14 @@ shop-type:
   selling: VERKOPEN
   buying: KOPEN
   frozen: BEVROREN
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: Enabled
+  disabled: Disabled
 language:
   qa-issues: '<yellow>Kwaliteit geruststelling problemen: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -715,17 +791,6 @@ benefit-added: <green>Speler <aqua>{0}</aqua> is toegevoegd aan de voordelen van
 benefit-updated: <green>Speler <aqua>{0}</aqua>'s voordelen zijn bijgewerkt!
 benefit-query: <green>Deze winkel heeft <yellow>{0}</yellow> spelers in de voordelenlijst!
 benefit-query-list: <yellow> - </yellow><white>Speler <gold>{0}</gold>, Voordeel <gold>{1}%
-tag-added: '<green>Succesvol toegevoegd <aqua>#{0}</aqua> aan deze winkel!'
-tag-add-duplicate: '<red>De tag <aqua>#{0}</aqua> bestaat al in deze winkel!'
-tag-removed: '<green>Succesvol verwijderd <aqua>#{0}</aqua> uit deze winkel!'
-tag-remove-not-exists: 'De tag <aqua>#{0}</aqua> bestaat niet in deze winkel!'
-tag-cleared: <green>Alle tags uit deze winkel zijn succesvol gewist!
-tag-shops-cleared: '<green>Succesvol verwijderd <aqua>#{0}</aqua> van al uw getagde winkels!'
-tag-query: '<green>Deze winkel heeft <yellow>{0}</yellow> tags:'
-tag-query-listing: '<yellow> - <aqua>#{0}'
-tag-query-no-tag: <red>Deze winkel heeft geen tags
-tag-query-shops: '<green>Deze tag bevat <yellow>{0}</yellow> winkels:'
-tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>Succesvol batch verwerkt <yellow>{0}</yellow> winkels.
 batch-operations-based-on-tags-have-failure: <yellow>In totaal {0} winkels in batchverwerking succesvol voltooid, maar <red>{1}</red> verzoeken niet voltooid.
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>In totaal {0} winkels in batchverwerking succesvol voltooid, maar <red>{1}</red>verzoeken niet voltooid. Reden: <gold>{2}'
@@ -1423,7 +1488,7 @@ addon:
       list: <yellow>Alle winkels weergeven die eigendom zijn van jou of een specifieke speler
     table-prefix: '<yellow><green>{0}</green>''s shops <gray>(Totaal {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s shops <gray>(Pagina {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Prijs<yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>Je kunt geen niet-winkelartikelen in de winkelcontainer plaatsen, alle niet-winkelartikelen worden op je locatie achtergelaten.
   limited:
@@ -1584,6 +1649,16 @@ gui:
         - "<gray>Huidige prijs: <white>{0}</white></gray>"
         - ""
         - "<yellow>Klik om de prijs te veranderen</yellow> "
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Wijzig Modus</green></bold>"
       lore:

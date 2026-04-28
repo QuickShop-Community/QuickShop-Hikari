@@ -20,8 +20,19 @@ tabcomplete:
   price: '[Preis]'
   name: '[Name]'
   range: '[Reichweite]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[Währungsname]'
   percentage: '[Prozentsatz%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>Das Steuerkonto dieses Shops folgt nun den globalen Servereinstellungen.
 blacklisted-item: <red>Dieses Item kann nicht verkauft werden, da es auf der Schwarzen Liste steht
 command-type-mismatch: <red>Dieser Befehl kann nur von <aqua>{0}<red> ausgeführt werden.
@@ -97,6 +108,61 @@ shop-staff-empty: <yellow>Dieser Shop hat keine Mitarbeiter.
 shops-recovering: Stelle Shops von Backups wieder her...
 virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>Bezieht sich auf ein Systemkonto mit dem selben Namen.</gray>\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>"
 real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>Manage your shop tags."
+    favorite: "<yellow>Toggle favorite on looked-at shop."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>An error occurred while executing a tag operation."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>Du hast <yellow>{0} <green>an Steuern zahlen müssen.
   owner: '<green>Besitzer: {0}'
@@ -113,21 +179,23 @@ menu:
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen
   item-holochat-error: <red>[Fehler]
   this-shop-is-selling: <green>Dieser Shop <aqua>VERKAUFT<green> Gegenstände.
+  this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>Menge: <yellow>{0}'
   space: '<green>Kapazität: <yellow>{0}'
   effects: <green>Effekte
   damage-percent-remaining: <yellow>{0}% <green>verbleibend.
   item-holochat-data-too-large: <red>[Error] Item NBT ist zu gross zum Anzeigen
   stock: '<green>Lagerbestand: <yellow>{0}'
-  this-shop-is-buying: <green>Dieser Shop <light_purple>KAUFT<green> Gegenstände an.
-  this-shop-is-frozen: <green>Dieser Shop ist nun <red>eingefroren<green>.
   successfully-sold: '<green>Erfolgreich verkauft:'
   total-value-of-chest: '<green>Gesamtwert der Truhe: <yellow>{0}'
 currency-not-exists: <red>Kann die Währung, welche du setzen willst, nicht finden. Vielleicht ist die Schreibweise falsch oder diese Währung ist in dieser Welt nicht verfügbar.
 no-nearby-shop: <red>Keine nahegelegenen Shops welche {0} entsprechen.
 translation-author: 'Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integrierung {0} hat das Shop-handeln verweigert
-shop-transaction-failed: <red>Sorry, aber ein interner Fehler ist während dem verarbeiten deines Kaufes aufgetreten. Der Kauf wurde abgebrochen und jegliche wirtschaftliche aktion wurde zurückgesetzt. Bitte kontaktiere einen Server-Administrator sollte dies weiterhin auftreten.
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
 success-change-owner-to-server: <green>Der Shop wurde erfolgreich dem Server überschrieben.
 shop-name-not-found: <red>Ein Shop mit dem Namen <yellow>{0}</yellow> existiert nicht.
 shop-name-too-long: <red>Dieser Shopname ist zu lang (Maximal {0}). Bitte wähle einen anderen!
@@ -180,6 +248,14 @@ shop-type:
   selling: VERKAUFEN
   buying: KAUFEN
   frozen: EINGEFROREN
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: Enabled
+  disabled: Disabled
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -699,17 +775,6 @@ benefit-added: <green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugef�
 benefit-updated: <green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!
 benefit-query: <green>Dieser Shop hat <yellow>{0}</yellow> Spieler in der Vorteilsliste!
 benefit-query-list: '<yellow> - </yellow><white>Spieler <gold>{0}</gold>. Vorteil: <gold>{1}%</gold>/white>'
-tag-added: '<green><aqua>#{0}</aqua> erfolgreich als Tag zu diesem Shop hinzugefügt!'
-tag-add-duplicate: '<red>Der Tag <aqua>#{0}</aqua> existiert bereits für diesen Shop!'
-tag-removed: '<green>Tag <aqua>#{0}</aqua> efolgreich von diesem Shop entfernt!'
-tag-remove-not-exists: '<red>Der Tag <aqua>#{0}</aqua> existiert für diesen Shop nicht!'
-tag-cleared: <green>Alle Tags erfolgreich von diesem Shop entfernt!
-tag-shops-cleared: '<green><aqua>#{0}</aqua> wurde erfolgreich von all deinen getaggten Shops entfernt!'
-tag-query: '<green>Dieser Shop hat <yellow>{0}</yellow> Tags:'
-tag-query-listing: '<yellow> - <aqua>#{0}</aqua>'
-tag-query-no-tag: <red>Dieser Shop hat keine Tags.
-tag-query-shops: '<green>Dieser Tag hat <yellow>{0}</yellow> Shops:'
-tag-query-shops-listing: <yellow> - <aqua>{0}</aqua>
 batch-operations-based-on-tags-no-failure: <green><yellow>{0}</yellow> Shops erfolgreich verarbeitet.
 batch-operations-based-on-tags-have-failure: <yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.
 batch-operations-based-on-tags-have-failure-with-reason: "<yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.\nGrund: <gold>{2}</gold>"
@@ -1354,7 +1419,7 @@ addon:
       list: <yellow>Zeigt alle Shops welche dir oder einem bestimmten Spieler gehören
     table-prefix: '<yellow><green>{0}</green>''s Shops <gray>(Gesamt: {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>''s Shops <gray>(Seite {1}/{2})</gray>: '
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3}, {4}, {5}</gray>\n<aqua>Preis <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen.
   limited:
@@ -1515,6 +1580,16 @@ gui:
         - "<gray>Aktueller Preis: <white>{0}</white></gray>"
         - ""
         - "<yellow>Klicken, um Preis zu ändern</yellow>"
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>Modus ändern</green></bold>"
       lore:

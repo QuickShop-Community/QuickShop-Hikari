@@ -20,8 +20,19 @@ tabcomplete:
   price: '[价格]'
   name: '[名称]'
   range: '[范围]'
+  list: 'list'
+  page: '[page #]'
+  shop-id: '[shop id]'
   currency: '[货币名称]'
   percentage: '[百分比%]'
+  add: 'add'
+  remove: 'remove'
+  clear: 'clear'
+  clearall: 'clearall'
+  shops: 'shops'
+  tagged: 'tagged'
+  purge: 'purge'
+  tag: '[tag]'
 taxaccount-unset: <green>该商店的税务账户现在变为服务器的全局设置。
 blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
@@ -98,6 +109,61 @@ shop-staff-empty: <yellow>此商店没有商店助手。
 shops-recovering: 正在从备份中恢复商店...
 virtual-player-component-hover: "<gray>这是虚拟玩家\n<gray>是指一个具有相同名称的系统帐户</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>这是一个真正存在的玩家\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>\n<gray>如果您希望使用同名的虚拟系统帐户 将 <dark_gray>\"[]\"</dark_gray> 添加到用户名的两边： <dark_gray>[{1}]</dark_gray>"
+pagination:
+  header: "<green>{0}</green>:"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+tags:
+  commands:
+    tag: "<yellow>Manage your shop tags."
+    favorite: "<yellow>Toggle favorite on looked-at shop."
+    watch: "<yellow>Toggle watch on looked-at shop."
+    avoid: "<yellow>Toggle avoid on looked-at shop."
+  general:
+    database-error: "<red>An error occurred while executing a tag operation."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
+    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+  avoid:
+    added: "<green>Added this shop to your avoid list."
+    removed: "<green>Removed this shop from your avoid list."
+    unable: "<red>Unable to toggle avoid on this shop."
+    none: "<red>You have no avoided shops."
+    label: "<yellow>Avoid"
+  favorite:
+    added: "<green>Added this shop to your favorite list."
+    removed: "<green>Removed this shop from your favorite list."
+    unable: "<red>Unable to toggle favorite on this shop."
+    none: "<red>You have no favorite shops."
+    label: "<yellow>Favorite"
+  watch:
+    added: "<green>You are now watching this shop."
+    removed: "<green>You are no longer watching this shop."
+    unable: "<red>Unable to toggle watch on this shop."
+    none: "<red>You are not watching any shops."
+    label: "<yellow>Watching"
+  tag:
+    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
+    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
+    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
+    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
+    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
+    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
+    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
+    cleared: "<green>Cleared all tags from this shop."
+    cleared-all: "<green>Cleared all tags from all shops."
+    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
+    no-tags-all: "<red>There are no tags on any shop."
+    no-tags: "<red>This shop has no tags."
+    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops: "<red>You have no tagged shops."
+    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
   sell-tax: <green>你支付了<yellow>{0}<green>的税。
   owner: '<green>所有者：{0}'
@@ -114,21 +180,23 @@ menu:
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[错误]
   this-shop-is-selling: <green>这个商店现在正在<light_purple>出售<green>物品。
+  this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
+  this-shop-is-frozen: <blue>FROZEN</blue>
+  this-shop-is-active: <aqua>ACTIVE</aqua>
+  this-shop-is-state: <green>This shop's current state is {0}<green>.
   shop-stack: '<green>每次交易物品数量：<yellow>{0}'
   space: '<green>空间: <yellow>{0}'
   effects: <green>效果
   damage-percent-remaining: <yellow>{0}% <green>剩余
   item-holochat-data-too-large: <red>[错误] 物品NBT太长，无法显示
   stock: '<green>库存:<yellow>{0}'
-  this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
-  this-shop-is-frozen: <green>这个商店现在处于 <red>冻结模式<green>。
   successfully-sold: '<green>出售成功：'
   total-value-of-chest: '<green>共计商店数: <yellow>{0}'
 currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写错误或该货币在这个世界不可用。
 no-nearby-shop: <red>附近没有匹配 {0} 的商店。
 translation-author: 'Ghost_chu, sandtechnology, Pemdow, YuanYuanOwO, RMSCA, 李馨雨'
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
-shop-transaction-failed: <red>抱歉，在处理您的购买时发生内部错误。购买已取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
+shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
 shop-name-not-found: <red>名称为 <yellow>{0} <red> 的商店不存在。
 shop-name-too-long: <red>此商店名称过长 (最大长度 {0})，请缩短名称后再试！
@@ -187,6 +255,14 @@ shop-type:
   selling: 出售
   buying: 收购
   frozen: 已冻结
+shop-state:
+  frozen: FROZEN
+  unfrozen: UNFROZEN
+  freeze: Freeze
+  unfreeze: Unfreeze
+shop-display:
+  enabled: Enabled
+  disabled: Disabled
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -709,17 +785,6 @@ benefit-added: <green>玩家 <aqua>{0}</aqua> 已被添加到商店的利益分�
 benefit-updated: <green>玩家 <aqua>{0}</aqua> 的利益分配已更新！
 benefit-query: <green>该商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！
 benefit-query-list: <yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益分配 <gold>{1}%
-tag-added: '<green>成功将 <aqua>#{0}</aqua> 添加到该商店！'
-tag-add-duplicate: '<red>此商店已经存在标签 <aqua>#{0}</aqua>！'
-tag-removed: '<green>成功从该商店删除 <aqua>#{0}</aqua>！'
-tag-remove-not-exists: '该商店中不存在标签 <aqua>#{0}</aqua>！'
-tag-cleared: <green>成功清除了该商店的所有标签！
-tag-shops-cleared: '<green>成功地从您所有标记的商店中清除 <aqua>#{0}</aqua>！'
-tag-query: '<green>该商店有 <yellow>{0}</yellow> 标签：'
-tag-query-listing: '<yellow> - <aqua>#{0}'
-tag-query-no-tag: <red>此商店没有标签。
-tag-query-shops: '<green>此标签包含 <yellow>{0}</yellow> 商店：'
-tag-query-shops-listing: <yellow> - <aqua>{0}
 batch-operations-based-on-tags-no-failure: <green>成功批量处理 <yellow>{0}</yellow> 个商店
 batch-operations-based-on-tags-have-failure: <yellow>总 {0} 商店在批处理中成功完成，但是 <red>{1}</red> 请求未完成
 batch-operations-based-on-tags-have-failure-with-reason: '<yellow>总 {0} 商店在批处理中成功完成，但是 <red>{1}</red> 请求未完成。原因： <gold>{2}'
@@ -1417,7 +1482,7 @@ addon:
       list: <yellow>列出自己或其他玩家拥有的所有商店
     table-prefix: '<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>的商店 <gray>（页面 {1}/{2})</gray>: '
-    entry: <yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}'>{0}. <aqua>{1}
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
   shopitemonly:
     message: <red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上
   limited:
@@ -1578,6 +1643,16 @@ gui:
         - "<gray>当前价格：<white>{0}</white></gray>"
         - ""
         - "<yellow>点击更改价格</yellow>"
+    display-toggle:
+      display: "<bold><green>Toggle Preview</green></bold>"
+      lore:
+        - "<gray>Toggle item preview in shops</gray>"
+        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+    freeze-toggle:
+      display: "<bold><green>Toggle Freeze</green></bold>"
+      lore:
+        - "<gray>Currently <white>{0}</white></gray>"
+        - "<gray>Click to <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>更改模式</green></bold>"
       lore:
