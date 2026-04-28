@@ -34,7 +34,14 @@ public class SubCommand_SilentFreeze extends SubCommand_SilentBase {
     if(!shop.shopState().isTradingAllowed() && shop.shopState().identifier().equalsIgnoreCase("FROZEN")) {
       shop.shopState(ACTIVE_STATE);
       plugin.text().of(sender, "shop-nolonger-freezed", Util.getItemStackName(shop.getItem())).send();
-      plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+
+      if(shop.shopType().identifier().equalsIgnoreCase(BUYING_TYPE.identifier())) {
+
+        plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+      } else {
+
+        plugin.text().of(sender, "command.now-selling", Util.getItemStackName(shop.getItem())).send();
+      }
     } else {
       shop.shopState(FROZEN_STATE);
       plugin.text().of(sender, "shop-now-freezed", Util.getItemStackName(shop.getItem())).send();
