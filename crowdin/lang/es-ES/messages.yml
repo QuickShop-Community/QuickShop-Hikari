@@ -20,7 +20,7 @@ tabcomplete:
   price: '[precio]'
   name: '[name]'
   range: '[rango]'
-  list: 'list'
+  list: 'a'
   page: '[page #]'
   shop-id: '[shop id]'
   currency: '[nombre de divisa]'
