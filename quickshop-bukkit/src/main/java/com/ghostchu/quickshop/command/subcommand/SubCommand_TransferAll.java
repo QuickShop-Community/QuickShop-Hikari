@@ -136,7 +136,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
   @Override
   public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    final List<String> list = Util.getPlayerList();
+    final List<String> list = Util.getPlayerList(sender);
     list.add("accept");
     list.add("deny");
     return parser.getArgs().size() <= 2? list : Collections.emptyList();
