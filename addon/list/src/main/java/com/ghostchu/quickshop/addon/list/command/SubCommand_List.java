@@ -63,7 +63,7 @@ public class SubCommand_List implements CommandHandler<Player> {
 
     if(parser.getArgs().size() == 1) {
       if(quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
-        return getPlayerList();
+        return getPlayerList(sender);
       }
     }
     if(parser.getArgs().size() == 2) {

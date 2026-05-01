@@ -74,6 +74,6 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
   @Override
   public @Nullable List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
 
-    return parser.getArgs().size() <= 1? getPlayerList() : Collections.emptyList();
+    return parser.getArgs().size() <= 1? getPlayerList(sender) : Collections.emptyList();
   }
 }

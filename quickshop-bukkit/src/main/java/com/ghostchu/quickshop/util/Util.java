@@ -46,6 +46,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -1055,9 +1056,15 @@ public class Util {
    * @return the player names
    */
   @NotNull
-  public static List<String> getPlayerList() {
+  public static List<String> getPlayerList(final CommandSender sender) {
 
-    final List<String> tabList = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+    final List<String> tabList = new ArrayList<>();
+    if(sender instanceof final Player player) {
+      tabList.addAll(Bukkit.getOnlinePlayers().stream().filter(player::canSee).map(Player::getName).toList());
+    } else {
+      tabList.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+    }
+
     if(plugin.getConfig().getBoolean("include-offlineplayer-list")) {
       tabList.addAll(Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
     }
