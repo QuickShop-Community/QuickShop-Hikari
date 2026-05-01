@@ -575,7 +575,7 @@ public class Util {
     } else {
       final ItemStack item = shop.getItem();
       int space = 0;
-      final int itemMaxStackSize = getItemMaxStackSize(item.getType());
+      final int itemMaxStackSize = item.getMaxStackSize();
       for(final ItemStack iStack : inv) {
         if(iStack == null || iStack.getType() == Material.AIR) {
           space += itemMaxStackSize;
@@ -618,7 +618,7 @@ public class Util {
       return ciw.countSpace(input->matcher.matches(item, input));
     } else {
       int space = 0;
-      final int itemMaxStackSize = getItemMaxStackSize(item.getType());
+      final int itemMaxStackSize = item.getMaxStackSize();
       for(final ItemStack iStack : inv) {
         if(iStack == null || iStack.getType() == Material.AIR) {
           space += itemMaxStackSize;
