@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopItemBlackList;
 import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.ShopPermissionManager;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionManager;
 import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.vdurmont.semver4j.Semver;
