@@ -193,7 +193,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       }
       cacheUnlimitedShopAccount = QUserImpl.createSync(plugin.getPlayerFinder(), uAccount);
     }
-    this.priceLimiter = new SimplePriceLimiter(plugin);
+    if(this.priceLimiter == null) {
+      this.priceLimiter = new SimplePriceLimiter(plugin);
+    }
     this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
     this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     this.maximumDigitsLimit = plugin.getConfig().getInt("shop.maximum-digits-in-price", -1);

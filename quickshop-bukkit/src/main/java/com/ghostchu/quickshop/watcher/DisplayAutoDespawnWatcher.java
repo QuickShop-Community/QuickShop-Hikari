@@ -9,6 +9,7 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,6 +23,8 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   private final QuickShop plugin;
   private int range;
   private WrappedTask task;
+  @Getter
+  private int taskPeriod;
 
   public DisplayAutoDespawnWatcher(@NotNull final QuickShop plugin) {
 
@@ -50,6 +53,9 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
   }
 
   public void start(final int delay, final int period) {
+
+    taskPeriod = period;
+    stop();
 
     task = QuickShop.folia().getScheduler().runTimer(this, delay, period);
   }
@@ -97,6 +103,10 @@ public class DisplayAutoDespawnWatcher implements Runnable, Reloadable, SubPaste
       }
     } catch(final IllegalStateException ignore) {
     }
+  }
+
+  public void unregister() {
+    stop();
     plugin.getReloadManager().unregister(this);
     plugin.getPasteManager().unregister(plugin.getJavaPlugin(), this);
   }

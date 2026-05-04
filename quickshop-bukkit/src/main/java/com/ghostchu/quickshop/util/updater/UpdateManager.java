@@ -71,6 +71,11 @@ public class UpdateManager implements SubPasteItem {
     plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
   }
 
+  public void unregister() {
+
+    this.plugin.getPasteManager().unregister(this.plugin.getJavaPlugin(), this);
+  }
+
   public void registerProvider(@NotNull final UpdateProvider provider) {
     providers.put(provider.id().toLowerCase(Locale.ROOT), provider);
   }

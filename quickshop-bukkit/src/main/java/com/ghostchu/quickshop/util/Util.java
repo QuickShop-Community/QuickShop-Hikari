@@ -50,8 +50,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -59,7 +57,6 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1589,21 +1586,6 @@ public class Util {
     final YamlConfiguration cfg = new YamlConfiguration();
     cfg.set("item", iStack);
     return cfg.saveToString();
-  }
-
-  /**
-   * Unregister all listeners registered instances that belong to specified class
-   *
-   * @param plugin Plugin instance
-   * @param clazz  Class to unregister
-   */
-  public static void unregisterListenerClazz(@NotNull final Plugin plugin, @NotNull final Class<? extends Listener> clazz) {
-
-    for(final RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
-      if(registeredListener.getListener().getClass().equals(clazz)) {
-        HandlerList.unregisterAll(registeredListener.getListener());
-      }
-    }
   }
 
   public static boolean checkIfBungee() {
