@@ -1212,6 +1212,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public final void onDisable() {
 
     logger.info("QuickShop is finishing remaining work, this may need a while...");
+    if(calendarWatcher != null) {
+      calendarWatcher.stop();
+    }
     if(sentryErrorReporter != null) {
       logger.info("Shutting down error reporter...");
       sentryErrorReporter.unregister();
@@ -1282,10 +1285,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     }
     logger.info("Shutting down scheduled timers...");
     folia.getScheduler().cancelAllTasks();
-    if(calendarWatcher != null) {
-      logger.info("Shutting down event calendar watcher...");
-      calendarWatcher.stop();
-    }
     /* Unload UpdateWatcher */
     if(this.updateWatcher != null) {
       logger.info("Shutting down update watcher...");
