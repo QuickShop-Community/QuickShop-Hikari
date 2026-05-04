@@ -32,7 +32,7 @@ public class QuickExecutor {
 
   public static ExecutorService provideHikariCPExecutor() {
 
-    return new ThreadPoolExecutor(2, 8, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    return Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("QuickShop-Database-Worker-", 0).factory());
   }
 
   public static ExecutorService getCommonExecutor() {
