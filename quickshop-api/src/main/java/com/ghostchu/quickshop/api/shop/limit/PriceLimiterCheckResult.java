@@ -1,5 +1,6 @@
-package com.ghostchu.quickshop.api.shop;
+package com.ghostchu.quickshop.api.shop.limit;
 
+import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**

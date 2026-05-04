@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.meta;
+package com.ghostchu.quickshop.api.shop.components;
 
 /*
  * QuickShop-Hikari
@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.api.shop.meta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 
 /**
@@ -30,21 +29,43 @@ import java.util.Comparator;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopPrice<U> {
+public interface ShopPrice<T> {
 
   /**
    * Retrieves the price of the shop.
    *
    * @return the price of the shop as an instance of type U, where U represents a generic type.
    */
-  U price();
+  T price();
 
   /**
    * Sets the price for a shop.
    *
    * @param price the price to set for the shop; must be of type U and should not be null
    */
-  void price(U price);
+  void price(T price);
+
+  /**
+   * Gets the currency that shop use
+   *
+   * @return The currency name
+   */
+  @Nullable
+  String getCurrency();
+
+  /**
+   * Sets the currency that shop use
+   *
+   * @param currency The currency name; null to use default currency
+   */
+  void setCurrency(@Nullable String currency);
+
+  /**
+   * Check if this shop is free shop
+   *
+   * @return Free Shop
+   */
+  boolean isFreeShop();
 
   /**
    * Formats a string representation based on the provided world and optional currency.
@@ -72,7 +93,7 @@ public interface ShopPrice<U> {
    *
    * @return a {@link Comparator} for comparing values of type U
    */
-  Comparator<U> priceComparator();
+  Comparator<T> priceComparator();
 
   /**
    * Compares the price of the current shop with the price of another shop.
@@ -82,7 +103,7 @@ public interface ShopPrice<U> {
    * @return a negative integer, zero, or a positive integer as the price of this shop
    *         is less than, equal to, or greater than the price of the other shop
    */
-  default int comparePrice(final U other, final boolean reversed) {
+  default int comparePrice(final T other, final boolean reversed) {
 
     if(reversed) {
       return priceComparator().reversed().compare(this.price(), other);

@@ -4,8 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
 import com.ghostchu.quickshop.api.registry.builtin.itemexpression.ItemExpressionRegistry;
-import com.ghostchu.quickshop.api.shop.PriceLimiter;
-import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
+import com.ghostchu.quickshop.api.shop.limit.PriceLimiter;
+import com.ghostchu.quickshop.api.shop.limit.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.limit.RuleSet;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -16,7 +16,6 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.Data;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -162,7 +161,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, Sub
 
     final Set<RuleSet<Double>> applicableRules = new HashSet<>();
 
-    for(SimpleRuleSet rule : rules.values()) {
+    for(final SimpleRuleSet rule : rules.values()) {
 
       if(rule.isApplicable(stack)) {
         applicableRules.add(rule);
@@ -176,7 +175,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, Sub
 
     final Set<RuleSet<Double>> applicableRules = new HashSet<>();
 
-    for(SimpleRuleSet rule : rules.values()) {
+    for(final SimpleRuleSet rule : rules.values()) {
 
       if(rule.isApplicable(sender, stack)) {
         applicableRules.add(rule);
@@ -190,7 +189,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, Sub
 
     final Set<RuleSet<Double>> applicableRules = new HashSet<>();
 
-    for(SimpleRuleSet rule : rules.values()) {
+    for(final SimpleRuleSet rule : rules.values()) {
 
       if(rule.isApplicable(user, stack)) {
         applicableRules.add(rule);
@@ -204,7 +203,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, Sub
 
     final Set<RuleSet<Double>> applicableRules = new HashSet<>();
 
-    for(SimpleRuleSet rule : rules.values()) {
+    for(final SimpleRuleSet rule : rules.values()) {
 
       if(rule.isApplicable(stack, currency)) {
         applicableRules.add(rule);
@@ -218,7 +217,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, Sub
 
     final Set<RuleSet<Double>> applicableRules = new HashSet<>();
 
-    for(SimpleRuleSet rule : rules.values()) {
+    for(final SimpleRuleSet rule : rules.values()) {
 
       if(rule.isApplicable(sender, stack, currency)) {
         applicableRules.add(rule);
@@ -232,7 +231,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter<Double>, Sub
 
     final Set<RuleSet<Double>> applicableRules = new HashSet<>();
 
-    for(SimpleRuleSet rule : rules.values()) {
+    for(final SimpleRuleSet rule : rules.values()) {
 
       if(rule.isApplicable(user, stack, currency)) {
         applicableRules.add(rule);

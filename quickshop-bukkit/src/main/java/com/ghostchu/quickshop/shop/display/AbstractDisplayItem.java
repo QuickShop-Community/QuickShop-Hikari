@@ -19,10 +19,13 @@ package com.ghostchu.quickshop.shop.display;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.display.DisplayItem;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.shop.datatype.ShopProtectionFlag;
+import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -30,7 +33,6 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,25 +41,26 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager.DISPLAY_MARK_NAMESPACE;
+
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
  * with.
  */
-public abstract class AbstractDisplayItem implements Reloadable {
+public abstract class AbstractDisplayItem implements DisplayItem, Reloadable {
 
   protected static final QuickShop PLUGIN = QuickShop.getInstance();
-  private static final NamespacedKey DISPLAY_MARK_NAMESPACE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "display_protection");
-  private static boolean virtualDisplayDoesntWork = false;
+
   protected final ItemStack originalItemStack;
-  protected final Shop shop;
+  protected final ModernShop<?, ?, ?> shop;
   @Nullable
   protected ItemStack guardedStack;
   private boolean pendingRemoval;
 
-  protected AbstractDisplayItem(final Shop shop) {
+  protected AbstractDisplayItem(final ModernShop<?, ?, ?> shop) {
 
     this.shop = shop;
-    this.originalItemStack = shop.getItem().clone();
+    this.originalItemStack = shop.item().getItem();
     PLUGIN.getReloadManager().register(this);
     init();
   }
@@ -71,7 +74,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
   public static DisplayType getNowUsing() {
 
     final DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-    if(displayType == DisplayType.VIRTUALITEM && virtualDisplayDoesntWork) {
+    if(displayType == DisplayType.VIRTUALITEM && VirtualDisplayItemManager.isVirtualDisplayDoesntWork()) {
       return DisplayType.CUSTOM;
     }
     return displayType;
@@ -150,16 +153,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
           @NotNull final ItemStack itemStack, @NotNull final Shop shop) {
 
     return new ShopProtectionFlag(shop.bukkitLocation().toString(), Util.serialize(itemStack));
-  }
-
-  public static boolean isVirtualDisplayDoesntWork() {
-
-    return virtualDisplayDoesntWork;
-  }
-
-  public static void setVirtualDisplayDoesntWork(final boolean shouldDisable) {
-
-    virtualDisplayDoesntWork = shouldDisable;
   }
 
   protected void init() {
@@ -321,7 +314,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
    * @return The shop that display holding
    */
   @NotNull
-  public Shop getShop() {
+  public ModernShop<?, ?, ?> shop() {
 
     return shop;
   }

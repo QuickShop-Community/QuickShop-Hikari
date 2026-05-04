@@ -120,10 +120,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private IShopType shopType;
   private ShopState shopState;
   private boolean unlimited;
-  @NotNull
-  private ItemStack item;
-  @NotNull
-  private ItemStack originalItem;
   @Nullable
   @EqualsAndHashCode.Exclude
   private AbstractDisplayItem displayItem = null;
@@ -139,7 +135,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   private boolean updating = false;
   @Nullable
   private String currency;
-  private boolean disableDisplay;
   private QUser taxAccount;
   @NotNull
   private String inventoryWrapperProvider;

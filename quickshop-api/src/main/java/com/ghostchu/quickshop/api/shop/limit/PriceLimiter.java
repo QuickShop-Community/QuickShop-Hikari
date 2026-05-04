@@ -1,7 +1,6 @@
-package com.ghostchu.quickshop.api.shop;
+package com.ghostchu.quickshop.api.shop.limit;
 
 import com.ghostchu.quickshop.api.obj.QUser;
-import com.ghostchu.quickshop.api.shop.limit.RuleSet;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

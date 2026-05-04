@@ -30,6 +30,7 @@ import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VirtualDisplayItemManager {
 
   private static VirtualDisplayItemManager instance;
+
+  public static final NamespacedKey DISPLAY_MARK_NAMESPACE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "display_protection");
+  private boolean virtualDisplayDoesntWork = false;
+
   public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
   protected final Map<String, PacketHandler<?>> packetHandlers = new LinkedHashMap<>();
   @Getter
@@ -170,6 +175,16 @@ public class VirtualDisplayItemManager {
   public VirtualDisplayItem<?> createVirtualDisplayItem(@NotNull final Shop shop) {
 
     return new VirtualDisplayItem<>(this, packetFactory, shop);
+  }
+
+  public static boolean isVirtualDisplayDoesntWork() {
+
+    return instance.virtualDisplayDoesntWork;
+  }
+
+  public static void setVirtualDisplayDoesntWork(final boolean shouldDisable) {
+
+    instance.virtualDisplayDoesntWork = shouldDisable;
   }
 
   public boolean isTestPassed() {

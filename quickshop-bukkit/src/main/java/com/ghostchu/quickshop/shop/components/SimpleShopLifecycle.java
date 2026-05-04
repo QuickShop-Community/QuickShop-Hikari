@@ -1,0 +1,282 @@
+package com.ghostchu.quickshop.shop.components;
+
+/*
+ * QuickShop-Hikari
+ * Copyright (C) 2026 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.management.ShopDatabaseEvent;
+import com.ghostchu.quickshop.api.event.management.ShopUnloadEvent;
+import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
+import com.ghostchu.quickshop.api.shop.components.ShopLifecycle;
+import com.ghostchu.quickshop.shop.InventoryPreview;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import lombok.EqualsAndHashCode;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.ghostchu.quickshop.util.Util.waitForFuture;
+
+/**
+ * SimpleShopLifecycle
+ *
+ * @author creatorfromhell
+ * @since 6.3.0.0
+ */
+public class SimpleShopLifecycle implements ShopLifecycle {
+
+  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+
+  protected YamlConfiguration extra;
+
+  @NotNull
+  protected String symbolLink;
+
+  protected boolean dirty = false;
+  @EqualsAndHashCode.Exclude
+  private boolean updating = false;
+  protected boolean isLoaded = false;
+
+  //updating objects
+  private final AtomicBoolean updatingAtomic = new AtomicBoolean(false);
+  private volatile CompletableFuture<Void> inFlightUpdate;
+
+  public SimpleShopLifecycle(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+    this.shop = shop;
+  }
+
+  /**
+   * Getting ConfigurationSection (extra data) instance of your plugin namespace)
+   *
+   * @param plugin The plugin and plugin name will used for namespace
+   *
+   * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly lose
+   * or save
+   */
+  @Override
+  public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
+
+    if(this.extra == null) {
+      this.extra = new YamlConfiguration();
+    }
+    ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
+    if(section == null) {
+      section = extra.createSection(plugin.getName());
+    }
+    return section;
+  }
+
+  /**
+   * Save the extra data to the shop.
+   *
+   * @param plugin Plugin instace
+   * @param data   The data table
+   */
+  @Override
+  public void setExtra(@NotNull final Plugin plugin, @NotNull final ConfigurationSection data) {
+
+    if(this.extra == null) {
+      this.extra = new YamlConfiguration();
+    }
+    extra.set(plugin.getName(), data);
+    // compress extra to null if possible
+    boolean anyValid = false;
+    for(final String key : extra.getKeys(false)) {
+      if(!extra.isConfigurationSection(key)) {
+        anyValid = true;
+        break;
+      }
+      final ConfigurationSection section = extra.getConfigurationSection(key);
+      if(section == null) continue;
+      if(!section.getKeys(false).isEmpty()) {
+        anyValid = true;
+        break;
+      }
+    }
+    if(!anyValid) {
+      this.extra = null;
+    }
+
+    //TODO: Determine how to mark as dirty. Maybe through shop service?
+    //setDirty();
+  }
+
+  /**
+   * Save the plugin extra data to Json format
+   *
+   * @return The json string
+   */
+  @Override
+  public @NotNull String saveExtraToYaml() {
+
+    return extra == null? "" : extra.saveToString();
+  }
+
+  /**
+   * Getting ShopInfoStorage that you can use for storage the shop data
+   *
+   * @return ShopInfoStorage
+   */
+  @Override
+  public ShopInfoStorage asInfoStorage() {
+
+    return ShopInfoStorage.fromShop(shop);
+  }
+
+  /**
+   * Gets the symbol link that created by InventoryWrapperManager
+   *
+   * @return InventoryWrapper
+   */
+  @Override
+  public @NotNull String asSymbolLink() {
+
+    return symbolLink;
+  }
+
+  /**
+   * Gets if shop is dirty (so shop will be save)
+   *
+   * @return Is dirty
+   */
+  @Override
+  public boolean isDirty() {
+
+    return dirty;
+  }
+
+  /**
+   * Sets dirty status
+   *
+   * @param isDirty Shop is dirty
+   */
+  @Override
+  public void setDirty(final boolean isDirty) {
+    this.dirty = isDirty;
+  }
+
+  /**
+   * Sets shop is dirty
+   */
+  @Override
+  public void markDirty() {
+    this.dirty = true;
+  }
+
+  /**
+   * Get this container shop is loaded or unloaded.
+   *
+   * @return Loaded
+   */
+  @Override
+  public boolean isLoaded() {
+
+    return this.isLoaded;
+  }
+
+  @Override
+  public void handleLoading() {
+
+  }
+
+  @Override
+  public void handleUnloading(final boolean dontTouchWorld) {
+    Util.ensureThread(false);
+    if(!this.isLoaded) {
+      Log.debug("Dupe unload request, canceled.");
+      return;
+    }
+    if(this.shop.interaction().preview() != null) {
+      this.shop.interaction().preview().close();
+    }
+    if(this.shop.item().getDisplayItem() != null) {
+      this.shop.item().getDisplayItem().remove(dontTouchWorld);
+    }
+    this.isLoaded = false;
+    QuickShop.getInstance().getShopManager().getLoadedShops().remove(this);
+    new ShopUnloadEvent(Phase.POST, this.shop).callEvent();
+  }
+
+  /**
+   * Update shop data to database
+   */
+  @Override
+  public @NotNull CompletableFuture<Void> update() {
+
+    //Warning! This method can be run in async thread.
+    if(updating) {
+      return CompletableFuture.completedFuture(null);
+    }
+
+    if(this.shop.meta().getShopId() == -1) {
+      Log.debug("Skip shop database update because it not fully setup!");
+      return CompletableFuture.completedFuture(null);
+    }
+
+    ShopDatabaseEvent event = new ShopDatabaseEvent(Phase.PRE_CANCELLABLE, this.shop);
+
+    if(event.callCancellableEvent()) {
+
+      Log.debug("The Shop update action was canceled by a plugin.");
+      return CompletableFuture.completedFuture(null);
+    }
+
+    event = event.clone(Phase.POST);
+    event.callEvent();
+
+    //If already updating, just return the same future
+    if(!updatingAtomic.compareAndSet(false, true)) {
+      return inFlightUpdate != null ? inFlightUpdate : CompletableFuture.completedFuture(null);
+    }
+
+    //Start a new update
+    final CompletableFuture<Void> f = QuickShop.getInstance().getDatabaseHelper().updateShop(this.shop)
+            .whenComplete((r, th) -> {
+              updatingAtomic.set(false);
+              if (th == null) {
+                dirty = false;
+              } else {
+                QuickShop.getInstance().logger().warn("Could not update shop in DB!", th);
+              }
+            });
+
+    inFlightUpdate = f;
+    return f;
+  }
+
+  /**
+   * Update shop data to database synchronously. This will create the completeable future for the
+   * save function, and wait for it to complete. DON'T USE IF YOU DON'T KNOW WHAT YOU'RE DOING!
+   */
+  @Override
+  public void updateSync() throws RuntimeException {
+
+    final CompletableFuture<Void> future = update();
+
+    waitForFuture(future, 15, TimeUnit.SECONDS, "updateShop(" + shop.meta().getShopId() + ")");
+  }
+}

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.meta;
+package com.ghostchu.quickshop.api.shop.components;
 
 /*
  * QuickShop-Hikari
@@ -37,16 +37,7 @@ import java.util.UUID;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopMeta<U> extends ShopPrice<U> {
-
-  /**
-   * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
-   * IT TO STORE DATA!
-   *
-   * @return Random UUID
-   */
-  @NotNull
-  UUID getRuntimeRandomUniqueId();
+public interface ShopMeta {
 
   /**
    * Gets the Shop ID to identify the shop.
@@ -77,54 +68,6 @@ public interface ShopMeta<U> extends ShopPrice<U> {
    * @param shopName shop name, null to remove currently name
    */
   void setShopName(@Nullable String shopName);
-
-  /**
-   * Get shop item's ItemStack
-   *
-   * @return The shop's ItemStack
-   */
-  @NotNull
-  ItemStack getItem();
-
-  /**
-   * Set shop item's ItemStack
-   *
-   * @param item ItemStack to set
-   */
-  void setItem(@NotNull ItemStack item);
-
-  /**
-   * Gets the currency that shop use
-   *
-   * @return The currency name
-   */
-  @Nullable
-  String getCurrency();
-
-  /**
-   * Sets the currency that shop use
-   *
-   * @param currency The currency name; null to use default currency
-   */
-  void setCurrency(@Nullable String currency);
-
-  /**
-   * Get shop's price
-   *
-   * @return Price
-   * @deprecated Use {@link ShopPrice#price()} instead
-   */
-  @Deprecated(forRemoval = true, since = "6.3.0.0")
-  double getPrice();
-
-  /**
-   * Set shop's new price
-   *
-   * @param paramDouble New price
-   * @deprecated Use {@link ShopPrice#price(Object)} instead.
-   */
-  @Deprecated(forRemoval = true, since = "6.3.0.0")
-  void setPrice(double paramDouble);
 
   /**
    * Retrieves the current state of the shop.
@@ -211,9 +154,9 @@ public interface ShopMeta<U> extends ShopPrice<U> {
   /**
    * Set new owner to the shop's owner
    *
-   * @param qUser New owner user
+   * @param owner New owner user
    */
-  void setOwner(@NotNull QUser qUser);
+  void setOwner(@NotNull QUser owner);
 
   /**
    * Getting the shop tax account for using, it can be specific uuid or general tax account
@@ -240,13 +183,6 @@ public interface ShopMeta<U> extends ShopPrice<U> {
   QUser getTaxAccountActual();
 
   /**
-   * Gets shop status is stacking shop
-   *
-   * @return The shop stacking status
-   */
-  boolean isStackingShop();
-
-  /**
    * Get shop is or not in Unlimited Mode (Admin Shop)
    *
    * @return yes or not
@@ -254,11 +190,13 @@ public interface ShopMeta<U> extends ShopPrice<U> {
   boolean isUnlimited();
 
   /**
-   * Set shop is or not Unlimited Mode (Admin Shop)
+   * Sets the shop's mode to unlimited or not.
+   * This determines whether the shop operates in "Admin Shop" mode, allowing
+   * unlimited transactions without inventory limitations.
    *
-   * @param paramBoolean status
+   * @param unlimited true to enable unlimited mode, false to disable it
    */
-  void setUnlimited(boolean paramBoolean);
+  void setUnlimited(boolean unlimited);
 
   /**
    * Gets the benefit in this shop

@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
+import com.ghostchu.quickshop.api.shop.limit.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.api.shop.tax.TaxManager;
 import com.ghostchu.quickshop.api.shop.trading.TradeService;

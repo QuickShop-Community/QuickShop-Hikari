@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.meta;
+package com.ghostchu.quickshop.api.shop.components;
 
 /*
  * QuickShop-Hikari
@@ -26,12 +26,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * ShopDisplay
+ * ShopSign
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopDisplay {
+public interface ShopWorldAdapter {
+
+  /**
+   * Whether Shop is valid
+   *
+   * @return status
+   */
+  boolean isValid();
 
   /**
    * Check the display location, and teleport, respawn if needs.
@@ -65,34 +72,6 @@ public interface ShopDisplay {
    */
   @NotNull
   List<Sign> getSigns();
-
-  /**
-   * Getting if this shop has been disabled the display
-   *
-   * @return Does display has been disabled
-   */
-  boolean isDisableDisplay();
-
-  /**
-   * Set the display disable state
-   *
-   * @param disabled Has been disabled
-   */
-  void setDisableDisplay(boolean disabled);
-
-  /**
-   * Determines whether a custom item name should be used.
-   *
-   * @return true if a custom item name is enabled, false otherwise
-   */
-  boolean useCustomItemName();
-
-  /**
-   * Customizes and returns a Component representing an item name.
-   *
-   * @return a Component representing the customized item name
-   */
-  Component customItemName();
 
   /**
    * Checks if a Sign is a ShopSign

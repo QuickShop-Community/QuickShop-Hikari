@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.permission;
+package com.ghostchu.quickshop.api.shop.components;
 
 /*
  * QuickShop-Hikari
@@ -18,6 +18,8 @@ package com.ghostchu.quickshop.api.shop.permission;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

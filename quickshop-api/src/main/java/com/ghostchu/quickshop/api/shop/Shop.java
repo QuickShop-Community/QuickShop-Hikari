@@ -2,10 +2,10 @@ package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.inventory.ShopInventory;
-import com.ghostchu.quickshop.api.shop.meta.ShopDisplay;
-import com.ghostchu.quickshop.api.shop.meta.ShopMeta;
-import com.ghostchu.quickshop.api.shop.permission.ShopPermission;
-import com.ghostchu.quickshop.api.shop.trading.ShopTrading;
+import com.ghostchu.quickshop.api.shop.components.ShopDisplay;
+import com.ghostchu.quickshop.api.shop.components.ShopMeta;
+import com.ghostchu.quickshop.api.shop.components.ShopPermission;
+import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -77,11 +77,6 @@ public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, Sh
    * @return status
    */
   boolean isValid();
-
-  /**
-   * Execute codes when player click the shop will did things
-   */
-  void onClick(@NotNull Player clicker);
 
 
   @Deprecated()

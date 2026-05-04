@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api.shop;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +29,11 @@ public class ShopInfoStorage {
   private final String symbolLink;
   private final Map<UUID, String> permission;
 
-  public ShopInfoStorage(final String world, final BlockPos position, final QUser owner, final double price, final String item, final int unlimited, final int shopType, final String extra, final String currency, final boolean disableDisplay, final QUser taxAccount, final String inventoryWrapperName, final String symbolLink, final Map<UUID, String> permission) {
+  public ShopInfoStorage(final String world, final BlockPos position, final QUser owner,
+                         final double price, final String item, final int unlimited,
+                         final int shopType, final String extra, final String currency,
+                         final boolean disableDisplay, final QUser taxAccount, final String inventoryWrapperName,
+                         final String symbolLink, final Map<UUID, String> permission) {
 
     this.world = world;
     this.position = position;
@@ -48,5 +53,16 @@ public class ShopInfoStorage {
     this.inventoryWrapperName = inventoryWrapperName;
     this.symbolLink = symbolLink;
     this.permission = permission;
+  }
+
+  public static ShopInfoStorage fromShop(@NotNull final ModernShop<?, ?, ?> shop) {
+
+    return new ShopInfoStorage(shop.bukkitLocation().getWorld().getName(),
+                               new BlockPos(shop.bukkitLocation()), shop.meta().getOwner(), this.price,
+                               QuickShop.getInstance().platform().encodeStack(this.originalItem),
+                               isUnlimited()? 1 : 0, shopType().id(),
+                               saveExtraToYaml(), this.currency, this.disableDisplay,
+                               this.taxAccount, inventoryWrapperProvider,
+                               saveToSymbolLink(), this.playerGroup);
   }
 }
