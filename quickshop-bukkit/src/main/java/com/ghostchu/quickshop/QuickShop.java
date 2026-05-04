@@ -973,6 +973,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
       final int checkTime = getConfig().getInt("shop.display-check-time");
       if(this.displayAutoDespawnWatcher != null && this.displayAutoDespawnWatcher.getTaskPeriod() == checkTime) {
+        // Don't restart the task if the check time hasn't changed.
         return;
       }
 
