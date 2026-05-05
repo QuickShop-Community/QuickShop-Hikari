@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.components;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.display.DisplayItem;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import net.kyori.adventure.text.Component;
@@ -50,7 +51,10 @@ public interface ShopItem {
    * Set shop item's ItemStack
    *
    * @param item ItemStack to set
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setItem(@NotNull ItemStack item);
 
   /**
@@ -85,7 +89,10 @@ public interface ShopItem {
    * Set the display disable state
    *
    * @param disabled Has been disabled
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setDisableDisplay(boolean disabled);
 
   /**

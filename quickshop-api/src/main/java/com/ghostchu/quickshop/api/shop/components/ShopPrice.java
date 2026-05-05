@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop.components;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +45,10 @@ public interface ShopPrice<T> {
    * Sets the price for a shop.
    *
    * @param price the price to set for the shop; must be of type U and should not be null
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void price(T price);
 
   /**
@@ -59,7 +63,10 @@ public interface ShopPrice<T> {
    * Sets the currency that shop use
    *
    * @param currency The currency name; null to use default currency
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setCurrency(@Nullable String currency);
 
   /**

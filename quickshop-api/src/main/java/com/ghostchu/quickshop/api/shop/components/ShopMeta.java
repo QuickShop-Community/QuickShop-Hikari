@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
+import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import net.kyori.adventure.text.Component;
@@ -68,7 +69,10 @@ public interface ShopMeta {
    * Sets shop name
    *
    * @param shopName shop name, null to remove currently name
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setShopName(@Nullable String shopName);
 
   /**
@@ -82,7 +86,10 @@ public interface ShopMeta {
    * Updates the current state of the shop based on the provided {@code ShopState}.
    *
    * @param state the new state to set for the shop; must not be null
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void shopState(@NotNull ShopState state);
 
   /**
@@ -90,7 +97,10 @@ public interface ShopMeta {
    *
    * @param shopStateIdentifier a non-null string representing the unique identifier
    *                             for the shop state to be updated or processed.
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void shopState(@NotNull String shopStateIdentifier);
 
   /**
@@ -104,14 +114,20 @@ public interface ShopMeta {
    * Sets the type of shop using the provided shop type parameter.
    *
    * @param newShopType the shop type to set, must not be null
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void shopType(@NotNull IShopType newShopType);
 
   /**
    * Specifies the type of shop based on the given identifier.
    *
    * @param shopTypeIdentifier the identifier representing the type of shop. Must not be null.
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void shopType(@NotNull String shopTypeIdentifier);
 
   /**
@@ -157,7 +173,10 @@ public interface ShopMeta {
    * Set new owner to the shop's owner
    *
    * @param owner New owner user
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setOwner(@NotNull QUser owner);
 
   /**
@@ -172,7 +191,10 @@ public interface ShopMeta {
    * Sets shop taxAccount
    *
    * @param taxAccount tax account, null to use general tax account
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setTaxAccount(@Nullable QUser taxAccount);
 
   /**
@@ -197,7 +219,10 @@ public interface ShopMeta {
    * unlimited transactions without inventory limitations.
    *
    * @param unlimited true to enable unlimited mode, false to disable it
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setUnlimited(boolean unlimited);
 
   /**
@@ -208,7 +233,10 @@ public interface ShopMeta {
 
   /**
    * Sets the benefit in this shop
+   *
+   * @deprecated All setting operations should go through the {@link ShopService} going forward.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setShopBenefit(@NotNull BenefitProvider benefit);
 
   /**
