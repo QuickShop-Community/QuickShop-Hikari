@@ -21,7 +21,7 @@ tabcomplete:
   name: '[Name]'
   range: '[Reichweite]'
   list: 'list'
-  page: '[page #]'
+  page: '[seite #]'
   shop-id: '[shop id]'
   currency: '[Währungsname]'
   percentage: '[Prozentsatz%]'
@@ -110,17 +110,17 @@ virtual-player-component-hover: "<gray>Dies ist ein virtueller Spieler.\n<gray>B
 real-player-component-hover: "<gray>Dies ist ein echter existierender Spieler.\n<green>UUID: <yellow>{0}</yellow>\n<green>Benutzername: <yellow>{1}</yellow>\n<green>Angezeigt als: <yellow>{2}</yellow>\n<gray>Wenn du ein virtuelles Systemkonto mit demselben Namen verwenden willst, füge <dark_gray>\"[]\"</dark_gray> an beiden enden des Namens hinzu: <dark_gray>[{1}]</dark_gray>."
 pagination:
   header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Vorherige Seite\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Nächste Seite\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
+    tag: "<yellow>Verwalte deine Shop-Tags."
     favorite: "<yellow>Toggle favorite on looked-at shop."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
-    database-error: "<red>An error occurred while executing a tag operation."
-    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    database-error: "<red>Beim Ausführen einer Tag-Operation ist ein Fehler aufgetreten."
+    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>Zeige alle Shops mit diesem Tag\">Zeige Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Entferne diesen Tag von diesem Shop\">Entfernen</hover></click>]</red>"
+    invalid: "<red>Ungültiger Tag. Nur Buchstaben, Bindestriche (-) und Unterstriche (_) sind erlaubt. Maximale Länge: <yellow>{0}</yellow>"
   avoid:
     added: "<green>Added this shop to your avoid list."
     removed: "<green>Removed this shop from your avoid list."
