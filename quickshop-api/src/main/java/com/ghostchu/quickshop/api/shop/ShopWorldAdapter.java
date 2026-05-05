@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.components;
+package com.ghostchu.quickshop.api.shop;
 
 /*
  * QuickShop-Hikari

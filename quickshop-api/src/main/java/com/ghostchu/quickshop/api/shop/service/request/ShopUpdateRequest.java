@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.service.request;
  */
 
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.service.ShopRequest;
 import com.ghostchu.quickshop.api.shop.service.ShopUpdateOptions;
 import org.bukkit.command.CommandSender;
 
@@ -28,7 +29,7 @@ import org.bukkit.command.CommandSender;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class ShopUpdateRequest {
+public class ShopUpdateRequest implements ShopRequest {
 
   protected final ShopUpdateOptions options;
   protected final CommandSender actor;
@@ -67,6 +68,12 @@ public class ShopUpdateRequest {
   public ModernShop<?, ?, ?, ?> shop() {
 
     return shop;
+  }
+
+  @Override
+  public long shopId() {
+
+    return shop.meta().getShopId();
   }
 
   public static final class Builder {

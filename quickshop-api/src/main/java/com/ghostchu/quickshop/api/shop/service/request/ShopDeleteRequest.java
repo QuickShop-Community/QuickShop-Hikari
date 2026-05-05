@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop.service.request;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.service.ShopRequest;
 import com.ghostchu.quickshop.api.shop.service.ShopUpdateOptions;
 import org.bukkit.command.CommandSender;
 
@@ -27,7 +28,7 @@ import org.bukkit.command.CommandSender;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class ShopDeleteRequest {
+public class ShopDeleteRequest implements ShopRequest {
 
   protected final ShopUpdateOptions options;
   protected final CommandSender actor;
@@ -63,6 +64,7 @@ public class ShopDeleteRequest {
     return actor;
   }
 
+  @Override
   public long shopId() {
 
     return shopId;

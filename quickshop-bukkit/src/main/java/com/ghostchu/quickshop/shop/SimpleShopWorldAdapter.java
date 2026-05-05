@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.components;
+package com.ghostchu.quickshop.shop;
 
 /*
  * QuickShop-Hikari
@@ -21,9 +21,8 @@ package com.ghostchu.quickshop.shop.components;
 import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.components.ShopWorldAdapter;
+import com.ghostchu.quickshop.api.shop.ShopWorldAdapter;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.shop.DisplayProvider;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.Util;
 import lombok.EqualsAndHashCode;

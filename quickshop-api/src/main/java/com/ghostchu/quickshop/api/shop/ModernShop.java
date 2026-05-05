@@ -25,8 +25,6 @@ import com.ghostchu.quickshop.api.shop.components.ShopMeta;
 import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
-import com.ghostchu.quickshop.api.shop.components.ShopWorldAdapter;
-import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
