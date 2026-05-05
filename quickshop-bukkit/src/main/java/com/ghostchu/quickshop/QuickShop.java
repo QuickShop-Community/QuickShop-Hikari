@@ -346,6 +346,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private RegistryManager registry;
 
+  private LockListener shopLockListener;
+  private DisplayProtectionListener displayProtectionListener;
+
   public QuickShop(final QuickShopBukkit javaPlugin, final Logger logger, final Platform platform) {
 
     this.javaPlugin = javaPlugin;
@@ -967,12 +970,22 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private void registerDisplayAutoDespawn() {
 
     if(this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
-      this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-      this.displayAutoDespawnWatcher.start(20, getConfig().getInt("shop.display-check-time"));
+
+      final int checkTime = getConfig().getInt("shop.display-check-time");
+      if(this.displayAutoDespawnWatcher != null && this.displayAutoDespawnWatcher.getTaskPeriod() == checkTime) {
+        // Don't restart the task if the check time hasn't changed.
+        return;
+      }
+
+      if(this.displayAutoDespawnWatcher == null) {
+        this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
+      }
+
+      this.displayAutoDespawnWatcher.start(20, checkTime);
       logger.warn("Unrecommended use of display-auto-despawn. This feature may have a heavy impact on the server's performance!");
     } else {
       if(this.displayAutoDespawnWatcher != null) {
-        this.displayAutoDespawnWatcher.stop();
+        this.displayAutoDespawnWatcher.unregister();
         this.displayAutoDespawnWatcher = null;
       }
     }
@@ -1056,30 +1069,46 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       } else {
         logger.error("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
       }
-      new DisplayProtectionListener(this).register();
+      if(this.displayProtectionListener == null) {
+        this.displayProtectionListener = new DisplayProtectionListener(this);
+        this.displayProtectionListener.register();
+      }
     } else {
-      Util.unregisterListenerClazz(javaPlugin, DisplayProtectionListener.class);
+      if(this.displayProtectionListener != null) {
+        this.displayProtectionListener.unregister();
+        this.displayProtectionListener = null;
+      }
     }
   }
 
   private void registerShopLock() {
 
-    Util.unregisterListenerClazz(javaPlugin, LockListener.class);
     final boolean useShopLock = getConfig().getBoolean("shop.lock");
     if(useShopLock) {
 
-      new LockListener(this).register();
+      if(this.shopLockListener == null) {
+        this.shopLockListener = new LockListener(this);
+        this.shopLockListener.register();
+      }
+    } else if(this.shopLockListener != null) {
+      this.shopLockListener.unregister();
+      this.shopLockListener = null;
     }
   }
 
   private void registerUpdater() {
 
     final boolean updaterEnabled = this.getConfig().getBoolean("updater", true);
-    if(updaterEnabled) {
+    if(updaterEnabled && this.updateManager == null) {
       this.updateManager = new UpdateManager(this);
       updateWatcher = new UpdateWatcher();
       updateWatcher.init();
     } else {
+      if (this.updateManager != null) {
+        this.updateManager.unregister();
+        this.updateManager = null;
+      }
+
       if(updateWatcher != null) {
         updateWatcher.uninit();
         updateWatcher = null;
