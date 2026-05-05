@@ -220,44 +220,6 @@ public abstract class AbstractShopManager implements ShopManager {
   }
 
   @Override
-  public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull final UUID tagger, @NotNull final Shop shop) {
-
-    return plugin.getDatabaseHelper().removeAllShopTagsBy(tagger, shop.getShopId());
-  }
-
-  @Override
-  public CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull final UUID tagger, @NotNull String tag) {
-
-    tag = tag.trim().toLowerCase(Locale.ROOT);
-    tag = tag.replace(" ", "_");
-    return plugin.getDatabaseHelper().removeTagFromShops(tagger, tag);
-  }
-
-  @Override
-  public CompletableFuture<@Nullable Integer> removeTag(@NotNull final UUID tagger, @NotNull final Shop shop, @NotNull String tag) {
-
-    tag = tag.trim().toLowerCase(Locale.ROOT);
-    tag = tag.replace(" ", "_");
-    return plugin.getDatabaseHelper().removeShopTag(tagger, shop.getShopId(), tag);
-  }
-
-  @Override
-  public CompletableFuture<@Nullable Integer> tagShop(@NotNull final UUID tagger, @NotNull final Shop shop, @NotNull String tag) {
-
-    tag = tag.trim().toLowerCase(Locale.ROOT);
-    tag = tag.replace(" ", "_");
-    return plugin.getDatabaseHelper().tagShop(tagger, shop.getShopId(), tag);
-  }
-
-  @Override
-  @NotNull
-  public List<String> listTags(@NotNull final UUID tagger) {
-
-    Util.ensureThread(true);
-    return plugin.getDatabaseHelper().listTags(tagger);
-  }
-
-  @Override
   public CompletableFuture<?> unregisterShop(@NotNull final Shop shop, final boolean persist) {
 
     removeShopFromLookupTable(shop);

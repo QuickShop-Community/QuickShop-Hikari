@@ -18,10 +18,12 @@ package com.ghostchu.quickshop.api.shop.components;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.EnumSet;
 
 /**
  * ShopPrice
@@ -126,4 +128,15 @@ public interface ShopPrice<T> {
    * @return true if the shop can afford the specified number of items, false otherwise
    */
   boolean canAfford(final int itemAmount);
+
+  /**
+   * Computes and returns the differences between the current shop and another specified shop based on their properties.
+   * The differences are represented as a set of {@code ShopChangeType} enumerations.
+   *
+   * @param compare The {@code ShopPrice} object to compare against. Can be null, which will indicate
+   *                a comparison against the absence of a shop.
+   * @return An {@code EnumSet} of {@code ShopChangeType} representing the differences between the
+   *         current shop and the provided shop. Returns an empty set if no differences are found.
+   */
+  EnumSet<ShopChangeType> diff(final @Nullable ShopPrice<?> compare);
 }

@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop.service;
+package com.ghostchu.quickshop.api.shop.service.result;
 
 /*
  * QuickShop-Hikari
@@ -18,15 +18,14 @@ package com.ghostchu.quickshop.api.shop.service;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * ShopActionResult
+ * ShopDeleteResult
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public record ShopActionResult<T>(T value,
-                                  boolean success,
-                                  @Nullable ShopActionFailureReason failureReason) {
+public record ShopDeleteResult(@Nullable ModernShop<?, ?, ?, ?> shop) {
 }

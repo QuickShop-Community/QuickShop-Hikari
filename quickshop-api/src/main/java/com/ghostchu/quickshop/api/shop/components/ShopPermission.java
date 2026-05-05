@@ -20,10 +20,12 @@ package com.ghostchu.quickshop.api.shop.components;
 
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -118,4 +120,15 @@ public interface ShopPermission {
    * @param group  group
    */
   void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);
+
+  /**
+   * Computes the differences between the current shop permissions and the specified shop's permissions.
+   * The differences are represented as a set of {@code ShopChangeType} enumerations.
+   *
+   * @param compare The shop permissions to compare against. The provided {@code ShopPermission} may be null.
+   *                If null, this method will evaluate differences assuming the absence of a comparison item.
+   * @return An {@code EnumSet} of {@code ShopChangeType} representing the differences between
+   *         the two shop permissions. Returns an empty set if there are no differences.
+   */
+  EnumSet<ShopChangeType> diff(final @Nullable ShopPermission compare);
 }

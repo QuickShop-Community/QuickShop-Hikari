@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import com.ghostchu.quickshop.api.shop.components.ShopWorldAdapter;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -34,8 +35,8 @@ import java.util.UUID;
  * ShopModern
  * T = price object, such as BigDecimal or Double
  * S = Location object such as Bukkit's Location object
- * U = Player object such as Bukkit's Player object
- * V = Preview object such as Bukkit's Inventory object
+ * U = Preview object such as Bukkit's Inventory object
+ * V = Inventory object such as InventoryWrapper
  * @author creatorfromhell
  * @since 6.3.0.0
  */

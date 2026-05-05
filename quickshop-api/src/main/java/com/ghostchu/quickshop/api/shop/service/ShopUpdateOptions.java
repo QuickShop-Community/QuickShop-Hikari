@@ -18,15 +18,14 @@ package com.ghostchu.quickshop.api.shop.service;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.annotations.Nullable;
-
 /**
- * ShopActionResult
+ * ShopUpdateOptions
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public record ShopActionResult<T>(T value,
-                                  boolean success,
-                                  @Nullable ShopActionFailureReason failureReason) {
+public record ShopUpdateOptions(boolean checkPermissions,
+                                boolean updateDisplay,
+                                boolean updateSign,
+                                boolean updateDB) {
 }

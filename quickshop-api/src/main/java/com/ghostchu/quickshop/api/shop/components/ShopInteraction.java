@@ -18,7 +18,9 @@ package com.ghostchu.quickshop.api.shop.components;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * ShopInteraction
@@ -37,6 +39,11 @@ public interface ShopInteraction<T, U> {
   void onClick(@NotNull final T player);
 
   U preview();
+
+  /**
+   * @return The chest this shop is based on.
+   */
+  @Nullable InventoryWrapper getInventory();
 
   /**
    * Opens a preview for the specified player. This is typically used to display

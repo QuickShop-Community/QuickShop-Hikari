@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.shop.components;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopDatabaseEvent;
+import com.ghostchu.quickshop.api.event.management.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.management.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
@@ -28,6 +29,7 @@ import com.ghostchu.quickshop.api.shop.components.ShopLifecycle;
 import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import lombok.EqualsAndHashCode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,6 +37,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -49,7 +53,9 @@ import static com.ghostchu.quickshop.util.Util.waitForFuture;
  */
 public class SimpleShopLifecycle implements ShopLifecycle {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  @EqualsAndHashCode.Exclude
+  protected final QuickShop plugin;
+  protected final ModernShop<?, ?, Player, InventoryPreview> shop;
 
   protected YamlConfiguration extra;
 
@@ -58,7 +64,7 @@ public class SimpleShopLifecycle implements ShopLifecycle {
 
   protected boolean dirty = false;
   @EqualsAndHashCode.Exclude
-  private boolean updating = false;
+  protected boolean updating = false;
   protected boolean isLoaded = false;
 
   //updating objects
@@ -67,6 +73,7 @@ public class SimpleShopLifecycle implements ShopLifecycle {
 
   public SimpleShopLifecycle(final ModernShop<?, ?, Player, InventoryPreview> shop) {
     this.shop = shop;
+    this.plugin = QuickShop.getInstance();
   }
 
   /**
@@ -201,10 +208,44 @@ public class SimpleShopLifecycle implements ShopLifecycle {
   @Override
   public void handleLoading() {
 
+    Util.ensureThread(false);
+    if(this.isLoaded) {
+      Log.debug("Dupe load request, canceled.");
+      return;
+    }
+    try(final PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
+      if(this.shop.interaction().getInventory() == null) {
+
+        plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
+        if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
+          plugin.logger().warn("Deleting corrupt shop...");
+          Util.regionThread(this.shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(this.shop));
+        } else {
+
+          plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
+          plugin.getShopManager().unloadShop(this.shop);
+        }
+        return;
+      }
+    }
+    if(Util.fireCancellableEvent(new ShopLoadEvent(this.shop))) {
+      return;
+    }
+    this.isLoaded = true;
+
+    try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
+      checkDisplay();
+    }
+    if(plugin.getConfig().getBoolean("shop.update-sign-on-load", false)) {
+
+      Log.debug("Scheduled sign update for shop " + this + " because updateShopSignOnLoad has been enabled.");
+      plugin.getSignUpdateWatcher().scheduleSignUpdate(this.shop);
+    }
   }
 
   @Override
   public void handleUnloading(final boolean dontTouchWorld) {
+
     Util.ensureThread(false);
     if(!this.isLoaded) {
       Log.debug("Dupe unload request, canceled.");
@@ -217,7 +258,7 @@ public class SimpleShopLifecycle implements ShopLifecycle {
       this.shop.item().getDisplayItem().remove(dontTouchWorld);
     }
     this.isLoaded = false;
-    QuickShop.getInstance().getShopManager().getLoadedShops().remove(this);
+    QuickShop.getInstance().getShopManager().getLoadedShops().remove(this.shop);
     new ShopUnloadEvent(Phase.POST, this.shop).callEvent();
   }
 

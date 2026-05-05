@@ -20,11 +20,14 @@ package com.ghostchu.quickshop.api.shop.components;
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.display.DisplayItem;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -105,4 +108,15 @@ public interface ShopItem {
    * @return a Component representing the customized item name
    */
   Component customItemName();
+
+  /**
+   * Computes and returns the differences between the current shop item and another specified shop item.
+   * The differences are identified and represented as a set of {@code ShopChangeType} enumerations.
+   *
+   * @param compare The shop item to compare against. The provided {@code ShopItem} may be null.
+   *                If null, this method will evaluate differences assuming the absence of a comparison item.
+   * @return An {@code EnumSet} of {@code ShopChangeType} representing the differences between
+   *         the two shop items. Returns an empty set if there are no differences.
+   */
+  EnumSet<ShopChangeType> diff(final @Nullable ShopItem compare);
 }

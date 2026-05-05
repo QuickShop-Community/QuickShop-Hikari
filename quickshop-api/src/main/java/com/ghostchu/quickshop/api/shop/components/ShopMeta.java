@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.UUID;
 
 /**
@@ -208,4 +210,15 @@ public interface ShopMeta {
    * Sets the benefit in this shop
    */
   void setShopBenefit(@NotNull BenefitProvider benefit);
+
+  /**
+   * Compares the current {@code ShopMeta} instance with another {@code ShopMeta} instance
+   * and determines the set of differences between them.
+   *
+   * @param compare the {@code ShopMeta} instance to compare with the current instance.
+   *                If null, no comparison is performed, and an empty set is returned.
+   * @return an {@code EnumSet} of {@code ShopChangeType} representing the detected differences
+   *         between the two {@code ShopMeta} instances. The set is empty if there are no differences.
+   */
+  EnumSet<ShopChangeType> diff(final @Nullable ShopMeta compare);
 }
