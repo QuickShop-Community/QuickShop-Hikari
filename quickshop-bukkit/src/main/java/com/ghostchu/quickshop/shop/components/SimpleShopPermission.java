@@ -23,9 +23,11 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -35,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -255,5 +258,15 @@ public class SimpleShopPermission implements ShopPermission {
 
     //TODO: Determine how to mark as dirty. Maybe through shop service?
     //setDirty();
+  }
+
+  @Override
+  public EnumSet<ShopChangeType> diff(final @Nullable ShopPermission compare) {
+
+    final EnumSet<ShopChangeType> changes = EnumSet.noneOf(ShopChangeType.class);
+
+    //TODO: check maps for equality
+
+    return changes;
   }
 }

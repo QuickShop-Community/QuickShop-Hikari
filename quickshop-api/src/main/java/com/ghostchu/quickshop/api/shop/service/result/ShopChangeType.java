@@ -27,11 +27,16 @@ package com.ghostchu.quickshop.api.shop.service.result;
 public enum ShopChangeType {
 
   ITEM,
+  DISPLAY_TOGGLE,
+  AMOUNT,
   OWNER,
-  PRICE,
-  PERMISSION,
-  MODE,
-  STATE,
   NAME,
-  AMOUNT, STOCK
+  ADMIN_STATUS,
+  TYPE,
+  STATE,
+  TAX_ACCOUNT,
+  BENEFITS,
+  PRICE,
+  CURRENCY,
+  PERMISSION,
 }

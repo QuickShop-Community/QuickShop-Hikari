@@ -25,6 +25,7 @@ package com.ghostchu.quickshop.api.shop.service;
  * @since 6.3.0.0
  */
 public record ShopUpdateOptions(boolean checkPermissions,
+                                boolean performEconomyActions,
                                 boolean updateDisplay,
                                 boolean updateSign,
                                 boolean updateDB) {

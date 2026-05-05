@@ -30,7 +30,9 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.components.ShopMeta;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.InventoryPreview;
@@ -42,6 +44,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.Objects;
 
 /**
@@ -455,5 +458,43 @@ public class SimpleShopMeta implements ShopMeta {
 
     //TODO: Determine how to mark as dirty. Maybe through shop service?
     //setDirty();
+  }
+
+  @Override
+  public EnumSet<ShopChangeType> diff(final @Nullable ShopMeta compare) {
+
+    final EnumSet<ShopChangeType> changes = EnumSet.noneOf(ShopChangeType.class);
+
+    if(compare == null || this.owner.getUniqueId() != compare.getOwner().getUniqueId()) {
+      changes.add(ShopChangeType.OWNER);
+    }
+
+    if(compare == null && this.shopName != null
+       || compare != null && this.shopName == null && compare.getShopName() != null
+       || compare != null && this.shopName != null && !this.shopName.equals(compare.getShopName())) {
+      changes.add(ShopChangeType.NAME);
+    }
+
+    if(compare == null || this.unlimited != compare.isUnlimited()) {
+      changes.add(ShopChangeType.ADMIN_STATUS);
+    }
+
+    if(compare == null || !Objects.equals(this.shopType.identifier(), compare.shopType().identifier())) {
+      changes.add(ShopChangeType.TYPE);
+    }
+
+    if(compare == null || !Objects.equals(this.shopState.identifier(), compare.shopState().identifier())) {
+      changes.add(ShopChangeType.STATE);
+    }
+
+    if(compare == null || compare.getTaxAccount() == null && this.taxAccount != null
+       || compare.getTaxAccount() != null && !Objects.equals(this.taxAccount.getUniqueId(), compare.getTaxAccount().getUniqueId())) {
+      changes.add(ShopChangeType.TAX_ACCOUNT);
+    }
+
+    if(compare == null || !compare.getShopBenefit().serialize().equals(this.benefit.serialize())) {
+      changes.add(ShopChangeType.BENEFITS);
+    }
+    return changes;
   }
 }

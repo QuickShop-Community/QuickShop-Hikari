@@ -25,4 +25,10 @@ package com.ghostchu.quickshop.api.shop.service;
  * @since 6.3.0.0
  */
 public enum ShopActionFailureReason {
+
+  SHOP_NOT_FOUND,
+  SHOP_ALREADY_EXISTS,
+  NO_PERMISSIONS,
+  ECONOMY_ACTION_FAILED,
+  UNKNOWN
 }

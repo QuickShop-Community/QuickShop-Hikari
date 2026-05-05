@@ -21,7 +21,9 @@ package com.ghostchu.quickshop.shop.components;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.shop.InventoryPreview;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.Objects;
 
 import static java.math.BigDecimal.ZERO;
 
@@ -228,5 +232,20 @@ public class SimpleShopPrice implements ShopPrice<Double> {
 
     final BigDecimal total = unitPrice.multiply(BigDecimal.valueOf(itemAmount));
     return balance.compareTo(total) >= 0;
+  }
+
+  @Override
+  public EnumSet<ShopChangeType> diff(final @Nullable ShopPrice<?> compare) {
+
+    final EnumSet<ShopChangeType> changes = EnumSet.noneOf(ShopChangeType.class);
+
+    if(compare == null || !Objects.equals(this.currency, compare.getCurrency())) {
+      changes.add(ShopChangeType.CURRENCY);
+    }
+
+    if(compare == null || compare.price() instanceof Double && this.price != (Double)compare.price()) {
+      changes.add(ShopChangeType.PRICE);
+    }
+    return changes;
   }
 }

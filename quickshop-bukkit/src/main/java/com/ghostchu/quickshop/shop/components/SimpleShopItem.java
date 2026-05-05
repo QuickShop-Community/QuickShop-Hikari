@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.display.DisplayItem;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.Util;
@@ -36,6 +37,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
 
 /**
  * SimpleShopDisplay
@@ -224,5 +227,25 @@ public class SimpleShopItem implements ShopItem {
   public Component customItemName() {
 
     return Util.getItemStackName(getItem());
+  }
+
+  @Override
+  public EnumSet<ShopChangeType> diff(final @Nullable ShopItem compare) {
+
+    final EnumSet<ShopChangeType> changes = EnumSet.noneOf(ShopChangeType.class);
+
+    if(compare == null || this.disableDisplay != compare.isDisableDisplay()) {
+      changes.add(ShopChangeType.DISPLAY_TOGGLE);
+    }
+
+    if(compare == null || !this.item.equals(compare.getItem())) {
+      changes.add(ShopChangeType.ITEM);
+    }
+
+    if(compare == null || this.getShopStackingAmount() != compare.getShopStackingAmount()) {
+      changes.add(ShopChangeType.AMOUNT);
+    }
+
+    return changes;
   }
 }
