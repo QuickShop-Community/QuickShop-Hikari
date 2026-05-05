@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import com.ghostchu.quickshop.api.shop.trading.TradeResult;
+import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import com.ghostchu.quickshop.shop.InventoryPreview;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -91,6 +92,7 @@ public class SimpleShopTrading implements ShopTrading {
    * @param amount         The amount to buy
    *
    * @throws Exception Possible exception thrown if anything wrong.
+   * @deprecated Use the {@link TradeService} instead.
    */
   @Override
   public TradeResult buy(@NotNull final QUser buyer, @NotNull final InventoryWrapper buyerInventory,
@@ -109,6 +111,7 @@ public class SimpleShopTrading implements ShopTrading {
    * @param amount          The amount to sell
    *
    * @throws Exception Possible exception thrown if anything wrong.
+   * @deprecated Use the {@link TradeService} instead.
    */
   @Override
   public TradeResult sell(@NotNull final QUser seller, @NotNull final InventoryWrapper sellerInventory,

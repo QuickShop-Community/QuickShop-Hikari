@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.api.shop.components;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.trading.TradeResult;
+import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
+@Deprecated(forRemoval = true, since = "6.3.0.0")
 public interface ShopTrading {
 
   /**
@@ -68,7 +70,9 @@ public interface ShopTrading {
    * @param amount         The amount to buy
    *
    * @throws Exception Possible exception thrown if anything wrong.
+   * @deprecated Use the {@link TradeService} instead.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   TradeResult buy(@NotNull QUser buyer, @NotNull InventoryWrapper buyerInventory,
                   @NotNull Location loc2Drop, int amount);
 
@@ -82,7 +86,9 @@ public interface ShopTrading {
    * @param amount          The amount to sell
    *
    * @throws Exception Possible exception thrown if anything wrong.
+   * @deprecated Use the {@link TradeService} instead.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   TradeResult sell(@NotNull QUser seller, @NotNull InventoryWrapper sellerInventory,
                    @NotNull Location loc2Drop, int amount);
 }
