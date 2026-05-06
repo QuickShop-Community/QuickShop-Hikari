@@ -153,7 +153,7 @@ public interface ShopPermission {
    */
   default ShopPermission withChanges(Consumer<ShopPermissionBuilder> changes) {
 
-    final ShopPermissionBuilder builder = asBuilder();
+    final ShopPermissionBuilder builder = builder();
     changes.accept(builder);
     return builder.build();
   }
@@ -163,5 +163,5 @@ public interface ShopPermission {
    *
    * @return a {@link ShopPermissionBuilder} to configure and construct a new {@link ShopPermission}.
    */
-  ShopPermissionBuilder asBuilder();
+  ShopPermissionBuilder builder();
 }

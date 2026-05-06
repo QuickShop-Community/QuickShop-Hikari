@@ -269,7 +269,7 @@ public interface ShopMeta {
    */
   default ShopMeta withChanges(Consumer<ShopMetaBuilder> changes) {
 
-    final ShopMetaBuilder builder = asBuilder();
+    final ShopMetaBuilder builder = builder();
     changes.accept(builder);
     return builder.build();
   }
@@ -279,5 +279,5 @@ public interface ShopMeta {
    *
    * @return a {@link ShopMetaBuilder} to configure and construct a new {@link ShopMeta}.
    */
-  ShopMetaBuilder asBuilder();
+  ShopMetaBuilder builder();
 }

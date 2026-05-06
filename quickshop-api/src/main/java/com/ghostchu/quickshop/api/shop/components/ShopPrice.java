@@ -163,7 +163,7 @@ public interface ShopPrice<T> {
    */
   default ShopPrice<T> withChanges(Consumer<ShopPriceBuilder<T>> changes) {
 
-    final ShopPriceBuilder<T> builder = asBuilder();
+    final ShopPriceBuilder<T> builder = builder();
     changes.accept(builder);
     return builder.build();
   }
@@ -173,5 +173,5 @@ public interface ShopPrice<T> {
    *
    * @return a {@link ShopPriceBuilder} to configure and construct a new {@link ShopPrice}.
    */
-  ShopPriceBuilder<T> asBuilder();
+  ShopPriceBuilder<T> builder();
 }

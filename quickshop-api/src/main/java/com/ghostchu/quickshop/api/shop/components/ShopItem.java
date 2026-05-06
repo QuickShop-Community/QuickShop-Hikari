@@ -143,7 +143,7 @@ public interface ShopItem {
    */
   default ShopItem withChanges(Consumer<ShopItemBuilder> changes) {
 
-    final ShopItemBuilder builder = asBuilder();
+    final ShopItemBuilder builder = builder();
     changes.accept(builder);
     return builder.build();
   }
@@ -153,5 +153,5 @@ public interface ShopItem {
    *
    * @return a {@link ShopItemBuilder} to configure and construct a new {@link ShopItem}.
    */
-  ShopItemBuilder asBuilder();
+  ShopItemBuilder builder();
 }
