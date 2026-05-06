@@ -65,4 +65,11 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
 
   //This may need to be moved to the manager not entirely sold on it being in the shop object.
   ShopWorldAdapter worldAdapter();
+
+  class Builder<T, S, U, V> {
+
+    public ModernShop<T, S, U, V> build() {
+        return null;
+    }
+  }
 }

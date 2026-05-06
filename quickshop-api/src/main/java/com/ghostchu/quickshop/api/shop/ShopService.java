@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.ShopBuilderFactory;
 import com.ghostchu.quickshop.api.shop.service.ShopActionResult;
 import com.ghostchu.quickshop.api.shop.service.request.ShopCreateRequest;
 import com.ghostchu.quickshop.api.shop.service.request.ShopDeleteRequest;
@@ -35,6 +36,14 @@ import org.jetbrains.annotations.NotNull;
  * @since 6.3.0.0
  */
 public interface ShopService {
+
+  /**
+   * Retrieves the ShopBuilderFactory instance associated with the ShopService implementation.
+   *
+   * @return ShopBuilderFactory instance responsible for providing builder objects for shop-related components,
+   *         such as ShopItemBuilder, ShopMetaBuilder, ShopPermissionBuilder, and ShopPriceBuilder.
+   */
+  ShopBuilderFactory shopBuilderFactory();
 
   /**
    * Creates a new shop based on the provided creation request.

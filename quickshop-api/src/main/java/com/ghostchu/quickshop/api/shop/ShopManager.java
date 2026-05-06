@@ -50,6 +50,14 @@ public interface ShopManager {
   TaxManager taxManager();
 
   /**
+   * Provides an instance of {@link ShopService}.
+   *
+   * @return a non-null instance of ShopService
+   */
+  @NotNull
+  ShopService shopService();
+
+  /**
    * Retrieves the TradeService associated with the EconomyManager.
    *
    * @return A non-null instance of TradeService, which provides functionality for executing
