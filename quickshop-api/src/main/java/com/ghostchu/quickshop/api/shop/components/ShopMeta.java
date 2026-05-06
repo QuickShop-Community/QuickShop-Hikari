@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * ShopIdentity
@@ -251,6 +252,27 @@ public interface ShopMeta {
    *         between the two {@code ShopMeta} instances. The set is empty if there are no differences.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopMeta compare);
+
+
+  /**
+   * Creates a modified instance of {@code ShopMeta} based on the provided changes.
+   * The method allows customization of the current {@code ShopMeta} object using a
+   * {@code Consumer} that operates on a {@code ShopMetaBuilder}.
+   *
+   * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
+   * you'll need to utilize the {@link ShopService} to do that.</strong>
+   *
+   * @param changes a {@code Consumer} of {@code ShopMetaBuilder} used to apply modifications
+   *                to the current {@code ShopMeta} instance.
+   * @return a new {@code ShopMeta} instance reflecting the changes applied through the
+   *         {@code ShopMetaBuilder}.
+   */
+  default ShopMeta withChanges(Consumer<ShopMetaBuilder> changes) {
+
+    final ShopMetaBuilder builder = asBuilder();
+    changes.accept(builder);
+    return builder.build();
+  }
 
   /**
    * Creates and returns a {@link ShopMetaBuilder} instance to customize and build a {@link ShopMeta}.

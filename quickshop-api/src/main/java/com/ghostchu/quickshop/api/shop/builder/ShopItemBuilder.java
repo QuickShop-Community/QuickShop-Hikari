@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.api.shop.builder;
 
 
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * ShopItemBuilder
@@ -29,5 +30,41 @@ import com.ghostchu.quickshop.api.shop.components.ShopItem;
  */
 public interface ShopItemBuilder {
 
+  /**
+   * Retrieves the {@code ItemStack} associated with the shop item being built.
+   *
+   * @return the {@code ItemStack} instance representing the item configuration for the shop.
+   */
+  ItemStack item();
+
+  /**
+   * Sets the item to be associated with the shop.
+   *
+   * @param item the {@code ItemStack} representing the item to set; must not be null
+   * @return the current {@code ShopItemBuilder} instance for method chaining
+   */
+  ShopItemBuilder item(ItemStack item);
+
+  /**
+   * Checks whether the display of the shop item is disabled.
+   *
+   * @return true if the display is disabled, false otherwise.
+   */
+  boolean isDisableDisplay();
+
+  /**
+   * Sets whether the display of the shop item should be disabled.
+   *
+   * @param disabled a boolean value indicating whether to disable the display;
+   *                 {@code true} to disable the display, {@code false} to enable it
+   * @return the current {@code ShopItemBuilder} instance for method chaining
+   */
+  ShopItemBuilder disableDisplay(boolean disabled);
+
+  /**
+   * Constructs and returns a new {@link ShopItem} instance based on the current builder configuration.
+   *
+   * @return a new {@link ShopItem} instance.
+   */
   ShopItem build();
 }

@@ -32,6 +32,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * ShopPermission
@@ -140,6 +141,22 @@ public interface ShopPermission {
    *         the two shop permissions. Returns an empty set if there are no differences.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopPermission compare);
+
+  /**
+   * Creates a modified {@link ShopPermission} based on the changes applied to the {@link ShopPermissionBuilder}.
+   *
+   * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
+   * you'll need to utilize the {@link ShopService} to do that.</strong>
+   *
+   * @param changes a {@link Consumer} that applies modifications to the {@link ShopPermissionBuilder}.
+   * @return a new {@link ShopPermission} instance with the applied changes.
+   */
+  default ShopPermission withChanges(Consumer<ShopPermissionBuilder> changes) {
+
+    final ShopPermissionBuilder builder = asBuilder();
+    changes.accept(builder);
+    return builder.build();
+  }
 
   /**
    * Creates and returns a {@link ShopPermissionBuilder} instance to customize and build a {@link ShopPermission}.

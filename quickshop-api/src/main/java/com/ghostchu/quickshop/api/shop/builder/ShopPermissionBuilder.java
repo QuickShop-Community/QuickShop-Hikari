@@ -20,6 +20,10 @@ package com.ghostchu.quickshop.api.shop.builder;
 
 
 import com.ghostchu.quickshop.api.shop.components.ShopPermission;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * ShopPermissionBuilder
@@ -29,5 +33,32 @@ import com.ghostchu.quickshop.api.shop.components.ShopPermission;
  */
 public interface ShopPermissionBuilder {
 
+  /**
+   * Retrieves a map of permissions associated with a shop.
+   * The map uses {@code UUID} as the key to uniquely identify the entity or user,
+   * and {@code String} as the value to represent the associated permission level or configuration.
+   *
+   * @return a non-null map where keys are {@code UUID} values representing unique identifiers,
+   *         and values are {@code String} values representing associated permissions.
+   */
+  @NotNull
+  Map<UUID, String> permissions();
+
+  /**
+   * Sets the permissions for the shop being built.
+   *
+   * @param permissions a map where each key is a {@code UUID} representing a unique identifier,
+   *                    and each value is a {@code String} representing the associated permission;
+   *                    must not be null
+   * @return the current {@code ShopPermissionBuilder} instance for method chaining
+   */
+  ShopPermissionBuilder permissions(@NotNull Map<UUID, String> permissions);
+
+  /**
+   * Builds and returns a new {@link ShopPermission} instance based on the current configuration
+   * provided to the {@link ShopPermissionBuilder}.
+   *
+   * @return a {@link ShopPermission} instance representing the configured shop permissions.
+   */
   ShopPermission build();
 }

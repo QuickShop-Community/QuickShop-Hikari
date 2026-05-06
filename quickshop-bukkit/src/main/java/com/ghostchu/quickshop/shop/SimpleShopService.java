@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -32,6 +33,8 @@ import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.service.result.ShopCreateResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopDeleteResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopUpdateResult;
+import com.ghostchu.quickshop.shop.components.SimpleShopItem;
+import com.ghostchu.quickshop.shop.components.SimpleShopPrice;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -39,6 +42,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,11 +61,11 @@ import java.util.UUID;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class SimpleShopService implements ShopService {
+public class SimpleShopService implements ShopService<ModernContainerShop> {
 
 
-  protected final Map<String, Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>>> shops = Maps.newConcurrentMap();
-  protected final Set<ModernShop<?, ?, ?, ?>> loadedShops = Sets.newConcurrentHashSet();
+  protected final Map<String, Map<ShopChunk, Map<Location, ModernContainerShop>>> shops = Maps.newConcurrentMap();
+  protected final Set<ModernContainerShop> loadedShops = Sets.newConcurrentHashSet();
 
   /**
    * Retrieves the ShopBuilderFactory instance associated with the ShopService implementation.
@@ -105,7 +109,7 @@ public class SimpleShopService implements ShopService {
   public @NotNull ShopActionResult<ShopUpdateResult> updateShop(final @NotNull ShopUpdateRequest request) {
 
     //TODO: shopManager.findShop(request.shop().meta().shopId())
-    final ModernShop<?, ?, ?, ?> originalShop = null;
+    final ModernContainerShop originalShop = null;
 
     final EnumSet<ShopChangeType> changes = EnumSet.noneOf(ShopChangeType.class);
     changes.addAll(request.shop().item().diff((originalShop == null)? null : originalShop.item()));
@@ -154,13 +158,13 @@ public class SimpleShopService implements ShopService {
    *         wrapped in an unmodifiable list.
    */
   @Override
-  public @NotNull List<ModernShop<?, ?, ?, ?>> getAllShops() {
+  public @NotNull List<ModernContainerShop> getAllShops() {
 
     try(final PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
-      final List<ModernShop<?, ?, ?, ?>> shopsCollected = new ArrayList<>();
+      final List<ModernContainerShop> shopsCollected = new ArrayList<>();
 
-      for(final Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>> shopMapData : getShops().values()) {
-        for(final Map<Location, ModernShop<?, ?, ?, ?>> shopData : shopMapData.values()) {
+      for(final Map<ShopChunk, Map<Location, ModernContainerShop>> shopMapData : getShops().values()) {
+        for(final Map<Location, ModernContainerShop> shopData : shopMapData.values()) {
 
           shopsCollected.addAll(shopData.values());
         }
@@ -175,7 +179,7 @@ public class SimpleShopService implements ShopService {
    * @return a non-null unmodifiable set containing the loaded shops.
    */
   @Override
-  public @NotNull Set<ModernShop<?, ?, ?, ?>> getLoadedShops() {
+  public @NotNull Set<ModernContainerShop> getLoadedShops() {
 
     return Collections.unmodifiableSet(this.loadedShops);
   }
@@ -187,10 +191,10 @@ public class SimpleShopService implements ShopService {
    * @return a list of shops owned by the specified user, never null
    */
   @Override
-  public @NotNull List<ModernShop<?, ?, ?, ?>> getAllShops(@NotNull final QUser user) {
+  public @NotNull List<ModernContainerShop> getAllShops(@NotNull final QUser user) {
 
-    final List<ModernShop<?, ?, ?, ?>> playerShops = new ArrayList<>(10);
-    for(final ModernShop<?, ?, ?, ?> shop : getAllShops()) {
+    final List<ModernContainerShop> playerShops = new ArrayList<>(10);
+    for(final ModernContainerShop shop : getAllShops()) {
       if(shop.meta().getOwner().equals(user)) {
         playerShops.add(shop);
       }
@@ -204,10 +208,10 @@ public class SimpleShopService implements ShopService {
    * @return a list of ModernShop objects owned by the specified player. Never null but may be empty if no shops are found.
    */
   @Override
-  public @NotNull List<ModernShop<?, ?, ?, ?>> getAllShops(@NotNull final UUID playerUUID) {
+  public @NotNull List<ModernContainerShop> getAllShops(@NotNull final UUID playerUUID) {
 
-    final List<ModernShop<?, ?, ?, ?>> playerShops = new ArrayList<>(10);
-    for(final ModernShop<?, ?, ?, ?> shop : getAllShops()) {
+    final List<ModernContainerShop> playerShops = new ArrayList<>(10);
+    for(final ModernContainerShop shop : getAllShops()) {
       final UUID shopUuid = shop.meta().getOwner().getUniqueIdIfRealPlayer().orElse(null);
       if(playerUUID.equals(shopUuid)) {
 
@@ -223,9 +227,9 @@ public class SimpleShopService implements ShopService {
    * @return The shop object
    */
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShop(final long shopId) {
+  public @Nullable ModernContainerShop getShop(final long shopId) {
 
-    for(final ModernShop<?, ?, ?, ?> shop : getAllShops()) {
+    for(final ModernContainerShop shop : getAllShops()) {
       if(shop.meta().getShopId() == shopId) {
         return shop;
       }
@@ -241,7 +245,7 @@ public class SimpleShopService implements ShopService {
    * @return The shop at that location
    */
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShop(@NotNull final Location loc) {
+  public @Nullable ModernContainerShop getShop(@NotNull final Location loc) {
 
     return null;
   }
@@ -255,7 +259,7 @@ public class SimpleShopService implements ShopService {
    * @return The shop at that location but via cache
    */
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShopViaCache(@NotNull final Location loc) {
+  public @Nullable ModernContainerShop getShopViaCache(@NotNull final Location loc) {
 
     return null;
   }
@@ -269,19 +273,19 @@ public class SimpleShopService implements ShopService {
    * @return The shop at that location
    */
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShop(@NotNull final Location loc, final boolean skipShopableChecking) {
+  public @Nullable ModernContainerShop getShop(@NotNull final Location loc, final boolean skipShopableChecking) {
 
     return null;
   }
 
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShopFromRuntimeRandomUniqueId(@NotNull final UUID runtimeRandomUniqueId) {
+  public @Nullable ModernContainerShop getShopFromRuntimeRandomUniqueId(@NotNull final UUID runtimeRandomUniqueId) {
 
     return null;
   }
 
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShopFromRuntimeRandomUniqueId(@NotNull final UUID runtimeRandomUniqueId, final boolean includeInvalid) {
+  public @Nullable ModernContainerShop getShopFromRuntimeRandomUniqueId(@NotNull final UUID runtimeRandomUniqueId, final boolean includeInvalid) {
 
     return null;
   }
@@ -294,7 +298,7 @@ public class SimpleShopService implements ShopService {
    * @return The shop at that location
    */
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShopIncludeAttached(@Nullable final Location loc) {
+  public @Nullable ModernContainerShop getShopIncludeAttached(@Nullable final Location loc) {
 
     return null;
   }
@@ -308,7 +312,7 @@ public class SimpleShopService implements ShopService {
    * @return The shop at that location but via cache
    */
   @Override
-  public @Nullable ModernShop<?, ?, ?, ?> getShopIncludeAttachedViaCache(@Nullable final Location loc) {
+  public @Nullable ModernContainerShop getShopIncludeAttachedViaCache(@Nullable final Location loc) {
 
     return null;
   }
@@ -320,7 +324,7 @@ public class SimpleShopService implements ShopService {
    * @return a new shop iterator object.
    */
   @Override
-  public @NotNull Iterator<ModernShop<?, ?, ?, ?>> getShopIterator() {
+  public @NotNull Iterator<ModernContainerShop> getShopIterator() {
 
     return null;
   }
@@ -331,7 +335,7 @@ public class SimpleShopService implements ShopService {
    * @return a map of World - Chunk - Shop
    */
   @Override
-  public @NotNull Map<String, Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>>> getShops() {
+  public @NotNull Map<String, Map<ShopChunk, Map<Location, ModernContainerShop>>> getShops() {
 
     return Map.of();
   }
@@ -344,7 +348,7 @@ public class SimpleShopService implements ShopService {
    * @return Shops
    */
   @Override
-  public @NotNull Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull final Chunk c) {
+  public @NotNull Map<Location, ModernContainerShop> getShops(@NotNull final Chunk c) {
 
     return Map.of();
   }
@@ -359,7 +363,7 @@ public class SimpleShopService implements ShopService {
    * @return The shop at the world and specific chunk.
    */
   @Override
-  public @NotNull Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
+  public @NotNull Map<Location, ModernContainerShop> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
 
     return Map.of();
   }
@@ -372,7 +376,7 @@ public class SimpleShopService implements ShopService {
    * @return The shop at the world and specific chunk.
    */
   @Override
-  public @NotNull Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull final ShopChunk shopChunk) {
+  public @NotNull Map<Location, ModernContainerShop> getShops(@NotNull final ShopChunk shopChunk) {
 
     return Map.of();
   }
@@ -385,7 +389,7 @@ public class SimpleShopService implements ShopService {
    * @return a map of Chunk - Shop
    */
   @Override
-  public @NotNull Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>> getShops(@NotNull final String world) {
+  public @NotNull Map<ShopChunk, Map<Location, ModernContainerShop>> getShops(@NotNull final String world) {
 
     return Map.of();
   }
@@ -398,7 +402,7 @@ public class SimpleShopService implements ShopService {
    * @return The list have this world all shops
    */
   @Override
-  public @NotNull List<ModernShop<?, ?, ?, ?>> getShopsInWorld(@NotNull final World world) {
+  public @NotNull List<ModernContainerShop> getShopsInWorld(@NotNull final World world) {
 
     return List.of();
   }
@@ -411,7 +415,7 @@ public class SimpleShopService implements ShopService {
    * @return The list have this world all shops
    */
   @Override
-  public @NotNull List<ModernShop<?, ?, ?, ?>> getShopsInWorld(@NotNull final String worldName) {
+  public @NotNull List<ModernContainerShop> getShopsInWorld(@NotNull final String worldName) {
 
     return List.of();
   }

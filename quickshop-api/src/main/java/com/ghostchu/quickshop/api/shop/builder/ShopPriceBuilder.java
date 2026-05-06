@@ -20,6 +20,8 @@ package com.ghostchu.quickshop.api.shop.builder;
 
 
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * ShopPriceBuilder
@@ -29,5 +31,43 @@ import com.ghostchu.quickshop.api.shop.components.ShopPrice;
  */
 public interface ShopPriceBuilder<T> {
 
+  /**
+   * Retrieves the price configuration associated with the shop being built.
+   *
+   * @return the price configuration of type {@code T}.
+   */
+  T price();
+
+  /**
+   * Assigns a price to the shop being built.
+   *
+   * @param price the price to assign to the shop; must not be null
+   * @return the current {@code ShopPriceBuilder} instance for method chaining
+   */
+  ShopPriceBuilder<T> price(@NotNull final T price);
+
+  /**
+   * Retrieves the currency identifier associated with the shop price being built.
+   * The currency identifier represents the type of currency, such as USD, EUR, etc.
+   *
+   * @return the currency identifier as a String, or {@code null} if no specific currency is set.
+   */
+  @Nullable
+  String currency();
+
+  /**
+   * Sets the currency for the shop price being built.
+   *
+   * @param currency the currency identifier to assign to the shop price;
+   *                 can be null to indicate no specific currency is set.
+   * @return the current {@code ShopPriceBuilder} instance for method chaining.
+   */
+  ShopPriceBuilder<T> currency(@Nullable final String currency);
+
+  /**
+   * Builds and returns a new instance of {@link ShopPrice} based on the current configurations of the builder.
+   *
+   * @return a {@link ShopPrice} instance containing the configured price and currency.
+   */
   ShopPrice<T> build();
 }

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.function.Consumer;
 
 /**
  * ShopPrice
@@ -148,6 +149,24 @@ public interface ShopPrice<T> {
    *         current shop and the provided shop. Returns an empty set if no differences are found.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopPrice<?> compare);
+
+  /**
+   * Applies changes to the current {@code ShopPrice} instance using a {@link Consumer} to modify a {@link ShopPriceBuilder}.
+   * The provided changes are applied to a builder, and a new {@code ShopPrice} instance is returned based on the updated builder.
+   *
+   * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
+   * you'll need to utilize the {@link ShopService} to do that.</strong>
+   *
+   * @param changes a {@link Consumer} that accepts a {@link ShopPriceBuilder} to define modifications to the shop's properties;
+   *                must not be null
+   * @return a new {@code ShopPrice} instance reflecting the applied changes from the builder
+   */
+  default ShopPrice<T> withChanges(Consumer<ShopPriceBuilder<T>> changes) {
+
+    final ShopPriceBuilder<T> builder = asBuilder();
+    changes.accept(builder);
+    return builder.build();
+  }
 
   /**
    * Creates and returns a {@link ShopPriceBuilder} instance to customize and build a {@link ShopPrice}.

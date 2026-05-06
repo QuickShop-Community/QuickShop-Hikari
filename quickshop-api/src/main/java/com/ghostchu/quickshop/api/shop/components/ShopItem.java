@@ -19,7 +19,9 @@ package com.ghostchu.quickshop.api.shop.components;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopService;
+import com.ghostchu.quickshop.api.shop.builder.ShopBuilder;
 import com.ghostchu.quickshop.api.shop.builder.ShopItemBuilder;
 import com.ghostchu.quickshop.api.shop.display.DisplayItem;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
@@ -31,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * ShopDisplay
@@ -127,6 +130,23 @@ public interface ShopItem {
    *         the two shop items. Returns an empty set if there are no differences.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopItem compare);
+
+  /**
+   * Creates a new {@code ShopItem} by applying changes defined in the provided consumer
+   * to a {@code ShopItemBuilder} created from the current state of this item.
+   *
+   * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
+   * you'll need to utilize the {@link ShopService} to do that.</strong>
+   *
+   * @param changes a consumer that takes a {@code ShopItemBuilder} and applies modifications to it
+   * @return a new {@code ShopItem} instance with the applied changes
+   */
+  default ShopItem withChanges(Consumer<ShopItemBuilder> changes) {
+
+    final ShopItemBuilder builder = asBuilder();
+    changes.accept(builder);
+    return builder.build();
+  }
 
   /**
    * Creates and returns a {@link ShopItemBuilder} instance to customize and build a {@link ShopItem}.

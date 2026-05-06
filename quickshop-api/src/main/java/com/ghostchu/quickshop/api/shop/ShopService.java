@@ -23,9 +23,9 @@ import com.ghostchu.quickshop.api.shop.service.ShopActionResult;
 import com.ghostchu.quickshop.api.shop.service.request.ShopCreateRequest;
 import com.ghostchu.quickshop.api.shop.service.request.ShopDeleteRequest;
 import com.ghostchu.quickshop.api.shop.service.request.ShopUpdateRequest;
-import com.ghostchu.quickshop.api.shop.service.result.ShopUpdateResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopCreateResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopDeleteResult;
+import com.ghostchu.quickshop.api.shop.service.result.ShopUpdateResult;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,11 +41,11 @@ import java.util.UUID;
 /**
  * ShopService
  *
- * T = Player object
+ * T = Shop object
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public interface ShopService {
+public interface ShopService<T extends ModernShop<?, ?, ?, ?>> {
 
   /**
    * Retrieves the ShopBuilderFactory instance associated with the ShopService implementation.
@@ -102,7 +102,7 @@ public interface ShopService {
    * @return All shop in the database
    */
   @NotNull
-  List<ModernShop<?, ?, ?, ?>> getAllShops();
+  List<T> getAllShops();
 
   /**
    * Get all loaded shops.
@@ -110,7 +110,7 @@ public interface ShopService {
    * @return All loaded shops.
    */
   @NotNull
-  Set<ModernShop<?, ?, ?, ?>> getLoadedShops();
+  Set<T> getLoadedShops();
 
   /**
    * Get a players all shops.
@@ -122,7 +122,7 @@ public interface ShopService {
    * @return The list have this player's all shops.
    */
   @NotNull
-  List<ModernShop<?, ?, ?, ?>> getAllShops(@NotNull QUser playerUUID);
+  List<T> getAllShops(@NotNull QUser playerUUID);
 
   /**
    * Get a players all shops.
@@ -134,7 +134,7 @@ public interface ShopService {
    * @return The list have this player's all shops.
    */
   @NotNull
-  List<ModernShop<?, ?, ?, ?>> getAllShops(@NotNull UUID playerUUID);
+  List<T> getAllShops(@NotNull UUID playerUUID);
 
   /**
    * Gets a shop by shop Id
@@ -142,7 +142,7 @@ public interface ShopService {
    * @return The shop object
    */
   @Nullable
-  ModernShop<?, ?, ?, ?> getShop(long shopId);
+  T getShop(long shopId);
 
   /**
    * Gets a shop in a specific location ATTENTION: This not include attached shops (double-chest)
@@ -152,7 +152,7 @@ public interface ShopService {
    * @return The shop at that location
    */
   @Nullable
-  ModernShop<?, ?, ?, ?> getShop(@NotNull Location loc);
+  T getShop(@NotNull Location loc);
 
   /**
    * Gets a shop in a specific location but via cache ATTENTION: This not include attached shops
@@ -163,7 +163,7 @@ public interface ShopService {
    * @return The shop at that location but via cache
    */
   @Nullable
-  ModernShop<?, ?, ?, ?> getShopViaCache(@NotNull Location loc);
+  T getShopViaCache(@NotNull Location loc);
 
   /**
    * Gets a shop in a specific location ATTENTION: This not include attached shops (double-chest)
@@ -174,14 +174,14 @@ public interface ShopService {
    * @return The shop at that location
    */
   @Nullable
-  ModernShop<?, ?, ?, ?> getShop(@NotNull Location loc, boolean skipShopableChecking);
+  T getShop(@NotNull Location loc, boolean skipShopableChecking);
 
 
   @Nullable
-  ModernShop<?, ?, ?, ?> getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId);
+  T getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId);
 
   @Nullable
-  ModernShop<?, ?, ?, ?> getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
+  T getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
 
   /**
    * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
@@ -191,7 +191,7 @@ public interface ShopService {
    * @return The shop at that location
    */
   @Nullable
-  ModernShop<?, ?, ?, ?> getShopIncludeAttached(@Nullable Location loc);
+  T getShopIncludeAttached(@Nullable Location loc);
 
   /**
    * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop. but via
@@ -202,7 +202,7 @@ public interface ShopService {
    * @return The shop at that location but via cache
    */
   @Nullable
-  ModernShop<?, ?, ?, ?> getShopIncludeAttachedViaCache(@Nullable Location loc);
+  T getShopIncludeAttachedViaCache(@Nullable Location loc);
 
 
   /**
@@ -212,7 +212,7 @@ public interface ShopService {
    * @return a new shop iterator object.
    */
   @NotNull
-  Iterator<ModernShop<?, ?, ?, ?>> getShopIterator();
+  Iterator<T> getShopIterator();
 
   /**
    * Returns a map of World - Chunk - Shop
@@ -220,7 +220,7 @@ public interface ShopService {
    * @return a map of World - Chunk - Shop
    */
   @NotNull
-  Map<String, Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>>> getShops();
+  Map<String, Map<ShopChunk, Map<Location, T>>> getShops();
 
   /**
    * Returns a map of Shops
@@ -230,7 +230,7 @@ public interface ShopService {
    * @return Shops
    */
   @NotNull
-  Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull Chunk c);
+  Map<Location, T> getShops(@NotNull Chunk c);
 
   /**
    * Gets the shop at the world and specific chunk.
@@ -242,7 +242,7 @@ public interface ShopService {
    * @return The shop at the world and specific chunk.
    */
   @NotNull
-  Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull String world, int chunkX, int chunkZ);
+  Map<Location, T> getShops(@NotNull String world, int chunkX, int chunkZ);
 
   /**
    * Gets the shop at the world and specific chunk.
@@ -252,7 +252,7 @@ public interface ShopService {
    * @return The shop at the world and specific chunk.
    */
   @NotNull
-  Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull ShopChunk shopChunk);
+  Map<Location, T> getShops(@NotNull ShopChunk shopChunk);
 
   /**
    * Returns a map of Chunk - Shop
@@ -262,7 +262,7 @@ public interface ShopService {
    * @return a map of Chunk - Shop
    */
   @NotNull
-  Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>> getShops(@NotNull String world);
+  Map<ShopChunk, Map<Location, T>> getShops(@NotNull String world);
 
   /**
    * Get the all shops in the world.
@@ -272,7 +272,7 @@ public interface ShopService {
    * @return The list have this world all shops
    */
   @NotNull
-  List<ModernShop<?, ?, ?, ?>> getShopsInWorld(@NotNull World world);
+  List<T> getShopsInWorld(@NotNull World world);
 
   /**
    * Get the all shops in the world.
@@ -282,7 +282,7 @@ public interface ShopService {
    * @return The list have this world all shops
    */
   @NotNull
-  List<ModernShop<?, ?, ?, ?>> getShopsInWorld(@NotNull String worldName);
+  List<T> getShopsInWorld(@NotNull String worldName);
 
   @Deprecated()
   ShopActionResult handleLoading();

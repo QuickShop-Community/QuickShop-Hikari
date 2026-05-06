@@ -29,6 +29,7 @@ import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * ShopModern
@@ -64,6 +65,29 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
 
   ShopTrading trading();
 
+  /**
+   * Applies a series of changes to the current shop instance using a {@link ShopBuilder}.
+   * The specified consumer allows modification of the {@code ShopBuilder},
+   * after which the shop is rebuilt with the applied changes.
+   *
+   * <strong>NOTE: This does not apply the changes to the Shop cache or database, you'll need to utilize the
+   * {@link ShopService} to do that.</strong>
+   *
+   * @param changes a {@code Consumer} that defines the modifications to the {@link ShopBuilder}.
+   * @return a {@link ModernShop} instance with the applied modifications.
+   */
+  default ModernShop<T, S, U, V> withChanges(Consumer<ShopBuilder<T, S, U, V>> changes) {
+
+    final ShopBuilder<T, S, U, V> builder = asBuilder();
+    changes.accept(builder);
+    return builder.build();
+  }
+
+  /**
+   * Converts the current shop instance into a {@link ShopBuilder} for applying modifications or rebuilding.
+   *
+   * @return a {@link ShopBuilder} instance initialized with the current shop's state, enabling further modifications.
+   */
   ShopBuilder<T, S, U, V> asBuilder();
 
   //This may need to be moved to the manager not entirely sold on it being in the shop object.

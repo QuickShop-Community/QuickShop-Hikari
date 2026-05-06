@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.shop.components;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.builder.ShopPriceBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
@@ -247,5 +248,11 @@ public class SimpleShopPrice implements ShopPrice<Double> {
       changes.add(ShopChangeType.PRICE);
     }
     return changes;
+  }
+
+  @Override
+  public ShopPriceBuilder<Double> asBuilder() {
+
+    return null;
   }
 }
