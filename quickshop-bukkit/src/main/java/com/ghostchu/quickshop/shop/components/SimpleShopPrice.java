@@ -251,7 +251,7 @@ public class SimpleShopPrice implements ShopPrice<Double> {
   }
 
   @Override
-  public ShopPriceBuilder<Double> asBuilder() {
+  public ShopPriceBuilder<Double> builder() {
 
     return null;
   }
