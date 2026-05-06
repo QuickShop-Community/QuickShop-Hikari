@@ -20,17 +20,17 @@ tabcomplete:
   price: '[prezzo]'
   name: '[nome]'
   range: '[raggio]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
+  list: 'lista'
+  page: '[pagina #]'
+  shop-id: '[id negozio]'
   currency: '[nome della valuta]'
   percentage: 'percentuale'
-  add: 'add'
-  remove: 'remove'
-  clear: 'clear'
-  clearall: 'clearall'
-  shops: 'shops'
-  tagged: 'tagged'
+  add: 'aggiungi'
+  remove: 'rimuovi'
+  clear: 'svuota'
+  clearall: 'svuota tutto'
+  shops: 'negozi'
+  tagged: 'taggato'
   purge: 'purge'
   tag: '[tag]'
 taxaccount-unset: <green>La tassa di questo negozio ora segue l'impostazione globale del server.
@@ -126,7 +126,7 @@ tags:
     removed: "<green>Removed this shop from your avoid list."
     unable: "<red>Unable to toggle avoid on this shop."
     none: "<red>You have no avoided shops."
-    label: "<yellow>Avoid"
+    label: "<yellow>Evita"
   favorite:
     added: "<green>Added this shop to your favorite list."
     removed: "<green>Removed this shop from your favorite list."
@@ -149,18 +149,18 @@ tags:
     shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
     entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
     list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
+    added: "<green>Aggiunta tag <aqua>{0}</aqua> a questo negozio."
+    duplicate: "<red>Questo negozio ha già la tag <aqua>{0}</aqua>."
     failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
     failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
     removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
     does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
-    cleared: "<green>Cleared all tags from this shop."
+    cleared: "<green>Rimosse tutte le tag da questo negozio."
     cleared-all: "<green>Cleared all tags from all shops."
     cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
     no-tags-all: "<red>There are no tags on any shop."
     no-tags: "<red>This shop has no tags."
-    no-tagged-shops-player: "<red>You have no tags on this shop."
+    no-tagged-shops-player: "<red>Non hai tag su questo negozio."
     no-tagged-shops: "<red>You have no tagged shops."
     no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
 menu:
