@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.api.shop.components;
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.ShopService;
+import com.ghostchu.quickshop.api.shop.builder.ShopItemBuilder;
 import com.ghostchu.quickshop.api.shop.display.DisplayItem;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import net.kyori.adventure.text.Component;
@@ -126,4 +127,11 @@ public interface ShopItem {
    *         the two shop items. Returns an empty set if there are no differences.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopItem compare);
+
+  /**
+   * Creates and returns a {@link ShopItemBuilder} instance to customize and build a {@link ShopItem}.
+   *
+   * @return a {@link ShopItemBuilder} to configure and construct a new {@link ShopItem}.
+   */
+  ShopItemBuilder asBuilder();
 }

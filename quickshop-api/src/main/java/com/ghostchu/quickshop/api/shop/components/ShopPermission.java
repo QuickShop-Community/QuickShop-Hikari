@@ -19,6 +19,8 @@ package com.ghostchu.quickshop.api.shop.components;
  */
 
 import com.ghostchu.quickshop.api.shop.ShopService;
+import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
+import com.ghostchu.quickshop.api.shop.builder.ShopPermissionBuilder;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
@@ -138,4 +140,11 @@ public interface ShopPermission {
    *         the two shop permissions. Returns an empty set if there are no differences.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopPermission compare);
+
+  /**
+   * Creates and returns a {@link ShopPermissionBuilder} instance to customize and build a {@link ShopPermission}.
+   *
+   * @return a {@link ShopPermissionBuilder} to configure and construct a new {@link ShopPermission}.
+   */
+  ShopPermissionBuilder asBuilder();
 }

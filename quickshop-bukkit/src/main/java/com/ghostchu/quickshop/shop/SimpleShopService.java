@@ -18,7 +18,11 @@ package com.ghostchu.quickshop.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopBuilderFactory;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.service.ShopActionResult;
 import com.ghostchu.quickshop.api.shop.service.request.ShopCreateRequest;
@@ -28,10 +32,24 @@ import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.service.result.ShopCreateResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopDeleteResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopUpdateResult;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * SimpleShopService
@@ -40,6 +58,23 @@ import java.util.EnumSet;
  * @since 6.3.0.0
  */
 public class SimpleShopService implements ShopService {
+
+
+  protected final Map<String, Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>>> shops = Maps.newConcurrentMap();
+  protected final Set<ModernShop<?, ?, ?, ?>> loadedShops = Sets.newConcurrentHashSet();
+
+  /**
+   * Retrieves the ShopBuilderFactory instance associated with the ShopService implementation.
+   *
+   * @return ShopBuilderFactory instance responsible for providing builder objects for shop-related
+   * components, such as ShopItemBuilder, ShopMetaBuilder, ShopPermissionBuilder, and
+   * ShopPriceBuilder.
+   */
+  @Override
+  public ShopBuilderFactory shopBuilderFactory() {
+
+    return null;
+  }
 
   /**
    * Creates a new shop based on the provided creation request.
@@ -106,6 +141,279 @@ public class SimpleShopService implements ShopService {
   public @NotNull ShopActionResult<ShopDeleteResult> deleteShop(final @NotNull ShopDeleteRequest request) {
 
     return null;
+  }
+
+  /**
+   * Retrieves a list of all the shops available across all shop chunks and locations.
+   * This method collects and consolidates the shops from the internal data structure
+   * into a single unmodifiable list.
+   *
+   * Performance is monitored while the method executes using a performance monitor.
+   *
+   * @return a list of all {@link ModernShop} instances across all shop chunks and locations,
+   *         wrapped in an unmodifiable list.
+   */
+  @Override
+  public @NotNull List<ModernShop<?, ?, ?, ?>> getAllShops() {
+
+    try(final PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
+      final List<ModernShop<?, ?, ?, ?>> shopsCollected = new ArrayList<>();
+
+      for(final Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>> shopMapData : getShops().values()) {
+        for(final Map<Location, ModernShop<?, ?, ?, ?>> shopData : shopMapData.values()) {
+
+          shopsCollected.addAll(shopData.values());
+        }
+      }
+      return Collections.unmodifiableList(shopsCollected);
+    }
+  }
+
+  /**
+   * Retrieves an unmodifiable set of all currently loaded shops.
+   *
+   * @return a non-null unmodifiable set containing the loaded shops.
+   */
+  @Override
+  public @NotNull Set<ModernShop<?, ?, ?, ?>> getLoadedShops() {
+
+    return Collections.unmodifiableSet(this.loadedShops);
+  }
+
+  /**
+   * Retrieves all shops that belong to the specified user.
+   *
+   * @param user the user whose shops are to be retrieved; must not be null
+   * @return a list of shops owned by the specified user, never null
+   */
+  @Override
+  public @NotNull List<ModernShop<?, ?, ?, ?>> getAllShops(@NotNull final QUser user) {
+
+    final List<ModernShop<?, ?, ?, ?>> playerShops = new ArrayList<>(10);
+    for(final ModernShop<?, ?, ?, ?> shop : getAllShops()) {
+      if(shop.meta().getOwner().equals(user)) {
+        playerShops.add(shop);
+      }
+    }
+    return playerShops;
+  }
+  /**
+   * Retrieves a list of all shops owned by the player with the given UUID.
+   *
+   * @param playerUUID the UUID of the player whose shops are to be retrieved. Must not be null.
+   * @return a list of ModernShop objects owned by the specified player. Never null but may be empty if no shops are found.
+   */
+  @Override
+  public @NotNull List<ModernShop<?, ?, ?, ?>> getAllShops(@NotNull final UUID playerUUID) {
+
+    final List<ModernShop<?, ?, ?, ?>> playerShops = new ArrayList<>(10);
+    for(final ModernShop<?, ?, ?, ?> shop : getAllShops()) {
+      final UUID shopUuid = shop.meta().getOwner().getUniqueIdIfRealPlayer().orElse(null);
+      if(playerUUID.equals(shopUuid)) {
+
+        playerShops.add(shop);
+      }
+    }
+    return playerShops;
+  }
+
+  /**
+   * Gets a shop by shop Id
+   *
+   * @return The shop object
+   */
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShop(final long shopId) {
+
+    for(final ModernShop<?, ?, ?, ?> shop : getAllShops()) {
+      if(shop.meta().getShopId() == shopId) {
+        return shop;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Gets a shop in a specific location ATTENTION: This not include attached shops (double-chest)
+   *
+   * @param loc The location to get the shop from
+   *
+   * @return The shop at that location
+   */
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShop(@NotNull final Location loc) {
+
+    return null;
+  }
+
+  /**
+   * Gets a shop in a specific location but via cache ATTENTION: This not include attached shops
+   * (double-chest)
+   *
+   * @param loc The location to get the shop from
+   *
+   * @return The shop at that location but via cache
+   */
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShopViaCache(@NotNull final Location loc) {
+
+    return null;
+  }
+
+  /**
+   * Gets a shop in a specific location ATTENTION: This not include attached shops (double-chest)
+   *
+   * @param loc                  The location to get the shop from
+   * @param skipShopableChecking whether to check is shopable
+   *
+   * @return The shop at that location
+   */
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShop(@NotNull final Location loc, final boolean skipShopableChecking) {
+
+    return null;
+  }
+
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShopFromRuntimeRandomUniqueId(@NotNull final UUID runtimeRandomUniqueId) {
+
+    return null;
+  }
+
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShopFromRuntimeRandomUniqueId(@NotNull final UUID runtimeRandomUniqueId, final boolean includeInvalid) {
+
+    return null;
+  }
+
+  /**
+   * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
+   *
+   * @param loc The location to get the shop from
+   *
+   * @return The shop at that location
+   */
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShopIncludeAttached(@Nullable final Location loc) {
+
+    return null;
+  }
+
+  /**
+   * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop. but via
+   * cache
+   *
+   * @param loc The location to get the shop from
+   *
+   * @return The shop at that location but via cache
+   */
+  @Override
+  public @Nullable ModernShop<?, ?, ?, ?> getShopIncludeAttachedViaCache(@Nullable final Location loc) {
+
+    return null;
+  }
+
+  /**
+   * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
+   * through a 3D map.
+   *
+   * @return a new shop iterator object.
+   */
+  @Override
+  public @NotNull Iterator<ModernShop<?, ?, ?, ?>> getShopIterator() {
+
+    return null;
+  }
+
+  /**
+   * Returns a map of World - Chunk - Shop
+   *
+   * @return a map of World - Chunk - Shop
+   */
+  @Override
+  public @NotNull Map<String, Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>>> getShops() {
+
+    return Map.of();
+  }
+
+  /**
+   * Returns a map of Shops
+   *
+   * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are used.
+   *
+   * @return Shops
+   */
+  @Override
+  public @NotNull Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull final Chunk c) {
+
+    return Map.of();
+  }
+
+  /**
+   * Gets the shop at the world and specific chunk.
+   *
+   * @param world  The world to get the shop from
+   * @param chunkX The chunk x coordinate
+   * @param chunkZ The chunk z coordinate
+   *
+   * @return The shop at the world and specific chunk.
+   */
+  @Override
+  public @NotNull Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull final String world, final int chunkX, final int chunkZ) {
+
+    return Map.of();
+  }
+
+  /**
+   * Gets the shop at the world and specific chunk.
+   *
+   * @param shopChunk The shop chunk
+   *
+   * @return The shop at the world and specific chunk.
+   */
+  @Override
+  public @NotNull Map<Location, ModernShop<?, ?, ?, ?>> getShops(@NotNull final ShopChunk shopChunk) {
+
+    return Map.of();
+  }
+
+  /**
+   * Returns a map of Chunk - Shop
+   *
+   * @param world The name of the world (case sensitive) to get the list of shops from
+   *
+   * @return a map of Chunk - Shop
+   */
+  @Override
+  public @NotNull Map<ShopChunk, Map<Location, ModernShop<?, ?, ?, ?>>> getShops(@NotNull final String world) {
+
+    return Map.of();
+  }
+
+  /**
+   * Get the all shops in the world.
+   *
+   * @param world The world you want get the shops.
+   *
+   * @return The list have this world all shops
+   */
+  @Override
+  public @NotNull List<ModernShop<?, ?, ?, ?>> getShopsInWorld(@NotNull final World world) {
+
+    return List.of();
+  }
+
+  /**
+   * Get the all shops in the world.
+   *
+   * @param worldName The world you want get the shops.
+   *
+   * @return The list have this world all shops
+   */
+  @Override
+  public @NotNull List<ModernShop<?, ?, ?, ?>> getShopsInWorld(@NotNull final String worldName) {
+
+    return List.of();
   }
 
   @Override

@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.builder.ShopBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopInteraction;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.components.ShopLifecycle;
@@ -63,13 +64,8 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
 
   ShopTrading trading();
 
+  ShopBuilder<T, S, U, V> asBuilder();
+
   //This may need to be moved to the manager not entirely sold on it being in the shop object.
   ShopWorldAdapter worldAdapter();
-
-  class Builder<T, S, U, V> {
-
-    public ModernShop<T, S, U, V> build() {
-        return null;
-    }
-  }
 }

@@ -19,6 +19,8 @@ package com.ghostchu.quickshop.api.shop.components;
  */
 
 import com.ghostchu.quickshop.api.shop.ShopService;
+import com.ghostchu.quickshop.api.shop.builder.ShopPermissionBuilder;
+import com.ghostchu.quickshop.api.shop.builder.ShopPriceBuilder;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -146,4 +148,11 @@ public interface ShopPrice<T> {
    *         current shop and the provided shop. Returns an empty set if no differences are found.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopPrice<?> compare);
+
+  /**
+   * Creates and returns a {@link ShopPriceBuilder} instance to customize and build a {@link ShopPrice}.
+   *
+   * @return a {@link ShopPriceBuilder} to configure and construct a new {@link ShopPrice}.
+   */
+  ShopPriceBuilder<T> asBuilder();
 }

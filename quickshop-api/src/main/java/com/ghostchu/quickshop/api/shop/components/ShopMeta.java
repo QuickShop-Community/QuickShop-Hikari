@@ -23,6 +23,8 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.ShopService;
+import com.ghostchu.quickshop.api.shop.builder.ShopItemBuilder;
+import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import net.kyori.adventure.text.Component;
@@ -249,4 +251,11 @@ public interface ShopMeta {
    *         between the two {@code ShopMeta} instances. The set is empty if there are no differences.
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopMeta compare);
+
+  /**
+   * Creates and returns a {@link ShopMetaBuilder} instance to customize and build a {@link ShopMeta}.
+   *
+   * @return a {@link ShopMetaBuilder} to configure and construct a new {@link ShopMeta}.
+   */
+  ShopMetaBuilder asBuilder();
 }
