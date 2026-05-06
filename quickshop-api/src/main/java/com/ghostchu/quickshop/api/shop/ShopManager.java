@@ -67,6 +67,14 @@ public interface ShopManager {
   TradeService tradeService();
 
   /**
+   * Getting the Shop Price Limiter
+   *
+   * @return The shop price limiter
+   */
+  @NotNull
+  PriceLimiter getPriceLimiter();
+
+  /**
    * Sets the shop layout provider to customize the layout of the shop.
    *
    * @param provider the instance of IShopLayoutProvider that defines the layout of the shop
@@ -288,7 +296,9 @@ public interface ShopManager {
    * <p>Make sure you have caching this, because this need a while to get all shops
    *
    * @return All shop in the database
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   List<Shop> getAllShops();
 
@@ -296,7 +306,9 @@ public interface ShopManager {
    * Get all loaded shops.
    *
    * @return All loaded shops.
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Set<Shop> getLoadedShops();
 
@@ -308,7 +320,9 @@ public interface ShopManager {
    * @param playerUUID The player's uuid.
    *
    * @return The list have this player's all shops.
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   List<Shop> getAllShops(@NotNull QUser playerUUID);
 
@@ -320,23 +334,19 @@ public interface ShopManager {
    * @param playerUUID The player's uuid.
    *
    * @return The list have this player's all shops.
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   List<Shop> getAllShops(@NotNull UUID playerUUID);
-
-  /**
-   * Getting the Shop Price Limiter
-   *
-   * @return The shop price limiter
-   */
-  @NotNull
-  PriceLimiter getPriceLimiter();
 
   /**
    * Gets a shop by shop Id
    *
    * @return The shop object
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShop(long shopId);
 
@@ -346,7 +356,9 @@ public interface ShopManager {
    * @param loc The location to get the shop from
    *
    * @return The shop at that location
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShop(@NotNull Location loc);
 
@@ -357,7 +369,9 @@ public interface ShopManager {
    * @param loc The location to get the shop from
    *
    * @return The shop at that location but via cache
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShopViaCache(@NotNull Location loc);
 
@@ -368,14 +382,30 @@ public interface ShopManager {
    * @param skipShopableChecking whether to check is shopable
    *
    * @return The shop at that location
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShop(@NotNull Location loc, boolean skipShopableChecking);
 
-
+  /**
+   *
+   * @param runtimeRandomUniqueId
+   * @return
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
+   */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId);
 
+  /**
+   *
+   * @param runtimeRandomUniqueId
+   * @param includeInvalid
+   * @return
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
+   */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
 
@@ -385,7 +415,9 @@ public interface ShopManager {
    * @param loc The location to get the shop from
    *
    * @return The shop at that location
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShopIncludeAttached(@Nullable Location loc);
 
@@ -396,7 +428,9 @@ public interface ShopManager {
    * @param loc The location to get the shop from
    *
    * @return The shop at that location but via cache
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @Nullable
   Shop getShopIncludeAttachedViaCache(@Nullable Location loc);
 
@@ -406,7 +440,9 @@ public interface ShopManager {
    * through a 3D map.
    *
    * @return a new shop iterator object.
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Iterator<Shop> getShopIterator();
 
@@ -414,7 +450,9 @@ public interface ShopManager {
    * Returns a map of World - Chunk - Shop
    *
    * @return a map of World - Chunk - Shop
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops();
 
@@ -424,7 +462,9 @@ public interface ShopManager {
    * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are used.
    *
    * @return Shops
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Map<Location, Shop> getShops(@NotNull Chunk c);
 
@@ -436,7 +476,9 @@ public interface ShopManager {
    * @param chunkZ The chunk z coordinate
    *
    * @return The shop at the world and specific chunk.
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
 
@@ -446,7 +488,9 @@ public interface ShopManager {
    * @param shopChunk The shop chunk
    *
    * @return The shop at the world and specific chunk.
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Map<Location, Shop> getShops(@NotNull ShopChunk shopChunk);
 
@@ -456,7 +500,9 @@ public interface ShopManager {
    * @param world The name of the world (case sensitive) to get the list of shops from
    *
    * @return a map of Chunk - Shop
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
 
@@ -466,7 +512,9 @@ public interface ShopManager {
    * @param world The world you want get the shops.
    *
    * @return The list have this world all shops
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   List<Shop> getShopsInWorld(@NotNull World world);
 
@@ -476,7 +524,9 @@ public interface ShopManager {
    * @param worldName The world you want get the shops.
    *
    * @return The list have this world all shops
+   * @Deprecated Replaced with {@link ShopService} for shop operations.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   @NotNull
   List<Shop> getShopsInWorld(@NotNull String worldName);
 
