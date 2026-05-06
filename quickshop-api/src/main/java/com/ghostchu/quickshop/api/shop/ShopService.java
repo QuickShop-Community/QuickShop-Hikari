@@ -18,7 +18,6 @@ package com.ghostchu.quickshop.api.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.ShopBuilderFactory;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.service.ShopActionResult;
 import com.ghostchu.quickshop.api.shop.service.request.ShopCreateRequest;
