@@ -664,17 +664,7 @@ public interface ShopManager {
   @NotNull
   CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);
 
-  CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);
-
-  CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag);
-
-  CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
-
-  CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
-
-  @NotNull
-  List<String> listTags(@NotNull UUID tagger);
-
+  @Deprecated(since = "6.2.0.11", forRemoval = true)
   void deleteShop(@NotNull Shop shop);
 
   @NotNull
