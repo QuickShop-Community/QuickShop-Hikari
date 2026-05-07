@@ -22,11 +22,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.builder.ShopPriceBuilder;
-import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
-import com.ghostchu.quickshop.shop.InventoryPreview;
-import org.bukkit.entity.Player;
+import com.ghostchu.quickshop.shop.builder.SimpleShopPriceBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,14 +43,22 @@ import static java.math.BigDecimal.ZERO;
  */
 public class SimpleShopPrice implements ShopPrice<Double> {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  private final ModernShop<?, ?, ?, ?> shop;
 
   @Nullable
   protected String currency;
   protected double price;
 
-  public SimpleShopPrice(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopPrice(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
+  }
+
+  public SimpleShopPrice(@NotNull final ModernShop<?, ?, ?, ?> shop,
+                         @Nullable final String currency, final double price) {
+
+    this.shop = shop;
+    this.currency = currency;
+    this.price = price;
   }
 
   /**
@@ -253,6 +259,6 @@ public class SimpleShopPrice implements ShopPrice<Double> {
   @Override
   public ShopPriceBuilder<Double> builder() {
 
-    return null;
+    return new SimpleShopPriceBuilder().price(this.price).currency(this.currency);
   }
 }

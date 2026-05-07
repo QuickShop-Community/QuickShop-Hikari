@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 

@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
-import com.ghostchu.quickshop.api.shop.limit.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
+import com.ghostchu.quickshop.api.shop.limit.PriceLimiterCheckResult;
 import lombok.Data;
 
 @Data

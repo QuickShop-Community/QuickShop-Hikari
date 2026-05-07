@@ -29,6 +29,7 @@ import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -40,11 +41,11 @@ import org.jspecify.annotations.NonNull;
  */
 public class SimpleShopInteraction implements ShopInteraction<Player, InventoryPreview> {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  private final ModernShop<?, ?, ?, ?> shop;
   @EqualsAndHashCode.Exclude
   private InventoryPreview inventoryPreview = null;
 
-  public SimpleShopInteraction(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopInteraction(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
   }
 
@@ -56,7 +57,7 @@ public class SimpleShopInteraction implements ShopInteraction<Player, InventoryP
   @Override
   public void onClick(@NonNull final Player player) {
 
-    ShopClickEvent event = new ShopClickEvent(shop, QUserImpl.createFullFilled(player));
+    ShopClickEvent event = new ShopClickEvent(this.shop, QUserImpl.createFullFilled(player));
     event.callEvent();
 
     event = event.clone(Phase.MAIN);

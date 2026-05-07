@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop.components;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.builder.ShopPermissionBuilder;
 import com.ghostchu.quickshop.api.shop.builder.ShopPriceBuilder;
@@ -151,21 +152,23 @@ public interface ShopPrice<T> {
   EnumSet<ShopChangeType> diff(final @Nullable ShopPrice<?> compare);
 
   /**
-   * Applies changes to the current {@code ShopPrice} instance using a {@link Consumer} to modify a {@link ShopPriceBuilder}.
-   * The provided changes are applied to a builder, and a new {@code ShopPrice} instance is returned based on the updated builder.
+   * Applies modifications to the current {@code ShopPrice} instance using a {@link ShopPriceBuilder}.
+   * The specified consumer is used to define the changes, and the resulting {@link ShopPrice}
+   * is constructed and returned after applying the modifications.
    *
    * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
    * you'll need to utilize the {@link ShopService} to do that.</strong>
    *
-   * @param changes a {@link Consumer} that accepts a {@link ShopPriceBuilder} to define modifications to the shop's properties;
-   *                must not be null
-   * @return a new {@code ShopPrice} instance reflecting the applied changes from the builder
+   * @param shop the {@link ModernShop} instance associated with the {@code ShopPrice}; must not be null.
+   * @param changes a {@link Consumer} that defines the modifications to be applied to the {@link ShopPriceBuilder};
+   *                must not be null.
+   * @return a new {@link ShopPrice} instance with the applied changes.
    */
-  default ShopPrice<T> withChanges(Consumer<ShopPriceBuilder<T>> changes) {
+  default ShopPrice<T> withChanges(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull final Consumer<ShopPriceBuilder<T>> changes) {
 
     final ShopPriceBuilder<T> builder = builder();
     changes.accept(builder);
-    return builder.build();
+    return builder.build(shop);
   }
 
   /**

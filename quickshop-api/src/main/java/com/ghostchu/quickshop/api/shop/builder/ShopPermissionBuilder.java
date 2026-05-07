@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.builder;
  */
 
 
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,10 +56,22 @@ public interface ShopPermissionBuilder {
   ShopPermissionBuilder permissions(@NotNull Map<UUID, String> permissions);
 
   /**
-   * Builds and returns a new {@link ShopPermission} instance based on the current configuration
-   * provided to the {@link ShopPermissionBuilder}.
+   * Associates a specific permission group with the entity identified by the provided unique identifier (UUID).
+   * This method adds or updates a permission mapping within the builder's internal configuration.
    *
-   * @return a {@link ShopPermission} instance representing the configured shop permissions.
+   * @param uuid the unique identifier (UUID) of the entity to associate the permission with; must not be null
+   * @param group the permission group name to assign to the specified entity; must not be null
+   * @return the current {@code ShopPermissionBuilder} instance for method chaining
    */
-  ShopPermission build();
+  ShopPermissionBuilder permission(@NotNull UUID uuid, @NotNull String group);
+
+  /**
+   * Builds and returns a {@link ShopPermission} instance for the specified shop.
+   *
+   * @param shop the {@link ModernShop} instance for which the permissions will be built;
+   *             must not be null and defines the context for the resulting {@link ShopPermission}.
+   * @return a {@link ShopPermission} instance that represents the permissions associated
+   *         with the specified {@link ModernShop}.
+   */
+  ShopPermission build(ModernShop<?, ?, ?, ?> shop);
 }

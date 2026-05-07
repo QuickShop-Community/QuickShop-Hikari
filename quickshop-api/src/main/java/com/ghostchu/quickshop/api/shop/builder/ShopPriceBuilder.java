@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.builder;
  */
 
 
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,9 +66,12 @@ public interface ShopPriceBuilder<T> {
   ShopPriceBuilder<T> currency(@Nullable final String currency);
 
   /**
-   * Builds and returns a new instance of {@link ShopPrice} based on the current configurations of the builder.
+   * Builds and returns a new {@link ShopPrice} instance associated with the specified shop.
    *
-   * @return a {@link ShopPrice} instance containing the configured price and currency.
+   * @param shop the {@link ModernShop} instance for which the {@link ShopPrice} is being constructed;
+   *             must not be null and should be a valid representation of a shop.
+   * @return a new {@link ShopPrice} instance containing the price configuration and currency
+   *         settings as defined in the builder for the provided shop.
    */
-  ShopPrice<T> build();
+  ShopPrice<T> build(ModernShop<?, ?, ?, ?> shop);
 }

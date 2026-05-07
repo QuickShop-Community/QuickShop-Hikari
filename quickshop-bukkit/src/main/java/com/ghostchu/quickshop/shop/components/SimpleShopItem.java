@@ -23,16 +23,16 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.type.ShopDisplayEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopItemEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
+import com.ghostchu.quickshop.api.shop.builder.ShopItemBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import com.ghostchu.quickshop.api.shop.display.DisplayItem;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
-import com.ghostchu.quickshop.shop.InventoryPreview;
+import com.ghostchu.quickshop.shop.builder.SimpleShopItemBuilder;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +48,7 @@ import java.util.EnumSet;
  */
 public class SimpleShopItem implements ShopItem {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  private final ModernShop<?, ?, ?, ?> shop;
 
   @NotNull
   private ItemStack item;
@@ -61,8 +61,17 @@ public class SimpleShopItem implements ShopItem {
 
   private boolean disableDisplay = false;
 
-  public SimpleShopItem(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopItem(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
+  }
+
+  public SimpleShopItem(@NotNull final ModernShop<?, ?, ?, ?> shop,
+                        @NotNull final ItemStack item, final boolean disableDisplay) {
+
+    this.shop = shop;
+    this.item = item;
+    this.originalItem = item.clone();
+    this.disableDisplay = disableDisplay;
   }
 
   /**
@@ -247,5 +256,11 @@ public class SimpleShopItem implements ShopItem {
     }
 
     return changes;
+  }
+
+  @Override
+  public ShopItemBuilder builder() {
+
+    return new SimpleShopItemBuilder().item(this.item.clone()).disableDisplay(this.disableDisplay);
   }
 }

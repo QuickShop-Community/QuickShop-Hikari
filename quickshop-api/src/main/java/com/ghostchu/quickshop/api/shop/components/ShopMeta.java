@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.builder.ShopItemBuilder;
 import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
@@ -253,25 +254,22 @@ public interface ShopMeta {
    */
   EnumSet<ShopChangeType> diff(final @Nullable ShopMeta compare);
 
-
   /**
-   * Creates a modified instance of {@code ShopMeta} based on the provided changes.
-   * The method allows customization of the current {@code ShopMeta} object using a
-   * {@code Consumer} that operates on a {@code ShopMetaBuilder}.
+   * Applies the specified changes to a {@link ShopMetaBuilder}, builds a new {@link ShopMeta} instance,
+   * and associates it with the provided {@link ModernShop}.
    *
    * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
    * you'll need to utilize the {@link ShopService} to do that.</strong>
    *
-   * @param changes a {@code Consumer} of {@code ShopMetaBuilder} used to apply modifications
-   *                to the current {@code ShopMeta} instance.
-   * @return a new {@code ShopMeta} instance reflecting the changes applied through the
-   *         {@code ShopMetaBuilder}.
+   * @param shop the {@link ModernShop} instance associated with the {@link ShopMeta}; must not be null
+   * @param changes a {@link Consumer} that accepts a {@link ShopMetaBuilder} to apply changes; must not be null
+   * @return a new {@link ShopMeta} instance with the applied changes
    */
-  default ShopMeta withChanges(Consumer<ShopMetaBuilder> changes) {
+  default ShopMeta withChanges(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull final Consumer<ShopMetaBuilder> changes) {
 
     final ShopMetaBuilder builder = builder();
     changes.accept(builder);
-    return builder.build();
+    return builder.build(shop);
   }
 
   /**

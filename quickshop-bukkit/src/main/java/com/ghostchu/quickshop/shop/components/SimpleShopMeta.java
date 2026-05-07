@@ -30,17 +30,15 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.components.ShopItem;
+import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopMeta;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,7 +53,7 @@ import java.util.Objects;
  */
 public class SimpleShopMeta implements ShopMeta {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  private final ModernShop<?, ?, ?, ?> shop;
 
   protected long shopId;
   private QUser owner;
@@ -71,8 +69,41 @@ public class SimpleShopMeta implements ShopMeta {
   @NotNull
   private BenefitProvider benefit;
 
-  public SimpleShopMeta(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopMeta(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
+  }
+
+  public SimpleShopMeta(@NotNull final ModernShop<?, ?, ?, ?> shop,
+                        @NotNull final QUser owner,
+                        @Nullable final String shopName,
+                        final boolean unlimited,
+                        @NotNull final IShopType shopType,
+                        @NotNull final ShopState shopState,
+                        @Nullable final QUser taxAccount,
+                        @NotNull final BenefitProvider benefit) {
+
+    this(shop, shop.meta().getShopId(), owner, shopName, unlimited, shopType, shopState, taxAccount, benefit);
+  }
+
+  public SimpleShopMeta(@NotNull final ModernShop<?, ?, ?, ?> shop,
+                        final long shopId,
+                        @NotNull final QUser owner,
+                        @Nullable final String shopName,
+                        final boolean unlimited,
+                        @NotNull final IShopType shopType,
+                        @NotNull final ShopState shopState,
+                        @Nullable final QUser taxAccount,
+                        @NotNull final BenefitProvider benefit) {
+
+    this.shop = shop;
+    this.shopId = shopId;
+    this.owner = owner;
+    this.shopName = shopName;
+    this.unlimited = unlimited;
+    this.shopType = shopType;
+    this.shopState = shopState;
+    this.taxAccount = taxAccount;
+    this.benefit = benefit;
   }
 
   /**
@@ -496,5 +527,11 @@ public class SimpleShopMeta implements ShopMeta {
       changes.add(ShopChangeType.BENEFITS);
     }
     return changes;
+  }
+
+  @Override
+  public ShopMetaBuilder builder() {
+
+    return null;
   }
 }

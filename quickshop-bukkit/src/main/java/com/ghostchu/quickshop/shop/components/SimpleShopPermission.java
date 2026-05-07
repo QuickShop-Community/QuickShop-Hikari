@@ -23,15 +23,14 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopPermissionCheckEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPlayerGroupEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.components.ShopItem;
+import com.ghostchu.quickshop.api.shop.builder.ShopPermissionBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.shop.InventoryPreview;
+import com.ghostchu.quickshop.shop.builder.SimpleShopPermissionsBuilder;
 import com.ghostchu.quickshop.util.logger.Log;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * SimpleShopPermission
@@ -53,15 +53,23 @@ import java.util.UUID;
  */
 public class SimpleShopPermission implements ShopPermission {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  private final ModernShop<?, ?, ?, ?> shop;
 
   //TODO: modification methods for this in order to add entries/set all entries
   @NotNull
-  private final Map<UUID, String> playerGroup = new HashMap<>();
+  private final Map<UUID, String> groups = new ConcurrentHashMap<>();
 
-  public SimpleShopPermission(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopPermission(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
   }
+
+  public SimpleShopPermission(@NotNull final ModernShop<?, ?, ?, ?> shop,
+                              @NotNull final Map<UUID, String> groups) {
+    this.shop = shop;
+    this.groups.putAll(groups);
+  }
+
+
 
   /**
    * Gets all player and their group on this shop
@@ -71,7 +79,7 @@ public class SimpleShopPermission implements ShopPermission {
   @Override
   public @NotNull Map<UUID, String> getPermissionAudiences() {
 
-    final Map<UUID, String> clonedPlayerGroup = new HashMap<>(playerGroup);
+    final Map<UUID, String> clonedPlayerGroup = new HashMap<>(groups);
     final Optional<UUID> uuid = shop.meta().getOwner().getUniqueIdOptional();
     if(uuid.isPresent()) {
       clonedPlayerGroup.put(shop.meta().getOwner().getUniqueId(), BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode());
@@ -218,10 +226,10 @@ public class SimpleShopPermission implements ShopPermission {
 
     if(group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
 
-      this.playerGroup.remove(player);
+      this.groups.remove(player);
     } else {
 
-      this.playerGroup.put(player, group);
+      this.groups.put(player, group);
     }
     event = event.clone(Phase.POST);
     event.callEvent();
@@ -247,7 +255,7 @@ public class SimpleShopPermission implements ShopPermission {
     event.callEvent();
     if(group == BuiltInShopPermissionGroup.EVERYONE) {
 
-      this.playerGroup.remove(player);
+      this.groups.remove(player);
     } else {
 
       setPlayerGroup(player, group.getNamespacedNode());
@@ -268,5 +276,11 @@ public class SimpleShopPermission implements ShopPermission {
     //TODO: check maps for equality
 
     return changes;
+  }
+
+  @Override
+  public ShopPermissionBuilder builder() {
+
+    return new SimpleShopPermissionsBuilder().permissions(Map.copyOf(this.groups));
   }
 }

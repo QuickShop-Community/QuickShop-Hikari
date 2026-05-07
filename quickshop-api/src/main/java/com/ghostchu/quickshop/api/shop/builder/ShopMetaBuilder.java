@@ -19,13 +19,19 @@ package com.ghostchu.quickshop.api.shop.builder;
  */
 
 
+import com.ghostchu.quickshop.api.economy.benefit.BenefitOverflowException;
 import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitsAlreadyException;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopMeta;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 /**
  * ShopMetaBuilder
@@ -172,6 +178,28 @@ public interface ShopMetaBuilder {
   BenefitProvider benefit();
 
   /**
+   * Configures a benefit for the given user with a specified percentage and a result consumer.
+   *
+   * @param user    the {@code QUser} instance representing the user to whom the benefit will be applied.
+   *                Must not be null.
+   * @param percent the percentage of the benefit to be applied. Can be null, but should be a valid
+   *                {@code BigDecimal} value if provided.
+   * @param result  a {@code Consumer<Boolean>} to process the outcome of the operation.
+   *                Must not be null.
+   * @return the {@code ShopMetaBuilder} instance after applying the benefit.
+   */
+  ShopMetaBuilder withBenefit(final @NotNull QUser user, final BigDecimal percent, @NotNull final Consumer<Boolean> result);
+
+  /**
+   * Reduces the benefit associated with the specified user.
+   *
+   * @param user The {@code QUser} instance representing the user whose benefit should be reduced.
+   *             Must not be null.
+   * @return A {@code ShopMetaBuilder} instance after the benefit has been reduced for the specified user.
+   */
+  ShopMetaBuilder lessBenefit(final @NotNull QUser user);
+
+  /**
    * Sets the benefit provider for the shop.
    *
    * @param benefit The BenefitProvider to associate with the shop. Must not be null.
@@ -180,9 +208,11 @@ public interface ShopMetaBuilder {
   ShopMetaBuilder benefit(@NotNull final BenefitProvider benefit);
 
   /**
-   * Builds and returns the configured ShopMeta instance.
+   * Builds and returns a {@code ShopMeta} instance using the specified {@code ModernShop}.
    *
-   * @return the constructed ShopMeta instance based on the current configuration of the builder.
+   * @param shop the {@code ModernShop} instance used to build a {@code ShopMeta}.
+   *             Must be a valid {@code ModernShop} object.
+   * @return a {@code ShopMeta} instance representing the metadata of the provided {@code ModernShop}.
    */
-  ShopMeta build();
+  ShopMeta build(ModernShop<?, ?, ?, ?> shop);
 }

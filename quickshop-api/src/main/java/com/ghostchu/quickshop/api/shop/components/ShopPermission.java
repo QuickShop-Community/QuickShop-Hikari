@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop.components;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopService;
 import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
 import com.ghostchu.quickshop.api.shop.builder.ShopPermissionBuilder;
@@ -143,19 +144,22 @@ public interface ShopPermission {
   EnumSet<ShopChangeType> diff(final @Nullable ShopPermission compare);
 
   /**
-   * Creates a modified {@link ShopPermission} based on the changes applied to the {@link ShopPermissionBuilder}.
+   * Creates a new {@link ShopPermission} instance with modifications applied to its configuration.
+   * This method initializes a {@link ShopPermissionBuilder}, applies the given changes using the provided consumer,
+   * and then builds the resulting {@link ShopPermission}.
    *
    * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
    * you'll need to utilize the {@link ShopService} to do that.</strong>
    *
-   * @param changes a {@link Consumer} that applies modifications to the {@link ShopPermissionBuilder}.
-   * @return a new {@link ShopPermission} instance with the applied changes.
+   * @param shop the {@link ModernShop} instance for which the {@link ShopPermission} will be constructed; must not be null.
+   * @param changes a {@link Consumer} that defines the modifications to be applied to the {@link ShopPermissionBuilder}; must not be null.
+   * @return a new {@link ShopPermission} instance with the specified changes applied.
    */
-  default ShopPermission withChanges(Consumer<ShopPermissionBuilder> changes) {
+  default ShopPermission withChanges(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull final Consumer<ShopPermissionBuilder> changes) {
 
     final ShopPermissionBuilder builder = builder();
     changes.accept(builder);
-    return builder.build();
+    return builder.build(shop);
   }
 
   /**

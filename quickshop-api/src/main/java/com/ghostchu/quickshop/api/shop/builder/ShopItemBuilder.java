@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.builder;
  */
 
 
+import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
 import org.bukkit.inventory.ItemStack;
 
@@ -60,11 +61,12 @@ public interface ShopItemBuilder {
    * @return the current {@code ShopItemBuilder} instance for method chaining
    */
   ShopItemBuilder disableDisplay(boolean disabled);
-
   /**
-   * Constructs and returns a new {@link ShopItem} instance based on the current builder configuration.
+   * Builds and returns a {@code ShopItem} instance based on the specified shop.
    *
-   * @return a new {@link ShopItem} instance.
+   * @param shop the {@code ModernShop} instance used to construct the {@code ShopItem};
+   *             must not be null
+   * @return a newly constructed {@code ShopItem} instance
    */
-  ShopItem build();
+  ShopItem build(ModernShop<?, ?, ?, ?> shop);
 }

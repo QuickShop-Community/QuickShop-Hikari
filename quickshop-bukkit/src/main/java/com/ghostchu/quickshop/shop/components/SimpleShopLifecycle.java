@@ -26,14 +26,12 @@ import com.ghostchu.quickshop.api.event.management.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.components.ShopLifecycle;
-import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import lombok.EqualsAndHashCode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +53,7 @@ public class SimpleShopLifecycle implements ShopLifecycle {
 
   @EqualsAndHashCode.Exclude
   protected final QuickShop plugin;
-  protected final ModernShop<?, ?, Player, InventoryPreview> shop;
+  protected final ModernShop<?, ?, ?, ?> shop;
 
   protected YamlConfiguration extra;
 
@@ -71,7 +69,7 @@ public class SimpleShopLifecycle implements ShopLifecycle {
   private final AtomicBoolean updatingAtomic = new AtomicBoolean(false);
   private volatile CompletableFuture<Void> inFlightUpdate;
 
-  public SimpleShopLifecycle(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopLifecycle(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
     this.plugin = QuickShop.getInstance();
   }

@@ -18,10 +18,8 @@ package com.ghostchu.quickshop.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopBuilderFactory;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.ShopService;
@@ -33,8 +31,6 @@ import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.service.result.ShopCreateResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopDeleteResult;
 import com.ghostchu.quickshop.api.shop.service.result.ShopUpdateResult;
-import com.ghostchu.quickshop.shop.components.SimpleShopItem;
-import com.ghostchu.quickshop.shop.components.SimpleShopPrice;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -42,7 +38,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

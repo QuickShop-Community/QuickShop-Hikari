@@ -25,9 +25,7 @@ import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import com.ghostchu.quickshop.api.shop.trading.TradeResult;
 import com.ghostchu.quickshop.api.shop.trading.TradeService;
-import com.ghostchu.quickshop.shop.InventoryPreview;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -38,9 +36,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SimpleShopTrading implements ShopTrading {
 
-  private final ModernShop<?, ?, Player, InventoryPreview> shop;
+  private final ModernShop<?, ?, ?, ?> shop;
 
-  public SimpleShopTrading(final ModernShop<?, ?, Player, InventoryPreview> shop) {
+  public SimpleShopTrading(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
   }
 

@@ -132,20 +132,23 @@ public interface ShopItem {
   EnumSet<ShopChangeType> diff(final @Nullable ShopItem compare);
 
   /**
-   * Creates a new {@code ShopItem} by applying changes defined in the provided consumer
-   * to a {@code ShopItemBuilder} created from the current state of this item.
+   * Applies a series of changes to a {@link ShopItem} using the provided {@link Consumer<ShopItemBuilder>},
+   * and rebuilds the item with the applied modifications.
    *
    * <strong>NOTE: This does not apply the changes to the Shop Object, Shop cache or database,
    * you'll need to utilize the {@link ShopService} to do that.</strong>
    *
-   * @param changes a consumer that takes a {@code ShopItemBuilder} and applies modifications to it
-   * @return a new {@code ShopItem} instance with the applied changes
+   * @param shop the {@link ModernShop} instance to associate with the modified {@link ShopItem};
+   *             must not be null
+   * @param changes a {@link Consumer} that defines the modifications to apply using a {@link ShopItemBuilder};
+   *                must not be null
+   * @return a newly constructed {@link ShopItem} instance with the applied changes
    */
-  default ShopItem withChanges(Consumer<ShopItemBuilder> changes) {
+  default ShopItem withChanges(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull final Consumer<ShopItemBuilder> changes) {
 
     final ShopItemBuilder builder = builder();
     changes.accept(builder);
-    return builder.build();
+    return builder.build(shop);
   }
 
   /**
