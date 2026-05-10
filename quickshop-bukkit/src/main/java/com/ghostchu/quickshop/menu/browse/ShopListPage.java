@@ -266,10 +266,21 @@ public class ShopListPage {
               .display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + itemName + "</yellow>"))
               .lore(lore);
 
-      // Get teleport location - use shop location + 1 block up
-      // Note: We avoid calling shop.getSigns() here as it requires block access
-      // which can fail on Folia when the shop is in a different region
-      final Location teleportTarget = shop.bukkitLocation().clone().add(0.5, 1, 0.5);
+      List<Location> possiblePositions = new ArrayList<>();
+      possiblePositions.add(shop.bukkitLocation().clone().add(1, 0, 0));
+      possiblePositions.add(shop.bukkitLocation().clone().add(-1, 0, 0));
+      possiblePositions.add(shop.bukkitLocation().clone().add(0, 0, 1));
+      possiblePositions.add(shop.bukkitLocation().clone().add(0, 0, -1));
+
+      // Check which position has a sign in it
+      Location teleportTarget = null;
+      for(Location loc : possiblePositions) {
+          if(loc.getBlock().getState() instanceof org.bukkit.block.Sign) {
+              teleportTarget = loc.add(0.5, 0, 0.5); // Center of the block
+              break;
+          }
+      }
+
 
       final IconBuilder iconBuilder = new IconBuilder(stack)
               .withSlot(listStartSlot + (i - start));
