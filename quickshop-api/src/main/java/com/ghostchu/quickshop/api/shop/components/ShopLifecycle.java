@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop.components;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -60,6 +61,9 @@ public interface ShopLifecycle {
   @NotNull
   String saveExtraToYaml();
 
+  @NotNull
+  DataRecord asDataRecord();
+
   /**
    * Getting ShopInfoStorage that you can use for storage the shop data
    *
@@ -100,6 +104,13 @@ public interface ShopLifecycle {
    * @return Loaded
    */
   boolean isLoaded();
+
+  /**
+   * Checks whether the shop is marked as deleted.
+   *
+   * @return {@code true} if the shop is deleted, {@code false} otherwise
+   */
+  boolean isDeleted();
 
   @Deprecated()
   @ApiStatus.Internal

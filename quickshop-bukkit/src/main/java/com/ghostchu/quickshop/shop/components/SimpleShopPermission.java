@@ -31,6 +31,7 @@ import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.builder.SimpleShopPermissionsBuilder;
 import com.ghostchu.quickshop.util.logger.Log;
+import lombok.EqualsAndHashCode;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SimpleShopPermission implements ShopPermission {
 
+  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   //TODO: modification methods for this in order to add entries/set all entries

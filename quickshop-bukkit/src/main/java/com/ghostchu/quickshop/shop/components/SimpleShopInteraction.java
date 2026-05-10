@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopInteraction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InventoryPreview;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
@@ -41,6 +42,7 @@ import org.jspecify.annotations.NonNull;
  */
 public class SimpleShopInteraction implements ShopInteraction<Player, InventoryPreview> {
 
+  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
   @EqualsAndHashCode.Exclude
   private InventoryPreview inventoryPreview = null;
@@ -57,6 +59,7 @@ public class SimpleShopInteraction implements ShopInteraction<Player, InventoryP
   @Override
   public void onClick(@NonNull final Player player) {
 
+    Util.ensureThread(false);
     ShopClickEvent event = new ShopClickEvent(this.shop, QUserImpl.createFullFilled(player));
     event.callEvent();
 

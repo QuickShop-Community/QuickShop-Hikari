@@ -69,6 +69,16 @@ public interface ShopItem {
   String encodedItem();
 
   /**
+   * Checks whether the provided {@code ItemStack} matches the current shop item.
+   *
+   * @param item The {@code ItemStack} to compare against the shop's item.
+   *             The parameter can be {@code null}.
+   * @return {@code true} if the provided {@code ItemStack} matches the shop's item,
+   *         {@code false} otherwise.
+   */
+  boolean matches(@Nullable final ItemStack item);
+
+  /**
    * Gets shop status is stacking shop
    *
    * @return The shop stacking status

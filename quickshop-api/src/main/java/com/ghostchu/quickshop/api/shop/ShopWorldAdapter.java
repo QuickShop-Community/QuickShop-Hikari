@@ -26,7 +26,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * ShopSign
+ * Defines an adapter for interacting with the world context of a shop within the system.
+ * This interface provides methods for handling shop signs, validating shops, updating display
+ * locations, and managing localized sign text among other operations.
+ * <strong>NOTE: Any methods related to actions that need to be performed in the world itself, any methods in here
+ * need to happen on the main thread</strong>
  *
  * @author creatorfromhell
  * @since 6.3.0.0
@@ -34,33 +38,50 @@ import java.util.List;
 public interface ShopWorldAdapter {
 
   /**
-   * Whether Shop is valid
+   * Checks whether the specified shop instance is valid.
+   * This method determines if the given shop meets the necessary criteria
+   * for being considered a valid shop within the system.
    *
-   * @return status
+   * @param shop The shop instance to validate, represented by a {@code ModernShop<?, ?, ?, ?>}.
+   * @return {@code true} if the shop is valid, {@code false} otherwise.
+   * @since 6.3.0.0
    */
-  boolean isValid();
+  boolean isValidShop(@NotNull final ModernShop<?, ?, ?, ?> shop);
 
   /**
-   * Check the display location, and teleport, respawn if needs.
+   * Ensures that the display location for the specified shop is correctly handled.
+   * This method may involve verifying the shop's display location, teleporting entities,
+   * or respawning display objects as required to maintain consistency.
+   *
+   * @param shop The shop instance whose display location is to be checked and updated,
+   *             represented by a {@code ModernShop<?, ?, ?, ?>}.
+   * @since 6.3.0.0
    */
-  void checkDisplay();
+  void checkDisplay(@NotNull final ModernShop<?, ?, ?, ?> shop);
 
   /**
    * Claim a sign as shop sign (modern method)
    *
    * @param sign The shop sign
+   * @since 6.3.0.0
    */
   void claimShopSign(@NotNull Sign sign);
 
   /**
-   * Get sign texts on shop's sign.
+   * Retrieves the localized text to be displayed on a shop's sign.
+   * This method provides the sign text in the form of a list of {@link Component},
+   * customized according to the specified shop instance and locale.
    *
-   * @param locale The locale to be created for
-   *
-   * @return String arrays represents sign texts: Index | Content Line 0: Header Line 1: Shop Type
-   * Line 2: Shop Item Name Line 3: Price
+   * @param shop   The shop instance for which the sign text is to be retrieved,
+   *               represented by a {@code ModernShop<?, ?, ?, ?>}.
+   * @param locale The locale to be used for generating the sign text,
+   *               represented by a {@code ProxiedLocale}.
+   * @return A list of {@link Component} objects representing the text of the shop's sign,
+   *         with each list entry corresponding to a line of text.
+   * @since 6.3.0.0
    */
-  default List<Component> getSignText(@NotNull final ProxiedLocale locale) {
+  default List<Component> getSignText(@NotNull final ModernShop<?, ?, ?, ?> shop,
+                                      @NotNull final ProxiedLocale locale) {
     //backward support
     throw new UnsupportedOperationException();
   }
@@ -69,9 +90,10 @@ public interface ShopWorldAdapter {
    * Get shop signs, may have multi signs
    *
    * @return Signs for the shop
+   * @since 6.3.0.0
    */
   @NotNull
-  List<Sign> getSigns();
+  List<Sign> getSigns(@NotNull final ModernShop<?, ?, ?, ?> shop);
 
   /**
    * Checks if a Sign is a ShopSign
@@ -79,20 +101,39 @@ public interface ShopWorldAdapter {
    * @param sign Target {@link Sign}
    *
    * @return Is shop info sign
+   * @since 6.3.0.0
    */
   boolean isShopSign(@NotNull Sign sign);
 
   /**
    * Generate new sign texts on shop's sign.
+   * @since 6.3.0.0
    */
-  void setSignText();
+  void setSignText(@NotNull final ModernShop<?, ?, ?, ?> shop);
 
   /**
-   * Set texts on shop's sign
+   * Sets the text displayed on a shop's sign.
+   * This method allows for updating the sign text of the specified shop
+   * using a list of {@link Component} objects where each entry represents a line of text.
    *
-   * @param paramArrayOfString The texts you want set
+   * @param shop The shop instance whose sign text is to be updated, represented by a
+   *             {@code ModernShop<?, ?, ?, ?>}.
+   * @param paramArrayOfString A list of {@link Component} objects representing the new sign text,
+   *                           with each list entry corresponding to a line of text.
+   * @since 6.3.0.0
    */
-  void setSignText(@NotNull List<Component> paramArrayOfString);
+  void setSignText(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull List<Component> paramArrayOfString);
 
-  void setSignText(@NotNull ProxiedLocale locale);
+  /**
+   * Updates the text displayed on a shop's sign with content localized to the given locale.
+   * This method dynamically adjusts the shop sign's text based on the specified shop instance
+   * and target locale for display purposes.
+   *
+   * @param shop   The shop instance whose sign text is to be updated, represented by a
+   *               {@code ModernShop<?, ?, ?, ?>}.
+   * @param locale The locale used to localize the text displayed on the shop's sign,
+   *               represented by a {@code ProxiedLocale}.
+   * @since 6.3.0.0
+   */
+  void setSignText(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull ProxiedLocale locale);
 }

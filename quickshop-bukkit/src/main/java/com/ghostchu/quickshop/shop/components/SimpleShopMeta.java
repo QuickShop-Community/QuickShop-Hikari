@@ -38,6 +38,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
+import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +54,7 @@ import java.util.Objects;
  */
 public class SimpleShopMeta implements ShopMeta {
 
+  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   protected long shopId;

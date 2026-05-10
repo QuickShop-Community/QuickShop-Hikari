@@ -20,11 +20,13 @@ package com.ghostchu.quickshop.shop.components;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
+import com.ghostchu.quickshop.api.event.settings.type.ShopCurrencyEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.builder.ShopPriceBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.shop.builder.SimpleShopPriceBuilder;
+import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +45,7 @@ import static java.math.BigDecimal.ZERO;
  */
 public class SimpleShopPrice implements ShopPrice<Double> {
 
+  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   @Nullable
@@ -95,7 +98,10 @@ public class SimpleShopPrice implements ShopPrice<Double> {
   @Override
   public @Nullable String getCurrency() {
 
-    return currency;
+    final ShopCurrencyEvent event = ShopCurrencyEvent.RETRIEVE(this.shop, this.currency);
+    event.callEvent();
+
+    return event.updated();
   }
 
   /**
@@ -106,6 +112,9 @@ public class SimpleShopPrice implements ShopPrice<Double> {
   @Override
   public void setCurrency(@Nullable final String currency) {
 
+    if(Objects.equals(this.currency, currency)) {
+      return;
+    }
     this.currency = currency;
   }
 

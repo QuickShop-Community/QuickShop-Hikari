@@ -33,12 +33,17 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * SimpleShopDisplay
@@ -48,6 +53,7 @@ import java.util.EnumSet;
  */
 public class SimpleShopItem implements ShopItem {
 
+  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   @NotNull
@@ -88,6 +94,27 @@ public class SimpleShopItem implements ShopItem {
   }
 
   /**
+   * @return The enchantments the shop has on its items.
+   */
+  public @NotNull Map<Enchantment, Integer> getEnchants() {
+
+    final ItemStack item = getItem();
+
+    if(item.hasItemMeta() && item.getItemMeta().hasEnchants()) {
+      return Objects.requireNonNull(item.getItemMeta()).getEnchants();
+    }
+    return Collections.emptyMap();
+  }
+
+  /**
+   * @return The ItemStack type of this shop
+   */
+  public @NotNull Material getMaterial() {
+
+    return this.getItem().getType();
+  }
+
+  /**
    * Set shop item's ItemStack
    *
    * @param item ItemStack to set
@@ -124,6 +151,28 @@ public class SimpleShopItem implements ShopItem {
   public String encodedItem() {
 
     return QuickShop.getInstance().platform().encodeStack(this.originalItem);
+  }
+
+  /**
+   * Checks whether the provided {@code ItemStack} matches the current shop item.
+   *
+   * @param compare The {@code ItemStack} to compare against the shop's item. The parameter can be
+   *             {@code null}.
+   *
+   * @return {@code true} if the provided {@code ItemStack} matches the shop's item, {@code false}
+   * otherwise.
+   */
+  @Override
+  public boolean matches(final @Nullable ItemStack compare) {
+
+    if(compare == null) {
+      return false;
+    }
+    final ItemStack givenItem = compare.clone();
+    givenItem.setAmount(1);
+    final ItemStack shopItem = this.getItem();
+    shopItem.setAmount(1);
+    return QuickShop.getInstance().getItemMatcher().matches(shopItem, givenItem);
   }
 
   /**
