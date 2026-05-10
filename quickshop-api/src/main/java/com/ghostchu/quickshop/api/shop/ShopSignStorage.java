@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.api.shop;
 
 import lombok.Builder;
 import lombok.Data;

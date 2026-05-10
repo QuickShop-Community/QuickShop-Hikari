@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.ShopWorldAdapter;
 import com.ghostchu.quickshop.api.shop.builder.ShopBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopInteraction;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
@@ -12,6 +11,7 @@ import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import com.ghostchu.quickshop.shop.components.SimpleShopInteraction;
+import com.ghostchu.quickshop.api.shop.ShopSignStorage;
 import com.ghostchu.quickshop.shop.components.SimpleShopItem;
 import com.ghostchu.quickshop.shop.components.SimpleShopLifecycle;
 import com.ghostchu.quickshop.shop.components.SimpleShopMeta;
@@ -113,7 +113,8 @@ public class ModernContainerShop implements ModernShop<Double, Location, Player,
     return location;
   }
 
-  protected ShopSignStorage asShopSignStorage() {
+  @Override
+  public ShopSignStorage asShopSignStorage() {
 
     return new ShopSignStorage(this.bukkitLocation().getWorld().getName(),
                                this.bukkitLocation().getBlockX(),

@@ -99,10 +99,6 @@ import static java.math.BigDecimal.ZERO;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop<Double, Location>, Reloadable {
-
-  // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
-  private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
-  private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
   @EqualsAndHashCode.Exclude
   private final QuickShop plugin;
 
@@ -411,19 +407,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   @Override
-  public List<Component> getSignText(@NotNull final ProxiedLocale locale) {
-
-    Util.ensureThread(false);
-
-    final LinkedList<Component> lines = plugin.getShopManager().shopLayoutProvider().render(this, locale);
-
-    final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.RETRIEVE, this, lines);
-    event.callEvent();
-
-    return event.updated();
-  }
-
-  @Override
   public boolean inventoryAvailable() {
 
     if(isUnlimited()) {
@@ -439,120 +422,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       return false;
     }
     return true;
-  }
-
-  @Override
-  public boolean isAttached(@NotNull final Block b) {
-
-    Util.ensureThread(false);
-    return this.bukkitLocation().getBlock().equals(Util.getAttached(b));
-  }
-
-  /**
-   * Checks if a Sign is a ShopSign
-   *
-   * @param sign Target {@link Sign}
-   *
-   * @return Is shop info sign
-   */
-  @Override
-  public boolean isShopSign(@NotNull final Sign sign) {
-    // Check for new shop sign
-    final Component[] lines = new Component[sign.getLines().length];
-    for(int i = 0; i < sign.getLines().length; i++) {
-      lines[i] = plugin.platform().getLine(sign, i);
-    }
-    // Can be claim
-
-    boolean empty = true;
-    for(final Component line : lines) {
-      if(!Util.isEmptyComponent(line)) {
-        empty = false;
-        break;
-      }
-    }
-
-    if(empty) {
-      return true;
-    }
-
-    // Check for exists shop sign (modern)
-    ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
-    if(shopSignStorage == null) {
-      // Try to read Reremake sign namespaced key
-      shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
-    }
-    if(shopSignStorage == null) {
-      // Try more hard to read Reremake sign namespaced key
-      if(sign.getLine(1).startsWith(LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN)) {
-        return true;
-      }
-    }
-    if(shopSignStorage != null) {
-      return shopSignStorage.equals(this.bukkitLocation().getWorld().getName(), this.bukkitLocation().getBlockX(), this.bukkitLocation().getBlockY(), this.bukkitLocation().getBlockZ());
-    }
-    return false;
-  }
-
-  /**
-   * Load ContainerShop.
-   */
-  @Override
-  public void handleLoading() {
-
-    Util.ensureThread(false);
-    if(this.isLoaded) {
-      Log.debug("Dupe load request, canceled.");
-      return;
-    }
-    try(final PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
-      if(getInventory() == null) {
-        plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
-        if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
-          plugin.logger().warn("Deleting corrupt shop...");
-          Util.regionThread(location, () -> plugin.getShopManager().deleteShop(this));
-        } else {
-          plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
-          plugin.getShopManager().unloadShop(this);
-        }
-        return;
-      }
-    }
-    if(Util.fireCancellableEvent(new ShopLoadEvent(this))) {
-      return;
-    }
-    this.isLoaded = true;
-    //disable schedule check due to performance issue
-    //plugin.getShopContainerWatcher().scheduleCheck(this);
-    try(final PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
-      checkDisplay();
-    }
-    if(plugin.getConfig().getBoolean("shop.update-sign-on-load", false)) {
-      Log.debug("Scheduled sign update for shop " + this + " because updateShopSignOnLoad has been enabled.");
-      plugin.getSignUpdateWatcher().scheduleSignUpdate(this);
-    }
-  }
-
-  /**
-   * Unload ContainerShop.
-   */
-  @Override
-  public void handleUnloading(final boolean dontTouchWorld) {
-
-    Util.ensureThread(false);
-    if(!this.isLoaded) {
-      Log.debug("Dupe unload request, canceled.");
-      return;
-    }
-    if(inventoryPreview != null) {
-      inventoryPreview.close();
-    }
-    if(this.displayItem != null) {
-      this.displayItem.remove(dontTouchWorld);
-    }
-    this.isLoaded = false;
-    plugin.getShopManager().getLoadedShops().remove(this);
-    new ShopUnloadEvent(Phase.POST, this).callEvent();
   }
 
   /**
@@ -583,61 +452,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       remains -= stackSize;
     }
     this.setSignText();
-  }
-
-  /**
-   * Updates the shop into the database.
-   */
-  @Override
-  @NotNull
-  public CompletableFuture<Void> update() {
-
-    //Warning! This method can be run in async thread.
-    if(updating) {
-      return CompletableFuture.completedFuture(null);
-    }
-
-    if(this.shopId == -1) {
-      Log.debug("Skip shop database update because it not fully setup!");
-      return CompletableFuture.completedFuture(null);
-    }
-
-    ShopDatabaseEvent event = new ShopDatabaseEvent(Phase.PRE_CANCELLABLE, this);
-
-    if(event.callCancellableEvent()) {
-
-      Log.debug("The Shop update action was canceled by a plugin.");
-      return CompletableFuture.completedFuture(null);
-    }
-
-    event = event.clone(Phase.POST);
-    event.callEvent();
-
-    //If already updating, just return the same future
-    if(!updatingAtomic.compareAndSet(false, true)) {
-      return inFlightUpdate != null ? inFlightUpdate : CompletableFuture.completedFuture(null);
-    }
-
-    //Start a new update
-    final CompletableFuture<Void> f = plugin.getDatabaseHelper().updateShop(this)
-            .whenComplete((r, th) -> {
-              updatingAtomic.set(false);
-              if (th == null) {
-                dirty = false;
-              } else {
-                plugin.logger().warn("Could not update shop in DB!", th);
-              }
-            });
-
-    inFlightUpdate = f;
-    return f;
-  }
-
-  @Override
-  public void updateSync() throws RuntimeException {
-    final CompletableFuture<Void> future = update();
-
-    waitForFuture(future, 15, TimeUnit.SECONDS, "updateShop(" + shopId + ")");
   }
 
   private @NotNull InventoryWrapper locateInventory(@Nullable final String symbolLink) {

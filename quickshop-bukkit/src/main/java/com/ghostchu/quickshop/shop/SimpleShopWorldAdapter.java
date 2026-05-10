@@ -19,23 +19,19 @@ package com.ghostchu.quickshop.shop;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopWorldAdapter;
-import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
-import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -47,7 +43,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.ghostchu.quickshop.util.Util.plugin;
+import static com.ghostchu.quickshop.api.shop.Shop.SHOP_NAMESPACED_KEY;
+import static com.ghostchu.quickshop.shop.ContainerShop.LEGACY_SHOP_NAMESPACED_KEY;
+import static com.ghostchu.quickshop.shop.ContainerShop.LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN;
 
 /**
  * SimpleShopWorldAdapter
@@ -56,6 +54,10 @@ import static com.ghostchu.quickshop.util.Util.plugin;
  * @since 6.3.0.0
  */
 public class SimpleShopWorldAdapter implements ShopWorldAdapter {
+
+  // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
+  private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
+  private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
 
   /**
    * Checks whether the specified shop instance is valid. This method determines if the given shop
@@ -75,6 +77,28 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
       return false;
     }
     return Util.canBeShop(shop.bukkitLocation().getBlock());
+  }
+
+  /**
+   * Determines whether the specified block is attached to the given shop instance.
+   *
+   * This method checks if the provided block is associated with the given shop based on certain
+   * conditions, which could involve physical proximity, structural linkage, or other criteria
+   * defined within the system.
+   *
+   * @param shop The shop instance to check against, represented by a
+   *             {@code ModernShop<?, ?, ?, ?>}. Must not be null.
+   * @param b    The block to verify as being attached. Must not be null.
+   *
+   * @return {@code true} if the block is attached to the specified shop, {@code false} otherwise.
+   *
+   * @since 6.3.0.0
+   */
+  @Override
+  public boolean isAttached(final @NotNull ModernShop<?, ?, ?, ?> shop, final @NotNull Block b) {
+
+    Util.ensureThread(false);
+    return shop.bukkitLocation().getBlock().equals(Util.getAttached(b));
   }
 
   /**
@@ -100,8 +124,8 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
   @Override
   public void claimShopSign(final @NotNull ModernShop<?, ?, ?, ?> shop, @NotNull final Sign sign) {
 
-    if(!sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
-      sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
+    if(!sign.getPersistentDataContainer().has(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
+      sign.getPersistentDataContainer().set(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, shop.asShopSignStorage());
       sign.update();
     }
   }
@@ -140,8 +164,8 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
       if(!shop.bukkitLocation().getBlock().equals(Util.getAttached(b))) {
         continue;
       }
-      if(isShopSign(sign)) {
-        claimShopSign(sign);
+      if(isShopSign(shop, sign)) {
+        claimShopSign(shop, sign);
         signs.add(sign);
       }
     }
@@ -152,13 +176,53 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
   /**
    * Checks if a Sign is a ShopSign
    *
+   * @param shop The shop instance that the sign belongs to, represented by a
+   *             {@code ModernShop<?, ?, ?, ?>}.
    * @param sign Target {@link Sign}
    *
    * @return Is shop info sign
+   *
+   * @since 6.3.0.0
    */
   @Override
-  public boolean isShopSign(@NotNull final Sign sign) {
+  public boolean isShopSign(final @NotNull ModernShop<?, ?, ?, ?> shop, @NotNull final Sign sign) {
+    // Check for new shop sign
+    final Component[] lines = new Component[sign.getLines().length];
+    for(int i = 0; i < sign.getLines().length; i++) {
+      lines[i] = QuickShop.getInstance().platform().getLine(sign, i);
+    }
+    // Can be claim
 
+    boolean empty = true;
+    for(final Component line : lines) {
+      if(!Util.isEmptyComponent(line)) {
+        empty = false;
+        break;
+      }
+    }
+
+    if(empty) {
+      return true;
+    }
+
+    // Check for exists shop sign (modern)
+    com.ghostchu.quickshop.api.shop.ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+    if(shopSignStorage == null) {
+      // Try to read Reremake sign namespaced key
+      shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+    }
+    if(shopSignStorage == null) {
+      // Try more hard to read Reremake sign namespaced key
+      if(sign.getLine(1).startsWith(LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN)) {
+        return true;
+      }
+    }
+    if(shopSignStorage != null) {
+      return shopSignStorage.equals(shop.bukkitLocation().getWorld().getName(),
+                                    shop.bukkitLocation().getBlockX(),
+                                    shop.bukkitLocation().getBlockY(),
+                                    shop.bukkitLocation().getBlockZ());
+    }
     return false;
   }
 
@@ -248,7 +312,7 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
     }
     if(QuickShop.getInstance().getSignHooker() != null) {
       Log.debug("Start sign broadcast...");
-      QuickShop.getInstance().getSignHooker().updatePerPlayerShopSignBroadcast(shop.bukkitLocation(), this);
+      QuickShop.getInstance().getSignHooker().updatePerPlayerShopSignBroadcast(shop.bukkitLocation(), shop);
       Log.debug("Sign broadcast completed.");
     }
   }

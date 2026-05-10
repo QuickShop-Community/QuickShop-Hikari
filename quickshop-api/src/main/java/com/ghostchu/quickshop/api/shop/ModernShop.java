@@ -66,6 +66,16 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
   ShopTrading trading();
 
   /**
+   * Converts the current shop instance into a {@link ShopSignStorage}.
+   *
+   * This method provides a {@link ShopSignStorage} object that acts as a
+   * container for storing the shop's sign location data, such as world, x, y, and z coordinates.
+   *
+   * @return a {@link ShopSignStorage} instance that contains the location data of the shop's sign.
+   */
+  ShopSignStorage asShopSignStorage();
+
+  /**
    * Applies a series of changes to the current shop instance using a {@link ShopBuilder}.
    * The specified consumer allows modification of the {@code ShopBuilder},
    * after which the shop is rebuilt with the applied changes.

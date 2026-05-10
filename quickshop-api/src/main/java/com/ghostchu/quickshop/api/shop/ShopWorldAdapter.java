@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import net.kyori.adventure.text.Component;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,6 +50,21 @@ public interface ShopWorldAdapter {
   boolean isValidShop(@NotNull final ModernShop<?, ?, ?, ?> shop);
 
   /**
+   * Determines whether the specified block is attached to the given shop instance.
+   *
+   * This method checks if the provided block is associated with the given shop
+   * based on certain conditions, which could involve physical proximity, structural
+   * linkage, or other criteria defined within the system.
+   *
+   * @param shop The shop instance to check against, represented by a {@code ModernShop<?, ?, ?, ?>}.
+   *             Must not be null.
+   * @param b    The block to verify as being attached. Must not be null.
+   * @return {@code true} if the block is attached to the specified shop, {@code false} otherwise.
+   * @since 6.3.0.0
+   */
+  boolean isAttached(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull final Block b);
+
+  /**
    * Ensures that the display location for the specified shop is correctly handled.
    * This method may involve verifying the shop's display location, teleporting entities,
    * or respawning display objects as required to maintain consistency.
@@ -62,10 +78,11 @@ public interface ShopWorldAdapter {
   /**
    * Claim a sign as shop sign (modern method)
    *
+   * @param shop The shop instance that the sign belongs to, represented by a {@code ModernShop<?, ?, ?, ?>}.
    * @param sign The shop sign
    * @since 6.3.0.0
    */
-  void claimShopSign(@NotNull Sign sign);
+  void claimShopSign(final @NotNull ModernShop<?, ?, ?, ?> shop, @NotNull Sign sign);
 
   /**
    * Retrieves the localized text to be displayed on a shop's sign.
@@ -98,12 +115,13 @@ public interface ShopWorldAdapter {
   /**
    * Checks if a Sign is a ShopSign
    *
+   * @param shop The shop instance that the sign belongs to, represented by a {@code ModernShop<?, ?, ?, ?>}.
    * @param sign Target {@link Sign}
    *
    * @return Is shop info sign
    * @since 6.3.0.0
    */
-  boolean isShopSign(@NotNull Sign sign);
+  boolean isShopSign(@NotNull final ModernShop<?, ?, ?, ?> shop, @NotNull Sign sign);
 
   /**
    * Generate new sign texts on shop's sign.
