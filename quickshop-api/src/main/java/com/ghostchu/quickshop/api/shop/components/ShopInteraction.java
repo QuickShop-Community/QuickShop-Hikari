@@ -41,11 +41,6 @@ public interface ShopInteraction<T, U> {
   U preview();
 
   /**
-   * @return The chest this shop is based on.
-   */
-  @Nullable InventoryWrapper getInventory();
-
-  /**
    * Opens a preview for the specified player. This is typically used to display
    * shop items to the player in a preview interface.
    *

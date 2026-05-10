@@ -51,9 +51,9 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
+@SuppressWarnings({ "removal"})
 public class SimpleShopItem implements ShopItem {
 
-  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   @NotNull
@@ -311,5 +311,19 @@ public class SimpleShopItem implements ShopItem {
   public ShopItemBuilder builder() {
 
     return new SimpleShopItemBuilder().item(this.item.clone()).disableDisplay(this.disableDisplay);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(!(o instanceof final SimpleShopItem that)) return false;
+    return disableDisplay == that.disableDisplay && Objects.equals(item, that.item)
+           && Objects.equals(originalItem, that.originalItem);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(item, originalItem, disableDisplay);
   }
 }

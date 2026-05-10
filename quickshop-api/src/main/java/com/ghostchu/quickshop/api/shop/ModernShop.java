@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.api.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.builder.ShopBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopInteraction;
 import com.ghostchu.quickshop.api.shop.components.ShopItem;
@@ -26,8 +27,11 @@ import com.ghostchu.quickshop.api.shop.components.ShopMeta;
 import com.ghostchu.quickshop.api.shop.components.ShopPermission;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
+import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -76,6 +80,45 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
   ShopSignStorage asShopSignStorage();
 
   /**
+   * Converts the current shop instance into a {@link DataRecord}.
+   *
+   * This method provides a {@link DataRecord} representation of the shop instance,
+   * encapsulating all relevant shop-related data such as item details, pricing,
+   * permissions, owner information, and additional metadata.
+   *
+   * @return a {@link DataRecord} instance representing the shop's data.
+   */
+  @NotNull
+  DataRecord asDataRecord();
+
+  /**
+   * Getting ShopInfoStorage that you can use for storage the shop data
+   *
+   * @return ShopInfoStorage
+   */
+  ShopInfoStorage asInfoStorage();
+
+  /**
+   * Gets the symbol link that created by InventoryWrapperManager
+   *
+   * @return InventoryWrapper
+   */
+  @NotNull
+  String asSymbolLink();
+
+  /**
+   * Compares the current {@code ModernShop} instance with another provided instance and determines the set of
+   * differences between them. These differences are represented as a set of {@code ShopChangeType} values,
+   * where each type corresponds to a category of change (e.g., item, price, owner, etc.).
+   *
+   * @param compare The {@code ModernShop} instance to compare against. If {@code null}, the method assumes
+   *                comparison with a non-existent or empty shop.
+   * @return An {@code EnumSet} of {@code ShopChangeType} values that represent the changes detected between
+   *         the current shop instance and the provided shop. If no changes are detected, an empty set is returned.
+   */
+  EnumSet<ShopChangeType> diff(final @Nullable ModernShop<T, S, U, V> compare);
+
+  /**
    * Applies a series of changes to the current shop instance using a {@link ShopBuilder}.
    * The specified consumer allows modification of the {@code ShopBuilder},
    * after which the shop is rebuilt with the applied changes.
@@ -88,7 +131,7 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
    */
   default ModernShop<T, S, U, V> withChanges(final Consumer<ShopBuilder<T, S, U, V>> changes) {
 
-    final ShopBuilder<T, S, U, V> builder = asBuilder();
+    final ShopBuilder<T, S, U, V> builder = builder();
     changes.accept(builder);
     return builder.build();
   }
@@ -98,5 +141,5 @@ public interface ModernShop<T, S, U, V> extends Locatable<S> {
    *
    * @return a {@link ShopBuilder} instance initialized with the current shop's state, enabling further modifications.
    */
-  ShopBuilder<T, S, U, V> asBuilder();
+  ShopBuilder<T, S, U, V> builder();
 }

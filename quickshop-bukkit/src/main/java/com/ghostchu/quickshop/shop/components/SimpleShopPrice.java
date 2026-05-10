@@ -26,7 +26,6 @@ import com.ghostchu.quickshop.api.shop.builder.ShopPriceBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopPrice;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.shop.builder.SimpleShopPriceBuilder;
-import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,9 +42,9 @@ import static java.math.BigDecimal.ZERO;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
+@SuppressWarnings({ "removal"})
 public class SimpleShopPrice implements ShopPrice<Double> {
 
-  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   @Nullable
@@ -269,5 +268,18 @@ public class SimpleShopPrice implements ShopPrice<Double> {
   public ShopPriceBuilder<Double> builder() {
 
     return new SimpleShopPriceBuilder().price(this.price).currency(this.currency);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(!(o instanceof final SimpleShopPrice that)) return false;
+    return Double.compare(price, that.price) == 0 && Objects.equals(currency, that.currency);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(currency, price);
   }
 }

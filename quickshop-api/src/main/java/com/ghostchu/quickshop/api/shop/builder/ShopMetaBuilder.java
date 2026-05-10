@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopMeta;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -206,6 +207,28 @@ public interface ShopMetaBuilder {
    * @return The current instance of ShopMetaBuilder for method chaining.
    */
   ShopMetaBuilder benefit(@NotNull final BenefitProvider benefit);
+
+  /**
+   * Sets additional configuration for the shop using the provided {@code YamlConfiguration} instance.
+   * This method allows for extending the shop's metadata with extra custom-defined settings.
+   *
+   * @param extra the {@code YamlConfiguration} instance containing additional shop configuration.
+   *              Must not be null.
+   * @return the current instance of {@code ShopMetaBuilder} for method chaining.
+   */
+  ShopMetaBuilder extra(final @NotNull YamlConfiguration extra);
+
+  /**
+   * Configures an inventory wrapper provider for the shop.
+   * The inventory wrapper provider manages inventory-related operations
+   * within the shop system and must not be null.
+   *
+   * @param inventoryWrapperProvider the name or identifier of the
+   *                                 inventory wrapper provider to associate with the shop.
+   *                                 Must be a non-null string.
+   * @return the current instance of {@code ShopMetaBuilder} for method chaining.
+   */
+  ShopMetaBuilder inventoryWrapperProvider(@NotNull final String inventoryWrapperProvider);
 
   /**
    * Builds and returns a {@code ShopMeta} instance using the specified {@code ModernShop}.

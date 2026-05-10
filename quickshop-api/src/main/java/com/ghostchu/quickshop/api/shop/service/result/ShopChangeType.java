@@ -39,4 +39,9 @@ public enum ShopChangeType {
   PRICE,
   CURRENCY,
   PERMISSION,
+  EXTRA,
+  INVENTORY_WRAPPER,
+  LOCATION,
+  SYMBOL_LINK,
+  RUNTIME_ID
 }

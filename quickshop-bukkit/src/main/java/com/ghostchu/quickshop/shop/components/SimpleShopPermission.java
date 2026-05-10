@@ -31,7 +31,6 @@ import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.builder.SimpleShopPermissionsBuilder;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.EqualsAndHashCode;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,9 +52,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
+@SuppressWarnings({"deprecation", "removal"})
 public class SimpleShopPermission implements ShopPermission {
 
-  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   //TODO: modification methods for this in order to add entries/set all entries
@@ -284,5 +284,18 @@ public class SimpleShopPermission implements ShopPermission {
   public ShopPermissionBuilder builder() {
 
     return new SimpleShopPermissionsBuilder().permissions(Map.copyOf(this.groups));
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(!(o instanceof final SimpleShopPermission that)) return false;
+    return Objects.equals(groups, that.groups);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hashCode(groups);
   }
 }

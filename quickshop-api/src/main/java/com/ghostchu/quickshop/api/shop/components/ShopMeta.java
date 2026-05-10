@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop.components;
  */
 
 import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
@@ -29,7 +30,9 @@ import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
 import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -242,6 +245,49 @@ public interface ShopMeta {
    */
   @Deprecated(forRemoval = true, since = "6.3.0.0")
   void setShopBenefit(@NotNull BenefitProvider benefit);
+
+  /**
+   * Getting ConfigurationSection (extra data) instance of your plugin namespace)
+   *
+   * @param plugin The plugin and plugin name will used for namespace
+   *
+   * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly lose
+   * or save
+   */
+  @NotNull
+  ConfigurationSection getExtra(@NotNull Plugin plugin);
+
+  /**
+   * Sets additional data for the shop associated with the specified plugin.
+   *
+   * @param plugin The plugin instance for which the extra data is being set. Must not be null.
+   * @param data   The configuration section containing the extra data to be associated with the shop.
+   *               Can be null if the extra data needs to be cleared.
+   */
+  void setExtra(@NotNull Plugin plugin, @Nullable ConfigurationSection data);
+
+  /**
+   * Returns the name of the inventory wrapper provider used in the application.
+   *
+   * @return A non-null string representing the inventory wrapper provider's name.
+   */
+  @NotNull String getInventoryWrapperProvider();
+
+  /**
+   * Retrieves the current inventory encapsulated within an InventoryWrapper object.
+   * If no inventory is available, this method may return null.
+   *
+   * @return the InventoryWrapper containing inventory data, or null if no inventory is present.
+   */
+  @Nullable InventoryWrapper getInventory();
+
+  /**
+   * Save the plugin extra data to Json format
+   *
+   * @return The json string
+   */
+  @NotNull
+  String saveExtraToYaml();
 
   /**
    * Compares the current {@code ShopMeta} instance with another {@code ShopMeta} instance

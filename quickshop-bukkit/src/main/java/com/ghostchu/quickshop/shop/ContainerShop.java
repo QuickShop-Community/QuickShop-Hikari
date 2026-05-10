@@ -327,12 +327,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     return null;
   }
 
-  @Override
-  public @NotNull String getInventoryWrapperProvider() {
-
-    return inventoryWrapperProvider;
-  }
-
   /**
    * Returns the number of free spots in the chest for the particular item.
    *

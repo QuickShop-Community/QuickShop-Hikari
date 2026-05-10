@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopStateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTaxAccountEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
@@ -36,10 +37,13 @@ import com.ghostchu.quickshop.api.shop.service.result.ShopChangeType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
+import com.ghostchu.quickshop.shop.builder.SimpleShopMetaBuilder;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,9 +56,9 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
+@SuppressWarnings({"deprecation", "removal"})
 public class SimpleShopMeta implements ShopMeta {
 
-  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   protected long shopId;
@@ -71,6 +75,11 @@ public class SimpleShopMeta implements ShopMeta {
   @NotNull
   private BenefitProvider benefit;
 
+  @NotNull
+  private String inventoryWrapperProvider;
+
+  protected YamlConfiguration extra;
+
   public SimpleShopMeta(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
   }
@@ -82,9 +91,11 @@ public class SimpleShopMeta implements ShopMeta {
                         @NotNull final IShopType shopType,
                         @NotNull final ShopState shopState,
                         @Nullable final QUser taxAccount,
-                        @NotNull final BenefitProvider benefit) {
+                        @NotNull final BenefitProvider benefit,
+                        @NotNull final String inventoryWrapperProvider,
+                        @NotNull final YamlConfiguration extra) {
 
-    this(shop, shop.meta().getShopId(), owner, shopName, unlimited, shopType, shopState, taxAccount, benefit);
+    this(shop, shop.meta().getShopId(), owner, shopName, unlimited, shopType, shopState, taxAccount, benefit, inventoryWrapperProvider, extra);
   }
 
   public SimpleShopMeta(@NotNull final ModernShop<?, ?, ?, ?> shop,
@@ -95,7 +106,9 @@ public class SimpleShopMeta implements ShopMeta {
                         @NotNull final IShopType shopType,
                         @NotNull final ShopState shopState,
                         @Nullable final QUser taxAccount,
-                        @NotNull final BenefitProvider benefit) {
+                        @NotNull final BenefitProvider benefit,
+                        @NotNull final String inventoryWrapperProvider,
+                        @NotNull final YamlConfiguration extra) {
 
     this.shop = shop;
     this.shopId = shopId;
@@ -106,6 +119,8 @@ public class SimpleShopMeta implements ShopMeta {
     this.shopState = shopState;
     this.taxAccount = taxAccount;
     this.benefit = benefit;
+    this.inventoryWrapperProvider = inventoryWrapperProvider;
+    this.extra = extra;
   }
 
   /**
@@ -493,6 +508,100 @@ public class SimpleShopMeta implements ShopMeta {
     //setDirty();
   }
 
+  /**
+   * Getting ConfigurationSection (extra data) instance of your plugin namespace)
+   *
+   * @param plugin The plugin and plugin name will used for namespace
+   *
+   * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly lose
+   * or save
+   */
+  @Override
+  public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
+
+    if(this.extra == null) {
+      this.extra = new YamlConfiguration();
+    }
+    ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
+    if(section == null) {
+      section = extra.createSection(plugin.getName());
+    }
+    return section;
+  }
+
+  /**
+   * Save the extra data to the shop.
+   *
+   * @param plugin Plugin instace
+   * @param data   The data table
+   */
+  @Override
+  public void setExtra(@NotNull final Plugin plugin, @Nullable final ConfigurationSection data) {
+
+    if(data == null && this.extra == null) {
+      return;
+    }
+
+    if(this.extra == null) {
+      this.extra = new YamlConfiguration();
+    }
+    extra.set(plugin.getName(), data);
+    // compress extra to null if possible
+    boolean anyValid = false;
+    for(final String key : extra.getKeys(false)) {
+      if(!extra.isConfigurationSection(key)) {
+        anyValid = true;
+        break;
+      }
+      final ConfigurationSection section = extra.getConfigurationSection(key);
+      if(section == null) continue;
+      if(!section.getKeys(false).isEmpty()) {
+        anyValid = true;
+        break;
+      }
+    }
+    if(!anyValid) {
+      this.extra = null;
+    }
+
+    //TODO: Determine how to mark as dirty. Maybe through shop service?
+    //setDirty();
+  }
+
+  /**
+   * Returns the name of the inventory wrapper provider used in the application.
+   *
+   * @return A non-null string representing the inventory wrapper provider's name.
+   */
+  @Override
+  public @NotNull String getInventoryWrapperProvider() {
+
+    return inventoryWrapperProvider;
+  }
+
+  /**
+   * Retrieves the current inventory encapsulated within an InventoryWrapper object. If no inventory
+   * is available, this method may return null.
+   *
+   * @return the InventoryWrapper containing inventory data, or null if no inventory is present.
+   */
+  @Override
+  public @Nullable InventoryWrapper getInventory() {
+
+    return null;
+  }
+
+  /**
+   * Save the plugin extra data to Json format
+   *
+   * @return The json string
+   */
+  @Override
+  public @NotNull String saveExtraToYaml() {
+
+    return extra == null? "" : extra.saveToString();
+  }
+
   @Override
   public EnumSet<ShopChangeType> diff(final @Nullable ShopMeta compare) {
 
@@ -528,12 +637,49 @@ public class SimpleShopMeta implements ShopMeta {
     if(compare == null || !compare.getShopBenefit().serialize().equals(this.benefit.serialize())) {
       changes.add(ShopChangeType.BENEFITS);
     }
+
+    if(compare == null || !compare.saveExtraToYaml().equals(this.saveExtraToYaml())) {
+      changes.add(ShopChangeType.EXTRA);
+    }
+
+    if(compare == null || !compare.getInventoryWrapperProvider().equals(this.getInventoryWrapperProvider())) {
+      changes.add(ShopChangeType.INVENTORY_WRAPPER);
+    }
     return changes;
   }
 
   @Override
   public ShopMetaBuilder builder() {
 
-    return null;
+    return new SimpleShopMetaBuilder()
+            .shopId(shopId)
+            .owner(owner)
+            .shopName(shopName)
+            .isUnlimited(unlimited)
+            .shopType(shopType)
+            .shopState(shopState)
+            .taxAccount(taxAccount)
+            .benefit(benefit)
+            .inventoryWrapperProvider(inventoryWrapperProvider)
+            .extra(extra);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+
+    if(!(o instanceof final SimpleShopMeta that)) return false;
+    return shopId == that.shopId && unlimited == that.unlimited && Objects.equals(owner, that.owner)
+           && Objects.equals(shopName, that.shopName) && Objects.equals(shopType, that.shopType)
+           && Objects.equals(shopState, that.shopState) && Objects.equals(taxAccount, that.taxAccount)
+           && Objects.equals(benefit, that.benefit)
+           && Objects.equals(inventoryWrapperProvider, that.inventoryWrapperProvider)
+           && Objects.equals(extra, that.extra);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(shopId, owner, shopName, unlimited, shopType, shopState, taxAccount, benefit,
+                        inventoryWrapperProvider, extra);
   }
 }

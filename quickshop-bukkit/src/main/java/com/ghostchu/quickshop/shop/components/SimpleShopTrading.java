@@ -25,7 +25,6 @@ import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopTrading;
 import com.ghostchu.quickshop.api.shop.trading.TradeResult;
 import com.ghostchu.quickshop.api.shop.trading.TradeService;
-import lombok.EqualsAndHashCode;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,9 +34,9 @@ import org.jetbrains.annotations.NotNull;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
+@SuppressWarnings({ "removal"})
 public class SimpleShopTrading implements ShopTrading {
 
-  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
 
   public SimpleShopTrading(@NotNull final ModernShop<?, ?, ?, ?> shop) {

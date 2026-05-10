@@ -19,28 +19,19 @@ package com.ghostchu.quickshop.shop.components;
  */
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopDatabaseEvent;
 import com.ghostchu.quickshop.api.event.management.ShopLoadEvent;
 import com.ghostchu.quickshop.api.event.management.ShopUnloadEvent;
 import com.ghostchu.quickshop.api.shop.ModernShop;
-import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import com.ghostchu.quickshop.api.shop.components.ShopLifecycle;
-import com.ghostchu.quickshop.common.util.JsonUtil;
-import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
-import lombok.EqualsAndHashCode;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,28 +46,13 @@ import static com.ghostchu.quickshop.util.Util.waitForFuture;
  */
 public class SimpleShopLifecycle implements ShopLifecycle {
 
-  @EqualsAndHashCode.Exclude
   protected final QuickShop plugin;
-  @EqualsAndHashCode.Exclude
   protected final ModernShop<?, ?, ?, ?> shop;
 
-  @NotNull
-  private String inventoryWrapperProvider;
-
-  protected YamlConfiguration extra;
-
-  @NotNull
-  protected String symbolLink;
-
-  @EqualsAndHashCode.Exclude
   protected boolean dirty = false;
-  @EqualsAndHashCode.Exclude
   protected boolean updating = false;
-  @EqualsAndHashCode.Exclude
   protected boolean isLoaded = false;
-  @EqualsAndHashCode.Exclude
   private final boolean isDeleted = false;
-  @EqualsAndHashCode.Exclude
   private volatile boolean createBackup = false;
 
   //updating objects
@@ -86,119 +62,6 @@ public class SimpleShopLifecycle implements ShopLifecycle {
   public SimpleShopLifecycle(@NotNull final ModernShop<?, ?, ?, ?> shop) {
     this.shop = shop;
     this.plugin = QuickShop.getInstance();
-  }
-
-  /**
-   * Getting ConfigurationSection (extra data) instance of your plugin namespace)
-   *
-   * @param plugin The plugin and plugin name will used for namespace
-   *
-   * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly lose
-   * or save
-   */
-  @Override
-  public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
-
-    if(this.extra == null) {
-      this.extra = new YamlConfiguration();
-    }
-    ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
-    if(section == null) {
-      section = extra.createSection(plugin.getName());
-    }
-    return section;
-  }
-
-  /**
-   * Save the extra data to the shop.
-   *
-   * @param plugin Plugin instace
-   * @param data   The data table
-   */
-  @Override
-  public void setExtra(@NotNull final Plugin plugin, @NotNull final ConfigurationSection data) {
-
-    if(this.extra == null) {
-      this.extra = new YamlConfiguration();
-    }
-    extra.set(plugin.getName(), data);
-    // compress extra to null if possible
-    boolean anyValid = false;
-    for(final String key : extra.getKeys(false)) {
-      if(!extra.isConfigurationSection(key)) {
-        anyValid = true;
-        break;
-      }
-      final ConfigurationSection section = extra.getConfigurationSection(key);
-      if(section == null) continue;
-      if(!section.getKeys(false).isEmpty()) {
-        anyValid = true;
-        break;
-      }
-    }
-    if(!anyValid) {
-      this.extra = null;
-    }
-
-    //TODO: Determine how to mark as dirty. Maybe through shop service?
-    //setDirty();
-  }
-
-  /**
-   * Save the plugin extra data to Json format
-   *
-   * @return The json string
-   */
-  @Override
-  public @NotNull String saveExtraToYaml() {
-
-    return extra == null? "" : extra.saveToString();
-  }
-
-  @Override
-  public @NotNull DataRecord asDataRecord() {
-
-    return new SimpleDataRecord(
-            shop.meta().getOwner(),
-            shop.item().encodedItem(),
-            shop.item().encodedItem(),
-            shop.meta().getShopName(),
-            shop.meta().shopType().id(),
-            shop.meta().shopState().identifier(),
-            shop.price().getCurrency(),
-            shop.price().price(),
-            shop.meta().isUnlimited(),
-            shop.item().isDisableDisplay(),
-            shop.meta().getTaxAccount(),
-            JsonUtil.getGson().toJson(shop.permission().getPermissionAudiences()),
-            saveExtraToYaml(),
-            shop.interaction().getInventoryWrapperProvider(),
-            shop.lifecycle().asSymbolLink(),
-            new Date(),
-            shop.meta().getShopBenefit().serialize()
-    );
-  }
-
-  /**
-   * Getting ShopInfoStorage that you can use for storage the shop data
-   *
-   * @return ShopInfoStorage
-   */
-  @Override
-  public ShopInfoStorage asInfoStorage() {
-
-    return ShopInfoStorage.fromShop(shop);
-  }
-
-  /**
-   * Gets the symbol link that created by InventoryWrapperManager
-   *
-   * @return InventoryWrapper
-   */
-  @Override
-  public @NotNull String asSymbolLink() {
-
-    return symbolLink;
   }
 
   /**
@@ -261,9 +124,9 @@ public class SimpleShopLifecycle implements ShopLifecycle {
       return;
     }
     try(final PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
-      if(this.shop.interaction().getInventory() == null) {
+      if(this.shop.meta().getInventory() == null) {
 
-        plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, this.getClass().getName(), "Inventory is null");
+        plugin.logger().warn("Failed to load shop: {}: {}: {}", shop.asSymbolLink(), this.getClass().getName(), "Inventory is null");
         if(plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
           plugin.logger().warn("Deleting corrupt shop...");
           Util.regionThread(this.shop.bukkitLocation(), () -> plugin.getShopManager().deleteShop(this.shop));

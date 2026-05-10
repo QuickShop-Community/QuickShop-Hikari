@@ -54,6 +54,25 @@ public interface ShopBuilder<T, S, U, V> {
   ShopBuilder<T, S, U, V> location(T location);
 
   /**
+   * Retrieves the symbolic link associated with the shop being built.
+   * The symbolic link can be used as an identifier or a reference to the shop in various contexts.
+   *
+   * @return a {@code String} representing the symbolic link for the shop.
+   */
+  String symbolLink();
+
+  /**
+   * Associates a symbolic identifier with the shop being built. This symbolic identifier
+   * can be used for various purposes, such as referencing the shop in external systems
+   * or providing human-readable identifiers for debugging.
+   *
+   * @param symbolLink the symbolic identifier to associate with the shop; must not be null
+   *                   or empty
+   * @return the current {@code ShopBuilder} instance for method chaining
+   */
+  ShopBuilder<T, S, U, V> symbolLink(String symbolLink);
+
+  /**
    * Generates and retrieves a runtime-unique {@code UUID}. This identifier is intended
    * to uniquely distinguish a specific shop instance during its lifecycle.
    *
@@ -109,6 +128,17 @@ public interface ShopBuilder<T, S, U, V> {
    * @return the {@code ShopLifecycle} representing the lifecycle management of the shop.
    */
   ShopLifecycle lifecycle();
+
+  /**
+   * Sets the lifecycle configuration for the shop being built. The lifecycle is used
+   * to manage the state and behavior of the shop throughout its existence, such as
+   * handling loading, saving, and dirty state tracking.
+   *
+   * @param lifecycle the {@code ShopLifecycle} instance that defines the lifecycle
+   *                  management for the shop; must not be null
+   * @return the current {@code ShopBuilder} instance for method chaining
+   */
+  ShopBuilder<T, S, U, V> lifecycle(ShopLifecycle lifecycle);
 
   /**
    * Retrieves the metadata associated with the shop being built.

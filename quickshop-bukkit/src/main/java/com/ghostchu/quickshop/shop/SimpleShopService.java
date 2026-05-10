@@ -416,13 +416,13 @@ public class SimpleShopService implements ShopService<ModernContainerShop> {
   }
 
   @Override
-  public ShopActionResult handleLoading() {
+  public ShopActionResult<?> handleLoading() {
 
     return null;
   }
 
   @Override
-  public ShopActionResult handleUnloading(final boolean dontTouchWorld) {
+  public ShopActionResult<?> handleUnloading(final boolean dontTouchWorld) {
 
     return null;
   }

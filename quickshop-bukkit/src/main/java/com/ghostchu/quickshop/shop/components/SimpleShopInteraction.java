@@ -21,17 +21,14 @@ package com.ghostchu.quickshop.shop.components;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopClickEvent;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.components.ShopInteraction;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.InventoryPreview;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 /**
@@ -42,9 +39,7 @@ import org.jspecify.annotations.NonNull;
  */
 public class SimpleShopInteraction implements ShopInteraction<Player, InventoryPreview> {
 
-  @EqualsAndHashCode.Exclude
   private final ModernShop<?, ?, ?, ?> shop;
-  @EqualsAndHashCode.Exclude
   private InventoryPreview inventoryPreview = null;
 
   public SimpleShopInteraction(@NotNull final ModernShop<?, ?, ?, ?> shop) {
@@ -81,15 +76,6 @@ public class SimpleShopInteraction implements ShopInteraction<Player, InventoryP
   public InventoryPreview preview() {
 
     return inventoryPreview;
-  }
-
-  /**
-   * @return The chest this shop is based on.
-   */
-  @Override
-  public @Nullable InventoryWrapper getInventory() {
-
-    return null;
   }
 
   /**

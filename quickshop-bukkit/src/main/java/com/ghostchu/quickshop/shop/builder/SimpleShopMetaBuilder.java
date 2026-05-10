@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.builder.ShopMetaBuilder;
 import com.ghostchu.quickshop.api.shop.components.ShopMeta;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import com.ghostchu.quickshop.shop.components.SimpleShopMeta;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +29,10 @@ public class SimpleShopMetaBuilder implements ShopMetaBuilder {
   private QUser taxAccount;
 
   private BenefitProvider benefit;
+
+  private String inventoryWrapperProvider;
+
+  protected YamlConfiguration extra;
 
   @Override
   public long shopId() {
@@ -132,7 +137,7 @@ public class SimpleShopMetaBuilder implements ShopMetaBuilder {
     try {
 
       result.accept(benefit.add(user, percent));
-    } catch(Exception ignore) {
+    } catch(final Exception ignore) {
 
       result.accept(false);
     }
@@ -154,9 +159,24 @@ public class SimpleShopMetaBuilder implements ShopMetaBuilder {
   }
 
   @Override
+  public ShopMetaBuilder extra(final @NotNull YamlConfiguration extra) {
+
+    this.extra = extra;
+    return this;
+  }
+
+  @Override
+  public ShopMetaBuilder inventoryWrapperProvider(final @NotNull String inventoryWrapperProvider) {
+
+    this.inventoryWrapperProvider = inventoryWrapperProvider;
+    return this;
+  }
+
+  @Override
   public ShopMeta build(final ModernShop<?, ?, ?, ?> shop) {
 
     return new SimpleShopMeta(shop, this.shopId, this.owner, this.shopName, this.unlimited,
-                              this.shopType, this.shopState, this.taxAccount, this.benefit);
+                              this.shopType, this.shopState, this.taxAccount, this.benefit,
+                              this.inventoryWrapperProvider, this.extra);
   }
 }
