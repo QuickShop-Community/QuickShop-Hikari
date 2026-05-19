@@ -38,6 +38,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,6 +112,8 @@ public class SimpleShopService implements ShopService<ModernContainerShop> {
     changes.addAll(request.shop().meta().diff((originalShop == null)? null : originalShop.meta()));
     changes.addAll(request.shop().permission().diff((originalShop == null)? null : originalShop.permission()));
     changes.addAll(request.shop().price().diff((originalShop == null)? null : originalShop.price()));
+
+    changes.addAll(originalShop.diff((ModernShop<Double, Location, Player, InventoryPreview>)request.shop()));
 
     final ShopUpdateResult result = new ShopUpdateResult(changes, originalShop, request.shop());
 

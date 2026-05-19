@@ -44,8 +44,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.ghostchu.quickshop.api.shop.Shop.SHOP_NAMESPACED_KEY;
-import static com.ghostchu.quickshop.shop.ContainerShop.LEGACY_SHOP_NAMESPACED_KEY;
-import static com.ghostchu.quickshop.shop.ContainerShop.LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN;
 
 /**
  * SimpleShopWorldAdapter
