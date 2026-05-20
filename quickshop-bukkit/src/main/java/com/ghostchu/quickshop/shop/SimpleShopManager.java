@@ -1048,7 +1048,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         previewComponentPrePopulateEvent.callEvent();
         previewItemStack = previewComponentPrePopulateEvent.getItemStack();
         Component previewComponent = plugin.text().of(p, "menu.preview", Component.text(previewItemStack.getAmount())).forLocale().clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/{0} {1} {2}", plugin.getMainCommand(), plugin.getCommandPrefix("silentpreview"), shop.getRuntimeRandomUniqueId().toString())));
-        previewComponent = plugin.platform().setItemStackHoverEvent(previewComponent, shop.getItem());
+        previewComponent = plugin.platform().setItemStackHoverEvent(previewComponent, previewItemStack);
         final ItemPreviewComponentPopulateEvent itemPreviewComponentPopulateEvent = new ItemPreviewComponentPopulateEvent(previewComponent, p);
         itemPreviewComponentPopulateEvent.callEvent();
         previewComponent = itemPreviewComponentPopulateEvent.getComponent();
