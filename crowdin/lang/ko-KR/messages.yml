@@ -370,7 +370,7 @@ signs:
   item-right: ''
   out-of-space: 공간 부족
   unlimited: 무제한
-  stack-selling: 판매중 {0} 개
+  stack-selling: 판매 중 {0} 개
   stack-price: '아이템 {2}, {1} 개당 {0}원'
   status-unavailable: <red>
   out-of-stock: 일시 품절
