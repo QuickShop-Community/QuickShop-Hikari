@@ -243,6 +243,10 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   private void updateShopData() {
 
+    if(this.extra == null) {
+      return;
+    }
+
     final ConfigurationSection section = getExtra(plugin.getJavaPlugin());
     if(section.getString("currency") != null) {
       this.currency = section.getString("currency");
@@ -428,11 +432,11 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public @NotNull ConfigurationSection getExtra(@NotNull final Plugin plugin) {
 
     if(this.extra == null) {
-      this.extra = new YamlConfiguration();
+      return new YamlConfiguration();
     }
     ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
     if(section == null) {
-      section = extra.createSection(plugin.getName());
+      return new YamlConfiguration();
     }
     return section;
   }
@@ -1680,7 +1684,11 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
    * @param data   The data table
    */
   @Override
-  public void setExtra(@NotNull final Plugin plugin, @NotNull final ConfigurationSection data) {
+  public void setExtra(@NotNull final Plugin plugin, @Nullable final ConfigurationSection data) {
+
+    if(data == null && this.extra == null) {
+      return;
+    }
 
     if(this.extra == null) {
       this.extra = new YamlConfiguration();

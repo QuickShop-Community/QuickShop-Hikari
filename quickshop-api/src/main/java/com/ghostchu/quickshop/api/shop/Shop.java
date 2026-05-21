@@ -146,10 +146,10 @@ public interface Shop<U, L> extends Locatable<L>, ShopInventory, ShopMeta<U>, Sh
   /**
    * Save the extra data to the shop.
    *
-   * @param plugin Plugin instace
-   * @param data   The data table
+   * @param plugin Plugin instance
+   * @param data   The data table, or null to remove it
    */
-  void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data);
+  void setExtra(@NotNull Plugin plugin, @Nullable ConfigurationSection data);
 
   /**
    * Update shop data to database
