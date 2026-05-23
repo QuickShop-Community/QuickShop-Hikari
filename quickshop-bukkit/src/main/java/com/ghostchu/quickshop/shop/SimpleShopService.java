@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopBuilderFactory;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.ShopService;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.service.ShopActionResult;
 import com.ghostchu.quickshop.api.shop.service.request.ShopCreateRequest;
 import com.ghostchu.quickshop.api.shop.service.request.ShopDeleteRequest;
@@ -41,6 +42,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * SimpleShopService
@@ -418,6 +421,57 @@ public class SimpleShopService implements ShopService<ModernContainerShop> {
     return List.of();
   }
 
+  /**
+   * Queries the database to retrieve the inventory cache for the specified shop.
+   *
+   * @param shop The shop instance for which the inventory cache is being queried. Must not be
+   *             null.
+   *
+   * @return A CompletableFuture that completes with the ShopInventoryCountCache containing
+   * inventory information for the given shop. The result is guaranteed to be non-null.
+   */
+  @Override
+  public @NotNull CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NonNull final ModernContainerShop shop) {
+
+    return null;
+  }
+
+  /**
+   * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+   * effects a lots of feature, make sure load it after create it.
+   *
+   * @param shop The shop to load
+   */
+  @Override
+  public void loadShop(@NonNull final ModernContainerShop shop) {
+
+  }
+
+  /**
+   * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+   * effects a lots of feature, make sure load it after create it.
+   *
+   * @param shop The shop to load
+   */
+  @Override
+  public void unloadShop(@NonNull final ModernContainerShop shop) {
+
+  }
+
+  /**
+   * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+   * effects a lots of feature, make sure load it after create it.
+   *
+   * @param shop           The shop to load
+   * @param chunkUnloading If unloadShop called caused by chunk unloading, when this is true,
+   *                       QuickShop will try avoid any main-thread opreations to avoid
+   *                       load-unload-load loop
+   */
+  @Override
+  public void unloadShop(@NonNull final ModernContainerShop shop, final boolean chunkUnloading) {
+
+  }
+
   @Override
   public ShopActionResult<?> handleLoading() {
 
@@ -426,6 +480,35 @@ public class SimpleShopService implements ShopService<ModernContainerShop> {
 
   @Override
   public ShopActionResult<?> handleUnloading(final boolean dontTouchWorld) {
+
+    return null;
+  }
+
+  /**
+   * Registers a shop with the system and optionally persists the shop information.
+   *
+   * @param shop    the shop object to be registered; must not be null
+   * @param persist a flag indicating whether the shop should be persisted to storage
+   *
+   * @return a CompletableFuture representing the asynchronous operation of registering the shop
+   */
+  @Override
+  public CompletableFuture<?> registerShop(@NonNull final ModernContainerShop shop, final boolean persist) {
+
+    return null;
+  }
+
+  /**
+   * Unregisters the specified shop from the system. If persistence is enabled, the removal will be
+   * reflected in the underlying storage to ensure the shop is no longer persisted.
+   *
+   * @param shop    the shop instance to be unregistered; must not be null
+   * @param persist indicates whether the unregister operation should be persisted in the storage
+   *
+   * @return a CompletableFuture representing the asynchronous operation of unregistering the shop
+   */
+  @Override
+  public CompletableFuture<?> unregisterShop(@NonNull final ModernContainerShop shop, final boolean persist) {
 
     return null;
   }

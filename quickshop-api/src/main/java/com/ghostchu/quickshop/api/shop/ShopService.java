@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop;
  */
 
 import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.cache.ShopInventoryCountCache;
 import com.ghostchu.quickshop.api.shop.service.ShopActionResult;
 import com.ghostchu.quickshop.api.shop.service.request.ShopCreateRequest;
 import com.ghostchu.quickshop.api.shop.service.request.ShopDeleteRequest;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * ShopService
@@ -91,8 +93,6 @@ public interface ShopService<T extends ModernShop<?, ?, ?, ?>> {
    */
   @NotNull
   ShopActionResult<ShopDeleteResult> deleteShop(@NotNull final ShopDeleteRequest request);
-
-
 
   /**
    * Returns all shops in the whole database, include unloaded.
@@ -284,9 +284,69 @@ public interface ShopService<T extends ModernShop<?, ?, ?, ?>> {
   @NotNull
   List<T> getShopsInWorld(@NotNull String worldName);
 
+  //Shop database operations.
+  /**
+   * Queries the database to retrieve the inventory cache for the specified shop.
+   *
+   * @param shop The shop instance for which the inventory cache is being queried. Must not be null.
+   * @return A CompletableFuture that completes with the ShopInventoryCountCache containing
+   *         inventory information for the given shop. The result is guaranteed to be non-null.
+   */
+  @NotNull
+  CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull T shop);
+
+  /**
+   * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+   * effects a lots of feature, make sure load it after create it.
+   *
+   * @param shop  The shop to load
+   */
+  void loadShop(@NotNull T shop);
+
+  /**
+   * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+   * effects a lots of feature, make sure load it after create it.
+   *
+   * @param shop  The shop to load
+   */
+  void unloadShop(@NotNull T shop);
+
+  /**
+   * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+   * effects a lots of feature, make sure load it after create it.
+   *
+   * @param shop           The shop to load
+   * @param chunkUnloading If unloadShop called caused by chunk unloading, when this is true,
+   *                       QuickShop will try avoid any main-thread opreations to avoid
+   *                       load-unload-load loop
+   */
+  void unloadShop(@NotNull T shop, boolean chunkUnloading);
+
   @Deprecated()
   ShopActionResult handleLoading();
 
   @Deprecated()
   ShopActionResult handleUnloading(boolean dontTouchWorld);
+
+  /**
+   * Registers a shop with the system and optionally persists the shop information.
+   *
+   * @param shop the shop object to be registered; must not be null
+   * @param persist a flag indicating whether the shop should be persisted to storage
+   * @return a CompletableFuture representing the asynchronous operation of registering the shop
+   */
+  CompletableFuture<?> registerShop(@NotNull T shop, boolean persist);
+
+  /**
+   * Unregisters the specified shop from the system. If persistence is enabled,
+   * the removal will be reflected in the underlying storage to ensure the shop
+   * is no longer persisted.
+   *
+   * @param shop    the shop instance to be unregistered; must not be null
+   * @param persist indicates whether the unregister operation should be
+   *                persisted in the storage
+   * @return a CompletableFuture representing the asynchronous operation of
+   *         unregistering the shop
+   */
+  CompletableFuture<?> unregisterShop(@NotNull T shop, boolean persist);
 }

@@ -23,6 +23,8 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.general.ShopSignUpdateEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopSignLinesEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.ModernShop;
 import com.ghostchu.quickshop.api.shop.ShopWorldAdapter;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
@@ -31,12 +33,14 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,6 +79,21 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
       return false;
     }
     return Util.canBeShop(shop.bukkitLocation().getBlock());
+  }
+
+  /**
+   * Check if shop is not valided for specific player
+   *
+   * @param uuid The uuid of the player
+   * @param info The info of the shop
+   * @param shop The shop
+   *
+   * @return If the shop is not valided for the player
+   */
+  @Override
+  public boolean shopIsNotValid(@NotNull final QUser uuid, @NotNull final Info info, @NotNull final ModernShop<?, ?, ?, ?> shop) {
+
+    return false;
   }
 
   /**
@@ -126,6 +145,12 @@ public class SimpleShopWorldAdapter implements ShopWorldAdapter {
       sign.getPersistentDataContainer().set(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, shop.asShopSignStorage());
       sign.update();
     }
+  }
+
+  @Override
+  public @NotNull BlockState makeShopSign(@NotNull final Block container, @NotNull final Block signBlock, @Nullable final Material signMaterial) {
+
+    return null;
   }
 
   /**

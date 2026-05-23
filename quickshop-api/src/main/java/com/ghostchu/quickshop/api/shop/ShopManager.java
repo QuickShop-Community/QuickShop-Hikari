@@ -564,6 +564,7 @@ public interface ShopManager {
    * @param world The world the shop is in
    * @param shop  The shop to load
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   void loadShop(@NotNull Shop shop);
 
   /**
@@ -573,6 +574,7 @@ public interface ShopManager {
    * @param world The world the shop is in
    * @param shop  The shop to load
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   void unloadShop(@NotNull Shop shop);
 
   /**
@@ -585,11 +587,13 @@ public interface ShopManager {
    *                       QuickShop will try avoid any main-thread opreations to avoid
    *                       load-unload-load loop
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   void unloadShop(@NotNull Shop shop, boolean chunkUnloading);
 
   /**
    * Change the owner to unlimited shop owner. It defined in configuration.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   void migrateOwnerToUnlimitedShopOwner(Shop shop);
 
   /**
@@ -599,6 +603,7 @@ public interface ShopManager {
    *
    * @return True if the shop was register successfully.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   CompletableFuture<?> registerShop(@NotNull Shop shop, boolean persist);
 
   /**
@@ -608,6 +613,7 @@ public interface ShopManager {
    *
    * @return True if the shop was unregister successfully.
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   CompletableFuture<?> unregisterShop(@NotNull Shop shop, boolean persist);
 
   /**
@@ -648,6 +654,7 @@ public interface ShopManager {
    *
    * @return If the shop is not valided for the player
    */
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   boolean shopIsNotValid(@NotNull QUser uuid, @NotNull Info info, @NotNull Shop shop);
 
   /**
@@ -659,6 +666,7 @@ public interface ShopManager {
   ShopManager.InteractiveManager getInteractiveManager();
 
   @NotNull
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   BlockState makeShopSign(@NotNull Block container, @NotNull Block signBlock, @Nullable Material signMaterial);
 
   @NotNull
@@ -668,6 +676,7 @@ public interface ShopManager {
   void deleteShop(@NotNull Shop shop);
 
   @NotNull
+  @Deprecated(since = "6.3.0.0", forRemoval = true)
   CompletableFuture<@NotNull ShopInventoryCountCache> queryShopInventoryCacheInDatabase(@NotNull Shop shop);
 
   /**

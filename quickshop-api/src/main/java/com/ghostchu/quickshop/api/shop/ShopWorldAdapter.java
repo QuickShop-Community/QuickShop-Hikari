@@ -19,10 +19,14 @@ package com.ghostchu.quickshop.api.shop;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.obj.QUser;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -48,6 +52,17 @@ public interface ShopWorldAdapter {
    * @since 6.3.0.0
    */
   boolean isValidShop(@NotNull final ModernShop<?, ?, ?, ?> shop);
+
+  /**
+   * Check if shop is not valided for specific player
+   *
+   * @param uuid The uuid of the player
+   * @param info The info of the shop
+   * @param shop The shop
+   *
+   * @return If the shop is not valided for the player
+   */
+  boolean shopIsNotValid(@NotNull QUser uuid, @NotNull Info info, @NotNull ModernShop<?, ?, ?, ?> shop);
 
   /**
    * Determines whether the specified block is attached to the given shop instance.
@@ -83,6 +98,9 @@ public interface ShopWorldAdapter {
    * @since 6.3.0.0
    */
   void claimShopSign(final @NotNull ModernShop<?, ?, ?, ?> shop, @NotNull Sign sign);
+
+  @NotNull
+  BlockState makeShopSign(@NotNull Block container, @NotNull Block signBlock, @Nullable Material signMaterial);
 
   /**
    * Retrieves the localized text to be displayed on a shop's sign.
