@@ -174,13 +174,13 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
 
       final Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
       final Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
-      final Component itemName = Util.getItemStackName(shop.getItem());
+      final Component itemName = Util.getItemStackName(shop.getItem(), locale.getLocale());
 
       return left.append(itemName).append(right);
     }
 
     return plugin.text().of("signs.item-left").forLocale(locale.getLocale())
-            .append(Util.getItemStackName(shop.getItem())
+            .append(Util.getItemStackName(shop.getItem(), locale.getLocale())
                             .append(plugin.text().of("signs.item-right").forLocale(locale.getLocale())));
   }
 

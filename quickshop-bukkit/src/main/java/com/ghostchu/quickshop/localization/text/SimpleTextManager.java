@@ -488,8 +488,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
     return false;
   }
 
+  @Override
   @NotNull
-  private String getDefLocale() {
+  public String getDefLocale() {
 
     final Iterator<String> defLocale = availableLanguages.iterator();
     if(defLocale.hasNext()) {
