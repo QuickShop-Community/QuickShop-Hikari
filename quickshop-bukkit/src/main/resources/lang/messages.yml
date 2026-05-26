@@ -472,6 +472,8 @@ signs:
   selling: Selling {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
   splash-potion: "Splash"
   linger-potion: "Lingering"
 negative-amount: <red>You can't trade negative amounts

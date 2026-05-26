@@ -88,6 +88,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -434,7 +435,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(this.extra == null) {
       return new YamlConfiguration();
     }
-    ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
+    final ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
     if(section == null) {
       return new YamlConfiguration();
     }
@@ -811,39 +812,48 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Override
   public int getRemainingStock() {
 
+    return getRemainingStockAsync()
+            .orTimeout(5, TimeUnit.SECONDS)
+            .exceptionally(ex -> 0)
+            .join();
+  }
+
+  public CompletableFuture<Integer> getRemainingStockAsync() {
     if(this.unlimited) {
-      return -1;
+      return CompletableFuture.completedFuture(-1);
     }
 
     if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
 
-      if(this.getInventory() == null) {
-        return 0;
-      }
-      final int stock = Util.countItems(this.getInventory(), this);
-      new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
-      return stock;
+      return CompletableFuture.completedFuture(calculateRemainingStock());
     }
 
     final CompletableFuture<Integer> future = new CompletableFuture<>();
 
-    QuickShop.folia()
-      .getScheduler()
-      .runAtLocation(
-        this.location,
-        task->{
-          if(this.getInventory() == null) {
-            future.complete(0);
-            return;
-          }
+    try {
+      QuickShop.folia().getScheduler().runAtLocation(this.location, task->{
+        try {
+          future.complete(calculateRemainingStock());
+        } catch(final Throwable throwable) {
+          future.completeExceptionally(throwable);
+        }
+      });
+    } catch(final Throwable throwable) {
+      future.completeExceptionally(throwable);
+    }
 
-          final int stock = Util.countItems(this.getInventory(), this);
-          new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+    return future;
+  }
 
-          future.complete(stock);
-        });
+  private int calculateRemainingStock() {
 
-    return future.join();
+    if(this.getInventory() == null) {
+      return 0;
+    }
+
+    final int stock = Util.countItems(this.getInventory(), this);
+    new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+    return stock;
   }
 
   /**

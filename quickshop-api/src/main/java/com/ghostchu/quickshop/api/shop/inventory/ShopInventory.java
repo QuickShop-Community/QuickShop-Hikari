@@ -24,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * ShopInventory
  *
@@ -78,6 +80,14 @@ public interface ShopInventory {
    * @return Remaining stock.
    */
   int getRemainingStock();
+
+  /**
+   * Asynchronously retrieves the number of items currently in stock in the shop.
+   *
+   * @return A CompletableFuture representing the remaining stock count. The future completes
+   *         with the value of the stock count once the information becomes available.
+   */
+  CompletableFuture<Integer> getRemainingStockAsync();
 
   int getShopStackingAmount();
 

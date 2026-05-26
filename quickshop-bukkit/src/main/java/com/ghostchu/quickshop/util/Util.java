@@ -997,15 +997,26 @@ public class Util {
       name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
       plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
     }
-    if(level > 1) {
-      name.append(Component.text(" " + RomanNumber.toRoman(level)));
-    }
+    name = name.append(Component.text(" " + RomanNumber.toRoman(level)));
     return name;
   }
 
   public static boolean useEnchantmentForEnchantedBook() {
 
     return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
+  }
+
+  @Nullable
+  public static Entry<Enchantment, Integer> getFirstEnchantment(@NotNull final ItemStack itemStack) {
+
+    final ItemMeta meta = itemStack.getItemMeta();
+    if(meta instanceof final EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+
+      return enchantmentStorageMeta.getStoredEnchants().entrySet().stream().findFirst().orElse(null);
+    } else {
+
+      return meta.getEnchants().entrySet().stream().findFirst().orElse(null);
+    }
   }
 
   @NotNull
@@ -1033,10 +1044,9 @@ public class Util {
   public static Component getFirstPotionEffectName(@NotNull final ItemStack item, final String locale) {
 
     Component name = null;
-    final ItemMeta meta = item.getItemMeta();
-    if(meta instanceof final PotionMeta potion && potion.getBasePotionType() != null && !potion.getBasePotionType().getPotionEffects().isEmpty()) {
+    final PotionEffect effect = getFirstPotionEffect(item);
+    if(effect != null) {
 
-      final PotionEffect effect = potion.getBasePotionType().getPotionEffects().getFirst();
       name = plugin.platform().getTranslation(effect.getType());
 
       name = name.append(Component.text(" " + RomanNumber.toRoman(effect.getAmplifier() + 1)));
@@ -1052,6 +1062,24 @@ public class Util {
       }
     }
     return name;
+  }
+
+  @Nullable
+  public static PotionEffect getFirstPotionEffect(@NotNull final ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta instanceof final PotionMeta potion && potion.getBasePotionType() != null && !potion.getBasePotionType().getPotionEffects().isEmpty()) {
+      return potion.getBasePotionType().getPotionEffects().getFirst();
+    }
+    return null;
+  }
+
+  public static Component getPotionLevel(final PotionEffect effect) {
+    return Component.text(RomanNumber.toRoman(effect.getAmplifier() + 1));
+  }
+
+  public static String getPotionDuration(final PotionEffect effect) {
+    return formatDuration(effect);
   }
 
   public static String formatDuration(final PotionEffect effect) {

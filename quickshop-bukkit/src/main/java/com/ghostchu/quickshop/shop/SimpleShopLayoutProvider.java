@@ -25,10 +25,14 @@ import com.ghostchu.quickshop.api.shop.IShopLayoutProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * SimpleShopLayoutProvider
@@ -102,6 +106,9 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
           break;
         case "price":
           renderedLines.add(renderPrice(shop, locale));
+          break;
+        case "level":
+          renderedLines.add(renderLevels(shop, locale));
           break;
       }
     }
@@ -204,5 +211,33 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     }
 
     return plugin.text().of("signs.price", plugin.getShopManager().format(shop.getPrice(), shop)).forLocale(locale.getLocale());
+  }
+
+  /**
+   * Renders the enchantment level for books, or the duration for potions into a component based on
+   * the provided locale.
+   *
+   * @param shop   the shop instance for which the level component is to be rendered
+   * @param locale the locale to be used for rendering the level component
+   *
+   * @return a component representing the visual level section of the shop
+   */
+  @Override
+  public Component renderLevels(final @NotNull Shop shop, final @NotNull ProxiedLocale locale) {
+
+    final ItemStack clone = shop.getItem().clone();
+    final PotionEffect effect = Util.getFirstPotionEffect(clone);
+    if(effect != null) {
+
+      return plugin.text().of("signs.item-duration", Util.getPotionDuration(effect)).forLocale(locale.getLocale());
+    }
+
+    final Map.Entry<Enchantment, Integer> enchantment = Util.getFirstEnchantment(clone);
+    if(enchantment != null) {
+
+      return plugin.text().of("signs.item-level", enchantment.getValue()).forLocale(locale.getLocale());
+    }
+
+    return Component.empty();
   }
 }

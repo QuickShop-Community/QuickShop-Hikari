@@ -84,4 +84,13 @@ public interface IShopLayoutProvider {
    * @return a component representing the visual price section of the shop
    */
   Component renderPrice(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);
+
+  /**
+   * Renders the enchantment level for books, or the duration for potions into a component based on the provided locale.
+   *
+   * @param shop the shop instance for which the level component is to be rendered
+   * @param locale the locale to be used for rendering the level component
+   * @return a component representing the visual level section of the shop
+   */
+  Component renderLevels(final @NotNull Shop shop, final @NotNull ProxiedLocale locale);
 }

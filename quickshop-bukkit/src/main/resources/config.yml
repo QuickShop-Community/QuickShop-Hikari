@@ -369,6 +369,7 @@ shop:
     - remove
 
   # Shop Sign Layout
+  # Item level = level for enchantment or duration for potions.
   layout:
 
     # Layout for BUYING shops.
