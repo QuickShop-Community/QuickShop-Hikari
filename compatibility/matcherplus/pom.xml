@@ -89,6 +89,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.nexomc</groupId>
+            <artifactId>nexo</artifactId>
+            <version>1.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.dre.brewery</groupId>
             <artifactId>BreweryX</artifactId>
             <version>3.4.3</version>
