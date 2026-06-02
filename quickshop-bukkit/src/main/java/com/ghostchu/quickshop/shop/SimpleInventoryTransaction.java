@@ -3,7 +3,10 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.inventory.InventoryTransactionEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.ItemRemoveResult;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.operation.OperationResult;
+import com.ghostchu.quickshop.api.operation.result.GenericOperationResult;
 import com.ghostchu.quickshop.api.shop.InventoryTransaction;
 import com.ghostchu.quickshop.shop.operation.AddItemOperation;
 import com.ghostchu.quickshop.shop.operation.RemoveItemOperation;
@@ -73,12 +76,31 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
       this.lastError = "Plugin cancelled this transaction.";
       return false;
     }
-    if(from != null && !this.executeOperation(new RemoveItemOperation(item, amount, from))) {
-      this.lastError = "Failed to remove " + amount + "x " + Util.serialize(item) + " from " + from;
-      callback.onFailed(this);
-      return false;
+
+    OperationResult<?> removeResult = null;
+    if(from != null) {
+
+      removeResult = this.executeOperation(new RemoveItemOperation(item, amount, from));
+      if(!removeResult.success()) {
+
+        this.lastError = "Failed to remove " + amount + "x " + Util.serialize(item) + " from " + from;
+        callback.onFailed(this);
+        return false;
+      }
     }
-    if(to != null && !this.executeOperation(new AddItemOperation(item, amount, to))) {
+
+    if(to == null) {
+
+      callback.onSuccess(this);
+      return true;
+    }
+
+    final AddItemOperation addOperation = (removeResult != null && removeResult.result() instanceof ItemRemoveResult)?
+                                          new AddItemOperation(((ItemRemoveResult)removeResult.result()).removed().values().toArray(ItemStack[]::new), to) : new AddItemOperation(item, amount, to);
+    final OperationResult<?> addResult = this.executeOperation(addOperation);
+
+    if(!addResult.success()) {
+
       this.lastError = "Failed to add " + amount + "x " + Util.serialize(item) + " to " + to;
       callback.onFailed(this);
       return false;
@@ -220,7 +242,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     }
   }
 
-  private boolean executeOperation(@NotNull final Operation operation) {
+  private OperationResult<?> executeOperation(@NotNull final Operation operation) {
 
     try {
       processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
@@ -228,7 +250,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     } catch(Exception exception) {
       plugin.logger().warn("Failed to execute operation: " + operation, exception);
       this.lastError = "Failed to execute operation: " + operation;
-      return false;
+      return new GenericOperationResult(false);
     }
   }
 

@@ -602,6 +602,16 @@ public class Util {
     return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
   }
 
+  public static int[] getItemMaxStackSizes(@NotNull final ItemStack[] item) {
+
+    final int[] stackSizes = new int[item.length];
+    for(int i = 0; i < item.length; i++) {
+
+      stackSizes[i] = getItemMaxStackSize(item[i].getType());
+    }
+    return stackSizes;
+  }
+
   /**
    * Returns the number of items that can be given to the inventory safely.
    *

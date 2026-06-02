@@ -821,7 +821,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           createCost = 0;
         }
         if(createCost > 0) {
-          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).tax(BigDecimal.ZERO).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.bukkitLocation().getWorld().getName()).build();
+          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.bukkitLocation().getWorld().getName()).build();
           if(!economyTransaction.completable()) {
             plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
             return;
