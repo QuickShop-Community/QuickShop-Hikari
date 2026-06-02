@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Operation to remove items
@@ -48,7 +49,7 @@ public class RemoveItemOperation implements Operation {
     int remains = amount;
     int lastRemains = -1;
 
-    final ItemRemoveResult result = new ItemRemoveResult(Collections.emptyMap(), Collections.emptyMap());
+    final ItemRemoveResult result = new ItemRemoveResult(new HashMap<>(), new HashMap<>());
 
     while(remains > 0) {
       final int stackSize = Math.min(remains, itemMaxStackSize);

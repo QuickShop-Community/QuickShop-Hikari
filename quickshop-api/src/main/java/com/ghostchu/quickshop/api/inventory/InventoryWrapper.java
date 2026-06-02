@@ -189,32 +189,37 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
 
       final InventoryWrapperIterator iterator = iterator();
 
+      int iteratorSlot = 0;
       while (remaining > 0 && iterator.hasNext()) {
         final ItemStack current = iterator.next();
 
         if (current == null) {
+          iteratorSlot++;
           continue;
         }
 
         if (!QuickShopAPI.getInstance().getItemMatcher().matches(requested, current)) {
+          iteratorSlot++;
           continue;
         }
+
+        final ItemStack currentClone = current.clone();
 
         final int amount = Math.min(remaining, current.getAmount());
 
         current.setAmount(current.getAmount() - amount);
+        currentClone.setAmount(amount);
         iterator.setCurrent(current);
 
         remaining -= amount;
         removedAmount += amount;
-      }
+        if (amount > 0) {
 
-      //TODO: Make this more accurate.
-      if (removedAmount > 0) {
-
-        final ItemStack removedStack = requested.clone();
-        removedStack.setAmount(removedAmount);
-        removed.put(i, removedStack);
+          final ItemStack removedStack = requested.clone();
+          removedStack.setAmount(amount);
+          removed.put(iteratorSlot, currentClone);
+        }
+        iteratorSlot++;
       }
 
       if (remaining > 0) {
