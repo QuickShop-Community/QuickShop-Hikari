@@ -154,6 +154,14 @@ It has the goal to modernize the core content of QuickShop and adapt it to the l
 
 Obtain the latest version from [Modrinth][modrinth]
 
+## Automated System Restrictions
+
+This repository is subject to the terms in EULA.md.
+
+Access and use by AI agents, automated code-generation systems,
+machine-learning systems, and automated analysis tools is prohibited
+without explicit written permission.
+
 ## Compatibility Modules
 
 You can download optional modules [here][modrinth] for compatibility with other plugins.
