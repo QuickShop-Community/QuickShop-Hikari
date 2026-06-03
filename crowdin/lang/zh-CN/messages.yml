@@ -20,19 +20,19 @@ tabcomplete:
   price: '[价格]'
   name: '[名称]'
   range: '[范围]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
+  list: '列表'
+  page: '[页面 #]'
+  shop-id: '[商店id]'
   currency: '[货币名称]'
   percentage: '[百分比%]'
-  add: 'add'
-  remove: 'remove'
-  clear: 'clear'
-  clearall: 'clearall'
-  shops: 'shops'
-  tagged: 'tagged'
-  purge: 'purge'
-  tag: '[tag]'
+  add: '添加'
+  remove: '移除'
+  clear: '清除'
+  clearall: '清除全部'
+  shops: '商店'
+  tagged: '已标记'
+  purge: '清除'
+  tag: '[标签]'
 taxaccount-unset: <green>该商店的税务账户现在变为服务器的全局设置。
 blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
@@ -110,60 +110,60 @@ shops-recovering: 正在从备份中恢复商店...
 virtual-player-component-hover: "<gray>这是虚拟玩家\n<gray>是指一个具有相同名称的系统帐户</gray>\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>这是一个真正存在的玩家\n<green>UUID： <yellow>{0}</yellow></green>\n<green>用户名： <yellow>{1}</yellow></green>\n<green>显示为： <yellow>{2}</yellow></green>\n<gray>如果您希望使用同名的虚拟系统帐户 将 <dark_gray>\"[]\"</dark_gray> 添加到用户名的两边： <dark_gray>[{1}]</dark_gray>"
 pagination:
-  header: "<green>{0}</green>:"
-  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Previous page\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Next page\"><white>></white></hover></click>]</light_purple>"
+  header: "<green>{0}</green>："
+  footer: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>上一页\"><white><</white></hover></click>]</light_purple> <gray>{1}/{2}</gray> <light_purple>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>下一页\"><white>></white></hover></click>]</light_purple>"
 tags:
   commands:
-    tag: "<yellow>Manage your shop tags."
-    favorite: "<yellow>Toggle favorite on looked-at shop."
-    watch: "<yellow>Toggle watch on looked-at shop."
-    avoid: "<yellow>Toggle avoid on looked-at shop."
+    tag: "<yellow>管理您的商店标签。"
+    favorite: "<yellow>切换当前查看商店的收藏状态"
+    watch: "<yellow>切换当前查看商店的关注状态"
+    avoid: "<yellow>切换当前查看商店的屏蔽状态"
   general:
-    database-error: "<red>An error occurred while executing a tag operation."
-    list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
-    invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
+    database-error: "<red>执行标签操作时发生错误。"
+    list-entry: "<green>{0}。</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>查看所有带有此标签的商店\">查看商店</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>从此商店移除此标签\">移除</hover></click>]</red>"
+    invalid: "<red>无效标签。只允许使用字母、短横线（-）和下划线（_）。最大长度：<yellow>{0}</yellow"
   avoid:
-    added: "<green>Added this shop to your avoid list."
-    removed: "<green>Removed this shop from your avoid list."
-    unable: "<red>Unable to toggle avoid on this shop."
-    none: "<red>You have no avoided shops."
-    label: "<yellow>Avoid"
+    added: "<green>已将当前商店添加至您的屏蔽列表。"
+    removed: "<green>已将当前商店从您的屏蔽列表中移除。"
+    unable: "<red>无法切换当前商店的屏蔽状态。"
+    none: "<red>您尚未屏蔽任何商店。"
+    label: "<yellow>屏蔽"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
-    unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    added: "<green>已将当前商店添加至您的收藏列表。"
+    removed: "<green>已将当前商店从您的收藏列表中移除。"
+    unable: "<red>无法切换当前商店的收藏状态。"
+    none: "<red>您尚未收藏任何商店。"
+    label: "<yellow>收藏"
   watch:
-    added: "<green>You are now watching this shop."
-    removed: "<green>You are no longer watching this shop."
-    unable: "<red>Unable to toggle watch on this shop."
-    none: "<red>You are not watching any shops."
-    label: "<yellow>Watching"
+    added: "<green>您正在关注此商店。"
+    removed: "<green>您已不再关注此商店。"
+    unable: "<red>无法切换当前商店的关注状态。"
+    none: "<red>您尚未关注任何商店。"
+    label: "<yellow>正在关注"
   tag:
-    title-avoided-shops: "<green>Avoided shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-favorited-shops: "<green>Favorited shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    title-watched-shops: "<green>Watched shops</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    list-player-shops-title: "<green>Your tagged shops</green> <gray>(<yellow>{0}</yellow> shops, <yellow>{1}</yellow> tags)</gray>"
-    list-player-shop-title: "<green>Shop tags</green> <gray>(Total <yellow>{0}</yellow>)</gray>"
-    list-tag-title: "<green>Tag <aqua>{0}</aqua> usage</green> <gray>(<yellow>{1}</yellow> shops)</gray>"
-    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>View all tags on this shop\">View {10} tags</hover></click>]</light_purple>"
-    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>Price <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}. <aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove Tag</hover></click>]</red>"
-    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>Teleport to this shop\">Teleport</hover></click>]</light_purple>"
-    added: "<green>Added tag <aqua>{0}</aqua> to this shop."
-    duplicate: "<red>This shop already has tag <aqua>{0}</aqua>."
-    failed-add: "<red>An error occurred while adding tag <aqua>{0}</aqua> to this shop."
-    failed-remove: "<red>An error occurred while removing tag <aqua>{0}</aqua> from this shop."
-    removed: "<green>Removed tag <aqua>{0}</aqua> from this shop."
-    does-not-exist: "<red>This shop does not have tag <aqua>{0}</aqua>."
-    cleared: "<green>Cleared all tags from this shop."
-    cleared-all: "<green>Cleared all tags from all shops."
-    cleared-tag: "<green>Cleared tag <aqua>{0}</aqua> from all your tagged shops."
-    no-tags-all: "<red>There are no tags on any shop."
-    no-tags: "<red>This shop has no tags."
-    no-tagged-shops-player: "<red>You have no tags on this shop."
-    no-tagged-shops: "<red>You have no tagged shops."
-    no-tagged-shops-tag: "<red>You have no shops with tag <aqua>{0}</aqua>."
+    title-avoided-shops: "<green>已屏蔽的商店</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    title-favorited-shops: "<green>已收藏的商店</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    title-watched-shops: "<green>已关注的商店</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    list-player-shops-title: "<green>您的标签商店</green> <gray>(<yellow>{0}</yellow> 家商店，<yellow>{1}</yellow> 个标签)</gray>"
+    list-player-shop-title: "<green>商店标签</green> <gray>(共 <yellow>{0}</yellow>)</gray>"
+    list-tag-title: "<green>标签 <aqua>{0}</aqua> 使用情况</green> <gray>(<yellow>{1}</yellow> 家商店)</gray>"
+    shops-entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>价格 <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}。<aqua>{1}</hover> <gray>-</gray> <light_purple>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>查看此商店的所有标签\">查看 {10} 个标签</hover></click>]</light_purple>"
+    entry: "<yellow><hover:show_text:\"<yellow>{1}</yellow><br><gray>{2} {3}</gray><br><aqua>价格 <yellow>{4}</yellow> - <light_purple>x{5}</light_purple> <yellow>{6}</yellow><br><green>{7}<br><green>{8}\">{0}。<aqua>{1}</hover> <gray>-</gray> <red>[<click:run_command:\"{9}\"><hover:show_text:\"<gray>从此商店移除此标签\">移除标签</hover></click>]</red>"
+    list-tag-shop-entry-tp: "<light_purple>[<click:run_command:\"{0}\"><hover:show_text:\"<gray>传送到此商店\">传送</hover></click>]</light_purple>"
+    added: "<green>已为此商店添加标签 <aqua>{0}</aqua>。"
+    duplicate: "<red>此商店已拥有标签 <aqua>{0}</aqua>。"
+    failed-add: "<red>为此商店添加标签 <aqua>{0}</aqua> 时发生错误。"
+    failed-remove: "<red>从此商店移除标签 <aqua>{0}</aqua> 时发生错误。"
+    removed: "<green>已从此商店移除标签 <aqua>{0}</aqua>。"
+    does-not-exist: "<red>此商店没有标签 <aqua>{0}</aqua>。"
+    cleared: "<green>已清除此商店的所有标签。"
+    cleared-all: "<green>已清除所有商店的所有标签。"
+    cleared-tag: "<green>已从您所有带标签的商店中清除标签 <aqua>{0}</aqua>。"
+    no-tags-all: "<red>没有任何商店拥有标签。"
+    no-tags: "<red>此商店没有标签。"
+    no-tagged-shops-player: "<red>您在此商店上没有任何标签。"
+    no-tagged-shops: "<red>您没有任何带标签的商店。"
+    no-tagged-shops-tag: "<red>您没有任何带有标签 <aqua>{0}</aqua> 的商店。"
 menu:
   sell-tax: <green>你支付了<yellow>{0}<green>的税。
   owner: '<green>所有者：{0}'
@@ -181,9 +181,9 @@ menu:
   item-holochat-error: <red>[错误]
   this-shop-is-selling: <green>这个商店现在正在<light_purple>出售<green>物品。
   this-shop-is-buying: <green>这个商店现在正在<light_purple>收购<green>物品。
-  this-shop-is-frozen: <blue>FROZEN</blue>
-  this-shop-is-active: <aqua>ACTIVE</aqua>
-  this-shop-is-state: <green>This shop's current state is {0}<green>.
+  this-shop-is-frozen: <blue>冻结</blue>
+  this-shop-is-active: <aqua>激活</aqua>
+  this-shop-is-state: <green>此商店当前状态为 {0}<green>。
   shop-stack: '<green>每次交易物品数量：<yellow>{0}'
   space: '<green>空间: <yellow>{0}'
   effects: <green>效果
@@ -196,7 +196,7 @@ currency-not-exists: <red>无法找到您想要设置的货币，也许是拼写
 no-nearby-shop: <red>附近没有匹配 {0} 的商店。
 translation-author: 'Ghost_chu, sandtechnology, Pemdow, YuanYuanOwO, RMSCA, 李馨雨'
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
-shop-transaction-failed: "<red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Reason: {0}"
+shop-transaction-failed: "<red>抱歉，在处理您的购买过程中发生了一个内部错误。此次购买已被取消，所有其他操作均已回滚。原因：{0}"
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
 shop-name-not-found: <red>名称为 <yellow>{0} <red> 的商店不存在。
 shop-name-too-long: <red>此商店名称过长 (最大长度 {0})，请缩短名称后再试！
@@ -256,13 +256,13 @@ shop-type:
   buying: 收购
   frozen: 已冻结
 shop-state:
-  frozen: FROZEN
-  unfrozen: UNFROZEN
-  freeze: Freeze
-  unfreeze: Unfreeze
+  frozen: 冻结
+  unfrozen: 取消冻结
+  freeze: 冻结
+  unfreeze: 取消冻结
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: 启用
+  disabled: 禁用
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -1482,7 +1482,7 @@ addon:
       list: <yellow>列出自己或其他玩家拥有的所有商店
     table-prefix: '<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: '
     table-prefix-pageable: '<yellow><green>{0}</green>的商店 <gray>（页面 {1}/{2})</gray>: '
-    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}.<aqua>{1}</hover>"
+    entry: "<yellow><hover:show_text:'<yellow>{1}</yellow><br><gray>{2} {3},{4},{5}</gray><br><aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow><br><green>{9}<br><green>{10}'>{0}。<aqua>{1}</hover>"
   shopitemonly:
     message: <red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上
   limited:
@@ -1644,15 +1644,15 @@ gui:
         - ""
         - "<yellow>点击更改价格</yellow>"
     display-toggle:
-      display: "<bold><green>Toggle Preview</green></bold>"
+      display: "<bold><green>切换预览</green></bold>"
       lore:
-        - "<gray>Toggle item preview in shops</gray>"
-        - "<gray>Status: <white>{0}</white>. Click to toggle.</gray>"
+        - "<gray>切换商店中的物品预览</gray>"
+        - "<gray>状态：<white>{0}</white>。点击切换。</gray>"
     freeze-toggle:
-      display: "<bold><green>Toggle Freeze</green></bold>"
+      display: "<bold><green>切换冻结状态</green></bold>"
       lore:
-        - "<gray>Currently <white>{0}</white></gray>"
-        - "<gray>Click to <white>{1}</white></gray>"
+        - "<gray>当前 <white>{0}</white></gray>"
+        - "<gray>点击以 <white>{1}</white></gray>"
     mode-toggle:
       display: "<bold><green>更改模式</green></bold>"
       lore:

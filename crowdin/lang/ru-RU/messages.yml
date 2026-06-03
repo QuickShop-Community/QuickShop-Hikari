@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop отключен в этом мире
 how-much-to-trade-for: <green>Введите в чат, за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop обнаружил, что вы изменили язык. Теперь для вас используется {0} язык.
 shops-backingup: Создание резервной копии магазина из базы данных...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment:
 unlimited-shop-owner-changed: '<yellow>Владелец бесконечного магазина был изменен на: {0}.'
 bad-command-usage-detailed: '<red>Неправильные аргументы для команды! Принимаются только эти параметры: <gray>{0}'
 thats-not-a-number: <red>Неверное число

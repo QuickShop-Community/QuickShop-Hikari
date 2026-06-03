@@ -1,11 +1,11 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
+break-shop-use-supertool: <yellow>Szétütheted a boltot a supertool használatával.
 fee-charged-for-price-change: <green>Neked fizetned kell <red>{0}<green>, hogy az ár megváltozzon.
 not-allowed-to-create: <red>Nem tudsz boltot létrehozni itt.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>A QuickShop ki van kapcsolva ebben a világban
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Mentés betöltése a databázisból...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
+_comment: 'Üdv fordító! Ha ezt GitHubon vagy a forráskódon keresztül szerkeszted, helyette itt kellene: https://crowdin.com/project/qs-hikari instead.'
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ismeretlen szám.
@@ -16,15 +16,15 @@ not-looking-at-valid-shop-block: <red>Nem tudtuk létrehozni a boltot, mert nem 
 shop-removed-cause-ongoing-fee: <red>A te boltod {0}nál ki lett törölve, mert nem volt elég pénzed, hogy fentartsad!
 tabcomplete:
   amount: '[mennyiség]'
-  item: '[item]'
+  item: '[tárgy]'
   price: '[ár]'
-  name: '[name]'
+  name: '[név]'
   range: '[hatótávolság]'
-  list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
-  currency: '[currency name]'
-  percentage: '[percentage%]'
+  list: 'lista'
+  page: '[# oldal]'
+  shop-id: '[bolt id]'
+  currency: '[valuta név]'
+  percentage: '[százalék%]'
   add: 'add'
   remove: 'remove'
   clear: 'clear'
@@ -32,50 +32,49 @@ tabcomplete:
   shops: 'shops'
   tagged: 'tagged'
   purge: 'purge'
-  tag: '[tag]'
+  tag: '[címke]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>Ez a tárgy a feketelistán van! Nem tudod eladni!
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /quickshop reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+server-crash-warning: '<red>FIGYELEM: /quickshop reload használata arra, hogy új QuickShop jar filet tölts be kifagyaszthatja a szervert.'
 you-cant-afford-to-change-price: <red>{0} -ba kerül az áralakítás.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>A boltod {0} tele van!
 paste-disabled: |-
-  <red>Paste function has been disabled! You cannot request technical support.
-  Reason: {0}
+  <red>A beillesztés funkció ki lett kapcsolva! Nem tudsz technikai segítséget kérni. Indok: {0}
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[saját] <aqua>{0} <light_purple>{1}'
   hover:
     - '<green>Név: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Tulajdonos: <aqua>{0}'
+    - '<yellow>Típus: <aqua>{0}'
+    - '<yellow>Ár: <aqua>{0}'
     - '<yellow>Tárgy: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Hely: <aqua>{0}'
   hover-arg-filled:
     - '<green>Név: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Tulajdonos: <aqua>{owner}'
+    - '<yellow>Típus: <aqua>{type}'
+    - '<yellow>Ár: <aqua>{price}'
     - '<yellow>Tárgy: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Hely: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. Configuration Guide:https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
+3rd-plugin-build-check-failed-admin: '<gray>(Csak Adminoknak) <light_purple>{0}<dark_gray> jogszűrés letiltva. Ha nem ezt akartad, próbáld meg hozzáadni a listener blacklisthez ezt: <light_purple>{1} <gray>Konfiguráció útmutató: https://quickshop-community.github.io/QuickShop-Hikari-Documents/docs/modules/shops/protection-checker'
 average-price-nearby: '<green>Átlagos ár a közeledben: <yellow>{0}'
-inventory-check-global-alert: "<red>[Inventory Check] <gray>Warning! Found a QuickShop display item <gold>{2}</gold> in inventory at <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, which it shouldn't happened, This usually means that someone is maliciously exploiting the exploit to duplicating the display item."
+inventory-check-global-alert: "<red>[Eszköztár Figyelő] <gray>Figyelem! QuickShop kirakati tárgy <gold>{2}</gold> észlelve egy eszköztárban itt: <aqua>{0}</aqua> <dark_gray>[{1}]</dark_gray>, aminek nem kellett volna megtörténnie. Ez általában azt jelenti, hogy valaki kártékonyan kihasznál egy hibát a kirakati tárgy duplikálására."
 digits-reach-the-limit: <red>Te elérted a limitet pont után az árban.
-currency-unset: <green>Shop currency removed successfully. Using default settings now.
+currency-unset: <green>Bolt valute sikeresen eltávolítva. Alap beállítások használata.
 you-cant-create-shop-in-there: <red>Nincsen jogosultságod boltot készíteni ezen a helyen!
 no-pending-action: <red>You do not have any pending action
 refill-success: <green>Újratöltés sikeresen megtörtént!
 failed-to-paste: <red>Az adatok átvitele sikerteleül zajlott le a Pastebinbe! Próbálja újra később! (Nézze meg a konzolt információkért)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: '<dark_purple>A boltod {0} kifogyott ebből: {1}!'
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
+exceeded-maximum: <red>Az érték meghaladta a maximum java értéket.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>Nincs elég pénzed, hogy fentartsd a boltjaidat! Az összes bolt törölve lett...
 3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission setup in there?
@@ -94,18 +93,18 @@ you-cant-afford-a-new-shop: '<red>Nem tudsz új boltot csinálni, mert túl kev�
 success-created-shop: <green>Sikeresen elkészítettél egy boltot!
 shop-creation-cancelled: <red>Boltkészítés visszavonva.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: <red>Nem kereskedhetsz a saját boltoddal.
 purchase-out-of-space: <red>Nincs több item készleten, Egyeztess a bolt tulajdonosával.
 reloading-status:
   success: <green>Reload completed without any errors.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} vásárolt {1} {2} a boltodból. Kerestél {3}-t ({4} adóval).
 not-enough-space: <red>You only have room for {0} more of that!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Sikeresen hozzá adtad a {0}t a boltodhoz!
-shop-staff-empty: <yellow>This shop have no staff members.
+shop-staff-empty: <yellow>Ennek a boltnak nincs vezetőségi tagja.
 shops-recovering: Mentés betöltése a boltokról...
 virtual-player-component-hover: "<gray>This is a virtual player.\n<gray>Refers to a system account of this name with the same name.</gray>\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>"
 real-player-component-hover: "<gray>This is a real exists player.\n<green>UUID: <yellow>{0}</yellow></green>\n<green>Username: <yellow>{1}</yellow></green>\n<green>Display as: <yellow>{2}</yellow></green>\n<gray>If you wish to use a virtual system account with the same name, add <dark_gray>\"[]\"</dark_gray> to the both side of the username: <dark_gray>[{1}]</dark_gray>."
