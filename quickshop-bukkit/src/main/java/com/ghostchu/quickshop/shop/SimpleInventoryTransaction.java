@@ -55,7 +55,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public boolean commit() {
 
-    try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Commit")) {
       return this.commit(new SimpleTransactionCallback() {
       });
     }
@@ -95,9 +95,10 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
       return true;
     }
 
+    //TODO: How to make this anti-abusable? Disable it for custom matcher? We can't really guarantee trades for that
     final AddItemOperation addOperation = (removeResult != null && removeResult.result() instanceof ItemRemoveResult)?
                                           new AddItemOperation(((ItemRemoveResult)removeResult.result()).removed().values().toArray(ItemStack[]::new), to) : new AddItemOperation(item, amount, to);
-    final OperationResult<?> addResult = this.executeOperation(addOperation);
+    final OperationResult<?> addResult = this.executeOperation(new AddItemOperation(item, amount, to));
 
     if(!addResult.success()) {
 
@@ -210,7 +211,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
   @Override
   public List<Operation> rollback(final boolean continueWhenFailed) {
 
-    try(PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
+    try(final PerfMonitor ignored = new PerfMonitor("Inventory Transaction - Rollback")) {
       final List<Operation> operations = new ArrayList<>();
       while(!processingStack.isEmpty()) {
         final Operation operation = processingStack.pop();
@@ -228,7 +229,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             Log.transaction("Rollback successes: " + operation);
           }
           operations.add(operation);
-        } catch(Exception exception) {
+        } catch(final Exception exception) {
           if(continueWhenFailed) {
             operations.add(operation);
             plugin.logger().warn("Failed to rollback transaction: Operation: {}; Transaction: {}; Skipping...", operation, this);
@@ -247,7 +248,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     try {
       processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
       return operation.commit();
-    } catch(Exception exception) {
+    } catch(final Exception exception) {
       plugin.logger().warn("Failed to execute operation: " + operation, exception);
       this.lastError = "Failed to execute operation: " + operation;
       return new GenericOperationResult(false);
