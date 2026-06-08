@@ -20,6 +20,8 @@ package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * IShopType
  *
@@ -127,5 +129,10 @@ public interface IShopType {
    */
   default Integer remainingStock(final Shop shop) {
     return 0;
+  }
+
+  default CompletableFuture<Integer> remainingStockAsync(final Shop shop) {
+
+    return CompletableFuture.completedFuture(remainingStock(shop));
   }
 }

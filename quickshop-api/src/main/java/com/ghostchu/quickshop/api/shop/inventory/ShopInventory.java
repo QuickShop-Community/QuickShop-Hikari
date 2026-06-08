@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 /**
  * ShopInventory
@@ -97,6 +98,15 @@ public interface ShopInventory {
    * @return true if out of space or out of stock
    */
   boolean inventoryAvailable();
+
+  /**
+   * Asynchronously determines whether the shop's inventory is available,
+   * indicating that it is neither out of space nor out of stock.
+   *
+   * @return A CompletionStage that completes with a Boolean value indicating
+   *         whether the inventory is available (true) or not (false).
+   */
+  CompletableFuture<Boolean> inventoryAvailableAsync();
 
   /**
    * Check the target ItemStack is matches with this shop's item.

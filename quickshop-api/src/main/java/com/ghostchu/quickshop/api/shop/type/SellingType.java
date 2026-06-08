@@ -23,6 +23,8 @@ import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * SellingType
  *
@@ -111,5 +113,11 @@ public class SellingType implements IShopType {
   public Integer remainingStock(final Shop shop) {
 
     return shop.getRemainingStock();
+  }
+
+  @Override
+  public CompletableFuture<Integer> remainingStockAsync(final Shop shop) {
+
+    return shop.getRemainingStockAsync();
   }
 }
