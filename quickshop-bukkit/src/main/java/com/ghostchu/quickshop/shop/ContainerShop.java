@@ -451,6 +451,13 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public @Nullable InventoryWrapper getInventory() {
 
     Util.ensureThread(false);
+    final int chunkX = location.getBlockX() >> 4;
+    final int chunkZ = location.getBlockZ() >> 4;
+
+    if(!this.location.getWorld().isChunkLoaded(chunkX, chunkZ)) {
+      return null;
+    }
+
     try {
       final InventoryWrapper inventoryWrapper = locateInventory(symbolLink);
       if(inventoryWrapper.isValid()) {
@@ -849,11 +856,12 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
   private int calculateRemainingStock() {
 
-    if(this.getInventory() == null) {
+    final InventoryWrapper inventoryWrapper = getInventory();
+    if(inventoryWrapper == null) {
       return 0;
     }
 
-    final int stock = Util.countItems(this.getInventory(), this);
+    final int stock = Util.countItems(inventoryWrapper, this);
     new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
     return stock;
   }
