@@ -25,6 +25,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
+import com.comphenix.protocol.wrappers.Vector3F;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
@@ -36,7 +37,6 @@ import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.Util;
-import com.github.retrooper.packetevents.util.Vector3f;
 import lombok.Getter;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
@@ -44,6 +44,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -171,10 +172,12 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
     packet.getUUIDs().write(0, identifier);
     packet.getEntityTypeModifier().write(0, EntityType.TEXT_DISPLAY);
 
-    packet.getDoubles().write(0, location.getX()).write(1, location.getY()).write(2, location.getZ());
-    packet.getBytes().write(0, (byte)0).write(1, (byte)0).write(2, (byte)0);
-    packet.getIntegers().write(1, 0);
+    packet.getDoubles().write(0, location.getX());
+    packet.getDoubles().write(1, location.getY());
+    packet.getDoubles().write(2, location.getZ());
 
+    packet.getIntegers().write(4, 0);
+    packet.getIntegers().write(5, 0);
     return packet;
   }
 
@@ -203,7 +206,7 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
     final WrappedChatComponent component = WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(Util.getTextDisplay(shop, itemStack)));
 
     final List<WrappedDataValue> data = new ArrayList<>();
-    data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3f.class), scaleVector));
+    //data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3f.class), scaleVector));
     data.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get(Byte.class), (byte)3));
     data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Float.class), blockDistance * 0.0125f));
     data.add(new WrappedDataValue(23, WrappedDataWatcher.Registry.getChatComponentSerializer(), component.getHandle()));
