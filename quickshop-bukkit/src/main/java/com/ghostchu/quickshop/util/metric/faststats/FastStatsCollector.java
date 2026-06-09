@@ -96,4 +96,10 @@ public class FastStatsCollector {
 
     return Metric.string("statistic_packetvents", collector::researchPacketEventsVersion);
   }
+
+  @MetricCollectEntry(dataType = MetricDataType.RESEARCH, moduleName = "Research - Addons or Compacts Discovered", description = "QuickShop collects the QuickShop's addons/compacts (including 3rd-party) list that installed on your server to discover new addons/compacts so we can contact authors when we have major API changes, or use for improve exists official addons/compacts who have most of users using.")
+  public Metric<String[]> researchAddonsCompacts() {
+
+    return Metric.stringArray("statistics_extra", ()->collector.researchAddonsCompats().keySet().toArray(String[]::new));
+  }
 }

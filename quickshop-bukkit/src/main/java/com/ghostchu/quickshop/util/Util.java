@@ -26,6 +26,7 @@ import io.papermc.paper.registry.RegistryKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -62,6 +63,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -853,6 +855,45 @@ public class Util {
     } else {
       return BlockFace.WEST;
     }
+  }
+
+  public static Component getTextDisplay(@NotNull final Shop shop, @NotNull final ItemStack itemStack) {
+    if(!plugin.getConfig().getBoolean("shop.text-display.enabled", false)) {
+      return Component.empty();
+    }
+
+    Component display = Component.empty();
+    final List<String> lines = plugin.getConfig().getStringList("shop.text-display.lines");
+    final ProxiedLocale locale = plugin.text().findRelativeLanguages(plugin.text().getDefLocale());
+    for(int i = 0; i < lines.size(); i++) {
+
+      Component line = MiniMessage.miniMessage().deserialize(lines.get(i));
+
+      line = replaceComponent(line, "<item_name>", Util.getItemStackName(itemStack));
+      line = replaceComponent(line, "<price>", Component.text(plugin.getShopManager().format(shop.getPrice(), shop)));
+      line = replaceComponent(line, "<amount>", Component.text(itemStack.getAmount()));
+      line = replaceComponent(line, "<price_amount>", plugin.getShopManager().shopLayoutProvider().renderPrice(shop, locale));
+      line = replaceComponent(line, "<owner>", shop.ownerName());
+      line = replaceComponent(line, "<type>", plugin.text().of(shop.shopType().translationKey()).forLocale());
+      line = replaceComponent(line, "<status>", Util.getItemStackName(itemStack));
+      line = replaceComponent(line, "<level>", plugin.getShopManager().shopLayoutProvider().renderLevels(shop, locale));
+
+      display = display.append(line);
+
+      if(i < lines.size() - 1) {
+        display = display.append(Component.newline());
+      }
+    }
+    return display;
+  }
+
+  public static Component replaceComponent(@NotNull final Component component,
+                                           @NotNull final String placeholder,
+                                           @NotNull final Component replacement) {
+
+    return component.replaceText(builder -> builder
+            .matchLiteral(placeholder)
+            .replacement(replacement));
   }
 
   @NotNull
