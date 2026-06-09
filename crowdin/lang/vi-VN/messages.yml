@@ -384,6 +384,10 @@ signs:
   selling: Bán {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Bạn không thể giao dịch lượng số âm
 display-turn-on: <green>Successfully turn on the shop display.
 display-turn-off: <green>Successfully turn off the shop display.
@@ -397,7 +401,7 @@ backup-failed: Không thể sao lưu cơ sở dữ liệu. Kiểm tra bảng đi
 shop-staff-cleared: <green>Đã xóa thành công tất cả nhân viên khỏi cửa hàng của bạn.
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Thao tác bị hủy, Lý do: {0}'
-player-sold-to-your-store: <green>{0} đã bán {1} {2} cho shop của bạn.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Shop của bạn ở toạ độ {0}, {1}, {2} đã hết {3}!
 how-many-buy: <green>Nhập vào khung chat số lượng bạn muốn <aqua>MUA<green>. Bạn có thể mua <aqua>{0}<green>. Nhập <aqua>{1}<green> để mua tất cả.
 language-info-panel:
