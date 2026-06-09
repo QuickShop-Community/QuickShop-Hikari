@@ -395,6 +395,10 @@ signs:
   selling: Продаж {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Ви не можете торгувати від'ємною кількістю
 display-turn-on: <green>Успішно увімкнено відображення магазину.
 display-turn-off: <green>Успішно вимкнено відображення магазину.
@@ -408,7 +412,7 @@ backup-failed: Не вдалося створити резервну копію 
 shop-staff-cleared: <green>Успішно видалено весь персонал з вашого магазину.
 price-too-high: <red>Ціна магазину занадто висока! Ви не можете створити магазин з ціною вищою за {0}.
 plugin-cancelled: '<red>Операцію скасовано. Причина: {0}'
-player-sold-to-your-store: <green>{0} продав(-ла) {1} {2} у ваш магазин.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>У вашому магазині за координатами {0}, {1}, {2} закінчився {3}!
 how-many-buy: <green>Введіть у чат, скільки ви бажаєте <aqua>КУПИТИ</aqua>. Ви можете купити <yellow>{0}</yellow>. Введіть <aqua>{1}</aqua>, щоб купити все.
 language-info-panel:
