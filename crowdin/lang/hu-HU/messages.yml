@@ -394,6 +394,10 @@ signs:
   selling: Eladás {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Nem tudsz negatív mennyiséget megadni.
 display-turn-on: <green>Successfully turn on the shop display.
 display-turn-off: <green>Successfully turn off the shop display.
@@ -407,7 +411,7 @@ backup-failed: Nem lehet lementeni a bázist! Nézze meg a konzolt további info
 shop-staff-cleared: <green>Sikeresen eltávolítottál mindent a boltodból!
 price-too-high: <red> A bolt ára túl magas! Nem tudsz olyan boltot létrehozni, amelynek magasabb az ára, mint {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <white>{0} <green>eladott <white>{1} {2} <green>a boltodba.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: '<dark_purple><bold>!!! <light_purple>A boldot itt: <white>{0}<light_purple>, <white>{1}<light_purple>, <white>{2}<light_purple>, kifogyott ebből: <white>{3}'
 how-many-buy: <green>Írd be a chatbe, hogy mennyit szeretnél vásárolni. Maximum <yellow>{0}<green> db-ot tudsz venni. Ha az összeset megvennéd, írd be, hogy <aqua>{1}<green>.
 language-info-panel:

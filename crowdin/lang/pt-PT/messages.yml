@@ -384,6 +384,10 @@ signs:
   selling: Vendendo {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Você não pode trocar com valores negativos
 display-turn-on: <green>Você ativou o display de item.
 display-turn-off: <green>Você desativou o display de item.
@@ -397,7 +401,7 @@ backup-failed: Não é possível fazer backup do banco de dados, verifique o con
 shop-staff-cleared: <green>Todos os membros da equipe de sua loja foram removidos.
 price-too-high: <red>O preço da loja é muito alto! Você não pode criar uma que tenha o preço superior a {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} vendeu {1} {2} à sua loja.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Sua loja em {0}, {1}, {2} ficou sem {3}!
 how-many-buy: <green>Digite no chat, quantos você deseja <aqua>COMPRAR<green>. Você pode comprar <yellow>{0}<green>. Digite <aqua>{1}<green> para comprar todos.
 language-info-panel:

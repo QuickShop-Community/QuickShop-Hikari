@@ -395,6 +395,10 @@ signs:
   selling: Selling {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>You can't trade negative amounts
 display-turn-on: <green>Successfully enabled shop-display.
 display-turn-off: <green>Successfully turned off shop display.
@@ -408,7 +412,7 @@ backup-failed: Cannot backup the database. Check the console for details.
 shop-staff-cleared: <green>Successfully removed all staff members from your shop.
 price-too-high: <red>The shop price is too high! You cannot create a shop with a price higher than {0}.
 plugin-cancelled: '<red>Operation cancelled. Reason: {0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
 how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
 language-info-panel:

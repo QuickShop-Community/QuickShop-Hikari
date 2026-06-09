@@ -384,6 +384,10 @@ signs:
   selling: 販売 {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>マイナス量を取引できません
 display-turn-on: <green>ショップの表示をオンにしました。
 display-turn-off: <green>ショップの表示をオフにしました。
@@ -397,7 +401,7 @@ backup-failed: データベースをバックアップできません。詳細�
 shop-staff-cleared: <green>ショップのスタッフを全員削除しました。
 price-too-high: <red>ショップの価格が高すぎます！ {0} より高い価格のショップは作成できません。
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} があなたのショップに {2} を {1} 個 売却しました。
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>{0}、{1}、{2} のショップで {3} の在庫がなくなりました！
 how-many-buy: <green>チャットで<aqua>購入<green>したい個数を入力してください。<yellow>{0}個 <green> 購入できます。<aqua>{1} <green>で全て購入
 language-info-panel:

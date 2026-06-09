@@ -384,6 +384,10 @@ signs:
   selling: Prodej {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Derp, nemůžeš obchodovat se zápornými částkami
 display-turn-on: <green>Úspěšně zapnuto zobrazení obchodu.
 display-turn-off: <green>Úspěšně vypnuto zobrazení obchodu.
@@ -397,7 +401,7 @@ backup-failed: Nelze zálohovat databázi. Podrobnosti naleznete v konzole.
 shop-staff-cleared: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byli odebráni všichni členi z tvého obchodu.
 price-too-high: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Cena obchodu je příliš vysoká! Nelze vytvořit s cenou vyšší než {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Hráč {0} prodal {1} {2} do tvého obchodu.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Váš obchod v {0}, {1}, {2}, vyčerpal {3}!
 how-many-buy: <gray>Napište do chatu, kolik si přejete <aqua>Koupit<gray>. Můžete si koupit <aqua>{0}<gray>. Zadejte <aqua>{1}<gray> pro zakoupení všech.
 language-info-panel:

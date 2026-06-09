@@ -384,6 +384,10 @@ signs:
   selling: Vendo {0}u
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>No puedes comerciar con valores negativos
 display-turn-on: <green>Se encendió con éxito la exhibición de la tienda de empresa.
 display-turn-off: <green>Se apagó con éxito la exhibición de la tienda de empresa.
@@ -397,7 +401,7 @@ backup-failed: No se puede hacer una copia de seguridad de la base de datos. Rev
 shop-staff-cleared: <green>Todo el personal de tu tienda de empresa ha sido eliminado con éxito.
 price-too-high: <red>¡El precio establecido es demasiado alto! No puedes crear una tienda de empresa con un precio superior a {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} ha vendido {1} {2} en tu tienda de empresa.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Tu tienda de empresa en {0}, {1}, {2} se ha quedado sin {3}!
 how-many-buy: <green>Ingresa en el chat, cuantos desea <aqua>COMPRAR<green>. Puede comprar <yellow>{0}<green>. Introduce <aqua>{1}<green> para comprarlos todos.
 language-info-panel:
