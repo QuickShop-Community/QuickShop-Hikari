@@ -395,6 +395,10 @@ signs:
   selling: Parduodama {0}
   status-available: <green>Galima
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Negalima pardavinėti neigiamomis sumomis
 display-turn-on: <green>Parduotuvės ekranas įjungtas sėkmingai.
 display-turn-off: <green>Parduotuvės ekranas išjungtas sėkmingai.
@@ -408,7 +412,7 @@ backup-failed: Nepavyko sukurti atsarginės duomenų bazės kopijos. Daugiau inf
 shop-staff-cleared: <green>Sėkmingai pašalinti visi prižiūrėtojai iš jūsų parduotuvės.
 price-too-high: <red>Parduotuvės kaina per didelė! Negalite sukurti parduotuvės, kurios kaina viršija {0}.
 plugin-cancelled: '<red>Veiksmas atšauktas, priežastis: {0}'
-player-sold-to-your-store: <green>{0} Gauta {1} {2} į jūsų parduotuvę.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>Jūsų parduotuvė {0}, {1}, {2} ištuštinta ir trūksta {3}!
 how-many-buy: <green>Įveskite pokalbyje, kiek norite <aqua>PIRKTI<green>. Galite įsigyti <yellow>{0}</yellow>. Įveskite <aqua>{1}</aqua>, jei norite nusipirkti viską.
 language-info-panel:
