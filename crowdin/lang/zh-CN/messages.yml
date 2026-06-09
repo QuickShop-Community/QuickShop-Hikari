@@ -394,6 +394,10 @@ signs:
   selling: 出售 {0}
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>你输入的数字是负数。
 display-turn-on: <green>成功启用商店悬浮物显示
 display-turn-off: <green>成功关闭商店悬浮物显示
@@ -407,7 +411,7 @@ backup-failed: 无法备份数据库，请查看控制台以获取详细信息�
 shop-staff-cleared: <green>成功删除了该商店的所有助手。
 price-too-high: <red>商品的价格太高了！你不能创建价格高于 {0} 的商店。
 plugin-cancelled: '<red>操作被取消，原因： {0}'
-player-sold-to-your-store: <green>{0} 在你的商店出售了 {1} 个 {2} 。
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。
 how-many-buy: <green>在聊天中输入您想要<aqua>购买<green>的数量。您可以购买<yellow>{0}<green>个，输入<aqua>{1}<green>以购买全部。
 language-info-panel:
