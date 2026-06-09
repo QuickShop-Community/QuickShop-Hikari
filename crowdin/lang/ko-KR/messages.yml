@@ -384,6 +384,10 @@ signs:
   selling: 판매 {0} 개
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>갯수는 음수(-)일수 없습니다. 양수로 입력해주세요. (숫자만 입력해주세요.)
 display-turn-on: <green>상점 디스플레이를 성공적으로 켰습니다.
 display-turn-off: <green>상점 디스플레이를 성공적으로 껏습니다.
@@ -397,7 +401,7 @@ backup-failed: 데이터베이스에 백업할 수 없습니다, 자세한 내�
 shop-staff-cleared: <green>성공적으로 당신 상점의 모든 관리자를 해고하였습니다.
 price-too-high: <red>상점의 가격이 너무 높습니다! 당신은 {0} 원 이상의 상점을 만들수 없습니다!
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} 님이 {2}  {1} 개을 (를) 유저님의 상점에 판매했습니다.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>{0}, {1}, {2} 에 있는 당신의 가게의 물품 {3} 이 (가) 부족합니다.
 how-many-buy: <green>채팅으로 원하는 <aqua>구매<green> 개수를 입력해주세요. 당신은 <yellow>{0}<green>개를 구매할 수 있습니다. <aqua>{1}<green>을 입력해 전부 구매 가능합니다.
 language-info-panel:
