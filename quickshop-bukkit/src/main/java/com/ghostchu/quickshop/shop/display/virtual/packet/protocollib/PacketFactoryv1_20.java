@@ -43,6 +43,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -168,10 +169,12 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
     packet.getUUIDs().write(0, identifier);
     packet.getEntityTypeModifier().write(0, EntityType.TEXT_DISPLAY);
 
-    packet.getDoubles().write(0, location.getX()).write(1, location.getY()).write(2, location.getZ());
-    packet.getBytes().write(0, (byte)0).write(1, (byte)0).write(2, (byte)0);
-    packet.getIntegers().write(1, 0);
+    packet.getDoubles().write(0, location.getX());
+    packet.getDoubles().write(1, location.getY());
+    packet.getDoubles().write(2, location.getZ());
 
+    packet.getIntegers().write(4, 0);
+    packet.getIntegers().write(5, 0);
     return packet;
   }
 
@@ -193,14 +196,14 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
 
     final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
 
-    final Vector3F scaleVector = new Vector3F(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
+    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
                                               QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
                                               QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
 
     final WrappedChatComponent component = WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(Util.getTextDisplay(shop, itemStack)));
 
     final List<WrappedDataValue> data = new ArrayList<>();
-    data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3F.class), scaleVector));
+    //data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3f.class), scaleVector));
     data.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get(Byte.class), (byte)3));
     data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Float.class), blockDistance * 0.0125f));
     data.add(new WrappedDataValue(23, WrappedDataWatcher.Registry.getChatComponentSerializer(), component.getHandle()));
