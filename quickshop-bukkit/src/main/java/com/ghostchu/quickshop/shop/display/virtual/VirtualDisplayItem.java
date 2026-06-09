@@ -88,8 +88,9 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
       this.metaPacket = packetFactory.createMetaDataPacket(entityID, checkEnchants(getOriginalItemStack().clone()));
 
       //text
-      this.textSpawnPacket = packetFactory.createTextDisplaySpawnPacket(textEntityID, getDisplayLocation().clone().add(0,
-              QuickShop.getInstance().getConfig().getInt("shop.text-display.y-offset", 0), 0));
+      this.textSpawnPacket = packetFactory.createTextDisplaySpawnPacket(textEntityID,
+                                                                        getDisplayLocation().clone().add(0,
+                                                                                                         QuickShop.getInstance().getConfig().getDouble("shop.text-display.y-offset", 0.8), 0));
       this.textMetaPacket = packetFactory.createTextDisplayVisiblePacket(textEntityID, shop, getOriginalItemStack().clone());
 
       this.velocityPacket = packetFactory.createVelocityPacket(entityID);
