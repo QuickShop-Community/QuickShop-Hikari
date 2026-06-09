@@ -384,6 +384,10 @@ signs:
   selling: 'Satıyor: {0}'
   status-available: <green>
   item-left: ''
+  item-duration: 'Dur: {0}'
+  item-level: 'Level: {0}'
+  splash-potion: "Splash"
+  linger-potion: "Lingering"
 negative-amount: <red>Negatif miktarlarda işlem yapamazsın
 display-turn-on: <green>Mağaza ekranını başarıyla açın.
 display-turn-off: <green>Mağaza ekranını başarıyla kapatın.
@@ -397,7 +401,7 @@ backup-failed: Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.
 shop-staff-cleared: <green>Başarıyla marketinizin bütün personelleri kadırıldı.
 price-too-high: <red>Market fiyatı çok yüksek! {0} fiyatından yüksek bir tane oluşturamazsınız.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
-player-sold-to-your-store: <green>{0} marketine {1} tane {2} sattı.
+player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
 shop-out-of-stock: <dark_purple>{0}, {1}, {2} koordinatlarındaki marketinde {3} tükendi!
 how-many-buy: <green>Sohbete kaç tane <aqua>Satın almak<green> istediğinizi yazın. <yellow>{0}<green> tane alabilirsiniz. Hepsini satın almak için <aqua>{1}<green> yazın.
 language-info-panel:
