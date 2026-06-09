@@ -47,6 +47,15 @@ public interface TextManager {
   List<String> getAvailableLanguages();
 
   /**
+   * Retrieves the default locale string
+   *
+   * @return The string representation of the default locale.
+   *         This value is guaranteed to be non-null.
+   */
+  @NotNull
+  String getDefLocale();
+
+  /**
    * Gets specific locale status
    *
    * @param locale The locale

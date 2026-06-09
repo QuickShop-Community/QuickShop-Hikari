@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1040
+config-version: 1041
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -369,6 +369,7 @@ shop:
     - remove
 
   # Shop Sign Layout
+  # Item level = level for enchantment or duration for potions.
   layout:
 
     # Layout for BUYING shops.
@@ -505,6 +506,44 @@ shop:
     # Positive values move south, negative values move north.
     # Supports decimal values.
     z: 0.5
+
+  # This spawns a separate fake entity that displays shop information.
+  text-display:
+
+    # Should the text display be enabled?
+    enabled: false
+
+    # Text Display view range
+    range-blocks: 3
+
+    # Height above the item
+    y-offset: 0.8
+
+    # Background color (32-bit ARGB)
+    background-color: 1073741824
+
+    line-width: 200
+
+    #The scale of the text display.
+    #The acceptable values are from 0.0 to 1.0.
+    scale:
+
+      x: 0.5
+      y: 0.5
+      z: 0.5
+
+    # <item_name> is replaced with the item name.
+    # <price> is replaced with the item price.
+    # <amount> is replaced with the item amount.
+    # <price_amount> is replaced with the item price per amount.
+    # <owner> is replaced with the shop owner's name.
+    # <type> is replaced with the shop type (BUYING/SELLING).
+    # <status> is replaced with the shop status (ACTIVE/FROZEN).
+    lines:
+    - "<green><item_name></green>"
+    - "<gray><owner></gray>"
+    - "<gray><type></gray>"
+    - "<gold><price_amount></gold>"
 
   # [BETA] Per-player shop sign translations (i18n).
   # Sends an extra sign packet so each player sees text in their own locale.

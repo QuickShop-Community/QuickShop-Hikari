@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.shop.display.virtual.packet.packetevents;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
@@ -33,6 +34,7 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChunkData;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
@@ -41,6 +43,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSp
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUnloadChunk;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -109,6 +112,45 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
       data.add(new EntityData<>(2, EntityDataTypes.OPTIONAL_COMPONENT, Optional.of(itemName)));
       data.add(new EntityData<>(3, EntityDataTypes.BOOLEAN, true));
     }
+
+    return new WrapperPlayServerEntityMetadata(id, data);
+  }
+
+  public PacketWrapper<?> createTextDisplaySpawnPacket(final int id, @NotNull final Location location) {
+
+    final UUID identifier = UUID.nameUUIDFromBytes(("SHOP_TEXT:" + id).getBytes(StandardCharsets.UTF_8));
+
+    return new WrapperPlayServerSpawnEntity(id, identifier,
+                                            SpigotConversionUtil.fromBukkitEntityType(EntityType.TEXT_DISPLAY),
+                                            SpigotConversionUtil.fromBukkitLocation(location),
+                                            0F, 0, Vector3d.zero());
+  }
+
+  /**
+   * Creates a name visibility packet for the given entity ID, item stack, and visibility state.
+   *
+   * @param id        the ID of the entity associated with the packet
+   * @param itemStack the ItemStack to include in the packet, cannot be null
+   *
+   * @return the name visibility packet of type T
+   */
+  @Override
+  public PacketWrapper<?> createTextDisplayVisiblePacket(final int id, final @NotNull Shop shop, final @NotNull ItemStack itemStack) {
+    final List<EntityData<?>> data = new ArrayList<>();
+
+    final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
+
+    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
+                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
+                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
+
+    // Text Display text metadata
+    data.add(new EntityData<>(12, EntityDataTypes.VECTOR3F, scaleVector));
+    data.add(new EntityData<>(15, EntityDataTypes.BYTE, (byte)3));
+    data.add(new EntityData<>(17, EntityDataTypes.FLOAT, blockDistance * 0.0125f));//0.0125 per block
+    data.add(new EntityData<>(23, EntityDataTypes.ADV_COMPONENT, Util.getTextDisplay(shop, itemStack)));
+    data.add(new EntityData<>(24, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
+    data.add(new EntityData<>(25, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
 
     return new WrapperPlayServerEntityMetadata(id, data);
   }

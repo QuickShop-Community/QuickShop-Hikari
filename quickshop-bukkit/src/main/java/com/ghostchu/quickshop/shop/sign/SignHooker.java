@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class SignHooker extends AbstractQSListener {
 
@@ -37,16 +38,26 @@ public class SignHooker extends AbstractQSListener {
 
   public void updatePerPlayerShopSign(final Player player, final Location location, final Shop shop) {
 
-    Util.ensureThread(false);
     if(!shop.isLoaded()) {
       return;
     }
     Log.debug("Updating per-player packet sign: Player=" + player.getName() + ", Location=" + location + ", Shop=" + shop.getShopId());
-    final List<Component> lines = shop.getSignText(plugin.getTextManager().findRelativeLanguages(player));
-    for(final Sign sign : shop.getSigns()) {
 
-      plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), lines);
-    }
+
+    final Location loc = shop.bukkitLocation().clone();
+    final CompletableFuture<List<Component>> textCompletable = shop.getSignTextAsync(plugin.getTextManager().findRelativeLanguages(player));
+
+    textCompletable.thenAccept(lines ->QuickShop.folia().getScheduler().runAtLocation(loc, (consumer)->{
+
+      if(!shop.isValid()) {
+
+        return;
+      }
+      for(final Sign sign : shop.getSigns()) {
+
+        plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), lines);
+      }
+    }));
   }
 
   public void updatePerPlayerShopSignBroadcast(final Location location, final Shop shop) {
@@ -72,7 +83,7 @@ public class SignHooker extends AbstractQSListener {
     try {
       //noinspection ConstantValue
       exists = World.class.getMethod("getPlayersSeeingChunk", int.class, int.class) != null;
-    } catch (ReflectiveOperationException ignored) {}
+    } catch (final ReflectiveOperationException ignored) {}
 
     CAN_USE_PLAYERS_SEEING_CHUNK = exists;
   }

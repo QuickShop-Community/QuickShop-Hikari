@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.shop.display.virtual;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.display.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.event.packet.send.PacketHandlerSendDestroyEvent;
@@ -49,6 +50,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reloadable {
 
   private final int entityID;
+  private final int textEntityID;
   //The List which store packet sender
   private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
   private final PacketFactory<T> packetFactory;
@@ -57,8 +59,11 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
 
   private final T spawnPacket;
   private final T metaPacket;
+  private final T textSpawnPacket;
+  private final T textMetaPacket;
   private final T velocityPacket;
   private final T destroyPacket;
+  private final T textDestroyPacket;
 
   //cache chunk x and z
   private ShopChunk chunkLocation;
@@ -72,6 +77,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
     super(shop);
 
     this.entityID = manager.generateEntityId();
+    this.textEntityID = manager.generateEntityId();
     this.manager = manager;
     this.manager.shopEntities.put(shop.getShopId(), entityID);
     this.packetFactory = packetFactory;
@@ -80,14 +86,24 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
 
       this.spawnPacket = packetFactory.createSpawnPacket(entityID, getDisplayLocation());
       this.metaPacket = packetFactory.createMetaDataPacket(entityID, checkEnchants(getOriginalItemStack().clone()));
+
+      //text
+      this.textSpawnPacket = packetFactory.createTextDisplaySpawnPacket(textEntityID, getDisplayLocation().clone().add(0,
+              QuickShop.getInstance().getConfig().getInt("shop.text-display.y-offset", 0), 0));
+      this.textMetaPacket = packetFactory.createTextDisplayVisiblePacket(textEntityID, shop, getOriginalItemStack().clone());
+
       this.velocityPacket = packetFactory.createVelocityPacket(entityID);
       this.destroyPacket = packetFactory.createDestroyPacket(entityID);
+      this.textDestroyPacket = packetFactory.createDestroyPacket(textEntityID);
 
     } else {
       this.spawnPacket = null;
       this.metaPacket = null;
+      this.textSpawnPacket = null;
+      this.textMetaPacket = null;
       this.velocityPacket = null;
       this.destroyPacket = null;
+      this.textDestroyPacket = null;
     }
 
     load();
@@ -278,6 +294,14 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
       this.packetFactory.sendPacket(player, event.metaPacket());
     }
   }
+  //TODO: Events
+  public void sendTextSpawnPacket(@NotNull final Player player) {
+    this.packetFactory.sendPacket(player, textSpawnPacket);
+  }
+
+  public void sendTextMetaPacket(@NotNull final Player player) {
+    this.packetFactory.sendPacket(player, textMetaPacket);
+  }
 
   public void sendDestroyPacket(@NotNull final Player player) {
 
@@ -290,6 +314,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
     } else {
 
       this.packetFactory.sendPacket(player, event.destroyPacket());
+      this.packetFactory.sendPacket(player, textDestroyPacket);
     }
   }
 
@@ -298,6 +323,13 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
     this.sendDestroyPacket(player);
     this.sendSpawnPacket(player);
     this.sendMetaPacket(player);
+
+    if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
+
+      this.sendTextSpawnPacket(player);
+      this.sendTextMetaPacket(player);
+    }
+
     if(velocityPacket != null) {
 
       this.packetFactory.sendPacket(player, velocityPacket);

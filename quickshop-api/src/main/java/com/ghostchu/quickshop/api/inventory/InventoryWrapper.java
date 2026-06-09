@@ -140,7 +140,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
    *
    * @return The map of containing item index and itemStack itself which is not fit
    */
-  @NotNull
+  /*@NotNull
   default Map<Integer, ItemStack> removeItem(final ItemStack... itemStacks) {
 
     if(itemStacks.length == 0) {
@@ -171,6 +171,66 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
       }
     }
     return integerItemStackMap;
+  }*/
+
+  /* Need to test the following before implementation, but I think it's a better impl.
+  */
+  @NotNull
+  default ItemRemoveResult removeItem(final ItemStack... itemStacks) {
+
+    final Map<Integer, ItemStack> leftovers = new HashMap<>();
+    final Map<Integer, ItemStack> removed = new HashMap<>();
+
+    for (int i = 0; i < itemStacks.length; i++) {
+
+      final ItemStack requested = itemStacks[i];
+      int remaining = requested.getAmount();
+      int removedAmount = 0;
+
+      final InventoryWrapperIterator iterator = iterator();
+
+      int iteratorSlot = 0;
+      while (remaining > 0 && iterator.hasNext()) {
+        final ItemStack current = iterator.next();
+
+        if (current == null) {
+          iteratorSlot++;
+          continue;
+        }
+
+        if (!QuickShopAPI.getInstance().getItemMatcher().matches(requested, current)) {
+          iteratorSlot++;
+          continue;
+        }
+
+        final ItemStack currentClone = current.clone();
+
+        final int amount = Math.min(remaining, current.getAmount());
+
+        current.setAmount(current.getAmount() - amount);
+        currentClone.setAmount(amount);
+        iterator.setCurrent(current);
+
+        remaining -= amount;
+        removedAmount += amount;
+        if (amount > 0) {
+
+          final ItemStack removedStack = requested.clone();
+          removedStack.setAmount(amount);
+          removed.put(iteratorSlot, currentClone);
+        }
+        iteratorSlot++;
+      }
+
+      if (remaining > 0) {
+
+        final ItemStack leftoverStack = requested.clone();
+        leftoverStack.setAmount(remaining);
+        leftovers.put(i, leftoverStack);
+      }
+    }
+
+    return new ItemRemoveResult(leftovers, removed);
   }
 
   /**

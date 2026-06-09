@@ -10,7 +10,7 @@ public interface Operation {
    *
    * @return true if successes
    */
-  boolean commit();
+  OperationResult<?> commit();
 
   /**
    * Check if operation is committed

@@ -28,12 +28,14 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.Util;
+import com.github.retrooper.packetevents.util.Vector3f;
 import lombok.Getter;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
@@ -144,6 +146,72 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketContainer> {
       throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
     }
     return fakeItemMetaPacket;
+  }
+
+  /**
+   * Creates a text display spawn packet for the specified entity ID and location.
+   *
+   * @param id       the unique identifier for the entity associated with the text display spawn
+   *                 packet
+   * @param location the location where the text display will be spawned, cannot be null
+   *
+   * @return the text display spawn packet of type T
+   */
+  @Override
+  public PacketContainer createTextDisplaySpawnPacket(final int id, @NotNull final Location location) {
+
+    final UUID identifier = UUID.nameUUIDFromBytes(("SHOP_TEXT:" + id).getBytes(StandardCharsets.UTF_8));
+
+    final PacketContainer packet = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
+
+    packet.getIntegers().write(0, id);
+    packet.getUUIDs().write(0, identifier);
+    packet.getEntityTypeModifier().write(0, EntityType.TEXT_DISPLAY);
+
+    packet.getDoubles().write(0, location.getX()).write(1, location.getY()).write(2, location.getZ());
+    packet.getBytes().write(0, (byte)0).write(1, (byte)0).write(2, (byte)0);
+    packet.getIntegers().write(1, 0);
+
+    return packet;
+  }
+
+  /**
+   * Creates a name visibility packet for the given entity ID, item stack, and visibility state.
+   *
+   * @param id        the ID of the entity associated with the packet
+   * @param itemStack the ItemStack to include in the packet, cannot be null
+   *
+   * @return the name visibility packet of type T
+   */
+  @Override
+  public PacketContainer createTextDisplayVisiblePacket(final int id,
+                                                        final @NotNull Shop shop,
+                                                        final @NotNull ItemStack itemStack) {
+
+    final PacketContainer packet = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
+    packet.getIntegers().write(0, id);
+
+    final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
+
+    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
+                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
+                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
+
+    final WrappedChatComponent component = WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(Util.getTextDisplay(shop, itemStack)));
+
+    final List<WrappedDataValue> data = new ArrayList<>();
+    data.add(new WrappedDataValue(12, WrappedDataWatcher.Registry.get(Vector3f.class), scaleVector));
+    data.add(new WrappedDataValue(15, WrappedDataWatcher.Registry.get(Byte.class), (byte)3));
+    data.add(new WrappedDataValue(17, WrappedDataWatcher.Registry.get(Float.class), blockDistance * 0.0125f));
+    data.add(new WrappedDataValue(23, WrappedDataWatcher.Registry.getChatComponentSerializer(), component.getHandle()));
+    data.add(new WrappedDataValue(24, WrappedDataWatcher.Registry.get(Integer.class),
+                                  QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
+    data.add(new WrappedDataValue(25, WrappedDataWatcher.Registry.get(Integer.class),
+                                  QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
+
+    packet.getDataValueCollectionModifier().write(0, data);
+
+    return packet;
   }
 
   /**

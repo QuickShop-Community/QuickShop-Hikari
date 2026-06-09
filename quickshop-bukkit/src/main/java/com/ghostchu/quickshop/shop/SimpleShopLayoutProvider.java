@@ -23,12 +23,18 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.IShopLayoutProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * SimpleShopLayoutProvider
@@ -70,6 +76,115 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
   }
 
   /**
+   * Creates a snapshot of a shop sign that encapsulates the visual and structural data required to
+   * render the sign, based on the specified shop and locale.
+   *
+   * @param shop   the shop instance for which the sign snapshot is to be created
+   * @param locale the locale to be used for formatting and rendering the snapshot
+   *
+   * @return a CompletableFuture that completes with a SignRenderSnapshot, representing the state of
+   * the shop sign
+   */
+  @Override
+  public CompletableFuture<SignRenderSnapshot> createSignSnapshot(@NotNull final Shop shop, final @NotNull ProxiedLocale locale) {
+
+    final ItemStack item = shop.getItem().clone();
+
+    final Component levels = renderLevels(shop, locale);
+    final CompletableFuture<Boolean> inventoryAvailableFuture = shop.inventoryAvailableAsync();
+    final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+
+    return inventoryAvailableFuture.thenCombine(remainingStockFuture,(inventoryAvailable, remainingStock) -> new SignRenderSnapshot(
+                                                  inventoryAvailable,
+                                                  shop.ownerName(false, locale),
+                                                  shop.isStackingShop(),
+                                                  shop.shopType().tradingTranslationKey(),
+                                                  shop.shopType().stackTradingTranslationKey(),
+                                                  shop.shopType().outOfStockTranslationKey(),
+                                                  remainingStock,
+                                                  shop.shopState().overrideShopTypeText(),
+                                                  shop.shopState().translationKey(),
+                                                  Util.getItemStackName(item, locale.getLocale()),
+                                                  item.getAmount(),
+                                                  plugin.getShopManager().format(shop.getPrice(), shop),
+                                                  levels,
+                                                  layoutTemplate(shop))
+                                         );
+  }
+
+  /**
+   * Renders the header section of a shop sign snapshot into a component based on the provided
+   * locale.
+   *
+   * @param snapshot the snapshot representing the current state of the shop sign's header to be
+   *                 rendered
+   * @param locale   the locale to be used for rendering the header component
+   *
+   * @return a component representing the rendered header section of the shop sign snapshot
+   */
+  @Override
+  public Component renderHeaderSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale) {
+
+    final String key = snapshot.inventoryAvailable()
+                       ? "signs.header-available"
+                       : "signs.header-unavailable";
+
+    return plugin.text().of(key, snapshot.ownerName()).forLocale(locale.getLocale());
+  }
+
+  /**
+   * Renders the trading section of a shop sign snapshot into a component based on the provided
+   * locale.
+   *
+   * @param snapshot the snapshot representing the current state of the shop sign's trading section
+   *                 to be rendered
+   * @param locale   the locale to be used for rendering the trading component
+   *
+   * @return a component representing the rendered trading section of the shop sign snapshot
+   */
+  @Override
+  public Component renderTradingSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale) {
+
+    final String baseKey = snapshot.stackingShop() ? snapshot.stackTradingKey() : snapshot.tradingKey();
+    final String finalKey = snapshot.overrideShopTypeText() ? snapshot.shopStateKey() : baseKey;
+
+    return switch (snapshot.remainingStock()) {
+      case -1 -> plugin.text()
+              .of(finalKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale()))
+              .forLocale(locale.getLocale());
+
+      case 0 -> snapshot.overrideShopTypeText()
+                ? plugin.text().of(snapshot.shopStateKey()).forLocale(locale.getLocale())
+                : plugin.text().of(snapshot.outOfStockKey()).forLocale(locale.getLocale());
+
+      default -> plugin.text()
+              .of(finalKey, Component.text(snapshot.remainingStock()))
+              .forLocale(locale.getLocale());
+    };
+  }
+
+  /**
+   * Renders the price section of a shop sign snapshot into a component based on the provided
+   * locale.
+   *
+   * @param snapshot the snapshot representing the current state of the shop sign to be rendered
+   * @param locale   the locale to be used for rendering the price component
+   *
+   * @return a component representing the rendered price section of the shop sign snapshot
+   */
+  @Override
+  public Component renderPriceSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale) {
+    
+    if (snapshot.stackingShop()) {
+      return plugin.text()
+              .of("signs.stack-price", snapshot.formattedPrice(), snapshot.itemAmount(), snapshot.itemName())
+              .forLocale(locale.getLocale());
+    }
+
+    return plugin.text().of("signs.price", snapshot.formattedPrice()).forLocale(locale.getLocale());
+  }
+
+  /**
    * Renders the layout of the specified shop into a list of components based on the provided locale.
    *
    * @param shop the shop instance for which the components are to be rendered
@@ -102,6 +217,9 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
           break;
         case "price":
           renderedLines.add(renderPrice(shop, locale));
+          break;
+        case "level":
+          renderedLines.add(renderLevels(shop, locale));
           break;
       }
     }
@@ -174,13 +292,13 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
 
       final Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
       final Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
-      final Component itemName = Util.getItemStackName(shop.getItem());
+      final Component itemName = Util.getItemStackName(shop.getItem(), locale.getLocale());
 
       return left.append(itemName).append(right);
     }
 
     return plugin.text().of("signs.item-left").forLocale(locale.getLocale())
-            .append(Util.getItemStackName(shop.getItem())
+            .append(Util.getItemStackName(shop.getItem(), locale.getLocale())
                             .append(plugin.text().of("signs.item-right").forLocale(locale.getLocale())));
   }
 
@@ -204,5 +322,33 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     }
 
     return plugin.text().of("signs.price", plugin.getShopManager().format(shop.getPrice(), shop)).forLocale(locale.getLocale());
+  }
+
+  /**
+   * Renders the enchantment level for books, or the duration for potions into a component based on
+   * the provided locale.
+   *
+   * @param shop   the shop instance for which the level component is to be rendered
+   * @param locale the locale to be used for rendering the level component
+   *
+   * @return a component representing the visual level section of the shop
+   */
+  @Override
+  public Component renderLevels(final @NotNull Shop shop, final @NotNull ProxiedLocale locale) {
+
+    final ItemStack clone = shop.getItem().clone();
+    final PotionEffect effect = Util.getFirstPotionEffect(clone);
+    if(effect != null) {
+
+      return plugin.text().of("signs.item-duration", Util.getPotionDuration(effect)).forLocale(locale.getLocale());
+    }
+
+    final Map.Entry<Enchantment, Integer> enchantment = Util.getFirstEnchantment(clone);
+    if(enchantment != null) {
+
+      return plugin.text().of("signs.item-level", enchantment.getValue()).forLocale(locale.getLocale());
+    }
+
+    return Component.empty();
   }
 }

@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.economy.transaction.TransactionCallback;
 import com.ghostchu.quickshop.api.event.economy.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.operation.OperationResult;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
@@ -61,7 +62,6 @@ public class QSEconomyTransaction implements EconomyTransaction {
   private @NotNull String world;
   private @Nullable String currency;
   private @NotNull BigDecimal amount;
-  private @NotNull BigDecimal tax = BigDecimal.ZERO;
   private final @NotNull BigDecimal fromAmount;
   private @NotNull BigDecimal amountAfterTax = BigDecimal.ZERO;
   private @NotNull BigDecimal toTax = BigDecimal.ZERO;
@@ -539,9 +539,9 @@ public class QSEconomyTransaction implements EconomyTransaction {
     }
 
     try {
-      final boolean result = operation.commit();
+      final OperationResult<?> result = operation.commit();
 
-      if(!result) {
+      if(!result.success()) {
 
         return false;
       }

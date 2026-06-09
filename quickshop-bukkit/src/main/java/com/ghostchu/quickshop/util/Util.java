@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -19,11 +20,13 @@ import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
 import dev.dejvokep.boostedyaml.route.Route;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -56,7 +59,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -597,6 +604,16 @@ public class Util {
     return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
   }
 
+  public static int[] getItemMaxStackSizes(@NotNull final ItemStack[] item) {
+
+    final int[] stackSizes = new int[item.length];
+    for(int i = 0; i < item.length; i++) {
+
+      stackSizes[i] = getItemMaxStackSize(item[i].getType());
+    }
+    return stackSizes;
+  }
+
   /**
    * Returns the number of items that can be given to the inventory safely.
    *
@@ -840,8 +857,53 @@ public class Util {
     }
   }
 
+  public static Component getTextDisplay(@NotNull final Shop shop, @NotNull final ItemStack itemStack) {
+    if(!plugin.getConfig().getBoolean("shop.text-display.enabled", false)) {
+      return Component.empty();
+    }
+
+    Component display = Component.empty();
+    final List<String> lines = plugin.getConfig().getStringList("shop.text-display.lines");
+    final ProxiedLocale locale = plugin.text().findRelativeLanguages(plugin.text().getDefLocale());
+    for(int i = 0; i < lines.size(); i++) {
+
+      Component line = MiniMessage.miniMessage().deserialize(lines.get(i));
+
+      line = replaceComponent(line, "<item_name>", Util.getItemStackName(itemStack));
+      line = replaceComponent(line, "<price>", Component.text(plugin.getShopManager().format(shop.getPrice(), shop)));
+      line = replaceComponent(line, "<amount>", Component.text(itemStack.getAmount()));
+      line = replaceComponent(line, "<price_amount>", plugin.getShopManager().shopLayoutProvider().renderPrice(shop, locale));
+      line = replaceComponent(line, "<owner>", shop.ownerName());
+      line = replaceComponent(line, "<type>", plugin.text().of(shop.shopType().translationKey()).forLocale());
+      line = replaceComponent(line, "<status>", Util.getItemStackName(itemStack));
+      line = replaceComponent(line, "<level>", plugin.getShopManager().shopLayoutProvider().renderLevels(shop, locale));
+
+      display = display.append(line);
+
+      if(i < lines.size() - 1) {
+        display = display.append(Component.newline());
+      }
+    }
+    return display;
+  }
+
+  public static Component replaceComponent(@NotNull final Component component,
+                                           @NotNull final String placeholder,
+                                           @NotNull final Component replacement) {
+
+    return component.replaceText(builder -> builder
+            .matchLiteral(placeholder)
+            .replacement(replacement));
+  }
+
   @NotNull
   public static Component getItemStackName(@NotNull final ItemStack itemStack) {
+
+    return getItemStackName(itemStack, plugin.text().getDefLocale());
+  }
+
+  @NotNull
+  public static Component getItemStackName(@NotNull final ItemStack itemStack, final String locale) {
 
     Component result = getItemCustomName(itemStack);
     if(isEmptyComponent(result)) {
@@ -858,11 +920,22 @@ public class Util {
   @Nullable
   public static Component getItemCustomName(@NotNull final ItemStack itemStack) {
 
+    return getItemCustomName(itemStack, plugin.text().getDefLocale());
+  }
+
+  @Nullable
+  public static Component getItemCustomName(@NotNull final ItemStack itemStack, final String locale) {
+
     if(useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
       final ItemMeta meta = itemStack.getItemMeta();
       if(meta instanceof final EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
         return getFirstEnchantmentName(enchantmentStorageMeta);
       }
+    }
+
+    if(usePotionForPotionItem() && itemStack.getItemMeta() instanceof PotionMeta) {
+
+      return getFirstPotionEffectName(itemStack, locale);
     }
 
 
@@ -975,15 +1048,26 @@ public class Util {
       name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
       plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
     }
-    if(level > 1) {
-      name.append(Component.text(" " + RomanNumber.toRoman(level)));
-    }
+    name = name.append(Component.text(" " + RomanNumber.toRoman(level)));
     return name;
   }
 
   public static boolean useEnchantmentForEnchantedBook() {
 
     return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
+  }
+
+  @Nullable
+  public static Entry<Enchantment, Integer> getFirstEnchantment(@NotNull final ItemStack itemStack) {
+
+    final ItemMeta meta = itemStack.getItemMeta();
+    if(meta instanceof final EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+
+      return enchantmentStorageMeta.getStoredEnchants().entrySet().stream().findFirst().orElse(null);
+    } else {
+
+      return meta.getEnchants().entrySet().stream().findFirst().orElse(null);
+    }
   }
 
   @NotNull
@@ -994,6 +1078,72 @@ public class Util {
     }
     final Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
     return enchantmentDataToComponent(entry.getKey(), entry.getValue());
+  }
+
+  public static boolean usePotionForPotionItem() {
+
+    return plugin.getConfig().getBoolean("shop.use-effect-for-potion-item");
+  }
+
+  @Nullable
+  public static Component getFirstPotionEffectName(@NotNull final ItemStack item) {
+
+    return getFirstPotionEffectName(item, plugin.text().getDefLocale());
+  }
+
+  @Nullable
+  public static Component getFirstPotionEffectName(@NotNull final ItemStack item, final String locale) {
+
+    Component name = null;
+    final PotionEffect effect = getFirstPotionEffect(item);
+    if(effect != null) {
+
+      name = plugin.platform().getTranslation(effect.getType());
+
+      name = name.append(Component.text(" " + RomanNumber.toRoman(effect.getAmplifier() + 1)));
+
+      name = name.append(Component.text(" " + formatDuration(effect)));
+
+      if(item.getType() == Material.SPLASH_POTION) {
+
+        name = name.append(Component.text(" ")).append(plugin.text().of("signs.splash-potion").forLocale(locale));
+      } else if(item.getType() == Material.LINGERING_POTION) {
+
+        name = name.append(Component.text(" ")).append(plugin.text().of("signs.linger-potion").forLocale(locale));
+      }
+    }
+    return name;
+  }
+
+  @Nullable
+  public static PotionEffect getFirstPotionEffect(@NotNull final ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta instanceof final PotionMeta potion && potion.getBasePotionType() != null && !potion.getBasePotionType().getPotionEffects().isEmpty()) {
+      return potion.getBasePotionType().getPotionEffects().getFirst();
+    }
+    return null;
+  }
+
+  public static Component getPotionLevel(final PotionEffect effect) {
+    return Component.text(RomanNumber.toRoman(effect.getAmplifier() + 1));
+  }
+
+  public static String getPotionDuration(final PotionEffect effect) {
+    return formatDuration(effect);
+  }
+
+  public static String formatDuration(final PotionEffect effect) {
+    if(effect.isInfinite()) {
+
+      return "∞";
+    }
+
+    final int totalSeconds = effect.getDuration() / 20;
+    final int minutes = totalSeconds / 60;
+    final int seconds = totalSeconds % 60;
+
+    return minutes + ":" + String.format("%02d", seconds);
   }
 
   public static int getItemTotalAmountsInMap(@NotNull final Map<Integer, ItemStack> map) {

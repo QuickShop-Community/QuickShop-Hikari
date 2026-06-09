@@ -1,13 +1,16 @@
 package com.ghostchu.quickshop.shop.operation;
 
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.ItemRemoveResult;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.operation.result.ItemRemoveOperationResult;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Operation to remove items
@@ -39,28 +42,35 @@ public class RemoveItemOperation implements Operation {
   }
 
   @Override
-  public boolean commit() {
+  public ItemRemoveOperationResult commit() {
 
     committed = true;
     this.snapshot = inv.createSnapshot();
     int remains = amount;
     int lastRemains = -1;
+
+    final ItemRemoveResult result = new ItemRemoveResult(new HashMap<>(), new HashMap<>());
+
     while(remains > 0) {
       final int stackSize = Math.min(remains, itemMaxStackSize);
       item.setAmount(stackSize);
       Log.debug("Committing remove item operation, remains: " + remains + ", stackSize: " + stackSize + ", target: " + item);
-      final Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
-      if(notFit.isEmpty()) {
+
+      final ItemRemoveResult resultNotFit = inv.removeItem(item.clone());
+      result.leftovers().putAll(resultNotFit.leftovers());
+      result.removed().putAll(resultNotFit.removed());
+      if(resultNotFit.leftovers().isEmpty()) {
         remains -= stackSize;
       } else {
-        remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
+        remains -= stackSize - resultNotFit.leftovers().entrySet().iterator().next().getValue().getAmount();
       }
+
       if(remains == lastRemains) {
-        return false;
+        return new ItemRemoveOperationResult(false, result);
       }
       lastRemains = remains;
     }
-    return true;
+    return new ItemRemoveOperationResult(true, result);
   }
 
   @Override

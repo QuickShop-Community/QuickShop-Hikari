@@ -81,6 +81,7 @@ public interface MetricPlatform<T> {
     if(metric == null) {
       return;
     }
+
     QuickShop.getInstance().getPrivacyController().privacyReview(dataType, moduleName.replace(" ", "_").replace("-", "_").toUpperCase(Locale.ROOT), reason, ()->addMetric(metric), ()->Log.debug("Blocked metric registration: failed privacy reviewing."));
   }
 

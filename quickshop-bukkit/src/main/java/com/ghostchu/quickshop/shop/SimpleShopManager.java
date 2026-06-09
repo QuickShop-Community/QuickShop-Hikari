@@ -445,15 +445,15 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     sendSellSuccess(buyerQUser, shop, amount, total, transaction.toTax().doubleValue());
     new ShopSuccessPurchaseEvent(shop, buyerQUser, buyerInventory, amount, total, transaction.toTax().doubleValue()).callEvent();
     shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
-    notifySold(buyerQUser, shop, amount, space);
+    notifySold(buyerQUser, shop, amount, total, space);
     return true;
   }
 
-  private void notifySold(@NotNull final QUser buyerQUser, @NotNull final Shop shop, final int amount, final int space) {
+  private void notifySold(@NotNull final QUser buyerQUser, @NotNull final Shop shop, final int amount, final double total, final int space) {
 
     Util.asyncThreadRun(()->{
       final List<Function<String, Component>> sendList = new ArrayList<>();
-      final Function<String, Component> notify = langCode->plugin.platform().setItemStackHoverEvent(plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem())).forLocale(langCode), shop.getItem());
+      final Function<String, Component> notify = langCode->plugin.platform().setItemStackHoverEvent(plugin.text().of("player-sold-to-your-store", buyerQUser.getDisplay(), amount, Util.getItemStackName(shop.getItem()), format(total, shop)).forLocale(langCode), shop.getItem());
       sendList.add(notify);
       if(space == amount) {
         Function<String, Component> spaceWarn;
@@ -821,7 +821,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
           createCost = 0;
         }
         if(createCost > 0) {
-          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).tax(BigDecimal.ZERO).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.bukkitLocation().getWorld().getName()).build();
+          final QSEconomyTransaction economyTransaction = QSEconomyTransaction.builder().taxer(cacheTaxAccount).from(QUserImpl.createFullFilled(p)).to(null).amount(BigDecimal.valueOf(createCost)).currency(plugin.getCurrency()).world(shop.bukkitLocation().getWorld().getName()).build();
           if(!economyTransaction.completable()) {
             plugin.text().of(p, "you-cant-afford-a-new-shop", format(createCost, shop.bukkitLocation().getWorld(), shop.getCurrency())).send();
             return;

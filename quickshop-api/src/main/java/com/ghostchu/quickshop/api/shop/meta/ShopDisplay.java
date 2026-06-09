@@ -19,11 +19,13 @@ package com.ghostchu.quickshop.api.shop.meta;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * ShopDisplay
@@ -57,6 +59,15 @@ public interface ShopDisplay {
     //backward support
     throw new UnsupportedOperationException();
   }
+
+  /**
+   * Retrieves the text to be displayed on the shop's sign asynchronously.
+   *
+   * @param locale The locale configuration used to generate the sign text.
+   * @return A CompletableFuture containing a list of {@link Component} objects that represent the text
+   *         for each line of the shop's sign.
+   */
+  CompletableFuture<List<Component>> getSignTextAsync(@NotNull final ProxiedLocale locale);
 
   /**
    * Get shop signs, may have multi signs

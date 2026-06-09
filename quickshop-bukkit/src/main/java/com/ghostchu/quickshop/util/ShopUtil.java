@@ -113,6 +113,51 @@ public class ShopUtil {
     QuickShop.getInstance().text().of(receiver, "transfer-single-ask", 60).send();
   }
 
+  /**
+   * Initiates a transfer request for a single shop from a sender user to a receiver user.
+   *
+   * @param senderQUser The sending user initiating the transfer. Must not be null.
+   *                    The user must have a valid unique ID.
+   * @param receiverQUser The receiving user for the transfer. Must not be null.
+   *                      The user must have a valid unique ID. Cannot be the same user as the sender.
+   * @param name The string name of the receiving player. Must not be null.
+   * @param shop The shop to be transferred as part of the request. Must not be null.
+   */
+  public static void transferRequest(@NotNull final QUser senderQUser, @NotNull final QUser receiverQUser, @NotNull final String name, @NotNull final Shop shop) {
+
+    transferRequest(senderQUser, receiverQUser, name, List.of(shop));
+  }
+
+  /**
+   * Initiates a transfer request of shops from a sender user to a receiver user.
+   *
+   * @param senderQUser The sending user initiating the transfer. Must not be null.
+   *                    The user must have a valid unique ID.
+   * @param receiverQUser The receiving user for the transfer. Must not be null.
+   *                      The user must have a valid unique ID. Cannot be the same user as the sender.
+   * @param name The string name of the receiving player. Must not be null.
+   * @param shopsToTransfer A list of shops to be transferred. Must not be null.
+   *                        The provided list should contain valid shop entries.
+   */
+  public static void transferRequest(@NotNull final QUser senderQUser, @NotNull final QUser receiverQUser, @NotNull final String name, @NotNull final List<Shop> shopsToTransfer) {
+
+    if(senderQUser.getUniqueId() == null || receiverQUser.getUniqueId() == null) {
+      //TODO: send error message/will this happen?
+      return;
+    }
+
+    if(senderQUser.getUniqueId().equals(receiverQUser.getUniqueId())) {
+      QuickShop.getInstance().text().of(senderQUser, "transfer-no-self", name).send();
+      return;
+    }
+
+    final ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(senderQUser, receiverQUser, shopsToTransfer);
+    taskCache.put(receiverQUser.getUniqueId(), task);
+    QuickShop.getInstance().text().of(senderQUser, "transfer-sent", name).send();
+    QuickShop.getInstance().text().of(receiverQUser, "transfer-single-request", senderQUser.getDisplay()).send();
+    QuickShop.getInstance().text().of(receiverQUser, "transfer-single-ask", 60).send();
+  }
+
   public static void setPrice(final QuickShop plugin, @NotNull final QUser user, final double price, @NotNull final Shop shop) {
 
     if(user.getUniqueId() == null || user.getBukkitPlayer().isEmpty()) {

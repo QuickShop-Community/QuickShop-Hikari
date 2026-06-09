@@ -32,6 +32,7 @@ import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
+import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -88,6 +89,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -434,7 +437,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(this.extra == null) {
       return new YamlConfiguration();
     }
-    ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
+    final ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
     if(section == null) {
       return new YamlConfiguration();
     }
@@ -448,6 +451,13 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   public @Nullable InventoryWrapper getInventory() {
 
     Util.ensureThread(false);
+    final int chunkX = location.getBlockX() >> 4;
+    final int chunkZ = location.getBlockZ() >> 4;
+
+    if(!this.location.getWorld().isChunkLoaded(chunkX, chunkZ)) {
+      return null;
+    }
+
     try {
       final InventoryWrapper inventoryWrapper = locateInventory(symbolLink);
       if(inventoryWrapper.isValid()) {
@@ -811,39 +821,49 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Override
   public int getRemainingStock() {
 
+    return getRemainingStockAsync()
+            .orTimeout(5, TimeUnit.SECONDS)
+            .exceptionally(ex -> 0)
+            .join();
+  }
+
+  public CompletableFuture<Integer> getRemainingStockAsync() {
     if(this.unlimited) {
-      return -1;
+      return CompletableFuture.completedFuture(-1);
     }
 
     if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
 
-      if(this.getInventory() == null) {
-        return 0;
-      }
-      final int stock = Util.countItems(this.getInventory(), this);
-      new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
-      return stock;
+      return CompletableFuture.completedFuture(calculateRemainingStock());
     }
 
     final CompletableFuture<Integer> future = new CompletableFuture<>();
 
-    QuickShop.folia()
-      .getScheduler()
-      .runAtLocation(
-        this.location,
-        task->{
-          if(this.getInventory() == null) {
-            future.complete(0);
-            return;
-          }
+    try {
+      QuickShop.folia().getScheduler().runAtLocation(this.location, task->{
+        try {
+          future.complete(calculateRemainingStock());
+        } catch(final Throwable throwable) {
+          future.completeExceptionally(throwable);
+        }
+      });
+    } catch(final Throwable throwable) {
+      future.completeExceptionally(throwable);
+    }
 
-          final int stock = Util.countItems(this.getInventory(), this);
-          new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+    return future;
+  }
 
-          future.complete(stock);
-        });
+  private int calculateRemainingStock() {
 
-    return future.join();
+    final InventoryWrapper inventoryWrapper = getInventory();
+    if(inventoryWrapper == null) {
+      return 0;
+    }
+
+    final int stock = Util.countItems(inventoryWrapper, this);
+    new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
+    return stock;
   }
 
   /**
@@ -1049,6 +1069,55 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   }
 
   /**
+   * Retrieves the text to be displayed on the shop's sign asynchronously.
+   *
+   * @param locale The locale configuration used to generate the sign text.
+   *
+   * @return A CompletableFuture containing a list of {@link Component} objects that represent the
+   * text for each line of the shop's sign.
+   */
+  @Override
+  public CompletableFuture<List<Component>> getSignTextAsync(final @NotNull ProxiedLocale locale) {
+
+    final Location loc = this.location.clone();
+    final CompletableFuture<List<Component>> result = new CompletableFuture<>();
+
+    QuickShop.folia().getScheduler().runAtLocation(loc, task -> {
+      if (!this.isValid()) {
+        result.complete(List.of());
+        return;
+      }
+
+      plugin.getShopManager()
+              .shopLayoutProvider()
+              .createSignSnapshot(this, locale)
+              .thenApply(snapshot ->plugin.getShopManager().shopLayoutProvider().renderSnapshot(snapshot, locale))
+              .whenComplete((lines, throwable) -> {
+                QuickShop.folia().getScheduler().runAtLocation(loc, task2 -> {
+                  if (throwable != null) {
+
+                    result.completeExceptionally(throwable);
+                    return;
+                  }
+
+                  if (!this.isValid()) {
+
+                    result.complete(List.of());
+                    return;
+                  }
+
+                  final ShopSignLinesEvent event = new ShopSignLinesEvent(Phase.RETRIEVE, this, new LinkedList<>(lines));
+
+                  event.callEvent();
+                  result.complete(event.updated());
+                });
+              });
+    });
+
+    return result;
+  }
+
+  /**
    * Returns a list of signs that are attached to this shop (QuickShop and blank signs only)
    *
    * @return a list of signs that are attached to this shop (QuickShop and blank signs only)
@@ -1154,6 +1223,32 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       return false;
     }
     return true;
+  }
+
+  /**
+   * Asynchronously determines whether the shop's inventory is available, indicating that it is
+   * neither out of space nor out of stock.
+   *
+   * @return A CompletionStage that completes with a Boolean value indicating whether the inventory
+   * is available (true) or not (false).
+   */
+  @Override
+  public CompletableFuture<Boolean> inventoryAvailableAsync() {
+
+    if(isUnlimited()) {
+      return CompletableFuture.completedFuture(true);
+    }
+    if(isSelling()) {
+
+      return getRemainingStockAsync().thenApply(stock -> stock > 0);
+    }
+    if(isBuying()) {
+      return CompletableFuture.completedFuture(getRemainingSpace() > 0);
+    }
+    if(isFrozen()) {
+      return CompletableFuture.completedFuture(false);
+    }
+    return CompletableFuture.completedFuture(true);
   }
 
   @Override
@@ -1783,8 +1878,17 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(!Util.isLoaded(this.location)) {
       return;
     }
-    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
-      this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+
+    final Location loc = this.location.clone();
+    final CompletableFuture<List<Component>> textCompletable = getSignTextAsync(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode()));
+
+    textCompletable.thenAccept(lines -> {
+      QuickShop.folia().getScheduler().runAtLocation(loc, (consumer)->{
+        if(!isValid()) {
+          return;
+        }
+        this.setSignText(lines);
+      });
     });
   }
 
@@ -1839,9 +1943,17 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       return;
     }
 
-    QuickShop.folia().getScheduler().runAtLocation(this.location, (consumer)->{
-      this.setSignText(getSignText(locale));
-    });
+    final Location loc = this.location.clone();
+    final CompletableFuture<List<Component>> textCompletable = getSignTextAsync(locale);
+
+    textCompletable.thenAccept(lines ->QuickShop.folia().getScheduler().runAtLocation(loc, (consumer)->{
+
+      if(!isValid()) {
+
+        return;
+      }
+      this.setSignText(lines);
+    }));
   }
 
   /**
