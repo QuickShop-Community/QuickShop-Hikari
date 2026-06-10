@@ -46,6 +46,7 @@ public class QuickShopPage extends Page {
   public QuickShopPage(final int pageNumber) {
 
     super(pageNumber);
+    setLockEmptySlots(true);
   }
 
   public static Optional<OfflinePlayer> getPlayer(final UUID uuid) {

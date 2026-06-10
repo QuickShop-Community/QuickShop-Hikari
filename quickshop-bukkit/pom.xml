@@ -12,8 +12,8 @@
     </parent>
 
     <properties>
-        <tnml.version>1.6.0.0-SNAPSHOT-15</tnml.version>
-        <tnil.version>0.1.7.6-LEGACY-13</tnil.version>
+        <tnml.version>1.7.0.1-SNAPSHOT-4</tnml.version>
+        <tnil.version>0.1.2.2-SNAPSHOT-1</tnil.version>
     </properties>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -193,6 +193,19 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Bukkit</artifactId>
+            <version>${tnil.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.tnemc</groupId>
+            <artifactId>TNIL-Paper</artifactId>
             <version>${tnil.version}</version>
             <scope>compile</scope>
             <exclusions>

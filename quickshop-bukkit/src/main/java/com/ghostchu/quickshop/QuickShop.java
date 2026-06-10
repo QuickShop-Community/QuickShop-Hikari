@@ -125,9 +125,10 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.bukkit.BukkitHelper;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitHelper;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.platform.registry.BaseHelper;
 import net.tnemc.item.providers.HelperMethods;
 import net.tnemc.menu.bukkit.BukkitMenuHandler;
 import net.tnemc.menu.bukkit.BukkitPlayer;
@@ -225,7 +226,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Getter
   private final PasteManager pasteManager = new PasteManager();
   protected MenuHandler menuHandler;
-  protected HelperMethods helperMethods;
+  protected BaseHelper helperMethods;
   private QuickShopInteractionManager interactionManager;
   @Getter
   private GuiConfig guiConfig;
