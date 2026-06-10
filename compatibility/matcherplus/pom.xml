@@ -261,7 +261,7 @@
         <dependency>
             <groupId>xyz.xenondevs.nova</groupId>
             <artifactId>nova-api</artifactId>
-            <version>0.18</version>
+            <version>0.23.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
