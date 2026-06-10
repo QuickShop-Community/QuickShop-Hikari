@@ -70,7 +70,8 @@
         <compat.cmilib>1.5.6.3</compat.cmilib><!-- no maven repository? -->
         <compat.crazycrates>4.10.5</compat.crazycrates>
         <compat.eco>6.75.2</compat.eco>
-        <compat.ecoenchants>12.22.0</compat.ecoenchants>
+        <compat.ecoenchants>13.9.0</compat.ecoenchants>
+        <compat.libreforge-loader>5.7.0</compat.libreforge-loader>
         <compat.elitemobs>9.2.3</compat.elitemobs>
         <compat.excellentcrates>6.4.0</compat.excellentcrates>
         <compat.fabledskyblock>3.5.2-SNAPSHOT</compat.fabledskyblock>
