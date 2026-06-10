@@ -95,7 +95,7 @@
         <compat.voidchest>3.0.0</compat.voidchest>
         <compat.worldedit>7.3.17</compat.worldedit>
         <compat.worldeditfawe>2.12.0</compat.worldeditfawe>
-        <compat.worldguard>7.0.14</compat.worldguard>
+        <compat.worldguard>7.0.17</compat.worldguard>
     </properties>
 
     <licenses>
