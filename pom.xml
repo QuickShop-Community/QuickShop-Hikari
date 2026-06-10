@@ -96,7 +96,7 @@
         <compat.ultimateclaims>3.0.2-SNAPSHOT</compat.ultimateclaims>
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
-        <compat.worldedit>7.3.17</compat.worldedit>
+        <compat.worldedit>7.4.3</compat.worldedit>
         <compat.worldeditfawe>2.12.0</compat.worldeditfawe>
         <compat.worldguard>7.0.17</compat.worldguard>
     </properties>
