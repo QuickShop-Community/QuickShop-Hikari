@@ -67,6 +67,12 @@
         </dependency>
         <dependency>
             <groupId>com.willfp</groupId>
+            <artifactId>libreforge-loader</artifactId>
+            <version>${compat.libreforge-loader}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.willfp</groupId>
             <artifactId>eco</artifactId>
             <version>${compat.eco}</version>
             <scope>provided</scope>
