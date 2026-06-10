@@ -668,7 +668,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     sendPurchaseSuccess(sellerQUser, shop, amount, total, transaction.fromTax().doubleValue());
-    new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.fromTax().doubleValue()).callEvent();
+    new ShopSuccessPurchaseEvent(shop, sellerQUser, sellerInventory, amount, total, transaction.toTax().doubleValue()).callEvent();
     notifyBought(sellerQUser, shop, amount, stock, transaction);
     return true;
   }
@@ -1178,7 +1178,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       Function<String, Component> notify;
       final double ownerPayment = transaction.ownerPayment().doubleValue();
       final double tax = transaction.toTax().doubleValue();
-      if(plugin.getConfig().getBoolean("show-tax")) {
+      if(showTax) {
         notify = langCode->plugin.text().of("player-bought-from-your-store-tax", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(ownerPayment, shop), this.formatter.format(tax, shop)).forLocale(langCode);
       } else {
         notify = langCode->plugin.text().of("player-bought-from-your-store", seller, amount * shop.getItem().getAmount(), Util.getItemStackName(shop.getItem()), this.formatter.format(ownerPayment, shop)).forLocale(langCode);

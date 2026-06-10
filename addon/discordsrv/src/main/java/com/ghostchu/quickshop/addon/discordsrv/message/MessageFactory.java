@@ -128,8 +128,9 @@ public class MessageFactory {
     //noinspection DataFlowIssue
     placeHolders.put("purchase.world", shop.bukkitLocation().getWorld().getName());
     placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
-    placeHolders.put("purchase.balance", String.valueOf(event.getBalanceWithoutTax()));
-    placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getShopManager().format(event.getBalanceWithoutTax(), shop)));
+    final double balance = shop.isSelling()? event.getBalance() : event.getBalanceWithoutTax();
+    placeHolders.put("purchase.balance", String.valueOf(balance));
+    placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getShopManager().format(balance, shop)));
     placeHolders.put("purchase.taxes", String.valueOf(event.getTax()));
     placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getShopManager().format(event.getTax(), shop)));
     return placeHolders;
