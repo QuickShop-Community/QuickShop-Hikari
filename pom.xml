@@ -41,7 +41,7 @@
         <depend.examination-string>1.3.0</depend.examination-string>
         <depend.faststats>0.17.2</depend.faststats>
         <depend.nbtapi>2.15.0</depend.nbtapi>
-        <depend.packetevents>2.10.0</depend.packetevents>
+        <depend.packetevents>2.12.2</depend.packetevents>
         <depend.paper>1.21-R0.1-SNAPSHOT</depend.paper>
         <depend.protocollib>5.4.0</depend.protocollib>
         <depend.vault>1.7.1</depend.vault>
