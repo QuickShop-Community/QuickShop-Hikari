@@ -332,7 +332,7 @@
                         <version>true</version>
                         <linksource>true</linksource>
                         <notimestamp>true</notimestamp>
-                        <bottom><![CDATA[<b>QuickShopCommunity, 2025</b>]]></bottom>
+                        <bottom><![CDATA[<b>QuickShopCommunity, 2026</b>]]></bottom>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -473,7 +473,6 @@
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
 
-        <!--<module>addon/betonquest</module>-->
         <module>addon/bluemap</module>
         <module>addon/discordsrv</module>
         <module>addon/displaycontrol</module>
@@ -487,8 +486,8 @@
         <module>addon/reremake-migrator</module>
         <module>addon/squaremap</module>
         <module>addon/shopitemonly</module>
+      
         <module>compatibility/advancedregionmarket</module>
-          <!--   <module>compatibility/angelchest</module>  -->
         <module>compatibility/bentobox</module>
         <module>compatibility/bungeecord</module>
         <module>compatibility/bungeecord-geyser</module>
