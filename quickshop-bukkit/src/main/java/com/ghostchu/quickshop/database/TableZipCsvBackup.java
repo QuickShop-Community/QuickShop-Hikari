@@ -215,16 +215,16 @@ public final class TableZipCsvBackup {
   public static void importFromCSV(@NotNull final File zipFile, @NotNull final DataTables table)
           throws SQLException, ClassNotFoundException, IOException {
 
-    final TableSchema schema = readSchemaFromZip(zipFile, table.getName());
+    final TableSchema schema = readSchemaFromZip(zipFile, table.logicalName());
     if(schema == null) {
-      throw new IllegalStateException("Missing schema sidecar for table " + table.getName()
-                                      + " (expected " + table.getName() + ".schema.json in zip)");
+      throw new IllegalStateException("Missing schema sidecar for table " + table.logicalName()
+                                      + " (expected " + table.logicalName() + ".schema.json in zip)");
     }
 
     Log.debug("Loading CsvDriver...");
     Class.forName("org.relique.jdbc.csv.CsvDriver");
 
-    final String csvTableName = table.getName();
+    final String csvTableName = table.logicalName();
 
     try(final Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
         final Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
