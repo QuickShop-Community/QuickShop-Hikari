@@ -100,12 +100,12 @@
             <version>3.4.3</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>su.nightexpress.excellentcrates</groupId>
             <artifactId>ExcellentCrates</artifactId>
             <version>6.5.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.badbones69.crazycrates</groupId>
             <artifactId>crazycrates-paper-api</artifactId>
@@ -123,12 +123,12 @@
             </exclusions>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>main</artifactId>
             <version>2.10.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>de.dustplanet</groupId>
             <artifactId>silkspawners</artifactId>

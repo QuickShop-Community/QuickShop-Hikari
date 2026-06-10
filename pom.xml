@@ -41,11 +41,11 @@
         <depend.examination-string>1.3.0</depend.examination-string>
         <depend.faststats>0.17.2</depend.faststats>
         <depend.nbtapi>2.15.0</depend.nbtapi>
-        <depend.packetevents>2.9.0-SNAPSHOT</depend.packetevents>
+        <depend.packetevents>2.10.0</depend.packetevents>
         <depend.paper>1.21-R0.1-SNAPSHOT</depend.paper>
         <depend.protocollib>5.4.0</depend.protocollib>
         <depend.vault>1.7.1</depend.vault>
-        <depend.vaultunlocked>2.13</depend.vaultunlocked>
+        <depend.vaultunlocked>2.15</depend.vaultunlocked>
 
         <!-- addon versions -->
         <addon.betonquest>3.0.0-20250112.153201-1</addon.betonquest>
@@ -81,7 +81,7 @@
         <compat.itemsadder>4.0.10</compat.itemsadder>
         <compat.lands>7.15.20</compat.lands>
         <compat.openinv>5.1.6</compat.openinv>
-        <compat.plotsquared>7.5.2</compat.plotsquared>
+        <compat.plotsquared>7.5.8</compat.plotsquared>
         <compat.reforges>6.74.0</compat.reforges>
         <compat.residence>6.0.0.1</compat.residence>
         <compat.silkspawners>8.3.0</compat.silkspawners>
@@ -89,13 +89,13 @@
         <compat.slimefun>RC-37</compat.slimefun>
         <compat.superiorskyblock>1.11.1</compat.superiorskyblock>
         <compat.tne>0.1.3.6-Pre-1</compat.tne>
-        <compat.towny>0.101.1.15</compat.towny>
+        <compat.towny>0.101.2.6</compat.towny>
         <compat.ultimateclaims>3.0.2-SNAPSHOT</compat.ultimateclaims>
         <compat.velocity>3.1.2-SNAPSHOT</compat.velocity>
         <compat.voidchest>3.0.0</compat.voidchest>
-        <compat.worldedit>7.3.11</compat.worldedit>
+        <compat.worldedit>7.3.17</compat.worldedit>
         <compat.worldeditfawe>2.12.0</compat.worldeditfawe>
-        <compat.worldguard>7.0.13</compat.worldguard>
+        <compat.worldguard>7.0.14</compat.worldguard>
     </properties>
 
     <licenses>
@@ -347,7 +347,7 @@
                 <plugin>
                     <groupId>io.github.git-commit-id</groupId>
                     <artifactId>git-commit-id-maven-plugin</artifactId>
-                    <version>9.0.1</version>
+                    <version>9.0.2</version>
                     <executions>
                         <execution>
                             <id>get-the-git-infos</id>
@@ -375,7 +375,7 @@
                 <plugin>
                     <groupId>io.takari.maven.plugins</groupId>
                     <artifactId>takari-lifecycle-plugin</artifactId>
-                    <version>2.3.0</version>
+                    <version>2.3.2</version>
                     <extensions>true</extensions>
                     <configuration>
                         <proc>proc</proc>
