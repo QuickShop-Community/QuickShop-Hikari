@@ -527,6 +527,11 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
     this.displayItem = null;
     checkDisplay();
+    if(this.inventoryPreview != null) {
+
+      this.inventoryPreview.close();
+      this.inventoryPreview = null;
+    }
     setSignText();
     setDirty();
   }
