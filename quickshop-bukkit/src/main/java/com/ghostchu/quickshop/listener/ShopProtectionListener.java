@@ -194,13 +194,13 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onPlaceProtectedBlock(final BlockPlaceEvent e) {
 
-    if(e.getBlockPlaced().getState() instanceof final Hopper hopper) {
+    if(e.getBlockPlaced().getState(false) instanceof final Hopper hopper) {
       hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
       hopper.setBlockData(e.getBlockPlaced().getBlockData());
       hopper.update();
     }
 
-    if(e.getBlockPlaced().getState() instanceof final Dropper dropper) {
+    if(e.getBlockPlaced().getState(false) instanceof final Dropper dropper) {
       dropper.getPersistentDataContainer().set(dropperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
       dropper.setBlockData(e.getBlockPlaced().getBlockData());
       dropper.update();

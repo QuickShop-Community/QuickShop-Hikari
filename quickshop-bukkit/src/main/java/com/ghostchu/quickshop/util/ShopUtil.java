@@ -77,7 +77,7 @@ public class ShopUtil {
 
   public static boolean allowed(final Block shopBlock, final ItemStack itemStack) {
 
-    if(shopBlock.getState() instanceof ShulkerBox
+    if(shopBlock.getState(false) instanceof ShulkerBox
        && itemStack.getItemMeta() instanceof final BlockStateMeta blockMeta
        && blockMeta.getBlockState() instanceof ShulkerBox) {
 

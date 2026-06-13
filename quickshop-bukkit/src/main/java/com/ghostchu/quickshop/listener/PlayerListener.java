@@ -170,7 +170,7 @@ public class PlayerListener extends AbstractQSListener {
       }
     }
 
-    if(shop == null && b.getState() instanceof Container) {
+    if(shop == null && b.getState(false) instanceof Container) {
 
       return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.CONTAINER);
     }
@@ -202,7 +202,7 @@ public class PlayerListener extends AbstractQSListener {
     if(!Util.isWallSign(block.getType())) {
       return;
     }
-    final BlockState state = e.getBlock().getState();
+    final BlockState state = e.getBlock().getState(false);
     if(state instanceof final Sign sign) {
       if(sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
         e.setCancelled(true);

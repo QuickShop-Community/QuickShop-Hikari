@@ -7,8 +7,10 @@ layer-name: "QuickShop-Hikari Shops"
 layer-priority: 99
 #Should we show the controls for the layer?
 layer-controls: true
+# Should we use a custom icon for the marker? If so place it in the qsaddon-pl3xmap file, and include the file extension in the icon-file-location.
+icon-custom: false
 #Location for the image you want as your quick-shop marker, it's defaulted to the Pl3xMap assets folder,
-#without the file extension.
+#without the file extension. If you want a custom icon, place it in the qsaddon-pl3xmap file, and include the file extension.
 icon-file-location: "players"
 # Max distance of range where the user can see the marker, useful for lag reduction in frames.
 max-distance: 1000
