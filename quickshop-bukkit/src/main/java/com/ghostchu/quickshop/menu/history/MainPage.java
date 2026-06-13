@@ -107,6 +107,7 @@ public class MainPage {
         final ProxiedLocale locale = QuickShop.getInstance().getTextManager().findRelativeLanguages(player);
 
         callback.getPage().getIcons().clear();
+        callback.getPage().setLockEmptySlots(true);
         final UUID id = viewer.get().uuid();
 
         // Load GUI configuration
@@ -172,11 +173,11 @@ public class MainPage {
           if(owner.isRealPlayer() && owner.getUniqueId() != null) {
 
             ownerProfile = new SkullProfile();
-            ownerProfile.setUuid(owner.getUniqueId());
+            ownerProfile.uuid(owner.getUniqueId());
           }
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(shopInfoMaterial, 1)
-                                                             .display(shopName)
+                                                             .customName(shopName)
                                                              .lore(getConfigLore(id, shopInfoConfig,
                                                                                  shopType,
                                                                                  shop.getOwner().getDisplay(),
@@ -192,7 +193,7 @@ public class MainPage {
         } else {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(multiShopMaterial, 1)
-                                                             .display(getConfigDisplay(id, multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
+                                                             .customName(getConfigDisplay(id, multiShopConfig, "<yellow>Multiple Shops ({0})</yellow>", shops.size())))
                                              .withSlot(multiShopSlot)
                                              .build());
         }
@@ -202,7 +203,7 @@ public class MainPage {
         final int summarySlot = (summaryConfig != null)? summaryConfig.getSlot() : 0;
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(summaryMaterial, 1)
-                                                           .display(getConfigDisplay(id, summaryConfig, "<yellow>Summary</yellow>"))
+                                                           .customName(getConfigDisplay(id, summaryConfig, "<yellow>Summary</yellow>"))
                                                            .lore(getConfigLore(id, summaryConfig, locale.getNumberFormat().format(summary.totalPurchases()),
                                                                                locale.getNumberFormat().format(summary.uniquePurchasers()),
                                                                                hours(id, 24), locale.getNumberFormat().format(summary.recentPurchases24h()),
@@ -230,7 +231,7 @@ public class MainPage {
         }
 
         callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(topCustomersMaterial, 1)
-                                                           .display(getConfigDisplay(id, topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
+                                                           .customName(getConfigDisplay(id, topCustomersConfig, "<aqua>Top Customers ({0})</aqua>", summary.valuableCustomers().size()))
                                                            .lore(valuableDescription)).withSlot(topCustomersSlot).build());
 
         // Pagination icons from config
@@ -242,14 +243,14 @@ public class MainPage {
         if(maxPages > 1) {
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
-                                                             .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
+                                                             .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
                                                              .lore(getConfigLore(id, prevPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(prevPageSlot)
                                              .build());
 
           callback.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
-                                                             .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
+                                                             .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
                                                              .lore(getConfigLore(id, nextPageConfig, page)))
                                              .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                                              .withSlot(nextPageSlot)
@@ -308,13 +309,13 @@ public class MainPage {
             if(offline.isPresent() && offline.get().hasPlayedBefore()) {
 
               final SkullProfile profile = new SkullProfile();
-              profile.setUuid(record.buyer());
+              profile.uuid(record.buyer());
               stack = stack.profile(profile);
             }
           } else {
             stack = stack.of(type, Math.min(max, record.amount()));
           }
-          stack = stack.display(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
+          stack = stack.customName(getConfigDisplay(id, entryConfig, "<yellow>{0}</yellow>", dateStr));
           stack = stack.lore(getConfigLore(id, entryConfig, shopName, userName, itemName,
                                            record.amount(), record.money(), record.tax(),
                                            record.money() - record.tax()));

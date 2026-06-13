@@ -92,6 +92,7 @@ public class MainPage {
       if(shopsData.isPresent() && player != null) {
 
         playerPage.getIcons(id).clear();
+        playerPage.setLockEmptySlots(true);
 
         // Load GUI configuration
         final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
@@ -134,14 +135,14 @@ public class MainPage {
         if(maxPages > 1) {
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(prevPageMaterial, 1)
-                                                         .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
+                                                         .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>"))
                                                          .lore(getConfigLore(id, prevPageConfig, page)))
                   .withActions(new DataAction(staffPageID, prev), new SwitchPageAction(menuName, menuPage))
                   .withSlot(prevPageSlot)
                   .build());
 
           playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(nextPageMaterial, 1)
-                                                         .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
+                                                         .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>"))
                                                          .lore(getConfigLore(id, nextPageConfig, page)))
                   .withActions(new DataAction(staffPageID, next), new SwitchPageAction(menuName, menuPage))
                   .withSlot(nextPageSlot)
@@ -149,7 +150,7 @@ public class MainPage {
         }
 
         playerPage.addIcon(id, new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                                       .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
+                                                       .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}</yellow>", page)))
                 .withSlot(pageInfoSlot)
                 .build());
 
@@ -174,7 +175,7 @@ public class MainPage {
           if(owner.isRealPlayer() && owner.getUniqueId() != null) {
 
             ownerProfile = new SkullProfile();
-            ownerProfile.setUuid(owner.getUniqueId());
+            ownerProfile.uuid(owner.getUniqueId());
           }
 
           final String priceFormatted = shop.format(shop.bukkitLocation().getWorld().getName(), shop.getCurrency());

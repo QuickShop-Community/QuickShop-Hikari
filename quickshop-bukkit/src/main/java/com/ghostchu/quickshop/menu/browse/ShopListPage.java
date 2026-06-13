@@ -77,6 +77,7 @@ public class ShopListPage {
 
     final MenuViewer viewer = viewerOpt.get();
     final Page menuPage = callback.getPage();
+    menuPage.setLockEmptySlots(true);
 
     final Optional<Object> shopsData = viewer.findData(SELECTED_ITEM_SHOPS);
     final UUID id = viewer.uuid();
@@ -144,7 +145,7 @@ public class ShopListPage {
       final String filterIndicator = getFilterIndicator(filterMode);
       final AbstractItemStack<ItemStack> infoStack = new BukkitItemStack()
               .of(firstShop.getItem().getType().key().asString(), 1)
-              .display(QuickShop.getInstance().platform().miniMessage().deserialize(
+              .customName(QuickShop.getInstance().platform().miniMessage().deserialize(
                       "<yellow>" + CommonUtil.prettifyText(firstShop.getItem().getType().name()) + "</yellow>"))
               .lore(List.of(
                       QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Showing: " + filterIndicator + "</gray>"),
@@ -159,7 +160,7 @@ public class ShopListPage {
     final String sortMaterial = sortConfig != null? sortConfig.getMaterial() : "HOPPER";
     final int sortSlot = sortConfig != null? sortConfig.getSlot() : 2;
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
-                                             .display(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
+                                             .customName(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
                                              .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
                              .withActions(
@@ -175,7 +176,7 @@ public class ShopListPage {
     final int filterSlot = filterConfig != null? filterConfig.getSlot() : 4;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
-                                             .display(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
+                                             .customName(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
                                              .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
                              .withActions(
@@ -192,7 +193,7 @@ public class ShopListPage {
     final String stockStatus = stockOnly? "ON" : "OFF";
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(stockMaterial, 1)
-                                             .display(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
+                                             .customName(getConfigDisplay(id, stockConfig, "<gold>In Stock Only: {0}</gold>", stockStatus))
                                              .lore(getConfigLore(id, stockConfig)))
                              .withSlot(stockSlot)
                              .withActions(
@@ -207,7 +208,7 @@ public class ShopListPage {
     final int backSlot = backConfig != null? backConfig.getSlot() : 8;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(backMaterial, 1)
-                                             .display(getConfigDisplay(id, backConfig, "<white>Back to Market</white>")))
+                                             .customName(getConfigDisplay(id, backConfig, "<white>Back to Market</white>")))
                              .withSlot(backSlot)
                              .withActions(
                                      new DataAction(SHOPS_PAGE, 1),
@@ -225,13 +226,13 @@ public class ShopListPage {
 
     if(maxPages > 1) {
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(prevMaterial, 1)
-                                               .display(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
+                                               .customName(getConfigDisplay(id, prevPageConfig, "<white><< Previous Page</white>")))
                                .withSlot(prevSlot)
                                .withActions(new DataAction(SHOP_LIST_PAGE, prev), new SwitchPageAction(menuName, 2))
                                .build());
 
       menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(nextMaterial, 1)
-                                               .display(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
+                                               .customName(getConfigDisplay(id, nextPageConfig, "<white>Next Page >></white>")))
                                .withSlot(nextSlot)
                                .withActions(new DataAction(SHOP_LIST_PAGE, next), new SwitchPageAction(menuName, 2))
                                .build());
@@ -239,7 +240,7 @@ public class ShopListPage {
 
     // Page info
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(pageInfoMaterial, 1)
-                                             .display(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
+                                             .customName(getConfigDisplay(id, pageInfoConfig, "<yellow>Page {0}/{1}</yellow>", page, Math.max(1, maxPages))))
                              .withSlot(pageInfoSlot)
                              .build());
 
@@ -263,7 +264,7 @@ public class ShopListPage {
 
       final AbstractItemStack<ItemStack> stack = new BukkitItemStack()
               .of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
-              .display(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + itemName + "</yellow>"))
+              .customName(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + itemName + "</yellow>"))
               .lore(lore);
 
       // Get teleport location - use shop location + 1 block up

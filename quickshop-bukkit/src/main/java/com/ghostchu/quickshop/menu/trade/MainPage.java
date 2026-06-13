@@ -111,7 +111,7 @@ public class MainPage extends QuickShopPage {
         final String infoStockMaterial = (infoStockConfig != null)? infoStockConfig.getMaterial() : "CHEST";
         final int infoStockSlot = (infoStockConfig != null)? infoStockConfig.getSlot() : 21;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoStockMaterial, 1)
-                                                       .display(getConfigDisplay(id, infoStockConfig, "<yellow>Stock Information</yellow>"))
+                                                       .customName(getConfigDisplay(id, infoStockConfig, "<yellow>Stock Information</yellow>"))
                                                        .lore(getConfigLore(id, infoStockConfig, stockString)))
                                        .withSlot(infoStockSlot).build());
 
@@ -119,7 +119,7 @@ public class MainPage extends QuickShopPage {
         final String infoPriceMaterial = infoPriceConfig != null? infoPriceConfig.getMaterial() : "GOLD_INGOT";
         final int infoPriceSlot = infoPriceConfig != null? infoPriceConfig.getSlot() : 22;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoPriceMaterial, 1)
-                                                       .display(getConfigDisplay(id, infoPriceConfig, "<gold>Price Information</gold>"))
+                                                       .customName(getConfigDisplay(id, infoPriceConfig, "<gold>Price Information</gold>"))
                                                        .lore(getConfigLore(id, infoPriceConfig, priceFormatted, amount)))
                                        .withSlot(infoPriceSlot).build());
 
@@ -129,11 +129,11 @@ public class MainPage extends QuickShopPage {
         SkullProfile sellerProfile = null;
         if(shop.get().getOwner().isRealPlayer()) {
           sellerProfile = new SkullProfile();
-          sellerProfile.setUuid(shop.get().getOwner().getUniqueId());
+          sellerProfile.uuid(shop.get().getOwner().getUniqueId());
         }
         final String ownerName = shop.get().getOwner().getDisplay();
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoSellerMaterial, 1)
-                                                       .display(getConfigDisplay(id, infoSellerConfig, "<aqua>Seller Information</aqua>"))
+                                                       .customName(getConfigDisplay(id, infoSellerConfig, "<aqua>Seller Information</aqua>"))
                                                        .lore(getConfigLore(id, infoSellerConfig, ownerName))
                                                        .profile(sellerProfile))
                                        .withSlot(infoSellerSlot).build());
@@ -144,7 +144,7 @@ public class MainPage extends QuickShopPage {
 
         final String enterPath = (shop.get().isSelling())? "trade.enter-buy" : "trade.enter-sell";
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(customAmountMaterial, 1)
-                                                       .display(getConfigDisplay(id, customAmountConfig, "<bold><blue>Custom Order</blue></bold>"))
+                                                       .customName(getConfigDisplay(id, customAmountConfig, "<bold><blue>Custom Order</blue></bold>"))
                                                        .lore(getConfigLore(id, customAmountConfig, amount, stockString)))
                                        .withActions(new GuiChatAction((message)->{
                                          if(!message.isEmpty()) {
@@ -199,7 +199,7 @@ public class MainPage extends QuickShopPage {
           final String displayText = (shop.get().isSelling())? "<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(quantityMaterial, Math.min(adjustedAmount, 64))
-                                                         .display(QuickShop.getInstance().platform().miniMessage().deserialize(displayText))
+                                                         .customName(QuickShop.getInstance().platform().miniMessage().deserialize(displayText))
                                                          .lore(getConfigLore(id, quantityConfig, totalPrice)))
                                          .withActions(new RunnableAction((click->{
                                            if(shop.get().isBuying()) {
@@ -222,7 +222,7 @@ public class MainPage extends QuickShopPage {
         final String closeMaterial = closeConfig != null? closeConfig.getMaterial() : "BARRIER";
         final int closeSlot = closeConfig != null? closeConfig.getSlot() : 49;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(closeMaterial, 1)
-                                                       .display(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
+                                                       .customName(getConfigDisplay(id, closeConfig, "<red>Close</red>")))
                                        .withActions(new RunnableAction((click->viewer.get().close(QuickShop.getInstance().createMenuPlayer(player)))))
                                        .withSlot(closeSlot).build());
       }
