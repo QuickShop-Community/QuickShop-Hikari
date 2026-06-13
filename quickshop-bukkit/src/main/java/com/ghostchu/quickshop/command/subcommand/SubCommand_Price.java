@@ -46,15 +46,6 @@ public class SubCommand_Price implements CommandHandler<Player> {
       return;
     }
 
-    final int maximumDigitsInPrice = plugin.getConfig().getInt("shop.maximum-digits-in-price", -1);
-    if(maximumDigitsInPrice != -1) {
-      final int inputScale = Math.max(price.stripTrailingZeros().scale(), 0);
-      if(inputScale > maximumDigitsInPrice) {
-        plugin.text().of(sender, "digits-reach-the-limit", Component.text(maximumDigitsInPrice)).send();
-        return;
-      }
-    }
-
     final double priceDouble = price.doubleValue();
     // No number input
     if(Double.isInfinite(priceDouble) || Double.isNaN(priceDouble)) {

@@ -47,6 +47,7 @@ import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.tax.QuickShopTaxManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -508,6 +509,11 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       // No number input
       Log.debug("actionCreate had issue with price parameter.");
       plugin.text().of(p, "not-a-number", message).send();
+      return;
+    }
+
+    if(!ShopUtil.isValidPrice(price)) {
+      plugin.text().of(createQUser, "digits-reach-the-limit", Component.text(32)).send();
       return;
     }
 

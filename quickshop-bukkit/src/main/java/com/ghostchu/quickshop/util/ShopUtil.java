@@ -161,6 +161,18 @@ public class ShopUtil {
     QuickShop.getInstance().text().of(receiverQUser, "transfer-single-ask", 60).send();
   }
 
+  //check if the price will fit within DECIMAL(32,2)
+  public static boolean isValidPrice(final BigDecimal price) {
+
+    //At most 2 decimal places
+    if (price.scale() > 2) {
+      return false;
+    }
+
+    //max 32 total digits
+    return price.precision() <= 32;
+  }
+
   public static void setPrice(final QuickShop plugin, @NotNull final QUser user, final double price, @NotNull final Shop shop) {
 
     if(user.getUniqueId() == null || user.getBukkitPlayer().isEmpty()) {
@@ -189,9 +201,15 @@ public class ShopUtil {
       return;
     }
 
+    final BigDecimal priceBigDecimal = BigDecimal.valueOf(price);
+    if(!isValidPrice(priceBigDecimal)) {
+      plugin.text().of(user, "digits-reach-the-limit", Component.text(32)).send();
+      return;
+    }
+
     final int maximumDigitsInPrice = plugin.getConfig().getInt("shop.maximum-digits-in-price", -1);
     if(maximumDigitsInPrice != -1) {
-      final int inputScale = Math.max(BigDecimal.valueOf(price).stripTrailingZeros().scale(), 0);
+      final int inputScale = Math.max(priceBigDecimal.stripTrailingZeros().scale(), 0);
       if(inputScale > maximumDigitsInPrice) {
         plugin.text().of(user, "digits-reach-the-limit", Component.text(maximumDigitsInPrice)).send();
         return;
