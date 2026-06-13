@@ -74,7 +74,7 @@ public class ShopMarkerManager {
   }
 
   public Icon getIcon(@NotNull final String key, @NotNull final Shop shop) {
-    return Marker.icon(key, point(shop.bukkitLocation()), Main.instance().icon())
+    return Marker.icon(key, point(shop.bukkitLocation()), Main.PL3X_ICON_KEY)
         .setOptions(Options.builder()
             .tooltipDirection(Tooltip.Direction.TOP)
             .tooltipContent(fillPlaceholders(Main.instance().markerDetail(), shop))

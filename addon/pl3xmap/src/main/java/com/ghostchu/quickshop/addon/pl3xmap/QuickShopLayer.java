@@ -11,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 
-public class QuickShopLayer  extends WorldLayer {
+public class QuickShopLayer extends WorldLayer {
 
   final String worldName;
 
-  public QuickShopLayer(World world) {
+  public QuickShopLayer(final World world) {
     super(Main.PL3X_KEY, world, ()->Main.instance().layerName());
 
     this.worldName = world.getName();

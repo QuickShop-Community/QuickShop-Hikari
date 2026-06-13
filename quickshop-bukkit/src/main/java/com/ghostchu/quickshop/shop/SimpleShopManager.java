@@ -534,7 +534,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     QuickShop.folia().getScheduler().runAtLocation(info.getLocation(), task -> {
-      final BlockState state = info.getLocation().getBlock().getState();
+      final BlockState state = info.getLocation().getBlock().getState(false);
       if(state instanceof final InventoryHolder holder) {
         // Create the basic shop
         final String symbolLink;
@@ -1223,7 +1223,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
     final boolean signIsWatered = signBlock.getType() == Material.WATER;
     signBlock.setType(signMaterial == null? Util.getSignMaterial() : signMaterial);
-    final BlockState signBlockState = signBlock.getState();
+    final BlockState signBlockState = signBlock.getState(false);
     final BlockData signBlockData = signBlockState.getBlockData();
 
     if(signIsWatered && (signBlockData instanceof final Waterlogged waterable)) {

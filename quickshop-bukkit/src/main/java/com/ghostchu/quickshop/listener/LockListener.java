@@ -152,7 +152,7 @@ public class LockListener extends AbstractProtectionListener {
   public void onSignPlace(final BlockPlaceEvent event) {
 
     final Block placedBlock = event.getBlock();
-    if(!(placedBlock.getState() instanceof Sign)) {
+    if(!(placedBlock.getState(false) instanceof Sign)) {
       return;
     }
     final Block posShopBlock = Util.getAttached(placedBlock);

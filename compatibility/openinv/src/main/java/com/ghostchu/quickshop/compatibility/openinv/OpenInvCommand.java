@@ -42,7 +42,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
       return;
     }
     if(shop.getInventory() instanceof EnderChestWrapper) {
-      shop.setInventory(new BukkitInventoryWrapper((((InventoryHolder)shop.bukkitLocation().getBlock().getState()).getInventory())), plugin.getApi().getInventoryWrapperRegistry().get("QuickShop-Hikari"));
+      shop.setInventory(new BukkitInventoryWrapper((((InventoryHolder)shop.bukkitLocation().getBlock().getState(false)).getInventory())), plugin.getApi().getInventoryWrapperRegistry().get("QuickShop-Hikari"));
       sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.to-chest")));
     } else {
       shop.setInventory(new EnderChestWrapper(shop.getOwner().getUniqueIdIfRealPlayer().orElse(CommonUtil.getNilUniqueId()), plugin.getOpenInv(), plugin), plugin.getManager());
