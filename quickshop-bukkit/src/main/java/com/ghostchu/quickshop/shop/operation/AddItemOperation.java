@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -72,8 +73,11 @@ public class AddItemOperation implements Operation {
 
     int totalRemaining = 0;
 
+    Log.debug("Committing add item operation, items: " + Arrays.toString(items));
+
     for (int i = 0; i < items.length; i++) {
       final ItemStack item = items[i];
+      final String itemString = "" + item;
 
       if (item == null || item.getAmount() <= 0) {
         continue;
@@ -85,6 +89,8 @@ public class AddItemOperation implements Operation {
       while (remaining > 0) {
         final int attemptedAmount = Math.min(remaining, itemMaxStackSize[i]);
 
+        Log.debug("Committing add item operation, item: " + itemString + ", attemptedAmount: " + attemptedAmount);
+
         final ItemStack stackToAdd = item.clone();
         stackToAdd.setAmount(attemptedAmount);
 
@@ -92,17 +98,21 @@ public class AddItemOperation implements Operation {
 
         final Map<Integer, ItemStack> leftovers = inv.addItem(stackToAdd);
 
+        Log.debug("Committing add item operation, leftovers: " + leftovers);
+
         final int leftoverAmount = leftovers.values().stream().filter(Objects::nonNull).mapToInt(ItemStack::getAmount).sum();
 
         final int addedAmount = attemptedAmount - leftoverAmount;
 
-        if (addedAmount <= 0 || remaining == previousRemaining) {
+        remaining -= addedAmount;
+
+        if (remaining == previousRemaining) {
+
+          Log.debug("Committing add item operation, remaining: " + remaining + ", previousRemaing: " + previousRemaining + ", attemptedAmount: " + attemptedAmount + ", addedAmount: " + addedAmount);
 
           totalRemaining += remaining;
           return new ItemAddOperationResult(false, totalRemaining);
         }
-
-        remaining -= addedAmount;
         previousRemaining = remaining;
       }
     }
