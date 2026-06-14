@@ -20,6 +20,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_Export;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Favorite;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_FetchMessage;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Find;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_FindNear;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Freeze;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Help;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_History;
@@ -39,10 +40,13 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_Remove;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_RemoveAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_RemoveWorld;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Reset;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_Sale;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Sell;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_SetOwner;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Sign;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Size;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_SoldOut;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_SoldOutCycle;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Staff;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_StaffAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_SuggestPrice;
@@ -374,6 +378,27 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.create.changeamount")
                         .executor(new SubCommand_Size(plugin))
                         .disabledSupplier(()->!plugin.isAllowStack())
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("sale")
+                        .permission("quickshop.sale")
+                        .executor(new SubCommand_Sale(plugin))
+                        .disabledSupplier(()->!plugin.isAllowStack())
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("soldout")
+                        .permission("quickshop.soldout")
+                        .executor(new SubCommand_SoldOut(plugin))
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("soldoutcycle")
+                        .permission("quickshop.soldout")
+                        .executor(new SubCommand_SoldOutCycle(plugin))
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("findnear")
+                        .permission("quickshop.findnear")
+                        .executor(new SubCommand_FindNear(plugin))
                         .build());
     registerCmd(CommandContainer.builder()
                         .prefix("item")
