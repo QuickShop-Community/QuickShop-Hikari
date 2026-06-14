@@ -64,17 +64,21 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
 
     super(shop);
 
-    itemDisplay = EntityUtil.spawnDisplayItemFor(null, getDisplayLocation().clone().add(0, .15d, 0), shop.getItem(), new Vector3f(1.25f, 1.25f, 1.25f), Bukkit.getViewDistance() * 16, 0);
+    final Vector3f itemScaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.display-scale.x", 1.25f),
+                                              QuickShop.getInstance().getConfig().getFloat("shop.display-scale.y", 1.25f),
+                                              QuickShop.getInstance().getConfig().getFloat("shop.display-scale.z", 1.25f));
+
+    itemDisplay = EntityUtil.spawnDisplayItemFor(null, getDisplayLocation().clone().add(0, .15d, 0), shop.getItem(), itemScaleVector, Bukkit.getViewDistance() * 16, 0);
 
     final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
 
-    final Vector3f scaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
+    final Vector3f textScaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
                                               QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
                                               QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
 
     final Location textLocation = getDisplayLocation().clone().add(0, QuickShop.getInstance().getConfig().getDouble("shop.text-display.y-offset", 0.8), 0);
 
-    textDisplay = EntityUtil.spawnDisplayTextFor(null, textLocation, Util.getTextDisplay(shop, shop.getItem().clone()), scaleVector, blockDistance, TextDisplay.TextAlignment.CENTER, 0);
+    textDisplay = EntityUtil.spawnDisplayTextFor(null, textLocation, Util.getTextDisplay(shop, shop.getItem().clone()), textScaleVector, blockDistance, TextDisplay.TextAlignment.CENTER, 0);
   }
 
   /**
