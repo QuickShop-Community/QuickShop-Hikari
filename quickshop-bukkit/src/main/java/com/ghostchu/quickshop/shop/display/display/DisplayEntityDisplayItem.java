@@ -37,13 +37,6 @@ import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
-
 /**
  * DisplayEntityDisplayItem
  *
@@ -51,8 +44,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @since 6.3.0.0
  */
 public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Reloadable {
-
-  private final Set<UUID> viewerUUIDS = new ConcurrentSkipListSet<>();
 
   private final ItemDisplay itemDisplay;
   private final TextDisplay textDisplay;
