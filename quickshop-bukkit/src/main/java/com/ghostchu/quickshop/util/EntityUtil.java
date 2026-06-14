@@ -25,10 +25,14 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
@@ -54,7 +58,7 @@ public class EntityUtil {
    * @param location The location where the block display should be spawned.
    * @param material The material used for the block display.
    */
-  public static BlockDisplay spawnDisplayBlockFor(final Player player, final Location location, final Material material) {
+  public static BlockDisplay spawnDisplayBlockFor(final @Nullable Player player, final Location location, final Material material) {
 
     return spawnDisplayBlockFor(player, location, material, new Vector3f(1.02f, 1.02f, 1.02f), 15, 10);
   }
@@ -71,12 +75,12 @@ public class EntityUtil {
    * @param despawn    The time, in seconds, after which the display entity will automatically despawn.
    *                   A value of 0 means the entity will not despawn automatically.
    */
-  public static BlockDisplay spawnDisplayBlockFor(final Player player,
-                                          final Location location,
-                                          final Material material,
-                                          final Vector3f scale,
-                                          final int viewRange,
-                                          final int despawn) {
+  public static BlockDisplay spawnDisplayBlockFor(final @Nullable Player player,
+                                                  final Location location,
+                                                  final Material material,
+                                                  final Vector3f scale,
+                                                  final int viewRange,
+                                                  final int despawn) {
 
     final Location blockLoc = location.getBlock().getLocation();
 
@@ -89,9 +93,72 @@ public class EntityUtil {
     display.setPersistent(false);
     display.setVisibleByDefault(false);
 
-    player.showEntity(QuickShop.getInstance().getJavaPlugin(), display);
+    if (player != null) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), display);
+    }
 
     if (despawn > 0) {
+      QuickShop.folia().getScheduler().runAtLocationLater(location, () -> {
+
+        if (display.isValid()) {
+          display.remove();
+        }
+      }, despawn, TimeUnit.SECONDS);
+    }
+
+    return display;
+  }
+
+  /**
+   * Spawns an item display at the specified location for a given player, with the provided item.
+   * Configures the display with default scaling, brightness, and view distance settings.
+   *
+   * @param player the player for whom the item display is spawned
+   * @param location the location where the item display will be spawned
+   * @param itemStack the item to be displayed
+   * @return the spawned ItemDisplay object
+   */
+  public static ItemDisplay spawnDisplayItemFor(final @Nullable Player player, final Location location, final ItemStack itemStack) {
+
+    return spawnDisplayItemFor(player, location, itemStack, new Vector3f(1.0f, 1.0f, 1.0f), 15, 10);
+  }
+  /**
+   * Spawns an ItemDisplay entity at the specified location, configured with the provided
+   * item stack, scale, view range, and despawn time. The spawned entity is configured not
+   * to be persistent or visible by default, and is explicitly shown to the provided player.
+   *
+   * @param player the player to whom the spawned ItemDisplay entity should be explicitly shown
+   * @param location the location at which to spawn the ItemDisplay entity
+   * @param itemStack the item stack to be displayed by the spawned ItemDisplay entity
+   * @param scale the scale transformation to apply to the ItemDisplay entity
+   * @param viewRange the view range of the ItemDisplay entity
+   * @param despawn the time in seconds after which the ItemDisplay entity should despawn;
+   *                if less than or equal to 0, the entity will not be automatically despawned
+   * @return the spawned ItemDisplay entity
+   */
+  public static ItemDisplay spawnDisplayItemFor(final @Nullable Player player,
+                                                final Location location,
+                                                final ItemStack itemStack,
+                                                final Vector3f scale,
+                                                final int viewRange,
+                                                final int despawn) {
+
+    final ItemDisplay display = location.getWorld().spawn(location, ItemDisplay.class);
+
+    display.setItemStack(itemStack);
+    display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.GROUND);
+    display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));
+    display.setBrightness(new Display.Brightness(15, 15));
+    display.setViewRange(viewRange);
+    display.setPersistent(false);
+    display.setVisibleByDefault(false);
+
+    if (player != null) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), display);
+    }
+
+    if (despawn > 0) {
+      System.out.println("despawn");
       QuickShop.folia().getScheduler().runAtLocationLater(location, () -> {
 
         if (display.isValid()) {
@@ -115,7 +182,7 @@ public class EntityUtil {
    * @param content  The text content that will be displayed.
    * @return A {@code TextDisplay} object representing the spawned text display entity.
    */
-  public static TextDisplay spawnDisplayTextFor(final Player player, final Location location, final Component content) {
+  public static TextDisplay spawnDisplayTextFor(final @Nullable Player player, final Location location, final Component content) {
 
     return spawnDisplayTextFor(player, location, content, new Vector3f(1.0f, 1.0f, 1.0f), 15, TextDisplay.TextAlignment.CENTER, 10);
   }
@@ -138,14 +205,14 @@ public class EntityUtil {
    *                  A value of 0 means the entity will not despawn automatically.
    * @return A {@code TextDisplay} object representing the spawned text display entity.
    */
-  public static TextDisplay spawnDisplayTextFor(final Player player,
+  public static TextDisplay spawnDisplayTextFor(final @Nullable Player player,
                                                 final Location location,
                                                 final Component content,
                                                 final Vector3f scale,
                                                 final int viewRange,
                                                 final TextDisplay.TextAlignment alignment,
                                                 final int despawn) {
-    final TextDisplay text = location.getWorld().spawn(location.clone().add(0.5, 1.35, 0.5), TextDisplay.class);
+    final TextDisplay text = location.getWorld().spawn(location, TextDisplay.class);
 
     text.text(content);
     text.setAlignment(alignment);
@@ -156,7 +223,9 @@ public class EntityUtil {
     text.setPersistent(false);
     text.setVisibleByDefault(false);
 
-    player.showEntity(QuickShop.getInstance().getJavaPlugin(), text);
+    if (player != null) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), text);
+    }
 
     if (despawn > 0) {
       QuickShop.folia().getScheduler().runAtLocationLater(location, () -> {
@@ -179,7 +248,7 @@ public class EntityUtil {
    * @param shopLoc The location of the shop to which the trail leads.
    * @param despawn The time in seconds after which the trail will disappear.
    */
-  public static void showShopTrail(final Player player, final Location shopLoc, final int despawn) {
+  public static void showShopTrail(final @NotNull Player player, final Location shopLoc, final int despawn) {
     final Location start = player.getLocation().clone();
     final Location end = shopLoc.clone().add(0.5, 0.2, 0.5);
 
@@ -254,7 +323,7 @@ public class EntityUtil {
    *                        where each frame corresponds to a change in the displayed material.
    * @return A {@code BlockDisplay} object representing the spawned animated block display entity.
    */
-  public static BlockDisplay spawnDisplayBlockAnimationFor(final Player player,
+  public static BlockDisplay spawnDisplayBlockAnimationFor(final @Nullable Player player,
                                                            final Location location,
                                                            final Material[] materials,
                                                            final Vector3f scale,
@@ -301,7 +370,7 @@ public class EntityUtil {
    * @return A {@link TextDisplay} object representing the spawned text display, allowing
    *         further interaction or modifications to the display.
    */
-  public static TextDisplay spawnDisplayTextAnimationFor(final Player player,
+  public static TextDisplay spawnDisplayTextAnimationFor(final @Nullable Player player,
                                                          final Location location,
                                                          final Component[] content,
                                                          final Vector3f scale,

@@ -20,6 +20,7 @@ softdepend:
   - WorldEdit
   - FastAsyncWorldEdit
   - BarrelShops
+  - Nexo
 api-version: '1.20'
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 #libraries:

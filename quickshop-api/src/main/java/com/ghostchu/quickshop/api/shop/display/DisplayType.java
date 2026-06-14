@@ -15,7 +15,7 @@ public enum DisplayType {
   //REALITEM(0),
   //  ARMORSTAND(1),
   VIRTUALITEM(2),
-  //ENTITY_DISPLAY(3),
+  DISPLAY_ENTITY(3),
   CUSTOM(900);
 
   private static final Map<Integer, DisplayType> TYPE_MAP;
