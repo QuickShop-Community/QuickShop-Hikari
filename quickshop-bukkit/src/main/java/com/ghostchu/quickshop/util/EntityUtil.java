@@ -158,7 +158,6 @@ public class EntityUtil {
     }
 
     if (despawn > 0) {
-      System.out.println("despawn");
       QuickShop.folia().getScheduler().runAtLocationLater(location, () -> {
 
         if (display.isValid()) {

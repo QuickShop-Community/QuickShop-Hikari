@@ -548,7 +548,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     final int type = getConfig().getInt("shop.display-type");
     if(type != 2 && type != 3 && type != 900) {
 
-      System.out.println("Invalid display type: " + type);
       this.invalidProvider = true;
     }
 

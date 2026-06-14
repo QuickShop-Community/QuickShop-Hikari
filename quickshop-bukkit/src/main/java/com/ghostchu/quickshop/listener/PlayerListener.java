@@ -263,8 +263,6 @@ public class PlayerListener extends AbstractQSListener {
 
     if(plugin.displayEntityItemManager() != null) {
 
-      System.out.println("Player join display send");
-
       plugin.displayEntityItemManager().addPlayer(e.getPlayer());
     }
   }

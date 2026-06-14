@@ -178,16 +178,16 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
   @Override
   public void remove(final boolean dontTouchWorld) {
 
+    if(QuickShop.getInstance().getJavaPlugin() == null || !QuickShop.getInstance().getJavaPlugin().isEnabled()) {
+      return;
+    }
+
     if (itemDisplay == null && textDisplay == null) {
       return;
     }
 
     if (itemDisplay != null && !itemDisplay.isValid() && textDisplay != null && !textDisplay.isValid()) {
 
-      return;
-    }
-
-    if(QuickShop.getInstance().getJavaPlugin() == null) {
       return;
     }
 
@@ -264,32 +264,13 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
       Log.debug("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
       return;
     }
-    //load();
-
-
-    System.out.println("Spawning display entity");
     sendFakeItemToAll();
 
     isSpawned = true;
   }
 
-  private void load() {
-
-    Util.ensureThread(false);
-
-    //Does this even need to be loaded?
-    final List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
-    onlinePlayers.removeIf(p->!p.getWorld().equals(shop.bukkitLocation().getWorld()));
-
-    for(final Player onlinePlayer : onlinePlayers) {
-
-      viewerUUIDS.add(onlinePlayer.getUniqueId());
-    }
-  }
-
   public void sendFakeItemToPlayer(final Player player) {
 
-    System.out.println("Sending fake item to " + player.getName() + " for shop " + shop.getShopId() + "");
     player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
 
     if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
@@ -306,30 +287,5 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
         player.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);
       }
     }
-
-    /*
-    final Iterator<UUID> iterator = viewerUUIDS.iterator();
-    while(iterator.hasNext()) {
-
-      final UUID uuid = iterator.next();
-      final Player nextPlayer = Bukkit.getPlayer(uuid);
-
-      System.out.println("Checking player " + uuid);
-      if(nextPlayer == null) {
-
-        System.out.println("Player is offline");
-
-        iterator.remove();
-      } else {
-
-        System.out.println("Sending fake item to " + nextPlayer.getName());
-
-        nextPlayer.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
-
-        if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
-          nextPlayer.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);
-        }
-      }
-    }*/
   }
 }
