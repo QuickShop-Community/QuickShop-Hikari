@@ -88,7 +88,6 @@ public class EntityUtil {
 
     display.setBlock(material.createBlockData());
     display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));
-    display.setBrightness(new Display.Brightness(15, 15));
     display.setViewRange(viewRange);
     display.setPersistent(false);
     display.setVisibleByDefault(false);
@@ -148,7 +147,6 @@ public class EntityUtil {
     display.setItemStack(itemStack);
     display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.GROUND);
     display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));
-    display.setBrightness(new Display.Brightness(15, 15));
     display.setViewRange(viewRange);
     display.setPersistent(false);
     display.setVisibleByDefault(false);
@@ -217,7 +215,6 @@ public class EntityUtil {
     text.setAlignment(alignment);
     text.setBillboard(Display.Billboard.CENTER);
     text.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));
-    text.setBrightness(new Display.Brightness(15, 15));
     text.setViewRange(viewRange);
     text.setPersistent(false);
     text.setVisibleByDefault(false);

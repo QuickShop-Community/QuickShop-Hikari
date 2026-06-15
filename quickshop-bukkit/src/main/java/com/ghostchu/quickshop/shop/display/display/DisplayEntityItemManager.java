@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.shop.display.display;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DisplayEntityItemManager {
 
-  private final ConcurrentHashMap<Long, DisplayEntityDisplayItem> displayItems = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<Integer, DisplayEntityDisplayItem> displayItems = new ConcurrentHashMap<>();
 
   private static DisplayEntityItemManager instance;
 
@@ -48,13 +49,13 @@ public class DisplayEntityItemManager {
 
   public DisplayEntityDisplayItem create(@NotNull final Shop shop) {
 
-    if (displayItems.containsKey(shop.getShopId())) {
+    if (displayItems.containsKey(shop.bukkitLocation().hashCode())) {
 
-      return displayItems.get(shop.getShopId());
+      return displayItems.get(shop.bukkitLocation().hashCode());
     }
 
     final DisplayEntityDisplayItem displayEntityDisplayItem = new DisplayEntityDisplayItem(shop);
-    displayItems.put(shop.getShopId(), displayEntityDisplayItem);
+    displayItems.put(shop.bukkitLocation().hashCode(), displayEntityDisplayItem);
     return displayEntityDisplayItem;
   }
 

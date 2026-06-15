@@ -70,6 +70,8 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     final Location textLocation = getDisplayLocation().clone().add(0, QuickShop.getInstance().getConfig().getDouble("shop.text-display.y-offset", 0.8), 0);
 
     textDisplay = EntityUtil.spawnDisplayTextFor(null, textLocation, Util.getTextDisplay(shop, shop.getItem().clone()), textScaleVector, blockDistance, TextDisplay.TextAlignment.CENTER, 0);
+
+    spawn();
   }
 
   /**
