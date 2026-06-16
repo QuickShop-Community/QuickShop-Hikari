@@ -75,6 +75,8 @@ public interface ShopInventory {
    */
   int getRemainingSpace();
 
+  CompletableFuture<Integer> getRemainingSpaceAsync();
+
   /**
    * Get shop remaining stock.
    *

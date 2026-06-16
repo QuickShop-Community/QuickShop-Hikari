@@ -33,6 +33,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * MarketUtils - Utility class for market/browse operations Handles grouping shops by item,
@@ -63,7 +64,7 @@ public final class MarketUtils {
 
     for(final Shop shop : shops) {
       MarketItemGroup matchingGroup = null;
-      List<MarketItemGroup> matGroups = groupsByMat.computeIfAbsent(shop.getItem().getType(), k->new ArrayList<>());
+      final List<MarketItemGroup> matGroups = groupsByMat.computeIfAbsent(shop.getItem().getType(), k->new ArrayList<>());
       // Find existing group that matches this shop's item
       for(final MarketItemGroup group : matGroups) {
         if(matcher.matches(group.getRepresentativeItem(), shop.getItem())) {
@@ -406,16 +407,18 @@ public final class MarketUtils {
   public static int getStockFromCache(@NotNull final Shop shop) {
 
     if(shop.isUnlimited()) {
+
       return -1;
     }
     try {
-      final ShopInventoryCountCache cache = QuickShop.getInstance().getShopManager()
-              .queryShopInventoryCacheInDatabase(shop).join();
-      final int stock = cache.getStock();
+      //final ShopInventoryCountCache cache = QuickShop.getInstance().getShopManager().queryShopInventoryCacheInDatabase(shop).join();
+      //final int stock = cache.getStock();
+      final int stock = shop.getRemainingStockAsync().join();
       // Return stock if available, otherwise return 0 for uninitialized cache
-      return stock >= 0? stock : 0;
+      return Math.max(stock, 0);
     } catch(final Exception e) {
       // Fallback to 0 if cache query fails
+      System.out.println("Error getting stock: " + e.getMessage());
       return 0;
     }
   }
@@ -434,11 +437,10 @@ public final class MarketUtils {
       return -1;
     }
     try {
-      final ShopInventoryCountCache cache = QuickShop.getInstance().getShopManager()
-              .queryShopInventoryCacheInDatabase(shop).join();
-      final int space = cache.getSpace();
+      //final ShopInventoryCountCache cache = QuickShop.getInstance().getShopManager().queryShopInventoryCacheInDatabase(shop).join();
+      final int space = shop.getRemainingSpaceAsync().join();
       // Return space if available, otherwise return 0 for uninitialized cache
-      return space >= 0? space : 0;
+      return Math.max(space, 0);
     } catch(final Exception e) {
       // Fallback to 0 if cache query fails
       return 0;

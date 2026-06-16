@@ -818,6 +818,34 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
   }
 
+  @Override
+  public CompletableFuture<Integer> getRemainingSpaceAsync() {
+    if(this.unlimited) {
+      return CompletableFuture.completedFuture(-1);
+    }
+
+    if(Bukkit.getServer().isOwnedByCurrentRegion(location)) {
+
+      return CompletableFuture.completedFuture(getRemainingSpace());
+    }
+
+    final CompletableFuture<Integer> future = new CompletableFuture<>();
+
+    try {
+      QuickShop.folia().getScheduler().runAtLocation(this.location, task->{
+        try {
+          future.complete(getRemainingSpace());
+        } catch(final Throwable throwable) {
+          future.completeExceptionally(throwable);
+        }
+      });
+    } catch(final Throwable throwable) {
+      future.completeExceptionally(throwable);
+    }
+
+    return future;
+  }
+
   /**
    * Returns the number of items this shop has in stock.
    *
@@ -857,6 +885,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
 
     return future;
+
   }
 
   private int calculateRemainingStock() {
