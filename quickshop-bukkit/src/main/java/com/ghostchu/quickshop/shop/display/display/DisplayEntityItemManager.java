@@ -20,7 +20,9 @@ package com.ghostchu.quickshop.shop.display.display;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.listener.InteractionEntityListener;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +36,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DisplayEntityItemManager {
 
+  public static final String DISPLAY_ITEM_KEY = "qs-display-interaction";
+
+  public static final NamespacedKey DISPLAY_ITEM_KEY_INSTANCE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), DISPLAY_ITEM_KEY);
+
   private final ConcurrentHashMap<Integer, DisplayEntityDisplayItem> displayItems = new ConcurrentHashMap<>();
 
   private static DisplayEntityItemManager instance;
@@ -41,6 +47,8 @@ public class DisplayEntityItemManager {
   public DisplayEntityItemManager() {
 
     instance = this;
+
+    QuickShop.getInstance().getJavaPlugin().getServer().getPluginManager().registerEvents(new InteractionEntityListener(QuickShop.getInstance()), QuickShop.getInstance().getJavaPlugin());
   }
 
   public static DisplayEntityItemManager instance() {

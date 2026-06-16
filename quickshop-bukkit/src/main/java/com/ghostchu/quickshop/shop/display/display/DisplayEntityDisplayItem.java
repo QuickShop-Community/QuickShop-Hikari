@@ -30,12 +30,17 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+
+import static com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager.DISPLAY_ITEM_KEY_INSTANCE;
 
 /**
  * DisplayEntityDisplayItem
@@ -47,6 +52,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
 
   private final ItemDisplay itemDisplay;
   private final TextDisplay textDisplay;
+  private final Interaction interactionEntity;
 
   private boolean isSpawned = false;
 
@@ -60,6 +66,9 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
                                               QuickShop.getInstance().getConfig().getFloat("shop.display-scale.z", 1.25f));
 
     itemDisplay = EntityUtil.spawnDisplayItemFor(null, getDisplayLocation().clone().add(0, .15d, 0), shop.getItem(), itemScaleVector, Bukkit.getViewDistance() * 16, 0);
+
+    interactionEntity = EntityUtil.spawnInteractionFor(null, getDisplayLocation().toCenterLocation().add(0.0, 0.4, 0.0), 0);
+    interactionEntity.getPersistentDataContainer().set(DISPLAY_ITEM_KEY_INSTANCE, PersistentDataType.STRING, Util.locationToPDCString(shop.bukkitLocation()));
 
     final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
 
@@ -177,12 +186,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
       return;
     }
 
-    if (itemDisplay == null && textDisplay == null) {
-      return;
-    }
-
-    if (itemDisplay != null && !itemDisplay.isValid() && textDisplay != null && !textDisplay.isValid()) {
-
+    if (itemDisplay == null && textDisplay == null && interactionEntity == null) {
       return;
     }
 
@@ -205,6 +209,10 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
 
     if (itemDisplay != null && itemDisplay.isValid()) {
       player.hideEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+    }
+
+    if (interactionEntity != null && interactionEntity.isValid()) {
+      player.hideEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
     }
 
     if (textDisplay != null && textDisplay.isValid()) {
@@ -255,10 +263,11 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     if(isSpawned || !shop.isLoaded()) {
       return;
     }
-    if(new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM).callCancellableEvent()) {
+    if(new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.DISPLAY_ENTITY).callCancellableEvent()) {
       Log.debug("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
       return;
     }
+
     sendFakeItemToAll();
 
     isSpawned = true;
@@ -267,6 +276,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
   public void sendFakeItemToPlayer(final Player player) {
 
     player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+    player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
 
     if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);
@@ -277,6 +287,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
 
     for(final Player player : Bukkit.getOnlinePlayers()) {
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
 
       if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
         player.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);

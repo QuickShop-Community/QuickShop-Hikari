@@ -28,5 +28,6 @@ public enum InteractionClick {
   SHOPBLOCK,
   CONTAINER,
   SIGN,
+  DISPLAY,
   AIR
 }

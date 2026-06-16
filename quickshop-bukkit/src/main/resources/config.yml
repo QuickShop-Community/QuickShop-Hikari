@@ -461,7 +461,7 @@ shop:
   # Display type:
   # 2 = Virtual Item (recommended; reduces entities)
   # Requires ProtocolLib or PacketEvents (feature disables if missing).
-  # 3 = Display Entity (non-packet-based; shouldn't cause lag, but never know without more data)
+  # 3 = Display Entity (non-packet-based; shouldn't cause lag, but never know without more data 1.19.4+)
   display-type: 2
 
   # Preferred protocol implementation for virtual displays:

@@ -156,6 +156,23 @@ public class Util {
     QuickShop.folia().getScheduler().runLaterAsync(runnable, 0);
   }
 
+  public static String locationToPDCString(final Location location) {
+
+    return location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
+  }
+
+  public static Location locationFromPDCString(final World world, final @Nullable String locationString) {
+    if(locationString == null) {
+      return null;
+    }
+    final String[] split = locationString.split(";");
+    if(split.length < 3) {
+      return null;
+    }
+
+    return new Location(world, Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+  }
+
   public static void playClickSound(@NotNull final Player player) {
 
     if(plugin.getConfig().getBoolean("effect.sound.onclick")) {

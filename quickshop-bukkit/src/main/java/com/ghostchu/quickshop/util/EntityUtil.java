@@ -25,6 +25,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -165,6 +166,63 @@ public class EntityUtil {
     }
 
     return display;
+  }
+
+  public static Interaction spawnInteractionFor(final @Nullable Player player,
+                                                final Location location,
+                                                final float height,
+                                                final float width,
+                                                final int despawn) {
+
+    final Interaction interaction = location.getWorld().spawn(location, Interaction.class);
+    interaction.setInteractionWidth(width);
+    interaction.setInteractionHeight(height);
+    interaction.setPersistent(false);
+    interaction.setResponsive(true);
+    interaction.setInvulnerable(true);
+    interaction.setVisibleByDefault(false);
+
+    if (player != null) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), interaction);
+    }
+
+    if (despawn > 0) {
+      QuickShop.folia().getScheduler().runAtLocationLater(location, () -> {
+
+        if (interaction.isValid()) {
+          interaction.remove();
+        }
+      }, despawn, TimeUnit.SECONDS);
+    }
+    return interaction;
+  }
+
+  public static Interaction spawnInteractionFor(final @Nullable Player player,
+                                                final Location location,
+                                                final int despawn) {
+
+    final Interaction interaction = location.getWorld().spawn(location, Interaction.class);
+    interaction.setInteractionWidth(1.02F);
+    interaction.setInteractionHeight(1.02F);
+
+    interaction.setPersistent(false);
+    interaction.setResponsive(true);
+    interaction.setInvulnerable(true);
+    interaction.setVisibleByDefault(false);
+
+    if (player != null) {
+      player.showEntity(QuickShop.getInstance().getJavaPlugin(), interaction);
+    }
+
+    if (despawn > 0) {
+      QuickShop.folia().getScheduler().runAtLocationLater(location, () -> {
+
+        if (interaction.isValid()) {
+          interaction.remove();
+        }
+      }, despawn, TimeUnit.SECONDS);
+    }
+    return interaction;
   }
 
   /**

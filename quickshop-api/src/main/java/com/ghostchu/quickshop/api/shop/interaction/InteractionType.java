@@ -17,6 +17,8 @@ package com.ghostchu.quickshop.api.shop.interaction;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,4 +48,28 @@ public interface InteractionType {
    * false otherwise.
    */
   boolean applies(final @NotNull PlayerInteractEvent event, final @NotNull InteractionClick click);
+
+  /**
+   * Determines if this type of interaction applies to the given PlayerInteractEntityEvent
+   * with the specified InteractionClick type.
+   *
+   * @param event The PlayerInteractEntityEvent to evaluate. Must not be null.
+   * @param click The type of interaction click to consider. Must not be null.
+   * @return True if this interaction type applies to the event with the given InteractionClick,
+   * false otherwise.
+   */
+  default boolean applies(final @NotNull PlayerInteractEntityEvent event, final @NotNull InteractionClick click) {
+    return false;
+  }
+
+  /**
+   * Determines if this type of interaction applies to the given EntityDamageByEntityEvent with the specified
+   * InteractionClick action.
+   * @param event The EntityDamageByEntityEvent to check against. Must not be null.
+   * @param click The type of interaction click to consider. Must not be null.
+   * @return True if this interaction type applies to the event with the given InteractionClick, false otherwise.
+   */
+  default boolean applies(final @NotNull EntityDamageByEntityEvent event, final @NotNull InteractionClick click) {
+    return false;
+  }
 }
