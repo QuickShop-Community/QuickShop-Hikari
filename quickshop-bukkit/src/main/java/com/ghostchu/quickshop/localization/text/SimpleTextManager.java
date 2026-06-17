@@ -13,7 +13,6 @@ import com.ghostchu.quickshop.localization.text.postprocessing.impl.FixClientIte
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.ForceReplaceFillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.GuavaCacheRender;

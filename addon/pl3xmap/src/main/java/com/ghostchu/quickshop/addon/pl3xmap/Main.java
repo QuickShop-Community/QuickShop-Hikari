@@ -7,7 +7,6 @@ import net.pl3x.map.core.event.server.ServerLoadedEvent;
 import net.pl3x.map.core.event.world.WorldLoadedEvent;
 import net.pl3x.map.core.event.world.WorldUnloadedEvent;
 import net.pl3x.map.core.image.IconImage;
-import net.pl3x.map.core.markers.marker.Icon;
 import net.pl3x.map.core.world.World;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;

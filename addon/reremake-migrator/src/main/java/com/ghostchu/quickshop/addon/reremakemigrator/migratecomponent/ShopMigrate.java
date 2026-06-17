@@ -14,7 +14,6 @@ import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;

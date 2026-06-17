@@ -18,11 +18,8 @@ package com.ghostchu.quickshop.util.pagination;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.shop.trading.TradeOptions;
-
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * PaginationOptions

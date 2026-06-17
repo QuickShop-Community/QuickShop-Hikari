@@ -19,7 +19,6 @@ package com.ghostchu.quickshop.api.shop.meta;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
-import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;

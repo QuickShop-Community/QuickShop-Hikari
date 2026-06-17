@@ -19,7 +19,6 @@ package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.economy.EconomyProvider;
-import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

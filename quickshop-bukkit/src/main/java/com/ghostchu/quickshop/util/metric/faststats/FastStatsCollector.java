@@ -22,11 +22,6 @@ import com.ghostchu.quickshop.util.metric.MetricCollectEntry;
 import com.ghostchu.quickshop.util.metric.MetricDataType;
 import com.ghostchu.quickshop.util.metric.StatCollector;
 import dev.faststats.core.data.Metric;
-import org.bstats.charts.AdvancedPie;
-import org.bstats.charts.CustomChart;
-import org.bstats.charts.DrilldownPie;
-import org.bstats.charts.SimplePie;
-import org.bstats.charts.SingleLineChart;
 
 /**
  * FastStatsCollector
