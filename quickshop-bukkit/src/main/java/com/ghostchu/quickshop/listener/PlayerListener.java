@@ -260,6 +260,11 @@ public class PlayerListener extends AbstractQSListener {
       final long delay = plugin.getConfig().getLong("shop.join-flush-delay", 60L);
       QuickShop.folia().getScheduler().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
     }
+
+    if(plugin.displayEntityItemManager() != null) {
+
+      plugin.displayEntityItemManager().addPlayer(e.getPlayer());
+    }
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

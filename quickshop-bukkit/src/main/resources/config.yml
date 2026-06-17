@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1041
+config-version: 1042
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -461,8 +461,7 @@ shop:
   # Display type:
   # 2 = Virtual Item (recommended; reduces entities)
   # Requires ProtocolLib or PacketEvents (feature disables if missing).
-  #
-  # Note: ArmorStand mode is outdated and cannot be used.
+  # 3 = Display Entity (non-packet-based; shouldn't cause lag, but never know without more data 1.19.4+)
   display-type: 2
 
   # Preferred protocol implementation for virtual displays:
@@ -506,6 +505,13 @@ shop:
     # Positive values move south, negative values move north.
     # Supports decimal values.
     z: 0.5
+
+  # The scale of the display item. This is only used for display-type 3.
+  display-scale:
+
+    x: 1.25
+    y: 1.25
+    z: 1.25
 
   # This spawns a separate fake entity that displays shop information.
   text-display:

@@ -78,6 +78,7 @@ import com.ghostchu.quickshop.shop.SimpleShopPermissionManager;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.interaction.QuickShopInteractionManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
@@ -340,6 +341,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   @Nullable
   @Getter
   private VirtualDisplayItemManager virtualDisplayItemManager;
+  private DisplayEntityItemManager displayEntityItemManager = null;
   @Getter
   private PrivacyController privacyController;
   @Getter
@@ -544,7 +546,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     // Load quick variables
     this.display = this.getConfig().getBoolean("shop.display-items");
     final int type = getConfig().getInt("shop.display-type");
-    if(type != 2 && type != 900) {
+    if(type != 2 && type != 3 && type != 900) {
+
       this.invalidProvider = true;
     }
 
@@ -942,6 +945,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
           throw e;
         }
       }
+
+      if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY) {
+
+        this.displayEntityItemManager = new DisplayEntityItemManager();
+      }
     }
   }
 
@@ -1049,7 +1057,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   private void registerDisplayItem() {
 
-    if(this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+    if(this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM
+       && AbstractDisplayItem.getNowUsing() != DisplayType.DISPLAY_ENTITY) {
       if(getDisplayItemCheckTicks() > 0) {
         if(getConfig().getInt("shop.display-items-check-ticks") < 3000) {
           logger.error("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
@@ -1384,6 +1393,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public @NotNull TextManager text() {
 
     return this.textManager;
+  }
+
+  public @Nullable DisplayEntityItemManager displayEntityItemManager() {
+
+    return displayEntityItemManager;
   }
 
   public ShopControlPanelManager controlPanelManager() {

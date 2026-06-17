@@ -30,15 +30,19 @@ import com.ghostchu.quickshop.shop.interaction.behaviors.TradeDirectAll;
 import com.ghostchu.quickshop.shop.interaction.behaviors.TradeInteraction;
 import com.ghostchu.quickshop.shop.interaction.behaviors.TradeUI;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickContainer;
+import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickDisplay;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingLeftClickSign;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickContainer;
+import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickDisplay;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.SneakingRightClickSign;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickContainer;
+import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickDisplay;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingLeftClickSign;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickContainer;
+import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickDisplay;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickShop;
 import com.ghostchu.quickshop.shop.interaction.interactions.StandingRightClickSign;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -46,6 +50,8 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -98,6 +104,12 @@ public class QuickShopInteractionManager implements InteractionManager, Reloadab
     interaction(new SneakingRightClickSign());
     interaction(new StandingLeftClickSign());
     interaction(new StandingRightClickSign());
+
+    //Display Interactions
+    interaction(new SneakingLeftClickDisplay());
+    interaction(new StandingLeftClickDisplay());
+    interaction(new SneakingRightClickDisplay());
+    interaction(new StandingRightClickDisplay());
 
     behavior(new ControlPanel());
     behavior(new ControlPanelUI());
@@ -199,6 +211,28 @@ public class QuickShopInteractionManager implements InteractionManager, Reloadab
   }
 
   public Optional<InteractionType> interaction(final @NotNull PlayerInteractEvent event, final @NotNull InteractionClick click) {
+
+    for(final InteractionType interaction : interactions.values()) {
+
+      if(interaction.applies(event, click)) {
+        return Optional.of(interaction);
+      }
+    }
+    return Optional.empty();
+  }
+
+  public Optional<InteractionType> interaction(final @NotNull PlayerInteractEntityEvent event, final @NotNull InteractionClick click) {
+
+    for(final InteractionType interaction : interactions.values()) {
+
+      if(interaction.applies(event, click)) {
+        return Optional.of(interaction);
+      }
+    }
+    return Optional.empty();
+  }
+
+  public Optional<InteractionType> interaction(final @NotNull EntityDamageByEntityEvent event, final @NotNull InteractionClick click) {
 
     for(final InteractionType interaction : interactions.values()) {
 
