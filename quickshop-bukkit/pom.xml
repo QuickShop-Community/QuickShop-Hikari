@@ -13,7 +13,7 @@
 
     <properties>
         <tnml.version>1.7.0.1-SNAPSHOT-4</tnml.version>
-        <tnil.version>0.1.3.0-SNAPSHOT-1</tnil.version>
+        <tnil.version>0.1.3.1-SNAPSHOT-1</tnil.version>
     </properties>
 
     <artifactId>quickshop-bukkit</artifactId>
