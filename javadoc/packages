@@ -67,6 +67,7 @@ com.ghostchu.quickshop.shop.display.virtual
 com.ghostchu.quickshop.shop.display.virtual.packet
 com.ghostchu.quickshop.shop.display.virtual.packet.packetevents
 com.ghostchu.quickshop.shop.display.virtual.packet.protocollib
+com.ghostchu.quickshop.shop.display.display
 com.ghostchu.quickshop.shop.tag
 com.ghostchu.quickshop.shop.interaction.interactions
 com.ghostchu.quickshop.shop.interaction
