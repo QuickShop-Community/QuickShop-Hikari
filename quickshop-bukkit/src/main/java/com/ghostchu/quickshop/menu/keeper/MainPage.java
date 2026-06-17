@@ -59,7 +59,6 @@ import static com.ghostchu.quickshop.menu.ShopKeeperMenu.KEEPER_MAIN;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.ACTIVE_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_STATE;
-import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_TYPE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.SELLING_TYPE;
 
 /**

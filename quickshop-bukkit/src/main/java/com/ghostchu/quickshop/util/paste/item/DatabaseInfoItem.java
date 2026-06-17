@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.jetbrains.annotations.NotNull;
 

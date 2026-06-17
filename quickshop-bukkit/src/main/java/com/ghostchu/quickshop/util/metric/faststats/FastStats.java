@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.metric.MetricPlatform;
 import com.ghostchu.quickshop.util.metric.StatCollector;
 import dev.faststats.bukkit.BukkitMetrics;
-import dev.faststats.core.ErrorTracker;
 import dev.faststats.core.data.Metric;
 
 /**

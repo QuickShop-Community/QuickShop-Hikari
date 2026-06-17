@@ -9,17 +9,13 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.pagination.Pagination;
 import com.ghostchu.quickshop.util.pagination.PaginationOptions;
 import net.kyori.adventure.text.Component;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.Consumer;
 
 import static com.ghostchu.quickshop.api.shop.tag.TagService.TOTAL_INDEX;
 import static com.ghostchu.quickshop.shop.tag.QuickShopTagManager.MAX_PER_PAGE;

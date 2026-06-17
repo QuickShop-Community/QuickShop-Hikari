@@ -39,7 +39,6 @@ import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
-import net.milkbowl.vault.economy.AbstractEconomy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;

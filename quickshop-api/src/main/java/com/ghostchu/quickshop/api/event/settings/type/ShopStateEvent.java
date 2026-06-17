@@ -20,7 +20,6 @@ package com.ghostchu.quickshop.api.event.settings.type;
 
 import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.settings.ShopSettingEvent;
-import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import org.jetbrains.annotations.NotNull;

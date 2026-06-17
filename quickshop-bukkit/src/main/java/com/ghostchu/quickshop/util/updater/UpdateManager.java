@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.util.updater;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.updater.UpdateMetadata;
 import com.ghostchu.quickshop.api.updater.UpdateProvider;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -25,13 +26,12 @@ import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.vdurmont.semver4j.Semver;
 import lombok.Getter;
-import com.ghostchu.quickshop.QuickShop;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;

@@ -15,7 +15,6 @@ import java.util.List;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.ACTIVE_STATE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
 import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_STATE;
-import static com.ghostchu.quickshop.shop.SimpleShopManager.FROZEN_TYPE;
 
 public class SubCommand_Freeze implements CommandHandler<Player> {
 

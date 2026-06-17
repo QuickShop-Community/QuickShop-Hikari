@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.hook.worldedit;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.obj.QUserImpl;

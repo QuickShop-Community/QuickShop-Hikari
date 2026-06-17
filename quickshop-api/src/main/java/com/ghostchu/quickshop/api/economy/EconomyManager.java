@@ -17,7 +17,6 @@ package com.ghostchu.quickshop.api.economy;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.api.shop.trading.TradeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

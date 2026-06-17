@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.api.shop.meta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 
 /**
