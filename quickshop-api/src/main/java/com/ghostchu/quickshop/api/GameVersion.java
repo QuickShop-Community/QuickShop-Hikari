@@ -82,20 +82,22 @@ public enum GameVersion {
 
   public static GameVersion get(@NotNull final String nmsVersion, final Consumer<Boolean> fallback) {
 
-    for(final GameVersion version : GameVersion.values()) {
-      if(version.name().equals(nmsVersion)) {
+    for (final GameVersion version : GameVersion.values()) {
+      if (version.name().equals(nmsVersion.trim())) {
 
         if (fallback != null) {
           fallback.accept(false);
         }
         return version;
       }
-      if(Arrays.asList(version.mcVersion).contains(nmsVersion)) {
 
-        if (fallback != null) {
-          fallback.accept(false);
+      for (final String str : version.mcVersion) {
+        if (str.trim().equalsIgnoreCase(nmsVersion.trim())) {
+          if (fallback != null) {
+            fallback.accept(false);
+          }
+          return version;
         }
-        return version;
       }
     }
 

@@ -607,10 +607,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public GameVersion getGameVersion() {
 
     if(gameVersion == null) {
-      gameVersion = GameVersion.get(ReflectFactory.getNMSVersion(), (fallback)->this.isFallbackVersion = fallback);
-      if(gameVersion == GameVersion.UNKNOWN) {
-        gameVersion = GameVersion.get(platform.getMinecraftVersion(), (fallback)->this.isFallbackVersion = fallback);
-      }
+
+      //NMS version is irrelevant anymore
+      gameVersion = GameVersion.get(platform.getMinecraftVersion(), (fallback)->this.isFallbackVersion = fallback);
     }
     return this.gameVersion;
   }
