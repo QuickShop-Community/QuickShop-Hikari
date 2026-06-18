@@ -536,9 +536,6 @@ shop:
       #Should text shadows be enabled?
       enabled: true
 
-
-
-
     #The scale of the text display.
     #The acceptable values are from 0.0 to 1.0.
     scale:
@@ -633,6 +630,9 @@ shop:
   # Show one enchantment name on the sign for enchanted books (instead of "Enchanted Book").
   # NOTE: Only one enchantment is shown, chosen randomly.
   use-enchantment-for-enchanted-book: false
+
+  # Whether or not to use roman numerals for enchantment number displays or not.
+  use-roman-numeral-for-enchantments: true
 
   # Show one potion effect name on the sign (instead of "Potion").
   # NOTE: Only one effect is shown, chosen randomly.

@@ -1057,7 +1057,9 @@ public class Util {
       name = MsgUtil.setHandleFailedHover(null, Component.text(enchantment.getKey().getKey()));
       plugin.logger().warn("Failed to handle translation for Enchantment {}", enchantment.getKey(), throwable);
     }
-    name = name.append(Component.text(" " + RomanNumber.toRoman(level)));
+
+    final String levelString = (plugin.getConfig().getBoolean("shop.use-roman-numeral-for-enchantments", true))? RomanNumber.toRoman(level) : "" + level;
+    name = name.append(Component.text(" " + levelString));
     return name;
   }
 
