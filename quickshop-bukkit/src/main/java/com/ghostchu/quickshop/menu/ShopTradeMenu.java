@@ -36,8 +36,9 @@ public class ShopTradeMenu extends QuickShopMenu {
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("trade");
     this.rows = (menuConfig != null? menuConfig.getRows() : 6);
     this.name = "qs:trade";
+    this.title = "Shop Trade";
 
-    setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.trade.title")));
+    setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     addPage(new MainPage());
   }
