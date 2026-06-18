@@ -64,6 +64,7 @@
         <compat.arm>3.5.5</compat.arm>
         <compat.angelchest>13.6.1</compat.angelchest>
         <compat.bentobox>2.7.0</compat.bentobox>
+        <compat.bolt>1.1.33</compat.bolt>
         <compat.bungee>1.20-R0.2</compat.bungee>
         <compat.dominion>4.5.0</compat.dominion>
         <compat.geyser>2.1.0-SNAPSHOT</compat.geyser>
@@ -489,6 +490,7 @@
       
         <module>compatibility/advancedregionmarket</module>
         <module>compatibility/bentobox</module>
+        <module>compatibility/bolt</module>
         <module>compatibility/bungeecord</module>
         <module>compatibility/bungeecord-geyser</module>
         <module>compatibility/chestprotect</module>

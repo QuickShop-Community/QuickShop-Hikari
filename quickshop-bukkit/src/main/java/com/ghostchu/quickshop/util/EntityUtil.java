@@ -277,6 +277,8 @@ public class EntityUtil {
     text.setPersistent(false);
     text.setVisibleByDefault(false);
 
+    //shadow
+
     if (player != null) {
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), text);
     }

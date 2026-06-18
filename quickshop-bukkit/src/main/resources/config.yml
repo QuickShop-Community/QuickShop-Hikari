@@ -530,6 +530,15 @@ shop:
 
     line-width: 200
 
+    #Text shadow configurations
+    shadow:
+
+      #Should text shadows be enabled?
+      enabled: true
+
+
+
+
     #The scale of the text display.
     #The acceptable values are from 0.0 to 1.0.
     scale:
