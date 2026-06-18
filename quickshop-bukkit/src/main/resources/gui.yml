@@ -20,7 +20,7 @@
 # Common tags: <bold>, <italic>, <red>, <green>, <yellow>, <aqua>, <gradient:color1:color2>
 # If you wish to use a value from the language file for display names or lore, start your value with "lang:"
 
-version: 5
+version: 6
 
 # ===================
 # GLOBAL STYLE SETTINGS
@@ -90,6 +90,9 @@ trade:
     custom-model-data: 0
     slots: [37, 38, 39, 40, 41, 42]
     quantities: [1, 2, 4, 8, 16, 64]
+    close-after: true
+    display-buy: "lang:gui.trade.quantity-button.display-buy"
+    display-sell: "lang:gui.trade.quantity-button.display-sell"
     lore:
       - "lang:gui.trade.quantity-button.lore"
   
