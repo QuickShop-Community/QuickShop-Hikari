@@ -26,7 +26,7 @@ jobs:
 
       - name: Generate Javadocs
         run: |
-          mvn -B clean package javadoc:javadoc \
+          mvn -B clean install javadoc:javadoc \
             -DskipTests \
             -Dmaven.javadoc.failOnError=false \
             -Dmaven.javadoc.failOnWarnings=false \
