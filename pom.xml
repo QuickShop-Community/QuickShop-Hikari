@@ -342,10 +342,15 @@
                     <configuration>
                         <show>public</show>
                         <windowtitle>Quickshop - Hikari</windowtitle>
-                        <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
+                        <excludePackageNames>
+                            com.ghostchu.quickshop.nonquickshopstuff.*
+                            com.ghostchu.quickshop.compatibility.*,
+                            com.ghostchu.quickshop.addon.*
+                        </excludePackageNames>
                         <additionalJOption>-Xdoclint:none</additionalJOption>
                         <failOnWarnings>false</failOnWarnings>
                         <failOnError>false</failOnError>
+                        <quiet>true</quiet>
                         <verbose>false</verbose>
                         <author>true</author>
                         <version>true</version>
