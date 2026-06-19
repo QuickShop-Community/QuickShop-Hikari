@@ -26,12 +26,12 @@ jobs:
 
       - name: Generate Javadocs
         run: |
-          mvn -B clean javadoc:javadoc \
-            -P github \
+          mvn -B clean package javadoc:javadoc \
             -DskipTests \
             -Dmaven.javadoc.failOnError=false \
             -Dmaven.javadoc.failOnWarnings=false \
-            -pl quickshop-api,quickshop-common,platform/quickshop-platform-interface,platform/quickshop-platform-paper,quickshop-bukkit \
+            -pl quickshop-common,quickshop-api,platform/quickshop-platform-interface,platform/quickshop-platform-paper,quickshop-bukkit \
+            -am \
             --file pom.xml
 
       - name: Collect Javadocs
