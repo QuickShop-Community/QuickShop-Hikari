@@ -1,1 +1,1 @@
-/opt/hostedtoolcache/Java_Adopt_jdk/21.0.11-10.0.LTS/x64/bin/javadoc -J-Duser.language= -J-Duser.country= -Xdoclint:none @options @packages
+/usr/lib/jvm/temurin-21-jdk-amd64/bin/javadoc -J-Duser.language= -J-Duser.country= -Xdoclint:none @options @packages
