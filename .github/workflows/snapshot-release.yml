@@ -2,11 +2,6 @@ name: Snapshot Release
 
 on:
   workflow_dispatch:
-    inputs:
-      snapshot_tag:
-        description: "Snapshot tag/version, example: snapshot/6.3.0.0-8"
-        required: true
-        type: string
 
 permissions:
   contents: write
@@ -35,18 +30,23 @@ jobs:
             -q \
             -DforceStdout)
 
-          RAW_TAG="${{ inputs.snapshot_tag }}"
-          TAG_VERSION="${RAW_TAG#snapshot/}"
+          BASE_VERSION=$(echo "$MAVEN_VERSION" | sed -E 's/-SNAPSHOT(-[0-9]+)?$//')
+          SNAPSHOT_NUMBER=$(echo "$MAVEN_VERSION" | sed -nE 's/.*-SNAPSHOT-([0-9]+)$/\1/p')
+
           DATE=$(date -u +'%Y%m%d')
           SHORT_SHA=$(git rev-parse --short HEAD)
 
-          RELEASE_VERSION="${TAG_VERSION}-snapshot.${DATE}+${SHORT_SHA}"
+          if [ -n "$SNAPSHOT_NUMBER" ]; then
+            RELEASE_TAG="snapshot/${BASE_VERSION}-${SNAPSHOT_NUMBER}"
+            RELEASE_VERSION="${BASE_VERSION}-snapshot.${SNAPSHOT_NUMBER}.${DATE}+${SHORT_SHA}"
+          else
+            RELEASE_TAG="snapshot/${BASE_VERSION}"
+            RELEASE_VERSION="${BASE_VERSION}-snapshot.${DATE}+${SHORT_SHA}"
+          fi
 
-          echo "raw_tag=$RAW_TAG" >> "$GITHUB_OUTPUT"
           echo "maven_version=$MAVEN_VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag_version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
+          echo "release_tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
           echo "release_version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
-          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Generate changelog
         id: changelog
@@ -55,12 +55,12 @@ jobs:
           PREVIOUS_TAG=$(git tag --sort=-creatordate | grep '^snapshot/' | head -n 1 || true)
 
           if [ -z "$PREVIOUS_TAG" ]; then
-            CHANGELOG=$(git log -n 25 --pretty=format:"- %s (%h)")
+            CHANGELOG=$(git log -n 50 --pretty=format:"- %s (%h)")
             CHANGELOG="${CHANGELOG}
 
-          _No previous snapshot tag found. Showing latest 25 commits only._"
+          _No previous snapshot tag found. Showing latest 50 commits only._"
           else
-            CHANGELOG=$(git log "${PREVIOUS_TAG}..HEAD" --pretty=format:"- %s (%h)" | head -n 25)
+            CHANGELOG=$(git log "${PREVIOUS_TAG}..HEAD" --pretty=format:"- %s (%h)" | head -n 50)
           fi
 
           if [ -z "$CHANGELOG" ]; then
@@ -76,10 +76,34 @@ jobs:
       - name: Build snapshot
         run: mvn -B clean package -T 1.5C -P github --file pom.xml
 
+      - name: Collect release artifacts
+        shell: bash
+        run: |
+          rm -rf release-artifacts
+          mkdir -p release-artifacts
+
+          find quickshop-bukkit/target -type f -name "QuickShop-Hikari-*.jar" \
+            ! -name "*-sources.jar" \
+            ! -name "*-javadoc.jar" \
+            -exec cp {} release-artifacts/ \;
+
+          find . -type f -path "*/target/Compat*.jar" \
+            ! -name "*-sources.jar" \
+            ! -name "*-javadoc.jar" \
+            -exec cp {} release-artifacts/ \;
+
+          find . -type f -path "*/target/Addon*.jar" \
+            ! -name "*-sources.jar" \
+            ! -name "*-javadoc.jar" \
+            -exec cp {} release-artifacts/ \;
+
+          echo "Collected artifacts:"
+          ls -la release-artifacts
+
       - name: Create GitHub prerelease
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.snapshot.outputs.raw_tag }}
+          tag_name: ${{ steps.snapshot.outputs.release_tag }}
           target_commitish: ${{ github.sha }}
           name: QuickShop-Hikari ${{ steps.snapshot.outputs.release_version }}
           prerelease: true
@@ -89,7 +113,7 @@ jobs:
 
             Maven version: `${{ steps.snapshot.outputs.maven_version }}`
             Snapshot version: `${{ steps.snapshot.outputs.release_version }}`
-            Source tag: `${{ steps.snapshot.outputs.raw_tag }}`
+            Source tag: `${{ steps.snapshot.outputs.release_tag }}`
             Commit: `${{ github.sha }}`
             Java: `21`
 
@@ -97,6 +121,4 @@ jobs:
 
             ${{ steps.changelog.outputs.content }}
           files: |
-            quickshop-bukkit/target/QuickShop-Hikari-*.jar
-            **/target/Compat*.jar
-            **/target/Addon*.jar
+            release-artifacts/*.jar
