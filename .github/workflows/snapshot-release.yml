@@ -2,6 +2,11 @@ name: Snapshot Release
 
 on:
   workflow_dispatch:
+    inputs:
+      snapshot_tag:
+        description: "Snapshot tag/version, example: snapshot/6.3.0.0-8"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -30,23 +35,19 @@ jobs:
             -q \
             -DforceStdout)
 
-          BASE_VERSION=$(echo "$MAVEN_VERSION" | sed -E 's/-SNAPSHOT(-[0-9]+)?$//')
-          SNAPSHOT_NUMBER=$(echo "$MAVEN_VERSION" | sed -nE 's/.*-SNAPSHOT-([0-9]+)$/\1/p')
+          RAW_TAG="${{ inputs.snapshot_tag }}"
+          TAG_VERSION="${RAW_TAG#snapshot/}"
 
           DATE=$(date -u +'%Y%m%d')
           SHORT_SHA=$(git rev-parse --short HEAD)
 
-          if [ -n "$SNAPSHOT_NUMBER" ]; then
-            RELEASE_TAG="snapshot/${BASE_VERSION}-${SNAPSHOT_NUMBER}"
-            RELEASE_VERSION="${BASE_VERSION}-snapshot.${SNAPSHOT_NUMBER}.${DATE}+${SHORT_SHA}"
-          else
-            RELEASE_TAG="snapshot/${BASE_VERSION}"
-            RELEASE_VERSION="${BASE_VERSION}-snapshot.${DATE}+${SHORT_SHA}"
-          fi
+          RELEASE_VERSION="${TAG_VERSION}-snapshot.${DATE}+${SHORT_SHA}"
 
+          echo "raw_tag=$RAW_TAG" >> "$GITHUB_OUTPUT"
           echo "maven_version=$MAVEN_VERSION" >> "$GITHUB_OUTPUT"
-          echo "release_tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "tag_version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
           echo "release_version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Generate changelog
         id: changelog
@@ -103,7 +104,7 @@ jobs:
       - name: Create GitHub prerelease
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.snapshot.outputs.release_tag }}
+          tag_name: ${{ steps.snapshot.outputs.raw_tag }}
           target_commitish: ${{ github.sha }}
           name: QuickShop-Hikari ${{ steps.snapshot.outputs.release_version }}
           prerelease: true
@@ -113,7 +114,7 @@ jobs:
 
             Maven version: `${{ steps.snapshot.outputs.maven_version }}`
             Snapshot version: `${{ steps.snapshot.outputs.release_version }}`
-            Source tag: `${{ steps.snapshot.outputs.release_tag }}`
+            Source tag: `${{ steps.snapshot.outputs.raw_tag }}`
             Commit: `${{ github.sha }}`
             Java: `21`
 
