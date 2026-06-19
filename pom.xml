@@ -343,7 +343,7 @@
                         <show>public</show>
                         <windowtitle>Quickshop - Hikari</windowtitle>
                         <excludePackageNames>
-                            com.ghostchu.quickshop.nonquickshopstuff.*
+                            com.ghostchu.quickshop.nonquickshopstuff.*,
                             com.ghostchu.quickshop.compatibility.*,
                             com.ghostchu.quickshop.addon.*
                         </excludePackageNames>
