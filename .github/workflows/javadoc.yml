@@ -30,7 +30,7 @@ jobs:
             -DskipTests \
             -Dmaven.javadoc.failOnError=false \
             -Dmaven.javadoc.failOnWarnings=false \
-            -pl quickshop-common,quickshop-api,platform/quickshop-platform-interface,platform/quickshop-platform-paper,quickshop-bukkit \
+            -pl quickshop-api \
             -am \
             --file pom.xml
 
@@ -39,55 +39,12 @@ jobs:
           rm -rf public
           mkdir -p public/javadoc
 
-          modules=(
-            "quickshop-api"
-            "quickshop-common"
-            "platform/quickshop-platform-interface"
-            "platform/quickshop-platform-paper"
-            "quickshop-bukkit"
-          )
+          cp -R quickshop-api/target/reports/apidocs/* public/javadoc/
 
-          for module in "${modules[@]}"; do
-            dir="$module/target/site/apidocs"
-            name=$(basename "$module")
+          test -f public/javadoc/index.html
 
-            if [ -f "$dir/index.html" ]; then
-              mkdir -p "public/javadoc/$name"
-              cp -R "$dir"/* "public/javadoc/$name/"
-            fi
-          done
-
-          cat > public/javadoc/index.html <<'EOF'
-          <!doctype html>
-          <html>
-          <head>
-            <meta charset="utf-8">
-            <title>QuickShop-Hikari Javadocs</title>
-          </head>
-          <body>
-            <h1>QuickShop-Hikari Javadocs</h1>
-            <ul>
-          EOF
-
-          for module in $(find public/javadoc -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort); do
-            echo "      <li><a href=\"${module}/index.html\">${module}</a></li>" >> public/javadoc/index.html
-          done
-
-          cat >> public/javadoc/index.html <<'EOF'
-            </ul>
-          </body>
-          </html>
-          EOF
-
-          find public -maxdepth 4 -type f | sort | head -100
-          cat public/javadoc/index.html
-
-          test "$(find public/javadoc -mindepth 1 -maxdepth 1 -type d | wc -l)" -gt 0
-
-      - name: Debug Javadoc output
-        run: |
-          find public -maxdepth 4 -type f | sort | head -100
-          cat public/javadoc/index.html
+          echo "Generated Javadocs:"
+          find public/javadoc -maxdepth 3 -type f | sort | head -100
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
