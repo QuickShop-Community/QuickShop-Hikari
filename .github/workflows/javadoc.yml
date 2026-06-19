@@ -1,23 +1,41 @@
-name: Deploy Javadoc
+name: Deploy Javadocs
 
 on:
   push:
     branches:
-      - master
-      - main
       - hikari
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  publish:
+  javadocs:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # if you have a protection rule on your repository, you'll need to give write permission to the workflow.
+
     steps:
-      - name: Deploy JavaDoc 🚀
-        uses: MathieuSoysal/Javadoc-publisher.yml@v3.0.2
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          javadoc-branch: gh-pages
-          java-version: 21
-          target-folder: javadoc # url will be https://<username>.github.io/<repo>/javadoc, This can be left as nothing to generate javadocs in the root folder.
-          project: maven
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+
+      - name: Generate aggregate Javadocs
+        run: mvn -B clean javadoc:aggregate -P github --file pom.xml
+
+      - name: Prepare Javadocs
+        run: |
+          rm -rf ./public
+          mkdir -p ./public/javadoc
+          cp -R target/reports/apidocs/* ./public/javadoc/
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./public
+          destination_dir: .
+          keep_files: true

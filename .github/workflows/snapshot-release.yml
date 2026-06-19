@@ -1,10 +1,12 @@
 name: Snapshot Release
 
 on:
-  push:
-    tags:
-      - 'snapshot/*'
   workflow_dispatch:
+    inputs:
+      snapshot_tag:
+        description: "Snapshot tag/version, example: snapshot/6.3.0.0-8"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -33,13 +35,14 @@ jobs:
             -q \
             -DforceStdout)
 
-          RAW_TAG="${GITHUB_REF_NAME}"
+          RAW_TAG="${{ inputs.snapshot_tag }}"
           TAG_VERSION="${RAW_TAG#snapshot/}"
           DATE=$(date -u +'%Y%m%d')
           SHORT_SHA=$(git rev-parse --short HEAD)
 
           RELEASE_VERSION="${TAG_VERSION}-snapshot.${DATE}+${SHORT_SHA}"
 
+          echo "raw_tag=$RAW_TAG" >> "$GITHUB_OUTPUT"
           echo "maven_version=$MAVEN_VERSION" >> "$GITHUB_OUTPUT"
           echo "tag_version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
           echo "release_version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
@@ -49,8 +52,7 @@ jobs:
         id: changelog
         shell: bash
         run: |
-          CURRENT_TAG="${GITHUB_REF_NAME}"
-          PREVIOUS_TAG=$(git tag --sort=-creatordate | grep '^snapshot/' | grep -v "^${CURRENT_TAG}$" | head -n 1 || true)
+          PREVIOUS_TAG=$(git tag --sort=-creatordate | grep '^snapshot/' | head -n 1 || true)
 
           if [ -z "$PREVIOUS_TAG" ]; then
             CHANGELOG=$(git log --pretty=format:"- %s (%h)")
@@ -74,7 +76,8 @@ jobs:
       - name: Create GitHub prerelease
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ steps.snapshot.outputs.raw_tag }}
+          target_commitish: ${{ github.sha }}
           name: QuickShop-Hikari ${{ steps.snapshot.outputs.release_version }}
           prerelease: true
           draft: false
@@ -83,7 +86,7 @@ jobs:
 
             Maven version: `${{ steps.snapshot.outputs.maven_version }}`
             Snapshot version: `${{ steps.snapshot.outputs.release_version }}`
-            Source tag: `${{ github.ref_name }}`
+            Source tag: `${{ steps.snapshot.outputs.raw_tag }}`
             Commit: `${{ github.sha }}`
             Java: `21`
 
