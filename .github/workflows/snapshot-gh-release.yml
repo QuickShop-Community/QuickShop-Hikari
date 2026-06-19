@@ -1,4 +1,4 @@
-name: Snapshot Release Flow
+name: Snapshot Release
 
 on:
   workflow_dispatch:
@@ -37,7 +37,6 @@ jobs:
 
           RAW_TAG="${{ inputs.snapshot_tag }}"
           TAG_VERSION="${RAW_TAG#snapshot/}"
-
           DATE=$(date -u +'%Y%m%d')
           SHORT_SHA=$(git rev-parse --short HEAD)
 
@@ -56,12 +55,12 @@ jobs:
           PREVIOUS_TAG=$(git tag --sort=-creatordate | grep '^snapshot/' | head -n 1 || true)
 
           if [ -z "$PREVIOUS_TAG" ]; then
-            CHANGELOG=$(git log -n 50 --pretty=format:"- %s (%h)")
+            CHANGELOG=$(git log -n 25 --pretty=format:"- %s (%h)")
             CHANGELOG="${CHANGELOG}
 
-          _No previous snapshot tag found. Showing latest 50 commits only._"
+          _No previous snapshot tag found. Showing latest 25 commits only._"
           else
-            CHANGELOG=$(git log "${PREVIOUS_TAG}..HEAD" --pretty=format:"- %s (%h)" | head -n 50)
+            CHANGELOG=$(git log "${PREVIOUS_TAG}..HEAD" --pretty=format:"- %s (%h)" | head -n 25)
           fi
 
           if [ -z "$CHANGELOG" ]; then
