@@ -30,8 +30,8 @@ jobs:
             -q \
             -DforceStdout)
 
-          BASE_VERSION=$(echo "$MAVEN_VERSION" | sed -E 's/-SNAPSHOT(-[0-9]+)?$//')
-          SNAPSHOT_NUMBER=$(echo "$MAVEN_VERSION" | sed -nE 's/.*-SNAPSHOT-([0-9]+)$/\1/p')
+          RAW_TAG="${{ inputs.snapshot_tag }}"
+          TAG_VERSION="${RAW_TAG#snapshot/}"
 
           DATE=$(date -u +'%Y%m%d')
           SHORT_SHA=$(git rev-parse --short HEAD)
