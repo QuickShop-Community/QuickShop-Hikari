@@ -38,40 +38,49 @@ jobs:
           rm -rf public
           mkdir -p public/javadoc
 
-          find . -path "*/target/site/apidocs/index.html" -print
-
           for dir in $(find . -path "*/target/site/apidocs" -type d); do
             module=$(echo "$dir" | sed 's#^\./##' | cut -d/ -f1)
-            mkdir -p "public/javadoc/$module"
-            cp -R "$dir"/* "public/javadoc/$module/"
+
+            if [ -f "$dir/index.html" ]; then
+              mkdir -p "public/javadoc/$module"
+              cp -R "$dir"/* "public/javadoc/$module/"
+            fi
           done
 
-          test -f public/javadoc/index.html || cat > public/javadoc/index.html <<'EOF'
+          cat > public/javadoc/index.html <<'EOF'
           <!doctype html>
           <html>
-          <head><meta charset="utf-8"><title>QuickShop-Hikari Javadocs</title></head>
+          <head>
+            <meta charset="utf-8">
+            <title>QuickShop-Hikari Javadocs</title>
+          </head>
           <body>
-          <h1>QuickShop-Hikari Javadocs</h1>
-          <ul>
+            <h1>QuickShop-Hikari Javadocs</h1>
+            <ul>
           EOF
 
           for module in $(find public/javadoc -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort); do
-            echo "<li><a href=\"${module}/index.html\">${module}</a></li>" >> public/javadoc/index.html
+            echo "      <li><a href=\"${module}/index.html\">${module}</a></li>" >> public/javadoc/index.html
           done
 
           cat >> public/javadoc/index.html <<'EOF'
-          </ul>
+            </ul>
           </body>
           </html>
           EOF
 
           test -f public/javadoc/index.html
 
+      - name: Debug Javadoc output
+        run: |
+          find public -maxdepth 4 -type f | sort | head -100
+          cat public/javadoc/index.html
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: public/javadoc
-          destination_dir: javadoc
+          publish_dir: public
+          destination_dir: .
           keep_files: true
