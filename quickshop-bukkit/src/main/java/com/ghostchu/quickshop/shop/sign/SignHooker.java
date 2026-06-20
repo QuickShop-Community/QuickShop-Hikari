@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop.sign;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.listener.AbstractQSListener;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import net.kyori.adventure.text.Component;
@@ -54,7 +55,7 @@ public class SignHooker extends AbstractQSListener {
       }
       for(final Sign sign : shop.getSigns()) {
 
-        plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), lines);
+        plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), Util.getDyeColor(), lines);
       }
     }));
   }

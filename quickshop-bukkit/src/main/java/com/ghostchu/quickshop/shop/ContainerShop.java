@@ -61,6 +61,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -379,6 +380,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     if(!sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
       sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
+      System.out.println("Claiming shop sign " + sign);
       sign.update();
     }
   }
@@ -1912,20 +1914,19 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     event.callEvent();
 
     for(final Sign sign : signs) {
-
-      final DyeColor dyeColor = Util.getDyeColor();
-      if(dyeColor != null) {
-        sign.setColor(dyeColor);
-      }
       final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
       final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
-
-      sign.setGlowingText(isGlowing);
-      sign.setWaxed(isWaxed);
-      sign.update(true);
       plugin.platform().setLines(sign, event.updated());
 
+      sign.getSide(Side.FRONT).setGlowingText(isGlowing);
+      final DyeColor dyeColor = Util.getDyeColor();
+      if(dyeColor != null) {
+        sign.getSide(Side.FRONT).setColor(dyeColor);
+      }
+      sign.setWaxed(isWaxed);
+
       new ShopSignUpdateEvent(this, sign).callEvent();
+      sign.update(true);
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");

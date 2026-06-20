@@ -340,6 +340,8 @@ public final class Main extends CompatibilityModule implements Listener {
       return;
     }
 
+    System.out.println("towny");
+
     event.user().getBukkitPlayer().ifPresent(player->{
       final Optional<Component> component = checkFlags(player, event.location(), this.createFlags);
       component.ifPresent(value->event.setCancelled(true, value));
