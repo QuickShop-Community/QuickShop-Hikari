@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
@@ -347,6 +348,12 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     if(enchantment != null) {
 
       return plugin.text().of("signs.item-level", enchantment.getValue()).forLocale(locale.getLocale());
+    }
+
+    //TODO: Parser API? Tying rendering to specific parts, or adding custom rendering logic
+    if(clone.getItemMeta() instanceof final FireworkMeta fireworkMeta) {
+
+      return plugin.text().of("signs.item-duration", fireworkMeta.getPower()).forLocale(locale.getLocale());
     }
 
     return Component.empty();

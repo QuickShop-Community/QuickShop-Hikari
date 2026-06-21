@@ -354,6 +354,9 @@ shop:
   # Skip confirmation prompts for destructive commands (like remove).
   skip-command-confirmation: false
 
+  # Disable showing unlimited shops in /qs browse menu.
+  disable-unlimited-browse: false
+
   # Control panel components used when not using the GUI-based control panel.
   control-panel:
     - owner
