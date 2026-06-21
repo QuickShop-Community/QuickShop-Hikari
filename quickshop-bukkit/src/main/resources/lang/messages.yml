@@ -659,6 +659,11 @@ command:
     <yellow>{2}
   no-trade-item: <green>Please hold a trade item to change in the main hand
   wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
+  permission-added: <green>Successfully added permission {0} to group {1}
+  permission-no-group: <red>Group {0} does not exist.
+  permission-no-default-moderator: <red>Cannot set default moderator group to {0}
+  permission-check-found: '<red>Found and removed misconfigured permissions. Please ensure the following permissions have been removed from your default group immediately: {0}'
+  permission-check-not-found: <green>No misconfigured permissions found.
   some-shops-removed: <yellow>{0} <green>shop(s) removed
   new-owner: '<green>New owner: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -937,22 +942,23 @@ transfer-sent: <green>Shop Transfer-request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> would like to transfer their Shops
   to you. Do you want to accept the request?
 transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop
-  to you. Do you want to accept the request?
+  to you. Do you want to accept the request? Do NOT accept if you don't know the player.
 transfer-ask: |-
   <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  The request will expire after <red>{0}</red> seconds. Do NOT accept if you don't know the player.
 transferall-ask: |-
   <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  The request will expire after <red>{0}</red> seconds. Do NOT accept if you don't know the player.
 transfer-single-ask: |-
   <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  The request will expire after <red>{0}</red> seconds. Do NOT accept if you don't know the player.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your Shop Transfer-request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s Transfer-Request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your Shop Transfer-request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s Shop Transfer-request.
 transfer-no-pending-operation: <red>You don't have any pending Transfer-requests.
 transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to
   100%.
 benefit-exists: <red>Target player already in benefits list on this shop.

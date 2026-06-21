@@ -41,6 +41,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_RemoveWorld;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Reset;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Sell;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_SetOwner;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_SetupPermission;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Sign;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Size;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Staff;
@@ -77,6 +78,7 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -108,6 +110,40 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
 
   private boolean playSoundOnTabComplete;
   private boolean playSoundOnCommand;
+
+  public static final String[] MODERATOR_NODES = {
+          "quickshop.moderator",
+          "quickshop.tag.clear",
+          "quickshop.tag.clearall",
+          "quickshop.setowner",
+          "quickshop.setuppermission",
+          "quickshop.other.destroy",
+          "quickshop.other.open",
+          "quickshop.other.price",
+          "quickshop.bypass.*",
+          "quickshop.alerts",
+          "quickshop.create.admin",
+          "quickshop.history.*",
+          "quickshop.transferownership.other",
+          "quickshop.other.changeitem",
+          "quickshop.other.changeamount",
+          "quickshop.other.staff",
+          "quickshop.other.currency",
+          "quickshop.other.taxaccount",
+          "quickshop.other.toggledisplay",
+          "quickshop.purge",
+          "quickshop.other.setowner",
+          "quickshop.taxaccount",
+          "quickshop.toggledisplayall.admin",
+          "quickshop.other.shopnaming",
+          "quickshop.bypass.namefee",
+          "quickshop.other.search",
+          "quickshop.other.preview",
+          "quickshop.other.use",
+          "quickshop.other.benefit",
+          "quickshop.other.sign",
+          "quickshop.other.history"
+  };
 
   public SimpleCommandManager(final QuickShop plugin) {
 
@@ -162,6 +198,17 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .permission("quickshop.setowner")
                     .executor(new SubCommand_SetOwner(plugin))
                     .build());
+
+    if (Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+
+      registerCmd(
+              CommandContainer.builder()
+                      .prefix("setuppermission")
+                      .permission("quickshop.setuppermission")
+                      .executor(new SubCommand_SetupPermission(plugin))
+                      .build());
+    }
+
     registerCmd(
             CommandContainer.builder()
                     .prefix("amount")

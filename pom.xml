@@ -42,6 +42,7 @@
         <depend.examination-string>1.3.0</depend.examination-string>
         <depend.faststats>0.17.2</depend.faststats>
         <depend.h2>2.1.214</depend.h2>
+        <depend.luckperms>5.5</depend.luckperms>
         <depend.nbtapi>2.15.0</depend.nbtapi>
         <depend.packetevents>2.12.2</depend.packetevents>
         <depend.paper>1.21-R0.1-SNAPSHOT</depend.paper>
