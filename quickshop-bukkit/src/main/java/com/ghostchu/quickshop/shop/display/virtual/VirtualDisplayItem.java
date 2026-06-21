@@ -249,7 +249,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
     Util.ensureThread(false);
     //some time shop can be loaded when world isn't loaded
     chunkLocation = SimpleShopChunk.fromLocation(shop.bukkitLocation());
-    manager.put(chunkLocation, this);
+    manager.put(chunkLocation, entityID, this);
     //Let nearby player can saw fake item
     final List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
     onlinePlayers.removeIf(p->!p.getWorld().equals(shop.bukkitLocation().getWorld()));
@@ -356,7 +356,7 @@ public class VirtualDisplayItem<T> extends AbstractDisplayItem implements Reload
   private void unload() {
 
     packetSenders.clear();
-    manager.remove(chunkLocation, this);
+    manager.remove(chunkLocation, entityID, this);
   }
 
   @NotNull

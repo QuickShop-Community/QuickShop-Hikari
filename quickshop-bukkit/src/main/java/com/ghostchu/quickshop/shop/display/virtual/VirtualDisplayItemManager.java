@@ -23,32 +23,28 @@ import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerAddedEvent;
 import com.ghostchu.quickshop.api.event.packet.handler.PacketHandlerInitEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.api.shop.display.DisplayManager;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
 import com.ghostchu.quickshop.api.shop.display.PacketHandler;
 import com.ghostchu.quickshop.shop.display.virtual.packet.PacketEventsHandler;
 import com.ghostchu.quickshop.shop.display.virtual.packet.ProtocolLibHandler;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class VirtualDisplayItemManager {
+public class VirtualDisplayItemManager implements DisplayManager<VirtualDisplayItem<?>> {
 
   private static VirtualDisplayItemManager instance;
   public final Map<Long, Integer> shopEntities = new ConcurrentHashMap<>();
   protected final Map<String, PacketHandler<?>> packetHandlers = new LinkedHashMap<>();
-  @Getter
-  private final Map<ShopChunk, List<VirtualDisplayItem<?>>> chunksMapping = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<ShopChunk, ConcurrentHashMap<Integer, VirtualDisplayItem<?>>> chunksMapping = new ConcurrentHashMap<>();
   private final QuickShop plugin;
   private final AtomicInteger entityIdCounter;
   private PacketHandler<?> packetHandler;
@@ -91,6 +87,23 @@ public class VirtualDisplayItemManager {
     return instance;
   }
 
+  /**
+   * Retrieves a mapping between ShopChunk objects and their associated lists of display entities.
+   *
+   * This method provides access to the internal data structure used by the display manager to store
+   * and organize displays according to their respective ShopChunk locations. The returned mapping
+   * allows efficient retrieval, addition, or removal of display entities based on chunk-specific
+   * contexts.
+   *
+   * @return A {@code ConcurrentHashMap} where the keys represent {@code ShopChunk} objects, and the
+   * values are lists of display entities of type {@code T} associated with the respective chunks.
+   */
+  @Override
+  public ConcurrentHashMap<ShopChunk, ConcurrentHashMap<Integer, VirtualDisplayItem<?>>> chunksMapping() {
+
+    return chunksMapping;
+  }
+
   public void setHandler() {
 
     final String preferred = QuickShop.getInstance().getConfig().getString("shop.display-protocol", "protocollib").toLowerCase(Locale.ROOT);
@@ -112,6 +125,8 @@ public class VirtualDisplayItemManager {
     }
   }
 
+
+  @Override
   public void load() {
 
     Log.debug("Attempting to load packet factory...");
@@ -132,25 +147,7 @@ public class VirtualDisplayItemManager {
     }
   }
 
-  public void put(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem<?> value) {
-
-    //Thread-safe was ensured by ONLY USE Map method to do something
-    final List<VirtualDisplayItem<?>> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
-    chunksMapping.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal)->{
-
-      mapOldVal.addAll(mapNewVal);
-      return mapOldVal;
-    });
-  }
-
-  public void remove(@NotNull final ShopChunk key, @NotNull final VirtualDisplayItem value) {
-
-    chunksMapping.computeIfPresent(key, (mapOldKey, mapOldVal)->{
-      mapOldVal.remove(value);
-      return mapOldVal;
-    });
-  }
-
+  @Override
   public void unload() {
 
     Log.debug("Unregistering the packet listener...");
@@ -166,20 +163,11 @@ public class VirtualDisplayItemManager {
     return entityIdCounter.getAndDecrement();
   }
 
+  @Override
   @NotNull
-  public VirtualDisplayItem<?> createVirtualDisplayItem(@NotNull final Shop shop) {
+  public VirtualDisplayItem<?> create(@NotNull final Shop shop) {
 
     return new VirtualDisplayItem<>(this, packetFactory, shop);
-  }
-
-  public boolean isTestPassed() {
-
-    return testPassed;
-  }
-
-  public void setTestPassed(final boolean testPassed) {
-
-    this.testPassed = testPassed;
   }
 
   public void addHandler(final PacketHandler<?> packetHandler) {
@@ -193,19 +181,6 @@ public class VirtualDisplayItemManager {
 
       packetHandlers.put(packetHandler.identifier().toLowerCase(Locale.ROOT), packetHandler);
     }
-  }
-
-  public boolean allowEnchants() {
-    return plugin.getConfig().getBoolean("shop.display-allow-enchants", true);
-  }
-
-  public boolean useItemName() {
-    return plugin.getConfig().getBoolean("shop.display-item-use-name");
-  }
-
-  public Map<String, PacketHandler<?>> packetHandlers() {
-
-    return packetHandlers;
   }
 
   public PacketHandler<?> packetHandler() {

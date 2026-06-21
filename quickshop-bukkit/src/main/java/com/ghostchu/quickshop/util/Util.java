@@ -1653,6 +1653,36 @@ public class Util {
   }
 
   /**
+   * Creates a byte representing a set of flags based on the provided boolean parameters.
+   * Each parameter corresponds to a specific bit in the byte.
+   *
+   * @return a byte where each bit represents a corresponding flag set by the input parameters.
+   */
+  public static byte createTextDisplayFlags() {
+
+    final int background = plugin.getConfig().getInt("shop.text-display.background-color", 1073741824);
+    final boolean defaultBackground = background == 1073741824;
+    final boolean hasShadow = plugin.getConfig().getBoolean("shop.text-display.shadow.enabled", true);
+    final boolean seeThrough = plugin.getConfig().getBoolean("shop.text-display.see-through", false);
+
+    byte flags = 0;
+
+    if (hasShadow) {
+      flags |= 0x01;
+    }
+
+    if (seeThrough) {
+      flags |= 0x02;
+    }
+
+    if (defaultBackground) {
+      flags |= 0x04;
+    }
+
+    return flags;
+  }
+
+  /**
    * @param mat The material to check
    *
    * @return Returns true if the item is a tool (Has durability) or false if it doesn't.

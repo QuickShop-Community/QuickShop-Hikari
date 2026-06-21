@@ -43,6 +43,8 @@ import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
+import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -319,7 +321,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(this.displayItem == null) {
       try {
         final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-        if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getVirtualDisplayItemManager() == null) {
+        if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() == null) {
           plugin.logger().warn("Invalid display provider! " +
                                "No compatible display backend found. " +
                                "This may occur if ProtocolLib or PacketEvents is missing, outdated, or incompatible with your Minecraft version, " +
@@ -332,13 +334,12 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
           this.displayItem = provider.provide(this);
         } else {
 
-          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof final VirtualDisplayItemManager virtualManager) {
 
-            if(plugin.getVirtualDisplayItemManager() != null) {
-              this.displayItem = plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
-            }
-          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.displayEntityItemManager() != null) {
-            this.displayItem = plugin.displayEntityItemManager().create(this);
+            this.displayItem = virtualManager.create(this);
+          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayManager) {
+
+            this.displayItem = displayManager.create(this);
           }
         }
 

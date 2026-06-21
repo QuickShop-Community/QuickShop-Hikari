@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.interaction.InteractionBehavior;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionType;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
 import com.ghostchu.quickshop.util.ExpiringSet;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -261,9 +262,9 @@ public class PlayerListener extends AbstractQSListener {
       QuickShop.folia().getScheduler().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
     }
 
-    if(plugin.displayEntityItemManager() != null) {
+    if(plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayEntityItemManager) {
 
-      plugin.displayEntityItemManager().addPlayer(e.getPlayer());
+      displayEntityItemManager.addPlayer(e.getPlayer());
     }
   }
 

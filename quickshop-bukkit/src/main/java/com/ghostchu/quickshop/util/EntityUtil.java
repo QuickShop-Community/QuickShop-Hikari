@@ -20,6 +20,7 @@ package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -143,11 +144,36 @@ public class EntityUtil {
                                                 final int viewRange,
                                                 final int despawn) {
 
+    return spawnDisplayItemFor(player, location, itemStack, scale, new AxisAngle4f(),viewRange, despawn);
+  }
+
+  /**
+   * Spawns an {@code ItemDisplay} entity at the specified location with specific appearance and behavior.
+   * The item display can have custom scaling, rotation, and visibility settings. Optionally, the spawned
+   * display can be shown only to a specific player and will automatically despawn after a set duration.
+   *
+   * @param player    The player to whom the display will be visible, or {@code null} for no player-specific visibility.
+   * @param location  The location where the {@code ItemDisplay} entity will be spawned. Must not be {@code null}.
+   * @param itemStack The item to display in the spawned {@code ItemDisplay}. Must not be {@code null}.
+   * @param scale     The scaling factor for the display's appearance. Must not be {@code null}.
+   * @param rotation  The rotational transformation for the display's appearance. Must not be {@code null}.
+   * @param viewRange The view range (in blocks) for the display's visibility.
+   * @param despawn   The number of seconds before the display automatically despawns. Set to {@code 0} for no automatic despawn.
+   * @return The spawned {@code ItemDisplay} entity.
+   */
+  public static ItemDisplay spawnDisplayItemFor(final @Nullable Player player,
+                                                final Location location,
+                                                final ItemStack itemStack,
+                                                final Vector3f scale,
+                                                final AxisAngle4f rotation,
+                                                final int viewRange,
+                                                final int despawn) {
+
     final ItemDisplay display = location.getWorld().spawn(location, ItemDisplay.class);
 
     display.setItemStack(itemStack);
     display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.GROUND);
-    display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));
+    display.setTransformation(new Transformation(new Vector3f(), rotation, scale, new AxisAngle4f()));
     display.setViewRange(viewRange);
     display.setPersistent(false);
     display.setVisibleByDefault(false);
@@ -273,11 +299,18 @@ public class EntityUtil {
     text.setAlignment(alignment);
     text.setBillboard(Display.Billboard.CENTER);
     text.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), scale, new AxisAngle4f()));
-    text.setViewRange(viewRange);
+    text.setViewRange(viewRange * 0.0125f);
     text.setPersistent(false);
     text.setVisibleByDefault(false);
 
+    final int background = QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824);
+    final boolean defaultBackground = background == 1073741824;
+    text.setBackgroundColor(Color.fromARGB(background));
+    text.setDefaultBackground(defaultBackground);
     //shadow
+    text.setShadowed(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.shadow.enabled", true));
+    text.setSeeThrough(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.see-through", false));
+    text.setTextOpacity(QuickShop.getInstance().getConfig().getByte("shop.text-display.text-opacity", (byte)-1));
 
     if (player != null) {
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), text);
