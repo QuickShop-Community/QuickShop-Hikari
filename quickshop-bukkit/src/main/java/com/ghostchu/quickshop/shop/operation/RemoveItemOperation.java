@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.ItemRemoveResult;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.api.operation.result.ItemRemoveOperationResult;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +36,7 @@ public class RemoveItemOperation implements Operation {
     this.item = item.clone();
     this.amount = amount;
     this.inv = inv;
-    this.itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
+    this.itemMaxStackSize = item.getMaxStackSize();
 
   }
 
