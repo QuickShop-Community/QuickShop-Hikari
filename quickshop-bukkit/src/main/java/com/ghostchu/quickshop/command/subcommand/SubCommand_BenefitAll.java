@@ -1,27 +1,206 @@
 package com.ghostchu.quickshop.command.subcommand;
-/*
- * IslandSurvival
- * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitOverflowException;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitProvider;
+import com.ghostchu.quickshop.api.economy.benefit.BenefitsAlreadyException;
+import com.ghostchu.quickshop.api.event.Phase;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitAddEvent;
+import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitRemoveEvent;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.util.Util;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 /**
  * SubCommand_BenefitAll
  *
  * @author creatorfromhell
  * @since 0.0.1.0
  */
-public class SubCommand_BenefitAll {
+public class SubCommand_BenefitAll implements CommandHandler<Player> {
+
+  private final QuickShop plugin;
+
+  public SubCommand_BenefitAll(final QuickShop plugin) {
+
+    this.plugin = plugin;
+  }
+
+  @Override
+  public void onCommand(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().isEmpty()) {
+      plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
+      return;
+    }
+
+    final List<Shop> shops = plugin.getShopManager().getAllShops(sender.getUniqueId());
+    if(shops.isEmpty()) {
+      plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
+      return;
+    }
+
+    switch(parser.getArgs().getFirst()) {
+      case "add" -> addBenefit(sender, shops, parser);
+      case "remove" -> removeBenefit(sender, shops, parser);
+      default -> plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
+    }
+
+  }
+
+  private void addBenefit(final Player sender, final List<Shop> shops, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().size() < 3) {
+      plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove> <player> <percentage>").send();
+      return;
+    }
+    final String player = parser.getArgs().get(1);
+
+    QUserImpl.createAsync(plugin.getPlayerFinder(), player).thenAccept(qUser->{
+      if(qUser == null) {
+        plugin.text().of(sender, "unknown-player", player).send();
+        return;
+      }
+
+      if(!plugin.getConfig().getBoolean("shop.allow-offline-benefit", false) && qUser.getBukkitPlayer().isEmpty()) {
+
+        plugin.text().of(sender, "player-offline", player).send();
+        return;
+      }
+
+      if(!parser.getArgs().get(2).endsWith("%")) {
+        // Force player enter '%' to avoid player type something like 0.01 for 1%
+        plugin.text().of(sender, "invalid-percentage", parser.getArgs().getFirst()).send();
+        return;
+      }
+      final String percentageStr = CommonUtil.subBeforeLast(parser.getArgs().get(2), "%");
+      Util.mainThreadRun(()->{
+        try {
+          double percent = Double.parseDouble(percentageStr);
+          if(Double.isInfinite(percent) || Double.isNaN(percent)) {
+            plugin.text().of(sender, "not-a-number", parser.getArgs().get(2)).send();
+            return;
+          }
+
+          for(final Shop shop : shops) {
+
+            ShopBenefitAddEvent event = ShopBenefitAddEvent.PRE(shop, qUser, 0.0d, percent);
+            event.callEvent();
+
+            event = event.clone(Phase.MAIN);
+            if(event.callCancellableEvent()) {
+
+              plugin.logger().info("Plugin cancelled ShopBenefitAddEvent");
+              plugin.text().of(sender, "internal-error").send();
+              return;
+            }
+
+            percent = event.updated();
+
+            if(percent <= 0 || percent >= 100) {
+              plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
+              return;
+            }
+
+            final BenefitProvider benefit = shop.getShopBenefit();
+
+
+            benefit.add(qUser, BigDecimal.valueOf(percent / 100d));
+            shop.setShopBenefit(benefit);
+
+            event = event.clone(Phase.POST);
+            event.callEvent();
+          }
+
+          plugin.text().of(sender, "benefit-added", qUser.getDisplay()).send();
+        } catch(final NumberFormatException ignore) {
+          plugin.text().of(sender, "not-a-number", percentageStr).send();
+        } catch(final BenefitOverflowException e) {
+          plugin.text().of(sender, "benefit-overflow", (e.benefit().doubleValue() * 100) + "%").send();
+        } catch(final BenefitsAlreadyException ignore) {
+          plugin.text().of(sender, "benefit-exists").send();
+        }
+      });
+    }).exceptionally(e->{
+      plugin.logger().warn("Failed to get uuid of player " + player, e);
+      plugin.text().of(sender, "internal-error").send();
+      return null;
+    });
+
+  }
+
+  private void removeBenefit(final Player sender, final List<Shop> shops, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().size() < 2) {
+      plugin.text().of(sender, "command-incorrect", "/quickshop benefit <add/remove/query> <player> <percentage>").send();
+      return;
+    }
+    final String player = parser.getArgs().get(1);
+
+    QUserImpl.createAsync(plugin.getPlayerFinder(), player).thenAccept((qUser)->{
+              if(qUser == null) {
+                plugin.text().of(sender, "unknown-player", player).send();
+                return;
+              }
+
+              for(final Shop shop : shops) {
+
+                final BenefitProvider benefit = shop.getShopBenefit();
+
+                final BigDecimal percent = benefit.benefits().getOrDefault(qUser, BigDecimal.ZERO);
+
+                ShopBenefitRemoveEvent event = ShopBenefitRemoveEvent.PRE(shop, qUser, percent, BigDecimal.ZERO);
+                event.callEvent();
+
+                event = event.clone(Phase.MAIN);
+                if(event.callCancellableEvent()) {
+
+                  plugin.logger().info("Plugin cancelled ShopBenefitRemoveEvent");
+                  plugin.text().of(sender, "internal-error").send();
+                  return;
+                }
+
+                benefit.remove(qUser);
+                shop.setShopBenefit(benefit);
+
+                event = event.clone(Phase.POST);
+                event.callEvent();
+
+              }
+
+              plugin.text().of(sender, "benefit-removed", qUser.getDisplay()).send();
+            })
+            .exceptionally(e->{
+              plugin.logger().warn("Failed to get uuid of player " + player, e);
+              plugin.text().of(sender, "internal-error").send();
+              return null;
+            });
+
+  }
+
+  @NotNull
+  @Override
+  public List<String> onTabComplete(
+          @NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+
+    if(parser.getArgs().size() == 1) {
+      return List.of("add", "remove");
+    }
+    if(parser.getArgs().size() == 2) {
+      return null;
+    }
+    if(parser.getArgs().size() == 3) {
+      return Collections.singletonList(plugin.text().of(sender, "tabcomplete.percentage").legacy());
+    }
+    return Collections.emptyList();
+  }
+
 }

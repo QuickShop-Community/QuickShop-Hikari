@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_About;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Amount;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Avoid;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Benefit;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_BenefitAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Browse;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Buy;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Clean;
@@ -480,6 +481,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .prefix("benefit")
                         .permission("quickshop.benefit")
                         .executor(new SubCommand_Benefit(plugin))
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("benefitall")
+                        .permission("quickshop.benefitall")
+                        .executor(new SubCommand_BenefitAll(plugin))
                         .build());
     registerCmd(CommandContainer.builder()
                         .prefix("browse")
