@@ -9,7 +9,8 @@ import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Operation to remove items
@@ -46,30 +47,25 @@ public class RemoveItemOperation implements Operation {
     committed = true;
     this.snapshot = inv.createSnapshot();
     int remains = amount;
-    int lastRemains = -1;
 
-    final ItemRemoveResult result = new ItemRemoveResult(new HashMap<>(), new HashMap<>());
+    final List<ItemStack> itemsToRemove = new ArrayList<>();
 
     while(remains > 0) {
       final int stackSize = Math.min(remains, itemMaxStackSize);
-      item.setAmount(stackSize);
-      Log.debug("Committing remove item operation, remains: " + remains + ", stackSize: " + stackSize + ", target: " + item);
+      remains -= stackSize;
 
-      final ItemRemoveResult resultNotFit = inv.removeItem(item.clone());
-      result.leftovers().putAll(resultNotFit.leftovers());
-      result.removed().putAll(resultNotFit.removed());
-      if(resultNotFit.leftovers().isEmpty()) {
-        remains -= stackSize;
-      } else {
-        remains -= stackSize - resultNotFit.leftovers().entrySet().iterator().next().getValue().getAmount();
-      }
+      final ItemStack clone = item.clone();
+      clone.setAmount(stackSize);
 
-      if(remains == lastRemains) {
-        return new ItemRemoveOperationResult(false, result);
-      }
-      lastRemains = remains;
+      itemsToRemove.add(clone);
     }
-    return new ItemRemoveOperationResult(true, result);
+
+    Log.debug("Committing remove item operation, target: " + itemsToRemove);
+
+    final ItemRemoveResult result = inv.removeItem(itemsToRemove.toArray(new ItemStack[0]));
+
+    Log.debug("Remove item operation results, leftover: " + result.leftovers() + ", removed: " + result.removed());
+    return new ItemRemoveOperationResult(result.leftovers().isEmpty(), result);
   }
 
   @Override

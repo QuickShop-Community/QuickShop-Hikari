@@ -185,7 +185,6 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
 
       final ItemStack requested = itemStacks[i];
       int remaining = requested.getAmount();
-      int removedAmount = 0;
 
       final InventoryWrapperIterator iterator = iterator();
 
@@ -212,12 +211,9 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
         iterator.setCurrent(current);
 
         remaining -= amount;
-        removedAmount += amount;
         if (amount > 0) {
 
-          final ItemStack removedStack = requested.clone();
-          removedStack.setAmount(amount);
-          removed.put(iteratorSlot, currentClone);
+          removed.merge(iteratorSlot, currentClone, (existing, added) -> existing.add(added.getAmount()));
         }
         iteratorSlot++;
       }
