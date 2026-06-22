@@ -26,9 +26,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
+
 public final class Main extends JavaPlugin implements Listener {
 
   private NamespacedKey DYE_NAMESPACE_KEY;
+  private NamespacedKey GLOW_NAMESPACE_KEY;
+  private NamespacedKey CLEAR_NAMESPACE_KEY;
 
   static Main instance;
   private QuickShop plugin;
@@ -38,6 +42,8 @@ public final class Main extends JavaPlugin implements Listener {
 
     instance = this;
     DYE_NAMESPACE_KEY = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "sign-dye");
+    GLOW_NAMESPACE_KEY = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "sign-glow");
+    CLEAR_NAMESPACE_KEY = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "sign-clear");
   }
 
   @Override
@@ -52,7 +58,9 @@ public final class Main extends JavaPlugin implements Listener {
     saveDefaultConfig();
     plugin = QuickShop.getInstance();
     getLogger().info("Registering the per shop permissions...");
-    plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "dye_shop");
+    plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "dye_sign");
+    plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "glow_sign");
+    plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "clear_sign");
     getLogger().info("Registering the listeners...");
     Bukkit.getPluginManager().registerEvents(this, this);
   }
@@ -60,21 +68,78 @@ public final class Main extends JavaPlugin implements Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   public void onSignChange(@NotNull final ShopSignUpdateEvent event) {
 
+    if (event.getSign().getPersistentDataContainer().has(CLEAR_NAMESPACE_KEY, PersistentDataType.STRING)) {
+      return;
+    }
+
     final DyeColor signColor = dyeFromSign(event.getSign());
-    System.out.println("Sign color: " + signColor);
-    if(signColor != null) {
+    if (signColor != null) {
       event.getSign().getSide(Side.FRONT).setColor(signColor);
     }
+
+    event.getSign().getSide(Side.FRONT).setGlowingText(event.getSign().getPersistentDataContainer().getOrDefault(GLOW_NAMESPACE_KEY,
+                                                                                                                 PersistentDataType.BOOLEAN,
+                                                                                                                 event.getSign().getSide(Side.FRONT).isGlowingText()));
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
-  public void onPlayerInteract(final PlayerInteractEvent event) {
+  public void onPlayerDye(final PlayerInteractEvent event) {
     if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 
       return;
     }
 
-    final Block block = event.getClickedBlock();
+    final Player player = event.getPlayer();
+
+    final ItemStack item = event.getItem();
+    if (item == null) {
+      return;
+    }
+
+    getShopSign(event.getClickedBlock(), (shop, sign)->{
+      if (sign == null) {
+        return;
+      }
+
+      final DyeColor dyeColor = getDyeColor(item.getType());
+      if (dyeColor != null) {
+
+        if (!shop.playerAuthorize(player.getUniqueId(), this, "dye_sign")) {
+          return;
+        }
+
+        sign.getSide(Side.FRONT).setColor(dyeColor);
+        sign.getPersistentDataContainer().set(DYE_NAMESPACE_KEY, PersistentDataType.STRING, dyeColor.name());
+        sign.getPersistentDataContainer().remove(CLEAR_NAMESPACE_KEY);
+      } else if(item.getType() == Material.GLOW_INK_SAC) {
+
+        if (!shop.playerAuthorize(player.getUniqueId(), this, "glow_sign")) {
+          return;
+        }
+
+        final boolean glow = !sign.getSide(Side.FRONT).isGlowingText();
+
+        sign.getSide(Side.FRONT).setGlowingText(glow);
+        sign.getPersistentDataContainer().set(GLOW_NAMESPACE_KEY, PersistentDataType.BOOLEAN, glow);
+        sign.getPersistentDataContainer().remove(CLEAR_NAMESPACE_KEY);
+      } else if(item.getType().name().contains("_SIGN")) {
+
+        if (!shop.playerAuthorize(player.getUniqueId(), this, "clear_sign")) {
+          return;
+        }
+
+        sign.getSide(Side.FRONT).setGlowingText(false);
+        //sign.getSide(Side.FRONT).setColor(null);
+        sign.getPersistentDataContainer().set(CLEAR_NAMESPACE_KEY, PersistentDataType.STRING, "nothingtoseehere");
+        sign.getPersistentDataContainer().remove(GLOW_NAMESPACE_KEY);
+        sign.getPersistentDataContainer().remove(DYE_NAMESPACE_KEY);
+      }
+      sign.update(true);
+    });
+  }
+
+  public void getShopSign(final Block block, final BiConsumer<Shop, Sign> consumer) {
+
     if (block == null) {
       return;
     }
@@ -97,33 +162,9 @@ public final class Main extends JavaPlugin implements Listener {
       return;
     }
 
-    final ItemStack item = event.getItem();
-    if (item == null) {
-      return;
+    if (consumer != null) {
+      consumer.accept(shop, sign);
     }
-
-    if (!item.getType().name().endsWith("_DYE")) {
-      return;
-    }
-
-    final DyeColor dyeColor = getDyeColor(item.getType());
-    if (dyeColor == null) {
-      return;
-    }
-
-    // Player right-clicked a sign with a dye
-    final Player player = event.getPlayer();
-    if (player == null) {
-      return;
-    }
-
-    if (!shop.playerAuthorize(player.getUniqueId(), this, "dye_shop")) {
-      return;
-    }
-
-    sign.getSide(Side.FRONT).setColor(dyeColor);
-    sign.getPersistentDataContainer().set(DYE_NAMESPACE_KEY, PersistentDataType.STRING, dyeColor.name());
-    sign.update(true);
   }
 
   @Nullable

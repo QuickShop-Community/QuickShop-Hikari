@@ -57,7 +57,7 @@ public class SignHooker extends AbstractQSListener {
       }
       for(final Sign sign : shop.getSigns()) {
 
-        plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), sign.getSide(Side.FRONT).getColor(), lines);
+        plugin.platform().sendSignTextChange(player, sign, sign.getSide(Side.FRONT).isGlowingText(), sign.getSide(Side.FRONT).getColor(), lines);
       }
     }));
   }
