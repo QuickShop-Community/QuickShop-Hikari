@@ -129,7 +129,6 @@ public final class Main extends JavaPlugin implements Listener {
         }
 
         sign.getSide(Side.FRONT).setGlowingText(false);
-        //sign.getSide(Side.FRONT).setColor(null);
         sign.getPersistentDataContainer().set(CLEAR_NAMESPACE_KEY, PersistentDataType.STRING, "nothingtoseehere");
         sign.getPersistentDataContainer().remove(GLOW_NAMESPACE_KEY);
         sign.getPersistentDataContainer().remove(DYE_NAMESPACE_KEY);

@@ -95,6 +95,9 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     final CompletableFuture<Boolean> inventoryAvailableFuture = shop.inventoryAvailableAsync();
     final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
 
+    final Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
+    final Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
+
     return inventoryAvailableFuture.thenCombine(remainingStockFuture,(inventoryAvailable, remainingStock) -> new SignRenderSnapshot(
                                                   inventoryAvailable,
                                                   shop.ownerName(false, locale),
@@ -105,7 +108,7 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
                                                   remainingStock,
                                                   shop.shopState().overrideShopTypeText(),
                                                   shop.shopState().translationKey(),
-                                                  Util.getItemStackName(item, locale.getLocale()),
+                                                  left.append(Util.getItemStackName(item, locale.getLocale())).append(right),
                                                   item.getAmount(),
                                                   plugin.getShopManager().format(shop.getPrice(), shop),
                                                   levels,

@@ -381,7 +381,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
 
     if(!sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
       sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
-      System.out.println("Claiming shop sign " + sign);
       sign.update();
     }
   }
