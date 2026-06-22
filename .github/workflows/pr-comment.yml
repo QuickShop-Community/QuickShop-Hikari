@@ -1,0 +1,54 @@
+# Credit goes to polarathene for a work around to the rate-limiting API
+# https://github.com/orgs/community/discussions/25220
+name: PR Artifact Comment
+
+on:
+  workflow_run:
+    workflows:
+      - Maven CI
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  comment:
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get PR number for commit
+        id: pr-context
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_TARGET_REPO: ${{ github.repository }}
+          PR_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          gh search prs "$PR_SHA" \
+            --repo "$PR_TARGET_REPO" \
+            --state open \
+            --json number \
+            --jq '"pr_number=\(.[0].number)"' >> "$GITHUB_OUTPUT"
+
+      - name: Comment artifact link on PR
+        if: steps.pr-context.outputs.pr_number != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ steps.pr-context.outputs.pr_number }}
+          header: quickshop-pr-artifacts
+          recreate: true
+          message: |
+            Latest build artifacts are available for this PR.
+
+            Commit: ${{ github.event.workflow_run.head_sha }}
+            Workflow run: ${{ github.event.workflow_run.html_url }}
+
+            Download the artifact named:
+
+            quickshop-pr-${{ steps.pr-context.outputs.pr_number }}
