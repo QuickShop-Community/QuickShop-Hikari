@@ -64,33 +64,6 @@ jobs:
           path: pr-artifacts/*.jar
           retention-days: 14
 
-      - name: Find existing artifact comment
-        if: github.event_name == 'pull_request'
-        uses: peter-evans/find-comment@v3
-        id: find-artifact-comment
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: github-actions[bot]
-          body-includes: "<!-- quickshop-pr-artifacts -->"
-
-      - name: Create or update artifact comment
-        if: github.event_name == 'pull_request'
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          comment-id: ${{ steps.find-artifact-comment.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          edit-mode: replace
-          body: |
-            <!-- quickshop-pr-artifacts -->
-            Latest build artifacts are available for this PR.
-
-            Commit: `${{ github.sha }}`
-            Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            Download the artifact named:
-
-            `quickshop-pr-${{ github.event.pull_request.number }}`
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v5
         if: success() && github.event_name != 'pull_request'
