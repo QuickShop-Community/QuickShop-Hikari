@@ -416,6 +416,9 @@ shop:
   # Disable the Super Tool (golden axe used by creative players to break shops).
   disable-super-tool: false
 
+  # Disable the ability to transfer buy shops using the transfer and transferall commands.
+  disable-buy-transfer: false
+
   # Allow shop owners to break only the sign (so it can be replaced).
   # WARNING: May cause sign duplication if auto-sign is enabled.
   allow-owner-break-shop-sign: false

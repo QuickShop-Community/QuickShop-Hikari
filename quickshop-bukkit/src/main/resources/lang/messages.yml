@@ -954,6 +954,7 @@ transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s Shop Transfer-req
 transfer-no-pending-operation: <red>You don't have any pending Transfer-requests.
 transfer-no-self: <red>You can't transfer your shops to yourself.
 transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to
   100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
