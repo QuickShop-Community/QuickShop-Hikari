@@ -926,20 +926,20 @@ public class Util {
   @Nullable
   public static Component getItemCustomName(@NotNull final ItemStack itemStack, final String locale) {
 
+    final ItemMeta meta = itemStack.getItemMeta();
     if(useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
-      final ItemMeta meta = itemStack.getItemMeta();
       if(meta instanceof final EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
         return getFirstEnchantmentName(enchantmentStorageMeta);
       }
     }
 
-    if(usePotionForPotionItem() && itemStack.getItemMeta() instanceof PotionMeta) {
+    if(usePotionForPotionItem() && meta instanceof PotionMeta) {
 
       return getFirstPotionEffectName(itemStack, locale);
     }
 
 
-    if(!itemStack.hasItemMeta() || QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
+    if(meta == null) {
 
       return null;
     }
@@ -947,14 +947,23 @@ public class Util {
     boolean itemName = false;
 
     try {
-      itemName = Objects.requireNonNull(itemStack.getItemMeta()).hasItemName();
+      itemName = meta.hasItemName();
     } catch(final NoSuchMethodError ignore) {
       //outdated
     }
 
-    if(Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() || itemName) {
+    if(QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
 
-      return plugin.platform().getDisplayName(itemStack.getItemMeta());
+      try {
+        return itemName ? meta.itemName() : null;
+      } catch(final NoSuchMethodError ignored) {}
+
+      return null;
+    }
+
+    if(meta.hasDisplayName() || itemName) {
+
+      return plugin.platform().getDisplayName(meta);
     }
     return null;
   }
