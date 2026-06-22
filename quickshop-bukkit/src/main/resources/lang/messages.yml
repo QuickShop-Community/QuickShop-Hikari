@@ -659,11 +659,6 @@ command:
     <yellow>{2}
   no-trade-item: <green>Please hold a trade item to change in the main hand
   wrong-args: <red>Invalid argument. Use <bold>/quickshop help</bold> to see a list of commands.
-  permission-added: <green>Successfully added permission {0} to group {1}
-  permission-no-group: <red>Group {0} does not exist.
-  permission-no-default-moderator: <red>Cannot set default moderator group to {0}
-  permission-check-found: '<red>Found and removed misconfigured permissions. Please ensure the following permissions have been removed from your default group immediately: {0}'
-  permission-check-not-found: <green>No misconfigured permissions found.
   some-shops-removed: <yellow>{0} <green>shop(s) removed
   new-owner: '<green>New owner: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
