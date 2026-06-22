@@ -1920,6 +1920,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       plugin.platform().setLines(sign, event.updated());
 
       sign.getSide(Side.FRONT).setGlowingText(isGlowing);
+
       final DyeColor dyeColor = Util.getDyeColor();
       if(dyeColor != null) {
         sign.getSide(Side.FRONT).setColor(dyeColor);

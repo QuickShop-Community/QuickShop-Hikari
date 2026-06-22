@@ -199,16 +199,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .executor(new SubCommand_SetOwner(plugin))
                     .build());
 
-    if (Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null) {
-
-      registerCmd(
-              CommandContainer.builder()
-                      .prefix("setuppermission")
-                      .permission("quickshop.setuppermission")
-                      .executor(new SubCommand_SetupPermission(plugin))
-                      .build());
-    }
-
     registerCmd(
             CommandContainer.builder()
                     .prefix("amount")
