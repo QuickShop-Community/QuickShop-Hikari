@@ -169,7 +169,6 @@ permissions:
       quickshop.tag.clear: true
       quickshop.tag.clearall: true
       quickshop.setowner: true
-      quickshop.setuppermission: true
       quickshop.other.destroy: true
       quickshop.other.open: true
       quickshop.other.price: true
