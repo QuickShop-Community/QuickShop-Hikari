@@ -58,9 +58,11 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -272,10 +274,26 @@ public final class Main extends CompatibilityModule implements Listener {
     Util.asyncThreadRun(()->{
       final QUser actor = QUserImpl.createFullFilled(CommonUtil.getNilUniqueId(), "Towny", false);
       //Getting all shop with world-chunk-shop mapping
-      for(final Shop shop : api.getShopManager().getAllShops()) {
-        if(!worldCoords.contains(WorldCoord.parseWorldCoord(shop.bukkitLocation()))) {
-          continue;
+      final List<Shop> shops = new ArrayList<>();
+      if(WorldCoord.getCellSize() != 16) {
+
+        for(final Shop shop : api.getShopManager().getAllShops()) {
+          if(!worldCoords.contains(WorldCoord.parseWorldCoord(shop.bukkitLocation()))) {
+            continue;
+          }
+          shops.add(shop);
         }
+      } else {
+        // the size of a worldcoord is the same size as a chunk, we can use a faster way to retrieve all shops
+        for(final WorldCoord worldCoord : worldCoords) {
+          final Map<Location, Shop> shopsInChunk = api.getShopManager().getShops(worldCoord.getWorldName(), worldCoord.getX(), worldCoord.getZ());
+          if(!shopsInChunk.isEmpty()) {
+            shops.addAll(shopsInChunk.values());
+          }
+        }
+      }
+
+      for(final Shop shop : shops) {
         if(overrideOwner || owner != null && owner.equals(shop.getOwner().getUniqueId())) {
           Util.regionThread(shop.bukkitLocation(), ()->{
             recordDeletion(actor, shop, reason);
