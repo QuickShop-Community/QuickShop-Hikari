@@ -139,6 +139,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>allowedAmount</code> record component.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#allowEnchants()" class="member-name-link">allowEnchants()</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/Phase.html#allowUpdate()" class="member-name-link">allowUpdate()</a> - Method in enum class com.ghostchu.quickshop.api.event.<a href="com/ghostchu/quickshop/api/event/Phase.html" title="enum class in com.ghostchu.quickshop.api.event">Phase</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/tag/TaggingResult.html#ALREADY_EXISTS" class="member-name-link">ALREADY_EXISTS</a> - Enum constant in enum class com.ghostchu.quickshop.api.shop.tag.<a href="com/ghostchu/quickshop/api/shop/tag/TaggingResult.html" title="enum class in com.ghostchu.quickshop.api.shop.tag">TaggingResult</a></dt>
@@ -329,6 +331,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/shop/meta/ShopDisplay.html#checkDisplay()" class="member-name-link">checkDisplay()</a> - Method in interface com.ghostchu.quickshop.api.shop.meta.<a href="com/ghostchu/quickshop/api/shop/meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a></dt>
 <dd>
 <div class="block">Check the display location, and teleport, respawn if needs.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#chunksMapping()" class="member-name-link">chunksMapping()</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>
+<div class="block">Retrieves a mapping between ShopChunk objects and their associated lists of display entities.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/meta/ShopDisplay.html#claimShopSign(org.bukkit.block.Sign)" class="member-name-link">claimShopSign(Sign)</a> - Method in interface com.ghostchu.quickshop.api.shop.meta.<a href="com/ghostchu/quickshop/api/shop/meta/ShopDisplay.html" title="interface in com.ghostchu.quickshop.api.shop.meta">ShopDisplay</a></dt>
 <dd>
@@ -777,6 +783,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Counting the spaces</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#create(com.ghostchu.quickshop.api.shop.Shop)" class="member-name-link">create(Shop)</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>
+<div class="block">Creates and returns a new display instance associated with the specified shop.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/database/ShopOperationEnum.html#CREATE" class="member-name-link">CREATE</a> - Enum constant in enum class com.ghostchu.quickshop.api.database.<a href="com/ghostchu/quickshop/api/database/ShopOperationEnum.html" title="enum class in com.ghostchu.quickshop.api.database">ShopOperationEnum</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopAction.html#CREATE_BUY" class="member-name-link">CREATE_BUY</a> - Enum constant in enum class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopAction.html" title="enum class in com.ghostchu.quickshop.api.shop">ShopAction</a></dt>
@@ -896,6 +906,22 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/event/display/DisplayApplicableCheckEvent.html" class="type-name-link" title="class in com.ghostchu.quickshop.api.event.display">DisplayApplicableCheckEvent</a> - Class in <a href="com/ghostchu/quickshop/api/event/display/package-summary.html">com.ghostchu.quickshop.api.event.display</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/display/DisplayApplicableCheckEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.shop.Shop,java.util.UUID)" class="member-name-link">DisplayApplicableCheckEvent(Shop, UUID)</a> - Constructor for class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayApplicableCheckEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayApplicableCheckEvent</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager&lt;T&gt;</a> - Interface in <a href="com/ghostchu/quickshop/api/shop/display/package-summary.html">com.ghostchu.quickshop.api.shop.display</a></dt>
+<dd>
+<div class="block">Manages the display functionality for various display type entities.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html" class="type-name-link" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerPutEvent&lt;T&gt;</a> - Class in <a href="com/ghostchu/quickshop/api/event/display/package-summary.html">com.ghostchu.quickshop.api.event.display</a></dt>
+<dd>
+<div class="block">DisplayEntityItemManager</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.shop.ShopChunk,T)" class="member-name-link">DisplayManagerPutEvent(ShopChunk, T)</a> - Constructor for class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerPutEvent</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html" class="type-name-link" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerRemoveEvent&lt;T&gt;</a> - Class in <a href="com/ghostchu/quickshop/api/event/display/package-summary.html">com.ghostchu.quickshop.api.event.display</a></dt>
+<dd>
+<div class="block">DisplayEntityItemManager</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.shop.ShopChunk,T)" class="member-name-link">DisplayManagerRemoveEvent(ShopChunk, T)</a> - Constructor for class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerRemoveEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/updater/UpdateProvider.html#displayName()" class="member-name-link">displayName()</a> - Method in interface com.ghostchu.quickshop.api.updater.<a href="com/ghostchu/quickshop/api/updater/UpdateProvider.html" title="interface in com.ghostchu.quickshop.api.updater">UpdateProvider</a></dt>
 <dd>
@@ -1139,6 +1165,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Matches the version that QuickShop supports or not</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/GameVersion.html#get(java.lang.String,java.util.function.Consumer)" class="member-name-link">get(String, Consumer&lt;Boolean&gt;)</a> - Static method in enum class com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html#get(java.lang.String)" class="member-name-link">get(String)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">InventoryWrapperRegistry</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html#get(java.util.UUID)" class="member-name-link">get(UUID)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></dt>
@@ -1265,8 +1293,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gets the text should be shown while command was disabled.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html#getDisplay()" class="member-name-link">getDisplay()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerPutEvent</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html#getDisplay()" class="member-name-link">getDisplay()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerRemoveEvent</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/obj/QUser.html#getDisplay()" class="member-name-link">getDisplay()</a> - Method in interface com.ghostchu.quickshop.api.obj.<a href="com/ghostchu/quickshop/api/obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/QuickShopAPI.html#getDisplayManager()" class="member-name-link">getDisplayManager()</a> - Method in interface com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></dt>
+<dd>
+<div class="block">Retrieves the instance of the DisplayManager responsible for managing display functionalities.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/display/ShopDisplayItemSpawnEvent.html#getDisplayType()" class="member-name-link">getDisplayType()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/ShopDisplayItemSpawnEvent.html" title="class in com.ghostchu.quickshop.api.event.display">ShopDisplayItemSpawnEvent</a></dt>
 <dd>
 <div class="block">Gets the current display type</div>
@@ -1700,6 +1736,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gets the benefit in this shop</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html#getShopChunk()" class="member-name-link">getShopChunk()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerPutEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerPutEvent</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html#getShopChunk()" class="member-name-link">getShopChunk()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerRemoveEvent</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/QuickShopAPI.html#getShopControlPanelManager()" class="member-name-link">getShopControlPanelManager()</a> - Method in interface com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></dt>
 <dd>
 <div class="block">Getting the control panel manager</div>
@@ -2574,6 +2614,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/config/QSConfig.html#load()" class="member-name-link">load()</a> - Method in class com.ghostchu.quickshop.api.config.<a href="com/ghostchu/quickshop/api/config/QSConfig.html" title="class in com.ghostchu.quickshop.api.config">QSConfig</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#load()" class="member-name-link">load()</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>
+<div class="block">Loads the required resources, configurations, or internal states for this display manager.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/tag/TagManager.html#loadAllFromDB()" class="member-name-link">loadAllFromDB()</a> - Method in interface com.ghostchu.quickshop.api.shop.tag.<a href="com/ghostchu/quickshop/api/shop/tag/TagManager.html" title="interface in com.ghostchu.quickshop.api.shop.tag">TagManager</a></dt>
 <dd>
 <div class="block">Loads all tag-related data from the database into memory.</div>
@@ -3401,6 +3445,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/database/ShopOperationEnum.html#PURCHASE_SELLING_SHOP" class="member-name-link">PURCHASE_SELLING_SHOP</a> - Enum constant in enum class com.ghostchu.quickshop.api.database.<a href="com/ghostchu/quickshop/api/database/ShopOperationEnum.html" title="enum class in com.ghostchu.quickshop.api.database">ShopOperationEnum</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#put(com.ghostchu.quickshop.api.shop.ShopChunk,int,T)" class="member-name-link">put(ShopChunk, int, T)</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>
+<div class="block">Adds a display object to the display manager, associating it with a specified <code>ShopChunk</code>
+ and a unique location hash.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html#put(java.util.UUID,com.ghostchu.quickshop.api.shop.Info)" class="member-name-link">put(UUID, Info)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -3540,6 +3589,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/economy/benefit/BenefitProvider.html#remove(com.ghostchu.quickshop.api.obj.QUser)" class="member-name-link">remove(QUser)</a> - Method in interface com.ghostchu.quickshop.api.economy.benefit.<a href="com/ghostchu/quickshop/api/economy/benefit/BenefitProvider.html" title="interface in com.ghostchu.quickshop.api.economy.benefit">BenefitProvider</a></dt>
 <dd>
 <div class="block">Removes the specified user from this BenefitManager.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#remove(com.ghostchu.quickshop.api.shop.ShopChunk,int,T)" class="member-name-link">remove(ShopChunk, int, T)</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>
+<div class="block">Removes the specified display object associated with the given ShopChunk key
+ from the manager.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html#remove(java.util.UUID)" class="member-name-link">remove(UUID)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></dt>
 <dd>&nbsp;</dd>
@@ -4973,6 +5027,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/GameVersion.html#UNKNOWN" class="member-name-link">UNKNOWN</a> - Enum constant in enum class com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#unload()" class="member-name-link">unload()</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>
+<div class="block">Unloads the resources, configurations, or internal states for this display manager.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.html#unloadShop(com.ghostchu.quickshop.api.shop.Shop)" class="member-name-link">unloadShop(Shop)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager</a></dt>
 <dd>
 <div class="block">Load shop method for loading shop into mapping, so getShops method will can find it.</div>
@@ -5089,6 +5147,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Determines whether a custom item name should be used.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#useItemName()" class="member-name-link">useItemName()</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/economy/EconomyManager.html#useProvider(java.lang.String)" class="member-name-link">useProvider(String)</a> - Method in interface com.ghostchu.quickshop.api.economy.<a href="com/ghostchu/quickshop/api/economy/EconomyManager.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyManager</a></dt>
 <dd>
 <div class="block">Uses the provided EconomyProvider associated with the specified provider ID.</div>
@@ -5153,6 +5213,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/GameVersion.html#v1_21_R6" class="member-name-link">v1_21_R6</a> - Enum constant in enum class com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/GameVersion.html#v1_21_R9" class="member-name-link">v1_21_R9</a> - Enum constant in enum class com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/GameVersion.html#v26_1" class="member-name-link">v26_1</a> - Enum constant in enum class com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/GameVersion.html#v26_2" class="member-name-link">v26_2</a> - Enum constant in enum class com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/economy/EconomyProvider.html#valid()" class="member-name-link">valid()</a> - Method in interface com.ghostchu.quickshop.api.economy.<a href="com/ghostchu/quickshop/api/economy/EconomyProvider.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyProvider</a></dt>
 <dd>

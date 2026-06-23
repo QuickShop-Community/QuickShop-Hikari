@@ -97,7 +97,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public enum </span><span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-13">GameVersion</a></span>
+<div class="type-signature"><span class="modifiers">public enum </span><span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-14">GameVersion</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a>&gt;</span></div>
 <div class="block">Utilities to help QuickShop quickly check server supported features</div>
 <dl class="notes">
@@ -160,6 +160,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#v1_21_R9" class="member-name-link">v1_21_R9</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#v26_1" class="member-name-link">v26_1</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#v26_2" class="member-name-link">v26_2</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -180,13 +184,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Matches the version that QuickShop supports or not</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#get(java.lang.String,java.util.function.Consumer)" class="member-name-link">get</a><wbr>(@NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nmsVersion,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;fallback)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -213,109 +221,121 @@ the order they are declared.</div>
 <li>
 <section class="detail" id="v1_18_R1">
 <h3>v1_18_R1</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-15">v1_18_R1</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-16">v1_18_R1</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_18_R2">
 <h3>v1_18_R2</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-16">v1_18_R2</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-17">v1_18_R2</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_19_R1">
 <h3>v1_19_R1</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-17">v1_19_R1</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-18">v1_19_R1</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_19_R2">
 <h3>v1_19_R2</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-18">v1_19_R2</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-19">v1_19_R2</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_19_R3">
 <h3>v1_19_R3</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-19">v1_19_R3</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-20">v1_19_R3</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_20_R1">
 <h3>v1_20_R1</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-20">v1_20_R1</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-21">v1_20_R1</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_20_R2">
 <h3>v1_20_R2</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-21">v1_20_R2</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-22">v1_20_R2</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_20_R3">
 <h3>v1_20_R3</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-22">v1_20_R3</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-23">v1_20_R3</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_20_R4">
 <h3>v1_20_R4</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-23">v1_20_R4</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-24">v1_20_R4</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R1">
 <h3>v1_21_R1</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-24">v1_21_R1</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-25">v1_21_R1</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R2">
 <h3>v1_21_R2</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-25">v1_21_R2</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-26">v1_21_R2</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R3">
 <h3>v1_21_R3</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-26">v1_21_R3</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-27">v1_21_R3</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R4">
 <h3>v1_21_R4</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-27">v1_21_R4</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-28">v1_21_R4</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R5">
 <h3>v1_21_R5</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-28">v1_21_R5</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-29">v1_21_R5</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R6">
 <h3>v1_21_R6</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-29">v1_21_R6</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-30">v1_21_R6</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R9">
 <h3>v1_21_R9</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-30">v1_21_R9</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-31">v1_21_R9</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="v1_21_R10">
 <h3>v1_21_R10</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-31">v1_21_R10</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-32">v1_21_R10</a></span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="v26_1">
+<h3>v26_1</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-33">v26_1</a></span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="v26_2">
+<h3>v26_2</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-34">v26_2</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-32">UNKNOWN</a></span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-35">UNKNOWN</a></span></div>
 </section>
 </li>
 </ul>
@@ -329,7 +349,7 @@ the order they are declared.</div>
 <li>
 <section class="detail" id="values()">
 <h3>values</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a>[]</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-13">values</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a>[]</span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-14">values</a></span>()</div>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 <dl class="notes">
@@ -341,7 +361,7 @@ the order they are declared.</div>
 <li>
 <section class="detail" id="valueOf(java.lang.String)">
 <h3>valueOf</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-13">valueOf</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-14">valueOf</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 <div class="block">Returns the enum constant of this class with the specified name.
 The string must match <i>exactly</i> an identifier used to declare an
 enum constant in this class.  (Extraneous whitespace characters are 
@@ -361,7 +381,7 @@ not permitted.)</div>
 <section class="detail" id="get(java.lang.String)">
 <h3>get</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">public static</span>&nbsp;<span class="return-type">@NotNull <a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-74">get</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type">@NotNull <a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-77">get</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nmsVersion)</span></div>
 <div class="block">Matches the version that QuickShop supports or not</div>
 <dl class="notes">
@@ -370,6 +390,14 @@ not permitted.)</div>
 <dt>Returns:</dt>
 <dd>The object contains supports details for GameVersion</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="get(java.lang.String,java.util.function.Consumer)">
+<h3>get</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="GameVersion.html" title="enum class in com.ghostchu.quickshop.api">GameVersion</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/com/ghostchu/quickshop/api/GameVersion.html#line-83">get</a></span><wbr><span class="parameters">(@NotNull
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nmsVersion,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;fallback)</span></div>
 </section>
 </li>
 </ul>
