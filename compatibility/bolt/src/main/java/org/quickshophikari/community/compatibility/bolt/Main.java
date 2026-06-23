@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.compatibility.bolt;
+package org.quickshophikari.community.compatibility.bolt;
 
 /*
  * QuickShop-Hikari

@@ -1,4 +1,4 @@
-package dev.cfh.quickshop.addon.dyesigns;
+package org.quickshophikari.community.addon.dyesigns;
 
 /*
  * QuickShop-Hikari
@@ -126,7 +126,13 @@ public final class Main extends JavaPlugin implements Listener {
       final DyeColor dyeColor = getDyeColor(item.getType());
       if (dyeColor != null) {
 
-        if (!shop.playerAuthorize(player.getUniqueId(), this, "dye_sign")) {
+        if (!player.hasPermission("quickshopaddon.dyesigns.dye")) {
+          return;
+        }
+
+        if (!player.getUniqueId().equals(shop.getOwner().getUniqueId())
+            && !shop.playerAuthorize(player.getUniqueId(), this, "sign-dye")
+            && !player.hasPermission("quickshopaddon.dyesigns.dye.other")) {
           return;
         }
 
@@ -135,7 +141,13 @@ public final class Main extends JavaPlugin implements Listener {
         sign.getPersistentDataContainer().remove(CLEAR_NAMESPACE_KEY);
       } else if(item.getType() == Material.GLOW_INK_SAC) {
 
-        if (!shop.playerAuthorize(player.getUniqueId(), this, "glow_sign")) {
+        if (!player.hasPermission("quickshopaddon.dyesigns.glow")) {
+          return;
+        }
+
+        if (!player.getUniqueId().equals(shop.getOwner().getUniqueId())
+            && !shop.playerAuthorize(player.getUniqueId(), this, "sign-glow")
+            && !player.hasPermission("quickshopaddon.dyesigns.glow.other")) {
           return;
         }
 
@@ -146,7 +158,13 @@ public final class Main extends JavaPlugin implements Listener {
         sign.getPersistentDataContainer().remove(CLEAR_NAMESPACE_KEY);
       } else if(item.getType().name().contains("_SIGN")) {
 
-        if (!shop.playerAuthorize(player.getUniqueId(), this, "clear_sign")) {
+        if (!player.hasPermission("quickshopaddon.dyesigns.clear")) {
+          return;
+        }
+
+        if (!player.getUniqueId().equals(shop.getOwner().getUniqueId())
+            && !shop.playerAuthorize(player.getUniqueId(), this, "sign-clear")
+            && !player.hasPermission("quickshopaddon.dyesigns.clear.other")) {
           return;
         }
 
