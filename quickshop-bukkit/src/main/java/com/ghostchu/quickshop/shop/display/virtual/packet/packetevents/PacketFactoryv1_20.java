@@ -17,6 +17,8 @@ package com.ghostchu.quickshop.shop.display.virtual.packet.packetevents;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.comphenix.protocol.wrappers.WrappedDataValue;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
@@ -104,7 +106,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
     data.add(new EntityData<>(5, EntityDataTypes.BOOLEAN, true));
     data.add(new EntityData<>(8, EntityDataTypes.ITEMSTACK, SpigotConversionUtil.fromBukkitItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
+    if(QuickShop.getInstance().getDisplayManager().useItemName()) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -150,6 +152,8 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
     data.add(new EntityData<>(23, EntityDataTypes.ADV_COMPONENT, Util.getTextDisplay(shop, itemStack)));
     data.add(new EntityData<>(24, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
     data.add(new EntityData<>(25, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
+    data.add(new EntityData<>(26, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.text-opacity", -1)));
+    data.add(new EntityData<>(27, EntityDataTypes.BYTE, Util.createTextDisplayFlags()));
 
     return new WrapperPlayServerEntityMetadata(id, data);
   }
@@ -227,9 +231,9 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
         final int x = chunkData.getColumn().getX();
         final int z = chunkData.getColumn().getZ();
 
-        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
 
-          for(final VirtualDisplayItem<?> target : targetList) {
+          for(final VirtualDisplayItem<?> target : targetList.values()) {
             if(!target.isSpawned()) {
 
               continue;
@@ -291,8 +295,8 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
         final int x = unloadChunk.getChunkX();
         final int z = unloadChunk.getChunkZ();
 
-        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(final VirtualDisplayItem<?> target : targetList) {
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList.values()) {
 
             if(!target.isSpawned()) {
 

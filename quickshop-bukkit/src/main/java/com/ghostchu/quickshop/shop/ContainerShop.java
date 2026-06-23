@@ -43,6 +43,8 @@ import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.obj.QUserImpl;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
+import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -61,6 +63,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -318,7 +321,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(this.displayItem == null) {
       try {
         final DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-        if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getVirtualDisplayItemManager() == null) {
+        if(provider == null && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() == null) {
           plugin.logger().warn("Invalid display provider! " +
                                "No compatible display backend found. " +
                                "This may occur if ProtocolLib or PacketEvents is missing, outdated, or incompatible with your Minecraft version, " +
@@ -331,13 +334,12 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
           this.displayItem = provider.provide(this);
         } else {
 
-          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+          if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && plugin.getDisplayManager() instanceof final VirtualDisplayItemManager virtualManager) {
 
-            if(plugin.getVirtualDisplayItemManager() != null) {
-              this.displayItem = plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
-            }
-          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.displayEntityItemManager() != null) {
-            this.displayItem = plugin.displayEntityItemManager().create(this);
+            this.displayItem = virtualManager.create(this);
+          } else if(AbstractDisplayItem.getNowUsing() == DisplayType.DISPLAY_ENTITY && plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayManager) {
+
+            this.displayItem = displayManager.create(this);
           }
         }
 
@@ -1912,20 +1914,20 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     event.callEvent();
 
     for(final Sign sign : signs) {
+      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
+      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
+      plugin.platform().setLines(sign, event.updated());
+
+      sign.getSide(Side.FRONT).setGlowingText(isGlowing);
 
       final DyeColor dyeColor = Util.getDyeColor();
       if(dyeColor != null) {
-        sign.setColor(dyeColor);
+        sign.getSide(Side.FRONT).setColor(dyeColor);
       }
-      final boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing", false);
-      final boolean isWaxed = plugin.getConfig().getBoolean("shop.sign-wax", false);
-
-      sign.setGlowingText(isGlowing);
       sign.setWaxed(isWaxed);
-      sign.update(true);
-      plugin.platform().setLines(sign, event.updated());
 
       new ShopSignUpdateEvent(this, sign).callEvent();
+      sign.update(true);
     }
     if(plugin.getSignHooker() != null) {
       Log.debug("Start sign broadcast...");

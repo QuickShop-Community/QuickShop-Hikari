@@ -187,6 +187,19 @@ public class QuickShopPage extends Page {
     return result;
   }
 
+  @NotNull
+  public static Component getConfigDisplay(final UUID player, @Nullable final GuiConfig.IconConfig config, @NotNull final String configName, @NotNull final String defaultName, @Nullable final Object... args) {
+
+    //check if this should be a lang-file lookup
+    final String name = (config != null && config.section() != null)? config.section().getString(configName, defaultName) : defaultName;
+
+    if(config != null && name.startsWith("lang:")) {
+      return get(player, name.replaceAll("lang:", ""), args);
+    }
+
+    return QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(name, args));
+  }
+
   /**
    * Replaces placeholders in the given message with the provided arguments.
    * Placeholders in the message should be in the format {0}, {1}, etc., where

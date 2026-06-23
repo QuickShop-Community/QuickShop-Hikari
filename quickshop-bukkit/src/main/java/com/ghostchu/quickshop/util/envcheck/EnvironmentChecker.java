@@ -383,7 +383,7 @@ public final class EnvironmentChecker {
     if(AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
       return new ResultContainer(CheckResult.PASSED, "The setting shop.display-type is not virtual item.");
     }
-    if(plugin.getVirtualDisplayItemManager() == null) {
+    if(plugin.getDisplayManager() == null) {
       AbstractDisplayItem.setVirtualDisplayDoesntWork(true);
       return new ResultContainer(CheckResult.WARNING, "VirtualDisplayItemManager is null, this shouldn't happen, contact with QuickShop-Hikari developer.");
     }

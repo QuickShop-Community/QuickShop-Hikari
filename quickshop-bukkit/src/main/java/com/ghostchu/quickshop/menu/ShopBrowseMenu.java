@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.config.GuiConfig;
 import com.ghostchu.quickshop.menu.browse.GroupedItemPage;
 import com.ghostchu.quickshop.menu.browse.ShopListPage;
+import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 import net.tnemc.menu.core.Menu;
 import net.tnemc.menu.core.Page;
 
@@ -51,8 +52,9 @@ public class ShopBrowseMenu extends Menu {
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("browse");
     this.rows = (menuConfig != null? menuConfig.getRows() : 6);
     this.name = "qs:browse";
+    this.title = "Shop Browse";
 
-    setOpen((open)->open.getMenu().setTitle(QuickShop.getInstance().text().of(open.getPlayer().identifier(), "gui.browse.title").legacy()));
+    setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     // Page 1: Grouped item view (market overview)
     final Page groupedPage = new Page(1);

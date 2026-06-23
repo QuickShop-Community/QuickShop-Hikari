@@ -18,11 +18,16 @@ package com.ghostchu.quickshop.menu.shared;
  */
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.config.GuiConfig;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.menu.core.Menu;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.ghostchu.quickshop.menu.shared.QuickShopPage.replaceArguments;
 
 /**
  * QuickshopMenu
@@ -70,5 +75,16 @@ public class QuickShopMenu extends Menu {
   protected List<Component> getList(final UUID player, final String route) {
 
     return QuickShop.getInstance().text().ofList(player, route).forLocale();
+  }
+
+  public static String getTitle(final UUID player, final GuiConfig.MenuConfig menuConfig, final String defaultName, @Nullable final Object... args) {
+
+    final String name = (menuConfig != null && menuConfig.getTitle() != null)? menuConfig.getTitle() : defaultName;
+
+    if(menuConfig != null && name.startsWith("lang:")) {
+      return QuickShop.getInstance().text().of(player, name.replaceAll("lang:", ""), args).legacy();
+    }
+
+    return LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().platform().miniMessage().deserialize(replaceArguments(name, args)));
   }
 }

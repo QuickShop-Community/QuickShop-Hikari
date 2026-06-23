@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1042
+config-version: 1044
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -354,6 +354,9 @@ shop:
   # Skip confirmation prompts for destructive commands (like remove).
   skip-command-confirmation: false
 
+  # Disable showing unlimited shops in /qs browse menu.
+  disable-unlimited-browse: false
+
   # Control panel components used when not using the GUI-based control panel.
   control-panel:
     - owner
@@ -412,6 +415,9 @@ shop:
 
   # Disable the Super Tool (golden axe used by creative players to break shops).
   disable-super-tool: false
+
+  # Disable the ability to transfer buy shops using the transfer and transferall commands.
+  disable-buy-transfer: false
 
   # Allow shop owners to break only the sign (so it can be replaced).
   # WARNING: May cause sign duplication if auto-sign is enabled.
@@ -506,6 +512,21 @@ shop:
     # Supports decimal values.
     z: 0.5
 
+  # Display rotation settings. This is only used for display-type 3.
+  display-rotation:
+
+    # Rotation angle in degrees.
+    degrees: 0.0
+
+    # X-component of the rotation axis.
+    x: 0.0
+
+    # Y-component of the rotation axis.
+    y: 0.0
+
+    # Z-component of the rotation axis.
+    z: 1.0
+
   # The scale of the display item. This is only used for display-type 3.
   display-scale:
 
@@ -528,10 +549,24 @@ shop:
     # Background color (32-bit ARGB)
     background-color: 1073741824
 
+    # The line width of the text display.
     line-width: 200
 
-    #The scale of the text display.
-    #The acceptable values are from 0.0 to 1.0.
+    # Text opacity for the display. -1 is full opaque, values accepted are 0-255.
+    # Note: values 0 - 25 are considered invisible by the rendering engine.
+    text-opacity: -1
+
+    # Should the text display text be see through?
+    see-through: false
+
+    # Text shadow configurations
+    shadow:
+
+      # Should text shadows be enabled?
+      enabled: true
+
+    # The scale of the text display.
+    # The acceptable values are from 0.0 to 1.0.
     scale:
 
       x: 0.5
@@ -624,6 +659,9 @@ shop:
   # Show one enchantment name on the sign for enchanted books (instead of "Enchanted Book").
   # NOTE: Only one enchantment is shown, chosen randomly.
   use-enchantment-for-enchanted-book: false
+
+  # Whether or not to use roman numerals for enchantment number displays or not.
+  use-roman-numeral-for-enchantments: true
 
   # Show one potion effect name on the sign (instead of "Potion").
   # NOTE: Only one effect is shown, chosen randomly.
