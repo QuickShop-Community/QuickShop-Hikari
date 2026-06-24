@@ -95,7 +95,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
       if(string != null) {
         final String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
         Component component = plugin.text().of(sender, "paste-created", url).forLocale();
-        component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
+        component = component.clickEvent(ClickEvent.openUrl(url));
         MsgUtil.sendDirectMessage(sender, component);
         if("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
           plugin.text().of(sender, "paste-451").send();
