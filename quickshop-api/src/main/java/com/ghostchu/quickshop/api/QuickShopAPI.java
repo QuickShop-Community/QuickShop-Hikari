@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.api;
 
 import com.ghostchu.quickshop.api.command.CommandManager;
+import com.ghostchu.quickshop.api.config.QSConfig;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.hook.Hook;
@@ -16,6 +17,7 @@ import com.ghostchu.quickshop.api.shop.display.DisplayManager;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionManager;
 import com.ghostchu.quickshop.api.shop.tag.TagManager;
 import com.vdurmont.semver4j.Semver;
+import dev.dejvokep.boostedyaml.YamlDocument;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -106,6 +108,21 @@ public interface QuickShopAPI {
 
     hooks().remove(identifier.toLowerCase(Locale.ROOT));
   }
+
+  /**
+   * Retrieves the main configuration object of the QuickShop system.
+   *
+   * This method provides access to the QSConfig instance, which is responsible
+   * for managing the configuration settings of the plugin. The returned object
+   * allows for reading, updating, and saving configuration options crucial for
+   * the proper functioning of the system.
+   *
+   * @since 6.3.0.0
+   *
+   * @return The QSConfig instance representing the main configuration of QuickShop.
+   */
+  @NotNull
+  YamlDocument getConfig();
 
   /**
    * Getting command manager that allow addon direct access QuickShop sub-command system
