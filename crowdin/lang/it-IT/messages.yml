@@ -371,6 +371,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Supertool è disabilitato. Impossibile rompere alcun negozio.
 unknown-owner: '&2Sconosciuto'
 restricted-prices: '<red>Prezzo ristretto per {0}: Minimo {1}, max {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Il negozio è a {0} blocchi di distanza da te.
 owner-bypass-check: <yellow>Bypassato tutti i controlli. Eseguito con successo! (Ora sei il proprietario del negozio!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Clicca qui per ricevere i tuoi premi a tempo limitato, messi in palio dallo sviluppatore QuickShop-Hikari!</green></click></hover>"
@@ -780,6 +782,8 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>Non puoi trasferire i tuoi negozi a te stesso.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>La somma di tutti i vantaggi non può essere maggiore o uguale al 100%.
 benefit-exists: <red>Destinazione giocatore già nella lista benefici in questo negozio.
 benefit-removed: <red>Il giocatore bersaglio è stato rimosso dai vantaggi del negozio.
@@ -1635,6 +1639,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
