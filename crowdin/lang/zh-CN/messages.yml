@@ -373,6 +373,8 @@ support-disable-reason:
 supertool-is-disabled: <red>超级工具已被禁用，现已不能使用超级工具破坏任何商店。
 unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
+restricted-price-max: '<red>物品 {0} 的价格最大限制为 {1}'
+restricted-price-min: '<red>物品 {0} 的价格最小限制为 {1}'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
 april-rick-and-roll-easter-egg: "<hover:show_text:'在浏览器中点击打开获取限时奖励!'><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'><green>点击此处可以获取由 QuickShop 开发者提供的限时奖励!</green></click></hover>"
@@ -394,10 +396,10 @@ signs:
   selling: 出售 {0}
   status-available: <green>
   item-left: ''
-  item-duration: 'Dur: {0}'
-  item-level: 'Level: {0}'
-  splash-potion: "Splash"
-  linger-potion: "Lingering"
+  item-duration: '持续时间: {0}'
+  item-level: '等级：{0}'
+  splash-potion: "喷溅"
+  linger-potion: "滞留"
 negative-amount: <red>你输入的数字是负数。
 display-turn-on: <green>成功启用商店悬浮物显示
 display-turn-off: <green>成功关闭商店悬浮物显示
@@ -411,7 +413,7 @@ backup-failed: 无法备份数据库，请查看控制台以获取详细信息�
 shop-staff-cleared: <green>成功删除了该商店的所有助手。
 price-too-high: <red>商品的价格太高了！你不能创建价格高于 {0} 的商店。
 plugin-cancelled: '<red>操作被取消，原因： {0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop for {3}.
+player-sold-to-your-store: <green>{0} 以 {3} 的价格向你的商店出售了 {1} 个 {2}。
 shop-out-of-stock: <dark_purple>你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。
 how-many-buy: <green>在聊天中输入您想要<aqua>购买<green>的数量。您可以购买<yellow>{0}<green>个，输入<aqua>{1}<green>以购买全部。
 language-info-panel:
@@ -769,7 +771,7 @@ importing-failed: <red>导入数据失败，请检查服务器控制台。
 imported-database: <green>数据从 <yellow>{0}</yellow> 导入。
 transfer-sent: <green>商店转移请求已发送到 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？
-transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 想要将商店转让给您。您想要接受请求吗？
+transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 想要将商店转让给您。您想要接受请求吗？如果你不相信该玩家，请不要接受该请求
 transfer-ask: |-
   <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
 transferall-ask: |-
@@ -782,6 +784,8 @@ transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店�
 transfer-rejected-toside: <red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-no-pending-operation: <red>您没有待处理的商店转移请求。
 transfer-no-self: <red>您不能将商店转移给自己
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>所有利益的总和不能大于或等于100%
 benefit-exists: <red>目标玩家已经在此商店的利益分配列表中。
 benefit-removed: <red>目标玩家已被从商店的利益分配中移除。
@@ -1637,6 +1641,8 @@ gui:
     custom-amount:
       display: "<bold><blue>自定义交易</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
