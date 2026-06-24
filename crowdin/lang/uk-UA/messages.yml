@@ -374,6 +374,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Супер-інструмент вимкнено. Неможливо зламати жоден магазин.
 unknown-owner: Невідомо
 restricted-prices: '<red>Обмежена ціна для {0}: Мін. {1}, макс. {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Магазин знаходиться на відстані {0} блоків від вас.
 owner-bypass-check: <yellow>Усі перевірки пройдено. Торгівля успішна! (Тепер ви власник магазину!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'>Натисніть, щоб відкрити в браузері та отримати тимчасові нагороди!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Натисніть тут, щоб отримати тимчасові нагороди від розробника QuickShop-Hikari!</green></click></hover>"
@@ -790,6 +792,8 @@ transfer-rejected-fromside: <red>Гравець <aqua>{0}</aqua> відхили�
 transfer-rejected-toside: <red>Ви відхилили запит на передачу магазину від <aqua>{0}</aqua>.
 transfer-no-pending-operation: <red>У вас немає очікуючих запитів на передачу.
 transfer-no-self: <red>Ви не можете передати свої магазини самому собі.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>Сума всіх прибутків не може бути більшою або дорівнювати 100%.
 benefit-exists: <red>Цільовий гравець вже є у списку прибутків цього магазина.
 benefit-removed: <red>Цільового гравця видалено з прибутків магазина.
@@ -1645,6 +1649,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

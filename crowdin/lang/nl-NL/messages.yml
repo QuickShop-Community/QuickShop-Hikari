@@ -374,6 +374,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Supertool is uitgeschakeld. Kan geen winkels breken.
 unknown-owner: Onbekend
 restricted-prices: '<red>Beperkte prijs voor {0}: Min {1}, max {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Shop is {0} blok(ken) ver van je.
 owner-bypass-check: <yellow>Alle controles omzeild. Handel succesvol! (Je bent nu de eigenaar van de winkel!)
 april-rick-and-roll-easter-egg: "<hover:show_text:‘Klik om te openen in de browser voor tijdelijke beloningen!’><click:open_url:‘https://www.youtube.com/watch?v=dQw4w9WgXcQ’><green>Klik hier om je tijdelijke beloningen te ontvangen die worden aangeboden door QuickShop-Hikari-ontwikkelaar!</green></click></hover>"
@@ -788,6 +790,8 @@ transfer-rejected-fromside: <red>Speler <aqua>{0}</aqua> heeft je verzoek om een
 transfer-rejected-toside: <red>Je hebt het verzoek van <aqua>{0}</aqua> om de winkel over te dragen afgewezen.
 transfer-no-pending-operation: <red>Je hebt geen lopende transferverzoeken.
 transfer-no-self: <red>Je kunt je winkels niet aan jezelf overdragen.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>De som van alle voordelen kan niet groter of gelijk zijn aan 100%.
 benefit-exists: <red>De speler staat al op de voordelenlijst van deze winkel.
 benefit-removed: <red>De betreffende speler is verwijderd uit de winkelvoordelen.
@@ -1643,6 +1647,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Aangepaste Bestelling</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

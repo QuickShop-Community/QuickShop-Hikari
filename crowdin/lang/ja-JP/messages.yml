@@ -363,6 +363,8 @@ support-disable-reason:
 supertool-is-disabled: <red>スーパーツールが無効になっています。どのショップも破壊することはできません。
 unknown-owner: 不明
 restricted-prices: '<red>{0} の価格制限: 最低 {1}, 最高 {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>ショップは {0} ブロック先にあります。
 owner-bypass-check: <yellow>全てのチェックをバイパスしました。取引成功！ (あなたがショップの店主になりました！)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>QuickShop-Hikari 開発者が提供する時間限定報酬を獲得するには、ここをクリックしてください！</green></click></hover>"
@@ -774,6 +776,8 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>ショップを自分自身に譲渡することはできません。
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>すべての利益の合計は100%以上であることはできません。
 benefit-exists: <red>このショップではすでに利益リストに入っているターゲットプレーヤー。
 benefit-removed: <red>ターゲットプレイヤーはショップの特典から削除されました。
@@ -1629,6 +1633,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

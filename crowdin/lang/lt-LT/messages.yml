@@ -374,6 +374,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Supertool išjungtas. Negalima sulaužyti parduotuvių.
 unknown-owner: Nežinomas/a
 restricted-prices: '<red>Ribota kaina nuo {0}: Min {1}, Max {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Parduotuvė yra {0} blokais toliau nuo jūsų.
 owner-bypass-check: <yellow>Praėjote visus patikrinimus. Mainai sėkmingai pavyko! (Nuo šiol jūs esate šios parduotuvės savininkas)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Paspauskite, kad atidarytumėte naršyklėje ir gautumėte laikinus apdovanojimus!'>click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'<green>Paspauskite čia, kad gautumėte laikinus apdovanojimus, kuriuos suteikia QuickShop-Hikari kūrėjas!</green></click></hover>"
@@ -789,6 +791,8 @@ transfer-rejected-fromside: <red>Žaidėjas <aqua>{0}</aqua> atsisakė jūsų pa
 transfer-rejected-toside: <red>Jūs atsisakėte žaidėjo <aqua>{0}</aqua> parduotuvės perdavimo užklausos.
 transfer-no-pending-operation: <red>Jūs neturite laukiančios perdavimo užklausos.
 transfer-no-self: <red>Negalite perkelti savo parduotuvių sau patiems.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>Visų naudotojų naudų suma negali būti didesnė ar lygi 100%.
 benefit-exists: <red>Žaidėjas jau yra naudos sąraše šioje parduotuvėje.
 benefit-removed: <red>Žaidėjas pašalintas iš naudos sąrašo šioje parduotuvėje.
@@ -1645,6 +1649,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

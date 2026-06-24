@@ -374,6 +374,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Superverktøyet er deaktivert. Kan ikke ødelegge butikker.
 unknown-owner: Ukjent
 restricted-prices: '<red>Begrenset pris for {0}: Min {1}, maks {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Butikken er {0} blokk(er) unna deg.
 owner-bypass-check: <yellow>Alle sjekker omgått. Handelen vellykket! (Du er nå butikkeieren!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Click here to acquire your time limited rewards that provided by QuickShop-Hikari developer!</green></click></hover>"
@@ -790,6 +792,8 @@ transfer-rejected-fromside: <red>Spiller <aqua>{0}</aqua> avviste forespørselen
 transfer-rejected-toside: <red>Du har avvist forespørselen om butikkoverføring fra <aqua>{0}</aqua>.
 transfer-no-pending-operation: <red>Du har ingen ventende overføringsforespørsler.
 transfer-no-self: <red>Du kan ikke overføre butikkene dine til deg selv.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>Summen av alle fordeler kan ikke være større eller lik 100%.
 benefit-exists: <red>Spilleren er allerede i fordelslisten for denne butikken.
 benefit-removed: <red>Spilleren er fjernet fra butikkfordelene.
@@ -1645,6 +1649,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

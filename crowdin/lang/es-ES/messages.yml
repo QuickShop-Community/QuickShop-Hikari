@@ -363,6 +363,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Superherramienta deshabilitada. No se puede romper ninguna tienda de empresa.
 unknown-owner: Desconocido
 restricted-prices: '<red>Precio restringido de {0}: Mín. {1}, Máx. {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>La tienda de empresa está a {0} bloques de ti.
 owner-bypass-check: <yellow>Pasado todos los controles. ¡Comercio exitoso! (¡Ahora eres el propietario de la tienda de empresa!)
 april-rick-and-roll-easter-egg: "<green>---------------------------------------------------</green>\n<rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>\n<yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>\n<aqua>Claim it by watch the video tutorial below!</aqua>\n<hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>\n<green>---------------------------------------------------</green>"
@@ -770,6 +772,8 @@ transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your shop tran
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s shop transfer request.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self:
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>La suma de todos los beneficios no puede ser mayor o igual al 100%.
 benefit-exists: <red>El jugador objetivo ya está en la lista de beneficios de esta.
 benefit-removed: <red>El jugador objetivo ha sido eliminado de los beneficios de la tienda de empresa.
@@ -1629,6 +1633,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

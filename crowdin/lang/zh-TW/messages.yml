@@ -374,6 +374,8 @@ support-disable-reason:
 supertool-is-disabled: <red>超級工具已被停用，現在不能使用超級工具破壞任何商店。
 unknown-owner: 未知
 restricted-prices: '<red>{0} 是無效的價格：最高 {1}，最低 {2}。'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>商店距離你 {0} 格遠。
 owner-bypass-check: <yellow>繞過所有檢查並完成交易（因為你是商店擁有者！）
 april-rick-and-roll-easter-egg: "<hover:show_text:'Click to open in browser for time limited rewards!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>快來點擊此處領取 QuickShop-Hikari 開發人員提供的限時獎勵吧！</green></click></hover>"
@@ -790,6 +792,8 @@ transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 已拒絕你的商店�
 transfer-rejected-toside: <red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。
 transfer-no-pending-operation: <red>你還沒有待處理的轉移請求。
 transfer-no-self: <red>你無法將你的商店轉移給自己。
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>所有利益的總和不能大於或等於100%。
 benefit-exists: <red>目標玩家已經在此商店的利益分配列表中。
 benefit-removed: <red>目標玩家已從商店的利益分配中移除。
@@ -1645,6 +1649,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
