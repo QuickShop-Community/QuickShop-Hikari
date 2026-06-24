@@ -126,10 +126,10 @@ public interface DisplayManager<T> {
   }
 
   default boolean allowEnchants() {
-    return QuickShopAPI.getPluginInstance().getConfig().getBoolean("shop.display-allow-enchants", true);
+    return QuickShopAPI.getInstance().getConfig().getBoolean("shop.display-allow-enchants", true);
   }
 
   default boolean useItemName() {
-    return QuickShopAPI.getPluginInstance().getConfig().getBoolean("shop.display-item-use-name");
+    return QuickShopAPI.getInstance().getConfig().getBoolean("shop.display-item-use-name");
   }
 }
