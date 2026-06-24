@@ -773,19 +773,19 @@ transfer-sent: <green>商店转移请求已发送到 <yellow>{0}</yellow>。
 transfer-request: <yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？
 transfer-single-request: <yellow>玩家 <aqua>{0}</aqua> 想要将商店转让给您。您想要接受请求吗？如果你不相信该玩家，请不要接受该请求
 transfer-ask: |-
-  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transfer accept</red> 来接受。</gold><gold>输入 <red>/quickshop transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。如果你不相信该玩家，请不要接受该请求
 transferall-ask: |-
-  <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transferall accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferall deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。如果你不相信该玩家，请不要接受该请求
 transfer-single-ask: |-
-  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。
+  <gold>输入 <red>/quickshop transferownership accept</red> 来接受。</gold><gold>输入 <red>/quickshop transferownership deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。如果你不相信该玩家，请不要接受该请求
 transfer-accepted-fromside: <green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。
 transfer-accepted-toside: <green>您接受了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-rejected-fromside: <red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。
 transfer-rejected-toside: <red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。
 transfer-no-pending-operation: <red>您没有待处理的商店转移请求。
 transfer-no-self: <red>您不能将商店转移给自己
-transfer-no-buy: <red>You can't transfer shops that are buy shops.
-transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
+transfer-no-buy: <red>您不能转让收购商店
+transfer-failed-some: <red>无法转移某些商店，因为它们不符合条件。
 benefit-overflow: <red>所有利益的总和不能大于或等于100%
 benefit-exists: <red>目标玩家已经在此商店的利益分配列表中。
 benefit-removed: <red>目标玩家已被从商店的利益分配中移除。
@@ -1641,8 +1641,8 @@ gui:
     custom-amount:
       display: "<bold><blue>自定义交易</blue></bold>"
     quantity-button:
-      display-buy: "<green>Buy x{0}</green>"
-      display-sell: "<gold>Sell x{0}</gold>"
+      display-buy: "<green>收购 x{0}</green>"
+      display-sell: "<gold>出售 x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
