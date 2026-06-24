@@ -77,6 +77,6 @@ public class EmptyComponent implements ControlComponent {
     final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentempty"), shop.getRuntimeRandomUniqueId().toString());
 
     return text.hoverEvent(HoverEvent.showText(hoverText))
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+            .clickEvent(ClickEvent.runCommand(clickCommand));
   }
 }

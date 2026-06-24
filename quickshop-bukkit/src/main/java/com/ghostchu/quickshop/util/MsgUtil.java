@@ -636,10 +636,10 @@ public class MsgUtil {
     }
 
     if(PLUGIN == null) {
-      return Component.text(name).color(TextColor.color(NamedTextColor.AQUA))
-              .append(Component.text("(").color(TextColor.color(NamedTextColor.GOLD)))
-              .append(Component.text(uuid)).color(TextColor.color(NamedTextColor.YELLOW))
-              .append(Component.text(")").color(TextColor.color(NamedTextColor.GOLD)));
+      return Component.text(name).color(NamedTextColor.AQUA)
+              .append(Component.text("(").color(NamedTextColor.GOLD))
+              .append(Component.text(uuid)).color(NamedTextColor.YELLOW)
+              .append(Component.text(")").color(NamedTextColor.GOLD));
     } else {
       return PLUGIN.text().of(sender, "player-profile-format", name, uuid).forLocale();
     }

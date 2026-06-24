@@ -83,7 +83,7 @@ public class ShopModeComponent implements ControlComponent {
       final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentbuy"), shop.getRuntimeRandomUniqueId().toString());
 
       return text.hoverEvent(HoverEvent.showText(hoverText))
-              .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+              .clickEvent(ClickEvent.runCommand(clickCommand));
     } else if(shop.isBuying()) {
 
       final Component text = ((QuickShop)plugin).text().of(sender, "controlpanel.mode-buying").forLocale();
@@ -91,9 +91,8 @@ public class ShopModeComponent implements ControlComponent {
       final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentsell"), shop.getRuntimeRandomUniqueId().toString());
 
       return text.hoverEvent(HoverEvent.showText(hoverText))
-              .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+              .clickEvent(ClickEvent.runCommand(clickCommand));
     }
-
     return null;
   }
 }

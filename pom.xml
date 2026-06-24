@@ -18,22 +18,22 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <qs.relocation>com.ghostchu.quickshop.shade</qs.relocation>
         <!-- common lib versions -->
-        <depend.adventure-api>4.16.0</depend.adventure-api>
-        <depend.adventure-key>4.16.0</depend.adventure-key>
-        <depend.adventure-nbt>4.16.0</depend.adventure-nbt>
-        <depend.adventure-text-logger-slf4j>4.16.0</depend.adventure-text-logger-slf4j>
-        <depend.adventure-text-minimessage>4.16.0</depend.adventure-text-minimessage>
-        <depend.adventure-text-serializer-ansi>4.16.0</depend.adventure-text-serializer-ansi>
-        <depend.adventure-text-serializer-gson-legacy-impl>4.16.0</depend.adventure-text-serializer-gson-legacy-impl>
-        <depend.adventure-text-serializer-json>4.16.0</depend.adventure-text-serializer-json>
-        <depend.adventure-text-serializer-json-legacy-impl>4.16.0</depend.adventure-text-serializer-json-legacy-impl>
-        <depend.adventure-text-serializer-legacy>4.16.0</depend.adventure-text-serializer-legacy>
-        <depend.adventure-text-serializer-plain>4.16.0</depend.adventure-text-serializer-plain>
-        <depend.adventure-platform-api>4.3.4</depend.adventure-platform-api>
-        <depend.adventure-platform-bukkit>4.3.4</depend.adventure-platform-bukkit>
-        <depend.adventure-platform-facet>4.3.4</depend.adventure-platform-facet>
-        <depend.adventure-platform-viaversion>4.3.4</depend.adventure-platform-viaversion>
-        <depend.adventure-text-serializer-bungeecord>4.3.4</depend.adventure-text-serializer-bungeecord>
+        <depend.adventure-api>5.1.1</depend.adventure-api>
+        <depend.adventure-key>5.1.1</depend.adventure-key>
+        <depend.adventure-nbt>5.1.1</depend.adventure-nbt>
+        <depend.adventure-text-logger-slf4j>5.1.1</depend.adventure-text-logger-slf4j>
+        <depend.adventure-text-minimessage>5.1.1</depend.adventure-text-minimessage>
+        <depend.adventure-text-serializer-ansi>5.1.1</depend.adventure-text-serializer-ansi>
+        <depend.adventure-text-serializer-gson-legacy-impl>5.1.1</depend.adventure-text-serializer-gson-legacy-impl>
+        <depend.adventure-text-serializer-json>5.1.1</depend.adventure-text-serializer-json>
+        <depend.adventure-text-serializer-json-legacy-impl>5.1.1</depend.adventure-text-serializer-json-legacy-impl>
+        <depend.adventure-text-serializer-legacy>5.1.1</depend.adventure-text-serializer-legacy>
+        <depend.adventure-text-serializer-plain>5.1.1</depend.adventure-text-serializer-plain>
+        <depend.adventure-platform-api>4.4.1</depend.adventure-platform-api>
+        <depend.adventure-platform-bukkit>4.4.1</depend.adventure-platform-bukkit>
+        <depend.adventure-platform-facet>4.4.1</depend.adventure-platform-facet>
+        <depend.adventure-platform-viaversion>4.4.1</depend.adventure-platform-viaversion>
+        <depend.adventure-text-serializer-bungeecord>4.4.1</depend.adventure-text-serializer-bungeecord>
         <depend.boosted>1.3.7</depend.boosted>
         <depend.commons.lang3>3.18.0</depend.commons.lang3>
         <depend.easy>0.4.7</depend.easy>

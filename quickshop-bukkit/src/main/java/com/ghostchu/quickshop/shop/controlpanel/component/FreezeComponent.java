@@ -80,6 +80,6 @@ public class FreezeComponent implements ControlComponent {
     final Component hoverText = ((QuickShop)plugin).text().of(sender, "controlpanel.freeze-hover").forLocale();
     final String clickCommand = MsgUtil.fillArgs("/{0} {1} {2}", ((QuickShop)plugin).getMainCommand(), ((QuickShop)plugin).getCommandPrefix("silentfreeze"), shop.getRuntimeRandomUniqueId().toString());
     return text.hoverEvent(HoverEvent.showText(hoverText))
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+            .clickEvent(ClickEvent.runCommand(clickCommand));
   }
 }
