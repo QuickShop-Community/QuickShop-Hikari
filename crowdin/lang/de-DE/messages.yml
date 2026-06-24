@@ -363,6 +363,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Super-Tool ist deaktiviert. Kann keine Shops zerstören.
 unknown-owner: Unbekannt
 restricted-prices: '<red>Eingeschränkter Preis für {0}: Mindestens {1}, maximal {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Shop ist {0} Blöcke von dir entfernt.
 owner-bypass-check: <yellow>Alle Prüfungen wurden umgangen. Handel erfolgreich! (Sie sind jetzt der Besitzer des Ladens!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Anklicken um im Browser zu öffnen für eine limitierte Belohnung!'><click:open_url:'https://www.youtube.com/watch?v?dQw4w9WgXcQ'><green>Klicke hier um eine limitierte Belohnung von den QuickShop-Hikari Entwicklern zu erhalten!</green></click></hover>"
@@ -772,6 +774,8 @@ transfer-rejected-fromside: <red>Spieler <aqua>{0}</aqua> hat deine Shop-Übertr
 transfer-rejected-toside: <red>Du hast <aqua>{0}</aqua>'s Shop-Übertragungsanfrage abgelehnt.
 transfer-no-pending-operation: <red>Du hast keine ausstehenden Transfer-Anfragen.
 transfer-no-self: <red>Du kannst deine Shops nicht an dich selbst übertragen.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein.
 benefit-exists: <red>Spieler ist bereits in der Vorteilsliste dieses Shops.
 benefit-removed: <red>Spieler wurde von Shop-Vorteilen entfernt.
@@ -1574,6 +1578,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Benutzerdefinierte Bestellung</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
