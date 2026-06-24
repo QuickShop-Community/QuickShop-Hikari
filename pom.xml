@@ -523,23 +523,23 @@
         <module>compatibility/fabledskyblock</module>
         <module>compatibility/griefprevention</module>
         <module>compatibility/husktowns</module>
-        <!--  <module>compatibility/iridiumskyblock</module> -->
-          <module>compatibility/itemsadder</module>
-          <module>compatibility/lands</module>
-          <module>compatibility/matcherplus</module>
-          <module>compatibility/openinv</module>
-          <module>compatibility/plotsquared</module>
-          <module>compatibility/reforges</module>
-          <module>compatibility/residence</module>
-          <module>compatibility/simpleclaimsystem</module>
-          <module>compatibility/slimefun</module>
-          <module>compatibility/superiorskyblock</module>
-          <module>compatibility/towny</module>
-          <module>compatibility/ultimateclaims</module>
-          <module>compatibility/velocity</module>
-          <module>compatibility/voidchest</module>
-          <module>compatibility/worldguard</module>
+        <module>compatibility/iridiumskyblock</module>
+        <module>compatibility/itemsadder</module>
+        <module>compatibility/lands</module>
+        <module>compatibility/matcherplus</module>
+        <module>compatibility/openinv</module>
+        <module>compatibility/plotsquared</module>
+        <module>compatibility/reforges</module>
+        <module>compatibility/residence</module>
+        <module>compatibility/simpleclaimsystem</module>
+        <module>compatibility/slimefun</module>
+        <module>compatibility/superiorskyblock</module>
+        <module>compatibility/towny</module>
+        <module>compatibility/ultimateclaims</module>
+        <module>compatibility/velocity</module>
+        <module>compatibility/voidchest</module>
+        <module>compatibility/worldguard</module>
 
-      </modules>
+    </modules>
 
-  </project>
+</project>
