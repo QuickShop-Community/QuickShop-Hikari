@@ -3,7 +3,9 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -18,6 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static com.ghostchu.quickshop.listener.PlayerListener.searchShop;
 
 public class SubCommand_Create implements CommandHandler<Player> {
 
@@ -79,6 +84,12 @@ public class SubCommand_Create implements CommandHandler<Player> {
       if(!Util.canBeShop(b) || !ShopUtil.allowed(b, item)) {
         continue;
       }
+
+      final Map.Entry<@Nullable Shop, @NotNull InteractionClick> search = searchShop(b, sender);
+      if(search.getKey() != null) {
+        continue;
+      }
+
       // Send creation menu.
       plugin.getShopManager().getInteractiveManager().put(sender.getUniqueId(),
                                                           new SimpleInfo(b.getLocation(), ShopAction.CREATE_SELL, item, b.getRelative(sender.getFacing().getOppositeFace()), false));

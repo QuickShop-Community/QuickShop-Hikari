@@ -11,7 +11,7 @@ public class Util {
     try {
       clazz.getDeclaredMethod(methodName);
       return true;
-    } catch(NoSuchMethodException var3) {
+    } catch(final NoSuchMethodException var3) {
       return false;
     }
   }

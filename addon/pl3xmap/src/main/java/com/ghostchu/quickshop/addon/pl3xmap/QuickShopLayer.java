@@ -21,7 +21,7 @@ public class QuickShopLayer extends WorldLayer {
     this.worldName = world.getName();
 
     setShowControls(Main.instance().showControls());
-    setDefaultHidden(Main.instance().layerEnabled());
+    setDefaultHidden(!Main.instance().layerEnabled());
     setUpdateInterval(Main.instance().refreshPerSeconds());
     setPriority(Main.instance().layerPriority());
   }

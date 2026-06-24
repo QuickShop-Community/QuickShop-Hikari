@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
@@ -94,6 +95,9 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     final CompletableFuture<Boolean> inventoryAvailableFuture = shop.inventoryAvailableAsync();
     final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
 
+    final Component left = plugin.text().of("signs.item-left").forLocale(locale.getLocale());
+    final Component right = plugin.text().of("signs.item-right").forLocale(locale.getLocale());
+
     return inventoryAvailableFuture.thenCombine(remainingStockFuture,(inventoryAvailable, remainingStock) -> new SignRenderSnapshot(
                                                   inventoryAvailable,
                                                   shop.ownerName(false, locale),
@@ -104,7 +108,7 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
                                                   remainingStock,
                                                   shop.shopState().overrideShopTypeText(),
                                                   shop.shopState().translationKey(),
-                                                  Util.getItemStackName(item, locale.getLocale()),
+                                                  left.append(Util.getItemStackName(item, locale.getLocale())).append(right),
                                                   item.getAmount(),
                                                   plugin.getShopManager().format(shop.getPrice(), shop),
                                                   levels,
@@ -347,6 +351,12 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     if(enchantment != null) {
 
       return plugin.text().of("signs.item-level", enchantment.getValue()).forLocale(locale.getLocale());
+    }
+
+    //TODO: Parser API? Tying rendering to specific parts, or adding custom rendering logic
+    if(clone.getItemMeta() instanceof final FireworkMeta fireworkMeta) {
+
+      return plugin.text().of("signs.item-duration", fireworkMeta.getPower()).forLocale(locale.getLocale());
     }
 
     return Component.empty();

@@ -40,8 +40,9 @@ public class ShopKeeperMenu extends QuickShopMenu {
     final GuiConfig.MenuConfig menuConfig = QuickShop.getInstance().getGuiConfig().getMenuConfig("keeper");
     this.rows = (menuConfig != null? menuConfig.getRows() : 4);
     this.name = "qs:keeper";
+    this.title = "Shop Keeper";
 
-    setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.keeper.title")));
+    setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     addPage(new MainPage());
   }

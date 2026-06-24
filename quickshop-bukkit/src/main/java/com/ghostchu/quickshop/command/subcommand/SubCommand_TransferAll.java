@@ -91,7 +91,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
             final QUser senderQUser = QUserImpl.createFullFilled(sender);
             final QUser receiverQUser = QUserImpl.createFullFilled(receiver);
 
-            final List<Shop> shopsToTransfer = plugin.getShopManager().getAllShops(senderQUser);
+            final List<Shop> shopsToTransfer = plugin.getShopManager().getAllShops(senderQUser).stream().filter(shop -> !plugin.getConfig().getBoolean("shop.disable-buy-transfer", false) || !shop.shopType().isBuying()).toList();
             final ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(senderQUser, receiverQUser, shopsToTransfer);
             taskCache.put(uuid, task);
             plugin.text().of(sender, "transfer-sent", name).send();
@@ -122,7 +122,7 @@ public class SubCommand_TransferAll implements CommandHandler<Player> {
           return;
         }
 
-        final List<Shop> shopList = plugin.getShopManager().getAllShops(fromQUser);
+        final List<Shop> shopList = plugin.getShopManager().getAllShops(fromQUser).stream().filter(shop -> !plugin.getConfig().getBoolean("shop.disable-buy-transfer", false) || !shop.shopType().isBuying()).toList();
         final ShopUtil.PendingTransferTask task = new ShopUtil.PendingTransferTask(fromQUser, targetQUser, shopList);
         Util.mainThreadRun(()->{
           task.commit(false);

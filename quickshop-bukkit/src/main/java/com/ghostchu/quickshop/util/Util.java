@@ -39,6 +39,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.command.CommandSender;
@@ -55,6 +56,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.ApiStatus;
@@ -1068,10 +1070,10 @@ public class Util {
     }
 
     if(enchantment.getMaxLevel() > 1 || level > 1) {
-
-      name = name.append(Component.text(" " + RomanNumber.toRoman(level)));
+      
+      final String levelString = (plugin.getConfig().getBoolean("shop.use-roman-numeral-for-enchantments", true))? RomanNumber.toRoman(level) : "" + level;
+      name = name.append(Component.text(levelString));
     }
-
     return name;
   }
 
@@ -1662,6 +1664,36 @@ public class Util {
     } else {
       return null;
     }
+  }
+
+  /**
+   * Creates a byte representing a set of flags based on the provided boolean parameters.
+   * Each parameter corresponds to a specific bit in the byte.
+   *
+   * @return a byte where each bit represents a corresponding flag set by the input parameters.
+   */
+  public static byte createTextDisplayFlags() {
+
+    final int background = plugin.getConfig().getInt("shop.text-display.background-color", 1073741824);
+    final boolean defaultBackground = background == 1073741824;
+    final boolean hasShadow = plugin.getConfig().getBoolean("shop.text-display.shadow.enabled", true);
+    final boolean seeThrough = plugin.getConfig().getBoolean("shop.text-display.see-through", false);
+
+    byte flags = 0;
+
+    if (hasShadow) {
+      flags |= 0x01;
+    }
+
+    if (seeThrough) {
+      flags |= 0x02;
+    }
+
+    if (defaultBackground) {
+      flags |= 0x04;
+    }
+
+    return flags;
   }
 
   /**

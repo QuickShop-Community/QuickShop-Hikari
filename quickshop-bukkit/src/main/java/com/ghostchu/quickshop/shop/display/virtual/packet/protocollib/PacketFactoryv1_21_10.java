@@ -124,7 +124,7 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
     values.add(new WrappedDataValue(5, WrappedDataWatcher.Registry.get(Boolean.class), true));
     values.add(new WrappedDataValue(8, serializer, MinecraftReflection.getMinecraftItemStack(itemStack)));
 
-    if(QuickShop.getInstance().getVirtualDisplayItemManager().useItemName()) {
+    if(QuickShop.getInstance().getDisplayManager().useItemName()) {
 
       final String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
 
@@ -208,6 +208,9 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
     data.add(new WrappedDataValue(25, WrappedDataWatcher.Registry.get(Integer.class),
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
+    data.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get(Integer.class),
+                                  QuickShop.getInstance().getConfig().getInt("shop.text-display.text-opacity", -1)));
+    data.add(new WrappedDataValue(27, WrappedDataWatcher.Registry.get(Byte.class), Util.createTextDisplayFlags()));
 
     packet.getDataValueCollectionModifier().write(0, data);
 
@@ -286,8 +289,8 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
         //chunk z
         final int z = integerStructureModifier.read(1);
 
-        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(final VirtualDisplayItem<?> target : targetList) {
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList.values()) {
             if(!target.isSpawned()) {
               continue;
             }
@@ -340,8 +343,8 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
         final int x = pair.getChunkX();
         //chunk z
         final int z = pair.getChunkZ();
-        VirtualDisplayItemManager.instance().getChunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
-          for(final VirtualDisplayItem<?> target : targetList) {
+        VirtualDisplayItemManager.instance().chunksMapping().computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList)->{
+          for(final VirtualDisplayItem<?> target : targetList.values()) {
 
             if(!target.isSpawned()) {
 

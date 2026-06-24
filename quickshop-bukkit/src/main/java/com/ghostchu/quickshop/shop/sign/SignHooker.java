@@ -3,13 +3,16 @@ package com.ghostchu.quickshop.shop.sign;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.listener.AbstractQSListener;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Chunk;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
@@ -54,7 +57,7 @@ public class SignHooker extends AbstractQSListener {
       }
       for(final Sign sign : shop.getSigns()) {
 
-        plugin.platform().sendSignTextChange(player, sign, plugin.getConfig().getBoolean("shop.sign-glowing"), lines);
+        plugin.platform().sendSignTextChange(player, sign, sign.getSide(Side.FRONT).isGlowingText(), sign.getSide(Side.FRONT).getColor(), lines);
       }
     }));
   }

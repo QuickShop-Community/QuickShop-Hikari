@@ -30,6 +30,7 @@ import com.ghostchu.quickshop.menu.shared.QuickShopPage;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.Util;
+import net.kyori.adventure.text.Component;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.core.builder.IconBuilder;
@@ -194,26 +195,33 @@ public class MainPage extends QuickShopPage {
           final int slot = configSlots.get(i);
           final int adjustedAmount = (amount * quantity);
           final String totalPrice = shop.get().format(shop.get().bukkitLocation().getWorld().getName(),
-                                               shop.get().getCurrency(), quantity);
-          final String displayText = (shop.get().isSelling())? "<green>Buy x" + adjustedAmount + "</green>" : "<gold>Sell x" + adjustedAmount + "</gold>";
+                                                      shop.get().getCurrency(), quantity);
+
+          final Component displayComponent = (shop.get().isSelling())? getConfigDisplay(id, quantityConfig, "display-buy", "<green>Buy x" + adjustedAmount + "</green>", adjustedAmount)
+                                                                     : getConfigDisplay(id, quantityConfig, "display-sell", "<gold>Sell x" + adjustedAmount + "</gold>", adjustedAmount);
+
+          final boolean closeAfter = quantityConfig.section() != null && quantityConfig.section().getBoolean("close-after", true);
+          final int page = (closeAfter)? -1 : 1;
 
           open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(quantityMaterial, Math.min(adjustedAmount, 64))
-                                                         .customName(QuickShop.getInstance().platform().miniMessage().deserialize(displayText))
+                                                         .customName(displayComponent)
                                                          .lore(getConfigLore(id, quantityConfig, totalPrice)))
                                          .withActions(new RunnableAction((click->{
                                            if(shop.get().isBuying()) {
 
                                              final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_SELL, null, null, shop.get(), false);
                                              Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionBuying(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
-                                             viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            } else {
 
                                              final Info info = new SimpleInfo(shop.get().bukkitLocation(), ShopAction.PURCHASE_BUY, null, null, shop.get(), false);
                                              Util.regionThread(shop.get().bukkitLocation(), ()->QuickShop.getInstance().getShopManager().actionSelling(player, new BukkitInventoryWrapper(player.getInventory()), eco, info, shop.get(), quantity));
+                                           }
+
+                                           if (closeAfter) {
                                              viewer.get().close(QuickShop.getInstance().createMenuPlayer(player));
                                            }
                                          })))
-                                         .withActions(new PageSwitchWithCloseAction("qs:trade", -1))
+                                         .withActions(new PageSwitchWithCloseAction("qs:trade", page))
                                          .withSlot(slot).build());
         }
 

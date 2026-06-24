@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.display.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.display.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.EntityUtil;
@@ -37,6 +38,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
 import static com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager.DISPLAY_ITEM_KEY_INSTANCE;
@@ -49,33 +51,48 @@ import static com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManag
  */
 public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Reloadable {
 
-  private final ItemDisplay itemDisplay;
-  private final TextDisplay textDisplay;
-  private final Interaction interactionEntity;
+  private final ShopChunk chunkLocation;
+  private final int locationHash;
+  private ItemDisplay itemDisplay;
+  private TextDisplay textDisplay;
+  private Interaction interactionEntity;
 
   private boolean isSpawned = false;
 
   //I don't think this needs to be protected.
-  public DisplayEntityDisplayItem(final Shop shop) {
+  DisplayEntityDisplayItem(final Shop shop, final ShopChunk chunkLocation) {
 
     super(shop);
 
-    final Vector3f itemScaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.display-scale.x", 1.25f),
-                                              QuickShop.getInstance().getConfig().getFloat("shop.display-scale.y", 1.25f),
-                                              QuickShop.getInstance().getConfig().getFloat("shop.display-scale.z", 1.25f));
+    this.chunkLocation = chunkLocation;
+    this.locationHash = shop.bukkitLocation().hashCode();
+  }
 
-    itemDisplay = EntityUtil.spawnDisplayItemFor(null, getDisplayLocation().clone().add(0, .15d, 0), shop.getItem(), itemScaleVector, Bukkit.getViewDistance() * 16, 0);
+  protected void initEntities() {
+
+    final QuickShop plugin = QuickShop.getInstance();
+
+    final Vector3f itemScaleVector = new Vector3f(plugin.getConfig().getFloat("shop.display-scale.x", 1.25f),
+                                                  plugin.getConfig().getFloat("shop.display-scale.y", 1.25f),
+                                                  plugin.getConfig().getFloat("shop.display-scale.z", 1.25f));
+
+    final AxisAngle4f rotation = new AxisAngle4f((float)Math.toRadians(plugin.getConfig().getDouble("shop.display-rotation.degrees", 0d)),
+                                                 plugin.getConfig().getFloat("shop.display-rotation.x", 0f),
+                                                 plugin.getConfig().getFloat("shop.display-rotation.y", 0f),
+                                                 plugin.getConfig().getFloat("shop.display-rotation.z", 1f));
+
+    itemDisplay = EntityUtil.spawnDisplayItemFor(null, getDisplayLocation().clone().add(0, .15d, 0), shop.getItem(), itemScaleVector, rotation, Bukkit.getViewDistance() * 16, 0);
 
     interactionEntity = EntityUtil.spawnInteractionFor(null, getDisplayLocation().toCenterLocation().add(0.0, 0.4, 0.0), 0);
     interactionEntity.getPersistentDataContainer().set(DISPLAY_ITEM_KEY_INSTANCE, PersistentDataType.STRING, Util.locationToPDCString(shop.bukkitLocation()));
 
-    final int blockDistance = QuickShop.getInstance().getConfig().getInt("shop.text-display.range-blocks", 8);
+    final int blockDistance = plugin.getConfig().getInt("shop.text-display.range-blocks", 8);
 
-    final Vector3f textScaleVector = new Vector3f(QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.x", 1.0f),
-                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.y", 1.0f),
-                                              QuickShop.getInstance().getConfig().getFloat("shop.text-display.scale.z", 1.0f));
+    final Vector3f textScaleVector = new Vector3f(plugin.getConfig().getFloat("shop.text-display.scale.x", 1.0f),
+                                                  plugin.getConfig().getFloat("shop.text-display.scale.y", 1.0f),
+                                                  plugin.getConfig().getFloat("shop.text-display.scale.z", 1.0f));
 
-    final Location textLocation = getDisplayLocation().clone().add(0, QuickShop.getInstance().getConfig().getDouble("shop.text-display.y-offset", 0.8), 0);
+    final Location textLocation = getDisplayLocation().clone().add(0, plugin.getConfig().getDouble("shop.text-display.y-offset", 0.8), 0);
 
     textDisplay = EntityUtil.spawnDisplayTextFor(null, textLocation, Util.getTextDisplay(shop, shop.getItem().clone()), textScaleVector, blockDistance, TextDisplay.TextAlignment.CENTER, 0);
   }
@@ -185,18 +202,26 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
       return;
     }
 
-    if (itemDisplay == null && textDisplay == null && interactionEntity == null) {
-      return;
+    if (itemDisplay != null) {
+      itemDisplay.remove();
     }
 
-    for (final Player player : Bukkit.getOnlinePlayers()) {
+    if (textDisplay != null) {
+      textDisplay.remove();
+    }
 
-      removeDisplay(player);
+    if (interactionEntity != null) {
+      interactionEntity.remove();
     }
 
     if (isSpawned()) {
 
       isSpawned = false;
+
+      if(QuickShop.getInstance().getDisplayManager() instanceof DisplayEntityItemManager) {
+
+        ((DisplayEntityItemManager) QuickShop.getInstance().getDisplayManager()).remove(this.chunkLocation, locationHash, this);
+      }
     }
   }
 
@@ -267,6 +292,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
       return;
     }
 
+    initEntities();
     sendFakeItemToAll();
 
     isSpawned = true;
@@ -292,5 +318,10 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
         player.showEntity(QuickShop.getInstance().getJavaPlugin(), textDisplay);
       }
     }
+  }
+
+  public int locationHash() {
+
+    return locationHash;
   }
 }
