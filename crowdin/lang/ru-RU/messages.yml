@@ -363,6 +363,8 @@ support-disable-reason:
 supertool-is-disabled: <red>Супер-инструмент отключен, вы не можете сломать чужой магазин.
 unknown-owner: Неизвестно
 restricted-prices: '<red>Цена ограничена {0}: от {1} до {2}'
+restricted-price-max: '<red>Restricted price for {0}: Max {1}'
+restricted-price-min: '<red>Restricted price for {0}: Min {1}'
 nearby-shop-this-way: <green>Магазин находится в {0} блоках от вас.
 owner-bypass-check: <yellow>Вы прошли все проверки, вы можете торговать! (Теперь вы владелец магазина!)
 april-rick-and-roll-easter-egg: "<hover:show_text:'Нажмите, чтобы открыть в браузере и получить ограниченные по времени награды!'><click:open_url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'><green>Нажмите здесь, чтобы получить ограниченные по времени награды, предоставленные разработчиком QuickShop-Hikari!</green></click></hover>"
@@ -775,6 +777,8 @@ transfer-rejected-fromside: <red>Игрок <aqua>{0}</aqua> отклонил в
 transfer-rejected-toside: <red>Вы отклонили запрос на передачу магазинов от <aqua>{0}</aqua>.
 transfer-no-pending-operation: <red>You don't have pending transfer request yet.
 transfer-no-self: <red>Вы не можете передать свои магазины самому себе.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>Сумма всех выплат не может быть больше или равна 100%.
 benefit-exists: <red>Игроку уже выплачивается процент с магазина.
 benefit-removed: <red>Этот игрок был удален из выплат магазина.
@@ -1630,6 +1634,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:
