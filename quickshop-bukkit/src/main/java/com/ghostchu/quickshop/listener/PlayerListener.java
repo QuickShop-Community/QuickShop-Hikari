@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.interaction.InteractionBehavior;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionClick;
 import com.ghostchu.quickshop.api.shop.interaction.InteractionType;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
 import com.ghostchu.quickshop.util.ExpiringSet;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -134,13 +135,13 @@ public class PlayerListener extends AbstractQSListener {
   }
 
   @NotNull
-  public Map.Entry<@Nullable Shop, @NotNull InteractionClick> searchShop(@Nullable final Block b, @NotNull final Player p) {
+  public static Map.Entry<@Nullable Shop, @NotNull InteractionClick> searchShop(@Nullable final Block b, @NotNull final Player p) {
 
     if(b == null) {
       return new AbstractMap.SimpleEntry<>(null, InteractionClick.AIR);
     }
 
-    Shop shop = plugin.getShopManager().getShop(b.getLocation());
+    Shop shop = QuickShop.getInstance().getShopManager().getShop(b.getLocation());
 
     // If that wasn't a shop, search nearby shops
     if(shop == null) {
@@ -151,7 +152,7 @@ public class PlayerListener extends AbstractQSListener {
         attached = Util.getAttached(b);
         if(attached != null) {
 
-          shop = plugin.getShopManager().getShop(attached.getLocation());
+          shop = QuickShop.getInstance().getShopManager().getShop(attached.getLocation());
           return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.SIGN);
         }
       } else if(Util.isDoubleChest(b.getBlockData())) {
@@ -159,7 +160,7 @@ public class PlayerListener extends AbstractQSListener {
         attached = Util.getSecondHalf(b);
         if(attached != null) {
 
-          final Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+          final Shop secondHalfShop = QuickShop.getInstance().getShopManager().getShop(attached.getLocation());
           if(secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner().getUniqueId())) {
             // If player not the owner of the shop, make him select the second half of the
             // shop
@@ -261,9 +262,9 @@ public class PlayerListener extends AbstractQSListener {
       QuickShop.folia().getScheduler().runLaterAsync(()->MsgUtil.flush(e.getPlayer()), delay);
     }
 
-    if(plugin.displayEntityItemManager() != null) {
+    if(plugin.getDisplayManager() instanceof final DisplayEntityItemManager displayEntityItemManager) {
 
-      plugin.displayEntityItemManager().addPlayer(e.getPlayer());
+      displayEntityItemManager.addPlayer(e.getPlayer());
     }
   }
 

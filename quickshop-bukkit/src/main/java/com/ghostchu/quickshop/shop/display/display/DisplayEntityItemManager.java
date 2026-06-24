@@ -20,7 +20,10 @@ package com.ghostchu.quickshop.shop.display.display;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.api.shop.display.DisplayManager;
 import com.ghostchu.quickshop.listener.InteractionEntityListener;
+import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +36,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class DisplayEntityItemManager {
+public class DisplayEntityItemManager implements DisplayManager<DisplayEntityDisplayItem> {
 
   public static final String DISPLAY_ITEM_KEY = "qs-display-interaction";
 
   public static final NamespacedKey DISPLAY_ITEM_KEY_INSTANCE = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), DISPLAY_ITEM_KEY);
 
-  private final ConcurrentHashMap<Integer, DisplayEntityDisplayItem> displayItems = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<ShopChunk, ConcurrentHashMap<Integer, DisplayEntityDisplayItem>> chunksMapping = new ConcurrentHashMap<>();
 
   private static DisplayEntityItemManager instance;
 
@@ -54,20 +57,60 @@ public class DisplayEntityItemManager {
     return instance;
   }
 
+  /**
+   * Retrieves a mapping between ShopChunk objects and their associated lists of display entities.
+   *
+   * This method provides access to the internal data structure used by the display manager to store
+   * and organize displays according to their respective ShopChunk locations. The returned mapping
+   * allows efficient retrieval, addition, or removal of display entities based on chunk-specific
+   * contexts.
+   *
+   * @return A {@code ConcurrentHashMap} where the keys represent {@code ShopChunk} objects, and the
+   * values are lists of display entities of type {@code T} associated with the respective chunks.
+   */
+  @Override
+  public ConcurrentHashMap<ShopChunk, ConcurrentHashMap<Integer, DisplayEntityDisplayItem>> chunksMapping() {
+
+    return chunksMapping;
+  }
+
+  /**
+   * Loads the required resources, configurations, or internal states for this display manager. This
+   * method prepares the manager for operation, ensuring it is in a ready state to handle
+   * display-related actions, such as creating or managing displays.
+   *
+   * Typically invoked during the initialization process or when reloading the manager.
+   */
+  @Override
+  public void load() {
+
+  }
+
+  /**
+   * Unloads the resources, configurations, or internal states for this display manager. This method
+   * is typically used to clean up or release resources when the display manager is no longer needed
+   * or is being shut down.
+   *
+   * Invoking this method ensures that the manager releases any held resources properly and avoids
+   * potential memory leaks or unintended behavior.
+   */
+  @Override
+  public void unload() {
+
+  }
+
   public DisplayEntityDisplayItem create(@NotNull final Shop shop) {
 
-    if (displayItems.containsKey(shop.bukkitLocation().hashCode())) {
+    final ShopChunk chunk = SimpleShopChunk.fromLocation(shop.bukkitLocation());
 
-      return displayItems.get(shop.bukkitLocation().hashCode());
-    }
-
-    final DisplayEntityDisplayItem displayEntityDisplayItem = new DisplayEntityDisplayItem(shop);
-    displayItems.put(shop.bukkitLocation().hashCode(), displayEntityDisplayItem);
-    return displayEntityDisplayItem;
+    return chunksMapping
+            .computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
+            .computeIfAbsent(shop.bukkitLocation().hashCode(),
+                             k -> new DisplayEntityDisplayItem(shop, chunk));
   }
 
   public void addPlayer(final Player player) {
 
-    displayItems.values().forEach(displayEntityDisplayItem -> displayEntityDisplayItem.sendFakeItemToPlayer(player));
+    chunksMapping.values().forEach(map ->map.values().forEach(display -> display.sendFakeItemToPlayer(player)));
   }
 }

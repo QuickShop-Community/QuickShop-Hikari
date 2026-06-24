@@ -937,22 +937,24 @@ transfer-sent: <green>Shop Transfer-request sent to <yellow>{0}</yellow>.
 transfer-request: <yellow>Player <aqua>{0}</aqua> would like to transfer their Shops
   to you. Do you want to accept the request?
 transfer-single-request: <yellow>Player <aqua>{0}</aqua> would like to transfer a shop
-  to you. Do you want to accept the request?
+  to you. Do you want to accept the request? Do NOT accept if you don't know the player.
 transfer-ask: |-
   <gold>Type <red>/quickshop transfer accept</red> to accept or <red>/quickshop transfer deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  The request will expire after <red>{0}</red> seconds. Do NOT accept if you don't know the player.
 transferall-ask: |-
   <gold>Type <red>/quickshop transferall accept</red> to accept or <red>/quickshop transferall deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  The request will expire after <red>{0}</red> seconds. Do NOT accept if you don't know the player.
 transfer-single-ask: |-
   <gold>Type <red>/quickshop transferownership accept</red> to accept or <red>/quickshop transferownership deny</red> to deny.
-  The request will expire after <red>{0}</red> seconds.
+  The request will expire after <red>{0}</red> seconds. Do NOT accept if you don't know the player.
 transfer-accepted-fromside: <green>Player <aqua>{0}</aqua> accepted your Shop Transfer-request.
 transfer-accepted-toside: <green>You accepted <aqua>{0}</aqua>'s Transfer-Request.
 transfer-rejected-fromside: <red>Player <aqua>{0}</aqua> rejected your Shop Transfer-request.
 transfer-rejected-toside: <red>You rejected <aqua>{0}</aqua>'s Shop Transfer-request.
 transfer-no-pending-operation: <red>You don't have any pending Transfer-requests.
 transfer-no-self: <red>You can't transfer your shops to yourself.
+transfer-no-buy: <red>You can't transfer shops that are buy shops.
+transfer-failed-some: <red>Failed to transfer some of the shops as they're not eligible.
 benefit-overflow: <red>The sum of all benefits cannot be greater than or equal to
   100%.
 benefit-exists: <red>Target player already in benefits list on this shop.
@@ -1875,6 +1877,8 @@ gui:
     custom-amount:
       display: "<bold><blue>Custom Order</blue></bold>"
     quantity-button:
+      display-buy: "<green>Buy x{0}</green>"
+      display-sell: "<gold>Sell x{0}</gold>"
       lore:
         - "<yellow>{0}</yellow>"
   keeper:

@@ -51,7 +51,7 @@ public class ShopStaffMenu extends QuickShopMenu {
     this.name = "qs:staff";
     this.title = "Shop Staff";
 
-    setOpen((open)->open.getMenu().setTitle(legacy(open.getPlayer().identifier(), "gui.staff.title")));
+    setOpen((open)->open.getMenu().setTitle(QuickShopMenu.getTitle(open.getPlayer().identifier(), menuConfig, this.title, null)));
 
     final Page main = new Page(STAFF_MAIN);
     final StaffSelectionPage staffSelection = new StaffSelectionPage("qs:keeper", this.name, STAFF_MAIN, KEEPER_MAIN, STAFF_PAGE, this.rows, "gui.staff.head-icon.lore");

@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.command.subcommand.SubCommand_About;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Amount;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Avoid;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Benefit;
+import com.ghostchu.quickshop.command.subcommand.SubCommand_BenefitAll;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Browse;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Buy;
 import com.ghostchu.quickshop.command.subcommand.SubCommand_Clean;
@@ -109,6 +110,40 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
   private boolean playSoundOnTabComplete;
   private boolean playSoundOnCommand;
 
+  public static final String[] MODERATOR_NODES = {
+          "quickshop.moderator",
+          "quickshop.tag.clear",
+          "quickshop.tag.clearall",
+          "quickshop.setowner",
+          "quickshop.setuppermission",
+          "quickshop.other.destroy",
+          "quickshop.other.open",
+          "quickshop.other.price",
+          "quickshop.bypass.*",
+          "quickshop.alerts",
+          "quickshop.create.admin",
+          "quickshop.history.*",
+          "quickshop.transferownership.other",
+          "quickshop.other.changeitem",
+          "quickshop.other.changeamount",
+          "quickshop.other.staff",
+          "quickshop.other.currency",
+          "quickshop.other.taxaccount",
+          "quickshop.other.toggledisplay",
+          "quickshop.purge",
+          "quickshop.other.setowner",
+          "quickshop.taxaccount",
+          "quickshop.toggledisplayall.admin",
+          "quickshop.other.shopnaming",
+          "quickshop.bypass.namefee",
+          "quickshop.other.search",
+          "quickshop.other.preview",
+          "quickshop.other.use",
+          "quickshop.other.benefit",
+          "quickshop.other.sign",
+          "quickshop.other.history"
+  };
+
   public SimpleCommandManager(final QuickShop plugin) {
 
     this.plugin = plugin;
@@ -162,6 +197,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     .permission("quickshop.setowner")
                     .executor(new SubCommand_SetOwner(plugin))
                     .build());
+
     registerCmd(
             CommandContainer.builder()
                     .prefix("amount")
@@ -443,6 +479,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .prefix("benefit")
                         .permission("quickshop.benefit")
                         .executor(new SubCommand_Benefit(plugin))
+                        .build());
+    registerCmd(CommandContainer.builder()
+                        .prefix("benefitall")
+                        .permission("quickshop.benefitall")
+                        .executor(new SubCommand_BenefitAll(plugin))
                         .build());
     registerCmd(CommandContainer.builder()
                         .prefix("browse")

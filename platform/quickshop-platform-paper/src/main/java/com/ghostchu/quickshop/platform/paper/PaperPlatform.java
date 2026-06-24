@@ -2,10 +2,12 @@ package com.ghostchu.quickshop.platform.paper;
 
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
+import com.ghostchu.quickshop.platform.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -235,9 +237,13 @@ public class PaperPlatform implements Platform {
   }
 
   @Override
-  public void sendSignTextChange(@NotNull final Player player, @NotNull final Sign sign, final boolean glowing, @NotNull final List<Component> components) {
+  public void sendSignTextChange(@NotNull final Player player, @NotNull final Sign sign, final boolean glowing, @Nullable final DyeColor dyeColor, @NotNull final List<Component> components) {
+    if(dyeColor == null) {
+      player.sendSignChange(sign.getLocation(), components, glowing);
+      return;
+    }
 
-    player.sendSignChange(sign.getLocation(), components);
+    player.sendSignChange(sign.getLocation(), components, dyeColor, glowing);
   }
 
   @Override

@@ -22,6 +22,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.type.BuyingType;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
@@ -32,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.ghostchu.quickshop.QuickShop.taskCache;
+import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
 
 public class SubCommand_TransferOwnership implements CommandHandler<Player> {
 
@@ -77,6 +79,12 @@ public class SubCommand_TransferOwnership implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
           }
+
+          if (targetShop.shopType().isBuying() && plugin.getConfig().getBoolean("shop.disable-buy-transfer", false)) {
+            plugin.text().of(sender, "transfer-no-buy").send();
+            return;
+          }
+
           if(!targetShop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)
              && !plugin.perm().hasPermission(sender, "quickshop.transferownership.other")) {
             plugin.text().of(sender, "no-permission").send();
