@@ -5,7 +5,7 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>6.3.0.0-SNAPSHOT-8</version>
+        <version>6.3.0.0-SNAPSHOT-9</version>
     </parent>
     <build>
         <plugins>
