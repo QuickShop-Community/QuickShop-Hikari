@@ -111,8 +111,8 @@ jobs:
           body: |
             Snapshot build for QuickShop-Hikari.
 
-            **Notice: This is a development/early build use at your own risk. **
-            **As always with development builds you should backup any data you have. **
+            **Notice: This is a development/early build use at your own risk.**
+            **As always with development builds you should backup any data you have.**
 
             Maven version: `${{ steps.snapshot.outputs.maven_version }}`
             Snapshot version: `${{ steps.snapshot.outputs.release_version }}`
