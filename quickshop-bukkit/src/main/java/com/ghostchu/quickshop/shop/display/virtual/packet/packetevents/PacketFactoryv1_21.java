@@ -142,7 +142,6 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketWrapper<?>> {
 
     // Text Display text metadata
     data.add(new EntityData<>(12, EntityDataTypes.VECTOR3F, scaleVector));
-    data.add(new EntityData<>(13, EntityDataTypes.VECTOR3F, scaleVector));
     data.add(new EntityData<>(15, EntityDataTypes.BYTE, (byte)3));
     data.add(new EntityData<>(17, EntityDataTypes.FLOAT, blockDistance * 0.0125f));//0.0125 per block
     data.add(new EntityData<>(23, EntityDataTypes.ADV_COMPONENT, Util.getTextDisplay(shop, itemStack)));
