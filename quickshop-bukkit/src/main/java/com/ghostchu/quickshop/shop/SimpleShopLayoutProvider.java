@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.shop;
 
-
 /*
  * QuickShop-Hikari
  * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
@@ -24,6 +23,7 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.IShopLayoutProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
+import com.ghostchu.quickshop.api.shop.layout.ItemComponent;
 import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.HeaderLineRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.ItemLineRenderComponent;
@@ -61,6 +61,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class SimpleShopLayoutProvider implements IShopLayoutProvider {
 
+  protected final List<ItemComponent> itemComponents = new ArrayList<>();
   protected final List<RenderComponent> renderComponents = new ArrayList<>();
 
   private final String[] defaultLayout = new String[] {
@@ -78,11 +79,17 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
 
   private void init() {
 
+
+    //render components
+
+    //full line components
     renderComponents.add(new HeaderLineRenderComponent());
     renderComponents.add(new ItemLineRenderComponent());
     renderComponents.add(new LevelLineRenderComponent());
     renderComponents.add(new PriceLineRenderComponent());
     renderComponents.add(new TradingLineRenderComponent());
+
+    //inline components
     renderComponents.add(new AmountRenderComponent());
     renderComponents.add(new ItemNameRenderComponent());
     renderComponents.add(new LevelRenderComponent());
@@ -91,6 +98,12 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     renderComponents.add(new StatusRenderComponent());
     renderComponents.add(new StockRenderComponent());
     renderComponents.add(new TypeRenderComponent());
+  }
+
+  @Override
+  public List<ItemComponent> itemComponents() {
+
+    return itemComponents;
   }
 
   @Override

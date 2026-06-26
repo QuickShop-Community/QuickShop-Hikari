@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.shop.layout.ItemComponent;
 import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -36,6 +37,14 @@ import java.util.concurrent.CompletableFuture;
  * @since 6.2.0.11
  */
 public interface IShopLayoutProvider {
+
+  /**
+   * Provides a list of {@link ItemComponent} objects, each representing a component associated
+   * with an item in the context of a shop layout.
+   *
+   * @return a list of {@link ItemComponent} objects representing the item components.
+   */
+  List<ItemComponent> itemComponents();
 
   /**
    * A list of components that represent various aspects of a text-display layout or sign.
@@ -126,7 +135,7 @@ public interface IShopLayoutProvider {
       }
 
       Component lineComponent = MiniMessage.miniMessage().deserialize(line);
-      for (RenderComponent component : nonFullLineRenderComponents()) {
+      for (RenderComponent component : inlineRenderComponents()) {
 
         if (!component.supportsSnapshot()) {
           continue;

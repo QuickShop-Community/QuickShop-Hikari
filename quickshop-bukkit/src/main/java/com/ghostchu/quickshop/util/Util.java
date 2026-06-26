@@ -930,33 +930,6 @@ public class Util {
     return display;
   }
 
-  public static Component replaceDisplayTemplates(@NotNull final String basetring,
-                                                  @NotNull final Shop shop,
-                                                  @NotNull final ItemStack itemStack,
-                                                  final ProxiedLocale locale) {
-
-
-    Component line = MiniMessage.miniMessage().deserialize(basetring);
-
-    for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().inlineRenderComponents()) {
-
-      line = line.replaceText(builder -> builder
-              .matchLiteral(component.placeholder())
-              .replacement(component.render(shop, itemStack, locale)));
-    }
-
-    return line;
-  }
-
-  public static Component replaceComponent(@NotNull final Component component,
-                                           @NotNull final String placeholder,
-                                           @NotNull final Component replacement) {
-
-    return component.replaceText(builder -> builder
-            .matchLiteral(placeholder)
-            .replacement(replacement));
-  }
-
   @NotNull
   public static Component getItemStackName(@NotNull final ItemStack itemStack) {
 
