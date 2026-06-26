@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.layout.partial;
+package com.ghostchu.quickshop.shop.layout.inline;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;

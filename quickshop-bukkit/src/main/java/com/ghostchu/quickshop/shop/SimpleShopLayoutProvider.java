@@ -30,14 +30,14 @@ import com.ghostchu.quickshop.shop.layout.line.ItemLineRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.LevelLineRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.PriceLineRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.TradingLineRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.AmountRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.ItemNameRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.LevelRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.OwnerRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.PriceAloneRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.StatusRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.StockRenderComponent;
-import com.ghostchu.quickshop.shop.layout.partial.TypeRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.AmountRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.ItemNameRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.LevelRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.OwnerRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.PriceAloneRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.StatusRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.StockRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.TypeRenderComponent;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -50,7 +50,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -285,7 +284,7 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
       }
 
       Component lineComponent = MiniMessage.miniMessage().deserialize(line);
-      for (RenderComponent component : nonFullLineRenderComponents()) {
+      for (RenderComponent component : inlineRenderComponents()) {
 
         if (!component.supportsSnapshot()) {
           continue;

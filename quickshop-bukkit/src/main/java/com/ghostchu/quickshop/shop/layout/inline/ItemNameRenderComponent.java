@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.layout.partial;
+package com.ghostchu.quickshop.shop.layout.inline;
 
 /*
  * QuickShop-Hikari
@@ -18,27 +18,27 @@ package com.ghostchu.quickshop.shop.layout.partial;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
 import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
+import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * TypeRenderComponent
+ * ItemNameRenderComponent
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class TypeRenderComponent implements RenderComponent {
+public class ItemNameRenderComponent implements RenderComponent {
 
   @Override
   public String placeholder() {
 
-    return "<type>";
+    return "<item_name>";
   }
 
   @Override
@@ -56,12 +56,12 @@ public class TypeRenderComponent implements RenderComponent {
   @Override
   public Component renderSnapshot(final @NotNull SignRenderSnapshot snapshot, final ProxiedLocale locale) {
 
-    return QuickShop.getInstance().text().of(snapshot.shopTypeKey()).forLocale();
+    return snapshot.itemName();
   }
 
   @Override
-  public Component render(final @NotNull Shop shop, final @NotNull ItemStack item, final ProxiedLocale locale) {
+  public Component render(final @NotNull Shop shop, @NotNull final ItemStack item, final ProxiedLocale locale) {
 
-    return QuickShop.getInstance().text().of(shop.shopType().translationKey()).forLocale();
+    return Util.getItemStackName(item, locale.getLocale());
   }
 }

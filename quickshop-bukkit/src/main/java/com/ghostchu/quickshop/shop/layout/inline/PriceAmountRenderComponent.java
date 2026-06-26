@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.layout.partial;
+package com.ghostchu.quickshop.shop.layout.inline;
 
 /*
  * QuickShop-Hikari

@@ -18,7 +18,7 @@ package com.ghostchu.quickshop.shop.layout.line;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ghostchu.quickshop.shop.layout.partial.LevelRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.LevelRenderComponent;
 import org.jetbrains.annotations.NotNull;
 
 /**

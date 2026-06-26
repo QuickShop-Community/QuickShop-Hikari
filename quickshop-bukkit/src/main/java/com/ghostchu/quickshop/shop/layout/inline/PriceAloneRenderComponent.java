@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.shop.layout.partial;
+package com.ghostchu.quickshop.shop.layout.inline;
 
 /*
  * QuickShop-Hikari
@@ -18,6 +18,7 @@ package com.ghostchu.quickshop.shop.layout.partial;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
@@ -27,17 +28,17 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * OwnerRenderComponent
+ * PriceAloneRenderComponent
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public class OwnerRenderComponent implements RenderComponent {
+public class PriceAloneRenderComponent implements RenderComponent {
 
   @Override
   public String placeholder() {
 
-    return "<owner>";
+    return "<price_alone>";
   }
 
   @Override
@@ -55,12 +56,12 @@ public class OwnerRenderComponent implements RenderComponent {
   @Override
   public Component renderSnapshot(final @NotNull SignRenderSnapshot snapshot, final ProxiedLocale locale) {
 
-    return snapshot.ownerName();
+    return Component.text(snapshot.formattedPrice());
   }
 
   @Override
   public Component render(final @NotNull Shop shop, final @NotNull ItemStack item, final ProxiedLocale locale) {
 
-    return shop.ownerName();
+    return Component.text(QuickShop.getInstance().getShopManager().format(shop.getPrice(), shop));
   }
 }

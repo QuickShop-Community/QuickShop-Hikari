@@ -62,7 +62,7 @@ public interface IShopLayoutProvider {
    * @return a list of {@link RenderComponent} objects representing components that do not replace entire lines
    * @since 6.3.0.0
    */
-  default List<RenderComponent> nonFullLineRenderComponents() {
+  default List<RenderComponent> inlineRenderComponents() {
     return renderComponents().stream().filter(component -> !component.fullLine()).toList();
   }
 

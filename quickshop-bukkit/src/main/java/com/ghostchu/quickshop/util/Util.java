@@ -907,7 +907,7 @@ public class Util {
       }
 
       Component lineComponent = MiniMessage.miniMessage().deserialize(line);
-      for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().nonFullLineRenderComponents()) {
+      for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().inlineRenderComponents()) {
 
         if (!component.supportsSnapshot()) {
           continue;
@@ -938,7 +938,7 @@ public class Util {
 
     Component line = MiniMessage.miniMessage().deserialize(basetring);
 
-    for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().nonFullLineRenderComponents()) {
+    for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().inlineRenderComponents()) {
 
       line = line.replaceText(builder -> builder
               .matchLiteral(component.placeholder())
