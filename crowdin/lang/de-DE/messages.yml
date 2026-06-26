@@ -36,7 +36,7 @@ tabcomplete:
 taxaccount-unset: <green>Das Steuerkonto dieses Shops folgt nun den globalen Servereinstellungen.
 blacklisted-item: <red>Dieses Item kann nicht verkauft werden, da es auf der Schwarzen Liste steht
 command-type-mismatch: <red>Dieser Befehl kann nur von <aqua>{0}<red> ausgeführt werden.
-server-crash-warning: '<red>Server kann nach Ausführung des /qs Reload-Befehls abstürzen, wenn Sie während des Laufens des Servers QuickShop-Plugin-Jar-Datei ersetzen/löschen.'
+server-crash-warning: '<red>Server kann nach Ausführung des /quickshop reload Befehls abstürzen, wenn Sie während des Laufens des Servers QuickShop-Plugin-Jar-Datei ersetzen/löschen.'
 you-cant-afford-to-change-price: Es kostet {0} um den Preis deines Shops zu ändern.
 safe-mode: <red>QuickShop ist im Sicherheitsmodus. Du kannst diesen Shop-Container nicht öffnen. Kontaktiere den Server Administrator um dieses Problem zu beheben.
 forbidden-vanilla-behavior: <red>Die Operation ist verboten da Sie nicht mit dem Vanilla verhalten übereinstimmt
@@ -114,7 +114,7 @@ pagination:
 tags:
   commands:
     tag: "<yellow>Verwalte deine Shop-Tags."
-    favorite: "<yellow>Toggle favorite on looked-at shop."
+    favorite: "<yellow>Favorit am angesehenen Shop umschalten."
     watch: "<yellow>Toggle watch on looked-at shop."
     avoid: "<yellow>Toggle avoid on looked-at shop."
   general:
@@ -1626,7 +1626,7 @@ gui:
         - "<gray>Klicke, um dein Shop zu löschen.</gray>"
         - "<dark_gray>Du kannst auch das Schild/die Truhe zerstören.</dark_gray>"
   staff:
-    title: "<dark_aqua>Staff Management</dark_aqua>"
+    title: "<dark_aqua>Staff Verwaltung</dark_aqua>"
     search:
       display: "<yellow>Suche: {0}</yellow>"
       lore:
