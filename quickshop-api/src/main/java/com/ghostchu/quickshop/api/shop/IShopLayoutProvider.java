@@ -136,7 +136,9 @@ public interface IShopLayoutProvider {
           continue;
         }
 
-        lineComponent = component.renderSnapshot(snapshot, locale);
+        lineComponent = lineComponent.replaceText(builder -> builder
+                .matchLiteral(component.placeholder())
+                .replacement(component.renderSnapshot(snapshot, locale)));
       }
       rendered.add(lineComponent);
     }

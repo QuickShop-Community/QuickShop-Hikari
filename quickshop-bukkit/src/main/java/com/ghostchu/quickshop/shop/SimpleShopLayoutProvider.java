@@ -295,7 +295,9 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
           continue;
         }
 
-        lineComponent = component.render(shop, shopItem, locale);
+        lineComponent = lineComponent.replaceText(builder -> builder
+                .matchLiteral(component.placeholder())
+                .replacement(component.render(shop, shopItem, locale)));
       }
       renderedLines.add(lineComponent);
     }

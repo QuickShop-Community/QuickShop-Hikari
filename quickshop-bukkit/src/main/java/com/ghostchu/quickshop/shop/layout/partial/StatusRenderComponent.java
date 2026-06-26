@@ -14,7 +14,7 @@ public class StatusRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "status";
+    return "<status>";
   }
 
   @Override

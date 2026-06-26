@@ -38,7 +38,7 @@ public class PriceAloneRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "price_alone";
+    return "<price_alone>";
   }
 
   @Override

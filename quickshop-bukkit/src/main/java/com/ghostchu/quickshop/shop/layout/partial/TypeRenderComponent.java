@@ -38,7 +38,7 @@ public class TypeRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "type";
+    return "<type>";
   }
 
   @Override

@@ -44,7 +44,7 @@ public class LevelRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "item_level";
+    return "<item_level>";
   }
 
   @Override

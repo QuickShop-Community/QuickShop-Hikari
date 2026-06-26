@@ -37,7 +37,7 @@ public class AmountRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "amount";
+    return "<amount>";
   }
 
   @Override

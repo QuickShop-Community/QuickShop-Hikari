@@ -31,7 +31,7 @@ public class StockRenderComponent extends TradingLineRenderComponent {
   @Override
   public String placeholder() {
 
-    return "stock";
+    return "<stock>";
   }
 
   @Override

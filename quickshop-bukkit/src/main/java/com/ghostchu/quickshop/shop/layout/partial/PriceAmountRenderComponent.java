@@ -32,7 +32,7 @@ public class PriceAmountRenderComponent extends PriceLineRenderComponent {
   @Override
   public String placeholder() {
 
-    return "price_amount";
+    return "<price_amount>";
   }
 
   @Override

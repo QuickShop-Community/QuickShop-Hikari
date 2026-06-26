@@ -38,7 +38,7 @@ public class ItemNameRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "item_name";
+    return "<item_name>";
   }
 
   @Override

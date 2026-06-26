@@ -37,7 +37,7 @@ public class OwnerRenderComponent implements RenderComponent {
   @Override
   public String placeholder() {
 
-    return "owner";
+    return "<owner>";
   }
 
   @Override

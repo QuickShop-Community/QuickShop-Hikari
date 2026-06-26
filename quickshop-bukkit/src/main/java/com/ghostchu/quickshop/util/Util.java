@@ -879,7 +879,49 @@ public class Util {
     final ProxiedLocale locale = plugin.text().findRelativeLanguages(plugin.text().getDefLocale());
     for(int i = 0; i < lines.size(); i++) {
 
-      display = display.append(replaceDisplayTemplates(lines.get(i), shop, itemStack, locale));
+      final String line = lines.get(i);
+
+      boolean isFullLine = false;
+      for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().fullLineRenderComponents()) {
+
+        if (!component.supportsSnapshot()) {
+          continue;
+        }
+
+        if (!component.appliesTo(line)) {
+          continue;
+        }
+
+        display = display.append(component.render(shop, itemStack, locale));
+
+        if(i < lines.size() - 1) {
+          display = display.append(Component.newline());
+        }
+        isFullLine = true;
+        break;
+
+      }
+
+      if (isFullLine) {
+        continue;
+      }
+
+      Component lineComponent = MiniMessage.miniMessage().deserialize(line);
+      for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().nonFullLineRenderComponents()) {
+
+        if (!component.supportsSnapshot()) {
+          continue;
+        }
+
+        if (!component.appliesTo(line)) {
+          continue;
+        }
+
+        lineComponent = lineComponent.replaceText(builder -> builder
+                .matchLiteral(component.placeholder())
+                .replacement(component.render(shop, itemStack, locale)));
+      }
+      display = display.append(lineComponent);
 
       if(i < lines.size() - 1) {
         display = display.append(Component.newline());
@@ -898,7 +940,9 @@ public class Util {
 
     for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().nonFullLineRenderComponents()) {
 
-      line = component.render(shop, itemStack, locale);
+      line = line.replaceText(builder -> builder
+              .matchLiteral(component.placeholder())
+              .replacement(component.render(shop, itemStack, locale)));
     }
 
     return line;
