@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.api.shop;
+package com.ghostchu.quickshop.shop.layout.partial;
 
 /*
  * QuickShop-Hikari
@@ -18,31 +18,32 @@ package com.ghostchu.quickshop.api.shop;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import net.kyori.adventure.text.Component;
-
-import java.util.List;
+import com.ghostchu.quickshop.shop.layout.line.PriceLineRenderComponent;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * SignRenderSnapshot
+ * PriceAmountRenderComponent
  *
  * @author creatorfromhell
  * @since 6.3.0.0
  */
-public record SignRenderSnapshot(
-        boolean inventoryAvailable,
-        Component ownerName,
-        boolean stackingShop,
-        String shopTypeKey,
-        String tradingKey,
-        String stackTradingKey,
-        String outOfStockKey,
-        int remainingStock,
-        boolean overrideShopTypeText,
-        String shopStateKey,
-        Component itemName,
-        int itemAmount,
-        String formattedPrice,
-        Component levelLine,
-        List<String> template) {
+public class PriceAmountRenderComponent extends PriceLineRenderComponent {
 
+  @Override
+  public String placeholder() {
+
+    return "price_amount";
+  }
+
+  @Override
+  public boolean appliesTo(final @NotNull String line) {
+
+    return line.contains(placeholder());
+  }
+
+  @Override
+  public boolean fullLine() {
+
+    return false;
+  }
 }

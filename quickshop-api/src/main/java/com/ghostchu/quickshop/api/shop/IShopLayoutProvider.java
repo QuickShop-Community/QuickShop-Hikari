@@ -19,13 +19,14 @@ package com.ghostchu.quickshop.api.shop;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -35,6 +36,35 @@ import java.util.concurrent.CompletableFuture;
  * @since 6.2.0.11
  */
 public interface IShopLayoutProvider {
+
+  /**
+   * A list of components that represent various aspects of a text-display layout or sign.
+   *
+   * @return a list of {@link RenderComponent} objects representing the render components
+   * @since 6.3.0.0
+   */
+  List<RenderComponent> renderComponents();
+
+  /**
+   * Filters the list of render components to include only those that are full line replacements.
+   *
+   * @return a list of {@link RenderComponent} objects representing components that replace entire lines
+   * @since 6.3.0.0
+   */
+  default List<RenderComponent> fullLineRenderComponents() {
+
+    return renderComponents().stream().filter(RenderComponent::fullLine).toList();
+  }
+
+  /**
+   * Filters the list of render components to include only those that are not full line replacements.
+   *
+   * @return a list of {@link RenderComponent} objects representing components that do not replace entire lines
+   * @since 6.3.0.0
+   */
+  default List<RenderComponent> nonFullLineRenderComponents() {
+    return renderComponents().stream().filter(component -> !component.fullLine()).toList();
+  }
 
   /**
    * Generates a layout template for the specified shop.
@@ -72,14 +102,43 @@ public interface IShopLayoutProvider {
         continue;
       }
 
-      rendered.add(switch (snapshot.template().get(i).toLowerCase(Locale.ROOT)) {
-        case "header" -> renderHeaderSnapshot(snapshot, locale);
-        case "trading" -> renderTradingSnapshot(snapshot, locale);
-        case "item" -> snapshot.itemName();
-        case "price" -> renderPriceSnapshot(snapshot, locale);
-        case "level" -> snapshot.levelLine();
-        default -> Component.empty();
-      });
+      final String line = snapshot.template().get(i);
+
+      boolean isFullLine = false;
+      for (RenderComponent component : fullLineRenderComponents()) {
+
+        if (!component.supportsSnapshot()) {
+          continue;
+        }
+
+        if (!component.appliesTo(line)) {
+          continue;
+        }
+
+        rendered.add(component.renderSnapshot(snapshot, locale));
+        isFullLine = true;
+        break;
+
+      }
+
+      if (isFullLine) {
+        continue;
+      }
+
+      Component lineComponent = MiniMessage.miniMessage().deserialize(line);
+      for (RenderComponent component : nonFullLineRenderComponents()) {
+
+        if (!component.supportsSnapshot()) {
+          continue;
+        }
+
+        if (!component.appliesTo(line)) {
+          continue;
+        }
+
+        lineComponent = component.renderSnapshot(snapshot, locale);
+      }
+      rendered.add(lineComponent);
     }
 
     return rendered;
@@ -91,7 +150,10 @@ public interface IShopLayoutProvider {
    * @param snapshot the snapshot representing the current state of the shop sign's header to be rendered
    * @param locale the locale to be used for rendering the header component
    * @return a component representing the rendered header section of the shop sign snapshot
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderHeaderSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);
 
   /**
@@ -100,7 +162,10 @@ public interface IShopLayoutProvider {
    * @param snapshot the snapshot representing the current state of the shop sign's trading section to be rendered
    * @param locale the locale to be used for rendering the trading component
    * @return a component representing the rendered trading section of the shop sign snapshot
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderTradingSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);
 
   /**
@@ -109,7 +174,10 @@ public interface IShopLayoutProvider {
    * @param snapshot the snapshot representing the current state of the shop sign to be rendered
    * @param locale the locale to be used for rendering the price component
    * @return a component representing the rendered price section of the shop sign snapshot
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderPriceSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);
 
   /**
@@ -127,7 +195,10 @@ public interface IShopLayoutProvider {
    * @param shop the shop instance for which the header component is to be rendered
    * @param locale the locale to be used for rendering the header component
    * @return a component representing the visual header of the shop
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderHeader(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);
 
   /**
@@ -136,7 +207,10 @@ public interface IShopLayoutProvider {
    * @param shop the shop instance for which the trading component is to be rendered
    * @param locale the locale to be used for rendering the trading component
    * @return a component representing the visual trading section of the shop
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderTrading(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);
 
   /**
@@ -145,7 +219,10 @@ public interface IShopLayoutProvider {
    * @param shop the shop instance for which the item component is to be rendered
    * @param locale the locale to be used for rendering the item component
    * @return a component representing the visual item section of the shop
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderItem(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);
 
   /**
@@ -154,7 +231,10 @@ public interface IShopLayoutProvider {
    * @param shop the shop instance for which the price component is to be rendered
    * @param locale the locale to be used for rendering the price component
    * @return a component representing the visual price section of the shop
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderPrice(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);
 
   /**
@@ -163,6 +243,9 @@ public interface IShopLayoutProvider {
    * @param shop the shop instance for which the level component is to be rendered
    * @param locale the locale to be used for rendering the level component
    * @return a component representing the visual level section of the shop
+   *
+   * @deprecated Individual render methods replaced my the render component system.
    */
+  @Deprecated(forRemoval = true, since = "6.3.0.0")
   Component renderLevels(final @NotNull Shop shop, final @NotNull ProxiedLocale locale);
 }

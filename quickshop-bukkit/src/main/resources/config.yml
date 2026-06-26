@@ -574,7 +574,7 @@ shop:
       z: 0.5
 
     # <item_name> is replaced with the item name.
-    # <price> is replaced with the item price.
+    # <price_alone> is replaced with the item price.
     # <amount> is replaced with the item amount.
     # <price_amount> is replaced with the item price per amount.
     # <owner> is replaced with the shop owner's name.

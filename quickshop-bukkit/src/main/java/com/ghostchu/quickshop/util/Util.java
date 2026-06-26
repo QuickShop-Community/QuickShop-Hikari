@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
@@ -878,24 +879,29 @@ public class Util {
     final ProxiedLocale locale = plugin.text().findRelativeLanguages(plugin.text().getDefLocale());
     for(int i = 0; i < lines.size(); i++) {
 
-      Component line = MiniMessage.miniMessage().deserialize(lines.get(i));
-
-      line = replaceComponent(line, "<item_name>", Util.getItemStackName(itemStack));
-      line = replaceComponent(line, "<price>", Component.text(plugin.getShopManager().format(shop.getPrice(), shop)));
-      line = replaceComponent(line, "<amount>", Component.text(itemStack.getAmount()));
-      line = replaceComponent(line, "<price_amount>", plugin.getShopManager().shopLayoutProvider().renderPrice(shop, locale));
-      line = replaceComponent(line, "<owner>", shop.ownerName());
-      line = replaceComponent(line, "<type>", plugin.text().of(shop.shopType().translationKey()).forLocale());
-      line = replaceComponent(line, "<status>", Util.getItemStackName(itemStack));
-      line = replaceComponent(line, "<level>", plugin.getShopManager().shopLayoutProvider().renderLevels(shop, locale));
-
-      display = display.append(line);
+      display = display.append(replaceDisplayTemplates(lines.get(i), shop, itemStack, locale));
 
       if(i < lines.size() - 1) {
         display = display.append(Component.newline());
       }
     }
     return display;
+  }
+
+  public static Component replaceDisplayTemplates(@NotNull final String basetring,
+                                                  @NotNull final Shop shop,
+                                                  @NotNull final ItemStack itemStack,
+                                                  final ProxiedLocale locale) {
+
+
+    Component line = MiniMessage.miniMessage().deserialize(basetring);
+
+    for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().nonFullLineRenderComponents()) {
+
+      line = component.render(shop, itemStack, locale);
+    }
+
+    return line;
   }
 
   public static Component replaceComponent(@NotNull final Component component,
