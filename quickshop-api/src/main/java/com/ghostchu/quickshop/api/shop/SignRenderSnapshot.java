@@ -40,6 +40,7 @@ public record SignRenderSnapshot(
         boolean overrideShopTypeText,
         String shopStateKey,
         Component itemName,
+        Component originalItemName,
         int itemAmount,
         String formattedPrice,
         Component levelLine,

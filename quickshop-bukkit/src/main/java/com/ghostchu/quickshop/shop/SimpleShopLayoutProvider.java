@@ -174,6 +174,7 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
                                                   shop.shopState().overrideShopTypeText(),
                                                   shop.shopState().translationKey(),
                                                   Util.getItemStackName(item, locale.getLocale()),
+                                                  plugin.platform().getTranslation(item),
                                                   item.getAmount(),
                                                   plugin.getShopManager().format(shop.getPrice(), shop),
                                                   levels,

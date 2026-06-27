@@ -667,6 +667,9 @@ shop:
   # NOTE: Only one effect is shown, chosen randomly.
   use-effect-for-potion-item: false
 
+  # Show song name on the sign (instead of "Music Disc").
+  use-song-for-disc-item: false
+
   # Worlds where shop creation is allowed.
   # If not empty, only worlds in this list can create shops.
   # Takes priority over blacklist-world.

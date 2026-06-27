@@ -1,5 +1,7 @@
 package com.ghostchu.quickshop.util;
 
+import com.destroystokyo.paper.MaterialSetTag;
+import com.destroystokyo.paper.MaterialTags;
 import com.destroystokyo.paper.ParticleBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
@@ -78,6 +80,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -970,6 +973,15 @@ public class Util {
       return getFirstPotionEffectName(itemStack, locale);
     }
 
+    if(useSongForDiscItem() && MaterialTags.MUSIC_DISCS.isTagged(itemStack.getType())) {
+
+      final Component component = Component.translatable("jukebox_song.minecraft." + itemStack.getType().name().toLowerCase(Locale.ROOT).replace("music_disc_", ""));
+      final String[] asText = PlainTextComponentSerializer.plainText().serialize(component).split("-");
+      final String songName = (asText.length > 1)? asText[1] : asText[0];
+
+      return Component.text(songName).append(Component.text(" ")).append(plugin.platform().getTranslation(itemStack));
+    }
+
 
     if(meta == null) {
 
@@ -1129,6 +1141,11 @@ public class Util {
   public static boolean usePotionForPotionItem() {
 
     return plugin.getConfig().getBoolean("shop.use-effect-for-potion-item");
+  }
+
+  public static boolean useSongForDiscItem() {
+
+    return plugin.getConfig().getBoolean("shop.use-song-for-disc-item");
   }
 
   @Nullable
