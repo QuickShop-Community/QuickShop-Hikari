@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.api.shop.layout.ConditionalRenderComponent;
 import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -882,11 +883,7 @@ public class Util {
       final String line = lines.get(i);
 
       boolean isFullLine = false;
-      for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().fullLineRenderComponents()) {
-
-        if (!component.supportsSnapshot()) {
-          continue;
-        }
+      for (final RenderComponent component : plugin.getShopManager().shopLayoutProvider().fullLineRenderComponents()) {
 
         if (!component.appliesTo(line)) {
           continue;
@@ -907,14 +904,15 @@ public class Util {
       }
 
       Component lineComponent = MiniMessage.miniMessage().deserialize(line);
-      for (RenderComponent component : plugin.getShopManager().shopLayoutProvider().inlineRenderComponents()) {
-
-        if (!component.supportsSnapshot()) {
-          continue;
-        }
+      for (final RenderComponent component : plugin.getShopManager().shopLayoutProvider().inlineRenderComponents()) {
 
         if (!component.appliesTo(line)) {
           continue;
+        }
+
+        if (component instanceof final ConditionalRenderComponent conditionalComponent && conditionalComponent.isFullLine(shop)) {
+          lineComponent = conditionalComponent.render(shop, itemStack, locale);
+          break;
         }
 
         lineComponent = lineComponent.replaceText(builder -> builder

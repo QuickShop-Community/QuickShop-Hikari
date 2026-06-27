@@ -23,8 +23,11 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.IShopLayoutProvider;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.SignRenderSnapshot;
+import com.ghostchu.quickshop.api.shop.layout.ConditionalRenderComponent;
 import com.ghostchu.quickshop.api.shop.layout.ItemComponent;
 import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
+import com.ghostchu.quickshop.shop.layout.conditional.AmountAutoRenderComponent;
+import com.ghostchu.quickshop.shop.layout.inline.PriceAmountRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.HeaderLineRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.ItemLineRenderComponent;
 import com.ghostchu.quickshop.shop.layout.line.LevelLineRenderComponent;
@@ -50,6 +53,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -89,12 +93,16 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
     renderComponents.add(new PriceLineRenderComponent());
     renderComponents.add(new TradingLineRenderComponent());
 
+    //conditional
+    renderComponents.add(new AmountAutoRenderComponent());
+
     //inline components
     renderComponents.add(new AmountRenderComponent());
     renderComponents.add(new ItemNameRenderComponent());
     renderComponents.add(new LevelRenderComponent());
     renderComponents.add(new OwnerRenderComponent());
     renderComponents.add(new PriceAloneRenderComponent());
+    renderComponents.add(new PriceAmountRenderComponent());
     renderComponents.add(new StatusRenderComponent());
     renderComponents.add(new StockRenderComponent());
     renderComponents.add(new TypeRenderComponent());
@@ -124,7 +132,10 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
 
     final LinkedList<String> template = new LinkedList<>();
 
-    final String baseNode = "shop.layout." + shop.shopType().identifier() + ".line";
+    final String identifier = (shop.shopState().overrideShopTypeText())? shop.shopState().identifier() : shop.shopType().identifier();
+
+
+    final String baseNode = "shop.layout." + identifier.toUpperCase(Locale.ROOT) + ".line";
     for(int i = 0; i < 4; i++) {
 
       template.add(QuickShop.getInstance().getConfig().getString(baseNode + (i + 1), defaultLayout[i]));
@@ -276,11 +287,7 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
       final String line = template.get(i);
 
       boolean isFullLine = false;
-      for (RenderComponent component : fullLineRenderComponents()) {
-
-        if (!component.supportsSnapshot()) {
-          continue;
-        }
+      for (final RenderComponent component : fullLineRenderComponents()) {
 
         if (!component.appliesTo(line)) {
           continue;
@@ -297,14 +304,15 @@ public class SimpleShopLayoutProvider implements IShopLayoutProvider {
       }
 
       Component lineComponent = MiniMessage.miniMessage().deserialize(line);
-      for (RenderComponent component : inlineRenderComponents()) {
-
-        if (!component.supportsSnapshot()) {
-          continue;
-        }
+      for (final RenderComponent component : inlineRenderComponents()) {
 
         if (!component.appliesTo(line)) {
           continue;
+        }
+
+        if (component instanceof final ConditionalRenderComponent conditionalComponent && conditionalComponent.isFullLine(shop)) {
+          lineComponent = conditionalComponent.render(shop, shopItem, locale);
+          break;
         }
 
         lineComponent = lineComponent.replaceText(builder -> builder

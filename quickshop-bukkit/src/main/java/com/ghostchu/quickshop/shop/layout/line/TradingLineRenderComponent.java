@@ -82,10 +82,10 @@ public class TradingLineRenderComponent implements RenderComponent {
     final QuickShop plugin = QuickShop.getInstance();
 
     final String tradingStringKey = (shop.isStackingShop()? shop.shopType().stackTradingTranslationKey() : shop.shopType().tradingTranslationKey());
+    final String finalTradingStringKey = (shop.shopState().overrideShopTypeText())? shop.shopState().translationKey() : tradingStringKey;
     final String noRemainingStringKey = shop.shopType().outOfStockTranslationKey();
     final int shopRemaining = shop.shopType().remainingStock(shop);
 
-    final String finalTradingStringKey = (shop.shopState().overrideShopTypeText())? shop.shopState().translationKey() : tradingStringKey;
 
     final Component trading = switch(shopRemaining) {
       //Unlimited

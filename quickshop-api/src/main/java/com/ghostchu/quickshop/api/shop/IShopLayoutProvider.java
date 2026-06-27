@@ -19,6 +19,7 @@ package com.ghostchu.quickshop.api.shop;
  */
 
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
+import com.ghostchu.quickshop.api.shop.layout.ConditionalRenderComponent;
 import com.ghostchu.quickshop.api.shop.layout.ItemComponent;
 import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import net.kyori.adventure.text.Component;
@@ -114,7 +115,7 @@ public interface IShopLayoutProvider {
       final String line = snapshot.template().get(i);
 
       boolean isFullLine = false;
-      for (RenderComponent component : fullLineRenderComponents()) {
+      for (final RenderComponent component : fullLineRenderComponents()) {
 
         if (!component.supportsSnapshot()) {
           continue;
@@ -135,7 +136,7 @@ public interface IShopLayoutProvider {
       }
 
       Component lineComponent = MiniMessage.miniMessage().deserialize(line);
-      for (RenderComponent component : inlineRenderComponents()) {
+      for (final RenderComponent component : inlineRenderComponents()) {
 
         if (!component.supportsSnapshot()) {
           continue;
@@ -143,6 +144,11 @@ public interface IShopLayoutProvider {
 
         if (!component.appliesTo(line)) {
           continue;
+        }
+
+        if (component instanceof final ConditionalRenderComponent conditionalComponent && conditionalComponent.isFullLine(snapshot)) {
+          lineComponent = conditionalComponent.renderSnapshot(snapshot, locale);
+          break;
         }
 
         lineComponent = lineComponent.replaceText(builder -> builder
