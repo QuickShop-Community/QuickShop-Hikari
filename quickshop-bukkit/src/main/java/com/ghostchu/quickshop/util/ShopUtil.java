@@ -257,6 +257,7 @@ public class ShopUtil {
 
     if(event.callCancellableEvent()) {
       Log.debug("A plugin cancelled the price change event.");
+      plugin.text().of(user, "plugin-cancelled", event.getCancelReason()).send();
       return;
     }
 
