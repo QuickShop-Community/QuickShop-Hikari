@@ -176,6 +176,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Indicates to which entity or entities the tax applies.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html#appliesTo(com.ghostchu.quickshop.api.shop.layout.RenderComponent,org.bukkit.inventory.ItemStack)" class="member-name-link">appliesTo(RenderComponent, ItemStack)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ItemComponent</a></dt>
+<dd>
+<div class="block">Determines if the given <a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout"><code>RenderComponent</code></a> and <code>ItemStack</code> are applicable to this component.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html#appliesTo(java.lang.String)" class="member-name-link">appliesTo(String)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a></dt>
+<dd>
+<div class="block">Determines if the given line contains the placeholder string
+ associated with the render component.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html#appliesTo(org.bukkit.inventory.ItemStack)" class="member-name-link">appliesTo(ItemStack)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ItemComponent</a></dt>
+<dd>
+<div class="block">Determines whether the given <code>ItemStack</code> is applicable to this component.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:B">B</h2>
 <dl class="index">
@@ -648,6 +661,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/inventory/package-summary.html">com.ghostchu.quickshop.api.shop.inventory</a> - package com.ghostchu.quickshop.api.shop.inventory</dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/package-summary.html">com.ghostchu.quickshop.api.shop.layout</a> - package com.ghostchu.quickshop.api.shop.layout</dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/meta/package-summary.html">com.ghostchu.quickshop.api.shop.meta</a> - package com.ghostchu.quickshop.api.shop.meta</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/permission/package-summary.html">com.ghostchu.quickshop.api.shop.permission</a> - package com.ghostchu.quickshop.api.shop.permission</dt>
@@ -742,6 +757,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/economy/transaction/EconomyTransaction.html#completable()" class="member-name-link">completable()</a> - Method in interface com.ghostchu.quickshop.api.economy.transaction.<a href="com/ghostchu/quickshop/api/economy/transaction/EconomyTransaction.html" title="interface in com.ghostchu.quickshop.api.economy.transaction">EconomyTransaction</a></dt>
 <dd>
 <div class="block">Indicates whether the transaction is completable.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ConditionalRenderComponent.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.shop.layout">ConditionalRenderComponent</a> - Interface in <a href="com/ghostchu/quickshop/api/shop/layout/package-summary.html">com.ghostchu.quickshop.api.shop.layout</a></dt>
+<dd>
+<div class="block">ConditionalRenderComponent</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/interaction/InteractionClick.html#CONTAINER" class="member-name-link">CONTAINER</a> - Enum constant in enum class com.ghostchu.quickshop.api.shop.interaction.<a href="com/ghostchu/quickshop/api/shop/interaction/InteractionClick.html" title="enum class in com.ghostchu.quickshop.api.shop.interaction">InteractionClick</a></dt>
 <dd>&nbsp;</dd>
@@ -986,6 +1005,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Enables the hook and updates its state to active.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html#enabled()" class="member-name-link">enabled()</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ItemComponent</a></dt>
+<dd>
+<div class="block">Determines whether the component is enabled.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopControlPanelManager.html#enabledComponents()" class="member-name-link">enabledComponents()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopControlPanelManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopControlPanelManager</a></dt>
 <dd>
 <div class="block">Retrieves a list of enabled components.</div>
@@ -1140,6 +1163,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 &nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html#fullLine()" class="member-name-link">fullLine()</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a></dt>
+<dd>
+<div class="block">Determines if this render component is a full line replacement.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#fullLineRenderComponents()" class="member-name-link">fullLineRenderComponents()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
+<dd>
+<div class="block">Filters the list of render components to include only those that are full line replacements.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:G">G</h2>
 <dl class="index">
@@ -2201,6 +2232,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Check if the cache has been initialized.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#inlineRenderComponents()" class="member-name-link">inlineRenderComponents()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
+<dd>
+<div class="block">Filters the list of render components to include only those that are not full line replacements.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/database/DatabaseHelper.html#insertHistoryRecord(java.lang.Object)" class="member-name-link">insertHistoryRecord(Object)</a> - Method in interface com.ghostchu.quickshop.api.database.<a href="com/ghostchu/quickshop/api/database/DatabaseHelper.html" title="interface in com.ghostchu.quickshop.api.database">DatabaseHelper</a></dt>
 <dd>
 <div class="block">Insert a history record into logs table</div>
@@ -2404,6 +2439,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/obj/QUser.html#isFull()" class="member-name-link">isFull()</a> - Method in interface com.ghostchu.quickshop.api.obj.<a href="com/ghostchu/quickshop/api/obj/QUser.html" title="interface in com.ghostchu.quickshop.api.obj">QUser</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ConditionalRenderComponent.html#isFullLine(com.ghostchu.quickshop.api.shop.Shop)" class="member-name-link">isFullLine(Shop)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ConditionalRenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ConditionalRenderComponent</a></dt>
+<dd>
+<div class="block">Determines if the specified shop represents a full-line replacement.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ConditionalRenderComponent.html#isFullLine(com.ghostchu.quickshop.api.shop.SignRenderSnapshot)" class="member-name-link">isFullLine(SignRenderSnapshot)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ConditionalRenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ConditionalRenderComponent</a></dt>
+<dd>
+<div class="block">Determines if a specific render component for a shop sign is designated as a full-line replacement.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/database/bean/DataRecord.html#isHologram()" class="member-name-link">isHologram()</a> - Method in interface com.ghostchu.quickshop.api.database.bean.<a href="com/ghostchu/quickshop/api/database/bean/DataRecord.html" title="interface in com.ghostchu.quickshop.api.database.bean">DataRecord</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a> - Interface in <a href="com/ghostchu/quickshop/api/shop/package-summary.html">com.ghostchu.quickshop.api.shop</a></dt>
@@ -2526,6 +2569,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#itemAmount()" class="member-name-link">itemAmount()</a> - Method in record class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>itemAmount</code> record component.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.shop.layout">ItemComponent</a> - Interface in <a href="com/ghostchu/quickshop/api/shop/layout/package-summary.html">com.ghostchu.quickshop.api.shop.layout</a></dt>
+<dd>
+<div class="block">ItemComponent</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#itemComponents()" class="member-name-link">itemComponents()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
+<dd>
+<div class="block">Provides a list of <a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout"><code>ItemComponent</code></a> objects, each representing a component associated
+ with an item in the context of a shop layout.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/registry/builtin/itemexpression/ItemExpressionHandler.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.registry.builtin.itemexpression">ItemExpressionHandler</a> - Interface in <a href="com/ghostchu/quickshop/api/registry/builtin/itemexpression/package-summary.html">com.ghostchu.quickshop.api.registry.builtin.itemexpression</a></dt>
 <dd>&nbsp;</dd>
@@ -3015,6 +3067,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/event/general/ShopItemMatchEvent.html#original()" class="member-name-link">original()</a> - Method in class com.ghostchu.quickshop.api.event.general.<a href="com/ghostchu/quickshop/api/event/general/ShopItemMatchEvent.html" title="class in com.ghostchu.quickshop.api.event.general">ShopItemMatchEvent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#originalItemName()" class="member-name-link">originalItemName()</a> - Method in record class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></dt>
+<dd>
+<div class="block">Returns the value of the <code>originalItemName</code> record component.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#outOfStockKey()" class="member-name-link">outOfStockKey()</a> - Method in record class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>outOfStockKey</code> record component.</div>
@@ -3151,6 +3207,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/PhasedEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.event.Phase,boolean)" class="member-name-link">PhasedEvent(Phase, boolean)</a> - Constructor for class com.ghostchu.quickshop.api.event.<a href="com/ghostchu/quickshop/api/event/PhasedEvent.html" title="class in com.ghostchu.quickshop.api.event">PhasedEvent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html#placeholder()" class="member-name-link">placeholder()</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a></dt>
+<dd>
+<div class="block">Returns the placeholder string associated with the render component.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/localization/text/Text.html#plain()" class="member-name-link">plain()</a> - Method in interface com.ghostchu.quickshop.api.localization.text.<a href="com/ghostchu/quickshop/api/localization/text/Text.html" title="interface in com.ghostchu.quickshop.api.localization.text">Text</a></dt>
 <dd>
 <div class="block">Getting the plain text for player locale</div>
@@ -3693,29 +3753,65 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Renders the layout of the specified shop into a list of components based on the provided locale.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html#render(com.ghostchu.quickshop.api.shop.Shop,org.bukkit.inventory.ItemStack,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">render(Shop, ItemStack, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a></dt>
+<dd>
+<div class="block">Renders a component based on the provided shop and item data.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a> - Interface in <a href="com/ghostchu/quickshop/api/shop/layout/package-summary.html">com.ghostchu.quickshop.api.shop.layout</a></dt>
+<dd>
+<div class="block">ControlComponent</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderComponents()" class="member-name-link">renderComponents()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
+<dd>
+<div class="block">A list of components that represent various aspects of a text-display layout or sign.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html#renderFor(com.ghostchu.quickshop.api.shop.layout.RenderComponent,org.bukkit.inventory.ItemStack)" class="member-name-link">renderFor(RenderComponent, ItemStack)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ItemComponent</a></dt>
+<dd>
+<div class="block">Renders a visual representation of the provided <a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout"><code>RenderComponent</code></a> and <code>ItemStack</code>.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderHeader(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderHeader(Shop, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the header section of the specified shop into a component.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderHeaderSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderHeaderSnapshot(SignRenderSnapshot, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the header section of a shop sign snapshot into a component based on the provided locale.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderItem(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderItem(Shop, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders an item section of the specified shop into a component based on the provided locale.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderLevels(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderLevels(Shop, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the enchantment level for books, or the duration for potions into a component based on the provided locale.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html#renderName(org.bukkit.inventory.ItemStack)" class="member-name-link">renderName(ItemStack)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/ItemComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">ItemComponent</a></dt>
+<dd>
+<div class="block">Renders a visual representation of the provided <code>ItemStack</code>.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderPrice(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderPrice(Shop, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the price section of the specified shop into a component based on the provided locale.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderPriceSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderPriceSnapshot(SignRenderSnapshot, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the price section of a shop sign snapshot into a component based on the provided locale.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html#renderSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderSnapshot(SignRenderSnapshot, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a></dt>
+<dd>
+<div class="block">Renders the snapshot of the current state of the <a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop"><code>SignRenderSnapshot</code></a>.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderSnapshot(SignRenderSnapshot, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
@@ -3723,11 +3819,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderTrading(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderTrading(Shop, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the trading section of the specified shop into a component.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html#renderTradingSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderTradingSnapshot(SignRenderSnapshot, ProxiedLocale)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/IShopLayoutProvider.html" title="interface in com.ghostchu.quickshop.api.shop">IShopLayoutProvider</a></dt>
 <dd>
-<div class="block">Renders the trading section of a shop sign snapshot into a component based on the provided locale.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/trading/TradePreview.html#requestedAmount()" class="member-name-link">requestedAmount()</a> - Method in record class com.ghostchu.quickshop.api.shop.trading.<a href="com/ghostchu/quickshop/api/shop/trading/TradePreview.html" title="class in com.ghostchu.quickshop.api.shop.trading">TradePreview</a></dt>
 <dd>
@@ -4621,6 +4721,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/settings/type/ShopTypeEnhancedEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.event.Phase,com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.shop.IShopType,com.ghostchu.quickshop.api.shop.IShopType)" class="member-name-link">ShopTypeEnhancedEvent(Phase, Shop, IShopType, IShopType)</a> - Constructor for class com.ghostchu.quickshop.api.event.settings.type.<a href="com/ghostchu/quickshop/api/event/settings/type/ShopTypeEnhancedEvent.html" title="class in com.ghostchu.quickshop.api.event.settings.type">ShopTypeEnhancedEvent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#shopTypeKey()" class="member-name-link">shopTypeKey()</a> - Method in record class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></dt>
+<dd>
+<div class="block">Returns the value of the <code>shopTypeKey</code> record component.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.html#shopTypeOrDefault(int)" class="member-name-link">shopTypeOrDefault(int)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager</a></dt>
 <dd>
 <div class="block">Retrieves the shop type associated with the specified ID.</div>
@@ -4663,7 +4767,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">SignRenderSnapshot</div>
 </dd>
-<dt><a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#%3Cinit%3E(boolean,net.kyori.adventure.text.Component,boolean,java.lang.String,java.lang.String,java.lang.String,int,boolean,java.lang.String,net.kyori.adventure.text.Component,int,java.lang.String,net.kyori.adventure.text.Component,java.util.List)" class="member-name-link">SignRenderSnapshot(boolean, Component, boolean, String, String, String, int, boolean, String, Component, int, String, Component, List&lt;String&gt;)</a> - Constructor for record class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></dt>
+<dt><a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#%3Cinit%3E(boolean,net.kyori.adventure.text.Component,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,java.lang.String,net.kyori.adventure.text.Component,net.kyori.adventure.text.Component,int,java.lang.String,net.kyori.adventure.text.Component,java.util.List)" class="member-name-link">SignRenderSnapshot(boolean, Component, boolean, String, String, String, String, int, boolean, String, Component, Component, int, String, Component, List&lt;String&gt;)</a> - Constructor for record class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>SignRenderSnapshot</code> record class.</div>
 </dd>
@@ -4722,6 +4826,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/economy/EconomyProvider.html#supportsCurrency(java.lang.String,java.lang.String)" class="member-name-link">supportsCurrency(String, String)</a> - Method in interface com.ghostchu.quickshop.api.economy.<a href="com/ghostchu/quickshop/api/economy/EconomyProvider.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyProvider</a></dt>
 <dd>
 <div class="block">Check if the EconomyProvider supports the given currency in the given world.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html#supportsSnapshot()" class="member-name-link">supportsSnapshot()</a> - Method in interface com.ghostchu.quickshop.api.shop.layout.<a href="com/ghostchu/quickshop/api/shop/layout/RenderComponent.html" title="interface in com.ghostchu.quickshop.api.shop.layout">RenderComponent</a></dt>
+<dd>
+<div class="block">Determines if this render component supports snapshot rendering.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/tag/TagService.html#SYS_AVOID" class="member-name-link">SYS_AVOID</a> - Static variable in interface com.ghostchu.quickshop.api.shop.tag.<a href="com/ghostchu/quickshop/api/shop/tag/TagService.html" title="interface in com.ghostchu.quickshop.api.shop.tag">TagService</a></dt>
 <dd>

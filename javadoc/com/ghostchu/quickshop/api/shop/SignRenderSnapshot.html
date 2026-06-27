@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#line-31">SignRenderSnapshot</a></span>(boolean&nbsp;inventoryAvailable, net.kyori.adventure.text.Component&nbsp;ownerName, boolean&nbsp;stackingShop, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tradingKey, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stackTradingKey, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outOfStockKey, int&nbsp;remainingStock, boolean&nbsp;overrideShopTypeText, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopStateKey, net.kyori.adventure.text.Component&nbsp;itemName, int&nbsp;itemAmount, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formattedPrice, net.kyori.adventure.text.Component&nbsp;levelLine, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;template)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#line-31">SignRenderSnapshot</a></span>(boolean&nbsp;inventoryAvailable, net.kyori.adventure.text.Component&nbsp;ownerName, boolean&nbsp;stackingShop, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopTypeKey, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tradingKey, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stackTradingKey, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outOfStockKey, int&nbsp;remainingStock, boolean&nbsp;overrideShopTypeText, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopStateKey, net.kyori.adventure.text.Component&nbsp;itemName, net.kyori.adventure.text.Component&nbsp;originalItemName, int&nbsp;itemAmount, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formattedPrice, net.kyori.adventure.text.Component&nbsp;levelLine, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;template)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">SignRenderSnapshot</div>
 <dl class="notes">
@@ -113,9 +113,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean,net.kyori.adventure.text.Component,boolean,java.lang.String,java.lang.String,java.lang.String,int,boolean,java.lang.String,net.kyori.adventure.text.Component,int,java.lang.String,net.kyori.adventure.text.Component,java.util.List)" class="member-name-link">SignRenderSnapshot</a><wbr>(boolean&nbsp;inventoryAvailable,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean,net.kyori.adventure.text.Component,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,java.lang.String,net.kyori.adventure.text.Component,net.kyori.adventure.text.Component,int,java.lang.String,net.kyori.adventure.text.Component,java.util.List)" class="member-name-link">SignRenderSnapshot</a><wbr>(boolean&nbsp;inventoryAvailable,
  net.kyori.adventure.text.Component&nbsp;ownerName,
  boolean&nbsp;stackingShop,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopTypeKey,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tradingKey,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stackTradingKey,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outOfStockKey,
@@ -123,6 +124,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;overrideShopTypeText,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopStateKey,
  net.kyori.adventure.text.Component&nbsp;itemName,
+ net.kyori.adventure.text.Component&nbsp;originalItemName,
  int&nbsp;itemAmount,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formattedPrice,
  net.kyori.adventure.text.Component&nbsp;levelLine,
@@ -179,30 +181,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>levelLine</code> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#outOfStockKey()" class="member-name-link">outOfStockKey</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>net.kyori.adventure.text.Component</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#originalItemName()" class="member-name-link">originalItemName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <code>originalItemName</code> record component.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#outOfStockKey()" class="member-name-link">outOfStockKey</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>outOfStockKey</code> record component.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideShopTypeText()" class="member-name-link">overrideShopTypeText</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#overrideShopTypeText()" class="member-name-link">overrideShopTypeText</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>overrideShopTypeText</code> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>net.kyori.adventure.text.Component</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownerName()" class="member-name-link">ownerName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>net.kyori.adventure.text.Component</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownerName()" class="member-name-link">ownerName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>ownerName</code> record component.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#remainingStock()" class="member-name-link">remainingStock</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#remainingStock()" class="member-name-link">remainingStock</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>remainingStock</code> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shopStateKey()" class="member-name-link">shopStateKey</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shopStateKey()" class="member-name-link">shopStateKey</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>shopStateKey</code> record component.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shopTypeKey()" class="member-name-link">shopTypeKey</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <code>shopTypeKey</code> record component.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stackingShop()" class="member-name-link">stackingShop</a>()</code></div>
@@ -247,11 +259,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(boolean,net.kyori.adventure.text.Component,boolean,java.lang.String,java.lang.String,java.lang.String,int,boolean,java.lang.String,net.kyori.adventure.text.Component,int,java.lang.String,net.kyori.adventure.text.Component,java.util.List)">
+<section class="detail" id="&lt;init&gt;(boolean,net.kyori.adventure.text.Component,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,java.lang.String,net.kyori.adventure.text.Component,net.kyori.adventure.text.Component,int,java.lang.String,net.kyori.adventure.text.Component,java.util.List)">
 <h3>SignRenderSnapshot</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#line-31">SignRenderSnapshot</a></span><wbr><span class="parameters">(boolean&nbsp;inventoryAvailable,
  net.kyori.adventure.text.Component&nbsp;ownerName,
  boolean&nbsp;stackingShop,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopTypeKey,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tradingKey,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stackTradingKey,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outOfStockKey,
@@ -259,6 +272,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;overrideShopTypeText,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shopStateKey,
  net.kyori.adventure.text.Component&nbsp;itemName,
+ net.kyori.adventure.text.Component&nbsp;originalItemName,
  int&nbsp;itemAmount,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formattedPrice,
  net.kyori.adventure.text.Component&nbsp;levelLine,
@@ -269,6 +283,7 @@ loadScripts(document, 'script');</script>
 <dd><code>inventoryAvailable</code> - the value for the <code>inventoryAvailable</code> record component</dd>
 <dd><code>ownerName</code> - the value for the <code>ownerName</code> record component</dd>
 <dd><code>stackingShop</code> - the value for the <code>stackingShop</code> record component</dd>
+<dd><code>shopTypeKey</code> - the value for the <code>shopTypeKey</code> record component</dd>
 <dd><code>tradingKey</code> - the value for the <code>tradingKey</code> record component</dd>
 <dd><code>stackTradingKey</code> - the value for the <code>stackTradingKey</code> record component</dd>
 <dd><code>outOfStockKey</code> - the value for the <code>outOfStockKey</code> record component</dd>
@@ -276,6 +291,7 @@ loadScripts(document, 'script');</script>
 <dd><code>overrideShopTypeText</code> - the value for the <code>overrideShopTypeText</code> record component</dd>
 <dd><code>shopStateKey</code> - the value for the <code>shopStateKey</code> record component</dd>
 <dd><code>itemName</code> - the value for the <code>itemName</code> record component</dd>
+<dd><code>originalItemName</code> - the value for the <code>originalItemName</code> record component</dd>
 <dd><code>itemAmount</code> - the value for the <code>itemAmount</code> record component</dd>
 <dd><code>formattedPrice</code> - the value for the <code>formattedPrice</code> record component</dd>
 <dd><code>levelLine</code> - the value for the <code>levelLine</code> record component</dd>
@@ -366,6 +382,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="shopTypeKey()">
+<h3>shopTypeKey</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#line-31">shopTypeKey</a></span>()</div>
+<div class="block">Returns the value of the <code>shopTypeKey</code> record component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of the <code>shopTypeKey</code> record component</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="tradingKey()">
 <h3>tradingKey</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#line-31">tradingKey</a></span>()</div>
@@ -439,6 +466,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value of the <code>itemName</code> record component</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="originalItemName()">
+<h3>originalItemName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">net.kyori.adventure.text.Component</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/com/ghostchu/quickshop/api/shop/SignRenderSnapshot.html#line-31">originalItemName</a></span>()</div>
+<div class="block">Returns the value of the <code>originalItemName</code> record component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of the <code>originalItemName</code> record component</dd>
 </dl>
 </section>
 </li>

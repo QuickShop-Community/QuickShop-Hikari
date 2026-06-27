@@ -57,6 +57,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="#com.ghostchu.quickshop.api.shop">com.ghostchu.quickshop.api.shop</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="#com.ghostchu.quickshop.api.shop.layout">com.ghostchu.quickshop.api.shop.layout</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <section class="class-uses">
 <ul class="block-list">
@@ -85,13 +87,17 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><span class="type-name-label">IShopLayoutProvider.</span><code><a href="../IShopLayoutProvider.html#renderHeaderSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderHeaderSnapshot</a><wbr>(<a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a>&nbsp;snapshot,
  <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Renders the header section of a shop sign snapshot into a component based on the provided locale.</div>
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </div>
 <div class="col-first odd-row-color"><code>net.kyori.adventure.text.Component</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">IShopLayoutProvider.</span><code><a href="../IShopLayoutProvider.html#renderPriceSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderPriceSnapshot</a><wbr>(<a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a>&nbsp;snapshot,
  <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Renders the price section of a shop sign snapshot into a component based on the provided locale.</div>
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
 </div>
 <div class="col-first even-row-color"><code>default <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;net.kyori.adventure.text.Component&gt;</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">IShopLayoutProvider.</span><code><a href="../IShopLayoutProvider.html#renderSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderSnapshot</a><wbr>(<a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a>&nbsp;snapshot,
@@ -103,7 +109,31 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color"><span class="type-name-label">IShopLayoutProvider.</span><code><a href="../IShopLayoutProvider.html#renderTradingSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderTradingSnapshot</a><wbr>(<a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a>&nbsp;snapshot,
  <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Renders the trading section of a shop sign snapshot into a component based on the provided locale.</div>
+<div class="block"><span class="deprecated-label">Deprecated, for removal: This API element is subject to removal in a future version.</span>
+<div class="deprecation-comment">Individual render methods replaced my the render component system.</div>
+</div>
+</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="com.ghostchu.quickshop.api.shop.layout">
+<h2>Uses of <a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a> in <a href="../layout/package-summary.html">com.ghostchu.quickshop.api.shop.layout</a></h2>
+<div class="caption"><span>Methods in <a href="../layout/package-summary.html">com.ghostchu.quickshop.api.shop.layout</a> with parameters of type <a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ConditionalRenderComponent.</span><code><a href="../layout/ConditionalRenderComponent.html#isFullLine(com.ghostchu.quickshop.api.shop.SignRenderSnapshot)" class="member-name-link">isFullLine</a><wbr>(<a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a>&nbsp;snapshot)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Determines if a specific render component for a shop sign is designated as a full-line replacement.</div>
+</div>
+<div class="col-first odd-row-color"><code>net.kyori.adventure.text.Component</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">RenderComponent.</span><code><a href="../layout/RenderComponent.html#renderSnapshot(com.ghostchu.quickshop.api.shop.SignRenderSnapshot,com.ghostchu.quickshop.api.localization.text.ProxiedLocale)" class="member-name-link">renderSnapshot</a><wbr>(@NotNull <a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop">SignRenderSnapshot</a>&nbsp;snapshot,
+ <a href="../../localization/text/ProxiedLocale.html" title="class in com.ghostchu.quickshop.api.localization.text">ProxiedLocale</a>&nbsp;locale)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Renders the snapshot of the current state of the <a href="../SignRenderSnapshot.html" title="class in com.ghostchu.quickshop.api.shop"><code>SignRenderSnapshot</code></a>.</div>
 </div>
 </div>
 </section>

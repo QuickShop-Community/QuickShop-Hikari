@@ -38,6 +38,7 @@ com.ghostchu.quickshop.api.shop.cache
 com.ghostchu.quickshop.api.shop.display
 com.ghostchu.quickshop.api.shop.interaction
 com.ghostchu.quickshop.api.shop.inventory
+com.ghostchu.quickshop.api.shop.layout
 com.ghostchu.quickshop.api.shop.meta
 com.ghostchu.quickshop.api.shop.permission
 com.ghostchu.quickshop.api.shop.state

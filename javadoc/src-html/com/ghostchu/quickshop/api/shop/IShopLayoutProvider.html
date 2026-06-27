@@ -32,153 +32,253 @@
 <span class="source-line-no">019</span><span id="line-19"> */</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;</span>
-<span class="source-line-no">022</span><span id="line-22">import net.kyori.adventure.text.Component;</span>
-<span class="source-line-no">023</span><span id="line-23">import org.jetbrains.annotations.NotNull;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">import java.util.ArrayList;</span>
-<span class="source-line-no">026</span><span id="line-26">import java.util.LinkedList;</span>
-<span class="source-line-no">027</span><span id="line-27">import java.util.List;</span>
-<span class="source-line-no">028</span><span id="line-28">import java.util.Locale;</span>
-<span class="source-line-no">029</span><span id="line-29">import java.util.concurrent.CompletableFuture;</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">/**</span>
-<span class="source-line-no">032</span><span id="line-32"> * IShopLayout</span>
-<span class="source-line-no">033</span><span id="line-33"> *</span>
-<span class="source-line-no">034</span><span id="line-34"> * @author creatorfromhell</span>
-<span class="source-line-no">035</span><span id="line-35"> * @since 6.2.0.11</span>
-<span class="source-line-no">036</span><span id="line-36"> */</span>
-<span class="source-line-no">037</span><span id="line-37">public interface IShopLayoutProvider {</span>
-<span class="source-line-no">038</span><span id="line-38"></span>
-<span class="source-line-no">039</span><span id="line-39">  /**</span>
-<span class="source-line-no">040</span><span id="line-40">   * Generates a layout template for the specified shop.</span>
-<span class="source-line-no">041</span><span id="line-41">   *</span>
-<span class="source-line-no">042</span><span id="line-42">   * @param shop the shop instance for which the layout template is to be generated</span>
-<span class="source-line-no">043</span><span id="line-43">   * @return a LinkedList of Strings representing the layout template of the shop</span>
-<span class="source-line-no">044</span><span id="line-44">   */</span>
-<span class="source-line-no">045</span><span id="line-45">  LinkedList&lt;String&gt; layoutTemplate(final Shop shop);</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">  /**</span>
-<span class="source-line-no">048</span><span id="line-48">   * Creates a snapshot of a shop sign that encapsulates the visual and structural data required</span>
-<span class="source-line-no">049</span><span id="line-49">   * to render the sign, based on the specified shop and locale.</span>
-<span class="source-line-no">050</span><span id="line-50">   *</span>
-<span class="source-line-no">051</span><span id="line-51">   * @param shop the shop instance for which the sign snapshot is to be created</span>
-<span class="source-line-no">052</span><span id="line-52">   * @param locale the locale to be used for formatting and rendering the snapshot</span>
-<span class="source-line-no">053</span><span id="line-53">   * @return a CompletableFuture that completes with a SignRenderSnapshot, representing</span>
-<span class="source-line-no">054</span><span id="line-54">   *         the state of the shop sign</span>
+<span class="source-line-no">022</span><span id="line-22">import com.ghostchu.quickshop.api.shop.layout.ConditionalRenderComponent;</span>
+<span class="source-line-no">023</span><span id="line-23">import com.ghostchu.quickshop.api.shop.layout.ItemComponent;</span>
+<span class="source-line-no">024</span><span id="line-24">import com.ghostchu.quickshop.api.shop.layout.RenderComponent;</span>
+<span class="source-line-no">025</span><span id="line-25">import net.kyori.adventure.text.Component;</span>
+<span class="source-line-no">026</span><span id="line-26">import net.kyori.adventure.text.minimessage.MiniMessage;</span>
+<span class="source-line-no">027</span><span id="line-27">import org.jetbrains.annotations.NotNull;</span>
+<span class="source-line-no">028</span><span id="line-28"></span>
+<span class="source-line-no">029</span><span id="line-29">import java.util.ArrayList;</span>
+<span class="source-line-no">030</span><span id="line-30">import java.util.LinkedList;</span>
+<span class="source-line-no">031</span><span id="line-31">import java.util.List;</span>
+<span class="source-line-no">032</span><span id="line-32">import java.util.concurrent.CompletableFuture;</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">/**</span>
+<span class="source-line-no">035</span><span id="line-35"> * IShopLayout</span>
+<span class="source-line-no">036</span><span id="line-36"> *</span>
+<span class="source-line-no">037</span><span id="line-37"> * @author creatorfromhell</span>
+<span class="source-line-no">038</span><span id="line-38"> * @since 6.2.0.11</span>
+<span class="source-line-no">039</span><span id="line-39"> */</span>
+<span class="source-line-no">040</span><span id="line-40">public interface IShopLayoutProvider {</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">  /**</span>
+<span class="source-line-no">043</span><span id="line-43">   * Provides a list of {@link ItemComponent} objects, each representing a component associated</span>
+<span class="source-line-no">044</span><span id="line-44">   * with an item in the context of a shop layout.</span>
+<span class="source-line-no">045</span><span id="line-45">   *</span>
+<span class="source-line-no">046</span><span id="line-46">   * @return a list of {@link ItemComponent} objects representing the item components.</span>
+<span class="source-line-no">047</span><span id="line-47">   */</span>
+<span class="source-line-no">048</span><span id="line-48">  List&lt;ItemComponent&gt; itemComponents();</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">  /**</span>
+<span class="source-line-no">051</span><span id="line-51">   * A list of components that represent various aspects of a text-display layout or sign.</span>
+<span class="source-line-no">052</span><span id="line-52">   *</span>
+<span class="source-line-no">053</span><span id="line-53">   * @return a list of {@link RenderComponent} objects representing the render components</span>
+<span class="source-line-no">054</span><span id="line-54">   * @since 6.3.0.0</span>
 <span class="source-line-no">055</span><span id="line-55">   */</span>
-<span class="source-line-no">056</span><span id="line-56">  CompletableFuture&lt;SignRenderSnapshot&gt; createSignSnapshot(@NotNull Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">056</span><span id="line-56">  List&lt;RenderComponent&gt; renderComponents();</span>
 <span class="source-line-no">057</span><span id="line-57"></span>
 <span class="source-line-no">058</span><span id="line-58">  /**</span>
-<span class="source-line-no">059</span><span id="line-59">   * Renders a snapshot of a shop sign into a list of components based on the provided locale.</span>
+<span class="source-line-no">059</span><span id="line-59">   * Filters the list of render components to include only those that are full line replacements.</span>
 <span class="source-line-no">060</span><span id="line-60">   *</span>
-<span class="source-line-no">061</span><span id="line-61">   * @param snapshot the snapshot representing the current state of the shop sign to be rendered</span>
-<span class="source-line-no">062</span><span id="line-62">   * @param locale the locale to be used for rendering the components</span>
-<span class="source-line-no">063</span><span id="line-63">   * @return a list of components representing the rendered shop sign snapshot</span>
-<span class="source-line-no">064</span><span id="line-64">   */</span>
-<span class="source-line-no">065</span><span id="line-65">  default List&lt;Component&gt; renderSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale) {</span>
-<span class="source-line-no">066</span><span id="line-66"></span>
-<span class="source-line-no">067</span><span id="line-67">    final List&lt;Component&gt; rendered = new ArrayList&lt;&gt;(4);</span>
+<span class="source-line-no">061</span><span id="line-61">   * @return a list of {@link RenderComponent} objects representing components that replace entire lines</span>
+<span class="source-line-no">062</span><span id="line-62">   * @since 6.3.0.0</span>
+<span class="source-line-no">063</span><span id="line-63">   */</span>
+<span class="source-line-no">064</span><span id="line-64">  default List&lt;RenderComponent&gt; fullLineRenderComponents() {</span>
+<span class="source-line-no">065</span><span id="line-65"></span>
+<span class="source-line-no">066</span><span id="line-66">    return renderComponents().stream().filter(RenderComponent::fullLine).toList();</span>
+<span class="source-line-no">067</span><span id="line-67">  }</span>
 <span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">    for (int i = 0; i &lt; 4; i++) {</span>
-<span class="source-line-no">070</span><span id="line-70">      if (snapshot.template().size() &lt;= i || snapshot.template().get(i).isBlank()) {</span>
-<span class="source-line-no">071</span><span id="line-71">        rendered.add(Component.empty());</span>
-<span class="source-line-no">072</span><span id="line-72">        continue;</span>
-<span class="source-line-no">073</span><span id="line-73">      }</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">      rendered.add(switch (snapshot.template().get(i).toLowerCase(Locale.ROOT)) {</span>
-<span class="source-line-no">076</span><span id="line-76">        case "header" -&gt; renderHeaderSnapshot(snapshot, locale);</span>
-<span class="source-line-no">077</span><span id="line-77">        case "trading" -&gt; renderTradingSnapshot(snapshot, locale);</span>
-<span class="source-line-no">078</span><span id="line-78">        case "item" -&gt; snapshot.itemName();</span>
-<span class="source-line-no">079</span><span id="line-79">        case "price" -&gt; renderPriceSnapshot(snapshot, locale);</span>
-<span class="source-line-no">080</span><span id="line-80">        case "level" -&gt; snapshot.levelLine();</span>
-<span class="source-line-no">081</span><span id="line-81">        default -&gt; Component.empty();</span>
-<span class="source-line-no">082</span><span id="line-82">      });</span>
-<span class="source-line-no">083</span><span id="line-83">    }</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85">    return rendered;</span>
-<span class="source-line-no">086</span><span id="line-86">  }</span>
-<span class="source-line-no">087</span><span id="line-87"></span>
-<span class="source-line-no">088</span><span id="line-88">  /**</span>
-<span class="source-line-no">089</span><span id="line-89">   * Renders the header section of a shop sign snapshot into a component based on the provided locale.</span>
+<span class="source-line-no">069</span><span id="line-69">  /**</span>
+<span class="source-line-no">070</span><span id="line-70">   * Filters the list of render components to include only those that are not full line replacements.</span>
+<span class="source-line-no">071</span><span id="line-71">   *</span>
+<span class="source-line-no">072</span><span id="line-72">   * @return a list of {@link RenderComponent} objects representing components that do not replace entire lines</span>
+<span class="source-line-no">073</span><span id="line-73">   * @since 6.3.0.0</span>
+<span class="source-line-no">074</span><span id="line-74">   */</span>
+<span class="source-line-no">075</span><span id="line-75">  default List&lt;RenderComponent&gt; inlineRenderComponents() {</span>
+<span class="source-line-no">076</span><span id="line-76">    return renderComponents().stream().filter(component -&gt; !component.fullLine()).toList();</span>
+<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79">  /**</span>
+<span class="source-line-no">080</span><span id="line-80">   * Generates a layout template for the specified shop.</span>
+<span class="source-line-no">081</span><span id="line-81">   *</span>
+<span class="source-line-no">082</span><span id="line-82">   * @param shop the shop instance for which the layout template is to be generated</span>
+<span class="source-line-no">083</span><span id="line-83">   * @return a LinkedList of Strings representing the layout template of the shop</span>
+<span class="source-line-no">084</span><span id="line-84">   */</span>
+<span class="source-line-no">085</span><span id="line-85">  LinkedList&lt;String&gt; layoutTemplate(final Shop shop);</span>
+<span class="source-line-no">086</span><span id="line-86"></span>
+<span class="source-line-no">087</span><span id="line-87">  /**</span>
+<span class="source-line-no">088</span><span id="line-88">   * Creates a snapshot of a shop sign that encapsulates the visual and structural data required</span>
+<span class="source-line-no">089</span><span id="line-89">   * to render the sign, based on the specified shop and locale.</span>
 <span class="source-line-no">090</span><span id="line-90">   *</span>
-<span class="source-line-no">091</span><span id="line-91">   * @param snapshot the snapshot representing the current state of the shop sign's header to be rendered</span>
-<span class="source-line-no">092</span><span id="line-92">   * @param locale the locale to be used for rendering the header component</span>
-<span class="source-line-no">093</span><span id="line-93">   * @return a component representing the rendered header section of the shop sign snapshot</span>
-<span class="source-line-no">094</span><span id="line-94">   */</span>
-<span class="source-line-no">095</span><span id="line-95">  Component renderHeaderSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);</span>
-<span class="source-line-no">096</span><span id="line-96"></span>
-<span class="source-line-no">097</span><span id="line-97">  /**</span>
-<span class="source-line-no">098</span><span id="line-98">   * Renders the trading section of a shop sign snapshot into a component based on the provided locale.</span>
-<span class="source-line-no">099</span><span id="line-99">   *</span>
-<span class="source-line-no">100</span><span id="line-100">   * @param snapshot the snapshot representing the current state of the shop sign's trading section to be rendered</span>
-<span class="source-line-no">101</span><span id="line-101">   * @param locale the locale to be used for rendering the trading component</span>
-<span class="source-line-no">102</span><span id="line-102">   * @return a component representing the rendered trading section of the shop sign snapshot</span>
-<span class="source-line-no">103</span><span id="line-103">   */</span>
-<span class="source-line-no">104</span><span id="line-104">  Component renderTradingSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">  /**</span>
-<span class="source-line-no">107</span><span id="line-107">   * Renders the price section of a shop sign snapshot into a component based on the provided locale.</span>
-<span class="source-line-no">108</span><span id="line-108">   *</span>
-<span class="source-line-no">109</span><span id="line-109">   * @param snapshot the snapshot representing the current state of the shop sign to be rendered</span>
-<span class="source-line-no">110</span><span id="line-110">   * @param locale the locale to be used for rendering the price component</span>
-<span class="source-line-no">111</span><span id="line-111">   * @return a component representing the rendered price section of the shop sign snapshot</span>
-<span class="source-line-no">112</span><span id="line-112">   */</span>
-<span class="source-line-no">113</span><span id="line-113">  Component renderPriceSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);</span>
+<span class="source-line-no">091</span><span id="line-91">   * @param shop the shop instance for which the sign snapshot is to be created</span>
+<span class="source-line-no">092</span><span id="line-92">   * @param locale the locale to be used for formatting and rendering the snapshot</span>
+<span class="source-line-no">093</span><span id="line-93">   * @return a CompletableFuture that completes with a SignRenderSnapshot, representing</span>
+<span class="source-line-no">094</span><span id="line-94">   *         the state of the shop sign</span>
+<span class="source-line-no">095</span><span id="line-95">   */</span>
+<span class="source-line-no">096</span><span id="line-96">  CompletableFuture&lt;SignRenderSnapshot&gt; createSignSnapshot(@NotNull Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">097</span><span id="line-97"></span>
+<span class="source-line-no">098</span><span id="line-98">  /**</span>
+<span class="source-line-no">099</span><span id="line-99">   * Renders a snapshot of a shop sign into a list of components based on the provided locale.</span>
+<span class="source-line-no">100</span><span id="line-100">   *</span>
+<span class="source-line-no">101</span><span id="line-101">   * @param snapshot the snapshot representing the current state of the shop sign to be rendered</span>
+<span class="source-line-no">102</span><span id="line-102">   * @param locale the locale to be used for rendering the components</span>
+<span class="source-line-no">103</span><span id="line-103">   * @return a list of components representing the rendered shop sign snapshot</span>
+<span class="source-line-no">104</span><span id="line-104">   */</span>
+<span class="source-line-no">105</span><span id="line-105">  default List&lt;Component&gt; renderSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale) {</span>
+<span class="source-line-no">106</span><span id="line-106"></span>
+<span class="source-line-no">107</span><span id="line-107">    final List&lt;Component&gt; rendered = new ArrayList&lt;&gt;(4);</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">    for (int i = 0; i &lt; 4; i++) {</span>
+<span class="source-line-no">110</span><span id="line-110">      if (snapshot.template().size() &lt;= i || snapshot.template().get(i).isBlank()) {</span>
+<span class="source-line-no">111</span><span id="line-111">        rendered.add(Component.empty());</span>
+<span class="source-line-no">112</span><span id="line-112">        continue;</span>
+<span class="source-line-no">113</span><span id="line-113">      }</span>
 <span class="source-line-no">114</span><span id="line-114"></span>
-<span class="source-line-no">115</span><span id="line-115">  /**</span>
-<span class="source-line-no">116</span><span id="line-116">   * Renders the layout of the specified shop into a list of components based on the provided locale.</span>
-<span class="source-line-no">117</span><span id="line-117">   *</span>
-<span class="source-line-no">118</span><span id="line-118">   * @param shop the shop instance for which the components are to be rendered</span>
-<span class="source-line-no">119</span><span id="line-119">   * @param locale the locale to be used for rendering the components</span>
-<span class="source-line-no">120</span><span id="line-120">   * @return a LinkedList of components representing the visual layout of the shop</span>
-<span class="source-line-no">121</span><span id="line-121">   */</span>
-<span class="source-line-no">122</span><span id="line-122">  LinkedList&lt;Component&gt; render(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">115</span><span id="line-115">      final String line = snapshot.template().get(i);</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">      boolean isFullLine = false;</span>
+<span class="source-line-no">118</span><span id="line-118">      for (final RenderComponent component : fullLineRenderComponents()) {</span>
+<span class="source-line-no">119</span><span id="line-119"></span>
+<span class="source-line-no">120</span><span id="line-120">        if (!component.supportsSnapshot()) {</span>
+<span class="source-line-no">121</span><span id="line-121">          continue;</span>
+<span class="source-line-no">122</span><span id="line-122">        }</span>
 <span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">  /**</span>
-<span class="source-line-no">125</span><span id="line-125">   * Renders the header section of the specified shop into a component.</span>
-<span class="source-line-no">126</span><span id="line-126">   *</span>
-<span class="source-line-no">127</span><span id="line-127">   * @param shop the shop instance for which the header component is to be rendered</span>
-<span class="source-line-no">128</span><span id="line-128">   * @param locale the locale to be used for rendering the header component</span>
-<span class="source-line-no">129</span><span id="line-129">   * @return a component representing the visual header of the shop</span>
-<span class="source-line-no">130</span><span id="line-130">   */</span>
-<span class="source-line-no">131</span><span id="line-131">  Component renderHeader(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
-<span class="source-line-no">132</span><span id="line-132"></span>
-<span class="source-line-no">133</span><span id="line-133">  /**</span>
-<span class="source-line-no">134</span><span id="line-134">   * Renders the trading section of the specified shop into a component.</span>
-<span class="source-line-no">135</span><span id="line-135">   *</span>
-<span class="source-line-no">136</span><span id="line-136">   * @param shop the shop instance for which the trading component is to be rendered</span>
-<span class="source-line-no">137</span><span id="line-137">   * @param locale the locale to be used for rendering the trading component</span>
-<span class="source-line-no">138</span><span id="line-138">   * @return a component representing the visual trading section of the shop</span>
-<span class="source-line-no">139</span><span id="line-139">   */</span>
-<span class="source-line-no">140</span><span id="line-140">  Component renderTrading(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
-<span class="source-line-no">141</span><span id="line-141"></span>
-<span class="source-line-no">142</span><span id="line-142">  /**</span>
-<span class="source-line-no">143</span><span id="line-143">   * Renders an item section of the specified shop into a component based on the provided locale.</span>
-<span class="source-line-no">144</span><span id="line-144">   *</span>
-<span class="source-line-no">145</span><span id="line-145">   * @param shop the shop instance for which the item component is to be rendered</span>
-<span class="source-line-no">146</span><span id="line-146">   * @param locale the locale to be used for rendering the item component</span>
-<span class="source-line-no">147</span><span id="line-147">   * @return a component representing the visual item section of the shop</span>
-<span class="source-line-no">148</span><span id="line-148">   */</span>
-<span class="source-line-no">149</span><span id="line-149">  Component renderItem(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
-<span class="source-line-no">150</span><span id="line-150"></span>
-<span class="source-line-no">151</span><span id="line-151">  /**</span>
-<span class="source-line-no">152</span><span id="line-152">   * Renders the price section of the specified shop into a component based on the provided locale.</span>
-<span class="source-line-no">153</span><span id="line-153">   *</span>
-<span class="source-line-no">154</span><span id="line-154">   * @param shop the shop instance for which the price component is to be rendered</span>
-<span class="source-line-no">155</span><span id="line-155">   * @param locale the locale to be used for rendering the price component</span>
-<span class="source-line-no">156</span><span id="line-156">   * @return a component representing the visual price section of the shop</span>
-<span class="source-line-no">157</span><span id="line-157">   */</span>
-<span class="source-line-no">158</span><span id="line-158">  Component renderPrice(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
-<span class="source-line-no">159</span><span id="line-159"></span>
-<span class="source-line-no">160</span><span id="line-160">  /**</span>
-<span class="source-line-no">161</span><span id="line-161">   * Renders the enchantment level for books, or the duration for potions into a component based on the provided locale.</span>
-<span class="source-line-no">162</span><span id="line-162">   *</span>
-<span class="source-line-no">163</span><span id="line-163">   * @param shop the shop instance for which the level component is to be rendered</span>
-<span class="source-line-no">164</span><span id="line-164">   * @param locale the locale to be used for rendering the level component</span>
-<span class="source-line-no">165</span><span id="line-165">   * @return a component representing the visual level section of the shop</span>
-<span class="source-line-no">166</span><span id="line-166">   */</span>
-<span class="source-line-no">167</span><span id="line-167">  Component renderLevels(final @NotNull Shop shop, final @NotNull ProxiedLocale locale);</span>
-<span class="source-line-no">168</span><span id="line-168">}</span>
+<span class="source-line-no">124</span><span id="line-124">        if (!component.appliesTo(line)) {</span>
+<span class="source-line-no">125</span><span id="line-125">          continue;</span>
+<span class="source-line-no">126</span><span id="line-126">        }</span>
+<span class="source-line-no">127</span><span id="line-127"></span>
+<span class="source-line-no">128</span><span id="line-128">        rendered.add(component.renderSnapshot(snapshot, locale));</span>
+<span class="source-line-no">129</span><span id="line-129">        isFullLine = true;</span>
+<span class="source-line-no">130</span><span id="line-130">        break;</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">      }</span>
+<span class="source-line-no">133</span><span id="line-133"></span>
+<span class="source-line-no">134</span><span id="line-134">      if (isFullLine) {</span>
+<span class="source-line-no">135</span><span id="line-135">        continue;</span>
+<span class="source-line-no">136</span><span id="line-136">      }</span>
+<span class="source-line-no">137</span><span id="line-137"></span>
+<span class="source-line-no">138</span><span id="line-138">      Component lineComponent = MiniMessage.miniMessage().deserialize(line);</span>
+<span class="source-line-no">139</span><span id="line-139">      for (final RenderComponent component : inlineRenderComponents()) {</span>
+<span class="source-line-no">140</span><span id="line-140"></span>
+<span class="source-line-no">141</span><span id="line-141">        if (!component.supportsSnapshot()) {</span>
+<span class="source-line-no">142</span><span id="line-142">          continue;</span>
+<span class="source-line-no">143</span><span id="line-143">        }</span>
+<span class="source-line-no">144</span><span id="line-144"></span>
+<span class="source-line-no">145</span><span id="line-145">        if (!component.appliesTo(line)) {</span>
+<span class="source-line-no">146</span><span id="line-146">          continue;</span>
+<span class="source-line-no">147</span><span id="line-147">        }</span>
+<span class="source-line-no">148</span><span id="line-148"></span>
+<span class="source-line-no">149</span><span id="line-149">        if (component instanceof final ConditionalRenderComponent conditionalComponent &amp;&amp; conditionalComponent.isFullLine(snapshot)) {</span>
+<span class="source-line-no">150</span><span id="line-150">          lineComponent = conditionalComponent.renderSnapshot(snapshot, locale);</span>
+<span class="source-line-no">151</span><span id="line-151">          break;</span>
+<span class="source-line-no">152</span><span id="line-152">        }</span>
+<span class="source-line-no">153</span><span id="line-153"></span>
+<span class="source-line-no">154</span><span id="line-154">        lineComponent = lineComponent.replaceText(builder -&gt; builder</span>
+<span class="source-line-no">155</span><span id="line-155">                .matchLiteral(component.placeholder())</span>
+<span class="source-line-no">156</span><span id="line-156">                .replacement(component.renderSnapshot(snapshot, locale)));</span>
+<span class="source-line-no">157</span><span id="line-157">      }</span>
+<span class="source-line-no">158</span><span id="line-158">      rendered.add(lineComponent);</span>
+<span class="source-line-no">159</span><span id="line-159">    }</span>
+<span class="source-line-no">160</span><span id="line-160"></span>
+<span class="source-line-no">161</span><span id="line-161">    return rendered;</span>
+<span class="source-line-no">162</span><span id="line-162">  }</span>
+<span class="source-line-no">163</span><span id="line-163"></span>
+<span class="source-line-no">164</span><span id="line-164">  /**</span>
+<span class="source-line-no">165</span><span id="line-165">   * Renders the header section of a shop sign snapshot into a component based on the provided locale.</span>
+<span class="source-line-no">166</span><span id="line-166">   *</span>
+<span class="source-line-no">167</span><span id="line-167">   * @param snapshot the snapshot representing the current state of the shop sign's header to be rendered</span>
+<span class="source-line-no">168</span><span id="line-168">   * @param locale the locale to be used for rendering the header component</span>
+<span class="source-line-no">169</span><span id="line-169">   * @return a component representing the rendered header section of the shop sign snapshot</span>
+<span class="source-line-no">170</span><span id="line-170">   *</span>
+<span class="source-line-no">171</span><span id="line-171">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">172</span><span id="line-172">   */</span>
+<span class="source-line-no">173</span><span id="line-173">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">174</span><span id="line-174">  Component renderHeaderSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);</span>
+<span class="source-line-no">175</span><span id="line-175"></span>
+<span class="source-line-no">176</span><span id="line-176">  /**</span>
+<span class="source-line-no">177</span><span id="line-177">   * Renders the trading section of a shop sign snapshot into a component based on the provided locale.</span>
+<span class="source-line-no">178</span><span id="line-178">   *</span>
+<span class="source-line-no">179</span><span id="line-179">   * @param snapshot the snapshot representing the current state of the shop sign's trading section to be rendered</span>
+<span class="source-line-no">180</span><span id="line-180">   * @param locale the locale to be used for rendering the trading component</span>
+<span class="source-line-no">181</span><span id="line-181">   * @return a component representing the rendered trading section of the shop sign snapshot</span>
+<span class="source-line-no">182</span><span id="line-182">   *</span>
+<span class="source-line-no">183</span><span id="line-183">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">184</span><span id="line-184">   */</span>
+<span class="source-line-no">185</span><span id="line-185">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">186</span><span id="line-186">  Component renderTradingSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);</span>
+<span class="source-line-no">187</span><span id="line-187"></span>
+<span class="source-line-no">188</span><span id="line-188">  /**</span>
+<span class="source-line-no">189</span><span id="line-189">   * Renders the price section of a shop sign snapshot into a component based on the provided locale.</span>
+<span class="source-line-no">190</span><span id="line-190">   *</span>
+<span class="source-line-no">191</span><span id="line-191">   * @param snapshot the snapshot representing the current state of the shop sign to be rendered</span>
+<span class="source-line-no">192</span><span id="line-192">   * @param locale the locale to be used for rendering the price component</span>
+<span class="source-line-no">193</span><span id="line-193">   * @return a component representing the rendered price section of the shop sign snapshot</span>
+<span class="source-line-no">194</span><span id="line-194">   *</span>
+<span class="source-line-no">195</span><span id="line-195">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">196</span><span id="line-196">   */</span>
+<span class="source-line-no">197</span><span id="line-197">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">198</span><span id="line-198">  Component renderPriceSnapshot(final SignRenderSnapshot snapshot, final ProxiedLocale locale);</span>
+<span class="source-line-no">199</span><span id="line-199"></span>
+<span class="source-line-no">200</span><span id="line-200">  /**</span>
+<span class="source-line-no">201</span><span id="line-201">   * Renders the layout of the specified shop into a list of components based on the provided locale.</span>
+<span class="source-line-no">202</span><span id="line-202">   *</span>
+<span class="source-line-no">203</span><span id="line-203">   * @param shop the shop instance for which the components are to be rendered</span>
+<span class="source-line-no">204</span><span id="line-204">   * @param locale the locale to be used for rendering the components</span>
+<span class="source-line-no">205</span><span id="line-205">   * @return a LinkedList of components representing the visual layout of the shop</span>
+<span class="source-line-no">206</span><span id="line-206">   */</span>
+<span class="source-line-no">207</span><span id="line-207">  LinkedList&lt;Component&gt; render(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
+<span class="source-line-no">209</span><span id="line-209">  /**</span>
+<span class="source-line-no">210</span><span id="line-210">   * Renders the header section of the specified shop into a component.</span>
+<span class="source-line-no">211</span><span id="line-211">   *</span>
+<span class="source-line-no">212</span><span id="line-212">   * @param shop the shop instance for which the header component is to be rendered</span>
+<span class="source-line-no">213</span><span id="line-213">   * @param locale the locale to be used for rendering the header component</span>
+<span class="source-line-no">214</span><span id="line-214">   * @return a component representing the visual header of the shop</span>
+<span class="source-line-no">215</span><span id="line-215">   *</span>
+<span class="source-line-no">216</span><span id="line-216">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">217</span><span id="line-217">   */</span>
+<span class="source-line-no">218</span><span id="line-218">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">219</span><span id="line-219">  Component renderHeader(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">220</span><span id="line-220"></span>
+<span class="source-line-no">221</span><span id="line-221">  /**</span>
+<span class="source-line-no">222</span><span id="line-222">   * Renders the trading section of the specified shop into a component.</span>
+<span class="source-line-no">223</span><span id="line-223">   *</span>
+<span class="source-line-no">224</span><span id="line-224">   * @param shop the shop instance for which the trading component is to be rendered</span>
+<span class="source-line-no">225</span><span id="line-225">   * @param locale the locale to be used for rendering the trading component</span>
+<span class="source-line-no">226</span><span id="line-226">   * @return a component representing the visual trading section of the shop</span>
+<span class="source-line-no">227</span><span id="line-227">   *</span>
+<span class="source-line-no">228</span><span id="line-228">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">229</span><span id="line-229">   */</span>
+<span class="source-line-no">230</span><span id="line-230">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">231</span><span id="line-231">  Component renderTrading(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">232</span><span id="line-232"></span>
+<span class="source-line-no">233</span><span id="line-233">  /**</span>
+<span class="source-line-no">234</span><span id="line-234">   * Renders an item section of the specified shop into a component based on the provided locale.</span>
+<span class="source-line-no">235</span><span id="line-235">   *</span>
+<span class="source-line-no">236</span><span id="line-236">   * @param shop the shop instance for which the item component is to be rendered</span>
+<span class="source-line-no">237</span><span id="line-237">   * @param locale the locale to be used for rendering the item component</span>
+<span class="source-line-no">238</span><span id="line-238">   * @return a component representing the visual item section of the shop</span>
+<span class="source-line-no">239</span><span id="line-239">   *</span>
+<span class="source-line-no">240</span><span id="line-240">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">241</span><span id="line-241">   */</span>
+<span class="source-line-no">242</span><span id="line-242">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">243</span><span id="line-243">  Component renderItem(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">244</span><span id="line-244"></span>
+<span class="source-line-no">245</span><span id="line-245">  /**</span>
+<span class="source-line-no">246</span><span id="line-246">   * Renders the price section of the specified shop into a component based on the provided locale.</span>
+<span class="source-line-no">247</span><span id="line-247">   *</span>
+<span class="source-line-no">248</span><span id="line-248">   * @param shop the shop instance for which the price component is to be rendered</span>
+<span class="source-line-no">249</span><span id="line-249">   * @param locale the locale to be used for rendering the price component</span>
+<span class="source-line-no">250</span><span id="line-250">   * @return a component representing the visual price section of the shop</span>
+<span class="source-line-no">251</span><span id="line-251">   *</span>
+<span class="source-line-no">252</span><span id="line-252">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">253</span><span id="line-253">   */</span>
+<span class="source-line-no">254</span><span id="line-254">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">255</span><span id="line-255">  Component renderPrice(@NotNull final Shop shop, @NotNull final ProxiedLocale locale);</span>
+<span class="source-line-no">256</span><span id="line-256"></span>
+<span class="source-line-no">257</span><span id="line-257">  /**</span>
+<span class="source-line-no">258</span><span id="line-258">   * Renders the enchantment level for books, or the duration for potions into a component based on the provided locale.</span>
+<span class="source-line-no">259</span><span id="line-259">   *</span>
+<span class="source-line-no">260</span><span id="line-260">   * @param shop the shop instance for which the level component is to be rendered</span>
+<span class="source-line-no">261</span><span id="line-261">   * @param locale the locale to be used for rendering the level component</span>
+<span class="source-line-no">262</span><span id="line-262">   * @return a component representing the visual level section of the shop</span>
+<span class="source-line-no">263</span><span id="line-263">   *</span>
+<span class="source-line-no">264</span><span id="line-264">   * @deprecated Individual render methods replaced my the render component system.</span>
+<span class="source-line-no">265</span><span id="line-265">   */</span>
+<span class="source-line-no">266</span><span id="line-266">  @Deprecated(forRemoval = true, since = "6.3.0.0")</span>
+<span class="source-line-no">267</span><span id="line-267">  Component renderLevels(final @NotNull Shop shop, final @NotNull ProxiedLocale locale);</span>
+<span class="source-line-no">268</span><span id="line-268">}</span>
 
 
 
