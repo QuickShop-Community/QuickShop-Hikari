@@ -1,5 +1,7 @@
 package com.ghostchu.quickshop.util;
 
+import com.destroystokyo.paper.MaterialSetTag;
+import com.destroystokyo.paper.MaterialTags;
 import com.destroystokyo.paper.ParticleBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.Phase;
@@ -12,6 +14,8 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.api.shop.layout.ConditionalRenderComponent;
+import com.ghostchu.quickshop.api.shop.layout.RenderComponent;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
@@ -76,6 +80,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -878,33 +883,52 @@ public class Util {
     final ProxiedLocale locale = plugin.text().findRelativeLanguages(plugin.text().getDefLocale());
     for(int i = 0; i < lines.size(); i++) {
 
-      Component line = MiniMessage.miniMessage().deserialize(lines.get(i));
+      final String line = lines.get(i);
 
-      line = replaceComponent(line, "<item_name>", Util.getItemStackName(itemStack));
-      line = replaceComponent(line, "<price>", Component.text(plugin.getShopManager().format(shop.getPrice(), shop)));
-      line = replaceComponent(line, "<amount>", Component.text(itemStack.getAmount()));
-      line = replaceComponent(line, "<price_amount>", plugin.getShopManager().shopLayoutProvider().renderPrice(shop, locale));
-      line = replaceComponent(line, "<owner>", shop.ownerName());
-      line = replaceComponent(line, "<type>", plugin.text().of(shop.shopType().translationKey()).forLocale());
-      line = replaceComponent(line, "<status>", Util.getItemStackName(itemStack));
-      line = replaceComponent(line, "<level>", plugin.getShopManager().shopLayoutProvider().renderLevels(shop, locale));
+      boolean isFullLine = false;
+      for (final RenderComponent component : plugin.getShopManager().shopLayoutProvider().fullLineRenderComponents()) {
 
-      display = display.append(line);
+        if (!component.appliesTo(line)) {
+          continue;
+        }
+
+        display = display.append(component.render(shop, itemStack, locale));
+
+        if(i < lines.size() - 1) {
+          display = display.append(Component.newline());
+        }
+        isFullLine = true;
+        break;
+
+      }
+
+      if (isFullLine) {
+        continue;
+      }
+
+      Component lineComponent = MiniMessage.miniMessage().deserialize(line);
+      for (final RenderComponent component : plugin.getShopManager().shopLayoutProvider().inlineRenderComponents()) {
+
+        if (!component.appliesTo(line)) {
+          continue;
+        }
+
+        if (component instanceof final ConditionalRenderComponent conditionalComponent && conditionalComponent.isFullLine(shop)) {
+          lineComponent = conditionalComponent.render(shop, itemStack, locale);
+          break;
+        }
+
+        lineComponent = lineComponent.replaceText(builder -> builder
+                .matchLiteral(component.placeholder())
+                .replacement(component.render(shop, itemStack, locale)));
+      }
+      display = display.append(lineComponent);
 
       if(i < lines.size() - 1) {
         display = display.append(Component.newline());
       }
     }
     return display;
-  }
-
-  public static Component replaceComponent(@NotNull final Component component,
-                                           @NotNull final String placeholder,
-                                           @NotNull final Component replacement) {
-
-    return component.replaceText(builder -> builder
-            .matchLiteral(placeholder)
-            .replacement(replacement));
   }
 
   @NotNull
@@ -947,6 +971,15 @@ public class Util {
     if(usePotionForPotionItem() && meta instanceof PotionMeta) {
 
       return getFirstPotionEffectName(itemStack, locale);
+    }
+
+    if(useSongForDiscItem() && MaterialTags.MUSIC_DISCS.isTagged(itemStack.getType())) {
+
+      final Component component = Component.translatable("jukebox_song.minecraft." + itemStack.getType().name().toLowerCase(Locale.ROOT).replace("music_disc_", ""));
+      final String[] asText = PlainTextComponentSerializer.plainText().serialize(component).split("-");
+      final String songName = (asText.length > 1)? asText[1] : asText[0];
+
+      return Component.text(songName).append(Component.text(" ")).append(plugin.platform().getTranslation(itemStack));
     }
 
 
@@ -1108,6 +1141,11 @@ public class Util {
   public static boolean usePotionForPotionItem() {
 
     return plugin.getConfig().getBoolean("shop.use-effect-for-potion-item");
+  }
+
+  public static boolean useSongForDiscItem() {
+
+    return plugin.getConfig().getBoolean("shop.use-song-for-disc-item");
   }
 
   @Nullable

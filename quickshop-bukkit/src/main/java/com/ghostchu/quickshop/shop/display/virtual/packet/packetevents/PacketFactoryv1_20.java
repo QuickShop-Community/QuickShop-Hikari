@@ -152,7 +152,7 @@ public class PacketFactoryv1_20 implements PacketFactory<PacketWrapper<?>> {
     data.add(new EntityData<>(23, EntityDataTypes.ADV_COMPONENT, Util.getTextDisplay(shop, itemStack)));
     data.add(new EntityData<>(24, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
     data.add(new EntityData<>(25, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
-    data.add(new EntityData<>(26, EntityDataTypes.INT, QuickShop.getInstance().getConfig().getInt("shop.text-display.text-opacity", -1)));
+    data.add(new EntityData<>(26, EntityDataTypes.BYTE, QuickShop.getInstance().getConfig().getByte("shop.text-display.text-opacity", (byte)-1)));
     data.add(new EntityData<>(27, EntityDataTypes.BYTE, Util.createTextDisplayFlags()));
 
     return new WrapperPlayServerEntityMetadata(id, data);

@@ -11,7 +11,7 @@
 
 # Internal configuration version.
 # Do not change this unless QuickShop support instructs you to.
-config-version: 1044
+config-version: 1045
 
 # Default language used by the plugin.
 # Set to "default" to use the player's Minecraft client language automatically.
@@ -574,7 +574,7 @@ shop:
       z: 0.5
 
     # <item_name> is replaced with the item name.
-    # <price> is replaced with the item price.
+    # <price_alone> is replaced with the item price.
     # <amount> is replaced with the item amount.
     # <price_amount> is replaced with the item price per amount.
     # <owner> is replaced with the shop owner's name.
@@ -666,6 +666,9 @@ shop:
   # Show one potion effect name on the sign (instead of "Potion").
   # NOTE: Only one effect is shown, chosen randomly.
   use-effect-for-potion-item: false
+
+  # Show song name on the sign (instead of "Music Disc").
+  use-song-for-disc-item: false
 
   # Worlds where shop creation is allowed.
   # If not empty, only worlds in this list can create shops.

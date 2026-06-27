@@ -208,8 +208,8 @@ public class PacketFactoryv1_21_10 implements PacketFactory<PacketContainer> {
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.line-width", 200)));
     data.add(new WrappedDataValue(25, WrappedDataWatcher.Registry.get(Integer.class),
                                   QuickShop.getInstance().getConfig().getInt("shop.text-display.background-color", 1073741824)));
-    data.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get(Integer.class),
-                                  QuickShop.getInstance().getConfig().getInt("shop.text-display.text-opacity", -1)));
+    data.add(new WrappedDataValue(26, WrappedDataWatcher.Registry.get(Byte.class),
+                                  QuickShop.getInstance().getConfig().getByte("shop.text-display.text-opacity", (byte)-1)));
     data.add(new WrappedDataValue(27, WrappedDataWatcher.Registry.get(Byte.class), Util.createTextDisplayFlags()));
 
     packet.getDataValueCollectionModifier().write(0, data);
