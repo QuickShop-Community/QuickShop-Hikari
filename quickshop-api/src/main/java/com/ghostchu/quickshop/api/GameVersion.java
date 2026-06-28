@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.api;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**

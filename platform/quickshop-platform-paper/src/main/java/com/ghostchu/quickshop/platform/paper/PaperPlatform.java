@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.platform.paper;
 
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
-import com.ghostchu.quickshop.platform.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
