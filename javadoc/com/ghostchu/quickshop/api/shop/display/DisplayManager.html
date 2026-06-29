@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 <dd><code>T</code> - The type of object or entity used for rendering displays.</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-41">DisplayManager</a>&lt;T&gt;</span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-38">DisplayManager</a>&lt;T&gt;</span></div>
 <div class="block">Manages the display functionality for various display type entities.</div>
 <dl class="notes">
 <dt>Since:</dt>
@@ -173,7 +173,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="chunksMapping()">
 <h3>chunksMapping</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html" title="class or interface in java.util.concurrent" class="external-link">ConcurrentHashMap</a>&lt;<a href="../ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html" title="class or interface in java.util.concurrent" class="external-link">ConcurrentHashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>,<wbr><a href="DisplayManager.html" title="type parameter in DisplayManager">T</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-53">chunksMapping</a></span>()</div>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html" title="class or interface in java.util.concurrent" class="external-link">ConcurrentHashMap</a>&lt;<a href="../ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html" title="class or interface in java.util.concurrent" class="external-link">ConcurrentHashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>,<wbr><a href="DisplayManager.html" title="type parameter in DisplayManager">T</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-50">chunksMapping</a></span>()</div>
 <div class="block">Retrieves a mapping between ShopChunk objects and their associated lists of display entities.
 
  This method provides access to the internal data structure used by the display manager to store and
@@ -189,7 +189,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="load()">
 <h3>load</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-62">load</a></span>()</div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-59">load</a></span>()</div>
 <div class="block">Loads the required resources, configurations, or internal states for this display manager.
  This method prepares the manager for operation, ensuring it is in a ready state to handle
  display-related actions, such as creating or managing displays.
@@ -200,7 +200,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="unload()">
 <h3>unload</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-72">unload</a></span>()</div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-69">unload</a></span>()</div>
 <div class="block">Unloads the resources, configurations, or internal states for this display manager.
  This method is typically used to clean up or release resources when the display manager
  is no longer needed or is being shut down.
@@ -212,7 +212,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="create(com.ghostchu.quickshop.api.shop.Shop)">
 <h3>create</h3>
-<div class="member-signature"><span class="return-type"><a href="DisplayManager.html" title="type parameter in DisplayManager">T</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-81">create</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="return-type"><a href="DisplayManager.html" title="type parameter in DisplayManager">T</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-78">create</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../Shop.html" title="interface in com.ghostchu.quickshop.api.shop">Shop</a>&nbsp;shop)</span></div>
 <div class="block">Creates and returns a new display instance associated with the specified shop.</div>
 <dl class="notes">
@@ -228,7 +228,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="put(com.ghostchu.quickshop.api.shop.ShopChunk,int,T)">
 <h3 id="put(com.ghostchu.quickshop.api.shop.ShopChunk,int,java.lang.Object)">put</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-96">put</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-93">put</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>&nbsp;key,
  int&nbsp;locationHash,
  @NotNull
@@ -251,7 +251,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="remove(com.ghostchu.quickshop.api.shop.ShopChunk,int,T)">
 <h3 id="remove(com.ghostchu.quickshop.api.shop.ShopChunk,int,java.lang.Object)">remove</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-115">remove</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-112">remove</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="../ShopChunk.html" title="interface in com.ghostchu.quickshop.api.shop">ShopChunk</a>&nbsp;key,
  int&nbsp;locationHash,
  @NotNull
@@ -272,13 +272,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="allowEnchants()">
 <h3>allowEnchants</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-128">allowEnchants</a></span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-125">allowEnchants</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="useItemName()">
 <h3>useItemName</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-132">useItemName</a></span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/com/ghostchu/quickshop/api/shop/display/DisplayManager.html#line-129">useItemName</a></span>()</div>
 </section>
 </li>
 </ul>
