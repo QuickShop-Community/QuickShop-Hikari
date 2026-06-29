@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.api.shop.type.BuyingType;
 import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
@@ -33,7 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.ghostchu.quickshop.QuickShop.taskCache;
-import static com.ghostchu.quickshop.shop.SimpleShopManager.BUYING_TYPE;
 
 public class SubCommand_TransferOwnership implements CommandHandler<Player> {
 

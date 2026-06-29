@@ -17,8 +17,6 @@ package com.ghostchu.quickshop.shop.display.virtual.packet.packetevents;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.comphenix.protocol.wrappers.WrappedDataValue;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.PacketFactory;
@@ -59,7 +57,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * PacketFactoryv1_21
+ * PacketFactoryv1_20
  *
  * @author creatorfromhell
  * @since 6.2.0.9
