@@ -14,6 +14,16 @@ public class QuickExecutor {
   private static ExecutorService COMMON_EXECUTOR = Executors.newCachedThreadPool();
   private static ExecutorService PRIMARY_PROFILE_IO_EXECUTOR = Executors.newWorkStealingPool(16);
   private static ExecutorService SECONDARY_PROFILE_IO_EXECUTOR = Executors.newWorkStealingPool(2);
+  private static final ExecutorService ERROR_REPORT_EXECUTOR = new ThreadPoolExecutor(
+          1,
+          1,
+          60L,
+          TimeUnit.SECONDS,
+          new LinkedBlockingQueue<>(100),r -> {
+            Thread t = new Thread(r, "QuickShop-ErrorReporter");
+            t.setDaemon(true);
+            return t;
+    }, new ThreadPoolExecutor.DiscardPolicy());
 
   static {
     HIKARICP_EXECUTOR = provideHikariCPExecutor();
@@ -33,6 +43,10 @@ public class QuickExecutor {
   public static ExecutorService provideHikariCPExecutor() {
 
     return Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("QuickShop-Database-Worker-", 0).factory());
+  }
+
+  public static ExecutorService getErrorReportExecutor() {
+    return ERROR_REPORT_EXECUTOR;
   }
 
   public static ExecutorService getCommonExecutor() {
