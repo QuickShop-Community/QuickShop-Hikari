@@ -84,7 +84,6 @@ public class ModrinthUpdateProvider implements UpdateProvider {
         final String versionNumberRaw = v.optString("version_number", "");
         if(versionNumberRaw.isEmpty()) continue;
 
-        //You may publish like "v6.2.0.11" — Semver4j doesn’t like leading 'v'
         final String versionNumber = stripLeadingV(versionNumberRaw);
 
         final Semver semver;
@@ -107,7 +106,6 @@ public class ModrinthUpdateProvider implements UpdateProvider {
           }
         }
 
-        // date_published is ISO-8601, e.g. "2024-01-01T12:34:56.000Z"
         final String published = v.optString("date_published", "");
         if(!published.isEmpty()) {
           try {
@@ -123,7 +121,6 @@ public class ModrinthUpdateProvider implements UpdateProvider {
         return null;
       }
       if(bestRelease == null) {
-        //If you *never* mark versions release, fall back to any
         bestRelease = bestAny;
       }
 

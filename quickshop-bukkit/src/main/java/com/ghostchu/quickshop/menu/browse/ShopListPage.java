@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.config.GuiConfig;
+import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
@@ -50,6 +51,7 @@ import static com.ghostchu.quickshop.menu.ShopBrowseMenu.SELECTED_ITEM_SHOPS;
 import static com.ghostchu.quickshop.menu.ShopBrowseMenu.SHOPS_PAGE;
 import static com.ghostchu.quickshop.menu.ShopBrowseMenu.SHOP_LIST_PAGE;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigDisplay;
+import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigLangEntry;
 import static com.ghostchu.quickshop.menu.shared.QuickShopPage.getConfigLore;
 
 /**
@@ -141,17 +143,13 @@ public class ShopListPage {
     final GuiConfig.IconConfig searchConfig = menuConfig != null? menuConfig.getIcon("search") : null;
     final int itemInfoSlot = searchConfig != null? searchConfig.getSlot() : 0;
     if(!allShops.isEmpty()) {
+      final GuiConfig.IconConfig searchItemConfig = menuConfig != null? menuConfig.getIcon("search-item") : null;
       final Shop firstShop = allShops.getFirst();
-      final String filterIndicator = getFilterIndicator(filterMode);
+      final Component filterIndicator = QuickShop.getInstance().text().of(id, filterMode.indicatorTranslationKey()).forLocale();
       final AbstractItemStack<ItemStack> infoStack = new BukkitItemStack()
               .of(firstShop.getItem().getType().key().asString(), 1)
-              .customName(QuickShop.getInstance().platform().miniMessage().deserialize(
-                      "<yellow>" + CommonUtil.prettifyText(firstShop.getItem().getType().name()) + "</yellow>"))
-              .lore(List.of(
-                      QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Showing: " + filterIndicator + "</gray>"),
-                      QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Shops: <white>" + sortedShops.size() + "</white></gray>"),
-                      QuickShop.getInstance().platform().miniMessage().deserialize("<gray>Average price: <gold>" + formatPrice(avgPrice) + "</gold></gray>")
-                           ));
+              .customName(getConfigDisplay(id, searchItemConfig, "<yellow>{0}</yellow>", Util.getItemStackName(firstShop.getItem())))
+              .lore(getConfigLore(id, searchItemConfig, filterIndicator, sortedShops.size(), formatPrice(avgPrice)));
 
       menuPage.addIcon(new IconBuilder(infoStack).withSlot(itemInfoSlot).build());
     }
@@ -160,7 +158,7 @@ public class ShopListPage {
     final String sortMaterial = sortConfig != null? sortConfig.getMaterial() : "HOPPER";
     final int sortSlot = sortConfig != null? sortConfig.getSlot() : 2;
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(sortMaterial, 1)
-                                             .customName(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", getSortDisplayName(sortMode)))
+                                             .customName(getConfigDisplay(id, sortConfig, "<green>Sort: {0}</green>", QuickShop.getInstance().text().of(id, sortMode.getTranslationKey()).forLocale()))
                                              .lore(getConfigLore(id, sortConfig)))
                              .withSlot(sortSlot)
                              .withActions(
@@ -176,7 +174,7 @@ public class ShopListPage {
     final int filterSlot = filterConfig != null? filterConfig.getSlot() : 4;
 
     menuPage.addIcon(new IconBuilder(QuickShop.getInstance().stack().of(filterMaterial, 1)
-                                             .customName(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", getFilterDisplayName(filterMode)))
+                                             .customName(getConfigDisplay(id, filterConfig, "<aqua>Filter: {0}</aqua>", QuickShop.getInstance().text().of(id, filterMode.getTranslationKey()).forLocale()))
                                              .lore(getConfigLore(id, filterConfig)))
                              .withSlot(filterSlot)
                              .withActions(
@@ -256,15 +254,17 @@ public class ShopListPage {
       }
       if(i >= (start + items)) break;
 
+      final GuiConfig.IconConfig listConfig = menuConfig != null? menuConfig.getIcon("shop-list") : null;
+
       // Build shop lore with price indicator and click instruction
-      final List<Component> lore = buildShopLore(shop, avgPrice, canTeleport);
+      final List<Component> lore = buildShopLore(shop, id, listConfig, avgPrice, canTeleport);
 
       // Get display name for the item
-      final String itemName = CommonUtil.prettifyText(shop.getItem().getType().name());
+      final Component itemName = Util.getItemStackName(shop.getItem());
 
       final AbstractItemStack<ItemStack> stack = new BukkitItemStack()
               .of(shop.getItem().getType().key().asString(), shop.getShopStackingAmount())
-              .customName(QuickShop.getInstance().platform().miniMessage().deserialize("<yellow>" + itemName + "</yellow>"))
+              .customName(getConfigDisplay(id, listConfig, "<yellow>{0}</yellow>", itemName))
               .lore(lore);
 
       // Get teleport location - use shop location + 1 block up
@@ -309,36 +309,9 @@ public class ShopListPage {
    * Build the lore for an individual shop. Note: Uses database cache for stock/space to avoid Folia
    * cross-region block access issues.
    */
-  private List<Component> buildShopLore(final Shop shop, final double avgPrice, final boolean canTeleport) {
+  private List<Component> buildShopLore(final Shop shop, final UUID playerID, final GuiConfig.IconConfig config, final double avgPrice, final boolean canTeleport) {
 
-    final List<Component> lore = new ArrayList<>();
-    final var mm = QuickShop.getInstance().platform().miniMessage();
-
-    // Owner
-    //TODO: use admin-shop when it's an admin shop
-    lore.add(mm.deserialize("<gray>Owner: <white>" + shop.getOwner().getDisplay() + "</white></gray>"));
-
-    // Shop type
-    final String typeColor = shop.isSelling()? "<green>" : "<#FFA500>";
-    final String typeText = shop.isSelling()? "Selling" : "Buying";
-    lore.add(mm.deserialize("<gray>Type: " + typeColor + typeText + "</gray>"));
-
-    // Price with indicator
-    final String priceIndicator = getPriceIndicator(shop.getPrice(), avgPrice, shop.isSelling());
-    final String priceColor = getPriceColor(priceIndicator);
-    lore.add(mm.deserialize("<gray>Price: " + priceColor + formatPrice(shop.getPrice()) + " " + priceIndicator + "</gray>"));
-
-    // Stock/Space - Use database cache to avoid Folia cross-region block access
-    // The shop may be in a different region than the player viewing the menu
-    if(shop.isSelling()) {
-      final int stock = getStockFromCache(shop);
-      final String stockText = stock < 0? "Unlimited" : String.valueOf(stock);
-      lore.add(mm.deserialize("<gray>Stock: <aqua>" + stockText + "</aqua></gray>"));
-    } else {
-      final int space = getSpaceFromCache(shop);
-      final String spaceText = space < 0? "Unlimited" : String.valueOf(space);
-      lore.add(mm.deserialize("<gray>Space: <aqua>" + spaceText + "</aqua></gray>"));
-    }
+    final PriceIndicator indicator = getPriceIndicator(config, shop.getPrice(), avgPrice, shop.isSelling());
 
     // Location
     final String world = shop.bukkitLocation().getWorld() != null?
@@ -346,13 +319,47 @@ public class ShopListPage {
     final String coords = shop.bukkitLocation().getBlockX() + ", " +
                           shop.bukkitLocation().getBlockY() + ", " +
                           shop.bukkitLocation().getBlockZ();
-    lore.add(mm.deserialize("<gray>Location: <white>" + world + "</white></gray>"));
-    lore.add(mm.deserialize("<dark_gray>" + coords + "</dark_gray>"));
+    final String type = (shop.isSelling())? "selling-label" : "buying-label";
+
+    final QuickShop plugin = QuickShop.getInstance();
+
+    final var mm = QuickShop.getInstance().platform().miniMessage();
+
+    //stock
+    final String tradingStringKey = (shop.isStackingShop()? shop.shopType().stackTradingTranslationKey() : shop.shopType().tradingTranslationKey());
+    final String finalTradingStringKey = (shop.shopState().overrideShopTypeText())? shop.shopState().translationKey() : tradingStringKey;
+    final String noRemainingStringKey = shop.shopType().outOfStockTranslationKey();
+    final int shopRemaining = shop.shopType().remainingStock(shop);
+    //todo: use cache methods.
+
+    final Component trading = switch(shopRemaining) {
+      //Unlimited
+      case -1 -> plugin.text().of(playerID, finalTradingStringKey, plugin.text().of(playerID, "signs.unlimited").forLocale()).forLocale();
+      //No remaining
+      case 0 -> {
+        if(shop.shopState().overrideShopTypeText()) {
+          yield plugin.text().of(playerID, shop.shopState().translationKey()).forLocale();
+        }
+        yield plugin.text().of(playerID, noRemainingStringKey).forLocale();
+      }
+      //Has remaining
+      default -> plugin.text().of(playerID, finalTradingStringKey, Component.text(shopRemaining)).forLocale();
+    };
+
+    final String color = config.section().getString(indicator.colorPath(shop.isSelling()), "<white>");
+    final Component indicatorLang = getConfigLangEntry(playerID, config, indicator.labelPath(shop.isSelling()), "<white>");
+    final Component price = mm.deserialize(color + formatPrice(shop.getPrice()) + " ").append(indicatorLang);
+    final List<Component> lore = getConfigLore(playerID, config,
+                                               shop.getOwner().getDisplay(),
+                                               QuickShop.getInstance().text().of(playerID, "gui.browse.shop-list." + type).forLocale(),
+                                               price,
+                                               trading,
+                                               world,
+                                               coords);
 
     // Click instruction (only if player has teleport permission)
     if(canTeleport) {
-      lore.add(Component.empty());
-      lore.add(mm.deserialize("<yellow>Click to teleport</yellow>"));
+      lore.add(QuickShop.getInstance().text().of(playerID, "gui.browse.shop-list.teleport").forLocale());
     }
 
     return lore;
@@ -361,75 +368,39 @@ public class ShopListPage {
   /**
    * Get a price indicator based on comparison to average
    */
-  private String getPriceIndicator(final double price, final double avgPrice, final boolean isSelling) {
+  private PriceIndicator getPriceIndicator(final GuiConfig.IconConfig config, final double price, final double avgPrice, final boolean isSelling) {
 
-    if(avgPrice == 0) return "";
+    if(avgPrice == 0 || config.section() == null) return PriceIndicator.AVERAGE;
 
     final double ratio = price / avgPrice;
 
-    if(isSelling) {
-      // For selling shops: lower is better for buyers
-      if(ratio < 0.85) return "▼▼ Great Deal!";
-      if(ratio < 0.95) return "▼ Below Avg";
-      if(ratio > 1.15) return "▲▲ Expensive";
-      if(ratio > 1.05) return "▲ Above Avg";
+    if (isSelling) {
+      if (ratio < config.section().getDouble(PriceIndicator.GREAT.ratioPath(true)))
+        return PriceIndicator.GREAT;
+
+      if (ratio < config.section().getDouble(PriceIndicator.GOOD.ratioPath(true)))
+        return PriceIndicator.GOOD;
+
+      if (ratio > config.section().getDouble(PriceIndicator.WORST.ratioPath(true)))
+        return PriceIndicator.WORST;
+
+      if (ratio > config.section().getDouble(PriceIndicator.BAD.ratioPath(true)))
+        return PriceIndicator.BAD;
     } else {
-      // For buying shops: higher is better for sellers
-      if(ratio > 1.15) return "▲▲ Great Price!";
-      if(ratio > 1.05) return "▲ Above Avg";
-      if(ratio < 0.85) return "▼▼ Low Offer";
-      if(ratio < 0.95) return "▼ Below Avg";
+      if (ratio > config.section().getDouble(PriceIndicator.GREAT.ratioPath(false)))
+        return PriceIndicator.GREAT;
+
+      if (ratio > config.section().getDouble(PriceIndicator.GOOD.ratioPath(false)))
+        return PriceIndicator.GOOD;
+
+      if (ratio < config.section().getDouble(PriceIndicator.WORST.ratioPath(false)))
+        return PriceIndicator.WORST;
+
+      if (ratio < config.section().getDouble(PriceIndicator.BAD.ratioPath(false)))
+        return PriceIndicator.BAD;
     }
-    return "● Average";
-  }
 
-  /**
-   * Get color based on price indicator
-   */
-  private String getPriceColor(final String indicator) {
-
-    if(indicator.contains("Great")) return "<green>";
-    if(indicator.contains("Below") || indicator.contains("Low")) return "<yellow>";
-    if(indicator.contains("Above")) return "<gold>";
-    if(indicator.contains("Expensive")) return "<red>";
-    return "<white>";
-  }
-
-  /**
-   * Get display name for sort mode
-   */
-  private String getSortDisplayName(final BrowseSortMode mode) {
-
-    return switch(mode) {
-      case PRICE_ASC -> "Price ↑";
-      case PRICE_DESC -> "Price ↓";
-      case STOCK -> "Stock";
-      case NAME -> "Name";
-    };
-  }
-
-  /**
-   * Get display name for filter mode
-   */
-  private String getFilterDisplayName(final BrowseFilterMode mode) {
-
-    return switch(mode) {
-      case ALL -> "All";
-      case BUYING -> "Buying";
-      case SELLING -> "Selling";
-    };
-  }
-
-  /**
-   * Get colored indicator for current filter mode
-   */
-  private String getFilterIndicator(final BrowseFilterMode mode) {
-
-    return switch(mode) {
-      case ALL -> "<white>All Shops</white>";
-      case BUYING -> "<#FFA500>Buying Shops</#FFA500>";
-      case SELLING -> "<green>Selling Shops</green>";
-    };
+    return PriceIndicator.AVERAGE;
   }
 
   /**
@@ -437,8 +408,7 @@ public class ShopListPage {
    */
   private String formatPrice(final double price) {
 
-    return QuickShop.getInstance().getEconomyManager().provider()
-            .format(BigDecimal.valueOf(price), null, null);
+    return QuickShop.getInstance().getEconomyManager().provider().format(BigDecimal.valueOf(price), null, null);
   }
 
   /**
