@@ -272,6 +272,7 @@ database:
   # Database password (only required when mysql is true)
   password: passwd
   # Table prefix. Set to "none" to remove prefix.
+  # Each server must use a unique table prefix. Multiple servers cannot share the same table prefix.
   prefix: "qs_"
   # Use SSL for database connections (only required when mysql is true)
   usessl: false
