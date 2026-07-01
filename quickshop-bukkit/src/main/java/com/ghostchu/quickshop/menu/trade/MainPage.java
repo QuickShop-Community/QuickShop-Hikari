@@ -31,6 +31,7 @@ import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.menu.core.builder.IconBuilder;
@@ -38,10 +39,15 @@ import net.tnemc.menu.core.callbacks.page.PageOpenCallback;
 import net.tnemc.menu.core.icon.action.impl.RunnableAction;
 import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Bukkit;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -105,7 +111,19 @@ public class MainPage extends QuickShopPage {
 
         // Shop item display slot from config (centered in row 2)
         final int shopItemSlot = (shopItemConfig != null)? shopItemConfig.getSlot() : 13;
-        open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(shopItemSlot).build());
+
+        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(shopItem);
+        if(shopItem.getItemMeta() instanceof final EnchantmentStorageMeta enchantmentStorageMeta) {
+
+          final LinkedList<Component> lore = new LinkedList<>();
+          for(final Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
+
+            lore.add(Util.enchantmentDataToComponent(entry.getKey(), entry.getValue()));
+          }
+          shopItemStack.lore(lore);
+        }
+
+        open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
         // Info icons row (row 3) - Stock info
         final String infoStockMaterial = (infoStockConfig != null)? infoStockConfig.getMaterial() : "CHEST";

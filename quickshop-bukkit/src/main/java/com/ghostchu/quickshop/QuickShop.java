@@ -154,6 +154,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.h2.Driver;
@@ -1415,6 +1416,14 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       return new PaperItemStack();
     }
     return new BukkitItemStack();
+  }
+
+  public AbstractItemStack<ItemStack> stack(final ItemStack itemStack) {
+
+    if(PaperLib.isPaper()) {
+      return new PaperItemStack().of(itemStack);
+    }
+    return new BukkitItemStack().of(itemStack);
   }
 
   public @NotNull TextManager text() {

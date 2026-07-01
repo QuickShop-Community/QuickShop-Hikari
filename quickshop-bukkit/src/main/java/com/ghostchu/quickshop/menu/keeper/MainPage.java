@@ -30,6 +30,7 @@ import com.ghostchu.quickshop.util.ShopUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.providers.SkullProfile;
@@ -42,13 +43,17 @@ import net.tnemc.menu.core.icon.impl.StateIcon;
 import net.tnemc.menu.core.manager.MenuManager;
 import net.tnemc.menu.core.viewer.MenuViewer;
 import org.bukkit.Bukkit;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -85,6 +90,7 @@ public class MainPage extends QuickShopPage {
 
       final Optional<Shop> shop = getShop(viewer.get());
       final Player player = Bukkit.getPlayer(id);
+
       if(shop.isPresent() && player != null) {
 
         // Clear existing icons to ensure fresh data on reopen
@@ -117,12 +123,20 @@ public class MainPage extends QuickShopPage {
         // Shop item preview - top center (slot 4)
         final ItemStack shopItem = shop.get().getItem();
         final int shopItemSlot = shopItemConfig != null? shopItemConfig.getSlot() : 4;
-        open.getPage().addIcon(new IconBuilder(new BukkitItemStack().of(shopItem)).withSlot(shopItemSlot).build());
+        final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(shopItem);
+        if(shopItem.getItemMeta() instanceof final EnchantmentStorageMeta enchantmentStorageMeta) {
+
+          final LinkedList<Component> lore = new LinkedList<>();
+          for(final Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
+
+            lore.add(Util.enchantmentDataToComponent(entry.getKey(), entry.getValue()));
+          }
+          shopItemStack.lore(lore);
+        }
+        open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
         // Always read price directly from shop to get the latest value
         final double currentPrice = shop.get().getPrice();
-
-
 
         final GuiConfig.IconConfig activeConfig = (displayToggleConfig != null)? displayToggleConfig.getSubIcon("active") : null;
         final GuiConfig.IconConfig inactiveConfig = (displayToggleConfig != null)? displayToggleConfig.getSubIcon("inactive") : null;

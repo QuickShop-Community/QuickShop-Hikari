@@ -1102,7 +1102,7 @@ public class Util {
     if(enchantment.getMaxLevel() > 1 || level > 1) {
       
       final String levelString = (plugin.getConfig().getBoolean("shop.use-roman-numeral-for-enchantments", true))? RomanNumber.toRoman(level) : "" + level;
-      name = name.append(Component.text(levelString));
+      name = name.append(Component.text(" ")).append(Component.text(levelString));
     }
     return name;
   }

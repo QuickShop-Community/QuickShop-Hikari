@@ -367,6 +367,55 @@ browse:
   shop-item:
     lore:
       - "lang:gui.browse.shop-item.lore"
+
+  shop-list:
+    name: "lang:gui.browse.shop-list.display"
+    lore:
+      - "lang:gui.browse.shop-list.lore"
+    indicators:
+      great:
+        buy:
+          ratio: 1.15
+          color: "<green>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.great"
+        sell:
+          ratio: 0.85
+          color: "<green>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.great"
+      good:
+        buy:
+          ratio: 1.05
+          color: "<gold>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.good"
+        sell:
+          ratio: 0.95
+          color: "<gold>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.good"
+      bad:
+        buy:
+          ratio: 0.95
+          color: "<yellow>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.bad"
+        sell:
+          ratio: 1.05
+          color: "<yellow>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.bad"
+      worst:
+        buy:
+          ratio: 0.85
+          color: "<red>"
+          label: "lang:gui.browse.shop-list.price-indicator.buying.worst"
+        sell:
+          ratio: 1.15
+          color: "<red>"
+          label: "lang:gui.browse.shop-list.price-indicator.selling.worst"
+      average:
+        sell:
+          color: "<white>"
+          label: "lang:gui.browse.shop-list.price-indicator.average"
+        buy:
+          color: "<white>"
+          label: "lang:gui.browse.shop-list.price-indicator.average"
   
   # Search button - opens chat input for item search
   # {0} = current search query or "None"
@@ -377,6 +426,11 @@ browse:
       - "lang:gui.browse.search.lore"
     custom-model-data: 0
     slot: 0
+  #Same as above, but if the player is search for a specific item.
+  search-item:
+    name: "lang:gui.browse.search-item.display"
+    lore:
+      - "lang:gui.browse.search-item.lore"
   
   # Sort button - cycles through sort options
   # {0} = current sort mode

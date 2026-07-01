@@ -46,7 +46,6 @@ public class UpdateManager implements SubPasteItem {
 
   private final QuickShop plugin;
 
-  // Register providers here (or via ServiceLoader later if you want)
   private final Map<String, UpdateProvider> providers = new HashMap<>();
 
   @Getter
@@ -56,7 +55,6 @@ public class UpdateManager implements SubPasteItem {
   private boolean cachedResult = true;
   private long lastCheck = 0;
 
-  // Same 1 hour cache you used before
   private static final long CACHE_MS = TimeUnit.HOURS.toMillis(1);
 
   public UpdateManager(final QuickShop plugin) {
@@ -94,7 +92,6 @@ public class UpdateManager implements SubPasteItem {
     if(!isEnabled() || cachedMetadata == null) {
       return plugin.getVersion();
     }
-    // Keep old behavior: show releaseVersion (what most server owners want)
     return cachedMetadata.getReleaseVersion();
   }
 

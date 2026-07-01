@@ -153,7 +153,7 @@ public class MainPage {
                 .build());
 
         int i = 0;
-        for(final Shop shop : shops) {
+        for(final Shop<?, ?> shop : shops) {
 
           //System.out.println("Menu add: id: " + shop.getShopId() + " slot: " + offset + (i - start) + "i: " + i);
 
