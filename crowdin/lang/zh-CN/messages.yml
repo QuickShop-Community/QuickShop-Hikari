@@ -1704,6 +1704,30 @@ gui:
       display: "<white>返回商店</white>"
   browse:
     title: "<dark_aqua>商店浏览</dark_aqua>"
+    shop-list:
+      buying-label: "<#FFA500>Buying</#FFA500>"
+      selling-label: "<green>Selling</green>"
+      price-indicator:
+        average: "● Average"
+        selling:
+          great: "▼▼ Great Deal!"
+          good: "▼ Below Avg"
+          bad: "▲▲ Expensive"
+          worst: "▲ Above Avg"
+        buying:
+          great: "▲▲ Great Price!"
+          good: "▲ Above Avg"
+          bad: "▼▼ Low Offer"
+          worst: "▼▼ Below Avg"
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Owner: <white>{0}</white></gray>"
+        - "<gray>Type: {1}</gray>"
+        - "<gray>Price: {2}</gray>"
+        - "<gray><aqua>{3}</aqua></gray>"
+        - "<gray>Location: <white>{4}</white></gray>"
+        - "<dark_gray>{5}</dark_gray>"
+      teleport: "<newline><yellow>Click to teleport</yellow>"
     shop-item:
       lore:
         - "<green>所有者: </green>{0}<yellow></yellow>"
@@ -1733,6 +1757,12 @@ gui:
       lore:
         - "<gray>左键点击搜索玩家</gray>"
         - "<gray>右键单击清除搜索</gray>"
+    search-item:
+      display: "<yellow>{0}</yellow>"
+      lore:
+        - "<gray>Showing: {0}</gray>"
+        - "<gray>Shops: <white>{1}</white></gray>"
+        - "<gray>Average price: <gold>{2}</gold></gray>"
     sort:
       display: "<green>排序： {0}</green>"
       lore:
@@ -1748,6 +1778,9 @@ gui:
       all: "全部"
       selling: "出售"
       buying: "收购"
+      all-indicator: "<white>All Shops</white>"
+      selling-indicator: "<green>Selling Shops</green>"
+      buying-indicator: "<#FFA500>Buying Shops</#FFA500>"
     stock-filter:
       display: "<gold>仅显示有货: {0}</gold>"
       lore:
