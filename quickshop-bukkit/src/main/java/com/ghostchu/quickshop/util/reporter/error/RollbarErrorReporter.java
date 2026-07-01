@@ -238,7 +238,7 @@ public class RollbarErrorReporter {
    */
   public void sendError(@NotNull final Throwable throwable, @NotNull final String... context) {
 
-    QuickExecutor.getCommonExecutor().submit(()->sendError0(throwable, context));
+    QuickExecutor.getErrorReportExecutor().submit(()->sendError0(throwable, context));
   }
 
   /**
