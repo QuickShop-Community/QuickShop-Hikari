@@ -94,7 +94,7 @@ public class ShopListPage {
     final GuiConfig.IconConfig borderConfig = menuConfig != null? menuConfig.getIcon("border") : null;
     final GuiConfig.IconConfig backConfig = menuConfig != null? menuConfig.getIcon("back") : null;
     final GuiConfig.IconConfig itemInfoConfig = menuConfig != null? menuConfig.getIcon("item-info") : null;
-    final GuiConfig.IconConfig sortConfig = menuConfig != null? menuConfig.getIcon("shop-list-sort") : null;
+    final GuiConfig.IconConfig sortConfig = menuConfig != null? menuConfig.getIcon("sort") : null;
     final GuiConfig.IconConfig closeConfig = menuConfig != null? menuConfig.getIcon("close") : null;
     final GuiConfig.IconConfig prevPageConfig = menuConfig != null? menuConfig.getIcon("previous-page") : null;
     final GuiConfig.IconConfig nextPageConfig = menuConfig != null? menuConfig.getIcon("next-page") : null;

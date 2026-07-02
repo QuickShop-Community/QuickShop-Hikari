@@ -1000,6 +1000,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
 
         final String filled = MiniMessageFiller.fillRaw(str, args);
         final Component component = manager.plugin.platform().miniMessage().deserialize(filled, tagResolvers);
+        //final Component component = MiniMessageFiller.fill(str, manager.plugin.platform().miniMessage(), tagResolvers, args);
         return postProcess(component);
       }
     }
