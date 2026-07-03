@@ -51,6 +51,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ghostchu.quickshop.menu.ShopKeeperMenu.SHOP_STOCK_ID;
+
 /**
  * MainPage
  *
@@ -104,9 +106,22 @@ public class MainPage extends QuickShopPage {
 
         final ItemStack shopItem = shop.get().getItem();
         final int amount = shopItem.getAmount();
-        // Use cache to avoid Folia cross-region block access issues
-        final int stock = (shop.get().isBuying())? -1 : MarketUtils.getStockFromCache(shop.get());
-        final String stockString = (shop.get().isUnlimited())? "Unlimited" : stock + "";
+
+        final int remainingStock = (int)viewer.get().dataOrDefault(SHOP_STOCK_ID, MarketUtils.getStockFromCache(shop.get()));
+        final QuickShop plugin = QuickShop.getInstance();
+        final String baseKey = (shop.get().isStackingShop())? shop.get().shopType().stackTradingTranslationKey()
+                                                            : shop.get().shopType().tradingTranslationKey();
+        final String finalKey = (shop.get().shopState().overrideShopTypeText())? shop.get().shopState().translationKey() : baseKey;
+
+        final Component stockComponent = switch (remainingStock) {
+
+          case -1 -> plugin.text().of(player, finalKey, plugin.text().of(player, "signs.unlimited").forLocale()).forLocale();
+
+          case 0 -> (shop.get().shopState().overrideShopTypeText())? plugin.text().of(player, shop.get().shopState().translationKey()).forLocale()
+                                                                   : plugin.text().of(player, shop.get().shopType().outOfStockTranslationKey()).forLocale();
+
+          default -> Component.text(remainingStock);
+        };
         final String priceFormatted = shop.get().format(shop.get().bukkitLocation().getWorld().getName(), shop.get().getCurrency());
 
         // Shop item display slot from config (centered in row 2)
@@ -130,7 +145,7 @@ public class MainPage extends QuickShopPage {
         final int infoStockSlot = (infoStockConfig != null)? infoStockConfig.getSlot() : 21;
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(infoStockMaterial, 1)
                                                        .customName(getConfigDisplay(id, infoStockConfig, "<yellow>Stock Information</yellow>"))
-                                                       .lore(getConfigLore(id, infoStockConfig, stockString)))
+                                                       .lore(getConfigLore(id, infoStockConfig, stockComponent)))
                                        .withSlot(infoStockSlot).build());
 
         // Info icons row - Price info
@@ -163,7 +178,7 @@ public class MainPage extends QuickShopPage {
         final String enterPath = (shop.get().isSelling())? "trade.enter-buy" : "trade.enter-sell";
         open.getPage().addIcon(new IconBuilder(QuickShop.getInstance().stack().of(customAmountMaterial, 1)
                                                        .customName(getConfigDisplay(id, customAmountConfig, "<bold><blue>Custom Order</blue></bold>"))
-                                                       .lore(getConfigLore(id, customAmountConfig, amount, stockString)))
+                                                       .lore(getConfigLore(id, customAmountConfig, amount, stockComponent)))
                                        .withActions(new GuiChatAction((message)->{
                                          if(!message.isEmpty()) {
                                            try {
@@ -173,7 +188,7 @@ public class MainPage extends QuickShopPage {
                                                return true;
                                              }
 
-                                             if(!shop.get().isUnlimited() && quantity > stock && stock > -1) {
+                                             if(!shop.get().isUnlimited() && quantity > remainingStock && remainingStock > -1) {
                                                player.sendMessage(guiMessage("trade.invalid-stock"));
                                                return true;
                                              }

@@ -33,6 +33,7 @@ public class ShopKeeperMenu extends QuickShopMenu {
   public static final int KEEPER_MAIN = 1;
 
   public static final String SHOP_DATA_ID = "SHOP_ID";
+  public static final String SHOP_STOCK_ID = "SHOP_STOCK_REMAINING";
 
   public ShopKeeperMenu() {
 
