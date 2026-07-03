@@ -38,6 +38,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * TradeUI
  *
@@ -93,12 +95,18 @@ public class TradeUI implements InteractionBehavior {
         return;
       }
 
-      final MenuViewer viewer = new MenuViewer(event.getPlayer().getUniqueId());
-      viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
-      MenuManager.instance().addViewer(viewer);
+      final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+      remainingStockFuture.thenAccept(remainingStock -> {
 
-      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
-      MenuManager.instance().open("qs:trade", 1, menuPlayer);
+
+        final MenuViewer viewer = new MenuViewer(event.getPlayer().getUniqueId());
+        viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
+        viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+        MenuManager.instance().addViewer(viewer);
+
+        final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(event.getPlayer());
+        MenuManager.instance().open("qs:trade", 1, menuPlayer);
+      });
 
       //cancel our item use
       event.setCancelled(true);
@@ -141,12 +149,17 @@ public class TradeUI implements InteractionBehavior {
       return;
     }
 
-    final MenuViewer viewer = new MenuViewer(player.getUniqueId());
-    viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
-    MenuManager.instance().addViewer(viewer);
+    final CompletableFuture<Integer> remainingStockFuture = shop.shopType().remainingStockAsync(shop);
+    remainingStockFuture.thenAccept(remainingStock ->{
 
-    final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
-    MenuManager.instance().open("qs:trade", 1, menuPlayer);
+      final MenuViewer viewer = new MenuViewer(player.getUniqueId());
+      viewer.addData(ShopKeeperMenu.SHOP_DATA_ID, shop.getShopId());
+      viewer.addData(ShopKeeperMenu.SHOP_STOCK_ID, remainingStock);
+      MenuManager.instance().addViewer(viewer);
+
+      final MenuPlayer menuPlayer = QuickShop.getInstance().createMenuPlayer(player);
+      MenuManager.instance().open("qs:trade", 1, menuPlayer);
+    });
 
     //cancel our item use
     event.setCancelled(true);
