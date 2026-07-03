@@ -258,7 +258,12 @@ public class ModernCustomMatcher implements ItemMatcher, Reloadable {
 
       // Fish bucket entity data
       case "fish_bucket" -> add(out, registry,
-                                "BUCKET_ENTITY_DATA"
+                                "BUCKET_ENTITY_DATA",
+                                "AXOLOTL/VARIANT",
+                                "SALMON/SIZE",
+                                "TROPICAL_FISH/PATTERN",
+                                "TROPICAL_FISH/BASE_COLOR",
+                                "TROPICAL_FISH/BASE_COLOR"
                                );
 
       // Suspicious stew effects
