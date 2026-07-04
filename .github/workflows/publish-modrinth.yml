@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-java@v5
         with:
-          java-version: "21"
+          java-version: "25"
           distribution: temurin
           cache: maven
 
@@ -47,6 +47,6 @@ jobs:
           game-version-filter: releases
 
           java: |
-            21
+            25
 
           version-type: release

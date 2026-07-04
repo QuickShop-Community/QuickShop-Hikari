@@ -97,7 +97,6 @@ public class MainPage extends QuickShopPage {
         // Set up our borders from config (gray for modern look)
         final String borderMaterial = (borderConfig != null)? borderConfig.getMaterial() : "GRAY_STAINED_GLASS_PANE";
         final IconBuilder borderBuilder = new IconBuilder(QuickShop.getInstance().stack().of(borderMaterial, 1));
-
         // Get border rows from config or use defaults (rows 1, 4, 6 for modern 6-row layout)
         final List<Integer> borderRows = (borderConfig != null)? borderConfig.getRows() : List.of(1, 4, 6);
         for(final int row : borderRows) {
@@ -128,15 +127,6 @@ public class MainPage extends QuickShopPage {
         final int shopItemSlot = (shopItemConfig != null)? shopItemConfig.getSlot() : 13;
 
         final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(shopItem);
-        if(shopItem.getItemMeta() instanceof final EnchantmentStorageMeta enchantmentStorageMeta) {
-
-          final LinkedList<Component> lore = new LinkedList<>();
-          for(final Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
-
-            lore.add(Util.enchantmentDataToComponent(entry.getKey(), entry.getValue()));
-          }
-          shopItemStack.lore(lore);
-        }
 
         open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
