@@ -103,14 +103,19 @@ public class DisplayEntityItemManager implements DisplayManager<DisplayEntityDis
 
     final ShopChunk chunk = SimpleShopChunk.fromLocation(shop.bukkitLocation());
 
-    return chunksMapping
-            .computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
+    //output if display is in chunks map
+
+    return chunksMapping.computeIfAbsent(chunk, k -> new ConcurrentHashMap<>())
             .computeIfAbsent(shop.bukkitLocation().hashCode(),
                              k -> new DisplayEntityDisplayItem(shop, chunk));
   }
 
   public void addPlayer(final Player player) {
 
-    chunksMapping.values().forEach(map ->map.values().forEach(display -> display.sendFakeItemToPlayer(player)));
+    final ShopChunk chunk = SimpleShopChunk.fromLocation(player.getLocation());
+    chunksMapping.computeIfPresent(chunk, (k, v) -> {
+      v.values().forEach(display -> display.sendFakeItemToPlayer(player));
+      return v;
+    });
   }
 }
