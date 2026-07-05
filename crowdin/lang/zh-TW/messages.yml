@@ -1,8 +1,8 @@
-break-shop-use-supertool: <yellow>你可以透過超級工具來破壞商店
-fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 變更商店定價。
+break-shop-use-supertool: <yellow>你可以透過超級工具來破壞商店。
+fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 以變更商店定價。
 not-allowed-to-create: <red>你無法在此建立商店。
-disabled-in-this-world: <red>已停用此世界的 QuickShop
-how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
+disabled-in-this-world: <red>該世界已停用 QuickShop
+how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0}</yellow>的價格。
 client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
 _comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/qs-hikari instead.
@@ -18,24 +18,24 @@ tabcomplete:
   amount: '[數量]'
   item: '[物品]'
   price: '[價格]'
-  name: '[name]'
+  name: '[名稱]'
   range: '[範圍]'
   list: 'list'
-  page: '[page #]'
-  shop-id: '[shop id]'
+  page: '[頁數 #]'
+  shop-id: '[商店 id]'
   currency: '[貨幣名稱]'
   percentage: '[percentage%]'
   add: 'add'
-  remove: 'remove'
-  clear: 'clear'
-  clearall: 'clearall'
-  shops: 'shops'
+  remove: '移除'
+  clear: '清除'
+  clearall: '清除全部'
+  shops: '商店'
   tagged: 'tagged'
-  purge: 'purge'
-  tag: '[tag]'
+  purge: '清除'
+  tag: '[標籤]'
 taxaccount-unset: <green>此商店的稅金帳戶現在按照伺服器全域設定。
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣
-command-type-mismatch: <red>此指令只能由 <aqua>{0} <red>執行。
+command-type-mismatch: <red>此指令只能由 <aqua>{0}</aqua>執行。
 server-crash-warning: '<red>警告：使用 /quickshop reload 重新載入命令替換 / 刪除 QuickShop Jar 檔可能會在伺服器運行時崩潰。'
 you-cant-afford-to-change-price: <red>你需要花費 {0} 來變更商品價格。
 safe-mode: <red>QuickShop 現在處於安全模式，你無法打開此商店容器，請聯絡伺服器管理員以修復錯誤！
@@ -94,7 +94,7 @@ you-cant-afford-a-new-shop: <red>需要花費 <green>{0}<red> 才能建立商店
 success-created-shop: <green>已成功地建立商店。
 shop-creation-cancelled: <red>已取消建立商店。
 shop-owner-self-trade: <yellow>你正在跟自己開的商店進行交易。<gray>所以你的餘額不會改變。
-shop-owner-self-trade-denied: <red>You cannot trade with your own shop.
+shop-owner-self-trade-denied: <red>你不能和自己的商店進行交易。
 purchase-out-of-space: <red>此商店空間不足！請聯絡商店擁有者或商店員工清空商店。
 reloading-status:
   success: <green>插件成功地重新載入且沒有發生任何錯誤。
@@ -123,17 +123,17 @@ tags:
     list-entry: "<green>{0}.</green> <aqua>{1}</aqua> <light_purple>[<click:run_command:\"{2}\"><hover:show_text:\"<gray>View all shops with this tag\">View Shops</hover></click>]</light_purple> <red>[<click:run_command:\"{3}\"><hover:show_text:\"<gray>Remove this tag from this shop\">Remove</hover></click>]</red>"
     invalid: "<red>Invalid tag. Only letters, dash (-), and underscore (_) are allowed. Max length: <yellow>{0}</yellow>"
   avoid:
-    added: "<green>Added this shop to your avoid list."
-    removed: "<green>Removed this shop from your avoid list."
-    unable: "<red>Unable to toggle avoid on this shop."
-    none: "<red>You have no avoided shops."
-    label: "<yellow>Avoid"
+    added: "<green>已將此商店加入屏蔽清單。"
+    removed: "<green>已將此商店從你的屏蔽清單中移除。"
+    unable: "<red>無法將此商店加入屏蔽清單。"
+    none: "<red>你還未屏蔽任何商店。"
+    label: "<yellow>屏蔽"
   favorite:
-    added: "<green>Added this shop to your favorite list."
-    removed: "<green>Removed this shop from your favorite list."
-    unable: "<red>Unable to toggle favorite on this shop."
-    none: "<red>You have no favorite shops."
-    label: "<yellow>Favorite"
+    added: "<green>已將此商店加入收藏清單。"
+    removed: "<green>已將此商店從你的收藏清單中移除。"
+    unable: "<red>無法將此商店加入收藏清單。"
+    none: "<red>你還未收藏任何商店。"
+    label: "<yellow>收藏"
   watch:
     added: "<green>You are now watching this shop."
     removed: "<green>You are no longer watching this shop."
@@ -262,8 +262,8 @@ shop-state:
   freeze: Freeze
   unfreeze: Unfreeze
 shop-display:
-  enabled: Enabled
-  disabled: Disabled
+  enabled: 已啟用
+  disabled: 已停用
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -399,8 +399,8 @@ signs:
   item-left: ''
   item-duration: 'Dur: {0}'
   item-level: 'Level: {0}'
-  splash-potion: "Splash"
-  linger-potion: "Lingering"
+  splash-potion: "噴濺"
+  linger-potion: "滯留"
 negative-amount: <red>我的天啊，沒想到居然有人想要交易負數的數量。
 display-turn-on: <green>成功地啟用商店懸浮物顯示。
 display-turn-off: <green>成功地關閉商店懸浮物顯示。
