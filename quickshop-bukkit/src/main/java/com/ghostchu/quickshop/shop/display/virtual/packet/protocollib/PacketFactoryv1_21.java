@@ -174,9 +174,6 @@ public class PacketFactoryv1_21 implements PacketFactory<PacketContainer> {
     packet.getDoubles().write(0, location.getX());
     packet.getDoubles().write(1, location.getY());
     packet.getDoubles().write(2, location.getZ());
-
-    packet.getIntegers().write(4, 0);
-    packet.getIntegers().write(5, 0);
     return packet;
   }
 
