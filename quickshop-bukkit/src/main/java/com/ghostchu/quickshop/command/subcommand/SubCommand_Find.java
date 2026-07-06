@@ -60,7 +60,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
 
 
-    final String lookFor = sb.toString().toLowerCase();
+    final String lookFor = sb.toString().toLowerCase(Locale.ROOT);
 
     final StringBuilder originLookForSb = new StringBuilder(parser.getArgs().getFirst());
     for(int i = 1; i < parser.getArgs().size(); i++) {
