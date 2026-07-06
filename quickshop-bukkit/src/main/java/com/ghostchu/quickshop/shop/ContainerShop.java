@@ -135,8 +135,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @EqualsAndHashCode.Exclude
   private volatile boolean createBackup = false;
   @EqualsAndHashCode.Exclude
-  private InventoryPreview inventoryPreview = null;
-  @EqualsAndHashCode.Exclude
   private boolean dirty;
   @EqualsAndHashCode.Exclude
   private boolean updating = false;
@@ -529,11 +527,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     }
     this.displayItem = null;
     checkDisplay();
-    if(this.inventoryPreview != null) {
-
-      this.inventoryPreview.close();
-      this.inventoryPreview = null;
-    }
     setSignText();
     setDirty();
   }
@@ -1563,9 +1556,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       Log.debug("Dupe unload request, canceled.");
       return;
     }
-    if(inventoryPreview != null) {
-      inventoryPreview.close();
-    }
     if(this.displayItem != null) {
       this.displayItem.remove(dontTouchWorld);
     }
@@ -1577,10 +1567,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
   @Override
   public void openPreview(@NotNull final Player player) {
 
-    if(inventoryPreview == null) {
-      inventoryPreview = new InventoryPreview(plugin, getItem().clone(), player.getLocale());
-    }
-    inventoryPreview.show(player);
+    InventoryPreview.show(player, getItem());
 
   }
 
@@ -2140,7 +2127,6 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
            ", displayItem=" + displayItem +
            ", isLoaded=" + isLoaded +
            ", createBackup=" + createBackup +
-           ", inventoryPreview=" + inventoryPreview +
            ", dirty=" + dirty +
            ", updating=" + updating +
            ", currency='" + currency + '\'' +

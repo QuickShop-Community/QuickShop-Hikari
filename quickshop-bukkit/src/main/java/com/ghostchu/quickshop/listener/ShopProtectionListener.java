@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Dropper;
 import org.bukkit.block.Hopper;
+import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
@@ -136,7 +137,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
   public void onHopperMoveItem(final InventoryMoveItemEvent event) {
 
-    if(!this.hopperProtect || !(event.getDestination().getHolder() instanceof Hopper)) {
+    if(!this.hopperProtect || (!(event.getDestination().getHolder() instanceof Hopper) && !(event.getDestination().getHolder() instanceof HopperMinecart))) {
       return;
     }
 
