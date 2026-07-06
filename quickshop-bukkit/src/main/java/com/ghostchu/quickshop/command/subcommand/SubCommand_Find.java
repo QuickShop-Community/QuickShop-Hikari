@@ -15,7 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
+import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -50,8 +50,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
     plugin.getShopManager().findCooldown().put(uuid, System.currentTimeMillis() + plugin.getConfig().getLong("shop.finding.cooldown", 20L) * 1000);
 
-    final Location loc = sender.getLocation().clone();
-    final Vector playerVector = loc.toVector();
+    final Location loc = sender.getLocation();
 
     //Combing command args
     final StringBuilder sb = new StringBuilder(parser.getArgs().getFirst());
@@ -67,7 +66,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
       originLookForSb.append(" ").append(parser.getArgs().get(i));
     }
     final String originLookFor = originLookForSb.toString();
-    final double maxDistance = plugin.getConfig().getInt("shop.finding.distance");
+    final double maxDistanceSquared = NumberConversions.square(plugin.getConfig().getInt("shop.finding.distance"));
     final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
     final int shopLimit = usingOldLogic? 1 : plugin.getConfig().getInt("shop.finding.limit");
     final boolean allShops = plugin.getConfig().getBoolean("shop.finding.all");
@@ -97,10 +96,10 @@ public class SubCommand_Find implements CommandHandler<Player> {
          && !plugin.perm().hasPermission(sender, "quickshop.other.search")) {
         continue;
       }
-      final Vector shopVector = shop.bukkitLocation().toVector();
-      final double distance = shopVector.distance(playerVector);
+      final Location shopLocation = shop.bukkitLocation();
+      final double distanceSquared = shopLocation.distanceSquared(loc);
       //Check distance
-      if(distance <= maxDistance || global) {
+      if(distanceSquared <= maxDistanceSquared || global) {
         //Collect valid shop that trading items we want
         if(!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)
            && !shop.getItem().getType().name().toLowerCase().contains(lookFor)
@@ -113,7 +112,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
             continue;
           }
         }
-        aroundShops.put(shop, distance);
+        aroundShops.put(shop, Math.sqrt(distanceSquared));
       }
     }
     //Check if no shops found
