@@ -156,7 +156,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.h2.Driver;
@@ -1348,7 +1347,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     try {
       for (final Player player : javaPlugin.getServer().getOnlinePlayers()) {
         if (player.getOpenInventory().getTopInventory().getHolder(false) instanceof QuickShopPreviewGUIHolder) {
-          player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+          player.closeInventory();
         }
       }
     } catch(Exception e) {
