@@ -16,7 +16,7 @@ public class QuickShopPreviewGUIHolder implements InventoryHolder {
 
   public void setInventory(final @NotNull Inventory inventory) {
 
-    Preconditions.checkState(this.inventory == null);
+    Preconditions.checkState(this.inventory == null, "cannot update inventory field with another inventory after one has already been set");
     this.inventory = inventory;
   }
 
