@@ -41,6 +41,8 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager.DISPLAY_ITEM_KEY_INSTANCE;
 
 /**
@@ -215,7 +217,6 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     }
 
     if (isSpawned()) {
-
       isSpawned = false;
 
       if(QuickShop.getInstance().getDisplayManager() instanceof DisplayEntityItemManager) {
@@ -293,7 +294,10 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     }
 
     initEntities();
-    sendFakeItemToAll();
+    //sendFakeItemToAll();
+    QuickShop.folia().getScheduler().runAtLocationLater(getDisplayLocation(), task -> {
+      sendFakeItemToAll();
+    }, 1, TimeUnit.SECONDS);
 
     isSpawned = true;
   }
@@ -311,6 +315,7 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
   public void sendFakeItemToAll() {
 
     for(final Player player : Bukkit.getOnlinePlayers()) {
+
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
 

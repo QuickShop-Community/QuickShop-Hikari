@@ -124,15 +124,6 @@ public class MainPage extends QuickShopPage {
         final ItemStack shopItem = shop.get().getItem();
         final int shopItemSlot = shopItemConfig != null? shopItemConfig.getSlot() : 4;
         final AbstractItemStack<ItemStack> shopItemStack = QuickShop.getInstance().stack(shopItem);
-        if(shopItem.getItemMeta() instanceof final EnchantmentStorageMeta enchantmentStorageMeta) {
-
-          final LinkedList<Component> lore = new LinkedList<>();
-          for(final Map.Entry<Enchantment, Integer> entry : enchantmentStorageMeta.getStoredEnchants().entrySet()) {
-
-            lore.add(Util.enchantmentDataToComponent(entry.getKey(), entry.getValue()));
-          }
-          shopItemStack.lore(lore);
-        }
         open.getPage().addIcon(new IconBuilder(shopItemStack).withSlot(shopItemSlot).build());
 
         // Always read price directly from shop to get the latest value

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       snapshot_tag:
-        description: "Snapshot tag/version, example: snapshot/6.3.0.0-8"
+        description: "Snapshot tag/version, example: snapshot/6.3.0.0-SNAPSHOT-8"
         required: true
         type: string
 

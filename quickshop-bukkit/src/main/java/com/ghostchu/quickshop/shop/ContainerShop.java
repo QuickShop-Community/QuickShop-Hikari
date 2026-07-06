@@ -354,6 +354,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
         return;
       }
     }
+
     if(this.displayItem != null) {
       if(!this.displayItem.isSpawned()) {
         /* Not spawned yet. */

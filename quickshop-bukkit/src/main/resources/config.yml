@@ -339,7 +339,6 @@ limits:
 shop-blocks:
   - CHEST
   - TRAPPED_CHEST
-  - ENDER_CHEST
   - BARREL
 
 shop:
