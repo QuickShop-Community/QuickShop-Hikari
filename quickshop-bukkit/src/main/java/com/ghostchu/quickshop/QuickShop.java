@@ -96,6 +96,7 @@ import com.ghostchu.quickshop.util.envcheck.EnvCheckEntry;
 import com.ghostchu.quickshop.util.envcheck.EnvironmentChecker;
 import com.ghostchu.quickshop.util.envcheck.ResultContainer;
 import com.ghostchu.quickshop.util.envcheck.ResultReport;
+import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.ModernCustomMatcher;
@@ -153,6 +154,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -1342,6 +1344,17 @@ public class QuickShop implements QuickShopAPI, Reloadable {
       logger.info("Cleaning up shop manager...");
       shopManager.clear();
     }
+
+    try {
+      for (final Player player : javaPlugin.getServer().getOnlinePlayers()) {
+        if (player.getOpenInventory().getTopInventory().getHolder(false) instanceof QuickShopPreviewGUIHolder) {
+          player.closeInventory();
+        }
+      }
+    } catch(Exception e) {
+      javaPlugin.getSLF4JLogger().warn("An exception occurred while attempting to close open preview inventories for players", e);
+    }
+
     if(AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && displayManager != null) {
       logger.info("Cleaning up display manager...");
       displayManager.unload();
