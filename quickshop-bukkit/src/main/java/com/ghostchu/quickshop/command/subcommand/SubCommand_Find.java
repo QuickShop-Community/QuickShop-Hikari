@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -84,6 +85,9 @@ public class SubCommand_Find implements CommandHandler<Player> {
     } else {
       scanPool = plugin.getShopManager().getLoadedShops();
     }
+
+    final boolean canSearchOther = plugin.perm().hasPermission(sender, "quickshop.other.search");
+
     //Calc distance between player and shop
     for(final Shop shop : scanPool) {
       if(!Objects.equals(shop.bukkitLocation().getWorld(), loc.getWorld())) {
@@ -92,17 +96,16 @@ public class SubCommand_Find implements CommandHandler<Player> {
       if(aroundShops.size() == shopLimit) {
         break;
       }
-      if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH)
-         && !plugin.perm().hasPermission(sender, "quickshop.other.search")) {
-        continue;
-      }
       final Location shopLocation = shop.bukkitLocation();
       final double distanceSquared = shopLocation.distanceSquared(loc);
       //Check distance
       if(distanceSquared <= maxDistanceSquared || global) {
+        if(!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH) && !canSearchOther) {
+          continue;
+        }
         //Collect valid shop that trading items we want
-        if(!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)
-           && !shop.getItem().getType().name().toLowerCase().contains(lookFor)
+        if(!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase(Locale.ROOT).contains(lookFor)
+           && !shop.getItem().getType().name().toLowerCase(Locale.ROOT).contains(lookFor)
            && !Util.findStringInList(Util.getEnchantsForItemStack(shop.getItem()), lookFor)
            && plugin.getItemMarker().get(originLookFor) == null) {
           continue;
