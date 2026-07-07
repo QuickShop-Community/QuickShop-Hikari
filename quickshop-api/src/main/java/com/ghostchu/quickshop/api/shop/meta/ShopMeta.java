@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopType;
 import com.ghostchu.quickshop.api.shop.state.ShopState;
 import net.kyori.adventure.text.Component;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -92,6 +93,14 @@ public interface ShopMeta<U> extends ShopPrice<U> {
    * @param item ItemStack to set
    */
   void setItem(@NotNull ItemStack item);
+
+  /**
+   * Get shop block
+   *
+   * @return The shop's block
+   */
+  @NotNull
+  Block getShopBlock();
 
   /**
    * Gets the currency that shop use
