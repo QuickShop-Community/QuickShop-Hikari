@@ -38,7 +38,7 @@ import java.util.List;
  * ToggleDisplayAll
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 6.2.0.10
  */
 public class SubCommand_ToggleDisplayAll implements CommandHandler<Player> {
 

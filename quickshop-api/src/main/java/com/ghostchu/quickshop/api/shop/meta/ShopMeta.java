@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 /**
- * ShopIdentity
+ * ShopMeta
  *
  * @author creatorfromhell
  * @since 6.3.0.0

@@ -22,7 +22,7 @@ import com.ghostchu.quickshop.api.event.AbstractQSEvent;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 
 /**
- * DisplayEntityItemManager
+ * DisplayManagerRemoveEvent
  *
  * @author creatorfromhell
  * @since 6.3.0.0

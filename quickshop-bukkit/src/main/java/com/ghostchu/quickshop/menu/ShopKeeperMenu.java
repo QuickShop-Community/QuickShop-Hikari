@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.menu.keeper.MainPage;
 import com.ghostchu.quickshop.menu.shared.QuickShopMenu;
 
 /**
- * ShopControlMenu
+ * ShopKeeperMenu
  *
  * @author creatorfromhell
  * @since 6.2.0.8

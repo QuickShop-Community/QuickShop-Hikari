@@ -23,7 +23,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * InteractionHandler
+ * InteractionType
  *
  * @author creatorfromhell
  * @since 6.2.0.11

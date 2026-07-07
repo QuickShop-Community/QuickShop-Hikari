@@ -26,7 +26,7 @@ import com.ghostchu.quickshop.api.operation.result.EconomyOperationResult;
 import java.math.BigDecimal;
 
 /**
- * EconomyDepositOperation
+ * EconomyWithdrawOperation
  *
  * @author creatorfromhell
  * @since 6.2.0.11

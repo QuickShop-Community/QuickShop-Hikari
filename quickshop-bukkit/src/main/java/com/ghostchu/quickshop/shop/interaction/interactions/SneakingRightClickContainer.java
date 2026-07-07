@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * SneakingRightClickShop
+ * SneakingRightClickContainer
  *
  * @author creatorfromhell
  * @since 6.2.0.11

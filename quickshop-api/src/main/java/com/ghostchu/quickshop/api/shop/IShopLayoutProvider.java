@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * IShopLayout
+ * IShopLayoutProvider
  *
  * @author creatorfromhell
  * @since 6.2.0.11
