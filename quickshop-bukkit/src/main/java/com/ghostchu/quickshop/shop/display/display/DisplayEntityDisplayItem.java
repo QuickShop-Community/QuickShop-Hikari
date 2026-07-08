@@ -31,6 +31,8 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.ItemDisplay;
@@ -78,12 +80,57 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
                                                   plugin.getConfig().getFloat("shop.display-scale.y", 1.25f),
                                                   plugin.getConfig().getFloat("shop.display-scale.z", 1.25f));
 
-    final AxisAngle4f rotation = new AxisAngle4f((float)Math.toRadians(plugin.getConfig().getDouble("shop.display-rotation.degrees", 0d)),
+    final BlockData data = shop.getShopBlock().getBlockData();
+
+    float yaw = 0f;
+
+    if (data instanceof final Directional directional) {
+      switch (directional.getFacing()) {
+        case SOUTH -> yaw = 0f;
+        case WEST  -> yaw = 90f;
+        case NORTH -> yaw = 180f;
+        case EAST  -> yaw = 270f;
+      }
+    }
+    final float configDegrees = plugin.getConfig().getFloat("shop.display-rotation.degrees", 0.0f);
+
+    final AxisAngle4f rotation = new AxisAngle4f((float)Math.toRadians(configDegrees + yaw),
                                                  plugin.getConfig().getFloat("shop.display-rotation.x", 0f),
-                                                 plugin.getConfig().getFloat("shop.display-rotation.y", 0f),
-                                                 plugin.getConfig().getFloat("shop.display-rotation.z", 1f));
+                                                 plugin.getConfig().getFloat("shop.display-rotation.y", 1f),
+                                                 plugin.getConfig().getFloat("shop.display-rotation.z", 0f));
 
     itemDisplay = EntityUtil.spawnDisplayItemFor(null, getDisplayLocation().clone().add(0, .15d, 0), shop.getItem(), itemScaleVector, rotation, Bukkit.getViewDistance() * 16, 0);
+
+    /*
+    final Location base = getDisplayLocation().getBlock().getLocation();
+
+    final float glassSize = 0.70f;
+    final float logSize = 0.56f;
+
+
+    glass = EntityUtil.spawnDisplayBlockFor(
+            null,
+            base.clone().add(
+                    0.5 - glassSize / 2.0,
+                    0.85,
+                    0.5 - glassSize / 2.0
+                            ),
+            Material.GLASS,
+            new Vector3f(glassSize, glassSize, glassSize),
+            Bukkit.getViewDistance() * 16,
+            0);
+
+    log = EntityUtil.spawnDisplayBlockFor(
+            null,
+            base.clone().add(
+                    0.5 - logSize / 2.0,
+                    0.86,
+                    0.5 - logSize / 2.0
+                            ),
+            Material.OAK_LOG,
+            new Vector3f(logSize, 0.08f, logSize),
+            Bukkit.getViewDistance() * 16,
+            0);*/
 
     interactionEntity = EntityUtil.spawnInteractionFor(null, getDisplayLocation().toCenterLocation().add(0.0, 0.4, 0.0), 0);
     interactionEntity.getPersistentDataContainer().set(DISPLAY_ITEM_KEY_INSTANCE, PersistentDataType.STRING, Util.locationToPDCString(shop.bukkitLocation()));
@@ -294,7 +341,6 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     }
 
     initEntities();
-    //sendFakeItemToAll();
     QuickShop.folia().getScheduler().runAtLocationLater(getDisplayLocation(), task -> {
       sendFakeItemToAll();
     }, 1, TimeUnit.SECONDS);
@@ -305,6 +351,8 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
   public void sendFakeItemToPlayer(final Player player) {
 
     player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+    //player.showEntity(QuickShop.getInstance().getJavaPlugin(), glass);
+    //player.showEntity(QuickShop.getInstance().getJavaPlugin(), log);
     player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
 
     if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
@@ -317,6 +365,8 @@ public class DisplayEntityDisplayItem extends AbstractDisplayItem implements Rel
     for(final Player player : Bukkit.getOnlinePlayers()) {
 
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), itemDisplay);
+      //player.showEntity(QuickShop.getInstance().getJavaPlugin(), glass);
+      //player.showEntity(QuickShop.getInstance().getJavaPlugin(), log);
       player.showEntity(QuickShop.getInstance().getJavaPlugin(), interactionEntity);
 
       if(QuickShop.getInstance().getConfig().getBoolean("shop.text-display.enabled")) {
