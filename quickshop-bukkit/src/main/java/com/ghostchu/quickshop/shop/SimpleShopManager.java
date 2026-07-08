@@ -64,11 +64,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
@@ -79,6 +81,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -108,6 +111,9 @@ import java.util.function.Function;
 public class SimpleShopManager extends AbstractShopManager implements ShopManager, Reloadable {
 
   public static final String DEFAULT_TYPE = "BUYING";
+
+  public static final NamespacedKey CHEST_SHOP = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "chest_shop");
+  public static final NamespacedKey CHEST_SHOP_OWNER = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "chest_shop_owner");
 
   protected final Map<UUID, Long> cooldowns = Maps.newConcurrentMap();
   protected final Map<Integer, IShopType> shopTypes = Maps.newConcurrentMap();
@@ -877,6 +883,20 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
         addShopToLookupTable(shop);
         registerShop(shop, true);
         loadShop(shop);
+
+        //set PDC on shop block
+        final Block block = shop.getShopBlock();
+        if (block.getState(false) instanceof final TileState tileState) {
+
+          if (shop.getOwner().getUniqueId() != null) {
+
+            tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, shop.getOwner().getUniqueId().toString());
+          }
+          tileState.getPersistentDataContainer().set(CHEST_SHOP, PersistentDataType.LONG, shop.getShopId());
+
+          tileState.update(true);
+        }
+
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(p));
 
         event = event.clone(Phase.MAIN);
@@ -1385,6 +1405,25 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
     for(final Sign s : shop.getSigns()) {
       s.getBlock().setType(Material.AIR);
+    }
+
+    final Block shopBlock = shop.getShopBlock();
+    if (shopBlock.getState(false) instanceof final TileState state) {
+
+      boolean updated = false;
+      if (state.getPersistentDataContainer().has(CHEST_SHOP)) {
+        state.getPersistentDataContainer().remove(CHEST_SHOP);
+        updated = true;
+      }
+
+      if (state.getPersistentDataContainer().has(CHEST_SHOP_OWNER)) {
+        state.getPersistentDataContainer().remove(CHEST_SHOP_OWNER);
+        updated = true;
+      }
+
+      if (updated) {
+        state.update(true);
+      }
     }
     refundShop(shop);
     unloadShop(shop);

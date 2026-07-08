@@ -63,6 +63,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.block.TileState;
 import org.bukkit.block.sign.Side;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -71,6 +72,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -94,6 +96,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.ghostchu.quickshop.shop.SimpleShopManager.CHEST_SHOP_OWNER;
 import static com.ghostchu.quickshop.util.Util.waitForFuture;
 import static java.math.BigDecimal.ZERO;
 
@@ -531,6 +534,11 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     setDirty();
   }
 
+  @Override
+  public @NotNull Block getShopBlock() {
+    return this.location.getBlock();
+  }
+
   /**
    * @return The location of the shops chest
    */
@@ -573,6 +581,17 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
       return;
     }
     this.owner = owner;
+
+    //Setup PDC with new owner
+    if (owner.getUniqueId() != null) {
+      final Block block = this.location.getBlock();
+      if(block.getState(false) instanceof final TileState tileState) {
+
+        tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, owner.getUniqueId().toString());
+        tileState.update(true);
+      }
+    }
+
     setDirty();
     setSignText(plugin.getTextManager().findRelativeLanguages(owner, false));
   }

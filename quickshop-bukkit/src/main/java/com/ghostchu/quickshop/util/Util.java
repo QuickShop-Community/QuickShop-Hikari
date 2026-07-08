@@ -473,6 +473,26 @@ public class Util {
     return true;
   }
 
+  public static boolean canBeShop(@NotNull final Block b, final BlockState bs) {
+
+    if(isBlacklistWorld(b.getWorld())) {
+      return false;
+    }
+
+    // Specified types by configuration
+    if(!isShoppables(b.getType())) {
+      return false;
+    }
+
+    if (!(bs instanceof InventoryHolder)) {
+      if(Util.isDevMode()) {
+        Log.debug(b.getType() + " not a container");
+      }
+      return false;
+    }
+    return true;
+  }
+
   public static boolean isBlacklistWorld(@NotNull final World world) {
 
     final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
