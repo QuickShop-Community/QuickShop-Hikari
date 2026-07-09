@@ -530,7 +530,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                        + " INNER JOIN " + DataTables.SHOPS.getName()
                        + " ON " + DataTables.DATA.getName() + ".id = " + DataTables.SHOPS.getName() + ".data"
                        + " INNER JOIN " + DataTables.SHOP_MAP.getName()
-                       + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id";
+                       + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id"
+                       + " LEFT JOIN " + DataTables.EXTERNAL_CACHE.getName()
+                       + " ON " + DataTables.EXTERNAL_CACHE.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id";
     try(final SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
       final ResultSet rs = query.getResultSet();
       while(rs.next()) {
@@ -544,7 +546,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         final int z = rs.getInt("z");
         final DataRecord dataRecord = new SimpleDataRecord(plugin.getPlayerFinder(), rs);
         final InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
-        shopRecords.add(new ShopRecord(dataRecord, infoRecord));
+        final int cachedStock = rs.getInt("stock");
+        final int cachedSpace = rs.getInt("space");
+        shopRecords.add(new ShopRecord(dataRecord, infoRecord, cachedStock, cachedSpace));
       }
     } catch(final SQLException e) {
       plugin.logger().error("Failed to list shops", e);
@@ -900,7 +904,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
   public CompletableFuture<@NotNull ShopInventoryCountCache> queryInventoryCache(final long shopId) {
 
     return CompletableFuture.supplyAsync(()->{
-      ShopInventoryCountCache cache = new SimpleShopInventoryCountCache(-2, -2, false);
       try(final SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
               .selectColumns("stock", "space")
               .addCondition("shop", shopId)
@@ -908,12 +911,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
               .build().execute()) {
         final ResultSet set = query.getResultSet();
         if(set.next()) {
-          cache = new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"), true);
+          return new SimpleShopInventoryCountCache(set.getInt("stock"), set.getInt("space"), true);
         }
       } catch(final SQLException exception) {
         plugin.logger().warn("Cannot handle the inventory cache lookup for shop {}", shopId, exception);
       }
-      return cache;
+      return new SimpleShopInventoryCountCache();
     });
   }
 

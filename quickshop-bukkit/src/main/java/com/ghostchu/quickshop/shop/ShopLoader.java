@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.QSBenefitProvider;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -121,7 +122,7 @@ public class ShopLoader implements SubPasteItem {
       final InfoRecord infoRecord = shopRecord.getInfoRecord();
       final DataRecord dataRecord = shopRecord.getDataRecord();
       final Timer singleShopLoadingTimer = new Timer(true);
-      final ShopLoadResult result = loadSingleShop(infoRecord, dataRecord, worldName, shopsLoadInNextTick);
+      final ShopLoadResult result = loadSingleShop(shopRecord, worldName, shopsLoadInNextTick);
       switch(result) {
         case LOADED -> successCounter.incrementAndGet();
         case LOAD_AFTER_CHUNK_LOADED -> chunkNotLoaded.incrementAndGet();
@@ -141,7 +142,10 @@ public class ShopLoader implements SubPasteItem {
   }
 
 
-  private ShopLoadResult loadSingleShop(final InfoRecord infoRecord, final DataRecord dataRecord, @Nullable final String worldName, @NotNull final List<Shop> shopsLoadInNextTick) {
+  private ShopLoadResult loadSingleShop(final ShopRecord shopRecord, @Nullable final String worldName, @NotNull final List<Shop> shopsLoadInNextTick) {
+    final InfoRecord infoRecord = shopRecord.getInfoRecord();
+    final DataRecord dataRecord = shopRecord.getDataRecord();
+
     // World check
     if(worldName != null) {
       if(!worldName.equals(infoRecord.getWorld())) {
@@ -172,6 +176,10 @@ public class ShopLoader implements SubPasteItem {
     final DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(dataRecord);
     final Location location = new Location(Bukkit.getWorld(infoRecord.getWorld()), x, y, z);
 
+    final SimpleShopInventoryCountCache countCache = shopRecord.getCachedSpace() == 0 && shopRecord.getCachedStock() == 0
+            ? new SimpleShopInventoryCountCache() // cached stock & space both being 0 means no external cache existed, create uninitialized cache
+            : new SimpleShopInventoryCountCache(shopRecord.getCachedStock(), shopRecord.getCachedSpace(), true);
+
     final ItemStack stack = (rawInfo.getNewItem() == null)? rawInfo.getItem() : rawInfo.getNewItem();
     try {
       shop = new ContainerShop(plugin,
@@ -191,7 +199,9 @@ public class ShopLoader implements SubPasteItem {
                                rawInfo.getInvSymbolLink(),
                                rawInfo.getName(),
                                rawInfo.getPermissions(),
-                               rawInfo.getBenefits());
+                               rawInfo.getBenefits(),
+                               countCache
+      );
     } catch(final Exception e) {
       if(e instanceof IllegalStateException) {
         plugin.logger().warn("Failed to load the shop, skipping...", e);
@@ -319,6 +329,7 @@ public class ShopLoader implements SubPasteItem {
     private boolean needUpdate = false;
 
     private BenefitProvider benefits;
+    private SimpleShopInventoryCountCache inventoryCountCache;
 
 
     DataRawDatabaseInfo(@NotNull final DataRecord dataRecord) {

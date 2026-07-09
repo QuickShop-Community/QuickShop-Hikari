@@ -9,4 +9,8 @@ public class ShopRecord {
 
   private DataRecord dataRecord;
   private InfoRecord infoRecord;
+
+  // Extra fields
+  private int cachedStock;
+  private int cachedSpace;
 }

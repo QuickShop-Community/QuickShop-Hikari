@@ -42,6 +42,7 @@ import com.ghostchu.quickshop.economy.QSBenefitProvider;
 import com.ghostchu.quickshop.economy.transaction.QSEconomyTransaction;
 import com.ghostchu.quickshop.economy.transaction.QSEconomyTransactionBuilder;
 import com.ghostchu.quickshop.obj.QUserImpl;
+import com.ghostchu.quickshop.shop.cache.SimpleShopInventoryCountCache;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.tax.QuickShopTaxManager;
@@ -561,7 +562,7 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
                                                      SELLING_TYPE, ACTIVE_STATE, new YamlConfiguration(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
                                                      null, plugin.getJavaPlugin().getName(),
                                                      symbolLink,
-                                                     null, Collections.emptyMap(), new QSBenefitProvider());
+                                                     null, Collections.emptyMap(), new QSBenefitProvider(), new SimpleShopInventoryCountCache());
         createShop(shop, info.getSignBlock(), info.isBypassed());
       } else {
         plugin.text().of(p, "invalid-container").send();
